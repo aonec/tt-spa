@@ -17,7 +17,8 @@ import {
   DeviceProfile,
   MetersPage,
   ApartmentProfile,
-  ErrorPage
+  ErrorPage,
+  AccessDeniedPage
 } from "01/_pages"
 
 export const App = () => {
@@ -29,6 +30,7 @@ export const App = () => {
         <Route path="/logout" render={() => "logout"} />
         {/* <Route path="/error/" render={() => "404"} /> */}
         <Route path="/error/" render={() => <ErrorPage />} />
+        <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
         <Route path="/">
           <layout>
             <menu as="div">

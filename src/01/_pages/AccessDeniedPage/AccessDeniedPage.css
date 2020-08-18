@@ -5,20 +5,34 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-   
 }
 .error-page__title {
-    color: #FFFFFF;
+    color: #ffffff;
 }
 .error-page__button {
     margin-top: 24px;
 }
 
 .error-page__image {
-    padding-top: 64px;
+   margin-top:-180px;
 }
 /* .error-page__title {
     font-weight: 300;
     font-size: 40px;
     line-height: 48px;
 } */
+
+.access-denied__subtitle {
+    color: #FFFFFF;
+    padding-top: 16px;
+    max-width: 691px;
+    text-align: center;
+}
+
+.access-denied__link {
+    color: #189EE9;
+}
+.ft-14 {
+    font-size: 14px;
+    line-height: 16px;
+}
