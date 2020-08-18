@@ -3,6 +3,7 @@ import styled from "reshadow/macro"
 import { Route, Switch, Redirect } from "react-router-dom"
 
 import "01/css/index.css"
+import "01/css/styles.css"
 
 import { useApp } from "./useApp"
 import { app } from "01/styles/app"
@@ -15,7 +16,8 @@ import {
   ObjectProfile,
   DeviceProfile,
   MetersPage,
-  ApartmentProfile
+  ApartmentProfile,
+  ErrorPage
 } from "01/_pages"
 
 export const App = () => {
@@ -25,7 +27,8 @@ export const App = () => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/logout" render={() => "logout"} />
-        <Route path="/error/" render={() => "404"} />
+        {/* <Route path="/error/" render={() => "404"} /> */}
+        <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/">
           <layout>
             <menu as="div">

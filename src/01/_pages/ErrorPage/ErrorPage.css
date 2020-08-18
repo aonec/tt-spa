@@ -1,0 +1,21 @@
+.error-page {
+    min-height: 100vh;
+    background: #12193d;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+.error-page__title {
+    color: #FFFFFF;
+}
+.error-page__button {
+    margin-top: 24px;
+}
+
+/* .error-page__title {
+    font-weight: 300;
+    font-size: 40px;
+    line-height: 48px;
+} */

@@ -7,14 +7,16 @@ import { Perpetrator, Contractors, NextStage } from "01/components/Select"
 import { Loader } from "01/components"
 import { UploadButton, useUpload, UploadList } from "01/components/Upload"
 
-// display: grid;
-// grid-gap: 16px;
+
+// display:flex;
+// align-items: flex-end;
+// justify-content: space-between;
+
+
 const styles = css`
   panel {
-    
-    display:flex;
-    align-items: flex-end;
-    justify-content: space-between;
+    display: grid;
+    grid-gap: 16px;
     padding: 8px;
     box-shadow: var(--shadow);
     &[|one] {
