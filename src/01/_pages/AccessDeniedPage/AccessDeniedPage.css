@@ -1,38 +1,36 @@
-.error-page {
+.access-denied {
     min-height: 100vh;
     background: #12193d;
     padding-top: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.error-page__title {
     color: #ffffff;
 }
-.error-page__button {
-    margin-top: 24px;
+.access-denied__title {
 }
-
-.error-page__image {
-   margin-top:-180px;
-}
-/* .error-page__title {
-    font-weight: 300;
-    font-size: 40px;
-    line-height: 48px;
-} */
 
 .access-denied__subtitle {
-    color: #FFFFFF;
     padding-top: 16px;
     max-width: 691px;
     text-align: center;
+    z-index: 2;
 }
 
 .access-denied__link {
-    color: #189EE9;
+    color: #189ee9;
+    
 }
-.ft-14 {
-    font-size: 14px;
-    line-height: 16px;
+
+.access-denied__link :hover {
+    text-decoration: underline;
+}
+
+.access-denied__button {
+    margin-top: 24px;
+}
+
+.access-denied__image {
+    margin-top: -100px;
+    z-index: 1;
 }

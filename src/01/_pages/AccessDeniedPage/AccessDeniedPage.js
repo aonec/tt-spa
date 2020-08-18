@@ -13,15 +13,15 @@ const buttonHandler = () => {
 export const AccessDeniedPage = () => {
     const params = useParams()
     return styled(button)(
-        <div className="error-page">
-            <h1 className="error-page__title title-40">У вас нет доступа к запрашиваемым ресурсам</h1>
+        <div className="access-denied">
+            <h1 className="access-denied__title title-40">У вас нет доступа к запрашиваемым ресурсам</h1>
             <p className="access-denied__subtitle ft-14">
-                Если вы уверены, что это ошибка или недоразумение, то, пожалуйста, напишите нам в <a className= "access-denied__link" href="mailto:support@aonec.ru">службу поддержки</a>. В письме не забудьте указать ссылку на страницу.
+                Если вы уверены, что это ошибка или недоразумение, то, пожалуйста, напишите нам в <a className="access-denied__link" href="mailto:support@aonec.ru">службу поддержки. </a>В письме не забудьте указать ссылку на страницу.
             </p>
-            <button className="error-page__button" data-big data-primary onClick={buttonHandler} >
+            <button className="access-denied__button" data-big data-primary onClick={buttonHandler} >
                 <span>Вернуться к работе</span></button>
             {/* <img  src="https://satamalam.ru/public/404.svg" /> */}
-            <img className="error-page__image" src={require("./403.svg")} />
+            <img className="access-denied__image" src={require("./403.svg")} />
         </div>
 
     )
