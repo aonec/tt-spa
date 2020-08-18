@@ -7,10 +7,14 @@ import { Perpetrator, Contractors, NextStage } from "01/components/Select"
 import { Loader } from "01/components"
 import { UploadButton, useUpload, UploadList } from "01/components/Upload"
 
+// display: grid;
+// grid-gap: 16px;
 const styles = css`
   panel {
-    display: grid;
-    grid-gap: 16px;
+    
+    display:flex;
+    align-items: flex-end;
+    justify-content: space-between;
     padding: 8px;
     box-shadow: var(--shadow);
     &[|one] {
@@ -58,7 +62,7 @@ export const Panel = ({
   pushProps = {},
   isObserver = false,
   perpName = "",
-  dispatch = () => {},
+  dispatch = () => { },
 }) => {
   const upload = useUpload((data) => dispatch({ type: "add_data", data }))
   if (hiddenPanel) return null
@@ -161,6 +165,7 @@ const PushButton = ({ loading = false, ...props }) =>
   styled(s.button)`
     button {
       grid-area: push;
+      margin-left: 10px;
     }
   `(
     <button data-big data-primary {...props}>

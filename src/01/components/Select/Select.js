@@ -31,6 +31,7 @@ export const Select = ({
         font-size: 16px;
         line-height: 2em;
         --h: var(--h-big);
+        width: 100%;
       }
     }
 
