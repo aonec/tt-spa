@@ -141,7 +141,8 @@ export const TasksList = ({ items }) => {
             )}
             <addr>
               <Icon icon="map" />
-              {address}
+              {/* {address} */}
+              {address.city}, {address.street},{address.housingStockNumber}
             </addr>
             <num>
               <Icon icon="number" />

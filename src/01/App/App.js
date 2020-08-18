@@ -15,6 +15,7 @@ import {
   ObjectProfile,
   DeviceProfile,
   MetersPage,
+  ApartmentProfile
 } from "01/_pages"
 
 export const App = () => {
@@ -40,16 +41,23 @@ export const App = () => {
                 />
                 <Route path="/tasks/(\\d+)" component={TaskProfile} />
                 <Route path="/objects/" component={Objects} exact />
-                {/* <Route
+                <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
                   component={DeviceProfile}
                   exact
-                /> */}
+                />
                 <Route
                   path="/objects/(\\d+)/(apartments|devices)?"
                   component={ObjectProfile}
                   exact
                 />
+
+                <Route
+                  path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|changes)?"
+                  component={ApartmentProfile}
+                  exact
+                />
+
                 <Redirect from="/meters/" to="/meters/apartments" exact />
                 <Route
                   path="/meters/(apartments|houses)"

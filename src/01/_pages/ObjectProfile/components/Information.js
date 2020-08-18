@@ -14,7 +14,7 @@ export const Information = ({ list = [], loading = true, ...props }) => {
   `(
     <information {...props}>
       <h2>Общая информация</h2>
-      <Loader show={loading} size="32">
+      {/* <Loader show={loading} size="32"> */}
         <info_list>
           {list.map(({ title, value, url }) => (
             <info_item
@@ -27,7 +27,7 @@ export const Information = ({ list = [], loading = true, ...props }) => {
             </info_item>
           ))}
         </info_list>
-      </Loader>
+      {/* </Loader> */}
     </information>
   )
 }
