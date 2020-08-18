@@ -1,0 +1,15 @@
+:root {
+  --main: 39, 47, 90;
+  --primary: 24, 158, 233;
+  --error: 252, 82, 91;
+  --success: 23, 180, 90;
+  --warning: 255, 138, 31;
+
+  --bg: 243, 245, 246;
+  --frame: 220, 222, 228;
+
+  /* resourse */
+  --hot-water: rgb(255, 140, 104);
+  --cold-water: rgb(121, 175, 255);
+  --electro: rgb(226, 177, 4);
+}

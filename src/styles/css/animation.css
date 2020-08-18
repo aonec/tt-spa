@@ -1,0 +1,8 @@
+@keyframes spin {
+  from {
+    fill: red;
+  }
+  to {
+    fill: blue;
+  }
+}

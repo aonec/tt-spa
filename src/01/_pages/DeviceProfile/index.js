@@ -1,0 +1,1 @@
+export { DeviceProfile } from './DeviceProfile'
