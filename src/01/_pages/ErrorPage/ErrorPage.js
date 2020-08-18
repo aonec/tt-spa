@@ -4,13 +4,17 @@ import { useParams } from 'react-router-dom'
 import { input, button } from "../../r_comp"
 // import { Tabs } from './components/Tabs'
 
+import "./ErrorPage.css";
+
 export const ErrorPage = () => {
     const params = useParams()
     return styled(button)(
-        <div>
-            <h1>Ресурсы не найдены</h1>
-            <button data-big data-primary>
+        <div className="error-page">
+            <h1 className="error-page__title title-40">Ресурсы не найдены</h1>
+            <button className="error-page__button" data-big data-primary>
                 <span>Вернуться к работе</span></button>
+            <img className="error-page__image" src="https://satamalam.ru/public/404.svg" />
         </div>
+
     )
 }
