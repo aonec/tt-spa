@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled, { css } from "reshadow/macro"
 import { useHistory } from "react-router-dom"
 import { Loader, Icon } from "01/components"
@@ -78,8 +78,15 @@ const styles = css`
 
 
 export const Events = ({ title = "", loading = true, items = [] }) => {
+
+
+  const [state, setState] = useState(1);
+  const [perpetrator, serPerpetrator] = useState({
+    id: 0,
+    name: '24.06.2020 10:32 — 31.07.2020 14:32'
+  });
   const { push } = useHistory()
-  const id = 0;
+
   const timer = [{
     text: 'text',
     stage: {
@@ -88,40 +95,38 @@ export const Events = ({ title = "", loading = true, items = [] }) => {
     }
   }];
 
-  const perpetrator = {
-    name: '24.06.2020 10:32 — 31.07.2020 14:32'
-  }
+  items = [
+    {
+      id: 0,
+      value: 'test'
+    },
+    {
+      id: 1,
+      value: 'test'
+    }
+  ]
+
   return styled(styles)(
     <section>
       <h2>{title}</h2>
       <e_list>
         {/* <Loader show={loading} /> */}
-        {/* {items.map(({ id, currentStage, name, perpetrator, timer = {} }) => ( */}
-        <e_item key={id} onClick={() => push("/tasks/" + id)}>
-          {/* <e_title as="h4">{currentStage.name}</e_title> */}
-          <e_title as="h4">Некорректные показания</e_title>
-          {/* <e_name>{name}</e_name> */}
-          {/* <e_name>Некорректные показания</e_name> */}
-          {/* <timer>
-            <Icon icon="timer" />
-            <Icon icon="ok" />
-            <span>{timer.text}Выполнено</span>
-            <timer_text>{timer.stage.timeStr}</timer_text> */}
-            {/* <before>{timer.stage.before}</before>
-          </timer> */}
-          <status>
-            {/* <Icon icon="timer" /> */}
-            <Icon icon="ok" />
-            <span>{timer.text}Выполнено</span>
-            {/* <timer_text>{timer.stage.timeStr}</timer_text> */}
-            {/* <before>{timer.stage.before}</before> */}
-          </status>
-          <perp>
-            <Icon icon="calendar" />
-            <user_name>{perpetrator.name}</user_name>
-          </perp>
-        </e_item>
-        {/* ))} */}
+        {items.map(({ id, currentStage, name, timer = {} }) => {
+          return (
+            <e_item key={id} onClick={() => push("/tasks/" + id)}>
+              <e_title as="h4">Некорректные показания</e_title>
+              <status>
+                <Icon icon="ok" />
+                <span>{timer.text}Выполнено</span>
+              </status>
+              <perp>
+                <Icon icon="calendar" />
+                <user_name>{perpetrator.name}</user_name>
+              </perp>
+            </e_item>
+          )
+        }
+        )}
       </e_list>
     </section>
   )

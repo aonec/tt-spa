@@ -13,6 +13,7 @@ const objectInfo = [
   // ["Год постройки", "constructionDate"],
 ]
 
+
 // const objectInfo = [
 //   ["Город", "city"],
 //   ["Район", "district"],

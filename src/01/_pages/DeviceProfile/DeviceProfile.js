@@ -32,7 +32,7 @@ import { Changes } from "./components/Changes"
 // import { Events } from "./components/Events"
 // import { Apartments } from "./components/Apartments"
 // import { Devices } from "./components/Devices"
-import { useObjectInformation, useFetchPage } from "./hooks"
+import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
 
 function reducer(state, action) {
   const { type, data } = action
@@ -51,8 +51,9 @@ export const DeviceProfile = () => {
   const { 0: objid } = useParams()
   const { push } = useHistory()
   const info = useObjectInformation(state)
+  const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state
-
+  console.log("changes", changes);
   return styled(grid)(
     <>
       <Header {...header} />
