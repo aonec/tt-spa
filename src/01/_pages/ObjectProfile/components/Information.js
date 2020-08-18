@@ -7,6 +7,7 @@ import { information } from "01/r_comp"
 
 export const Information = ({ list = [], loading = true, ...props }) => {
   const { push } = useHistory()
+  console.log(list)
   return styled(information)`
     Loader {
       justify-self: center;

@@ -8,11 +8,14 @@
     background: #12193d;
 }
 
+/* colors */
 .white {
     color: #FFFFFF;
 }
 
+/* font-sizes */
 .ft-14 {
     font-size: 14px;
     line-height: 16px;
 }
+

@@ -19,11 +19,10 @@
 
 .access-denied__link {
     color: #189ee9;
-    
 }
 
-.access-denied__link :hover {
-    text-decoration: underline;
+.access-denied__link:hover {
+    text-decoration: underline !important;
 }
 
 .access-denied__button {
