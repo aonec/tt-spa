@@ -9,7 +9,7 @@ export const ApartmentProfile = () => {
   return styled()(
     <div>
       Профиль Квартиры
-      <h2>id прибора: {params[1]}</h2>
+      <h2>id квартиры: {params[1]}</h2>
       <p>Компонент обновляется</p>
       <Tabs />
     </div>
