@@ -38,6 +38,12 @@ const styles = css`
       grid-template-areas: "push .";
       grid-template-columns: auto 1fr;
     }
+    &[|five] {
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      grid-template-areas:
+        "ta ta ta ta ta push";
+    }
   }
 
   Perpetrator {
@@ -53,7 +59,7 @@ const styles = css`
     grid-area: ul;
   }
   NextStage {
-    grid-area: nst;
+    grid-area: ta;
   }
 `
 
@@ -98,6 +104,7 @@ export const Panel = ({
         two: AddDocuments,
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
+        five: Switch && PushButton
       })}
     >
       {AddPerpetrator && (
