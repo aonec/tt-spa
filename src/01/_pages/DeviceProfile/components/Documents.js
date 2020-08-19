@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from '01/axios';
+
+import { button } from '01/r_comp';
 // import { Table, Tag, Space } from 'antd';
 // import 'antd/dist/antd.css';
+
+import { test, getDevices, getApartmentInfo } from '../api'
+
+import styled, { use } from "reshadow/macro"
+import { useHistory, useParams } from "react-router-dom"
+
+
+
+import { Loader } from "01/components/Loader"
+import { information } from "01/r_comp"
+import { useEffect } from 'react';
+
+export const Information = ({ list = [], loading = true, ...props }) => {
+    const { push } = useHistory()
+    console.log(list);
+
+    const params = useParams()
+    console.log(params)
+    console.log(params[1])
+}
 
 const columns = [
     {
@@ -94,10 +117,37 @@ const data = [
 
 ];
 
+
 export const Documents = () => {
+    const params = useParams()
+    const a = test;
+    const b = getDevices;
+    const result = getApartmentInfo(1125376);
+
+    const buttonHandler = () => {
+        console.log("buttonHandler");
+        console.log(params)
+        console.log(params[1])
+        console.log(a);
+        console.log(getApartmentInfo(1125376))
+
+        // 1125376
+
+
+    }
+    const [state, setState] = useState({});
+    console.log(state)
+    useEffect(() => {
+        console.log('test');
+        console.log(result);
+    },[]);
+
     return (
         // <Table columns={columns} dataSource={data} pagination={false} />
-        <h2>Компонент Документы в процессе разработки</h2>
+        <>
+            <h2>Компонент Документы в процессе разработки</h2>
+            <button onClick={buttonHandler}>Test</button>
+        </>
     )
 }
 
