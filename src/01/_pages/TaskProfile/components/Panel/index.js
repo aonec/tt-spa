@@ -104,7 +104,7 @@ export const Panel = ({
         two: AddDocuments,
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
-        five: Switch
+        five: Switch && PushButton
       })}
     >
       {AddPerpetrator && (
