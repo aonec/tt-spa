@@ -92,12 +92,6 @@ export const Changes = React.memo(
                             date,
                             action,
                             name
-                            // id,
-                            // apartmentNumber,
-                            // homeownerName,
-                            // homeownersCount,
-                            // personalAccountNumber,
-                            // square,
                         }) => (
                                 <item onClick={() => onClick(id)} key={id}>
                                     {/* <h4>{`№ ${date}`}</h4> */}
