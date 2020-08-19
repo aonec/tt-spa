@@ -97,7 +97,7 @@ export const History = React.memo(
          grid-gap: 8px;
          cursor: pointer;
       }
-      some {
+        h3__wrap {
         display: grid;
         grid-template-columns: 1.5fr 1.5fr 1fr;
         }
@@ -117,10 +117,10 @@ export const History = React.memo(
                 <history>
                     <wrap className="descriptions">
                         <h3>Месяц</h3>
-                        <some>
+                        <h3__wrap>
                             <h3>Показания</h3>
                             <h3>Потребление</h3>
-                        </some>
+                        </h3__wrap>
 
                         <h3>Оператор</h3>
                         <h3>Дата и время</h3>
@@ -140,22 +140,22 @@ export const History = React.memo(
                                 <item onClick={() => onClick(id)} key={id}>
                                     <item_date>{date}</item_date>
 
-                                    <p className="test">
-                                        <div className="test__wrap">
+                                    <plans className="test">
+                                        <plans__wrap className="test__wrap">
                                             <plan className="test__plan">
                                                 <h4>Тариф 1</h4>
                                                 {/* <item_action>{action}</item_action> */}
-                                                <input placeholder={action} />
+                                                <input placeholder={action} disabled/>
                                             </plan>
                                             <plan className="test__plan">
                                                 <h4>Тариф 2</h4>
                                                 {/* <item_executor>{name}</item_executor> */}
                                                 <input placeholder={name} disabled />
                                             </plan>
-                                        </div>
+                                        </plans__wrap>
 
                                         <button onClick={(event) => { buttonHandler(event) }}><img src={require("./edit.svg")} /></button>
-                                    </p>
+                                    </plans>
 
 
                                     <item_date>{person}</item_date>
