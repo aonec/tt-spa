@@ -28,6 +28,7 @@ import { Information } from "./components/Information"
 import { History } from "./components/History"
 import { Events } from "./components/Events"
 import { Changes } from "./components/Changes"
+import { Documents } from "./components/Documents"
 
 // import { Events } from "./components/Events"
 // import { Apartments } from "./components/Apartments"
@@ -69,12 +70,18 @@ export const DeviceProfile = () => {
                   exact
                 /> */}
       </grid>
+      <Route path="/*/(\\d+)/documents" exact>
+        <Documents {...info} />
+      </Route>
+
       <Route path="/*/(\\d+)/testimony" exact>
         <History {...info} />
       </Route>
+
       <Route path="/*/(\\d+)/changes" exact>
         <Changes {...info} />
       </Route>
+
     </>
   )
 }

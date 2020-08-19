@@ -1,167 +1,135 @@
-import React from 'react';
-// import { Table, Tag, Space } from 'antd';
-// import 'antd/dist/antd.css';
+import React from "react"
+import { Route } from "react-router-dom"
+import styled from "reshadow/macro"
 
-const columns = [
-    {
-        title: 'Месяц',
-        dataIndex: 'month',
-        key: 'month',
-        // render: text => <a>{text}</a>,
-    },
-    {
-        title: 'Показания',
-        dataIndex: 'data',
-        key: 'data',
-    },
-    {
-        title: 'Потребление',
-        dataIndex: 'use',
-        key: 'use',
-    },
-    {
-        title: 'Оператор',
-        dataIndex: 'operator',
-        key: 'operator',
-    },
-    {
-        title: 'Дата и время',
-        dataIndex: 'dateandtime',
-        key: 'dateandtime',
-    },
+import { Loader } from "01/components"
+import * as style from "_reshadow"
 
-    // {
-    //     title: 'Tags',
-    //     key: 'tags',
-    //     dataIndex: 'tags',
-    //     render: tags => (
-    //         <>
-    //             {tags.map(tag => {
-    //                 let color = tag.length > 5 ? 'geekblue' : 'green';
-    //                 if (tag === 'loser') {
-    //                     color = 'volcano';
-    //                 }
-    //                 return (
-    //                     <Tag color={color} key={tag}>
-    //                         {tag.toUpperCase()}
-    //                     </Tag>
-    //                 );
-    //             })}
-    //         </>
-    //     ),
-    // },
-    // {
-    //     title: 'Action',
-    //     key: 'action',
-    //     render: (text, record) => (
-    //         <Space size="middle">
-    //             <a>Invite {record.name}</a>
-    //             <a>Delete</a>
-    //         </Space>
-    //     ),
-    // },
-];
+export const History = React.memo(
+    ({ items = [], loading = true, path = null, onClick = () => { } }) => {
 
-const data = [
-    {
-        month: 'Февраль 2020',
-        data: 'Тариф 1',
-        use: '0 м',
-        operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
-    },
-    {
-        month: 'Февраль 2020',
-        data: 'Тариф 1',
-        use: '123 КВт/ч',
-        operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
-    },
-    {
-        month: 'Февраль 2020',
-        data: 'Тариф 1',
-        use: '123 КВт/ч',
-        operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
-    },
-    // {
-    //     key: '2',
-    //     name: 'Jim Green',
-    //     age: 42,
-    //     address: 'London No. 1 Lake Park',
-    //     tags: ['loser'],
-    // },
+        items = [{
+            id: 0,
+            date: 'Февраль 2020',
+            action: 'Тариф 1:',
+            name: '123 КВт/ч',
+            person: 'Константинопольский К.К.',
+            dateandtime: '24 марта 2020  14:34'
 
-];
+        },
+        {
+            id: 1,
+            date: 'Январь 2020',
+            action: 'Тариф 1:',
+            name: '123 КВт/ч',
+            person: 'Константинопольский К.К.',
+            dateandtime: '24 марта 2020  14:34'
+        },
+        {
+            id: 2,
+            date: 'Декабрь 2019',
+            action: 'Тариф 1:',
+            name: '123 КВт/ч',
+            person: 'Константинопольский К.К.',
+            dateandtime: '24 марта 2020  14:34'
+        },
+        {
+            id: 3,
+            date: 'Ноябрь 2019',
+            action: 'Тариф 1:',
+            name: '123 КВт/ч',
+            person: 'Константинопольский К.К.',
+            dateandtime: '24 марта 2020  14:34'
+        },
+        {
+            id: 4,
+            date: 'Октябрь 2019',
+            action: 'Тариф 1:',
+            name: '123 КВт/ч',
+            person: 'Константинопольский К.К.',
+            dateandtime: '24 марта 2020  14:34'
+        },
 
-export const History = () => {
-    return (
-        // <Table columns={columns} dataSource={data} pagination={false} />
-        <h2>Компонент в процессе разработки</h2>
-    )
-}
+        ]
+        console.log(items[0])
+        return styled(style.item)`
+      item {
+        grid-template-columns: 0.5fr 1fr 1.5fr 1fr;
+        border-bottom: 1px solid var(--frame);
+        padding: 16px;
+        font-size: 14px;
+        line-height: 16px;
+        color: rgba(39, 47, 90, 0.8);
+      }
+      history {
+        display: grid;
+      }
+      Loader {
+        margin: 0 auto;
+      }
+      h3 {
+        color: rgba(39, 47, 90, 0.6);
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+      }
+      wrap {
+        background: rgba(39, 47, 90, 0.04);
+        grid-template-columns: 0.5fr 1fr 1.5fr 1fr;
+        border-bottom: 1px solid var(--frame);
+        display: grid;
+        grid-auto-flow: column;
+         align-items: center;
+         padding: 16px;
+         grid-gap: 8px;
+         cursor: pointer;
+      }
+      some {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+    
+      }
+    `(
+            <Route path={path}>
+                <history>
+                    <wrap className="descriptions">
+                        <h3>Месяц</h3>
+                        <some>
+                            <h3>Показания</h3>
+                            <h3>Потребление</h3>
+                        </some>
 
+                        <h3>Оператор</h3>
+                        <h3>Дата и время</h3>
+                    </wrap>
 
-// import React from "react"
-// import styled, { use } from "reshadow/macro"
-// import { useHistory, useParams } from "react-router-dom"
-
+                    {/* <Loader show={loading} size="32" /> */}
 
 
-// import { Loader } from "01/components/Loader"
-// import { information } from "01/r_comp"
+                    {items.map(
+                        ({ id,
+                            date,
+                            action,
+                            name,
+                            person,
+                            dateandtime
+                        }) => (
+                                <item onClick={() => onClick(id)} key={id}>
+                                    <item_date>{date}</item_date>
+                                    <some>
+                                    <item_action>{action}</item_action>
+                                    <item_executor>{name}</item_executor>
+                                    </some>
+                                
+                                    <item_date>{person}</item_date>
+                                    <item_date>{dateandtime}</item_date>
+                                </item>
+                            )
+                    )}
+                </history>
+            </Route>
+        )
+    }
+)
+{/* <h4>{`№ ${date}`}</h4> */ }
 
-// export const History = ({ list = [], loading = true, ...props }) => {
-
-//     return (
-//         <div>test</div>
-
-//     )
-// }
-
-
-
-
-// export const History = ({ list = [], loading = true, ...props }) => {
-//     const { push } = useHistory()
-//     console.log(list);
-//     const params = useParams()
-//     console.log(params[1])
-//     return styled(information)`
-//     Loader {
-//       justify-self: center;
-//     }
-//   `(
-//         <information {...props}>
-//             <h2>Информация</h2>
-//             {/* <Loader show={loading} size="32"> */}
-//             {/* <info_list>
-//                 {list.map(({ title, value, url }) => (
-//                     <info_item
-//                         key={title}
-//                         {...use({ url })}
-//                         onClick={url ? push(url) : null}
-//                     >
-//                         <span>{title}</span>
-//                         <span>{value}</span>
-//                     </info_item>
-//                 ))}
-//             </info_list> */}
-
-//             <info_list>
-//                 {list.map(({ title, value, url }) => (
-//                     <info_item
-//                         key={title}
-//                         {...use({ url })}
-//                         onClick={url ? push(url) : null}
-//                     >
-//                         <span>{title}</span>
-//                         <span>{value}</span>
-//                     </info_item>
-//                 ))}
-//             </info_list>
-
-//             {/* </Loader> */}
-//         </information>
-//     )
-// }

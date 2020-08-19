@@ -43,8 +43,12 @@ export const Changes = React.memo(
         console.log(items[0])
         return styled(style.item)`
       item {
-        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-columns: 0.5fr 2fr 1.5fr;
         border-bottom: 1px solid var(--frame);
+        padding: 16px;
+        font-size: 14px;
+        line-height: 16px;
+        color: rgba(39, 47, 90, 0.8);
       }
       changes {
         display: grid;
@@ -62,14 +66,14 @@ export const Changes = React.memo(
       }
       wrap {
         background: rgba(39, 47, 90, 0.04);
-        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-columns: 0.5fr 2fr 1.5fr;
         border-bottom: 1px solid var(--frame);
         display: grid;
-    grid-auto-flow: column;
-    align-items: center;
-    padding: 8px;
-    grid-gap: 8px;
-    cursor: pointer;
+        grid-auto-flow: column;
+         align-items: center;
+         padding: 16px;
+         grid-gap: 8px;
+         cursor: pointer;
       }
     `(
             <Route path={path}>
