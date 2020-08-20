@@ -10,7 +10,7 @@ import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 
-import "./ApartmentProfile.css"
+import "./ApartmentProfile.scss"
 
 import { Tabs } from './components/Tabs/Tabs'
 import { button } from '01/r_comp';
