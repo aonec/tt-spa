@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 
 import { Comments } from './Comments'
-import {Tags} from './Tags'
+import {Tags} from './components/Tags/Tags'
 
 export function ApartmentProfile() {
   return (
