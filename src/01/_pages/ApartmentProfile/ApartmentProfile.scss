@@ -1,12 +1,19 @@
 .apartment-header {
     display: flex;
     justify-content: space-between;
+
+    .apartment-header__button-wrap {
+        height: min-content;
+        position: relative;
+        .apartment-header__button {
+            width: 48px;
+            height: 48px;
+        }
+    }
+  
 }
 
-.apartment-header__button {
-    width: 48px;
-    height: 48px;
-}
+
 
 .block {
     position: absolute;
@@ -16,20 +23,23 @@
     border: 1px solid #000000;
     background: #ffffff;
     width: 460px;
-}
-.block li a {
-    font-size: 16px;
-    line-height: 32px;
-    padding: 8px 24px;
-    /* identical to box height, or 200% */
 
-    display: flex;
-    align-items: center;
+    a {
+        font-size: 16px;
+        line-height: 32px;
+        padding: 8px 24px;
+        /* identical to box height, or 200% */
+    
+        display: flex;
+        align-items: center;
+    
+        /* Text/Body */
+        border-bottom: 1px solid #dcdee4;
+    
+        color: rgba(39, 47, 90, 0.8);
+    }
 
-    /* Text/Body */
-    border-bottom: 1px solid #dcdee4;
-
-    color: rgba(39, 47, 90, 0.8);
+  
 }
 
 .visible {
@@ -37,7 +47,7 @@
     z-index: 2;
 }
 
-.apartment-header__button-wrap {
-    height: min-content;
-    position: relative;
-}
+
+
+
+
