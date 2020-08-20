@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 
 import "01/css/index.css"
 import "01/css/styles.css"
+import "./tt-styles.css"
 
 import { useApp } from "./useApp"
 import { app } from "01/styles/app"
