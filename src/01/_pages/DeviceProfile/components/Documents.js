@@ -5,7 +5,8 @@ import { button } from '01/r_comp';
 // import { Table, Tag, Space } from 'antd';
 // import 'antd/dist/antd.css';
 
-import { test, getDevices, getApartmentInfo } from '../api'
+import { getInfo } from '../../../_api/device_page';
+
 
 import styled, { use } from "reshadow/macro"
 import { useHistory, useParams } from "react-router-dom"
@@ -119,28 +120,63 @@ const data = [
 
 
 export const Documents = () => {
-    const params = useParams()
-    const a = test;
-    const b = getDevices;
-    const result = getApartmentInfo(1125376);
+    // let a;
+
+
+    const URL = "HousingStocks"
+
+    const replaceURL = (url = "") => url.replace(/objects/, URL)
+
+
+    // utils
+    function createTitleObject(data) {
+        const { street, number, city } = data
+        return [`${street}, ${number}`, city]
+    }
+
+    async function getInfo(url = "") {
+        try {
+            const res = await axios.get(replaceURL(url))
+            console.log("url", url)
+            //console.log(res);
+            console.log({ ...res, info: true, header: createTitleObject(res) });
+            return { ...res, info: true, header: createTitleObject(res) }
+        } catch (error) { }
+    }
+
+    let tess;
+
+    async function f(url = "") {
+        const res = await axios.get(replaceURL(url))
+
+        // let promise = new Promise((resolve, reject) => {
+        //     setTimeout(() => resolve("готово!"), 1000)
+        // });
+
+        // let result = await promise; // будет ждать, пока промис не выполнится (*)
+
+        console.log('result', res); // "готово!"
+        tess=res;
+        console.log('tess', tess)
+    }
+
+    f(`/objects/755/devices/1325866`);
+
+    const a = f(`/objects/755/devices/1325866`);
+ 
+
+
+
+
+
+
+
 
     const buttonHandler = () => {
-        console.log("buttonHandler");
-        console.log(params)
-        console.log(params[1])
-        console.log(a);
-        console.log(getApartmentInfo(1125376))
-
-        // 1125376
-
-
+        console.log(tess)
     }
-    const [state, setState] = useState({});
-    console.log(state)
-    useEffect(() => {
-        console.log('test');
-        console.log(result);
-    },[]);
+
+
 
     return (
         // <Table columns={columns} dataSource={data} pagination={false} />

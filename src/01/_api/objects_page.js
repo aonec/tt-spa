@@ -8,6 +8,7 @@ const replaceURL = (url = "") => url.replace(/objects/, URL)
 export async function getInfo(url = "") {
   try {
     const res = await axios.get(replaceURL(url))
+    console.log("url", url)
     return { ...res, info: true, header: createTitleObject(res) }
   } catch (error) {}
 }
@@ -15,6 +16,7 @@ export async function getInfo(url = "") {
 export async function getDevices(url = "") {
   try {
     const res = await axios.get(replaceURL(url))
+    console.log("getDevices")
     return {
       ...res,
       header: createTitleObject(res.housingStock),
@@ -53,6 +55,7 @@ export async function getEvents(...ids) {
 export async function getApartments(params) {
   try {
     const res = await axios.get("apartments", { params })
+    console.log('getApartments')
     return { apartments: { ...res, loading: false } }
   } catch (error) {}
 }
