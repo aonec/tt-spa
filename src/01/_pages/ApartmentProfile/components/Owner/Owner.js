@@ -1,7 +1,9 @@
 import React from 'react'
-import { List, Typography, Button } from 'antd';
+import { List, Typography } from 'antd';
 import "./Owner.css";
 
+import {OwnerButton} from './OwnerButton'
+import { Title } from '../Title';
 const descriptions = [
     'Номер лицевого счета',
     'Статус собственник',
@@ -17,11 +19,12 @@ const data = [
 ];
 
 
-
 export const Owner = () => {
     return (
         <div className="owner-information">
-            <h2 className="title-24">Константинопольский К.К.</h2>
+            <div className="owner-information__wrap">  <img src={require("./key.svg")} />
+            <Title size="24">Константинопольский К.К.</Title></div>
+          
             <List
                 // header={<div>Header</div>}
                 // footer={<div>Footer</div>}
@@ -33,7 +36,7 @@ export const Owner = () => {
                     </List.Item>
                 )}
             />
-            <Button>Перейти в профиль собственника</Button>
+            <OwnerButton>Перейти в профиль собственника</OwnerButton>
         </div>
     )
 }

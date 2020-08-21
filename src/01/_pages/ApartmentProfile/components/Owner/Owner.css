@@ -11,3 +11,12 @@
     font-size: 14px;
     line-height: 16px;
 }
+
+.owner-information__wrap {
+    display: flex;
+    align-items: baseline;
+}
+
+.owner-information__wrap h2{
+    padding-left: 8px;
+}

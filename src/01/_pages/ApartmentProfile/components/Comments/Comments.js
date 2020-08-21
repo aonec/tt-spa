@@ -2,12 +2,14 @@ import React from 'react'
 import { Comment, Avatar, Form, Button, List, Input } from 'antd';
 import moment from 'moment';
 import { UserOutlined } from '@ant-design/icons';
+import './Comments.css';
+
 const { TextArea } = Input;
 
 const CommentList = ({ comments }) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'коментарий'}`}
     itemLayout="horizontal"
     renderItem={props => <Comment {...props} />}
   />

@@ -5,15 +5,19 @@ import 'react-tagsinput/react-tagsinput.css' // If using WebPack and style-loade
 
 import './style.css';
 
+import { Title } from '../Title';
+
+
 export function Tags() {
 
     const [tags, setTags] = useState(['Бабулька', 'Шустрая'])
-    const a = tags;
     const handleChange = (tags) => {
         console.log(tags);
         setTags(tags)
     }
-    return <TagsInput placeholder="sdfs" value={tags} onChange={handleChange}
-    />
+    return (<div>
+        <Title size="24">Теги</Title>
+        <TagsInput value={tags} onChange={handleChange} />
+    </div>)
 
 }

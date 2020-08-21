@@ -1,6 +1,7 @@
 import React from 'react'
-import { List, Typography, Divider } from 'antd';
+import { List, Typography } from 'antd';
 import "./Information.css";
+import { Title } from '../Title';
 
 const data = [
     '78 м2',
@@ -18,7 +19,8 @@ const descriptions = [
 export const Information = () => {
     return (
         <div className="appartment-information">
-            <h2 className="title-24">Информация</h2>
+            
+            <Title size="24">Информация</Title>
             <List
                 // header={<div>Header</div>}
                 // footer={<div>Footer</div>}

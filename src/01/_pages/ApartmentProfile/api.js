@@ -5,6 +5,20 @@ const replaceURL = (url = '') => url.replace(/objects/, 'housingstocks')
 const createTitle = ({ number, street }) =>
   street ? `${street}, ${number}` : null
 
+
+
+export const getApartment = async (url = '', dispatch = () => { }) => {
+  try {
+    // const res = await axios.get(replaceURL(url))
+    const res = await axios.get('/objects/65/apartments/149887')
+    console.log(res)
+    dispatch({
+      type: 'success',
+      data: { ...res, title: createTitle(res), info: true },
+    })
+  } catch (error) { }
+}
+
 export const getInfo = async (url = '', dispatch = () => { }) => {
   try {
     const res = await axios.get(replaceURL(url))

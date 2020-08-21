@@ -1,0 +1,9 @@
+.ant-btn {
+    background: rgba(39, 47, 90, 0.32);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+    border: none;
+    color: #FFFFFF;
+}

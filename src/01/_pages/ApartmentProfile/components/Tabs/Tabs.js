@@ -5,14 +5,14 @@ import { NavLink, useRouteMatch } from 'react-router-dom'
 import { tabs } from '01/r_comp'
 
 const tabItems = [
-  ['Общая информация', ''],
-  ['История показаний', 'testimony'],
-  ['Документы', 'documents'],
-  ['История изменений', 'changes'],
+  ['Общие данные', ''],
+  ['Приборы учёта', 'testimony'],
 ]
 
+
+// eslint-disable-next-line react/display-name
 export const Tabs = React.memo(() => {
-  const { url } = useRouteMatch('/*/*/devices/(\\d+)/')
+  const { url } = useRouteMatch('/*/*/apartments/(\\d+)/')
   console.log(url)
   return styled(tabs)(
     <tabs>
@@ -30,3 +30,4 @@ export const Tabs = React.memo(() => {
     </tabs>
   )
 })
+

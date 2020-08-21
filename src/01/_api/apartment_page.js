@@ -7,7 +7,7 @@ const replaceURL = (url = "") => url.replace(/objects/, URL)
 export async function getInfo(url = "/objects/755/devices/1325866") {
     try {
         const res = await axios.get(replaceURL(url))
-        console.log(replaceURL(url))
+
         ///HousingStocks/755/devices/1325866
         console.log("getInfo", url)
         //console.log(res);
@@ -15,36 +15,33 @@ export async function getInfo(url = "/objects/755/devices/1325866") {
         return { ...res, info: true, header: createTitleObject(res) }
     } catch (error) { }
 }
+///HousingStocks/755/devices/1325866
+
 
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-// export async function getApartment(url = "/objects/664/apartments/1125376") {
-
-export async function getApartment(url = "/Apartments/1125376") {
+export async function getApartment(url = "/objects/664/apartments/1125376") {
     try {
+        const res = await axios.get('Apartments/1125376')
+        console.log({ ...res, info: true, header: createTitleObject(res) });
         console.log("getApartment", url)
-        // const res = await axios.get(replaceURL2(url))
-        const res = await axios.get('/Apartments/1125376')
-        console.log(res);
-        const test = res;
-        // console.log({ ...res, info: true, header: createTitleObject(res) });
-        // return { ...res, info: true, header: createTitleObject(res) }
-        return test
 
     } catch (error) { }
 }
 
 
 
-
-// export async function getInfo(url = "") {
+// const URL2 = "Apartments"
+// const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
+// export async function getApartment(url = "/objects/664/apartments/1125376") {
 //     try {
-//         const res = await axios.get(replaceURL(url))
-//         console.log("url", url)
-//         console.log(res);
-//         return { ...res, info: true, header: createTitleObject(res) }
+//         const res = await axios.get(replaceURL2(url))
+//         console.log({ ...res, info: true, header: createTitleObject(res) });
+//         console.log("getApartment", url)
+
 //     } catch (error) { }
 // }
+
 
 export async function getDevices(url = "") {
     try {

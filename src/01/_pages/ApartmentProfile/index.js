@@ -1,39 +1,49 @@
-import React from 'react';
+import React from "react"
+import styled from "reshadow/macro"
 import 'antd/dist/antd.css';
-import { Button, Breadcrumb } from 'antd';
-import {
-  MoreOutlined, UserOutlined, LeftOutlined
-} from '@ant-design/icons';
+import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
+import { grid } from "01/r_comp"
+import { Tabs } from "./components/Tabs/Tabs"
 
-import { Comments } from './components/Comments/Comments'
+import { MoreOutlined } from '@ant-design/icons';
+import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
+import { getApartment, getInfo } from "./api"
+
+
+import { Title } from './components/Title'
+import { Text } from './components/Text'
 import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 
-import "./ApartmentProfile.css"
 
-import { Tabs } from './components/Tabs/Tabs'
-import { button } from '01/r_comp';
-import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
 
-import { getInfo, getApartment } from '../../_api/apartment_page';
+import { EditButton } from './components/EditButton'
+import "./ApartmentProfile.css";
 
-import { useParams } from 'react-router-dom'
-
-export function ApartmentProfile() {
-  const buttonHandler = (event) => {
-    console.log('buttonHandler')
-    console.log(event.target)
-    const a = document.querySelector('.block')
-    console.log(a)
-    a.classList.add('visible')
+function reducer(state, action) {
+  const { type, data } = action
+  switch (type) {
+    case "success":
+      return { ...state, ...data }
+    default:
+      console.error("objid", type)
+      return state
   }
+}
 
-  const params = useParams()
-  console.log(params[1])
+export const ApartmentProfile = () => {
+  const [state, dispatch] = React.useReducer(reducer, {})
+  useFetchPage(state, dispatch)
+  const { 0: objid } = useParams()
+  const { push } = useHistory()
+  const info = useObjectInformation(state)
+  const changes = useDeviceChanges(state);
+  const { header = [], events = [], aparts = [] } = state
+  console.log("changes", changes);
+
 
   const Block = () => {
-
     return (
       <ul className="block">
         <li><a className="block__link">Редактировать квартиру</a></li>
@@ -44,59 +54,119 @@ export function ApartmentProfile() {
     )
   }
 
-  let b;
-
-  async function c() {
-    try {
-      const res = await getApartment()
-      // console.log(replaceURL(url))
-      ///HousingStocks/755/devices/1325866
-      // console.log("getInfo", url)
-      console.log('res', res);
-      //console.log({ ...res, info: true, header: createTitleObject(res) });
-      // return { ...res, info: true, header: createTitleObject(res) }
-      return res
-    } catch (error) { }
+  const buttonHandler = (event) => {
+    console.log('buttonHandler')
+    console.log(event.target)
+    const a = document.querySelector('.block')
+    console.log(a)
+    a.classList.toggle('visible')
   }
-
-  const a = c();
-
 
   const funcGetApartment = () => {
-    // console.log('funcGetApartment')
-    // console.log('getInfo', getInfo());
-    // console.log("getApartment", getApartment(`/objects/664/apartments/1125376`));
-    console.log('getApartment', getApartment());
-    console.log(a)
+    getInfo();
   }
 
 
-  return (
-    <div>
-      <button onClick={funcGetApartment}>getApartment</button>
-      <Breadcrumb>
+  return styled(grid)(
+    <>
+
+      {/* <Breadcrumb>
         <Breadcrumb.Item href="/">
           <LeftOutlined />
           <span>Назад</span></Breadcrumb.Item>
-      </Breadcrumb>
+      </Breadcrumb> */}
+
       <div className="apartment-header">
         <div className="apartment-header__wrap">
-          <h1 className="title-32">Кв. №41</h1>
-          <p>Нижнекамск, ул. Мира, 36</p>
+          <Title size="32">Кв. №41</Title>
+          <Text>Нижнекамск, ул. Мира, 36</Text>
         </div>
+
         <div className="apartment-header__button-wrap">
-          <Button className="apartment-header__button" onClick={(event) => { buttonHandler(event) }}><MoreOutlined /></Button>
+          <EditButton onClick={(event) => { buttonHandler(event) }}><MoreOutlined /></EditButton>
           <Block />
         </div>
-
       </div>
+      <Tabs />
 
-      <Comments />
-      <Tags />
-      <Information />
-      <Owner />
+      {/* <grid> */}
+        <Route path="/*/(\\d+)" exact>
+          {/* <Information {...info} /> */}
+          {/* <Events title="Задачи с объектом" {...events} /> */}
+        
+          <Tags />
+          <Information />
+          <Owner />
+          <button onClick={funcGetApartment}>getApartment</button>
+        </Route>
+        {/* <Route
+                  path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
+                  component={DeviceProfile}
+                  exact
+                /> */}
+      {/* </grid> */}
+      <Route path="/*/(\\d+)/testimony" exact>
+        {/* <Documents {...info} /> */}
+        <h2>Компонент Приборы Учета</h2>
+      </Route>
 
-    </div>
 
+    </>
   )
 }
+
+
+
+
+
+
+
+// export function ApartmentProfile() {
+//   const buttonHandler = (event) => {
+//     console.log('buttonHandler')
+//     console.log(event.target)
+//     const a = document.querySelector('.block')
+//     console.log(a)
+//     a.classList.toggle('visible')
+//   }
+
+//   const params = useParams()
+//   console.log(params[1])
+
+
+
+//   const funcGetApartment = () => {
+//     getApartment()
+//     getInfo();
+//   }
+
+//   return (
+//     <div>
+//       <Breadcrumb>
+//         <Breadcrumb.Item href="/">
+//           <LeftOutlined />
+//           <span>Назад</span></Breadcrumb.Item>
+//       </Breadcrumb>
+
+
+//       <div className="apartment-header">
+//         <div className="apartment-header__wrap">
+//           <Title size="32">Кв. №41</Title>
+//           <Text>Нижнекамск, ул. Мира, 36</Text>
+//         </div>
+
+//         <div className="apartment-header__button-wrap">
+//           <EditButton onClick={(event) => { buttonHandler(event) }}><MoreOutlined /></EditButton>
+//           <Block />
+//         </div>
+//       </div>
+
+//       <Tabs />
+//       <Tags />
+//       <Information />
+//       <Owner />
+//       <button onClick={funcGetApartment}>getApartment</button>
+//     </div>
+
+//   )
+// }
