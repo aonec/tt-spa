@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
 import { grid } from "01/r_comp"
 import { Tabs } from "./components/Tabs/Tabs"
-
+import axios from '01/axios';
 import { MoreOutlined } from '@ant-design/icons';
 import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
 import { getApartment, getInfo } from "./api"
@@ -54,17 +54,41 @@ export const ApartmentProfile = () => {
     )
   }
 
-  const buttonHandler = (event) => {
-    console.log('buttonHandler')
-    console.log(event.target)
-    const a = document.querySelector('.block')
-    console.log(a)
-    a.classList.toggle('visible')
+  // const buttonHandler = (event) => {
+  //   console.log('buttonHandler')
+  //   console.log(event.target)
+  //   const a = document.querySelector('.block')
+  //   console.log(a)
+  //   a.classList.toggle('visible')
+  // }
+
+
+
+  const URL = "HousingStocks"
+  const replaceURL = (url = "") => url.replace(/objects/, URL)
+
+  function createTitleObject(data) {
+    const { street, number, city } = data
+    return [`${street}, ${number}`, city]
   }
 
-  const funcGetApartment = () => {
-    getInfo();
+  let tess;
+
+  async function f(url = "") {
+    const res = await axios.get(replaceURL(url))
+    console.log('result', res); // "готово!"
+    tess = res;
+    console.log('tess', tess)
   }
+  f(`/objects/755/devices/1325866`);
+
+  const a = f(`/objects/755/devices/1325866`);
+  const buttonHandler = () => {
+    console.log(tess)
+  }
+
+
+
 
 
   return styled(grid)(
@@ -90,16 +114,18 @@ export const ApartmentProfile = () => {
       <Tabs />
 
       {/* <grid> */}
-        <Route path="/*/(\\d+)" exact>
-          {/* <Information {...info} /> */}
-          {/* <Events title="Задачи с объектом" {...events} /> */}
-        
-          <Tags />
-          <Information />
-          <Owner />
-          <button onClick={funcGetApartment}>getApartment</button>
-        </Route>
-        {/* <Route
+      <Route path="/*/(\\d+)" exact>
+        {/* <Information {...info} /> */}
+        {/* <Events title="Задачи с объектом" {...events} /> */}
+
+        <Tags />
+        <Information />
+        <Owner />
+        <button onClick={buttonHandler}>getApartment</button>
+
+
+      </Route>
+      {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
                   component={DeviceProfile}
                   exact
