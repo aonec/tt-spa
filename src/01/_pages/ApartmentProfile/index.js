@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "reshadow/macro"
 import 'antd/dist/antd.css';
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
@@ -7,7 +7,7 @@ import { Tabs } from "./components/Tabs/Tabs"
 import axios from '01/axios';
 import { MoreOutlined } from '@ant-design/icons';
 import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
-import { getApartment, getInfo } from "./api"
+
 
 
 import { Title } from './components/Title'
@@ -15,7 +15,7 @@ import { Text } from './components/Text'
 import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
-
+import { getApartment } from '01/_api/device_page';
 
 
 import { EditButton } from './components/EditButton'
@@ -38,10 +38,10 @@ export const ApartmentProfile = () => {
   const { 0: objid } = useParams()
   const { push } = useHistory()
   const info = useObjectInformation(state)
-  const changes = useDeviceChanges(state);
+  // const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state
-  console.log("changes", changes);
-
+  // console.log("changes", changes);
+  console.log("changes");
 
   const Block = () => {
     return (
@@ -54,52 +54,40 @@ export const ApartmentProfile = () => {
     )
   }
 
-  // const buttonHandler = (event) => {
-  //   console.log('buttonHandler')
-  //   console.log(event.target)
-  //   const a = document.querySelector('.block')
-  //   console.log(a)
-  //   a.classList.toggle('visible')
-  // }
 
-
-
-  const URL = "HousingStocks"
-  const replaceURL = (url = "") => url.replace(/objects/, URL)
-
-  function createTitleObject(data) {
-    const { street, number, city } = data
-    return [`${street}, ${number}`, city]
+  const editButtonHandler = (event) => {
+    console.log('buttonHandler')
+    console.log(event.target)
+    const a = document.querySelector('.block')
+    console.log(a)
+    a.classList.toggle('visible')
   }
 
-  let tess;
+  const [app, setApp] = useState({})
 
-  async function f(url = "") {
-    const res = await axios.get(replaceURL(url))
-    console.log('result', res); // "готово!"
-    tess = res;
-    console.log('tess', tess)
+
+  async function getState() {
+    await getApartment().then(response => (setApp(response)));
   }
-  f(`/objects/755/devices/1325866`);
 
-  const a = f(`/objects/755/devices/1325866`);
+  const someObj = app.housingStock;
+  useEffect(() => {
+    async function test() {
+      await getState()
+    }
+    test();
+    // let a = app.homeowners[0].firstName;
+
+  },[]);
+
   const buttonHandler = () => {
-    console.log(tess)
+    console.log(app);
+    console.log(app.homeowners[0].firstName)
+    console.log(someObj)
   }
-
-
-
-
-
+  
   return styled(grid)(
     <>
-
-      {/* <Breadcrumb>
-        <Breadcrumb.Item href="/">
-          <LeftOutlined />
-          <span>Назад</span></Breadcrumb.Item>
-      </Breadcrumb> */}
-
       <div className="apartment-header">
         <div className="apartment-header__wrap">
           <Title size="32">Кв. №41</Title>
@@ -107,7 +95,7 @@ export const ApartmentProfile = () => {
         </div>
 
         <div className="apartment-header__button-wrap">
-          <EditButton onClick={(event) => { buttonHandler(event) }}><MoreOutlined /></EditButton>
+          <EditButton onClick={(event) => { editButtonHandler(event) }}><MoreOutlined /></EditButton>
           <Block />
         </div>
       </div>
@@ -120,7 +108,9 @@ export const ApartmentProfile = () => {
 
         <Tags />
         <Information />
-        <Owner />
+        <Owner name= {app.apartmentNumber} />
+        {app.url}
+
         <button onClick={buttonHandler}>getApartment</button>
 
 
@@ -136,63 +126,9 @@ export const ApartmentProfile = () => {
         <h2>Компонент Приборы Учета</h2>
       </Route>
 
+      <button onClick={buttonHandler}>  apartmentNumber</button>
+
 
     </>
   )
 }
-
-
-
-
-
-
-
-// export function ApartmentProfile() {
-//   const buttonHandler = (event) => {
-//     console.log('buttonHandler')
-//     console.log(event.target)
-//     const a = document.querySelector('.block')
-//     console.log(a)
-//     a.classList.toggle('visible')
-//   }
-
-//   const params = useParams()
-//   console.log(params[1])
-
-
-
-//   const funcGetApartment = () => {
-//     getApartment()
-//     getInfo();
-//   }
-
-//   return (
-//     <div>
-//       <Breadcrumb>
-//         <Breadcrumb.Item href="/">
-//           <LeftOutlined />
-//           <span>Назад</span></Breadcrumb.Item>
-//       </Breadcrumb>
-
-
-//       <div className="apartment-header">
-//         <div className="apartment-header__wrap">
-//           <Title size="32">Кв. №41</Title>
-//           <Text>Нижнекамск, ул. Мира, 36</Text>
-//         </div>
-
-//         <div className="apartment-header__button-wrap">
-//           <EditButton onClick={(event) => { buttonHandler(event) }}><MoreOutlined /></EditButton>
-//           <Block />
-//         </div>
-//       </div>
-
-//       <Tabs />
-//       <Tags />
-//       <Information />
-//       <Owner />
-//       <button onClick={funcGetApartment}>getApartment</button>
-//     </div>
-
-//   )
-// }

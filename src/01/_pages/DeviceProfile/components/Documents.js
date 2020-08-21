@@ -16,15 +16,7 @@ import { useHistory, useParams } from "react-router-dom"
 import { Loader } from "01/components/Loader"
 import { information } from "01/r_comp"
 import { useEffect } from 'react';
-
-export const Information = ({ list = [], loading = true, ...props }) => {
-    const { push } = useHistory()
-    console.log(list);
-
-    const params = useParams()
-    console.log(params)
-    console.log(params[1])
-}
+import { getDevice, getApartment } from '01/_api/device_page';
 
 const columns = [
     {
@@ -80,47 +72,34 @@ const data = [
 ];
 
 
+
+// export const Information = ({ list = [], loading = true, ...props }) => {
+//     const { push } = useHistory()
+//     // console.log(list);
+
+//     const params = useParams()
+//     // console.log(params)
+//     // console.log(params[1])
+// }
+
+
+
+
+
 export const Documents = () => {
-    // let a;
 
 
-    const URL = "HousingStocks"
-
-    const replaceURL = (url = "") => url.replace(/objects/, URL)
-
-
-    // utils
-    function createTitleObject(data) {
-        const { street, number, city } = data
-        return [`${street}, ${number}`, city]
-    }
-
-    async function getInfo(url = "") {
-        try {
-            const res = await axios.get(replaceURL(url))
-            console.log("url", url)
-            //console.log(res);
-            console.log({ ...res, info: true, header: createTitleObject(res) });
-            return { ...res, info: true, header: createTitleObject(res) }
-        } catch (error) { }
-    }
-
-    let tess;
-
-    async function f(url = "") {
-        const res = await axios.get(replaceURL(url))
-        console.log('result', res); // "готово!"
-        tess = res;
-        console.log('tess', tess)
-    }
-
-    f(`/objects/755/devices/1325866`);
-
-    const a = f(`/objects/755/devices/1325866`);
-
+    const [state, setState] = useState()
     const buttonHandler = () => {
-        console.log(tess)
+        console.log(state);
+        console.log(state.apartmentNumber)
     }
+
+    async function getState() {
+        await getApartment().then(response => (setState(response)));
+    }
+    getState();
+
 
 
     return (

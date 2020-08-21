@@ -11,10 +11,39 @@ export async function getInfo(url = "") {
         const res = await axios.get(replaceURL(url))
         console.log("url", url)
         //console.log(res);
-        console.log({...res, info: true, header: createTitleObject(res)});
+        console.log({ ...res, info: true, header: createTitleObject(res) });
         return { ...res, info: true, header: createTitleObject(res) }
     } catch (error) { }
 }
+
+export async function getDevice(url = "/objects/755/devices/1325866") {
+    try {
+        const res = await axios.get(replaceURL(url))
+        // console.log("url", url)
+        // console.log(res);
+        // console.log('test');
+        // console.log({...res, info: true, header: createTitleObject(res)});
+        // return { ...res, info: true, header: createTitleObject(res) }
+    } catch (error) { }
+}
+
+
+const URL2 = "Apartments"
+const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
+export async function getApartment(url = "1306857") {
+    try {
+        //const res = await axios.get(replaceURL2(url))
+        const res = await axios.get("Apartments/1306857")
+        // console.log("url", url)
+        // console.log(res);
+        // console.log('test');
+        // console.log({...res, info: true, header: createTitleObject(res)});
+        // return { ...res, info: true, header: createTitleObject(res) }
+        return { ...res }
+    } catch (error) { }
+}
+
+
 
 // export async function getInfo(url = "") {
 //     try {

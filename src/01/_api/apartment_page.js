@@ -1,47 +1,58 @@
 import axios from "01/axios"
 import { createTimeline, createTimer, createDevice } from "./utils"
-
+import { getDevice, getApartment } from '01/_api/apartment_page';
 const URL = "HousingStocks"
 
 const replaceURL = (url = "") => url.replace(/objects/, URL)
-export async function getInfo(url = "/objects/755/devices/1325866") {
+
+
+export async function getInfo(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
-
-        ///HousingStocks/755/devices/1325866
-        console.log("getInfo", url)
+        console.log("url", url)
         //console.log(res);
         console.log({ ...res, info: true, header: createTitleObject(res) });
         return { ...res, info: true, header: createTitleObject(res) }
     } catch (error) { }
 }
-///HousingStocks/755/devices/1325866
+
+export async function getDevice(url = "/objects/755/devices/1325866") {
+    try {
+        const res = await axios.get(replaceURL(url))
+        // console.log("url", url)
+        // console.log(res);
+        // console.log('test');
+        // console.log({...res, info: true, header: createTitleObject(res)});
+        // return { ...res, info: true, header: createTitleObject(res) }
+    } catch (error) { }
+}
 
 
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-export async function getApartment(url = "/objects/664/apartments/1125376") {
+export async function getApartment(url = "1306857") {
     try {
-        const res = await axios.get('Apartments/1125376')
-        console.log({ ...res, info: true, header: createTitleObject(res) });
-        console.log("getApartment", url)
-
+        //const res = await axios.get(replaceURL2(url))
+        const res = await axios.get("Apartments/1306857")
+        // console.log("url", url)
+        // console.log(res);
+        // console.log('test');
+        // console.log({...res, info: true, header: createTitleObject(res)});
+        // return { ...res, info: true, header: createTitleObject(res) }
+        return { ...res }
     } catch (error) { }
 }
 
 
 
-// const URL2 = "Apartments"
-// const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-// export async function getApartment(url = "/objects/664/apartments/1125376") {
+// export async function getInfo(url = "") {
 //     try {
-//         const res = await axios.get(replaceURL2(url))
-//         console.log({ ...res, info: true, header: createTitleObject(res) });
-//         console.log("getApartment", url)
-
+//         const res = await axios.get(replaceURL(url))
+//         console.log("url", url)
+//         console.log(res);
+//         return { ...res, info: true, header: createTitleObject(res) }
 //     } catch (error) { }
 // }
-
 
 export async function getDevices(url = "") {
     try {
