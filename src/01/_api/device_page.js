@@ -30,10 +30,12 @@ export async function getDevice(url = "/objects/755/devices/1325866") {
 
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-export async function getApartment(url = "1306857") {
+export async function getApartment(url = "") {
     try {
         //const res = await axios.get(replaceURL2(url))
-        const res = await axios.get("Apartments/1306857")
+        const res = await axios.get(`Apartments/${url}`)
+        console.log("res",res)
+        // const res = await axios.get("Apartments/1306857")
         // console.log("url", url)
         // console.log(res);
         // console.log('test');

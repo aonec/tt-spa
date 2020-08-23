@@ -7,6 +7,7 @@ import { useEvents } from "./useEvents"
 export const Events = ({ start = true }) => {
   const { items } = useEvents(start)
   console.log(items)
+  console.log("Events")
   return styled(title_section)(
     <events>
       <title_section>Задачи с объектом</title_section>

@@ -8,7 +8,8 @@ import axios from '01/axios';
 import { MoreOutlined } from '@ant-design/icons';
 import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
 
-
+import { ApartmentTasks, ApartmentTasksTitle, ApartmentTask, ApartmentTaskTitle, ApartmentTaskState, ApartmentTaskDate } from "./components/ApartmentTasks";
+import {Comments} from './components/Comments/Comments'
 
 import { Title } from './components/Title'
 import { Text } from './components/Text'
@@ -16,6 +17,7 @@ import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 import { getApartment } from '01/_api/device_page';
+import {Button} from './components/Button';
 
 
 import { EditButton } from './components/EditButton'
@@ -42,6 +44,8 @@ export const ApartmentProfile = () => {
   const { header = [], events = [], aparts = [] } = state
   // console.log("changes", changes);
   console.log("changes");
+  const params = useParams()
+  console.log("params[1]", params[1])
 
   const Block = () => {
     return (
@@ -63,35 +67,70 @@ export const ApartmentProfile = () => {
     a.classList.toggle('visible')
   }
 
-  const [app, setApp] = useState({})
+  const [apartment, setapartment] = useState({})
 
 
   async function getState() {
-    await getApartment().then(response => (setApp(response)));
+    await getApartment(params[1]).then(response => (setapartment(response)));
   }
 
-  const someObj = app.housingStock;
+
+  //Номер квартиры 
+  const apartmentNumber = apartment.apartmentNumber;
+
+  //Информация о доме
+  const housingStock = { ...apartment.housingStock }
+
+  //Город, улица, дом
+  const city = housingStock.city;
+  const street = housingStock.street;
+  const number = housingStock.number;
+
+  //Площадь жилого помещения
+  const square = apartment.square;
+
+  //Количество проживающих / зарегистрированных
+  const numberOfLiving = apartment.numberOfLiving;
+
+  //Нормативное количество проживающих
+  const normativeNumberOfLiving = apartment.normativeNumberOfLiving;
+
+  //Собственники
+  const homeowners = { ...apartment.homeowners };
+
+  //Первый собственник
+  const { ...homeowners0 } = { ...homeowners[0] };
+
+  //Константинопольский К.К.
+  const firstName = homeowners0.firstName;
+
+  //Контактный номер телефона;
+  const phoneNumber = homeowners0.phoneNumber;
+
+  //Номер лицевого счета
+  const personalAccountNumber = homeowners0.personalAccountNumber;
+
   useEffect(() => {
-    async function test() {
+    async function internalFunc() {
       await getState()
     }
-    test();
-    // let a = app.homeowners[0].firstName;
+    internalFunc();
 
-  },[]);
+  }, []);
 
   const buttonHandler = () => {
-    console.log(app);
-    console.log(app.homeowners[0].firstName)
-    console.log(someObj)
+    console.log(params[0])
+    console.log(apartment);
+    console.log(square, normativeNumberOfLiving, numberOfLiving, homeowners, homeowners0);
+
   }
-  
+
   return styled(grid)(
     <>
       <div className="apartment-header">
         <div className="apartment-header__wrap">
-          <Title size="32">Кв. №41</Title>
-          <Text>Нижнекамск, ул. Мира, 36</Text>
+          <Title size="32">Кв. №{apartmentNumber}</Title>
+          <Text>{city}, {street}, {number}</Text>
         </div>
 
         <div className="apartment-header__button-wrap">
@@ -99,21 +138,55 @@ export const ApartmentProfile = () => {
           <Block />
         </div>
       </div>
-      <Tabs />
 
+
+      <Tabs />
       {/* <grid> */}
       <Route path="/*/(\\d+)" exact>
         {/* <Information {...info} /> */}
         {/* <Events title="Задачи с объектом" {...events} /> */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '8fr 4fr'
+        }}>
+          <div>
+            <Comments />
+            <Tags />
+            <Information />
+            <Owner firstName={firstName} personalAccountNumber={personalAccountNumber} phoneNumber={phoneNumber} />
+            {apartment.url}
 
-        <Tags />
-        <Information />
-        <Owner name= {app.apartmentNumber} />
-        {app.url}
-
-        <button onClick={buttonHandler}>getApartment</button>
-
-
+            <button onClick={buttonHandler}>getApartment</button>
+          </div>
+          <div>
+            <ApartmentTasks>
+              <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
+              <ApartmentTask>
+                <ApartmentTaskTitle>
+                  Некорректные показания
+                </ApartmentTaskTitle>
+                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
+                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
+              </ApartmentTask>
+              <ApartmentTask>
+                <ApartmentTaskTitle>
+                  Отсутствие подключения к вычислителю
+                </ApartmentTaskTitle>
+                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
+                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
+              </ApartmentTask>
+              <ApartmentTask>
+                <ApartmentTaskTitle>
+                  Неполадки с ОДПУ
+                </ApartmentTaskTitle>
+                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
+                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
+              </ApartmentTask>
+              <Button>Все задачи с объектом</Button>
+            </ApartmentTasks>
+          
+          </div>
+        </div>
       </Route>
       {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
@@ -125,10 +198,6 @@ export const ApartmentProfile = () => {
         {/* <Documents {...info} /> */}
         <h2>Компонент Приборы Учета</h2>
       </Route>
-
-      <button onClick={buttonHandler}>  apartmentNumber</button>
-
-
     </>
   )
 }
