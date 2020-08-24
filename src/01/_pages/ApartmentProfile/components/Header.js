@@ -26,15 +26,6 @@ color: rgba(39, 47, 90, 0.8);
   };
 `
 
-// font-size: 16px;
-// line-height: 32px;
-// padding: 8px 24px;
-// display: flex;
-// align-items: center;
-// border-bottom: 1px solid #dcdee4;
-// color: rgba(39, 47, 90, 0.8);
-
-
 const UL = styled.ul`
   position: absolute;
   right: 0;
@@ -55,7 +46,6 @@ const UL = styled.ul`
       `
   };
 `
-
 
 const Popup = () => {
   const [state, setState] = useState(false);
@@ -95,41 +85,6 @@ ${
    `
   };
 `
-
-/* .apartment-header {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-    align-items: baseline;
-
-}
-
-.apartment-header__button-wrap {
-    height: min-content;
-    position: relative;
-
-}
-
-
-.block__link {
-    font-size: 16px;
-    line-height: 32px;
-    padding: 8px 24px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #dcdee4;
-    color: rgba(39, 47, 90, 0.8);
-}
-.visible {
-    display: block !important;
-    z-index: 2;
-}
-
-
-
-
- */
-
 
 export const Header = (props, state) => {
   const { apartmentNumber, city, street, number } = props;

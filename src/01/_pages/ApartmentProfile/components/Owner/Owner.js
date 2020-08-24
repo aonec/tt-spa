@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button } from '../Button';
-import { Title } from '../Title';
+import { Button, Title } from '../../components';
 import { ListItem, ListItemDescription, ListItemValue } from '../ListItem';
 import styled, { css } from 'styled-components'
 

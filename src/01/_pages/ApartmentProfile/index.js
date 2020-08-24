@@ -5,7 +5,7 @@ import styled from "reshadow/macro"
 
 import { grid } from "01/r_comp"
 import { Tabs } from "./components/Tabs/Tabs"
-
+import { Loader } from '01/components/Loader'
 
 //библиотека обработки дат и локализация СНГ
 import moment from 'moment'
@@ -30,6 +30,7 @@ export const ApartmentProfile = () => {
 
   const [apartment, setapartment] = useState({})
   const [tasks, setTasks] = useState({})
+  const [loading, setLoading] = useState(true);
 
   const RenderTasks = () => {
     return (
@@ -87,6 +88,7 @@ export const ApartmentProfile = () => {
   useEffect(() => {
     async function getTasksAndApartments() {
       await getApartment(apartmentId).then(response => (setapartment(response)));
+      setLoading(false)
       await getTasks(apartmentId).then(response => (setTasks(response)));
     }
     getTasksAndApartments();
@@ -94,10 +96,12 @@ export const ApartmentProfile = () => {
 
   return styled(grid)(
     <>
-      <Header apartmentNumber={apartmentNumber}
-        city={city}
-        street={street}
-        number={number} />
+      <Loader show={loading} size="32">
+        <Header apartmentNumber={apartmentNumber}
+          city={city}
+          street={street}
+          number={number} />
+      </Loader>
 
       <Tabs />
 
