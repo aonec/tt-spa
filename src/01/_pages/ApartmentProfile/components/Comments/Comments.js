@@ -1,9 +1,8 @@
 import React from 'react'
-import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import { Comment, Avatar, Form, List, Input } from 'antd';
 import moment from 'moment';
 import { UserOutlined } from '@ant-design/icons';
-import './Comments.css';
-import {Title} from '../../components'
+import {Title, Button} from '../../components'
 
 const { TextArea } = Input;
 
@@ -31,7 +30,13 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 export class Comments extends React.Component {
   state = {
-    comments: [],
+    comments: [{
+      author: 'Тransparent Technologies',
+      // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      avatar: <UserOutlined />,
+      content: <p>Выполнить Задачи с объектом</p>,
+      datetime: moment().fromNow(),
+    }],
     submitting: false,
     value: '',
   };
@@ -60,6 +65,7 @@ export class Comments extends React.Component {
           ...this.state.comments,
         ],
       });
+      console.log(this.state.comments)
     }, 1000);
   };
 
@@ -80,7 +86,7 @@ export class Comments extends React.Component {
           avatar={
             <Avatar
               // src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              src={require("../../../../../public/icons/personal.svg")}
               alt="Тransparent Technologies"
             />
           }
@@ -97,3 +103,4 @@ export class Comments extends React.Component {
     );
   }
 }
+

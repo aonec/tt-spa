@@ -19,7 +19,7 @@ import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 import { getApartment } from '01/_api/device_page';
 import { Button } from './components';
-
+import {ApartmentDevices} from './components/ApartmentDevices/ApartmentDevices'
 
 import { EditButton } from './components/EditButton'
 import "./ApartmentProfile.css";
@@ -185,7 +185,7 @@ export const ApartmentProfile = () => {
       {/* </grid> */}
       <Route path="/*/(\\d+)/testimony" exact>
         {/* <Documents {...info} /> */}
-        <h2>Компонент Приборы Учета</h2>
+        <ApartmentDevices />
       </Route>
     </>
   )

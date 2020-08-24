@@ -10,10 +10,22 @@ export const Button = styled.button`
     font-size: 14px;
     line-height: 16px;
     width: fit-content;
+    transition: all 0.3s;
+
+    &: hover {
+      transition: all 0.3s;
+      transform: translate(-2px, -2px);
+      border-color: rgb(var(--primary));
+      color: rgb(var(--primary));
+
+      
+    }
+  }
+    
 
   ${props =>
-        props.primary &&
-        css`
+    props.primary &&
+    css`
       background: palevioletred;
       color: white;
     `};

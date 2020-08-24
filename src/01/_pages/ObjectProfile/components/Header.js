@@ -12,6 +12,7 @@ const styles = css`
   }
   h_title {
     font-size: 32px;
+    font-weight: 300;
   }
 
   h_subtitle {

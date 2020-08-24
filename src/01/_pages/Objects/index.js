@@ -50,7 +50,7 @@ export const Objects = () => {
   const [state, setState] = React.useState({ items: null })
 
   React.useEffect(() => {
-    ;(async () => {
+    (async () => {
       const res = await axios.get("housingstocks")
       setState(res)
     })()
@@ -60,7 +60,7 @@ export const Objects = () => {
   const { items } = state
   return styled(styles)(
     <>
-      <h1>Объекты</h1>
+      <h1 style={{fontWeight:300}}>Объекты</h1>
       <Loader show={!items} size="32">
         {items?.map(
           ({ city, id, number, numberOfTasks, street, numberOfApartments }) => {

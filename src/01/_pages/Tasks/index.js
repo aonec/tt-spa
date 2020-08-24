@@ -29,7 +29,7 @@ export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks()
   return (
     <>
-      <h1>Задачи</h1>
+      <h1 style={{fontWeight:300}}>Задачи</h1>
       <Tabs total={[executingTasksCount, observingTasksCount]} />
       <TasksList items={items} />
     </>
