@@ -1,48 +1,33 @@
 import React, { useState, useEffect } from "react"
-import styled from "reshadow/macro"
-import 'antd/dist/antd.css';
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
+
+import styled from "reshadow/macro"
+
 import { grid } from "01/r_comp"
 import { Tabs } from "./components/Tabs/Tabs"
-import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
+
 
 //библиотека обработки дат и локализация СНГ
 import moment from 'moment'
 import 'moment/locale/ru'
 
 import { ApartmentTasks, ApartmentTasksTitle, ApartmentTask, ApartmentTaskTitle, ApartmentTaskState, ApartmentTaskDate } from "./components/ApartmentTasks";
-import { Comments } from './components/Comments/Comments'
-import { Header } from './components/Header';
+import { Comments, Header, Tags, Information, Owner } from './components'
 
-import { Tags } from './components/Tags/Tags'
-import { Information } from './components/Information/Information'
-import { Owner } from './components/Owner/Owner'
+//Получаем типовые функции по запросам к серверу
 import { getApartment, getTasks } from '01/_api/apartment_page';
 import { ApartmentDevices } from './components/ApartmentDevices/ApartmentDevices'
+
+//стилизация
 import "./ApartmentProfile.css";
-import 'moment/locale/ru';
+import 'antd/dist/antd.css';
 moment.locale('ru')
 
-function reducer(state, action) {
-  const { type, data } = action
-  switch (type) {
-    case "success":
-      return { ...state, ...data }
-    default:
-      console.error("objid", type)
-      return state
-  }
-}
 
 export const ApartmentProfile = () => {
-  const [state, dispatch] = React.useReducer(reducer, {})
-  useFetchPage(state, dispatch)
-  const { 0: objid } = useParams()
-  const { push } = useHistory()
-  const info = useObjectInformation(state)
-  // const changes = useDeviceChanges(state);
-  const { header = [], events = [], aparts = [] } = state
   const params = useParams();
+  const apartmentId = params[1];
+
   const [apartment, setapartment] = useState({})
   const [tasks, setTasks] = useState({})
 
@@ -51,32 +36,24 @@ export const ApartmentProfile = () => {
       <div>
         <ApartmentTasks>
           <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
-          {someMap}
+          {Tasks}
         </ApartmentTasks>
       </div>
     )
   };
 
   const buttonHandler = () => {
-    console.log(params[0])
+    console.log(apartmentId)
     console.log("tasks", tasksArr)
   }
 
-  async function getState() {
-    await getApartment(params[1]).then(response => (setapartment(response)));
-  }
-
-  async function getApartmentTasks() {
-    await getTasks(params[1]).then(response => (setTasks(response)));
-  }
-
-  //Задачи с объектом
+  //Получили список задач
   const tasksList = { ...tasks.items };
-
+  //Здесь правило выдачи списка
   const tasksArr = [{ ...tasksList[0] }, { ...tasksList[4] }, { ...tasksList[8] }]
 
 
-  const someMap = tasksArr.map((value, index) => {
+  const Tasks = tasksArr.map((value, index) => {
     const begin = moment(tasksArr[index].creationTime).format('DD.MM.YYYY, hh:mm');
     const ending = moment(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime).format('DD.MM.YYYY, hh:mm');
     return (
@@ -105,22 +82,15 @@ export const ApartmentProfile = () => {
   const homeowners = { ...apartment.homeowners };
 
   //Константинопольский К.К.
-  const {firstName, phoneNumber,personalAccountNumber} = { ...homeowners[0] };
+  const { firstName, phoneNumber, personalAccountNumber } = { ...homeowners[0] };
 
   useEffect(() => {
-    async function internalFunc() {
-      await getState()
+    async function getTasksAndApartments() {
+      await getApartment(apartmentId).then(response => (setapartment(response)));
+      await getTasks(apartmentId).then(response => (setTasks(response)));
     }
-
-    async function getApartmentTasksInternal() {
-      await getApartmentTasks()
-    }
-
-    internalFunc();
-    getApartmentTasksInternal();
-
+    getTasksAndApartments();
   }, []);
-
 
   return styled(grid)(
     <>
@@ -130,16 +100,13 @@ export const ApartmentProfile = () => {
         number={number} />
 
       <Tabs />
-      {/* <grid> */}
+
       <Route path="/*/(\\d+)" exact>
-        {/* <Information {...info} /> */}
-        {/* <Events title="Задачи с объектом" {...events} /> */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '8fr 4fr'
         }}>
           <div>
-
             <Comments />
             <Tags />
             <Information style={{ paddingTop: '32px' }}
@@ -148,14 +115,12 @@ export const ApartmentProfile = () => {
               square={square || '74 кв.м.'}
             />
             <Owner firstName={firstName} personalAccountNumber={personalAccountNumber} phoneNumber={phoneNumber} />
-
             <div>
               <button onClick={buttonHandler}>getApartment</button>
             </div>
           </div>
           <div>
             <RenderTasks />
-
           </div>
         </div>
       </Route>
@@ -172,3 +137,23 @@ export const ApartmentProfile = () => {
     </>
   )
 }
+
+
+// import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
+
+// function reducer(state, action) {
+//   const { type, data } = action
+//   switch (type) {
+//     case "success":
+//       return { ...state, ...data }
+//     default:
+//       console.error("objid", type)
+//       return state
+//   }
+// }
+
+
+  // const [state, dispatch] = React.useReducer(reducer, {})
+  // useFetchPage(state, dispatch)
+    // const { 0: objid } = useParams()
+  // const { push } = useHistory()
