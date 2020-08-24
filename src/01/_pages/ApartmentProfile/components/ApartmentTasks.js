@@ -40,6 +40,9 @@ export const ApartmentTask = styled.a`
 padding:0;
 padding-top:32px;
 margin:0;
+&:first-of-type{
+  padding:0;
+}
 `
 export const ApartmentTaskTitle = styled.h3`
 font-size: 14px;
