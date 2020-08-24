@@ -3,6 +3,7 @@ import { Comment, Avatar, Form, Button, List, Input } from 'antd';
 import moment from 'moment';
 import { UserOutlined } from '@ant-design/icons';
 import './Comments.css';
+import {Title} from '../../components'
 
 const { TextArea } = Input;
 
@@ -73,6 +74,7 @@ export class Comments extends React.Component {
 
     return (
       <>
+        <Title size="24">Комментарии</Title>
         {comments.length > 0 && <CommentList comments={comments} />}
         <Comment
           avatar={

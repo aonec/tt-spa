@@ -9,7 +9,8 @@ import { MoreOutlined } from '@ant-design/icons';
 import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
 
 import { ApartmentTasks, ApartmentTasksTitle, ApartmentTask, ApartmentTaskTitle, ApartmentTaskState, ApartmentTaskDate } from "./components/ApartmentTasks";
-import {Comments} from './components/Comments/Comments'
+import { Comments } from './components/Comments/Comments'
+import { Header } from './components/Header';
 
 import { Title } from './components/Title'
 import { Text } from './components/Text'
@@ -17,7 +18,7 @@ import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 import { getApartment } from '01/_api/device_page';
-import {Button} from './components/Button';
+import { Button } from './components';
 
 
 import { EditButton } from './components/EditButton'
@@ -47,25 +48,16 @@ export const ApartmentProfile = () => {
   const params = useParams()
   console.log("params[1]", params[1])
 
-  const Block = () => {
-    return (
-      <ul className="block">
-        <li><a className="block__link">Редактировать квартиру</a></li>
-        <li><a className="block__link">Добавить собственника</a></li>
-        <li><a className="block__link">Добавить прибор учета</a></li>
-        <li><a className="block__link">Удалить квартиру</a></li>
-      </ul>
-    )
-  }
 
 
-  const editButtonHandler = (event) => {
-    console.log('buttonHandler')
-    console.log(event.target)
-    const a = document.querySelector('.block')
-    console.log(a)
-    a.classList.toggle('visible')
-  }
+
+  // const editButtonHandler = (event) => {
+  //   console.log('buttonHandler')
+  //   console.log(event.target)
+  //   const a = document.querySelector('.block')
+  //   console.log(a)
+  //   a.classList.toggle('visible')
+  // }
 
   const [apartment, setapartment] = useState({})
 
@@ -127,18 +119,11 @@ export const ApartmentProfile = () => {
 
   return styled(grid)(
     <>
-      <div className="apartment-header">
-        <div className="apartment-header__wrap">
-          <Title size="32">Кв. №{apartmentNumber}</Title>
-          <Text>{city}, {street}, {number}</Text>
-        </div>
 
-        <div className="apartment-header__button-wrap">
-          <EditButton onClick={(event) => { editButtonHandler(event) }}><MoreOutlined /></EditButton>
-          <Block />
-        </div>
-      </div>
-
+      <Header apartmentNumber={apartmentNumber}
+        city={city}
+        street={street}
+        number={number} />
 
       <Tabs />
       {/* <grid> */}
@@ -152,7 +137,11 @@ export const ApartmentProfile = () => {
           <div>
             <Comments />
             <Tags />
-            <Information />
+            <Information style={{ paddingTop: '32px' }} 
+            numberOfLiving={numberOfLiving || 'Данные обновляются'}
+            normativeNumberOfLiving={normativeNumberOfLiving || 'Данные обновляются'}
+            square = {square || '74 кв.м.' }
+            />
             <Owner firstName={firstName} personalAccountNumber={personalAccountNumber} phoneNumber={phoneNumber} />
             {apartment.url}
 
@@ -184,7 +173,7 @@ export const ApartmentProfile = () => {
               </ApartmentTask>
               <Button>Все задачи с объектом</Button>
             </ApartmentTasks>
-          
+
           </div>
         </div>
       </Route>

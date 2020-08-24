@@ -1,7 +1,5 @@
 import React from 'react'
-// import { List, Typography } from 'antd';
 import { ListItem, ListItemDescription, ListItemValue } from '../ListItem';
-import "./Information.css";
 import { Title } from '../Title';
 
 const data = [
@@ -17,16 +15,26 @@ const descriptions = [
 ]
 
 
-export const Information = () => {
+
+export const Information = (props) => {
+
+    // var ListItems = descriptions.map(function (value, index) {
+
+    //     return (
+    //     <ListItem><ListItemDescription>{descriptions[index]}</ListItemDescription> <ListItemValue>{data[index]}</ListItemValue></ListItem>
+    //     )
+
+    // });
+
+
+    const {normativeNumberOfLiving,numberOfLiving, square } = props;
+
     return (
-        <div className="appartment-information">
+        <div style={{ paddingTop: '32px' }}>
             <Title size="24">Информация</Title>
-            <ListItem><ListItemDescription>Площадь жилого помещения</ListItemDescription> <ListItemValue>78 м2</ListItemValue></ListItem>
-            <ListItem><ListItemDescription>Количество проживающих / зарегистрированных</ListItemDescription> <ListItemValue>4</ListItemValue></ListItem>
-            <ListItem><ListItemDescription>Нормативное количество проживающих</ListItemDescription> <ListItemValue>4</ListItemValue></ListItem>
+            <ListItem><ListItemDescription>{descriptions[0]}</ListItemDescription> <ListItemValue>{square}</ListItemValue></ListItem>
+            <ListItem><ListItemDescription>{descriptions[1]}</ListItemDescription> <ListItemValue>{numberOfLiving}</ListItemValue></ListItem>
+            <ListItem><ListItemDescription>{descriptions[2]}</ListItemDescription> <ListItemValue>{normativeNumberOfLiving}</ListItemValue></ListItem>
         </div>
-
-
-
     )
 }
