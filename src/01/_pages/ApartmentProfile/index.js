@@ -4,26 +4,24 @@ import 'antd/dist/antd.css';
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
 import { grid } from "01/r_comp"
 import { Tabs } from "./components/Tabs/Tabs"
-import axios from '01/axios';
-import { MoreOutlined } from '@ant-design/icons';
 import { useObjectInformation, useFetchPage, useDeviceChanges } from "./hooks"
+
+//библиотека обработки дат и локализация СНГ
+import moment from 'moment'
+import 'moment/locale/ru'
 
 import { ApartmentTasks, ApartmentTasksTitle, ApartmentTask, ApartmentTaskTitle, ApartmentTaskState, ApartmentTaskDate } from "./components/ApartmentTasks";
 import { Comments } from './components/Comments/Comments'
 import { Header } from './components/Header';
 
-import { Title } from './components/Title'
-import { Text } from './components/Text'
 import { Tags } from './components/Tags/Tags'
 import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
-import { getApartment } from '01/_api/device_page';
-import { Button } from './components';
-import {ApartmentDevices} from './components/ApartmentDevices/ApartmentDevices'
+import { getApartment, getTasks } from '01/_api/apartment_page';
+import { ApartmentDevices } from './components/ApartmentDevices/ApartmentDevices'
 
-import { EditButton } from './components/EditButton'
 import "./ApartmentProfile.css";
-
+import 'moment/locale/ru';
 function reducer(state, action) {
   const { type, data } = action
   switch (type) {
@@ -34,7 +32,7 @@ function reducer(state, action) {
       return state
   }
 }
-
+moment.locale('ru')
 export const ApartmentProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {})
   useFetchPage(state, dispatch)
@@ -43,28 +41,59 @@ export const ApartmentProfile = () => {
   const info = useObjectInformation(state)
   // const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state
-  // console.log("changes", changes);
-  console.log("changes");
-  const params = useParams()
-  console.log("params[1]", params[1])
-
-
-
-
-  // const editButtonHandler = (event) => {
-  //   console.log('buttonHandler')
-  //   console.log(event.target)
-  //   const a = document.querySelector('.block')
-  //   console.log(a)
-  //   a.classList.toggle('visible')
-  // }
-
+  const params = useParams();
   const [apartment, setapartment] = useState({})
+  const [tasks, setTasks] = useState({})
 
+  const RenderTasks = () => {
+    return (
+      <div>
+        <ApartmentTasks>
+          <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
+          {someMap}
+        </ApartmentTasks>
+      </div>
+    )
+  };
+
+  const buttonHandler = () => {
+    console.log(params[0])
+    console.log("tasks", tasksArr)
+  }
 
   async function getState() {
     await getApartment(params[1]).then(response => (setapartment(response)));
   }
+
+  async function getApartmentTasks() {
+    await getTasks(params[1]).then(response => (setTasks(response)));
+  }
+
+  //Задачи с объектом
+  const a = { ...tasks.items };
+
+  const tasksArr = [{ ...a[0] }, { ...a[4] }, { ...a[8] }]
+
+
+  const someMap = tasksArr.map((value, index) => {
+    const name = tasksArr[index].name;
+    const begin = moment(tasksArr[index].creationTime).format('DD.MM.YYYY, hh:mm');
+    const ending = moment(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime).format('DD.MM.YYYY, hh:mm');
+    return (
+      // eslint-disable-next-line react/jsx-key
+      <ApartmentTask>
+        <ApartmentTaskTitle>
+          {tasksArr[index].name}
+        </ApartmentTaskTitle>
+        <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
+        <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />
+          {begin}&nbsp;-&nbsp;{ending}
+          {/* {tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime}  */}
+        </ApartmentTaskDate>
+      </ApartmentTask>
+
+    )
+  })
 
 
   //Номер квартиры 
@@ -106,16 +135,16 @@ export const ApartmentProfile = () => {
     async function internalFunc() {
       await getState()
     }
+
+    async function getApartmentTasksInternal() {
+      await getApartmentTasks()
+    }
+
     internalFunc();
+    getApartmentTasksInternal();
 
   }, []);
 
-  const buttonHandler = () => {
-    console.log(params[0])
-    console.log(apartment);
-    console.log(square, normativeNumberOfLiving, numberOfLiving, homeowners, homeowners0);
-
-  }
 
   return styled(grid)(
     <>
@@ -135,44 +164,22 @@ export const ApartmentProfile = () => {
           gridTemplateColumns: '8fr 4fr'
         }}>
           <div>
+
             <Comments />
             <Tags />
-            <Information style={{ paddingTop: '32px' }} 
-            numberOfLiving={numberOfLiving || 'Данные обновляются'}
-            normativeNumberOfLiving={normativeNumberOfLiving || 'Данные обновляются'}
-            square = {square || '74 кв.м.' }
+            <Information style={{ paddingTop: '32px' }}
+              numberOfLiving={numberOfLiving || 'Данные обновляются'}
+              normativeNumberOfLiving={normativeNumberOfLiving || 'Данные обновляются'}
+              square={square || '74 кв.м.'}
             />
             <Owner firstName={firstName} personalAccountNumber={personalAccountNumber} phoneNumber={phoneNumber} />
-            {apartment.url}
 
-            <button onClick={buttonHandler}>getApartment</button>
+            <div>
+              <button onClick={buttonHandler}>getApartment</button>
+            </div>
           </div>
           <div>
-            <ApartmentTasks>
-              <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
-              <ApartmentTask>
-                <ApartmentTaskTitle>
-                  Некорректные показания
-                </ApartmentTaskTitle>
-                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
-                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
-              </ApartmentTask>
-              <ApartmentTask>
-                <ApartmentTaskTitle>
-                  Отсутствие подключения к вычислителю
-                </ApartmentTaskTitle>
-                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
-                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
-              </ApartmentTask>
-              <ApartmentTask>
-                <ApartmentTaskTitle>
-                  Неполадки с ОДПУ
-                </ApartmentTaskTitle>
-                <ApartmentTaskState><img src={require("../../../public/icons/ok.svg")} />Выполнено</ApartmentTaskState>
-                <ApartmentTaskDate><img src={require("../../../public/icons/calendar.svg")} />24.06.2020 10:32 — 31.07.2020 14:32</ApartmentTaskDate>
-              </ApartmentTask>
-              <Button>Все задачи с объектом</Button>
-            </ApartmentTasks>
+            <RenderTasks />
 
           </div>
         </div>
