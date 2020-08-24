@@ -5,13 +5,13 @@ padding:0 16px;
 display: flex;
 flex-direction:column;
   ${props =>
-        props.description &&
-        css`
+    props.description &&
+    css`
     font-size: 24px;
     line-height: 48px;
    `||
-        props.value &&
-        css`
+    props.value &&
+    css`
     font-size: 32px;
     line-height: 48px;
       `
@@ -23,18 +23,6 @@ margin:0;
 font-weight: normal;
 font-size: 24px;
 line-height: 32px;
-${props =>
-        props.description &&
-        css`
-    font-size: 24px;
-    line-height: 48px;
-   `||
-        props.value &&
-        css`
-    font-size: 32px;
-    line-height: 48px;
-      `
-    };
 `
 export const ApartmentTask = styled.a`
 padding:0;
