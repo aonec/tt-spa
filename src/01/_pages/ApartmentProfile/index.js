@@ -19,9 +19,10 @@ import { Information } from './components/Information/Information'
 import { Owner } from './components/Owner/Owner'
 import { getApartment, getTasks } from '01/_api/apartment_page';
 import { ApartmentDevices } from './components/ApartmentDevices/ApartmentDevices'
-
 import "./ApartmentProfile.css";
 import 'moment/locale/ru';
+moment.locale('ru')
+
 function reducer(state, action) {
   const { type, data } = action
   switch (type) {
@@ -32,7 +33,7 @@ function reducer(state, action) {
       return state
   }
 }
-moment.locale('ru')
+
 export const ApartmentProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {})
   useFetchPage(state, dispatch)
@@ -70,13 +71,12 @@ export const ApartmentProfile = () => {
   }
 
   //Задачи с объектом
-  const a = { ...tasks.items };
+  const tasksList = { ...tasks.items };
 
-  const tasksArr = [{ ...a[0] }, { ...a[4] }, { ...a[8] }]
+  const tasksArr = [{ ...tasksList[0] }, { ...tasksList[4] }, { ...tasksList[8] }]
 
 
   const someMap = tasksArr.map((value, index) => {
-    const name = tasksArr[index].name;
     const begin = moment(tasksArr[index].creationTime).format('DD.MM.YYYY, hh:mm');
     const ending = moment(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime).format('DD.MM.YYYY, hh:mm');
     return (
@@ -95,41 +95,17 @@ export const ApartmentProfile = () => {
     )
   })
 
+  //Информация о доме: Город, улица, дом
+  const { city, street, number } = { ...apartment.housingStock };
 
-  //Номер квартиры 
-  const apartmentNumber = apartment.apartmentNumber;
-
-  //Информация о доме
-  const housingStock = { ...apartment.housingStock }
-
-  //Город, улица, дом
-  const city = housingStock.city;
-  const street = housingStock.street;
-  const number = housingStock.number;
-
-  //Площадь жилого помещения
-  const square = apartment.square;
-
-  //Количество проживающих / зарегистрированных
-  const numberOfLiving = apartment.numberOfLiving;
-
-  //Нормативное количество проживающих
-  const normativeNumberOfLiving = apartment.normativeNumberOfLiving;
+  //Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
+  const { apartmentNumber, square, numberOfLiving, normativeNumberOfLiving } = apartment;
 
   //Собственники
   const homeowners = { ...apartment.homeowners };
 
-  //Первый собственник
-  const { ...homeowners0 } = { ...homeowners[0] };
-
   //Константинопольский К.К.
-  const firstName = homeowners0.firstName;
-
-  //Контактный номер телефона;
-  const phoneNumber = homeowners0.phoneNumber;
-
-  //Номер лицевого счета
-  const personalAccountNumber = homeowners0.personalAccountNumber;
+  const {firstName, phoneNumber,personalAccountNumber} = { ...homeowners[0] };
 
   useEffect(() => {
     async function internalFunc() {
@@ -148,7 +124,6 @@ export const ApartmentProfile = () => {
 
   return styled(grid)(
     <>
-
       <Header apartmentNumber={apartmentNumber}
         city={city}
         street={street}
