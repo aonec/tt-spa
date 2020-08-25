@@ -3,7 +3,7 @@ import styled, { css } from "reshadow/macro"
 
 import { useLogin } from "./useLogin"
 import { input, button } from "01/r_comp"
-import { Loader } from "01/components"
+import { Icon, Loader } from "01/components"
 
 const styles = css`
   form,
