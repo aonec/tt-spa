@@ -10,13 +10,12 @@ export async function getInfo(url = "") {
     } catch (error) { }
 }
 
-const Tasks = "Tasks"
-
-const replaceURLTasks = (url = "") => url.replace(/objects/, Tasks)
+const TasksURL = "Tasks";
+const replaceURLTasks = (url = "") => url.replace(/objects/, TasksURL)
 export async function getTasks(url = "1306857") {
     try {
         //const res = await axios.get(replaceURL2(url))
-        const res = await axios.get("Tasks")
+        const res = await axios.get(TasksURL)
         return { ...res }
     } catch (error) { }
 }
