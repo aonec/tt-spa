@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { Title, Text, EditButton } from '../components'
 import { MoreOutlined } from '@ant-design/icons';
 import styled, { css } from 'styled-components';
-import '../ApartmentProfile.css';
-
+// .visible {
+//   display: block !important;
+//   z-index: 2;
+// }
 const A = styled.a`
 font-size: 16px;
 line-height: 32px;

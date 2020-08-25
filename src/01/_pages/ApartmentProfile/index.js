@@ -19,7 +19,6 @@ import { getApartment, getTasks } from '01/_api/apartment_page';
 import { ApartmentDevices } from './components/ApartmentDevices/ApartmentDevices'
 
 //стилизация
-import "./ApartmentProfile.css";
 import 'antd/dist/antd.css';
 moment.locale('ru')
 

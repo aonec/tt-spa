@@ -1,6 +1,10 @@
 import React from 'react'
 
 export const Popup = () => {
+    // .visible {
+    //     display: block !important;
+    //     z-index: 2;
+    // }
     return (
         <ul className="block">
             <li><a className="block__link">Редактировать квартиру</a></li>
