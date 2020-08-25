@@ -1,12 +1,12 @@
 import React from 'react'
-import { Comment, Avatar, Form, List, Input } from 'antd';
+import {Comment, Avatar, Form, List, Input} from 'antd';
 import moment from 'moment';
-import { UserOutlined } from '@ant-design/icons';
-import { Title, Button } from '../../components'
+import {UserOutlined} from '@ant-design/icons';
+import {Title, Button} from '../../components'
 
-const { TextArea } = Input;
+const {TextArea} = Input;
 
-const CommentList = ({ comments }) => (
+const CommentList = ({comments}) => (
   <List
     dataSource={comments}
     header={`${comments.length} ${comments.length > 1 ? 'комментарий' : 'комментарий'}`}
@@ -15,13 +15,13 @@ const CommentList = ({ comments }) => (
   />
 );
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+const Editor = ({onChange, onSubmit, submitting, value}) => (
   <>
     <Form.Item style={{
       margin: '0',
       padding: '0'
     }}>
-      <TextArea rows={4} onChange={onChange} value={value} style={{ height: '32px' }} />
+      <TextArea rows={4} onChange={onChange} value={value} style={{height: '32px'}}/>
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
@@ -37,9 +37,9 @@ export class Comments extends React.Component {
       author: 'Тransparent Technologies',
       // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
       avatar: <Avatar
-      src={require("../../../../../public/icons/personal.svg")}
-      alt="Тransparent Technologies"
-    />,
+        src={require("../../../../../public/icons/personal.svg")}
+        alt="Тransparent Technologies"
+      />,
       content: <p>Выполнить Задачи с объектом</p>,
       datetime: moment().fromNow(),
     }],
@@ -85,12 +85,12 @@ export class Comments extends React.Component {
   };
 
   render() {
-    const { comments, submitting, value } = this.state;
+    const {comments, submitting, value} = this.state;
 
     return (
       <>
         <Title size="24">Комментарии</Title>
-        {comments.length > 0 && <CommentList comments={comments} />}
+        {comments.length > 0 && <CommentList comments={comments}/>}
         <Comment
           avatar={
             <Avatar

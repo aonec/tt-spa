@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Title, Text, EditButton } from "../components";
-import { MoreOutlined } from "@ant-design/icons";
-import styled, { css } from "styled-components";
+import React, {useState} from "react";
+import {Title, Text, EditButton} from "../components";
+import {MoreOutlined} from "@ant-design/icons";
+import styled, {css} from "styled-components";
 // .visible {
 //   display: block !important;
 //   z-index: 2;
 // }
-const A = styled.a`
+const PopupElem = styled.a`
   font-size: 16px;
   line-height: 32px;
   padding: 8px 24px;
@@ -15,19 +15,19 @@ const A = styled.a`
   border-bottom: 1px solid #dcdee4;
   color: rgba(39, 47, 90, 0.8);
   ${(props) =>
-    (props.description &&
-      css`
+  (props.description &&
+    css`
         font-size: 24px;
         line-height: 48px;
       `) ||
-    (props.value &&
-      css`
+  (props.value &&
+    css`
         font-size: 32px;
         line-height: 48px;
       `)};
 `;
 
-const UL = styled.ul`
+const PopupList = styled.ul`
   position: absolute;
   right: 0;
   filter: drop-shadow(0px 4px 4px rgba(78, 93, 146, 0.16)),
@@ -38,12 +38,12 @@ const UL = styled.ul`
   z-index: 2;
   display: none;
   ${(props) =>
-    (props.visible == true &&
-      css`
+  (props.visible == true &&
+    css`
         display: block;
       `) ||
-    (props.visible == false &&
-      css`
+  (props.visible == false &&
+    css`
         display: none;
       `)};
 `;
@@ -51,20 +51,20 @@ const UL = styled.ul`
 const Popup = () => {
   const [state, setState] = useState(false);
   return (
-    <UL className="editPopup">
+    <PopupList className="editPopup">
       <li>
-        <A>Редактировать квартиру</A>
+        <PopupElem>Редактировать квартиру</PopupElem>
       </li>
       <li>
-        <A>Добавить собственника</A>
+        <PopupElem>Добавить собственника</PopupElem>
       </li>
       <li>
-        <A>Добавить прибор учета</A>
+        <PopupElem>Добавить прибор учета</PopupElem>
       </li>
       <li>
-        <A>Удалить квартиру</A>
+        <PopupElem>Удалить квартиру</PopupElem>
       </li>
-    </UL>
+    </PopupList>
   );
 };
 
@@ -79,15 +79,15 @@ const HeaderWrap = styled.div`
   height: 80px;
   align-items: baseline;
   ${(props) =>
-    props.size == 12 &&
-    css`
+  props.size == 12 &&
+  css`
       font-size: 12px;
       line-height: 16px;
     `};
 `;
 
 export const Header = (props, state) => {
-  const { apartmentNumber, city, street, number } = props;
+  const {apartmentNumber, city, street, number} = props;
   return (
     <HeaderWrap>
       <div className="apartment-header__wrap">
@@ -97,12 +97,12 @@ export const Header = (props, state) => {
         </Text>
       </div>
 
-      <div style={{ position: "relative" }}>
+      <div style={{position: "relative"}}>
         {/* <EditButton onClick={(event) => { editButtonHandler(event) }}><MoreOutlined /></EditButton> */}
         <EditButton onClick={editButtonHandler}>
-          <MoreOutlined />
+          <MoreOutlined/>
         </EditButton>
-        <Popup visible="false" />
+        <Popup visible="false"/>
       </div>
     </HeaderWrap>
   );

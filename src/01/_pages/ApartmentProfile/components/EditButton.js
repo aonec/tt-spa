@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, {css} from 'styled-components'
 
 export const EditButton = styled.button`
   border: 1px solid #DCDEE4;
@@ -9,8 +9,8 @@ export const EditButton = styled.button`
   color: #272F5A;
 
   ${props =>
-    props.primary &&
-    css`
+  props.primary &&
+  css`
       background: palevioletred;
       color: white;
     `};

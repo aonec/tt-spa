@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'reshadow/macro'
-import { NavLink, useRouteMatch } from 'react-router-dom'
+import {NavLink, useRouteMatch} from 'react-router-dom'
 
-import { tabs } from '01/r_comp'
+import {tabs} from '01/r_comp'
 
 const tabItems = [
   ['Общие данные', ''],
@@ -10,8 +10,8 @@ const tabItems = [
 ]
 
 
-export const Tabs = React.memo((displayName: 'Test') => {
-  const { url } = useRouteMatch('/*/*/apartments/(\\d+)/');
+export const Tabs = React.memo(() => {
+  const {url} = useRouteMatch('/*/*/apartments/(\\d+)/');
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (

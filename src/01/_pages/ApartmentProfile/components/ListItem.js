@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, {css} from "styled-components";
 
 export const ListItem = styled.div`
   display: grid;
@@ -22,13 +22,13 @@ export const ListItemValue = styled.p`
   margin: 0;
   color: rgba(39, 47, 90, 0.8);
   ${(props) =>
-    (props.description &&
-      css`
+  (props.description &&
+    css`
         font-size: 24px;
         line-height: 48px;
       `) ||
-    (props.value &&
-      css`
+  (props.value &&
+    css`
         font-size: 32px;
         line-height: 48px;
       `)};

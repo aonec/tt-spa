@@ -13,7 +13,6 @@ const TitleWrap = styled.div`
       color: white;
     `};
 `
-
 export const Owner = (props) => {
   const descriptions = [
     'Номер лицевого счета',
@@ -28,10 +27,11 @@ export const Owner = (props) => {
   //     'Физическое лицо',
   //     '+7 999 999-99-99'
   // ];
+
   const {firstName, personalAccountNumber, phoneNumber, test, test2} = props;
   return (
-    <div style={{paddingTop: '32px'}}>
-      <TitleWrap> <img src={require("./key.svg")}/>
+    <>
+      <TitleWrap style={{paddingTop: '32px'}}> <img src={require("./key.svg")}/>
         <Title size="24" style={{paddingLeft: '8px'}}>{firstName}</Title>
       </TitleWrap>
       <ListItem><ListItemDescription>Номер лицевого счета</ListItemDescription>
@@ -44,6 +44,6 @@ export const Owner = (props) => {
         <ListItemValue>{phoneNumber || 'Запрос данных'}</ListItemValue></ListItem>
 
       <Button style={{marginTop: '16px'}}>Перейти в профиль собственника</Button>
-    </div>
+    </>
   )
 }

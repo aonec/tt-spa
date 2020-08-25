@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, {css} from "styled-components";
 
 export const Title = styled.h2`
   padding: 0;
@@ -7,13 +7,13 @@ export const Title = styled.h2`
   font-size: 32px;
   line-height: 48px;
   ${(props) =>
-    (props.size === 24 &&
-      css`
+  (props.size === 24 &&
+    css`
         font-size: 24px;
         line-height: 48px;
       `) ||
-    (props.size === 32 &&
-      css`
+  (props.size === 32 &&
+    css`
         font-size: 32px;
         line-height: 48px;
       `)};
