@@ -11,13 +11,6 @@ export async function getInfo(url = "") {
     } catch (error) { }
 }
 
-export async function getDevice(url = "/objects/755/devices/1325866") {
-    try {
-        const res = await axios.get(replaceURL(url))
-        // return { ...res, info: true, header: createTitleObject(res) }
-    } catch (error) { }
-}
-
 export async function getDevices(url = "") {
     try {
         const res = await axios.get(replaceURL(url))

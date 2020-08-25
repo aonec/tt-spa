@@ -16,7 +16,7 @@ export async function getInfo(url = "") {
 
 const TasksURL = "Tasks";
 // const replaceURLTasks = (url = "") => url.replace(/objects/, TasksURL)
-export async function getTasks(url = "1306857") {
+export async function getTasks(url = "") {
     try {
         //const res = await axios.get(replaceURL2(url))
         const res = await axios.get(TasksURL)
