@@ -11,7 +11,6 @@ export function Tags() {
 
     const [tags, setTags] = useState(['Бабулька', 'Шустрая'])
     const handleChange = (tags) => {
-        console.log(tags);
         setTags(tags)
     }
     return (<div>

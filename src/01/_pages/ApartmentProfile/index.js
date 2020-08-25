@@ -44,7 +44,7 @@ export const ApartmentProfile = () => {
   };
 
   const buttonHandler = () => {
-    console.log("tasks", tasksArr)
+    // console.log("tasks", tasksArr)
   }
 
   //Получили список задач

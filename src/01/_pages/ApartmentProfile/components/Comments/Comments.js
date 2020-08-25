@@ -74,7 +74,7 @@ export class Comments extends React.Component {
           ...this.state.comments,
         ],
       });
-      console.log(this.state.comments)
+      // console.log(this.state.comments)
     }, 1000);
   };
 

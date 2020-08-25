@@ -39,7 +39,7 @@ export const useFetchPage = (state, dispatch) => {
     }
 
     if ((info || devices) && !events) {
-      console.log(params)
+      // console.log(params)
       getEvents(params.id).then((data) => dispatch({ type: "success", data }))
     }
   }, [isExact, url, state, pageDevice, pageApart, replace])

@@ -25,7 +25,6 @@ export const getAparts = async (params = {}, dispatch = () => { }) => {
 export const getDevices = async (url = '', dispatch = () => { }) => {
   try {
     const res = await axios.get(replaceURL(url))
-    console.log(res)
     dispatch({
       type: 'success',
       data: {
@@ -50,7 +49,6 @@ export const getEvents = async (
         DeviceId,
       },
     })
-    console.log(res)
   } catch (error) { }
 }
 
@@ -88,7 +86,6 @@ export async function getDeviceInfo(id) {
       //axios.get("MeteringDevices", { params: { ApartmentId: id } }),
     ])
     const [apartInfo, meterDevices] = res
-    console.log(res);
     return {
       // apartInfo,
       // meterDevices: {

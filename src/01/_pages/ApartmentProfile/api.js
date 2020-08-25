@@ -87,7 +87,6 @@ export async function getDeviceInfo(id) {
       //axios.get("MeteringDevices", { params: { ApartmentId: id } }),
     ])
     const [apartInfo, meterDevices] = res
-    console.log(res);
     return {
       // apartInfo,
       // meterDevices: {

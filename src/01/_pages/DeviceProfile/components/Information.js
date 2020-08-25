@@ -8,7 +8,7 @@ import { information } from "01/r_comp"
 export const Information = ({ list = [], loading = true, ...props }) => {
     const { push } = useHistory()
     const params = useParams()
-    console.log(params[1])
+    // console.log(params[1])
 
     const test = [
         "Активен",

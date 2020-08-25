@@ -1,5 +1,4 @@
 export const useApartments = ({ apartments = {} }, { filter = "" }) => {
-  console.log(apartments)
   const { loading, items = [], housingStock } = apartments
   return {
     loading,
