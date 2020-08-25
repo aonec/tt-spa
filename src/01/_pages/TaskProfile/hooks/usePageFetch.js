@@ -8,6 +8,7 @@ export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams()
   const { replace } = useHistory()
   useCancelFetch()
+  
   React.useEffect(() => {
     getTask(id).then((data) => dispatch({ type: "success", data }))
   }, [])
@@ -23,16 +24,3 @@ export const usePageFetch = (state, dispatch) => {
   }, [state])
 }
 
-// React.useEffect(() => {
-//   // getTaskPage(url, dispatch)
-//   getTask(id)
-//   return () => cancel()
-// }, [url])
-
-// React.useEffect(() => {
-//   const { move, stageData, isReplace } = state
-//   if (isReplace) replace("/tasks/")
-//   if (move) {
-//     postMoveStage(url, move, stageData, dispatch, replace)
-//   }
-// }, [state])
