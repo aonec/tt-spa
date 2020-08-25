@@ -9,9 +9,9 @@ const TitleWrap = styled.div`
   ${props =>
   props.primary &&
   css`
-      background: palevioletred;
-      color: white;
-    `};
+  background: palevioletred;
+  color: white;
+  `};
 `
 export const Owner = (props) => {
   const descriptions = [
