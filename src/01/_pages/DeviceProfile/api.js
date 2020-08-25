@@ -22,7 +22,6 @@ export const getAparts = async (params = {}, dispatch = () => { }) => {
   } catch (error) { }
 }
 
-
 export const getDevices = async (url = '', dispatch = () => { }) => {
   try {
     const res = await axios.get(replaceURL(url))

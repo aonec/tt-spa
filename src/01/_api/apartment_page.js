@@ -1,10 +1,7 @@
 import axios from "01/axios"
-import { createTimeline, createTimer, createDevice } from "./utils"
-//import { getDevice, getApartment } from '01/_api/apartment_page';
 const URL = "HousingStocks"
 
 const replaceURL = (url = "") => url.replace(/objects/, URL)
-
 
 export async function getInfo(url = "") {
     try {
@@ -14,6 +11,7 @@ export async function getInfo(url = "") {
 }
 
 const Tasks = "Tasks"
+
 const replaceURLTasks = (url = "") => url.replace(/objects/, Tasks)
 export async function getTasks(url = "1306857") {
     try {

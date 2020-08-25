@@ -61,7 +61,6 @@ export const Select = ({
     } else {
       getSelectData(ids[0] ?? null)
     }
-    // eslint-disable-next-line
   }, [items])
 
   return (

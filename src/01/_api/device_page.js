@@ -1,10 +1,8 @@
 import axios from "01/axios"
 import { createTimeline, createTimer, createDevice } from "./utils"
-
 const URL = "HousingStocks"
 
 const replaceURL = (url = "") => url.replace(/objects/, URL)
-
 
 export async function getInfo(url = "") {
     try {
@@ -20,7 +18,6 @@ export async function getDevice(url = "/objects/755/devices/1325866") {
     } catch (error) { }
 }
 
-
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
 export async function getApartment(url = "") {
@@ -31,7 +28,6 @@ export async function getApartment(url = "") {
         return { ...res }
     } catch (error) { }
 }
-
 
 export async function getDevices(url = "") {
     try {

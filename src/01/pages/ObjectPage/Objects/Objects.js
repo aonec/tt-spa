@@ -1,12 +1,9 @@
 import React from "react"
 import styled from "reshadow/macro"
-// eslint-disable-next-line
-import { Icon } from "01/components/Icon"
 import { page } from "01/r_comp"
 
 import { HeaderBlock } from "01/components/HeaderBlock"
 import { useObjects } from "./useObjects"
-import { api } from "../api"
 import { ObjectItem } from "./ObjectItem"
 
 export const Objects = () => {

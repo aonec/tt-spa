@@ -1,22 +1,7 @@
 import React, { useState } from 'react';
-import axios from '01/axios';
-
 import { button } from '01/r_comp';
-// import { Table, Tag, Space } from 'antd';
-// import 'antd/dist/antd.css';
 
-import { getInfo } from '../../../_api/device_page';
-
-
-import styled, { use } from "reshadow/macro"
-import { useHistory, useParams } from "react-router-dom"
-
-
-
-import { Loader } from "01/components/Loader"
-import { information } from "01/r_comp"
-import { useEffect } from 'react';
-import { getDevice, getApartment } from '01/_api/device_page';
+import {getApartment } from '01/_api/device_page';
 
 const columns = [
     {

@@ -10,7 +10,6 @@ const buttonHandler = () => {
 }
 
 export const AccessDeniedPage = () => {
-    const params = useParams()
     return styled(button)(
         <div className="access-denied">
             <h1 className="access-denied__title title-40">У вас нет доступа к запрашиваемым ресурсам</h1>

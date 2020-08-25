@@ -15,7 +15,6 @@ export const useGetInfo = () => {
         const res = await axios(url)
         setInfo(createObjInfoList(res.data.successResponse))
       })()
-    // eslint-disable-next-line
   }, [infoPage.isExact])
   console.log(info)
   return { list: info }
