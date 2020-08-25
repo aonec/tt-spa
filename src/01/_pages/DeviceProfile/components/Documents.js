@@ -71,29 +71,8 @@ const data = [
     },
 ];
 
-
-
-// export const Information = ({ list = [], loading = true, ...props }) => {
-//     const { push } = useHistory()
-//     // console.log(list);
-
-//     const params = useParams()
-//     // console.log(params)
-//     // console.log(params[1])
-// }
-
-
-
-
-
 export const Documents = () => {
-
-
     const [state, setState] = useState()
-    const buttonHandler = () => {
-        console.log(state);
-        console.log(state.apartmentNumber)
-    }
 
     async function getState() {
         await getApartment().then(response => (setState(response)));
@@ -101,12 +80,10 @@ export const Documents = () => {
     getState();
 
 
-
     return (
-        // <Table columns={columns} dataSource={data} pagination={false} />
         <>
             <h2>Компонент Документы в процессе разработки</h2>
-            <button onClick={buttonHandler}>Test</button>
+            <button>Test</button>
         </>
     )
 }

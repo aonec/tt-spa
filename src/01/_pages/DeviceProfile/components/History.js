@@ -7,9 +7,7 @@ import * as style from "_reshadow"
 import { button } from "01/r_comp";
 
 const buttonHandler = (event) => {
-    console.log('buttonHandler');
-    // const parentItem = event.target.closest('div');
-    // $(parentItem).find('input').prop('disabled', false);
+
 }
 
 

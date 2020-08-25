@@ -36,7 +36,6 @@ export const DeviceProfile = () => {
   const info = useObjectInformation(state)
   const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state
-  console.log("changes", changes);
   return styled(grid)(
     <>
       <Header {...header} />

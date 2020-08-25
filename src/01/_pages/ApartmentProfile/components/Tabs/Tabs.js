@@ -13,7 +13,6 @@ const tabItems = [
 // eslint-disable-next-line react/display-name
 export const Tabs = React.memo(() => {
   const { url } = useRouteMatch('/*/*/apartments/(\\d+)/')
-  console.log(url)
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (

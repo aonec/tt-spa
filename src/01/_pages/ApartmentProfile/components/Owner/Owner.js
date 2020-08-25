@@ -30,7 +30,6 @@ export const Owner = (props) => {
     //     '+7 999 999-99-99'
     // ];
     const { firstName, personalAccountNumber, phoneNumber, test, test2 } = props;
-    console.log(props);
     return (
         <div style={{paddingTop:'32px'}}>
             <TitleWrap>  <img src={require("./key.svg")} />

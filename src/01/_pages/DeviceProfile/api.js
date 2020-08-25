@@ -22,9 +22,6 @@ export const getAparts = async (params = {}, dispatch = () => { }) => {
   } catch (error) { }
 }
 
-export const test = () => {
-  console.log('test');
-}
 
 export const getDevices = async (url = '', dispatch = () => { }) => {
   try {

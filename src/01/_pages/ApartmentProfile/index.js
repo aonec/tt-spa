@@ -44,7 +44,6 @@ export const ApartmentProfile = () => {
   };
 
   const buttonHandler = () => {
-    console.log(apartmentId)
     console.log("tasks", tasksArr)
   }
 
@@ -58,7 +57,6 @@ export const ApartmentProfile = () => {
     const begin = moment(tasksArr[index].creationTime).format('DD.MM.YYYY, hh:mm');
     const ending = moment(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime).format('DD.MM.YYYY, hh:mm');
     return (
-
       <ApartmentTask key={index}>
         <ApartmentTaskTitle>
           {tasksArr[index].name}

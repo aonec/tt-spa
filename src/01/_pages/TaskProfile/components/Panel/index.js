@@ -87,7 +87,6 @@ export const Panel = ({
     SwitchDevices,
     SetNextStageDeadline,
   } = actions
-  console.log(actions)
   const { emailNotify = {} } = state
 
   return styled(styles)(

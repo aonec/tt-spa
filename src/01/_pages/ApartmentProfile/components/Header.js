@@ -61,13 +61,8 @@ const Popup = () => {
 
 
 const editButtonHandler = (event, state) => {
-  console.log('buttonHandler')
-  // console.log(event.target)
   const a = document.querySelector('.editPopup')
-
-   console.log(a)
    a.classList.toggle('visible')
-  // a.classList.toggle(props.visible = 'false')
 
 }
 
