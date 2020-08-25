@@ -23,7 +23,7 @@ export const Button = styled.button`
   ${props =>
   props.primary &&
   css`
-      background: palevioletred;
-      color: white;
-    `};
+    background: palevioletred;
+    color: white;
+  `};
 `
