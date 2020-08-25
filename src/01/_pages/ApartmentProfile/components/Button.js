@@ -1,6 +1,8 @@
-import styled, { css } from 'styled-components'
+import styled, {
+  css
+} from 'styled-components'
 
-export const Button = styled.button`
+export const Button = styled.button `
     border: 1px solid #DCDEE4;
     box-sizing: border-box;
     border-radius: 4px;
