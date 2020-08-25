@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import { button } from '01/r_comp';
-
-import {getApartment } from '01/_api/device_page';
-
 const columns = [
     {
         title: 'Месяц',
@@ -58,13 +54,6 @@ const data = [
 
 export const Documents = () => {
     const [state, setState] = useState()
-
-    async function getState() {
-        await getApartment().then(response => (setState(response)));
-    }
-    getState();
-
-
     return (
         <>
             <h2>Компонент Документы в процессе разработки</h2>

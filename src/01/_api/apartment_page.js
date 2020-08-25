@@ -22,10 +22,10 @@ export async function getTasks(url = "1306857") {
 
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-export async function getApartment(url = "1306857") {
+export async function getApartment(url = "") {
     try {
         //const res = await axios.get(replaceURL2(url))
-        const res = await axios.get("Apartments/1306857")
+        const res = await axios.get(`Apartments/${url}`)
         // return { ...res, info: true, header: createTitleObject(res) }
         return { ...res }
     } catch (error) { }

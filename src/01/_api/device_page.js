@@ -18,17 +18,6 @@ export async function getDevice(url = "/objects/755/devices/1325866") {
     } catch (error) { }
 }
 
-const URL2 = "Apartments"
-const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-export async function getApartment(url = "") {
-    try {
-        //const res = await axios.get(replaceURL2(url))
-        const res = await axios.get(`Apartments/${url}`)
-        // return { ...res, info: true, header: createTitleObject(res) }
-        return { ...res }
-    } catch (error) { }
-}
-
 export async function getDevices(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
