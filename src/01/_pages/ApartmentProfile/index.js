@@ -58,8 +58,8 @@ export const ApartmentProfile = () => {
     const begin = moment(tasksArr[index].creationTime).format('DD.MM.YYYY, hh:mm');
     const ending = moment(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime).format('DD.MM.YYYY, hh:mm');
     return (
-      // eslint-disable-next-line react/jsx-key
-      <ApartmentTask>
+
+      <ApartmentTask key={index}>
         <ApartmentTaskTitle>
           {tasksArr[index].name}
         </ApartmentTaskTitle>
