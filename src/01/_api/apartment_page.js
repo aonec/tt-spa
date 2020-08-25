@@ -6,8 +6,12 @@ const replaceURL = (url = "") => url.replace(/objects/, URL)
 export async function getInfo(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
-        return { ...res, info: true, header: createTitleObject(res) }
-    } catch (error) { }
+        return {
+            ...res,
+            info: true,
+            header: createTitleObject(res)
+        }
+    } catch (error) {}
 }
 
 const TasksURL = "Tasks";
@@ -16,8 +20,10 @@ export async function getTasks(url = "1306857") {
     try {
         //const res = await axios.get(replaceURL2(url))
         const res = await axios.get(TasksURL)
-        return { ...res }
-    } catch (error) { }
+        return {
+            ...res
+        }
+    } catch (error) {}
 }
 
 const URL2 = "Apartments"
@@ -27,12 +33,18 @@ export async function getApartment(url = "") {
         //const res = await axios.get(replaceURL2(url))
         const res = await axios.get(`Apartments/${url}`)
         // return { ...res, info: true, header: createTitleObject(res) }
-        return { ...res }
-    } catch (error) { }
+        return {
+            ...res
+        }
+    } catch (error) {}
 }
 
 // utils
 function createTitleObject(data) {
-    const { street, number, city } = data
+    const {
+        street,
+        number,
+        city
+    } = data
     return [`${street}, ${number}`, city]
 }
