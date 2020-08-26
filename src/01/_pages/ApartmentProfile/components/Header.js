@@ -6,27 +6,6 @@ import styled, {css} from "styled-components";
 //   display: block !important;
 //   z-index: 2;
 // }
-const PopupElem = styled.a`
-  font-size: 16px;
-  line-height: 32px;
-  padding: 8px 24px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #dcdee4;
-  color: rgba(39, 47, 90, 0.8);
-  ${(props) =>
-  (props.description &&
-    css`
-        font-size: 24px;
-        line-height: 48px;
-      `) ||
-  (props.value &&
-    css`
-        font-size: 32px;
-        line-height: 48px;
-      `)};
-`;
-
 const PopupList = styled.ul`
   position: absolute;
   right: 0;
@@ -48,22 +27,47 @@ const PopupList = styled.ul`
       `)};
 `;
 
+const PopupElemWrap = styled.li`
+  //some styles
+`;
+
+const PopupElem = styled.a`
+  font-size: 16px;
+  line-height: 32px;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dcdee4;
+  color: rgba(39, 47, 90, 0.8);
+  ${(props) =>
+  (props.description &&
+    css`
+        font-size: 24px;
+        line-height: 48px;
+      `) ||
+  (props.value &&
+    css`
+        font-size: 32px;
+        line-height: 48px;
+      `)};
+`;
+
 const Popup = () => {
   const [state, setState] = useState(false);
   return (
     <PopupList className="editPopup">
-      <li>
+      <PopupElemWrap>
         <PopupElem>Редактировать квартиру</PopupElem>
-      </li>
-      <li>
+      </PopupElemWrap>
+      <PopupElemWrap>
         <PopupElem>Добавить собственника</PopupElem>
-      </li>
-      <li>
+      </PopupElemWrap>
+      <PopupElemWrap>
         <PopupElem>Добавить прибор учета</PopupElem>
-      </li>
-      <li>
+      </PopupElemWrap>
+      <PopupElemWrap>
         <PopupElem>Удалить квартиру</PopupElem>
-      </li>
+      </PopupElemWrap>
     </PopupList>
   );
 };
