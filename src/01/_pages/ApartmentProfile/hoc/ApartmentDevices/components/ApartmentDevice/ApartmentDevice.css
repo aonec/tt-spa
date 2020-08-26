@@ -1,0 +1,39 @@
+.wrap {
+    display: grid;
+}
+.top {
+    display: grid;
+    grid-template-columns: 2fr 6fr 4fr;
+}
+.bottom {
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr 2fr;
+}
+h2 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 32px;
+}
+.number {
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.6);
+}
+
+.state {
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.8);
+}
+
+.dates {
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.6);
+}
+
+.place {
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.6);
+}

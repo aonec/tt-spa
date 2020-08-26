@@ -4,7 +4,7 @@ export * from './EditButton';
 export * from './ListItem';
 export * from './Text';
 export * from './Title';
-export * from './ApartmentDevices/ApartmentDevices';
+export * from '../hoc/ApartmentDevices/ApartmentDevices';
 export * from './Comments/Comments';
 export * from './Header'
 export * from './Tags/Tags'

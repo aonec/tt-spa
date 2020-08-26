@@ -16,7 +16,7 @@ import { Comments, Header, Tags, Information, Owner } from './components'
 
 //Получаем типовые функции по запросам к серверу
 import { getApartment, getTasks } from '01/_api/apartment_page';
-import { ApartmentDevices } from './components/ApartmentDevices/ApartmentDevices'
+import { ApartmentDevices } from './hoc/ApartmentDevices/ApartmentDevices'
 
 //стилизация
 import 'antd/dist/antd.css';
