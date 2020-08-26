@@ -8,7 +8,7 @@
 }
 .bottom {
     display: grid;
-    grid-template-columns: 1fr 2fr 6fr 3fr;
+    grid-template-columns: 1fr 2fr 5fr 4fr;
     align-items: center;
 }
 .name {

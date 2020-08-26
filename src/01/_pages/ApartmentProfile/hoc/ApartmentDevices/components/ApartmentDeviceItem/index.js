@@ -2,6 +2,7 @@ import React from "react";
 import './ApartmentDeviceItem.css'
 import {ApartmentDevice} from "../ApartmentDevice";
 import {ApartmentInput} from "../ApartmentInput";
+import {ApartmentDevicesHistory} from '../ApartmentDevicesHistory'
 
 export function ApartmentDeviceItem() {
   return (
@@ -9,7 +10,7 @@ export function ApartmentDeviceItem() {
       <div><ApartmentDevice /></div>
       <div><ApartmentInput /></div>
       <div><ApartmentInput /></div>
-      <div>История показаний</div>
+      <div><ApartmentDevicesHistory/></div>
     </div>
   )
 }
