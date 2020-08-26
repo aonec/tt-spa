@@ -1,16 +1,27 @@
-import React from "react";
+import React, {useContext} from "react";
 import './ApartmentDeviceItem.css'
 import {ApartmentDevice} from "../ApartmentDevice";
 import {ApartmentInput} from "../ApartmentInput";
 import {ApartmentDevicesHistory} from '../ApartmentDevicesHistory'
 
-export function ApartmentDeviceItem() {
+import {ApartmentDevicesContext} from '../../ApartmentDevices'
+
+export function ApartmentDeviceItem(props) {
+  const ApartmentDevicesList = useContext(ApartmentDevicesContext);
+  const currentDevice = {...ApartmentDevicesList[props.index]}
+  const {model, serialNumber} = currentDevice;
+  console.log("props", props)
+  console.log("currentDevice", currentDevice)
+
   return (
     <div className='appdev__item'>
-      <div><ApartmentDevice /></div>
-      <div><ApartmentInput /></div>
-      <div><ApartmentInput /></div>
-      <div><ApartmentDevicesHistory/></div>
+      <ApartmentDevice
+        model={model}
+        serialNumber={serialNumber}
+      />
+      <ApartmentInput/>
+      <ApartmentInput/>
+      <ApartmentDevicesHistory/>
     </div>
   )
 }

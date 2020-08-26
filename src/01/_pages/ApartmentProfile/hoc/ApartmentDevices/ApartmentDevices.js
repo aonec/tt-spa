@@ -33,7 +33,7 @@ export const ApartmentDevices = () => {
 
   return (
     <>
-      <ApartmentDevicesContext.Provider  value={items}>
+      <ApartmentDevicesContext.Provider  value={Object.values(items)}>
         <Header/>
         <ApartmentDevicesList/>
         <ShowHidden/>

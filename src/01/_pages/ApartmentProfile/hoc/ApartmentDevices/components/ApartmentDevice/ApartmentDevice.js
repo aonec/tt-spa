@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './ApartmentDevice.css';
 import 'icomoon/style.css';
+import {ApartmentDevicesContext} from "../../ApartmentDevices";
 
-export function ApartmentDevice() {
+export function ApartmentDevice(props) {
+
+  const ApartmentDevicesList = useContext(ApartmentDevicesContext);
+  console.log(ApartmentDevicesList);
+
+  const device = {...ApartmentDevicesList[0]};
+  console.log(device)
   return (
     <div className='wrap'>
       <div className='top'>
         <div className='icon-drop'></div>
-        <h2 className='name'>СГВ-5</h2>
-        <p className='number'>(123456789)</p>
+        <h2 className='name'>{props.model}</h2>
+        <p className='number'>{props.serialNumber}</p>
       </div>
       <div className='bottom'>
         <div className='icon-green'></div>
