@@ -3,36 +3,48 @@
 }
 .top {
     display: grid;
-    grid-template-columns: 2fr 6fr 4fr;
+    grid-template-columns: 1fr 2fr 9fr;
+    align-items: center;
 }
 .bottom {
     display: grid;
-    grid-template-columns: 2fr 6fr 2fr 2fr;
+    grid-template-columns: 1fr 2fr 6fr 3fr;
+    align-items: center;
 }
-h2 {
+.name {
+    padding: 0;
+    margin: 0;
     font-weight: 500;
     font-size: 16px;
     line-height: 32px;
 }
 .number {
+    padding: 0;
+    margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: rgba(39, 47, 90, 0.6);
 }
 
 .state {
+    padding: 0;
+    margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: rgba(39, 47, 90, 0.8);
 }
 
 .dates {
+    padding: 0;
+    margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: rgba(39, 47, 90, 0.6);
 }
 
 .place {
+    padding: 0;
+    margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: rgba(39, 47, 90, 0.6);

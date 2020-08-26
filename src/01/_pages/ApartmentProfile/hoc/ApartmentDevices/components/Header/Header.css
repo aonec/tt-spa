@@ -1,0 +1,15 @@
+.appdev__header {
+    display: grid;
+    grid-template-columns: 5fr 2fr 2fr 3fr;
+    background: rgba(39, 47, 90, 0.04);
+    padding: 16px;
+
+}
+.appdev__header h5 {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.6);
+}
