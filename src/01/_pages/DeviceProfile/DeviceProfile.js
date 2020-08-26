@@ -1,21 +1,3 @@
-// import React from 'react'
-// import styled from 'reshadow/macro'
-// import { useParams } from 'react-router-dom'
-// import { Tabs } from './components/Tabs'
-// import {Information} from "./components/Information";
-
-// export const DeviceProfile = () => {
-//   const params = useParams()
-//   return styled()(
-//     <div>
-//       <h1>Информация о ОДПУ</h1>
-//       <h2>id прибора: {params[1]}</h2>
-//       <p>Компонент обновляется</p>
-//       <Tabs />
-//       <Information />
-//     </div>
-//   )
-// }
 
 import React from "react"
 import styled from "reshadow/macro"
@@ -54,7 +36,6 @@ export const DeviceProfile = () => {
   const info = useObjectInformation(state)
   const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state
-  console.log("changes", changes);
   return styled(grid)(
     <>
       <Header {...header} />
@@ -91,16 +72,17 @@ export const DeviceProfile = () => {
 // import styled from 'reshadow/macro'
 // import { useParams } from 'react-router-dom'
 // import { Tabs } from './components/Tabs'
+// import {Information} from "./components/Information";
 
 // export const DeviceProfile = () => {
 //   const params = useParams()
-//   console.log(params[1])
 //   return styled()(
 //     <div>
-//       Профиль прибора ОДПУ
-//       {/* <Tabs /> */}
+//       <h1>Информация о ОДПУ</h1>
 //       <h2>id прибора: {params[1]}</h2>
 //       <p>Компонент обновляется</p>
+//       <Tabs />
+//       <Information />
 //     </div>
 //   )
 // }

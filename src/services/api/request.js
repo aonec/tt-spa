@@ -5,8 +5,8 @@ export const request = axios.create()
 export const source = axios.CancelToken.source()
 export const isCancel = (e) => axios.isCancel(e)
 
-
-request.defaults.baseURL = "https://transparent-staging.herokuapp.com/api"
+//Если ок, то просто удалить
+// request.defaults.baseURL = "https://transparent-staging.herokuapp.com/api"
 
 request.interceptors.request.use((req) => {
   req.headers["Authorization"] = createBearer()

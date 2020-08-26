@@ -1,22 +1,27 @@
 import React from 'react'
-import { Comment, Avatar, Form, Button, List, Input } from 'antd';
+import {Comment, Avatar, Form, List, Input} from 'antd';
 import moment from 'moment';
-import { UserOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
+import {UserOutlined} from '@ant-design/icons';
+import {Title, Button} from '../../components'
 
-const CommentList = ({ comments }) => (
+const {TextArea} = Input;
+
+const CommentList = ({comments}) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+    header={`${comments.length} ${comments.length > 1 ? 'комментарий' : 'комментарий'}`}
     itemLayout="horizontal"
     renderItem={props => <Comment {...props} />}
   />
 );
 
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+const Editor = ({onChange, onSubmit, submitting, value}) => (
   <>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
+    <Form.Item style={{
+      margin: '0',
+      padding: '0'
+    }}>
+      <TextArea rows={4} onChange={onChange} value={value} style={{height: '32px'}}/>
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
@@ -28,7 +33,16 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 export class Comments extends React.Component {
   state = {
-    comments: [],
+    comments: [{
+      author: 'Тransparent Technologies',
+      // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      avatar: <Avatar
+        src={require("../../../../../public/icons/personal.svg")}
+        alt="Тransparent Technologies"
+      />,
+      content: <p>Выполнить Задачи с объектом</p>,
+      datetime: moment().fromNow(),
+    }],
     submitting: false,
     value: '',
   };
@@ -50,13 +64,17 @@ export class Comments extends React.Component {
           {
             author: 'Тransparent Technologies',
             // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-            avatar: <UserOutlined />,
+            avatar: <Avatar
+              src={require("../../../../../public/icons/personal.svg")}
+              alt="Тransparent Technologies"
+            />,
             content: <p>{this.state.value}</p>,
             datetime: moment().fromNow(),
           },
           ...this.state.comments,
         ],
       });
+      // console.log(this.state.comments)
     }, 1000);
   };
 
@@ -67,16 +85,17 @@ export class Comments extends React.Component {
   };
 
   render() {
-    const { comments, submitting, value } = this.state;
+    const {comments, submitting, value} = this.state;
 
     return (
       <>
-        {comments.length > 0 && <CommentList comments={comments} />}
+        <Title size="24">Комментарии</Title>
+        {comments.length > 0 && <CommentList comments={comments}/>}
         <Comment
           avatar={
             <Avatar
               // src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              src={require("../../../../../public/icons/personal.svg")}
               alt="Тransparent Technologies"
             />
           }
@@ -93,3 +112,4 @@ export class Comments extends React.Component {
     );
   }
 }
+

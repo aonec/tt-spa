@@ -1,39 +1,49 @@
 import React from 'react'
-import { List, Typography, Button } from 'antd';
-import "./Owner.css";
+import {Button, Title} from '../../components';
+import {ListItem, ListItemDescription, ListItemValue} from '../ListItem';
+import styled, {css} from 'styled-components'
 
-const descriptions = [
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: baseline;
+  ${props =>
+  props.primary &&
+  css`
+  background: palevioletred;
+  color: white;
+  `};
+`
+export const Owner = (props) => {
+  const descriptions = [
     'Номер лицевого счета',
     'Статус собственник',
     'Юридическое состояние',
     'Контактный номер телефона'
-]
+  ]
 
-const data = [
-    '12345678',
-    'Передает показания',
-    'Физическое лицо',
-    '+7 999 999-99-99'
-];
+  // const data = [
+  //     '12345678',
+  //     'Передает показания',
+  //     'Физическое лицо',
+  //     '+7 999 999-99-99'
+  // ];
 
+  const {firstName, personalAccountNumber, phoneNumber, test, test2} = props;
+  return (
+    <>
+      <TitleWrap style={{paddingTop: '32px'}}> <img src={require("./key.svg")}/>
+        <Title size="24" style={{paddingLeft: '8px'}}>{firstName}</Title>
+      </TitleWrap>
+      <ListItem><ListItemDescription>Номер лицевого счета</ListItemDescription>
+        <ListItemValue>{personalAccountNumber || 'Запрос данных'}</ListItemValue></ListItem>
+      <ListItem><ListItemDescription>Статус собственник</ListItemDescription>
+        <ListItemValue>{test || 'Запрос данных'}</ListItemValue></ListItem>
+      <ListItem><ListItemDescription>Юридическое состояние</ListItemDescription>
+        <ListItemValue>{test2 || 'Запрос данных'}</ListItemValue></ListItem>
+      <ListItem><ListItemDescription>Контактный номер телефона</ListItemDescription>
+        <ListItemValue>{phoneNumber || 'Запрос данных'}</ListItemValue></ListItem>
 
-
-export const Owner = () => {
-    return (
-        <div className="owner-information">
-            <h2 className="title-24">Константинопольский К.К.</h2>
-            <List
-                // header={<div>Header</div>}
-                // footer={<div>Footer</div>}
-                // bordered
-                dataSource={data}
-                renderItem={(item, index) => (
-                    <List.Item>
-                        <Typography.Text>{descriptions[index]}</Typography.Text> {item}
-                    </List.Item>
-                )}
-            />
-            <Button>Перейти в профиль собственника</Button>
-        </div>
-    )
+      <Button style={{marginTop: '16px'}}>Перейти в профиль собственника</Button>
+    </>
+  )
 }

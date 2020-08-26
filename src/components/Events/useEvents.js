@@ -12,7 +12,6 @@ export const useEvents = (start) => {
         setState({ ...data, loading: false })
       )
     }
-    // eslint-disable-next-line
   }, [start])
   return state
 }

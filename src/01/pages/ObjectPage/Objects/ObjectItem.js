@@ -1,13 +1,10 @@
-import React from "react"
-// eslint-disable-next-line
-import { Link } from "react-router-dom"
+import React, { Memo } from "react"
 import styled, { css } from "reshadow/macro"
-
 import { Icon } from "01/components/Icon"
 
-export const ObjectItem = React.memo(
-  ({ styles, city, id, number, numberOfTasks, street, path = "/object/" }) =>
-    styled(styles)(
+export const ObjectItem = Memo(
+  ({ styles, city, id, number, numberOfTasks, street, path = "/object/" }) => {
+    return styled(styles)(
       <item>
         <link as="Link" to={path + id}>
           <h4>
@@ -26,48 +23,7 @@ export const ObjectItem = React.memo(
         </link>
       </item>
     )
+  }
 )
 
-ObjectItem.defaultProps = {
-  styles: css`
-    item {
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      grid-column: 1 / -1;
-    }
 
-    link {
-      flex-grow: 1;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      align-items: inherit;
-      min-height: 48px;
-      padding: 8px;
-
-      &:hover {
-        color: var(--primary-100);
-        & span {
-          color: inherit;
-        }
-      }
-    }
-
-    span {
-      display: flex;
-    }
-
-    span:first-of-type {
-      color: var(--main-80);
-    }
-    span:nth-last-child(1),
-    span:nth-last-child(2) {
-      color: var(--main-60);
-    }
-
-    Icon {
-      margin-right: 8px;
-      color: var(--error);
-    }
-  `,
-}

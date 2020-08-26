@@ -1,40 +1,37 @@
 import React from 'react'
-import { List, Typography, Divider } from 'antd';
-import "./Information.css";
+import {ListItem, ListItemDescription, ListItemValue} from '../ListItem';
+import {Title} from '../Title';
 
-const data = [
+export const Information = (props) => {
+  //Пустышка для mapProps
+  const data = [
     '78 м2',
     '4',
     '4',
-];
+  ];
 
-const descriptions = [
+  const descriptions = [
     'Площадь жилого помещения',
     'Количество проживающих / зарегистрированных',
     'Нормативное количество проживающих',
-]
+  ]
 
+  const {normativeNumberOfLiving, numberOfLiving, square} = props;
+  const mapProps = [normativeNumberOfLiving, numberOfLiving, square];
 
-export const Information = () => {
+  const list = data.map((value, index) => {
     return (
-        <div className="appartment-information">
-            <h2 className="title-24">Информация</h2>
-            <List
-                // header={<div>Header</div>}
-                // footer={<div>Footer</div>}
-                // bordered
-                dataSource={data}
-                renderItem={(item, index) => (
-                    <List.Item>
-                        <Typography.Text>{descriptions[index]}</Typography.Text> {item}
-                    </List.Item>
-                )}
-            />
-
-
-        </div>
-
-
-
+      <ListItem>
+        <ListItemDescription>{descriptions[index]}</ListItemDescription>
+        <ListItemValue>{mapProps[index]}</ListItemValue>
+      </ListItem>
     )
+  })
+
+  return (
+    <div style={{paddingTop: '32px'}}>
+      <Title size="24">Информация</Title>
+      {list}
+    </div>
+  )
 }

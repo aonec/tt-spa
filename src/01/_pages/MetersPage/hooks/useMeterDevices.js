@@ -2,7 +2,7 @@ import React from "react"
 
 export const useMeterDevices = ({ meterDevices = {} }) => {
   const [state, dispatch] = React.useReducer(meterReducer, {})
-  console.log("itsms", meterDevices)
+  // console.log("itsms", meterDevices)
   const { items = [] } = meterDevices
   return {
     items: items.map((item) => ({ ...item })),

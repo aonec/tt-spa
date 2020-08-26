@@ -1,100 +1,50 @@
 import axios from "01/axios"
-import { createTimeline, createTimer, createDevice } from "./utils"
-
 const URL = "HousingStocks"
 
 const replaceURL = (url = "") => url.replace(/objects/, URL)
-export async function getInfo(url = "/objects/755/devices/1325866") {
+
+export async function getInfo(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
-        console.log(replaceURL(url))
-        ///HousingStocks/755/devices/1325866
-        console.log("getInfo", url)
-        //console.log(res);
-        console.log({ ...res, info: true, header: createTitleObject(res) });
-        return { ...res, info: true, header: createTitleObject(res) }
-    } catch (error) { }
+        return {
+            ...res,
+            info: true,
+            header: createTitleObject(res)
+        }
+    } catch (error) {}
+}
+
+const TasksURL = "Tasks";
+// const replaceURLTasks = (url = "") => url.replace(/objects/, TasksURL)
+export async function getTasks(url = "") {
+    try {
+        //const res = await axios.get(replaceURL2(url))
+        const res = await axios.get(TasksURL)
+        return {
+            ...res
+        }
+    } catch (error) {}
 }
 
 const URL2 = "Apartments"
 const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
-// export async function getApartment(url = "/objects/664/apartments/1125376") {
-
-export async function getApartment(url = "/Apartments/1125376") {
+export async function getApartment(url = "") {
     try {
-        console.log("getApartment", url)
-        // const res = await axios.get(replaceURL2(url))
-        const res = await axios.get('/Apartments/1125376')
-        console.log(res);
-        const test = res;
-        // console.log({ ...res, info: true, header: createTitleObject(res) });
+        //const res = await axios.get(replaceURL2(url))
+        const res = await axios.get(`Apartments/${url}`)
         // return { ...res, info: true, header: createTitleObject(res) }
-        return test
-
-    } catch (error) { }
-}
-
-
-
-
-// export async function getInfo(url = "") {
-//     try {
-//         const res = await axios.get(replaceURL(url))
-//         console.log("url", url)
-//         console.log(res);
-//         return { ...res, info: true, header: createTitleObject(res) }
-//     } catch (error) { }
-// }
-
-export async function getDevices(url = "") {
-    try {
-        const res = await axios.get(replaceURL(url))
-        console.log("getDevices")
         return {
-            ...res,
-            header: createTitleObject(res.housingStock),
-            city: res.housingStock.city,
-            devices: {
-                items: res.devices.map(createDevice),
-                loading: false,
-            },
+            ...res
         }
-    } catch (error) { }
-}
-
-export async function getEvents(...ids) {
-    try {
-        const res = await axios.get("tasks", {
-            params: {
-                GroupType: "NotArchived",
-                Take: 3,
-                HousingStockId: ids[0] ?? null,
-                DeviceId: ids[1] ?? null,
-            },
-        })
-        return {
-            events: {
-                items: res.items.map((item) => ({
-                    ...item,
-                    timeline: createTimeline(item),
-                    timer: createTimer(item),
-                })),
-                loading: false,
-            },
-        }
-    } catch (error) { }
-}
-
-export async function getApartments(params) {
-    try {
-        const res = await axios.get("apartments", { params })
-        console.log('getApartments')
-        return { apartments: { ...res, loading: false } }
-    } catch (error) { }
+    } catch (error) {}
 }
 
 // utils
 function createTitleObject(data) {
-    const { street, number, city } = data
+    const {
+        street,
+        number,
+        city
+    } = data
     return [`${street}, ${number}`, city]
 }

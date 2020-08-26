@@ -1,34 +1,19 @@
 import axios from "01/axios"
 import { createTimeline, createTimer, createDevice } from "./utils"
-
 const URL = "HousingStocks"
 
 const replaceURL = (url = "") => url.replace(/objects/, URL)
 
-
 export async function getInfo(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
-        console.log("url", url)
-        //console.log(res);
-        console.log({...res, info: true, header: createTitleObject(res)});
         return { ...res, info: true, header: createTitleObject(res) }
     } catch (error) { }
 }
 
-// export async function getInfo(url = "") {
-//     try {
-//         const res = await axios.get(replaceURL(url))
-//         console.log("url", url)
-//         console.log(res);
-//         return { ...res, info: true, header: createTitleObject(res) }
-//     } catch (error) { }
-// }
-
 export async function getDevices(url = "") {
     try {
         const res = await axios.get(replaceURL(url))
-        console.log("getDevices")
         return {
             ...res,
             header: createTitleObject(res.housingStock),
@@ -67,7 +52,6 @@ export async function getEvents(...ids) {
 export async function getApartments(params) {
     try {
         const res = await axios.get("apartments", { params })
-        console.log('getApartments')
         return { apartments: { ...res, loading: false } }
     } catch (error) { }
 }

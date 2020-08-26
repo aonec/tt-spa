@@ -2,7 +2,6 @@ import React from "react"
 import { Route } from "react-router-dom"
 import styled from "reshadow/macro"
 
-import { Loader } from "01/components"
 import * as style from "_reshadow"
 
 export const Changes = React.memo(
@@ -40,7 +39,6 @@ export const Changes = React.memo(
         },
 
         ]
-        console.log(items[0])
         return styled(style.item)`
       item {
         grid-template-columns: 0.5fr 2fr 1.5fr;

@@ -32,7 +32,6 @@ export const useTasks = () => {
       }
     })()
     return () => cancel()
-    // eslint-disable-next-line
   }, [params.grouptype])
 
   return {
@@ -46,6 +45,6 @@ export const useTasks = () => {
 
 function addTotal(items, arr) {
   return items.map((item, i) =>
-    !!arr.i ? { ...item, name: `${item.name} (${arr[i]})` } : item
+    arr.i ? { ...item, name: `${item.name} (${arr[i]})` } : item
   )
 }

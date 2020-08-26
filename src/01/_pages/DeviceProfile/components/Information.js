@@ -7,11 +7,8 @@ import { information } from "01/r_comp"
 
 export const Information = ({ list = [], loading = true, ...props }) => {
     const { push } = useHistory()
-    console.log(list);
-
     const params = useParams()
-    console.log(params)
-    console.log(params[1])
+    // console.log(params[1])
 
     const test = [
         "Активен",
@@ -25,7 +22,6 @@ export const Information = ({ list = [], loading = true, ...props }) => {
         "ИЦ НК",
         "Маяк НК",
     ]
-    console.log(test)
     return styled(information)`
     Loader {
       justify-self: center;

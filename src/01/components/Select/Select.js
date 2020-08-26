@@ -17,7 +17,6 @@ export const Select = ({
   const [showList, setShowList] = React.useState(false)
   React.useEffect(() => {
     if (!loading) getSelectData(checked)
-    // eslint-disable-next-line 
   }, [checked])
   return styled`
     select_wraper {

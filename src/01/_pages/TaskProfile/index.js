@@ -31,7 +31,7 @@ function reducer(state, action) {
         panelLoading: true,
       }
     case "push_stage":
-      console.log("stagedata", data)
+      // console.log("stagedata", data)
       return {
         ...state,
         stageData: { data, move: "push" },

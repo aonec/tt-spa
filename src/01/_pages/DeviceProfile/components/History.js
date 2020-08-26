@@ -7,9 +7,7 @@ import * as style from "_reshadow"
 import { button } from "01/r_comp";
 
 const buttonHandler = (event) => {
-    console.log('buttonHandler');
-    // const parentItem = event.target.closest('div');
-    // $(parentItem).find('input').prop('disabled', false);
+
 }
 
 
@@ -60,7 +58,6 @@ export const History = React.memo(
         },
 
         ]
-        console.log(items[0])
         return styled(style.item)`
       item {
         grid-template-columns: 0.5fr 1fr 1.5fr 1fr;

@@ -31,7 +31,6 @@ export const Comments = ({ comments, url }) => {
           dispatch({ type: "post_success", payload: comment })
       })
     }
-    // eslint-disable-next-line
   }, [act])
 
   return styled(styles, title_section)(

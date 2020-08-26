@@ -38,7 +38,7 @@ export const usePanel = ({ data }, dispatch) => {
     if (isType(/document/gi)) return { documentsIds }
   }
 
-  console.log(actions)
+
   function isDiabedBtn() {
     if (isType(/email/gi)) return !nextPerpetratorId
     if (isType(/document/gi)) return !documentsIds.length

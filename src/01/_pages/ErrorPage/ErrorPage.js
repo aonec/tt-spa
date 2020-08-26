@@ -6,7 +6,6 @@ import { input, button } from "../../r_comp"
 
 import "./ErrorPage.css";
 const buttonHandler = () => {
-    console.log('buttonHandler')
     window.open('/')
 }
 

@@ -5,8 +5,8 @@ import { Loader, Icon } from "01/components"
 import * as style from "_reshadow"
 
 export const Devices = React.memo(
-  ({ path = null, loading = true, items = [], onClick = () => {} }) => {
-    console.log(items)
+  ({ path = null, loading = true, items = [], onClick = () => { } }) => {
+    displayName: 'Devices',
     return styled(style.item)`
       devices {
         display: grid;
