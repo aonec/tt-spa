@@ -1,19 +1,12 @@
 import React from 'react';
 import './ApartmentDevice.css';
 import 'icomoon/style.css';
-import twitterIcon from '../../../../../../../public/icons/calendar.svg';
 
 export function ApartmentDevice() {
-
   return (
     <div className='wrap'>
-
       <div className='top'>
-        {/*<div className='icon-drop'></div>*/}
-        {/*<svg>*/}
-        {/*  <use xlink: href="#calendar"></use>*/}
-        {/*</svg>*/}
-        <twitterIcon />
+        <div className='icon-drop'></div>
         <h2 className='name'>СГВ-5</h2>
         <p className='number'>(123456789)</p>
       </div>
