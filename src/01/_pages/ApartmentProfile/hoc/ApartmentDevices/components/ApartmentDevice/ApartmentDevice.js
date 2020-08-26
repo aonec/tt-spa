@@ -7,15 +7,25 @@ export function ApartmentDevice(props) {
 
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
   console.log(ApartmentDevicesList);
+  const {model,serialNumber, resource} = props;
 
-  const device = {...ApartmentDevicesList[0]};
-  console.log(device)
+  let icon;
+  if (resource == "HotWaterSupply") {
+    icon = 'icon-HotWaterSupply'
+  }
+  if (resource =="ColdWaterSupply") {
+    icon = "icon-drop"
+  }
+  if (resource == "Electricity") {
+    icon="icon-electricity"
+  }
+
   return (
     <div className='wrap'>
       <div className='top'>
-        <div className='icon-drop'></div>
-        <h2 className='name'>{props.model}</h2>
-        <p className='number'>{props.serialNumber}</p>
+        <div className={icon}></div>
+        <h2 className='name'>{model}</h2>
+        <p className='number'>{serialNumber}</p>
       </div>
       <div className='bottom'>
         <div className='icon-green'></div>

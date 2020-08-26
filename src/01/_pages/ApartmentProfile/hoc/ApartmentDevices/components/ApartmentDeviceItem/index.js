@@ -9,7 +9,7 @@ import {ApartmentDevicesContext} from '../../ApartmentDevices'
 export function ApartmentDeviceItem(props) {
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
   const currentDevice = {...ApartmentDevicesList[props.index]}
-  const {model, serialNumber} = currentDevice;
+  const {model, serialNumber, resource} = currentDevice;
   console.log("props", props)
   console.log("currentDevice", currentDevice)
 
@@ -18,6 +18,7 @@ export function ApartmentDeviceItem(props) {
       <ApartmentDevice
         model={model}
         serialNumber={serialNumber}
+        resource = {resource}
       />
       <ApartmentInput/>
       <ApartmentInput/>
