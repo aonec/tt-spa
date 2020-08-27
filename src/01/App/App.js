@@ -27,26 +27,26 @@ export const App = () => {
   return styled(app)(
     <AppProvider>
       <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/logout" render={() => "logout"} />
+        <Route path="/login" component={Login}/>
+        <Route path="/logout" render={() => "logout"}/>
         {/* <Route path="/error/" render={() => "404"} /> */}
-        <Route path="/error/" render={() => <ErrorPage />} />
-        <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
+        <Route path="/error/" render={() => <ErrorPage/>}/>
+        <Route path="/access-denied/" render={() => <AccessDeniedPage/>}/>
         <Route path="/">
           <layout>
             <menu as="div">
-              <Logotip />
-              <Menu />
+              <Logotip/>
+              <Menu/>
             </menu>
             <main>
               <Switch>
-                <Redirect from="/tasks" to="/tasks/executing" exact />
+                <Redirect from="/tasks" to="/tasks/executing" exact/>
                 <Route
                   path="/tasks/(executing|observing|archived)/"
                   component={Tasks}
                 />
-                <Route path="/tasks/(\\d+)" component={TaskProfile} />
-                <Route path="/objects/" component={Objects} exact />
+                <Route path="/tasks/(\\d+)" component={TaskProfile}/>
+                <Route path="/objects/" component={Objects} exact/>
                 <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
                   component={DeviceProfile}
@@ -63,13 +63,11 @@ export const App = () => {
                   component={ApartmentProfile}
                   exact
                 />
-
-                <Redirect from="/meters/" to="/meters/apartments" exact />
+                <Redirect from="/meters/" to="/meters/apartments" exact/>
                 <Route
                   path="/meters/(apartments|houses)"
                   component={MetersPage}
-                />
-                <Redirect to="/tasks/" />
+                /> <Redirect to="/tasks/"/>
               </Switch>
             </main>
           </layout>

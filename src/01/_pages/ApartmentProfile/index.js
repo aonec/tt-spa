@@ -98,6 +98,7 @@ const ApartmentProfile = () => {
           style={{
             display: "grid",
             gridTemplateColumns: "8fr 4fr",
+            paddingBottom: '40px'
           }}
         >
           <div>
