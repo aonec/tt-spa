@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom"
+import {Button} from "./components/Button";
 
 import styled from "reshadow/macro"
 
@@ -37,6 +38,7 @@ export const ApartmentProfile = () => {
         <ApartmentTasks>
           <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
           {Tasks}
+          <Button>Все задачи с объектом</Button>
         </ApartmentTasks>
       </div>
     )
@@ -65,6 +67,7 @@ export const ApartmentProfile = () => {
           {begin}&nbsp;-&nbsp;{ending}
           {/* {tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime}  */}
         </ApartmentTaskDate>
+
       </ApartmentTask>
 
     )
