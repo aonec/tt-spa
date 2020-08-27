@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom";
-
-import { Icon } from "01/_components/Icon";
-
 import styled from "reshadow/macro";
 
 import { grid } from "01/r_comp";

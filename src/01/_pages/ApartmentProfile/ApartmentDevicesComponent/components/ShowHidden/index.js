@@ -1,9 +1,16 @@
-import React from "react";
-import './ShowHidden.css'
+import React from 'react';
+import styled from 'styled-components';
+
+const ShowHiddenWrap = styled.div`
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+`;
+
 export function ShowHidden() {
   return (
-    <div className='show-hidden'>
+    <ShowHiddenWrap>
       Показать закрытые приборы (1)
-    </div>
-  )
+    </ShowHiddenWrap>
+  );
 }
