@@ -3,8 +3,8 @@ import "./ApartmentDevice.css";
 import "icomoon/style.css";
 import styled from "styled-components";
 import { ApartmentDevicesContext } from "../../ApartmentDevices";
-import { Icon } from "01/_compnents/Icon";
-import { button } from "../../../../../../r_comp";
+import { Icon } from "01/components/Icon";
+import { button } from "../../../../../r_comp";
 
 const Wrap = styled.a`
   display: grid;

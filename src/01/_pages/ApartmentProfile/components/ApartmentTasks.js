@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ApartmentTasks = styled.div`
   padding: 0 16px;

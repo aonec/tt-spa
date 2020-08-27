@@ -4,9 +4,9 @@ export * from './EditButton';
 export * from './ListItem';
 export * from './Text';
 export * from './Title';
-export * from '../hoc/ApartmentDevices/ApartmentDevices';
-export * from './Comments/Comments';
-export * from './Header'
-export * from './Tags/Tags'
-export * from './Information/Information'
-export * from './Owner/Owner'
+export * from '../ApartmentDevicesComponent';
+export * from './Comments';
+export * from './Header';
+export * from './Tags';
+export * from './Information';
+export * from './Owner';

@@ -22,24 +22,10 @@ export async function getApartmentDevices(url = '') {
   try {
     const newURL = (`${MeteringDevicesURL}?ApartmentId=${url}`);
     const res = await axios.get(newURL);
-    console.log('MeteringDevices = ', res);
-    console.log('newURL', newURL);
     return res;
   } catch (error) {
   }
 }
-
-// export async function getDevices(url = "") {
-//     try {
-//         const res = await axios.get(replaceURL(url))
-//         console.log('test')
-//         return {
-//             ...res,
-//             info: true,
-//             header: createTitleObject(res)
-//         }
-//     } catch (error) {}
-// }
 
 const TasksURL = 'Tasks';
 
