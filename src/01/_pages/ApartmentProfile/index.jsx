@@ -1,54 +1,49 @@
-import React, { useState, useEffect } from "react";
-import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom";
-import styled from "reshadow/macro";
-
-import { grid } from "01/r_comp";
-import { Loader } from "01/components/Loader";
-import moment from "moment";
-import { getApartment, getTasks } from "01/_api/apartment_page";
-import { Tabs } from "./components/Tabs/Tabs";
-
-
-// библиотека обработки дат и локализация СНГ
-import "moment/locale/ru";
-
-import { Comments, Header, Tags, Information, Owner } from './components';
-
-import { Tasks } from './components/ApartmentTasks/ApartmentTasks'
+import React, { useState, useEffect } from 'react';
+import { Route, useParams } from 'react-router-dom';
+import styledComponents from 'styled-components';
+import styled from 'reshadow/macro';
+import moment from 'moment';
+import { grid } from '01/r_comp';
+import { Loader } from '01/components/Loader';
+import { getApartment, getTasks } from '01/_api/apartment_page';
+import { Tabs } from './components/Tabs/Tabs';
 
 // Получаем типовые функции по запросам к серверу
+import { Tasks } from './components/ApartmentTasks/ApartmentTasks.jsx';
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
-// стилизация
-import "antd/dist/antd.css";
+// библиотека обработки дат и локализация СНГ
+import 'moment/locale/ru';
 
-moment.locale("ru");
+// стилизация
+import 'antd/dist/antd.css';
+
+import {
+  Comments,
+  Header,
+  Tags,
+  Information,
+  Owner,
+} from './components';
+
+moment.locale('ru');
+
+const Wrapper = styledComponents.div`
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  padding-bottom: 40px;
+`;
 
 const ApartmentProfile = () => {
   const params = useParams();
   const apartmentId = params[1];
 
   const [apartment, setapartment] = useState({});
-  const [tasks, setTasks] = useState({});
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const buttonHandler = () => {
-    // console.log("tasks", tasksArr)
-  };
-
-  // Получили список задач
-  const tasksList = { ...tasks.items };
-  // Здесь правило выдачи списка
-  const tasksArr = [
-    { ...tasksList[0] },
-    { ...tasksList[4] },
-    { ...tasksList[8] },
-  ];
-
 
   // Информация о доме: Город, улица, дом
   const { city, street, number } = { ...apartment.housingStock };
-
   // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
   const {
     apartmentNumber,
@@ -66,14 +61,13 @@ const ApartmentProfile = () => {
   };
 
   useEffect(() => {
-    async function getTasksAndApartments(){
-      await getApartment(apartmentId).then((response) =>
-        setapartment(response)
-      );
+    async function getTasksAndApartments() {
+      const apartmentData = await getApartment(apartmentId);
+      const { items: taskList } = await getTasks(apartmentId);
+      setapartment(apartmentData);
+      setTasks(taskList);
       setLoading(false);
-      await getTasks(apartmentId).then((response) => setTasks(response));
     }
-
     getTasksAndApartments();
   }, []);
 
@@ -88,26 +82,20 @@ const ApartmentProfile = () => {
         />
       </Loader>
 
-      <Tabs/>
+      <Tabs />
 
       <Route path="/*/(\\d+)" exact>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "8fr 4fr",
-            paddingBottom: '40px'
-          }}
-        >
+        <Wrapper>
           <div>
-            <Comments/>
-            <Tags/>
+            <Comments />
+            <Tags />
             <Information
-              style={{ paddingTop: "32px" }}
-              numberOfLiving={numberOfLiving || "Данные обновляются"}
+              style={{ paddingTop: '32px' }}
+              numberOfLiving={numberOfLiving || 'Данные обновляются'}
               normativeNumberOfLiving={
-                normativeNumberOfLiving || "Данные обновляются"
+                normativeNumberOfLiving || 'Данные обновляются'
               }
-              square={square || "74 кв.м."}
+              square={square || '74 кв.м.'}
             />
             <Owner
               firstName={firstName}
@@ -116,9 +104,9 @@ const ApartmentProfile = () => {
             />
           </div>
           <div>
-            <Tasks tasksArr={tasksArr}/>
+            <Tasks tasksArr={tasks} />
           </div>
-        </div>
+        </Wrapper>
       </Route>
       {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
@@ -128,9 +116,9 @@ const ApartmentProfile = () => {
       {/* </grid> */}
       <Route path="/*/(\\d+)/testimony" exact>
         {/* <Documents {...info} /> */}
-        <ApartmentDevices/>
+        <ApartmentDevices />
       </Route>
-    </>
+    </>,
   );
 };
 export { ApartmentProfile };

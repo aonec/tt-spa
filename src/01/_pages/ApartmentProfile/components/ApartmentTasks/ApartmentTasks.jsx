@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/components/Icon'
-import moment from "moment";
-import "moment/locale/ru";
-import { Button } from "../Button";
+import { Icon } from '01/components/Icon';
+import moment from 'moment';
+import 'moment/locale/ru';
+import { Button } from '../Button';
 
-moment.locale("ru");
+moment.locale('ru');
 
 export const ApartmentTasks = styled.div`
   padding: 0 16px;
@@ -53,43 +53,43 @@ export const ApartmentTaskDate = styled.p`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const Tasks = (props) => {
-  const tasksArr = props.tasksArr;
-  console.log(tasksArr)
-  const TasksList = tasksArr.map((value, index) => {
+const DATE_FORMAT = 'DD.MM.YYYY, hh:mm';
 
-    const begin = moment(tasksArr[index].creationTime).format(
-      "DD.MM.YYYY, hh:mm"
-    );
-    const ending = moment(
-      tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime
-    ).format("DD.MM.YYYY, hh:mm");
-
+const renderTasks = (taskList) => (
+  // TODO Фильтрацию переделать
+  taskList.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
+    const {
+      creationTime,
+      closingTime,
+      expectedCompletionTime,
+      name,
+    } = task;
+    const begin = moment(creationTime).format(DATE_FORMAT);
+    const end = moment(closingTime || expectedCompletionTime).format(DATE_FORMAT);
     return (
-      <ApartmentTask key={index}>
-        <ApartmentTaskTitle>{tasksArr[index].name}</ApartmentTaskTitle>
+      <ApartmentTask key={ind}>
+        <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
         <ApartmentTaskState>
-          <Icon icon="ok"/>
+          <Icon icon="ok" />
           Выполнено
         </ApartmentTaskState>
         <ApartmentTaskDate>
-          <Icon icon="calendar"/>
-          {begin}
-          &nbsp;-&nbsp;
-          {ending}
+          <Icon icon="calendar" />
+          {`${begin} - ${end}`}
         </ApartmentTaskDate>
       </ApartmentTask>
-    )
+    );
   })
+);
+
+export const Tasks = (props) => {
+  const { tasksArr } = props;
 
   return (
     <ApartmentTasks>
       <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
-      {TasksList}
+      {renderTasks(tasksArr)}
       <Button>Все задачи с объектом</Button>
     </ApartmentTasks>
-
-  )
-}
-
-
+  );
+};
