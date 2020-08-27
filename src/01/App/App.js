@@ -17,7 +17,7 @@ import {
   ObjectProfile,
   DeviceProfile,
   MetersPage,
-  Index,
+  ApartmentProfile,
   ErrorPage,
   AccessDeniedPage
 } from "01/_pages"
@@ -60,7 +60,7 @@ export const App = () => {
 
                 <Route
                   path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|changes)?"
-                  component={Index}
+                  component={ApartmentProfile}
                   exact
                 />
 
