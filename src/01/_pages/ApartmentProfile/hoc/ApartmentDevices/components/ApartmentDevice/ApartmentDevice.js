@@ -1,39 +1,113 @@
-import React, {useContext} from 'react';
-import './ApartmentDevice.css';
-import 'icomoon/style.css';
-import {ApartmentDevicesContext} from "../../ApartmentDevices";
+import React, { useContext } from "react";
+import "./ApartmentDevice.css";
+import "icomoon/style.css";
+import styled from "styled-components";
+import { ApartmentDevicesContext } from "../../ApartmentDevices";
+import { Icon } from "01/_compnents/Icon";
+import { button } from "../../../../../../r_comp";
 
-export function ApartmentDevice(props) {
+const Wrap = styled.a`
+  display: grid;
+`;
 
+const Top = styled.div`
+  display: flex;
+  align-items: baseline;
+  height: fit-content;
+`;
+const Bottom = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Name = styled.div`
+  padding: 0;
+  margin: 0;
+  padding-left: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+`;
+const Number = styled.div`
+  padding: 0;
+  margin: 0;
+  padding-left: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+`;
+
+const State = styled.div`
+  padding: 0;
+  margin: 0;
+  padding-left: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.8);
+`;
+const Dates = styled.div`
+  padding: 0;
+  margin: 0;
+  padding-left: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+`;
+
+const Place = styled.div`
+  padding: 0;
+  margin: 0;
+  padding-left: 8px;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+`;
+
+export function ApartmentDevice(props){
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
   console.log(ApartmentDevicesList);
-  const {model,serialNumber, resource} = props;
+  const { model, serialNumber, resource, futureCheckingDate, birthday } = props;
 
   let icon;
-  if (resource == "HotWaterSupply") {
-    icon = 'icon-HotWaterSupply'
+  let color;
+
+  switch (resource) {
+    case 'HotWaterSupply':
+      icon = "water";
+      color = "#FF8C68";
+      break;
+
+    case 'ColdWaterSupply':
+      icon = "water";
+      color = "#79AFFF";
+      break;
+
+    case 'Electricity':
+      icon = "electro";
+      color = "#E2B104";
+      break;
+
+    default:
+
+      break;
   }
-  if (resource =="ColdWaterSupply") {
-    icon = "icon-drop"
-  }
-  if (resource == "Electricity") {
-    icon="icon-electricity"
+
+  const buttonHandler = () => {
+    console.log("buttonHandler")
   }
 
   return (
-    <div className='wrap'>
-      <div className='top'>
-        <div className={icon}></div>
-        <h2 className='name'>{model}</h2>
-        <p className='number'>{serialNumber}</p>
-      </div>
-      <div className='bottom'>
-        <div className='icon-green'></div>
-        <h4 className='state'>Активен</h4>
-        <p className='dates'>01.09.2017 — 01.09.2024</p>
-        <p className='place'>Туалет</p>
-      </div>
-    </div>
+    <Wrap onClick={buttonHandler}>
+      <Top>
+        <Icon icon={icon} color={color}/>
+        <Name>{model}</Name>
+        <Number>{serialNumber}</Number>
+      </Top>
+      <Bottom>
+        <Icon icon="circle" color="#17B45A"/>
+        <State>Активен</State>
+        <Dates>{birthday} — {futureCheckingDate}</Dates>
+        <Place>Туалет</Place>
+      </Bottom>
+    </Wrap>
   )
 }
-

@@ -1,7 +1,0 @@
-.appdev__item {
-    display: grid;
-    grid-template-columns: 5fr 2fr 2fr 3fr;
-    /*background: rgba(39, 47, 90, 0.04);*/
-    padding: 16px;
-
-}

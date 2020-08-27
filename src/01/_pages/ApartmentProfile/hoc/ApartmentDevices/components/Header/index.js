@@ -1,13 +1,29 @@
 import React from 'react';
-import './Header.css'
+import styled from 'styled-components';
+
+const HeaderWrap = styled.div`
+  display: grid;
+  grid-template-columns: 5fr 2fr 2fr 3fr;
+  background: rgba(39, 47, 90, 0.04);
+  padding: 16px;
+`;
+
+const Title = styled.h5`
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+`;
 
 export function Header() {
   return (
-    <div className='appdev__header'>
-      <h5>Информация о приборе</h5>
-      <h5>Февраль 2020</h5>
-      <h5>Январь 2020</h5>
-      <div></div>
-    </div>
-  )
+    <HeaderWrap>
+      <Title>Информация о приборе</Title>
+      <Title>Февраль 2020</Title>
+      <Title>Январь 2020</Title>
+      <div/>
+    </HeaderWrap>
+  );
 }

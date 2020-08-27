@@ -1,44 +1,37 @@
-import React, {useEffect, useState, useContext} from 'react';
-import {Header} from "./components/Header";
-import {ApartmentDevicesList} from './components/ApartmentDevicesList'
-import {ShowHidden} from "./components/ShowHidden";
-import {Button} from "antd";
-import {Route, useRouteMatch, useParams, useHistory} from "react-router-dom"
-import {getApartmentDevices} from '01/_api/apartment_page';
+import React, { useEffect, useState } from 'react';
+import { Button } from 'antd';
+import { useParams } from 'react-router-dom';
+import { getApartmentDevices } from '01/_api/apartment_page';
+import { Header } from './components/Header';
+import { ApartmentDevicesList } from './components/ApartmentDevicesList';
+import { ShowHidden } from './components/ShowHidden';
 
-export const ApartmentDevicesContext = React.createContext()
+export const ApartmentDevicesContext = React.createContext();
 
 export const ApartmentDevices = () => {
   const params = useParams();
   const apartmentId = params[1];
-  const [apartment, setapartment] = useState({})
-  const [tasks, setTasks] = useState({})
-
-  const items = {...tasks.items}
+  const [devices, setDevices] = useState({});
+  const items = { ...devices.items };
 
   useEffect(() => {
     async function getDevicesWrap() {
-      await getApartmentDevices(apartmentId).then(response => (setTasks(response)));
+      await getApartmentDevices(apartmentId).then((response) => setDevices(response));
     }
-
     getDevicesWrap();
-    console.log('useEffect')
+    // console.log('useEffect');
   }, []);
   const buttonHandler = () => {
-    console.log('apartmentId = ', apartmentId)
-    console.log(tasks)
-    console.log(items)
-
-  }
+    console.log('apartmentId = ', apartmentId);
+  };
 
   return (
     <>
-      <ApartmentDevicesContext.Provider  value={Object.values(items)}>
-        <Header/>
-        <ApartmentDevicesList/>
-        <ShowHidden/>
-        <Button onClick={buttonHandler}>GetInfo</Button>
+      <ApartmentDevicesContext.Provider value={Object.values(items)}>
+        <Header />
+        <ApartmentDevicesList />
+        <ShowHidden />
       </ApartmentDevicesContext.Provider>
     </>
-  )
-}
+  );
+};

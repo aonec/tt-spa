@@ -14,7 +14,7 @@ import 'moment/locale/ru'
 import { ApartmentTasks, ApartmentTasksTitle, ApartmentTask, ApartmentTaskTitle, ApartmentTaskState, ApartmentTaskDate } from "./components/ApartmentTasks";
 import { Comments, Header, Tags, Information, Owner } from './components'
 
-//Получаем типовые функции по запросам к серверу
+// Получаем типовые функции по запросам к серверу
 import { getApartment, getTasks } from '01/_api/apartment_page';
 import { ApartmentDevices } from './hoc/ApartmentDevices/ApartmentDevices'
 
@@ -104,13 +104,13 @@ export const ApartmentProfile = () => {
 
       <Route path="/*/(\\d+)" exact>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: '8fr 4fr'
+          "display": 'grid',
+          "gridTemplateColumns": '8fr 4fr'
         }}>
           <div>
             <Comments />
             <Tags />
-            <Information style={{ paddingTop: '32px' }}
+            <Information style={{ "paddingTop": '32px' }}
               numberOfLiving={numberOfLiving || 'Данные обновляются'}
               normativeNumberOfLiving={normativeNumberOfLiving || 'Данные обновляются'}
               square={square || '74 кв.м.'}

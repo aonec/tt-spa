@@ -1,35 +1,33 @@
-import axios from "01/axios"
+import axios from '01/axios';
 
-const URL = "HousingStocks"
+const URL = 'HousingStocks';
 
-const replaceURL = (url = "") => url.replace(/objects/, URL)
+const replaceURL = (url = '') => url.replace(/objects/, URL);
 
-export async function getInfo(url = "") {
+export async function getInfo(url = '') {
   try {
-    const res = await axios.get(replaceURL(url))
+    const res = await axios.get(replaceURL(url));
     return {
       ...res,
       info: true,
-      header: createTitleObject(res)
-    }
+      header: createTitleObject(res),
+    };
   } catch (error) {
   }
 }
 
+const MeteringDevicesURL = 'MeteringDevices';
 
-const MeteringDevicesURL = "MeteringDevices";
-
-export async function getApartmentDevices(url = "") {
+export async function getApartmentDevices(url = '') {
   try {
-    const newURL = (MeteringDevicesURL + '?ApartmentId=' + url);
-    const res = await axios.get(newURL)
-    console.log('MeteringDevices = ', res)
+    const newURL = (`${MeteringDevicesURL}?ApartmentId=${url}`);
+    const res = await axios.get(newURL);
+    console.log('MeteringDevices = ', res);
     console.log('newURL', newURL);
-    return res
+    return res;
   } catch (error) {
   }
 }
-
 
 // export async function getDevices(url = "") {
 //     try {
@@ -43,32 +41,31 @@ export async function getApartmentDevices(url = "") {
 //     } catch (error) {}
 // }
 
-
-const TasksURL = "Tasks";
+const TasksURL = 'Tasks';
 
 // const replaceURLTasks = (url = "") => url.replace(/objects/, TasksURL)
-export async function getTasks(url = "") {
+export async function getTasks(url = '') {
   try {
-    //const res = await axios.get(replaceURL2(url))
-    const res = await axios.get(TasksURL)
+    // const res = await axios.get(replaceURL2(url))
+    const res = await axios.get(TasksURL);
     return {
-      ...res
-    }
+      ...res,
+    };
   } catch (error) {
   }
 }
 
-const URL2 = "Apartments"
-const replaceURL2 = (url = "") => url.replace(/objects/, URL2)
+const URL2 = 'Apartments';
+const replaceURL2 = (url = '') => url.replace(/objects/, URL2);
 
-export async function getApartment(url = "") {
+export async function getApartment(url = '') {
   try {
-    //const res = await axios.get(replaceURL2(url))
-    const res = await axios.get(`Apartments/${url}`)
+    // const res = await axios.get(replaceURL2(url))
+    const res = await axios.get(`Apartments/${url}`);
     // return { ...res, info: true, header: createTitleObject(res) }
     return {
-      ...res
-    }
+      ...res,
+    };
   } catch (error) {
   }
 }
@@ -78,7 +75,7 @@ function createTitleObject(data) {
   const {
     street,
     number,
-    city
-  } = data
-  return [`${street}, ${number}`, city]
+    city,
+  } = data;
+  return [`${street}, ${number}`, city];
 }
