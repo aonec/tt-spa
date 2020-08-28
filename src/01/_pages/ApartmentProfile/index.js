@@ -108,7 +108,7 @@ const ApartmentProfile = () => {
               normativeNumberOfLiving={
                 normativeNumberOfLiving || 'Данные обновляются'
               }
-              square={square || '74 кв.м.'}
+              square={square || 'Данные обновляются'}
             />
             <Owner
               firstName={firstName}
