@@ -1,8 +1,6 @@
 import moment from 'moment';
-
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
-
 moment.locale('ru');
 
 export function convertDate(date) {
