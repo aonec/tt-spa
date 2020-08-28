@@ -72,10 +72,11 @@ export const Tasks = (props) => {
     } = task;
     const begin = convertDate(creationTime);
     const end = convertDate(closingTime || expectedCompletionTime);
+
     console.log("currentStage", task)
     console.log("currentStage", currentStage.status)
     let status, icon, color;
-    
+
     if (currentStage.status === "InProgress") {
       status = "В работе"
       icon = "replacement"
@@ -86,8 +87,6 @@ export const Tasks = (props) => {
       icon = "ok"
       color = "#17b45a"
     }
-
-    console.log(color)
 
     return (
       <ApartmentTask key={ind}>

@@ -13,7 +13,6 @@ export const ApartmentDevices = () => {
   const apartmentId = params[1];
   const [devices, setDevices] = useState({});
   const items = { ...devices.items };
-
   useEffect(() => {
     async function getDevicesWrap() {
       await getApartmentDevices(apartmentId).then((response) => setDevices(response));
