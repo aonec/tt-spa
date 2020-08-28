@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 // import moment from "moment";
 // import "moment/locale/ru";
@@ -35,14 +35,15 @@ export const ApartmentTaskTitle = styled.h3`
   line-height: 16px;
 `;
 
-export const ApartmentTaskState = styled.p`
+const ApartmentTaskState = styled.div`
   padding: 0;
   padding-top: 8px;
   margin: 0;
   display: flex;
   font-size: 12px;
   line-height: 16px;
-  color: #17b45a;
+  color: ${props => props.color};
+
 `;
 
 export const ApartmentTaskDate = styled.p`
@@ -67,16 +68,33 @@ export const Tasks = (props) => {
       closingTime,
       expectedCompletionTime,
       name,
+      currentStage
     } = task;
     const begin = convertDate(creationTime);
     const end = convertDate(closingTime || expectedCompletionTime);
+    console.log("currentStage", task)
+    console.log("currentStage", currentStage.status)
+    let status, icon, color;
+    
+    if (currentStage.status === "InProgress") {
+      status = "В работе"
+      icon = "replacement"
+      color = "#E2B104"
+
+    } else {
+      status = "Выполнено"
+      icon = "ok"
+      color = "#17b45a"
+    }
+
+    console.log(color)
 
     return (
       <ApartmentTask key={ind}>
         <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
-        <ApartmentTaskState>
-          <Icon icon="ok"/>
-          Выполнено
+        <ApartmentTaskState color={color}>
+          <Icon icon={icon}/>
+          {status}
         </ApartmentTaskState>
         <ApartmentTaskDate>
           <Icon icon="calendar"/>
