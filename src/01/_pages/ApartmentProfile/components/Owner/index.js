@@ -1,2 +1,2 @@
-import {Owner} from './Owner'
-export {Owner}
+import { Owner } from './Owner';
+export { Owner };

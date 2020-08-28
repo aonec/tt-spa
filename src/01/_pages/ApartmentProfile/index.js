@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom";
-import styled from "reshadow/macro";
-import styledComponents from 'styled-components'
+import React, { useState, useEffect } from 'react';
+import {
+  Route, useRouteMatch, useParams, useHistory,
+} from 'react-router-dom';
+import styled from 'reshadow/macro';
+import styledComponents from 'styled-components';
 
-import { grid } from "01/r_comp";
-import { Loader } from "01/components/Loader";
+import { grid } from '01/r_comp';
+import { Loader } from '01/components/Loader';
 
-import { getApartment, getTasks } from "01/_api/apartment_page";
-import { Tabs } from "./components/Tabs/Tabs";
+import { getApartment, getTasks } from '01/_api/apartment_page';
+import { Tabs } from './components/Tabs/Tabs';
 
+import {
+  Comments, Header, Tags, Information, Owner,
+} from './components';
 
-import { Comments, Header, Tags, Information, Owner } from './components';
-
-import { Tasks } from './components/ApartmentTasks/ApartmentTasks'
+import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
-import { convertDate } from "./utils/utils";
+import { convertDate } from './utils/utils';
 
 // стилизация
-import "antd/dist/antd.css";
+import 'antd/dist/antd.css';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -72,13 +75,10 @@ const ApartmentProfile = () => {
   };
 
   useEffect(() => {
-    async function getTasksAndApartments(){
-      await getApartment(apartmentId).then((response) =>
-        setapartment(response)
-      );
+    async function getTasksAndApartments() {
+      await getApartment(apartmentId).then((response) => setapartment(response));
       await getTasks(apartmentId).then((response) => setTasks(response));
       setLoading(false);
-
     }
 
     getTasksAndApartments();
@@ -95,20 +95,20 @@ const ApartmentProfile = () => {
         />
       </Loader>
 
-      <Tabs/>
+      <Tabs />
 
       <Route path="/*/(\\d+)" exact>
         <Wrapper>
           <div>
-            <Comments/>
-            <Tags/>
+            <Comments />
+            <Tags />
             <Information
-              style={{ paddingTop: "32px" }}
-              numberOfLiving={numberOfLiving || "Данные обновляются"}
+              style={{ paddingTop: '32px' }}
+              numberOfLiving={numberOfLiving || 'Данные обновляются'}
               normativeNumberOfLiving={
-                normativeNumberOfLiving || "Данные обновляются"
+                normativeNumberOfLiving || 'Данные обновляются'
               }
-              square={square || "74 кв.м."}
+              square={square || '74 кв.м.'}
             />
             <Owner
               firstName={firstName}
@@ -117,7 +117,7 @@ const ApartmentProfile = () => {
             />
           </div>
           <div>
-            <Tasks tasksList={tasksList}/>
+            <Tasks tasksList={tasksList} />
           </div>
         </Wrapper>
       </Route>
@@ -129,11 +129,10 @@ const ApartmentProfile = () => {
       {/* </grid> */}
       <Route path="/*/(\\d+)/testimony" exact>
         {/* <Documents {...info} /> */}
-        <ApartmentDevices/>
+        <ApartmentDevices />
       </Route>
-    </>
+    </>,
   );
 };
-
 
 export { ApartmentProfile };

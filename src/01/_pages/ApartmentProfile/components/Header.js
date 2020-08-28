@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {Title, Text, EditButton} from "../components";
-import {MoreOutlined} from "@ant-design/icons";
-import styled, {css} from "styled-components";
+import React, { useState } from 'react';
+import { MoreOutlined } from '@ant-design/icons';
+import styled, { css } from 'styled-components';
+import { Title, Text, EditButton } from '.';
 // .visible {
 //   display: block !important;
 //   z-index: 2;
@@ -16,13 +16,12 @@ const PopupList = styled.ul`
   width: 460px;
   z-index: 2;
   display: none;
-  ${(props) =>
-  (props.visible == true &&
-    css`
+  ${(props) => (props.visible == true
+    && css`
         display: block;
-      `) ||
-  (props.visible == false &&
-    css`
+      `)
+  || (props.visible == false
+    && css`
         display: none;
       `)};
 `;
@@ -39,14 +38,13 @@ const PopupElem = styled.a`
   align-items: center;
   border-bottom: 1px solid #dcdee4;
   color: rgba(39, 47, 90, 0.8);
-  ${(props) =>
-  (props.description &&
-    css`
+  ${(props) => (props.description
+    && css`
         font-size: 24px;
         line-height: 48px;
-      `) ||
-  (props.value &&
-    css`
+      `)
+  || (props.value
+    && css`
         font-size: 32px;
         line-height: 48px;
       `)};
@@ -73,8 +71,8 @@ const Popup = () => {
 };
 
 const editButtonHandler = (event, state) => {
-  const a = document.querySelector(".editPopup");
-  a.classList.toggle("visible");
+  const a = document.querySelector('.editPopup');
+  a.classList.toggle('visible');
 };
 
 const HeaderWrap = styled.div`
@@ -82,31 +80,39 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   height: 80px;
   align-items: baseline;
-  ${(props) =>
-  props.size == 12 &&
-  css`
+  ${(props) => props.size == 12
+  && css`
       font-size: 12px;
       line-height: 16px;
     `};
 `;
 
 export const Header = (props, state) => {
-  const {apartmentNumber, city, street, number} = props;
+  const {
+    apartmentNumber, city, street, number,
+  } = props;
   return (
     <HeaderWrap>
       <div className="apartment-header__wrap">
-        <Title size="32">Кв. №{apartmentNumber}</Title>
+        <Title size="32">
+          Кв. №
+          {apartmentNumber}
+        </Title>
         <Text>
-          {city}, {street}, {number}
+          {city}
+          ,
+          {street}
+          ,
+          {number}
         </Text>
       </div>
 
-      <div style={{position: "relative"}}>
+      <div style={{ position: 'relative' }}>
         {/* <EditButton onClick={(event) => { editButtonHandler(event) }}><MoreOutlined /></EditButton> */}
         <EditButton onClick={editButtonHandler}>
-          <MoreOutlined/>
+          <MoreOutlined />
         </EditButton>
-        <Popup visible="false"/>
+        <Popup visible="false" />
       </div>
     </HeaderWrap>
   );
