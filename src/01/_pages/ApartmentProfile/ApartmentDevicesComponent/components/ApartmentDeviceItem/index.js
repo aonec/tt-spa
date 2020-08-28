@@ -5,9 +5,7 @@ import { ApartmentInput } from '../ApartmentInput';
 import { ApartmentDevicesHistory } from '../ApartmentDevicesHistory';
 
 import { ApartmentDevicesContext } from '../../ApartmentDevices';
-import moment from "moment";
-import 'moment/locale/ru'
-moment.locale('ru')
+import {convertDate} from "../../../utils/utils";
 
 const DeviceIitem = styled.div`
   display: grid;
@@ -30,7 +28,7 @@ export function ApartmentDeviceItem(props) {
         serialNumber={serialNumber}
         resource={resource}
         birthday="запрос данных"
-        futureCheckingDate={moment(futureCheckingDate).format('DD.MM.YYYY, hh:mm')}
+        futureCheckingDate={convertDate(futureCheckingDate)}
       />
       <ApartmentInput />
       <ApartmentInput />

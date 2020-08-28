@@ -4,12 +4,10 @@ import styled from "reshadow/macro";
 
 import { grid } from "01/r_comp";
 import { Loader } from "01/components/Loader";
-import moment from "moment";
+
 import { getApartment, getTasks } from "01/_api/apartment_page";
 import { Tabs } from "./components/Tabs/Tabs";
 
-// библиотека обработки дат и локализация СНГ
-import "moment/locale/ru";
 
 import { Comments, Header, Tags, Information, Owner } from './components';
 
@@ -18,10 +16,10 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks'
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
+import {convertDate} from "./utils/utils";
+
 // стилизация
 import "antd/dist/antd.css";
-
-moment.locale("ru");
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -32,7 +30,8 @@ const ApartmentProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const buttonHandler = () => {
-    // console.log("tasks", tasksArr)
+    console.log("tasks", tasksArr)
+    convertDate()
   };
 
   // Получили список задач
@@ -98,6 +97,8 @@ const ApartmentProfile = () => {
           }}
         >
           <div>
+            <button onClick={buttonHandler}> buttonHandler</button>
+
             <Comments/>
             <Tags/>
             <Information
@@ -132,4 +133,6 @@ const ApartmentProfile = () => {
     </>
   );
 };
+
+
 export { ApartmentProfile };

@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components';
 import { Icon } from '01/components/Icon'
-import moment from "moment";
-import "moment/locale/ru";
+//import moment from "moment";
+//import "moment/locale/ru";
 import { Button } from "../Button";
 
-moment.locale("ru");
+import { convertDate } from "../../utils/utils";
+
+// moment.locale("ru");
 
 export const ApartmentTasks = styled.div`
   padding: 0 16px;
@@ -58,12 +60,17 @@ export const Tasks = (props) => {
   console.log(tasksArr)
   const TasksList = tasksArr.map((value, index) => {
 
-    const begin = moment(tasksArr[index].creationTime).format(
-      "DD.MM.YYYY, hh:mm"
-    );
-    const ending = moment(
-      tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime
-    ).format("DD.MM.YYYY, hh:mm");
+    const begin = convertDate(tasksArr[index].creationTime);
+
+    const ending = convertDate(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime);
+
+    //
+    // const begin = moment(tasksArr[index].creationTime).format(
+    //   "DD.MM.YYYY, hh:mm"
+    // );
+    // const ending = moment(
+    //   tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime
+    // ).format("DD.MM.YYYY, hh:mm");
 
     return (
       <ApartmentTask key={index}>
