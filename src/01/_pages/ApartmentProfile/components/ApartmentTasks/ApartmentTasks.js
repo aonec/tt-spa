@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/components/Icon'
-//import moment from "moment";
-//import "moment/locale/ru";
-import { Button } from "../Button";
+import { Icon } from '01/components/Icon';
+// import moment from "moment";
+// import "moment/locale/ru";
+import { Button } from '../Button';
 
-import { convertDate } from "../../utils/utils";
+import { convertDate } from '../../utils/utils';
 
 // moment.locale("ru");
 
@@ -56,38 +56,34 @@ export const ApartmentTaskDate = styled.p`
 `;
 
 export const Tasks = (props) => {
-  const tasksArr = props.tasksArr;
-  console.log(tasksArr)
-  const TasksList = tasksArr.map((value, index) => {
+  const tasksArr = Object.values(props.tasksList);
+  console.log('tasksList', tasksArr)
 
-    const begin = convertDate(tasksArr[index].creationTime);
-
-    const ending = convertDate(tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime);
-
-    //
-    // const begin = moment(tasksArr[index].creationTime).format(
-    //   "DD.MM.YYYY, hh:mm"
-    // );
-    // const ending = moment(
-    //   tasksArr[index].closingTime || tasksArr[index].expectedCompletionTime
-    // ).format("DD.MM.YYYY, hh:mm");
+  // const TasksList = tasksArr.map((value, index) => {
+  const TasksList = tasksArr.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
+    const {
+      creationTime,
+      closingTime,
+      expectedCompletionTime,
+      name,
+    } = task;
+    const begin = convertDate(creationTime);
+    const end = convertDate(closingTime || expectedCompletionTime);
 
     return (
-      <ApartmentTask key={index}>
-        <ApartmentTaskTitle>{tasksArr[index].name}</ApartmentTaskTitle>
+      <ApartmentTask key={ind}>
+        <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
         <ApartmentTaskState>
           <Icon icon="ok"/>
           Выполнено
         </ApartmentTaskState>
         <ApartmentTaskDate>
           <Icon icon="calendar"/>
-          {begin}
-          &nbsp;-&nbsp;
-          {ending}
+          {`${begin} - ${end}`}
         </ApartmentTaskDate>
       </ApartmentTask>
-    )
-  })
+    );
+  });
 
   return (
     <ApartmentTasks>
@@ -96,7 +92,5 @@ export const Tasks = (props) => {
       <Button>Все задачи с объектом</Button>
     </ApartmentTasks>
 
-  )
-}
-
-
+  );
+};

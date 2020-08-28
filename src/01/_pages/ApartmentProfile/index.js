@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, useRouteMatch, useParams, useHistory } from "react-router-dom";
 import styled from "reshadow/macro";
+import styledComponents from 'styled-components'
 
 import { grid } from "01/r_comp";
 import { Loader } from "01/components/Loader";
@@ -16,7 +17,7 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks'
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
-import {convertDate} from "./utils/utils";
+import { convertDate } from "./utils/utils";
 
 // стилизация
 import "antd/dist/antd.css";
@@ -26,24 +27,31 @@ const ApartmentProfile = () => {
   const apartmentId = params[1];
 
   const [apartment, setapartment] = useState({});
-  const [tasks, setTasks] = useState({});
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const buttonHandler = () => {
-    console.log("tasks", tasksArr)
-    convertDate()
+    // console.log("tasks", tasksArr)
   };
+
+  const Wrapper = styledComponents.div`
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  padding-bottom: 40px;
+`;
 
   // Получили список задач
   const tasksList = { ...tasks.items };
   // Здесь правило выдачи списка
-  const tasksArr = [
-    { ...tasksList[0] },
-    { ...tasksList[4] },
-    { ...tasksList[8] },
-  ];
+  // const tasksArr = [
+  //   { ...tasksList[0] },
+  //   { ...tasksList[4] },
+  //   { ...tasksList[8] },
+  // ];
 
-
+  // taskList.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
+  //
+  // }
   // Информация о доме: Город, улица, дом
   const { city, street, number } = { ...apartment.housingStock };
 
@@ -68,8 +76,9 @@ const ApartmentProfile = () => {
       await getApartment(apartmentId).then((response) =>
         setapartment(response)
       );
-      setLoading(false);
       await getTasks(apartmentId).then((response) => setTasks(response));
+      setLoading(false);
+
     }
 
     getTasksAndApartments();
@@ -89,16 +98,8 @@ const ApartmentProfile = () => {
       <Tabs/>
 
       <Route path="/*/(\\d+)" exact>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "8fr 4fr",
-            paddingBottom: '40px'
-          }}
-        >
+        <Wrapper>
           <div>
-            <button onClick={buttonHandler}> buttonHandler</button>
-
             <Comments/>
             <Tags/>
             <Information
@@ -116,9 +117,9 @@ const ApartmentProfile = () => {
             />
           </div>
           <div>
-            <Tasks tasksArr={tasksArr}/>
+            <Tasks tasksList={tasksList}/>
           </div>
-        </div>
+        </Wrapper>
       </Route>
       {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
