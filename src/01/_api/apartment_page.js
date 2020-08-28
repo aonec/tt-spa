@@ -32,8 +32,10 @@ const TasksURL = 'Tasks';
 // const replaceURLTasks = (url = "") => url.replace(/objects/, TasksURL)
 export async function getTasks(url = '') {
   try {
-    // const res = await axios.get(replaceURL2(url))
-    const res = await axios.get(TasksURL);
+    const newURL = (`${TasksURL}?ApartmentId=${url}`);
+    const res = await axios.get(newURL);
+    //console.log("newURL",newURL)
+   // console.log(allTasks)
     return {
       ...res,
     };

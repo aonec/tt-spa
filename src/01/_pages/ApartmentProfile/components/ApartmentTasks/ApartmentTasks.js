@@ -60,7 +60,8 @@ export const Tasks = (props) => {
   console.log('tasksList', tasksArr)
 
   // const TasksList = tasksArr.map((value, index) => {
-  const TasksList = tasksArr.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
+  // const TasksList = tasksArr.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
+  const TasksList = tasksArr.map((task, ind) => {
     const {
       creationTime,
       closingTime,
