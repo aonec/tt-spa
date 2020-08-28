@@ -22,7 +22,7 @@ export const ApartmentDevices = () => {
     // console.log('useEffect');
   }, []);
   const buttonHandler = () => {
-    console.log('apartmentId = ', apartmentId);
+    //console.log('apartmentId = ', apartmentId);
   };
 
   return (

@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { ApartmentDeviceItem } from "../ApartmentDeviceItem";
 import { ApartmentDevicesContext } from "../../ApartmentDevices";
 
-export function ApartmentDevicesList(props) {
+export function ApartmentDevicesList(props){
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
-  console.log(ApartmentDevicesList);
+  // console.log(ApartmentDevicesList);
 
   const list = ApartmentDevicesList.map((value) => (
     <ul>
@@ -44,10 +44,10 @@ export function ApartmentDevicesList(props) {
   ));
 
   const DevicesList = ApartmentDevicesList.map((value, index) => {
-    console.log("index", index);
-    return <ApartmentDeviceItem index={index} />;
+    // console.log("index", index);
+    return <ApartmentDeviceItem index={index}/>;
   });
-  
+
   return (
     <>
       {DevicesList}

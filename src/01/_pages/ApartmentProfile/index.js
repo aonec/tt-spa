@@ -8,7 +8,6 @@ import moment from "moment";
 import { getApartment, getTasks } from "01/_api/apartment_page";
 import { Tabs } from "./components/Tabs/Tabs";
 
-
 // библиотека обработки дат и локализация СНГ
 import "moment/locale/ru";
 

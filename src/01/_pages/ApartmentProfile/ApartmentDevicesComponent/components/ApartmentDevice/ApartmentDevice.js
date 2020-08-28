@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
-import "./ApartmentDevice.css";
-import "icomoon/style.css";
 import styled from "styled-components";
 import { ApartmentDevicesContext } from "../../ApartmentDevices";
 import { Icon } from "01/components/Icon";
-import { button } from "../../../../../r_comp";
 
 const Wrap = styled.a`
   display: grid;
