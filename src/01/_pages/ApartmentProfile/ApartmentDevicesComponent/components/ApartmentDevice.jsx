@@ -58,7 +58,7 @@ const Place = styled.div`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export default function ApartmentDevice(props){
+export default function ApartmentDevice(props) {
   const {
     model, serialNumber, resource, futureCheckingDate, creationDate,
   } = {
@@ -80,12 +80,12 @@ export default function ApartmentDevice(props){
   return (
     <Wrap onClick={buttonHandler}>
       <Top>
-        <Icon icon={currentIcon.value.icon} color={currentIcon.value.color}/>
+        <Icon icon={currentIcon.value.icon} color={currentIcon.value.color} />
         <Name>{model}</Name>
         <Number>{serialNumber}</Number>
       </Top>
       <Bottom>
-        <Icon icon="circle" color="#17B45A"/>
+        <Icon icon="circle" color="#17B45A" />
         <State>Активен</State>
         <Dates>
           {creationDate}
