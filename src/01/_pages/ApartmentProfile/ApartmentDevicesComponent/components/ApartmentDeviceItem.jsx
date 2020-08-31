@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ApartmentDevice from './ApartmentDevice';
 import { ApartmentInput } from './ApartmentInput';
 import { ApartmentDevicesHistory } from './ApartmentDevicesHistory';
-import { ApartmentDevicesContext } from '../ApartmentDevices';
 import { convertDate } from '../../../../_api/utils/convertDate';
 
 const DeviceIitem = styled.div`
@@ -14,11 +13,9 @@ const DeviceIitem = styled.div`
 `;
 
 export function ApartmentDeviceItem(props) {
-  const ApartmentDevicesList = useContext(ApartmentDevicesContext);
-  const currentDevice = ApartmentDevicesList[props.index];
   const {
-   id, model, serialNumber, resource, futureCheckingDate,
-  } = currentDevice;
+    id, model, serialNumber, resource, futureCheckingDate,
+  } = props;
   return (
     <DeviceIitem>
       <ApartmentDevice

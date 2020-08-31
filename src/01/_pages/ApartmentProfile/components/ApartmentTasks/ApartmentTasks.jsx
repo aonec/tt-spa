@@ -2,14 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
-import { getDevice } from '01/_api/apartment_page';
-// import moment from "moment";
-// import "moment/locale/ru";
 import { Button } from '../Button';
-
 import { convertDate } from '../../../../_api/utils/convertDate';
-
-// moment.locale("ru");
 
 export const ApartmentTasks = styled.div`
   padding: 0 16px;

@@ -17,7 +17,13 @@ import {
   ErrorPage,
   AccessDeniedPage,
 } from '01/_pages';
+import moment from 'moment';
 import { useApp } from './useApp';
+
+// библиотека обработки дат и локализация СНГ
+import 'moment/locale/ru';
+
+moment.locale('ru');
 
 export function App() {
   const AppProvider = useApp();
@@ -75,3 +81,5 @@ export function App() {
     </AppProvider>,
   );
 }
+
+export default App;

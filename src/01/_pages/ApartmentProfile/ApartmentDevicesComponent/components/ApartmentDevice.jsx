@@ -65,13 +65,21 @@ export default function ApartmentDevice(props) {
     ...props,
   };
 
-  const DevicesIcons = [
-    { key: 'HotWaterSupply', value: { icon: 'water', color: '#FF8C68' } },
-    { key: 'ColdWaterSupply', value: { icon: 'water', color: '#79AFFF' } },
-    { key: 'Electricity', value: { icon: 'electro', color: '#E2B104' } },
-  ];
+  const DevicesIcons = {
+    HotWaterSupply: { icon: 'water', color: '#FF8C68' },
+    ColdWaterSupply: { icon: 'water', color: '#79AFFF' },
+    Electricity: { icon: 'electro', color: '#E2B104' },
+  };
 
-  const currentIcon = DevicesIcons.find((object) => object.key === resource);
+  let currentIcon = {};
+
+  for (const key in DevicesIcons) {
+    if (key == resource) {
+      currentIcon = JSON.parse(JSON.stringify(DevicesIcons[key]));
+    }
+  }
+
+  const { icon, color } = { ...currentIcon };
 
   const buttonHandler = () => {
     // console.log('buttonHandler');
@@ -80,7 +88,7 @@ export default function ApartmentDevice(props) {
   return (
     <Wrap onClick={buttonHandler}>
       <Top>
-        <Icon icon={currentIcon.value.icon} color={currentIcon.value.color} />
+        <Icon icon={icon} color={color} />
         <Name>{model}</Name>
         <Number>{serialNumber}</Number>
       </Top>
