@@ -62,7 +62,7 @@ const Place = styled.div`
 export function ApartmentDevice(props){
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
   console.log(ApartmentDevicesList);
-  const { model, serialNumber, resource, futureCheckingDate, birthday } = props;
+  const { model, serialNumber, resource, futureCheckingDate, creationDate } = props;
 
   let icon;
   let color;
@@ -102,7 +102,7 @@ export function ApartmentDevice(props){
       <Bottom>
         <Icon icon="circle" color="#17B45A"/>
         <State>Активен</State>
-        <Dates>{birthday} — {futureCheckingDate}</Dates>
+        <Dates>{creationDate} — {futureCheckingDate}</Dates>
         <Place>Туалет</Place>
       </Bottom>
     </Wrap>

@@ -1,14 +1,11 @@
 import React from 'react';
-import styled from "reshadow/macro"
-import { Route, Switch, Redirect } from "react-router-dom"
-
-import "01/css/index.css"
-import "01/css/styles.css"
-import "./tt-styles.css"
-
-import { useApp } from "./useApp"
-import { app } from "01/styles/app"
-import { Logotip, Menu } from "01/components"
+import styled from 'reshadow/macro';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import '01/css/index.css';
+import '01/css/styles.css';
+import './tt-styles.css';
+import { app } from '01/styles/app';
+import { Logotip, Menu } from '01/components';
 import {
   Tasks,
   Login,
@@ -19,11 +16,12 @@ import {
   MetersPage,
   ApartmentProfile,
   ErrorPage,
-  AccessDeniedPage
-} from "01/_pages"
+  AccessDeniedPage,
+} from '01/_pages';
+import { useApp } from './useApp';
 
 export function App() {
-  const AppProvider = useApp()
+  const AppProvider = useApp();
   return styled(app)(
     <AppProvider>
       <Switch>
@@ -75,6 +73,6 @@ export function App() {
         </Route>
       </Switch>
       {/* <Pages /> */}
-    </AppProvider>
-  )
+    </AppProvider>,
+  );
 }

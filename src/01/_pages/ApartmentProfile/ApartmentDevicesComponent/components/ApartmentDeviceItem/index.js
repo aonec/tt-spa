@@ -27,7 +27,7 @@ export function ApartmentDeviceItem(props) {
         model={model}
         serialNumber={serialNumber}
         resource={resource}
-        birthday="запрос данных"
+        creationDate="запрос данных"
         futureCheckingDate={convertDate(futureCheckingDate)}
       />
       <ApartmentInput />
