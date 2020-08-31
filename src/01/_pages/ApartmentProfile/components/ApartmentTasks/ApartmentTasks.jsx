@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button } from '../Button';
 import { convertDate } from '../../../../_api/utils/convertDate';

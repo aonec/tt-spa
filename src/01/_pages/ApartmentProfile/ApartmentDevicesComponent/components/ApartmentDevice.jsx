@@ -58,7 +58,7 @@ const Place = styled.div`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export default function ApartmentDevice(props) {
+function ApartmentDevice(props) {
   const {
     model, serialNumber, resource, futureCheckingDate, creationDate,
   } = {
@@ -105,3 +105,5 @@ export default function ApartmentDevice(props) {
     </Wrap>
   );
 }
+
+export default ApartmentDevice;
