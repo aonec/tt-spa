@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
+import {getDevice} from '01/_api/apartment_page'
 // import moment from "moment";
 // import "moment/locale/ru";
 import { Button } from '../Button';
@@ -42,8 +44,7 @@ const ApartmentTaskState = styled.div`
   display: flex;
   font-size: 12px;
   line-height: 16px;
-  color: ${props => props.color};
-
+  color: ${(props) => props.color};
 `;
 
 export const ApartmentTaskDate = styled.p`
@@ -58,48 +59,59 @@ export const ApartmentTaskDate = styled.p`
 
 export const Tasks = (props) => {
   const tasksArr = Object.values(props.tasksList);
-  console.log('tasksList', tasksArr)
 
+  const buttonHandler = () => {
+    console.log('tedt')
+    console.log(tasksArr)
+
+  }
   // const TasksList = tasksArr.map((value, index) => {
   // const TasksList = tasksArr.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
   const TasksList = tasksArr.map((task, ind) => {
     const {
+      id,
       creationTime,
       closingTime,
       expectedCompletionTime,
       name,
-      currentStage
+      currentStage,
     } = task;
     const begin = convertDate(creationTime);
     const end = convertDate(closingTime || expectedCompletionTime);
 
-    console.log("currentStage", task)
-    console.log("currentStage", currentStage.status)
-    let status, icon, color;
+    let status;
+    let icon;
+    let color;
 
-    if (currentStage.status === "InProgress") {
-      status = "В работе"
-      icon = "replacement"
-      color = "#E2B104"
-
+    if (currentStage.status === 'InProgress') {
+      status = 'В работе';
+      icon = 'replacement';
+      color = '#E2B104';
     } else {
-      status = "Выполнено"
-      icon = "ok"
-      color = "#17b45a"
+      status = 'Выполнено';
+      icon = 'ok';
+      color = '#17b45a';
     }
 
+    const taskHandler = () => {
+      console.log('taskHandler');
+    };
+
+
     return (
-      <ApartmentTask key={ind}>
-        <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
-        <ApartmentTaskState color={color}>
-          <Icon icon={icon}/>
-          {status}
-        </ApartmentTaskState>
-        <ApartmentTaskDate>
-          <Icon icon="calendar"/>
-          {`${begin} - ${end}`}
-        </ApartmentTaskDate>
-      </ApartmentTask>
+      <Link to={`/Tasks/${id}`}>
+        <ApartmentTask key={ind} onClick={taskHandler}>
+          <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
+          <ApartmentTaskState color={color}>
+            <Icon icon={icon} />
+            {status}
+          </ApartmentTaskState>
+          <ApartmentTaskDate>
+            <Icon icon="calendar" />
+            {`${begin} - ${end}`}
+          </ApartmentTaskDate>
+        </ApartmentTask>
+      </Link>
     );
   });
 
@@ -107,8 +119,7 @@ export const Tasks = (props) => {
     <ApartmentTasks>
       <ApartmentTasksTitle>Задачи с объектом</ApartmentTasksTitle>
       {TasksList}
-      <Button>Все задачи с объектом</Button>
+      <Button onClick={buttonHandler}>Все задачи с объектом</Button>
     </ApartmentTasks>
-
   );
 };

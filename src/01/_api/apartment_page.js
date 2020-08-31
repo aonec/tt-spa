@@ -16,6 +16,27 @@ export async function getInfo(url = '') {
   }
 }
 
+
+const MeteringDevices= 'MeteringDevices';
+
+// const replaceURL = (url = '') => url.replace(/objects/, URL);
+
+export async function getDevice(url = '') {
+  try {
+    // const res = await axios.get(replaceURL(url));
+    const res = await axios.get('MeteringDevices/1306927');
+    console.log('MeteringDevices')
+    return {
+      ...res,
+      info: true,
+      header: createTitleObject(res),
+    };
+  } catch (error) {
+  }
+}
+
+
+
 const MeteringDevicesURL = 'MeteringDevices';
 
 export async function getApartmentDevices(url = '') {

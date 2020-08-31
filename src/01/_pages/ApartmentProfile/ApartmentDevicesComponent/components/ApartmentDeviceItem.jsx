@@ -17,9 +17,8 @@ export function ApartmentDeviceItem(props) {
   const ApartmentDevicesList = useContext(ApartmentDevicesContext);
   const currentDevice = ApartmentDevicesList[props.index];
   const {
-    model, serialNumber, resource, futureCheckingDate,
+   id, model, serialNumber, resource, futureCheckingDate,
   } = currentDevice;
-
   return (
     <DeviceIitem>
       <ApartmentDevice
