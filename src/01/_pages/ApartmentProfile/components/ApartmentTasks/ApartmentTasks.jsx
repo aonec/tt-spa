@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
-import {getDevice} from '01/_api/apartment_page'
+import { getDevice } from '01/_api/apartment_page';
 // import moment from "moment";
 // import "moment/locale/ru";
 import { Button } from '../Button';
@@ -60,11 +60,7 @@ export const ApartmentTaskDate = styled.p`
 export const Tasks = (props) => {
   const tasksArr = Object.values(props.tasksList);
 
-  const buttonHandler = () => {
-    console.log('tedt')
-    console.log(tasksArr)
-
-  }
+  const buttonHandler = () => {};
   // const TasksList = tasksArr.map((value, index) => {
   // const TasksList = tasksArr.filter((item, index) => [0, 4, 8].includes(index)).map((task, ind) => {
   const TasksList = tasksArr.map((task, ind) => {
@@ -96,7 +92,6 @@ export const Tasks = (props) => {
     const taskHandler = () => {
       console.log('taskHandler');
     };
-
 
     return (
       <Link to={`/Tasks/${id}`}>
