@@ -3,7 +3,6 @@ import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.css';
 import '01/css/styles.css';
-import './tt-styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import {

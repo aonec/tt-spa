@@ -20,7 +20,7 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
-import { convertDate } from './utils/utils';
+import { convertDate } from '../../_api/utils/convertDate';
 
 // стилизация
 import 'antd/dist/antd.css';

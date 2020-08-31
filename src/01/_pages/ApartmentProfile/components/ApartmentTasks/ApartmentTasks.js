@@ -5,7 +5,7 @@ import { Icon } from '01/components/Icon';
 // import "moment/locale/ru";
 import { Button } from '../Button';
 
-import { convertDate } from '../../utils/utils';
+import { convertDate } from '../../../../_api/utils/convertDate';
 
 // moment.locale("ru");
 
