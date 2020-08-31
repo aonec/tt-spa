@@ -8,8 +8,8 @@ export function ApartmentDevicesHistory(){
 `;
 
   const History = styled.div`
-       display: grid;
-      grid-template-columns: 10fr 2fr;
+    display: grid;
+    grid-template-columns: 10fr 2fr;
 `;
   const HistoryWrap = styled.div`
     display: flex;
@@ -18,14 +18,14 @@ export function ApartmentDevicesHistory(){
     height: fit-content;`;
 
   const HistoryButton = styled.button`
-       border: 1px solid #DCDEE4;
-       box-sizing: border-box;
-       border-radius: 4px;
-       width: 32px;
-       height: 32px;
-       display:flex;
-       align-items: center;
-       justify-content: center;
+    border: 1px solid #DCDEE4;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 `;
 
   const Text = styled.span`
