@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import ApartmentDevice from '../ApartmentDevice';
-import { ApartmentInput } from '../ApartmentInput';
-import { ApartmentDevicesHistory } from '../ApartmentDevicesHistory';
+import ApartmentDevice from './ApartmentDevice';
+import { ApartmentInput } from './ApartmentInput';
+import { ApartmentDevicesHistory } from './ApartmentDevicesHistory';
 
-import { ApartmentDevicesContext } from '../../ApartmentDevices';
-import { convertDate } from '../../../../../_api/utils/convertDate';
+import { ApartmentDevicesContext } from '../ApartmentDevices';
+import { convertDate } from '../../../../_api/utils/convertDate';
 
 const DeviceIitem = styled.div`
   display: grid;

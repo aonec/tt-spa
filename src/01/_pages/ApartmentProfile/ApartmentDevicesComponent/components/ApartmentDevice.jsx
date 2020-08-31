@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '../../../../../_components/Icon';
+import { Icon } from '../../../../_components/Icon';
 
 const Wrap = styled.a`
   display: grid;
