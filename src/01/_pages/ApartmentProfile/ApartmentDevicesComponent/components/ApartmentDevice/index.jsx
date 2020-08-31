@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
-import { ApartmentDevicesContext } from "../../ApartmentDevices";
-import { Icon } from "01/components/Icon";
+import React from 'react';
+import styled from 'styled-components';
+import { Icon } from '../../../../../_components/Icon';
 
 const Wrap = styled.a`
   display: grid;
@@ -59,52 +58,44 @@ const Place = styled.div`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export function ApartmentDevice(props){
-  const ApartmentDevicesList = useContext(ApartmentDevicesContext);
-  console.log(ApartmentDevicesList);
-  const { model, serialNumber, resource, futureCheckingDate, creationDate } = props;
+export default function ApartmentDevice(props) {
+  const {
+    model, serialNumber, resource, futureCheckingDate, creationDate,
+  } = {
+    ...props,
+  };
 
-  let icon;
-  let color;
+  const DevicesIcons = [
+    { key: 'HotWaterSupply', value: { icon: 'water', color: '#FF8C68' } },
+    { key: 'ColdWaterSupply', value: { icon: 'water', color: '#79AFFF' } },
+    { key: 'Electricity', value: { icon: 'electro', color: '#E2B104' } },
+  ];
 
-  switch (resource) {
-    case 'HotWaterSupply':
-      icon = "water";
-      color = "#FF8C68";
-      break;
-
-    case 'ColdWaterSupply':
-      icon = "water";
-      color = "#79AFFF";
-      break;
-
-    case 'Electricity':
-      icon = "electro";
-      color = "#E2B104";
-      break;
-
-    default:
-
-      break;
-  }
+  const currentIcon = DevicesIcons.find((object) => object.key === resource);
 
   const buttonHandler = () => {
-    console.log("buttonHandler")
-  }
+    // console.log('buttonHandler');
+  };
 
   return (
     <Wrap onClick={buttonHandler}>
       <Top>
-        <Icon icon={icon} color={color}/>
+        <Icon icon={currentIcon.value.icon} color={currentIcon.value.color} />
         <Name>{model}</Name>
         <Number>{serialNumber}</Number>
       </Top>
       <Bottom>
-        <Icon icon="circle" color="#17B45A"/>
+        <Icon icon="circle" color="#17B45A" />
         <State>Активен</State>
-        <Dates>{creationDate} — {futureCheckingDate}</Dates>
+        <Dates>
+          {creationDate}
+          {' '}
+          —
+          {' '}
+          {futureCheckingDate}
+        </Dates>
         <Place>Туалет</Place>
       </Bottom>
     </Wrap>
-  )
+  );
 }
