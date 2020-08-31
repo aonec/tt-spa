@@ -23,7 +23,9 @@ export function Header() {
       <Title>Информация о приборе</Title>
       <Title>Февраль 2020</Title>
       <Title>Январь 2020</Title>
-      <div/>
+      <div />
     </HeaderWrap>
   );
 }
+
+export default Header;

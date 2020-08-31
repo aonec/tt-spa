@@ -1,13 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Template = styled.div`
-
-`;
-
-const Input__wrap = styled.div`
- width: 160px;
-  border: 1px solid #DCDEE4;
+const InputWrap = styled.div`
+  width: 160px;
+  border: 1px solid #dcdee4;
   box-sizing: border-box;
   border-radius: 4px;
   display: grid;
@@ -18,9 +14,9 @@ const Row = styled.div`
   padding: 8px;
   display: grid;
   grid-template-columns: 6fr 6fr;
-  border-bottom: 1px solid #DCDEE4;
-  :last-of-type { 
-  border-bottom: none;
+  border-bottom: 1px solid #dcdee4;
+  :last-of-type {
+    border-bottom: none;
   }
 `;
 
@@ -42,7 +38,7 @@ const Input = styled.input`
 
 export function ApartmentInput() {
   return (
-    <Input__wrap>
+    <InputWrap>
       <Row>
         <Plan>Тариф 1</Plan>
         <Input placeholder="123 м3" />
@@ -51,6 +47,8 @@ export function ApartmentInput() {
         <Plan>Тариф 2</Plan>
         <Input placeholder="123 м3" />
       </Row>
-    </Input__wrap>
+    </InputWrap>
   );
 }
+
+export default ApartmentInput;
