@@ -31,6 +31,19 @@ export async function getObjectOfDevice(url = '') {
   } catch (error) {
   }
 }
+
+const TasksURL = 'MeteringDevices';
+
+export async function getDeviceTasks(url = '') {
+  try {
+    const newURL = (`${TasksURL}?DeviceId=${url}`);
+    const res = await axios.get(newURL);
+    return res;
+  } catch (error) {
+  }
+}
+
+
 export async function getDevices(url = '') {
   try {
     const res = await axios.get(replaceURL(url));
