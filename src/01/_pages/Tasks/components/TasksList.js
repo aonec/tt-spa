@@ -1,9 +1,9 @@
-import React from "react"
-import styled, { css, use } from "reshadow/macro"
-import { Loader, Icon } from "01/components"
+import React from 'react';
+import styled, { css, use } from 'reshadow/macro';
+import { Loader, Icon } from '01/components';
 
-import { time_line } from "01/r_comp"
-import { useHistory } from "react-router-dom"
+import { time_line } from '01/r_comp';
+import { useHistory } from 'react-router-dom';
 
 const styles = css`
   task_item {
@@ -76,10 +76,14 @@ const styles = css`
   executor {
     opacity: 0.6;
   }
-`
+
+  task_title  {
+    width: 70%;
+  }
+`;
 
 export const TasksList = ({ items }) => {
-  const { push } = useHistory()
+  const { push } = useHistory();
   return styled(styles, time_line)(
     items?.map(
       ({
@@ -94,7 +98,7 @@ export const TasksList = ({ items }) => {
         perpetrator,
         showExecutor,
       }) => (
-        <task_item key={id} onClick={() => push("/tasks/" + id)}>
+        <task_item key={id} onClick={() => push(`/tasks/${id}`)}>
           {/* one */}
           <row>
             <task_title as="h4">
@@ -134,14 +138,24 @@ export const TasksList = ({ items }) => {
             {device && (
               <device>
                 <Icon icon={device.icon} fill={device.fill} />
-                <device_model as="span">{device.model}</device_model>{" "}
-                <device_number as="span">({device.serialNumber})</device_number>
+                <device_model as="span">{device.model}</device_model>
+                {' '}
+                <device_number as="span">
+                  (
+                  {device.serialNumber}
+                  )
+                </device_number>
               </device>
             )}
             <addr>
               <Icon icon="map" />
               {/* {address} */}
-              {address.city}, {address.street},{address.housingStockNumber}
+              {address.city}
+              ,
+              {' '}
+              {address.street}
+              ,
+              {address.housingStockNumber}
             </addr>
             <num>
               <Icon icon="number" />
@@ -153,7 +167,7 @@ export const TasksList = ({ items }) => {
             </cal>
           </row>
         </task_item>
-      )
-    ) ?? <Loader show={true} size="32" />
-  )
-}
+      ),
+    ) ?? <Loader show size="32" />,
+  );
+};
