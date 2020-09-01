@@ -21,7 +21,7 @@ export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     console.log('url', url);
-    const res = await axios.get('HousingStocks/249');
+    const res = await axios.get(`HousingStocks/${url}`);
     console.log('res', res);
     return {
       ...res,

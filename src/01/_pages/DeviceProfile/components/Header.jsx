@@ -33,27 +33,27 @@ export const Header = ({ list = [], loading = true, ...props }) => {
   const DeviceContextResult = useContext(DeviceContext);
   const [houseId, setHouseId] = useState();
   const [house, setHouse] = useState();
-  const {
-    serialNumber, type, housingStockId, model,
-  } = props;
   // const {
-  //   calculator,
-  //   canBeEdited,
-  //   closingDate,
-  //   commercialAccountingDate,
-  //   diameter,
-  //   futureCheckingDate,
-  //   housingStockId,
-  //   id,
-  //   ipV4,
-  //   lastCheckingDate,
-  //   model,
-  //   resource,
-  //   serialNumber,
-  //   type,
-  //   underTransaction,
-  //   url,
-  // } = { ...DeviceContextResult };
+  //   serialNumber, type, housingStockId, model,
+  // } = props;
+  const {
+    calculator,
+    canBeEdited,
+    closingDate,
+    commercialAccountingDate,
+    diameter,
+    futureCheckingDate,
+    housingStockId,
+    id,
+    ipV4,
+    lastCheckingDate,
+    model,
+    resource,
+    serialNumber,
+    type,
+    underTransaction,
+    url,
+  } = { ...DeviceContextResult };
 
   const {
     areaOfNonResidential,
