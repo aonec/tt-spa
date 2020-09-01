@@ -48,6 +48,25 @@ export const DeviceProfile = (props) => {
 
   const [device, setDevice] = useState();
 
+  const {
+    calculator,
+    canBeEdited,
+    closingDate,
+    commercialAccountingDate,
+    diameter,
+    futureCheckingDate,
+    housingStockId,
+    id,
+    ipV4,
+    lastCheckingDate,
+    model,
+    resource,
+    serialNumber,
+    type,
+    underTransaction,
+    url,
+  } = { ...device };
+
   useEffect(() => {
     async function getDeviceInfo() {
       await getInfo(deviceId).then((response) => setDevice(response));
@@ -60,16 +79,18 @@ export const DeviceProfile = (props) => {
     // console.log(device);
   };
 
+  console.log(info);
+
   return styled(grid)(
     <>
       <DeviceContext.Provider value={device}>
         {/* <button onClick={buttonHandler}>button</button> */}
-        <Header {...header} />
+        <Header serialNumber={serialNumber} type={type} housingStockId={housingStockId} model={model} />
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>
-            <Information {...info} />
-            <Events title="Задачи с объектом" {...events} />
+            <Information {...info} {...device} />
+            {/* <Events title="Задачи с объектом" {...events} /> */}
           </Route>
           {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"

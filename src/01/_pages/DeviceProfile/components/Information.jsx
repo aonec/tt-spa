@@ -3,6 +3,8 @@ import styled, { use } from 'reshadow/macro';
 import { useHistory, useParams } from 'react-router-dom';
 import { Loader } from '01/components/Loader';
 import { information } from '01/r_comp';
+import { convertDate } from '01/_api/utils/convertDate';
+import moment from 'moment';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Information = ({ list = [], loading = true, ...props }) => {
@@ -12,20 +14,24 @@ export const Information = ({ list = [], loading = true, ...props }) => {
   const params = useParams();
   console.log(params[1]);
 
+  console.log(props);
+
+  const {
+    commercialAccountingDate,
+    futureCheckingDate,
+    lastCheckingDate,
+  } = props;
+
   const buttonHandler = () => {
     console.log('buttonHandler', DeviceContextResult);
   };
   const test = [
-    'Активен',
-    '01.09.2017',
-    '01.09.2017',
-    '01.09.2023',
-    'Электричество',
-    'Туалет',
-    '14',
-    'Есть',
-    'ИЦ НК',
-    'Маяк НК',
+    'Данныe обновляются',
+    // 'Данныe обновляются',
+    convertDate(commercialAccountingDate) || 'Данныe обновляются',
+    // 'Данныe обновляются',
+    convertDate(lastCheckingDate) || 'Данныe обновляются',
+    convertDate(futureCheckingDate) || 'Данныe обновляются',
   ];
   return styled(information)`
     Loader {
