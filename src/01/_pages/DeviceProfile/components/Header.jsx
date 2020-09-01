@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { getObjectOfDevice } from '01/_api/device_page';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Icon } from '01/_components/Icon';
-import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
 
@@ -30,71 +29,19 @@ export const Subtitle = styled.p`
 `;
 
 export const Header = ({ list = [], loading = true, ...props }) => {
-  const DeviceContextResult = useContext(DeviceContext);
-  const [houseId, setHouseId] = useState();
-  const [house, setHouse] = useState();
-  // const {
-  //   serialNumber, type, housingStockId, model,
-  // } = props;
-  const {
-    calculator,
-    canBeEdited,
-    closingDate,
-    commercialAccountingDate,
-    diameter,
-    futureCheckingDate,
-    housingStockId,
-    id,
-    ipV4,
-    lastCheckingDate,
-    model,
-    resource,
-    serialNumber,
-    type,
-    underTransaction,
-    url,
-  } = { ...DeviceContextResult };
 
+  const [house, setHouse] = useState();
   const {
-    areaOfNonResidential,
-    city,
-    constructionDate,
-    corpus,
-    district,
-    houseArea,
-    houseCategory,
-    index,
-    isThereElevator,
-    number,
-    numberOfApartments,
-    numberOfEntrances,
-    numberOfFloors,
-    region,
-    street,
-    totalArea,
-    totalLivingArea,
-  } = { ...house };
-  console.log(props);
+    serialNumber, type, model,city,number,street
+  } = props;
+
   const buttonHandler = () => {
     console.log('house', house);
     console.log(city);
   };
-
   const [icons, setIcons] = useState(DeviceIcons);
-  console.log('icons', icons);
-  console.log('type', type);
-
-  // const { icon, color } = icons[type];
-  useEffect(() => {
-    async function getTasksAndApartments() {
-      await getObjectOfDevice(housingStockId).then((response) => setHouse(response));
-    }
-    getTasksAndApartments();
-  }, [housingStockId]);
-
-  console.log(icons[type]);
   const { icon, color } = { ...icons[type] };
-  console.log(icon);
+
 
   return (
     <h>

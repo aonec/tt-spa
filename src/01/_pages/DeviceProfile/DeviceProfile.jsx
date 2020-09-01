@@ -5,7 +5,7 @@ import {
   Route, useRouteMatch, useParams, useHistory,
 } from 'react-router-dom';
 import { grid } from '01/r_comp';
-import { getInfo } from '01/_api/device_page';
+import { getInfo, getObjectOfDevice } from '01/_api/device_page';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
@@ -38,8 +38,11 @@ export const DeviceProfile = (props) => {
   console.log('objid', objid);
 
   const params = useParams();
+  console.log(params[0]);
   console.log(params[1]);
   const deviceId = params[1];
+  const buildingId = params[0];
+  
 
   const { push } = useHistory();
   const info = useObjectInformation(state);
@@ -47,6 +50,7 @@ export const DeviceProfile = (props) => {
   const { header = [], events = [], aparts = [] } = state;
 
   const [device, setDevice] = useState();
+  const [building, setBuilding] = useState()
 
   const {
     calculator,
@@ -67,11 +71,18 @@ export const DeviceProfile = (props) => {
     url,
   } = { ...device };
 
+
   useEffect(() => {
     async function getDeviceInfo() {
       await getInfo(deviceId).then((response) => setDevice(response));
     }
     getDeviceInfo();
+
+    async function getObjectOfDeviceWrap() {
+      await getObjectOfDevice(buildingId).then((response) => setBuilding(response));
+    }
+    getObjectOfDeviceWrap();
+    
   }, []);
 
   const buttonHandler = () => {
@@ -79,13 +90,13 @@ export const DeviceProfile = (props) => {
     // console.log(device);
   };
 
-  console.log(info);
+
 
   return styled(grid)(
     <>
       <DeviceContext.Provider value={device}>
         {/* <button onClick={buttonHandler}>button</button> */}
-        <Header serialNumber={serialNumber} type={type} housingStockId={housingStockId} model={model} />
+        <Header {...device}  {...building}/>
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>

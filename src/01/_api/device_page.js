@@ -23,11 +23,12 @@ export async function getObjectOfDevice(url = '') {
     console.log('url', url);
     const res = await axios.get(`HousingStocks/${url}`);
     console.log('res', res);
-    return {
-      ...res,
-      info: true,
-      header: createTitleObject(res),
-    };
+    return res;
+    // return {
+    //   ...res,
+    //   info: true,
+    //   header: createTitleObject(res),
+    // };
   } catch (error) {
   }
 }
