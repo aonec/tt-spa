@@ -1,8 +1,9 @@
-import { css } from "reshadow/macro"
+import { css } from 'reshadow/macro';
 
 export const information = css`
   information {
     display: grid;
+    height: min-content;
   }
   info_item {
     display: grid;
@@ -28,4 +29,4 @@ export const information = css`
       }
     }
   }
-`
+`;

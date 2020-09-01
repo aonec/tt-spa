@@ -2,7 +2,7 @@ export const useInformationDevice = ({
   device = null,
   housingStockId = null,
 }) => {
-  if (!device) return { hidden: true }
+  if (!device) return { hidden: true };
   const {
     icon,
     fill,
@@ -13,7 +13,7 @@ export const useInformationDevice = ({
     lastCheckingDate,
     commercialAccountingDate,
     diameter,
-  } = device
+  } = device;
   return {
     hidden: false,
     icon: { icon, fill },
@@ -21,25 +21,25 @@ export const useInformationDevice = ({
     model,
     url: `/objects/${housingStockId}/devices/${id}`,
     list: [
-      ["Связь с прибором", "-"],
-      ["ID узла", ""],
+      // ["Связь с прибором", "-"],
+      ['ID узла', ''],
       [
-        "Постановка на учет",
+        'Постановка на учет',
         new Date(commercialAccountingDate).toLocaleDateString(),
       ],
-      ["Диаметр", diameter],
+      ['Диаметр', diameter],
       [
-        "Окончание срока эксплуатации",
+        'Окончание срока эксплуатации',
         new Date(futureCheckingDate).toLocaleDateString(),
       ],
       [
-        "Последняя поверка приборов",
+        'Последняя поверка приборов',
         new Date(lastCheckingDate).toLocaleDateString(),
       ],
-      ["Форм-фактор", "-"],
-      ["Документ", "-"],
+      // ['Форм-фактор', '-'],
+      // ['Документ', '-'],
     ]
       .map(({ 0: title, 1: value }) => ({ title, value }))
       .filter((i) => i.value),
-  }
-}
+  };
+};
