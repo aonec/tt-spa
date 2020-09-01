@@ -7,7 +7,9 @@ const replaceURL = (url = '') => url.replace(/objects/, URL);
 
 export async function getInfo(url = '') {
   try {
+    console.log('getInfogetInfo');
     const res = await axios.get(replaceURL(url));
+    console.log('resresres', res);
     return { ...res, info: true, header: createTitleObject(res) };
   } catch (error) {}
 }
