@@ -1,6 +1,6 @@
 import styled, {
-  css
-} from 'styled-components'
+  css,
+} from 'styled-components';
 
 export const Button = styled.button`
   border: 1px solid #DCDEE4;
@@ -20,10 +20,9 @@ export const Button = styled.button`
     color: rgb(var(--primary));     
     }
   }
-  ${props =>
-  props.primary &&
-  css`
+  ${(props) => props.primary
+  && css`
     background: palevioletred;
     color: white;
   `};
-`
+`;

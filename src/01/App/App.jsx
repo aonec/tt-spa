@@ -1,14 +1,10 @@
-import React from "react"
-import styled from "reshadow/macro"
-import { Route, Switch, Redirect } from "react-router-dom"
-
-import "01/css/index.css"
-import "01/css/styles.css"
-import "./tt-styles.css"
-
-import { useApp } from "./useApp"
-import { app } from "01/styles/app"
-import { Logotip, Menu } from "01/components"
+import React from 'react';
+import styled from 'reshadow/macro';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import '01/css/index.css';
+import '01/css/styles.css';
+import { app } from '01/styles/app';
+import { Logotip, Menu } from '01/components';
 import {
   Tasks,
   Login,
@@ -19,16 +15,23 @@ import {
   MetersPage,
   ApartmentProfile,
   ErrorPage,
-  AccessDeniedPage
-} from "01/_pages"
+  AccessDeniedPage,
+} from '01/_pages';
+import moment from 'moment';
+import { useApp } from './useApp';
 
-export const App = () => {
-  const AppProvider = useApp()
+// библиотека обработки дат и локализация СНГ
+import 'moment/locale/ru';
+
+moment.locale('ru');
+
+export function App() {
+  const AppProvider = useApp();
   return styled(app)(
     <AppProvider>
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/logout" render={() => "logout"} />
+        <Route path="/logout" render={() => 'logout'} />
         {/* <Route path="/error/" render={() => "404"} /> */}
         <Route path="/error/" render={() => <ErrorPage />} />
         <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
@@ -63,7 +66,6 @@ export const App = () => {
                   component={ApartmentProfile}
                   exact
                 />
-
                 <Redirect from="/meters/" to="/meters/apartments" exact />
                 <Route
                   path="/meters/(apartments|houses)"
@@ -76,6 +78,8 @@ export const App = () => {
         </Route>
       </Switch>
       {/* <Pages /> */}
-    </AppProvider>
-  )
+    </AppProvider>,
+  );
 }
+
+export default App;
