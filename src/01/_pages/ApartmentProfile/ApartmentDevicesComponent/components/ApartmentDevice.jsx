@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
+import { Device } from 'components';
 import { Icon } from '../../../../_components/Icon';
 
 const Wrap = styled.a`
@@ -71,15 +73,8 @@ function ApartmentDevice(props) {
     Electricity: { icon: 'electro', color: '#E2B104' },
   };
 
-  let currentIcon = {};
-
-  for (const key in DevicesIcons) {
-    if (key == resource) {
-      currentIcon = JSON.parse(JSON.stringify(DevicesIcons[key]));
-    }
-  }
-
-  const { icon, color } = { ...currentIcon };
+  const currentIcon = DevicesIcons[resource];
+  const { icon, color } = currentIcon;
 
   const buttonHandler = () => {
     // console.log('buttonHandler');
