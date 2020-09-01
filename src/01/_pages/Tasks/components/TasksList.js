@@ -26,7 +26,6 @@ const styles = css`
 
   row > *:not(:last-child, Icon) {
     margin-right: 16px;
-    width: 70%;
   }
 
   Icon {
@@ -76,6 +75,10 @@ const styles = css`
   num,
   executor {
     opacity: 0.6;
+  }
+
+  task_title  {
+    width: 70%;
   }
 `;
 
