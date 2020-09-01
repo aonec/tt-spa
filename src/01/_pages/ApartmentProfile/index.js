@@ -104,11 +104,12 @@ const ApartmentProfile = () => {
             <Tags />
             <Information
               style={{ paddingTop: '32px' }}
+              square={square || 'Данные обновляются'}
               numberOfLiving={numberOfLiving || 'Данные обновляются'}
               normativeNumberOfLiving={
                 normativeNumberOfLiving || 'Данные обновляются'
               }
-              square={square || 'Данные обновляются'}
+
             />
             <Owner
               firstName={firstName}

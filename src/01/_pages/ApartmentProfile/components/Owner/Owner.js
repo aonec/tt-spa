@@ -36,23 +36,23 @@ export const Owner = (props) => {
       <TitleWrap style={{ paddingTop: '32px' }}>
         {' '}
         <Icon icon="key" />
-        <Title size="24" style={{ paddingLeft: '8px' }}>{firstName}</Title>
+        <Title size="24" style={{ paddingLeft: '8px' }}>{firstName || 'Собственник: данные обновляются'}</Title>
       </TitleWrap>
       <ListItem>
         <ListItemDescription>Номер лицевого счета</ListItemDescription>
-        <ListItemValue>{personalAccountNumber || 'Запрос данных'}</ListItemValue>
+        <ListItemValue>{personalAccountNumber || 'Данные обновляются'}</ListItemValue>
       </ListItem>
       <ListItem>
         <ListItemDescription>Статус собственник</ListItemDescription>
-        <ListItemValue>{test || 'Запрос данных'}</ListItemValue>
+        <ListItemValue>{test || 'Данные обновляются'}</ListItemValue>
       </ListItem>
       <ListItem>
         <ListItemDescription>Юридическое состояние</ListItemDescription>
-        <ListItemValue>{test2 || 'Запрос данных'}</ListItemValue>
+        <ListItemValue>{test2 || 'Данные обновляются'}</ListItemValue>
       </ListItem>
       <ListItem>
         <ListItemDescription>Контактный номер телефона</ListItemDescription>
-        <ListItemValue>{phoneNumber || 'Запрос данных'}</ListItemValue>
+        <ListItemValue>{phoneNumber || 'Данные обновляются'}</ListItemValue>
       </ListItem>
 
       <Button style={{ marginTop: '16px' }}>Перейти в профиль собственника</Button>
