@@ -4,11 +4,7 @@ import { Title } from '../Title';
 
 export const Information = (props) => {
   // Пустышка для mapProps
-  const data = [
-    '78 м2',
-    '4',
-    '4',
-  ];
+  const data = ['78 м2', '4', '4'];
 
   const descriptions = [
     'Площадь жилого помещения',
@@ -16,8 +12,8 @@ export const Information = (props) => {
     'Нормативное количество проживающих',
   ];
 
-  const { normativeNumberOfLiving, numberOfLiving, square } = props;
-  const mapProps = [normativeNumberOfLiving, numberOfLiving, square];
+  const { square, numberOfLiving, normativeNumberOfLiving } = props;
+  const mapProps = [square, numberOfLiving, normativeNumberOfLiving];
 
   const list = data.map((value, index) => (
     <ListItem>
@@ -33,3 +29,5 @@ export const Information = (props) => {
     </div>
   );
 };
+
+export default Information;
