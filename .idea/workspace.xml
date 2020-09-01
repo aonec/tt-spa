@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:task" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:bug" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:task" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="99f4a36d-3b28-4810-996a-3affe9858c0b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1gabhyqCsOVnYlS5huorknn47ck" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/01/_compnents" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\m.faizerakhmanov\Documents\GitHub\tt-spa\src\01\_pages\ApartmentProfile\ApartmentDevicesComponent" />
+      <recent name="C:\Users\m.faizerakhmanov\Documents\GitHub\tt-spa\src\01\_pages\ApartmentProfile\components" />
+      <recent name="C:\Users\m.faizerakhmanov\Documents\GitHub\tt-spa\src\01\_pages\ApartmentProfile\hoc" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\m.faizerakhmanov\Documents\GitHub\tt-spa\src\01\_compnents" />
+      <recent name="C:\Users\m.faizerakhmanov\Documents\GitHub\tt-spa\src\01\_pages\ApartmentProfile\hoc\ApartmentDevices\components" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="99f4a36d-3b28-4810-996a-3affe9858c0b" name="Default Changelist" comment="" />
+      <created>1598355774367</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1598355774367</updated>
+      <workItem from="1598355775837" duration="4970000" />
+      <workItem from="1598422551568" duration="17941000" />
+      <workItem from="1598446712864" duration="6368000" />
+      <workItem from="1598453652964" duration="1605000" />
+      <workItem from="1598505665009" duration="1313000" />
+      <workItem from="1598507084781" duration="1185000" />
+      <workItem from="1598508286075" duration="3532000" />
+      <workItem from="1598514661105" duration="11388000" />
+      <workItem from="1598529901184" duration="2050000" />
+      <workItem from="1598532563449" duration="5654000" />
+      <workItem from="1598539015190" duration="6405000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="828" y="412" key="#ESLint" timestamp="1598508915884">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="828" y="412" key="#ESLint/0.0.1920.1040@0.0.1920.1040" timestamp="1598508915884" />
+    <state x="698" y="229" key="#JavaScript" timestamp="1598360277191">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="698" y="229" key="#JavaScript/0.0.1920.1040@0.0.1920.1040" timestamp="1598360277191" />
+    <state x="699" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1598506215939">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="699" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598506215939" />
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598537778237">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598537778237" />
+    <state width="1899" height="199" key="GridCell.Tab.0.bottom" timestamp="1598506979509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="199" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598506979509" />
+    <state width="1899" height="199" key="GridCell.Tab.0.center" timestamp="1598506979509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="199" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598506979509" />
+    <state width="1899" height="199" key="GridCell.Tab.0.left" timestamp="1598506979509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="199" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598506979509" />
+    <state width="1899" height="199" key="GridCell.Tab.0.right" timestamp="1598506979509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="199" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598506979509" />
+    <state x="72" y="247" width="1448" height="710" key="SettingsEditor" timestamp="1598508948158">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="72" y="247" width="1448" height="710" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598508948158" />
+    <state x="667" y="119" width="646" height="801" key="find.popup" timestamp="1598597127201">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="667" y="119" width="646" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598597127201" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1598598365471">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598598365471" />
+  </component>
+</project>
