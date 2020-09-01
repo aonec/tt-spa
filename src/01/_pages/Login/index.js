@@ -3,7 +3,6 @@ import styled, { css } from "reshadow/macro"
 
 import { useLogin } from "./useLogin"
 import { input, button } from "01/r_comp"
-// eslint-disable-next-line
 import { Icon, Loader } from "01/components"
 
 const styles = css`

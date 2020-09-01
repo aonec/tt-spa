@@ -14,6 +14,9 @@
     margin-top: 24px;
 }
 
+.error-page__image {
+    padding-top: 64px;
+}
 /* .error-page__title {
     font-weight: 300;
     font-size: 40px;

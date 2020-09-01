@@ -11,14 +11,12 @@ export const useDocuments = ({ documents = null }, pageDispatch) => {
   React.useEffect(() => {
     if (documents) {
       dispatch({ type: "update_doc", documents })
-      console.log(documents)
     }
   }, [documents])
 
   React.useEffect(() => {
     const { deleteId } = state
     if (deleteId) {
-      console.log(123)
       deleteDoc(taskId, deleteId).then((deleteId) =>
         dispatch({ type: "success", deleteId })
       )
@@ -40,7 +38,6 @@ function documnetReducer(state, action) {
     case "update_doc":
       return { items: documents, hiddenDocs: !documents.length }
     case "start_delete":
-      console.log(deleteId)
       return {
         ...state,
         items: items.map((doc) =>

@@ -1,8 +1,5 @@
 import React from "react"
-// eslint-disable-next-line
-import { Link } from "react-router-dom"
 import styled, { css } from "reshadow/macro"
-
 import { Icon } from "01/components/Icon"
 import { date } from "01/servises/date"
 import { Timeline } from "01/components/Timeline"

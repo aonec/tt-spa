@@ -32,7 +32,7 @@ export const ObjectProfile = () => {
 
   return styled(grid)(
     <>
-      <Header {...header} />
+      <Header {...header}/>
       <Tabs />
       <grid>
         <Route path="/*/(\\d+)" exact>

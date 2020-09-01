@@ -2,9 +2,6 @@ import React from "react"
 import styled, { css, use } from "reshadow/macro"
 import t from "prop-types"
 
-// eslint-disable-next-line
-import { Icon } from "components"
-
 export const Button = ({
   styles,
   children,

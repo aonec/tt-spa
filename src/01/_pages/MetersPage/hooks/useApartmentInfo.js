@@ -1,5 +1,4 @@
 export const useApartmentInfo = ({ apartInfo = {} }) => {
-  console.log(apartInfo)
   const { housingStock = {}, apartmentNumber, homeowners = [] } = apartInfo
   return {
     title:

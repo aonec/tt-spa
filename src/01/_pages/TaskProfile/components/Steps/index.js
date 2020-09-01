@@ -33,7 +33,6 @@ const styles = css`
 
 export const Steps = () => {
   const { url } = useRouteMatch()
-  console.log(url)
   return styled(styles, s.input, s.button, s.label)(
     <Route path={`${url}/(step1|step2|step3)`}>
       <steps>

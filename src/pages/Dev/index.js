@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "reshadow/macro"
-// eslint-disable-next-line
-import { Button, Icon, Input } from "components"
+
+import { Input } from "components"
 
 export const Dev = () => {
   return styled()`

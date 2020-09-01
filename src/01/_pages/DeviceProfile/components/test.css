@@ -1,0 +1,44 @@
+/* .test {
+    display: block;
+    background: #f3f5f6;
+    border: 1px solid #dcdee4;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 0 16px;
+} */
+.test {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    align-items: baseline;
+}
+.test__wrap {
+    display: block !important;
+    background: #f3f5f6;
+    border: 1px solid #dcdee4;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 0 16px;
+}
+
+
+.test .test__plan {
+    padding: 8px 0;
+    border-bottom: 1px solid #dcdee4;
+}
+
+.test .test__plan:last-of-type {
+    border-bottom: none;
+}
+
+.test h4 {
+    color: rgba(39, 47, 90, 0.6);
+    font-weight: normal;
+}
+
+.test h4:hover {
+    color: var(--primary-100);
+}
+
+/* button {
+    margin-left: 16px;
+} */

@@ -17,7 +17,6 @@ export const useTasksPage = () => {
       getTasks(cancel)
     }
     return () => cancel()
-    // eslint-disable-next-line 
   }, [tasks?.params.grouptype])
 
   async function getTasks(cancel) {

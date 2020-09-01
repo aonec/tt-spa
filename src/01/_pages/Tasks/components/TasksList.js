@@ -80,7 +80,6 @@ const styles = css`
 
 export const TasksList = ({ items }) => {
   const { push } = useHistory()
-  console.log(items)
   return styled(styles, time_line)(
     items?.map(
       ({

@@ -11,7 +11,6 @@ const tabItems = [
 ]
 
 export const Tabs = ({ url }) => {
-  console.log(url)
   return styled(tabs)`
     tabs {
       grid-column: 1 / -1;

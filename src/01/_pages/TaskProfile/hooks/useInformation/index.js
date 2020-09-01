@@ -17,7 +17,6 @@ const taskInfo = [
 
 export const useInformation = (state = {}) => {
   createInfoHeader(state)
-  console.log(useInfoHeader())
   return {
     loading: false,
     list: taskInfo.reduce((l, { 0: title, 1: value, 2: url }) => {
@@ -39,5 +38,5 @@ export const useInformation = (state = {}) => {
 }
 
 function createInfoHeader(state = {}) {
-  console.log("state", state)
+  // console.log("state", state)
 }
