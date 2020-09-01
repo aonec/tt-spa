@@ -1,4 +1,4 @@
-import { css } from 'reshadow/macro'
+import { css } from 'reshadow/macro';
 
 export const styles = css`
   information {
@@ -28,4 +28,4 @@ export const styles = css`
       }
     }
   }
-`
+`;
