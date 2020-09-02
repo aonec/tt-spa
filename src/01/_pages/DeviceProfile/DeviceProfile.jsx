@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'reshadow/macro';
 
 import {
@@ -26,57 +26,49 @@ function reducer(state, action) {
       return state;
   }
 }
+
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = (props) => {
-  const a = props.location.pathname;
-  console.log('deviceprops', a);
 
   const [state, dispatch] = React.useReducer(reducer, {});
   useFetchPage(state, dispatch);
-  const { 0: objid, 1: deviceId } = useParams();
-  console.log('objid', objid);
-  console.log('deviceId', deviceId);
-
-  // const params = useParams();
-
-  // const deviceId = params[1];
-  // const buildingId = params[0];
-
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state;
 
+
+  const { 0: objid, 1: deviceId } = useParams();
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
 
   useEffect(() => {
-  getInfo(deviceId).then((response) => setDevice(response));
-  getObjectOfDevice(objid).then((response) => setBuilding(response)); 
-  getODPUTasks(objid).then((response) => setTasks(response)); 
+    getInfo(deviceId).then((response) => setDevice(response));
+    getObjectOfDevice(objid).then((response) => setBuilding(response));
+    getODPUTasks(objid).then((response) => setTasks(response));
   }, []);
 
   const buttonHandler = () => {
-    // console.log('buttonHandler');
+    console.log('deviceId', deviceId);
+    console.log('device', device)
+    console.log('objid', objid)
+    console.log('building', building)
   };
 
-  console.log(info)
-  console.log(building)
-  const {city, street, number} = {...building}
-  const address ={city, street, number};
-  
+  const { city, street, number } = { ...building };
+  const address = { city, street, number };
 
   return styled(grid)(
     <>
-      <DeviceContext.Provider value={device}>
-        {/* <button onClick={buttonHandler}>button</button> */}
-        <Header {...device} {...address}/>
+      <DeviceContext.Provider value={{device,building}}>
+         {/*<button onClick={buttonHandler}>button</button>*/}
+        <Header />
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>
-            <Information {...info} {...device} {...address}/>
+            <Information {...info} />
             {/* <Events title="Задачи с объектом" {...events} /> */}
           </Route>
           {/* <Route

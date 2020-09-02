@@ -8,35 +8,25 @@
       </path>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:task" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
       </path>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:bug" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:task" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="99f4a36d-3b28-4810-996a-3affe9858c0b" name="Default Changelist" comment="" />
+    <list default="true" id="99f4a36d-3b28-4810-996a-3affe9858c0b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/01/_components/DeviceIcons/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/01/_components/DeviceIcons/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/DeviceProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/DeviceProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/Information.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/Information.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/test.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/01/_pages/DeviceProfile/components/test.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,6 +100,7 @@
       <workItem from="1598529901184" duration="2050000" />
       <workItem from="1598532563449" duration="5654000" />
       <workItem from="1598539015190" duration="6405000" />
+      <workItem from="1599065130012" duration="4024000" />
     </task>
     <servers />
   </component>
@@ -144,10 +135,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="699" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598506215939" />
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598537778237">
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1599068540795">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598537778237" />
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599068540795" />
     <state width="1899" height="199" key="GridCell.Tab.0.bottom" timestamp="1598506979509">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -168,10 +159,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="72" y="247" width="1448" height="710" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598508948158" />
-    <state x="667" y="119" width="646" height="801" key="find.popup" timestamp="1598597127201">
+    <state x="667" y="119" width="646" height="801" key="find.popup" timestamp="1599068657100">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="667" y="119" width="646" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598597127201" />
+    <state x="667" y="119" width="646" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599068657100" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1598598365471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

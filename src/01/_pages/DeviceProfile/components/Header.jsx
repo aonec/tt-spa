@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { getObjectOfDevice } from '01/_api/device_page';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Icon } from '01/_components/Icon';
+import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
 
@@ -30,28 +29,26 @@ export const Subtitle = styled.p`
 
 export const Header = ({ list = [], loading = true, ...props }) => {
 
-  const [house, setHouse] = useState();
-  const {
-    serialNumber, type, model,city,number,street
-  } = props;
+  const DeviceProfileContext = useContext(DeviceContext);
+
+  const { city, street, number } = { ...DeviceProfileContext.building }
+  const { model, serialNumber, type } = { ...DeviceProfileContext.device }
+  const { icon, color } = { ...DeviceIcons[type] };
 
   const buttonHandler = () => {
-    // console.log('house', house);
-    // console.log(city);
+    console.log(type)
   };
-  const [icons, setIcons] = useState(DeviceIcons);
-  const { icon, color } = { ...icons[type] };
-
 
   return (
     <h>
       <Title>
-        <Icon icon={icons.Calculator.icon} style={{ width: '24px', height: '24px' }} />
+        <Icon icon={icon} color={color} style={{ width: '24px', height: '24px', marginRight:'8px' }}/>
         {model}
         &nbsp;(
         {serialNumber}
         )
       </Title>
+      {/*<button onClick={buttonHandler}>button</button>*/}
       <Subtitle>
         {city}
         ,
@@ -66,4 +63,3 @@ export const Header = ({ list = [], loading = true, ...props }) => {
 };
 
 export default Header;
-
