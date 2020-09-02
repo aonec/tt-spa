@@ -14,30 +14,9 @@ import { Events } from './components/Events';
 import { Changes } from './components/Changes';
 import { Documents } from './components/Documents';
 
-import { useObjectInformation, useFetchPage, useDeviceChanges } from './hooks';
-
-function reducer(state, action) {
-  const { type, data } = action;
-  switch (type) {
-    case 'success':
-      return { ...state, ...data };
-    default:
-      console.error('objid', type);
-      return state;
-  }
-}
-
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = (props) => {
-
-  const [state, dispatch] = React.useReducer(reducer, {});
-  useFetchPage(state, dispatch);
-  const { push } = useHistory();
-  const info = useObjectInformation(state);
-  const changes = useDeviceChanges(state);
-  const { header = [], events = [], aparts = [] } = state;
-
   const { 0: objid, 1: deviceId } = useParams();
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
@@ -50,24 +29,19 @@ export const DeviceProfile = (props) => {
   }, []);
 
   const buttonHandler = () => {
-    console.log('deviceId', deviceId);
-    console.log('device', device)
-    console.log('objid', objid)
-    console.log('building', building)
+    console.log('device', device);
+    console.log('building', building);
   };
-
-  const { city, street, number } = { ...building };
-  const address = { city, street, number };
 
   return styled(grid)(
     <>
-      <DeviceContext.Provider value={{device,building}}>
-         {/*<button onClick={buttonHandler}>button</button>*/}
+      <DeviceContext.Provider value={{ device, building }}>
+        {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>
-            <Information {...info} />
+            <Information />
             {/* <Events title="Задачи с объектом" {...events} /> */}
           </Route>
           {/* <Route
@@ -77,15 +51,15 @@ export const DeviceProfile = (props) => {
                 /> */}
         </grid>
         <Route path="/*/(\\d+)/documents" exact>
-          <Documents {...info} />
+          <Documents />
         </Route>
 
         <Route path="/*/(\\d+)/testimony" exact>
-          <History {...info} />
+          <History />
         </Route>
 
         <Route path="/*/(\\d+)/changes" exact>
-          <Changes {...info} />
+          <Changes />
         </Route>
       </DeviceContext.Provider>
     </>,

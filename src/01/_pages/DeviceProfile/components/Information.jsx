@@ -7,25 +7,30 @@ import { DeviceContext } from '../DeviceProfile';
 export const Information = () => {
   const DeviceProfileContext = useContext(DeviceContext);
 
-  const { city, street, number } = { ...DeviceProfileContext.building }
-  const {
-    model, serialNumber, type, commercialAccountingDate,
-    futureCheckingDate,
-    lastCheckingDate,
-  } = { ...DeviceProfileContext.device }
+  const { city, street, number } = { ...DeviceProfileContext.building };
+  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = {
+    ...DeviceProfileContext.device,
+  };
 
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
-  return styled(information)`
-  `(
+  return styled(information)``(
     <information>
       <h2>Информация</h2>
       <info_list>
         <info_item>
           <span>Адрес</span>
-          <span style={{fontWeight:'500'}}>{city}, {street}, {number}</span>
+          <span style={{ fontWeight: '500' }}>
+            {city}
+            ,
+            {' '}
+            {street}
+            ,
+            {' '}
+            {number}
+          </span>
         </info_item>
         <info_item>
           <span>Дата ввода в эксплуатацию</span>
@@ -40,7 +45,6 @@ export const Information = () => {
           <span>{convertDate(futureCheckingDate)}</span>
         </info_item>
       </info_list>
-
     </information>,
   );
 };

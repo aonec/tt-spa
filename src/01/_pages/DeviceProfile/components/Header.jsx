@@ -28,26 +28,33 @@ export const Subtitle = styled.p`
 `;
 
 export const Header = ({ list = [], loading = true, ...props }) => {
-
   const DeviceProfileContext = useContext(DeviceContext);
 
-  const { city, street, number } = { ...DeviceProfileContext.building }
-  const { model, serialNumber, type, resource } = { ...DeviceProfileContext.device }
+  const { city, street, number } = { ...DeviceProfileContext.building };
+  const {
+    model, serialNumber, type, resource,
+  } = {
+    ...DeviceProfileContext.device,
+  };
   const { icon, color } = { ...DeviceIcons[resource] };
   const buttonHandler = () => {
-    console.log(DeviceProfileContext)
+    console.log(DeviceProfileContext);
   };
 
   return (
     <h>
       <Title>
-        <Icon icon={icon} color={color} style={{ width: '24px', height: '24px', marginRight:'8px' }}/>
+        <Icon
+          icon={icon}
+          color={color}
+          style={{ width: '24px', height: '24px', marginRight: '8px' }}
+        />
         {model}
         &nbsp;(
         {serialNumber}
         )
       </Title>
-      {/*<button onClick={buttonHandler}>button</button>*/}
+      {/* <button onClick={buttonHandler}>button</button> */}
       <Subtitle>
         {city}
         ,
