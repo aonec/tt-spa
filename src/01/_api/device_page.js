@@ -37,9 +37,7 @@ export async function getObjectOfDevice(url = '') {
 export async function getODPUTasks(url = '') {
   try {
     const newURL = (`Tasks?DeviceId=${url}`);
-    console.log("getODPUTasks", url)
     const res = await axios.get(newURL);
-    console.log("getODPUTasks", res)
     return {
       ...res,
     };

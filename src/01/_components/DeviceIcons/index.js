@@ -10,5 +10,7 @@ export default {
   ColdWaterSupply: { icon: 'water', color: '#79AFFF' },
   Electricity: { icon: 'electro', color: '#E2B104' },
   Calculator: { icon: 'calendar', color: '#272F5A' },
-  FlowMeter: { icon: 'heat', color: '#272F5A' },
+  Heat: { icon: 'heat', color: '#272F5A' },
+  null: { icon: 'device', color: '#272F5A' },
+
 };

@@ -32,11 +32,10 @@ export const Header = ({ list = [], loading = true, ...props }) => {
   const DeviceProfileContext = useContext(DeviceContext);
 
   const { city, street, number } = { ...DeviceProfileContext.building }
-  const { model, serialNumber, type } = { ...DeviceProfileContext.device }
-  const { icon, color } = { ...DeviceIcons[type] };
-
+  const { model, serialNumber, type, resource } = { ...DeviceProfileContext.device }
+  const { icon, color } = { ...DeviceIcons[resource] };
   const buttonHandler = () => {
-    console.log(type)
+    console.log(DeviceProfileContext)
   };
 
   return (

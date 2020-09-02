@@ -38,7 +38,6 @@ export const DeviceProfile = (props) => {
   const changes = useDeviceChanges(state);
   const { header = [], events = [], aparts = [] } = state;
 
-
   const { 0: objid, 1: deviceId } = useParams();
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
