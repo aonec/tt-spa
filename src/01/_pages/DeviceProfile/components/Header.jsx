@@ -36,8 +36,8 @@ export const Header = ({ list = [], loading = true, ...props }) => {
   } = props;
 
   const buttonHandler = () => {
-    console.log('house', house);
-    console.log(city);
+    // console.log('house', house);
+    // console.log(city);
   };
   const [icons, setIcons] = useState(DeviceIcons);
   const { icon, color } = { ...icons[type] };
@@ -67,22 +67,3 @@ export const Header = ({ list = [], loading = true, ...props }) => {
 
 export default Header;
 
-// export const Header = React.memo(({ 0: title, 1: subtitle }) =>
-//   styled(styles)(
-//     <h>
-//       <Loader show={!title} size="48">
-//         <h_title>{title}</h_title>
-//         <h_subtitle>{subtitle}</h_subtitle>
-//       </Loader>
-//     </h>
-//   )
-// )
-
-// useEffect(() => {
-//   async function getTasksAndApartments() {
-//     await getObjectOfDevice(params[0]).then((response) => {
-//       setapartment(response.header);
-//     });
-//   }
-//   getTasksAndApartments();
-// }, []);

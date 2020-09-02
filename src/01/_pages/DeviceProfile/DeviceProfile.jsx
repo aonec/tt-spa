@@ -5,7 +5,7 @@ import {
   Route, useRouteMatch, useParams, useHistory,
 } from 'react-router-dom';
 import { grid } from '01/r_comp';
-import { getInfo, getObjectOfDevice } from '01/_api/device_page';
+import { getInfo, getObjectOfDevice, getODPUTasks } from '01/_api/device_page';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
@@ -34,15 +34,14 @@ export const DeviceProfile = (props) => {
 
   const [state, dispatch] = React.useReducer(reducer, {});
   useFetchPage(state, dispatch);
-  const { 0: objid } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   console.log('objid', objid);
+  console.log('deviceId', deviceId);
 
-  const params = useParams();
-  console.log(params[0]);
-  console.log(params[1]);
-  const deviceId = params[1];
-  const buildingId = params[0];
-  
+  // const params = useParams();
+
+  // const deviceId = params[1];
+  // const buildingId = params[0];
 
   const { push } = useHistory();
   const info = useObjectInformation(state);
@@ -50,57 +49,34 @@ export const DeviceProfile = (props) => {
   const { header = [], events = [], aparts = [] } = state;
 
   const [device, setDevice] = useState();
-  const [building, setBuilding] = useState()
-
-  const {
-    calculator,
-    canBeEdited,
-    closingDate,
-    commercialAccountingDate,
-    diameter,
-    futureCheckingDate,
-    housingStockId,
-    id,
-    ipV4,
-    lastCheckingDate,
-    model,
-    resource,
-    serialNumber,
-    type,
-    underTransaction,
-    url,
-  } = { ...device };
-
+  const [building, setBuilding] = useState();
+  const [tasks, setTasks] = useState();
 
   useEffect(() => {
-    async function getDeviceInfo() {
-      await getInfo(deviceId).then((response) => setDevice(response));
-    }
-    getDeviceInfo();
-
-    async function getObjectOfDeviceWrap() {
-      await getObjectOfDevice(buildingId).then((response) => setBuilding(response));
-    }
-    getObjectOfDeviceWrap();
-    
+  getInfo(deviceId).then((response) => setDevice(response));
+  getObjectOfDevice(objid).then((response) => setBuilding(response)); 
+  getODPUTasks(objid).then((response) => setTasks(response)); 
   }, []);
 
   const buttonHandler = () => {
     // console.log('buttonHandler');
-    // console.log(device);
   };
 
-
+  console.log(info)
+  console.log(building)
+  const {city, street, number} = {...building}
+  const address ={city, street, number};
+  
 
   return styled(grid)(
     <>
       <DeviceContext.Provider value={device}>
         {/* <button onClick={buttonHandler}>button</button> */}
-        <Header {...device}  {...building}/>
+        <Header {...device} {...address}/>
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>
-            <Information {...info} {...device} />
+            <Information {...info} {...device} {...address}/>
             {/* <Events title="Задачи с объектом" {...events} /> */}
           </Route>
           {/* <Route

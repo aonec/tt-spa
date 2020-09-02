@@ -9,7 +9,7 @@ export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/${url}`);
-    console.log('res', res);
+    // console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {}
@@ -20,9 +20,9 @@ const HousingStocksURL = 'HousingStocks';
 export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
-    console.log('url', url);
+    // console.log('url', url);
     const res = await axios.get(`HousingStocks/${url}`);
-    console.log('res', res);
+    // console.log('res', res);
     return res;
     // return {
     //   ...res,
@@ -33,11 +33,26 @@ export async function getObjectOfDevice(url = '') {
   }
 }
 
-const TasksURL = 'MeteringDevices';
+
+export async function getODPUTasks(url = '') {
+  try {
+    const newURL = (`Tasks?DeviceId=${url}`);
+    console.log("getODPUTasks", url)
+    const res = await axios.get(newURL);
+    console.log("getODPUTasks", res)
+    return {
+      ...res,
+    };
+  } catch (error) {
+  }
+}
+
+
+const MeteringDevices = 'MeteringDevices';
 
 export async function getDeviceTasks(url = '') {
   try {
-    const newURL = (`${TasksURL}?DeviceId=${url}`);
+    const newURL = (`${MeteringDevices}?DeviceId=${url}`);
     const res = await axios.get(newURL);
     return res;
   } catch (error) {

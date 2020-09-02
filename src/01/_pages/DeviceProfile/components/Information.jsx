@@ -20,13 +20,15 @@ export const Information = ({ list = [], loading = true, ...props }) => {
     commercialAccountingDate,
     futureCheckingDate,
     lastCheckingDate,
+    city, street, number
   } = props;
 
+  console.log(commercialAccountingDate,futureCheckingDate )
   const buttonHandler = () => {
     console.log('buttonHandler', DeviceContextResult);
   };
   const test = [
-    'Данныe обновляются',
+    `${city}, ${street}, ${number}` || 'Данныe обновляются',
     // 'Данныe обновляются',
     convertDate(commercialAccountingDate) || 'Данныe обновляются',
     // 'Данныe обновляются',
@@ -40,21 +42,6 @@ export const Information = ({ list = [], loading = true, ...props }) => {
   `(
     <information {...props}>
       <h2>Информация</h2>
-      {/* <button onClick={buttonHandler}>Информация</button> */}
-      {/* <Loader show={loading} size="32"> */}
-      {/* <info_list>
-                {list.map(({ title, value, url }) => (
-                    <info_item
-                        key={title}
-                        {...use({ url })}
-                        onClick={url ? push(url) : null}
-                    >
-                        <span>{title}</span>
-                        <span>{value}</span>
-                    </info_item>
-                ))}
-            </info_list> */}
-
       <info_list>
         {list.map(({ title, value, url }, index) => (
           <info_item
