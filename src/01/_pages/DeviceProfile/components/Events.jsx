@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
 
-import { Loader, Icon } from "01/components";
-import { DeviceContext } from "../DeviceProfile";
-import { convertDate } from "01/_api/utils/convertDate";
-import { Button } from "01/_components/Button";
+import { Loader, Icon } from '01/components';
+import { convertDate } from '01/_api/utils/convertDate';
+import { Button } from '01/_components/Button';
+import { DeviceContext } from '../DeviceProfile';
 
 const Template = styled.div``;
 
@@ -30,7 +30,6 @@ const StageName = styled.h3`
 `;
 const TasksWrap = styled.div`
   padding-left: 40px;
-  padding-top: 24px;
 `;
 
 const TaskName = styled.p`
@@ -53,26 +52,29 @@ const TasksTitle = styled.h2`
 `;
 
 const buttonHandler = () => {
-  console.log("buttonHandler");
+  console.log('buttonHandler');
 };
-export const Events = ({ title = "", loading = true }) => {
+export const Events = ({ title = '', loading = true }) => {
   const { tasks } = useContext(DeviceContext);
 
   if (tasks) {
     const tasksList = tasks.items;
-    //console.log(tasksList);
+    // console.log(tasksList);
     const TasksResult = tasksList.map((task, index) => {
       const { currentStage, perpetrator, id } = task;
       return (
         <Task key={id} href={`/tasks/${id}`}>
           <StageName>{currentStage.name}</StageName>
-          <TaskName>Причина: {task.name}</TaskName>
+          <TaskName>
+            Причина:
+            {task.name}
+          </TaskName>
           <TaskRow>
-            <Icon icon="timer" style={{ marginRight: "8px" }} />
+            <Icon icon="timer" style={{ marginRight: '8px' }} />
             {`${convertDate(currentStage.startingTime)} - ${convertDate(currentStage.expectedCompletionTime)}`}
           </TaskRow>
           <TaskRow>
-            <Icon icon="username2" style={{ marginRight: "8px" }} />
+            <Icon icon="username2" style={{ marginRight: '8px' }} />
             {perpetrator.name}
           </TaskRow>
         </Task>
@@ -86,7 +88,6 @@ export const Events = ({ title = "", loading = true }) => {
         <Button onClick={buttonHandler}>Все задачи с объектом</Button>
       </TasksWrap>
     );
-  } else {
-    return <Loader size="32" />;
   }
+  return <Loader size="32" />;
 };
