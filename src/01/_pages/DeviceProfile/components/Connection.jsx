@@ -10,8 +10,6 @@ export const Connection = () => {
   };
 
   if (device) {
-    console.log(device);
-
     return (
       <ListWrap>
         <Title>Настройки</Title>
