@@ -1,52 +1,82 @@
 import React, { useContext } from 'react';
-import styled from 'reshadow/macro';
-import { information } from '01/r_comp';
+import styled from 'styled-components';
 import { convertDate } from '01/_api/utils/convertDate';
+import { Loader } from '01/components';
 import { DeviceContext } from '../DeviceProfile';
 
-export const Information = () => {
-  const DeviceProfileContext = useContext(DeviceContext);
+const InformationWrap = styled.div`
+  display: grid;
+  height: min-content;
+}
+`;
 
-  const { city, street, number } = { ...DeviceProfileContext.building };
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = {
-    ...DeviceProfileContext.device,
-  };
+const Title = styled.h2`
+`;
+
+const ListItem = styled.div`
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-template-rows: 48px;
+align-items: center;
+border-bottom: 1px solid var(--frame);
+opacity: 0.8;
+&[|url] {
+  cursor: pointer;
+  font-weight: 500;
+  opacity: 1;
+  &:hover {
+    color: var(--primary-100);
+  }
+}
+& span {
+  padding: 8px;
+  &:first-of-type {
+    opacity: 0.6;
+    font-weight: normal;
+  }
+}
+}
+`;
+
+export const Information = () => {
+  // const DeviceProfileContext = useContext(DeviceContext);
+  const { device, building } = useContext(DeviceContext);
 
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
-  return styled(information)``(
-    <information>
-      <h2>Информация</h2>
-      <info_list>
-        <info_item>
+  if (device && building) {
+    const { city, street, number } = building;
+    const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+
+    return (
+      <InformationWrap>
+        <Title>Информация</Title>
+        <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {city}
-            ,
-            {' '}
-            {street}
-            ,
-            {' '}
-            {number}
+            {`${city},${street},${number}`}
           </span>
-        </info_item>
-        <info_item>
+        </ListItem>
+        <ListItem>
           <span>Дата ввода в эксплуатацию</span>
           <span>{convertDate(commercialAccountingDate)}</span>
-        </info_item>
-        <info_item>
+        </ListItem>
+        <ListItem>
           <span>Дата поверки прибора</span>
           <span>{convertDate(lastCheckingDate)}</span>
-        </info_item>
-        <info_item>
+        </ListItem>
+        <ListItem>
           <span>Дата следующей поверки прибора</span>
           <span>{convertDate(futureCheckingDate)}</span>
-        </info_item>
-      </info_list>
-    </information>,
-  );
+        </ListItem>
+        {/* </info_list> */}
+      </InformationWrap>
+    );
+  }
+  // пока не получили данные - показываем Loader
+  return <Loader show size="32" />;
 };
 
 export default Information;

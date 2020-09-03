@@ -9,67 +9,47 @@ export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/${url}`);
-    // console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {}
 }
 
-const HousingStocksURL = 'HousingStocks';
+const housingStocksURL = 'HousingStocks';
 
 export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     // console.log('url', url);
     const res = await axios.get(`HousingStocks/${url}`);
-    // console.log('res', res);
     return res;
-    // return {
-    //   ...res,
-    //   info: true,
-    //   header: createTitleObject(res),
-    // };
   } catch (error) {
   }
 }
-
 
 export async function getODPUTasks(url = '') {
   try {
     const newURL = (`Tasks?DeviceId=${url}`);
     const res = await axios.get(newURL);
-    return {
-      ...res,
-    };
+    return res;
   } catch (error) {
   }
 }
 
-
-const MeteringDevices = 'MeteringDevices';
+const meteringDevices = 'MeteringDevices';
 
 export async function getDeviceTasks(url = '') {
   try {
-    const newURL = (`${MeteringDevices}?DeviceId=${url}`);
+    const newURL = (`${meteringDevices}?DeviceId=${url}`);
     const res = await axios.get(newURL);
     return res;
   } catch (error) {
   }
 }
 
-
 export async function getDevices(url = '') {
   try {
     const res = await axios.get(replaceURL(url));
-    return {
-      ...res,
-      header: createTitleObject(res.housingStock),
-      city: res.housingStock.city,
-      devices: {
-        items: res.devices.map(createDevice),
-        loading: false,
-      },
-    };
+    return res;
   } catch (error) {}
 }
 
@@ -94,17 +74,4 @@ export async function getEvents(...ids) {
       },
     };
   } catch (error) {}
-}
-
-export async function getApartments(params) {
-  try {
-    const res = await axios.get('apartments', { params });
-    return { apartments: { ...res, loading: false } };
-  } catch (error) {}
-}
-
-// utils
-function createTitleObject(data) {
-  const { street, number, city } = data;
-  return [`${street}, ${number}`, city];
 }

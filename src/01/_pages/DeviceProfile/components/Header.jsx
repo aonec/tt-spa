@@ -2,11 +2,12 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Icon } from '01/_components/Icon';
+import { Loader } from '01/components';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
 
-export const h = styled.div`
+export const HeaderWrap = styled.div`
   display: grid;
   grid-template-rows: 48px 16px;
   grid-gap: 8px;
@@ -28,44 +29,38 @@ export const Subtitle = styled.p`
 `;
 
 export const Header = ({ list = [], loading = true, ...props }) => {
-  const DeviceProfileContext = useContext(DeviceContext);
+  // const DeviceProfileContext = useContext(DeviceContext);
+  const { device, building } = useContext(DeviceContext);
 
-  const { city, street, number } = { ...DeviceProfileContext.building };
-  const {
-    model, serialNumber, type, resource,
-  } = {
-    ...DeviceProfileContext.device,
-  };
-  const { icon, color } = { ...DeviceIcons[resource] };
   const buttonHandler = () => {
-    console.log(DeviceProfileContext);
+    console.log(device, building);
   };
 
-  return (
-    <h>
-      <Title>
-        <Icon
-          icon={icon}
-          color={color}
-          style={{ width: '24px', height: '24px', marginRight: '8px' }}
-        />
-        {model}
-        &nbsp;(
-        {serialNumber}
-        )
-      </Title>
-      {/* <button onClick={buttonHandler}>button</button> */}
-      <Subtitle>
-        {city}
-        ,
-        {' '}
-        {street}
-        ,
-        {' '}
-        {number}
-      </Subtitle>
-    </h>
-  );
+  // сначала получаем объекты с данными
+  if (device && building) {
+    const { city, street, number } = building;
+    const { model, serialNumber, resource } = device;
+    const { icon, color } = DeviceIcons[resource];
+
+    return (
+      <HeaderWrap>
+        <Title>
+          <Icon
+            icon={icon}
+            color={color}
+            size="24"
+            style={{ marginRight: '8px' }}
+          />
+          {`${model} (${serialNumber})`}
+        </Title>
+        {/* <button onClick={buttonHandler}>button</button> */}
+        <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+      </HeaderWrap>
+    );
+  }
+  // пока не получили данные - показываем Loader
+
+  return <Loader show size="32" />;
 };
 
 export default Header;
