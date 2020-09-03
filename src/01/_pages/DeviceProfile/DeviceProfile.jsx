@@ -25,7 +25,7 @@ export const DeviceProfile = (props) => {
   useEffect(() => {
     getInfo(deviceId).then((response) => setDevice(response));
     getObjectOfDevice(objid).then((response) => setBuilding(response));
-    getODPUTasks(objid).then((response) => setTasks(response));
+    getODPUTasks(deviceId).then((response) => setTasks(response));
   }, []);
 
   const buttonHandler = () => {
@@ -35,14 +35,14 @@ export const DeviceProfile = (props) => {
 
   return styled(grid)(
     <>
-      <DeviceContext.Provider value={{ device, building }}>
+      <DeviceContext.Provider value={{ device, building, tasks }}>
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
         <grid>
           <Route path="/*/(\\d+)" exact>
             <Information />
-            {/* <Events title="Задачи с объектом" {...events} /> */}
+            <Events title="Задачи с объектом" />
           </Route>
           {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
