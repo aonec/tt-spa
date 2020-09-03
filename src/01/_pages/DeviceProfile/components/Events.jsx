@@ -11,6 +11,15 @@ const Template = styled.div``;
 const Task = styled.a`
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  width: fit-content;
+
+  &:hover {
+
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    
+  }
 `;
 
 const StageName = styled.h3`
@@ -40,7 +49,7 @@ const TaskRow = styled.div`
 const TasksTitle = styled.h2`
   font-size: 24px;
   line-height: 32px;
-  padding-bottom: 24px;
+  padding-bottom: 14px;
 `;
 
 const buttonHandler = () => {
@@ -60,8 +69,7 @@ export const Events = ({ title = "", loading = true }) => {
           <TaskName>Причина: {task.name}</TaskName>
           <TaskRow>
             <Icon icon="timer" style={{ marginRight: "8px" }} />
-            {convertDate(currentStage.startingTime)}
-            {convertDate(currentStage.expectedCompletionTime)}
+            {`${convertDate(currentStage.startingTime)} - ${convertDate(currentStage.expectedCompletionTime)}`}
           </TaskRow>
           <TaskRow>
             <Icon icon="username2" style={{ marginRight: "8px" }} />
