@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Loader, Icon } from "01/components";
 import { DeviceContext } from "../DeviceProfile";
 import { convertDate } from "01/_api/utils/convertDate";
+import { Button } from "01/_components/Button";
 
 const Template = styled.div``;
 
@@ -19,9 +20,9 @@ const StageName = styled.h3`
   color: rgba(0, 0, 0, 0.85);
 `;
 const TasksWrap = styled.div`
-padding-left: 40px;
-padding-top: 24px;`
-
+  padding-left: 40px;
+  padding-top: 24px;
+`;
 
 const TaskName = styled.p`
   color: rgba(39, 47, 90, 0.45);
@@ -42,6 +43,9 @@ const TasksTitle = styled.h2`
   padding-bottom: 24px;
 `;
 
+const buttonHandler = () => {
+  console.log("buttonHandler");
+};
 export const Events = ({ title = "", loading = true }) => {
   const { tasks } = useContext(DeviceContext);
 
@@ -71,9 +75,10 @@ export const Events = ({ title = "", loading = true }) => {
       <TasksWrap>
         <TasksTitle>{title}</TasksTitle>
         {TasksResult}
+        <Button onClick={buttonHandler}>Все задачи с объектом</Button>
       </TasksWrap>
     );
   } else {
-    return <Loader size='32' />;
+    return <Loader size="32" />;
   }
 };
