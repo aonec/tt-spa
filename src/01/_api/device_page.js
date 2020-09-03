@@ -15,7 +15,6 @@ export async function getInfo(url = '') {
 }
 
 const housingStocksURL = 'HousingStocks';
-
 export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
@@ -30,6 +29,7 @@ export async function getODPUTasks(url = '') {
   try {
     const newURL = (`Tasks?DeviceId=${url}`);
     const res = await axios.get(newURL);
+    console.log('getODPUTasks', res);
     return res;
   } catch (error) {
   }
