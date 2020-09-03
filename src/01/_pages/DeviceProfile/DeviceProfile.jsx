@@ -13,6 +13,7 @@ import { History } from './components/History';
 import { Events } from './components/Events';
 import { Changes } from './components/Changes';
 import { Documents } from './components/Documents';
+import { Connection } from './components/Connection';
 
 export const DeviceContext = React.createContext();
 
