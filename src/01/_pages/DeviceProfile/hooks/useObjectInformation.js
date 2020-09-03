@@ -1,4 +1,4 @@
-const objectInfo = [
+const objectInfo = {
   ['Адрес', 'city'],
   // ['Дата выпуска прибора', 'district'],
   ['Дата ввода в эксплуатацию', 'commercialAccountingDate'],
@@ -9,7 +9,7 @@ const objectInfo = [
   // ["Магнитная пломба", "totalLivingArea"],
   // ["Организация", "areaOfNonResidential"],
   // ["Монтажная организация", "houseArea"],
-];
+};
 
 export const useObjectInformation = (props) => ({
   loading: !props.index,

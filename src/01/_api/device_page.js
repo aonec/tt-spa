@@ -20,7 +20,7 @@ export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     // console.log('url', url);
-    const res = await axios.get(`HousingStocks/${url}`);
+    const res = await axios.get(`${housingStocksURL}/${url}`);
     return res;
   } catch (error) {
   }
