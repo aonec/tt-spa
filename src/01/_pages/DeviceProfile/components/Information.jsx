@@ -14,17 +14,7 @@ export const Information = () => {
   };
 
   const { city, street, number } = building || {};
-  const {
-    commercialAccountingDate,
-    futureCheckingDate,
-    lastCheckingDate,
-  } = device || {};
-
-  // if (device && building) {
-  // const { city, street, number } = { ...building };
-  // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = {
-  //   ...device,
-  // };
+  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
 
   return (
     <ListWrap>
