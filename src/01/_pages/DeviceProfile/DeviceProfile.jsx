@@ -6,13 +6,15 @@ import {
 } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { getInfo, getObjectOfDevice, getODPUTasks } from '01/_api/device_page';
+import { ListWrap, Title, ListItem } from '01/_components/List';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
-import { History } from './components/History';
+import { History } from './components/History__backup';
 import { Events } from './components/Events';
 import { Changes } from './components/Changes';
 import { Documents } from './components/Documents';
+import { Connection } from './components/Connection';
 
 export const DeviceContext = React.createContext();
 
@@ -39,24 +41,27 @@ export const DeviceProfile = (props) => {
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-        <grid>
-          <Route path="/*/(\\d+)" exact>
+
+        <Route path="/*/(\\d+)" exact>
+          <grid>
             <Information />
             <Events title="Задачи с объектом" />
-          </Route>
-          {/* <Route
+          </grid>
+        </Route>
+        {/* <Route
                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
                   component={DeviceProfile}
                   exact
                 /> */}
-        </grid>
-        <Route path="/*/(\\d+)/documents" exact>
-          <Documents />
+
+        <Route path="/*/(\\d+)/connection" exact>
+          <grid>
+            <Connection />
+            <Events title="Задачи с объектом" />
+          </grid>
         </Route>
 
-        <Route path="/*/(\\d+)/testimony" exact>
-          <History />
-        </Route>
+        <Route path="/*/(\\d+)/documents" exact />
 
         <Route path="/*/(\\d+)/changes" exact>
           <Changes />

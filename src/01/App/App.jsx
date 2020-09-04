@@ -51,7 +51,7 @@ export function App() {
                 <Route path="/tasks/(\\d+)" component={TaskProfile} />
                 <Route path="/objects/" component={Objects} exact />
                 <Route
-                  path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
+                  path="/objects/(\\d+)/devices/(\\d+)/(connection|documents|changes)?"
                   component={DeviceProfile}
                   exact
                 />

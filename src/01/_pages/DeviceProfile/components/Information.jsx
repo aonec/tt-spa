@@ -1,57 +1,24 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Loader } from '01/components';
+import { ListWrap, ListItem, Title } from '01/_components/List';
 import { DeviceContext } from '../DeviceProfile';
-
-const InformationWrap = styled.div`
-  display: grid;
-  height: min-content;
-}
-`;
-
-const Title = styled.h2`
-`;
-
-const ListItem = styled.div`
-display: grid;
-grid-template-columns: 1fr 1fr;
-grid-template-rows: 48px;
-align-items: center;
-border-bottom: 1px solid var(--frame);
-opacity: 0.8;
-&[|url] {
-  cursor: pointer;
-  font-weight: 500;
-  opacity: 1;
-  &:hover {
-    color: var(--primary-100);
-  }
-}
-& span {
-  padding: 8px;
-  &:first-of-type {
-    opacity: 0.6;
-    font-weight: normal;
-  }
-}
-}
-`;
 
 export const Information = () => {
   // const DeviceProfileContext = useContext(DeviceContext);
   const { device, building } = useContext(DeviceContext);
+  const loading = !(device && building);
 
-  const buttonHandler = () => {
+  const buttonHandler = ({ loading = true }) => {
     console.log('buttonHandler');
   };
 
-  if (device && building) {
-    const { city, street, number } = building;
-    const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+  const { city, street, number } = building || {};
+  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
 
-    return (
-      <InformationWrap>
+  return (
+    <ListWrap>
+      <Loader show={loading} size="32">
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
@@ -71,12 +38,13 @@ export const Information = () => {
           <span>Дата следующей поверки прибора</span>
           <span>{convertDate(futureCheckingDate)}</span>
         </ListItem>
-        {/* </info_list> */}
-      </InformationWrap>
-    );
-  }
-  // пока не получили данные - показываем Loader
-  return <Loader show size="32" />;
+      </Loader>
+      {/* </info_list> */}
+    </ListWrap>
+  );
 };
+// пока не получили данные - показываем Loader
+// return <Loader show size="32" />;
+// };
 
 export default Information;
