@@ -19,11 +19,11 @@ export const Connection = () => {
         </ListItem>
         <ListItem>
           <span>Порт</span>
-          <span>по умолчанию: 1234</span>
+          <span>{device.port}</span>
         </ListItem>
         <ListItem>
           <span>Адрес прибора</span>
-          <span>по умолчанию: 1234</span>
+          <span>{device.deviceAddress}</span>
         </ListItem>
       </ListWrap>
     );

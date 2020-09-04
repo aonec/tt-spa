@@ -7,17 +7,28 @@ import { DeviceContext } from '../DeviceProfile';
 export const Information = () => {
   // const DeviceProfileContext = useContext(DeviceContext);
   const { device, building } = useContext(DeviceContext);
+  const loading = !(device && building);
 
-  const buttonHandler = () => {
+  const buttonHandler = ({ loading = true }) => {
     console.log('buttonHandler');
   };
 
-  if (device && building) {
-    const { city, street, number } = building;
-    const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+  const { city, street, number } = building || {};
+  const {
+    commercialAccountingDate,
+    futureCheckingDate,
+    lastCheckingDate,
+  } = device || {};
 
-    return (
-      <ListWrap>
+  // if (device && building) {
+  // const { city, street, number } = { ...building };
+  // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = {
+  //   ...device,
+  // };
+
+  return (
+    <ListWrap>
+      <Loader show={loading} size="32">
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
@@ -37,12 +48,13 @@ export const Information = () => {
           <span>Дата следующей поверки прибора</span>
           <span>{convertDate(futureCheckingDate)}</span>
         </ListItem>
-        {/* </info_list> */}
-      </ListWrap>
-    );
-  }
-  // пока не получили данные - показываем Loader
-  return <Loader show size="32" />;
+      </Loader>
+      {/* </info_list> */}
+    </ListWrap>
+  );
 };
+// пока не получили данные - показываем Loader
+// return <Loader show size="32" />;
+// };
 
 export default Information;

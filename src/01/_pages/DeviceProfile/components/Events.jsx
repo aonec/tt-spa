@@ -15,10 +15,12 @@ const Task = styled.a`
   width: fit-content;
 
   &:hover {
-
+    color: #40a9ff;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1); 
-    
+    div {
+      color: #40a9ff;
+    }
   }
 `;
 
