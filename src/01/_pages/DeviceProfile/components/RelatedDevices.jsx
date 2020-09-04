@@ -1,11 +1,44 @@
 import React, { useContext } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
 import { Loader } from '01/components';
-// import { ListWrap, ListItem, Title } from '01/_components/List';
+import { Icon } from '01/_components/Icon';
+import DeviceIcons from '01/_components/DeviceIcons';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
+
+export const NameWrap = styled.a`
+  display: grid;
+  grid-template-columns: 1fr 2fr 9fr;
+  align-items: center;
+
+  &:hover {
+    h3,
+    p {
+      color: var(--primary-100);
+    }
+  }
+`;
+
+export const Name = styled.h3`
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+`;
+
+export const Serial = styled.p`
+  padding: 0;
+  margin: 0;
+  color: rgba(39, 47, 90, 0.6);
+`;
+
+export const State = styled.div`
+  display: flex;
+  align-items: center;
+  color: rgba(39, 47, 90, 0.8);
+`;
 
 export const Title = styled.h2``;
 
@@ -16,28 +49,15 @@ export const ListWrap = styled.div`
 `;
 
 export const ListItem = styled.div`
-display: grid;
-grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
-grid-template-rows: 48px;
-align-items: center;
-border-bottom: 1px solid var(--frame);
-opacity: 0.8;
-&[|url] {
-  cursor: pointer;
-  font-weight: 500;
-  opacity: 1;
-  &:hover {
-    color: var(--primary-100);
-  }
-}
-& span {
-  padding: 8px;
-  &:first-of-type {
-    opacity: 0.6;
-    font-weight: normal;
-  }
-}
-}
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  grid-template-rows: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--frame);
+  opacity: 0.8;
+`;
+export const Span = styled.span`
+  color: rgba(39, 47, 90, 0.6);
 `;
 
 export const RelatedDevices = () => {
@@ -53,28 +73,42 @@ export const RelatedDevices = () => {
 
   const result = relatedArr.map((value, index) => {
     const {
-      model, serialNumber, closingdate, pipe,
+      model,
+      serialNumber,
+      closingdate,
+      pipe,
+      resource,
+      id,
+      housingStockId,
     } = value;
     const { number, entryNumber } = pipe;
+    const { icon, color } = DeviceIcons[resource];
+
     // номер трубы - это pipe.number
     // номер ввода - это pipe.entryNumber
-    console.log(index);
+
     return (
       <ListItem>
-        <span>{`${model} (${serialNumber})`}</span>
-        <span>{`${closingdate || 'Активен'}`}</span>
-        <span>{`Ввод: ${entryNumber}`}</span>
-        <span>{`Узел: ${'-'}`}</span>
-        <span>
-          {`Труба: ${number}`}
-        </span>
+        <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
+          <Icon icon={icon} color={color} />
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <Icon icon="status" color="#17B45A" />
+          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        </State>
+        <Span>{`Ввод: ${entryNumber}`}</Span>
+        <Span>{`Узел: ${'-'}`}</Span>
+        <Span>{`Труба: ${number}`}</Span>
       </ListItem>
     );
   });
 
   return (
     <ListWrap>
-      <button onClick={buttonHandler}>related</button>
+      {/* <button onClick={buttonHandler}>related</button> */}
       <Loader show={loading} size="32">
         <Title>Приборы</Title>
         {result}

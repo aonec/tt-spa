@@ -74,11 +74,14 @@ export const DeviceProfile = (props) => {
         </Route>
 
         <Route path="/*/(\\d+)/related" exact>
-          <RelatedDevices />
+          <grid>
+            <RelatedDevices />
+            <Events title="Задачи с объектом" />
+          </grid>
         </Route>
 
         <Route path="/*/(\\d+)/changes" exact>
-          <Changes />
+          Компонент в разработке
         </Route>
       </DeviceContext.Provider>
     </>,
