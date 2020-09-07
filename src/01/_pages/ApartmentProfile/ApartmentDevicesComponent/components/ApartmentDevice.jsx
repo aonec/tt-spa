@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { Device } from 'components';
 import { Icon } from '../../../../_components/Icon';
 
-const Wrap = styled.a`
+const Wrap = styled.div`
   display: grid;
 `;
 
@@ -62,7 +63,12 @@ const Place = styled.div`
 
 function ApartmentDevice(props) {
   const {
-    model, serialNumber, resource, futureCheckingDate, creationDate,
+    model,
+    serialNumber,
+    resource,
+    futureCheckingDate,
+    creationDate,
+    id,
   } = {
     ...props,
   };
@@ -77,27 +83,26 @@ function ApartmentDevice(props) {
   const { icon, color } = currentIcon;
 
   const buttonHandler = () => {
-    // console.log('buttonHandler');
+    console.log('buttonHandler');
+    console.log(id);
   };
 
   return (
-    <Wrap onClick={buttonHandler}>
-      <Top>
-        <Icon icon={icon} color={color} />
-        <Name>{model}</Name>
-        <Number>{serialNumber}</Number>
-      </Top>
-      <Bottom>
-        <Icon icon="circle" color="#17B45A" />
-        <State>Активен</State>
-        <Dates>
-          {creationDate}
-          {' — '}
-          {futureCheckingDate}
-        </Dates>
-        <Place>Туалет</Place>
-      </Bottom>
-    </Wrap>
+    <Link to={`devices/${id}`}>
+      <Wrap onClick={buttonHandler}>
+        <Top>
+          <Icon icon={icon} color={color} />
+          <Name>{model}</Name>
+          <Number>{serialNumber}</Number>
+        </Top>
+        <Bottom>
+          <Icon icon="circle" color="#17B45A" />
+          <State>Активен</State>
+          <Dates>{`${creationDate} — ${futureCheckingDate}`}</Dates>
+          <Place>Туалет</Place>
+        </Bottom>
+      </Wrap>
+    </Link>
   );
 }
 
