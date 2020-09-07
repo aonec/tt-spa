@@ -35,15 +35,14 @@ export const IndividualDevice = (props) => {
     // console.log('tasks', tasks);
     // console.log('related', related);
   }, []);
+
   const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
-  const connection = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/connection`;
-  const documents = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/documents`;
+
   const buttonHandler = () => {
     console.log("buttonHandler");
-    console.log("device", device);
-    console.log("building", building);
+    console.log("path", path);
   };
-  console.log(path);
+
   return (
     <>
       <DeviceContext.Provider
@@ -57,24 +56,24 @@ export const IndividualDevice = (props) => {
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-        <Route path={path} exact>
-          <Grid>
+        
+        {/* Здесь делим экран на две части: main and aside */}
+        <Grid>
+          <Route path={path} exact>
             <Information />
-            <Events title="Задачи с объектом" />
-          </Grid>
-        </Route>
-        <Route path={connection} exact >
-          <Grid>
+          </Route>
+
+          <Route path={path + "connection"} exact>
             <div>Настройки подключения</div>
-            <Events title="Задачи с объектом" />
-          </Grid>
-        </Route>
-        <Route path={documents} exact>
-          <Grid>
+          </Route>
+
+          <Route path={path + "documents"} exact>
             <div>Документы</div>
-            <Events title="Задачи с объектом" />
-          </Grid>
-        </Route>
+          </Route>
+
+          <Events title="Задачи с объектом" />
+        </Grid>
+
       </DeviceContext.Provider>
     </>
   );
@@ -82,11 +81,3 @@ export const IndividualDevice = (props) => {
 
 export default IndividualDevice;
 
-// import React from 'react';
-
-// export const IndividualDevice = () => {
-//   console.log('test');
-//   return <div>test</div>;
-// };
-
-// export default IndividualDevice;

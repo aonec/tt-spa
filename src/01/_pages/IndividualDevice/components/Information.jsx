@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
-import { Loader } from '01/components';
-import { ListWrap, ListItem, Title } from '01/_components/List';
+// import { Loader } from '01/components';
+import {
+  ListWrap, ListItem, Title, Loader,
+} from '01/_components';
 import { DeviceContext } from '../IndividualDevice';
 
 export const Information = () => {
