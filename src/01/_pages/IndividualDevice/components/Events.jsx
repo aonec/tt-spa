@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
@@ -8,7 +8,7 @@ import { DeviceContext } from '../IndividualDevice';
 
 const Template = styled.div``;
 
-const Task = styled.a`
+const Task = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -69,23 +69,25 @@ export const Events = ({ title = '', loading = true }) => {
       const TasksResult = tasksList.map((task, index) => {
         const { currentStage, perpetrator, id } = task;
         return (
-          <Task key={id} href={`/tasks/${id}`}>
-            <StageName>{currentStage.name}</StageName>
-            <TaskName>
-              Причина:
-              {task.name}
-            </TaskName>
-            <TaskRow>
-              <Icon icon="timer" style={{ marginRight: '8px' }} />
-              {`${convertDate(currentStage.startingTime)} - ${convertDate(
-                currentStage.expectedCompletionTime,
-              )}`}
-            </TaskRow>
-            <TaskRow>
-              <Icon icon="username2" style={{ marginRight: '8px' }} />
-              {perpetrator.name}
-            </TaskRow>
-          </Task>
+          <Link key={id} to={`/tasks/${id}`}>
+            <Task>
+              <StageName>{currentStage.name}</StageName>
+              <TaskName>
+                Причина:
+                {task.name}
+              </TaskName>
+              <TaskRow>
+                <Icon icon="timer" style={{ marginRight: '8px' }} />
+                {`${convertDate(currentStage.startingTime)} - ${convertDate(
+                  currentStage.expectedCompletionTime,
+                )}`}
+              </TaskRow>
+              <TaskRow>
+                <Icon icon="username2" style={{ marginRight: '8px' }} />
+                {perpetrator.name}
+              </TaskRow>
+            </Task>
+          </Link>
         );
       });
       return (
@@ -100,14 +102,16 @@ export const Events = ({ title = '', loading = true }) => {
     return (
       <TasksWrap>
         <TasksTitle>{title}</TasksTitle>
-        <Task href="/tasks/">
-          <StageName>Нет задач </StageName>
-          <TaskName>задачи ОДПУ завершены</TaskName>
-          <TaskRow>
-            <Icon icon="username2" style={{ marginRight: '8px' }} />
-            Можете просмотреть все задачи
-          </TaskRow>
-        </Task>
+        <Link to="/tasks">
+          <Task>
+            <StageName>Нет задач </StageName>
+            <TaskName>задачи ОДПУ завершены</TaskName>
+            <TaskRow>
+              <Icon icon="username2" style={{ marginRight: '8px' }} />
+              Можете просмотреть все задачи
+            </TaskRow>
+          </Task>
+        </Link>
       </TasksWrap>
     );
   }
