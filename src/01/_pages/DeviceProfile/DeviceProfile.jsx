@@ -46,9 +46,13 @@ export const DeviceProfile = (props) => {
 
   return styled(grid)(
     <>
-      <DeviceContext.Provider value={{
-        device, building, tasks, related,
-      }}
+      <DeviceContext.Provider
+        value={{
+          device,
+          building,
+          tasks,
+          related,
+        }}
       >
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />

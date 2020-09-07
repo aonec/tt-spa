@@ -15,15 +15,15 @@ export const Connection = () => {
         <Title>Настройки</Title>
         <ListItem>
           <span>IP адрес вычислителя</span>
-          <span>{device.ipV4}</span>
+          <span>{device.ipV4 || 'X'}</span>
         </ListItem>
         <ListItem>
           <span>Порт</span>
-          <span>{device.port}</span>
+          <span>{device.port || 'X'}</span>
         </ListItem>
         <ListItem>
           <span>Адрес прибора</span>
-          <span>{device.deviceAddress}</span>
+          <span>{device.deviceAddress || 'X'}</span>
         </ListItem>
       </ListWrap>
     );

@@ -69,9 +69,9 @@ export const RelatedDevices = () => {
   };
 
   // Превратим в массив
-  const relatedArr = Object.values(related || []);
+  const relatedArr = Object.values(related || {});
 
-  const result = relatedArr.map((value, index) => {
+  const result = relatedArr.map((value) => {
     const {
       model,
       serialNumber,
@@ -81,7 +81,10 @@ export const RelatedDevices = () => {
       id,
       housingStockId,
     } = value;
-    const { number, entryNumber } = pipe;
+
+    // size: {width, height}
+
+    const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
     const { icon, color } = DeviceIcons[resource];
 
     // номер трубы - это pipe.number
