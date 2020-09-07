@@ -1,6 +1,20 @@
 import axios from '01/axios';
 import { createTimeline, createTimer, createDevice } from './utils';
 
+// Поиск связанных устройств
+// http://transparent-staging.herokuapp.com/api/MeteringDevices/related?DeviceId=1469976
+export async function getRelatedDevices(url = '') {
+  try {
+    // const res = await axios.get(replaceURL(url));
+    const res = await axios.get(`MeteringDevices/related?DeviceId=${url}`);
+    console.log('res', res);
+    //  return { ...res, info: true, header: createTitleObject(res) };
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const URL = 'HousingStocks';
 
 const replaceURL = (url = '') => url.replace(/objects/, URL);
@@ -12,7 +26,9 @@ export async function getInfo(url = '') {
     console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const housingStocksURL = 'HousingStocks';
@@ -23,16 +39,18 @@ export async function getObjectOfDevice(url = '') {
     const res = await axios.get(`${housingStocksURL}/${url}`);
     return res;
   } catch (error) {
+    console.log(error);
   }
 }
 
 export async function getODPUTasks(url = '') {
   try {
-    const newURL = (`Tasks?DeviceId=${url}`);
+    const newURL = `Tasks?DeviceId=${url}`;
     const res = await axios.get(newURL);
     console.log('getODPUTasks', res);
     return res;
   } catch (error) {
+    console.log(error);
   }
 }
 
@@ -40,10 +58,11 @@ const meteringDevices = 'MeteringDevices';
 
 export async function getDeviceTasks(url = '') {
   try {
-    const newURL = (`${meteringDevices}?DeviceId=${url}`);
+    const newURL = `${meteringDevices}?DeviceId=${url}`;
     const res = await axios.get(newURL);
     return res;
   } catch (error) {
+    console.log(error);
   }
 }
 
@@ -51,7 +70,9 @@ export async function getDevices(url = '') {
   try {
     const res = await axios.get(replaceURL(url));
     return res;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getEvents(...ids) {
@@ -74,5 +95,7 @@ export async function getEvents(...ids) {
         loading: false,
       },
     };
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
