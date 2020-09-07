@@ -105,7 +105,7 @@ export const Events = ({ title = '', loading = true }) => {
         <Link to="/tasks">
           <Task>
             <StageName>Нет задач </StageName>
-            <TaskName>задачи ОДПУ завершены</TaskName>
+            <TaskName>Активных задач нет</TaskName>
             <TaskRow>
               <Icon icon="username2" style={{ marginRight: '8px' }} />
               Можете просмотреть все задачи
