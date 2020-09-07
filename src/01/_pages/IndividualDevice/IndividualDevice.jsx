@@ -27,11 +27,21 @@ export const IndividualDevice = (props) => {
   // const [related, setRelated] = useState();
 
   useEffect(() => {
-    getInfo(deviceId).then((response) => setDevice(response));
-    getObjectOfDevice(objid).then((response) => setBuilding(response));
-    getODPUTasks(deviceId).then((response) => setTasks(response));
-    // getRelatedDevices(deviceId).then((response) => setRelated(response));
+    // getInfo(deviceId).then((response) => setDevice(response));
+    // getObjectOfDevice(objid).then((response) => setBuilding(response));
+    // getODPUTasks(deviceId).then((response) => setTasks(response));
 
+    Promise.all([
+      getInfo(deviceId),
+      getObjectOfDevice(objid),
+      getODPUTasks(deviceId),
+    ]).then((responses) => {
+      setDevice(responses[0]);
+      setBuilding(responses[1]);
+      setTasks(responses[2]);
+    });
+
+    // getRelatedDevices(deviceId).then((response) => setRelated(response));
     // console.log('tasks', tasks);
     // console.log('related', related);
   }, []);
@@ -56,7 +66,7 @@ export const IndividualDevice = (props) => {
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-        
+
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
@@ -73,11 +83,9 @@ export const IndividualDevice = (props) => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-
       </DeviceContext.Provider>
     </>
   );
 };
 
 export default IndividualDevice;
-
