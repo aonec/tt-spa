@@ -7,7 +7,7 @@ import { tabs } from '01/r_comp';
 const tabItems = [
   ['Общая информация', ''],
   ['Настройки подключения', 'connection'],
-  ['Документы', 'related'],
+  ['Документы', 'documents'],
 ];
 
 export const Tabs = React.memo(() => {

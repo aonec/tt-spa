@@ -17,7 +17,6 @@ import { Events } from "./components/Events";
 // import { Connection } from './components/Connection';
 // import { RelatedDevices } from './components/RelatedDevices';
 
-
 export const DeviceContext = React.createContext();
 
 export const IndividualDevice = (props) => {
@@ -25,7 +24,7 @@ export const IndividualDevice = (props) => {
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
- // const [related, setRelated] = useState();
+  // const [related, setRelated] = useState();
 
   useEffect(() => {
     getInfo(deviceId).then((response) => setDevice(response));
@@ -37,12 +36,14 @@ export const IndividualDevice = (props) => {
     // console.log('related', related);
   }, []);
   const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
+  const connection = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/connection`;
+  const documents = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/documents`;
   const buttonHandler = () => {
     console.log("buttonHandler");
     console.log("device", device);
     console.log("building", building);
   };
-  console.log(path)
+  console.log(path);
   return (
     <>
       <DeviceContext.Provider
@@ -56,9 +57,21 @@ export const IndividualDevice = (props) => {
         {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-        <Route path={path}>
+        <Route path={path} exact>
           <Grid>
             <Information />
+            <Events title="Задачи с объектом" />
+          </Grid>
+        </Route>
+        <Route path={connection} exact >
+          <Grid>
+            <div>Настройки подключения</div>
+            <Events title="Задачи с объектом" />
+          </Grid>
+        </Route>
+        <Route path={documents} exact>
+          <Grid>
+            <div>Документы</div>
             <Events title="Задачи с объектом" />
           </Grid>
         </Route>

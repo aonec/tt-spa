@@ -69,7 +69,7 @@ export function App() {
                   exact
                 />
                 <Route
-                  path="/objects/(\\d+)/apartments/(\\d+)/devices/(\\d+)"
+                  path="/objects/(\\d+)/apartments/(\\d+)/devices/(\\d+)/(connection|documents)?"
                   component={IndividualDevice}
                   exact
                 />
