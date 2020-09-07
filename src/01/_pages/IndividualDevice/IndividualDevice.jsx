@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { Route, useParams } from 'react-router-dom';
-import { grid } from '01/r_comp';
-import styled from 'styled-components';
+import { Route, useParams } from "react-router-dom";
+import { grid } from "01/r_comp";
+import styled from "styled-components";
 import {
   getInfo,
   getObjectOfDevice,
   getODPUTasks,
   getRelatedDevices,
-} from '01/_api/device_page';
-import { ListWrap, Title, ListItem } from '01/_components/List';
-import { Header } from './components/Header';
-import { Tabs } from './components/Tabs';
-import { Information } from './components/Information';
-import { Events } from './components/Events';
+} from "01/_api/device_page";
+import { ListWrap, Title, ListItem } from "01/_components/List";
+import { Header } from "./components/Header";
+import { Tabs } from "./components/Tabs";
+import { Information } from "./components/Information";
+import { Events } from "./components/Events";
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
 // import { Connection } from './components/Connection';
 // import { RelatedDevices } from './components/RelatedDevices';
 
 const Grid = styled.div`
-display: grid;
-grid-template-columns: 8fr 5fr;
-grid-gap: 16px;
-align-content: start;
-`
+  display: grid;
+  grid-template-columns: 8fr 5fr;
+  grid-gap: 16px;
+  align-content: start;
+`;
 
 export const DeviceContext = React.createContext();
 
@@ -44,15 +44,13 @@ export const IndividualDevice = (props) => {
     // console.log('tasks', tasks);
     // console.log('related', related);
   }, []);
-
+  const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
   const buttonHandler = () => {
-    console.log('buttonHandler');
-    console.log('device', device);
-    console.log('building', building);
+    console.log("buttonHandler");
+    console.log("device", device);
+    console.log("building", building);
   };
-
-  console.log('getRelatedDevices', related);
-
+  console.log(path)
   return (
     <>
       <DeviceContext.Provider
@@ -67,18 +65,11 @@ export const IndividualDevice = (props) => {
         <Header />
         <Tabs />
 
-        <Route path="/">
+        <Route path={path}>
           <Grid>
             <Information />
             <Events title="Задачи с объектом" />
-            </Grid>
-        </Route>
-
-        <Route path="/*/(\\d+)/" exact>
-          <grid>
-            {/* <Information /> */}
-            {/* <Events title="Задачи с объектом" /> */}
-          </grid>
+          </Grid>
         </Route>
       </DeviceContext.Provider>
     </>
