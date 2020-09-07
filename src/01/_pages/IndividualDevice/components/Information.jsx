@@ -27,8 +27,16 @@ export const Information = () => {
           </span>
         </ListItem>
         <ListItem>
+          <span>Дата выпуска прибора</span>
+          <span>{convertDate(commercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
           <span>Дата ввода в эксплуатацию</span>
           <span>{convertDate(commercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Срок эксплуатации по нормативу</span>
+          <span>нет информации</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>

@@ -1,30 +1,22 @@
 import React, { useState, useEffect } from "react";
-
 import { Route, useParams } from "react-router-dom";
-import { grid } from "01/r_comp";
-import styled from "styled-components";
+import { Grid } from "01/_components";
 import {
   getInfo,
   getObjectOfDevice,
   getODPUTasks,
   getRelatedDevices,
-} from "01/_api/device_page";
-import { ListWrap, Title, ListItem } from "01/_components/List";
+} from "01/_api/individual_device_page";
 import { Header } from "./components/Header";
 import { Tabs } from "./components/Tabs";
 import { Information } from "./components/Information";
 import { Events } from "./components/Events";
+
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
 // import { Connection } from './components/Connection';
 // import { RelatedDevices } from './components/RelatedDevices';
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 8fr 5fr;
-  grid-gap: 16px;
-  align-content: start;
-`;
 
 export const DeviceContext = React.createContext();
 
@@ -33,8 +25,8 @@ export const IndividualDevice = (props) => {
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
-  const [related, setRelated] = useState();
-  console.log(objid, apartmentId, deviceId);
+ // const [related, setRelated] = useState();
+
   useEffect(() => {
     getInfo(deviceId).then((response) => setDevice(response));
     getObjectOfDevice(objid).then((response) => setBuilding(response));
@@ -61,10 +53,9 @@ export const IndividualDevice = (props) => {
           // related,
         }}
       >
-        <button onClick={buttonHandler}>button</button>
+        {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-
         <Route path={path}>
           <Grid>
             <Information />
