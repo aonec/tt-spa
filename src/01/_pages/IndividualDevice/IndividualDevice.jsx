@@ -24,24 +24,29 @@ export const IndividualDevice = (props) => {
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
-  // const [related, setRelated] = useState();
+  const [related, setRelated] = useState();
 
   useEffect(() => {
     // getInfo(deviceId).then((response) => setDevice(response));
     // getObjectOfDevice(objid).then((response) => setBuilding(response));
     // getODPUTasks(deviceId).then((response) => setTasks(response));
+    // getRelatedDevices(deviceId).then((response) => setRelated(response));
 
     Promise.all([
       getInfo(deviceId),
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
+      getRelatedDevices(deviceId)
     ]).then((responses) => {
-      setDevice(responses[0]);
-      setBuilding(responses[1]);
-      setTasks(responses[2]);
+      // const [deviceResult, buildingsResult, tasksResult] = responses;
+      // console.log(responses);
+      const [device, building, tasks, related] = responses;
+      setDevice(device);
+      setBuilding(building);
+      setTasks(tasks);
+      setRelated(related)
     });
-
-    // getRelatedDevices(deviceId).then((response) => setRelated(response));
+    
     // console.log('tasks', tasks);
     // console.log('related', related);
   }, []);
