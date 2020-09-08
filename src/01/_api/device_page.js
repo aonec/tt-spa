@@ -54,6 +54,22 @@ export async function getRelatedDevices(url = '') {
   }
 }
 
+export async function getTypeODPU(url = '') {
+  try {
+    // const res = await axios.get(replaceURL(url));
+    const res = await axios.get(`MeteringDevices/${url}`);
+    // console.log('res', res);
+    //  return { ...res, info: true, header: createTitleObject(res) };
+    console.log(res.type)
+    return res.type;
+    
+  } catch (error) {
+    console.log(error);
+    throw new Error(error)
+  }
+}
+
+
 // import axios from '01/axios';
 // import { createTimeline, createTimer, createDevice } from './utils';
 //
