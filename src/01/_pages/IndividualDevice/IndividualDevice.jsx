@@ -6,6 +6,7 @@ import {
   getObjectOfDevice,
   getODPUTasks,
   getRelatedDevices,
+  getAllTasks
 } from '01/_api/individual_device_page';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -25,6 +26,7 @@ export const IndividualDevice = (props) => {
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
+  const [allTasks, setAllTasks] =useState();
 
   useEffect(() => {
     // getInfo(deviceId).then((response) => setDevice(response));
@@ -37,6 +39,7 @@ export const IndividualDevice = (props) => {
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
+      getAllTasks()
     ]).then((responses) => {
       // console.log(responses);
       const [device, building, tasks, related] = responses;
