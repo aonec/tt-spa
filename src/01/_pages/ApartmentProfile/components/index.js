@@ -1,4 +1,5 @@
 export * from './Button';
+export * from './EditButton';
 export * from './ListItem';
 export * from './Text';
 export * from './Title';

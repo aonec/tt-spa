@@ -33,19 +33,6 @@ export async function getObjectOfDevice(url = '') {
   }
 }
 
-
-export async function getAllTasks(url = '') {
-  try {
-    const newURL = `Tasks`;
-    const res = await axios.get(newURL);
-    console.log('getAllTasks', res);
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
 export async function getODPUTasks(url = '') {
   try {
     const newURL = `Tasks?DeviceId=${url}`;
