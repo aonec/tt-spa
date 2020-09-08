@@ -2,13 +2,12 @@ import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
 // import { Loader } from '01/components';
 import {
-  ListWrap, ListItem, Title, Loader,
+  ListWrap, ListItem, Title, Loader, HeaderWrap, Subtitle,
 } from '01/_components';
 import { DeviceContext } from '../IndividualDevice';
 
 export const Information = () => {
-  // const DeviceProfileContext = useContext(DeviceContext);
-  const { device, building } = useContext(DeviceContext);
+  const { device, building, mistake } = useContext(DeviceContext);
   const loading = !(device && building);
 
   const buttonHandler = ({ loading = true }) => {
@@ -17,6 +16,14 @@ export const Information = () => {
 
   const { city, street, number } = building || {};
   const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
+
+  if(mistake) {
+    return (
+      <ListWrap>
+          <Title style={{color:'red'}}>Данные не получены</Title>
+      </ListWrap>
+    )
+  }
 
   return (
     <ListWrap>

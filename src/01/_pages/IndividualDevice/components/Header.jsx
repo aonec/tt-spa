@@ -16,12 +16,10 @@ export const Header = (loading = true) => {
   if(mistake) {
     return (
       <HeaderWrap >
-        <Loader show={false} size="32">
           <Title style={{color: 'red'}}>
             Данные не получены
           </Title>
           <Subtitle style={{color: 'red'}}>Обратитесь в тех.поддержку</Subtitle>
-        </Loader>
       </HeaderWrap>
     )
   }

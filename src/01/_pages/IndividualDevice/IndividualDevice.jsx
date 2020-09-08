@@ -34,8 +34,8 @@ export const IndividualDevice = (props) => {
     // getRelatedDevices(deviceId).then((response) => setRelated(response));
 
     Promise.all([
-      getInfo(deviceId),
-      //getInfo(111111111),
+      //getInfo(deviceId),
+      getInfo(111111111),
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),

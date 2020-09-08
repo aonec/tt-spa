@@ -15,9 +15,25 @@ const buttonHandler = () => {
   console.log('buttonHandler');
 };
 export const Events = ({ title = '', loading = true }) => {
-  const { tasks } = useContext(DeviceContext);
+  const { tasks, mistake } = useContext(DeviceContext);
   loading = !tasks;
   const tasksList = _.get(tasks, 'items', []);
+
+  if (mistake) {
+    return (
+      <Link to="/tasks">
+        <Task>
+          <StageName style={{color:'red'}}>Произошла ошибка </StageName>
+          <TaskName>Что-то пошло не так</TaskName>
+          <TaskRow>
+            <Icon icon="username2" style={{ marginRight: '8px' }}/>
+            Можете просмотреть все задачи
+          </TaskRow>
+        </Task>
+      </Link>
+    )
+  }
+
   const NoEvents = () => {
     return (
       <Link to="/tasks">
