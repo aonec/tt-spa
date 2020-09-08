@@ -85,7 +85,11 @@ export const DeviceProfile = (props) => {
             <div>Настройки подключения</div>
           </Route>
 
-          <Route path={`${path}documents`} exact>
+          <Route path={`${path}related`} exact>
+            <div>Подключенные приборы</div>
+          </Route>
+
+          <Route path={path + 'documents'} exact>
             <div>Документы</div>
           </Route>
 

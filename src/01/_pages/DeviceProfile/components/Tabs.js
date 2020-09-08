@@ -8,7 +8,7 @@ const tabItems = [
   ['Общая информация', ''],
   ['Настройки соединения', 'connection'],
   ['Подключенные приборы', 'related'],
-  ['История изменений', 'changes'],
+  ['Документы', 'documents'],
 ];
 
 export const Tabs = React.memo(() => {
