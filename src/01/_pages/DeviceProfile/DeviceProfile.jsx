@@ -14,8 +14,8 @@ import { Events } from './components/Events';
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
-// import { Connection } from './components/Connection';
-// import { RelatedDevices } from './components/RelatedDevices';
+import { Connection } from './components/Connection';
+import { RelatedDevices } from './components/RelatedDevices';
 
 export const DeviceContext = React.createContext();
 
@@ -67,8 +67,8 @@ export const DeviceProfile = (props) => {
           device,
           building,
           tasks,
+          related,
           mistake
-          // related,
         }}
       >
 
@@ -82,11 +82,11 @@ export const DeviceProfile = (props) => {
           </Route>
 
           <Route path={`${path}connection`} exact>
-            <div>Настройки подключения</div>
+            <Connection />
           </Route>
 
           <Route path={`${path}related`} exact>
-            <div>Подключенные приборы</div>
+            <RelatedDevices />
           </Route>
 
           <Route path={path + 'documents'} exact>
