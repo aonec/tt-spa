@@ -25,6 +25,7 @@ export const IndividualDevice = (props) => {
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
+  const [mistake, setMistake] = useState();
 
   useEffect(() => {
     // getInfo(deviceId).then((response) => setDevice(response));
@@ -34,6 +35,7 @@ export const IndividualDevice = (props) => {
 
     Promise.all([
       getInfo(deviceId),
+      //getInfo(111111111),
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
@@ -44,6 +46,8 @@ export const IndividualDevice = (props) => {
       setBuilding(building);
       setTasks(tasks);
       setRelated(related);
+    }).catch((error) => {
+      setMistake(error)
     });
   }, []);
 
@@ -61,17 +65,18 @@ export const IndividualDevice = (props) => {
           device,
           building,
           tasks,
+          mistake
           // related,
         }}
       >
 
-        <Header />
-        <Tabs />
+        <Header/>
+        <Tabs/>
 
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
-            <Information />
+            <Information/>
           </Route>
 
           <Route path={`${path}connection`} exact>
@@ -82,7 +87,7 @@ export const IndividualDevice = (props) => {
             <div>Документы</div>
           </Route>
 
-          <Events title="Задачи с объектом" />
+          <Events title="Задачи с объектом"/>
         </Grid>
         {/* <button onClick={buttonHandler}>button</button> */}
       </DeviceContext.Provider>

@@ -5,6 +5,7 @@ import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
 import { DeviceContext } from '../IndividualDevice';
+
 import { Task, StageName, TaskName, TaskRow, TasksTitle, TasksWrap } from "01/_components/Events";
 import _ from 'lodash';
 

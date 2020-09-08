@@ -9,16 +9,29 @@ import { DeviceContext } from '../IndividualDevice';
 
 export const Template = styled.div``;
 
-export const Header = () => {
-  const { device, building } = useContext(DeviceContext);
-  const loading = !(device && building);
+export const Header = (loading = true) => {
+  const { device, building, mistake } = useContext(DeviceContext);
+  loading = !(device && building);
+
+  if(mistake) {
+    return (
+      <HeaderWrap >
+        <Loader show={false} size="32">
+          <Title style={{color: 'red'}}>
+            Данные не получены
+          </Title>
+          <Subtitle style={{color: 'red'}}>Обратитесь в тех.поддержку</Subtitle>
+        </Loader>
+      </HeaderWrap>
+    )
+  }
 
   const buttonHandler = () => {
     console.log(device, building);
   };
 
   const { city, street, number } = building || { city: null, street: null, number: null };
-  const { model, serialNumber, resource } = device || {model :null, serialNumber:null, resource :null};
+  const { model, serialNumber, resource } = device || { model: null, serialNumber: null, resource: null };
   const { icon, color } = DeviceIcons[resource];
 
   return (

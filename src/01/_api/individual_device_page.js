@@ -16,6 +16,7 @@ export async function getInfo(url = '') {
     return res;
   } catch (error) {
     console.log(error);
+    throw new Error(error)
   }
 }
 
@@ -28,6 +29,7 @@ export async function getObjectOfDevice(url = '') {
     return res;
   } catch (error) {
     console.log(error);
+    throw new Error(error)
   }
 }
 
@@ -39,6 +41,7 @@ export async function getODPUTasks(url = '') {
     return res;
   } catch (error) {
     console.log(error);
+    throw new Error(error)
   }
 }
 
@@ -53,5 +56,6 @@ export async function getRelatedDevices(url = '') {
     return res;
   } catch (error) {
     console.log(error);
+    throw new Error(error)
   }
 }
