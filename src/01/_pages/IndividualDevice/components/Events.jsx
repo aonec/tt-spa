@@ -31,15 +31,13 @@ export const Events = ({ title = '', loading = true }) => {
       </Link>
     )
   }
-  const TasksResult = tasksList.map((task) => {
-    const { currentStage, perpetrator, id } = task;
-    const { name, startingTime, expectedCompletionTime } = currentStage;
-
+  const TasksResult = tasksList.map((currentStage, perpetrator, id, name) => {
+    const { startingTime, expectedCompletionTime } = currentStage;
     return (
       <Link key={id} to={`/tasks/${id}`}>
         <Task>
-          <StageName>{name}</StageName>
-          <TaskName>{`Причина: ${task.name}`}</TaskName>
+          <StageName>{currentStage.name}</StageName>
+          <TaskName>{`Причина: ${name}`}</TaskName>
           <TaskRow>
             <Icon icon="timer" style={{ marginRight: '8px' }}/>
             {`${convertDate(startingTime)} - ${convertDate(expectedCompletionTime)}`}
