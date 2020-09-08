@@ -18,6 +18,7 @@ import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 
 import { RelatedDevices } from './components/RelatedDevices';
+import {RelatedDevicesNotCalculator} from './components/RelatedDevicesNotCalculator'
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
@@ -84,7 +85,7 @@ export const DeviceProfile = (props) => {
       >
 
         <Header/>
-        <div>Калькулятор</div>
+    
         <Tabs/>
 
         {/* Здесь делим экран на две части: main and aside */}
@@ -107,7 +108,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом"/>
         </Grid>
-         <button onClick={buttonHandler}>button</button>
+         {/* <button onClick={buttonHandler}>button</button> */}
       </DeviceContext.Provider>
  
   )}
@@ -135,7 +136,7 @@ export const DeviceProfile = (props) => {
           </Route>
 
           <Route path={path + 'related'} exact>
-            <RelatedDevices />
+            <RelatedDevicesNotCalculator />
           </Route>
 
           <Route path={path + 'documents'} exact>
@@ -144,7 +145,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом"/>
         </Grid>
-         <button onClick={buttonHandler}>button</button>
+         {/* <button onClick={buttonHandler}>button</button> */}
       </DeviceContext.Provider>
     )
   }

@@ -3,6 +3,7 @@ import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import { DeviceContext } from '../DeviceProfile';
 
+
 export const ConnectionNotCalculator = () => {
   const { device } = useContext(DeviceContext);
   const buttonHandler = () => {
