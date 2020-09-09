@@ -33,7 +33,6 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
-  const [mistake, setMistake] = useState();
   const [loadings, setLoadings] = useState({
     device: true,
     building: true,
@@ -42,13 +41,21 @@ export const DeviceProfile = (props) => {
     typeODPU: true,
   });
 
-  const errors = {
-    device: 'Произошла ошибка запроса устройства',
-    building: 'Произошла ошибка при загрузке данных по зданию',
-    tasks: 'Произошла ошибка при загрузке данных по задачам',
-    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
-  };
+  const [errors, setErrors] = useState({
+    device: null,
+    building: null,
+    tasks: null,
+    related: null,
+    typeODPU: null,
+  });
+
+  // const errors = {
+  //   device: 'Произошла ошибка запроса устройства',
+  //   building: 'Произошла ошибка при загрузке данных по зданию',
+  //   tasks: 'Произошла ошибка при загрузке данных по задачам',
+  //   related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
+  //   typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
+  // };
 
   useEffect(() => {
     Promise.all([
@@ -62,6 +69,7 @@ export const DeviceProfile = (props) => {
     ])
       .then((responses) => {
         const [device, building, tasks, related, typeODPU] = responses;
+        // setDevice(device);
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
@@ -73,7 +81,9 @@ export const DeviceProfile = (props) => {
         setLoadings((prev) => ({ ...prev, related: false }));
         setLoadings((prev) => ({ ...prev, typeODPU: false }));
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log('error', error);
+      });
   }, []);
 
   const path = `/objects/${objid}/devices/${deviceId}/`;
@@ -95,27 +105,21 @@ export const DeviceProfile = (props) => {
           related,
           typeODPU,
           loadings,
-          errors,
         }}
       >
         <Header />
-
         <Tabs />
-
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
             <Information />
           </Route>
-
           <Route path={`${path}connection`} exact>
             <Connection />
           </Route>
-
           <Route path={`${path}related`} exact>
             <RelatedDevices />
           </Route>
-
           <Route path={`${path}documents`} exact>
             <div>Документы</div>
           </Route>
@@ -136,7 +140,7 @@ export const DeviceProfile = (props) => {
         related,
         typeODPU,
         loadings,
-        errors,
+
       }}
     >
       <Header />
