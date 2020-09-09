@@ -2,14 +2,18 @@ import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
+import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
-export const Information = () => {
-  // const DeviceProfileContext = useContext(DeviceContext);
-  const { device, building } = useContext(DeviceContext);
-  const loading = !(device && building);
+export const Information = (loading = true) => {
+  const { device, building, loadings } = useContext(DeviceContext);
 
-  const buttonHandler = ({ loading = true }) => {
+  const loadingDevice = _.get(loadings, 'device', true);
+  const loadingBuilding = _.get(loadings, 'building', true);
+
+  loading = loadingDevice || loadingBuilding;
+
+  const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
@@ -39,12 +43,8 @@ export const Information = () => {
           <span>{convertDate(futureCheckingDate)}</span>
         </ListItem>
       </Loader>
-      {/* </info_list> */}
     </ListWrap>
   );
 };
-// пока не получили данные - показываем Loader
-// return <Loader show size="32" />;
-// };
 
 export default Information;

@@ -1,18 +1,22 @@
 import React, { useContext } from 'react';
 import { Loader } from '01/components';
+import _ from 'lodash';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import { DeviceContext } from '../DeviceProfile';
 
-export const Connection = () => {
-  const { device } = useContext(DeviceContext);
+export const Connection = (loading = true) => {
+  const { device, loadings } = useContext(DeviceContext);
+  const loadingDevice = _.get(loadings, 'device', true);
+  loading = loadingDevice;
+
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
-  if (device) {
-    return (
-      <ListWrap>
-        <Title>Настройки</Title>
+  return (
+    <ListWrap>
+      <Title>Настройки</Title>
+      <Loader show={loading} size="32">
         <ListItem>
           <span>IP адрес вычислителя</span>
           <span>{device.ipV4 || 'X'}</span>
@@ -25,11 +29,9 @@ export const Connection = () => {
           <span>Адрес прибора</span>
           <span>{device.deviceAddress || 'X'}</span>
         </ListItem>
-      </ListWrap>
-    );
-  }
-  // пока не получили данные - показываем Loader
-  return <Loader show size="32" />;
+      </Loader>
+    </ListWrap>
+  );
 };
 
 export default Connection;

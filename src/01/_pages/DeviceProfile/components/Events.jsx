@@ -57,69 +57,61 @@ const buttonHandler = () => {
   console.log('buttonHandler');
 };
 export const Events = ({ title = '', loading = true }) => {
-  const { tasks, states } = useContext(DeviceContext);
-  const loadingTasks = _.get(states, 'tasksState.loading', true);
-  const loadingTasksError = _.get(states, 'tasksState.error', 'OK');
+  const { tasks, loadings, errors } = useContext(DeviceContext);
+  const loadingTasks = _.get(loadings, 'device', true);
+  const loadingTasksError = _.get(errors, 'device', 'OK');
 
   loading = loadingTasks;
-  console.log("deviceState",states) 
-  console.log("loadingTasksError", loadingTasksError)
 
   const Tasks = (tasks || []).map((task, index) => {
-        const { currentStage, perpetrator, id } = task;
-       
-        return (
-          <Task key={id} href={`/tasks/${id}`}>
-            <StageName>{currentStage.name}</StageName>
-            <TaskName>
-              Причина:
-              {task.name}
-            </TaskName>
-            <TaskRow>
-              <Icon icon="timer" style={{ marginRight: '8px' }} />
-              {`${convertDate(currentStage.startingTime)} - ${convertDate(
-                currentStage.expectedCompletionTime,
-              )}`}
-            </TaskRow>
-            <TaskRow>
-              <Icon icon="username2" style={{ marginRight: '8px' }} />
-              {perpetrator.name}
-            </TaskRow>
-          </Task>
-        );
+    const { currentStage, perpetrator, id } = task;
+    return (
+      <Task key={id} href={`/tasks/${id}`}>
+        <StageName>{currentStage.name}</StageName>
+        <TaskName>
+          Причина:
+          {task.name}
+        </TaskName>
+        <TaskRow>
+          <Icon icon="timer" style={{ marginRight: '8px' }} />
+          {`${convertDate(currentStage.startingTime)} - ${convertDate(
+            currentStage.expectedCompletionTime,
+          )}`}
+        </TaskRow>
+        <TaskRow>
+          <Icon icon="username2" style={{ marginRight: '8px' }} />
+          {perpetrator.name}
+        </TaskRow>
+      </Task>
+    );
   });
-    if (Tasks.length > 0)  {
-      return (
-        <TasksWrap>
-          <Loader show={loading} size='32' >
+  if (Tasks.length > 0) {
+    return (
+      <TasksWrap>
+        <Loader show={loading} size="32">
           <TasksTitle>{title}</TasksTitle>
           {Tasks}
           <Button onClick={buttonHandler}>Все задачи с объектом</Button>
-          </Loader>
-        </TasksWrap>
-      );
-    
-    }
-
-
-
-    return (
-      <TasksWrap>
-        <Loader show={loading} size='32' >
-      <TasksTitle>{title}</TasksTitle>
-      <Task href="/tasks/">
-        <StageName>Нет задач </StageName>
-        <TaskName>задачи ОДПУ завершены</TaskName>
-        <TaskRow>
-          <Icon icon="username2" style={{ marginRight: '8px' }} />
-          Можете просмотреть все задачи
-        </TaskRow>
-      </Task>
-      </Loader>
-    </TasksWrap>  )
-    
+        </Loader>
+      </TasksWrap>
+    );
   }
 
-
+  return (
+    <TasksWrap>
+      <Loader show={loading} size="32">
+        <TasksTitle>{title}</TasksTitle>
+        <Task href="/tasks/">
+          <StageName>Нет задач </StageName>
+          <TaskName>задачи ОДПУ завершены</TaskName>
+          <TaskRow>
+            <Icon icon="username2" style={{ marginRight: '8px' }} />
+            Можете просмотреть все задачи
+          </TaskRow>
+        </Task>
+      </Loader>
+    </TasksWrap>
+  );
+};
 
 export default Events;

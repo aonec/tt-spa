@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
+import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
@@ -60,9 +61,11 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevices = () => {
-  const { related } = useContext(DeviceContext);
-  const loading = !related;
+export const RelatedDevices = (loading = true) => {
+  const { related, loadings, errors } = useContext(DeviceContext);
+
+  const loadingRelated = _.get(loadings, 'related', true);
+  loading = loadingRelated;
 
   const buttonHandler = () => {
     console.log(related);
@@ -121,8 +124,6 @@ export const RelatedDevices = () => {
 };
 
 export default RelatedDevices;
-
-
 
 // import React, { useContext } from 'react';
 // import styled from 'styled-components';

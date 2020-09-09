@@ -7,7 +7,7 @@ import {
   getObjectOfDevice,
   getODPUTasks,
   getRelatedDevices,
-  getTypeODPU
+  getTypeODPU,
 } from '01/_api/device_page';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -19,11 +19,10 @@ import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 
 import { RelatedDevices } from './components/RelatedDevices';
-import {RelatedDevicesNotCalculator} from './components/RelatedDevicesNotCalculator'
+import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
-
 
 export const DeviceContext = React.createContext();
 
@@ -35,96 +34,60 @@ export const DeviceProfile = (props) => {
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
   const [mistake, setMistake] = useState();
+  const [loadings, setLoadings] = useState({
+    device: true,
+    building: true,
+    tasks: true,
+    related: true,
+    typeODPU: true,
+  });
 
-  const states = {
-    deviceState: { loading: false, error: 'Произошла ошибка запроса устройства' },
-    buildingState: { loading: false, error: 'Произошла ошибка при загрузке данных по зданию' },
-    tasksState: { loading: false, error: 'Произошла ошибка при загрузке данных по задачам' },
-    relatedState : { loading: false, error: 'Произошла ошибка при загрузке данных по подключенным устройствам' },
-    typeODPUState : { loading: false, error: 'Произошла ошибка при загрузке данных по типу устройства' },
-  }
-
+  const errors = {
+    device: 'Произошла ошибка запроса устройства',
+    building: 'Произошла ошибка при загрузке данных по зданию',
+    tasks: 'Произошла ошибка при загрузке данных по задачам',
+    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
+    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
+  };
 
   useEffect(() => {
-    // getInfo(deviceId).then((response) => setDevice(response));
-    // getObjectOfDevice(objid).then((response) => setBuilding(response));
-    // getODPUTasks(deviceId).then((response) => setTasks(response));
-    // getRelatedDevices(deviceId).then((response) => setRelated(response));
-
     Promise.all([
       getInfo(deviceId),
-     // getInfo(111111111),
+      // getInfo(111111111),
       getObjectOfDevice(objid),
-     //getODPUTasks(deviceId),
-      getODPUTasks(1111111111111),
+      getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
-      //getRelatedDevices(111111),
-      getTypeODPU(deviceId)
-    ]).then((responses) => {
-      // console.log(responses);
-      const [device, building, tasks, related, typeODPU] = responses;
-      setDevice(device);
-      setBuilding(building);
-      setTasks(tasks.items);
-      setRelated(related);
-      setTypeODPU(typeODPU);
-    }).catch((error) => {
-      states[error].loading = false;
-    });
+      getTypeODPU(deviceId),
+      // getTypeODPU('111111'),
+    ])
+      .then((responses) => {
+        const [device, building, tasks, related, typeODPU] = responses;
+        setDevice(device);
+        setLoadings((prev) => ({ ...prev, device: false }));
+        setBuilding(building);
+        setLoadings((prev) => ({ ...prev, building: false }));
+        setTasks(tasks.items);
+        setLoadings((prev) => ({ ...prev, tasks: false }));
+        setRelated(related);
+        setLoadings((prev) => ({ ...prev, related: false }));
+        setTypeODPU(typeODPU);
+        setLoadings((prev) => ({ ...prev, typeODPU: false }));
+      })
+      .catch((error) => {
+        alert(error);
+      });
   }, []);
 
   const path = `/objects/${objid}/devices/${deviceId}/`;
-  const test = 2;
+
   const buttonHandler = () => {
-    console.log("states", states)
+    console.log('states', loadings);
     console.log('buttonHandler');
     console.log('path', path);
-    console.log("deviceId",deviceId)
-    console.log("typeODPU", typeODPU)
+    console.log('deviceId', deviceId);
+    console.log('typeODPU', typeODPU);
   };
-  if (typeODPU == 'Calculator') {
-  return (
-  
-      <DeviceContext.Provider
-        value={{
-          device,
-          building,
-          tasks,
-          related,
-          typeODPU,
-          states
-        }}
-      >
-
-        <Header/>
-    
-        <Tabs/>
-
-        {/* Здесь делим экран на две части: main and aside */}
-        <Grid>
-          <Route path={path} exact>
-            <Information/>
-          </Route>
-
-          <Route path={path +'connection'} exact>
-            <Connection />
-          </Route>
-
-          <Route path={path + 'related'} exact>
-            <RelatedDevices />
-          </Route>
-
-          <Route path={path + 'documents'} exact>
-            <div>Документы</div>
-          </Route>
-
-          <Events title="Задачи с объектом"/>
-        </Grid>
-         <button onClick={buttonHandler}>button</button>
-      </DeviceContext.Provider>
- 
-  )}
-  else {
+  if (typeODPU === 'Calculator') {
     return (
       <DeviceContext.Provider
         value={{
@@ -133,40 +96,76 @@ export const DeviceProfile = (props) => {
           tasks,
           related,
           typeODPU,
-          mistake,
+          loadings,
+          errors,
         }}
       >
+        <Header />
 
-        <Header/>
-       
-        <TabsNotCalculator />
+        <Tabs />
 
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
-            <Information/>
+            <Information />
           </Route>
 
-          <Route path={path + 'related'} exact>
-            <RelatedDevicesNotCalculator />
+          <Route path={`${path}connection`} exact>
+            <Connection />
           </Route>
 
-          <Route path={path + 'documents'} exact>
+          <Route path={`${path}related`} exact>
+            <RelatedDevices />
+          </Route>
+
+          <Route path={`${path}documents`} exact>
             <div>Документы</div>
           </Route>
 
-          <Events title="Задачи с объектом"/>
+          <Events title="Задачи с объектом" />
         </Grid>
-         <button onClick={buttonHandler}>button</button>
+        <button onClick={buttonHandler}>button</button>
       </DeviceContext.Provider>
-    )
+    );
   }
-  
+
+  return (
+    <DeviceContext.Provider
+      value={{
+        device,
+        building,
+        tasks,
+        related,
+        typeODPU,
+        mistake,
+      }}
+    >
+      <Header />
+
+      <TabsNotCalculator />
+
+      {/* Здесь делим экран на две части: main and aside */}
+      <Grid>
+        <Route path={path} exact>
+          <Information />
+        </Route>
+
+        <Route path={`${path}related`} exact>
+          <RelatedDevicesNotCalculator />
+        </Route>
+
+        <Route path={`${path}documents`} exact>
+          <div>Документы</div>
+        </Route>
+
+        <Events title="Задачи с объектом" />
+      </Grid>
+      <button onClick={buttonHandler}>button</button>
+    </DeviceContext.Provider>
+  );
 };
 
 export default DeviceProfile;
-
-
 
 // import React, { useState, useEffect, useContext } from 'react';
 // import styled from 'reshadow/macro';
