@@ -55,7 +55,7 @@ export const DeviceProfile = (props) => {
       getInfo(deviceId),
       // getInfo(111111111),
       getObjectOfDevice(objid),
-      // getODPUTasks(deviceId),
+      getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
       getTypeODPU(deviceId),
       // getTypeODPU('111111'),
@@ -135,7 +135,8 @@ export const DeviceProfile = (props) => {
         tasks,
         related,
         typeODPU,
-        mistake,
+        loadings,
+        errors,
       }}
     >
       <Header />

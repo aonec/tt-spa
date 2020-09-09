@@ -15,6 +15,9 @@ export const Header = (loading = true) => {
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
+
+  console.log('loadingDevice', loadingDevice);
+  console.log('loadingBuilding', loadingBuilding);
   loading = loadingDevice || loadingBuilding;
 
   const { city, street, number } = building || {

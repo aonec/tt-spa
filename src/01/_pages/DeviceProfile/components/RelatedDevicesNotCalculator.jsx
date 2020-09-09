@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
+import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
@@ -61,9 +62,11 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevicesNotCalculator = () => {
-  const { related } = useContext(DeviceContext);
-  const loading = !related;
+export const RelatedDevicesNotCalculator = (loading = true) => {
+  const { related, loadings, errors } = useContext(DeviceContext);
+
+  const loadingRelated = _.get(loadings, 'related', true);
+  loading = loadingRelated;
 
   const buttonHandler = () => {
     console.log(related);
@@ -73,7 +76,7 @@ export const RelatedDevicesNotCalculator = () => {
   const relatedArr = Object.values(related || {});
 
   const result = relatedArr.map((value) => {
-    console.log(value)
+    console.log(value);
     const {
       model,
       serialNumber,
@@ -110,8 +113,6 @@ export const RelatedDevicesNotCalculator = () => {
           {convertDate(futureCheckingDate)}
         </Span>
 
-  
-  
       </ListItem>
     );
   });
@@ -128,8 +129,6 @@ export const RelatedDevicesNotCalculator = () => {
 };
 
 export default RelatedDevicesNotCalculator;
-
-
 
 // import React, { useContext } from 'react';
 // import styled from 'styled-components';
