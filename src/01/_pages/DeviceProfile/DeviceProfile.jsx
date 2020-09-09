@@ -55,7 +55,7 @@ export const DeviceProfile = (props) => {
       getInfo(deviceId),
       // getInfo(111111111),
       getObjectOfDevice(objid),
-      getODPUTasks(deviceId),
+      // getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
       getTypeODPU(deviceId),
       // getTypeODPU('111111'),
@@ -63,19 +63,17 @@ export const DeviceProfile = (props) => {
       .then((responses) => {
         const [device, building, tasks, related, typeODPU] = responses;
         setDevice(device);
-        setLoadings((prev) => ({ ...prev, device: false }));
         setBuilding(building);
-        setLoadings((prev) => ({ ...prev, building: false }));
         setTasks(tasks.items);
-        setLoadings((prev) => ({ ...prev, tasks: false }));
         setRelated(related);
-        setLoadings((prev) => ({ ...prev, related: false }));
         setTypeODPU(typeODPU);
+        setLoadings((prev) => ({ ...prev, device: false }));
+        setLoadings((prev) => ({ ...prev, building: false }));
+        setLoadings((prev) => ({ ...prev, tasks: false }));
+        setLoadings((prev) => ({ ...prev, related: false }));
         setLoadings((prev) => ({ ...prev, typeODPU: false }));
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((error) => {});
   }, []);
 
   const path = `/objects/${objid}/devices/${deviceId}/`;
@@ -160,105 +158,9 @@ export const DeviceProfile = (props) => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      <button onClick={buttonHandler}>button</button>
+      {/* <button onClick={buttonHandler}>button</button> */}
     </DeviceContext.Provider>
   );
 };
 
 export default DeviceProfile;
-
-// import React, { useState, useEffect, useContext } from 'react';
-// import styled from 'reshadow/macro';
-//
-// import {
-//   Route, useRouteMatch, useParams, useHistory,
-// } from 'react-router-dom';
-// import { grid } from '01/r_comp';
-// import {
-//   getInfo,
-//   getObjectOfDevice,
-//   getODPUTasks,
-//   getRelatedDevices,
-// } from '01/_api/device_page';
-// import { ListWrap, Title, ListItem } from '01/_components/List';
-// import { Header } from './components/Header';
-// import { Tabs } from './components/Tabs';
-// import { Information } from './components/Information';
-// import { Events } from './components/Events';
-// import { Changes } from './components/Changes';
-// import { Documents } from './components/Documents';
-// import { Connection } from './components/Connection';
-// import { RelatedDevices } from './components/RelatedDevices';
-//
-// export const DeviceContext = React.createContext();
-//
-// export const DeviceProfile = (props) => {
-//   const { 0: objid, 1: deviceId } = useParams();
-//   const [device, setDevice] = useState();
-//   const [building, setBuilding] = useState();
-//   const [tasks, setTasks] = useState();
-//   const [related, setRelated] = useState();
-//
-//   useEffect(() => {
-//     getInfo(deviceId).then((response) => setDevice(response));
-//     getObjectOfDevice(objid).then((response) => setBuilding(response));
-//     getODPUTasks(deviceId).then((response) => setTasks(response));
-//     getRelatedDevices(deviceId).then((response) => setRelated(response));
-//   }, []);
-//
-//   const buttonHandler = () => {
-//     console.log('device', device);
-//     console.log('building', building);
-//   };
-//
-//   console.log('getRelatedDevices', related);
-//
-//   return styled(grid)(
-//     <>
-//       <DeviceContext.Provider
-//         value={{
-//           device,
-//           building,
-//           tasks,
-//           related,
-//         }}
-//       >
-//         {/* <button onClick={buttonHandler}>button</button> */}
-//         <Header />
-//         <Tabs />
-//
-//         <Route path="/*/(\\d+)" exact>
-//           <grid>
-//             <Information />
-//             <Events title="Задачи с объектом" />
-//           </grid>
-//         </Route>
-//         {/* <Route
-//                   path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
-//                   component={DeviceProfile}
-//                   exact
-//                 /> */}
-//
-//         <Route path="/*/(\\d+)/connection" exact>
-//           <grid>
-//             <Connection />
-//             <Events title="Задачи с объектом" />
-//           </grid>
-//         </Route>
-//
-//         <Route path="/*/(\\d+)/related" exact>
-//           <grid>
-//             <RelatedDevices />
-//             <Events title="Задачи с объектом" />
-//           </grid>
-//         </Route>
-//
-//         <Route path="/*/(\\d+)/changes" exact>
-//           Компонент в разработке
-//         </Route>
-//       </DeviceContext.Provider>
-//     </>,
-//   );
-// };
-//
-// export default DeviceProfile;
