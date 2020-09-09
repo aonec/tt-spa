@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
-
+import _ from 'lodash';
 import { Grid } from '01/_components';
 import {
   getInfo,
@@ -41,59 +41,82 @@ export const DeviceProfile = (props) => {
     typeODPU: true,
   });
 
-  const [errors, setErrors] = useState({
-    device: null,
-    building: null,
-    tasks: null,
-    related: null,
-    typeODPU: null,
-  });
+  const [error, setError] = useState();
+  const [errors, setErrors] = useState();
 
-  // const errors = {
-  //   device: 'Произошла ошибка запроса устройства',
-  //   building: 'Произошла ошибка при загрузке данных по зданию',
-  //   tasks: 'Произошла ошибка при загрузке данных по задачам',
-  //   related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-  //   typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
-  // };
+  const errorsTemplate = {
+    device: 'Произошла ошибка запроса устройства',
+    building: 'Произошла ошибка при загрузке данных по зданию',
+    tasks: 'Произошла ошибка при загрузке данных по задачам',
+    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
+    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
+  };
 
   useEffect(() => {
     Promise.all([
       getInfo(deviceId),
-      // getInfo(111111111),
+      // getInfo(111111111455545),
       getObjectOfDevice(objid),
+      // getObjectOfDevice(45465465456),
       getODPUTasks(deviceId),
+      // getODPUTasks(45465465456),
       getRelatedDevices(deviceId),
+      // getRelatedDevices(45465465456),
       getTypeODPU(deviceId),
-      // getTypeODPU('111111'),
+      // getTypeODPU(45465465456),
     ])
       .then((responses) => {
         const [device, building, tasks, related, typeODPU] = responses;
-        // setDevice(device);
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
+      })
+      .catch(({ resource, message }) => {
+        // const result = _.find(errors, (o) => o.name === resource);
+        // setErrors((prev) => ({
+        //   ...prev,
+        //   result,
+        // }));
+        console.log('name', resource);
+        console.log('message', message);
+        setError({ resource, message });
+      })
+      .finally(() => {
         setLoadings((prev) => ({ ...prev, device: false }));
         setLoadings((prev) => ({ ...prev, building: false }));
         setLoadings((prev) => ({ ...prev, tasks: false }));
         setLoadings((prev) => ({ ...prev, related: false }));
         setLoadings((prev) => ({ ...prev, typeODPU: false }));
-      })
-      .catch((error) => {
-        console.log('error', error);
       });
   }, []);
 
+  // function updateTitle() {
+  //   setState((prev) => ({
+  //     ...prev,
+  //     title: 'Новое название',
+  //   }));
+  // }
+
+  // function updateTitle() {
+  //   setState(prev => {
+  //     return {
+  //       ...prev,
+  //       title: 'Новое название'
+  //     }
+  //   })
+  // }
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
-    console.log('states', loadings);
-    console.log('buttonHandler');
-    console.log('path', path);
-    console.log('deviceId', deviceId);
-    console.log('typeODPU', typeODPU);
+    console.log('error', error);
+    // console.log('states', loadings);
+    // console.log('buttonHandler');
+    // console.log('path', path);
+    // console.log('deviceId', deviceId);
+    // console.log('typeODPU', typeODPU);
+    // console.log('errors', errors);
   };
   if (typeODPU === 'Calculator') {
     return (
@@ -105,6 +128,8 @@ export const DeviceProfile = (props) => {
           related,
           typeODPU,
           loadings,
+          errors,
+          error,
         }}
       >
         <Header />
@@ -140,7 +165,8 @@ export const DeviceProfile = (props) => {
         related,
         typeODPU,
         loadings,
-
+        errors,
+        error,
       }}
     >
       <Header />
@@ -163,7 +189,7 @@ export const DeviceProfile = (props) => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      {/* <button onClick={buttonHandler}>button</button> */}
+      <button onClick={buttonHandler}>button</button>
     </DeviceContext.Provider>
   );
 };

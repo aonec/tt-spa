@@ -6,7 +6,9 @@ import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
 export const Information = (loading = true) => {
-  const { device, building, loadings } = useContext(DeviceContext);
+  const {
+    device, building, loadings, error,
+  } = useContext(DeviceContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
@@ -19,6 +21,19 @@ export const Information = (loading = true) => {
 
   const { city, street, number } = building || {};
   const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
+
+  const errorOfComponent = _.get(error, 'resource', null);
+  console.log('error', error);
+
+  if (errorOfComponent) {
+    return (
+      <ListWrap>
+        <Title>{error.message}</Title>
+
+        <button onClick={buttonHandler}>button</button>
+      </ListWrap>
+    );
+  }
 
   return (
     <ListWrap>

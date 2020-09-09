@@ -11,7 +11,9 @@ import { DeviceContext } from '../DeviceProfile';
 export const Template = styled.div``;
 
 export const Header = (loading = true) => {
-  const { device, building, loadings } = useContext(DeviceContext);
+  const {
+    device, building, loadings, errors, error,
+  } = useContext(DeviceContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
@@ -31,11 +33,28 @@ export const Header = (loading = true) => {
     serialNumber: null,
     resource: null,
   };
-  const { icon, color } = DeviceIcons[resource] || { icon: 'device', color: 'unset' };
+  const { icon, color } = DeviceIcons[resource] || {
+    icon: 'device',
+    color: 'unset',
+  };
 
   const buttonHandler = () => {
-    console.log(loadings);
+    console.log('loadings', loadings);
+    console.log('errors', errors);
   };
+
+  const errorOfComponent = _.get(error, 'resource', null);
+  console.log('error', error);
+
+  if (errorOfComponent) {
+    return (
+      <HeaderWrap>
+        <Title>{error.message}</Title>
+        <Subtitle>Обратитесь в тех.поддержку</Subtitle>
+        <button onClick={buttonHandler}>button</button>
+      </HeaderWrap>
+    );
+  }
 
   return (
     <HeaderWrap>
