@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-
+import _ from 'lodash';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
@@ -57,17 +57,17 @@ const buttonHandler = () => {
   console.log('buttonHandler');
 };
 export const Events = ({ title = '', loading = true }) => {
-  const { tasks } = useContext(DeviceContext);
+  const { tasks, states } = useContext(DeviceContext);
+  const loadingTasks = _.get(states, 'tasksState.loading', true);
+  const loadingTasksError = _.get(states, 'tasksState.error', 'OK');
 
-  if (tasks) {
-    const tasksList = tasks.items;
-    // console.log(tasksList);
+  loading = loadingTasks;
+  console.log("deviceState",states) 
+  console.log("loadingTasksError", loadingTasksError)
 
-    if (tasksList.length > 0) {
-      console.log(tasksList.length);
-
-      const TasksResult = tasksList.map((task, index) => {
+  const Tasks = (tasks || []).map((task, index) => {
         const { currentStage, perpetrator, id } = task;
+       
         return (
           <Task key={id} href={`/tasks/${id}`}>
             <StageName>{currentStage.name}</StageName>
@@ -87,31 +87,39 @@ export const Events = ({ title = '', loading = true }) => {
             </TaskRow>
           </Task>
         );
-      });
+  });
+    if (Tasks.length > 0)  {
       return (
         <TasksWrap>
+          <Loader show={loading} size='32' >
           <TasksTitle>{title}</TasksTitle>
-          {TasksResult}
+          {Tasks}
           <Button onClick={buttonHandler}>Все задачи с объектом</Button>
+          </Loader>
         </TasksWrap>
       );
+    
     }
+
+
 
     return (
       <TasksWrap>
-        <TasksTitle>{title}</TasksTitle>
-        <Task href="/tasks/">
-          <StageName>Нет задач </StageName>
-          <TaskName>задачи ОДПУ завершены</TaskName>
-          <TaskRow>
-            <Icon icon="username2" style={{ marginRight: '8px' }} />
-            Можете просмотреть все задачи
-          </TaskRow>
-        </Task>
-      </TasksWrap>
-    );
+        <Loader show={loading} size='32' >
+      <TasksTitle>{title}</TasksTitle>
+      <Task href="/tasks/">
+        <StageName>Нет задач </StageName>
+        <TaskName>задачи ОДПУ завершены</TaskName>
+        <TaskRow>
+          <Icon icon="username2" style={{ marginRight: '8px' }} />
+          Можете просмотреть все задачи
+        </TaskRow>
+      </Task>
+      </Loader>
+    </TasksWrap>  )
+    
   }
-  return <Loader size="32" />;
-};
+
+
 
 export default Events;

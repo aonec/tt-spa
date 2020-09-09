@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
+
 import { Grid } from '01/_components';
 import {
   getInfo,
@@ -35,6 +36,15 @@ export const DeviceProfile = (props) => {
   const [typeODPU, setTypeODPU] = useState();
   const [mistake, setMistake] = useState();
 
+  const states = {
+    deviceState: { loading: false, error: 'Произошла ошибка запроса устройства' },
+    buildingState: { loading: false, error: 'Произошла ошибка при загрузке данных по зданию' },
+    tasksState: { loading: false, error: 'Произошла ошибка при загрузке данных по задачам' },
+    relatedState : { loading: false, error: 'Произошла ошибка при загрузке данных по подключенным устройствам' },
+    typeODPUState : { loading: false, error: 'Произошла ошибка при загрузке данных по типу устройства' },
+  }
+
+
   useEffect(() => {
     // getInfo(deviceId).then((response) => setDevice(response));
     // getObjectOfDevice(objid).then((response) => setBuilding(response));
@@ -43,30 +53,32 @@ export const DeviceProfile = (props) => {
 
     Promise.all([
       getInfo(deviceId),
-      //getInfo(111111111),
+     // getInfo(111111111),
       getObjectOfDevice(objid),
-      getODPUTasks(deviceId),
+     //getODPUTasks(deviceId),
+      getODPUTasks(1111111111111),
       getRelatedDevices(deviceId),
+      //getRelatedDevices(111111),
       getTypeODPU(deviceId)
     ]).then((responses) => {
       // console.log(responses);
       const [device, building, tasks, related, typeODPU] = responses;
       setDevice(device);
       setBuilding(building);
-      setTasks(tasks);
+      setTasks(tasks.items);
       setRelated(related);
-      setTypeODPU(typeODPU)
+      setTypeODPU(typeODPU);
     }).catch((error) => {
-      setMistake(error)
+      states[error].loading = false;
     });
   }, []);
 
   const path = `/objects/${objid}/devices/${deviceId}/`;
   const test = 2;
   const buttonHandler = () => {
+    console.log("states", states)
     console.log('buttonHandler');
     console.log('path', path);
-    console.log("mistake", mistake)
     console.log("deviceId",deviceId)
     console.log("typeODPU", typeODPU)
   };
@@ -80,7 +92,7 @@ export const DeviceProfile = (props) => {
           tasks,
           related,
           typeODPU,
-          mistake,
+          states
         }}
       >
 
@@ -108,7 +120,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом"/>
         </Grid>
-         {/* <button onClick={buttonHandler}>button</button> */}
+         <button onClick={buttonHandler}>button</button>
       </DeviceContext.Provider>
  
   )}
@@ -145,7 +157,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом"/>
         </Grid>
-         {/* <button onClick={buttonHandler}>button</button> */}
+         <button onClick={buttonHandler}>button</button>
       </DeviceContext.Provider>
     )
   }

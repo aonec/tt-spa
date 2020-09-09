@@ -10,7 +10,8 @@ export async function getInfo(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw new Error(error)
+  
+    throw 'deviceState'
   }
 }
 
@@ -23,7 +24,7 @@ export async function getObjectOfDevice(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw new Error(error)
+    throw new Error('getObjectOfDevice')
   }
 }
 
@@ -35,7 +36,7 @@ export async function getODPUTasks(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw new Error(error)
+    throw 'tasksState'
   }
 }
 
@@ -50,7 +51,7 @@ export async function getRelatedDevices(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw new Error(error)
+    throw new Error('getRelatedDevices')
   }
 }
 
@@ -65,7 +66,7 @@ export async function getTypeODPU(url = '') {
     
   } catch (error) {
     console.log(error);
-    throw new Error(error)
+    throw new Error('getTypeODPU')
   }
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
@@ -9,20 +10,33 @@ import { DeviceContext } from '../DeviceProfile';
 
 export const Template = styled.div``;
 
-export const Header = (loading = true) => {
-  const { device, building, mistake } = useContext(DeviceContext);
-  loading = !(device && building);
+export const Header = (loading=true) => {
+  const { device, building ,states } = useContext(DeviceContext);
 
-  if(mistake) {
-    return (
-      <HeaderWrap >
-        <Title style={{color: 'red'}}>
-          Данные не получены
-        </Title>
-        <Subtitle style={{color: 'red'}}>Обратитесь в тех.поддержку</Subtitle>
-      </HeaderWrap>
-    )
-  }
+  // const states = {
+  //   deviceState: { loading: false, error: 'Произошла ошибка запроса устройства' },
+  //   tasksState: { loading: false, error: 'Произошла ошибка при загрузке данных по сети' }
+  // }
+
+  const loadingDevice = _.get(states, 'deviceState.loading', true);
+  const loadingBuilding = _.get(states, 'buildingState.loading', true);
+
+  loading = loadingDevice || loadingBuilding;
+
+  console.log("deviceState",states)
+
+  if(device)
+  
+  // if(mistake) {
+  //   return (
+  //     <HeaderWrap >
+  //       <Title style={{color: 'red'}}>
+  //         Данные не получены
+  //       </Title>
+  //       <Subtitle style={{color: 'red'}}>Обратитесь в тех.поддержку</Subtitle>
+  //     </HeaderWrap>
+  //   )
+  // }
 
   const buttonHandler = () => {
     console.log(device, building);
@@ -31,6 +45,8 @@ export const Header = (loading = true) => {
   const { city, street, number } = building || { city: null, street: null, number: null };
   const { model, serialNumber, resource } = device || { model: null, serialNumber: null, resource: null };
   const { icon, color } = DeviceIcons[resource];
+
+
 
   return (
     <HeaderWrap>
