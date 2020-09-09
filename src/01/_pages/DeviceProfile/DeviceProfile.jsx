@@ -42,7 +42,6 @@ export const DeviceProfile = (props) => {
   });
 
   const [error, setError] = useState();
-  const [errors, setErrors] = useState();
 
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
@@ -52,18 +51,18 @@ export const DeviceProfile = (props) => {
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
 
+  const [errors, setErrors] = useState();
+
   useEffect(() => {
     Promise.all([
-      getInfo(deviceId),
-      // getInfo(111111111455545),
+      // getInfo(deviceId),
+      getInfo(11111111111),
       getObjectOfDevice(objid),
-      // getObjectOfDevice(45465465456),
+      //  getObjectOfDevice(111111111),
       getODPUTasks(deviceId),
-      // getODPUTasks(45465465456),
       getRelatedDevices(deviceId),
-      // getRelatedDevices(45465465456),
+      // getRelatedDevices(2323232),
       getTypeODPU(deviceId),
-      // getTypeODPU(45465465456),
     ])
       .then((responses) => {
         const [device, building, tasks, related, typeODPU] = responses;
@@ -74,14 +73,10 @@ export const DeviceProfile = (props) => {
         setTypeODPU(typeODPU);
       })
       .catch(({ resource, message }) => {
-        // const result = _.find(errors, (o) => o.name === resource);
-        // setErrors((prev) => ({
-        //   ...prev,
-        //   result,
-        // }));
         console.log('name', resource);
         console.log('message', message);
-        setError({ resource, message });
+        const text = errorsTemplate[resource];
+        setError({ resource, text });
       })
       .finally(() => {
         setLoadings((prev) => ({ ...prev, device: false }));

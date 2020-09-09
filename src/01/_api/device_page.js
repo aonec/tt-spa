@@ -24,7 +24,7 @@ export async function getObjectOfDevice(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw 'building';
+    throw { resource: 'building', message: 'Произошла ошибка при загрузке данных по зданию' };
   }
 }
 
@@ -36,7 +36,7 @@ export async function getODPUTasks(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw 'tasks';
+    throw { resource: 'tasks', message: 'Произошла ошибка при загрузке данных по задачам' };
   }
 }
 
@@ -51,7 +51,7 @@ export async function getRelatedDevices(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw 'related';
+    throw { resource: 'related', message: 'Произошла ошибка при загрузке данных по подключенным устройствам' };
   }
 }
 
@@ -62,6 +62,6 @@ export async function getTypeODPU(url = '') {
     return res.type;
   } catch (error) {
     console.log(error);
-    throw 'typeODPU';
+    throw { typeODPU: 'related', message: 'Произошла ошибка при загрузке данных по типу устройства' };
   }
 }

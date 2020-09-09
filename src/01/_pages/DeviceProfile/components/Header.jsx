@@ -35,11 +35,12 @@ export const Header = (loading = true) => {
   };
   const { icon, color } = DeviceIcons[resource] || {
     icon: 'device',
-    color: 'unset',
+    color: 'initial',
   };
 
   const buttonHandler = () => {
     console.log('loadings', loadings);
+    console.log('error', error);
     console.log('errors', errors);
   };
 
@@ -49,7 +50,7 @@ export const Header = (loading = true) => {
   if (errorOfComponent) {
     return (
       <HeaderWrap>
-        <Title>{error.message}</Title>
+        <Title>{error.text}</Title>
         <Subtitle>Обратитесь в тех.поддержку</Subtitle>
         <button onClick={buttonHandler}>button</button>
       </HeaderWrap>

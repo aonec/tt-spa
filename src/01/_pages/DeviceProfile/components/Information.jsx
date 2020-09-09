@@ -29,8 +29,7 @@ export const Information = (loading = true) => {
     return (
       <ListWrap>
         <Title>{error.message}</Title>
-
-        <button onClick={buttonHandler}>button</button>
+        {/* <button onClick={buttonHandler}>button</button> */}
       </ListWrap>
     );
   }
