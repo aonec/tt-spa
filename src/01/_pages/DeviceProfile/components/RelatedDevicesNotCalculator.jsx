@@ -76,7 +76,6 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
   const relatedArr = Object.values(related || {});
 
   const result = relatedArr.map((value) => {
-    console.log(value);
     const {
       model,
       serialNumber,
@@ -86,10 +85,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       resource,
       id,
       housingStockId,
-
     } = value;
-
-    // size: {width, height}
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
     const { icon, color } = DeviceIcons[resource];
@@ -109,10 +105,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
           <Icon icon="status" color="#17B45A" />
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
-        <Span>
-          {convertDate(futureCheckingDate)}
-        </Span>
-
+        <Span>{convertDate(futureCheckingDate)}</Span>
       </ListItem>
     );
   });
