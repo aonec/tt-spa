@@ -55,13 +55,10 @@ export const DeviceProfile = (props) => {
 
   useEffect(() => {
     Promise.all([
-      // getInfo(deviceId),
-      getInfo(11111111111),
+      getInfo(deviceId),
       getObjectOfDevice(objid),
-      //  getObjectOfDevice(111111111),
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
-      // getRelatedDevices(2323232),
       getTypeODPU(deviceId),
     ])
       .then((responses) => {
@@ -73,8 +70,6 @@ export const DeviceProfile = (props) => {
         setTypeODPU(typeODPU);
       })
       .catch(({ resource, message }) => {
-        console.log('name', resource);
-        console.log('message', message);
         const text = errorsTemplate[resource];
         setError({ resource, text });
       })
@@ -146,7 +141,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-        <button onClick={buttonHandler}>button</button>
+        {/* <button onClick={buttonHandler}>button</button> */}
       </DeviceContext.Provider>
     );
   }
@@ -184,7 +179,7 @@ export const DeviceProfile = (props) => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      <button onClick={buttonHandler}>button</button>
+      {/* <button onClick={buttonHandler}>button</button> */}
     </DeviceContext.Provider>
   );
 };
