@@ -1,16 +1,67 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import $ from 'jquery'
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
 
 import { DeviceContext } from '../DeviceProfile';
-
+// import {Menu} from './EditButton'
 export const Template = styled.div``;
 
+export const List = styled.ul`
+border:1px solid #DCDEE4;
+    position: absolute;
+    right: 0;
+    width: max-content;
+    z-index: 50;
+    background: white;
+    display: none;
+`;
+
+export const ListItem = styled.li`
+font-size: 16px;
+line-height: 32px;
+padding:8px 24px;
+cursor: pointer;
+border-bottom: 1px solid #DCDEE4;
+&:hover {
+background: #189EE9;
+color: #FFFFFF !important;
+}
+`;
+
+
+
+
 export const Header = (loading = true) => {
+
+  const showPopupHandler = () =>{
+    console.log("showPopupHandler")
+    const el = document.querySelector('ul');
+    // el.style.visibility = 'visible';
+    // el.style.display = (el.style.display == 'none') ? '' : 'none'
+    console.log($( "ul" ))
+
+    $( "ul" ).toggle();
+
+
+  }
+
+  const Menu = () => {
+    console.log("showPopupHandler", showPopupHandler)
+    return (
+      <List>
+        <ListItem>Редактировать вычислитель</ListItem>
+        <ListItem>Поверить вычислитель</ListItem>
+        <ListItem onClick={showPopupHandler}>Выгрузить отчет о общедомовом потреблении</ListItem>
+        <ListItem style={{color: "#FC525B"}}>Снять вычислитель с учета</ListItem>
+      </List>
+    )
+  }
+
   const {
     device, building, loadings, errors, error,
   } = useContext(DeviceContext);
@@ -58,8 +109,12 @@ export const Header = (loading = true) => {
   }
 
   return (
-    <HeaderWrap>
+    <HeaderWrap style={{
+      display:'flex',
+      justifyContent: 'space-between'
+    }}>
       <Loader show={loading} size="32">
+        <div>
         <Title>
           <Icon
             icon={icon}
@@ -71,8 +126,15 @@ export const Header = (loading = true) => {
         </Title>
 
         <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+        </div>
+        <div style={{position: 'relative'}}>
+          <button className='edit-button' onClick={showPopupHandler}>
+            <Icon icon={'menu'} />
+          </button>
+          <Menu className='menuUl' showPopupHandler={showPopupHandler}/>
+        </div>
       </Loader>
-      <button onClick={buttonHandler}>button</button>
+
     </HeaderWrap>
   );
 };

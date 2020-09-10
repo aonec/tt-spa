@@ -129,8 +129,7 @@ export const DeviceProfile = (props) => {
           <Events title="Задачи с объектом" />
         </Grid>
         <Popup />
-        <button onClick={showPopupHandler}>showPopup</button>
-        <button onClick={showInfo}>showInfo</button>
+        {/*<button onClick={showPopupHandler}>showPopup</button>*/}
       </DeviceContext.Provider>
     );
   }
@@ -168,9 +167,6 @@ export const DeviceProfile = (props) => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      <Popup />
-      <button onClick={showPopupHandler}>showPopup</button>
-      {/* <button onClick={buttonHandler}>button</button> */}
     </DeviceContext.Provider>
   );
 };

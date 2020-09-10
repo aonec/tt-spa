@@ -28,7 +28,7 @@ export const Popup = () => {
 
 
   //const period = useRef();
-  const [period, setPeriod] = useState();
+  const [period, setPeriod] = useState('daily');
   const [begin, setBegin] = useState()
   const [end, setEnd] = useState()
 
@@ -56,7 +56,7 @@ export const Popup = () => {
   const { RangePicker } = DatePicker;
   const downloadReport = () => {
     console.log("downloadReport")
-    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${period}&resourcetype=heat&entrynumber=1&from=${begin}T00:00:00Z&to=${end}T00:00:00Z`
+    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${period}&resourcetype=coldwatersupply&entrynumber=2&from=${begin}T00:00:00Z&to=${end}T00:00:00Z`
    // const  link = 'ss'
     const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
     // window.open(link);
@@ -96,8 +96,8 @@ export const Popup = () => {
               <label htmlFor="#type">Тип архива</label>
 
 
-              <Radio.Group defaultValue="a" size="large" onChange={(event) => onChange(event)}>
-                <Radio.Button value="hourly">Часовой</Radio.Button>
+              <Radio.Group defaultValue="daily" size="large" onChange={(event) => onChange(event)}>
+                <Radio.Button value="hourly" checked>Часовой</Radio.Button>
                 <Radio.Button value="daily">Суточный</Radio.Button>
 
               </Radio.Group>
