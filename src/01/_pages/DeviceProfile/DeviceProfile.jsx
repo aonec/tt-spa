@@ -17,7 +17,7 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-
+import {Popup} from './components/Modal'
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 
@@ -82,106 +82,89 @@ export const DeviceProfile = (props) => {
       });
   }, []);
 
-  // function updateTitle() {
-  //   setState((prev) => ({
-  //     ...prev,
-  //     title: 'Новое название',
-  //   }));
-  // }
-
-  // function updateTitle() {
-  //   setState(prev => {
-  //     return {
-  //       ...prev,
-  //       title: 'Новое название'
-  //     }
-  //   })
-  // }
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
     console.log('error', error);
-    // console.log('states', loadings);
-    // console.log('buttonHandler');
-    // console.log('path', path);
-    // console.log('deviceId', deviceId);
-    // console.log('typeODPU', typeODPU);
-    // console.log('errors', errors);
   };
-  if (typeODPU === 'Calculator') {
-    return (
-      <DeviceContext.Provider
-        value={{
-          device,
-          building,
-          tasks,
-          related,
-          typeODPU,
-          loadings,
-          errors,
-          error,
-        }}
-      >
-        <Header />
-        <Tabs />
-        {/* Здесь делим экран на две части: main and aside */}
-        <Grid>
-          <Route path={path} exact>
-            <Information />
-          </Route>
-          <Route path={`${path}connection`} exact>
-            <Connection />
-          </Route>
-          <Route path={`${path}related`} exact>
-            <RelatedDevices />
-          </Route>
-          <Route path={`${path}documents`} exact>
-            <div>Документы</div>
-          </Route>
-
-          <Events title="Задачи с объектом" />
-        </Grid>
-        {/* <button onClick={buttonHandler}>button</button> */}
-      </DeviceContext.Provider>
-    );
-  }
 
   return (
-    <DeviceContext.Provider
-      value={{
-        device,
-        building,
-        tasks,
-        related,
-        typeODPU,
-        loadings,
-        errors,
-        error,
-      }}
-    >
-      <Header />
-
-      <TabsNotCalculator />
-
-      {/* Здесь делим экран на две части: main and aside */}
-      <Grid>
-        <Route path={path} exact>
-          <Information />
-        </Route>
-
-        <Route path={`${path}related`} exact>
-          <RelatedDevicesNotCalculator />
-        </Route>
-
-        <Route path={`${path}documents`} exact>
-          <div>Документы</div>
-        </Route>
-
-        <Events title="Задачи с объектом" />
-      </Grid>
-      {/* <button onClick={buttonHandler}>button</button> */}
-    </DeviceContext.Provider>
-  );
+    <Popup />
+  )
+  // if (typeODPU === 'Calculator') {
+  //   return (
+  //     <DeviceContext.Provider
+  //       value={{
+  //         device,
+  //         building,
+  //         tasks,
+  //         related,
+  //         typeODPU,
+  //         loadings,
+  //         errors,
+  //         error,
+  //       }}
+  //     >
+  //       <Header />
+  //       <Tabs />
+  //       {/* Здесь делим экран на две части: main and aside */}
+  //       <Grid>
+  //         <Route path={path} exact>
+  //           <Information />
+  //         </Route>
+  //         <Route path={`${path}connection`} exact>
+  //           <Connection />
+  //         </Route>
+  //         <Route path={`${path}related`} exact>
+  //           <RelatedDevices />
+  //         </Route>
+  //         <Route path={`${path}documents`} exact>
+  //           <div>Документы</div>
+  //         </Route>
+  //
+  //         <Events title="Задачи с объектом" />
+  //       </Grid>
+  //       {/* <button onClick={buttonHandler}>button</button> */}
+  //     </DeviceContext.Provider>
+  //   );
+  // }
+  //
+  // return (
+  //   <DeviceContext.Provider
+  //     value={{
+  //       device,
+  //       building,
+  //       tasks,
+  //       related,
+  //       typeODPU,
+  //       loadings,
+  //       errors,
+  //       error,
+  //     }}
+  //   >
+  //     <Header />
+  //
+  //     <TabsNotCalculator />
+  //
+  //     {/* Здесь делим экран на две части: main and aside */}
+  //     <Grid>
+  //       <Route path={path} exact>
+  //         <Information />
+  //       </Route>
+  //
+  //       <Route path={`${path}related`} exact>
+  //         <RelatedDevicesNotCalculator />
+  //       </Route>
+  //
+  //       <Route path={`${path}documents`} exact>
+  //         <div>Документы</div>
+  //       </Route>
+  //
+  //       <Events title="Задачи с объектом" />
+  //     </Grid>
+  //     {/* <button onClick={buttonHandler}>button</button> */}
+  //   </DeviceContext.Provider>
+  // );
 };
 
 export default DeviceProfile;
