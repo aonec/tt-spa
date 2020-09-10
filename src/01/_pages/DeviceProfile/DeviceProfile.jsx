@@ -81,90 +81,98 @@ export const DeviceProfile = (props) => {
         setLoadings((prev) => ({ ...prev, typeODPU: false }));
       });
   }, []);
-
+  const showInfo = () => {
+    console.log(device)
+  }
   const path = `/objects/${objid}/devices/${deviceId}/`;
+  const showPopupHandler = () =>{
+    console.log("showPopupHandler")
+      const el = document.querySelector('.overlay');
+    el.style.visibility = 'visible';
 
+
+  }
   const buttonHandler = () => {
     console.log('error', error);
   };
+  if (typeODPU === 'Calculator') {
+    return (
+      <DeviceContext.Provider
+        value={{
+          device,
+          building,
+          tasks,
+          related,
+          typeODPU,
+          loadings,
+          errors,
+          error,
+        }}
+      >
+        <Header />
+        <Tabs />
+        {/* Здесь делим экран на две части: main and aside */}
+        <Grid>
+          <Route path={path} exact>
+            <Information />
+          </Route>
+          <Route path={`${path}connection`} exact>
+            <Connection />
+          </Route>
+          <Route path={`${path}related`} exact>
+            <RelatedDevices />
+          </Route>
+          <Route path={`${path}documents`} exact>
+            <div>Документы</div>
+          </Route>
+
+          <Events title="Задачи с объектом" />
+        </Grid>
+        <Popup />
+        <button onClick={showPopupHandler}>showPopup</button>
+        <button onClick={showInfo}>showInfo</button>
+      </DeviceContext.Provider>
+    );
+  }
 
   return (
-    <Popup />
-  )
-  // if (typeODPU === 'Calculator') {
-  //   return (
-  //     <DeviceContext.Provider
-  //       value={{
-  //         device,
-  //         building,
-  //         tasks,
-  //         related,
-  //         typeODPU,
-  //         loadings,
-  //         errors,
-  //         error,
-  //       }}
-  //     >
-  //       <Header />
-  //       <Tabs />
-  //       {/* Здесь делим экран на две части: main and aside */}
-  //       <Grid>
-  //         <Route path={path} exact>
-  //           <Information />
-  //         </Route>
-  //         <Route path={`${path}connection`} exact>
-  //           <Connection />
-  //         </Route>
-  //         <Route path={`${path}related`} exact>
-  //           <RelatedDevices />
-  //         </Route>
-  //         <Route path={`${path}documents`} exact>
-  //           <div>Документы</div>
-  //         </Route>
-  //
-  //         <Events title="Задачи с объектом" />
-  //       </Grid>
-  //       {/* <button onClick={buttonHandler}>button</button> */}
-  //     </DeviceContext.Provider>
-  //   );
-  // }
-  //
-  // return (
-  //   <DeviceContext.Provider
-  //     value={{
-  //       device,
-  //       building,
-  //       tasks,
-  //       related,
-  //       typeODPU,
-  //       loadings,
-  //       errors,
-  //       error,
-  //     }}
-  //   >
-  //     <Header />
-  //
-  //     <TabsNotCalculator />
-  //
-  //     {/* Здесь делим экран на две части: main and aside */}
-  //     <Grid>
-  //       <Route path={path} exact>
-  //         <Information />
-  //       </Route>
-  //
-  //       <Route path={`${path}related`} exact>
-  //         <RelatedDevicesNotCalculator />
-  //       </Route>
-  //
-  //       <Route path={`${path}documents`} exact>
-  //         <div>Документы</div>
-  //       </Route>
-  //
-  //       <Events title="Задачи с объектом" />
-  //     </Grid>
-  //     {/* <button onClick={buttonHandler}>button</button> */}
-  //   </DeviceContext.Provider>
-  // );
+    <DeviceContext.Provider
+      value={{
+        device,
+        building,
+        tasks,
+        related,
+        typeODPU,
+        loadings,
+        errors,
+        error,
+      }}
+    >
+      <Header />
+
+      <TabsNotCalculator />
+
+      {/* Здесь делим экран на две части: main and aside */}
+      <Grid>
+        <Route path={path} exact>
+          <Information />
+        </Route>
+
+        <Route path={`${path}related`} exact>
+          <RelatedDevicesNotCalculator />
+        </Route>
+
+        <Route path={`${path}documents`} exact>
+          <div>Документы</div>
+        </Route>
+
+        <Events title="Задачи с объектом" />
+      </Grid>
+      <Popup />
+      <button onClick={showPopupHandler}>showPopup</button>
+      {/* <button onClick={buttonHandler}>button</button> */}
+    </DeviceContext.Provider>
+  );
 };
 
 export default DeviceProfile;
