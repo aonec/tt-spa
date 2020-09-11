@@ -12,3 +12,8 @@ export const DEFAULT_DEVICE = {
   futureCheckingDate: null,
   lastCheckingDate: null,
 };
+
+export const DEFAULT_ICON = {
+  icon: 'device',
+  color: 'initial',
+};
