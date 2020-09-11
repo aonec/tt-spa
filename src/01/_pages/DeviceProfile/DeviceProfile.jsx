@@ -74,29 +74,17 @@ export const DeviceProfile = (props) => {
         setError({ resource, text });
       })
       .finally(() => {
-        setLoadings((prev) => ({ ...prev, device: false }));
-        setLoadings((prev) => ({ ...prev, building: false }));
-        setLoadings((prev) => ({ ...prev, tasks: false }));
-        setLoadings((prev) => ({ ...prev, related: false }));
-        setLoadings((prev) => ({ ...prev, typeODPU: false }));
+        setLoadings((prev) => ({
+          ...prev,
+          device: false,
+          building: false,
+          tasks: false,
+          related: false,
+          typeODPU: false,
+        }));
       });
   }, []);
 
-  // function updateTitle() {
-  //   setState((prev) => ({
-  //     ...prev,
-  //     title: 'Новое название',
-  //   }));
-  // }
-
-  // function updateTitle() {
-  //   setState(prev => {
-  //     return {
-  //       ...prev,
-  //       title: 'Новое название'
-  //     }
-  //   })
-  // }
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {

@@ -56,12 +56,10 @@ const TasksTitle = styled.h2`
 const buttonHandler = () => {
   console.log('buttonHandler');
 };
-export const Events = ({ title = '', loading = true }) => {
-  const { tasks, loadings, errors } = useContext(DeviceContext);
-  const loadingTasks = _.get(loadings, 'device', true);
-  const loadingTasksError = _.get(errors, 'device', 'OK');
-
-  loading = loadingTasks;
+export const Events = ({ title = '' }) => {
+  const { tasks, loadings } = useContext(DeviceContext);
+  // const loadingTasks = _.get(loadings, 'device', true);
+  const loading = _.get(loadings, 'device', true);
 
   const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;
