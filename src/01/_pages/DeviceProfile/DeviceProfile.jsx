@@ -20,6 +20,7 @@ import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import {Popup} from './components/Modal'
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
+import $ from "jquery";
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
@@ -50,6 +51,19 @@ export const DeviceProfile = (props) => {
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
+
+  $(document).mouseup(function (e) {
+    console.log("mouseup")
+    var container = $('ul');
+    if (container.has(e.target).length === 0){
+      container.hide();
+    }
+
+    // var container2 = $('.overlay');
+    // if (container2.has(e.target).length === 0){
+    //   container2.hide();
+    // }
+  });
 
   const [errors, setErrors] = useState();
 

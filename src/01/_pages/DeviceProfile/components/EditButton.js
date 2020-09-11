@@ -15,21 +15,7 @@ height: 48px;
 display: flex;
 justify-content: center;
 align-items: center;
-
 `;
-
-
-
-
-// export const EditButton = () => {
-//   return (
-//     <button className='edit-button'>
-//       <Icon icon={'menu'}/>
-//     </button>
-//   )
-// }
-
-
 
 export const List = styled.ul`
 border:1px solid #DCDEE4;
@@ -90,14 +76,14 @@ export const Menu = (showPopupHandler) => {
 
   return (
     <>
-      <EditButton />
-    <List>
-      <ListItem>Редактировать вычислитель</ListItem>
-      <ListItem>Поверить вычислитель</ListItem>
-      <ListItem onClick={showModal}>Выгрузить отчет о общедомовом потреблении</ListItem>
-      <ListItem style={{color: "#FC525B"}}>Снять вычислитель с учета</ListItem>
-    </List>
-      </>
+      <EditButton/>
+      <List>
+        <ListItem>Редактировать вычислитель</ListItem>
+        <ListItem>Поверить вычислитель</ListItem>
+        <ListItem onClick={showModal}>Выгрузить отчет о общедомовом потреблении</ListItem>
+        <ListItem style={{ color: "#FC525B" }}>Снять вычислитель с учета</ListItem>
+      </List>
+    </>
   )
 }
 

@@ -1,67 +1,83 @@
 import React, {
-  useRef, useState, useContext
+  useState, useContext, useRef
 } from "react";
-import './modal.css';
+import './modal.scss';
 import { Radio, ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate'
 import { DeviceContext } from '../../DeviceProfile';
-
-
-
+import { Icon } from "../../../../_components/Icon";
+import moment from "moment";
 
 export const Popup = () => {
-  const {device, building}= useContext(DeviceContext);
-  const {id, type, resource, model} = {...device}
-  const {number, street} = {...building}
+  const { device, building } = useContext(DeviceContext);
+  const { id, resource, model } = { ...device }
+  const { number, street } = { ...building }
 
 
-
-  const options = [
-    // { label: 'Месячный', value: 'Apple' },
-    // { label: 'Месячный', value: 'Apple' },
-    { label: 'Часовые', value: 'hourly' },
-    { label: 'Суточный', value: 'daily' },
-    // { label: 'Годовой ', value: 'Orange' },
+  const periodList = [
+    { label: 'Месячный', value: 'month' },
+    { label: 'Суточный', value: 'day' },
+    { label: 'Годовой', value: 'year' },
   ];
 
+  const detailList = [
+    { label: 'Суточный', value: 'daily' },
+    { label: 'Часовой', value: 'hourly' },
+  ];
 
-  //const period = useRef();
-  const [period, setPeriod] = useState('daily');
-  const [begin, setBegin] = useState()
-  const [end, setEnd] = useState()
+  // const [period, setPeriod] = useState();
+  const period = useRef('month');
+  // const [detail, setDetail] = useState();
+  const detail = useRef('daily');
+
+  const [begin, setBegin] = useState(moment().subtract(1, 'month'));
+  const [end, setEnd] = useState(moment());
 
   const datePickerHandler = (event) => {
-    console.log("datePickerHandler")
-    console.log(event)
-
-    setBegin(convertDateOnly(event[0]))
-    console.log("begin = ", begin)
-    setEnd(convertDateOnly(event[1]))
-    console.log("end = ", end)
-
-    console.log(device)
-    console.log(building)
+    setBegin((event[0]) || begin);
+    setEnd((event[1]) || end);
   }
-  const onChange = (e) => {
-    console.log('radio3 checked', e.target.value);
-    setPeriod(e.target.value);
-    console.log("value3", period)
-    // this.setState({
-    //   value3: e.target.value,
-    // });
+  const onPeriodChange = (e) => {
+    const res = e.target.value;
+    console.log(e.target.value)
+    //setPeriod(res);
+    period.current = res;
+    if (res === 'month') {
+      setBegin(moment().subtract(1, 'month'));
+      setEnd(moment());
+
+    }
+    //
+    if (res === 'day') {
+      setBegin(moment().subtract(1, 'day'));
+      setEnd(moment());
+    }
+    if (res === 'year') {
+      setBegin(moment().subtract(1, 'year'));
+      setEnd(moment());
+    }
+    console.log("period = ", period.current)
+  }
+
+  const onDetailChange = (e) => {
+    const result = e.target.value;
+    detail.current = result
+    //setDetail(result);
+    console.log(e.target.value)
+    console.log(result)
+
   }
 
   const { RangePicker } = DatePicker;
   const downloadReport = () => {
-    console.log("downloadReport")
-    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${period}&resourcetype=coldwatersupply&entrynumber=2&from=${begin}T00:00:00Z&to=${end}T00:00:00Z`
-   // const  link = 'ss'
-    const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
+    console.log("detail = ", detail)
+    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${detail.current}&resourcetype=coldwatersupply&entrynumber=2&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(end)}T00:00:00Z`
+    //const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
     // window.open(link);
     window.location.assign(link);
-    console.log(link)
+    //console.log(link)
   }
   const hideMe = () => {
     console.log("hideMe")
@@ -73,18 +89,25 @@ export const Popup = () => {
   return (
     <div className='overlay'>
       <div className='temp'>
+        <Icon className='modal__close' icon={'close'} color={'#272F5A'} onClick={hideMe}/>
         <div className="modal__top">
           <h3 className='modal__title'>Выгрузить отчет о общедомовом потреблении</h3>
           <div>
-            <label for="#input">Название отчета</label>
+            <label className='modal__label' for="#input">Название отчета</label>
             <input className='modal__input' id='input' value={`${model}_${street}_${number}.exls`}/>
           </div>
           <div className='period_and_type '>
-            <div className='period'><label htmlFor="#period">Период выгрузки</label>
-              {/*<input className='modal__input' id='period' value='Период выгрузки'/>*/}
+            <div className='period'>
+              <label className='modal__label' htmlFor="#period">Период выгрузки</label>
               <ConfigProvider locale={ruRu}>
                 <RangePicker
                   // format="YYYY-MM-DD"
+                  allowClear={false}
+                  size={'48px'}
+                  //defaultValue={[moment().subtract(1, 'month'), moment()]}
+                  // value = {[moment().subtract(1, 'month'), moment()]}
+                  value = {[begin, end]}
+                  // defaultValue={[{begin}, {end}]}
                   placeholder={['Дата Начала', 'Дата окончания']}
                   onChange={(event) => {
                     datePickerHandler(event)
@@ -93,17 +116,30 @@ export const Popup = () => {
               </ConfigProvider>
             </div>
             <div className='type'>
-              <label htmlFor="#type">Тип архива</label>
+              <label className='modal__label' htmlFor="#type">Тип архива</label>
 
 
-              <Radio.Group defaultValue="daily" size="large" onChange={(event) => onChange(event)}>
-                <Radio.Button value="hourly" checked>Часовой</Radio.Button>
+              <Radio.Group defaultValue="month" size="large"
+                           onChange={(event) => onPeriodChange(event)}>
+                <Radio.Button value="month" checked>Месячный</Radio.Button>
+                <Radio.Button value="day">Суточный</Radio.Button>
+                <Radio.Button value="year">Годовой</Radio.Button>
+
+              </Radio.Group>
+              <label className='modal__label' htmlFor="#type">Детализация</label>
+
+
+              <Radio.Group defaultValue="daily" size="large"
+                           onChange={(event) => onDetailChange(event)}>
+
                 <Radio.Button value="daily">Суточный</Radio.Button>
+                <Radio.Button value="hourly">Часовой</Radio.Button>
 
               </Radio.Group>
 
-
             </div>
+
+
           </div>
 
         </div>
