@@ -1,7 +1,9 @@
 import React from "react";
-import {Icon} from "../../../_components/Icon";
+import { Icon } from "../../../_components/Icon";
 import styled from "styled-components";
 import './edit-button.css'
+import $ from "jquery";
+
 export const Template = styled.div``;
 
 export const EditButtonTemplate = styled.button`
@@ -16,14 +18,17 @@ align-items: center;
 
 `;
 
-export const EditButton = () => {
-  return (
-    <button className='edit-button'>
-      <Icon icon={'menu'} />
-    </button>
-  )
-}
-export  default EditButton;
+
+
+
+// export const EditButton = () => {
+//   return (
+//     <button className='edit-button'>
+//       <Icon icon={'menu'}/>
+//     </button>
+//   )
+// }
+
 
 
 export const List = styled.ul`
@@ -31,7 +36,7 @@ border:1px solid #DCDEE4;
     position: absolute;
     right: 0;
     width: max-content;
-    z-index: 50;
+    z-index: 1;
     background: white;
     display: none;
 `;
@@ -49,14 +54,50 @@ color: #FFFFFF !important;
 `;
 
 
-export const Menu = (showPopupHandler) => {
-  console.log("showPopupHandler", showPopupHandler)
+export const EditButtonWrap = styled.button`
+border: 1px solid #DCDEE4;
+box-sizing: border-box;
+border-radius: 4px;
+width: 48px;
+height: 48px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+`
+
+export const EditButton = () => {
+  const someFunc = () => {
+    console.log("someFunc");
+    const el = document.querySelector('ul');
+    console.log($('ul'));
+    $('ul').toggle();
+  }
   return (
+    <EditButtonWrap onClick={someFunc}><Icon icon={'menu'}/></EditButtonWrap>
+  )
+}
+
+export const Menu = (showPopupHandler) => {
+
+  const showModal = () => {
+    console.log("showPopupHandler", showPopupHandler);
+    const elem = document.querySelector('.overlay');
+    console.log($('.overlay'));
+    $('.overlay').toggle();
+    $('ul').toggle();
+  }
+
+  return (
+    <>
+      <EditButton />
     <List>
       <ListItem>Редактировать вычислитель</ListItem>
       <ListItem>Поверить вычислитель</ListItem>
-      <ListItem>Выгрузить отчет о общедомовом потреблении</ListItem>
+      <ListItem onClick={showModal}>Выгрузить отчет о общедомовом потреблении</ListItem>
       <ListItem style={{color: "#FC525B"}}>Снять вычислитель с учета</ListItem>
     </List>
+      </>
   )
 }
+

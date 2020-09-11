@@ -66,12 +66,12 @@ export const Popup = () => {
   const hideMe = () => {
     console.log("hideMe")
     const el = document.querySelector('.overlay');
-    el.style.visibility = 'hidden';
+    el.style.display = 'none';
 
   }
 
   return (
-    <div className='overlay' style={{ visibility: "hidden" }}>
+    <div className='overlay'>
       <div className='temp'>
         <div className="modal__top">
           <h3 className='modal__title'>Выгрузить отчет о общедомовом потреблении</h3>

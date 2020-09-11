@@ -8,7 +8,7 @@ import {
 import DeviceIcons from '01/_components/DeviceIcons';
 
 import { DeviceContext } from '../DeviceProfile';
-// import {Menu} from './EditButton'
+import {EditButton, Menu} from './EditButton'
 export const Template = styled.div``;
 
 export const List = styled.ul`
@@ -34,27 +34,24 @@ color: #FFFFFF !important;
 `;
 
 export const Header = (loading = true) => {
-  const showPopupHandler = () => {
-    console.log('showPopupHandler');
-    const el = document.querySelector('ul');
-    // el.style.visibility = 'visible';
-    // el.style.display = (el.style.display == 'none') ? '' : 'none'
-    console.log($('ul'));
+  // const showPopupHandler = () => {
+  //   console.log('showPopupHandler');
+  //   const el = document.querySelector('ul');
+  //   console.log($('ul'));
+  //   $('ul').toggle();
+  // };
 
-    $('ul').toggle();
-  };
-
-  const Menu = () => {
-    console.log('showPopupHandler', showPopupHandler);
-    return (
-      <List>
-        <ListItem onClick={() => { console.log('ListItem'); }}>Редактировать вычислитель 123</ListItem>
-        <ListItem>Поверить вычислитель</ListItem>
-        <ListItem onClick={showPopupHandler}>Выгрузить отчет о общедомовом потреблении</ListItem>
-        <ListItem style={{ color: '#FC525B' }}>Снять вычислитель с учета</ListItem>
-      </List>
-    );
-  };
+  // const Menu = () => {
+  //   console.log('showPopupHandler', showPopupHandler);
+  //   return (
+  //     <List>
+  //       <ListItem onClick={() => { console.log('ListItem'); }}>Редактировать вычислитель 123</ListItem>
+  //       <ListItem>Поверить вычислитель</ListItem>
+  //       <ListItem onClick={showPopupHandler}>Выгрузить отчет о общедомовом потреблении</ListItem>
+  //       <ListItem style={{ color: '#FC525B' }}>Снять вычислитель с учета</ListItem>
+  //     </List>
+  //   );
+  // };
 
   const {
     device, building, loadings, errors, error,
@@ -123,10 +120,7 @@ export const Header = (loading = true) => {
           <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          <button className="edit-button" onClick={showPopupHandler}>
-            <Icon icon="menu" />
-          </button>
-          <Menu className="menuUl" showPopupHandler={showPopupHandler} />
+          <Menu />
         </div>
       </Loader>
 

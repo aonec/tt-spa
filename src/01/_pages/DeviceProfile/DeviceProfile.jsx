@@ -85,13 +85,7 @@ export const DeviceProfile = (props) => {
     console.log(device)
   }
   const path = `/objects/${objid}/devices/${deviceId}/`;
-  const showPopupHandler = () =>{
-    console.log("showPopupHandler")
-      const el = document.querySelector('.overlay');
-    el.style.visibility = 'visible';
 
-
-  }
   const buttonHandler = () => {
     console.log('error', error);
   };
