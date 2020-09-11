@@ -1,9 +1,9 @@
-import React from "react"
-import styled, { css } from "reshadow/macro"
-import { Link as LinkRow } from "react-router-dom"
+import React from 'react';
+import styled, { css } from 'reshadow/macro';
+import { Link as LinkRow } from 'react-router-dom';
 
-import axios, { cancel } from "01/axios"
-import { Loader, Icon } from "01/components"
+import axios, { cancel } from '01/axios';
+import { Loader, Icon } from '01/components';
 
 const styles = css`
   obj_item {
@@ -44,51 +44,62 @@ const styles = css`
       color: var(--primary-100);
     }
   }
-`
+`;
 
 export const Objects = () => {
-  const [state, setState] = React.useState({ items: null })
+  const [state, setState] = React.useState({ items: null });
 
   React.useEffect(() => {
     (async () => {
-      const res = await axios.get("housingstocks")
-      setState(res)
-    })()
-    return () => cancel()
-  }, [])
+      const res = await axios.get('housingstocks');
+      setState(res);
+    })();
+    return () => cancel();
+  }, []);
 
-  const { items } = state
+  const { items } = state;
   return styled(styles)(
     <>
-      <h1 style={{fontWeight:300}}>Объекты</h1>
+      <h1 style={{ fontWeight: 300 }}>Объекты</h1>
       <Loader show={!items} size="32">
         {items?.map(
-          ({ city, id, number, numberOfTasks, street, numberOfApartments }) => {
+          ({
+            city, id, number, numberOfTasks, street, numberOfApartments,
+          }) => {
             const task = numberOfTasks ? (
               <task>
                 <Icon icon="alarm" />
-                Задач: {numberOfTasks}
+                Задач:
+                {' '}
+                {numberOfTasks}
               </task>
-            ) : null
+            ) : null;
 
             return (
               <obj_item key={id}>
                 <LinkRow to={`/objects/${id}`}>
                   <span>
                     <h4>
-                      {street}, {number}
+                      {street}
+                      ,
+                      {' '}
+                      {number}
                     </h4>
                     {task}
                   </span>
                   <city>{city}</city>
-                  <span></span>
-                  <aparts>{numberOfApartments} квартир</aparts>
+                  <span />
+                  <aparts>
+                    {numberOfApartments}
+                    {' '}
+                    квартир
+                  </aparts>
                 </LinkRow>
               </obj_item>
-            )
-          }
+            );
+          },
         )}
       </Loader>
-    </>
-  )
-}
+    </>,
+  );
+};

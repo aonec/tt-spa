@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Loader } from '01/components';
-import _ from 'lodash';
 import { ListWrap, ListItem, Title } from '01/_components/List';
+import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
-export const Connection = (loading = true) => {
+export const ConnectionNotCalculator = (loading = true) => {
   const { device, loadings } = useContext(DeviceContext);
   const loadingDevice = _.get(loadings, 'device', true);
   loading = loadingDevice;
@@ -15,8 +15,9 @@ export const Connection = (loading = true) => {
 
   return (
     <ListWrap>
-      <Title>Настройки</Title>
+      <Title>Настройки (не вычислитель)</Title>
       <Loader show={loading} size="32">
+        ;
         <ListItem>
           <span>IP адрес вычислителя</span>
           <span>{device.ipV4 || 'X'}</span>
@@ -33,5 +34,6 @@ export const Connection = (loading = true) => {
     </ListWrap>
   );
 };
+// пока не получили данные - показываем Loader
 
-export default Connection;
+export default ConnectionNotCalculator;

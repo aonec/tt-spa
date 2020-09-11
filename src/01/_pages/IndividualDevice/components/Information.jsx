@@ -1,37 +1,28 @@
 import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
-import { Loader } from '01/components';
-import { ListWrap, ListItem, Title } from '01/_components/List';
-import _ from 'lodash';
-import { DeviceContext } from '../DeviceProfile';
+// import { Loader } from '01/components';
+import {
+  ListWrap, ListItem, Title, Loader, HeaderWrap, Subtitle,
+} from '01/_components';
+import { DeviceContext } from '../IndividualDevice';
 
-export const Information = (loading = true) => {
-  const {
-    device, building, loadings, error,
-  } = useContext(DeviceContext);
+export const Information = () => {
+  const { device, building, mistake } = useContext(DeviceContext);
+  const loading = !(device && building);
 
-  const loadingDevice = _.get(loadings, 'device', true);
-  const loadingBuilding = _.get(loadings, 'building', true);
-
-  loading = loadingDevice || loadingBuilding;
-
-  const buttonHandler = () => {
+  const buttonHandler = ({ loading = true }) => {
     console.log('buttonHandler');
   };
 
   const { city, street, number } = building || {};
   const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
 
-  const errorOfComponent = _.get(error, 'resource', null);
-  console.log('error', error);
-
-  if (errorOfComponent) {
+  if(mistake) {
     return (
       <ListWrap>
-        <Title>{error.message}</Title>
-        {/* <button onClick={buttonHandler}>button</button> */}
+          <Title style={{color:'red'}}>Данные не получены</Title>
       </ListWrap>
-    );
+    )
   }
 
   return (
@@ -45,8 +36,16 @@ export const Information = (loading = true) => {
           </span>
         </ListItem>
         <ListItem>
+          <span>Дата выпуска прибора</span>
+          <span>{convertDate(commercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
           <span>Дата ввода в эксплуатацию</span>
           <span>{convertDate(commercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Срок эксплуатации по нормативу</span>
+          <span>нет информации</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>
@@ -57,8 +56,12 @@ export const Information = (loading = true) => {
           <span>{convertDate(futureCheckingDate)}</span>
         </ListItem>
       </Loader>
+      {/* </info_list> */}
     </ListWrap>
   );
 };
+// пока не получили данные - показываем Loader
+// return <Loader show size="32" />;
+// };
 
 export default Information;

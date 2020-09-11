@@ -6,12 +6,11 @@ import { tabs } from '01/r_comp';
 
 const tabItems = [
   ['Общая информация', ''],
-  ['Настройки соединения', 'connection'],
   ['Подключенные приборы', 'related'],
-  ['Документы', 'documents'],
+  ['Документы', 'documents']
 ];
 
-export const Tabs = React.memo(() => {
+export const TabsNotCalculator = React.memo(() => {
   const { url } = useRouteMatch('/*/*/devices/(\\d+)/');
   return styled(tabs)(
     <tabs>

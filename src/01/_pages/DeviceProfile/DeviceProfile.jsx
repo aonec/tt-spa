@@ -1,25 +1,28 @@
-import React, { useState, useEffect, useContext } from 'react';
-import styled from 'reshadow/macro';
-
-import {
-  Route, useRouteMatch, useParams, useHistory,
-} from 'react-router-dom';
-import { grid } from '01/r_comp';
+import React, { useState, useEffect } from 'react';
+import { Route, useParams } from 'react-router-dom';
+import _ from 'lodash';
+import { Grid } from '01/_components';
 import {
   getInfo,
   getObjectOfDevice,
   getODPUTasks,
   getRelatedDevices,
+  getTypeODPU,
 } from '01/_api/device_page';
-import { ListWrap, Title, ListItem } from '01/_components/List';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
+import { TabsNotCalculator } from './components/TabsNotCalculator';
+
 import { Information } from './components/Information';
 import { Events } from './components/Events';
-import { Changes } from './components/Changes';
-import { Documents } from './components/Documents';
 import { Connection } from './components/Connection';
+import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
+
 import { RelatedDevices } from './components/RelatedDevices';
+import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
+
+// import { Changes } from './components/Changes';
+// import { Documents } from './components/Documents';
 
 export const DeviceContext = React.createContext();
 
@@ -29,66 +32,155 @@ export const DeviceProfile = (props) => {
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
+  const [typeODPU, setTypeODPU] = useState();
+  const [loadings, setLoadings] = useState({
+    device: true,
+    building: true,
+    tasks: true,
+    related: true,
+    typeODPU: true,
+  });
 
-  useEffect(() => {
-    getInfo(deviceId).then((response) => setDevice(response));
-    getObjectOfDevice(objid).then((response) => setBuilding(response));
-    getODPUTasks(deviceId).then((response) => setTasks(response));
-    getRelatedDevices(deviceId).then((response) => setRelated(response));
-  }, []);
+  const [error, setError] = useState();
 
-  const buttonHandler = () => {
-    console.log('device', device);
-    console.log('building', building);
+  const errorsTemplate = {
+    device: 'Произошла ошибка запроса устройства',
+    building: 'Произошла ошибка при загрузке данных по зданию',
+    tasks: 'Произошла ошибка при загрузке данных по задачам',
+    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
+    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
 
-  console.log('getRelatedDevices', related);
+  const [errors, setErrors] = useState();
 
-  return styled(grid)(
-    <>
+  useEffect(() => {
+    Promise.all([
+      getInfo(deviceId),
+      getObjectOfDevice(objid),
+      getODPUTasks(deviceId),
+      getRelatedDevices(deviceId),
+      getTypeODPU(deviceId),
+    ])
+      .then((responses) => {
+        const [device, building, tasks, related, typeODPU] = responses;
+        setDevice(device);
+        setBuilding(building);
+        setTasks(tasks.items);
+        setRelated(related);
+        setTypeODPU(typeODPU);
+      })
+      .catch(({ resource, message }) => {
+        const text = errorsTemplate[resource];
+        setError({ resource, text });
+      })
+      .finally(() => {
+        setLoadings((prev) => ({ ...prev, device: false }));
+        setLoadings((prev) => ({ ...prev, building: false }));
+        setLoadings((prev) => ({ ...prev, tasks: false }));
+        setLoadings((prev) => ({ ...prev, related: false }));
+        setLoadings((prev) => ({ ...prev, typeODPU: false }));
+      });
+  }, []);
+
+  // function updateTitle() {
+  //   setState((prev) => ({
+  //     ...prev,
+  //     title: 'Новое название',
+  //   }));
+  // }
+
+  // function updateTitle() {
+  //   setState(prev => {
+  //     return {
+  //       ...prev,
+  //       title: 'Новое название'
+  //     }
+  //   })
+  // }
+  const path = `/objects/${objid}/devices/${deviceId}/`;
+
+  const buttonHandler = () => {
+    console.log('error', error);
+    // console.log('states', loadings);
+    // console.log('buttonHandler');
+    // console.log('path', path);
+    // console.log('deviceId', deviceId);
+    // console.log('typeODPU', typeODPU);
+    // console.log('errors', errors);
+  };
+  if (typeODPU === 'Calculator') {
+    return (
       <DeviceContext.Provider
         value={{
           device,
           building,
           tasks,
           related,
+          typeODPU,
+          loadings,
+          errors,
+          error,
         }}
       >
-        {/* <button onClick={buttonHandler}>button</button> */}
         <Header />
         <Tabs />
-
-        <Route path="/*/(\\d+)" exact>
-          <grid>
+        {/* Здесь делим экран на две части: main and aside */}
+        <Grid>
+          <Route path={path} exact>
             <Information />
-            <Events title="Задачи с объектом" />
-          </grid>
-        </Route>
-        {/* <Route
-                  path="/objects/(\\d+)/devices/(\\d+)/(testimony|documents|changes)?"
-                  component={DeviceProfile}
-                  exact
-                /> */}
-
-        <Route path="/*/(\\d+)/connection" exact>
-          <grid>
+          </Route>
+          <Route path={`${path}connection`} exact>
             <Connection />
-            <Events title="Задачи с объектом" />
-          </grid>
-        </Route>
-
-        <Route path="/*/(\\d+)/related" exact>
-          <grid>
+          </Route>
+          <Route path={`${path}related`} exact>
             <RelatedDevices />
-            <Events title="Задачи с объектом" />
-          </grid>
+          </Route>
+          <Route path={`${path}documents`} exact>
+            <div>Документы</div>
+          </Route>
+
+          <Events title="Задачи с объектом" />
+        </Grid>
+        {/* <button onClick={buttonHandler}>button</button> */}
+      </DeviceContext.Provider>
+    );
+  }
+
+  return (
+    <DeviceContext.Provider
+      value={{
+        device,
+        building,
+        tasks,
+        related,
+        typeODPU,
+        loadings,
+        errors,
+        error,
+      }}
+    >
+      <Header />
+
+      <TabsNotCalculator />
+
+      {/* Здесь делим экран на две части: main and aside */}
+      <Grid>
+        <Route path={path} exact>
+          <Information />
         </Route>
 
-        <Route path="/*/(\\d+)/changes" exact>
-          Компонент в разработке
+        <Route path={`${path}related`} exact>
+          <RelatedDevicesNotCalculator />
         </Route>
-      </DeviceContext.Provider>
-    </>,
+
+        <Route path={`${path}documents`} exact>
+          <div>Документы</div>
+        </Route>
+
+        <Events title="Задачи с объектом" />
+      </Grid>
+      {/* <button onClick={buttonHandler}>button</button> */}
+    </DeviceContext.Provider>
   );
 };
 

@@ -24,6 +24,7 @@ export function ApartmentDeviceItem(props) {
         resource={resource}
         creationDate="запрос данных"
         futureCheckingDate={convertDate(futureCheckingDate)}
+        id={id}
       />
       <ApartmentInput />
       <ApartmentInput />

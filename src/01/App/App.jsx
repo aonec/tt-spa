@@ -17,6 +17,8 @@ import {
   ErrorPage,
   AccessDeniedPage,
 } from '01/_pages';
+
+import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
 import { useApp } from './useApp';
 
@@ -51,7 +53,7 @@ export function App() {
                 <Route path="/tasks/(\\d+)" component={TaskProfile} />
                 <Route path="/objects/" component={Objects} exact />
                 <Route
-                  path="/objects/(\\d+)/devices/(\\d+)/(connection|related|changes)?"
+                  path="/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?"
                   component={DeviceProfile}
                   exact
                 />
@@ -66,6 +68,12 @@ export function App() {
                   component={ApartmentProfile}
                   exact
                 />
+                <Route
+                  path="/objects/(\\d+)/apartments/(\\d+)/devices/(\\d+)/(connection|documents)?"
+                  component={IndividualDevice}
+                  exact
+                />
+
                 <Redirect from="/meters/" to="/meters/apartments" exact />
                 <Route
                   path="/meters/(apartments|houses)"

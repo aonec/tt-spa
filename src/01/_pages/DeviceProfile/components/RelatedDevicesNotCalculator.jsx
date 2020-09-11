@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
@@ -51,7 +52,7 @@ export const ListWrap = styled.div`
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 4fr 2fr 3fr 3fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
@@ -61,7 +62,7 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevices = (loading = true) => {
+export const RelatedDevicesNotCalculator = (loading = true) => {
   const { related, loadings, errors } = useContext(DeviceContext);
 
   const loadingRelated = _.get(loadings, 'related', true);
@@ -78,14 +79,13 @@ export const RelatedDevices = (loading = true) => {
     const {
       model,
       serialNumber,
+      futureCheckingDate,
       closingdate,
       pipe,
       resource,
       id,
       housingStockId,
     } = value;
-
-    // size: {width, height}
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
     const { icon, color } = DeviceIcons[resource];
@@ -105,9 +105,7 @@ export const RelatedDevices = (loading = true) => {
           <Icon icon="status" color="#17B45A" />
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${'-'}`}</Span>
-        <Span>{`Труба: ${number}`}</Span>
+        <Span>{convertDate(futureCheckingDate)}</Span>
       </ListItem>
     );
   });
@@ -116,14 +114,14 @@ export const RelatedDevices = (loading = true) => {
     <ListWrap>
       {/* <button onClick={buttonHandler}>related</button> */}
       <Loader show={loading} size="32">
-        <Title>Приборы</Title>
+        <Title>Соединение с вычислителем</Title>
         {result}
       </Loader>
     </ListWrap>
   );
 };
 
-export default RelatedDevices;
+export default RelatedDevicesNotCalculator;
 
 // import React, { useContext } from 'react';
 // import styled from 'styled-components';
