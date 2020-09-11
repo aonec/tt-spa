@@ -1,1 +1,1 @@
-export { DeviceProfile } from './DeviceProfile'
+export { DeviceProfile, DeviceContext } from './DeviceProfile';

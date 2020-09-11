@@ -3,8 +3,7 @@ import axios from 'axios';
 // const baseURL = process.env.REACT_APP_URL
 
 const baseURL = 'https://transparent-production.herokuapp.com/api';
-// const baseURL = "https://transparent-staging.herokuapp.com/api"
-
+//const baseURL = 'https://transparent-staging.herokuapp.com/api';
 
 axios.defaults.baseURL = baseURL;
 
@@ -40,7 +39,8 @@ axios.interceptors.response.use(
       saveToLocStor('user', user);
     }
     const res = data.successResponse ?? data ?? {};
-    return { ...res, url };
+    // return { ...res, url };
+    return res;
   },
   (error) => {
     console.log(error.message);

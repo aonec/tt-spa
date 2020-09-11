@@ -1,5 +1,10 @@
 import axios from '01/axios';
 
+// getInfo,
+// getObjectOfDevice,
+// getODPUTasks,
+// getRelatedDevices,
+
 const URL = 'HousingStocks';
 
 export async function getInfo(url = '') {
@@ -11,7 +16,7 @@ export async function getInfo(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw { resource: 'device', message: 'Произошла ошибка запроса устройства' };
+    throw new Error(error)
   }
 }
 
@@ -24,7 +29,7 @@ export async function getObjectOfDevice(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw { resource: 'building', message: 'Произошла ошибка при загрузке данных по зданию' };
+    throw new Error(error)
   }
 }
 
@@ -36,7 +41,7 @@ export async function getODPUTasks(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw { resource: 'tasks', message: 'Произошла ошибка при загрузке данных по задачам' };
+    throw new Error(error)
   }
 }
 
@@ -51,17 +56,6 @@ export async function getRelatedDevices(url = '') {
     return res;
   } catch (error) {
     console.log(error);
-    throw { resource: 'related', message: 'Произошла ошибка при загрузке данных по подключенным устройствам' };
-  }
-}
-
-export async function getTypeODPU(url = '') {
-  try {
-    const res = await axios.get(`MeteringDevices/${url}`);
-    console.log(res.type);
-    return res.type;
-  } catch (error) {
-    console.log(error);
-    throw { typeODPU: 'related', message: 'Произошла ошибка при загрузке данных по типу устройства' };
+    throw new Error(error)
   }
 }
