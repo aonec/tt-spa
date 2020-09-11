@@ -61,11 +61,11 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevices = (loading = true) => {
+export const RelatedDevices = () => {
   const { related, loadings, errors } = useContext(DeviceContext);
 
-  const loadingRelated = _.get(loadings, 'related', true);
-  loading = loadingRelated;
+  // const loadingRelated = _.get(loadings, 'related', true);
+  const loading = _.get(loadings, 'related', true);
 
   const buttonHandler = () => {
     console.log(related);

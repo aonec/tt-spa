@@ -4,6 +4,7 @@ import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
+import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 
 export const Information = (loading = true) => {
   const {
@@ -19,8 +20,8 @@ export const Information = (loading = true) => {
     console.log('buttonHandler');
   };
 
-  const { city, street, number } = building || {};
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
+  const { city, street, number } = building || DEFAULT_BUILDING;
+  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
   console.log('error', error);

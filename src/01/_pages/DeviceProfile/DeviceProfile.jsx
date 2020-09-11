@@ -9,6 +9,7 @@ import {
   getRelatedDevices,
   getTypeODPU,
 } from '01/_api/device_page';
+import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
@@ -17,10 +18,9 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-import {Popup} from './components/Modal'
+import { Popup } from './components/Modal';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
-import $ from "jquery";
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
@@ -52,10 +52,10 @@ export const DeviceProfile = (props) => {
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
 
-  $(document).mouseup(function (e) {
-    console.log("mouseup")
-    var container = $('ul');
-    if (container.has(e.target).length === 0){
+  $(document).mouseup((e) => {
+    console.log('mouseup');
+    const container = $('ul');
+    if (container.has(e.target).length === 0) {
       container.hide();
     }
 
@@ -88,16 +88,16 @@ export const DeviceProfile = (props) => {
         setError({ resource, text });
       })
       .finally(() => {
-        setLoadings((prev) => ({ ...prev, device: false }));
-        setLoadings((prev) => ({ ...prev, building: false }));
-        setLoadings((prev) => ({ ...prev, tasks: false }));
-        setLoadings((prev) => ({ ...prev, related: false }));
-        setLoadings((prev) => ({ ...prev, typeODPU: false }));
+        setLoadings((prev) => ({
+          ...prev,
+          device: false,
+          building: false,
+          tasks: false,
+          related: false,
+          typeODPU: false,
+        }));
       });
   }, []);
-  const showInfo = () => {
-    console.log(device)
-  }
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
@@ -137,7 +137,7 @@ export const DeviceProfile = (props) => {
           <Events title="Задачи с объектом" />
         </Grid>
         <Popup />
-        {/*<button onClick={showPopupHandler}>showPopup</button>*/}
+        {/* <button onClick={showPopupHandler}>showPopup</button> */}
       </DeviceContext.Provider>
     );
   }

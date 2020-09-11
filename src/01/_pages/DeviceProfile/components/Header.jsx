@@ -8,7 +8,8 @@ import {
 import DeviceIcons from '01/_components/DeviceIcons';
 
 import { DeviceContext } from '../DeviceProfile';
-import {EditButton, Menu} from './EditButton'
+import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+
 export const Template = styled.div``;
 
 export const List = styled.ul`
@@ -65,16 +66,21 @@ export const Header = (loading = true) => {
 
   loading = loadingDevice || loadingBuilding;
 
-  const { city, street, number } = building || {
-    city: null,
-    street: null,
-    number: null,
-  };
-  const { model, serialNumber, resource } = device || {
-    model: null,
-    serialNumber: null,
-    resource: null,
-  };
+  // const DEFAULT_BUILDING = {
+  //   city: null,
+  //   street: null,
+  //   number: null,
+  // };
+
+  // const DEFAULT_DEVICE = {
+  //   model: null,
+  //   serialNumber: null,
+  //   resource: null,
+  // };
+
+  const { city, street, number } = building || DEFAULT_BUILDING;
+  const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
+
   const { icon, color } = DeviceIcons[resource] || {
     icon: 'device',
     color: 'initial',
@@ -94,7 +100,6 @@ export const Header = (loading = true) => {
       <HeaderWrap>
         <Title>{error.text}</Title>
         <Subtitle>Обратитесь в тех.поддержку</Subtitle>
-        <button onClick={buttonHandler}>button</button>
       </HeaderWrap>
     );
   }
@@ -123,7 +128,6 @@ export const Header = (loading = true) => {
           <Menu />
         </div>
       </Loader>
-
     </HeaderWrap>
   );
 };

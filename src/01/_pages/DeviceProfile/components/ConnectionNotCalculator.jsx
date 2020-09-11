@@ -4,10 +4,10 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
 
-export const ConnectionNotCalculator = (loading = true) => {
+export const ConnectionNotCalculator = () => {
   const { device, loadings } = useContext(DeviceContext);
-  const loadingDevice = _.get(loadings, 'device', true);
-  loading = loadingDevice;
+  // const loadingDevice = _.get(loadings, 'device', true);
+  const loading = _.get(loadings, 'device', true);
 
   const buttonHandler = () => {
     console.log('buttonHandler');
