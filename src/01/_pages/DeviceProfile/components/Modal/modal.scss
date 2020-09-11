@@ -12,13 +12,14 @@
         margin: 100px auto;
         background: #FFFFFF;
         width: 800px;
-        height: 384px;
+        min-height: 384px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
     .modal__label {
         display: block;
+        padding-top: 16px;
         padding-bottom: 8px;
     }
         .ant-picker-range {

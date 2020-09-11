@@ -14,19 +14,25 @@ export const Popup = () => {
   const { id, resource, model } = { ...device };
   const { number, street } = { ...building };
 
-  const periodList = [
-    { label: "Месячный", value: "month" },
-    { label: "Суточный", value: "day" },
-    { label: "Годовой", value: "year" },
-  ];
-
-  const detailList = [
-    { label: "Суточный", value: "daily" },
-    { label: "Часовой", value: "hourly" },
-  ];
+  // const periodList = [
+  //   { label: "Месячный", value: "month" },
+  //   { label: "Суточный", value: "day" },
+  //   { label: "Годовой", value: "year" },
+  // ];
+  //
+  // const detailList = [
+  //   { label: "Суточный", value: "daily" },
+  //   { label: "Часовой", value: "hourly" },
+  // ];
+  //
+  // const typelList = [
+  //   { label: "Холодная вода", value: "coldwatersupply" },
+  //   { label: "Горячая вода", value: "heat" },
+  // ];
 
   const period = useRef("month");
   const detail = useRef("daily");
+  const type = useRef("coldwatersupply");
 
   const [begin, setBegin] = useState(moment().subtract(1, "month"));
   const [end, setEnd] = useState(moment());
@@ -47,11 +53,19 @@ export const Popup = () => {
     detail.current = result;
   };
 
+  const onTypeChange = (e) => {
+
+    const typeResult = e.target.value;
+    type.current = typeResult;
+    console.log(type)
+  };
+
+
   const { RangePicker } = DatePicker;
   const downloadReport = () => {
     const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
       detail.current
-    }&resourcetype=coldwatersupply&entrynumber=2&from=${convertDateOnly(
+    }&resourcetype=${type.current}&entrynumber=2&from=${convertDateOnly(
       begin
     )}T00:00:00Z&to=${convertDateOnly(end)}T00:00:00Z`;
     // const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
@@ -101,6 +115,23 @@ export const Popup = () => {
                   }}
                 />
               </ConfigProvider>
+              <label className="modal__label" htmlFor="#resource">
+                Тип ресурса
+              </label>
+
+              <Radio.Group
+                id='resource'
+                defaultValue="coldwatersupply"
+                size="large"
+                onChange={(event) => onTypeChange(event)}
+              >
+                <Radio.Button value="coldwatersupply" checked>
+                  Холодная вода
+                </Radio.Button>
+                <Radio.Button value="heat">Горячая вода</Radio.Button>
+
+              </Radio.Group>
+
             </div>
             <div className="type">
               <label className="modal__label" htmlFor="#type">
