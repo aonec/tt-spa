@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import $ from 'jquery'
+import $ from 'jquery';
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
@@ -33,34 +33,28 @@ color: #FFFFFF !important;
 }
 `;
 
-
-
-
 export const Header = (loading = true) => {
-
-  const showPopupHandler = () =>{
-    console.log("showPopupHandler")
+  const showPopupHandler = () => {
+    console.log('showPopupHandler');
     const el = document.querySelector('ul');
     // el.style.visibility = 'visible';
     // el.style.display = (el.style.display == 'none') ? '' : 'none'
-    console.log($( "ul" ))
+    console.log($('ul'));
 
-    $( "ul" ).toggle();
-
-
-  }
+    $('ul').toggle();
+  };
 
   const Menu = () => {
-    console.log("showPopupHandler", showPopupHandler)
+    console.log('showPopupHandler', showPopupHandler);
     return (
       <List>
-        <ListItem>Редактировать вычислитель</ListItem>
+        <ListItem onClick={() => { console.log('ListItem'); }}>Редактировать вычислитель 123</ListItem>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={showPopupHandler}>Выгрузить отчет о общедомовом потреблении</ListItem>
-        <ListItem style={{color: "#FC525B"}}>Снять вычислитель с учета</ListItem>
+        <ListItem style={{ color: '#FC525B' }}>Снять вычислитель с учета</ListItem>
       </List>
-    )
-  }
+    );
+  };
 
   const {
     device, building, loadings, errors, error,
@@ -110,28 +104,29 @@ export const Header = (loading = true) => {
 
   return (
     <HeaderWrap style={{
-      display:'flex',
-      justifyContent: 'space-between'
-    }}>
+      display: 'flex',
+      justifyContent: 'space-between',
+    }}
+    >
       <Loader show={loading} size="32">
         <div>
-        <Title>
-          <Icon
-            icon={icon}
-            color={color}
-            size="24"
-            style={{ marginRight: '8px' }}
-          />
-          {`${model} (${serialNumber})`}
-        </Title>
+          <Title>
+            <Icon
+              icon={icon}
+              color={color}
+              size="24"
+              style={{ marginRight: '8px' }}
+            />
+            {`${model} (${serialNumber})`}
+          </Title>
 
-        <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+          <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
         </div>
-        <div style={{position: 'relative'}}>
-          <button className='edit-button' onClick={showPopupHandler}>
-            <Icon icon={'menu'} />
+        <div style={{ position: 'relative' }}>
+          <button className="edit-button" onClick={showPopupHandler}>
+            <Icon icon="menu" />
           </button>
-          <Menu className='menuUl' showPopupHandler={showPopupHandler}/>
+          <Menu className="menuUl" showPopupHandler={showPopupHandler} />
         </div>
       </Loader>
 
