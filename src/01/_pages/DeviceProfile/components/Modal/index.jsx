@@ -9,7 +9,7 @@ import $ from 'jquery';
 import { DeviceContext } from '../../DeviceProfile';
 import { Icon } from '../../../../_components/Icon';
 
-export const Popup = () => {
+export const ModalODPU = () => {
   const { device, building } = useContext(DeviceContext);
   const { id, resource, model } = { ...device };
   const { number, street } = { ...building };
@@ -164,4 +164,4 @@ export const Popup = () => {
     </div>
   );
 };
-export default Popup;
+export default ModalODPU;
