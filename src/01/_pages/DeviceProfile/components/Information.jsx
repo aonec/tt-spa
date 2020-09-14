@@ -24,7 +24,7 @@ export const Information = (loading = true) => {
   const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
-  console.log('error', error);
+  // console.log('error', error);
 
   if (errorOfComponent) {
     return (

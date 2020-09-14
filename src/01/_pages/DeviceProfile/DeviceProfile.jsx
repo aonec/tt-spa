@@ -9,6 +9,7 @@ import {
   getRelatedDevices,
   getTypeODPU,
 } from '01/_api/device_page';
+import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
@@ -17,7 +18,7 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-
+import { ModalODPU } from './components/Modal';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 
@@ -33,6 +34,10 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
+
+  const [error, setError] = useState();
+  const [errors, setErrors] = useState();
+
   const [loadings, setLoadings] = useState({
     device: true,
     building: true,
@@ -40,9 +45,6 @@ export const DeviceProfile = (props) => {
     related: true,
     typeODPU: true,
   });
-
-  const [error, setError] = useState();
-
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
     building: 'Произошла ошибка при загрузке данных по зданию',
@@ -50,8 +52,6 @@ export const DeviceProfile = (props) => {
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
-
-  const [errors, setErrors] = useState();
 
   useEffect(() => {
     Promise.all([
@@ -84,17 +84,10 @@ export const DeviceProfile = (props) => {
         }));
       });
   }, []);
-
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
     console.log('error', error);
-    // console.log('states', loadings);
-    // console.log('buttonHandler');
-    // console.log('path', path);
-    // console.log('deviceId', deviceId);
-    // console.log('typeODPU', typeODPU);
-    // console.log('errors', errors);
   };
   if (typeODPU === 'Calculator') {
     return (
@@ -129,7 +122,8 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-        {/* <button onClick={buttonHandler}>button</button> */}
+        <ModalODPU />
+        {/* <button onClick={showPopupHandler}>showPopup</button> */}
       </DeviceContext.Provider>
     );
   }
@@ -167,7 +161,6 @@ export const DeviceProfile = (props) => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      {/* <button onClick={buttonHandler}>button</button> */}
     </DeviceContext.Provider>
   );
 };

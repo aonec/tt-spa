@@ -1,48 +1,54 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import $ from 'jquery';
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
-
+import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../DeviceProfile';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 
 export const Template = styled.div``;
 
-export const Header = (loading = true) => {
+export const List = styled.ul`
+  border: 1px solid #dcdee4;
+  position: absolute;
+  right: 0;
+  width: max-content;
+  z-index: 50;
+  background: white;
+  display: none;
+`;
+
+export const ListItem = styled.li`
+  font-size: 16px;
+  line-height: 32px;
+  padding: 8px 24px;
+  cursor: pointer;
+  border-bottom: 1px solid #dcdee4;
+  &:hover {
+    background: #189ee9;
+    color: #ffffff !important;
+  }
+`;
+
+export const Header = () => {
   const {
-    device, building, loadings, errors, error,
-  } = useContext(DeviceContext);
+    device, building, loadings, errors, error, typeODPU,
+  } = useContext(
+    DeviceContext,
+  );
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
 
-  console.log('loadingDevice', loadingDevice);
-  console.log('loadingBuilding', loadingBuilding);
-
-  loading = loadingDevice || loadingBuilding;
-
-  // const DEFAULT_BUILDING = {
-  //   city: null,
-  //   street: null,
-  //   number: null,
-  // };
-
-  // const DEFAULT_DEVICE = {
-  //   model: null,
-  //   serialNumber: null,
-  //   resource: null,
-  // };
+  const loading = loadingDevice || loadingBuilding;
 
   const { city, street, number } = building || DEFAULT_BUILDING;
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
-
-  const { icon, color } = DeviceIcons[resource] || {
-    icon: 'device',
-    color: 'initial',
-  };
+  const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
   const buttonHandler = () => {
     console.log('loadings', loadings);
@@ -50,8 +56,9 @@ export const Header = (loading = true) => {
     console.log('errors', errors);
   };
 
+  const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;
+
   const errorOfComponent = _.get(error, 'resource', null);
-  console.log('error', error);
 
   if (errorOfComponent) {
     return (
@@ -63,19 +70,29 @@ export const Header = (loading = true) => {
   }
 
   return (
-    <HeaderWrap>
+    <HeaderWrap
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
       <Loader show={loading} size="32">
-        <Title>
-          <Icon
-            icon={icon}
-            color={color}
-            size="24"
-            style={{ marginRight: '8px' }}
-          />
-          {`${model} (${serialNumber})`}
-        </Title>
+        <div>
+          <Title>
+            <Icon
+              icon={icon}
+              color={color}
+              size="24"
+              style={{ marginRight: '8px' }}
+            />
+            {`${model} (${serialNumber})`}
+          </Title>
 
-        <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+          <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+        </div>
+        <div style={{ position: 'relative' }}>
+          {MenuOPDU}
+        </div>
       </Loader>
     </HeaderWrap>
   );

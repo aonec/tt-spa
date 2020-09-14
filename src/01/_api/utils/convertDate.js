@@ -10,4 +10,11 @@ export function convertDate(date) {
   return newDate;
 }
 
+export function convertDateOnly(date) {
+  const dateOnly = 'YYYY-MM-DD';
+  const newDate = moment(date).format(dateOnly);
+  return newDate;
+}
+
+
 export default convertDate;
