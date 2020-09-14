@@ -94,7 +94,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
     // номер ввода - это pipe.entryNumber
 
     return (
-      <ListItem>
+      <ListItem key={id}>
         <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
           <Icon icon={icon} color={color} />
           <Name>{model}</Name>

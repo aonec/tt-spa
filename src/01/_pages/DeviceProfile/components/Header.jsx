@@ -6,8 +6,7 @@ import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { Menu } from './EditButton';
-
+import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../DeviceProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 
@@ -37,7 +36,7 @@ export const ListItem = styled.li`
 
 export const Header = () => {
   const {
-    device, building, loadings, errors, error,
+    device, building, loadings, errors, error, typeODPU,
   } = useContext(
     DeviceContext,
   );
@@ -56,6 +55,8 @@ export const Header = () => {
     console.log('error', error);
     console.log('errors', errors);
   };
+
+  const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -90,7 +91,7 @@ export const Header = () => {
           <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          <Menu />
+          {MenuOPDU}
         </div>
       </Loader>
     </HeaderWrap>

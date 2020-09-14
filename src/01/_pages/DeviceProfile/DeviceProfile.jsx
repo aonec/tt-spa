@@ -18,7 +18,7 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-import { Popup } from './components/Modal';
+import { ModalODPU } from './components/Modal';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 
@@ -122,7 +122,7 @@ export const DeviceProfile = (props) => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-        <Popup />
+        <ModalODPU />
         {/* <button onClick={showPopupHandler}>showPopup</button> */}
       </DeviceContext.Provider>
     );
