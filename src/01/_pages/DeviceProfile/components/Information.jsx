@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
+import { convertDateDots } from '01/_api/utils/convertDate';
 import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
@@ -42,20 +42,20 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city},${street},${number}`}
+            {`${city}, ${street}, ${number}`}
           </span>
         </ListItem>
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDate(commercialAccountingDate)}</span>
+          <span>{convertDateDots(commercialAccountingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>
-          <span>{convertDate(lastCheckingDate)}</span>
+          <span>{convertDateDots(lastCheckingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата следующей поверки прибора</span>
-          <span>{convertDate(futureCheckingDate)}</span>
+          <span>{convertDateDots(futureCheckingDate)}</span>
         </ListItem>
       </Loader>
     </ListWrap>

@@ -99,13 +99,13 @@ export const Events = ({ title = '' }) => {
     <TasksWrap>
       <Loader show={loading} size="32">
         <TasksTitle>{title}</TasksTitle>
-        <Task href="/tasks/">
+        <Task>
           <StageName>Нет задач </StageName>
           <TaskName>задачи ОДПУ завершены</TaskName>
-          <TaskRow>
+          {/* <TaskRow>
             <Icon icon="username2" style={{ marginRight: '8px' }} />
             Можете просмотреть все задачи
-          </TaskRow>
+          </TaskRow> */}
         </Task>
       </Loader>
     </TasksWrap>
