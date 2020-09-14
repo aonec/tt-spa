@@ -65,7 +65,7 @@ export const ModalODPU = () => {
   return (
     <div className="overlay">
       <div className="modal-odpu">
-        <Icon
+        <Icon 
           className="modal__close"
           icon="close"
           color="#272F5A"
