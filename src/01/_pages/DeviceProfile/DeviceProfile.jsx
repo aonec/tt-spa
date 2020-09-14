@@ -8,6 +8,7 @@ import {
   getODPUTasks,
   getRelatedDevices,
   getTypeODPU,
+  getCalculatorResources,
 } from '01/_api/device_page';
 import $ from 'jquery';
 import { Header } from './components/Header';
@@ -34,6 +35,7 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
+  const [calculator, setCalculator] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -51,6 +53,7 @@ export const DeviceProfile = (props) => {
     tasks: 'Произошла ошибка при загрузке данных по задачам',
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
+    calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
   useEffect(() => {
@@ -60,14 +63,16 @@ export const DeviceProfile = (props) => {
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
       getTypeODPU(deviceId),
+      getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        const [device, building, tasks, related, typeODPU] = responses;
+        const [device, building, tasks, related, typeODPU, calculator] = responses;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
+        setCalculator(calculator);
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -87,7 +92,7 @@ export const DeviceProfile = (props) => {
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
-    console.log('error', error);
+    console.log('calculator', calculator);
   };
   if (typeODPU === 'Calculator') {
     return (
@@ -101,9 +106,11 @@ export const DeviceProfile = (props) => {
           loadings,
           errors,
           error,
+          calculator,
         }}
       >
         <Header />
+        <button onClick={buttonHandler}>buttonHandler</button>
         <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>

@@ -1,6 +1,8 @@
 import React, { useState, useContext, useRef } from 'react';
 import './modal.scss';
-import { Radio, ConfigProvider, DatePicker } from 'antd';
+import {
+  Radio, ConfigProvider, DatePicker, Tabs,
+} from 'antd';
 import 'antd/dist/antd.css';
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
@@ -43,6 +45,23 @@ export const ModalODPU = () => {
     type.current = typeResult;
   };
 
+  const { TabPane } = Tabs;
+
+  function callback(key) {
+    console.log(key);
+  }
+
+  const Demo = () => (
+    <Tabs defaultActiveKey="1" onChange={callback}>
+      <TabPane tab="Холодная вода" key="1">
+        Холодная вода
+      </TabPane>
+      <TabPane tab="Отопление" key="2">
+        Отопление
+      </TabPane>
+    </Tabs>
+  );
+
   const { RangePicker } = DatePicker;
   const downloadReport = () => {
     const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
@@ -65,7 +84,7 @@ export const ModalODPU = () => {
   return (
     <div className="overlay">
       <div className="modal-odpu">
-        <Icon 
+        <Icon
           className="modal__close"
           icon="close"
           color="#272F5A"
@@ -73,9 +92,10 @@ export const ModalODPU = () => {
         />
         <div className="modal__top">
           <h3 className="modal__title">
-            Выгрузить отчет о общедомовом потреблении
+            Выгрузка отчета о общедомовом потреблении
           </h3>
           <div>
+            <Demo />
             <label className="modal__label" htmlFor="#input">
               Название отчета
             </label>
@@ -116,9 +136,7 @@ export const ModalODPU = () => {
                   Холодная вода
                 </Radio.Button>
                 <Radio.Button value="heat">Горячая вода</Radio.Button>
-
               </Radio.Group>
-
             </div>
             <div className="type">
               <label className="modal__label" htmlFor="#type">

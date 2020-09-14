@@ -65,3 +65,15 @@ export async function getTypeODPU(url = '') {
     throw { typeODPU: 'related', message: 'Произошла ошибка при загрузке данных по типу устройства' };
   }
 }
+
+// Получить ресурсы Вычислителя
+export async function getCalculatorResources(id = '') {
+  try {
+    const res = await axios.get(`Calculators/${id}`);
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
+  }
+}
