@@ -6,6 +6,8 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
+import { getInfo } from '01/_pages/ApartmentProfile/api';
+import axios from '01/axios';
 import { DeviceContext } from '../../DeviceProfile';
 import { Icon } from '../../../../_components/Icon';
 
@@ -48,8 +50,10 @@ export const ModalODPU = () => {
     }&resourcetype=${type.current}&entrynumber=2&from=${convertDateOnly(
       begin,
     )}T00:00:00Z&to=${convertDateOnly(end)}T00:00:00Z`;
-    // const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
+
+    const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
     window.location.assign(link);
+
     // Тип ошибки на запрос - сделать get;
     // Not found set resource type and/or entry number
   };
