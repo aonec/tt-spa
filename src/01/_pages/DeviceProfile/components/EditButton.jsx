@@ -52,26 +52,34 @@ align-items: center;
 
 export const EditButton = () => {
   const menuShowHide = () => {
-    const el = document.querySelector('ul');
-    $('ul').toggle();
+    $('#edit-button__list').toggle();
   };
+
   return (
-    <EditButtonWrap onClick={menuShowHide}>
+    <EditButtonWrap onClick={menuShowHide} id="edit-button">
       <Icon icon="menu" />
     </EditButtonWrap>
   );
 };
 
 export const Menu = (showPopupHandler) => {
+  $(document).mouseup((e) => {
+    const editButton = $('#edit-button');
+    const editButtonList = $('#edit-button__list');
+    if ((editButtonList.has(e.target).length === 0) && (editButton.has(e.target).length === 0)) {
+      editButtonList.hide();
+    }
+  });
+
   const showModal = () => {
     $('.overlay').toggle();
-    $('ul').toggle();
+    $('#edit-button__list').toggle();
   };
 
   return (
     <>
       <EditButton />
-      <List>
+      <List id="edit-button__list">
         <ListItem>Редактировать вычислитель</ListItem>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={showModal}>

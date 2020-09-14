@@ -34,6 +34,10 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
+
+  const [error, setError] = useState();
+  const [errors, setErrors] = useState();
+
   const [loadings, setLoadings] = useState({
     device: true,
     building: true,
@@ -41,9 +45,6 @@ export const DeviceProfile = (props) => {
     related: true,
     typeODPU: true,
   });
-
-  const [error, setError] = useState();
-
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
     building: 'Произошла ошибка при загрузке данных по зданию',
@@ -51,21 +52,6 @@ export const DeviceProfile = (props) => {
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
   };
-
-  $(document).mouseup((e) => {
-    console.log('mouseup');
-    const container = $('ul');
-    if (container.has(e.target).length === 0) {
-      container.hide();
-    }
-
-    // var container2 = $('.overlay');
-    // if (container2.has(e.target).length === 0){
-    //   container2.hide();
-    // }
-  });
-
-  const [errors, setErrors] = useState();
 
   useEffect(() => {
     Promise.all([

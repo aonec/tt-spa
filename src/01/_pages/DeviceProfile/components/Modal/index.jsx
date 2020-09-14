@@ -1,40 +1,23 @@
-import React, { useState, useContext, useRef } from "react";
-import "./modal.scss";
-import { Radio, ConfigProvider, DatePicker } from "antd";
-import "antd/dist/antd.css";
-import ruRu from "antd/es/locale/ru_RU";
-import { convertDateOnly } from "01/_api/utils/convertDate";
-import moment from "moment";
-import $ from "jquery";
-import { DeviceContext } from "../../DeviceProfile";
-import { Icon } from "../../../../_components/Icon";
+import React, { useState, useContext, useRef } from 'react';
+import './modal.scss';
+import { Radio, ConfigProvider, DatePicker } from 'antd';
+import 'antd/dist/antd.css';
+import ruRu from 'antd/es/locale/ru_RU';
+import { convertDateOnly } from '01/_api/utils/convertDate';
+import moment from 'moment';
+import $ from 'jquery';
+import { DeviceContext } from '../../DeviceProfile';
+import { Icon } from '../../../../_components/Icon';
 
 export const Popup = () => {
   const { device, building } = useContext(DeviceContext);
   const { id, resource, model } = { ...device };
   const { number, street } = { ...building };
+  const period = useRef('month');
+  const detail = useRef('daily');
+  const type = useRef('coldwatersupply');
 
-  // const periodList = [
-  //   { label: "Месячный", value: "month" },
-  //   { label: "Суточный", value: "day" },
-  //   { label: "Годовой", value: "year" },
-  // ];
-  //
-  // const detailList = [
-  //   { label: "Суточный", value: "daily" },
-  //   { label: "Часовой", value: "hourly" },
-  // ];
-  //
-  // const typelList = [
-  //   { label: "Холодная вода", value: "coldwatersupply" },
-  //   { label: "Горячая вода", value: "heat" },
-  // ];
-
-  const period = useRef("month");
-  const detail = useRef("daily");
-  const type = useRef("coldwatersupply");
-
-  const [begin, setBegin] = useState(moment().subtract(1, "month"));
+  const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
 
   const datePickerHandler = (event) => {
@@ -54,26 +37,24 @@ export const Popup = () => {
   };
 
   const onTypeChange = (e) => {
-
     const typeResult = e.target.value;
     type.current = typeResult;
-    console.log(type)
+    console.log(type);
   };
-
 
   const { RangePicker } = DatePicker;
   const downloadReport = () => {
     const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
       detail.current
     }&resourcetype=${type.current}&entrynumber=2&from=${convertDateOnly(
-      begin
+      begin,
     )}T00:00:00Z&to=${convertDateOnly(end)}T00:00:00Z`;
     // const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z'
     window.location.assign(link);
   };
   const hideMe = () => {
-    const el = document.querySelector(".overlay");
-    el.style.display = "none";
+    const el = document.querySelector('.overlay');
+    el.style.display = 'none';
   };
 
   return (
@@ -109,7 +90,7 @@ export const Popup = () => {
                   allowClear={false}
                   size="48px"
                   value={[begin, end]}
-                  placeholder={["Дата Начала", "Дата окончания"]}
+                  placeholder={['Дата Начала', 'Дата окончания']}
                   onChange={(event) => {
                     datePickerHandler(event);
                   }}
@@ -120,7 +101,7 @@ export const Popup = () => {
               </label>
 
               <Radio.Group
-                id='resource'
+                id="resource"
                 defaultValue="coldwatersupply"
                 size="large"
                 onChange={(event) => onTypeChange(event)}

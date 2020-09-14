@@ -17,3 +17,19 @@ export const DEFAULT_ICON = {
   icon: 'device',
   color: 'initial',
 };
+
+export const periodList = [
+  { label: 'Месячный', value: 'month' },
+  { label: 'Суточный', value: 'day' },
+  { label: 'Годовой', value: 'year' },
+];
+
+export const detailList = [
+  { label: 'Суточный', value: 'daily' },
+  { label: 'Часовой', value: 'hourly' },
+];
+
+export const typelList = [
+  { label: 'Холодная вода', value: 'coldwatersupply' },
+  { label: 'Горячая вода', value: 'heat' },
+];
