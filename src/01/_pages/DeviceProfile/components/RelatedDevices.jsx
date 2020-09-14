@@ -51,7 +51,7 @@ export const ListWrap = styled.div`
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
+  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
