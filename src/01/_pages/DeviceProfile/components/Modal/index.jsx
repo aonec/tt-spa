@@ -54,8 +54,6 @@ export const ModalODPU = () => {
 
   const devicesList = [];
 
-  let TabsList;
-
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
     // console.log('hubsarr', hubsarr);
@@ -79,13 +77,6 @@ export const ModalODPU = () => {
         });
       });
     });
-
-    TabsList = () => (
-      // <>
-      <TabPane tab="Tab 1" key="1">
-        Content of Tab Pane 1
-      </TabPane>
-    );
   }
 
   const onPeriodChange = (e) => {
@@ -134,19 +125,25 @@ export const ModalODPU = () => {
     $('.overlay').css('display', 'none');
   };
 
-  const Demo = () => (
-    <Tabs defaultActiveKey="1" onChange={callback}>
+  const Demo = () => {
+    const TabsList = () => (
       <TabPane tab="Tab 1" key="1">
         Content of Tab Pane 1
       </TabPane>
-      <TabPane tab="Tab 2" key="2">
-        Content of Tab Pane 2
-      </TabPane>
-      <TabPane tab="Tab 3" key="3">
-        Content of Tab Pane 3
-      </TabPane>
-    </Tabs>
-  );
+    );
+    // <TabPane tab="Tab 2" key="2">
+    //   Content of Tab Pane 2
+    // </TabPane>
+    // <TabPane tab="Tab 3" key="3">
+    //   Content of Tab Pane 3
+    // </TabPane>
+
+    return (
+      <Tabs defaultActiveKey="1" onChange={callback}>
+        {TabsList}
+      </Tabs>
+    );
+  };
 
   return (
     <div className="overlay">
