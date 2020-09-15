@@ -52,7 +52,7 @@ export const ModalODPU = () => {
   }
 
   const Demo = () => (
-    <Tabs defaultActiveKey="1" onChange={callback}>
+    <Tabs defaultActiveKey="1" onChan ge={callback}>
       <TabPane tab="Холодная вода" key="1">
         Холодная вода
       </TabPane>
