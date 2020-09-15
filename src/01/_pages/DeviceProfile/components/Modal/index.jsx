@@ -16,6 +16,7 @@ import { DeviceContext } from '../../DeviceProfile';
 import { Icon } from '../../../../_components/Icon';
 import { DEFAULT_ICON } from '../Templates';
 
+const { TabPane } = Tabs;
 const { Option } = Select;
 
 export const ModalODPU = () => {
@@ -25,6 +26,27 @@ export const ModalODPU = () => {
   const { id, resource, model } = { ...device };
   const { number, street } = { ...building };
 
+  console.log(hubs);
+
+  let hubPipes;
+
+  if (hubs) {
+    hubPipes = hubs.map((value, index) => {
+      console.log(value);
+      const { pipes } = { ...value };
+      console.log(pipes);
+      const pipesResult = pipes.map((value, index) => {
+        console.log('pipesResult', value);
+        const { serialNumber, type } = { ...value };
+        if (type === 'FeedFlow') {
+          console.log('ПРЭМ', type);
+          console.log('serialNumber', serialNumber);
+        }
+      });
+    });
+    // console.log('if hubs', hubs);
+  }
+
   const period = useRef('month');
   const detail = useRef('daily');
   const type = useRef('coldwatersupply');
@@ -32,11 +54,15 @@ export const ModalODPU = () => {
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
   const [hubsarr, setHubsarr] = useState([]);
+  let a;
+
+  const selectOptions = [
+    'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
+    'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
+  ];
 
   useEffect(() => {
-    // как получили массив - передали в hubsarr
     setHubsarr(hubs);
-    tabsArr(hubs);
     console.log('hubs = ', hubs);
   }, [hubs]);
 
@@ -45,22 +71,32 @@ export const ModalODPU = () => {
     setEnd(event[1] || end);
   };
 
-  // Создаем Табы
-  const tabsArr = () => hubsarr.map((value, id) => {
-    const { resource, entryNumber } = { ...value };
-    switch (resource) {
-      case 'Heat':
-        Arr.Heat.push(value);
-        break;
-      case 'ColdWaterSupply':
-        Arr.Cold.push(value);
-        break;
-      case 'HotWaterSupply':
-        Arr.Hot.push(value);
-        break;
-      default:
-    }
-  });
+  if (hubsarr) {
+    a = hubsarr.map((value, id) => {
+      const { resource, entryNumber } = { ...value };
+      switch (resource) {
+        case 'Heat':
+          Arr.Heat.push(value);
+          break;
+        case 'ColdWaterSupply':
+          Arr.Cold.push(value);
+          break;
+        case 'HotWaterSupply':
+          Arr.Hot.push(value);
+          break;
+        default:
+      }
+
+      const { icon, color, translate } = DeviceIcons[resource] || DEFAULT_ICON;
+
+      return (
+        <TabPane tab={translate} key={id + 1}>
+          <div>{`${translate} ${entryNumber}`}</div>
+          <Icon icon={icon} color={color} />
+        </TabPane>
+      );
+    });
+  }
 
   const onPeriodChange = (e) => {
     const res = e.target.value;
@@ -79,8 +115,6 @@ export const ModalODPU = () => {
     type.current = typeResult;
   };
 
-  const { TabPane } = Tabs;
-
   function callback(key) {
     console.log(key);
   }
@@ -89,37 +123,9 @@ export const ModalODPU = () => {
     console.log('calculatorHandler', Arr);
   };
 
-  // let a;
-  // if (hubsarr) {
-  //   a = hubsarr.map((value, id) => {
-  //     const { resource, entryNumber } = { ...value };
-  //     switch (resource) {
-  //       case 'Heat':
-  //         Arr.Heat.push(value);
-  //         break;
-  //       case 'ColdWaterSupply':
-  //         Arr.Cold.push(value);
-  //         break;
-  //       case 'HotWaterSupply':
-  //         Arr.Hot.push(value);
-  //         break;
-  //       default:
-  //     }
-
-  //     const { icon, color, translate } = DeviceIcons[resource] || DEFAULT_ICON;
-
-  //     return (
-  //       <TabPane tab={translate} key={id + 1}>
-  //         <div>{`${translate} ${entryNumber}`}</div>
-  //         <Icon icon={icon} color={color} />
-  //       </TabPane>
-  //     );
-  //   });
-  // }
-
   const Demo = () => (
     <Tabs defaultActiveKey="1" onChange={onTabsChange}>
-      {/* {a} */}
+      {a}
     </Tabs>
   );
 
@@ -170,13 +176,8 @@ export const ModalODPU = () => {
               style={{ width: 300 }}
               onChange={onSelectChange}
             >
-              <Option value="jack">
-                Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)
-              </Option>
-              <Option value="lucy">
-                Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ
-                (29387592701)
-              </Option>
+              <Option value="jack">{selectOptions[0]}</Option>
+              <Option value="lucy">{selectOptions[1]}</Option>
             </Select>
 
             <label className="modal__label" htmlFor="#input">
@@ -240,15 +241,6 @@ export const ModalODPU = () => {
               <label className="modal__label" htmlFor="#type">
                 Детализация
               </label>
-
-              {/* <Radio.Group
-                defaultValue="daily"
-                size="large"
-                onChange={(event) => onDetailChange(event)}
-              >
-                <Radio.Button value="daily">Суточный</Radio.Button>
-                <Radio.Button value="hourly">Часовой</Radio.Button>
-              </Radio.Group> */}
             </div>
           </div>
         </div>
@@ -271,4 +263,50 @@ export const ModalODPU = () => {
     </div>
   );
 };
+
 export default ModalODPU;
+
+// Создаем Табы
+// const tabsArr = () => hubsarr.map((value, id) => {
+//   const { resource, entryNumber } = { ...value };
+//   switch (resource) {
+//     case 'Heat':
+//       Arr.Heat.push(value);
+//       break;
+//     case 'ColdWaterSupply':
+//       Arr.Cold.push(value);
+//       break;
+//     case 'HotWaterSupply':
+//       Arr.Hot.push(value);
+//       break;
+//     default:
+//   }
+// });
+
+// let a;
+// if (hubsarr) {
+//   a = hubsarr.map((value, id) => {
+//     const { resource, entryNumber } = { ...value };
+//     switch (resource) {
+//       case 'Heat':
+//         Arr.Heat.push(value);
+//         break;
+//       case 'ColdWaterSupply':
+//         Arr.Cold.push(value);
+//         break;
+//       case 'HotWaterSupply':
+//         Arr.Hot.push(value);
+//         break;
+//       default:
+//     }
+
+//     const { icon, color, translate } = DeviceIcons[resource] || DEFAULT_ICON;
+
+//     return (
+//       <TabPane tab={translate} key={id + 1}>
+//         <div>{`${translate} ${entryNumber}`}</div>
+//         <Icon icon={icon} color={color} />
+//       </TabPane>
+//     );
+//   });
+// }
