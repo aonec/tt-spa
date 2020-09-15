@@ -35,7 +35,7 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
-  const [calculator, setCalculator] = useState();
+  const [hubs, setHubs] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -66,13 +66,13 @@ export const DeviceProfile = (props) => {
       getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        const [device, building, tasks, related, typeODPU, calculator] = responses;
+        const [device, building, tasks, related, typeODPU, hubs] = responses;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
-        setCalculator(calculator);
+        setHubs(hubs);
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -92,7 +92,7 @@ export const DeviceProfile = (props) => {
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
-    console.log('calculator', calculator);
+    console.log('calculator', hubs);
   };
   if (typeODPU === 'Calculator') {
     return (
@@ -106,7 +106,7 @@ export const DeviceProfile = (props) => {
           loadings,
           errors,
           error,
-          calculator,
+          hubs,
         }}
       >
         <Header />
@@ -146,6 +146,7 @@ export const DeviceProfile = (props) => {
         loadings,
         errors,
         error,
+        hubs
       }}
     >
       <Header />

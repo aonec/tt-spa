@@ -71,9 +71,10 @@ export async function getCalculatorResources(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
     console.log(res);
-    return res;
+    return res.hubs;
   } catch (error) {
     console.log(error);
     throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
   }
 }
+
