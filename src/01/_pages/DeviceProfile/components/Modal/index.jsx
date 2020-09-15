@@ -20,32 +20,9 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 
 export const ModalODPU = () => {
-  const Arr = { Hot: [], Cold: [], Heat: [] };
-
   const { device, building, hubs } = useContext(DeviceContext);
-  const { id, resource, model } = { ...device };
+  const { id, model } = { ...device };
   const { number, street } = { ...building };
-
-  console.log(hubs);
-
-  let hubPipes;
-
-  if (hubs) {
-    hubPipes = hubs.map((value, index) => {
-      console.log(value);
-      const { pipes } = { ...value };
-      console.log(pipes);
-      const pipesResult = pipes.map((value, index) => {
-        console.log('pipesResult', value);
-        const { serialNumber, type } = { ...value };
-        if (type === 'FeedFlow') {
-          console.log('ПРЭМ', type);
-          console.log('serialNumber', serialNumber);
-        }
-      });
-    });
-    // console.log('if hubs', hubs);
-  }
 
   const period = useRef('month');
   const detail = useRef('daily');
@@ -53,8 +30,7 @@ export const ModalODPU = () => {
 
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
-  const [hubsarr, setHubsarr] = useState([]);
-  let a;
+  const [hubsarr, setHubsarr] = useState();
 
   const selectOptions = [
     'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
@@ -71,31 +47,45 @@ export const ModalODPU = () => {
     setEnd(event[1] || end);
   };
 
+  const someFunc = () => {
+    console.log(hubsarr);
+    console.log(devicesList);
+  };
+
+  const devicesList = [];
+
+  let TabsList;
+
+  // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
-    a = hubsarr.map((value, id) => {
-      const { resource, entryNumber } = { ...value };
-      switch (resource) {
-        case 'Heat':
-          Arr.Heat.push(value);
-          break;
-        case 'ColdWaterSupply':
-          Arr.Cold.push(value);
-          break;
-        case 'HotWaterSupply':
-          Arr.Hot.push(value);
-          break;
-        default:
-      }
-
-      const { icon, color, translate } = DeviceIcons[resource] || DEFAULT_ICON;
-
-      return (
-        <TabPane tab={translate} key={id + 1}>
-          <div>{`${translate} ${entryNumber}`}</div>
-          <Icon icon={icon} color={color} />
-        </TabPane>
-      );
+    // console.log('hubsarr', hubsarr);
+    hubsarr.map((value) => {
+      const { resource, entryNumber, pipes } = { ...value };
+      // console.log(resource);
+      const pipesList = pipes.map((values) => {
+        const { devices } = { ...values };
+        // console.log(devices);
+        const devicesRes = devices.map((value) => {
+          const { serialNumber, type } = { ...value };
+          if (type === 'FlowMeter') {
+            // console.log(serialNumber);
+            devicesList.push({
+              resource,
+              entryNumber,
+              type,
+              serialNumber,
+            });
+          }
+        });
+      });
     });
+
+    TabsList = () => (
+      // <>
+      <TabPane tab="Tab 1" key="1">
+        Content of Tab Pane 1
+      </TabPane>
+    );
   }
 
   const onPeriodChange = (e) => {
@@ -118,16 +108,6 @@ export const ModalODPU = () => {
   function callback(key) {
     console.log(key);
   }
-
-  const calculatorHandler = () => {
-    console.log('calculatorHandler', Arr);
-  };
-
-  const Demo = () => (
-    <Tabs defaultActiveKey="1" onChange={onTabsChange}>
-      {a}
-    </Tabs>
-  );
 
   const onSelectChange = () => {
     console.log('onSelectChange');
@@ -154,6 +134,20 @@ export const ModalODPU = () => {
     $('.overlay').css('display', 'none');
   };
 
+  const Demo = () => (
+    <Tabs defaultActiveKey="1" onChange={callback}>
+      <TabPane tab="Tab 1" key="1">
+        Content of Tab Pane 1
+      </TabPane>
+      <TabPane tab="Tab 2" key="2">
+        Content of Tab Pane 2
+      </TabPane>
+      <TabPane tab="Tab 3" key="3">
+        Content of Tab Pane 3
+      </TabPane>
+    </Tabs>
+  );
+
   return (
     <div className="overlay">
       <div className="modal-odpu">
@@ -167,10 +161,9 @@ export const ModalODPU = () => {
           <h3 className="modal__title">
             Выгрузка отчета о общедомовом потреблении
           </h3>
-          <button onClick={calculatorHandler}>calculator</button>
+          <Demo />
+          <button onClick={someFunc}>someFunc</button>
           <div>
-            <Demo />
-
             <Select
               placeholder="Выберите узел"
               style={{ width: 300 }}
