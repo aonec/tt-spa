@@ -21,10 +21,23 @@ import { DEFAULT_ICON } from '../Templates';
 import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
 import { DevicesListDiv } from './components/Tabs';
+import { SelectReport } from './components/SelectReport';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
+const Translate = {
+  Heat: 'Отопление',
+  ColdWaterSupply: 'Холодная вода',
+  HotWaterSupply: 'Горячая вода',
+};
+
+const hideMe = () => {
+  $('.overlay').css('display', 'none');
+};
+
+const translate = (resource) => Translate[resource];
 
 export const ModalODPU = () => {
   const { device, building, hubs } = useContext(DeviceContext);
@@ -32,69 +45,43 @@ export const ModalODPU = () => {
   const serialNumberODPU = serialNumber;
   const { number, street } = { ...building };
 
+  const list = [];
+  const devicesList = [];
+  let b;
+
   const period = useRef('month');
   const detail = useRef('daily');
-  // const type = useRef('ColdWaterSupply');
   const entryNumberRes = useRef('1');
-  const [type, setType] = useState();
+  const [type, setType] = useState(list[0]);
+  const resource = useRef();
 
+  // const [type, setType] = useState();
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
   const [hubsarr, setHubsarr] = useState();
-
-  useEffect(() => {
-    setHubsarr(hubs);
-  }, [hubs]);
+  const [value, setValue] = useState(null);
 
   const datePickerHandler = (event) => {
     setBegin(event[0] || begin);
     setEnd(event[1] || end);
   };
 
-  const list = [];
-  const devicesList = [];
+  useEffect(() => {
+    setHubsarr(hubs);
+  }, [hubs]);
 
-  const Translate = {
-    Heat: 'Отопление',
-    ColdWaterSupply: 'Холодная вода',
-    HotWaterSupply: 'Горячая вода',
-  };
+  function foo() {
+    $('.ant-tabs-tab-active').click();
+  }
 
-  const translate = (resource) => Translate[resource];
+  setTimeout(foo, 1000);
 
-  const onTabsChangeHandler = (key) => {
-    console.log('onTabsChangeHandler', key);
-    // type.current = key;
-    setType(key);
+  const onTabsChangeHandler = (resource) => {
+    console.log('onTabsChangeHandler', resource);
+    $('.ant-select-selection-item').html('Выберите узел');
+    setType(resource);
     console.log(type);
   };
-
-  // function DevicesListDiv() {
-  //   devicesList.map(({
-  //     resource, entryNumber, type, serialNumber,
-  //   }, index) => {
-  //     if (!list.includes(resource)) {
-  //       list.push(resource);
-  //     }
-  //   });
-
-  //   const someList = list.map((value, index) => {
-  //     const res = translate(value);
-  //     return (
-  //       <TabPane tab={res} key={value}>
-  //         {res}
-  //       </TabPane>
-  //     );
-  //   });
-
-  //   const defaultRes = translate(someList[0]);
-
-  //   return (
-  //     <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
-  //       {someList}
-  //     </Tabs>
-  //   );
-  // }
 
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
@@ -124,50 +111,12 @@ export const ModalODPU = () => {
     setEnd(moment());
   };
 
-  const onDetailChange = (e) => {
-    const result = e.target.value;
-    detail.current = result;
-  };
-
-  const onTypeChange = (e) => {
-    const typeResult = e.target.value;
-    type.current = typeResult;
-  };
-
-  function callback(key) {
-    console.log(key);
-    console.log('test');
-  }
-
-  // const onSelectChange = (event) => {
-  //   console.log('onSelectChange', event);
-  // };
-
-  const onTabsChange = (event) => {
-    console.log('onTabsChange', event);
-  };
-
-  // const selectOptions = [
-  //   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-  //   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
-  // ];
-
   const selectOptions = [];
   devicesList.map(({ resource, serialNumber, entryNumber }) => {
-    const users = [
-      { user: 'barney', age: 36, active: true },
-      { user: 'fred', age: 40, active: false },
-      { user: 'pebbles', age: 1, active: true },
-    ];
-
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
 
-      // res = { label: 'ssssssssss', value: 'ssss' };
-      console.log(res);
-      console.log(selectOptions.indexOf(res));
       const ind = selectOptions.indexOf(res);
-      console.log('ind', ind);
       selectOptions.splice(ind, 1, {
         label: `${_.get(
           selectOptions[ind],
@@ -186,12 +135,6 @@ export const ModalODPU = () => {
     }
   });
 
-  const aa = selectOptions.map((value, index) => {
-    console.log(index);
-  });
-
-  const showExactOptions = () => {};
-
   const downloadReport = () => {
     const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
       detail.current
@@ -202,46 +145,20 @@ export const ModalODPU = () => {
     )}T00:00:00Z`;
 
     const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-    window.location.assign(link);
-  };
+    // window.location.assign(link);
 
-  const hideMe = () => {
-    $('.overlay').css('display', 'none');
+    console.log(link);
   };
 
   function handleChange(value) {
-    console.log(`selected ${value}`);
-
     const b = _.filter(selectOptions, { value: `${value}` });
-
-    console.log('b', b);
     const { number } = { ...b[0] };
-    console.log(number);
+    console.log('number', number);
     entryNumberRes.current = number;
   }
 
-  let b;
-  const SelectReport = () => {
-    console.log(type);
-
-    console.log('b', _.filter(selectOptions, { value: `${type}` }));
-    const b = _.filter(selectOptions, { value: `${type}` });
-    return (
-      <Select
-        defaultValue="Выберите узел"
-        style={{ width: '100%' }}
-        onChange={handleChange}
-        className="inner"
-        options={b}
-      />
-    );
-  };
-
   const someFunc = () => {
-    console.log(type.current);
-    console.log(selectOptions);
-
-    console.log('b', _.filter(selectOptions, ['value', 'Heat']));
+    console.log('type = ', type);
   };
 
   return (
@@ -276,7 +193,12 @@ export const ModalODPU = () => {
               disabled
             />
 
-            <SelectReport />
+            <SelectReport
+              type={type}
+              selectOptions={selectOptions}
+              defaultValue="Выберите узел"
+              handleChange={handleChange}
+            />
           </div>
           <div className="period_and_type ">
             <div className="period">
@@ -335,3 +257,8 @@ export const ModalODPU = () => {
 };
 
 export default ModalODPU;
+
+// const selectOptions = [
+//   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
+//   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
+// ];

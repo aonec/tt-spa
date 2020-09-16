@@ -15,13 +15,9 @@ export function DevicesListDiv({
     }
   });
 
-  const someList = list.map((value) => {
+  const someList = list.map((value, index) => {
     const res = translate(value);
-    return (
-      <TabPane tab={res} key={value}>
-        {res}
-      </TabPane>
-    );
+    return <TabPane tab={res} key={value} />;
   });
 
   const defaultRes = translate(someList[0]);
