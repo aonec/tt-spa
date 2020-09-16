@@ -1,7 +1,12 @@
 import React, {
-  useState, useContext, useRef, useEffect,
+  useState,
+  useContext,
+  useRef,
+  useEffect,
+  Children,
 } from 'react';
 import './modal.scss';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
@@ -12,12 +17,18 @@ import moment from 'moment';
 import $ from 'jquery';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
-import { DeviceContext } from '../../DeviceProfile';
-import { Icon } from '../../../../_components/Icon';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
 import { DEFAULT_ICON } from '../Templates';
+import { Icon } from '../../../../_components/Icon';
+import { DeviceContext } from '../../DeviceProfile';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 export const ModalODPU = () => {
   const { device, building, hubs } = useContext(DeviceContext);
@@ -32,11 +43,6 @@ export const ModalODPU = () => {
   const [end, setEnd] = useState(moment());
   const [hubsarr, setHubsarr] = useState();
 
-  const selectOptions = [
-    'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-    'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
-  ];
-
   useEffect(() => {
     setHubsarr(hubs);
     console.log('hubs = ', hubs);
@@ -50,9 +56,45 @@ export const ModalODPU = () => {
   const someFunc = () => {
     console.log(hubsarr);
     console.log(devicesList);
+    console.log(list);
   };
 
+  let list = [];
   const devicesList = [];
+
+  const Translate = {
+    Heat: 'Отопление',
+    ColdWaterSupply: 'Холодная вода',
+    HotWaterSupply: 'Горячая вода',
+  };
+
+  const translate = (resource) => {
+    console.log('Translate[resource]', Translate[resource]);
+    return Translate[resource];
+  };
+
+  function DevicesListDiv() {
+    const b = devicesList.map(
+      ({
+        resource, entryNumber, type, serialNumber,
+      }, index) => {
+        if (!list.includes(resource)) {
+          list.push(resource);
+        }
+      },
+    );
+    const someList = list.map((value, index) => {
+      const a = translate(value);
+
+      return (
+        <TabPane tab={a} key={index + 1}>
+          {a}
+        </TabPane>
+      );
+    });
+
+    return <Tabs defaultActiveKey="1">{someList}</Tabs>;
+  }
 
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
@@ -98,6 +140,7 @@ export const ModalODPU = () => {
 
   function callback(key) {
     console.log(key);
+    console.log('test');
   }
 
   const onSelectChange = () => {
@@ -108,7 +151,15 @@ export const ModalODPU = () => {
     console.log('onTabsChange', event);
   };
 
-  const { RangePicker } = DatePicker;
+  // const selectOptions = [
+  //   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
+  //   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
+  // ];
+
+  const selectOptions = [];
+  devicesList.map(({ resource }) => {
+    selectOptions.push(resource);
+  });
 
   const downloadReport = () => {
     const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
@@ -125,24 +176,7 @@ export const ModalODPU = () => {
     $('.overlay').css('display', 'none');
   };
 
-  const Demo = () => {
-    const TabsList = () => (
-      <TabPane tab="Tab 1" key="1">
-        Content of Tab Pane 1
-      </TabPane>
-    );
-    // <TabPane tab="Tab 2" key="2">
-    //   Content of Tab Pane 2
-    // </TabPane>
-    // <TabPane tab="Tab 3" key="3">
-    //   Content of Tab Pane 3
-    // </TabPane>
-
-    return (
-      <Tabs defaultActiveKey="1" onChange={callback}>
-        {TabsList}
-      </Tabs>
-    );
+  const handleChange = () => {
   };
 
   return (
@@ -158,16 +192,18 @@ export const ModalODPU = () => {
           <h3 className="modal__title">
             Выгрузка отчета о общедомовом потреблении
           </h3>
-          <Demo />
+          {/* <Demo /> */}
           <button onClick={someFunc}>someFunc</button>
+          <DevicesListDiv />
           <div>
             <Select
-              placeholder="Выберите узел"
-              style={{ width: 300 }}
-              onChange={onSelectChange}
+              defaultValue="lucy"
+              style={{ width: 120 }}
+              onChange={handleChange}
+              className="inner"
             >
-              <Option value="jack">{selectOptions[0]}</Option>
-              <Option value="lucy">{selectOptions[1]}</Option>
+              <Option value="jacks" key="1">Jacks</Option>
+              <Option value="jacks" key="2">Jacks</Option>
             </Select>
 
             <label className="modal__label" htmlFor="#input">
@@ -255,6 +291,9 @@ export const ModalODPU = () => {
 };
 
 export default ModalODPU;
+
+/* <Option value="jack">{selectOptions[0]}</Option>
+              <Option value="lucy">{selectOptions[1]}</Option> */
 
 // Создаем Табы
 // const tabsArr = () => hubsarr.map((value, id) => {
