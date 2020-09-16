@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tabs } from 'antd';
+import { ReportContext } from '..';
 
 const { TabPane } = Tabs;
 
-export function DevicesListDiv({
-  list,
-  devicesList,
-  translate,
-  onTabsChangeHandler,
-}) {
+export function DevicesListDiv() {
+  const {
+    list, devicesList, translate, onTabsChangeHandler,
+  } = useContext(
+    ReportContext,
+  );
+
   devicesList.map(({ resource }) => {
     if (!list.includes(resource)) {
       list.push(resource);

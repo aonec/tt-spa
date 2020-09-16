@@ -22,6 +22,8 @@ import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
 import { DevicesListDiv } from './components/Tabs';
 import { SelectReport } from './components/SelectReport';
+import { Bottom } from './components/Bottom';
+import { Top } from './components/Top';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -38,6 +40,8 @@ const hideMe = () => {
 };
 
 const translate = (resource) => Translate[resource];
+
+export const ReportContext = React.createContext();
 
 export const ModalODPU = () => {
   const { device, building, hubs } = useContext(DeviceContext);
@@ -179,90 +183,109 @@ export const ModalODPU = () => {
     console.log('period', period);
     console.log('detail', detail);
   };
-
+  const a = 55;
   return (
-    <div className="overlay">
-      <div className="modal-odpu">
-        <Icon
-          className="modal__close"
-          icon="close"
-          color="#272F5A"
-          onClick={hideMe}
-        />
-        <div className="modal__top">
-          <h3 className="modal__title">
-            Выгрузка отчета о общедомовом потреблении
-          </h3>
-
-          {/* <button onClick={someFunc}>someFunc</button> */}
-          <DevicesListDiv
-            list={list}
-            devicesList={devicesList}
-            translate={translate}
-            onTabsChangeHandler={onTabsChangeHandler}
+    <ReportContext.Provider
+      value={{
+        begin,
+        end,
+        datePickerHandler,
+        list,
+        devicesList,
+        translate,
+        onTabsChangeHandler,
+        model,
+        street,
+        number,
+        SelectReport,
+        type,
+        selectOptions,
+        handleChange,
+      }}
+    >
+      <div className="overlay">
+        <div className="modal-odpu">
+          <Icon
+            className="modal__close"
+            icon="close"
+            color="#272F5A"
+            onClick={hideMe}
           />
-          <div>
-            <div>
-              <label className="modal__label" htmlFor="#input">
-                Название отчета
-              </label>
-              <input
-                className="modal__input"
-                id="input"
-                value={`${model}_${street}_${number}.exls`}
-                disabled
-              />
-            </div>
-            <div className="div">
-              <label className="modal__label" htmlFor="#select">
-                Выбор узла
-              </label>
-              <SelectReport
-                id="select"
-                type={type}
-                selectOptions={selectOptions}
-                defaultValue="Выберите узел"
-                handleChange={handleChange}
-              />
-            </div>
-          </div>
-          <div className="period_and_type ">
-            <div className="type">
-              <label className="modal__label" htmlFor="#type">
-                Тип архива
-              </label>
+          <div className="modal__top">
+            <h3 className="modal__title">
+              Выгрузка отчета о общедомовом потреблении
+            </h3>
 
-              <Radio.Group
-                defaultValue="month"
-                size="large"
-                onChange={(event) => onPeriodChange(event)}
-              >
-                <Radio.Button value="month" checked>
-                  Месячный
-                </Radio.Button>
-                <Radio.Button value="day">Суточный</Radio.Button>
-                <Radio.Button value="year">Годовой</Radio.Button>
-              </Radio.Group>
-            </div>
+            {/* <button onClick={someFunc}>someFunc</button> */}
+            {/* <DevicesListDiv /> */}
+            <Top />
+            {/* <div>
+              <div>
+                <label className="modal__label" htmlFor="#input">
+                  Название отчета
+                </label>
+                <input
+                  className="modal__input"
+                  id="input"
+                  value={`${model}_${street}_${number}.exls`}
+                  disabled
+                />
+              </div>
+              <div className="div">
+                <label className="modal__label" htmlFor="#select">
+                  Выбор узла
+                </label>
+                <SelectReport
+                  id="select"
+                  type={type}
+                  selectOptions={selectOptions}
+                  defaultValue="Выберите узел"
+                  handleChange={handleChange}
+                />
+              </div>
+            </div> */}
+            <div className="period_and_type ">
+              <div className="type">
+                <label className="modal__label" htmlFor="#type">
+                  Тип архива
+                </label>
 
-            <div className="detail">
-              <label className="modal__label" htmlFor="#type">
-                Детализация отчета
-              </label>
+                <Radio.Group
+                  defaultValue="month"
+                  size="large"
+                  onChange={(event) => onPeriodChange(event)}
+                >
+                  <Radio.Button value="month" checked>
+                    Месячный
+                  </Radio.Button>
+                  <Radio.Button value="day">Суточный</Radio.Button>
+                  <Radio.Button value="year">Годовой</Radio.Button>
+                </Radio.Group>
+              </div>
 
-              <Radio.Group
-                defaultValue="daily"
-                size="large"
-                onChange={(event) => onDetailChange(event)}
-              >
-                <Radio.Button value="daily" checked>
-                  Суточная
-                </Radio.Button>
-                <Radio.Button value="hourly">Часовая</Radio.Button>
-              </Radio.Group>
+              <div className="detail">
+                <label className="modal__label" htmlFor="#type">
+                  Детализация отчета
+                </label>
+
+                <Radio.Group
+                  defaultValue="daily"
+                  size="large"
+                  onChange={(event) => onDetailChange(event)}
+                >
+                  <Radio.Button value="daily" checked>
+                    Суточная
+                  </Radio.Button>
+                  <Radio.Button value="hourly">Часовая</Radio.Button>
+                </Radio.Group>
+              </div>
             </div>
-          </div>
-          <div className="period">
+            <Bottom
+              begin={begin}
+              end={end}
+              datePickerHandler={datePickerHandler}
+            />
+            {/* <div className="period">
             <label className="modal__label" htmlFor="#period">
               Период выгрузки
             </label>
@@ -277,25 +300,26 @@ export const ModalODPU = () => {
                 }}
               />
             </ConfigProvider>
+          </div> */}
+          </div>
+
+          <div className="modal__bottom">
+            <button
+              className="modal__button modal__button_cancel"
+              onClick={hideMe}
+            >
+              Отмена
+            </button>
+            <button
+              className="modal__button modal__button_ok"
+              onClick={downloadReport}
+            >
+              Выгрузить
+            </button>
           </div>
         </div>
-
-        <div className="modal__bottom">
-          <button
-            className="modal__button modal__button_cancel"
-            onClick={hideMe}
-          >
-            Отмена
-          </button>
-          <button
-            className="modal__button modal__button_ok"
-            onClick={downloadReport}
-          >
-            Выгрузить
-          </button>
-        </div>
       </div>
-    </div>
+    </ReportContext.Provider>
   );
 };
 
