@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.5);
-  // display: none;
+  display: none;
   z-index: 2;
   .div {
       margin-top: 12px;
@@ -97,7 +97,8 @@
       }
 
       .type {
-        width: 310px;
+        // width: 310px;
+        width: auto;
         margin-right: 16px;
         display: flex;
         flex-direction: column;

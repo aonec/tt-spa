@@ -110,7 +110,7 @@ export const DeviceProfile = (props) => {
         }}
       >
         <Header />
-        <button onClick={buttonHandler}>buttonHandler</button>
+        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
@@ -146,7 +146,7 @@ export const DeviceProfile = (props) => {
         loadings,
         errors,
         error,
-        hubs
+        hubs,
       }}
     >
       <Header />

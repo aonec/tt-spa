@@ -69,7 +69,7 @@ export const Bottom = () => {
     <>
       <PeriodType />
       <div className="period">
-        <button onClick={getContext}>getContext</button>
+        {/* <button onClick={getContext}>getContext</button> */}
         <label className="modal__label" htmlFor="#period">
           Период выгрузки
         </label>

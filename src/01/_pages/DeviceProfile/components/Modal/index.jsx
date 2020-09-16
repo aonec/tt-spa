@@ -76,6 +76,13 @@ export const ModalODPU = () => {
     setHubsarr(hubs);
   }, [hubs]);
 
+  useEffect(() => {
+    function foo() {
+      $('.ant-tabs-tab-active').click();
+    }
+
+    setTimeout(foo, 1000);
+  }, []);
   // function foo() {
   //   $('.ant-tabs-tab-active').click();
   // }
@@ -129,13 +136,13 @@ export const ModalODPU = () => {
           selectOptions[ind],
           'label',
           'default',
-        )} ПРЭМ (${serialNumber}) ${resource}`,
+        )} ПРЭМ (${serialNumber})`,
         value: resource,
         number: entryNumber,
       });
     } else {
       selectOptions.push({
-        label: `Узел ${entryNumber} ${model} ${serialNumberODPU} ПРЭМ (${serialNumber}) ${resource}`,
+        label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
         number: entryNumber,
       });
