@@ -76,11 +76,11 @@ export const ModalODPU = () => {
     setHubsarr(hubs);
   }, [hubs]);
 
-  function foo() {
-    $('.ant-tabs-tab-active').click();
-  }
+  // function foo() {
+  //   $('.ant-tabs-tab-active').click();
+  // }
 
-  setTimeout(foo, 1000);
+  // setTimeout(foo, 1000);
 
   const onTabsChangeHandler = (resource) => {
     console.log('onTabsChangeHandler', resource);
@@ -201,6 +201,8 @@ export const ModalODPU = () => {
         type,
         selectOptions,
         handleChange,
+        onPeriodChange,
+        onDetailChange,
       }}
     >
       <div className="overlay">
@@ -215,92 +217,8 @@ export const ModalODPU = () => {
             <h3 className="modal__title">
               Выгрузка отчета о общедомовом потреблении
             </h3>
-
-            {/* <button onClick={someFunc}>someFunc</button> */}
-            {/* <DevicesListDiv /> */}
             <Top />
-            {/* <div>
-              <div>
-                <label className="modal__label" htmlFor="#input">
-                  Название отчета
-                </label>
-                <input
-                  className="modal__input"
-                  id="input"
-                  value={`${model}_${street}_${number}.exls`}
-                  disabled
-                />
-              </div>
-              <div className="div">
-                <label className="modal__label" htmlFor="#select">
-                  Выбор узла
-                </label>
-                <SelectReport
-                  id="select"
-                  type={type}
-                  selectOptions={selectOptions}
-                  defaultValue="Выберите узел"
-                  handleChange={handleChange}
-                />
-              </div>
-            </div> */}
-            <div className="period_and_type ">
-              <div className="type">
-                <label className="modal__label" htmlFor="#type">
-                  Тип архива
-                </label>
-
-                <Radio.Group
-                  defaultValue="month"
-                  size="large"
-                  onChange={(event) => onPeriodChange(event)}
-                >
-                  <Radio.Button value="month" checked>
-                    Месячный
-                  </Radio.Button>
-                  <Radio.Button value="day">Суточный</Radio.Button>
-                  <Radio.Button value="year">Годовой</Radio.Button>
-                </Radio.Group>
-              </div>
-
-              <div className="detail">
-                <label className="modal__label" htmlFor="#type">
-                  Детализация отчета
-                </label>
-
-                <Radio.Group
-                  defaultValue="daily"
-                  size="large"
-                  onChange={(event) => onDetailChange(event)}
-                >
-                  <Radio.Button value="daily" checked>
-                    Суточная
-                  </Radio.Button>
-                  <Radio.Button value="hourly">Часовая</Radio.Button>
-                </Radio.Group>
-              </div>
-            </div>
-            <Bottom
-              begin={begin}
-              end={end}
-              datePickerHandler={datePickerHandler}
-            />
-            {/* <div className="period">
-            <label className="modal__label" htmlFor="#period">
-              Период выгрузки
-            </label>
-            <ConfigProvider locale={ruRu}>
-              <RangePicker
-                allowClear={false}
-                size="48px"
-                value={[begin, end]}
-                placeholder={['Дата Начала', 'Дата окончания']}
-                onChange={(event) => {
-                  datePickerHandler(event);
-                }}
-              />
-            </ConfigProvider>
-          </div> */}
+            <Bottom />
           </div>
 
           <div className="modal__bottom">
