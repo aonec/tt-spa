@@ -7,9 +7,12 @@
   background: rgba(0, 0, 0, 0.5);
   // display: none;
   z-index: 2;
+  .div {
+      margin-top: 12px;
+  }
   .ant-select {
-    margin-top: 24px;
- 
+    // margin-top: 24px;
+
     height: 48px;
     .ant-select-selector {
       height: 100% !important;
@@ -31,7 +34,7 @@
     position: relative;
     .modal__label {
       display: block;
-      padding-top: 16px;
+      padding-top: 0;
       padding-bottom: 8px;
     }
     .ant-picker-range {
@@ -79,10 +82,15 @@
 
       .period_and_type {
         padding-top: 16px;
+        padding-bottom: 16px;
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
       }
       .period {
+        .ant-picker {
+          width: 100%;
+        }
+
         .ant-picker-range-separator {
           padding: 0 24px;
         }
@@ -90,6 +98,7 @@
 
       .type {
         width: 310px;
+        margin-right: 16px;
         display: flex;
         flex-direction: column;
       }

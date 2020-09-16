@@ -51,15 +51,17 @@ export const ModalODPU = () => {
 
   const period = useRef('month');
   const detail = useRef('daily');
-  const entryNumberRes = useRef('1');
+  const entryNumberRes = useRef();
   const [type, setType] = useState(list[0]);
-  const resource = useRef();
 
   // const [type, setType] = useState();
+  // const [begin, setBegin] = useState(moment().subtract(1, 'month'));
+  // const [end, setEnd] = useState(moment());
+
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
+
   const [hubsarr, setHubsarr] = useState();
-  const [value, setValue] = useState(null);
 
   const datePickerHandler = (event) => {
     setBegin(event[0] || begin);
@@ -80,7 +82,8 @@ export const ModalODPU = () => {
     console.log('onTabsChangeHandler', resource);
     $('.ant-select-selection-item').html('Выберите узел');
     setType(resource);
-    console.log(type);
+    entryNumberRes.current = undefined;
+    // console.log(type);
   };
 
   // Получаем массив всех ПРЭМ, которые походят
@@ -136,18 +139,23 @@ export const ModalODPU = () => {
   });
 
   const downloadReport = () => {
-    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
-      detail.current
-    }&resourcetype=${type}&entrynumber=${
-      entryNumberRes.current
-    }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
-      end,
-    )}T00:00:00Z`;
+    if (entryNumberRes.current) {
+      console.log('entryNumberRes', entryNumberRes.current);
+      const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
+        detail.current
+      }&resourcetype=${type}&entrynumber=${
+        entryNumberRes.current
+      }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
+        end,
+      )}T00:00:00Z`;
 
-    const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-    // window.location.assign(link);
+      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
+      window.location.assign(link);
+    } else {
+      alert('Выберите узел!');
+    }
 
-    console.log(link);
+    // console.log(link);
   };
 
   function handleChange(value) {
@@ -157,8 +165,19 @@ export const ModalODPU = () => {
     entryNumberRes.current = number;
   }
 
+  function onDetailChange(e) {
+    const res = e.target.value;
+    detail.current = res;
+    // setBegin(moment().subtract(1, res));
+    // setEnd(moment());
+  }
   const someFunc = () => {
     console.log('type = ', type);
+    console.log('entryNumberRes.current', entryNumberRes.current);
+    console.log('begin', begin);
+    console.log('end', end);
+    console.log('period', period);
+    console.log('detail', detail);
   };
 
   return (
@@ -174,8 +193,8 @@ export const ModalODPU = () => {
           <h3 className="modal__title">
             Выгрузка отчета о общедомовом потреблении
           </h3>
-          {/* <Demo /> */}
-          <button onClick={someFunc}>someFunc</button>
+
+          {/* <button onClick={someFunc}>someFunc</button> */}
           <DevicesListDiv
             list={list}
             devicesList={devicesList}
@@ -183,40 +202,31 @@ export const ModalODPU = () => {
             onTabsChangeHandler={onTabsChangeHandler}
           />
           <div>
-            <label className="modal__label" htmlFor="#input">
-              Название отчета
-            </label>
-            <input
-              className="modal__input"
-              id="input"
-              value={`${model}_${street}_${number}.exls`}
-              disabled
-            />
-
-            <SelectReport
-              type={type}
-              selectOptions={selectOptions}
-              defaultValue="Выберите узел"
-              handleChange={handleChange}
-            />
+            <div>
+              <label className="modal__label" htmlFor="#input">
+                Название отчета
+              </label>
+              <input
+                className="modal__input"
+                id="input"
+                value={`${model}_${street}_${number}.exls`}
+                disabled
+              />
+            </div>
+            <div className="div">
+              <label className="modal__label" htmlFor="#select">
+                Выбор узла
+              </label>
+              <SelectReport
+                id="select"
+                type={type}
+                selectOptions={selectOptions}
+                defaultValue="Выберите узел"
+                handleChange={handleChange}
+              />
+            </div>
           </div>
           <div className="period_and_type ">
-            <div className="period">
-              <label className="modal__label" htmlFor="#period">
-                Период выгрузки
-              </label>
-              <ConfigProvider locale={ruRu}>
-                <RangePicker
-                  allowClear={false}
-                  size="48px"
-                  value={[begin, end]}
-                  placeholder={['Дата Начала', 'Дата окончания']}
-                  onChange={(event) => {
-                    datePickerHandler(event);
-                  }}
-                />
-              </ConfigProvider>
-            </div>
             <div className="type">
               <label className="modal__label" htmlFor="#type">
                 Тип архива
@@ -234,6 +244,39 @@ export const ModalODPU = () => {
                 <Radio.Button value="year">Годовой</Radio.Button>
               </Radio.Group>
             </div>
+
+            <div className="detail">
+              <label className="modal__label" htmlFor="#type">
+                Детализация отчета
+              </label>
+
+              <Radio.Group
+                defaultValue="daily"
+                size="large"
+                onChange={(event) => onDetailChange(event)}
+              >
+                <Radio.Button value="daily" checked>
+                  Суточная
+                </Radio.Button>
+                <Radio.Button value="hourly">Часовая</Radio.Button>
+              </Radio.Group>
+            </div>
+          </div>
+          <div className="period">
+            <label className="modal__label" htmlFor="#period">
+              Период выгрузки
+            </label>
+            <ConfigProvider locale={ruRu}>
+              <RangePicker
+                allowClear={false}
+                size="48px"
+                value={[begin, end]}
+                placeholder={['Дата Начала', 'Дата окончания']}
+                onChange={(event) => {
+                  datePickerHandler(event);
+                }}
+              />
+            </ConfigProvider>
           </div>
         </div>
 
