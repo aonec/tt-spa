@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './modal.scss';
 import $ from 'jquery';
 import { Icon } from '../../../../_components/Icon';
@@ -7,8 +7,12 @@ import TabsComponent from './components/Tabs';
 export const AddDeviceContext = React.createContext();
 
 export const ModalODPU = () => {
+
   const nextOrDone = () => {
     console.log('nextOrDone');
+    console.log("сейчас номер вкладки = ", tab)
+
+    // $('.ant-tabs-tab-active').click();
 
   };
 
