@@ -1,7 +1,9 @@
 import React from 'react'
 import styled, { css } from 'reshadow/macro'
-
+import { Menu, EditButton } from './EditButton';
 import { Loader } from '01/components/Loader'
+import { HeaderWrap } from "../../../_components/Headers";
+import { ModalODPU } from "./Modal";
 
 const styles = css`
   h {
@@ -23,10 +25,22 @@ const styles = css`
 export const Header = React.memo(({ 0: title, 1: subtitle }) =>
   styled(styles)(
     <h>
-      <Loader show={!title} size="48">
-        <h_title>{title}</h_title>
-        <h_subtitle>{subtitle}</h_subtitle>
-      </Loader>
+      <HeaderWrap
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Loader show={!title} size="48">
+          <div>
+            <h_title>{title}</h_title>
+            <h_subtitle>{subtitle}</h_subtitle>
+          </div>
+          <div style={{ position: 'relative' }}><Menu />
+            <ModalODPU />
+          </div>
+        </Loader>
+      </HeaderWrap>
     </h>
   )
 )
