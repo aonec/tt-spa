@@ -32,13 +32,20 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
+  const showAddCalculator = () => {
+    console.log("showAddCalculator")
+    console.log($('.overlay-addcalculator'))
+    $('.overlay-addcalculator').toggle();
+    $('#edit-button__list').toggle();
+  }
+
   return (
     <>
       <EditButton/>
       <List id="edit-button__list">
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
-        <ListItem>Добавить вычислитель</ListItem>
+        <ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>
         <ListItem onClick={showModal}>
           Добавить прибор учета
         </ListItem>

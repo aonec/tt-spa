@@ -18,22 +18,22 @@ export const Page2 = () => {
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Выберите вычислитель, к которому подключен прибор</label>
-        <input className={'tt-input'} type='text' placeholder={'Начните вводить серийный номер или IP адрес прибора'}/>
+        <input className={'tt-input'} type='text' placeholder={'Начните вводить серийный номер или IP адрес прибора'} required/>
       </div>
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Номер ввода</label>
-        <input className={'tt-input'} type='text'/>
+        <input className={'tt-input'} type='number' required/>
       </div>
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Номер узла</label>
-        <input className={'tt-input'} type='text'/>
+        <input className={'tt-input'} type='number' required/>
       </div>
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Номер трубы</label>
-        <input className={'tt-input'} type='text'/>
+        <input className={'tt-input'} type='number' required/>
       </div>
 
 

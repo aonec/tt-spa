@@ -6,7 +6,7 @@ import TabsComponent from './components/Tabs';
 
 export const AddDeviceContext = React.createContext();
 
-export const ModalODPU = () => {
+export const ModalCalculator = () => {
 
   const [tab, setTab] = useState(1);
   const [ok, setOk] = useState("Далее")
@@ -44,7 +44,7 @@ export const ModalODPU = () => {
     <AddDeviceContext.Provider
       value={{ tab, setTab, callback }}
     >
-      <div className="overlay">
+      <div className="overlay-addcalculator">
         <div className="modal-odpu-add">
           <Icon
             className="modal__close"
@@ -52,32 +52,32 @@ export const ModalODPU = () => {
             color="#272F5A"
             onClick={hideMe}
           />
-          <h2 className="title-32">Добавление нового ОДПУ</h2>
+          <h2 className="title-32">Добавление нового вычислителя</h2>
           <form>
-          <TabsComponent/>
+            <TabsComponent/>
 
-          <div className="modal__bottom">
-            <button
-              className="modal__button modal__button_ok"
-              onClick={postODPU}
-              type="submit"
-            >
-              Выгрузить
-            </button>
+            <div className="modal__bottom">
+              <button
+                className="modal__button modal__button_ok"
+                onClick={postODPU}
+                type="submit"
+              >
+                Выгрузить
+              </button>
 
-            <button
-              className="modal__button modal__button_cancel"
-              onClick={hideMe}
-            >
-              Отмена
-            </button>
-            <button
-              className="modal__button modal__button_ok"
-              onClick={nextOrDone}
-            >
-              {ok}
-            </button>
-          </div>
+              <button
+                className="modal__button modal__button_cancel"
+                onClick={hideMe}
+              >
+                Отмена
+              </button>
+              <button
+                className="modal__button modal__button_ok"
+                onClick={nextOrDone}
+              >
+                {ok}
+              </button>
+            </div>
           </form>
 
         </div>
@@ -86,4 +86,4 @@ export const ModalODPU = () => {
   );
 };
 
-export default ModalODPU;
+export default ModalCalculator;

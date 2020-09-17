@@ -37,13 +37,13 @@ export const Page1 = () => {
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Серийный номер</label>
-        <input className={'tt-input'} type='number'/>
+        <input className={'tt-input'} type='number' required/>
       </div>
 
       <div className={'tt-labelandinput'}>
         <label htmlFor="#resource" className={'tt-label'}>Дата выпуска прибора</label>
         <ConfigProvider locale={ruRu}>
-          <DatePicker/>
+          <DatePicker required/>
         </ConfigProvider>
       </div>
 

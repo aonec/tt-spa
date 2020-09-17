@@ -1,0 +1,60 @@
+.tt-label {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+}
+
+.tt-select {
+  border: 1px solid #DCDEE4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 32px;
+  color: rgba(39, 47, 90, 0.8);
+  height: 48px;
+  padding: 8px 56px 8px 24px;
+  //background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right ;
+  background: url('./Down.svg') no-repeat right;
+  -webkit-appearance: none;
+  background-position-x: calc(100% - 24px);
+  outline: none;
+}
+
+.tt-input {
+  border: 1px solid #DCDEE4;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 32px;
+  color: rgba(39, 47, 90, 0.8);
+  height: 48px;
+  padding: 8px 56px 8px 24px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tt-option {
+
+}
+
+.tt-labelandinput {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  label {
+    padding-bottom: 8px;
+  }
+}
+
+.tt-warning {
+  background: rgba(255, 140, 104, 0.16);
+  margin-top: 24px;
+  padding: 24px;
+}
