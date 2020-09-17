@@ -1,31 +1,123 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, {
+  useState,
+  useContext,
+  useRef,
+  useEffect,
+  Children,
+} from 'react';
 import './modal.scss';
-import { Radio, ConfigProvider, DatePicker } from 'antd';
+import {
+  Radio, ConfigProvider, DatePicker, Tabs, Select,
+} from 'antd';
 import 'antd/dist/antd.css';
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
-import { getInfo } from '01/_pages/ApartmentProfile/api';
-import axios from '01/axios';
-import { DeviceContext } from '../../DeviceProfile';
+import DeviceIcons from '01/_components/DeviceIcons';
+import _ from 'lodash';
+import { label } from '01/r_comp';
+import { DEFAULT_ICON } from '../Templates';
 import { Icon } from '../../../../_components/Icon';
+import { DeviceContext } from '../../DeviceProfile';
+import { DevicesListDiv } from './components/Tabs';
+import { SelectReport } from './components/SelectReport';
+import { Bottom } from './components/Bottom';
+import { Top } from './components/Top';
+
+const { TabPane } = Tabs;
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+
+const Translate = {
+  Heat: 'Отопление',
+  ColdWaterSupply: 'Холодная вода',
+  HotWaterSupply: 'Горячая вода',
+};
+
+const hideMe = () => {
+  $('.overlay').css('display', 'none');
+};
+
+const translate = (resource) => Translate[resource];
+
+export const ReportContext = React.createContext();
 
 export const ModalODPU = () => {
-  const { device, building } = useContext(DeviceContext);
-  const { id, resource, model } = { ...device };
+  const { device, building, hubs } = useContext(DeviceContext);
+  const { id, model, serialNumber } = { ...device };
+  const serialNumberODPU = serialNumber;
   const { number, street } = { ...building };
+
+  const list = [];
+  const devicesList = [];
+  let b;
+
   const period = useRef('month');
   const detail = useRef('daily');
-  const type = useRef('coldwatersupply');
+  const entryNumberRes = useRef();
+  const [type, setType] = useState(list[0]);
+
+  // const [type, setType] = useState();
+  // const [begin, setBegin] = useState(moment().subtract(1, 'month'));
+  // const [end, setEnd] = useState(moment());
 
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
+
+  const [hubsarr, setHubsarr] = useState();
 
   const datePickerHandler = (event) => {
     setBegin(event[0] || begin);
     setEnd(event[1] || end);
   };
+
+  useEffect(() => {
+    setHubsarr(hubs);
+  }, [hubs]);
+
+  useEffect(() => {
+    function foo() {
+      $('.ant-tabs-tab-active').click();
+    }
+
+    setTimeout(foo, 1000);
+  }, []);
+  // function foo() {
+  //   $('.ant-tabs-tab-active').click();
+  // }
+
+  // setTimeout(foo, 1000);
+
+  const onTabsChangeHandler = (resource) => {
+    console.log('onTabsChangeHandler', resource);
+    $('.ant-select-selection-item').html('Выберите узел');
+    setType(resource);
+    entryNumberRes.current = undefined;
+    // console.log(type);
+  };
+
+  // Получаем массив всех ПРЭМ, которые походят
+  if (hubsarr) {
+    hubsarr.map((value) => {
+      const { resource, entryNumber, pipes } = { ...value };
+      const pipesList = pipes.map((values) => {
+        const { devices } = { ...values };
+        const devicesRes = devices.map((value) => {
+          const { serialNumber, type } = { ...value };
+          if (type === 'FlowMeter') {
+            devicesList.push({
+              resource,
+              entryNumber,
+              type,
+              serialNumber,
+            });
+          }
+        });
+      });
+    });
+  }
+
   const onPeriodChange = (e) => {
     const res = e.target.value;
     period.current = res;
@@ -33,141 +125,132 @@ export const ModalODPU = () => {
     setEnd(moment());
   };
 
-  const onDetailChange = (e) => {
-    const result = e.target.value;
-    detail.current = result;
-  };
+  const selectOptions = [];
+  devicesList.map(({ resource, serialNumber, entryNumber }) => {
+    if (_.find(selectOptions, (o) => o.value === resource)) {
+      const res = _.find(selectOptions, (o) => o.value === resource);
 
-  const onTypeChange = (e) => {
-    const typeResult = e.target.value;
-    type.current = typeResult;
-  };
+      const ind = selectOptions.indexOf(res);
+      selectOptions.splice(ind, 1, {
+        label: `${_.get(
+          selectOptions[ind],
+          'label',
+          'default',
+        )} ПРЭМ (${serialNumber})`,
+        value: resource,
+        number: entryNumber,
+      });
+    } else {
+      selectOptions.push({
+        label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
+        value: resource,
+        number: entryNumber,
+      });
+    }
+  });
 
-  const { RangePicker } = DatePicker;
   const downloadReport = () => {
-    const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
-      detail.current
-    }&resourcetype=${type.current}&entrynumber=2&from=${convertDateOnly(
-      begin,
-    )}T00:00:00Z&to=${convertDateOnly(end)}T00:00:00Z`;
+    if (entryNumberRes.current) {
+      console.log('entryNumberRes', entryNumberRes.current);
+      const link = `http://84.201.132.164:8080/api/reports/xlsx?deviceId=${id}&ereporttype=${
+        detail.current
+      }&resourcetype=${type}&entrynumber=${
+        entryNumberRes.current
+      }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
+        end,
+      )}T00:00:00Z`;
 
-    const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-    window.location.assign(link);
+      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
+      window.location.assign(link);
+    } else {
+      alert('Выберите узел!');
+    }
 
-    // Тип ошибки на запрос - сделать get;
-    // Not found set resource type and/or entry number
+    // console.log(link);
   };
 
-  const hideMe = () => {
-    $('.overlay').css('display', 'none');
-  };
+  function handleChange(value) {
+    const b = _.filter(selectOptions, { value: `${value}` });
+    const { number } = { ...b[0] };
+    console.log('number', number);
+    entryNumberRes.current = number;
+  }
 
+  function onDetailChange(e) {
+    const res = e.target.value;
+    detail.current = res;
+    // setBegin(moment().subtract(1, res));
+    // setEnd(moment());
+  }
+  const someFunc = () => {
+    console.log('type = ', type);
+    console.log('entryNumberRes.current', entryNumberRes.current);
+    console.log('begin', begin);
+    console.log('end', end);
+    console.log('period', period);
+    console.log('detail', detail);
+  };
+  const a = 55;
   return (
-    <div className="overlay">
-      <div className="modal-odpu">
-        <Icon 
-          className="modal__close"
-          icon="close"
-          color="#272F5A"
-          onClick={hideMe}
-        />
-        <div className="modal__top">
-          <h3 className="modal__title">
-            Выгрузить отчет о общедомовом потреблении
-          </h3>
-          <div>
-            <label className="modal__label" htmlFor="#input">
-              Название отчета
-            </label>
-            <input
-              className="modal__input"
-              id="input"
-              value={`${model}_${street}_${number}.exls`}
-              disabled
-            />
-          </div>
-          <div className="period_and_type ">
-            <div className="period">
-              <label className="modal__label" htmlFor="#period">
-                Период выгрузки
-              </label>
-              <ConfigProvider locale={ruRu}>
-                <RangePicker
-                  allowClear={false}
-                  size="48px"
-                  value={[begin, end]}
-                  placeholder={['Дата Начала', 'Дата окончания']}
-                  onChange={(event) => {
-                    datePickerHandler(event);
-                  }}
-                />
-              </ConfigProvider>
-              <label className="modal__label" htmlFor="#resource">
-                Тип ресурса
-              </label>
-
-              <Radio.Group
-                id="resource"
-                defaultValue="coldwatersupply"
-                size="large"
-                onChange={(event) => onTypeChange(event)}
-              >
-                <Radio.Button value="coldwatersupply" checked>
-                  Холодная вода
-                </Radio.Button>
-                <Radio.Button value="heat">Горячая вода</Radio.Button>
-
-              </Radio.Group>
-
-            </div>
-            <div className="type">
-              <label className="modal__label" htmlFor="#type">
-                Тип архива
-              </label>
-
-              <Radio.Group
-                defaultValue="month"
-                size="large"
-                onChange={(event) => onPeriodChange(event)}
-              >
-                <Radio.Button value="month" checked>
-                  Месячный
-                </Radio.Button>
-                <Radio.Button value="day">Суточный</Radio.Button>
-                <Radio.Button value="year">Годовой</Radio.Button>
-              </Radio.Group>
-              <label className="modal__label" htmlFor="#type">
-                Детализация
-              </label>
-
-              <Radio.Group
-                defaultValue="daily"
-                size="large"
-                onChange={(event) => onDetailChange(event)}
-              >
-                <Radio.Button value="daily">Суточный</Radio.Button>
-                <Radio.Button value="hourly">Часовой</Radio.Button>
-              </Radio.Group>
-            </div>
-          </div>
-        </div>
-
-        <div className="modal__bottom">
-          <button
-            className="modal__button modal__button_cancel"
+    <ReportContext.Provider
+      value={{
+        begin,
+        end,
+        datePickerHandler,
+        list,
+        devicesList,
+        translate,
+        onTabsChangeHandler,
+        model,
+        street,
+        number,
+        SelectReport,
+        type,
+        selectOptions,
+        handleChange,
+        onPeriodChange,
+        onDetailChange,
+      }}
+    >
+      <div className="overlay">
+        <div className="modal-odpu">
+          <Icon
+            className="modal__close"
+            icon="close"
+            color="#272F5A"
             onClick={hideMe}
-          >
-            Отмена
-          </button>
-          <button
-            className="modal__button modal__button_ok"
-            onClick={downloadReport}
-          >
-            Выгрузить
-          </button>
+          />
+          <div className="modal__top">
+            <h3 className="modal__title">
+              Выгрузка отчета о общедомовом потреблении
+            </h3>
+            <Top />
+            <Bottom />
+          </div>
+
+          <div className="modal__bottom">
+            <button
+              className="modal__button modal__button_cancel"
+              onClick={hideMe}
+            >
+              Отмена
+            </button>
+            <button
+              className="modal__button modal__button_ok"
+              onClick={downloadReport}
+            >
+              Выгрузить
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </ReportContext.Provider>
   );
 };
+
 export default ModalODPU;
+
+// const selectOptions = [
+//   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
+//   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
+// ];
