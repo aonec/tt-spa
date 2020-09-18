@@ -50,7 +50,6 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  console.log("device = ", device)
   const buttonHandler = () => {
     console.log('loadings', loadings);
     console.log('error', error);

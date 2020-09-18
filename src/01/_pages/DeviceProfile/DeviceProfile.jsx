@@ -14,8 +14,8 @@ import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
-
 import { Information } from './components/Information';
+import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
@@ -156,7 +156,7 @@ export const DeviceProfile = (props) => {
       {/* Здесь делим экран на две части: main and aside */}
       <Grid>
         <Route path={path} exact>
-          <Information />
+          <InformationNotCalculator />
         </Route>
 
         <Route path={`${path}related`} exact>
