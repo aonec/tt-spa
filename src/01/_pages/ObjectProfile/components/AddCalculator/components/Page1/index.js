@@ -44,12 +44,12 @@ export const Page1 = () => {
 
       <div className="tt-labelandinput">
         <label htmlFor="#type" className="tt-label">Тип вычислителя</label>
-        <select id="type" className="tt-select">
-          <option className="tt-option">ТЭМ-106</option>
-          <option className="tt-option">ТЭМ-104</option>
-          <option className="tt-option">ВКТ-7</option>
-          <option className="tt-option">ТВ-7</option>
-          <option className="tt-option">ВИСТ</option>
+        <select id="infoId" className="tt-select" onChange={(event) => onInputChange(event)}>
+          <option className="tt-option" id="1">ТЭМ-106</option>
+          <option className="tt-option" id="2">ТЭМ-104</option>
+          <option className="tt-option" id="3">ВКТ-7</option>
+          <option className="tt-option" id="4">ТВ-7</option>
+          <option className="tt-option" id="5">ВИСТ</option>
 
         </select>
       </div>
