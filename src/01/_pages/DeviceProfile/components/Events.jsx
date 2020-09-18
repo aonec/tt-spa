@@ -67,8 +67,7 @@ export const Events = ({ title = '' }) => {
       <Task key={id} href={`/tasks/${id}`}>
         <StageName>{currentStage.name}</StageName>
         <TaskName>
-          Причина:
-          {task.name}
+          {`Причина: ${task.name}`}
         </TaskName>
         <TaskRow>
           <Icon icon="timer" style={{ marginRight: '8px' }} />

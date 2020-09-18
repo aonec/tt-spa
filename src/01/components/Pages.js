@@ -23,7 +23,7 @@ export const Pages = ({ children }) => {
     pages {
       border: 1px solid red;
       display: inherit;
-      grid-template-columns: 8fr 5fr;
+      grid-template-columns: 8fr 4fr;
       grid-gap: 16px;
       align-content: start;
       padding: 16px 56px;
