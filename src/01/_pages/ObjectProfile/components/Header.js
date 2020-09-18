@@ -38,7 +38,7 @@ export const Header = React.memo(({ 0: title, 1: subtitle }) =>
             <h_subtitle>{subtitle}</h_subtitle>
           </div>
           <div style={{ position: 'relative' }}><Menu />
-            <ModalODPU />
+            {/*<ModalODPU />*/}
             <ModalCalculator />
           </div>
         </Loader>
