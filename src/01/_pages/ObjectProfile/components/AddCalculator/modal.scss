@@ -1,4 +1,4 @@
-.overlay {
+.overlay-addcalculator {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -6,26 +6,15 @@
   right: 0;
   background: rgba(0, 0, 0, 0.5);
   display: none;
+  // display: block !important;
   z-index: 2;
-  .div {
-      margin-top: 12px;
+  .ant-picker-input {
+    padding: 8px 16px;
   }
-  .ant-select {
-    // margin-top: 24px;
 
-    height: 48px;
-    .ant-select-selector {
-      height: 100% !important;
-      padding: 8px 24px !important;
-      span {
-        font-size: 16px;
-        line-height: 32px;
-      }
-    }
-  }
-  .modal-odpu {
-    margin: 100px auto;
-    background: #ffffff;
+  .modal-odpu-add {
+    margin: 16px auto;
+    background: #FFFFFF;
     width: 800px;
     min-height: 384px;
     display: flex;
@@ -34,11 +23,12 @@
     position: relative;
     .modal__label {
       display: block;
-      padding-top: 0;
+      padding-top: 16px;
       padding-bottom: 8px;
     }
+
     .ant-picker-range {
-      border: 1px solid #dcdee4;
+      border: 1px solid #DCDEE4;
       box-sizing: border-box;
       border-radius: 4px;
       height: 48px;
@@ -50,17 +40,23 @@
         line-height: 32px;
         color: rgba(39, 47, 90, 0.8);
       }
+
     }
 
     .ant-radio-group {
       height: 48px;
+
       label {
         height: 48px;
       }
+
       span {
         line-height: 48px;
+
       }
+
     }
+
     .modal__close {
       position: absolute;
       cursor: pointer;
@@ -68,8 +64,11 @@
       top: 18px;
     }
 
+
     .modal__top {
+
       padding: 16px 32px;
+
       .modal__title {
         padding: 0;
         margin: 0;
@@ -82,33 +81,29 @@
 
       .period_and_type {
         padding-top: 16px;
-        padding-bottom: 16px;
         display: flex;
-        // justify-content: space-between;
+        justify-content: space-between;
       }
-      .period {
-        .ant-picker {
-          width: 100%;
-        }
 
+      .period {
         .ant-picker-range-separator {
           padding: 0 24px;
         }
       }
 
       .type {
-        // width: 310px;
-        width: auto;
-        margin-right: 16px;
+        width: 310px;
         display: flex;
         flex-direction: column;
       }
 
       .modal__radio {
+
       }
+
       .modal__input {
         color: rgba(39, 47, 90, 0.8);
-        border: 1px solid #dcdee4;
+        border: 1px solid #DCDEE4;
         box-sizing: border-box;
         border-radius: 4px;
         width: 100%;
@@ -117,11 +112,12 @@
         font-size: 16px;
         line-height: 32px;
       }
+
     }
 
     .modal__bottom {
       padding: 16px 32px;
-      background: #f3f5f6;
+      background: #F3F5F6;
       display: flex;
       justify-content: flex-end;
 
@@ -131,17 +127,46 @@
         font-size: 16px;
         line-height: 32px;
         height: 48px;
-        border: 1px solid #dcdee4;
+        border: 1px solid #DCDEE4;
         padding: 8px 24px;
+
       }
+
       .modal__button:hover {
         border: 1px solid #000c17;
       }
+
       .modal__button_ok {
-        background: #189ee9;
-        color: #ffffff;
+        background: #189EE9;
+        color: #FFFFFF;
         margin-left: 24px;
       }
+
     }
+
   }
+
 }
+
+.title-32 {
+  margin: 0;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+  padding: 24px;
+}
+
+.ant-picker {
+  height: 48px;
+}
+
+
+
+
+
+
+
+
+
+
+

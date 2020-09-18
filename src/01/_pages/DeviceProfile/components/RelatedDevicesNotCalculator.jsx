@@ -89,7 +89,6 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
     const { icon, color } = DeviceIcons[resource];
-
     // номер трубы - это pipe.number
     // номер ввода - это pipe.entryNumber
 

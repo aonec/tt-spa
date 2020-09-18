@@ -8,13 +8,14 @@ import {
   getODPUTasks,
   getRelatedDevices,
   getTypeODPU,
+  getCalculatorResources,
 } from '01/_api/device_page';
 import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
-
 import { Information } from './components/Information';
+import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
@@ -34,6 +35,7 @@ export const DeviceProfile = (props) => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
+  const [hubs, setHubs] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -51,6 +53,7 @@ export const DeviceProfile = (props) => {
     tasks: 'Произошла ошибка при загрузке данных по задачам',
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
     typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
+    calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
   useEffect(() => {
@@ -60,6 +63,7 @@ export const DeviceProfile = (props) => {
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
       getTypeODPU(deviceId),
+      // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
         const [device, building, tasks, related, typeODPU] = responses;
@@ -68,6 +72,7 @@ export const DeviceProfile = (props) => {
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
+        // setHubs(hubs);
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -83,13 +88,18 @@ export const DeviceProfile = (props) => {
           typeODPU: false,
         }));
       });
+
+    if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
   }, []);
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
+
+
   const buttonHandler = () => {
-    console.log('error', error);
+    console.log('calculator', hubs);
   };
   if (typeODPU === 'Calculator') {
+
     return (
       <DeviceContext.Provider
         value={{
@@ -101,9 +111,11 @@ export const DeviceProfile = (props) => {
           loadings,
           errors,
           error,
+          hubs,
         }}
       >
         <Header />
+        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
@@ -139,6 +151,7 @@ export const DeviceProfile = (props) => {
         loadings,
         errors,
         error,
+        hubs,
       }}
     >
       <Header />
@@ -148,7 +161,7 @@ export const DeviceProfile = (props) => {
       {/* Здесь делим экран на две части: main and aside */}
       <Grid>
         <Route path={path} exact>
-          <Information />
+          <InformationNotCalculator />
         </Route>
 
         <Route path={`${path}related`} exact>
