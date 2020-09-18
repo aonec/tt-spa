@@ -8,6 +8,9 @@
   display: none;
   // display: block !important;
   z-index: 2;
+  .ant-picker-input {
+    padding: 8px 16px;
+  }
 
   .modal-odpu-add {
     margin: 16px auto;
@@ -18,7 +21,6 @@
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-
     .modal__label {
       display: block;
       padding-top: 16px;
