@@ -63,16 +63,16 @@ export const DeviceProfile = (props) => {
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
       getTypeODPU(deviceId),
-      getCalculatorResources(deviceId),
+      // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        const [device, building, tasks, related, typeODPU, hubs] = responses;
+        const [device, building, tasks, related, typeODPU] = responses;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
-        setHubs(hubs);
+        // setHubs(hubs);
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -88,13 +88,18 @@ export const DeviceProfile = (props) => {
           typeODPU: false,
         }));
       });
+
+    if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
   }, []);
   const path = `/objects/${objid}/devices/${deviceId}/`;
+
+
 
   const buttonHandler = () => {
     console.log('calculator', hubs);
   };
   if (typeODPU === 'Calculator') {
+
     return (
       <DeviceContext.Provider
         value={{
