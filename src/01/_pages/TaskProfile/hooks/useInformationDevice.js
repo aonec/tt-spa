@@ -1,3 +1,5 @@
+import { convertDateDots } from "../../../_api/utils/convertDate";
+
 export const useInformationDevice = ({
   device = null,
   housingStockId = null,
@@ -25,7 +27,8 @@ export const useInformationDevice = ({
       ['ID узла', ''],
       [
         'Постановка на учет',
-        new Date(commercialAccountingDate).toLocaleDateString(),
+        // new Date(commercialAccountingDate).toLocaleDateString(),
+        convertDateDots((commercialAccountingDate))
       ],
       ['Диаметр', diameter],
       [

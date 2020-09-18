@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import styled from 'reshadow/macro';
 import { Loader, Icon } from '01/components';
 import * as style from '_reshadow';
+import convertDate, { convertDateDots } from "../../../_api/utils/convertDate";
 
 export const Devices = React.memo(
   ({
@@ -25,7 +26,7 @@ export const Devices = React.memo(
           <Loader show={loading} size="32" />
           {items.map(
             ({
-              id, fill, icon, model, serialNumber, futureCheckingDate,
+              id, fill, icon, model, serialNumber, futureCheckingDate, commercialAccountingDate
             }) => {
               console.log(model, id);
               return (
@@ -41,7 +42,7 @@ export const Devices = React.memo(
                   </h4>
                   <device_status>Активен</device_status>
                   <devcie_date>
-                    {new Date(futureCheckingDate).toLocaleDateString()}
+                    {convertDateDots(futureCheckingDate)}
                   </devcie_date>
                 </device>
               );

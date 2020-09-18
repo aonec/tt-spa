@@ -51,6 +51,7 @@ export const Header = () => {
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
   console.log("device = ", device)
+  console.log(model)
   const buttonHandler = () => {
     console.log('loadings', loadings);
     console.log('error', error);
@@ -86,7 +87,7 @@ export const Header = () => {
               size="24"
               style={{ marginRight: '8px' }}
             />
-            {`${model} (${serialNumber})`}
+            {`${model || 'Вычислитель'} (${serialNumber})`}
           </Title>
 
           <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
