@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import styled from 'reshadow/macro';
 import { Loader, Icon } from '01/components';
 import * as style from '_reshadow';
-import convertDate, { convertDateDots } from "../../../_api/utils/convertDate";
+import convertDate, { convertDateDots } from '../../../_api/utils/convertDate';
 
 export const Devices = React.memo(
   ({
@@ -11,6 +11,7 @@ export const Devices = React.memo(
   }) => styled(style.item)`
       devices {
         display: grid;
+        height: min-content;
       }
       device {
         border-bottom: 1px solid var(--frame);
@@ -26,7 +27,7 @@ export const Devices = React.memo(
           <Loader show={loading} size="32" />
           {items.map(
             ({
-              id, fill, icon, model, serialNumber, futureCheckingDate, commercialAccountingDate
+              id, fill, icon, model, serialNumber, futureCheckingDate, commercialAccountingDate,
             }) => {
               console.log(model, id);
               return (
