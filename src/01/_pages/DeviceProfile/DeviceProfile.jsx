@@ -89,8 +89,23 @@ export const DeviceProfile = (props) => {
         }));
       });
 
-    if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
+
   }, []);
+
+  useEffect(()=>{
+    // if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
+    console.log("typeODPU = ", typeODPU)
+    if (typeODPU === 'Calculator') {
+      console.log("\"typeODPU = \", typeODPU = ", typeODPU)
+      //getCalculatorResources(deviceId).then((response) => setHubs(response));
+      console.log(getCalculatorResources(deviceId).then(response => {console.log(response)
+      setHubs(response)
+      }))
+
+    }
+    
+
+  }, [typeODPU])
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
 
