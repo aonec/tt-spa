@@ -31,7 +31,8 @@ export const Uzel = () => {
           <input
             className="modal__input"
             id="input"
-            value={`${model}_${street}_${number}.exls`}
+            // value={`${model}_${street}_${number}.exls`}
+            value={`${street}_${number}.exls`}
             disabled
           />
         </div>
