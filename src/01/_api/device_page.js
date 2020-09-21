@@ -6,7 +6,7 @@ export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/${url}`);
-    // console.log('res', res);
+    console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {
@@ -78,3 +78,13 @@ export async function getCalculatorResources(id = '') {
   }
 }
 
+export async function getCalculator(id = '') {
+  try {
+    const res = await axios.get(`Calculators/${id}`);
+    console.log(res);
+    return res.model;
+  } catch (error) {
+    console.log(error);
+    throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
+  }
+}

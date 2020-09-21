@@ -53,6 +53,7 @@ export const ModalODPU = () => {
   const devicesList = [];
   let b;
 
+
   const period = useRef('month');
   const detail = useRef('daily');
   const entryNumberRes = useRef();
@@ -81,6 +82,7 @@ export const ModalODPU = () => {
       $('.ant-tabs-tab-active').click();
     }
 
+    console.log("device = ", device)
     setTimeout(foo, 1000);
   }, []);
   // function foo() {
