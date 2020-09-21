@@ -73,7 +73,12 @@ export const Input = styled.div`
     position: relative;
     z-index: 1;
   }
-  pass_btn {
+  & > svg {
+    align-self: center;
+    position: relative;
+    z-index: 1;
+  }
+  pass_btn, Icon {
     display: inherit;
     grid-column: -1;
     cursor: pointer;
