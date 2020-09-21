@@ -103,7 +103,7 @@ export const DeviceProfile = (props) => {
       }))
 
     }
-    
+
 
   }, [typeODPU])
   const path = `/objects/${objid}/devices/${deviceId}/`;
