@@ -35,7 +35,7 @@ export const Header = React.memo(({ 0: title, 1: subtitle }) =>
         <Loader show={!title} size="48">
           <div>
             <h_title>{title}</h_title>
-            <h_subtitle>{subtitle}</h_subtitle>
+            <h_subtitle style={{paddingTop: '8px'}}>{subtitle}</h_subtitle>
           </div>
           <div style={{ position: 'relative' }}><Menu />
             {/*<ModalODPU />*/}

@@ -9,6 +9,7 @@ import {
   getRelatedDevices,
   getTypeODPU,
   getCalculatorResources,
+  getCalculator
 } from '01/_api/device_page';
 import $ from 'jquery';
 import { Header } from './components/Header';
@@ -36,6 +37,7 @@ export const DeviceProfile = (props) => {
   const [related, setRelated] = useState();
   const [typeODPU, setTypeODPU] = useState();
   const [hubs, setHubs] = useState();
+  const [calcModel, setCalcModel] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -72,6 +74,7 @@ export const DeviceProfile = (props) => {
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
+        console.log("device", device)
         // setHubs(hubs);
       })
       .catch(({ resource, message }) => {
@@ -92,23 +95,27 @@ export const DeviceProfile = (props) => {
 
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     // if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
     console.log("typeODPU = ", typeODPU)
     if (typeODPU === 'Calculator') {
       console.log("\"typeODPU = \", typeODPU = ", typeODPU)
       //getCalculatorResources(deviceId).then((response) => setHubs(response));
-      console.log(getCalculatorResources(deviceId).then(response => {console.log(response)
-      setHubs(response)
-      }))
+      getCalculatorResources(deviceId).then(response => {
+        console.log(response)
+        setHubs(response);
+        // getCalculator
+      });
+      getCalculator(deviceId).then(response => {
+        setCalcModel(response)
+      });
 
     }
 
 
   }, [typeODPU])
   const path = `/objects/${objid}/devices/${deviceId}/`;
-
-
+  console.log(device)
 
   const buttonHandler = () => {
     console.log('calculator', hubs);
@@ -127,29 +134,30 @@ export const DeviceProfile = (props) => {
           errors,
           error,
           hubs,
+          calcModel
         }}
       >
-        <Header />
+        <Header/>
         {/* <button onClick={buttonHandler}>buttonHandler</button> */}
-        <Tabs />
+        <Tabs/>
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
-            <Information />
+            <Information/>
           </Route>
           <Route path={`${path}connection`} exact>
-            <Connection />
+            <Connection/>
           </Route>
           <Route path={`${path}related`} exact>
-            <RelatedDevices />
+            <RelatedDevices/>
           </Route>
           <Route path={`${path}documents`} exact>
             <div>Документы</div>
           </Route>
 
-          <Events title="Задачи с объектом" />
+          <Events title="Задачи с объектом"/>
         </Grid>
-        <ModalODPU />
+        <ModalODPU/>
         {/* <button onClick={showPopupHandler}>showPopup</button> */}
       </DeviceContext.Provider>
     );
@@ -166,28 +174,28 @@ export const DeviceProfile = (props) => {
         loadings,
         errors,
         error,
-        hubs,
+        hubs, calcModel
       }}
     >
-      <Header />
+      <Header/>
 
-      <TabsNotCalculator />
+      <TabsNotCalculator/>
 
       {/* Здесь делим экран на две части: main and aside */}
       <Grid>
         <Route path={path} exact>
-          <InformationNotCalculator />
+          <InformationNotCalculator/>
         </Route>
 
         <Route path={`${path}related`} exact>
-          <RelatedDevicesNotCalculator />
+          <RelatedDevicesNotCalculator/>
         </Route>
 
         <Route path={`${path}documents`} exact>
           <div>Документы</div>
         </Route>
 
-        <Events title="Задачи с объектом" />
+        <Events title="Задачи с объектом"/>
       </Grid>
     </DeviceContext.Provider>
   );
