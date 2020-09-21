@@ -1,15 +1,15 @@
-import React, { useContext } from "react"
-import { Link as LinkTitle } from "react-router-dom"
-import styled, { css } from "reshadow/macro"
+import React, { useContext, useEffect } from 'react';
+import { Link as LinkTitle } from 'react-router-dom';
+import styled, { css } from 'reshadow/macro';
 
-import { title_section, getDeviceIconProps } from "styles/helper"
-import { Icon, SimpleListItem } from "components"
-import { TaskIdContext } from "./contex"
+import { title_section, getDeviceIconProps } from 'styles/helper';
+import { Icon, SimpleListItem } from 'components';
+import { TaskIdContext } from './contex';
 
 export const DeviceList = ({ styles, ...props }) => {
-  const [{ device, housingStockId }] = useContext(TaskIdContext)
+  const [{ device, housingStockId }] = useContext(TaskIdContext);
 
-  if (!device) return null
+  if (!device) return null;
   const {
     id,
     serialNumber,
@@ -18,30 +18,29 @@ export const DeviceList = ({ styles, ...props }) => {
     lastCheckingDate,
     futureCheckingDate,
     commercialAccountingDate,
-    // ...props
-  } = device
-  // console.log(props)
+  } = device;
+
   return styled(styles, title_section)(
-    <div {...props}>
+    <div>
       <LinkTitle to={`/housingstocks/${housingStockId}/devices/${id}`}>
-        <Icon fill={"rgba(var(--main),.8)"} {...getDeviceIconProps(device)} />
-        {model} <span>({serialNumber})</span>
+        <Icon fill="rgba(var(--main),.8)" {...getDeviceIconProps(device)} />
+        <span>{`${model} (${serialNumber})`}</span>
       </LinkTitle>
       <ul>
         {[
           // { title: "Связь с прибором", value: "a" },
           // { title: "ID узла", value: "a" },
           {
-            title: "Постановка на учет",
+            title: 'Постановка на учет',
             value: new Date(commercialAccountingDate).toLocaleDateString(),
           },
-          diameter && { title: "Диаметр", value: diameter },
+          diameter && { title: 'Диаметр', value: diameter },
           {
-            title: "Окончание срока эксплуатации",
+            title: 'Окончание срока эксплуатации',
             value: new Date(futureCheckingDate).toLocaleDateString(),
           },
           {
-            title: "Последняя поверка приборов",
+            title: 'Последняя поверка приборов',
             value: new Date(lastCheckingDate).toLocaleDateString(),
           },
           // { title: "Форм-фактор", value: "a" },
@@ -52,9 +51,11 @@ export const DeviceList = ({ styles, ...props }) => {
             <SimpleListItem key={item.title} {...item} />
           ))}
       </ul>
-    </div>
-  )
-}
+    </div>,
+  );
+};
+
+export default DeviceList;
 
 DeviceList.defaultProps = {
   styles: css`
@@ -74,4 +75,4 @@ DeviceList.defaultProps = {
       }
     }
   `,
-}
+};

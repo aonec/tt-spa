@@ -1,14 +1,18 @@
-import React, { useContext } from "react"
-import styled from "reshadow/macro"
+import React, { useContext } from 'react';
+import styled from 'reshadow/macro';
 
-import { title_section } from "styles/helper"
-import { SimpleListItem } from "components"
-import { TaskIdContext } from "./contex"
+import { title_section } from 'styles/helper';
+import { SimpleListItem } from 'components';
+import { TaskIdContext } from './contex';
 
 export const InfoList = ({ ...props }) => {
-  const [{ id, creationTime, address, housingStockId }] = useContext(
-    TaskIdContext
-  )
+  const [{
+    id, creationTime, address, housingStockId,
+  }] = useContext(
+    TaskIdContext,
+  );
+
+  console.log('TaskIdContext = ', TaskIdContext);
   return styled(title_section)`
     title_section {
       margin-bottom: 16px;
@@ -19,14 +23,14 @@ export const InfoList = ({ ...props }) => {
 
       <ul>
         {[
-          { title: "Причина задачи", value: "1" },
-          { title: "Номер задачи", value: id },
+          { title: 'Причина задачи', value: '1' },
+          { title: 'Номер задачи', value: id },
           {
-            title: "Дата создания",
+            title: 'Дата создания',
             value: new Date(creationTime).toLocaleString(),
           },
           {
-            title: "Адрес",
+            title: 'Адрес',
             value: address,
             to: `/housingstocks/${housingStockId}`,
           },
@@ -41,6 +45,8 @@ export const InfoList = ({ ...props }) => {
           <SimpleListItem key={item.title} {...item} />
         ))}
       </ul>
-    </div>
-  )
-}
+    </div>,
+  );
+};
+
+export default InfoList;

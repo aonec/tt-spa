@@ -1,9 +1,9 @@
-import React from "react"
-import styled, { use, css } from "reshadow/macro"
-import { useHistory } from "react-router-dom"
+import React from 'react';
+import styled, { use, css } from 'reshadow/macro';
+import { useHistory } from 'react-router-dom';
 
-import { Icon } from "01/components"
-import { information } from "01/r_comp"
+import { Icon } from '01/components';
+import { information } from '01/r_comp';
 
 const style = css`
   device_title {
@@ -23,25 +23,25 @@ const style = css`
     font-weight: 400;
     opacity: 0.6;
   }
-`
+`;
 
 export const InformationDevice = ({
   list = [],
   icon = {},
-  model = "",
-  number = "",
+  model = '',
+  number = '',
   hidden = true,
-  url = "",
+  url = '',
   ...props
 }) => {
-  const { push } = useHistory()
-  if (hidden) return null
+  const { push } = useHistory();
+  if (hidden) return null;
   return styled(information, style)(
     <information {...props}>
       <device_title as="h3" onClick={() => push(url)}>
         <Icon {...icon} />
         <d_model>{model}</d_model>
-        <s_number>({number})</s_number>
+        <s_number>{`(${number})`}</s_number>
       </device_title>
       <info_list>
         {list.map(({ title, value, url }) => (
@@ -55,6 +55,8 @@ export const InformationDevice = ({
           </info_item>
         ))}
       </info_list>
-    </information>
-  )
-}
+    </information>,
+  );
+};
+
+export default InformationDevice;
