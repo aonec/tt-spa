@@ -34,9 +34,9 @@ export const ListItem = styled.li`
   }
 `;
 
-export const Header = () => {
+export const HeaderNotCalculator = () => {
   const {
-    device, building, loadings, errors, error, typeODPU,
+    device, building, loadings, errors, error, typeODPU, calcModel,
   } = useContext(
     DeviceContext,
   );
@@ -98,4 +98,4 @@ export const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderNotCalculator;
