@@ -1,29 +1,26 @@
 import React from 'react';
-
-import { input, button } from '01/r_comp';
+import './login.scss';
 import { Icon, Loader } from '01/components';
-import styled from 'styled-components';
+import login from '01/assets/svg/login.svg';
+import logo from '01/assets/svg/logo.svg';
+import {
+  Title, Label, Wrap, Button, Input,
+} from '01/tt-components';
+import styledcomponent from 'styled-components';
 import { useLogin } from './useLogin';
 
-export const Template = styled.div``;
-
-export const Form = styled.form`
-  display: grid;
-  min-width: 400px;
-  grid-gap: 24px;
-`;
-
-export const Main = styled.form`
-  display: grid;
+export const Main = styledcomponent.div`
   height: 100vh;
-  place-content: center;
-  background: var(--login-bg);
-  color: #fff;
+    place-content: center;
+    background: var(--login-bg);
+    color: #fff;
+     display: grid;
 `;
-
-export const Label = styled.form`
-  display: grid;
-  grid-gap: 8px;
+export const Form = styledcomponent.form`
+display: grid;
+    width: 400px;
+    height: fit-content;
+    grid-gap: 24px;
 `;
 
 export const Login = () => {
@@ -36,63 +33,91 @@ export const Login = () => {
     passBtnProps,
   } = useLogin();
 
+  console.log('passBtnProps', passBtnProps);
   return (
     <Main>
-      <Form {...formProps}>
-        <Label>
-          Логин
-          <input_frame data-big>
-            <input {...emailProps} />
-          </input_frame>
-        </Label>
-        <Label>
-          Пароль
-          <input_frame data-big style={{ background: 'white' }}>
-            <input {...passProps} />
-            <pass_btn as="Icon" {...passBtnProps} />
-          </input_frame>
-        </Label>
-        <Loader show={submit} size="48">
-          <button data-big data-primary {...btnFormProps}>
-            <span>Вход в систему</span>
-          </button>
-        </Loader>
-      </Form>
+      <div className="login">
+        <div className="login__left">
+          <div className="login__top">
+            <img src={logo} alt="logo" />
+            <span className="title">TT Management</span>
+          </div>
+          <img src={login} alt="login" />
+        </div>
+        <div className="login__right">
+          <Title>Вход в систему</Title>
+          <Form {...formProps}>
+            <Wrap>
+              <Label>Логин</Label>
+              <Input data-big>
+                <input {...emailProps} />
+              </Input>
+            </Wrap>
+
+            <Wrap>
+              <Label>Пароль</Label>
+              <Input data-big>
+                <input {...passProps} />
+                <pass_btn as="Icon" {...passBtnProps} />
+              </Input>
+            </Wrap>
+            <Loader show={submit} size="48">
+              <Button data-big data-primary {...btnFormProps}>
+                <span>Вход в систему</span>
+              </Button>
+            </Loader>
+          </Form>
+        </div>
+      </div>
     </Main>
   );
 };
 
 export default Login;
+// import React from 'react';
 
-// import React from "react";
-// import styled, { css } from "reshadow/macro";
+// import { input, button } from '01/r_comp';
+// import { Icon, Loader } from '01/components';
+// import styled from 'styled-components';
+// import { useLogin } from './useLogin';
 
-// import { useLogin } from "./useLogin";
-// import { input, button } from "01/r_comp";
-// import { Icon, Loader } from "01/components";
+// export const Template = styled.div``;
 
-// const styles = css`
-//   form,
-//   main,
-//   label {
-//     display: grid;
-//   }
+// export const Form = styled.form`
+//   display: grid;
+//   min-width: 400px;
+//   grid-gap: 24px;
+// `;
 
-//   main {
-//     height: 100vh;
-//     place-content: center;
-//     background: var(--login-bg);
-//     color: #fff;
-//   }
+// export const Main = styled.form`
+//   display: grid;
+//   height: 100vh;
+//   place-content: center;
+//   background: var(--login-bg);
+//   color: #fff;
+// `;
 
-//   form {
-//     min-width: 400px;
-//     grid-gap: 24px;
-//   }
+// export const Index = styled.form`
+//   display: grid;
+//   grid-gap: 8px;
+// `;
 
-//   label {
-//     grid-gap: 8px;
-//   }
+// export const Input = styled.input`
+//   background: #ffffff;
+//   border: 1px solid #dcdee4;
+//   box-sizing: border-box;
+//   border-radius: 4px;
+//   height: 48px;
+//   color: var(--main-80);
+// `;
+
+// export const Index = styled.h2`
+//   padding: 0;
+//   margin: 0;
+//   font-weight: 300;
+//   font-size: 40px;
+//   line-height: 48px;
+//   color: #ffffff;
 // `;
 
 // export const Login = () => {
@@ -104,28 +129,34 @@ export default Login;
 //     btnFormProps,
 //     passBtnProps,
 //   } = useLogin();
-//   return styled(input, button, styles)(
-//     <main>
-//       <form {...formProps}>
-//         <label>
+
+//   return (
+//     <Main>
+//       <Form {...formProps}>
+//         <Index>Вход в систему</Index>
+//         <Index>
 //           Логин
-//           <input_frame data-big>
-//             <input {...emailProps} />
-//           </input_frame>
-//         </label>
-//         <label>
+//           <Input />
+//           {/* <input_frame data-big>
+//             <Input {...emailProps} />
+//           </input_frame> */}
+//         </Index>
+//         <Index>
 //           Пароль
-//           <input_frame data-big>
-//             <input {...passProps} />
+//           <Input />
+//           {/* <input_frame data-big>
+//             <Input {...passProps} />
 //             <pass_btn as="Icon" {...passBtnProps} />
-//           </input_frame>
-//         </label>
+//           </input_frame> */}
+//         </Index>
 //         <Loader show={submit} size="48">
 //           <button data-big data-primary {...btnFormProps}>
 //             <span>Вход в систему</span>
 //           </button>
 //         </Loader>
-//       </form>
-//     </main>
+//       </Form>
+//     </Main>
 //   );
 // };
+
+// export default Login;

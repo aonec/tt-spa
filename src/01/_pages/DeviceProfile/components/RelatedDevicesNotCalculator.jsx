@@ -164,7 +164,7 @@ export default RelatedDevicesNotCalculator;
 //   color: rgba(39, 47, 90, 0.8);
 // `;
 
-// export const Title = styled.h2``;
+// export const Index = styled.h2``;
 
 // export const ListWrap = styled.div`
 //   display: grid;
@@ -237,7 +237,7 @@ export default RelatedDevicesNotCalculator;
 //     <ListWrap>
 //       {/* <button onClick={buttonHandler}>related</button> */}
 //       <Loader show={loading} size="32">
-//         <Title>Приборы</Title>
+//         <Index>Приборы</Index>
 //         {result}
 //       </Loader>
 //     </ListWrap>

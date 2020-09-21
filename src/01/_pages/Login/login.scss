@@ -1,0 +1,32 @@
+.login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.login__left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+}
+
+.login__right {
+  margin-left: 48px;
+}
+
+
+.title {
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.login__top {
+  position: absolute;
+
+  img {
+    margin-right: 16px;
+  }
+}

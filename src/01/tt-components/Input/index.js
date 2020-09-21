@@ -1,7 +1,6 @@
-import { css } from 'reshadow/macro';
+import styled from 'styled-components';
 
-export const input = css`
-  input_frame {
+export const Input = styled.div`
     --active: var(--primary-100);
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -57,7 +56,7 @@ export const input = css`
       border-color: var(--success);
     }
   }
-  input_frame > input {
+  & > input {
     grid-column: 2;
     position: relative;
     z-index: 1;
@@ -68,8 +67,8 @@ export const input = css`
       -webkit-text-fill-color: var(--main-32);
     }
   }
-  input_frame > Icon,
-  input_frame > pass_btn {
+  & > Icon,
+  & > pass_btn {
     align-self: center;
     position: relative;
     z-index: 1;
@@ -81,5 +80,6 @@ export const input = css`
     &:hover {
       color: var(--primary-100);
     }
-  }
 `;
+
+export default Input;
