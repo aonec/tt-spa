@@ -1,18 +1,18 @@
-import React from "react"
+import React from 'react';
 
 // import { InfoItem } from "01/components/items/InfoItem"
 
 export const Info = (info = null) => {
-  if (!info) return "loading"
-  console.log(info)
+  if (!info) return 'loading';
+  console.log('ObjectId-Info', info);
   return (
     <info>
       {/* {info?.map(({ 0: name, 1: value, 2: url }) => (
         <InfoItem {...{ name, value, url }} />
       ))} */}
     </info>
-  )
-}
+  );
+};
 
 // function createObjInfoList(info = {}) {
 //   return [

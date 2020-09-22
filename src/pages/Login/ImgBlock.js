@@ -2,7 +2,7 @@ import React from "react"
 import styled, { css } from "reshadow/macro"
 
 import logo_text from "assets/svg/logo_text.svg"
-import login_img from "assets/svg/login_img.svg"
+import login_img from "assets/svg/login.svg"
 
 export const ImgBlock = ({ styles }) => {
   return styled(styles)(

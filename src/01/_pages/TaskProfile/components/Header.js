@@ -1,8 +1,8 @@
-import React from "react"
-import styled, { css } from "reshadow/macro"
+import React from 'react';
+import styled, { css } from 'reshadow/macro';
 
-import { Loader, Icon } from "01/components"
-import * as s from "01/r_comp"
+import { Loader, Icon } from '01/components';
+import * as s from '01/r_comp';
 
 const styles = css`
   h {
@@ -63,35 +63,35 @@ const styles = css`
   Icon {
     margin-right: 8px;
   }
-`
+`;
 
 export const Header = React.memo(
-  ({ title = "", name = "", timeline = null, timer = null }) => {
-    return styled(styles, s.time_line)(
-      <h>
-        <Loader show={!title} size="48" />
-        <h_title as="h1">{title}</h_title>
-        {name && (
-          <>
-            <h_name>{name}</h_name>
-            <time_line>
-              <line_wrap>
-                <line as="span" style={timeline.style} />
-              </line_wrap>
-              <span>{timeline.timeStr}</span>
-              <before>{timeline.before}</before>
-            </time_line>
-          </>
-        )}
-        {timer && (
-          <timer>
-            <Icon {...timer.icon} />
-            <timer_text as="span">{timer.text}</timer_text>
-            <span>{timer.stage?.timeStr}</span>
-            <time>{timer.stage?.before}</time>
-          </timer>
-        )}
-      </h>
-    )
-  }
-)
+  ({
+    title = '', name = '', timeline = null, timer = null,
+  }) => styled(styles, s.time_line)(
+    <h>
+      <Loader show={!title} size="48" />
+      <h_title as="h1">{title}</h_title>
+      {name && (
+      <>
+        <h_name>{name}</h_name>
+        <time_line>
+          <line_wrap>
+            <line as="span" style={timeline.style} />
+          </line_wrap>
+          <span>{timeline.timeStr}</span>
+          <before>{timeline.before}</before>
+        </time_line>
+      </>
+      )}
+      {timer && (
+      <timer>
+        <Icon {...timer.icon} />
+        <timer_text as="span">{timer.text}</timer_text>
+        <span>{timer.stage?.timeStr}</span>
+        <time>{timer.stage?.before}</time>
+      </timer>
+      )}
+    </h>,
+  ),
+);

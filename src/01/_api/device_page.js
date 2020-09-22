@@ -88,3 +88,25 @@ export async function getCalculator(id = '') {
     throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
   }
 }
+
+export async function getPagination(id = '') {
+  try {
+    const res = await axios.get('MeteringDevices');
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
+  }
+}
+
+// export async function getPagination(id = '') {
+//   try {
+//     const res = await axios.get('MeteringDevices?PageNumber=2&PageSize=100');
+//     console.log(res);
+//     return res;
+//   } catch (error) {
+//     console.log(error);
+//     throw { typeODPU: 'getCalculatorResources', message: 'Произошла ошибка при загрузке ресурсов вычислителя' };
+//   }
+// }

@@ -36,7 +36,7 @@ export const ListItem = styled.li`
 
 export const Header = () => {
   const {
-    device, building, loadings, errors, error, typeODPU, calcModel
+    device, building, loadings, errors, error, typeODPU, calcModel,
   } = useContext(
     DeviceContext,
   );
@@ -50,8 +50,8 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  console.log("device = ", device)
-  console.log(model)
+  console.log('device = ', device);
+  console.log(model);
   const buttonHandler = () => {
     console.log('loadings', loadings);
     console.log('error', error);
@@ -87,7 +87,7 @@ export const Header = () => {
               size="24"
               style={{ marginRight: '8px' }}
             />
-            {`${model || 'Вычислитель'} (${serialNumber})`}
+            {`${calcModel || 'Вычислитель'} (${serialNumber})`}
           </Title>
 
           <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>

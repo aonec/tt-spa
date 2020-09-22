@@ -76,6 +76,14 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
+  const deleteDevice = () => {
+    console.log("deleteDevice")
+    $('#delete-device').toggle();
+    $('#edit-button__list').toggle();
+  };
+
+
+
   return (
     <>
       <EditButton />
@@ -85,7 +93,7 @@ export const Menu = (showPopupHandler) => {
         <ListItem onClick={showModal}>
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
-        <ListItem style={{ color: '#FC525B' }}>
+        <ListItem onClick={deleteDevice} style={{ color: '#FC525B' }}>
           Снять вычислитель с учета
         </ListItem>
       </List>

@@ -1,9 +1,9 @@
-import React from "react"
-import styled, { use } from "reshadow/macro"
-import { useHistory } from "react-router-dom"
+import React from 'react';
+import styled, { use } from 'reshadow/macro';
+import { useHistory } from 'react-router-dom';
 
-import { Loader} from "01/components/Loader"
-import { information } from "01/r_comp"
+import { Loader } from '01/components/Loader';
+import { information } from '01/r_comp';
 
 export const Information = ({
   list = [],
@@ -11,7 +11,7 @@ export const Information = ({
   loading = true,
   ...props
 }) => {
-  const { push } = useHistory()
+  const { push } = useHistory();
   return styled(information)`
     Loader {
       justify-self: center;
@@ -33,6 +33,8 @@ export const Information = ({
           ))}
         </info_list>
       </Loader>
-    </information>
-  )
-}
+    </information>,
+  );
+};
+
+export default Information;

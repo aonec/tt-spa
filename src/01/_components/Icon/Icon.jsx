@@ -14,6 +14,7 @@ export const Icon = ({ size = 16, icon = '', ...props }) => styled()`
       <path as="path" clipRule="evenodd" fillRule="evenodd" d={icons[icon]} />
     </svg>,
 );
+export default Icon;
 
 Icon.propTypes = {
   icon: t.oneOf([...Object.keys(icons).sort((a, b) => a.localeCompare(b))])

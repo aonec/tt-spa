@@ -10,7 +10,7 @@ import {
   Breadcrumbs,
   Documents,
   Loader,
-} from 'components';
+} from '../../components/App/node_modules/components';
 import { TaskIdContext } from './contex';
 import { Header } from './Header';
 import { Panel } from './Panel';
