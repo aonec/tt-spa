@@ -10,41 +10,42 @@ import { useLogin } from './useLogin';
 
 export const Main = styledcomponent.div`
   height: 100vh;
-    place-content: center;
-    background: var(--login-bg);
-    color: #fff;
-     display: grid;
-     display: grid;
-     grid-template-columns: 1fr 1fr;
-     align-items: center;
+  padding: 40px;
+  place-content: center;
+  background: var(--login-bg);
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 `;
 export const Form = styledcomponent.form`
-display: grid;
-    width: 400px;
-    height: fit-content;
-    grid-gap: 24px;
+  display: grid;
+  max-width: 400px;
+  height: fit-content;
+  grid-gap: 24px;
 `;
 
 export const Img = styledcomponent.img`
-margin-right: 16px;
+  margin-right: 16px;
 `;
 
 export const LoginLeft = styledcomponent.div`
-position: relative;
-display: flex;
-flex-direction: column;
-align-items: center;
-margin-left: auto;
-padding-top: 48px;
+  position: relative;
+  display: flex;
+  justify-self: end;
+  flex-direction: column;
+  align-items: center;
+  // margin-left: auto;
+  padding-top: 48px;
 `;
 
 export const LoginRight = styledcomponent.div`
-margin-left: 48px;
+  margin-left: 48px;
 `;
 
 export const LoginTop = styledcomponent.div`
-position: absolute;
-display: flex;
+  position: absolute;
+  display: flex;
 `;
 
 export const Login = () => {
