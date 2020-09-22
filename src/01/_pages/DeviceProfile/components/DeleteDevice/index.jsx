@@ -65,7 +65,7 @@ export const DeleteDevice = () => {
 
   return (
     <ReportContext.Provider value={{}}>
-      <div className="overlay" id="delete-device">
+      <div className="overlay-deregister-device" id="delete-device">
         <div className="modal-odpu">
           <Icon
             className="modal__close"
