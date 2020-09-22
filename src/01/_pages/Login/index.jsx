@@ -63,11 +63,7 @@ export const Login = () => {
     console.log('someFunc');
   };
 
-  function onSubmitHadler() {
-    setLoading(false);
-  }
-
-  async function okButtonHadler() {
+  async function FormSubmitHadler() {
     setLoading(true);
     try {
       await axios.post('auth/login', { email, password });
@@ -91,13 +87,12 @@ export const Login = () => {
       </LoginLeft>
       <LoginRight>
         <Title size="big">Вход в систему</Title>
-        <Form
-          onSubmit={onSubmitHadler}
-        >
+        <Form className="form" onSubmit={FormSubmitHadler}>
           <Wrap>
             <Label>Логин</Label>
             <Input data-big>
               <input
+                autoFocus
                 name="email"
                 placeholder="Введите логин"
                 type="text"
@@ -137,7 +132,7 @@ export const Login = () => {
               data-primary
               disabled={loading}
               type="loading"
-              onClick={okButtonHadler}
+              onClick={FormSubmitHadler}
             >
               <span>Вход в систему</span>
             </Button>
