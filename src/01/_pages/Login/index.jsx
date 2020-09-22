@@ -11,7 +11,6 @@ import {
 } from '01/tt-components';
 
 import styled from 'styled-components';
-// import { useLogin } from './useLogin';
 
 export const Main = styled.div`
   height: 100vh;
@@ -56,7 +55,6 @@ export const LoginTop = styled.div`
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [loading, setLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
@@ -65,20 +63,22 @@ export const Login = () => {
     console.log('someFunc');
   };
 
-  const okButtonHadler = () => {
-    (async function () {
-      setLoading(true);
-      try {
-        await axios.post('auth/login', { email, password });
-        await axios.get('ManagingFirmUsers/current');
-        replace('/tasks/');
-      } catch (error) {
-        alert('Корректно введите логин и пароль');
-      } finally {
-        setLoading(false);
-      }
-    }());
-  };
+  function onSubmitHadler() {
+    setLoading(false);
+  }
+
+  async function okButtonHadler() {
+    setLoading(true);
+    try {
+      await axios.post('auth/login', { email, password });
+      await axios.get('ManagingFirmUsers/current');
+      replace('/tasks/');
+    } catch (error) {
+      alert('Корректно введите логин и пароль');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Main>
@@ -92,17 +92,12 @@ export const Login = () => {
       <LoginRight>
         <Title size="big">Вход в систему</Title>
         <Form
-          // {...formProps}
-          onSubmit={(e) => {
-            e.preventDefault();
-            setLoading(true);
-          }}
+          onSubmit={onSubmitHadler}
         >
           <Wrap>
             <Label>Логин</Label>
             <Input data-big>
               <input
-                // {...emailProps}
                 name="email"
                 placeholder="Введите логин"
                 type="text"
@@ -119,7 +114,6 @@ export const Login = () => {
             <Label>Пароль</Label>
             <Input data-big>
               <input
-                //  {...passProps}
                 name="password"
                 placeholder="Введите пароль"
                 readOnly={loading}
@@ -130,9 +124,7 @@ export const Login = () => {
                 }}
               />
               <Icon
-                //  {...passBtnProps}
                 icon={showPass ? 'off' : 'on'}
-                // onClick={setShowPass(!showPass)}
                 onClick={() => {
                   setShowPass(!showPass);
                 }}
@@ -143,7 +135,6 @@ export const Login = () => {
             <Button
               data-big
               data-primary
-              //  {...btnFormProps}
               disabled={loading}
               type="loading"
               onClick={okButtonHadler}
