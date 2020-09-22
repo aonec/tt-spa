@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { Loader } from '01/components';
 import axios from '01/axios';
-import { useHistory } from 'react-router-dom';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
+
 import {
   Title, Label, Wrap, Button, Input, Icon,
 } from '01/tt-components';
+
 import styled from 'styled-components';
 // import { useLogin } from './useLogin';
 
@@ -14,8 +17,9 @@ export const Main = styled.div`
   height: 100vh;
   padding: 40px;
   place-content: center;
-  background: var(--login-bg);
-  color: #fff;
+  /* background: var(--login-bg); */
+  background: #12193d;
+  color: #ffffff;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -86,7 +90,7 @@ export const Login = () => {
         <Img src={login} alt="login" />
       </LoginLeft>
       <LoginRight>
-        <Title size="40">Вход в систему</Title>
+        <Title size="big">Вход в систему</Title>
         <Form
           // {...formProps}
           onSubmit={(e) => {

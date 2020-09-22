@@ -10,6 +10,7 @@ import {
   getTypeODPU,
   getCalculatorResources,
   getCalculator,
+  getPagination,
 } from '01/_api/device_page';
 import $ from 'jquery';
 import { Header } from './components/Header';
@@ -110,7 +111,8 @@ export const DeviceProfile = () => {
   const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
-    console.log('calculator', hubs);
+    console.log('calculator');
+    getPagination();
   };
   if (typeODPU === 'Calculator') {
     return (
@@ -128,7 +130,9 @@ export const DeviceProfile = () => {
           calcModel,
         }}
       >
+        <button onClick={buttonHandler}>getPagination</button>
         <Header />
+
         {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
