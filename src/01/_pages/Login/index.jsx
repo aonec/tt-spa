@@ -8,7 +8,6 @@ import {
   Title, Label, Wrap, Button, Input, Icon,
 } from '01/tt-components';
 import styled from 'styled-components';
-import { some } from 'lodash';
 // import { useLogin } from './useLogin';
 
 export const Main = styled.div`
@@ -53,7 +52,8 @@ export const LoginTop = styled.div`
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [submit, setSubmit] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
 
@@ -61,21 +61,20 @@ export const Login = () => {
     console.log('someFunc');
   };
 
-  useEffect(() => {
-    if (submit) {
-      (async function () {
-        try {
-          await axios.post('auth/login', { email, password });
-          await axios.get('ManagingFirmUsers/current');
-          replace('/tasks/');
-        } catch (error) {
-          setSubmit(false);
-        } finally {
-          setSubmit(false);
-        }
-      }());
-    }
-  }, [submit, email, password, replace]);
+  const okButtonHadler = () => {
+    (async function () {
+      setLoading(true);
+      try {
+        await axios.post('auth/login', { email, password });
+        await axios.get('ManagingFirmUsers/current');
+        replace('/tasks/');
+      } catch (error) {
+        alert('Корректно введите логин и пароль');
+      } finally {
+        setLoading(false);
+      }
+    }());
+  };
 
   return (
     <Main>
@@ -92,7 +91,7 @@ export const Login = () => {
           // {...formProps}
           onSubmit={(e) => {
             e.preventDefault();
-            setSubmit(true);
+            setLoading(true);
           }}
         >
           <Wrap>
@@ -103,7 +102,7 @@ export const Login = () => {
                 name="email"
                 placeholder="Введите логин"
                 type="text"
-                readOnly={submit}
+                readOnly={loading}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -119,7 +118,7 @@ export const Login = () => {
                 //  {...passProps}
                 name="password"
                 placeholder="Введите пароль"
-                readOnly={submit}
+                readOnly={loading}
                 type={showPass ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => {
@@ -136,13 +135,14 @@ export const Login = () => {
               />
             </Input>
           </Wrap>
-          <Loader show={submit} size="48">
+          <Loader show={loading} size="48">
             <Button
               data-big
               data-primary
               //  {...btnFormProps}
-              disabled={submit}
-              type="submit"
+              disabled={loading}
+              type="loading"
+              onClick={okButtonHadler}
             >
               <span>Вход в систему</span>
             </Button>
