@@ -1,31 +1,18 @@
 import React, {
-  useState,
-  useContext,
-  useRef,
-  useEffect,
+  useState, useContext,
 } from 'react';
 import './modal.scss';
-import {
-  Radio, ConfigProvider, DatePicker, Tabs, Select,
-} from 'antd';
+import { ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
-import _ from 'lodash';
 import ruRu from 'antd/es/locale/ru_RU';
 import axios from 'axios';
 import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
 import { Label } from '../../../../tt-components/Label';
-import { Button } from '../../../../tt-components/Button';
-import { ButtonDefault } from '../../../../tt-components/ButtonDefault';
-
-const Translate = {
-  Heat: 'Отопление',
-  ColdWaterSupply: 'Холодная вода',
-  HotWaterSupply: 'Горячая вода',
-};
+import { ButtonTT } from '../../../../tt-components/ButtonTT';
 
 const hideMe = () => {
   $('#delete-device').css('display', 'none');
@@ -35,34 +22,26 @@ export const ReportContext = React.createContext();
 
 export const DeleteDevice = () => {
   const { device, calcModel } = useContext(DeviceContext);
-  const { id, model, serialNumber } = { ...device };
+  const { id, model, serialNumber } = device;
+  const [selecteddate, setSelecteddate] = useState(convertDateOnly(moment()));
 
-  useEffect(() => {
-
-  }, []);
-
-  const someFunc = () => {
-
-  };
-
-  const someCalculator = {
+  const Device = {
     deviceId: id,
     documentsIds: [],
-    closingDateTime: '2020-09-22T12:40:51.373Z',
+    closingDateTime: `${selecteddate}T00:00:00.373Z`,
   };
 
-  const Tenplate = {
-    "deviceId": 1553348,
-    "documentsIds":[],
-    "closingDateTime":"2020-09-20T12:40:51.373Z"
-  }
+  const Template = {
+    deviceId: 1553348,
+    documentsIds: [],
+    closingDateTime: '2020-09-20T12:40:51.373Z',
+  };
 
-
-  const setCalculator = () => {
-    console.log(someCalculator);
+  const deregisterDevice = () => {
+    // console.log(Device);
     async function getCalculatorResources(id = '') {
       try {
-        const res = await axios.post('MeteringDevices/close', someCalculator);
+        const res = await axios.post('MeteringDevices/close', Device);
         console.log(res);
         return res;
       } catch (error) {
@@ -76,16 +55,16 @@ export const DeleteDevice = () => {
         alert('Вычислитель успешно снят с учета !');
       })
       .catch((response) => {
-        alert(
-          'Что-то пошло не так: попробуйте еще раз',
-        );
+        alert('Что-то пошло не так: попробуйте еще раз');
       });
   };
 
+  function DatePickerHadler(date, dateString) {
+    setSelecteddate(dateString);
+  }
+
   return (
-    <ReportContext.Provider
-      value={{}}
-    >
+    <ReportContext.Provider value={{}}>
       <div className="overlay" id="delete-device">
         <div className="modal-odpu">
           <Icon
@@ -96,29 +75,31 @@ export const DeleteDevice = () => {
           />
           <div className="modal__top">
             <h3 className="modal__title">
-              {`Вы действительно хотите снять ${model || calcModel} (${serialNumber}) с учета?`}
+              {`Вы действительно хотите снять ${model
+                || calcModel} (${serialNumber}) с учета?`}
             </h3>
-            <p>После этого прибор перейдет в архив и показания по нему перестанут учитываться</p>
-
+            <p>
+              После этого прибор перейдет в архив и показания по нему перестанут
+              учитываться
+            </p>
           </div>
           <div style={{ padding: '24px' }}>
             <Label color="rgba">Дата снятия прибора с учета</Label>
             <ConfigProvider locale={ruRu}>
-              <DatePicker required />
+              <DatePicker
+                required
+                onChange={DatePickerHadler}
+                defaultValue={moment()}
+                format="YYYY-MM-DD"
+              />
             </ConfigProvider>
           </div>
 
           <div className="modal__bottom">
-
-            <button
-              className="modal__button modal__button_cancel"
-              onClick={hideMe}
-            >
-              Отмена
-            </button>
-
-            <ButtonDefault color="red" onClick={setCalculator}>Снять прибор с учета</ButtonDefault>
-
+            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+            <ButtonTT color="red" onClick={deregisterDevice}>
+              Снять прибор с учета
+            </ButtonTT>
           </div>
         </div>
       </div>
@@ -127,8 +108,3 @@ export const DeleteDevice = () => {
 };
 
 export default DeleteDevice;
-
-// const selectOptions = [
-//   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-//   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
-// ];

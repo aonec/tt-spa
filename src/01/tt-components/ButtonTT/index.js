@@ -1,6 +1,6 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const ButtonDefault = styled.button`
+export const ButtonTT = styled.button`
       border-radius: 4px;
     font-weight: 500;
     font-size: 16px;
@@ -8,20 +8,19 @@ export const ButtonDefault = styled.button`
     height: 48px;
     border: 1px solid #dcdee4;
     padding: 8px 24px;
- ${({ color }) => (color === "red"
+ ${({ color }) => (color === 'red'
   && css`
    background: #FC525B;
    color: #ffffff;
       `)
-  || (color === "blue"
+  || (color === 'blue'
     && css`
    background: #189EE9;
    color: #ffffff;
       `)};
 `;
 
-export default ButtonDefault;
-
+export default ButtonTT;
 
 // import styled, {css} from 'styled-components';
 //
