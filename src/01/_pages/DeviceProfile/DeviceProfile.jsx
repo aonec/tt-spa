@@ -22,6 +22,7 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modal';
+import { DeleteDevice } from './components/DeleteDevice';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -153,6 +154,7 @@ export const DeviceProfile = () => {
           <Events title="Задачи с объектом" />
         </Grid>
         <ModalODPU />
+        <DeleteDevice />
       </DeviceContext.Provider>
     );
   }
