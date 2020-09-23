@@ -1,6 +1,4 @@
-import React, {
-  useState, useContext,
-} from 'react';
+import React, { useState, useContext } from 'react';
 import './modal.scss';
 import { ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
@@ -9,12 +7,12 @@ import { deregisterDevice } from '01/_api/device_page';
 import moment from 'moment';
 import $ from 'jquery';
 import ruRu from 'antd/es/locale/ru_RU';
-import axios from 'axios';
+import styled, { css } from 'styled-components';
 import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
-import { Label } from '../../../../tt-components/Label';
+import { Label, Title, Text } from '../../../../tt-components';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
-import {Title} from '../../../../tt-components/Title';
+import '01/tt-components/antd.scss';
 
 const hideMe = () => {
   $('#modal-deregister-device').css('display', 'none');
@@ -39,60 +37,71 @@ export const DeleteDevice = () => {
   //   closingDateTime: '2020-09-20T12:40:51.373Z',
   // };
 
-<<<<<<< Updated upstream
-  async function deregisterDevice() {
-    try {
-      const res = await axios.post('MeteringDevices/close', Device);
-      // console.log(res);
-      alert('Вычислитель успешно снят с учета !');
-      return res;
-    } catch(error) {
-      // console.log(error);
-      alert('Что-то пошло не так: попробуйте еще раз');
-      throw new Error(error);
-    }
-  }
-  
   const DatePickerHadler = (date, dateString) => {
-=======
-  const deregisterDevice = () => {
-    // console.log(Device);
-
-    getCalculatorResources()
-      .then((resonse) => {
-        alert('Вычислитель успешно снят с учета !');
-      })
-      .catch((response) => {
-        alert('Что-то пошло не так: попробуйте еще раз');
-      });
+    setSelecteddate(dateString);
   };
 
-  function DatePickerHadler(date, dateString) {
->>>>>>> Stashed changes
-    setSelecteddate(dateString);
-  }
+  const Template = styled.h2``;
+
+  const Modal = styled.div`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 2;
+  `;
+
+  const ModalWrap = styled.div`
+    margin: 100px auto;
+    background: #ffffff;
+    width: 800px;
+    min-height: 384px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  `;
+
+  const ModalTop = styled.div`
+    padding: 16px 32px;
+  `;
+
+  const ModalBottom = styled.div`
+    padding: 16px 32px;
+    background: #f3f5f6;
+    display: flex;
+    justify-content: flex-end;
+  `;
+
+  const ModalMain = styled.div`
+    padding: 24px;
+  `;
 
   return (
     <ReportContext.Provider value={{}}>
-      <div className="overlay" id="modal-deregister-device">
-        <div className="modal-odpu">
+      <Modal id="modal-deregister-device">
+        <ModalWrap>
           <Icon
             className="modal__close"
             icon="close"
             color="#272F5A"
             onClick={hideMe}
           />
-          <div className="modal__top">
-            <h3 className="modal__title">
+          <ModalTop>
+            <Title size="middle" color="black">
               {`Вы действительно хотите снять ${model
                 || calcModel} (${serialNumber}) с учета?`}
-            </h3>
-            <p>
+            </Title>
+            <Text>
               После этого прибор перейдет в архив и показания по нему перестанут
               учитываться
-            </p>
-          </div>
-          <div style={{ padding: '24px' }}>
+            </Text>
+          </ModalTop>
+
+          <ModalMain>
             <Label color="rgba">Дата снятия прибора с учета</Label>
             <ConfigProvider locale={ruRu}>
               <DatePicker
@@ -102,16 +111,22 @@ export const DeleteDevice = () => {
                 format="YYYY-MM-DD"
               />
             </ConfigProvider>
-          </div>
+          </ModalMain>
 
-          <div className="modal__bottom">
+          <ModalBottom className="modal__bottom">
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            <ButtonTT color="red" onClick={deregisterDevice}>
+            <ButtonTT
+              color="red"
+              onClick={() => {
+                deregisterDevice(Device);
+              }}
+              style={{ marginLeft: '24px' }}
+            >
               Снять прибор с учета
             </ButtonTT>
-          </div>
-        </div>
-      </div>
+          </ModalBottom>
+        </ModalWrap>
+      </Modal>
     </ReportContext.Provider>
   );
 };

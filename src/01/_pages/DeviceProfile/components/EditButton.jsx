@@ -72,18 +72,16 @@ export const Menu = (showPopupHandler) => {
   });
 
   const reportDevice = () => {
-    console.log("$('#modal-report-device')", $('#modal-report-device'))
+    console.log("$('#modal-report-device')", $('#modal-report-device'));
     $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
   };
 
   const deregisterDevice = () => {
-    console.log("deleteDevice" , $('#modal-deregister-device'));
+    console.log('deleteDevice', $('#modal-deregister-device'));
     $('#modal-deregister-device').toggle();
     $('#edit-button__list').toggle();
   };
-
-
 
   return (
     <>

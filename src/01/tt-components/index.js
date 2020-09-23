@@ -4,3 +4,6 @@ export * from './Wrap';
 export * from './Button';
 export * from './Input';
 export * from './Icon';
+export * from './Text';
+export * from './InputTT';
+export * from './ButtonTT';
