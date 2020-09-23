@@ -31,33 +31,25 @@ export const DeleteDevice = () => {
     closingDateTime: `${selecteddate}T00:00:00.373Z`,
   };
 
-  const Template = {
-    deviceId: 1553348,
-    documentsIds: [],
-    closingDateTime: '2020-09-20T12:40:51.373Z',
-  };
+  // const Template = {
+  //   deviceId: 1553348,
+  //   documentsIds: [],
+  //   closingDateTime: '2020-09-20T12:40:51.373Z',
+  // };
 
-  const deregisterDevice = () => {
-    // console.log(Device);
-    async function getCalculatorResources(id = '') {
-      try {
-        const res = await axios.post('MeteringDevices/close', Device);
-        console.log(res);
-        return res;
-      } catch (error) {
-        console.log(error);
-        throw new Error(error);
-      }
+  async function deregisterDevice(Device = '') {
+    try {
+      const res = await axios.post('MeteringDevices/close', Device);
+      // console.log(res);
+      alert('Вычислитель успешно снят с учета !');
+      return res;
+    } catch(error) {
+      // console.log(error);
+      alert('Что-то пошло не так: попробуйте еще раз');
+      throw new Error(error);
     }
-
-    getCalculatorResources()
-      .then((resonse) => {
-        alert('Вычислитель успешно снят с учета !');
-      })
-      .catch((response) => {
-        alert('Что-то пошло не так: попробуйте еще раз');
-      });
-  };
+  }
+  
 
   function DatePickerHadler(date, dateString) {
     setSelecteddate(dateString);
