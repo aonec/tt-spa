@@ -15,7 +15,7 @@ import { Label } from '../../../../tt-components/Label';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
 
 const hideMe = () => {
-  $('#delete-device').css('display', 'none');
+  $('#modal-deregister-device').css('display', 'none');
 };
 
 export const ReportContext = React.createContext();
@@ -50,14 +50,13 @@ export const DeleteDevice = () => {
     }
   }
   
-
-  function DatePickerHadler(date, dateString) {
+  const DatePickerHadler = (date, dateString) => {
     setSelecteddate(dateString);
   }
 
   return (
     <ReportContext.Provider value={{}}>
-      <div className="overlay-deregister-device" id="delete-device">
+      <div className="overlay" id="modal-deregister-device">
         <div className="modal-odpu">
           <Icon
             className="modal__close"
