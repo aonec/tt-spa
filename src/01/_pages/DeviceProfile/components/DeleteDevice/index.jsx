@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import './modal.scss';
 import { ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import { convertDateOnly } from '01/_api/utils/convertDate';
@@ -8,6 +7,9 @@ import moment from 'moment';
 import $ from 'jquery';
 import ruRu from 'antd/es/locale/ru_RU';
 import styled, { css } from 'styled-components';
+import {
+  Modal, ModalWrap, ModalTop, ModalMain, ModalBottom,
+} from '01/tt-components/Modal';
 import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
 import { Label, Title, Text } from '../../../../tt-components';
@@ -42,43 +44,6 @@ export const DeleteDevice = () => {
   };
 
   const Template = styled.h2``;
-
-  const Modal = styled.div`
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    z-index: 2;
-  `;
-
-  const ModalWrap = styled.div`
-    margin: 100px auto;
-    background: #ffffff;
-    width: 800px;
-    min-height: 384px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-  `;
-
-  const ModalTop = styled.div`
-    padding: 16px 32px;
-  `;
-
-  const ModalBottom = styled.div`
-    padding: 16px 32px;
-    background: #f3f5f6;
-    display: flex;
-    justify-content: flex-end;
-  `;
-
-  const ModalMain = styled.div`
-    padding: 24px;
-  `;
 
   return (
     <ReportContext.Provider value={{}}>

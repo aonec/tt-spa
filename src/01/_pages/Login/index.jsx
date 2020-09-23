@@ -47,7 +47,7 @@ export const LoginRight = styled.div`
   margin-left: 48px;
 `;
 
-export const LoginTop = styled.div`
+export const LoginTopHeader = styled.div`
   position: absolute;
   display: flex;
 `;
@@ -79,10 +79,10 @@ export const Login = () => {
   return (
     <Main>
       <LoginLeft>
-        <LoginTop>
+        <LoginTopHeader>
           <Img src={logo} alt="logo" />
           <Title size="24">TT Management</Title>
-        </LoginTop>
+        </LoginTopHeader>
         <Img src={login} alt="login" />
       </LoginLeft>
       <LoginRight>
