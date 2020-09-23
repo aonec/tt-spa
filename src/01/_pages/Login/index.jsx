@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components';
-// импортируем модифицированный axios и там обращамся к пути через функцию checkUrl
+
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
@@ -68,6 +68,7 @@ export const Login = () => {
     try {
       await axios.post('auth/login', { email, password });
       await axios.get('ManagingFirmUsers/current');
+      // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
       replace('/tasks/');
     } catch (error) {
       alert('Корректно введите логин и пароль');
