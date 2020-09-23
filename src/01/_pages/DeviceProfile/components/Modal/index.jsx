@@ -9,7 +9,7 @@ import './modal.scss';
 import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
-import 'antd/dist/antd.css';
+import '01/_pages/DeviceProfile/components/ModalDeregisterDevice/node_modules/antd/dist/antd.css';
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
@@ -53,7 +53,6 @@ export const ModalODPU = () => {
   const devicesList = [];
   let b;
 
-
   const period = useRef('month');
   const detail = useRef('daily');
   const entryNumberRes = useRef();
@@ -82,7 +81,7 @@ export const ModalODPU = () => {
       $('.ant-tabs-tab-active').click();
     }
 
-    console.log("device = ", device)
+    console.log('device = ', device);
     setTimeout(foo, 1000);
   }, []);
   // function foo() {
