@@ -43,8 +43,6 @@ export const DeleteDevice = () => {
     setSelecteddate(dateString);
   };
 
-  const Template = styled.h2``;
-
   return (
     <ReportContext.Provider value={{}}>
       <Modal id="modal-deregister-device">
