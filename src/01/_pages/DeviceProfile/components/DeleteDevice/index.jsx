@@ -5,6 +5,7 @@ import './modal.scss';
 import { ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
 import { convertDateOnly } from '01/_api/utils/convertDate';
+import { deregisterDevice } from '01/_api/device_page';
 import moment from 'moment';
 import $ from 'jquery';
 import ruRu from 'antd/es/locale/ru_RU';
@@ -38,6 +39,7 @@ export const DeleteDevice = () => {
   //   closingDateTime: '2020-09-20T12:40:51.373Z',
   // };
 
+<<<<<<< Updated upstream
   async function deregisterDevice() {
     try {
       const res = await axios.post('MeteringDevices/close', Device);
@@ -52,6 +54,21 @@ export const DeleteDevice = () => {
   }
   
   const DatePickerHadler = (date, dateString) => {
+=======
+  const deregisterDevice = () => {
+    // console.log(Device);
+
+    getCalculatorResources()
+      .then((resonse) => {
+        alert('Вычислитель успешно снят с учета !');
+      })
+      .catch((response) => {
+        alert('Что-то пошло не так: попробуйте еще раз');
+      });
+  };
+
+  function DatePickerHadler(date, dateString) {
+>>>>>>> Stashed changes
     setSelecteddate(dateString);
   }
 

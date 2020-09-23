@@ -100,6 +100,19 @@ export async function getPagination(id = '') {
   }
 }
 
+export async function deregisterDevice(Device = {}) {
+  try {
+    const res = await axios.post('MeteringDevices/close', Device);
+    alert('Вычислитель успешно снят с учета !');
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert('Что-то пошло не так: попробуйте еще раз');
+    throw new Error(error);
+  }
+}
+
 // export async function getPagination(id = '') {
 //   try {
 //     const res = await axios.get('MeteringDevices?PageNumber=2&PageSize=100');
