@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { ConfigProvider, DatePicker } from 'antd';
-import 'antd/dist/antd.css';
-import { convertDateOnly } from '01/_api/utils/convertDate';
-import { deregisterDevice } from '01/_api/device_page';
-import moment from 'moment';
-import $ from 'jquery';
-import ruRu from 'antd/es/locale/ru_RU';
+import React, { useState, useContext } from "react";
+import { ConfigProvider, DatePicker } from "antd";
+import "antd/dist/antd.css";
+import { convertDateOnly } from "01/_api/utils/convertDate";
+import { deregisterDevice } from "01/_api/device_page";
+import moment from "moment";
+import $ from "jquery";
+import ruRu from "antd/es/locale/ru_RU";
 import {
   Modal,
   ModalWrap,
@@ -13,17 +13,15 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from '01/tt-components/Modal';
+} from "01/tt-components/Modal";
 
-import { DeviceContext } from '../../DeviceProfile';
-import {
-  Label, Title, Text, Icon,
-} from '../../../../tt-components';
-import { ButtonTT } from '../../../../tt-components/ButtonTT';
-import '01/tt-components/antd.scss';
+import { DeviceContext } from "../../DeviceProfile";
+import { Label, Title, Text, Icon } from "../../../../tt-components";
+import { ButtonTT } from "../../../../tt-components/ButtonTT";
+import "01/tt-components/antd.scss";
 
 const hideMe = () => {
-  $('#modal-deregister-device').css('display', 'none');
+  $("#modal-deregister-device").css("display", "none");
 };
 
 export const ReportContext = React.createContext();
@@ -53,11 +51,12 @@ export const ModalDeregisterDevice = () => {
     <ReportContext.Provider value={{}}>
       <Modal id="modal-deregister-device">
         <ModalWrap>
-          <ModalClose onClick={hideMe} />
+          {/* <ModalClose onClick={hideMe} /> */}
+          <ModalClose someprop="someprop" />
           <ModalTop>
             <Title size="middle" color="black">
-              {`Вы действительно хотите снять ${model
-                || calcModel} (${serialNumber}) с учета?`}
+              {`Вы действительно хотите снять ${model ||
+                calcModel} (${serialNumber}) с учета?`}
             </Title>
             <Text>
               После этого прибор перейдет в архив и показания по нему перестанут
@@ -84,7 +83,7 @@ export const ModalDeregisterDevice = () => {
               onClick={() => {
                 deregisterDevice(Device);
               }}
-              style={{ marginLeft: '24px' }}
+              style={{ marginLeft: "24px" }}
             >
               Снять прибор с учета
             </ButtonTT>

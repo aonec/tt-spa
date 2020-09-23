@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import $ from "jquery";
-import axios from "axios";
-import moment from "moment";
-import { useParams } from "react-router-dom";
-import "01/tt-components/antd.scss";
+import React, { useEffect, useState, useRef } from 'react';
+import $ from 'jquery';
+import axios from 'axios';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import '01/tt-components/antd.scss';
 import {
   Modal,
   ModalWrap,
@@ -11,10 +11,12 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from "01/tt-components/Modal";
+} from '01/tt-components/Modal';
 
-import { Label, Title, Text, Icon, ButtonTT } from "../../../../tt-components";
-import TabsComponent from "./components/Tabs";
+import {
+  Label, Title, Text, Icon, ButtonTT,
+} from '../../../../tt-components';
+import TabsComponent from './components/Tabs';
 
 export const AddDeviceContext = React.createContext();
 
@@ -22,28 +24,28 @@ export const ModalCalculator = () => {
   const items = [
     {
       id: 1,
-      model: "ТЭМ-106",
+      model: 'ТЭМ-106',
     },
     {
       id: 2,
-      model: "ТЭМ-104",
+      model: 'ТЭМ-104',
     },
     {
       id: 3,
-      model: "ВКТ-7",
+      model: 'ВКТ-7',
     },
     {
       id: 4,
-      model: "ТВ-7",
+      model: 'ТВ-7',
     },
     {
       id: 5,
-      model: "ВИСТ",
+      model: 'ВИСТ',
     },
   ];
 
   const [tab, setTab] = useState(1);
-  const [ok, setOk] = useState("Далее");
+  const [ok, setOk] = useState('Далее');
 
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
@@ -53,67 +55,67 @@ export const ModalCalculator = () => {
   const futureCommercialAccountingDate = useRef(convertDateOnly(moment()));
   const port = useRef(1234);
   const infoId = useRef(1);
-  const ipV4 = useRef("192.168.0.1");
+  const ipV4 = useRef('192.168.0.1');
 
   const { 0: objid } = useParams();
 
   const onInputChange = (event) => {
-    console.log("onInputChange", event);
-    console.log("event.target", event.target);
+    console.log('onInputChange', event);
+    console.log('event.target', event.target);
 
-    const selected = $("#infoId")
-      .find("option:selected")
-      .attr("id");
+    const selected = $('#infoId')
+      .find('option:selected')
+      .attr('id');
 
-    const id = $(event.target).attr("id");
+    const id = $(event.target).attr('id');
     switch (id) {
-      case "serialNumber":
+      case 'serialNumber':
         serialNumber.current = event.target.value;
         console.log(serialNumber.current);
         break;
-      case "infoId":
+      case 'infoId':
         infoId.current = selected;
         console.log(selected);
         console.log(infoId.current);
         break;
-      case "port":
+      case 'port':
         port.current = event.target.value;
         console.log(port.current);
         break;
-      case "ipV4":
+      case 'ipV4':
         ipV4.current = event.target.value;
         console.log(ipV4.current);
         break;
 
       default:
-        alert("Нет таких значений");
+        alert('Нет таких значений');
     }
   };
 
   function callback(key) {
-    console.log("Был = ", tab);
+    console.log('Был = ', tab);
     setTab(key);
     if (key == 3) {
-      setOk("Выгрузить");
+      setOk('Выгрузить');
     } else {
-      setOk("Далее");
+      setOk('Далее');
     }
   }
 
   const nextOrDone = () => {
-    console.log("tab = ", tab);
+    console.log('tab = ', tab);
     if (tab == 3) {
-      alert("Cейчас будем отправлять данные!");
+      alert('Cейчас будем отправлять данные!');
       setCalculator();
     } else {
-      $(".ant-tabs-tab-active")
+      $('.ant-tabs-tab-active')
         .next()
         .click();
     }
   };
 
   const postODPU = () => {
-    console.log("postODPU");
+    console.log('postODPU');
   };
 
   function randomInteger(min, max) {
@@ -122,22 +124,22 @@ export const ModalCalculator = () => {
   }
 
   function convertDateOnly(date) {
-    const dateOnly = "YYYY-MM-DD";
+    const dateOnly = 'YYYY-MM-DD';
     const newDate = moment(date).format(dateOnly);
     return `${newDate}T14:36:28.797Z`;
   }
 
   const someCalculator = {
     serialNumber: serialNumber.current,
-    checkingDate: "2020-09-17T14:36:28.797Z",
-    futureCheckingDate: "2020-09-17T14:36:28.797Z",
-    lastCommercialAccountingDate: "2020-09-17T14:36:28.797Z",
+    checkingDate: '2020-09-17T14:36:28.797Z',
+    futureCheckingDate: '2020-09-17T14:36:28.797Z',
+    lastCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
     connection: {
       ipV4: ipV4.current,
       deviceAddress: deviceAddressRandom,
       port: parseInt(port.current),
     },
-    futureCommercialAccountingDate: "2020-09-17T14:36:28.797Z",
+    futureCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
     housingStockId: parseInt(objid),
     infoId: parseInt(infoId.current),
   };
@@ -145,9 +147,9 @@ export const ModalCalculator = () => {
   const setCalculator = () => {
     console.log(someCalculator);
 
-    async function getCalculatorResources(id = "") {
+    async function getCalculatorResources(id = '') {
       try {
-        const res = await axios.post("Calculators", someCalculator);
+        const res = await axios.post('Calculators', someCalculator);
         console.log(res);
         return res;
       } catch (error) {
@@ -158,17 +160,17 @@ export const ModalCalculator = () => {
 
     getCalculatorResources()
       .then((resonse) => {
-        alert("Вычислитель успешно создан !");
+        alert('Вычислитель успешно создан !');
       })
       .catch((response) => {
         alert(
-          "Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА"
+          'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
         );
       });
   };
 
   const hideMe = () => {
-    $("#add-calculator").css("display", "none");
+    $('#add-calculator').css('display', 'none');
   };
 
   const buttonHandler = () => {
@@ -191,7 +193,8 @@ export const ModalCalculator = () => {
     >
       <Modal id="add-calculator">
         <ModalWrap>
-          <ModalClose onClick={hideMe} />
+          {/* <ModalClose onClick={hideMe} /> */}
+          <ModalClose />
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового вычислителя

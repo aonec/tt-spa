@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '01/tt-components';
 import styled from 'styled-components';
+import $ from 'jquery';
 
 export const Modal = styled.div`
   position: fixed;
@@ -39,24 +40,31 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
-export const ModalClose = () => (
-  // const style = {
-  //   position: "absolute",
-  //   cursor: "pointer",
-  //   right: "18px",
-  //   top: "18p",
-  // };
-  <Icon
-    style={{
-      position: 'absolute',
-      cursor: 'pointer',
-      right: '18px',
-      top: '18px',
-    }}
-    icon="close"
-    color="#272F5A"
-  />
-);
+export const ModalClose = () => {
+  const style = {
+    position: 'absolute',
+    cursor: 'pointer',
+    right: '18px',
+    top: '18px',
+  };
+  const ModalShowHide = (event) => {
+    console.log(event.target);
+
+    // console.log($(this).attr('someprop'));
+    // $(`#${props.id}`).css('display', 'none');
+  };
+  return (
+    <Icon
+      style={style}
+      icon="close"
+      color="#272F5A"
+      onClick={(event) => {
+        ModalShowHide(event);
+      }}
+    />
+  );
+};
+
 export default {
   Modal,
   ModalWrap,
