@@ -13,6 +13,7 @@ import { Icon } from '../../../../_components/Icon';
 import { DeviceContext } from '../../DeviceProfile';
 import { Label } from '../../../../tt-components/Label';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
+import {Title} from '../../../../tt-components/Title';
 
 const hideMe = () => {
   $('#modal-deregister-device').css('display', 'none');
@@ -37,7 +38,7 @@ export const DeleteDevice = () => {
   //   closingDateTime: '2020-09-20T12:40:51.373Z',
   // };
 
-  async function deregisterDevice(Device = '') {
+  async function deregisterDevice() {
     try {
       const res = await axios.post('MeteringDevices/close', Device);
       // console.log(res);

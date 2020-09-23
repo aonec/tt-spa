@@ -215,7 +215,7 @@ export const ModalODPU = () => {
         onDetailChange,
       }}
     >
-      <div className="overlay">
+      <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
           <Icon
             className="modal__close"
