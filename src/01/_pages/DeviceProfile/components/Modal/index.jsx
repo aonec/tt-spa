@@ -5,11 +5,11 @@ import React, {
   useEffect,
   Children,
 } from 'react';
-import './modal.scss';
+import '01/tt-components/antd.scss';
 import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
-import '01/_pages/DeviceProfile/components/ModalDeregisterDevice/node_modules/antd/dist/antd.css';
+
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
