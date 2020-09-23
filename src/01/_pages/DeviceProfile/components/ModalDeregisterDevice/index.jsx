@@ -6,7 +6,6 @@ import { deregisterDevice } from '01/_api/device_page';
 import moment from 'moment';
 import $ from 'jquery';
 import ruRu from 'antd/es/locale/ru_RU';
-import styled, { css } from 'styled-components';
 import {
   Modal, ModalWrap, ModalTop, ModalMain, ModalBottom,
 } from '01/tt-components/Modal';
@@ -22,7 +21,7 @@ const hideMe = () => {
 
 export const ReportContext = React.createContext();
 
-export const DeleteDevice = () => {
+export const ModalDeregisterDevice = () => {
   const { device, calcModel } = useContext(DeviceContext);
   const { id, model, serialNumber } = device;
   const [selecteddate, setSelecteddate] = useState(convertDateOnly(moment()));
@@ -76,7 +75,7 @@ export const DeleteDevice = () => {
             </ConfigProvider>
           </ModalMain>
 
-          <ModalBottom className="modal__bottom">
+          <ModalBottom>
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
             <ButtonTT
               color="red"
@@ -94,4 +93,4 @@ export const DeleteDevice = () => {
   );
 };
 
-export default DeleteDevice;
+export default ModalDeregisterDevice;
