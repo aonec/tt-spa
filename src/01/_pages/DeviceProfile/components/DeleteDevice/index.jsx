@@ -36,7 +36,7 @@ export const DeleteDevice = () => {
   // const Template = {
   //   deviceId: 1553348,
   //   documentsIds: [],
-  //   closingDateTime: '2020-09-20T12:40:51.373Z',
+  //   closingDateTime: '2020-09-20T00:00:00.373Z',
   // };
 
   const DatePickerHadler = (date, dateString) => {
