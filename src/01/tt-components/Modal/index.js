@@ -1,3 +1,5 @@
+import React from 'react';
+import { Icon } from '01/tt-components';
 import styled from 'styled-components';
 
 export const Modal = styled.div`
@@ -37,6 +39,21 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
+export const ModalClose = () => {
+  const style = {
+    position: 'absolute',
+    cursor: 'pointer',
+    right: '18px',
+    top: '18p',
+  };
+  return <Icon className={{ style }} icon="close" color="#272F5A" />;
+};
+
 export default {
-  Modal, ModalWrap, ModalTop, ModalMain, ModalBottom,
+  Modal,
+  ModalWrap,
+  ModalTop,
+  ModalMain,
+  ModalBottom,
+  ModalClose,
 };

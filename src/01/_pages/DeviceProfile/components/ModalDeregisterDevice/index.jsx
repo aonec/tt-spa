@@ -7,11 +7,18 @@ import moment from 'moment';
 import $ from 'jquery';
 import ruRu from 'antd/es/locale/ru_RU';
 import {
-  Modal, ModalWrap, ModalTop, ModalMain, ModalBottom,
+  Modal,
+  ModalWrap,
+  ModalTop,
+  ModalMain,
+  ModalBottom,
+  ModalClose,
 } from '01/tt-components/Modal';
-import { Icon } from '../../../../_components/Icon';
+
 import { DeviceContext } from '../../DeviceProfile';
-import { Label, Title, Text } from '../../../../tt-components';
+import {
+  Label, Title, Text, Icon,
+} from '../../../../tt-components';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
 import '01/tt-components/antd.scss';
 
@@ -46,12 +53,7 @@ export const ModalDeregisterDevice = () => {
     <ReportContext.Provider value={{}}>
       <Modal id="modal-deregister-device">
         <ModalWrap>
-          <Icon
-            className="modal__close"
-            icon="close"
-            color="#272F5A"
-            onClick={hideMe}
-          />
+          <ModalClose onClick={hideMe} />
           <ModalTop>
             <Title size="middle" color="black">
               {`Вы действительно хотите снять ${model
