@@ -40,7 +40,8 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
-export const ModalClose = () => {
+export const ModalClose = (someprop) => {
+  console.log("someprop", someprop)
   const style = {
     position: 'absolute',
     cursor: 'pointer',

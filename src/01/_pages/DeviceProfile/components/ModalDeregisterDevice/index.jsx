@@ -31,28 +31,38 @@ export const ModalDeregisterDevice = () => {
   const { id, model, serialNumber } = device;
   const [selecteddate, setSelecteddate] = useState(convertDateOnly(moment()));
 
-  const Device = {
-    deviceId: id,
-    documentsIds: [],
-    closingDateTime: `${selecteddate}T00:00:00.373Z`,
-  };
+  // const Device = {
+  //   deviceId: id,
+  //   documentsIds: [],
+  //   closingDateTime: `${selecteddate}T00:00:00.373Z`,
+  // };
+  
+  const onSubmit = () => {
+    const Device = {
+      deviceId: id,
+      documentsIds: [],
+      closingDateTime: `${selecteddate}T00:00:00.373Z`,
+    };
 
-  // const Template = {
+    deregisterDevice(Device)
+  }
+  // const DEFAULT_DEVICE = {
   //   deviceId: 1553348,
   //   documentsIds: [],
   //   closingDateTime: '2020-09-20T00:00:00.373Z',
   // };
 
-  const DatePickerHadler = (date, dateString) => {
+  const datePickerHandler = (date, dateString) => {
     setSelecteddate(dateString);
+    console.log(date.toISOString())
   };
 
   return (
     <ReportContext.Provider value={{}}>
-      <Modal id="modal-deregister-device">
+      <Modal id="modal-deregister-device" ref={(value)=>{this.modalref = value}}>
         <ModalWrap>
           {/* <ModalClose onClick={hideMe} /> */}
-          <ModalClose someprop="someprop" />
+          <ModalClose someprop={this.modalref} />
           <ModalTop>
             <Title size="middle" color="black">
               {`Вы действительно хотите снять ${model ||
@@ -69,7 +79,7 @@ export const ModalDeregisterDevice = () => {
             <ConfigProvider locale={ruRu}>
               <DatePicker
                 required
-                onChange={DatePickerHadler}
+                onChange={datePickerHandler}
                 defaultValue={moment()}
                 format="YYYY-MM-DD"
               />
@@ -80,9 +90,7 @@ export const ModalDeregisterDevice = () => {
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
             <ButtonTT
               color="red"
-              onClick={() => {
-                deregisterDevice(Device);
-              }}
+              onClick={onSubmit}
               style={{ marginLeft: "24px" }}
             >
               Снять прибор с учета

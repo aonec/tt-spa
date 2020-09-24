@@ -95,7 +95,7 @@ export const ModalCalculator = () => {
   function callback(key) {
     console.log('Был = ', tab);
     setTab(key);
-    if (key == 3) {
+    if (key === 3) {
       setOk('Выгрузить');
     } else {
       setOk('Далее');
