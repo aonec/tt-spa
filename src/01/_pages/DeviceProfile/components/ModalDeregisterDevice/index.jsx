@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { ConfigProvider, DatePicker } from 'antd';
 import 'antd/dist/antd.css';
-import { convertDateOnly } from '01/_api/utils/convertDate';
 import { deregisterDevice } from '01/_api/device_page';
 import moment from 'moment';
 import $ from 'jquery';
