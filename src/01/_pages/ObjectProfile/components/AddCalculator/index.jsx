@@ -1,14 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
-import './modal.scss';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import '01/tt-components/antd.scss';
 import {
-  Route, useRouteMatch, useParams, useHistory,
-} from 'react-router-dom';
-import { Icon } from '../../../../_components/Icon';
+  Modal,
+  ModalWrap,
+  ModalTop,
+  ModalMain,
+  ModalBottom,
+  ModalClose,
+} from '01/tt-components/Modal';
+
+import {
+  Label, Title, Text, Icon, ButtonTT,
+} from '../../../../tt-components';
 import TabsComponent from './components/Tabs';
-import { button } from '../../../../r_comp';
 
 export const AddDeviceContext = React.createContext();
 
@@ -55,7 +63,9 @@ export const ModalCalculator = () => {
     console.log('onInputChange', event);
     console.log('event.target', event.target);
 
-    const selected = $('#infoId').find('option:selected').attr('id');
+    const selected = $('#infoId')
+      .find('option:selected')
+      .attr('id');
 
     const id = $(event.target).attr('id');
     switch (id) {
@@ -85,7 +95,7 @@ export const ModalCalculator = () => {
   function callback(key) {
     console.log('Был = ', tab);
     setTab(key);
-    if (key == 3) {
+    if (key === 3) {
       setOk('Выгрузить');
     } else {
       setOk('Далее');
@@ -160,7 +170,7 @@ export const ModalCalculator = () => {
   };
 
   const hideMe = () => {
-    $('.overlay-addcalculator').css('display', 'none');
+    $('#add-calculator').css('display', 'none');
   };
 
   const buttonHandler = () => {
@@ -169,7 +179,7 @@ export const ModalCalculator = () => {
     console.log(infoId.current);
     console.log(objid);
   };
-  console.log("ModalODPU'");
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -181,35 +191,26 @@ export const ModalCalculator = () => {
         onInputChange,
       }}
     >
-      <div className="overlay-addcalculator">
-        <div className="modal-odpu-add">
-          {/* <button onClick={buttonHandler}>button</button> */}
-          <Icon
-            className="modal__close"
-            icon="close"
-            color="#272F5A"
-            onClick={hideMe}
-          />
-          <h2 className="title-32">Добавление нового вычислителя</h2>
+      <Modal id="add-calculator">
+        <ModalWrap>
+          {/* <ModalClose onClick={hideMe} /> */}
+          <ModalClose />
+          <ModalTop>
+            <Title size="middle" color="black">
+              Добавление нового вычислителя
+            </Title>
+          </ModalTop>
 
-          <TabsComponent />
+          <ModalMain>
+            <TabsComponent />
+          </ModalMain>
 
-          <div className="modal__bottom">
-            <button
-              className="modal__button modal__button_cancel"
-              onClick={hideMe}
-            >
-              Отмена
-            </button>
-            <button
-              className="modal__button modal__button_ok"
-              onClick={nextOrDone}
-            >
-              {ok}
-            </button>
-          </div>
-        </div>
-      </div>
+          <ModalBottom>
+            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+            <ButtonTT onClick={nextOrDone}>{ok}</ButtonTT>
+          </ModalBottom>
+        </ModalWrap>
+      </Modal>
     </AddDeviceContext.Provider>
   );
 };
