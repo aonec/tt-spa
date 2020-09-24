@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
+import { SearchCalculator } from './components/SearchCalculator';
 import { useParams } from 'react-router-dom';
 import '01/tt-components/antd.scss';
 import {
@@ -168,6 +169,7 @@ export const ModalCalculator = () => {
     >
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
+
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
