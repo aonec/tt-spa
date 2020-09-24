@@ -21,28 +21,7 @@ import TabsComponent from './components/Tabs';
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
-  const items = [
-    {
-      id: 1,
-      model: 'ТЭМ-106',
-    },
-    {
-      id: 2,
-      model: 'ТЭМ-104',
-    },
-    {
-      id: 3,
-      model: 'ВКТ-7',
-    },
-    {
-      id: 4,
-      model: 'ТВ-7',
-    },
-    {
-      id: 5,
-      model: 'ВИСТ',
-    },
-  ];
+  const modalRef = React.createRef();
 
   const [tab, setTab] = useState(1);
   const [ok, setOk] = useState('Далее');
@@ -60,9 +39,6 @@ export const ModalCalculator = () => {
   const { 0: objid } = useParams();
 
   const onInputChange = (event) => {
-    console.log('onInputChange', event);
-    console.log('event.target', event.target);
-
     const selected = $('#infoId')
       .find('option:selected')
       .attr('id');
@@ -95,11 +71,12 @@ export const ModalCalculator = () => {
   function callback(key) {
     console.log('Был = ', tab);
     setTab(key);
-    if (key === 3) {
-      setOk('Выгрузить');
-    } else {
-      setOk('Далее');
-    }
+    console.log('Стал = ', tab);
+    // if (key == 3) {
+    //   setOk('Выгрузить');
+    // } else {
+    //   setOk('Далее');
+    // }
   }
 
   const nextOrDone = () => {
@@ -108,9 +85,15 @@ export const ModalCalculator = () => {
       alert('Cейчас будем отправлять данные!');
       setCalculator();
     } else {
-      $('.ant-tabs-tab-active')
-        .next()
-        .click();
+      // $('.ant-tabs-tab-active')
+      //   .next()
+      //   .addClass('ant-tabs-tab-active');
+      // const active = $('.ant-tabs-tab-active');
+      // const next = active.next();
+      // active.removeClass('ant-tabs-tab-active');
+      // next.addClass('ant-tabs-tab-active');
+      // .click();
+      setTab((prev) => prev + 1);
     }
   };
 
@@ -128,45 +111,24 @@ export const ModalCalculator = () => {
     const newDate = moment(date).format(dateOnly);
     return `${newDate}T14:36:28.797Z`;
   }
-
-  const someCalculator = {
-    serialNumber: serialNumber.current,
-    checkingDate: '2020-09-17T14:36:28.797Z',
-    futureCheckingDate: '2020-09-17T14:36:28.797Z',
-    lastCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
-    connection: {
-      ipV4: ipV4.current,
-      deviceAddress: deviceAddressRandom,
-      port: parseInt(port.current),
-    },
-    futureCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
-    housingStockId: parseInt(objid),
-    infoId: parseInt(infoId.current),
-  };
-
+  // date.toISOString()
   const setCalculator = () => {
+    const someCalculator = {
+      serialNumber: serialNumber.current,
+      checkingDate: '2020-09-17T14:36:28.797Z',
+      futureCheckingDate: '2020-09-17T14:36:28.797Z',
+      lastCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
+      connection: {
+        ipV4: ipV4.current,
+        deviceAddress: deviceAddressRandom,
+        port: parseInt(port.current),
+      },
+      futureCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
+      housingStockId: parseInt(objid),
+      infoId: parseInt(infoId.current),
+    };
+
     console.log(someCalculator);
-
-    async function getCalculatorResources(id = '') {
-      try {
-        const res = await axios.post('Calculators', someCalculator);
-        console.log(res);
-        return res;
-      } catch (error) {
-        console.log(error);
-        throw new Error(error);
-      }
-    }
-
-    getCalculatorResources()
-      .then((resonse) => {
-        alert('Вычислитель успешно создан !');
-      })
-      .catch((response) => {
-        alert(
-          'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-        );
-      });
   };
 
   const hideMe = () => {
@@ -179,7 +141,9 @@ export const ModalCalculator = () => {
     console.log(infoId.current);
     console.log(objid);
   };
-
+  const getKey = () => {
+    console.log(tab);
+  };
   return (
     <AddDeviceContext.Provider
       value={{
@@ -191,14 +155,14 @@ export const ModalCalculator = () => {
         onInputChange,
       }}
     >
-      <Modal id="add-calculator">
+      <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
-          {/* <ModalClose onClick={hideMe} /> */}
-          <ModalClose />
+          <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
+            <button onClick={getKey}>getKey</button>
           </ModalTop>
 
           <ModalMain>
@@ -207,7 +171,9 @@ export const ModalCalculator = () => {
 
           <ModalBottom>
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            <ButtonTT onClick={nextOrDone}>{ok}</ButtonTT>
+            <ButtonTT color="blue" onClick={nextOrDone}>
+              {ok}
+            </ButtonTT>
           </ModalBottom>
         </ModalWrap>
       </Modal>
