@@ -21,6 +21,7 @@ import TabsComponent from './components/Tabs';
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
+  const { 0: objid } = useParams();
   const modalRef = React.createRef();
 
   const [tab, setTab] = useState(1);
@@ -29,14 +30,15 @@ export const ModalCalculator = () => {
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
   const serialNumber = useRef(`${serialNumberRandom}`);
-  const checkingDate = useRef(convertDateOnly(moment()));
-  const futureCheckingDate = useRef(convertDateOnly(moment()));
-  const futureCommercialAccountingDate = useRef(convertDateOnly(moment()));
+
+  const lastCommercialAccountingDate = useRef(moment().toISOString());
+  const futureCommercialAccountingDate = useRef(moment().toISOString());
+  const lastCheckingDate = useRef(moment().toISOString());
+  const futureCheckingDate = useRef(moment().toISOString());
+
   const port = useRef(1234);
   const infoId = useRef(1);
   const ipV4 = useRef('192.168.0.1');
-
-  const { 0: objid } = useParams();
 
   const onInputChange = (event) => {
     const selected = $('#infoId')
@@ -69,10 +71,7 @@ export const ModalCalculator = () => {
   };
 
   function callback(key) {
-    console.log('Был = ', tab);
     setTab(key);
-    console.log('Стал = ', tab);
-
     if (key == 3) {
       setOk('Выгрузить');
     } else {
@@ -81,7 +80,6 @@ export const ModalCalculator = () => {
   }
 
   const nextOrDone = () => {
-    console.log('tab = ', tab);
     if (tab == 3) {
       alert('Cейчас будем отправлять данные!');
       setCalculator();
@@ -90,38 +88,54 @@ export const ModalCalculator = () => {
     }
   };
 
-  const postODPU = () => {
-    console.log('postODPU');
-  };
-
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
     return Math.round(rand);
   }
 
-  function convertDateOnly(date) {
-    const dateOnly = 'YYYY-MM-DD';
-    const newDate = moment(date).format(dateOnly);
-    return `${newDate}T14:36:28.797Z`;
+  function addPeriod(period, someRef) {
+    someRef.current = moment()
+      .add(parseInt(period), 'year')
+      .toISOString();
   }
+
+  function datetoISOString(date, dateString, someRef) {
+    someRef.current = date.toISOString();
+  }
+
   // date.toISOString()
   const setCalculator = () => {
     const someCalculator = {
       serialNumber: serialNumber.current,
-      checkingDate: '2020-09-17T14:36:28.797Z',
-      futureCheckingDate: '2020-09-17T14:36:28.797Z',
-      lastCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
+      checkingDate: lastCheckingDate.current,
+      futureCheckingDate: futureCheckingDate.current,
+      lastCommercialAccountingDate: lastCommercialAccountingDate.current,
       connection: {
         ipV4: ipV4.current,
         deviceAddress: deviceAddressRandom,
         port: parseInt(port.current),
       },
-      futureCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
+      futureCommercialAccountingDate: futureCommercialAccountingDate.current,
       housingStockId: parseInt(objid),
       infoId: parseInt(infoId.current),
     };
 
-    console.log(someCalculator);
+    async function getCalculatorResources(id = '') {
+      try {
+        const res = await axios.post('Calculators', someCalculator);
+        alert('Вычислитель успешно создан !');
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.log(error);
+        alert(
+          'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+        );
+        throw new Error(error);
+      }
+    }
+
+    getCalculatorResources();
   };
 
   const hideMe = () => {
@@ -135,7 +149,11 @@ export const ModalCalculator = () => {
     console.log(objid);
   };
   const getKey = () => {
-    console.log(tab);
+    console.log(lastCommercialAccountingDate.current);
+    console.log(
+      'futureCommercialAccountingDate',
+      futureCommercialAccountingDate,
+    );
   };
   return (
     <AddDeviceContext.Provider
@@ -146,6 +164,12 @@ export const ModalCalculator = () => {
         deviceAddressRandom,
         serialNumberRandom,
         onInputChange,
+        datetoISOString,
+        lastCommercialAccountingDate,
+        futureCommercialAccountingDate,
+        lastCheckingDate,
+        futureCheckingDate,
+        addPeriod,
       }}
     >
       <Modal id="add-calculator" ref={modalRef}>
@@ -155,7 +179,7 @@ export const ModalCalculator = () => {
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
-            <button onClick={getKey}>getKey</button>
+            {/* <button onClick={getKey}>getKey</button> */}
           </ModalTop>
 
           <ModalMain>

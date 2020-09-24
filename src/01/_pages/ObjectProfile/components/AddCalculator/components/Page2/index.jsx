@@ -1,20 +1,17 @@
-import React, {useContext} from 'react';
-import './page2.scss';
-import { ConfigProvider, DatePicker } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
-import { AddDeviceContext } from '../../index'
+import React, { useContext } from 'react';
+import { Label, InputTT, Wrap } from '01/tt-components';
+import { AddDeviceContext } from '../../index';
 
 export const Page2 = () => {
-  const { serialNumberRandom, deviceAddressRandom, onInputChange } = useContext(AddDeviceContext)
+  const { onInputChange } = useContext(AddDeviceContext);
   console.log('Page2');
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div className="tt-labelandinput">
-        <label htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource" className="tt-label">
           IP адрес вычислителя
-        </label>
-        <input
-          className="tt-input"
+        </Label>
+        <InputTT
           id="ipV4"
           type="text"
           required
@@ -25,11 +22,10 @@ export const Page2 = () => {
       </div>
 
       <div className="tt-labelandinput">
-        <label htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource" className="tt-label">
           Порт
-        </label>
-        <input
-          className="tt-input"
+        </Label>
+        <InputTT
           id="port"
           type="number"
           required
@@ -39,9 +35,15 @@ export const Page2 = () => {
         />
       </div>
 
-      <div className="tt-warning">
+      <Wrap
+        style={{
+          background: ' rgba(255, 140, 104, 0.16)',
+          marginTop: '24px',
+          padding: '24px',
+        }}
+      >
         Подключение к новому прибору может занять до 30 минут.
-      </div>
+      </Wrap>
     </div>
   );
 };

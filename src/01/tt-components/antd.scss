@@ -43,10 +43,11 @@
   }
 }
 
-//Типовые стили ?
-.modal__close {
-  position: absolute;
-  cursor: pointer;
-  right: 18px;
-  top: 18px;
+
+.ant-upload.ant-upload-drag  {
+  border: 1px dashed #DCDEE4;
+  box-sizing: border-box;
+  background: none;
+  height: 104px;
+  margin-top: 16px;
 }
