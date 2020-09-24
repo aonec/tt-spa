@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { Label, InputTT, Wrap } from '01/tt-components';
+import {
+  Label, InputTT, Wrap, InputWrap,
+} from '01/tt-components';
 import { AddDeviceContext } from '../../index';
 
 export const Page2 = () => {
@@ -7,7 +9,7 @@ export const Page2 = () => {
   console.log('Page2');
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div className="tt-labelandinput">
+      <InputWrap>
         <Label color="grey" htmlFor="#resource" className="tt-label">
           IP адрес вычислителя
         </Label>
@@ -19,9 +21,9 @@ export const Page2 = () => {
           defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
-      </div>
+      </InputWrap>
 
-      <div className="tt-labelandinput">
+      <InputWrap>
         <Label color="grey" htmlFor="#resource" className="tt-label">
           Порт
         </Label>
@@ -33,7 +35,7 @@ export const Page2 = () => {
           defaultValue="1234"
           onChange={(event) => onInputChange(event)}
         />
-      </div>
+      </InputWrap>
 
       <Wrap
         style={{

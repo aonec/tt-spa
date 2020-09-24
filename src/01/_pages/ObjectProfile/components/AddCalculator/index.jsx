@@ -11,6 +11,7 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
+  InputWrap,
 } from '01/tt-components/Modal';
 
 import {
@@ -40,21 +41,19 @@ export const ModalCalculator = () => {
   const infoId = useRef(1);
   const ipV4 = useRef('192.168.0.1');
 
-  const onInputChange = (event) => {
-    const selected = $('#infoId')
-      .find('option:selected')
-      .attr('id');
+  // Применяем только для select, для select - onInputChange
+  const onSelectChange = (value, target, someRef) => {
+    infoId.current = target.id;
+  };
 
+  // Применяем только для input, для select - onSelectChange
+  const onInputChange = (event) => {
+    console.log('event.target', event.target);
     const id = $(event.target).attr('id');
     switch (id) {
       case 'serialNumber':
         serialNumber.current = event.target.value;
         console.log(serialNumber.current);
-        break;
-      case 'infoId':
-        infoId.current = selected;
-        console.log(selected);
-        console.log(infoId.current);
         break;
       case 'port':
         port.current = event.target.value;
@@ -64,15 +63,14 @@ export const ModalCalculator = () => {
         ipV4.current = event.target.value;
         console.log(ipV4.current);
         break;
-
       default:
-        alert('Нет таких значений');
+        console.log('Кажется, нужно проверить правильно ли передан ID', id);
     }
   };
 
   function callback(key) {
     setTab(key);
-    if (key == 3) {
+    if (key === 3) {
       setOk('Выгрузить');
     } else {
       setOk('Далее');
@@ -80,7 +78,7 @@ export const ModalCalculator = () => {
   }
 
   const nextOrDone = () => {
-    if (tab == 3) {
+    if (tab === 3) {
       alert('Cейчас будем отправлять данные!');
       setCalculator();
     } else {
@@ -105,7 +103,7 @@ export const ModalCalculator = () => {
 
   // date.toISOString()
   const setCalculator = () => {
-    const someCalculator = {
+    const newCalculator = {
       serialNumber: serialNumber.current,
       checkingDate: lastCheckingDate.current,
       futureCheckingDate: futureCheckingDate.current,
@@ -119,10 +117,10 @@ export const ModalCalculator = () => {
       housingStockId: parseInt(objid),
       infoId: parseInt(infoId.current),
     };
-
-    async function getCalculatorResources(id = '') {
+    console.log(newCalculator);
+    async function getCalculatorResources() {
       try {
-        const res = await axios.post('Calculators', someCalculator);
+        const res = await axios.post('Calculators', newCalculator);
         alert('Вычислитель успешно создан !');
         console.log(res);
         return res;
@@ -148,13 +146,7 @@ export const ModalCalculator = () => {
     console.log(infoId.current);
     console.log(objid);
   };
-  const getKey = () => {
-    console.log(lastCommercialAccountingDate.current);
-    console.log(
-      'futureCommercialAccountingDate',
-      futureCommercialAccountingDate,
-    );
-  };
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -170,6 +162,8 @@ export const ModalCalculator = () => {
         lastCheckingDate,
         futureCheckingDate,
         addPeriod,
+        infoId,
+        onSelectChange,
       }}
     >
       <Modal id="add-calculator" ref={modalRef}>
@@ -179,7 +173,7 @@ export const ModalCalculator = () => {
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
-            {/* <button onClick={getKey}>getKey</button> */}
+            {/* <button onClick={buttonHandler}>getKey</button> */}
           </ModalTop>
 
           <ModalMain>
@@ -188,7 +182,7 @@ export const ModalCalculator = () => {
 
           <ModalBottom>
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            <ButtonTT color="blue" onClick={nextOrDone}>
+            <ButtonTT color="blue" onClick={nextOrDone} style={{ marginLeft: '16px' }}>
               {ok}
             </ButtonTT>
           </ModalBottom>

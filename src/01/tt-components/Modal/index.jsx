@@ -40,6 +40,13 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
+export const InputWrap = styled.div`
+padding-top: 16px;
+display: flex;
+flex-direction: column;
+width: 100%;
+`;
+
 export const ModalClose = (props) => {
   const { getModal } = props;
 
@@ -65,4 +72,5 @@ export default {
   ModalMain,
   ModalBottom,
   ModalClose,
+  InputWrap,
 };
