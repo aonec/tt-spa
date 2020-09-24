@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
-import { ConfigProvider, DatePicker } from "antd";
-import "antd/dist/antd.css";
-import { convertDateOnly } from "01/_api/utils/convertDate";
-import { deregisterDevice } from "01/_api/device_page";
-import moment from "moment";
-import $ from "jquery";
-import ruRu from "antd/es/locale/ru_RU";
+import React, { useState, useContext } from 'react';
+import { ConfigProvider, DatePicker } from 'antd';
+import 'antd/dist/antd.css';
+import { convertDateOnly } from '01/_api/utils/convertDate';
+import { deregisterDevice } from '01/_api/device_page';
+import moment from 'moment';
+import $ from 'jquery';
+import ruRu from 'antd/es/locale/ru_RU';
 import {
   Modal,
   ModalWrap,
@@ -13,15 +13,19 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from "01/tt-components/Modal";
+} from '01/tt-components/Modal';
 
-import { DeviceContext } from "../../DeviceProfile";
-import { Label, Title, Text, Icon } from "../../../../tt-components";
-import { ButtonTT } from "../../../../tt-components/ButtonTT";
-import "01/tt-components/antd.scss";
+import { DeviceContext } from '../../DeviceProfile';
+import {
+  Label, Title, Text, Icon,
+} from '../../../../tt-components';
+import { ButtonTT } from '../../../../tt-components/ButtonTT';
+import '01/tt-components/antd.scss';
+
+const modalRef = React.createRef();
 
 const hideMe = () => {
-  $("#modal-deregister-device").css("display", "none");
+  $('#modal-deregister-device').css('display', 'none');
 };
 
 export const ReportContext = React.createContext();
@@ -29,44 +33,41 @@ export const ReportContext = React.createContext();
 export const ModalDeregisterDevice = () => {
   const { device, calcModel } = useContext(DeviceContext);
   const { id, model, serialNumber } = device;
-  const [selecteddate, setSelecteddate] = useState(convertDateOnly(moment()));
+  const [selecteddate, setSelecteddate] = useState(moment().toISOString());
 
-  // const Device = {
-  //   deviceId: id,
-  //   documentsIds: [],
-  //   closingDateTime: `${selecteddate}T00:00:00.373Z`,
-  // };
-  
   const onSubmit = () => {
     const Device = {
       deviceId: id,
       documentsIds: [],
-      closingDateTime: `${selecteddate}T00:00:00.373Z`,
+      closingDateTime: `${selecteddate}`,
     };
 
-    deregisterDevice(Device)
-  }
+    deregisterDevice(Device);
+  };
   // const DEFAULT_DEVICE = {
   //   deviceId: 1553348,
   //   documentsIds: [],
   //   closingDateTime: '2020-09-20T00:00:00.373Z',
   // };
 
-  const datePickerHandler = (date, dateString) => {
-    setSelecteddate(dateString);
-    console.log(date.toISOString())
+  const someFunc = () => {
+    console.log('someFunc');
+  };
+
+  const datePickerHandler = (date) => {
+    setSelecteddate(date.toISOString());
   };
 
   return (
     <ReportContext.Provider value={{}}>
-      <Modal id="modal-deregister-device" ref={(value)=>{this.modalref = value}}>
+      <Modal id="modal-deregister-device" ref={modalRef}>
         <ModalWrap>
           {/* <ModalClose onClick={hideMe} /> */}
-          <ModalClose someprop={this.modalref} />
+          <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
-              {`Вы действительно хотите снять ${model ||
-                calcModel} (${serialNumber}) с учета?`}
+              {`Вы действительно хотите снять ${model
+                || calcModel} (${serialNumber}) с учета?`}
             </Title>
             <Text>
               После этого прибор перейдет в архив и показания по нему перестанут
@@ -81,7 +82,7 @@ export const ModalDeregisterDevice = () => {
                 required
                 onChange={datePickerHandler}
                 defaultValue={moment()}
-                format="YYYY-MM-DD"
+                format="DD.MM.YYYY"
               />
             </ConfigProvider>
           </ModalMain>
@@ -91,7 +92,7 @@ export const ModalDeregisterDevice = () => {
             <ButtonTT
               color="red"
               onClick={onSubmit}
-              style={{ marginLeft: "24px" }}
+              style={{ marginLeft: '24px' }}
             >
               Снять прибор с учета
             </ButtonTT>

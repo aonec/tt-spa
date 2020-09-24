@@ -40,29 +40,21 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
-export const ModalClose = (someprop) => {
-  console.log("someprop", someprop)
+export const ModalClose = (props) => {
+  const { getModal } = props;
+
   const style = {
     position: 'absolute',
     cursor: 'pointer',
     right: '18px',
     top: '18px',
   };
-  const ModalShowHide = (event) => {
-    console.log(event.target);
-
-    // console.log($(this).attr('someprop'));
-    // $(`#${props.id}`).css('display', 'none');
+  const ModalShowHide = () => {
+    // console.log(getModal.current);
+    $(getModal.current).css('display', 'none');
   };
   return (
-    <Icon
-      style={style}
-      icon="close"
-      color="#272F5A"
-      onClick={(event) => {
-        ModalShowHide(event);
-      }}
-    />
+    <Icon style={style} icon="close" color="#272F5A" onClick={ModalShowHide} />
   );
 };
 
