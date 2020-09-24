@@ -72,11 +72,12 @@ export const ModalCalculator = () => {
     console.log('Был = ', tab);
     setTab(key);
     console.log('Стал = ', tab);
-    // if (key == 3) {
-    //   setOk('Выгрузить');
-    // } else {
-    //   setOk('Далее');
-    // }
+
+    if (key == 3) {
+      setOk('Выгрузить');
+    } else {
+      setOk('Далее');
+    }
   }
 
   const nextOrDone = () => {
@@ -85,15 +86,7 @@ export const ModalCalculator = () => {
       alert('Cейчас будем отправлять данные!');
       setCalculator();
     } else {
-      // $('.ant-tabs-tab-active')
-      //   .next()
-      //   .addClass('ant-tabs-tab-active');
-      // const active = $('.ant-tabs-tab-active');
-      // const next = active.next();
-      // active.removeClass('ant-tabs-tab-active');
-      // next.addClass('ant-tabs-tab-active');
-      // .click();
-      setTab((prev) => prev + 1);
+      callback(parseInt(tab) + 1);
     }
   };
 

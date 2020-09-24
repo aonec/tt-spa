@@ -11,7 +11,6 @@ export const TabsComponent = () => {
   const { tab, setTab, callback } = useContext(AddDeviceContext);
   console.log('TabsComponent');
 
-  const [tabb, setTabb] = useState(1);
   return (
     <Tabs defaultActiveKey="1" activeKey={`${tab}`} onChange={callback} style={{ padding: '0 24px' }}>
       <TabPane tab="Шаг 1. Общие данные" key="1">
