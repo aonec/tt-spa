@@ -5,7 +5,7 @@ import moment from 'moment';
 import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
-import { AddDeviceContext } from '../../index';
+import { AddODPUDeviceContext } from '../../index';
 
 export const Page1 = () => {
   console.log('Page1');
@@ -20,7 +20,7 @@ export const Page1 = () => {
     futureCommercialAccountingDate,
     addPeriod,
     onSelectChange,
-  } = useContext(AddDeviceContext);
+  } = useContext(AddODPUDeviceContext);
 
   const items = [
     {
@@ -60,97 +60,108 @@ export const Page1 = () => {
     { value: '6', label: '6 лет', id: 2 },
   ];
 
-  const devices = [
-    { value: '1', label: 'Расходомер', id: 1 },
-    { value: '1', label: 'Термодатчик', id: 2 },
+  const types = [
+    {
+      value: 'FlowMeter',
+      label: 'Расходомер',
+      id: 1,
+      parent: 'type',
+    },
+    {
+      value: 'TemperatureSensor',
+      label: 'Термодатчик',
+      id: 2,
+      parent: 'type',
+    },
   ];
 
   const resources = [
-    { value: '1', label: 'Горячая вода', id: 1 },
-    { value: '2', label: 'Холодная вода', id: 2 },
-    { value: '3', label: 'Отопление', id: 3 },
+    {
+      value: 'HotWaterSupply',
+      label: 'Горячая вода',
+      id: 1,
+      parent: 'resource',
+    },
+    {
+      value: 'ColdWaterSupply',
+      label: 'Холодная вода',
+      id: 2,
+      parent: 'resource',
+    },
+    {
+      value: 'Heat',
+      label: 'Отопление',
+      id: 3,
+      parent: 'resource',
+    },
   ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
       <InputWrap>
         <Label color="grey" htmlFor="#type">
           Выберите тип прибора
         </Label>
-
         <Select
-          placeholder="Выберите тип устройства"
-          id="infoId"
+          id="type"
           onChange={onSelectChange}
-          options={devices}
-          defaultValue={devices[0].value}
+          options={types}
+          defaultValue={types[0].value}
         />
       </InputWrap>
+
       <InputWrap>
-        <Label color="grey" htmlFor="#type">
+        <Label color="grey" htmlFor="#resource">
           Выберите тип ресурса
         </Label>
 
         <Select
-          placeholder="Выберите тип устройства"
-          id="infoId"
+          id="resource"
           onChange={onSelectChange}
           options={resources}
           defaultValue={resources[0].value}
         />
       </InputWrap>
+
       <InputWrap>
-        <Label color="grey" htmlFor="#resource">
+        <Label color="grey" htmlFor="#model">
           Выберите модель прибора
         </Label>
         <InputTT
           id="model"
-          type="number"
-          // required
-          // defaultValue={serialNumberRandom}
+          type="text"
           onChange={onInputChange}
         />
       </InputWrap>
       <InputWrap>
-        <Label color="grey" htmlFor="#resource">
+        <Label color="grey" htmlFor="#serialNumber">
           Серийный номер
         </Label>
         <InputTT
           id="serialNumber"
-          type="number"
-          required
-          defaultValue={serialNumberRandom}
-          onChange={onInputChange}
-        />
-      </InputWrap>
-      -------------
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Серийный номер
-        </Label>
-        <InputTT
-          id="serialNumber"
-          type="number"
+          type="text"
           required
           defaultValue={serialNumberRandom}
           onChange={onInputChange}
         />
       </InputWrap>
       <InputWrap>
-        <Label color="grey" htmlFor="#type">
-          Тип вычислителя
+        <Label color="grey" htmlFor="#lastCommercialAccountingDate">
+          Дата выпуска прибора
         </Label>
-
-        <Select
-          placeholder="Выберите тип устройства"
-          id="infoId"
-          onChange={onSelectChange}
-          options={items}
-          defaultValue={items[0].value}
-        />
+        <ConfigProvider locale={ruRu}>
+          <DatePicker
+            id="lastCommercialAccountingDate"
+            defaultValue={moment()}
+            onChange={(date, dateString) => {
+              datetoISOString(date, dateString, lastCommercialAccountingDate);
+            }}
+          />
+        </ConfigProvider>
       </InputWrap>
       <InputWrap>
-        <Label color="grey" htmlFor="#resource">
+        <Label color="grey" htmlFor="#lastCommercialAccountingDate">
           Дата ввода в эксплуатацию
         </Label>
         <ConfigProvider locale={ruRu}>
@@ -164,33 +175,7 @@ export const Page1 = () => {
         </ConfigProvider>
       </InputWrap>
       <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата Поверки
-        </Label>
-        <ConfigProvider locale={ruRu}>
-          <DatePicker
-            defaultValue={moment()}
-            onChange={(date, dateString) => {
-              datetoISOString(date, dateString, lastCheckingDate);
-            }}
-          />
-        </ConfigProvider>
-      </InputWrap>
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата Следующей поверки
-        </Label>
-        <ConfigProvider locale={ruRu}>
-          <DatePicker
-            defaultValue={moment()}
-            onChange={(date, dateString) => {
-              datetoISOString(date, dateString, futureCheckingDate);
-            }}
-          />
-        </ConfigProvider>
-      </InputWrap>
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#futureCommercialAccountingDate">
           Срок эксплуатации по нормативу
         </Label>
         <Select

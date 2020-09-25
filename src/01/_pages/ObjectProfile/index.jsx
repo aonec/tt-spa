@@ -36,7 +36,7 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <Header {...header} />
-      <SearchCalculator />
+      {/* <SearchCalculator /> */}
       <Tabs />
       <grid>
         <Route path="/*/(\\d+)" exact>
@@ -58,3 +58,5 @@ export const ObjectProfile = () => {
     </>,
   );
 };
+
+export default ObjectProfile;

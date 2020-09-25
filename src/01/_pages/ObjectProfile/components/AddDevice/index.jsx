@@ -20,188 +20,7 @@ import {
 } from '../../../../tt-components';
 import TabsComponent from './components/Tabs';
 
-export const AddDeviceContext = React.createContext();
-
-const TEMPLATE_CALCULATOR_983 = {
-  id: 983,
-  isConnected: true,
-  underTransaction: false,
-  model: 'ВКТ-7',
-  serialNumber: '72381',
-  ipV4: null,
-  port: null,
-  deviceAddress: null,
-  address: {
-    city: 'Нижнекамск',
-    street: 'Гагарина',
-    housingStockNumber: '5 А',
-    corpus: null,
-  },
-  hubs: [
-    {
-      hubNumber: 0,
-      entryNumber: 1,
-      resource: 'Heat',
-      pipes: [
-        {
-          number: 0,
-          type: 'FeedFlow',
-          devices: [
-            {
-              id: 4567,
-              serialNumber: '218920',
-              type: 'FlowMeter',
-            },
-            {
-              id: 4568,
-              serialNumber: '145204',
-              type: 'TemperatureSensor',
-            },
-          ],
-        },
-        {
-          number: 1,
-          type: 'FeedBackFlow',
-          devices: [
-            {
-              id: 4569,
-              serialNumber: '238670',
-              type: 'FlowMeter',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      hubNumber: 0,
-      entryNumber: 2,
-      resource: 'HotWaterSupply',
-      pipes: [
-        {
-          number: 3,
-          type: 'FeedFlow',
-          devices: [
-            {
-              id: 4570,
-              serialNumber: '371540',
-              type: 'FlowMeter',
-            },
-            {
-              id: 4571,
-              serialNumber: '145194',
-              type: 'TemperatureSensor',
-            },
-          ],
-        },
-        {
-          number: 4,
-          type: 'FeedBackFlow',
-          devices: [
-            {
-              id: 4572,
-              serialNumber: '328702',
-              type: 'FlowMeter',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      hubNumber: 0,
-      entryNumber: 2,
-      resource: 'ColdWaterSupply',
-      pipes: [
-        {
-          number: 5,
-          type: 'FeedFlow',
-          devices: [
-            {
-              id: 4573,
-              serialNumber: '044626',
-              type: 'FlowMeter',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  lastCommercialAccountingDate: null,
-  futureCommercialAccountingDate: null,
-  lastCheckingDate: '2018-04-05T03:00:00',
-  futureCheckingDate: '2022-02-26T03:00:00',
-  closingDate: null,
-};
-
-const TEMPLATE_DEVICE_4608 = {
-  id: 4608,
-  housingStockId: 485,
-  model: 'СВМ',
-  serialNumber: '33431513',
-  diameter: '40 мм',
-  ipV4: null,
-  port: null,
-  deviceAddress: null,
-  type: 'FlowMeter',
-  resource: 'HotWaterSupply',
-  underTransaction: false,
-  canBeEdited: true,
-  lastCommercialAccountingDate: '0001-01-01T03:00:00',
-  futureCommercialAccountingDate: '0001-01-01T03:00:00',
-  lastCheckingDate: '2018-04-08T03:00:00',
-  futureCheckingDate: '2022-04-08T03:00:00',
-  closingDate: null,
-  calculator: null,
-};
-
-const TEMPLATE_DEVICE_MODIFIED = {
-  serialNumber: 'string',
-  checkingDate: '2020-09-25T07:50:29.316Z',
-  futureCheckingDate: '2020-09-25T07:50:29.316Z',
-  lastCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
-  documentsIds: [0],
-  connection: {
-    ipV4: 'string',
-    deviceAddress: 0,
-    port: 0,
-  },
-  futureCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
-  housingStockId: 0,
-  calculatorId: 0,
-  housingMeteringDeviceType: 'string',
-  resource: 'string',
-  model: 'string',
-  pipe: {
-    entryNumber: 0,
-    hubNumber: 0,
-    pipeNumber: 0,
-    magistral: 'string',
-  },
-};
-
-const TEMPLATE_DEVICE_POST = {
-  serialNumber: '1554022',
-  checkingDate: '2020-09-25T07:50:29.316Z',
-  futureCheckingDate: '2020-09-25T07:50:29.316Z',
-  lastCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
-  documentsIds: [0],
-  connection: {
-    ipV4: 'string',
-    deviceAddress: 0,
-    port: 0,
-  },
-  futureCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
-  housingStockId: 0,
-  calculatorId: 0,
-  housingMeteringDeviceType: 'string',
-  resource: 'string',
-  model: 'string',
-  pipe: {
-    entryNumber: 0,
-    hubNumber: 0,
-    pipeNumber: 0,
-    magistral: 'string',
-  },
-};
+export const AddODPUDeviceContext = React.createContext();
 
 export const ModalAddDevice = () => {
   const { 0: objid } = useParams();
@@ -221,7 +40,14 @@ export const ModalAddDevice = () => {
 
   const port = useRef(1234);
   const infoId = useRef(1);
-  const ipV4 = useRef('192.168.0.1');
+  const ipV4 = useRef(`192.168.0.${randomInteger(1, 255)}`);
+  const calculatorSerial = useRef();
+  const resource = useRef('HotWaterSupply');
+  const type = useRef('FlowMeter');
+  const model = useRef('MODEL');
+  const entryNumber = useRef(1);
+  const hubNumber = useRef(1);
+  const pipeNumber = useRef(1);
 
   // Применяем только для select, для select - onInputChange
   const onSelectChange = (value, target) => {
@@ -231,11 +57,22 @@ export const ModalAddDevice = () => {
         infoId.current = value;
         console.log(infoId.current);
         break;
+      case 'resource':
+        resource.current = value;
+        console.log(resource.current);
+        break;
+      case 'type':
+        type.current = value;
+        console.log(type.current);
+        break;
       default:
         console.log('Что-то пошло не так');
     }
   };
 
+  // const entryNumber = useRef(1);
+  // const hubNumber = useRef(1);
+  // const pipeNumber = useRef(1);
   // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
     const { id } = event.target;
@@ -251,6 +88,26 @@ export const ModalAddDevice = () => {
       case 'ipV4':
         ipV4.current = event.target.value;
         console.log(ipV4.current);
+        break;
+      case 'calculatorSerial':
+        calculatorSerial.current = event.target.value;
+        console.log(calculatorSerial.current);
+        break;
+      case 'model':
+        model.current = event.target.value;
+        console.log(model.current);
+        break;
+      case 'entryNumber':
+        entryNumber.current = event.target.value;
+        console.log(entryNumber.current);
+        break;
+      case 'hubNumber':
+        hubNumber.current = event.target.value;
+        console.log(hubNumber.current);
+        break;
+      case 'pipeNumber':
+        pipeNumber.current = event.target.value;
+        console.log(pipeNumber.current);
         break;
       default:
         console.log('Кажется, нужно проверить правильно ли передан ID', id);
@@ -278,11 +135,14 @@ export const ModalAddDevice = () => {
     console.log(someRef.current);
   }
 
+  const showMe = () => {
+    console.log(model.current);
+  };
   // date.toISOString()
 
   const createCalculator = async () => {
     alert('Cейчас будем отправлять данные!');
-    const newCalculator = {
+    const TEMPLATE = {
       serialNumber: serialNumber.current,
       checkingDate: lastCheckingDate.current,
       futureCheckingDate: futureCheckingDate.current,
@@ -294,20 +154,26 @@ export const ModalAddDevice = () => {
       },
       futureCommercialAccountingDate: futureCommercialAccountingDate.current,
       housingStockId: parseInt(objid),
-      infoId: parseInt(infoId.current),
+      calculatorId: 539559705,
+      housingMeteringDeviceType: type.current,
+      resource: resource.current,
+      model: model.current,
+      pipe: {
+        entryNumber: Number(entryNumber.current),
+        hubNumber: Number(hubNumber.current),
+        pipeNumber: Number(pipeNumber.current),
+        magistral: 'FeedBackFlow',
+      },
     };
-    console.log(newCalculator);
 
     try {
-      const res = await axios.post('Calculators', newCalculator);
-      alert('Вычислитель успешно создан !');
+      const res = await axios.post('HousingMeteringDevices', TEMPLATE);
+      alert('ОДПУ успешно создан !');
       console.log(res);
       return res;
     } catch (error) {
       console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
+      alert('Что-то пошло не так');
       throw new Error(error);
     }
   };
@@ -339,7 +205,6 @@ export const ModalAddDevice = () => {
         </ButtonTT>
       );
     }
-
     return (
       <ButtonTT onClick={Next} color="blue" style={{ marginLeft: '16px' }}>
         Далее
@@ -348,7 +213,7 @@ export const ModalAddDevice = () => {
   };
 
   return (
-    <AddDeviceContext.Provider
+    <AddODPUDeviceContext.Provider
       value={{
         tab,
         setTab,
@@ -385,7 +250,34 @@ export const ModalAddDevice = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </AddDeviceContext.Provider>
+    </AddODPUDeviceContext.Provider>
   );
 };
 export default ModalAddDevice;
+
+// serialNumber: serialNumber.current,
+// const TEMPLATE_DEVICE_POST = {
+//   serialNumber: '55555555555',
+//   checkingDate: '2020-09-25T07:50:29.316Z',
+//   futureCheckingDate: '2020-09-25T07:50:29.316Z',
+//   lastCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+//   documentsIds: [0],
+//   connection: {
+//     ipV4: '192.168.44.44',
+//     deviceAddress: 0,
+//     port: 0,
+//   },
+//   futureCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+//   housingStockId: 485,
+//   calculatorId: 1554022,
+//   housingMeteringDeviceType: 'FlowMeter',
+//   resource: 'HotWaterSupply',
+//   model: 'СВМ',
+//   pipe: {
+//     entryNumber: 2,
+//     hubNumber: 2,
+//     pipeNumber: 2,
+//     magistral: 'FeedFlow',
+//   },
+// };
+// console.log(newCalculator);
