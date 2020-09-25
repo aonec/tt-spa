@@ -132,7 +132,7 @@ export const Page1 = () => {
         </ConfigProvider>
       </InputWrap>
 
-      <div className="tt-labelandinput">
+      <InputWrap>
         <Label color="grey" htmlFor="#resource" className="tt-label">
           Срок эксплуатации по нормативу
         </Label>
@@ -145,7 +145,7 @@ export const Page1 = () => {
           options={serviceLife}
           defaultValue={serviceLife[0].value}
         />
-      </div>
+      </InputWrap>
     </div>
   );
 };

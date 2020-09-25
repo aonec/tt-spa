@@ -66,7 +66,7 @@ export const Page1 = () => {
   ];
 
   return (
-    <Wrap style={{ display: 'flex', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
         <Label color="grey" htmlFor="#type">
           Выберите тип прибора
@@ -165,7 +165,7 @@ export const Page1 = () => {
           defaultValue={serviceLife[0].value}
         />
       </InputWrap>
-    </Wrap>
+    </div>
   );
 };
 export default Page1;
