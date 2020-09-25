@@ -60,7 +60,7 @@ export const Page2 = () => {
           Выберите вычислитель, к которому подключен прибор
         </Label>
         <InputTT
-          id="calculatorSerial"
+          id="calculatorId"
           type="number"
           placeholder="Начните вводить серийный номер или IP адрес прибора"
           onChange={(event) => onInputChange(event)}

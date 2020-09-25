@@ -63,7 +63,9 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevicesNotCalculator = (loading = true) => {
-  const { related, loadings, errors } = useContext(DeviceContext);
+  const {
+    related, loadings, errors, calcModel,
+  } = useContext(DeviceContext);
 
   const loadingRelated = _.get(loadings, 'related', true);
   loading = loadingRelated;
@@ -85,6 +87,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       resource,
       id,
       housingStockId,
+
     } = value;
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;

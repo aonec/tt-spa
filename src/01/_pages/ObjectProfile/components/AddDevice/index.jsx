@@ -23,15 +23,19 @@ import TabsComponent from './components/Tabs';
 export const AddODPUDeviceContext = React.createContext();
 
 export const ModalAddDevice = () => {
+  const serialNumberRandom = randomInteger(1, 999999999);
+  const deviceAddressRandom = randomInteger(1, 255);
+
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
 
   const [tab, setTab] = useState(1);
   const [ok, setOk] = useState('Далее');
 
-  const serialNumberRandom = randomInteger(1, 999999999);
-  const deviceAddressRandom = randomInteger(1, 255);
+  // Серийный номер ОДПУ
   const serialNumber = useRef(`${serialNumberRandom}`);
+  // Серийный номер Вычислителя
+  const calculatorId = useRef();
 
   const lastCommercialAccountingDate = useRef(moment().toISOString());
   const futureCommercialAccountingDate = useRef(moment().toISOString());
@@ -39,9 +43,7 @@ export const ModalAddDevice = () => {
   const futureCheckingDate = useRef(moment().toISOString());
 
   const port = useRef(1234);
-  const infoId = useRef(1);
   const ipV4 = useRef(`192.168.0.${randomInteger(1, 255)}`);
-  const calculatorSerial = useRef();
   const resource = useRef('HotWaterSupply');
   const type = useRef('FlowMeter');
   const model = useRef('MODEL');
@@ -54,10 +56,6 @@ export const ModalAddDevice = () => {
   const onSelectChange = (value, target) => {
     const selectId = target.parent;
     switch (selectId) {
-      case 'infoId':
-        infoId.current = value;
-        console.log(infoId.current);
-        break;
       case 'resource':
         resource.current = value;
         console.log(resource.current);
@@ -75,10 +73,6 @@ export const ModalAddDevice = () => {
     }
   };
 
-  // const entryNumber = useRef(1);
-  // const hubNumber = useRef(1);
-  // const pipeNumber = useRef(1);
-  // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
     const { id } = event.target;
     switch (id) {
@@ -94,9 +88,9 @@ export const ModalAddDevice = () => {
         ipV4.current = event.target.value;
         console.log(ipV4.current);
         break;
-      case 'calculatorSerial':
-        calculatorSerial.current = event.target.value;
-        console.log(calculatorSerial.current);
+      case 'calculatorId':
+        calculatorId.current = event.target.value;
+        console.log(calculatorId.current);
         break;
       case 'model':
         model.current = event.target.value;
@@ -147,19 +141,41 @@ export const ModalAddDevice = () => {
 
   const createCalculator = async () => {
     alert('Cейчас будем отправлять данные!');
+    const TEST = {
+      calculatorId: 193130939,
+      checkingDate: '2020-09-25T12:55:18.417Z',
+      connection: {
+        ipV4: '192.168.0.82',
+        deviceAddress: 201,
+        port: 1234,
+      },
+      futureCheckingDate: '2020-09-25T12:55:18.417Z',
+      futureCommercialAccountingDate: '2020-09-25T12:55:18.417Z',
+      housingMeteringDeviceType: 'FlowMeter',
+      housingStockId: 485,
+      lastCommercialAccountingDate: '2020-09-25T12:55:18.417Z',
+      model: 'TEST',
+      pipe: {
+        entryNumber: 1,
+        hubNumber: 1,
+        pipeNumber: 1,
+        magistral: 'FeedFlow',
+      },
+      resource: 'ColdWaterSupply',
+      serialNumber: '193130939',
+    };
     const TEMPLATE = {
-      serialNumber: serialNumber.current,
+      calculatorId: Number(calculatorId.current),
       checkingDate: lastCheckingDate.current,
       futureCheckingDate: futureCheckingDate.current,
       lastCommercialAccountingDate: lastCommercialAccountingDate.current,
       connection: {
         ipV4: ipV4.current,
-        deviceAddress: deviceAddressRandom,
-        port: parseInt(port.current),
+        deviceAddress: Number(deviceAddressRandom),
+        port: Number(port.current),
       },
       futureCommercialAccountingDate: futureCommercialAccountingDate.current,
-      housingStockId: parseInt(objid),
-      calculatorId: Number(calculatorSerial.current),
+      housingStockId: Number(objid),
       housingMeteringDeviceType: type.current,
       resource: resource.current,
       model: model.current,
@@ -169,7 +185,10 @@ export const ModalAddDevice = () => {
         pipeNumber: Number(pipeNumber.current),
         magistral: magistral.current,
       },
+      serialNumber: serialNumber.current,
     };
+
+    console.log(TEMPLATE);
 
     try {
       const res = await axios.post('HousingMeteringDevices', TEMPLATE);
@@ -179,7 +198,7 @@ export const ModalAddDevice = () => {
     } catch (error) {
       console.log(error);
       alert('Что-то пошло не так');
-      throw new Error(error);
+      // throw new Error(error);
     }
   };
 
@@ -187,12 +206,7 @@ export const ModalAddDevice = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {
-    console.log(`${serialNumberRandom}`);
-    console.log(serialNumber.current);
-    console.log(infoId.current);
-    console.log(objid);
-  };
+  const buttonHandler = () => {};
 
   const Next = () => {
     callback(parseInt(tab) + 1);
@@ -232,7 +246,6 @@ export const ModalAddDevice = () => {
         lastCheckingDate,
         futureCheckingDate,
         addPeriod,
-        infoId,
         onSelectChange,
       }}
     >
