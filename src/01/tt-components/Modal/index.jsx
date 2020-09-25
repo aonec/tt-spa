@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 export const Modal = styled.div`
   position: fixed;
+  overflow: auto;
   top: 0;
   bottom: 0;
   left: 0;
@@ -40,6 +41,13 @@ export const ModalMain = styled.div`
   padding: 24px;
 `;
 
+export const InputWrap = styled.div`
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 export const ModalClose = (props) => {
   const { getModal } = props;
 
@@ -65,4 +73,5 @@ export default {
   ModalMain,
   ModalBottom,
   ModalClose,
+  InputWrap,
 };

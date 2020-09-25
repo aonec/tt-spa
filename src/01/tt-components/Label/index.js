@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const Label = styled.label`
 display: block;
@@ -9,11 +9,11 @@ color: #DCDEE4;
 //color: rgba(39, 47, 90, 0.6);
 padding-bottom: 8px;
 
-  ${({ color }) => (color === "rgba"
+  ${({ color }) => (color == 'rgba'
   && css`
      color: rgba(39, 47, 90, 0.6);
       `)
-  || (color == "rgba"
+  || (color == 'grey'
     && css`
        color: rgba(39, 47, 90, 0.6);
       `)};

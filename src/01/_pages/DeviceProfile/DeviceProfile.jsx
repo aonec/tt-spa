@@ -131,7 +131,7 @@ export const DeviceProfile = () => {
           calcModel,
         }}
       >
-        <button onClick={buttonHandler}>getPagination</button>
+        {/* <button onClick={buttonHandler}>getPagination</button> */}
         <Header />
 
         {/* <button onClick={buttonHandler}>buttonHandler</button> */}

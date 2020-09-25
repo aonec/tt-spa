@@ -1,6 +1,4 @@
-import React from "react";
-import './page3.scss'
-
+import React from 'react';
 import { Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 
@@ -10,7 +8,7 @@ const props = {
   name: 'file',
   multiple: true,
   action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  onChange(info){
+  onChange(info) {
     const { status } = info.file;
     if (status !== 'uploading') {
       console.log(info.file, info.fileList);
@@ -23,49 +21,34 @@ const props = {
   },
 };
 
-
 export const Page3 = () => {
-  console.log("Page3")
+  console.log('Page3');
   return (
     <div>
-
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
-          <InboxOutlined/>
+          <InboxOutlined />
         </p>
         <p className="ant-upload-text">Добавьте акт выполненных работ</p>
-        {/*<p className="ant-upload-hint">ant-upload-hint</p>*/}
       </Dragger>
 
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
-          <InboxOutlined/>
+          <InboxOutlined />
         </p>
         <p className="ant-upload-text">Добавьте паспорт прибора</p>
-        {/*<p className="ant-upload-hint">ant-upload-hint</p>*/}
       </Dragger>
 
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
-          <InboxOutlined/>
+          <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Добавьте свидетельство о поверке прибора</p>
-        {/*<p className="ant-upload-hint">ant-upload-hint</p>*/}
+        <p className="ant-upload-text">
+          Добавьте свидетельство о поверке прибора
+        </p>
       </Dragger>
-
-
-      {/*<Dragger {...props}>*/}
-      {/*  <p className="ant-upload-drag-icon">*/}
-      {/*    <InboxOutlined />*/}
-      {/*  </p>*/}
-      {/*  <p className="ant-upload-text">Click or drag file to this area to upload</p>*/}
-      {/*  <p className="ant-upload-hint">*/}
-      {/*    Support for a single or bulk upload. Strictly prohibit from uploading company data or other*/}
-      {/*    band files*/}
-      {/*  </p>*/}
-      {/*</Dragger>*/}
     </div>
-  )
-}
+  );
+};
 
 export default Page3;

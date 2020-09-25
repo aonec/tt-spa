@@ -21,8 +21,6 @@ import {
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
 import '01/tt-components/antd.scss';
 
-const modalRef = React.createRef();
-
 const hideMe = () => {
   $('#modal-deregister-device').css('display', 'none');
 };
@@ -31,6 +29,7 @@ export const ReportContext = React.createContext();
 
 export const ModalDeregisterDevice = () => {
   const { device, calcModel } = useContext(DeviceContext);
+  const modalRef = React.createRef();
   const { id, model, serialNumber } = device;
   const [selecteddate, setSelecteddate] = useState(moment().toISOString());
 

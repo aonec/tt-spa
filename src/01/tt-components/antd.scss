@@ -1,5 +1,6 @@
 .ant-picker {
   width: 100%;
+  padding: 8px 24px !important;
 }
 
 .ant-picker-range {
@@ -31,6 +32,9 @@
       line-height: 32px;
     }
   }
+  .ant-select-arrow {
+    padding: 0 28px !important;
+  }
 }
 
 .ant-radio-group {
@@ -43,10 +47,11 @@
   }
 }
 
-//Типовые стили ?
-.modal__close {
-  position: absolute;
-  cursor: pointer;
-  right: 18px;
-  top: 18px;
+
+.ant-upload.ant-upload-drag  {
+  border: 1px dashed #DCDEE4;
+  box-sizing: border-box;
+  background: none;
+  height: 104px;
+  margin-top: 16px;
 }

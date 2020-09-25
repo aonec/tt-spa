@@ -24,6 +24,7 @@ import { DevicesListDiv } from './components/Tabs';
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
+import './modal.scss';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
