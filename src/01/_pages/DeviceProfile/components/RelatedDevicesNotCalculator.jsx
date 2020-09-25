@@ -63,7 +63,9 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevicesNotCalculator = (loading = true) => {
-  const { related, loadings, errors } = useContext(DeviceContext);
+  const {
+    related, loadings, errors, calcModel,
+  } = useContext(DeviceContext);
 
   const loadingRelated = _.get(loadings, 'related', true);
   loading = loadingRelated;
@@ -85,6 +87,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       resource,
       id,
       housingStockId,
+
     } = value;
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
@@ -96,7 +99,7 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       <ListItem key={id}>
         <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
           <Icon icon={icon} color={color} />
-          <Name>{model}</Name>
+          <Name>{model || 'Вычислитель'}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
@@ -164,7 +167,7 @@ export default RelatedDevicesNotCalculator;
 //   color: rgba(39, 47, 90, 0.8);
 // `;
 
-// export const Title = styled.h2``;
+// export const Index = styled.h2``;
 
 // export const ListWrap = styled.div`
 //   display: grid;
@@ -237,7 +240,7 @@ export default RelatedDevicesNotCalculator;
 //     <ListWrap>
 //       {/* <button onClick={buttonHandler}>related</button> */}
 //       <Loader show={loading} size="32">
-//         <Title>Приборы</Title>
+//         <Index>Приборы</Index>
 //         {result}
 //       </Loader>
 //     </ListWrap>

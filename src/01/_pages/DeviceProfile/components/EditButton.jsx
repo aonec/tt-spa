@@ -71,8 +71,15 @@ export const Menu = (showPopupHandler) => {
     }
   });
 
-  const showModal = () => {
-    $('.overlay').toggle();
+  const reportDevice = () => {
+    console.log("$('#modal-report-device')", $('#modal-report-device'));
+    $('#modal-report-device').toggle();
+    $('#edit-button__list').toggle();
+  };
+
+  const deregisterDevice = () => {
+    console.log('deleteDevice', $('#modal-deregister-device'));
+    $('#modal-deregister-device').toggle();
     $('#edit-button__list').toggle();
   };
 
@@ -82,10 +89,10 @@ export const Menu = (showPopupHandler) => {
       <List id="edit-button__list">
         <ListItem>Редактировать вычислитель</ListItem>
         <ListItem>Поверить вычислитель</ListItem>
-        <ListItem onClick={showModal}>
+        <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
-        <ListItem style={{ color: '#FC525B' }}>
+        <ListItem onClick={deregisterDevice} style={{ color: '#FC525B' }}>
           Снять вычислитель с учета
         </ListItem>
       </List>

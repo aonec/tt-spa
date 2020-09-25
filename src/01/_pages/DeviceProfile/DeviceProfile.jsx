@@ -9,7 +9,8 @@ import {
   getRelatedDevices,
   getTypeODPU,
   getCalculatorResources,
-  getCalculator
+  getCalculator,
+  getPagination,
 } from '01/_api/device_page';
 import $ from 'jquery';
 import { Header } from './components/Header';
@@ -21,15 +22,17 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modal';
+import { ModalDeregisterDevice } from './components/ModalDeregisterDevice';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
+import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 
 // import { Changes } from './components/Changes';
 // import { Documents } from './components/Documents';
 
 export const DeviceContext = React.createContext();
 
-export const DeviceProfile = (props) => {
+export const DeviceProfile = () => {
   const { 0: objid, 1: deviceId } = useParams();
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
@@ -74,7 +77,7 @@ export const DeviceProfile = (props) => {
         setTasks(tasks.items);
         setRelated(related);
         setTypeODPU(typeODPU);
-        console.log("device", device)
+        console.log('device', device);
         // setHubs(hubs);
       })
       .catch(({ resource, message }) => {
@@ -91,37 +94,28 @@ export const DeviceProfile = (props) => {
           typeODPU: false,
         }));
       });
-
-
   }, []);
 
   useEffect(() => {
-    // if (typeODPU === 'Calculator') {getCalculatorResources(deviceId).then(setHubs(hubs))}
-    console.log("typeODPU = ", typeODPU)
     if (typeODPU === 'Calculator') {
-      console.log("\"typeODPU = \", typeODPU = ", typeODPU)
-      //getCalculatorResources(deviceId).then((response) => setHubs(response));
-      getCalculatorResources(deviceId).then(response => {
-        console.log(response)
+      getCalculatorResources(deviceId).then((response) => {
         setHubs(response);
-        // getCalculator
       });
-      getCalculator(deviceId).then(response => {
-        setCalcModel(response)
+      getCalculator(deviceId).then((response) => {
+        setCalcModel(response);
+        console.log('calcModel', response);
       });
-
+      console.log('calcModel= ', calcModel);
     }
+  }, [typeODPU]);
 
-
-  }, [typeODPU])
   const path = `/objects/${objid}/devices/${deviceId}/`;
-  console.log(device)
 
   const buttonHandler = () => {
-    console.log('calculator', hubs);
+    console.log('calculator');
+    getPagination();
   };
   if (typeODPU === 'Calculator') {
-
     return (
       <DeviceContext.Provider
         value={{
@@ -134,31 +128,33 @@ export const DeviceProfile = (props) => {
           errors,
           error,
           hubs,
-          calcModel
+          calcModel,
         }}
       >
-        <Header/>
+        {/* <button onClick={buttonHandler}>getPagination</button> */}
+        <Header />
+
         {/* <button onClick={buttonHandler}>buttonHandler</button> */}
-        <Tabs/>
+        <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
-            <Information/>
+            <Information />
           </Route>
           <Route path={`${path}connection`} exact>
-            <Connection/>
+            <Connection />
           </Route>
           <Route path={`${path}related`} exact>
-            <RelatedDevices/>
+            <RelatedDevices />
           </Route>
           <Route path={`${path}documents`} exact>
             <div>Документы</div>
           </Route>
 
-          <Events title="Задачи с объектом"/>
+          <Events title="Задачи с объектом" />
         </Grid>
-        <ModalODPU/>
-        {/* <button onClick={showPopupHandler}>showPopup</button> */}
+        <ModalODPU />
+        <ModalDeregisterDevice />
       </DeviceContext.Provider>
     );
   }
@@ -174,28 +170,29 @@ export const DeviceProfile = (props) => {
         loadings,
         errors,
         error,
-        hubs, calcModel
+        hubs,
+        calcModel,
       }}
     >
-      <Header/>
+      <HeaderNotCalculator />
 
-      <TabsNotCalculator/>
+      <TabsNotCalculator />
 
       {/* Здесь делим экран на две части: main and aside */}
       <Grid>
         <Route path={path} exact>
-          <InformationNotCalculator/>
+          <InformationNotCalculator />
         </Route>
 
         <Route path={`${path}related`} exact>
-          <RelatedDevicesNotCalculator/>
+          <RelatedDevicesNotCalculator />
         </Route>
 
         <Route path={`${path}documents`} exact>
           <div>Документы</div>
         </Route>
 
-        <Events title="Задачи с объектом"/>
+        <Events title="Задачи с объектом" />
       </Grid>
     </DeviceContext.Provider>
   );

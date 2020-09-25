@@ -23,7 +23,7 @@ import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import { convertDate } from '../../_api/utils/convertDate';
 
 // стилизация
-import 'antd/dist/antd.css';
+import '01/tt-components/antd.scss';
 
 const ApartmentProfile = () => {
   const params = useParams();

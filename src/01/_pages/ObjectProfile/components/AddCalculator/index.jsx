@@ -1,40 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
-import './modal.scss';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
+import { SearchCalculator } from './components/SearchCalculator';
+import { useParams } from 'react-router-dom';
+import '01/tt-components/antd.scss';
 import {
-  Route, useRouteMatch, useParams, useHistory,
-} from 'react-router-dom';
-import { Icon } from '../../../../_components/Icon';
+  Modal,
+  ModalWrap,
+  ModalTop,
+  ModalMain,
+  ModalBottom,
+  ModalClose,
+  InputWrap,
+} from '01/tt-components/Modal';
+
+import {
+  Label, Title, Text, Icon, ButtonTT,
+} from '../../../../tt-components';
 import TabsComponent from './components/Tabs';
-import { button } from '../../../../r_comp';
 
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
-  const items = [
-    {
-      id: 1,
-      model: 'ТЭМ-106',
-    },
-    {
-      id: 2,
-      model: 'ТЭМ-104',
-    },
-    {
-      id: 3,
-      model: 'ВКТ-7',
-    },
-    {
-      id: 4,
-      model: 'ТВ-7',
-    },
-    {
-      id: 5,
-      model: 'ВИСТ',
-    },
-  ];
+  const { 0: objid } = useParams();
+  const modalRef = React.createRef();
 
   const [tab, setTab] = useState(1);
   const [ok, setOk] = useState('Далее');
@@ -42,31 +32,40 @@ export const ModalCalculator = () => {
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
   const serialNumber = useRef(`${serialNumberRandom}`);
-  const checkingDate = useRef(convertDateOnly(moment()));
-  const futureCheckingDate = useRef(convertDateOnly(moment()));
-  const futureCommercialAccountingDate = useRef(convertDateOnly(moment()));
+
+  const lastCommercialAccountingDate = useRef(moment().toISOString());
+  const futureCommercialAccountingDate = useRef(moment().toISOString());
+  const lastCheckingDate = useRef(moment().toISOString());
+  const futureCheckingDate = useRef(moment().toISOString());
+
   const port = useRef(1234);
   const infoId = useRef(1);
   const ipV4 = useRef('192.168.0.1');
 
-  const { 0: objid } = useParams();
+  // Применяем только для select, для select - onInputChange
+  const onSelectChange = (value, target) => {
+    const selectId = target.parent;
+    switch (selectId) {
+      case 'infoId':
+        infoId.current = value;
+        console.log(infoId.current);
+        break;
+      default:
+        console.log('Что-то пошло не так');
+    }
+  };
 
+  // const onSelectChange = (value, target, someRef) => {
+  //   infoId.current = target.id;
+  // };
+
+  // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
-    console.log('onInputChange', event);
-    console.log('event.target', event.target);
-
-    const selected = $('#infoId').find('option:selected').attr('id');
-
-    const id = $(event.target).attr('id');
+    const { id } = event.target;
     switch (id) {
       case 'serialNumber':
         serialNumber.current = event.target.value;
         console.log(serialNumber.current);
-        break;
-      case 'infoId':
-        infoId.current = selected;
-        console.log(selected);
-        console.log(infoId.current);
         break;
       case 'port':
         port.current = event.target.value;
@@ -76,91 +75,73 @@ export const ModalCalculator = () => {
         ipV4.current = event.target.value;
         console.log(ipV4.current);
         break;
-
       default:
-        alert('Нет таких значений');
+        console.log('Кажется, нужно проверить правильно ли передан ID', id);
     }
   };
 
+  // Tabs
   function callback(key) {
-    console.log('Был = ', tab);
     setTab(key);
-    if (key == 3) {
-      setOk('Выгрузить');
-    } else {
-      setOk('Далее');
-    }
+    // if (key == 3) {
+    //   setOk('Выгрузить');
+    // } else {
+    //   setOk('Далее');
+    // }
   }
-
-  const nextOrDone = () => {
-    console.log('tab = ', tab);
-    if (tab == 3) {
-      alert('Cейчас будем отправлять данные!');
-      setCalculator();
-    } else {
-      $('.ant-tabs-tab-active')
-        .next()
-        .click();
-    }
-  };
-
-  const postODPU = () => {
-    console.log('postODPU');
-  };
 
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
     return Math.round(rand);
   }
 
-  function convertDateOnly(date) {
-    const dateOnly = 'YYYY-MM-DD';
-    const newDate = moment(date).format(dateOnly);
-    return `${newDate}T14:36:28.797Z`;
+  function addPeriod(period, someRef) {
+    someRef.current = moment()
+      .add(parseInt(period), 'year')
+      .toISOString();
   }
 
-  const someCalculator = {
-    serialNumber: serialNumber.current,
-    checkingDate: '2020-09-17T14:36:28.797Z',
-    futureCheckingDate: '2020-09-17T14:36:28.797Z',
-    lastCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
-    connection: {
-      ipV4: ipV4.current,
-      deviceAddress: deviceAddressRandom,
-      port: parseInt(port.current),
-    },
-    futureCommercialAccountingDate: '2020-09-17T14:36:28.797Z',
-    housingStockId: parseInt(objid),
-    infoId: parseInt(infoId.current),
-  };
+  function datetoISOString(date, dateString, someRef) {
+    someRef.current = date.toISOString();
+    console.log(someRef.current);
+  }
 
-  const setCalculator = () => {
-    console.log(someCalculator);
+  // date.toISOString()
 
-    async function getCalculatorResources(id = '') {
-      try {
-        const res = await axios.post('Calculators', someCalculator);
-        console.log(res);
-        return res;
-      } catch (error) {
-        console.log(error);
-        throw new Error(error);
-      }
+  const createCalculator = async () => {
+    alert('Cейчас будем отправлять данные!');
+    const newCalculator = {
+      serialNumber: serialNumber.current,
+      checkingDate: lastCheckingDate.current,
+      futureCheckingDate: futureCheckingDate.current,
+      lastCommercialAccountingDate: lastCommercialAccountingDate.current,
+      connection: {
+        ipV4: ipV4.current,
+        deviceAddress: deviceAddressRandom,
+        port: parseInt(port.current),
+      },
+      futureCommercialAccountingDate: futureCommercialAccountingDate.current,
+      housingStockId: parseInt(objid),
+      infoId: parseInt(infoId.current),
+    };
+    console.log(newCalculator);
+
+    try {
+      const res = await axios.post('Calculators', newCalculator);
+      alert('Вычислитель успешно создан !');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
     }
-
-    getCalculatorResources()
-      .then((resonse) => {
-        alert('Вычислитель успешно создан !');
-      })
-      .catch((response) => {
-        alert(
-          'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-        );
-      });
   };
 
   const hideMe = () => {
-    $('.overlay-addcalculator').css('display', 'none');
+    $('#add-calculator').css('display', 'none');
   };
 
   const buttonHandler = () => {
@@ -169,7 +150,27 @@ export const ModalCalculator = () => {
     console.log(infoId.current);
     console.log(objid);
   };
-  console.log("ModalODPU'");
+
+  const Next = () => {
+    callback(parseInt(tab) + 1);
+  };
+
+  const ButtonResult = () => {
+    if (tab == 3) {
+      return (
+        <ButtonTT color="blue" onClick={createCalculator} style={{ marginLeft: '16px' }}>
+          Выгрузить
+        </ButtonTT>
+      );
+    }
+
+    return (
+      <ButtonTT onClick={Next} color="blue" style={{ marginLeft: '16px' }}>
+        Далее
+      </ButtonTT>
+    );
+  };
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -179,37 +180,36 @@ export const ModalCalculator = () => {
         deviceAddressRandom,
         serialNumberRandom,
         onInputChange,
+        datetoISOString,
+        lastCommercialAccountingDate,
+        futureCommercialAccountingDate,
+        lastCheckingDate,
+        futureCheckingDate,
+        addPeriod,
+        infoId,
+        onSelectChange,
       }}
     >
-      <div className="overlay-addcalculator">
-        <div className="modal-odpu-add">
-          {/* <button onClick={buttonHandler}>button</button> */}
-          <Icon
-            className="modal__close"
-            icon="close"
-            color="#272F5A"
-            onClick={hideMe}
-          />
-          <h2 className="title-32">Добавление нового вычислителя</h2>
+      <Modal id="add-calculator" ref={modalRef}>
+        <ModalWrap>
+          <ModalClose getModal={modalRef} />
+          <ModalTop>
+            <Title size="middle" color="black">
+              Добавление нового вычислителя
+            </Title>
+            {/* <button onClick={buttonHandler}>getKey</button> */}
+          </ModalTop>
 
-          <TabsComponent />
+          <ModalMain>
+            <TabsComponent />
+          </ModalMain>
 
-          <div className="modal__bottom">
-            <button
-              className="modal__button modal__button_cancel"
-              onClick={hideMe}
-            >
-              Отмена
-            </button>
-            <button
-              className="modal__button modal__button_ok"
-              onClick={nextOrDone}
-            >
-              {ok}
-            </button>
-          </div>
-        </div>
-      </div>
+          <ModalBottom>
+            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+            <ButtonResult />
+          </ModalBottom>
+        </ModalWrap>
+      </Modal>
     </AddDeviceContext.Provider>
   );
 };

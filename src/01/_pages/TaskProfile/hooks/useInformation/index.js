@@ -6,18 +6,13 @@ const taskInfo = [
   ['Номер задачи', 'id'],
   ['Дата создания', 'creationTime'],
   ['Адрес', 'address', 'housingStockId'],
-  // ["Комментарий к квартире", ""],
-  // ["Теги к квартире", ""],
-  // ["Собственник 1", ""],
-  // ["Статус собственника 1", ""],
-  // ["Юридическое состояние", ""],
-  // ["Номер ЛС собственника 1", ""],
-  // ["Контактный номер телефона", ""],
+  ['Комментарий к квартире', ''],
 ];
-// IndividualDeviceCheck
+
 
 export const useInformation = (state = {}) => {
   createInfoHeader(state);
+  console.log(state);
   return {
     loading: false,
     list: taskInfo.reduce((l, { 0: title, 1: value, 2: url }) => {
@@ -41,3 +36,5 @@ export const useInformation = (state = {}) => {
 function createInfoHeader(state = {}) {
   // console.log("state", state)
 }
+
+export default useInformation;

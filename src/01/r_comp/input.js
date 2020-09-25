@@ -1,4 +1,4 @@
-import { css } from "reshadow/macro"
+import { css } from 'reshadow/macro';
 
 export const input = css`
   input_frame {
@@ -82,4 +82,4 @@ export const input = css`
       color: var(--primary-100);
     }
   }
-`
+`;

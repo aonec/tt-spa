@@ -5,11 +5,11 @@ import React, {
   useEffect,
   Children,
 } from 'react';
-import './modal.scss';
+import '01/tt-components/antd.scss';
 import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
-import 'antd/dist/antd.css';
+
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
@@ -24,6 +24,7 @@ import { DevicesListDiv } from './components/Tabs';
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
+import './modal.scss';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -53,7 +54,6 @@ export const ModalODPU = () => {
   const devicesList = [];
   let b;
 
-
   const period = useRef('month');
   const detail = useRef('daily');
   const entryNumberRes = useRef();
@@ -82,7 +82,7 @@ export const ModalODPU = () => {
       $('.ant-tabs-tab-active').click();
     }
 
-    console.log("device = ", device)
+    console.log('device = ', device);
     setTimeout(foo, 1000);
   }, []);
   // function foo() {
@@ -215,7 +215,7 @@ export const ModalODPU = () => {
         onDetailChange,
       }}
     >
-      <div className="overlay">
+      <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
           <Icon
             className="modal__close"
