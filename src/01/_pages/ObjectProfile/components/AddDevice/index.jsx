@@ -48,6 +48,7 @@ export const ModalAddDevice = () => {
   const entryNumber = useRef(1);
   const hubNumber = useRef(1);
   const pipeNumber = useRef(1);
+  const magistral = useRef('FeedFlow');
 
   // Применяем только для select, для select - onInputChange
   const onSelectChange = (value, target) => {
@@ -64,6 +65,10 @@ export const ModalAddDevice = () => {
       case 'type':
         type.current = value;
         console.log(type.current);
+        break;
+      case 'magistral':
+        magistral.current = value;
+        console.log(magistral.current);
         break;
       default:
         console.log('Что-то пошло не так');
@@ -154,7 +159,7 @@ export const ModalAddDevice = () => {
       },
       futureCommercialAccountingDate: futureCommercialAccountingDate.current,
       housingStockId: parseInt(objid),
-      calculatorId: 539559705,
+      calculatorId: Number(calculatorSerial.current),
       housingMeteringDeviceType: type.current,
       resource: resource.current,
       model: model.current,
@@ -162,7 +167,7 @@ export const ModalAddDevice = () => {
         entryNumber: Number(entryNumber.current),
         hubNumber: Number(hubNumber.current),
         pipeNumber: Number(pipeNumber.current),
-        magistral: 'FeedBackFlow',
+        magistral: magistral.current,
       },
     };
 

@@ -23,9 +23,19 @@ export const Page2 = () => {
     { value: '2', label: 'Отсутствует', id: 2 },
   ];
 
-  const feed = [
-    { value: 'FeedFlow', label: 'Прямая', id: 1 },
-    { value: 'FeedBackFlow', label: 'Обратная', id: 2 },
+  const magistrals = [
+    {
+      value: 'FeedFlow',
+      label: 'Прямая',
+      id: 1,
+      parent: 'magistral',
+    },
+    {
+      value: 'FeedBackFlow',
+      label: 'Обратная',
+      id: 2,
+      parent: 'magistral',
+    },
   ];
 
   console.log('Page2');
@@ -99,16 +109,14 @@ export const Page2 = () => {
       </InputWrap>
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
-          Направление подачи
+          Выберите тип ресурса
         </Label>
+
         <Select
-          id="futureCommercialAccountingDate"
-          onChange={(value, target) => {
-            addPeriod(value, futureCommercialAccountingDate);
-          }}
-          placeholder="Укажите период"
-          options={feed}
-          defaultValue={feed[0].value}
+          id="magistral"
+          onChange={onSelectChange}
+          options={magistrals}
+          defaultValue={magistrals[0].value}
         />
       </InputWrap>
     </div>
