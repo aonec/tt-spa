@@ -22,6 +22,187 @@ import TabsComponent from './components/Tabs';
 
 export const AddDeviceContext = React.createContext();
 
+const TEMPLATE_CALCULATOR_983 = {
+  id: 983,
+  isConnected: true,
+  underTransaction: false,
+  model: 'ВКТ-7',
+  serialNumber: '72381',
+  ipV4: null,
+  port: null,
+  deviceAddress: null,
+  address: {
+    city: 'Нижнекамск',
+    street: 'Гагарина',
+    housingStockNumber: '5 А',
+    corpus: null,
+  },
+  hubs: [
+    {
+      hubNumber: 0,
+      entryNumber: 1,
+      resource: 'Heat',
+      pipes: [
+        {
+          number: 0,
+          type: 'FeedFlow',
+          devices: [
+            {
+              id: 4567,
+              serialNumber: '218920',
+              type: 'FlowMeter',
+            },
+            {
+              id: 4568,
+              serialNumber: '145204',
+              type: 'TemperatureSensor',
+            },
+          ],
+        },
+        {
+          number: 1,
+          type: 'FeedBackFlow',
+          devices: [
+            {
+              id: 4569,
+              serialNumber: '238670',
+              type: 'FlowMeter',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      hubNumber: 0,
+      entryNumber: 2,
+      resource: 'HotWaterSupply',
+      pipes: [
+        {
+          number: 3,
+          type: 'FeedFlow',
+          devices: [
+            {
+              id: 4570,
+              serialNumber: '371540',
+              type: 'FlowMeter',
+            },
+            {
+              id: 4571,
+              serialNumber: '145194',
+              type: 'TemperatureSensor',
+            },
+          ],
+        },
+        {
+          number: 4,
+          type: 'FeedBackFlow',
+          devices: [
+            {
+              id: 4572,
+              serialNumber: '328702',
+              type: 'FlowMeter',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      hubNumber: 0,
+      entryNumber: 2,
+      resource: 'ColdWaterSupply',
+      pipes: [
+        {
+          number: 5,
+          type: 'FeedFlow',
+          devices: [
+            {
+              id: 4573,
+              serialNumber: '044626',
+              type: 'FlowMeter',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  lastCommercialAccountingDate: null,
+  futureCommercialAccountingDate: null,
+  lastCheckingDate: '2018-04-05T03:00:00',
+  futureCheckingDate: '2022-02-26T03:00:00',
+  closingDate: null,
+};
+
+const TEMPLATE_DEVICE_4608 = {
+  id: 4608,
+  housingStockId: 485,
+  model: 'СВМ',
+  serialNumber: '33431513',
+  diameter: '40 мм',
+  ipV4: null,
+  port: null,
+  deviceAddress: null,
+  type: 'FlowMeter',
+  resource: 'HotWaterSupply',
+  underTransaction: false,
+  canBeEdited: true,
+  lastCommercialAccountingDate: '0001-01-01T03:00:00',
+  futureCommercialAccountingDate: '0001-01-01T03:00:00',
+  lastCheckingDate: '2018-04-08T03:00:00',
+  futureCheckingDate: '2022-04-08T03:00:00',
+  closingDate: null,
+  calculator: null,
+};
+
+const TEMPLATE_DEVICE_MODIFIED = {
+  serialNumber: 'string',
+  checkingDate: '2020-09-25T07:50:29.316Z',
+  futureCheckingDate: '2020-09-25T07:50:29.316Z',
+  lastCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+  documentsIds: [0],
+  connection: {
+    ipV4: 'string',
+    deviceAddress: 0,
+    port: 0,
+  },
+  futureCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+  housingStockId: 0,
+  calculatorId: 0,
+  housingMeteringDeviceType: 'string',
+  resource: 'string',
+  model: 'string',
+  pipe: {
+    entryNumber: 0,
+    hubNumber: 0,
+    pipeNumber: 0,
+    magistral: 'string',
+  },
+};
+
+const TEMPLATE_DEVICE_POST = {
+  serialNumber: '1554022',
+  checkingDate: '2020-09-25T07:50:29.316Z',
+  futureCheckingDate: '2020-09-25T07:50:29.316Z',
+  lastCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+  documentsIds: [0],
+  connection: {
+    ipV4: 'string',
+    deviceAddress: 0,
+    port: 0,
+  },
+  futureCommercialAccountingDate: '2020-09-25T07:50:29.316Z',
+  housingStockId: 0,
+  calculatorId: 0,
+  housingMeteringDeviceType: 'string',
+  resource: 'string',
+  model: 'string',
+  pipe: {
+    entryNumber: 0,
+    hubNumber: 0,
+    pipeNumber: 0,
+    magistral: 'string',
+  },
+};
+
 export const ModalAddDevice = () => {
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
@@ -149,7 +330,11 @@ export const ModalAddDevice = () => {
   const ButtonResult = () => {
     if (tab == 3) {
       return (
-        <ButtonTT color="blue" onClick={createCalculator} style={{ marginLeft: '16px' }}>
+        <ButtonTT
+          color="blue"
+          onClick={createCalculator}
+          style={{ marginLeft: '16px' }}
+        >
           Выгрузить
         </ButtonTT>
       );

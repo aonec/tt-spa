@@ -62,7 +62,13 @@ export const Page1 = () => {
 
   const devices = [
     { value: '1', label: 'Расходомер', id: 1 },
-    { value: '1', label: 'Расходомер', id: 2 },
+    { value: '1', label: 'Термодатчик', id: 2 },
+  ];
+
+  const resources = [
+    { value: '1', label: 'Горячая вода', id: 1 },
+    { value: '2', label: 'Холодная вода', id: 2 },
+    { value: '3', label: 'Отопление', id: 3 },
   ];
 
   return (
@@ -80,7 +86,31 @@ export const Page1 = () => {
           defaultValue={devices[0].value}
         />
       </InputWrap>
+      <InputWrap>
+        <Label color="grey" htmlFor="#type">
+          Выберите тип ресурса
+        </Label>
 
+        <Select
+          placeholder="Выберите тип устройства"
+          id="infoId"
+          onChange={onSelectChange}
+          options={resources}
+          defaultValue={resources[0].value}
+        />
+      </InputWrap>
+      <InputWrap>
+        <Label color="grey" htmlFor="#resource">
+          Выберите модель прибора
+        </Label>
+        <InputTT
+          id="model"
+          type="number"
+          // required
+          // defaultValue={serialNumberRandom}
+          onChange={onInputChange}
+        />
+      </InputWrap>
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Серийный номер
@@ -93,7 +123,19 @@ export const Page1 = () => {
           onChange={onInputChange}
         />
       </InputWrap>
-
+      -------------
+      <InputWrap>
+        <Label color="grey" htmlFor="#resource">
+          Серийный номер
+        </Label>
+        <InputTT
+          id="serialNumber"
+          type="number"
+          required
+          defaultValue={serialNumberRandom}
+          onChange={onInputChange}
+        />
+      </InputWrap>
       <InputWrap>
         <Label color="grey" htmlFor="#type">
           Тип вычислителя
@@ -107,7 +149,6 @@ export const Page1 = () => {
           defaultValue={items[0].value}
         />
       </InputWrap>
-
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Дата ввода в эксплуатацию
@@ -122,7 +163,6 @@ export const Page1 = () => {
           />
         </ConfigProvider>
       </InputWrap>
-
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Дата Поверки
@@ -136,7 +176,6 @@ export const Page1 = () => {
           />
         </ConfigProvider>
       </InputWrap>
-
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Дата Следующей поверки
@@ -150,7 +189,6 @@ export const Page1 = () => {
           />
         </ConfigProvider>
       </InputWrap>
-
       <InputWrap>
         <Label color="grey" htmlFor="#resource" className="tt-label">
           Срок эксплуатации по нормативу
