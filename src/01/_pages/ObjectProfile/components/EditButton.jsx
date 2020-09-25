@@ -39,6 +39,11 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
+  const showAddDevice = () => {
+    $('#add-device').toggle();
+    $('#edit-button__list').toggle();
+  };
+
   return (
     <>
       <EditButton />
@@ -46,9 +51,7 @@ export const Menu = (showPopupHandler) => {
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
         <ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>
-        <ListItem onClick={showModal}>
-          Добавить прибор учета
-        </ListItem>
+        <ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>
 
         <ListItem style={{ color: '#FC525B' }}>
           Удалить дом

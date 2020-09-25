@@ -22,7 +22,7 @@ import TabsComponent from './components/Tabs';
 
 export const AddDeviceContext = React.createContext();
 
-export const ModalCalculator = () => {
+export const ModalAddDevice = () => {
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
 
@@ -55,10 +55,6 @@ export const ModalCalculator = () => {
     }
   };
 
-  // const onSelectChange = (value, target, someRef) => {
-  //   infoId.current = target.id;
-  // };
-
   // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
     const { id } = event.target;
@@ -83,11 +79,6 @@ export const ModalCalculator = () => {
   // Tabs
   function callback(key) {
     setTab(key);
-    // if (key == 3) {
-    //   setOk('Выгрузить');
-    // } else {
-    //   setOk('Далее');
-    // }
   }
 
   function randomInteger(min, max) {
@@ -190,14 +181,13 @@ export const ModalCalculator = () => {
         onSelectChange,
       }}
     >
-      <Modal id="add-calculator" ref={modalRef}>
+      <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
-              Добавление нового вычислителя
+              Добавление нового ОДПУ
             </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
           </ModalTop>
 
           <ModalMain>
@@ -213,4 +203,4 @@ export const ModalCalculator = () => {
     </AddDeviceContext.Provider>
   );
 };
-export default ModalCalculator;
+export default ModalAddDevice;
