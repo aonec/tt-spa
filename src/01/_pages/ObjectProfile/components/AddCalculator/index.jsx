@@ -43,14 +43,25 @@ export const ModalCalculator = () => {
   const ipV4 = useRef('192.168.0.1');
 
   // Применяем только для select, для select - onInputChange
-  const onSelectChange = (value, target, someRef) => {
-    infoId.current = target.id;
+  const onSelectChange = (value, target) => {
+    const selectId = target.parent;
+    switch (selectId) {
+      case 'infoId':
+        infoId.current = value;
+        console.log(infoId.current);
+        break;
+      default:
+        console.log('Что-то пошло не так');
+    }
   };
+
+  // const onSelectChange = (value, target, someRef) => {
+  //   infoId.current = target.id;
+  // };
 
   // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
-    console.log('event.target', event.target);
-    const id = $(event.target).attr('id');
+    const { id } = event.target;
     switch (id) {
       case 'serialNumber':
         serialNumber.current = event.target.value;
@@ -69,23 +80,15 @@ export const ModalCalculator = () => {
     }
   };
 
+  // Tabs
   function callback(key) {
     setTab(key);
-    if (key === 3) {
-      setOk('Выгрузить');
-    } else {
-      setOk('Далее');
-    }
+    // if (key == 3) {
+    //   setOk('Выгрузить');
+    // } else {
+    //   setOk('Далее');
+    // }
   }
-
-  const nextOrDone = () => {
-    if (tab === 3) {
-      alert('Cейчас будем отправлять данные!');
-      setCalculator();
-    } else {
-      callback(parseInt(tab) + 1);
-    }
-  };
 
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
@@ -100,10 +103,13 @@ export const ModalCalculator = () => {
 
   function datetoISOString(date, dateString, someRef) {
     someRef.current = date.toISOString();
+    console.log(someRef.current);
   }
 
   // date.toISOString()
-  const setCalculator = () => {
+
+  const createCalculator = async () => {
+    alert('Cейчас будем отправлять данные!');
     const newCalculator = {
       serialNumber: serialNumber.current,
       checkingDate: lastCheckingDate.current,
@@ -119,22 +125,19 @@ export const ModalCalculator = () => {
       infoId: parseInt(infoId.current),
     };
     console.log(newCalculator);
-    async function getCalculatorResources() {
-      try {
-        const res = await axios.post('Calculators', newCalculator);
-        alert('Вычислитель успешно создан !');
-        console.log(res);
-        return res;
-      } catch (error) {
-        console.log(error);
-        alert(
-          'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-        );
-        throw new Error(error);
-      }
-    }
 
-    getCalculatorResources();
+    try {
+      const res = await axios.post('Calculators', newCalculator);
+      alert('Вычислитель успешно создан !');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
   };
 
   const hideMe = () => {
@@ -148,6 +151,25 @@ export const ModalCalculator = () => {
     console.log(objid);
   };
 
+  const Next = () => {
+    callback(parseInt(tab) + 1);
+  };
+
+  const ButtonResult = () => {
+    if (tab == 3) {
+      return (
+        <ButtonTT color="blue" onClick={createCalculator} style={{ marginLeft: '16px' }}>
+          Выгрузить
+        </ButtonTT>
+      );
+    }
+
+    return (
+      <ButtonTT onClick={Next} color="blue" style={{ marginLeft: '16px' }}>
+        Далее
+      </ButtonTT>
+    );
+  };
   return (
     <AddDeviceContext.Provider
       value={{
@@ -169,7 +191,6 @@ export const ModalCalculator = () => {
     >
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
-
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
@@ -184,9 +205,7 @@ export const ModalCalculator = () => {
 
           <ModalBottom>
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            <ButtonTT color="blue" onClick={nextOrDone} style={{ marginLeft: '16px' }}>
-              {ok}
-            </ButtonTT>
+            <ButtonResult />
           </ModalBottom>
         </ModalWrap>
       </Modal>

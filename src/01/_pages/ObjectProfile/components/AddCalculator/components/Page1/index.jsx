@@ -23,11 +23,36 @@ export const Page1 = () => {
   } = useContext(AddDeviceContext);
 
   const items = [
-    { value: '1', label: 'ТЭМ-106', id: 1 },
-    { value: '2', label: 'ТЭМ-104', id: 2 },
-    { value: '3', label: 'ТЭМ-104', id: 3 },
-    { value: '4', label: 'ВКТ-7', id: 4 },
-    { value: '5', label: 'ВИСТ', id: 5 },
+    {
+      value: '1',
+      label: 'ТЭМ-106',
+      id: 1,
+      parent: 'infoId',
+    },
+    {
+      value: '2',
+      label: 'ТЭМ-104',
+      id: 2,
+      parent: 'infoId',
+    },
+    {
+      value: '3',
+      label: 'ТЭМ-104',
+      id: 3,
+      parent: 'infoId',
+    },
+    {
+      value: '4',
+      label: 'ВКТ-7',
+      id: 4,
+      parent: 'infoId',
+    },
+    {
+      value: '5',
+      label: 'ВИСТ',
+      id: 5,
+      parent: 'infoId',
+    },
   ];
 
   const serviceLife = [
@@ -46,7 +71,7 @@ export const Page1 = () => {
           type="number"
           required
           defaultValue={serialNumberRandom}
-          onChange={(event) => onInputChange(event)}
+          onChange={onInputChange}
         />
       </InputWrap>
 
@@ -58,9 +83,7 @@ export const Page1 = () => {
         <Select
           placeholder="Выберите тип устройства"
           id="infoId"
-          onChange={(value, target) => {
-            onSelectChange(value, target);
-          }}
+          onChange={onSelectChange}
           options={items}
           defaultValue={items[0].value}
         />
@@ -72,6 +95,7 @@ export const Page1 = () => {
         </Label>
         <ConfigProvider locale={ruRu}>
           <DatePicker
+            id="lastCommercialAccountingDate"
             defaultValue={moment()}
             onChange={(date, dateString) => {
               datetoISOString(date, dateString, lastCommercialAccountingDate);
@@ -113,7 +137,7 @@ export const Page1 = () => {
           Срок эксплуатации по нормативу
         </Label>
         <Select
-          id="resource"
+          id="futureCommercialAccountingDate"
           onChange={(value, target) => {
             addPeriod(value, futureCommercialAccountingDate);
           }}
