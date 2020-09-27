@@ -4,9 +4,8 @@ import {
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
 
-export const Page2 = () => {
+const SettingConnectionTab = () => {
   const { onInputChange } = useContext(AddDeviceContext);
-  console.log('Page2');
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
@@ -50,4 +49,4 @@ export const Page2 = () => {
   );
 };
 
-export default Page2;
+export default SettingConnectionTab;

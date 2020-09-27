@@ -18,16 +18,16 @@ import {
 import {
   Label, Title, Text, Icon, ButtonTT,
 } from '../../../../tt-components';
-import TabsComponent from './components/Tabs';
+import TabsComponent from './components/Tabs/Main';
 
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
+  const [currentTabKey, setTab] = useState('1');
+  const handleChangeTab = (value) => { setTab(value); };
+
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
-
-  const [tab, setTab] = useState(1);
-  const [ok, setOk] = useState('Далее');
 
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
@@ -41,6 +41,70 @@ export const ModalCalculator = () => {
   const port = useRef(1234);
   const infoId = useRef(1);
   const ipV4 = useRef('192.168.0.1');
+
+  // date.toISOString()
+
+  const handleSubmit = async () => {
+    alert('Cейчас будем отправлять данные!');
+    const newCalculator = {
+      serialNumber: serialNumber.current,
+      checkingDate: lastCheckingDate.current,
+      futureCheckingDate: futureCheckingDate.current,
+      lastCommercialAccountingDate: lastCommercialAccountingDate.current,
+      connection: {
+        ipV4: ipV4.current,
+        deviceAddress: deviceAddressRandom,
+        port: parseInt(port.current),
+      },
+      futureCommercialAccountingDate: futureCommercialAccountingDate.current,
+      housingStockId: parseInt(objid),
+      infoId: parseInt(infoId.current),
+    };
+    console.log(newCalculator);
+
+    try {
+      const res = await axios.post('Calculators', newCalculator);
+      alert('Вычислитель успешно создан !');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
+  };
+
+  const handleNext = () => {
+    setTab(String(Number(currentTabKey) + 1));
+  };
+
+  const renderNextButton = () => {
+    if (currentTabKey === '3') { return null; }
+    return (
+      <ButtonTT
+        color="blue"
+        style={{ marginLeft: '16px' }}
+        onClick={handleNext}
+      >
+        Далее
+      </ButtonTT>
+    );
+  };
+
+  const renderSubmitButton = () => {
+    if (currentTabKey !== '3') { return null; }
+    return (
+      <ButtonTT
+        color="blue"
+        style={{ marginLeft: '16px' }}
+        onClick={handleSubmit}
+      >
+        Выгрузить
+      </ButtonTT>
+    );
+  };
 
   // Применяем только для select, для select - onInputChange
   const onSelectChange = (value, target) => {
@@ -80,16 +144,6 @@ export const ModalCalculator = () => {
     }
   };
 
-  // Tabs
-  function callback(key) {
-    setTab(key);
-    // if (key == 3) {
-    //   setOk('Выгрузить');
-    // } else {
-    //   setOk('Далее');
-    // }
-  }
-
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
     return Math.round(rand);
@@ -106,40 +160,6 @@ export const ModalCalculator = () => {
     console.log(someRef.current);
   }
 
-  // date.toISOString()
-
-  const createCalculator = async () => {
-    alert('Cейчас будем отправлять данные!');
-    const newCalculator = {
-      serialNumber: serialNumber.current,
-      checkingDate: lastCheckingDate.current,
-      futureCheckingDate: futureCheckingDate.current,
-      lastCommercialAccountingDate: lastCommercialAccountingDate.current,
-      connection: {
-        ipV4: ipV4.current,
-        deviceAddress: deviceAddressRandom,
-        port: parseInt(port.current),
-      },
-      futureCommercialAccountingDate: futureCommercialAccountingDate.current,
-      housingStockId: parseInt(objid),
-      infoId: parseInt(infoId.current),
-    };
-    console.log(newCalculator);
-
-    try {
-      const res = await axios.post('Calculators', newCalculator);
-      alert('Вычислитель успешно создан !');
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
   };
@@ -151,32 +171,9 @@ export const ModalCalculator = () => {
     console.log(objid);
   };
 
-  const Next = () => {
-    callback(parseInt(tab) + 1);
-  };
-
-  const ButtonResult = () => {
-    if (tab == 3) {
-      return (
-        <ButtonTT color="blue" onClick={createCalculator} style={{ marginLeft: '16px' }}>
-          Выгрузить
-        </ButtonTT>
-      );
-    }
-
-    return (
-      <ButtonTT onClick={Next} color="blue" style={{ marginLeft: '16px' }}>
-        Далее
-      </ButtonTT>
-    );
-  };
-
   return (
     <AddDeviceContext.Provider
       value={{
-        tab,
-        setTab,
-        callback,
         deviceAddressRandom,
         serialNumberRandom,
         onInputChange,
@@ -201,12 +198,16 @@ export const ModalCalculator = () => {
           </ModalTop>
 
           <ModalMain>
-            <TabsComponent />
+            <TabsComponent
+              currentTabKey={currentTabKey}
+              handleChangeTab={handleChangeTab}
+            />
           </ModalMain>
 
           <ModalBottom>
             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            <ButtonResult />
+            {renderNextButton()}
+            {renderSubmitButton()}
           </ModalBottom>
         </ModalWrap>
       </Modal>

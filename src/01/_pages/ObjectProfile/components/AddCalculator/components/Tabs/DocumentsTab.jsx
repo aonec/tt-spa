@@ -21,8 +21,7 @@ const props = {
   },
 };
 
-export const Page3 = () => {
-  console.log('Page3');
+const DocumentsTab = () => {
   return (
     <div>
       <Dragger {...props}>
@@ -51,4 +50,4 @@ export const Page3 = () => {
   );
 };
 
-export default Page3;
+export default DocumentsTab;

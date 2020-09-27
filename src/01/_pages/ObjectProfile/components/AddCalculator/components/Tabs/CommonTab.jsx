@@ -7,9 +7,7 @@ import {
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
 
-export const Page1 = () => {
-  console.log('Page1');
-
+const CommonTab = () => {
   const {
     serialNumberRandom,
     onInputChange,
@@ -149,4 +147,4 @@ export const Page1 = () => {
     </div>
   );
 };
-export default Page1;
+export default CommonTab;
