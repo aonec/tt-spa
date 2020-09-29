@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
-import { AddCalculatorProvider } from './components/AddDeviceContext';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -14,9 +13,7 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
-import {
-  Label, Title, Text, Icon, ButtonTT,
-} from '../../../../tt-components';
+import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
 export const AddDeviceContext = React.createContext();
@@ -50,8 +47,6 @@ export const ModalCalculator = () => {
     infoId,
     ipV4,
   };
-
-  // date.toISOString()
 
   function handleChangeTab(value) {
     setTab(value);
@@ -177,50 +172,43 @@ export const ModalCalculator = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {
-    console.log(`${serialNumberRandom}`);
-    console.log(serialNumber.current);
-    console.log(infoId.current);
-    console.log(objid);
-  };
+  const buttonHandler = () => {};
 
   return (
-    <AddCalculatorProvider>
-      <AddDeviceContext.Provider
-        value={{
-          form,
-          onInputChange,
-          datetoISOString,
-          addPeriod,
-          onSelectChange,
-        }}
-      >
-        <Modal id="add-calculator" ref={modalRef}>
-          <ModalWrap>
-            <ModalClose getModal={modalRef} />
-            <ModalTop>
-              <Title size="middle" color="black">
-                Добавление нового вычислителя
-              </Title>
-              {/* <button onClick={buttonHandler}>getKey</button> */}
-            </ModalTop>
+    <AddDeviceContext.Provider
+      value={{
+        form,
+        onInputChange,
+        datetoISOString,
+        addPeriod,
+        onSelectChange,
+      }}
+    >
+      <Modal id="add-calculator" ref={modalRef}>
+        <ModalWrap>
+          <ModalClose getModal={modalRef} />
+          <ModalTop>
+            <Title size="middle" color="black">
+              Добавление нового вычислителя
+            </Title>
+            {/* <button onClick={buttonHandler}>getKey</button> */}
+          </ModalTop>
 
-            <ModalMain>
-              <TabsComponent
-                currentTabKey={currentTabKey}
-                handleChangeTab={handleChangeTab}
-              />
-            </ModalMain>
+          <ModalMain>
+            <TabsComponent
+              currentTabKey={currentTabKey}
+              handleChangeTab={handleChangeTab}
+            />
+          </ModalMain>
 
-            <ModalBottom>
-              <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-              {renderNextButton()}
-              {renderSubmitButton()}
-            </ModalBottom>
-          </ModalWrap>
-        </Modal>
-      </AddDeviceContext.Provider>
-    </AddCalculatorProvider>
+          <ModalBottom>
+            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+            {renderNextButton()}
+            {renderSubmitButton()}
+          </ModalBottom>
+        </ModalWrap>
+      </Modal>
+    </AddDeviceContext.Provider>
   );
 };
 export default ModalCalculator;
