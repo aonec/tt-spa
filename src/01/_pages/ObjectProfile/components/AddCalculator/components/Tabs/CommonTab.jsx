@@ -20,7 +20,7 @@ const CommonTab = () => {
   const {
     serialNumberRandom,
     deviceAddressRandom,
-    serialNumber,
+    // serialNumber,
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
     lastCheckingDate,
@@ -38,10 +38,11 @@ const CommonTab = () => {
         </Label>
         <InputTT
           id="serialNumber"
-          type="number"
+          type="text"
           required
-          defaultValue={serialNumberRandom}
-          onChange={onInputChange}
+          placeholder="serialNumber"
+                 // defaultValue="192.168.0.1"
+          onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
 

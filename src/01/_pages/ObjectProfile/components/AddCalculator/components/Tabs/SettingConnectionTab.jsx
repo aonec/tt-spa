@@ -23,13 +23,12 @@ const SettingConnectionTab = () => {
     futureCheckingDate,
     port,
     infoId,
-    ipV4,
   } = form;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource">
           IP адрес вычислителя
         </Label>
         <InputTT
@@ -37,13 +36,13 @@ const SettingConnectionTab = () => {
           type="text"
           required
           placeholder="192.168.0.1"
-          defaultValue="192.168.0.1"
+          // defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
 
       <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource">
           Порт
         </Label>
         <InputTT

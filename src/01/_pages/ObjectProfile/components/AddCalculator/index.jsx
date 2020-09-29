@@ -33,32 +33,38 @@ export const ModalCalculator = () => {
   console.log(Number(objid));
 
   const initialState = {
-    serialNumber: '{$serialNumberRandom}',
     checkingDate: moment().toISOString(),
     futureCheckingDate: moment().toISOString(),
     lastCommercialAccountingDate: moment().toISOString(),
     connection: {
-      ipV4: '192.168.0.1',
+      ipV4: '192.168.11.55',
       deviceAddress: deviceAddressRandom,
       port: 1234,
     },
     futureCommercialAccountingDate: moment().toISOString(),
     housingStockId: Number(objid),
     infoId: 1,
+    serialNumber: null,
   };
+  // serialNumber: 'serialNumber' -  это должно быть строковым значением
+  // но здесь ругается, потому что его не устрривает формат
+  // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
+  // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
 
   const reducer = (state = initialState, action) => {
     if (action.type === 'InfoId') {
       return { ...state, infoId: action.value };
     }
     if (action.type === 'serialNumber') {
-      return { ...state, serialNumber: action.value };
+      // здесь это тоже передается строковым значением
+      return { ...state, serialNumber: `${action.value}` };
     }
     if (action.type === 'port') {
       return { ...state, port: action.value };
     }
     if (action.type === 'ipV4') {
-      return { ...state, ipV4: action.value };
+      console.log('ipV4');
+      return { ...state, ipV4: `${action.value}` };
     }
     return state;
   };
@@ -69,63 +75,67 @@ export const ModalCalculator = () => {
 
   const modalRef = React.createRef();
 
-  const serialNumber = useRef(`${serialNumberRandom}`);
   const lastCommercialAccountingDate = useRef(moment().toISOString());
   const futureCommercialAccountingDate = useRef(moment().toISOString());
   const lastCheckingDate = useRef(moment().toISOString());
   const futureCheckingDate = useRef(moment().toISOString());
   const port = useRef(1234);
   const infoId = useRef(1);
-  const ipV4 = useRef('192.168.0.1');
 
   const form = {
     serialNumberRandom,
     deviceAddressRandom,
-    serialNumber,
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
     lastCheckingDate,
     futureCheckingDate,
     port,
     infoId,
-    ipV4,
   };
 
   function handleChangeTab(value) {
     setTab(value);
   }
 
-  const handleSubmit = async () => {
-    alert('Cейчас будем отправлять данные!');
-    const newCalculator = {
-      serialNumber: serialNumber.current,
-      checkingDate: lastCheckingDate.current,
-      futureCheckingDate: futureCheckingDate.current,
-      lastCommercialAccountingDate: lastCommercialAccountingDate.current,
-      connection: {
-        ipV4: ipV4.current,
-        deviceAddress: deviceAddressRandom,
-        port: parseInt(port.current),
-      },
-      futureCommercialAccountingDate: futureCommercialAccountingDate.current,
-      housingStockId: parseInt(objid),
-      infoId: parseInt(infoId.current),
-    };
-    console.log(newCalculator);
+  // Применяем только для select, для select - onInputChange
+  const onSelectChange = (value, target) => {
+    const name = target.parent;
+    onChangeUniversal(name, value);
+  };
 
-    try {
-      const res = await axios.post('Calculators', store.getState());
-      alert('Вычислитель успешно создан !');
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
+  // Применяем только для input, для select - onSelectChange
+  const onInputChange = (event) => {
+    const name = event.target.id;
+    onChangeUniversal(name, event.target.value);
+  };
+
+  // Универсальная функция
+  const onChangeUniversal = (name, value) => {
+    console.log(name, value);
+    switch (name) {
+      case 'infoId':
+        store.dispatch({ type: 'InfoId', value });
+        break;
+      case 'serialNumber':
+        // тоже строковое значение
+        store.dispatch({ type: 'serialNumber', value });
+        break;
+      case 'port':
+        store.dispatch({ type: 'port', value });
+        break;
+      case 'ipV4':
+        store.dispatch({ type: 'ipV4', value });
+        break;
+      case 'futureCommercialAccountingDate':
+        store.dispatch({ type: 'futureCommercialAccountingDate', value });
+        break;
+
+      default:
+        console.log('Кажется, нужно проверить правильно ли передан ID', name);
     }
   };
+
+  const someValuse = useRef(store.getState());
 
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
@@ -161,49 +171,11 @@ export const ModalCalculator = () => {
     );
   };
 
-  // Применяем только для select, для select - onInputChange
-  const onSelectChange = (value, target) => {
-    const name = target.parent;
-    onChangeUniversal(name, value);
-  };
-
-  // Применяем только для input, для select - onSelectChange
-  const onInputChange = (event) => {
-    const name = event.target.id;
-    onChangeUniversal(name, event.target.value);
-  };
-
-  // Универсальная функция
-  const onChangeUniversal = (name, value) => {
-    console.log(name, value);
-    switch (name) {
-      case 'infoId':
-        store.dispatch({ type: 'InfoId', value });
-        break;
-      case 'serialNumber':
-        store.dispatch({ type: 'serialNumber', value });
-        break;
-      case 'port':
-        store.dispatch({ type: 'port', value });
-        break;
-      case 'ipV4':
-        store.dispatch({ type: 'ipV4', value });
-        break;
-      case 'futureCommercialAccountingDate':
-        store.dispatch({ type: 'futureCommercialAccountingDate', value });
-        break;
-
-      default:
-        console.log('Кажется, нужно проверить правильно ли передан ID', name);
-    }
-  };
-
   function addPeriod(period, someRef) {
     const name = someRef.toString();
-    const value = moment().add(period, 'year').toISOString();
-
-    console.log(name);
-    console.log(value);
+    const value = moment()
+      .add(period, 'year')
+      .toISOString();
     onChangeUniversal(name, value);
   }
 
@@ -219,16 +191,34 @@ export const ModalCalculator = () => {
   const buttonHandler = () => {};
 
   store.subscribe(() => {
-    console.log('subscribe', store.getState());
+    console.log('subscribe');
+    someValuse.current = store.getState();
   });
-
-  // store.dispatch({ type: 'ADD_NUMBER', value: 10 });
 
   const test = () => {
     console.log('test');
     console.log(store.getState());
-    // store.dispatch({ type: 'ADD', value: 10 });
-    // store.dispatch({ type: 'ADD' });
+  };
+
+  const handleSubmit = async () => {
+    alert('Cейчас будем отправлять данные!');
+
+    try {
+      // но здесь ругается, потому что его не устрривает формат
+      // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
+      // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
+      console.log(someValuse.current);
+      const res = await axios.post('Calculators', someValuse.current);
+      alert('Вычислитель успешно создан !');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
   };
 
   return (
@@ -270,17 +260,3 @@ export const ModalCalculator = () => {
   );
 };
 export default ModalCalculator;
-
-// const reducer = (state = initialState, action) => {
-//   if (action.type === 'ADD') {
-//     return { counter: state.counter + 1 };
-//   }
-//   if (action.type === 'SUB') {
-//     return { counter: state.counter - 1 };
-//   }
-
-//   if (action.type === 'ADD_NUMBER') {
-//     return { counter: state.counter + action.value };
-//   }
-//   return state;
-// };
