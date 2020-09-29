@@ -5,7 +5,27 @@ import {
 import { AddDeviceContext } from '../../index';
 
 const SettingConnectionTab = () => {
-  const { onInputChange } = useContext(AddDeviceContext);
+  const {
+    form,
+    onInputChange,
+    datetoISOString,
+    addPeriod,
+    onSelectChange,
+  } = useContext(AddDeviceContext);
+
+  const {
+    serialNumberRandom,
+    deviceAddressRandom,
+    serialNumber,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    lastCheckingDate,
+    futureCheckingDate,
+    port,
+    infoId,
+    ipV4,
+  } = form;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>

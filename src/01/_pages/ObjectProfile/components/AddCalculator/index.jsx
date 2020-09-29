@@ -3,6 +3,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { AddCalculatorProvider } from './components/AddDeviceContext';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -11,7 +12,6 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-  InputWrap,
 } from '01/tt-components/Modal';
 
 import {
@@ -23,25 +23,39 @@ export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
   const [currentTabKey, setTab] = useState('1');
-  const handleChangeTab = (value) => { setTab(value); };
-
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
 
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
-  const serialNumber = useRef(`${serialNumberRandom}`);
 
+  const serialNumber = useRef(`${serialNumberRandom}`);
   const lastCommercialAccountingDate = useRef(moment().toISOString());
   const futureCommercialAccountingDate = useRef(moment().toISOString());
   const lastCheckingDate = useRef(moment().toISOString());
   const futureCheckingDate = useRef(moment().toISOString());
-
   const port = useRef(1234);
   const infoId = useRef(1);
   const ipV4 = useRef('192.168.0.1');
 
+  const form = {
+    serialNumberRandom,
+    deviceAddressRandom,
+    serialNumber,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    lastCheckingDate,
+    futureCheckingDate,
+    port,
+    infoId,
+    ipV4,
+  };
+
   // date.toISOString()
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -80,7 +94,9 @@ export const ModalCalculator = () => {
   };
 
   const renderNextButton = () => {
-    if (currentTabKey === '3') { return null; }
+    if (currentTabKey === '3') {
+      return null;
+    }
     return (
       <ButtonTT
         color="blue"
@@ -93,7 +109,9 @@ export const ModalCalculator = () => {
   };
 
   const renderSubmitButton = () => {
-    if (currentTabKey !== '3') { return null; }
+    if (currentTabKey !== '3') {
+      return null;
+    }
     return (
       <ButtonTT
         color="blue"
@@ -117,10 +135,6 @@ export const ModalCalculator = () => {
         console.log('Что-то пошло не так');
     }
   };
-
-  // const onSelectChange = (value, target, someRef) => {
-  //   infoId.current = target.id;
-  // };
 
   // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
@@ -171,46 +185,42 @@ export const ModalCalculator = () => {
   };
 
   return (
-    <AddDeviceContext.Provider
-      value={{
-        deviceAddressRandom,
-        serialNumberRandom,
-        onInputChange,
-        datetoISOString,
-        lastCommercialAccountingDate,
-        futureCommercialAccountingDate,
-        lastCheckingDate,
-        futureCheckingDate,
-        addPeriod,
-        infoId,
-        onSelectChange,
-      }}
-    >
-      <Modal id="add-calculator" ref={modalRef}>
-        <ModalWrap>
-          <ModalClose getModal={modalRef} />
-          <ModalTop>
-            <Title size="middle" color="black">
-              Добавление нового вычислителя
-            </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
-          </ModalTop>
+    <AddCalculatorProvider>
+      <AddDeviceContext.Provider
+        value={{
+          form,
+          onInputChange,
+          datetoISOString,
+          addPeriod,
+          onSelectChange,
+        }}
+      >
+        <Modal id="add-calculator" ref={modalRef}>
+          <ModalWrap>
+            <ModalClose getModal={modalRef} />
+            <ModalTop>
+              <Title size="middle" color="black">
+                Добавление нового вычислителя
+              </Title>
+              {/* <button onClick={buttonHandler}>getKey</button> */}
+            </ModalTop>
 
-          <ModalMain>
-            <TabsComponent
-              currentTabKey={currentTabKey}
-              handleChangeTab={handleChangeTab}
-            />
-          </ModalMain>
+            <ModalMain>
+              <TabsComponent
+                currentTabKey={currentTabKey}
+                handleChangeTab={handleChangeTab}
+              />
+            </ModalMain>
 
-          <ModalBottom>
-            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-            {renderNextButton()}
-            {renderSubmitButton()}
-          </ModalBottom>
-        </ModalWrap>
-      </Modal>
-    </AddDeviceContext.Provider>
+            <ModalBottom>
+              <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+              {renderNextButton()}
+              {renderSubmitButton()}
+            </ModalBottom>
+          </ModalWrap>
+        </Modal>
+      </AddDeviceContext.Provider>
+    </AddCalculatorProvider>
   );
 };
 export default ModalCalculator;

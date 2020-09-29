@@ -9,16 +9,25 @@ import { AddDeviceContext } from '../../index';
 
 const CommonTab = () => {
   const {
-    serialNumberRandom,
+    form,
     onInputChange,
-    lastCommercialAccountingDate,
     datetoISOString,
-    lastCheckingDate,
-    futureCheckingDate,
-    futureCommercialAccountingDate,
     addPeriod,
     onSelectChange,
   } = useContext(AddDeviceContext);
+
+  const {
+    serialNumberRandom,
+    deviceAddressRandom,
+    serialNumber,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    lastCheckingDate,
+    futureCheckingDate,
+    port,
+    infoId,
+    ipV4,
+  } = form;
 
   const items = [
     {
