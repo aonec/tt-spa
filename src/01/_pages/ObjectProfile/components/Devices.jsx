@@ -28,9 +28,9 @@ export const Devices = React.memo(
           {items.map(
             ({
               id, fill, icon, model, serialNumber, futureCheckingDate, commercialAccountingDate,
-            }) => {
-              console.log(model, id);
-              return (
+            }) =>
+              // console.log(model, id);
+              (
                 <device key={id} onClick={() => onClick(id)}>
                   <h4>
                     <Icon {...{ fill, icon }} />
@@ -46,8 +46,8 @@ export const Devices = React.memo(
                     {convertDateDots(futureCheckingDate)}
                   </devcie_date>
                 </device>
-              );
-            },
+              )
+            ,
           )}
         </devices>
       </Route>,

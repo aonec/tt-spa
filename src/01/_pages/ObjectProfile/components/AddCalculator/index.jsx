@@ -13,7 +13,6 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
-import { reduce } from 'lodash';
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
@@ -22,40 +21,6 @@ const redux = require('redux');
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
-  const initialState = {
-    counter: 0,
-  };
-
-  const reducer = (state = initialState, action) => {
-    if (action.type === 'ADD') {
-      return { counter: state.counter + 1 };
-    }
-    if (action.type === 'SUB') {
-      return { counter: state.counter - 1 };
-    }
-
-    if (action.type === 'ADD_NUMBER') {
-      return { counter: state.counter + action.value };
-    }
-    return state;
-  };
-
-  const store = redux.createStore(reducer);
-  store.subscribe(() => {
-    console.log('subscribe', store.getState());
-  });
-
-  // Actions
-  const addCounter = {
-    type: 'ADD',
-  };
-
-  store.dispatch(addCounter);
-
-  store.dispatch({ type: 'SUB' });
-
-  store.dispatch({ type: 'ADD_NUMBER', value: 10 });
-
   const [currentTabKey, setTab] = useState('1');
   const { 0: objid } = useParams();
   const modalRef = React.createRef();
@@ -88,6 +53,51 @@ export const ModalCalculator = () => {
   function handleChangeTab(value) {
     setTab(value);
   }
+
+  const initialState = {
+    serialNumber: serialNumber.current,
+    checkingDate: lastCheckingDate.current,
+    futureCheckingDate: futureCheckingDate.current,
+    lastCommercialAccountingDate: lastCommercialAccountingDate.current,
+    connection: {
+      ipV4: ipV4.current,
+      deviceAddress: deviceAddressRandom,
+      port: parseInt(port.current),
+    },
+    futureCommercialAccountingDate: futureCommercialAccountingDate.current,
+    housingStockId: parseInt(objid),
+    infoId: parseInt(infoId.current),
+  };
+
+  const reducer = (state = initialState, action) => {
+    if (action.type === 'ADD') {
+      return { counter: state.counter + 1 };
+    }
+    if (action.type === 'SUB') {
+      return { counter: state.counter - 1 };
+    }
+
+    if (action.type === 'ADD_NUMBER') {
+      return { counter: state.counter + action.value };
+    }
+    return state;
+  };
+
+  const store = redux.createStore(reducer);
+  store.subscribe(() => {
+    console.log('subscribe', store.getState());
+  });
+
+  // Actions
+  const addCounter = {
+    type: 'ADD',
+  };
+
+  store.dispatch(addCounter);
+
+  store.dispatch({ type: 'SUB' });
+
+  store.dispatch({ type: 'ADD_NUMBER', value: 10 });
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -249,3 +259,17 @@ export const ModalCalculator = () => {
   );
 };
 export default ModalCalculator;
+
+// const reducer = (state = initialState, action) => {
+//   if (action.type === 'ADD') {
+//     return { counter: state.counter + 1 };
+//   }
+//   if (action.type === 'SUB') {
+//     return { counter: state.counter - 1 };
+//   }
+
+//   if (action.type === 'ADD_NUMBER') {
+//     return { counter: state.counter + action.value };
+//   }
+//   return state;
+// };
