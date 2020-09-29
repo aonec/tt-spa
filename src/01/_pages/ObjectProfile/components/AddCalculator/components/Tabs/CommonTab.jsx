@@ -6,6 +6,7 @@ import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
+import { items, serviceLife } from '../CalculatorJSON';
 
 const CommonTab = () => {
   const {
@@ -28,44 +29,6 @@ const CommonTab = () => {
     infoId,
     ipV4,
   } = form;
-
-  const items = [
-    {
-      value: '1',
-      label: 'ТЭМ-106',
-      id: 1,
-      parent: 'infoId',
-    },
-    {
-      value: '2',
-      label: 'ТЭМ-104',
-      id: 2,
-      parent: 'infoId',
-    },
-    {
-      value: '3',
-      label: 'ТЭМ-104',
-      id: 3,
-      parent: 'infoId',
-    },
-    {
-      value: '4',
-      label: 'ВКТ-7',
-      id: 4,
-      parent: 'infoId',
-    },
-    {
-      value: '5',
-      label: 'ВИСТ',
-      id: 5,
-      parent: 'infoId',
-    },
-  ];
-
-  const serviceLife = [
-    { value: '4', label: '4 года', id: 1 },
-    { value: '6', label: '6 лет', id: 2 },
-  ];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -146,7 +109,7 @@ const CommonTab = () => {
         <Select
           id="futureCommercialAccountingDate"
           onChange={(value, target) => {
-            addPeriod(value, futureCommercialAccountingDate);
+            addPeriod(value, 'futureCommercialAccountingDate');
           }}
           placeholder="Укажите период"
           options={serviceLife}

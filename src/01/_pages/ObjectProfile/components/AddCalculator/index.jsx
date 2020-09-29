@@ -21,12 +21,53 @@ const redux = require('redux');
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = () => {
-  const [currentTabKey, setTab] = useState('1');
-  const { 0: objid } = useParams();
-  const modalRef = React.createRef();
+  function randomInteger(min, max) {
+    const rand = min + Math.random() * (max - min);
+    return Math.round(rand);
+  }
 
   const serialNumberRandom = randomInteger(1, 999999999);
   const deviceAddressRandom = randomInteger(1, 255);
+
+  const { 0: objid } = useParams();
+  console.log(Number(objid));
+
+  const initialState = {
+    serialNumber: '{$serialNumberRandom}',
+    checkingDate: moment().toISOString(),
+    futureCheckingDate: moment().toISOString(),
+    lastCommercialAccountingDate: moment().toISOString(),
+    connection: {
+      ipV4: '192.168.0.1',
+      deviceAddress: deviceAddressRandom,
+      port: 1234,
+    },
+    futureCommercialAccountingDate: moment().toISOString(),
+    housingStockId: Number(objid),
+    infoId: 1,
+  };
+
+  const reducer = (state = initialState, action) => {
+    if (action.type === 'InfoId') {
+      return { ...state, infoId: action.value };
+    }
+    if (action.type === 'serialNumber') {
+      return { ...state, serialNumber: action.value };
+    }
+    if (action.type === 'port') {
+      return { ...state, port: action.value };
+    }
+    if (action.type === 'ipV4') {
+      return { ...state, ipV4: action.value };
+    }
+    return state;
+  };
+
+  const store = redux.createStore(reducer);
+
+  const [currentTabKey, setTab] = useState('1');
+
+  const modalRef = React.createRef();
 
   const serialNumber = useRef(`${serialNumberRandom}`);
   const lastCommercialAccountingDate = useRef(moment().toISOString());
@@ -54,51 +95,6 @@ export const ModalCalculator = () => {
     setTab(value);
   }
 
-  const initialState = {
-    serialNumber: serialNumber.current,
-    checkingDate: lastCheckingDate.current,
-    futureCheckingDate: futureCheckingDate.current,
-    lastCommercialAccountingDate: lastCommercialAccountingDate.current,
-    connection: {
-      ipV4: ipV4.current,
-      deviceAddress: deviceAddressRandom,
-      port: parseInt(port.current),
-    },
-    futureCommercialAccountingDate: futureCommercialAccountingDate.current,
-    housingStockId: parseInt(objid),
-    infoId: parseInt(infoId.current),
-  };
-
-  const reducer = (state = initialState, action) => {
-    if (action.type === 'ADD') {
-      return { counter: state.counter + 1 };
-    }
-    if (action.type === 'SUB') {
-      return { counter: state.counter - 1 };
-    }
-
-    if (action.type === 'ADD_NUMBER') {
-      return { counter: state.counter + action.value };
-    }
-    return state;
-  };
-
-  const store = redux.createStore(reducer);
-  store.subscribe(() => {
-    console.log('subscribe', store.getState());
-  });
-
-  // Actions
-  const addCounter = {
-    type: 'ADD',
-  };
-
-  store.dispatch(addCounter);
-
-  store.dispatch({ type: 'SUB' });
-
-  store.dispatch({ type: 'ADD_NUMBER', value: 10 });
-
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     const newCalculator = {
@@ -118,7 +114,7 @@ export const ModalCalculator = () => {
     console.log(newCalculator);
 
     try {
-      const res = await axios.post('Calculators', newCalculator);
+      const res = await axios.post('Calculators', store.getState());
       alert('Вычислитель успешно создан !');
       console.log(res);
       return res;
@@ -167,47 +163,48 @@ export const ModalCalculator = () => {
 
   // Применяем только для select, для select - onInputChange
   const onSelectChange = (value, target) => {
-    const selectId = target.parent;
-    switch (selectId) {
-      case 'infoId':
-        infoId.current = value;
-        console.log(infoId.current);
-        break;
-      default:
-        console.log('Что-то пошло не так');
-    }
+    const name = target.parent;
+    onChangeUniversal(name, value);
   };
 
   // Применяем только для input, для select - onSelectChange
   const onInputChange = (event) => {
-    const { id } = event.target;
-    switch (id) {
+    const name = event.target.id;
+    onChangeUniversal(name, event.target.value);
+  };
+
+  // Универсальная функция
+  const onChangeUniversal = (name, value) => {
+    console.log(name, value);
+    switch (name) {
+      case 'infoId':
+        store.dispatch({ type: 'InfoId', value });
+        break;
       case 'serialNumber':
-        serialNumber.current = event.target.value;
-        console.log(serialNumber.current);
+        store.dispatch({ type: 'serialNumber', value });
         break;
       case 'port':
-        port.current = event.target.value;
-        console.log(port.current);
+        store.dispatch({ type: 'port', value });
         break;
       case 'ipV4':
-        ipV4.current = event.target.value;
-        console.log(ipV4.current);
+        store.dispatch({ type: 'ipV4', value });
         break;
+      case 'futureCommercialAccountingDate':
+        store.dispatch({ type: 'futureCommercialAccountingDate', value });
+        break;
+
       default:
-        console.log('Кажется, нужно проверить правильно ли передан ID', id);
+        console.log('Кажется, нужно проверить правильно ли передан ID', name);
     }
   };
 
-  function randomInteger(min, max) {
-    const rand = min + Math.random() * (max - min);
-    return Math.round(rand);
-  }
-
   function addPeriod(period, someRef) {
-    someRef.current = moment()
-      .add(parseInt(period), 'year')
-      .toISOString();
+    const name = someRef.toString();
+    const value = moment().add(period, 'year').toISOString();
+
+    console.log(name);
+    console.log(value);
+    onChangeUniversal(name, value);
   }
 
   function datetoISOString(date, dateString, someRef) {
@@ -221,6 +218,19 @@ export const ModalCalculator = () => {
 
   const buttonHandler = () => {};
 
+  store.subscribe(() => {
+    console.log('subscribe', store.getState());
+  });
+
+  // store.dispatch({ type: 'ADD_NUMBER', value: 10 });
+
+  const test = () => {
+    console.log('test');
+    console.log(store.getState());
+    // store.dispatch({ type: 'ADD', value: 10 });
+    // store.dispatch({ type: 'ADD' });
+  };
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -233,6 +243,7 @@ export const ModalCalculator = () => {
     >
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
+          <button onClick={test}>test</button>
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
