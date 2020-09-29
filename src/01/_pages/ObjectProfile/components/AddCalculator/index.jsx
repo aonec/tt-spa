@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
+import { createStore } from 'redux';
 import { useParams } from 'react-router-dom';
 import '01/tt-components/antd.scss';
 import {
@@ -16,7 +17,7 @@ import {
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
-const redux = require('redux');
+// const redux = require('redux');
 
 export const AddDeviceContext = React.createContext();
 
@@ -37,7 +38,7 @@ export const ModalCalculator = () => {
     futureCheckingDate: moment().toISOString(),
     lastCommercialAccountingDate: moment().toISOString(),
     connection: {
-      ipV4: '192.168.11.55',
+      ipV4: '192.168.0.1',
       deviceAddress: deviceAddressRandom,
       port: 1234,
     },
@@ -52,25 +53,35 @@ export const ModalCalculator = () => {
   // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
 
   const reducer = (state = initialState, action) => {
+    const { connection } = state;
+    let { ipV4, deviceAddress, port } = connection;
+
+    console.log(connection);
+
     if (action.type === 'InfoId') {
       return { ...state, infoId: action.value };
     }
     if (action.type === 'serialNumber') {
       // здесь это тоже передается строковым значением
+
       return { ...state, serialNumber: `${action.value}` };
     }
     if (action.type === 'port') {
       return { ...state, port: action.value };
     }
     if (action.type === 'ipV4') {
-      console.log('ipV4');
-      return { ...state, ipV4: `${action.value}` };
+      ipV4 = `${action.value}`;
+      const res = { ipV4, deviceAddress, port };
+
+      return { ...state, connection: res };
     }
+
     return state;
   };
 
-  const store = redux.createStore(reducer);
+  const store = createStore(reducer);
 
+  // const [currentTabKey, setTab] = useState('1');
   const [currentTabKey, setTab] = useState('1');
 
   const modalRef = React.createRef();
@@ -135,8 +146,6 @@ export const ModalCalculator = () => {
     }
   };
 
-  const someValuse = useRef(store.getState());
-
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
@@ -190,15 +199,18 @@ export const ModalCalculator = () => {
 
   const buttonHandler = () => {};
 
-  store.subscribe(() => {
-    console.log('subscribe');
-    someValuse.current = store.getState();
-  });
-
   const test = () => {
     console.log('test');
     console.log(store.getState());
+    console.log(reference.current);
   };
+
+  const reference = useRef();
+
+  store.subscribe(() => {
+    console.log('subscribe');
+    reference.current = store.getState();
+  });
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -207,11 +219,11 @@ export const ModalCalculator = () => {
       // но здесь ругается, потому что его не устрривает формат
       // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
       // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
-      console.log(someValuse.current);
-      const res = await axios.post('Calculators', someValuse.current);
-      alert('Вычислитель успешно создан !');
-      console.log(res);
-      return res;
+      console.log(reference.current);
+      // const res = await axios.post('Calculators', a);
+      // alert('Вычислитель успешно создан !');
+      // console.log(res);
+      // return res;
     } catch (error) {
       console.log(error);
       alert(
