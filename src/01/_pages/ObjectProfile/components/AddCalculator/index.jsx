@@ -40,23 +40,8 @@ export const ModalCalculator = (props) => {
     console.log('APP', props);
     store.dispatch({ type: 'housingStockId', value: Number(objid) });
   }, []);
-  const lastCommercialAccountingDate = useRef(moment().toISOString());
-  const futureCommercialAccountingDate = useRef(moment().toISOString());
-  const lastCheckingDate = useRef(moment().toISOString());
-  const futureCheckingDate = useRef(moment().toISOString());
-  const port = useRef(1234);
-  const infoId = useRef(1);
 
-  const form = {
-    serialNumberRandom,
-    deviceAddressRandom,
-    lastCommercialAccountingDate,
-    futureCommercialAccountingDate,
-    lastCheckingDate,
-    futureCheckingDate,
-    port,
-    infoId,
-  };
+  const reference = useRef();
 
   function handleChangeTab(value) {
     setTab(value);
@@ -77,39 +62,7 @@ export const ModalCalculator = (props) => {
   // Универсальная функция
   const onChangeUniversal = (name, value) => {
     console.log(name, value);
-    switch (name) {
-      case 'infoId':
-        store.dispatch({ type: 'InfoId', value });
-        break;
-      case 'serialNumber':
-        // тоже строковое значение
-        store.dispatch({ type: 'serialNumber', value });
-        break;
-      case 'port':
-        store.dispatch({ type: 'port', value });
-        break;
-      case 'ipV4':
-        store.dispatch({ type: 'ipV4', value });
-        break;
-      case 'lastCommercialAccountingDate':
-        store.dispatch({ type: 'lastCommercialAccountingDate', value });
-        break;
-      case 'checkingDate':
-        store.dispatch({ type: 'checkingDate', value });
-        break;
-      case 'futureCommercialAccountingDate':
-        store.dispatch({ type: 'futureCommercialAccountingDate', value });
-        break;
-      case 'futureCheckingDate':
-        store.dispatch({ type: 'futureCheckingDate', value });
-        break;
-      default:
-        console.log(
-          'Кажется, нужно проверить правильно ли передан ID',
-          name,
-          value,
-        );
-    }
+    store.dispatch({ type: `${name}`, value });
   };
 
   const handleNext = () => {
@@ -155,32 +108,20 @@ export const ModalCalculator = (props) => {
   }
 
   function datetoISOString(date, dateString, someRef) {
-    // someRef.current = date.toISOString();
     const value = date.toISOString();
     const name = someRef;
-
     console.log('name', name);
     console.log('value', value);
     onChangeUniversal(name, value);
-    // console.log(someRef.current);
-    // store.dispatch()
   }
 
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {};
-
-  const before = () => {
+  const buttonHandler = () => {
     console.log(store.getState());
   };
-
-  const after = () => {
-    store.dispatch({ type: 'ADD_TODO' });
-  };
-
-  const reference = useRef();
 
   store.subscribe(() => {
     console.log('subscribe');
@@ -189,11 +130,7 @@ export const ModalCalculator = (props) => {
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
-
     try {
-      // но здесь ругается, потому что его не устрривает формат
-      // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
-      // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
       console.log(store.getState());
       const res = await axios.post('Calculators', reference.current);
       alert('Вычислитель успешно создан !');
@@ -211,7 +148,6 @@ export const ModalCalculator = (props) => {
   return (
     <AddDeviceContext.Provider
       value={{
-        form,
         onInputChange,
         datetoISOString,
         addPeriod,
@@ -220,8 +156,6 @@ export const ModalCalculator = (props) => {
     >
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
-          <button onClick={before}>before</button>
-          <button onClick={after}>after</button>
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
@@ -249,3 +183,21 @@ export const ModalCalculator = (props) => {
 };
 
 export default ModalCalculator;
+
+// const lastCommercialAccountingDate = useRef(moment().toISOString());
+// const futureCommercialAccountingDate = useRef(moment().toISOString());
+// const lastCheckingDate = useRef(moment().toISOString());
+// const futureCheckingDate = useRef(moment().toISOString());
+// const port = useRef(1234);
+// const infoId = useRef(1);
+
+// const form = {
+//   serialNumberRandom,
+//   deviceAddressRandom,
+// lastCommercialAccountingDate,
+// futureCommercialAccountingDate,
+// lastCheckingDate,
+// futureCheckingDate,
+// port,
+// infoId,
+// };

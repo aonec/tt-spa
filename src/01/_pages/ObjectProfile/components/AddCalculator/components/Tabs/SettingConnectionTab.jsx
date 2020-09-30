@@ -6,24 +6,11 @@ import { AddDeviceContext } from '../../index';
 
 const SettingConnectionTab = () => {
   const {
-    form,
     onInputChange,
     datetoISOString,
     addPeriod,
     onSelectChange,
   } = useContext(AddDeviceContext);
-
-  // const {
-  //   serialNumberRandom,
-  //   deviceAddressRandom,
-  //   serialNumber,
-  //   lastCommercialAccountingDate,
-  //   futureCommercialAccountingDate,
-  //   lastCheckingDate,
-  //   futureCheckingDate,
-  //   port,
-  //   infoId,
-  // } = form;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -36,7 +23,6 @@ const SettingConnectionTab = () => {
           type="text"
           required
           placeholder="192.168.0.1"
-          // defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
