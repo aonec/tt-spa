@@ -1,7 +1,4 @@
 import moment from 'moment';
-import { combineReducers } from 'redux';
-import { reducerCalc } from './reducers/reducerCalc';
-import { reducerDev } from './reducers/reducerDev';
 
 export const initialState = {
   checkingDate: moment().toISOString(),
@@ -18,7 +15,7 @@ export const initialState = {
   serialNumber: 'serialNumber',
 };
 
-export function reducer(state = initialState, action) {
+export function reducerCalc(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 

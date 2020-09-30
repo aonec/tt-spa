@@ -22,7 +22,7 @@ import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
 import { useApp } from './useApp';
 import { Provider, connect } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, compose } from 'redux';
 
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
@@ -30,11 +30,13 @@ import { initialState, reducer } from '01/Redux';
 
 moment.locale('ru');
 
-export const store = createStore(reducer);
-store.subscribe(() => {
-  console.log(store.getState());
-});
+const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+  })
+  : compose;
 
+export const store = createStore(reducer);
 // store.dispatch({
 //   type: 'ADD_TODO',
 //   text: 'Read the docs'

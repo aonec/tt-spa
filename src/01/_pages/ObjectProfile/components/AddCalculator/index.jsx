@@ -5,6 +5,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -111,6 +112,7 @@ export const ModalCalculator = (props) => {
 
   const buttonHandler = () => {
     console.log(store.getState());
+    console.log(props);
   };
 
   store.subscribe(() => {
@@ -151,7 +153,7 @@ export const ModalCalculator = (props) => {
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
+            <button onClick={buttonHandler}>getKey</button>
           </ModalTop>
 
           <ModalMain>
@@ -172,7 +174,13 @@ export const ModalCalculator = (props) => {
   );
 };
 
-export default ModalCalculator;
+// ???
+function mapStateToProps(state) {
+  console.log('test');
+  return { infoId: state.infoId };
+}
+// ???
+export default connect(mapStateToProps)(ModalCalculator);
 
 // const lastCommercialAccountingDate = useRef(moment().toISOString());
 // const futureCommercialAccountingDate = useRef(moment().toISOString());
