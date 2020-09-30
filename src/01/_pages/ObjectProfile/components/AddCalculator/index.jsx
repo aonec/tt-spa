@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
-import { createStore } from 'redux';
+import {connect} from 'react-redux'
 import { useParams } from 'react-router-dom';
 import '01/tt-components/antd.scss';
 import {
@@ -247,4 +247,4 @@ export const ModalCalculator = () => {
     </AddDeviceContext.Provider>
   );
 };
-export default ModalCalculator;
+export default connect()(ModalCalculator);
