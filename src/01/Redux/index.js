@@ -12,17 +12,17 @@ export const initialState = {
   futureCommercialAccountingDate: moment().toISOString(),
   housingStockId: 0,
   infoId: 1,
-  serialNumber: 'REDUX',
+  serialNumber: 'serialNumber',
 };
 
 export function reducer(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 
-  console.log(connection);
+  // console.log(connection);
 
   if (action.type === 'InfoId') {
-    return { ...state, infoId: action.value };
+    return { ...state, infoId: Number(action.value) };
   }
   if (action.type === 'serialNumber') {
     // здесь это тоже передается строковым значением
