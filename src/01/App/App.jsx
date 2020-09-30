@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.css';
@@ -18,12 +18,11 @@ import {
   AccessDeniedPage,
 } from '01/_pages';
 
-import {Demo} from '01/_pages/Demo'
 
 import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
 import { useApp } from './useApp';
-import { Provider } from 'react-redux'
+import { Provider, connect } from 'react-redux'
 import {createStore} from 'redux'
 
 // библиотека обработки дат и локализация СНГ
@@ -46,6 +45,7 @@ store.subscribe(() => {
 
 export function App() {
   const AppProvider = useApp();
+
   return styled(app)(
     <Provider store={store}>
     <AppProvider>
@@ -54,7 +54,6 @@ export function App() {
         <Route path="/logout" render={() => 'logout'} />
         {/* <Route path="/error/" render={() => "404"} /> */}
         <Route path="/error/" render={() => <ErrorPage />} />
-        <Route path="/demo/" render={() => <Demo />} />
         <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
         <Route path="/">
           <layout>
@@ -110,4 +109,11 @@ export function App() {
   );
 }
 
-export default App;
+function mapStateToProps(state){
+  return {
+    lastCommercialAccountingDate: state.lastCommercialAccountingDate
+  
+  }
+} 
+
+export default connect(mapStateToProps)(App);

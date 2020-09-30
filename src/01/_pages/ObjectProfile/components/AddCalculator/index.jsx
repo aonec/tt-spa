@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
-import {connect} from 'react-redux'
 import { useParams } from 'react-router-dom';
 import '01/tt-components/antd.scss';
 import {
@@ -22,7 +21,8 @@ import {store} from '01/App/App'
 
 export const AddDeviceContext = React.createContext();
 
-export const ModalCalculator = () => {
+export const ModalCalculator = (props) => {
+ 
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
     return Math.round(rand);
@@ -38,6 +38,7 @@ export const ModalCalculator = () => {
 
   const modalRef = React.createRef();
   useEffect(()=>{
+    console.log("APP", props)
     store.dispatch({ type: 'housingStockId', value: Number(objid) });
   },[])
   const lastCommercialAccountingDate = useRef(moment().toISOString());
@@ -208,6 +209,7 @@ export const ModalCalculator = () => {
     }
   };
 
+
   return (
     <AddDeviceContext.Provider
       value={{
@@ -247,4 +249,6 @@ export const ModalCalculator = () => {
     </AddDeviceContext.Provider>
   );
 };
-export default connect()(ModalCalculator);
+
+
+export default ModalCalculator;
