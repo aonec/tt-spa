@@ -30,13 +30,7 @@ import { initialState, reducer } from '01/Redux';
 
 moment.locale('ru');
 
-const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-  })
-  : compose;
-
-export const store = createStore(reducer);
+export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // store.dispatch({
 //   type: 'ADD_TODO',
 //   text: 'Read the docs'
