@@ -18,6 +18,7 @@ import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
 // const redux = require('redux');
+import {store} from '01/App/App'
 
 export const AddDeviceContext = React.createContext();
 
@@ -33,55 +34,6 @@ export const ModalCalculator = () => {
   const { 0: objid } = useParams();
   console.log(Number(objid));
 
-  const initialState = {
-    checkingDate: moment().toISOString(),
-    futureCheckingDate: moment().toISOString(),
-    lastCommercialAccountingDate: moment().toISOString(),
-    connection: {
-      ipV4: '192.168.0.1',
-      deviceAddress: deviceAddressRandom,
-      port: 1234,
-    },
-    futureCommercialAccountingDate: moment().toISOString(),
-    housingStockId: Number(objid),
-    infoId: 1,
-    serialNumber: null,
-  };
-  // serialNumber: 'serialNumber' -  это должно быть строковым значением
-  // но здесь ругается, потому что его не устрривает формат
-  // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
-  // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
-
-  const reducer = (state = initialState, action) => {
-    const { connection } = state;
-    let { ipV4, deviceAddress, port } = connection;
-
-    console.log(connection);
-
-    if (action.type === 'InfoId') {
-      return { ...state, infoId: action.value };
-    }
-    if (action.type === 'serialNumber') {
-      // здесь это тоже передается строковым значением
-
-      return { ...state, serialNumber: `${action.value}` };
-    }
-    if (action.type === 'port') {
-      return { ...state, port: action.value };
-    }
-    if (action.type === 'ipV4') {
-      ipV4 = `${action.value}`;
-      const res = { ipV4, deviceAddress, port };
-
-      return { ...state, connection: res };
-    }
-
-    return state;
-  };
-
-  const store = createStore(reducer);
-
-  // const [currentTabKey, setTab] = useState('1');
   const [currentTabKey, setTab] = useState('1');
 
   const modalRef = React.createRef();
@@ -199,10 +151,13 @@ export const ModalCalculator = () => {
 
   const buttonHandler = () => {};
 
-  const test = () => {
-    console.log('test');
-    console.log(store.getState());
-    console.log(reference.current);
+  const before = () => {
+    console.log(store.getState())
+  
+  };
+
+  const after = () => {
+    store.dispatch({ type: 'ADD_TODO' });
   };
 
   const reference = useRef();
@@ -212,6 +167,8 @@ export const ModalCalculator = () => {
     reference.current = store.getState();
   });
 
+  store.dispatch({ type: 'housingStockId', value: Number(objid) });
+
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
 
@@ -219,11 +176,11 @@ export const ModalCalculator = () => {
       // но здесь ругается, потому что его не устрривает формат
       // делаю так же как у ipV4, но serialNumber всё равно выдет ошибку
       // при этом если в initialState прописать готовое значение в кавычках, и его не менять, то всё ок
-      console.log(reference.current);
-      // const res = await axios.post('Calculators', a);
-      // alert('Вычислитель успешно создан !');
-      // console.log(res);
-      // return res;
+      console.log(store.getState());
+      const res = await axios.post('Calculators', reference.current);
+      alert('Вычислитель успешно создан !');
+      console.log(res);
+      return res;
     } catch (error) {
       console.log(error);
       alert(
@@ -245,7 +202,8 @@ export const ModalCalculator = () => {
     >
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
-          <button onClick={test}>test</button>
+          <button onClick={before}>before</button>
+          <button onClick={after}>after</button>
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
