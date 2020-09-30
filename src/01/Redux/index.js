@@ -6,7 +6,7 @@ export const initialState = {
   lastCommercialAccountingDate: moment().toISOString(),
   connection: {
     ipV4: '192.168.0.1',
-    deviceAddress: 1234567890,
+    deviceAddress: 0,
     port: 1234,
   },
   futureCommercialAccountingDate: moment().toISOString(),
@@ -44,12 +44,12 @@ export function reducer(state = initialState, action) {
     return { ...state, futureCommercialAccountingDate: action.value };
   }
   if (action.type === 'port') {
-    port = action.value;
-    return { ...state, connection: {ipV4, deviceAddress, port} };
+    port = Number(action.value);
+    return { ...state, connection: { ipV4, deviceAddress, port } };
   }
   if (action.type === 'ipV4') {
     ipV4 = `${action.value}`;
-    return { ...state, connection: {ipV4, deviceAddress, port} };
+    return { ...state, connection: { ipV4, deviceAddress, port } };
   }
   return state;
 }

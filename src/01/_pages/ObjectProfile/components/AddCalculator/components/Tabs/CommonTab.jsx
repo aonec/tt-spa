@@ -17,19 +17,6 @@ const CommonTab = () => {
     onSelectChange,
   } = useContext(AddDeviceContext);
 
-  const {
-    serialNumberRandom,
-    deviceAddressRandom,
-    // serialNumber,
-    lastCommercialAccountingDate,
-    futureCommercialAccountingDate,
-    lastCheckingDate,
-    futureCheckingDate,
-    port,
-    infoId,
-    ipV4,
-  } = form;
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
@@ -41,7 +28,6 @@ const CommonTab = () => {
           type="text"
           required
           placeholder="serialNumber"
-          // defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>

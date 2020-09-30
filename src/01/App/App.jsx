@@ -106,10 +106,4 @@ export function App() {
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    lastCommercialAccountingDate: state.lastCommercialAccountingDate,
-  };
-}
-
-export default connect(mapStateToProps)(App);
+export default App;
