@@ -69,7 +69,7 @@ const CommonTab = () => {
             id="lastCommercialAccountingDate"
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, lastCommercialAccountingDate);
+              datetoISOString(date, dateString, "lastCommercialAccountingDate");
             }}
           />
         </ConfigProvider>
@@ -83,7 +83,7 @@ const CommonTab = () => {
           <DatePicker
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, lastCheckingDate);
+              datetoISOString(date, dateString, "checkingDate");
             }}
           />
         </ConfigProvider>
@@ -97,7 +97,7 @@ const CommonTab = () => {
           <DatePicker
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, futureCheckingDate);
+              datetoISOString(date, dateString, "futureCheckingDate");
             }}
           />
         </ConfigProvider>

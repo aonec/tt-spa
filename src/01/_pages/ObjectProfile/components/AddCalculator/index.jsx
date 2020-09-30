@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
@@ -37,7 +37,9 @@ export const ModalCalculator = () => {
   const [currentTabKey, setTab] = useState('1');
 
   const modalRef = React.createRef();
-
+  useEffect(()=>{
+    store.dispatch({ type: 'housingStockId', value: Number(objid) });
+  },[])
   const lastCommercialAccountingDate = useRef(moment().toISOString());
   const futureCommercialAccountingDate = useRef(moment().toISOString());
   const lastCheckingDate = useRef(moment().toISOString());
@@ -89,12 +91,20 @@ export const ModalCalculator = () => {
       case 'ipV4':
         store.dispatch({ type: 'ipV4', value });
         break;
-      case 'futureCommercialAccountingDate':
-        store.dispatch({ type: 'futureCommercialAccountingDate', value });
+      case 'lastCommercialAccountingDate':
+        store.dispatch({ type: 'lastCommercialAccountingDate', value });
         break;
-
-      default:
-        console.log('Кажется, нужно проверить правильно ли передан ID', name);
+        case 'checkingDate':
+          store.dispatch({ type: 'checkingDate', value });
+          break;
+          case 'futureCommercialAccountingDate':
+            store.dispatch({ type: 'futureCommercialAccountingDate', value });
+            break;  
+            case 'futureCheckingDate':
+              store.dispatch({ type: 'futureCheckingDate', value });
+              break;  
+        default:
+        console.log('Кажется, нужно проверить правильно ли передан ID', name, value);
     }
   };
 
@@ -141,8 +151,15 @@ export const ModalCalculator = () => {
   }
 
   function datetoISOString(date, dateString, someRef) {
-    someRef.current = date.toISOString();
-    console.log(someRef.current);
+    // someRef.current = date.toISOString();
+    const value = date.toISOString();
+    const name = someRef;
+
+    console.log('name', name)
+    console.log('value', value)
+    onChangeUniversal(name, value);
+    // console.log(someRef.current);
+    // store.dispatch()
   }
 
   const hideMe = () => {
@@ -167,7 +184,8 @@ export const ModalCalculator = () => {
     reference.current = store.getState();
   });
 
-  store.dispatch({ type: 'housingStockId', value: Number(objid) });
+
+ 
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');

@@ -26,20 +26,30 @@ export function reducer(state = initialState, action) {
   }
   if (action.type === 'serialNumber') {
     // здесь это тоже передается строковым значением
-
     return { ...state, serialNumber: `${action.value}` };
   }
   if (action.type === 'housingStockId') {
     return { ...state, housingStockId: action.value };
   }
+  if (action.type === 'lastCommercialAccountingDate') {
+    return { ...state, lastCommercialAccountingDate: action.value };
+  }
+  if (action.type === 'checkingDate') {
+    return { ...state, checkingDate: action.value };
+  }
+  if (action.type === 'futureCheckingDate') {
+    return { ...state, futureCheckingDate: action.value };
+  }
+  if (action.type === 'futureCommercialAccountingDate') {
+    return { ...state, futureCommercialAccountingDate: action.value };
+  }
   if (action.type === 'port') {
-    return { ...state, port: action.value };
+    port = action.value;
+    return { ...state, connection: {ipV4, deviceAddress, port} };
   }
   if (action.type === 'ipV4') {
     ipV4 = `${action.value}`;
-    const res = { ipV4, deviceAddress, port };
-    return { ...state, connection: res };
+    return { ...state, connection: {ipV4, deviceAddress, port} };
   }
-
   return state;
 }
