@@ -22,51 +22,49 @@ import TabsComponent from './components/Tabs/Main';
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = (props) => {
-  function randomInteger(min, max) {
-    const rand = min + Math.random() * (max - min);
-    return Math.round(rand);
-  }
-
-  const serialNumberRandom = randomInteger(1, 999999999);
-  const deviceAddressRandom = randomInteger(1, 255);
-
   const { 0: objid } = useParams();
-  console.log(Number(objid));
-
   const [currentTabKey, setTab] = useState('1');
-
+  const reference = useRef();
   const modalRef = React.createRef();
+
   useEffect(() => {
-    console.log('APP', props);
+    // console.log('APP', props);
     store.dispatch({ type: 'housingStockId', value: Number(objid) });
   }, []);
-
-  const reference = useRef();
 
   function handleChangeTab(value) {
     setTab(value);
   }
 
-  // Применяем только для select, для select - onInputChange
+  const handleNext = () => {
+    setTab(String(Number(currentTabKey) + 1));
+  };
+
+  // Применяем только для Select, для select - onInputChange
   const onSelectChange = (value, target) => {
     const name = target.parent;
     onChangeUniversal(name, value);
   };
 
-  // Применяем только для input, для select - onSelectChange
+  // Применяем только для Input, для select - onSelectChange
   const onInputChange = (event) => {
     const name = event.target.id;
     onChangeUniversal(name, event.target.value);
   };
 
+  // Применяем только для DatePicker, для select - onSelectChange
+  function datetoISOString(date, dateString, someRef) {
+    const value = date.toISOString();
+    const name = someRef;
+    // console.log('name', name);
+    // console.log('value', value);
+    onChangeUniversal(name, value);
+  }
+
   // Универсальная функция
   const onChangeUniversal = (name, value) => {
-    console.log(name, value);
+    // console.log(name, value);
     store.dispatch({ type: `${name}`, value });
-  };
-
-  const handleNext = () => {
-    setTab(String(Number(currentTabKey) + 1));
   };
 
   const renderNextButton = () => {
@@ -104,14 +102,6 @@ export const ModalCalculator = (props) => {
     const value = moment()
       .add(period, 'year')
       .toISOString();
-    onChangeUniversal(name, value);
-  }
-
-  function datetoISOString(date, dateString, someRef) {
-    const value = date.toISOString();
-    const name = someRef;
-    console.log('name', name);
-    console.log('value', value);
     onChangeUniversal(name, value);
   }
 
@@ -201,3 +191,11 @@ export default ModalCalculator;
 // port,
 // infoId,
 // };
+
+// function randomInteger(min, max) {
+//   const rand = min + Math.random() * (max - min);
+//   return Math.round(rand);
+// }
+
+// const serialNumberRandom = randomInteger(1, 999999999);
+// const deviceAddressRandom = randomInteger(1, 255);
