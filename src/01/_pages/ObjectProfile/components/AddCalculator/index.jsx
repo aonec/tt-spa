@@ -1,4 +1,6 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, {
+  useState, useRef, useContext, useEffect,
+} from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
@@ -13,16 +15,13 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
+import { store } from '01/App/App';
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-
-// const redux = require('redux');
-import {store} from '01/App/App'
 
 export const AddDeviceContext = React.createContext();
 
 export const ModalCalculator = (props) => {
- 
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max - min);
     return Math.round(rand);
@@ -37,10 +36,10 @@ export const ModalCalculator = (props) => {
   const [currentTabKey, setTab] = useState('1');
 
   const modalRef = React.createRef();
-  useEffect(()=>{
-    console.log("APP", props)
+  useEffect(() => {
+    console.log('APP', props);
     store.dispatch({ type: 'housingStockId', value: Number(objid) });
-  },[])
+  }, []);
   const lastCommercialAccountingDate = useRef(moment().toISOString());
   const futureCommercialAccountingDate = useRef(moment().toISOString());
   const lastCheckingDate = useRef(moment().toISOString());
@@ -95,17 +94,21 @@ export const ModalCalculator = (props) => {
       case 'lastCommercialAccountingDate':
         store.dispatch({ type: 'lastCommercialAccountingDate', value });
         break;
-        case 'checkingDate':
-          store.dispatch({ type: 'checkingDate', value });
-          break;
-          case 'futureCommercialAccountingDate':
-            store.dispatch({ type: 'futureCommercialAccountingDate', value });
-            break;  
-            case 'futureCheckingDate':
-              store.dispatch({ type: 'futureCheckingDate', value });
-              break;  
-        default:
-        console.log('Кажется, нужно проверить правильно ли передан ID', name, value);
+      case 'checkingDate':
+        store.dispatch({ type: 'checkingDate', value });
+        break;
+      case 'futureCommercialAccountingDate':
+        store.dispatch({ type: 'futureCommercialAccountingDate', value });
+        break;
+      case 'futureCheckingDate':
+        store.dispatch({ type: 'futureCheckingDate', value });
+        break;
+      default:
+        console.log(
+          'Кажется, нужно проверить правильно ли передан ID',
+          name,
+          value,
+        );
     }
   };
 
@@ -156,8 +159,8 @@ export const ModalCalculator = (props) => {
     const value = date.toISOString();
     const name = someRef;
 
-    console.log('name', name)
-    console.log('value', value)
+    console.log('name', name);
+    console.log('value', value);
     onChangeUniversal(name, value);
     // console.log(someRef.current);
     // store.dispatch()
@@ -170,8 +173,7 @@ export const ModalCalculator = (props) => {
   const buttonHandler = () => {};
 
   const before = () => {
-    console.log(store.getState())
-  
+    console.log(store.getState());
   };
 
   const after = () => {
@@ -184,9 +186,6 @@ export const ModalCalculator = (props) => {
     console.log('subscribe');
     reference.current = store.getState();
   });
-
-
- 
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -208,7 +207,6 @@ export const ModalCalculator = (props) => {
       throw new Error(error);
     }
   };
-
 
   return (
     <AddDeviceContext.Provider
@@ -249,6 +247,5 @@ export const ModalCalculator = (props) => {
     </AddDeviceContext.Provider>
   );
 };
-
 
 export default ModalCalculator;

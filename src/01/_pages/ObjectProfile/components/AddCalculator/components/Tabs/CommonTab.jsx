@@ -41,7 +41,7 @@ const CommonTab = () => {
           type="text"
           required
           placeholder="serialNumber"
-                 // defaultValue="192.168.0.1"
+          // defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
@@ -69,7 +69,7 @@ const CommonTab = () => {
             id="lastCommercialAccountingDate"
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, "lastCommercialAccountingDate");
+              datetoISOString(date, dateString, 'lastCommercialAccountingDate');
             }}
           />
         </ConfigProvider>
@@ -83,7 +83,7 @@ const CommonTab = () => {
           <DatePicker
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, "checkingDate");
+              datetoISOString(date, dateString, 'checkingDate');
             }}
           />
         </ConfigProvider>
@@ -97,7 +97,7 @@ const CommonTab = () => {
           <DatePicker
             defaultValue={moment()}
             onChange={(date, dateString) => {
-              datetoISOString(date, dateString, "futureCheckingDate");
+              datetoISOString(date, dateString, 'futureCheckingDate');
             }}
           />
         </ConfigProvider>

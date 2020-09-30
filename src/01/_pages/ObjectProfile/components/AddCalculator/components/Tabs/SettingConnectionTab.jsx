@@ -13,17 +13,17 @@ const SettingConnectionTab = () => {
     onSelectChange,
   } = useContext(AddDeviceContext);
 
-  const {
-    serialNumberRandom,
-    deviceAddressRandom,
-    serialNumber,
-    lastCommercialAccountingDate,
-    futureCommercialAccountingDate,
-    lastCheckingDate,
-    futureCheckingDate,
-    port,
-    infoId,
-  } = form;
+  // const {
+  //   serialNumberRandom,
+  //   deviceAddressRandom,
+  //   serialNumber,
+  //   lastCommercialAccountingDate,
+  //   futureCommercialAccountingDate,
+  //   lastCheckingDate,
+  //   futureCheckingDate,
+  //   port,
+  //   infoId,
+  // } = form;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
