@@ -25,9 +25,9 @@ import TabsComponent from './components/Tabs/Main';
 export const AddDeviceContext = React.createContext();
 
 const ModalCalculator = (props) => {
-  const { onChangeUniversal, help } = props;
+  const { onChangeUniversal, reducerCalc } = props;
   // console.log('onChangeUniversal', onChangeUniversal);
-  // console.log('help', help);
+  // console.log('reducerCalc', reducerCalc);
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const reference = useRef();
@@ -35,10 +35,12 @@ const ModalCalculator = (props) => {
 
   console.log('APP', props);
 
-  // useEffect(() => {
-  //   // console.log('APP', props);
-  //   store.dispatch({ type: 'housingStockId', value: Number(objid) });
-  // }, []);
+  useEffect(() => {
+    // console.log('APP', props);
+    const name = 'housingStockId';
+    const value = Number(objid);
+    onChangeUniversal(name, value);
+  }, []);
 
   function handleChangeTab(value) {
     setTab(value);
@@ -119,7 +121,7 @@ const ModalCalculator = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log(help);
+    console.log(reducerCalc);
   };
 
   // store.subscribe(() => {
@@ -132,7 +134,7 @@ const ModalCalculator = (props) => {
     try {
       console.log(store.getState());
       // const res = await axios.post('Calculators', reference.current);
-      const res = await axios.post('Calculators', help);
+      const res = await axios.post('Calculators', reducerCalc);
       alert('Вычислитель успешно создан !');
       console.log(res);
       return res;
@@ -184,14 +186,13 @@ const ModalCalculator = (props) => {
 
 function mapStateToProps(state) {
   return {
-    help: state.reducerCalc,
+    reducerCalc: state.reducerCalc,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     // someFunc: (number) => dispatch({ type: 'ADD2', payload: number }),
-
     onChangeUniversal: (name, value) => dispatch({ type: `${name}`, value }),
   };
 }

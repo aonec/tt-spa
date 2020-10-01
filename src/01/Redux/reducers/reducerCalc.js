@@ -22,7 +22,7 @@ export default function reducerCalc(state = initialState, action) {
   // console.log(connection);
 
   if (action.type === 'InfoId') {
-    return { ...state, infoId: Number(action.value) };
+    return { ...state, infoId: +action.value };
   }
   if (action.type === 'serialNumber') {
     // здесь это тоже передается строковым значением
