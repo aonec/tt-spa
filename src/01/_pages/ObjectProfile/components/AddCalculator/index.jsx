@@ -17,21 +17,28 @@ import {
 } from '01/tt-components/Modal';
 
 import { store } from '01/App/App';
+import Counter from './components/Counter';
+
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
 export const AddDeviceContext = React.createContext();
 
-export const ModalCalculator = (props) => {
+const ModalCalculator = (props) => {
+  const { onChangeUniversal, help } = props;
+  // console.log('onChangeUniversal', onChangeUniversal);
+  // console.log('help', help);
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const reference = useRef();
   const modalRef = React.createRef();
 
-  useEffect(() => {
-    // console.log('APP', props);
-    store.dispatch({ type: 'housingStockId', value: Number(objid) });
-  }, []);
+  console.log('APP', props);
+
+  // useEffect(() => {
+  //   // console.log('APP', props);
+  //   store.dispatch({ type: 'housingStockId', value: Number(objid) });
+  // }, []);
 
   function handleChangeTab(value) {
     setTab(value);
@@ -63,10 +70,11 @@ export const ModalCalculator = (props) => {
   }
 
   // Универсальная функция
-  const onChangeUniversal = (name, value) => {
-    // console.log(name, value);
-    store.dispatch({ type: `${name}`, value });
-  };
+  // const onChangeUniversal = (name, value) => {
+  //   // console.log(name, value);
+
+  //   store.dispatch({ type: `${name}`, value });
+  // };
 
   const renderNextButton = () => {
     if (currentTabKey === '3') {
@@ -111,20 +119,20 @@ export const ModalCalculator = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log(store.getState());
-    console.log(props);
+    console.log(help);
   };
 
-  store.subscribe(() => {
-    console.log('subscribe');
-    reference.current = store.getState();
-  });
+  // store.subscribe(() => {
+  //   console.log('subscribe', store.getState());
+  //   reference.current = store.getState();
+  // });
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
       console.log(store.getState());
-      const res = await axios.post('Calculators', reference.current);
+      // const res = await axios.post('Calculators', reference.current);
+      const res = await axios.post('Calculators', help);
       alert('Вычислитель успешно создан !');
       console.log(res);
       return res;
@@ -149,13 +157,13 @@ export const ModalCalculator = (props) => {
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
+          {/* <Counter /> */}
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
             <button onClick={buttonHandler}>getKey</button>
           </ModalTop>
-
           <ModalMain>
             <TabsComponent
               currentTabKey={currentTabKey}
@@ -174,36 +182,21 @@ export const ModalCalculator = (props) => {
   );
 };
 
-// ???
 function mapStateToProps(state) {
-  console.log('test');
-  return { infoId: state.infoId };
+  return {
+    help: state.reducerCalc,
+  };
 }
-// ???
-export default connect(mapStateToProps)(ModalCalculator);
 
-// const lastCommercialAccountingDate = useRef(moment().toISOString());
-// const futureCommercialAccountingDate = useRef(moment().toISOString());
-// const lastCheckingDate = useRef(moment().toISOString());
-// const futureCheckingDate = useRef(moment().toISOString());
-// const port = useRef(1234);
-// const infoId = useRef(1);
+function mapDispatchToProps(dispatch) {
+  return {
+    // someFunc: (number) => dispatch({ type: 'ADD2', payload: number }),
 
-// const form = {
-//   serialNumberRandom,
-//   deviceAddressRandom,
-// lastCommercialAccountingDate,
-// futureCommercialAccountingDate,
-// lastCheckingDate,
-// futureCheckingDate,
-// port,
-// infoId,
-// };
+    onChangeUniversal: (name, value) => dispatch({ type: `${name}`, value }),
+  };
+}
 
-// function randomInteger(min, max) {
-//   const rand = min + Math.random() * (max - min);
-//   return Math.round(rand);
-// }
-
-// const serialNumberRandom = randomInteger(1, 999999999);
-// const deviceAddressRandom = randomInteger(1, 255);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModalCalculator);

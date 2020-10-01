@@ -1,7 +1,4 @@
 import moment from 'moment';
-import { combineReducers } from 'redux';
-import { reducerCalc } from './reducers/reducerCalc';
-import { reducerDev } from './reducers/reducerDev';
 
 export const initialState = {
   checkingDate: moment().toISOString(),
@@ -14,11 +11,11 @@ export const initialState = {
   },
   futureCommercialAccountingDate: moment().toISOString(),
   housingStockId: 0,
-  infoId: 1,
+  infoId: 200,
   serialNumber: 'serialNumber',
 };
 
-export function reducer(state = initialState, action) {
+export function counter2(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 
@@ -56,3 +53,5 @@ export function reducer(state = initialState, action) {
   }
   return state;
 }
+
+export default counter2;

@@ -15,7 +15,7 @@ export const initialState = {
   serialNumber: 'serialNumber',
 };
 
-export default function reducerDev(state = initialState, action) {
+export function reducerCalc(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 

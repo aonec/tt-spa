@@ -10,12 +10,12 @@ export const initialState = {
     port: 1234,
   },
   futureCommercialAccountingDate: moment().toISOString(),
-  housingStockId: 0,
+  housingStockId: 485,
   infoId: 1,
   serialNumber: 'serialNumber',
 };
 
-export function reducerCalc(state = initialState, action) {
+export default function reducerCalc(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 
