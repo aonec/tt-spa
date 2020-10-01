@@ -22,15 +22,24 @@ import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
 import { useApp } from './useApp';
 import { Provider, connect } from 'react-redux';
-import { createStore, compose } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
-import { initialState, reducer } from '01/Redux';
+import rootReducer from '01/Redux/rootReducer';
 
 moment.locale('ru');
 
-export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const loggerMiddleware = (store) => (next) => (action) => {
+  const result = next(action);
+  console.log('Middleware', store.getState());
+  return result;
+};
+
+export const store = createStore(rootReducer, applyMiddleware(loggerMiddleware));
+
+// export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
 // store.dispatch({
 //   type: 'ADD_TODO',
 //   text: 'Read the docs'
@@ -38,6 +47,7 @@ export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ &&
 
 export function App() {
   const AppProvider = useApp();
+  console.log('store', store);
 
   return styled(app)(
     <Provider store={store}>

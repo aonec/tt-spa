@@ -24,6 +24,7 @@
     "react-scripts": "^3.4.3",
     "react-tagsinput": "^3.19.0",
     "react-test-render": "^1.1.2",
+    "react-thunk": "^1.0.0",
     "redux": "^4.0.5",
     "reshadow": "^0.0.1-alpha.75",
     "styled-components": "^5.1.1",

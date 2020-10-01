@@ -10,19 +10,19 @@ export const initialState = {
     port: 1234,
   },
   futureCommercialAccountingDate: moment().toISOString(),
-  housingStockId: 485,
+  housingStockId: 0,
   infoId: 1,
   serialNumber: 'serialNumber',
 };
 
-export default function reducerCalc(state = initialState, action) {
+export function reducerCalc(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 
   // console.log(connection);
 
   if (action.type === 'InfoId') {
-    return { ...state, infoId: +action.value };
+    return { ...state, infoId: Number(action.value) };
   }
   if (action.type === 'serialNumber') {
     // здесь это тоже передается строковым значением
