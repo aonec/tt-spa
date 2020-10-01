@@ -164,7 +164,7 @@ export const ModalCalculator = (props) => {
           </ModalMain>
 
           <ModalBottom>
-            <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
+            <ButtonTT color={"white"} onClick={hideMe}>Отмена</ButtonTT>
             {renderNextButton()}
             {renderSubmitButton()}
           </ModalBottom>
