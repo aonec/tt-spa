@@ -20,13 +20,12 @@ import {
 
 import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
-import { useApp } from './useApp';
 import { Provider, connect } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
-
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
+import { useApp } from './useApp';
 
 moment.locale('ru');
 

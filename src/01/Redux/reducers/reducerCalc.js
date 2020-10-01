@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 
 const INFO_ID = 'InfoId';
 const SERIAL_NUMBER = 'serialNumber';
@@ -12,6 +13,7 @@ const FUTURE_COMMERCIAL_ACCOUNTING_DATE = 'futureCommercialAccountingDate';
 const HOUSE_STOCKING_ID = 'housingStockId';
 
 export const initialState = {
+  serialNumber: '',
   checkingDate: moment().toISOString(),
   futureCheckingDate: moment().toISOString(),
   lastCommercialAccountingDate: moment().toISOString(),
@@ -23,12 +25,18 @@ export const initialState = {
   futureCommercialAccountingDate: moment().toISOString(),
   housingStockId: 0,
   infoId: 1,
-  serialNumber: 'serialNumber',
 };
 
 export default function reducerCalc(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
+
+  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
+    const newState = _.cloneDeep(state);
+    const { payload: { path, value } } = action;
+    _.set(newState, path, value);
+    return newState;
+  }
 
   // console.log(connection);
 
