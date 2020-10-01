@@ -21,33 +21,31 @@ const props = {
   },
 };
 
-const DocumentsTab = () => {
-  return (
-    <div>
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">Добавьте акт выполненных работ</p>
-      </Dragger>
+const DocumentsTab = () => (
+  <div>
+    <Dragger {...props}>
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      <p className="ant-upload-text">Добавьте акт выполненных работ</p>
+    </Dragger>
 
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">Добавьте паспорт прибора</p>
-      </Dragger>
+    <Dragger {...props}>
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      <p className="ant-upload-text">Добавьте паспорт прибора</p>
+    </Dragger>
 
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">
-          Добавьте свидетельство о поверке прибора
-        </p>
-      </Dragger>
-    </div>
-  );
-};
+    <Dragger {...props}>
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      <p className="ant-upload-text">
+        Добавьте свидетельство о поверке прибора
+      </p>
+    </Dragger>
+  </div>
+);
 
 export default DocumentsTab;

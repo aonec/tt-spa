@@ -5,11 +5,17 @@ import {
 import { AddDeviceContext } from '../../index';
 
 const SettingConnectionTab = () => {
-  const { onInputChange } = useContext(AddDeviceContext);
+  const {
+    onInputChange,
+    datetoISOString,
+    addPeriod,
+    onSelectChange,
+  } = useContext(AddDeviceContext);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource">
           IP адрес вычислителя
         </Label>
         <InputTT
@@ -17,13 +23,12 @@ const SettingConnectionTab = () => {
           type="text"
           required
           placeholder="192.168.0.1"
-          defaultValue="192.168.0.1"
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
 
       <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
+        <Label color="grey" htmlFor="#resource">
           Порт
         </Label>
         <InputTT

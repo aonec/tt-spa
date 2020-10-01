@@ -12,7 +12,6 @@ import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
-import { SearchCalculator } from './components/AddCalculator/components/SearchCalculator';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -36,7 +35,6 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <Header {...header} />
-      {/* <SearchCalculator /> */}
       <Tabs />
       <grid>
         <Route path="/*/(\\d+)" exact>

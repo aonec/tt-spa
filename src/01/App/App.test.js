@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import App from './App';
 import { Switch } from 'antd';
 
+
 configure({ adapter: new Adapter() });
 describe('<App />', () => {
   it('Should render three carachters', () => {
