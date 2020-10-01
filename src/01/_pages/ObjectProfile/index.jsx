@@ -12,6 +12,7 @@ import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
+import {ButtonTT} from "../../tt-components/ButtonTT";
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -35,6 +36,11 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <Header {...header} />
+      <div style={{backgroundColor: "#ccc"}}>
+      {/*<ButtonTT>*/}
+      {/*  button*/}
+      {/*</ButtonTT>*/}
+      </div>
       <Tabs />
       <grid>
         <Route path="/*/(\\d+)" exact>
