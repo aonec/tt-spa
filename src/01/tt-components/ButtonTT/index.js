@@ -50,18 +50,18 @@ export const ButtonTT = styled.button`
       
       
       
-       ${({ disabledButton }) => (disabledButton === 'true'
-    && css`
+       $:disabled {
         background: rgba(39, 47, 90, 0.32);
         color: #ffffff;
-      `)};
+      )};
       
       &:active {
         background-color: #272F5A;
       }
       
       &:disabled {
-        background-color: rgba(39, 47, 90, 0.32)
+        background-color: rgba(39, 47, 90, 0.32);
+        color: #fff;
       }
       
 

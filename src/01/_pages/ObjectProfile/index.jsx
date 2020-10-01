@@ -38,9 +38,9 @@ export const ObjectProfile = () => {
     <>
       <Header {...header} />
       <div style={{}}>
-      <ButtonTT disabled={true}>
-        button
-      </ButtonTT>
+      {/*<ButtonTT disabled={true}>*/}
+      {/*  button*/}
+      {/*</ButtonTT>*/}
       </div>
       <Tabs />
       <grid>
