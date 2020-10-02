@@ -8,4 +8,3 @@ export * from './Text';
 export * from './InputTT';
 export * from './ButtonTT';
 export * from './Modal';
-export * from './Header';
