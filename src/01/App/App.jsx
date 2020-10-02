@@ -27,7 +27,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
-import Devices from "../_pages/Devices/Devices";
+import Devices from "01/_pages/Devices/Devices";
 
 
 moment.locale('ru');

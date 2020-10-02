@@ -1,9 +1,12 @@
 import React from "react";
+import Header from "../../tt-components/Header";
+
+
 
 const Devices = () => {
     return (
         <div>
-            <h1 style={{ fontWeight: 300 }}>Приборы</h1>
+            <Header>Приборы</Header>
         </div>
     )
 }
