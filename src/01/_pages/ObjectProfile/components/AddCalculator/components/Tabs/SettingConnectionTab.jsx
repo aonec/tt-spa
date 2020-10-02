@@ -1,16 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { connect, useSelector } from 'react-redux';
 import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
 
-const SettingConnectionTab = () => {
-  const {
-    onInputChange,
-    datetoISOString,
-    addPeriod,
-    onSelectChange,
-  } = useContext(AddDeviceContext);
+const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
+  const a = 'a';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -23,7 +19,11 @@ const SettingConnectionTab = () => {
           type="text"
           required
           placeholder="192.168.0.1"
-          onChange={(event) => onInputChange(event)}
+          onChange={(event) => {
+            const { value } = event.target;
+            const path = ['ipV4'];
+            onChangeFormValueByPath(path, value);
+          }}
         />
       </InputWrap>
 
@@ -37,7 +37,11 @@ const SettingConnectionTab = () => {
           required
           placeholder="1234"
           defaultValue="1234"
-          onChange={(event) => onInputChange(event)}
+          onChange={(event) => {
+            const { value } = event.target;
+            const path = ['port'];
+            onChangeFormValueByPath(path, Number(value));
+          }}
         />
       </InputWrap>
 
@@ -54,4 +58,18 @@ const SettingConnectionTab = () => {
   );
 };
 
-export default SettingConnectionTab;
+const mapDispatchToProps = (dispatch) => ({
+  onChangeFormValueByPath: (path, value) => {
+    dispatch({
+      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+      payload: { path, value },
+    });
+  },
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SettingConnectionTab);
+
+// export default SettingConnectionTab;

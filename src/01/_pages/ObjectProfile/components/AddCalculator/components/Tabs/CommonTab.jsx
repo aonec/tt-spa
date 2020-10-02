@@ -11,13 +11,7 @@ import { AddDeviceContext } from '../../index';
 import { items, serviceLife } from '../CalculatorJSON';
 
 const CommonTab = ({ onChangeFormValueByPath }) => {
-  const {
-    form,
-    onInputChange,
-    datetoISOString,
-    addPeriod,
-    onSelectChange,
-  } = useContext(AddDeviceContext);
+  const { addPeriod } = useContext(AddDeviceContext);
   const serialNumber = useSelector(
     (state) => _.get(state, ['reducerCalc', 'serialNumber']),
     '',
@@ -52,7 +46,7 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
           onChange={(event) => {
             const value = event;
             const path = ['infoId'];
-            onChangeFormValueByPath(path, value);
+            onChangeFormValueByPath(path, Number(value));
           }}
           options={items}
           defaultValue={items[0].value}
@@ -72,10 +66,6 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
               const value = date.toISOString();
               onChangeFormValueByPath(path, value);
             }}
-
-            // onChange={(date, dateString) => {
-            //   datetoISOString(date, dateString, 'lastCommercialAccountingDate');
-            // }}
           />
         </ConfigProvider>
       </InputWrap>
@@ -136,13 +126,6 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
             const path = ['futureCommercialAccountingDate'];
             onChangeFormValueByPath(path, value);
           }}
-          // const value = moment()
-          // .add(period, 'year')
-          // .toISOString();
-
-          // onChange={(value, target) => {
-          //   addPeriod(value, 'futureCommercialAccountingDate');
-          // }}
           placeholder="Укажите период"
           options={serviceLife}
           defaultValue={serviceLife[0].value}

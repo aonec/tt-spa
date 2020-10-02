@@ -29,11 +29,28 @@ export const initialState = {
 
 export default function reducerCalc(state = initialState, action) {
   const { connection } = state;
-  const { ipV4, deviceAddress, port } = connection;
+  let { ipV4, deviceAddress, port } = connection;
 
   if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
     const newState = _.cloneDeep(state);
-    const { payload: { path, value } } = action;
+    const {
+      payload: { path, value },
+    } = action;
+
+    if (path[0] === 'port') {
+      port = value;
+
+      _.set(newState, 'connection', { ipV4, deviceAddress, port });
+      return newState;
+    }
+
+    if (path[0] === 'ipV4') {
+      ipV4 = value;
+      const res = { value, deviceAddress, port };
+      _.set(newState, 'connection', { ipV4, deviceAddress, port });
+      return newState;
+    }
+
     _.set(newState, path, value);
     return newState;
   }
