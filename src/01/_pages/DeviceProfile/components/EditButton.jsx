@@ -93,6 +93,7 @@ export const Menu = (showPopupHandler) => {
   function editDevice() {
     console.log('editDevice');
     console.log('window.location.pathname', window.location.pathname);
+    window.location.assign(`${window.location.pathname}/edit`);
   }
 
   //   <Apartments

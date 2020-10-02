@@ -16,9 +16,10 @@ import {
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
-  EditDevice,
   Devices,
 } from '01/_pages';
+
+import EditDevice from '01/_pages/EditDevice';
 
 import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';

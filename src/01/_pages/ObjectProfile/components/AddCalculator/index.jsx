@@ -15,8 +15,6 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
-import { store } from '01/App/App';
-
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 
@@ -24,6 +22,7 @@ export const AddDeviceContext = React.createContext();
 
 const ModalCalculator = (props) => {
   const { onChangeFormValueByPath, reducerCalc } = props;
+  console.log('reducerCalc', reducerCalc);
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
@@ -83,8 +82,6 @@ const ModalCalculator = (props) => {
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      console.log(store.getState());
-      // const res = await axios.post('Calculators', reference.current);
       const res = await axios.post('Calculators', reducerCalc);
       alert('Вычислитель успешно создан !');
       console.log(res);
