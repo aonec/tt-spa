@@ -1,14 +1,13 @@
-import React from "react";
-import Header from "../../tt-components/Header";
+import React from 'react';
+import { Header } from '../../tt-components';
+import TabsDevices from "./components/TabsDevices";
 
 
+const Devices = () => (
+    <div>
+        <Header>Приборы</Header>
+        <TabsDevices />
+    </div>
+);
 
-const Index = () => {
-    return (
-        <div>
-            <Header>Приборы</Header>
-        </div>
-    )
-}
-
-export default Index;
+export default Devices;
