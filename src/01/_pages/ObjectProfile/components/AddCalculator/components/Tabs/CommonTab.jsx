@@ -18,7 +18,10 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
     addPeriod,
     onSelectChange,
   } = useContext(AddDeviceContext);
-  const serialNumber = useSelector((state) => _.get(state, ['reducerCalc', 'serialNumber']), '');
+  const serialNumber = useSelector(
+    (state) => _.get(state, ['reducerCalc', 'serialNumber']),
+    '',
+  );
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
@@ -46,7 +49,11 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
         <Select
           placeholder="Выберите тип устройства"
           id="infoId"
-          onChange={onSelectChange}
+          onChange={(event) => {
+            const value = event;
+            const path = ['infoId'];
+            onChangeFormValueByPath(path, value);
+          }}
           options={items}
           defaultValue={items[0].value}
         />
@@ -60,9 +67,15 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
           <DatePicker
             id="lastCommercialAccountingDate"
             defaultValue={moment()}
-            onChange={(date, dateString) => {
-              datetoISOString(date, dateString, 'lastCommercialAccountingDate');
+            onChange={(date) => {
+              const path = ['lastCommercialAccountingDate'];
+              const value = date.toISOString();
+              onChangeFormValueByPath(path, value);
             }}
+
+            // onChange={(date, dateString) => {
+            //   datetoISOString(date, dateString, 'lastCommercialAccountingDate');
+            // }}
           />
         </ConfigProvider>
       </InputWrap>
@@ -74,9 +87,15 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
         <ConfigProvider locale={ruRu}>
           <DatePicker
             defaultValue={moment()}
-            onChange={(date, dateString) => {
-              datetoISOString(date, dateString, 'checkingDate');
+            onChange={(date) => {
+              const path = ['checkingDate'];
+              const value = date.toISOString();
+              onChangeFormValueByPath(path, value);
             }}
+
+            // onChange={(date, dateString) => {
+            //   datetoISOString(date, dateString, 'checkingDate');
+            // }}
           />
         </ConfigProvider>
       </InputWrap>
@@ -88,9 +107,15 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
         <ConfigProvider locale={ruRu}>
           <DatePicker
             defaultValue={moment()}
-            onChange={(date, dateString) => {
-              datetoISOString(date, dateString, 'futureCheckingDate');
+            onChange={(date) => {
+              const path = ['futureCheckingDate'];
+              const value = date.toISOString();
+              onChangeFormValueByPath(path, value);
             }}
+
+            // onChange={(date, dateString) => {
+            //   datetoISOString(date, dateString, 'futureCheckingDate');
+            // }}
           />
         </ConfigProvider>
       </InputWrap>
@@ -104,6 +129,20 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
           onChange={(value, target) => {
             addPeriod(value, 'futureCommercialAccountingDate');
           }}
+          onChange={(event) => {
+            const value = moment()
+              .add(event, 'year')
+              .toISOString();
+            const path = ['futureCommercialAccountingDate'];
+            onChangeFormValueByPath(path, value);
+          }}
+          // const value = moment()
+          // .add(period, 'year')
+          // .toISOString();
+
+          // onChange={(value, target) => {
+          //   addPeriod(value, 'futureCommercialAccountingDate');
+          // }}
           placeholder="Укажите период"
           options={serviceLife}
           defaultValue={serviceLife[0].value}
@@ -122,4 +161,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(null, mapDispatchToProps)(CommonTab);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(CommonTab);
