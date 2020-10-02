@@ -1,5 +1,6 @@
 import React from "react";
-import Header from "../../tt-components/Header";
+import {Header} from "../../tt-components/";
+
 
 
 
