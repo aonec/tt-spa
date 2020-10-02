@@ -25,7 +25,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
-import { Devices } from '01/_pages/Devices';
+import Devices from '01/_pages/Devices';
 import { useApp } from './useApp';
 
 moment.locale('ru');
@@ -36,7 +36,10 @@ const loggerMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
-export const store = createStore(rootReducer, applyMiddleware(loggerMiddleware));
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(loggerMiddleware),
+);
 
 // export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
