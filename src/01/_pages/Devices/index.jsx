@@ -3,7 +3,7 @@ import Header from "../../tt-components/Header";
 
 
 
-const Devices = () => {
+const Index = () => {
     return (
         <div>
             <Header>Приборы</Header>
@@ -11,4 +11,4 @@ const Devices = () => {
     )
 }
 
-export default Devices;
+export default Index;
