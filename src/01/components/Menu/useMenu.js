@@ -13,6 +13,7 @@ export function useMenu() {
     { name: "Выход из системы", to: "/login/", perm: ["all"] },
     { name: "Задачи", to: "/tasks/", icon: "task", perm: ["all"] },
     { name: "Объекты", to: "/objects/", icon: "object", perm: ["all"] },
+    { name: "Приборы", to: "/devices/", icon: "devices", perm: ["all"] },
     {
       name: "Собственники",
       to: "/owners/",
