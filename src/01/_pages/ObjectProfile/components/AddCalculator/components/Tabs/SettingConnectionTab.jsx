@@ -46,7 +46,7 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
           type="number"
           required
           placeholder="1234"
-          defaultValue={port}
+          value={port}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['port'];
