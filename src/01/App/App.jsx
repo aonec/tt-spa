@@ -16,6 +16,8 @@ import {
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
+  EditDevice,
+  Devices,
 } from '01/_pages';
 
 import { IndividualDevice } from '01/_pages/IndividualDevice';
@@ -25,7 +27,6 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
-import Devices from '01/_pages/Devices';
 import { useApp } from './useApp';
 
 moment.locale('ru');
@@ -77,11 +78,19 @@ export function App() {
                   <Route path="/tasks/(\\d+)" component={TaskProfile} />
                   <Route path="/objects/" component={Objects} exact />
                   <Route path="/devices/" component={Devices} exact />
+
                   <Route
                     path="/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?"
                     component={DeviceProfile}
                     exact
                   />
+
+                  <Route
+                    path="/objects/(\\d+)/devices/(\\d+)/edit/"
+                    component={EditDevice}
+                    exact
+                  />
+
                   <Route
                     path="/objects/(\\d+)/(apartments|devices)?"
                     component={ObjectProfile}

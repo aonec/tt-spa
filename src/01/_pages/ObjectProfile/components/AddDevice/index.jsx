@@ -23,7 +23,7 @@ import TabsComponent from './components/Tabs/Main';
 export const AddDeviceContext = React.createContext();
 
 const ModalAddDevice = (props) => {
-  const { onChangeFormValueByPath, reducerCalc } = props;
+  const { onChangeFormValueByPath, reducerDev } = props;
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
@@ -34,7 +34,7 @@ const ModalAddDevice = (props) => {
     onChangeFormValueByPath(name, value);
   }, []);
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     setTab(value);
   }
 
@@ -77,7 +77,7 @@ const ModalAddDevice = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log(reducerCalc);
+    console.log(reducerDev);
   };
 
   const handleSubmit = async () => {
@@ -85,7 +85,7 @@ const ModalAddDevice = (props) => {
     try {
       console.log(store.getState());
       // const res = await axios.post('Calculators', reference.current);
-      const res = await axios.post('Calculators', reducerCalc);
+      const res = await axios.post('HousingMeteringDevices', reducerDev);
       alert('Вычислитель успешно создан !');
       console.log(res);
       return res;
@@ -102,7 +102,7 @@ const ModalAddDevice = (props) => {
     <AddDeviceContext.Provider value={{}}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
-          <ModalClose getModal={modalRef} />
+          <ModalClose getModal={modalRef}/>
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового ОДПУ
@@ -129,16 +129,16 @@ const ModalAddDevice = (props) => {
   );
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state){
   return {
-    reducerCalc: state.reducerCalc,
+    reducerDev: state.reducerDev,
   };
 }
 
 const mapDispatchToProps = (dispatch) => ({
   onChangeFormValueByPath: (path, value) => {
     dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH2',
       payload: { path, value },
     });
   },

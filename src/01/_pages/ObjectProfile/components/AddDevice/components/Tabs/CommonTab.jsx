@@ -8,16 +8,69 @@ import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
-import { items, serviceLife } from '../CalculatorJSON';
+import { items, serviceLife, types, resources } from '../CalculatorJSON';
 
-const CommonTab = ({ onChangeFormValueByPath }) => {
+const CommonTab = ({ onChangeFormValueByPath2 }) => {
   const { addPeriod } = useContext(AddDeviceContext);
   const serialNumber = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'serialNumber']),
+    (state) => _.get(state, ['reducerDev', 'serialNumber']),
     '',
   );
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+      <InputWrap>
+        <Label color="grey" htmlFor="#type">
+          Выберите тип прибора
+        </Label>
+        <Select
+          id="housingMeteringDeviceType"
+          onChange={(event) => {
+            const value = event;
+            console.log(event)
+            const path = ['housingMeteringDeviceType'];
+            onChangeFormValueByPath2(path, value);
+          }}
+          options={types}
+          defaultValue={types[0].value}
+        />
+      </InputWrap>
+
+
+      <InputWrap>
+        <Label color="grey" htmlFor="#resource">
+          Выберите тип ресурса
+        </Label>
+
+        <Select
+          id="resource"
+          onChange={(event) => {
+            const value = event;
+            const path = ['resource'];
+            onChangeFormValueByPath2(path, value);
+          }}
+          options={resources}
+          defaultValue={resources[0].value}
+        />
+      </InputWrap>
+
+
+      <InputWrap>
+        <Label color="grey" htmlFor="#model">
+          Выберите модель прибора
+        </Label>
+        <InputTT
+          id="model"
+          type="text"
+          onChange={(event) => {
+            const { value } = event.target;
+            const path = ['model'];
+            onChangeFormValueByPath2(path, value);
+          }}
+        />
+      </InputWrap>
+
+
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Серийный номер
@@ -30,28 +83,29 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
           onChange={(event) => {
             const { value } = event.target;
             const path = ['serialNumber'];
-            onChangeFormValueByPath(path, value);
+            onChangeFormValueByPath2(path, value);
           }}
         />
       </InputWrap>
+
 
       <InputWrap>
-        <Label color="grey" htmlFor="#type">
-          Тип вычислителя
+        <Label color="grey" htmlFor="#lastCommercialAccountingDate">
+          Дата выпуска прибора
         </Label>
-
-        <Select
-          placeholder="Выберите тип устройства"
-          id="infoId"
-          onChange={(event) => {
-            const value = event;
-            const path = ['infoId'];
-            onChangeFormValueByPath(path, Number(value));
-          }}
-          options={items}
-          defaultValue={items[0].value}
-        />
+        <ConfigProvider locale={ruRu}>
+          <DatePicker
+            id="lastCommercialAccountingDate"
+            defaultValue={moment()}
+            onChange={(date) => {
+              const path = ['lastCommercialAccountingDate'];
+              const value = date.toISOString();
+              onChangeFormValueByPath2(path, value);
+            }}
+          />
+        </ConfigProvider>
       </InputWrap>
+
 
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
@@ -64,7 +118,7 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
             onChange={(date) => {
               const path = ['lastCommercialAccountingDate'];
               const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
+              onChangeFormValueByPath2(path, value);
             }}
           />
         </ConfigProvider>
@@ -80,27 +134,12 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
             onChange={(date) => {
               const path = ['checkingDate'];
               const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
+              onChangeFormValueByPath2(path, value);
             }}
           />
         </ConfigProvider>
       </InputWrap>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата Следующей поверки
-        </Label>
-        <ConfigProvider locale={ruRu}>
-          <DatePicker
-            defaultValue={moment()}
-            onChange={(date) => {
-              const path = ['futureCheckingDate'];
-              const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
-            }}
-          />
-        </ConfigProvider>
-      </InputWrap>
 
       <InputWrap>
         <Label color="grey" htmlFor="#resource" className="tt-label">
@@ -116,7 +155,7 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
               .add(event, 'year')
               .toISOString();
             const path = ['futureCommercialAccountingDate'];
-            onChangeFormValueByPath(path, value);
+            onChangeFormValueByPath2(path, value);
           }}
           placeholder="Укажите период"
           options={serviceLife}
@@ -128,9 +167,9 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
+  onChangeFormValueByPath2: (path, value) => {
     dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH2',
       payload: { path, value },
     });
   },

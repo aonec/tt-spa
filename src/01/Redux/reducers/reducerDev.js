@@ -1,55 +1,106 @@
 import moment from 'moment';
+import _ from 'lodash';
 
-export const initialState = {
+function randomInteger(min, max) {
+  // случайное число от min до (max+1)
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+}
+
+const initialState = {
+  calculatorId: 1553976,
   checkingDate: moment().toISOString(),
-  futureCheckingDate: moment().toISOString(),
-  lastCommercialAccountingDate: moment().toISOString(),
   connection: {
-    ipV4: '192.168.0.1',
-    deviceAddress: 0,
-    port: 1234,
+    ipV4: '192.168.1.1',
+    deviceAddress: randomInteger(1, 255),
+    port: 0,
   },
+  futureCheckingDate: moment().toISOString(),
   futureCommercialAccountingDate: moment().toISOString(),
+  housingMeteringDeviceType: 'FlowMeter',
   housingStockId: 0,
-  infoId: 1,
-  serialNumber: 'serialNumber',
+  lastCommercialAccountingDate: moment().toISOString(),
+  model: 'TEST',
+  pipe: {
+    entryNumber: 1,
+    hubNumber: 1,
+    pipeNumber: 1,
+    magistral: 'FeedFlow',
+  },
+  resource: 'ColdWaterSupply',
+  serialNumber: '',
 };
 
 export default function reducerDev(state = initialState, action) {
-  const { connection } = state;
-  let { ipV4, deviceAddress, port } = connection;
+  const { connection, pipe } = state;
+  const { ipV4, deviceAddress, port } = connection;
+  let {
+    entryNumber, hubNumber, pipeNumber, magistral,
+  } = pipe;
 
-  // console.log(connection);
+  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH2') {
+    const newState = _.cloneDeep(state);
+    const {
+      payload: { path, value },
+    } = action;
 
-  if (action.type === 'InfoId') {
-    return { ...state, infoId: Number(action.value) };
+    switch (path[0]) {
+      case 'pipeNumber':
+        pipeNumber = value;
+        _.set(newState, 'pipe', {
+          entryNumber, hubNumber, pipeNumber, magistral,
+        });
+        return newState;
+      case 'magistral':
+        magistral = value;
+        _.set(newState, 'pipe', {
+          entryNumber, hubNumber, pipeNumber, magistral,
+        });
+        return newState;
+      case 'entryNumber':
+        entryNumber = value;
+        _.set(newState, 'pipe', {
+          entryNumber, hubNumber, pipeNumber, magistral,
+        });
+        return newState;
+
+      case 'hubNumber':
+        hubNumber = value;
+        _.set(newState, 'pipe', {
+          entryNumber, hubNumber, pipeNumber, magistral,
+        });
+        return newState;
+
+      default:
+        _.set(newState, path, value);
+    }
+
+    return newState;
   }
-  if (action.type === 'serialNumber') {
-    // здесь это тоже передается строковым значением
-    return { ...state, serialNumber: `${action.value}` };
-  }
-  if (action.type === 'housingStockId') {
-    return { ...state, housingStockId: action.value };
-  }
-  if (action.type === 'lastCommercialAccountingDate') {
-    return { ...state, lastCommercialAccountingDate: action.value };
-  }
-  if (action.type === 'checkingDate') {
-    return { ...state, checkingDate: action.value };
-  }
-  if (action.type === 'futureCheckingDate') {
-    return { ...state, futureCheckingDate: action.value };
-  }
-  if (action.type === 'futureCommercialAccountingDate') {
-    return { ...state, futureCommercialAccountingDate: action.value };
-  }
-  if (action.type === 'port') {
-    port = Number(action.value);
-    return { ...state, connection: { ipV4, deviceAddress, port } };
-  }
-  if (action.type === 'ipV4') {
-    ipV4 = `${action.value}`;
-    return { ...state, connection: { ipV4, deviceAddress, port } };
-  }
+
   return state;
 }
+
+// const TEST = {
+//   calculatorId: 193130939,
+//   checkingDate: '2020-09-25T12:55:18.417Z',
+//   connection: {
+//     ipV4: '192.168.0.82',
+//     deviceAddress: 201,
+//     port: 1234,
+//   },
+//   futureCheckingDate: '2020-09-25T12:55:18.417Z',
+//   futureCommercialAccountingDate: '2020-09-25T12:55:18.417Z',
+//   housingMeteringDeviceType: 'FlowMeter',
+//   housingStockId: 485,
+//   lastCommercialAccountingDate: '2020-09-25T12:55:18.417Z',
+//   model: 'TEST',
+//   pipe: {
+//     entryNumber: 1,
+//     hubNumber: 1,
+//     pipeNumber: 1,
+//     magistral: 'FeedFlow',
+//   },
+//   resource: 'ColdWaterSupply',
+//   serialNumber: '193130939',
+// };

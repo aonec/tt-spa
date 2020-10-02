@@ -7,12 +7,7 @@ import { AddODPUDeviceContext } from '../../index';
 
 export const Page2 = () => {
   const {
-    serialNumberRandom,
     onInputChange,
-    lastCommercialAccountingDate,
-    datetoISOString,
-    lastCheckingDate,
-    futureCheckingDate,
     futureCommercialAccountingDate,
     addPeriod,
     onSelectChange,
@@ -66,11 +61,6 @@ export const Page2 = () => {
           onChange={(event) => onInputChange(event)}
         />
       </InputWrap>
-      {/*
-      const entryNumber = useRef(1);
-  const hubNumber = useRef(1);
-  const pipeNumber = useRef(1);
-   */}
       <InputWrap>
         <Label color="grey" htmlFor="#resource">
           Номер ввода
