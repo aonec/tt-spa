@@ -33,9 +33,7 @@ export default function reducerCalc(state = initialState, action) {
 
   if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
     const newState = _.cloneDeep(state);
-    const {
-      payload: { path, value },
-    } = action;
+    const { payload: { path, value } } = action;
     _.set(newState, path, value);
     return newState;
   }
@@ -72,4 +70,5 @@ export default function reducerCalc(state = initialState, action) {
   //   ipV4 = `${action.value}`;
   //   return { ...state, connection: { ipV4, deviceAddress, port } };
   // }
-
+  return state;
+}

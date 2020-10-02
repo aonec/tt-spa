@@ -25,15 +25,22 @@ import TabsComponent from './components/Tabs/Main';
 export const AddDeviceContext = React.createContext();
 
 const ModalCalculator = (props) => {
-  const { reducerCalc } = props;
+  const { onChangeUniversal, reducerCalc } = props;
   // console.log('onChangeUniversal', onChangeUniversal);
   // console.log('reducerCalc', reducerCalc);
-
+  const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const reference = useRef();
   const modalRef = React.createRef();
 
   console.log('APP', props);
+
+  useEffect(() => {
+    // console.log('APP', props);
+    const name = 'housingStockId';
+    const value = Number(objid);
+    onChangeUniversal(name, value);
+  }, []);
 
   function handleChangeTab(value) {
     setTab(value);
@@ -44,23 +51,25 @@ const ModalCalculator = (props) => {
   };
 
   // Применяем только для Select, для select - onInputChange
-  // const onSelectChange = (value, target) => {
-  //   const name = target.parent;
-  //   onChangeUniversal(name, value);
-  // };
+  const onSelectChange = (value, target) => {
+    const name = target.parent;
+    onChangeUniversal(name, value);
+  };
 
   // Применяем только для Input, для select - onSelectChange
-  // const onInputChange = (event) => {
-  //   const name = event.target.id;
-  //   onChangeUniversal(name, event.target.value);
-  // };
+  const onInputChange = (event) => {
+    const name = event.target.id;
+    onChangeUniversal(name, event.target.value);
+  };
 
   // Применяем только для DatePicker, для select - onSelectChange
-  // function datetoISOString(date, dateString, someRef) {
-  //   const value = date.toISOString();
-  //   const name = someRef;
-  //   onChangeUniversal(name, value);
-  // }
+  function datetoISOString(date, dateString, someRef) {
+    const value = date.toISOString();
+    const name = someRef;
+    // console.log('name', name);
+    // console.log('value', value);
+    onChangeUniversal(name, value);
+  }
 
   // Универсальная функция
   // const onChangeUniversal = (name, value) => {
@@ -99,13 +108,13 @@ const ModalCalculator = (props) => {
     );
   };
 
-  // function addPeriod(period, someRef) {
-  //   const name = someRef.toString();
-  //   const value = moment()
-  //     .add(period, 'year')
-  //     .toISOString();
-  //   onChangeUniversal(name, value);
-  // }
+  function addPeriod(period, someRef) {
+    const name = someRef.toString();
+    const value = moment()
+      .add(period, 'year')
+      .toISOString();
+    onChangeUniversal(name, value);
+  }
 
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
@@ -141,10 +150,10 @@ const ModalCalculator = (props) => {
   return (
     <AddDeviceContext.Provider
       value={{
-        // onInputChange,
-        // datetoISOString,
-        // addPeriod,
-        // onSelectChange,
+        onInputChange,
+        datetoISOString,
+        addPeriod,
+        onSelectChange,
       }}
     >
       <Modal id="add-calculator" ref={modalRef}>
@@ -165,9 +174,7 @@ const ModalCalculator = (props) => {
           </ModalMain>
 
           <ModalBottom>
-            <ButtonTT color="white" onClick={hideMe}>
-              Отмена
-            </ButtonTT>
+            <ButtonTT color={"white"} onClick={hideMe}>Отмена</ButtonTT>
             {renderNextButton()}
             {renderSubmitButton()}
           </ModalBottom>
@@ -183,13 +190,14 @@ function mapStateToProps(state) {
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     // someFunc: (number) => dispatch({ type: 'ADD2', payload: number }),
-//     onChangeUniversal: (name, value) => dispatch({ type: `${name}`, value }),
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    // someFunc: (number) => dispatch({ type: 'ADD2', payload: number }),
+    onChangeUniversal: (name, value) => dispatch({ type: `${name}`, value }),
+  };
+}
 
-// export default ModalCalculator;
-
-export default connect(mapStateToProps)(ModalCalculator);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModalCalculator);
