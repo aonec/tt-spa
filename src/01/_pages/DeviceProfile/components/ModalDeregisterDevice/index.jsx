@@ -12,14 +12,14 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/Modal';
+} from '01/tt-components/Modal';
 
 import { DeviceContext } from '../../DeviceProfile';
 import {
   Label, Title, Text, Icon,
 } from '../../../../tt-components';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
-import '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/antd.scss';
+import '01/tt-components/antd.scss';
 
 const hideMe = () => {
   $('#modal-deregister-device').css('display', 'none');

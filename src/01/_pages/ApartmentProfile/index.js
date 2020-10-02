@@ -20,10 +20,9 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 
-import { convertDate } from '../../_api/utils/convertDate';
 
 // стилизация
-import '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/antd.scss';
+import '01/tt-components/antd.scss';
 
 const ApartmentProfile = () => {
   const params = useParams();

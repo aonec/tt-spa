@@ -5,7 +5,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/antd.scss';
+import '01/tt-components/antd.scss';
 import {
   Modal,
   ModalWrap,
@@ -13,7 +13,7 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/Modal';
+} from '01/tt-components/Modal';
 
 import { store } from '01/App/App';
 

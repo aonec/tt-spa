@@ -5,7 +5,7 @@ import React, {
   useEffect,
   Children,
 } from 'react';
-import '01/_pages/ObjectProfile/components/AddDevice_backup/node_modules/01/tt-components/antd.scss';
+import '01/tt-components/antd.scss';
 import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
