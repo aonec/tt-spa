@@ -38,27 +38,27 @@ export default function reducerCalc(state = initialState, action) {
         return newState;
 
       default:
+        _.set(newState, path, value);
     }
 
-    // if (path[0] === "port") {
-    //   port = value;
-    //   _.set(newState, "connection", { ipV4, deviceAddress, port });
-    //   return newState;
-    // }
-
-    // if (path[0] === "ipV4") {
-    //   ipV4 = value;
-    //   const res = { value, deviceAddress, port };
-    //   _.set(newState, "connection", { ipV4, deviceAddress, port });
-    //   return newState;
-    // }
-
-    _.set(newState, path, value);
     return newState;
   }
 
   return state;
 }
+
+// if (path[0] === "port") {
+//   port = value;
+//   _.set(newState, "connection", { ipV4, deviceAddress, port });
+//   return newState;
+// }
+
+// if (path[0] === "ipV4") {
+//   ipV4 = value;
+//   const res = { value, deviceAddress, port };
+//   _.set(newState, "connection", { ipV4, deviceAddress, port });
+//   return newState;
+// }
 
 // const INFO_ID = 'InfoId';
 // const SERIAL_NUMBER = 'serialNumber';

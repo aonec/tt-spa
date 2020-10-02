@@ -22,13 +22,10 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modal';
-import { ModalDeregisterDevice } from './components/ModalDeregisterDevice';
+import ModalDeregisterDevice from './components/ModalDeregisterDevice';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
-
-// import { Changes } from './components/Changes';
-// import { Documents } from './components/Documents';
 
 export const DeviceContext = React.createContext();
 
