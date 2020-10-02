@@ -100,12 +100,12 @@ const ModalAddDevice = (props) => {
 
   return (
     <AddDeviceContext.Provider value={{}}>
-      <Modal id="add-calculator" ref={modalRef}>
+      <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
-              Добавление нового вычислителя
+              Добавление нового ОДПУ
             </Title>
             <button onClick={buttonHandler}>getKey</button>
           </ModalTop>
