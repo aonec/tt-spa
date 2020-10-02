@@ -3,10 +3,19 @@ import { connect, useSelector } from 'react-redux';
 import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
+import _ from 'lodash';
 import { AddDeviceContext } from '../../index';
 
 const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
-  const a = 'a';
+  const ipV4 = useSelector(
+    (state) => _.get(state, ['reducerCalc', 'ipV4']),
+    '',
+  );
+
+  const port = useSelector(
+    (state) => _.get(state, ['reducerCalc', 'port']),
+    '',
+  );
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -18,6 +27,7 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
           id="ipV4"
           type="text"
           required
+          value={ipV4}
           placeholder="192.168.0.1"
           onChange={(event) => {
             const { value } = event.target;
@@ -36,7 +46,7 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
           type="number"
           required
           placeholder="1234"
-          defaultValue="1234"
+          defaultValue={port}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['port'];

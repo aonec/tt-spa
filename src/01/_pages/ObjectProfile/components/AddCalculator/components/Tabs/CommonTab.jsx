@@ -82,10 +82,6 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
               const value = date.toISOString();
               onChangeFormValueByPath(path, value);
             }}
-
-            // onChange={(date, dateString) => {
-            //   datetoISOString(date, dateString, 'checkingDate');
-            // }}
           />
         </ConfigProvider>
       </InputWrap>
@@ -102,10 +98,6 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
               const value = date.toISOString();
               onChangeFormValueByPath(path, value);
             }}
-
-            // onChange={(date, dateString) => {
-            //   datetoISOString(date, dateString, 'futureCheckingDate');
-            // }}
           />
         </ConfigProvider>
       </InputWrap>

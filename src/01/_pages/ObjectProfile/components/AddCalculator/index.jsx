@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import '01/tt-components/antd.scss';
@@ -27,7 +26,6 @@ const ModalCalculator = (props) => {
   const { onChangeFormValueByPath, reducerCalc } = props;
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
-  const reference = useRef();
   const modalRef = React.createRef();
 
   useEffect(() => {
@@ -74,14 +72,6 @@ const ModalCalculator = (props) => {
     );
   };
 
-  // function addPeriod(period, someRef) {
-  //   const name = someRef.toString();
-  //   const value = moment()
-  //     .add(period, 'year')
-  //     .toISOString();
-  //   onChangeUniversal(name, value);
-  // }
-
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
   };
@@ -89,11 +79,6 @@ const ModalCalculator = (props) => {
   const buttonHandler = () => {
     console.log(reducerCalc);
   };
-
-  // store.subscribe(() => {
-  //   console.log('subscribe', store.getState());
-  //   reference.current = store.getState();
-  // });
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -118,7 +103,6 @@ const ModalCalculator = (props) => {
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
-          {/* <Counter /> */}
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового вычислителя
