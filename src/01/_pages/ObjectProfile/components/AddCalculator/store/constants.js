@@ -1,0 +1,1 @@
+export const CHANGE_INPU_VALUE = 'CHANGE_INPU_VALUE'

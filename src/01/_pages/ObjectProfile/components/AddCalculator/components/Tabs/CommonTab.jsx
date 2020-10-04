@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { ConfigProvider, DatePicker, Select } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
@@ -9,13 +9,18 @@ import {
 } from '01/tt-components';
 import { AddDeviceContext } from '../../index';
 import { items, serviceLife } from '../CalculatorJSON';
+import {changeInputVal} from '../../store/actions'
 
 const CommonTab = ({ onChangeFormValueByPath }) => {
   const { addPeriod } = useContext(AddDeviceContext);
-  const serialNumber = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'serialNumber']),
-    '',
-  );
+  const calcState = useSelector(state => state.calc)
+  const dispatch = useDispatch()
+
+  console.log(calcState)
+  const handleChange = (e) => {
+    // e.target.name, e.target.value
+    dispatch(changeInputVal(e.target.name, e.target.value))
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -27,12 +32,9 @@ const CommonTab = ({ onChangeFormValueByPath }) => {
           id="serialNumber"
           required
           placeholder="Serial number..."
-          value={serialNumber}
-          onChange={(event) => {
-            const { value } = event.target;
-            const path = ['serialNumber'];
-            onChangeFormValueByPath(path, value);
-          }}
+          // value={serialNumber}
+          name="serialNumber"
+          onChange={(e)=>handleChange(e)}
         />
       </InputWrap>
 
