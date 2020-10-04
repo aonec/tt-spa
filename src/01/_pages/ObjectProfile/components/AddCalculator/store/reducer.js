@@ -1,32 +1,37 @@
 import moment from 'moment';
 import _ from 'lodash';
-import {CHANGE_INPU_VALUE} from './constants';
+import { CHANGE_INPU_VALUE } from './constants';
 
 const initialState = {
-  serialNumber: '',
-  checkingDate: moment().toISOString(),
-  futureCheckingDate: moment().toISOString(),
-  lastCommercialAccountingDate: moment().toISOString(),
-  connection: {
-    ipV4: '192.168.0.1',
-    deviceAddress: 0,
-    port: 1234,
-  },
-  futureCommercialAccountingDate: moment().toISOString(),
-  housingStockId: 0,
-  infoId: 1,
-}; 
+	serialNumber: '',
+	checkingDate: moment().toISOString(),
+	futureCheckingDate: moment().toISOString(),
+	lastCommercialAccountingDate: moment().toISOString(),
+	connection: {
+		ipV4: '192.168.0.1',
+		deviceAddress: 0,
+		port: 1234
+	},
+	futureCommercialAccountingDate: { value: '4', label: '4 года', id: 1 },
+	housingStockId: 0,
+	infoId: {
+		value: '1',
+		label: 'ТЭМ-106',
+		id: 1,
+		parent: 'infoId'
+	}
+};
 
-const calc = (state = initialState, action) =>{
-    switch(action.type){
-        case CHANGE_INPU_VALUE :
-            return {...state, ...action.payload}
-        default:
-             return state
-    }
-}
+const calc = (state = initialState, action) => {
+	switch (action.type) {
+		case CHANGE_INPU_VALUE:
+			return { ...state, ...action.payload };
+		default:
+			return state;
+	}
+};
 
-export default calc
+export default calc;
 
 // if (path[0] === "port") {
 //   port = value;
