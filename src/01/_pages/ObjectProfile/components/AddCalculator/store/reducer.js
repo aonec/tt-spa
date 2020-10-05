@@ -12,7 +12,7 @@ const initialState = {
     deviceAddress: 0,
     port: 1234,
   },
-  futureCommercialAccountingDate: { value: '4', label: '4 года', id: 1 },
+  futureCommercialAccountingDate: moment().toISOString(),
   housingStockId: 0,
   infoId: 1,
 };

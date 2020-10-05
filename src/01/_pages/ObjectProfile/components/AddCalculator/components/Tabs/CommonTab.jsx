@@ -132,15 +132,16 @@ const CommonTab = () => {
           id="futureCommercialAccountingDate"
           onChange={(event) => {
             const value = moment()
-              .add(lastCommercialAccountingDate, 'year')
+              .add(event, 'year')
               .toISOString();
+            console.log(value);
             const path = ['futureCommercialAccountingDate'];
             dispatch(onChangeFormValueByPath(path, value));
           }}
           name="futureCommercialAccountingDate"
           placeholder="Укажите период"
           options={serviceLife}
-          defaultValue={futureCommercialAccountingDate.value}
+          // defaultValue={futureCommercialAccountingDate.value}
         />
       </InputWrap>
     </div>
