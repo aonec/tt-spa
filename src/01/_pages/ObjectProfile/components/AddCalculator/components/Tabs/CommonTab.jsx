@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { ConfigProvider, DatePicker, Select } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
-import {
-  Label, InputTT, Wrap, InputWrap,
-} from '01/tt-components';
-import { AddDeviceContext } from '../../index';
+import { Label, InputTT, InputWrap } from '01/tt-components';
+import { Info } from '01/pages/ObjectPage/ObjectId/Info';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../store/actions';
 
@@ -50,7 +48,6 @@ const CommonTab = () => {
           placeholder="Выберите тип устройства"
           id="infoId"
           options={items}
-          defaultValue={items[0].value}
           onChange={(event) => {
             const value = event;
             const path = 'infoId';
@@ -66,7 +63,8 @@ const CommonTab = () => {
         <ConfigProvider locale={ruRu}>
           <DatePicker
             id="lastCommercialAccountingDate"
-            defaultValue={moment(lastCommercialAccountingDate)}
+            // defaultValue={moment(lastCommercialAccountingDate)}
+            value={moment(lastCommercialAccountingDate)}
             name="lastCommercialAccountingDate"
             onChange={(date) => {
               const path = 'lastCommercialAccountingDate';
@@ -89,7 +87,7 @@ const CommonTab = () => {
               const value = date.toISOString();
               dispatch(onChangeFormValueByPath(path, value));
             }}
-            defaultValue={moment(checkingDate)}
+            value={moment(checkingDate)}
           />
         </ConfigProvider>
       </InputWrap>
@@ -100,7 +98,7 @@ const CommonTab = () => {
         </Label>
         <ConfigProvider locale={ruRu}>
           <DatePicker
-            defaultValue={moment(futureCheckingDate)}
+            value={moment(futureCheckingDate)}
             onChange={(date) => {
               const path = 'futureCheckingDate';
               const value = date.toISOString();
@@ -135,4 +133,4 @@ const CommonTab = () => {
   );
 };
 
-export default CommonTab;
+export default connect()(CommonTab);

@@ -1,35 +1,35 @@
 import moment from 'moment';
 import _ from 'lodash';
 
-// const initialState = {
-//   serialNumber: null,
-//   checkingDate: null,
-//   futureCheckingDate: null,
-//   lastCommercialAccountingDate: null,
-//   connection: {
-//     ipV4: null,
-//     deviceAddress: null,
-//     port: null,
-//   },
-//   futureCommercialAccountingDate: null,
-//   housingStockId: null,
-//   infoId: null,
-// };
-
 const initialState = {
-  serialNumber: '',
-  checkingDate: moment().toISOString(),
-  futureCheckingDate: moment().toISOString(),
-  lastCommercialAccountingDate: moment().toISOString(),
+  serialNumber: null,
+  checkingDate: null,
+  futureCheckingDate: null,
+  lastCommercialAccountingDate: null,
   connection: {
-    ipV4: '192.168.0.1',
-    deviceAddress: 0,
-    port: 1234,
+    ipV4: null,
+    deviceAddress: null,
+    port: null,
   },
-  futureCommercialAccountingDate: moment().toISOString(),
-  housingStockId: 0,
-  infoId: 1,
+  futureCommercialAccountingDate: null,
+  housingStockId: null,
+  infoId: null,
 };
+
+// const initialState = {
+//   serialNumber: '',
+//   checkingDate: moment().toISOString(),
+//   futureCheckingDate: moment().toISOString(),
+//   lastCommercialAccountingDate: moment().toISOString(),
+//   connection: {
+//     ipV4: '192.168.0.1',
+//     deviceAddress: 0,
+//     port: 1234,
+//   },
+//   futureCommercialAccountingDate: moment().toISOString(),
+//   housingStockId: 0,
+//   infoId: 1,
+// };
 
 export const calc = (state = initialState, action) => {
   const { connection } = state;

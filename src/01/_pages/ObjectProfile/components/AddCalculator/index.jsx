@@ -18,6 +18,7 @@ import {
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
+import { onChangeFormValueByPath } from './store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -30,6 +31,44 @@ const ModalCalculator = () => {
   useEffect(() => {
     const name = 'housingStockId';
     const value = Number(objid);
+
+    // const initialState = {
+    //   serialNumber: '',
+    //   checkingDate: moment().toISOString(),
+    //   futureCheckingDate: moment().toISOString(),
+    //   lastCommercialAccountingDate: moment().toISOString(),
+    //   connection: {
+    //     ipV4: '192.168.0.1',
+    //     deviceAddress: 0,
+    //     port: 1234,
+    //   },
+    //   futureCommercialAccountingDate: moment().toISOString(),
+    //   housingStockId: 0,
+    //   infoId: 1,
+    // };
+
+    dispatch(onChangeFormValueByPath(name, value));
+    dispatch(onChangeFormValueByPath('serialNumber', 'serialNumber'));
+    dispatch(onChangeFormValueByPath('infoId', 1));
+    dispatch(
+      onChangeFormValueByPath(
+        'lastCommercialAccountingDate',
+        moment().toISOString(),
+      ),
+    );
+    dispatch(onChangeFormValueByPath('checkingDate', moment().toISOString()));
+
+    dispatch(
+      onChangeFormValueByPath('futureCheckingDate', moment().toISOString()),
+    );
+
+    dispatch(onChangeFormValueByPath(['connection', 'ipV4'], '192.168.1.1'));
+    dispatch(onChangeFormValueByPath(['connection', 'deviceAddress'], 0));
+    dispatch(onChangeFormValueByPath(['connection', 'port'], 1));
+
+    //     ipV4: '192.168.0.1',
+    //     deviceAddress: 0,
+    //     port: 1234,
   }, []);
 
   function handleChangeTab(value) {

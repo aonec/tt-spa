@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import {
   Label, InputTT, Wrap, InputWrap,
@@ -7,9 +7,22 @@ import _ from 'lodash';
 import { onChangeFormValueByPath } from '../../store/actions';
 
 const SettingConnectionTab = () => {
+  const {
+    serialNumber,
+    checkingDate,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    infoId,
+    futureCheckingDate,
+    connection,
+  } = useSelector((state) => state.calc);
+  const { port, ipV4, deviceAddress } = connection;
   const dispatch = useDispatch();
-  const { port, ipV4 } = useSelector((state) => state.calc);
 
+  useEffect(() => {
+    console.log(port);
+    console.log(ipV4);
+  }, []);
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <InputWrap>
@@ -19,14 +32,12 @@ const SettingConnectionTab = () => {
         <InputTT
           id="ipV4"
           type="text"
-          required
           value={ipV4}
           placeholder="192.168.0.1"
           onChange={(event) => {
             const { value } = event.target;
             const path = ['connection', 'ipV4'];
             dispatch(onChangeFormValueByPath(path, value));
-            // onChangeFormValueByPath(path, value);
           }}
         />
       </InputWrap>
@@ -63,20 +74,4 @@ const SettingConnectionTab = () => {
   );
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   onChangeFormValueByPath: (path, value) => {
-//     dispatch({
-//       type: "CALC_UPDATE_FORM_VALUE_BY_PATH",
-//       payload: { path, value },
-//     });
-//   },
-// });
-
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(SettingConnectionTab);
-
 export default connect()(SettingConnectionTab);
-
-// export default SettingConnectionTab;
