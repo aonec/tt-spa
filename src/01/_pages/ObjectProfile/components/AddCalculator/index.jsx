@@ -18,7 +18,6 @@ import {
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { onChangeFormValueByPath } from './store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -31,7 +30,6 @@ const ModalCalculator = () => {
   useEffect(() => {
     const name = 'housingStockId';
     const value = Number(objid);
-    dispatch(onChangeFormValueByPath(name, value));
   }, []);
 
   function handleChangeTab(value) {

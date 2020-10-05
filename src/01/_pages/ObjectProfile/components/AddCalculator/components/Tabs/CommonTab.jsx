@@ -128,7 +128,7 @@ const CommonTab = () => {
           name="futureCommercialAccountingDate"
           placeholder="Укажите период"
           options={serviceLife}
-          // defaultValue={futureCommercialAccountingDate.value}
+          defaultValue={serviceLife[0].value}
         />
       </InputWrap>
     </div>
