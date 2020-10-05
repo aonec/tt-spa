@@ -1,21 +1,14 @@
 import React from 'react';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import {
   Label, InputTT, Wrap, InputWrap,
 } from '01/tt-components';
 import _ from 'lodash';
-import { AddDeviceContext } from '../../index';
+import { onChangeFormValueByPath } from '../../store/actions';
 
-const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
-  const ipV4 = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'ipV4']),
-    '',
-  );
-
-  const port = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'port']),
-    '',
-  );
+const SettingConnectionTab = () => {
+  const dispatch = useDispatch();
+  const { port, ipV4 } = useSelector((state) => state.calc);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -31,8 +24,9 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
           placeholder="192.168.0.1"
           onChange={(event) => {
             const { value } = event.target;
-            const path = ['ipV4'];
-            onChangeFormValueByPath(path, value);
+            const path = 'ipV4';
+            dispatch(onChangeFormValueByPath(path, value));
+            // onChangeFormValueByPath(path, value);
           }}
         />
       </InputWrap>
@@ -49,8 +43,9 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
           value={port}
           onChange={(event) => {
             const { value } = event.target;
-            const path = ['port'];
-            onChangeFormValueByPath(path, Number(value));
+            const path = 'port';
+            dispatch(onChangeFormValueByPath(path, Number(value)));
+            // onChangeFormValueByPath(path, Number(value));
           }}
         />
       </InputWrap>
@@ -68,18 +63,20 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   onChangeFormValueByPath: (path, value) => {
+//     dispatch({
+//       type: "CALC_UPDATE_FORM_VALUE_BY_PATH",
+//       payload: { path, value },
+//     });
+//   },
+// });
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(SettingConnectionTab);
+// export default connect(
+//   null,
+//   mapDispatchToProps
+// )(SettingConnectionTab);
+
+export default connect()(SettingConnectionTab);
 
 // export default SettingConnectionTab;

@@ -1,8 +1,8 @@
-import { CHANGE_INPU_VALUE } from './constants';
+import { CHANGE_INPUT_VALUE } from './constants';
 
-export function changeInputVal(name, val) {
-	return {
-		type: CHANGE_INPU_VALUE,
-		payload: { [name]: val }
-	};
+export function onChangeFormValueByPath(name, val) {
+  return {
+    type: CHANGE_INPUT_VALUE,
+    payload: { [name]: val },
+  };
 }

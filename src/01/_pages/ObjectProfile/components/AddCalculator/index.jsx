@@ -20,9 +20,7 @@ import TabsComponent from './components/Tabs/Main';
 
 export const AddDeviceContext = React.createContext();
 
-const ModalCalculator = (props) => {
-  const { onChangeFormValueByPath, reducerCalc } = props;
-  console.log('reducerCalc', reducerCalc);
+const ModalCalculator = () => {
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
@@ -30,7 +28,7 @@ const ModalCalculator = (props) => {
   useEffect(() => {
     const name = 'housingStockId';
     const value = Number(objid);
-    onChangeFormValueByPath(name, value);
+    // onChangeFormValueByPath(name, value);
   }, []);
 
   function handleChangeTab(value) {
@@ -76,16 +74,16 @@ const ModalCalculator = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log(reducerCalc);
+    // console.log(reducerCalc);
   };
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      const res = await axios.post('Calculators', reducerCalc);
+      // const res = await axios.post('Calculators', reducerCalc);
       alert('Вычислитель успешно создан !');
-      console.log(res);
-      return res;
+      // console.log(res);
+      // return res;
     } catch (error) {
       console.log(error);
       alert(
@@ -126,22 +124,4 @@ const ModalCalculator = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    reducerCalc: state.reducerCalc,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ModalCalculator);
+export default connect()(ModalCalculator);

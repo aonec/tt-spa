@@ -34,7 +34,7 @@ const ModalAddDevice = (props) => {
     onChangeFormValueByPath(name, value);
   }, []);
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -102,7 +102,7 @@ const ModalAddDevice = (props) => {
     <AddDeviceContext.Provider value={{}}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
-          <ModalClose getModal={modalRef}/>
+          <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового ОДПУ
@@ -129,7 +129,7 @@ const ModalAddDevice = (props) => {
   );
 };
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     reducerDev: state.reducerDev,
   };
@@ -138,7 +138,7 @@ function mapStateToProps(state){
 const mapDispatchToProps = (dispatch) => ({
   onChangeFormValueByPath: (path, value) => {
     dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH2',
+      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
       payload: { path, value },
     });
   },
