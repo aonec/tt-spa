@@ -24,7 +24,7 @@ const SettingConnectionTab = () => {
           placeholder="192.168.0.1"
           onChange={(event) => {
             const { value } = event.target;
-            const path = 'ipV4';
+            const path = ['connection', 'ipV4'];
             dispatch(onChangeFormValueByPath(path, value));
             // onChangeFormValueByPath(path, value);
           }}
@@ -43,7 +43,7 @@ const SettingConnectionTab = () => {
           value={port}
           onChange={(event) => {
             const { value } = event.target;
-            const path = 'port';
+            const path = ['connection', 'port'];
             dispatch(onChangeFormValueByPath(path, Number(value)));
             // onChangeFormValueByPath(path, Number(value));
           }}

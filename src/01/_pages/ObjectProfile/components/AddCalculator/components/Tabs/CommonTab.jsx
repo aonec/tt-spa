@@ -20,20 +20,7 @@ const CommonTab = () => {
     infoId,
     futureCheckingDate,
   } = useSelector((state) => state.calc);
-
   const dispatch = useDispatch();
-
-  const handleInputChange = (e) => {
-    dispatch(onChangeFormValueByPath(e.target.name, e.target.value));
-  };
-
-  const handleSelectChange = (value, option, name) => {
-    dispatch(onChangeFormValueByPath(name, option));
-  };
-
-  const handleDateChange = (date, dateString, name) => {
-    dispatch(onChangeFormValueByPath(name, dateString));
-  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -48,7 +35,7 @@ const CommonTab = () => {
           value={serialNumber}
           name="serialNumber"
           onChange={(event) => {
-            const path = 'serialNumber';
+            const path = ['serialNumber'];
             dispatch(onChangeFormValueByPath(path, event.target.value));
           }}
         />
@@ -66,7 +53,7 @@ const CommonTab = () => {
           defaultValue={items[0].value}
           onChange={(event) => {
             const value = event;
-            const path = ['infoId'];
+            const path = 'infoId';
             dispatch(onChangeFormValueByPath(path, Number(value)));
           }}
         />

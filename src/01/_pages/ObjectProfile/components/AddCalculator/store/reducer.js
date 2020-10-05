@@ -23,24 +23,26 @@ const calc = (state = initialState, action) => {
   const newState = _.cloneDeep(state);
 
   switch (action.type) {
-    case CHANGE_INPUT_VALUE:
-      if (action.payload.port) {
-        _.set(newState, 'connection', {
-          ipV4,
-          deviceAddress,
-          port: action.payload.port,
-        });
-        return newState;
-      }
+    case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
 
-      if (action.payload.ipV4) {
-        _.set(newState, 'connection', {
-          ipV4: action.payload.ipV4,
-          deviceAddress,
-          port,
-        });
-        return newState;
-      }
+      // if (action.payload.port) {
+      //   _.set(newState, 'connection', {
+      //     ipV4,
+      //     deviceAddress,
+      //     port: action.payload.port,
+      //   });
+      //   return newState;
+      // }
+
+      // if (action.payload.ipV4) {
+      //   _.set(newState, 'connection', {
+      //     ipV4: action.payload.ipV4,
+      //     deviceAddress,
+      //     port,
+      //   });
+      //   return newState;
+      // }
+
       return { ...newState, ...action.payload };
     default:
       return newState;
