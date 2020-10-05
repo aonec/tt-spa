@@ -1,6 +1,5 @@
 import moment from 'moment';
 import _ from 'lodash';
-import { CHANGE_INPUT_VALUE } from './constants';
 
 const initialState = {
   serialNumber: '',
@@ -17,49 +16,19 @@ const initialState = {
   infoId: 1,
 };
 
-const calc = (state = initialState, action) => {
+export const calc = (state = initialState, action) => {
   const { connection } = state;
   const { ipV4, deviceAddress, port } = connection;
   const newState = _.cloneDeep(state);
 
-  switch (action.type) {
-    case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
-
-      // if (action.payload.port) {
-      //   _.set(newState, 'connection', {
-      //     ipV4,
-      //     deviceAddress,
-      //     port: action.payload.port,
-      //   });
-      //   return newState;
-      // }
-
-      // if (action.payload.ipV4) {
-      //   _.set(newState, 'connection', {
-      //     ipV4: action.payload.ipV4,
-      //     deviceAddress,
-      //     port,
-      //   });
-      //   return newState;
-      // }
-
-      return { ...newState, ...action.payload };
-    default:
-      return newState;
+  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
+    const {
+      payload: { path, value },
+    } = action;
+    _.set(newState, path, value);
+    return newState;
   }
+  return newState;
 };
 
 export default calc;
-
-// if (path === "port") {
-//   port = value;
-//   _.set(newState, "connection", { ipV4, deviceAddress, port });
-//   return newState;
-// }
-
-// if (path === "ipV4") {
-//   ipV4 = value;
-//   const res = { value, deviceAddress, port };
-//   _.set(newState, "connection", { ipV4, deviceAddress, port });
-//   return newState;
-// }
