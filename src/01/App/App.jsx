@@ -27,6 +27,7 @@ import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
 import Devices from '01/_pages/Devices';
 import { useApp } from './useApp';
+import thunkMiddleWare from "redux-thunk";
 
 moment.locale('ru');
 
@@ -38,7 +39,7 @@ const loggerMiddleware = (store) => (next) => (action) => {
 
 export const store = createStore(
   rootReducer,
-  applyMiddleware(loggerMiddleware),
+  applyMiddleware(loggerMiddleware, thunkMiddleWare),
 );
 
 // export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

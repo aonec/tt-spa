@@ -76,3 +76,6 @@ function takeFromLocStor(name) {
 function checkUrl(str, url) {
   return new RegExp(str, 'gi').test(url);
 }
+
+
+
