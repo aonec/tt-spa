@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import moment from 'moment';
-import { SearchCalculator } from './components/SearchCalculator';
+// import { SearchCalculator } from './components/SearchCalculator';
 import { useParams } from 'react-router-dom';
 import '01/tt-components/antd.scss';
 import {
@@ -18,7 +18,7 @@ import {
 import {
   Label, Title, Text, Icon, ButtonTT,
 } from '../../../../tt-components';
-import TabsComponent from './components/Tabs';
+// import TabsComponent from './components/Tabs';
 
 export const AddODPUDeviceContext = React.createContext();
 
@@ -259,7 +259,7 @@ export const ModalAddDevice = () => {
           </ModalTop>
 
           <ModalMain>
-            <TabsComponent />
+            {/*<TabsComponent />*/}
           </ModalMain>
 
           <ModalBottom>
