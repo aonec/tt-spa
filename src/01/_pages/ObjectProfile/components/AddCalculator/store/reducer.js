@@ -2,6 +2,21 @@ import moment from 'moment';
 import _ from 'lodash';
 
 const initialState = {
+  serialNumber: null,
+  checkingDate: null,
+  futureCheckingDate: null,
+  lastCommercialAccountingDate: null,
+  connection: {
+    ipV4: null,
+    deviceAddress: null,
+    port: null,
+  },
+  futureCommercialAccountingDate: null,
+  housingStockId: null,
+  infoId: null,
+};
+
+const initialStateTemplate = {
   serialNumber: '',
   checkingDate: moment().toISOString(),
   futureCheckingDate: moment().toISOString(),

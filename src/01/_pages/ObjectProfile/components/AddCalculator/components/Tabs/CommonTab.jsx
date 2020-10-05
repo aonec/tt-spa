@@ -83,13 +83,13 @@ const CommonTab = () => {
         </Label>
         <ConfigProvider locale={ruRu}>
           <DatePicker
-            defaultValue={moment(checkingDate)}
             name="checkingDate"
             onChange={(date) => {
               const path = 'checkingDate';
               const value = date.toISOString();
               dispatch(onChangeFormValueByPath(path, value));
             }}
+            defaultValue={moment(checkingDate)}
           />
         </ConfigProvider>
       </InputWrap>

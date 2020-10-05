@@ -1,10 +1,11 @@
 import React, {
   useState, useRef, useContext, useEffect,
 } from 'react';
+import moment from 'moment';
 import $ from 'jquery';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -17,6 +18,7 @@ import {
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
+import { onChangeFormValueByPath } from './store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -24,11 +26,12 @@ const ModalCalculator = () => {
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const name = 'housingStockId';
     const value = Number(objid);
-    // onChangeFormValueByPath(name, value);
+    dispatch(onChangeFormValueByPath(name, value));
   }, []);
 
   function handleChangeTab(value) {
