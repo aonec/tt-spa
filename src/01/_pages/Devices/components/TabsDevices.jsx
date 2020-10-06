@@ -19,6 +19,7 @@ class TabsDevices extends React.Component {
 
     componentDidMount() {
         this.props.getDevices();
+
     }
 
 
@@ -32,13 +33,14 @@ class TabsDevices extends React.Component {
     // console.log(devicesAPI.getDevices())
     render() {
         let deviceItems = this.props.devices;
-        debugger;
 
         if (!deviceItems) return <div>LOADING...</div>
 
-        console.log(deviceItems)
 
-        let deviceElems = deviceItems.map(device => <div>{device.id}</div>)
+        let deviceElems = deviceItems.map(device => {
+            return <Device device={device} />
+            }
+        )
      return <Tabs defaultActiveKey="1" onChange={callback}>
             <TabPane tab="ОДПУ" key="1">
                 {deviceElems}
