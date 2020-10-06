@@ -24,7 +24,7 @@ const tabs = [
   },
 ];
 
-export const TabsComponent = (props) => {
+const TabsComponent = (props) => {
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>

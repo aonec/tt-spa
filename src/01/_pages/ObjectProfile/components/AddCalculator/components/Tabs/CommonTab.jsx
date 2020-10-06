@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { ConfigProvider, DatePicker, Select, Input, Form } from 'antd';
+import {
+  ConfigProvider, DatePicker, Select, Input, Form,
+} from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
@@ -18,10 +20,9 @@ const CommonTab = () => {
   const dispatch = useDispatch();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-
-      <Form>
-        <Form.Item name='text' label="Серийный номер устройства">
+    <ConfigProvider locale={ruRu}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Form.Item name="text" label="Серийный номер устройства">
           <Input
             value={serialNumber}
             placeholder="Серийный номер..."
@@ -32,8 +33,7 @@ const CommonTab = () => {
           />
         </Form.Item>
 
-
-        <Form.Item name='select' label="Тип вычислителя">
+        <Form.Item name="select" label="Тип вычислителя">
           <Select
             placeholder="Выберите тип устройства"
             id="infoId"
@@ -47,53 +47,44 @@ const CommonTab = () => {
           />
         </Form.Item>
 
-
         <Form.Item label="Дата ввода в эксплуатацию">
-          <ConfigProvider locale={ruRu}>
-            <DatePicker
-              id="lastCommercialAccountingDate"
-              value={moment(lastCommercialAccountingDate)}
-              placeholder="Укажите дату..."
-              name="lastCommercialAccountingDate"
-              onChange={(date) => {
-                const path = 'lastCommercialAccountingDate';
-                const value = date.toISOString();
-                dispatch(onChangeFormValueByPath(path, value));
-              }}
-            />
-          </ConfigProvider>
+          <DatePicker
+            id="lastCommercialAccountingDate"
+            value={moment(lastCommercialAccountingDate)}
+            placeholder="Укажите дату..."
+            name="lastCommercialAccountingDate"
+            onChange={(date) => {
+              const path = ['lastCommercialAccountingDate'];
+              const value = date.toISOString();
+              dispatch(onChangeFormValueByPath(path, value));
+            }}
+          />
         </Form.Item>
-
 
         <Form.Item label="Дата Поверки">
-          <ConfigProvider locale={ruRu}>
-            <DatePicker
-              name="checkingDate"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                const path = 'checkingDate';
-                const value = date.toISOString();
-                dispatch(onChangeFormValueByPath(path, value));
-              }}
-              value={moment(checkingDate)}
-            />
-          </ConfigProvider>
+          <DatePicker
+            name="checkingDate"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              const path = ['checkingDate'];
+              const value = date.toISOString();
+              dispatch(onChangeFormValueByPath(path, value));
+            }}
+            value={moment(checkingDate)}
+          />
         </Form.Item>
 
-
         <Form.Item label="Дата Следующей поверки">
-          <ConfigProvider locale={ruRu}>
-            <DatePicker
-              value={moment(futureCheckingDate)}
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                const path = 'futureCheckingDate';
-                const value = date.toISOString();
-                dispatch(onChangeFormValueByPath(path, value));
-              }}
-              name="futureCheckingDate"
-            />
-          </ConfigProvider>
+          <DatePicker
+            value={moment(futureCheckingDate)}
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              const path = ['futureCheckingDate'];
+              const value = date.toISOString();
+              dispatch(onChangeFormValueByPath(path, value));
+            }}
+            name="futureCheckingDate"
+          />
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
@@ -112,10 +103,9 @@ const CommonTab = () => {
             defaultValue={serviceLife[0].value}
           />
         </Form.Item>
-      </Form>
-
-    </div>
-);
+      </div>
+    </ConfigProvider>
+  );
 };
 
 export default connect()(CommonTab);

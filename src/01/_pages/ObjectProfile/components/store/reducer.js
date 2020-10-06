@@ -15,8 +15,9 @@ const initialState = {
   infoId: '',
 };
 
-const  calculatorReducer = (state = initialState, action) => {
-  const newState = _.cloneDeep(state);
+const calculatorReducer = (state = initialState, action) => {
+  let newState = _.cloneDeep(state);
+
   switch (action.type) {
     case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
       const {
@@ -24,6 +25,9 @@ const  calculatorReducer = (state = initialState, action) => {
       } = action;
       _.set(newState, path, value);
       return newState;
+    case 'CALC_UPDATE_FORM_DEFAULT':
+      console.log(action)
+      return action.payload.value
   }
   return newState;
 };
