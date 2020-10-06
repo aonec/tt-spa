@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import calculatorReducer from '01/_pages/ObjectProfile/components/store/reducer';
-import reducerDev from './reducers/reducerDev';
 import reducerDevicesPage from './reducers/reducerDevicesPage';
+import deviceReducer from '01/_pages/ObjectProfile/components/store/reducerAddDevice';
 
 export default combineReducers({
-  reducerDev,
+  deviceReducer,
   calculatorPage: calculatorReducer,
   devicePage: reducerDevicesPage,
 });
