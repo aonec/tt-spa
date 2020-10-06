@@ -6,7 +6,7 @@ import {Loader} from "../../../components/Loader";
 import {getDevices} from "../../../Redux/reducers/reducerDevicesPage";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import Device from "./Device";
+import DeviceBlock from "./DeviceBlock/DeviceBlock";
 
 const { TabPane } = Tabs;
 
@@ -39,7 +39,7 @@ class TabsDevices extends React.Component {
 
 
         let deviceElems = deviceItems.map(device => {
-            return <Device device={device} />
+            return <DeviceBlock device={device} />
             }
         )
      return <Tabs defaultActiveKey="1" onChange={callback}>
