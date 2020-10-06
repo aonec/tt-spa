@@ -25,7 +25,7 @@ export default function calculatorReducer(state = initialState, action) {
       } = action;
       _.set(newState, path, value);
       return newState;
-    case 'CALC_UPDATE_FORM_DEFAULT':
+    case 'CALC_UPDATE_FORM':
       console.log(action);
       return action.payload.value;
     default:

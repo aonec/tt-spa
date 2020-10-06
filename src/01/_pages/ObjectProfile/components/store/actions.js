@@ -7,7 +7,7 @@ export function onChangeFormValueByPath(path, value) {
 
 export function DefaultFormValueFullfill(path, value) {
   return {
-    type: 'CALC_UPDATE_FORM_DEFAULT',
+    type: 'CALC_UPDATE_FORM',
     payload: { path, value },
   };
 }
