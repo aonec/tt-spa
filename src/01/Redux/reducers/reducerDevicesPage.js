@@ -13,15 +13,13 @@ const initialState = {
   hasNextPage: true,
   nextPageNumber: 2,
   previousPageNumber: 1,
-  devices: []
+  devices: [],
 };
 
 export default function reducerDevicesPage(state = initialState, action) {
   switch (action.type) {
     case SET_DEVICES:
-      debugger;
       return { ...state, devices: [...action.devices] };
-
   }
   return state;
 }
@@ -29,14 +27,11 @@ export default function reducerDevicesPage(state = initialState, action) {
 export const setDevices = (devices) => ({ type: SET_DEVICES, devices });
 
 export const getDevices = () => async (dispatch) => {
-const devices = await devicesAPI.getDevices();
-const devicesWithRelated = await Promise.all(devices.map(async (d) => {
+  const devices = await devicesAPI.getDevices();
+  const devicesWithRelated = await Promise.all(devices.map(async (d) => {
     const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-    debugger;
     // if (!relatedDevices.length) return {...d, relatedDevices}
-    // return { ...d, property: '123' };
-    return {...d, relatedDevices: [...relatedDevices]}
+    return { ...d, relatedDevices: [...relatedDevices] };
   }));
-  console.log('devicesWithRelated');
   dispatch(setDevices(devicesWithRelated));
 };

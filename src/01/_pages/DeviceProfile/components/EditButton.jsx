@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
+import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { Icon } from '../../../_components/Icon';
 
 export const Template = styled.div``;
@@ -51,6 +52,9 @@ align-items: center;
 `;
 
 export const EditButton = () => {
+  const { 0: objid } = useParams();
+  const { push } = useHistory();
+
   const menuShowHide = () => {
     $('#edit-button__list').toggle();
   };
@@ -66,7 +70,10 @@ export const Menu = (showPopupHandler) => {
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
-    if ((editButtonList.has(e.target).length === 0) && (editButton.has(e.target).length === 0)) {
+    if (
+      editButtonList.has(e.target).length === 0
+      && editButton.has(e.target).length === 0
+    ) {
       editButtonList.hide();
     }
   });
@@ -83,11 +90,23 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
+  function editDevice() {
+    console.log('editDevice');
+    console.log('window.location.pathname', window.location.pathname);
+    window.location.assign(`${window.location.pathname}/edit`);
+  }
+
+  //   <Apartments
+  //   path="/*/apartments"
+  //   onClick={(id) => push(`/objects/${objid}/apartments/${id}`)}
+  //   {...state?.apartments}
+  // />
+
   return (
     <>
       <EditButton />
       <List id="edit-button__list">
-        <ListItem>Редактировать вычислитель</ListItem>
+        <ListItem onClick={editDevice}>Редактировать вычислитель</ListItem>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении

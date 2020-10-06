@@ -1,10 +1,9 @@
-import React, {
-  useState, useRef, useContext, useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import $ from 'jquery';
-import axios from 'axios';
+import axios from '01/axios';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -14,24 +13,43 @@ import {
   ModalBottom,
   ModalClose,
 } from '01/tt-components/Modal';
-
-import { store } from '01/App/App';
+import './styles.scss';
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
+import { DefaultFormValueFullfill } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
-const ModalCalculator = (props) => {
-  const { onChangeFormValueByPath, reducerCalc } = props;
+const ModalCalculator = () => {
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
+  const dispatch = useDispatch();
+  const calculatorPage = useSelector((state) => state.calculatorPage);
+
+  const initialStateDefaultValues = {
+    serialNumber: '',
+    checkingDate: moment().toISOString(),
+    futureCheckingDate: moment().toISOString(),
+    lastCommercialAccountingDate: moment().toISOString(),
+    connection: {
+      ipV4: '192.168.0.1',
+      deviceAddress: 0,
+      port: 1234,
+    },
+    futureCommercialAccountingDate: moment().toISOString(),
+    housingStockId: Number(objid),
+    infoId: 1,
+  };
 
   useEffect(() => {
-    const name = 'housingStockId';
-    const value = Number(objid);
-    onChangeFormValueByPath(name, value);
+    // initialStateFullfill.map((item) => {
+    //   dispatch(onChangeFormValueByPath(item.id, item.value));
+    // });
+    dispatch(
+      DefaultFormValueFullfill(calculatorPage, initialStateDefaultValues),
+    );
   }, []);
 
   function handleChangeTab(value) {
@@ -76,18 +94,14 @@ const ModalCalculator = (props) => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {
-    console.log(reducerCalc);
-  };
+  const buttonHandler = () => {};
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      console.log(store.getState());
-      // const res = await axios.post('Calculators', reference.current);
-      const res = await axios.post('Calculators', reducerCalc);
+      const res = await axios.post('Calculators', calculatorPage);
       alert('Вычислитель успешно создан !');
-      console.log(res);
+      // console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -107,7 +121,7 @@ const ModalCalculator = (props) => {
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
-            <button onClick={buttonHandler}>getKey</button>
+            {/* <button onClick={buttonHandler}>getKey</button> */}
           </ModalTop>
           <ModalMain>
             <TabsComponent
@@ -129,22 +143,37 @@ const ModalCalculator = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    reducerCalc: state.reducerCalc,
-  };
-}
+export default connect()(ModalCalculator);
 
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
+// const initialState = {
+//   serialNumber: '',
+//   checkingDate: moment().toISOString(),
+//   futureCheckingDate: moment().toISOString(),
+//   lastCommercialAccountingDate: moment().toISOString(),
+//   connection: {
+//     ipV4: '192.168.0.1',
+//     deviceAddress: 0,
+//     port: 1234,
+//   },
+//   futureCommercialAccountingDate: moment().toISOString(),
+//   housingStockId: Number(objid),
+//   infoId: 1,
+// };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ModalCalculator);
+// const initialStateFullfill = [
+//   { id: ['serialNumber'], value: 'serialNumber' },
+//   { id: ['housingStockId'], value: Number(objid) },
+//   { id: ['infoId'], value: 1 },
+//   { id: ['lastCommercialAccountingDate'], value: moment().toISOString() },
+//   { id: ['checkingDate'], value: moment().toISOString() },
+//   { id: ['futureCheckingDate'], value: moment().toISOString() },
+//   { id: ['connection', 'ipV4'], value: '192.168.1.1' },
+//   { id: ['connection', 'deviceAddress'], value: 0 },
+//   { id: ['connection', 'port'], value: 1 },
+//   {
+//     id: ['futureCommercialAccountingDate'],
+//     value: moment()
+//       .add(4, 'year')
+//       .toISOString(),
+//   },
+// ];

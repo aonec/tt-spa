@@ -24,15 +24,16 @@ const tabs = [
   },
 ];
 
-const TabsComponent = (props) => {
-  const { currentTabKey, handleChangeTab } = props;
+export const TabsComponent = (props) => {
+  const { currentTabKey, handleChangeTab, calculator } = props;
+  console.log('calculator is into Tabs', calculator);
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-            <Component />
+            <Component calculator={calculator} />
           </TabPane>
         );
       })}

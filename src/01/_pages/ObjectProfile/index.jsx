@@ -14,7 +14,6 @@ import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import ButtonTT from '../../tt-components/ButtonTT';
 
-
 function reducer(state, action) {
   const { type, data } = action;
   switch (type) {
@@ -38,9 +37,9 @@ export const ObjectProfile = () => {
     <>
       <Header {...header} />
       <div style={{}}>
-      {/*<ButtonTT disabled={true}>*/}
-      {/*  button*/}
-      {/*</ButtonTT>*/}
+        {/* <ButtonTT disabled={true}> */}
+        {/*  button */}
+        {/* </ButtonTT> */}
       </div>
       <Tabs />
       <grid>

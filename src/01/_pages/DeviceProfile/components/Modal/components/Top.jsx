@@ -5,14 +5,6 @@ import { ReportContext } from '..';
 export const Uzel = () => {
   console.log('Uzel');
   const {
-    begin,
-    end,
-    datePickerHandler,
-    list,
-    devicesList,
-    translate,
-    onTabsChangeHandler,
-    model,
     street,
     number,
     SelectReport,

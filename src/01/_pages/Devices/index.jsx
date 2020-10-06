@@ -1,12 +1,13 @@
 import React from 'react';
+
 import { Header } from '../../tt-components';
 import TabsDevices from './components/TabsDevices';
 
-const Devices = () => (
+export const Devices = () => (
   <div>
     <Header>Приборы</Header>
     <TabsDevices />
   </div>
 );
 
-export default Devices;
+export default { Devices };

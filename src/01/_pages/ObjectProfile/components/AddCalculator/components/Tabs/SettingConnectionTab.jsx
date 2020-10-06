@@ -1,59 +1,43 @@
-import React from 'react';
-import { connect, useSelector } from 'react-redux';
-import {
-  Label, InputTT, Wrap, InputWrap,
-} from '01/tt-components';
-import _ from 'lodash';
-import { AddDeviceContext } from '../../index';
+import React, { useEffect } from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { Wrap } from '01/tt-components';
+import { Input, Form } from 'antd';
+import { onChangeFormValueByPath } from '../../../store/actions';
 
-const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
-  const ipV4 = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'ipV4']),
-    '',
-  );
-
-  const port = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'port']),
-    '',
-  );
+const SettingConnectionTab = () => {
+  const {
+    connection: { port, ipV4 },
+  } = useSelector((state) => state.calculatorPage);
+  const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          IP адрес вычислителя
-        </Label>
-        <InputTT
+      <Form.Item name="text" label="IP адрес вычислителя">
+        <Input
           id="ipV4"
           type="text"
-          required
           value={ipV4}
-          placeholder="192.168.0.1"
+          placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
           onChange={(event) => {
-            const { value } = event.target;
-            const path = ['ipV4'];
-            onChangeFormValueByPath(path, value);
+            const path = ['connection', 'ipV4'];
+            dispatch(onChangeFormValueByPath(path, event.target.value));
           }}
         />
-      </InputWrap>
+      </Form.Item>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Порт
-        </Label>
-        <InputTT
+      <Form.Item name="text" label="IP адрес вычислителя">
+        <Input
           id="port"
           type="number"
           required
-          placeholder="1234"
+          placeholder="Укажите порт устройства (например, 1234)"
           value={port}
           onChange={(event) => {
-            const { value } = event.target;
-            const path = ['port'];
-            onChangeFormValueByPath(path, Number(value));
+            const path = ['connection', 'port'];
+            dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
           }}
         />
-      </InputWrap>
+      </Form.Item>
 
       <Wrap
         style={{
@@ -68,18 +52,4 @@ const SettingConnectionTab = ({ onChangeFormValueByPath }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(SettingConnectionTab);
-
-// export default SettingConnectionTab;
+export default connect()(SettingConnectionTab);

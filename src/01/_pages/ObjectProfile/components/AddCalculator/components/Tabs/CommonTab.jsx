@@ -1,142 +1,111 @@
-import React, { useContext } from 'react';
-import { connect, useSelector } from 'react-redux';
-import _ from 'lodash';
-import { ConfigProvider, DatePicker, Select } from 'antd';
+import React from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import {
+  ConfigProvider, DatePicker, Select, Input, Form,
+} from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
-import {
-  Label, InputTT, Wrap, InputWrap,
-} from '01/tt-components';
-import { AddDeviceContext } from '../../index';
 import { items, serviceLife } from '../CalculatorJSON';
+import { onChangeFormValueByPath } from '../../../store/actions';
 
-const CommonTab = ({ onChangeFormValueByPath }) => {
-  const { addPeriod } = useContext(AddDeviceContext);
-  const serialNumber = useSelector(
-    (state) => _.get(state, ['reducerCalc', 'serialNumber']),
-    '',
-  );
+const CommonTab = () => {
+  const {
+    serialNumber,
+    checkingDate,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    infoId,
+    futureCheckingDate,
+  } = useSelector((state) => state.calculatorPage);
+  const dispatch = useDispatch();
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Серийный номер
-        </Label>
-        <InputTT
-          id="serialNumber"
-          required
-          placeholder="Serial number..."
-          value={serialNumber}
-          onChange={(event) => {
-            const { value } = event.target;
-            const path = ['serialNumber'];
-            onChangeFormValueByPath(path, value);
-          }}
-        />
-      </InputWrap>
+    <ConfigProvider locale={ruRu}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Form.Item name="text" label="Серийный номер устройства">
+          <Input
+            value={serialNumber}
+            placeholder="Серийный номер..."
+            onChange={(event) => {
+              const path = ['serialNumber'];
+              dispatch(onChangeFormValueByPath(path, event.target.value));
+            }}
+          />
+        </Form.Item>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#type">
-          Тип вычислителя
-        </Label>
+        <Form.Item name="select" label="Тип вычислителя">
+          <Select
+            placeholder="Выберите тип устройства"
+            id="infoId"
+            options={items}
+            defaultValue={items[0].value}
+            onChange={(event) => {
+              const value = event;
+              const path = 'infoId';
+              dispatch(onChangeFormValueByPath(path, Number(value)));
+            }}
+          />
+        </Form.Item>
 
-        <Select
-          placeholder="Выберите тип устройства"
-          id="infoId"
-          onChange={(event) => {
-            const value = event;
-            const path = ['infoId'];
-            onChangeFormValueByPath(path, Number(value));
-          }}
-          options={items}
-          defaultValue={items[0].value}
-        />
-      </InputWrap>
-
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата ввода в эксплуатацию
-        </Label>
-        <ConfigProvider locale={ruRu}>
+        <Form.Item label="Дата ввода в эксплуатацию">
           <DatePicker
             id="lastCommercialAccountingDate"
-            defaultValue={moment()}
+            value={moment(lastCommercialAccountingDate)}
+            placeholder="Укажите дату..."
+            name="lastCommercialAccountingDate"
             onChange={(date) => {
               const path = ['lastCommercialAccountingDate'];
               const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
+              dispatch(onChangeFormValueByPath(path, value));
             }}
           />
-        </ConfigProvider>
-      </InputWrap>
+        </Form.Item>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата Поверки
-        </Label>
-        <ConfigProvider locale={ruRu}>
+        <Form.Item label="Дата Поверки">
           <DatePicker
-            defaultValue={moment()}
+            name="checkingDate"
+            placeholder="Укажите дату..."
             onChange={(date) => {
               const path = ['checkingDate'];
               const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
+              dispatch(onChangeFormValueByPath(path, value));
             }}
+            value={moment(checkingDate)}
           />
-        </ConfigProvider>
-      </InputWrap>
+        </Form.Item>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource">
-          Дата Следующей поверки
-        </Label>
-        <ConfigProvider locale={ruRu}>
+        <Form.Item label="Дата Следующей поверки">
           <DatePicker
-            defaultValue={moment()}
+            value={moment(futureCheckingDate)}
+            placeholder="Укажите дату..."
             onChange={(date) => {
               const path = ['futureCheckingDate'];
               const value = date.toISOString();
-              onChangeFormValueByPath(path, value);
+              dispatch(onChangeFormValueByPath(path, value));
             }}
+            name="futureCheckingDate"
           />
-        </ConfigProvider>
-      </InputWrap>
+        </Form.Item>
 
-      <InputWrap>
-        <Label color="grey" htmlFor="#resource" className="tt-label">
-          Срок эксплуатации по нормативу
-        </Label>
-        <Select
-          id="futureCommercialAccountingDate"
-          onChange={(value, target) => {
-            addPeriod(value, 'futureCommercialAccountingDate');
-          }}
-          onChange={(event) => {
-            const value = moment()
-              .add(event, 'year')
-              .toISOString();
-            const path = ['futureCommercialAccountingDate'];
-            onChangeFormValueByPath(path, value);
-          }}
-          placeholder="Укажите период"
-          options={serviceLife}
-          defaultValue={serviceLife[0].value}
-        />
-      </InputWrap>
-    </div>
+        <Form.Item label="Дата Следующей поверки">
+          <Select
+            id="futureCommercialAccountingDate"
+            onChange={(event) => {
+              const value = moment()
+                .add(event, 'year')
+                .toISOString();
+              const path = ['futureCommercialAccountingDate'];
+              dispatch(onChangeFormValueByPath(path, value));
+            }}
+            name="futureCommercialAccountingDate"
+            placeholder="Укажите оперид эксплуатации"
+            options={serviceLife}
+            defaultValue={serviceLife[0].value}
+          />
+        </Form.Item>
+      </div>
+    </ConfigProvider>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(CommonTab);
+export default connect()(CommonTab);
