@@ -17,7 +17,7 @@ import './styles.scss';
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { DefaultFormValueFullfill } from '../store/actions';
+import { fullfillAddDeviceForm } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -28,7 +28,7 @@ const ModalCalculator = () => {
   const dispatch = useDispatch();
   const deviceReducer = useSelector((state) => state.deviceReducer);
 
-  function randomInteger(min, max){
+  function randomInteger(min, max) {
     // случайное число от min до (max+1)
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
@@ -38,7 +38,7 @@ const ModalCalculator = () => {
     calculatorId: 1553976,
     checkingDate: moment().toISOString(),
     connection: {
-      ipV4: '192.168.1.1',
+      ipV4: '10.90.128.1',
       deviceAddress: randomInteger(1, 255),
       port: 0,
     },
@@ -58,14 +58,13 @@ const ModalCalculator = () => {
     serialNumber: '',
   };
 
-
   useEffect(() => {
     dispatch(
-      DefaultFormValueFullfill(deviceReducer, initialStateDefaultValues),
+      fullfillAddDeviceForm(deviceReducer, initialStateDefaultValues),
     );
   }, []);
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -130,7 +129,7 @@ const ModalCalculator = () => {
     <AddDeviceContext.Provider value={{}}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
-          <ModalClose getModal={modalRef}/>
+          <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового ОДПУ

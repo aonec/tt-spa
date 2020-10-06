@@ -36,7 +36,6 @@ export const serviceLife = [
   { value: '6', label: '6 лет', id: 2 },
 ];
 
-
 export const types = [
   {
     value: 'FlowMeter',
@@ -72,7 +71,7 @@ export const resources = [
 export const magistrals = [
   {
     value: 'FeedFlow',
-    label: 'Прямая',
+    label: 'Подающая',
     id: 1,
     parent: 'magistral',
   },

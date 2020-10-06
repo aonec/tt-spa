@@ -5,10 +5,8 @@ import {
 } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
-import { serviceLife } from '../CalculatorJSON';
-import { onChangeFormValueByPath } from '../../../store/actions';
-import { resources, types } from "../../../AddDevice/components/CalculatorJSON";
-
+import { serviceLife, resources, types } from '../DeviceJSON';
+import { onChangeDeviceFormValueByPath } from '../../../store/actions';
 
 const CommonTab = () => {
   const {
@@ -18,7 +16,7 @@ const CommonTab = () => {
     futureCommercialAccountingDate,
     infoId,
     futureCheckingDate,
-  } = useSelector((state) => state.calculatorPage);
+  } = useSelector((state) => state.deviceReducer);
   const dispatch = useDispatch();
 
   return (
@@ -30,9 +28,7 @@ const CommonTab = () => {
             onChange={(event) => {
               const value = event;
               const path = ['housingMeteringDeviceType'];
-              dispatch(onChangeFormValueByPath(path, value));
-
-              // onChangeFormValueByPath(path, value);
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             options={types}
             defaultValue={types[0].value}
@@ -46,13 +42,12 @@ const CommonTab = () => {
             onChange={(event) => {
               const value = event;
               const path = ['resource'];
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             options={resources}
             defaultValue={resources[0].value}
           />
         </Form.Item>
-
 
         <Form.Item name="text" label="Выберите модель прибора">
           <Input
@@ -61,7 +56,7 @@ const CommonTab = () => {
             onChange={(event) => {
               const { value } = event.target;
               const path = ['model'];
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
           />
         </Form.Item>
@@ -73,11 +68,10 @@ const CommonTab = () => {
             onChange={(event) => {
               const { value } = event.target;
               const path = ['serialNumber'];
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
           />
         </Form.Item>
-
 
         <Form.Item label="Дата выпуска прибора">
           <DatePicker
@@ -86,7 +80,7 @@ const CommonTab = () => {
             onChange={(date) => {
               const path = ['checkingDate'];
               const value = date.toISOString();
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             value={moment(checkingDate)}
           />
@@ -99,7 +93,7 @@ const CommonTab = () => {
             onChange={(date) => {
               const path = ['lastCommercialAccountingDate'];
               const value = date.toISOString();
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             name="futureCheckingDate"
           />
@@ -113,7 +107,7 @@ const CommonTab = () => {
                 .add(event, 'year')
                 .toISOString();
               const path = ['futureCommercialAccountingDate'];
-              dispatch(onChangeFormValueByPath(path, value));
+              dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             name="futureCommercialAccountingDate"
             placeholder="Укажите оперид эксплуатации"
