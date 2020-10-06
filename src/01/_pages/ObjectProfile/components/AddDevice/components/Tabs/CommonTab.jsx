@@ -8,17 +8,22 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { AddDeviceContext } from '../../index';
 import { resources, serviceLife, types } from '../CalculatorJSON';
 
+
+
 import { housingMeteringDeviceTypeAC } from '../../store/reducerCalc';
 
 const CommonTab = () => {
   const { addPeriod } = useContext(AddDeviceContext);
 
   const dispatch = useDispatch();
-  const calc = useSelector((state) => state.calc);
-  const { serialNumber, infoId, housingStockId } = calc;
+  const calculatorPage = useSelector((state) => state.calculatorPage);
+  const { serialNumber, infoId, housingStockId } = calculatorPage;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+
+
       <InputWrap>
         <Label color="grey" htmlFor="#type">
           Выберите тип прибора
