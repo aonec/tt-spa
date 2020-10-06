@@ -6,6 +6,7 @@ import {Loader} from "../../../components/Loader";
 import {getDevices} from "../../../Redux/reducers/reducerDevicesPage";
 import {compose} from "redux";
 import {connect} from "react-redux";
+import Device from "./Device";
 
 const { TabPane } = Tabs;
 
