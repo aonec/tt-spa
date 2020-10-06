@@ -15,8 +15,8 @@ const initialState = {
   infoId: '',
 };
 
-const calculatorReducer = (state = initialState, action) => {
-  let newState = _.cloneDeep(state);
+export default function calculatorReducer(state = initialState, action) {
+  const newState = _.cloneDeep(state);
 
   switch (action.type) {
     case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
@@ -26,13 +26,12 @@ const calculatorReducer = (state = initialState, action) => {
       _.set(newState, path, value);
       return newState;
     case 'CALC_UPDATE_FORM_DEFAULT':
-      console.log(action)
-      return action.payload.value
+      console.log(action);
+      return action.payload.value;
+    default:
+      return newState;
   }
-  return newState;
-};
-
-export default calculatorReducer;
+}
 
 // const initialState = {
 //   serialNumber: '',

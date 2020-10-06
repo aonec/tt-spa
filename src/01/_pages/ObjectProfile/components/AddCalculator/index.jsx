@@ -17,7 +17,7 @@ import './styles.scss';
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { onChangeFormValueByPath } from '../store/actions';
+import { DefaultFormValueFullfill } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -28,28 +28,28 @@ const ModalCalculator = () => {
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
 
-  const initialStateFullfill = [
-    { id: ['serialNumber'], value: 'serialNumber' },
-    { id: ['housingStockId'], value: Number(objid) },
-    { id: ['infoId'], value: 1 },
-    { id: ['lastCommercialAccountingDate'], value: moment().toISOString() },
-    { id: ['checkingDate'], value: moment().toISOString() },
-    { id: ['futureCheckingDate'], value: moment().toISOString() },
-    { id: ['connection', 'ipV4'], value: '192.168.1.1' },
-    { id: ['connection', 'deviceAddress'], value: 0 },
-    { id: ['connection', 'port'], value: 1 },
-    {
-      id: ['futureCommercialAccountingDate'],
-      value: moment()
-        .add(4, 'year')
-        .toISOString(),
+  const initialStateDefaultValues = {
+    serialNumber: '',
+    checkingDate: moment().toISOString(),
+    futureCheckingDate: moment().toISOString(),
+    lastCommercialAccountingDate: moment().toISOString(),
+    connection: {
+      ipV4: '192.168.0.1',
+      deviceAddress: 0,
+      port: 1234,
     },
-  ];
+    futureCommercialAccountingDate: moment().toISOString(),
+    housingStockId: Number(objid),
+    infoId: 1,
+  };
 
   useEffect(() => {
-    initialStateFullfill.map((item) => {
-      dispatch(onChangeFormValueByPath(item.id, item.value));
-    });
+    // initialStateFullfill.map((item) => {
+    //   dispatch(onChangeFormValueByPath(item.id, item.value));
+    // });
+    dispatch(
+      DefaultFormValueFullfill(calculatorPage, initialStateDefaultValues),
+    );
   }, []);
 
   function handleChangeTab(value) {
@@ -159,3 +159,21 @@ export default connect()(ModalCalculator);
 //   housingStockId: Number(objid),
 //   infoId: 1,
 // };
+
+// const initialStateFullfill = [
+//   { id: ['serialNumber'], value: 'serialNumber' },
+//   { id: ['housingStockId'], value: Number(objid) },
+//   { id: ['infoId'], value: 1 },
+//   { id: ['lastCommercialAccountingDate'], value: moment().toISOString() },
+//   { id: ['checkingDate'], value: moment().toISOString() },
+//   { id: ['futureCheckingDate'], value: moment().toISOString() },
+//   { id: ['connection', 'ipV4'], value: '192.168.1.1' },
+//   { id: ['connection', 'deviceAddress'], value: 0 },
+//   { id: ['connection', 'port'], value: 1 },
+//   {
+//     id: ['futureCommercialAccountingDate'],
+//     value: moment()
+//       .add(4, 'year')
+//       .toISOString(),
+//   },
+// ];
