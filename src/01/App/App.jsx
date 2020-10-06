@@ -42,6 +42,8 @@ export const store = createStore(
   applyMiddleware(loggerMiddleware, thunkMiddleWare),
 );
 
+window.store = store;
+
 // export const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // store.dispatch({
