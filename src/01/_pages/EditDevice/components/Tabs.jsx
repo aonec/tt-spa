@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs } from 'antd';
-import Common from './Common'
+import CommonTab from './CommonTab'
+import SettingConnectionTab from './SettingConnectionTab'
 
 const { TabPane } = Tabs;
 
@@ -8,22 +9,22 @@ const tabs = [
   {
     title: 'Общие данные',
     key: '1',
-    // Component: CommonTab,
+    Component: CommonTab,
   },
   {
     title: 'Настройки соединения',
     key: '2',
-    // Component: SettingConnectionTab,
+    Component: SettingConnectionTab,
   },
   {
     title: 'Подключенные приборы',
     key: '3',
-    // Component: DocumentsTab,
+    Component: CommonTab,
   },
   {
     title: 'Документы',
     key: '4',
-    // Component: DocumentsTab,
+    Component: CommonTab,
   },
 ];
 
@@ -36,7 +37,7 @@ const TabsComponent = (props) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-              <Common />
+              <Component />
           </TabPane>
         );
       })}
