@@ -13,11 +13,10 @@ import {
   ModalBottom,
   ModalClose,
 } from '01/tt-components/Modal';
-import './styles.scss';
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { fullfillAddDeviceForm } from '../store/actions';
+import { setAddDeviceForm } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -60,7 +59,7 @@ const ModalCalculator = () => {
 
   useEffect(() => {
     dispatch(
-      fullfillAddDeviceForm(deviceReducer, initialStateDefaultValues),
+      setAddDeviceForm(deviceReducer, initialStateDefaultValues),
     );
   }, []);
 

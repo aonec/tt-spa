@@ -14,7 +14,6 @@ const SettingConnectionTab = () => {
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Form.Item name="text" label="IP адрес вычислителя">
         <Input
-          id="ipV4"
           type="text"
           value={ipV4}
           placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
@@ -27,7 +26,6 @@ const SettingConnectionTab = () => {
 
       <Form.Item name="text" label="IP адрес вычислителя">
         <Input
-          id="port"
           type="number"
           required
           placeholder="Укажите порт устройства (например, 1234)"

@@ -41,9 +41,3 @@ export default function deviceReducer(state = initialState, action) {
       return newState;
   }
 }
-
-// case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
-// case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
-
-// case 'addDevice/DEV_UPDATE_FORM_VALUE_BY_PATH':
-// case 'addCalculator/DEV_UPDATE_FORM_VALUE_BY_PATH':

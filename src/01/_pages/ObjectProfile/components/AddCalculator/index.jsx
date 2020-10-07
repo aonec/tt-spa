@@ -13,11 +13,10 @@ import {
   ModalBottom,
   ModalClose,
 } from '01/tt-components/Modal';
-import './styles.scss';
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { DefaultFormValueFullfill } from '../store/actions';
+import { setAddCalculatorForm } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
@@ -48,7 +47,7 @@ const ModalCalculator = () => {
     //   dispatch(onChangeFormValueByPath(item.id, item.value));
     // });
     dispatch(
-      DefaultFormValueFullfill(calculatorPage, initialStateDefaultValues),
+      setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
     );
   }, []);
 

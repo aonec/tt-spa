@@ -7,6 +7,8 @@ import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../../store/actions';
+import { button } from '01/r_comp';
+import { Info } from '01/pages/ObjectPage/ObjectId/Info';
 
 const CommonTab = () => {
   const {
@@ -18,9 +20,14 @@ const CommonTab = () => {
     futureCheckingDate,
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
-
+  const buttonHandler = () => {
+    console.log(items)
+    console.log(infoId)
+    console.log(items[infoId].label)
+  }
   return (
     <ConfigProvider locale={ruRu}>
+      <button onClick={buttonHandler}>test</button>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Form.Item name="text" label="Серийный номер устройства">
           <Input
@@ -36,13 +43,15 @@ const CommonTab = () => {
         <Form.Item name="select" label="Тип вычислителя">
           <Select
             placeholder="Выберите тип устройства"
-            id="infoId"
             options={items}
             defaultValue={items[0].value}
-            onChange={(event) => {
+            // value={items[0].value}
+            value={infoId}
+                        onChange={(event, target) => {
+              console.log(event, target)
               const value = event;
-              const path = 'infoId';
-              dispatch(onChangeFormValueByPath(path, Number(value)));
+              const path = ['infoId'];
+              dispatch(onChangeFormValueByPath(path, Number(target.value)));
             }}
           />
         </Form.Item>
@@ -89,15 +98,11 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Следующей поверки">
           <Select
-            id="futureCommercialAccountingDate"
             onChange={(event) => {
-              const value = moment()
-                .add(event, 'year')
-                .toISOString();
+              const value = moment().add(event, 'year').toISOString();
               const path = ['futureCommercialAccountingDate'];
               dispatch(onChangeFormValueByPath(path, value));
             }}
-            name="futureCommercialAccountingDate"
             placeholder="Укажите оперид эксплуатации"
             options={serviceLife}
             defaultValue={serviceLife[0].value}

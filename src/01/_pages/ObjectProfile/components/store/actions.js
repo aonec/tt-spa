@@ -5,7 +5,7 @@ export function onChangeFormValueByPath(path, value) {
   };
 }
 
-export function DefaultFormValueFullfill(path, value) {
+export function setAddCalculatorForm(path, value) {
   return {
     type: 'CALC_UPDATE_FORM',
     payload: { path, value },
@@ -19,7 +19,7 @@ export function onChangeDeviceFormValueByPath(path, value) {
   };
 }
 
-export function fullfillAddDeviceForm(path, value) {
+export function setAddDeviceForm(path, value) {
   return {
     type: 'DEV_UPDATE_FORM',
     payload: { path, value },
