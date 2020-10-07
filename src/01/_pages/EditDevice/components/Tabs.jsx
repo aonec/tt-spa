@@ -1,5 +1,6 @@
 import React from 'react'
 import { Tabs } from 'antd';
+import Common from './Common'
 
 const { TabPane } = Tabs;
 
@@ -34,7 +35,7 @@ const TabsComponent = (props) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-              <div>Component</div>
+              <Common />
           </TabPane>
         );
       })}

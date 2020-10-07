@@ -8,6 +8,7 @@ import moment from 'moment';
 import { serviceLife, resources, types } from '../DeviceJSON';
 import { onChangeDeviceFormValueByPath } from '../../../store/actions';
 
+
 const CommonTab = () => {
   const {
     serialNumber,
