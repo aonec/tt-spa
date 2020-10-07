@@ -41,9 +41,9 @@ const TabsDevices = () => {
 
 
     const deviceElems = deviceItems.map((device) => {
-        return <div>
-            Прибор - {device.id}
-            <div>Подприборы: {device.relatedDevices.length ?
+        return <div className={styles.device}>
+            <h2>Прибор - {device.model} ({device.id}) - {device.futureCheckingDate}</h2>
+            <div><h3>Подприборы:</h3> {device.relatedDevices.length ?
                 device.relatedDevices.map((device) => <div>Подприбор {device.id}</div>) :
                 'Подприборов нет'
             }
@@ -56,7 +56,7 @@ const TabsDevices = () => {
 
     return <Tabs defaultActiveKey="1" onChange={callback}>
         <TabPane className={styles.tab} tab="ОДПУ" key="1">
-            {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
+            {isLoading ? <div>ЗАГРУЗКА... <Loader show={true} size="32"/></div> :
                 <div>
                 <div className={styles.devices}>{deviceElems}</div>
             <div className={styles.pages}>

@@ -45,7 +45,7 @@ export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
   const devices = await devicesAPI.getDevices(pageNumber, pageSize);
   const devicesWithRelated = await Promise.all(devices.map(async (d) => {
     const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-    // if (!relatedDevices.length) return {...d, relatedDevices}
+    if (!relatedDevices) return {...d, relatedDevices: []}
     return { ...d, relatedDevices: [...relatedDevices] };
   }));
   dispatch(toggleIsLoading());
