@@ -1,0 +1,28 @@
+.tab {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%
+}
+.devices {
+    /*height: 80%;*/
+}
+
+.pages {
+    margin: 20px 0;
+    position: relative;
+    bottom: 0;
+}
+
+.page, .currentPage {
+    border: 1px solid lightgray;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.currentPage {
+    border: 2px solid gray;
+    font-weight: 700;
+}
