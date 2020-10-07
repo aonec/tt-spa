@@ -26,7 +26,6 @@ export default function Connection() {
 
   const getInfoHandler = () => {
     console.log('getInfoHandler');
-
   };
 
   return (

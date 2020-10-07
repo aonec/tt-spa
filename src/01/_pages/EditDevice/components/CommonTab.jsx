@@ -8,7 +8,7 @@ import { items, serviceLife } from '../CalculatorJSON';
 
 function CommonTab() {
   const dispatch = useDispatch();
-  const {serialNumber, infoId} = useSelector((state) => state.editCalculatorReducer);
+  const { serialNumber, infoId } = useSelector((state) => state.editCalculatorReducer);
 
   const layout = {
     labelCol: { span: 8 },
@@ -28,7 +28,7 @@ function CommonTab() {
 
   const getInfoHandler = () => {
     console.log('getInfoHandler');
-    console.log(serialNumber, infoId)
+    console.log(serialNumber, infoId);
   };
 
   console.log('Common');
@@ -54,10 +54,10 @@ function CommonTab() {
         id="serialNumber"
         // rules={[{ required: true, message: 'Пожалуйста, укажите Серийный номер' }]}
       >
-        <Input 
+        <Input
         // placeholder={serialNumber}
-        value={serialNumber}
-        onChange={()=>console.log("onChange")}
+          value={serialNumber}
+          onChange={() => console.log('onChange')}
         />
       </Form.Item>
 
@@ -132,4 +132,4 @@ function CommonTab() {
   );
 }
 
-export default connect()(CommonTab)
+export default connect()(CommonTab);

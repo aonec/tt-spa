@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
-import axios from '01/axios'
-import {Header} from '01/tt-components'
-import TabsComponent from './components/Tabs'
+import React, { useEffect } from 'react';
+import axios from '01/axios';
+import { Header } from '01/tt-components';
 import { Route, useParams } from 'react-router-dom';
 import { connect, useSelector, useDispatch } from 'react-redux';
-
+import TabsComponent from './components/Tabs';
 
 async function getDevice(url = '') {
   try {
@@ -25,22 +24,21 @@ async function getDevice(url = '') {
 const EditDevice = () => {
   const dispatch = useDispatch();
   const editCalculatorReducer = useSelector((state) => state.editCalculatorReducer);
-  
-  const { 0: objid, 1: deviceId } = useParams();
-  useEffect(()=>{
-    getDevice(deviceId)
-    console.log(editCalculatorReducer)
-  },[])
 
- 
- return (
+  const { 0: objid, 1: deviceId } = useParams();
+  useEffect(() => {
+    getDevice(deviceId);
+    console.log(editCalculatorReducer);
+  }, []);
+
+  return (
 
     <>
-  <Header>ВКТ-7 (123456789). Редактирование</Header>
-  <TabsComponent />
-  <div>{deviceId}</div>
+      <Header>ВКТ-7 (123456789). Редактирование</Header>
+      <TabsComponent />
+      <div>{deviceId}</div>
     </>
-  )
+  );
 };
 
-export default connect()(EditDevice)
+export default connect()(EditDevice);

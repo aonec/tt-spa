@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { Tabs } from 'antd';
-import CommonTab from './CommonTab'
-import SettingConnectionTab from './SettingConnectionTab'
+import CommonTab from './CommonTab';
+import SettingConnectionTab from './SettingConnectionTab';
 
 const { TabPane } = Tabs;
 
@@ -29,7 +29,7 @@ const tabs = [
 ];
 
 const TabsComponent = (props) => {
-  console.log("TabsComponent", props)
+  console.log('TabsComponent', props);
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
@@ -37,7 +37,7 @@ const TabsComponent = (props) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-              <Component />
+            <Component />
           </TabPane>
         );
       })}
