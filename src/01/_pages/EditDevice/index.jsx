@@ -3,7 +3,7 @@ import axios from '01/axios'
 import {Header} from '01/tt-components'
 import TabsComponent from './components/Tabs'
 import { Route, useParams } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux';
 
 
 async function getDevice(url = '') {
@@ -24,9 +24,12 @@ async function getDevice(url = '') {
 
 const EditDevice = () => {
   const dispatch = useDispatch();
+  const editCalculatorReducer = useSelector((state) => state.editCalculatorReducer);
+  
   const { 0: objid, 1: deviceId } = useParams();
   useEffect(()=>{
     getDevice(deviceId)
+    console.log(editCalculatorReducer)
   },[])
 
  
@@ -34,10 +37,10 @@ const EditDevice = () => {
 
     <>
   <Header>ВКТ-7 (123456789). Редактирование</Header>
-  <TabsComponent />
+  <TabsComponent editCalculatorReducer={editCalculatorReducer}/>
   <div>{deviceId}</div>
     </>
   )
 };
 
-export default EditDevice
+export default connect()(EditDevice)

@@ -28,6 +28,7 @@ const tabs = [
 ];
 
 const TabsComponent = (props) => {
+  console.log("TabsComponent", props)
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
