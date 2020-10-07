@@ -1,11 +1,15 @@
 import React from 'react';
 import {
-  Form, Input, Button, Checkbox, Select, DatePicker
+  Form, Input, Button, Checkbox, Select, DatePicker,
 } from 'antd';
+import { connect, useSelector, useDispatch } from 'react-redux';
 
 import { items, serviceLife } from '../CalculatorJSON';
 
-export default function CommonTab() {
+function CommonTab() {
+  const dispatch = useDispatch();
+  const {serialNumber, infoId} = useSelector((state) => state.editCalculatorReducer);
+
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -24,6 +28,7 @@ export default function CommonTab() {
 
   const getInfoHandler = () => {
     console.log('getInfoHandler');
+    console.log(serialNumber, infoId)
   };
 
   console.log('Common');
@@ -31,7 +36,7 @@ export default function CommonTab() {
     <Form
       {...layout}
       name="basic"
-      initialValues={{ remember: true }}
+    //   initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
@@ -46,10 +51,14 @@ export default function CommonTab() {
 
       <Form.Item
         label="Серийный номер"
-        name="serialNumber"
-        rules={[{ required: true, message: 'Пожалуйста, укажите Серийный номер' }]}
+        id="serialNumber"
+        // rules={[{ required: true, message: 'Пожалуйста, укажите Серийный номер' }]}
       >
-        <Input />
+        <Input 
+        // placeholder={serialNumber}
+        value={serialNumber}
+        onChange={()=>console.log("onChange")}
+        />
       </Form.Item>
 
       <Form.Item
@@ -75,7 +84,6 @@ export default function CommonTab() {
       >
         <Select options={serviceLife} />
       </Form.Item>
-
 
       <Form.Item
         label="Дата поверки прибора"
@@ -123,3 +131,5 @@ export default function CommonTab() {
     </Form>
   );
 }
+
+export default connect()(CommonTab)

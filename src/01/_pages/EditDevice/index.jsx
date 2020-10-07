@@ -37,7 +37,7 @@ const EditDevice = () => {
 
     <>
   <Header>ВКТ-7 (123456789). Редактирование</Header>
-  <TabsComponent editCalculatorReducer={editCalculatorReducer}/>
+  <TabsComponent />
   <div>{deviceId}</div>
     </>
   )
