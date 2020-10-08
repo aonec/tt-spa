@@ -32,27 +32,8 @@ const EditCalculator = () => {
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
   const [currentCalc, setCurrentCalc] = useState();
+  const [model, setModel] = useState()
 
-  let {
-    calculator,
-    canBeEdited,
-    closingDate,
-    deviceAddress,
-    diameter,
-    futureCheckingDate,
-    futureCommercialAccountingDate,
-    housingStockId,
-    id,
-    ipV4,
-    lastCheckingDate,
-    lastCommercialAccountingDate,
-    model,
-    port,
-    resource,
-    serialNumber,
-    type,
-    underTransaction,
-  } = currentCalc || {};
 
   async function getCalculator(url = '') {
     try {
@@ -73,8 +54,29 @@ const EditCalculator = () => {
   useEffect(() => {
     if (currentCalc) {
 
+      let {
+        calculator,
+        canBeEdited,
+        closingDate,
+        deviceAddress,
+        diameter,
+        futureCheckingDate,
+        futureCommercialAccountingDate,
+        housingStockId,
+        id,
+        ipV4,
+        lastCheckingDate,
+        lastCommercialAccountingDate,
+        model,
+        port,
+        resource,
+        serialNumber,
+        type,
+        underTransaction,
+      } = currentCalc;
+    
 
-   const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
+    const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
 
     const { value } = currentInfoId;
 
@@ -93,10 +95,16 @@ const EditCalculator = () => {
           housingStockId,
           infoId: Number(value)
       }
+      console.log()
+      const temp = _.find(items, { value: value });
+      const {label} = temp
+      console.log("label",label)
+      setModel( label)
       dispatch(
         setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
       )
   }
+ 
   
   }, [currentCalc]);
 
@@ -164,13 +172,16 @@ const EditCalculator = () => {
     }
   };
 
+ 
+
+
   return (
     <AddDeviceContext.Provider value={{}}>
  <ConfigProvider locale={ruRu}>
 
       <ModalTop>
 
-        <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
+        <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
 
         <button onClick={buttonHandler}>getKey</button>
       </ModalTop>
