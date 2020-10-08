@@ -3,6 +3,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import $ from 'jquery';
 import axios from '01/axios';
+import ruRu from 'antd/es/locale/ru_RU';
 import { useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import '01/tt-components/antd.scss';
@@ -18,6 +19,9 @@ import {
 import { ButtonTT, Header } from '01/tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from './store/actions';
+import {
+  ConfigProvider
+} from 'antd';
 
 export const AddDeviceContext = React.createContext();
 
@@ -102,10 +106,10 @@ const EditCalculator = () => {
           lastCommercialAccountingDate,
           connection: {
               ipV4,
-              deviceAddress,
+              deviceAddress: deviceAddress || 124,
               port,
           },
-          futureCommercialAccountingDate,
+          futureCommercialAccountingDate: futureCommercialAccountingDate,
           housingStockId,
           infoId: Number(value)
       }
@@ -124,32 +128,32 @@ const EditCalculator = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-  const renderNextButton = () => {
-    if (currentTabKey === '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleNext}
-      >
-        Далее
-      </ButtonTT>
-    );
-  };
+  // const renderNextButton = () => {
+  //   if (currentTabKey === '3') {
+  //     return null;
+  //   }
+  //   return (
+  //     <ButtonTT
+  //       color="blue"
+  //       style={{ marginLeft: '16px' }}
+  //       onClick={handleNext}
+  //     >
+  //       Далее
+  //     </ButtonTT>
+  //   );
+  // };
 
   const renderSubmitButton = () => {
-    if (currentTabKey !== '3') {
-      return null;
-    }
+    // if (currentTabKey !== '3') {
+    //   return null;
+    // }
     return (
       <ButtonTT
         color="blue"
         style={{ marginLeft: '16px' }}
         onClick={handleSubmit}
       >
-        Выгрузить
+        Сохранить
       </ButtonTT>
     );
   };
@@ -167,9 +171,9 @@ const EditCalculator = () => {
     alert('Cейчас будем отправлять данные!');
     try {
       const res = await axios.put(`Calculators/${deviceId}`, calculatorPage);
-      alert('Вычислитель успешно создан !');
-      // console.log(res);
-      // return res;
+      alert('Вычислитель успешно изменен!');
+      console.log(res);
+      return res;
         console.log(calculatorPage,"calculatorPage")
     } catch (error) {
       console.log(error);
@@ -182,7 +186,7 @@ const EditCalculator = () => {
 
   return (
     <AddDeviceContext.Provider value={{}}>
-
+ <ConfigProvider locale={ruRu}>
 
       <ModalTop>
 
@@ -201,11 +205,11 @@ const EditCalculator = () => {
         <ButtonTT color="white" onClick={hideMe}>
           Отмена
         </ButtonTT>
-        {renderNextButton()}
+        {/* {renderNextButton()} */}
         {renderSubmitButton()}
 
       </ModalBottom>
-
+      </ConfigProvider>
     </AddDeviceContext.Provider>
   );
 };
