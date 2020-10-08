@@ -2,34 +2,29 @@ import React from 'react';
 import { Tabs } from 'antd';
 import CommonTab from './CommonTab';
 import SettingConnectionTab from './SettingConnectionTab';
+import DocumentsTab from './DocumentsTab';
 
 const { TabPane } = Tabs;
 
 const tabs = [
   {
-    title: 'Общие данные',
+    title: 'Шаг 1. Общие данные',
     key: '1',
     Component: CommonTab,
   },
   {
-    title: 'Настройки соединения',
+    title: 'Шаг 2. Настройки соединения',
     key: '2',
     Component: SettingConnectionTab,
   },
   {
-    title: 'Подключенные приборы',
+    title: 'Шаг 3. Документы',
     key: '3',
-    Component: CommonTab,
-  },
-  {
-    title: 'Документы',
-    key: '4',
-    Component: CommonTab,
+    Component: DocumentsTab,
   },
 ];
 
 const TabsComponent = (props) => {
-  console.log('TabsComponent', props);
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
