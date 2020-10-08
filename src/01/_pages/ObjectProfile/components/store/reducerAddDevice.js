@@ -1,27 +1,26 @@
 import _ from 'lodash';
-import moment from 'moment';
 
 const initialState = {
-  calculatorId: 1553976,
-  checkingDate: moment().toISOString(),
+  calculatorId: '',
+  checkingDate: '',
   connection: {
     ipV4: '',
     deviceAddress: '',
     port: '',
   },
-  futureCheckingDate: moment().toISOString(),
-  futureCommercialAccountingDate: moment().toISOString(),
-  housingMeteringDeviceType: 'FlowMeter',
+  futureCheckingDate: '',
+  futureCommercialAccountingDate: '',
+  housingMeteringDeviceType: '',
   housingStockId: '',
-  lastCommercialAccountingDate: moment().toISOString(),
-  model: 'TEST',
+  lastCommercialAccountingDate: '',
+  model: '',
   pipe: {
-    entryNumber: 1,
-    hubNumber: 1,
-    pipeNumber: 1,
+    entryNumber: '',
+    hubNumber: '',
+    pipeNumber: '',
     magistral: '',
   },
-  resource: 'ColdWaterSupply',
+  resource: '',
   serialNumber: '',
 };
 

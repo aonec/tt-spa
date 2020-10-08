@@ -18,7 +18,7 @@ import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from '../store/actions';
 
-export const AddDeviceContext = React.createContext();
+export const AddCalculatorContext = React.createContext();
 
 const ModalCalculator = () => {
   const { 0: objid } = useParams();
@@ -112,7 +112,7 @@ const ModalCalculator = () => {
   };
 
   return (
-    <AddDeviceContext.Provider value={{}}>
+    <AddCalculatorContext.Provider value={{}}>
       <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
@@ -138,7 +138,7 @@ const ModalCalculator = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </AddDeviceContext.Provider>
+    </AddCalculatorContext.Provider>
   );
 };
 

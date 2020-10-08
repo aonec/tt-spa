@@ -20,8 +20,8 @@ import { setAddDeviceForm } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
-const ModalCalculator = () => {
-  const { 0: objid } = useParams();
+const ModalAddDevice = () => {
+  const { 0: objid} = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const ModalCalculator = () => {
   }
 
   const initialStateDefaultValues = {
-    calculatorId: 1553976,
+    calculatorId: '',
     checkingDate: moment().toISOString(),
     connection: {
       ipV4: '10.90.128.1',
@@ -44,9 +44,9 @@ const ModalCalculator = () => {
     futureCheckingDate: moment().toISOString(),
     futureCommercialAccountingDate: moment().toISOString(),
     housingMeteringDeviceType: 'FlowMeter',
-    housingStockId: Number[objid],
+    housingStockId: Number(objid),
     lastCommercialAccountingDate: moment().toISOString(),
-    model: 'TEST',
+    model: '',
     pipe: {
       entryNumber: 1,
       hubNumber: 1,
@@ -58,7 +58,7 @@ const ModalCalculator = () => {
   };
 
   useEffect(() => {
-    dispatch(
+      dispatch(
       setAddDeviceForm(deviceReducer, initialStateDefaultValues),
     );
   }, []);
@@ -111,8 +111,8 @@ const ModalCalculator = () => {
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      const res = await axios.post('Calculators', deviceReducer);
-      alert('Вычислитель успешно создан !');
+      const res = await axios.post('HousingMeteringDevices', deviceReducer);
+      alert('ОДПУ успешно создан !');
       // console.log(res);
       return res;
     } catch (error) {
@@ -155,37 +155,4 @@ const ModalCalculator = () => {
   );
 };
 
-export default connect()(ModalCalculator);
-
-// const initialState = {
-//   serialNumber: '',
-//   checkingDate: moment().toISOString(),
-//   futureCheckingDate: moment().toISOString(),
-//   lastCommercialAccountingDate: moment().toISOString(),
-//   connection: {
-//     ipV4: '192.168.0.1',
-//     deviceAddress: 0,
-//     port: 1234,
-//   },
-//   futureCommercialAccountingDate: moment().toISOString(),
-//   housingStockId: Number(objid),
-//   infoId: 1,
-// };
-
-// const initialStateFullfill = [
-//   { id: ['serialNumber'], value: 'serialNumber' },
-//   { id: ['housingStockId'], value: Number(objid) },
-//   { id: ['infoId'], value: 1 },
-//   { id: ['lastCommercialAccountingDate'], value: moment().toISOString() },
-//   { id: ['checkingDate'], value: moment().toISOString() },
-//   { id: ['futureCheckingDate'], value: moment().toISOString() },
-//   { id: ['connection', 'ipV4'], value: '192.168.1.1' },
-//   { id: ['connection', 'deviceAddress'], value: 0 },
-//   { id: ['connection', 'port'], value: 1 },
-//   {
-//     id: ['futureCommercialAccountingDate'],
-//     value: moment()
-//       .add(4, 'year')
-//       .toISOString(),
-//   },
-// ];
+export default connect()(ModalAddDevice);

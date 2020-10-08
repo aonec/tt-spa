@@ -7,14 +7,6 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import '01/tt-components/antd.scss';
-import {
-  Modal,
-  ModalWrap,
-  ModalTop,
-  ModalMain,
-  ModalBottom,
-  ModalClose,
-} from '01/tt-components/Modal';
 import {items} from './components/CalculatorJSON'
 
 import { ButtonTT, Header } from '01/tt-components';
@@ -118,22 +110,6 @@ const EditCalculator = () => {
   };
 
 
-
-  const renderSubmitButton = () => {
-    // if (currentTabKey !== '3') {
-    //   return null;
-    // }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleSubmit}
-      >
-        Сохранить
-      </ButtonTT>
-    );
-  };
-
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
   };
@@ -167,27 +143,38 @@ const EditCalculator = () => {
     <AddDeviceContext.Provider value={{}}>
  <ConfigProvider locale={ruRu}>
 
-      <ModalTop>
+      {/* <ModalTop> */}
 
         <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
 
-        <button onClick={buttonHandler}>getKey</button>
-      </ModalTop>
-      <ModalMain>
+        {/* <button onClick={buttonHandler}>getKey</button> */}
+
+      {/* <ModalMain> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-      </ModalMain>
+      {/* </ModalMain> */}
 
-      <ModalBottom>
+      {/* <ModalBottom> */}
+      <div>
+      <ButtonTT
+        color='blue'
+        style={{ marginRight: '16px' }}
+        onClick={handleSubmit}
+      >
+        Сохранить
+       </ButtonTT>
+
         <ButtonTT color="white" onClick={hideMe}>
           Отмена
         </ButtonTT>
-        {/* {renderNextButton()} */}
-        {renderSubmitButton()}
+      </div>
 
-      </ModalBottom>
+        {/* {renderNextButton()} */}
+     
+
+      {/* </ModalBottom> */}
       </ConfigProvider>
     </AddDeviceContext.Provider>
   );
