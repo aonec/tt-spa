@@ -79,6 +79,7 @@ const TabsDevices = () => {
 
             <TabPane className={styles.tab} tab="ОДПУ" key="1">
                 <input
+                    className={styles.form}
                     type="text"
                     value={searchTerm}
                     onChange={editSearchTerm}
