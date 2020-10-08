@@ -39,13 +39,15 @@ const CommonTab = () => {
           />
         </Form.Item>
 
-        <Form.Item name="select" label="Тип вычислителя">
+        <Form.Item label="Тип вычислителя">
           <Select
             placeholder="Выберите тип устройства"
             options={items}
-            defaultValue={items[0].value}
+            // defaultValue={items[0].value}
             // value={items[0].value}
-            value={infoId}
+
+           // options={[{ label: 'fdf', value: '1' }, { label: 'wefse', value: '2' }, { label: 'fdsg', value: '3' }, { label: 'gsd', value: '4' }]}
+            value={infoId.toString()}
                         onChange={(event, target) => {
               console.log(event, target)
               const value = event;

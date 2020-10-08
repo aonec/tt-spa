@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import $ from 'jquery';
 import axios from '01/axios';
 import { useParams } from 'react-router-dom';
@@ -14,9 +15,11 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
-import { Title, ButtonTT, Header } from '01/tt-components'
+import { Title, ButtonTT, Header } from '01/tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from './store/actions';
+
+import { items } from './components/CalculatorJSON';
 
 export const AddDeviceContext = React.createContext();
 
@@ -26,21 +29,51 @@ const EditCalculator = () => {
   const modalRef = React.createRef();
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
+  const [currentCalc, setCurrentCalc] = useState({});
 
-  const initialStateDefaultValues = {
-    serialNumber: '',
-    checkingDate: moment().toISOString(),
-    futureCheckingDate: moment().toISOString(),
-    lastCommercialAccountingDate: moment().toISOString(),
-    connection: {
-      ipV4: '192.168.0.1',
-      deviceAddress: 0,
-      port: 1234,
+  const {
+    calculator,
+    canBeEdited,
+    closingDate,
+    deviceAddress,
+    diameter,
+    futureCheckingDate,
+    futureCommercialAccountingDate,
+    housingStockId,
+    id,
+    ipV4,
+    lastCheckingDate,
+    lastCommercialAccountingDate,
+    model,
+    port,
+    resource,
+    serialNumber,
+    type,
+    underTransaction,
+  } = currentCalc;
+
+  const items = [
+    {
+      value: '1',
+      label: 'ТЭМ-106',
     },
-    futureCommercialAccountingDate: moment().toISOString(),
-    housingStockId: Number(objid),
-    infoId: 1,
-  };
+    {
+      value: '2',
+      label: 'ТЭМ-104',
+    },
+    {
+      value: '3',
+      label: 'ТЭМ-104',
+    },
+    {
+      value: '4',
+      label: 'ВКТ-7',
+    },
+    {
+      value: '5',
+      label: 'ВИСТ',
+    },
+  ];
 
   async function getCalculator(url = '') {
     try {
@@ -59,21 +92,58 @@ const EditCalculator = () => {
   }
 
   useEffect(() => {
-    // initialStateFullfill.map((item) => {
-    //   dispatch(onChangeFormValueByPath(item.id, item.value));
-    // });
-  console.log("deviceId",deviceId)
-    // getCalculator(deviceId).then(result => {dispatch(
-    //     setAddCalculatorForm(calculatorPage, result)
-    // )})
-    const a = getCalculator(deviceId);
-    a.then((res) => console.log("testres", res))
+    getCalculator(deviceId).then((result) => {
+      setCurrentCalc(result);
+    });
 
-    
-    // dispatch(
-    //   setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
-    // );
   }, []);
+
+  useEffect(() => {
+    // console.log('some', currentCalc);
+    const currentInfoId = _.find(items, { label: model });
+    console.log(currentInfoId)
+    const { value } = {...currentInfoId} ;
+    console.log(value)
+
+
+    async function getDevice(url = '') {
+      try {
+        const res = await axios.get(`MeteringDevices/${url}`);
+        return res;
+      } catch (error) {
+        console.log(error);
+        throw {
+          resource: 'device',
+          message: 'Произошла ошибка запроса устройства',
+        };
+      }
+    }
+      const initialStateDefaultValues = {
+          serialNumber,
+          checkingDate: lastCommercialAccountingDate,
+          futureCheckingDate,
+          lastCommercialAccountingDate,
+          connection: {
+              ipV4,
+              deviceAddress,
+              port,
+          },
+          futureCommercialAccountingDate,
+          housingStockId,
+          infoId: Number(value),
+          // infoId: Number((_.find(items, {'label': 'ВКТ-7'})).value)
+      };
+
+
+
+    getDevice(deviceId).then(() => {
+      dispatch(
+        setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
+      );
+    });
+
+
+  }, [currentCalc]);
 
   function handleChangeTab(value) {
     setTab(value);
@@ -118,16 +188,18 @@ const EditCalculator = () => {
   };
 
   const buttonHandler = () => {
-    console.log("test")
+    console.log('test');
+    console.log(serialNumber);
   };
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      const res = await axios.post('Calculators', calculatorPage);
-      alert('Вычислитель успешно создан !');
+      // const res = await axios.post('Calculators', calculatorPage);
+      // alert('Вычислитель успешно создан !');
       // console.log(res);
-      return res;
+      // return res;
+        console.log(calculatorPage,"calculatorPage")
     } catch (error) {
       console.log(error);
       alert(
@@ -143,32 +215,32 @@ const EditCalculator = () => {
       {/* <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} /> */}
-          <ModalTop>
+      <ModalTop>
 
-              <Header>ВКТ-7 (123456789). Редактирование</Header>
+        <Header>ВКТ-7 (123456789). Редактирование</Header>
 
-             <button onClick={buttonHandler}>getKey</button>
-          </ModalTop>
-          <ModalMain>
-            <TabsComponent
-              currentTabKey={currentTabKey}
-              handleChangeTab={handleChangeTab}
-            />
-          </ModalMain>
+        <button onClick={buttonHandler}>getKey</button>
+      </ModalTop>
+      <ModalMain>
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+      </ModalMain>
 
-          <ModalBottom>
-            <ButtonTT color="white" onClick={hideMe}>
-              Отмена
-            </ButtonTT>
-            {renderNextButton()}
-            {renderSubmitButton()}
-          {/* </ModalBottom>
+      <ModalBottom>
+        <ButtonTT color="white" onClick={hideMe}>
+          Отмена
+        </ButtonTT>
+        {renderNextButton()}
+        {renderSubmitButton()}
+        {/* </ModalBottom>
         </ModalWrap> */}
-      {/*</Modal>*/}
-          </ModalBottom>
+        {/* </Modal> */}
+      </ModalBottom>
 
     </AddDeviceContext.Provider>
-  )
+  );
 };
 
 export default connect()(EditCalculator);
