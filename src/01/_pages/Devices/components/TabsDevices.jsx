@@ -4,12 +4,13 @@ import { Tabs } from 'antd';
 import {devicesAPI} from "../../../_api/devices_page";
 import {Loader} from "../../../components/Loader";
 import {getDevices, setCurrentPage, toggleIsLoading} from "../../../Redux/reducers/reducerDevicesPage";
-import {compose} from "redux";
-import Device from "./Device";
+
+
 import {useDispatch, useSelector} from "react-redux";
 
 import styles from './TabsDevices.module.css'
 import {createPages} from "../../../utils/pagesCreator";
+
 
 const { TabPane } = Tabs;
 
@@ -38,6 +39,7 @@ const TabsDevices = () => {
     }, [currentPage, pageSize]);
 
     const deviceItems = useSelector((state) => state.devicePage.devices);
+
 
 
     const deviceElems = deviceItems.map((device) => {
