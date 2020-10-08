@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import styles from './TabsDevices.module.css'
 import {createPages} from "../../../utils/pagesCreator";
+import {NavLink} from "react-router-dom";
 
 
 const { TabPane } = Tabs;
@@ -44,7 +45,7 @@ const TabsDevices = () => {
 
     const deviceElems = deviceItems.map((device) => {
         return <div>
-            Прибор - {device.id}
+            Прибор - <NavLink to={`/objects/${device.housingStockId}/devices/${device.id}`}>{device.model}</NavLink>
             <div>Подприборы: {device.relatedDevices.length ?
                 device.relatedDevices.map((device) => <div>Подприбор {device.id}</div>) :
                 'Подприборов нет'
