@@ -6,7 +6,6 @@ import {Loader} from "../../../components/Loader";
 import {getDevices, setCurrentPage, toggleIsLoading} from "../../../Redux/reducers/reducerDevicesPage";
 
 
-import Device from "./Device";
 import {useDispatch, useSelector} from "react-redux";
 
 import styles from './TabsDevices.module.css'
