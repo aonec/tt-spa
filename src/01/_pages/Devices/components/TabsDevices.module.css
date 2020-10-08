@@ -8,6 +8,27 @@
     /*height: 80%;*/
 }
 
+.device__title {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 2;
+    color: #272f5A;
+}
+
+
+
+.device {
+    margin-bottom: 30px;
+}
+
+.subDevices {
+    margin-left: 44px;
+}
+
+.icon {
+    margin-right: 8px;
+}
+
 .pages {
     margin: 20px 0;
     position: relative;

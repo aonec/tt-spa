@@ -11,6 +11,8 @@ import {useDispatch, useSelector} from "react-redux";
 import styles from './TabsDevices.module.css'
 import {createPages} from "../../../utils/pagesCreator";
 
+import {NavLink} from "react-router-dom";
+
 
 const { TabPane } = Tabs;
 
@@ -27,6 +29,7 @@ const TabsDevices = () => {
     const totalPages = useSelector((state) => state.devicePage.totalPages);
     const isLoading = useSelector((state) => state.devicePage.isLoading);
 
+    }
 
 
     const pages = [];
@@ -37,18 +40,15 @@ const TabsDevices = () => {
         dispatch(getDevices(currentPage, pageSize));
         dispatch(toggleIsLoading());
     }, [currentPage, pageSize]);
+    }
 
     const deviceItems = useSelector((state) => state.devicePage.devices);
+    )
 
 
 
     const deviceElems = deviceItems.map((device) => {
-        return <div>
-            Прибор - {device.id}
-            <div>Подприборы: {device.relatedDevices.length ?
-                device.relatedDevices.map((device) => <div>Подприбор {device.id}</div>) :
-                'Подприборов нет'
-            }
+        return <div className={styles.device}>
             </div>
 
         </div>
@@ -56,7 +56,6 @@ const TabsDevices = () => {
 
     // if (isLoading) return <div>LOADING...</div>
 
-    return <Tabs defaultActiveKey="1" onChange={callback}>
         <TabPane className={styles.tab} tab="ОДПУ" key="1">
             {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                 <div>
