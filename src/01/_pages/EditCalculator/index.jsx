@@ -15,6 +15,7 @@ import {
   ModalBottom,
   ModalClose,
 } from '01/tt-components/Modal';
+import {items} from './components/CalculatorJSON'
 
 import { ButtonTT, Header } from '01/tt-components';
 import TabsComponent from './components/Tabs/Main';
@@ -32,28 +33,26 @@ const EditCalculator = () => {
   const calculatorPage = useSelector((state) => state.calculatorPage);
   const [currentCalc, setCurrentCalc] = useState();
 
-  const items = [
-    {
-      value: '1',
-      label: 'ТЭМ-106',
-    },
-    {
-      value: '2',
-      label: 'ТЭМ-104',
-    },
-    {
-      value: '3',
-      label: 'ТЭМ-104',
-    },
-    {
-      value: '4',
-      label: 'ВКТ-7',
-    },
-    {
-      value: '5',
-      label: 'ВИСТ',
-    },
-  ];
+  let {
+    calculator,
+    canBeEdited,
+    closingDate,
+    deviceAddress,
+    diameter,
+    futureCheckingDate,
+    futureCommercialAccountingDate,
+    housingStockId,
+    id,
+    ipV4,
+    lastCheckingDate,
+    lastCommercialAccountingDate,
+    model,
+    port,
+    resource,
+    serialNumber,
+    type,
+    underTransaction,
+  } = currentCalc || {};
 
   async function getCalculator(url = '') {
     try {
@@ -73,26 +72,7 @@ const EditCalculator = () => {
 
   useEffect(() => {
     if (currentCalc) {
-        const {
-        calculator,
-        canBeEdited,
-        closingDate,
-        deviceAddress,
-        diameter,
-        futureCheckingDate,
-        futureCommercialAccountingDate,
-        housingStockId,
-        id,
-        ipV4,
-        lastCheckingDate,
-        lastCommercialAccountingDate,
-        model,
-        port,
-        resource,
-        serialNumber,
-        type,
-        underTransaction,
-      } = currentCalc;
+
 
    const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
 
@@ -190,7 +170,7 @@ const EditCalculator = () => {
 
       <ModalTop>
 
-        <Header>ВКТ-7 (123456789). Редактирование</Header>
+        <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
 
         <button onClick={buttonHandler}>getKey</button>
       </ModalTop>
