@@ -1,12 +1,12 @@
-import React from "react";
 
 import { Tabs } from 'antd';
 import {devicesAPI} from "../../../_api/devices_page";
 import {Loader} from "../../../components/Loader";
 import {getDevices} from "../../../Redux/reducers/reducerDevicesPage";
 import {compose} from "redux";
-import {connect} from "react-redux";
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
+import {getDevices, setCurrentPage, toggleIsLoading} from "../../../Redux/reducers/reducerDevicesPage";
+
 
 const { TabPane } = Tabs;
 
@@ -16,55 +16,49 @@ function callback(key) {
 
 
 
-class TabsDevices extends React.Component {
-
-    componentDidMount() {
-        this.props.getDevices();
-
-    }
 
 
-    // const devicesArray = devicesAPI.getDevices();
-    debugger;
-
-    // if (devicesArray instanceof Promise) return <div>LOAD</div>;
-    // const devices = devicesArray.map(device => <div>{device.id}</div>)
-//     let items = devices.items;
-
-    // console.log(devicesAPI.getDevices())
-    render() {
-        let deviceItems = this.props.devices;
-
-        if (!deviceItems) return <div>LOADING...</div>
 
 
-        let deviceElems = deviceItems.map(device => {
-            return <DeviceBlock device={device} />
+
+    const deviceItems = useSelector((state) => state.devicePage.devices);
+
+
+
+    const deviceElems = deviceItems.map((device) => {
+        return <div>
+            Прибор - {device.id}
+            <div>Подприборы: {device.relatedDevices.length ?
+                device.relatedDevices.map((device) => <div>Подприбор {device.id}</div>) :
+                'Подприборов нет'
             }
-        )
-     return <Tabs defaultActiveKey="1" onChange={callback}>
-            <TabPane tab="ОДПУ" key="1">
-                {deviceElems}
-            </TabPane>
-            <TabPane tab="ИПУ" key="2">
-                Content of Tab Pane 2
-            </TabPane>
-        </Tabs>
-    }
+            </div>
 
-}
-
-
-const mapStateToProps = (state) => {
-    return {
-        devices: state.devicePage.devices
-    }
-}
-
-
-
-export default compose(
-    connect(mapStateToProps, {
-        getDevices
+        </div>
     })
-)(TabsDevices)
+
+    // if (isLoading) return <div>LOADING...</div>
+
+    return <Tabs defaultActiveKey="1" onChange={callback}>
+        <TabPane className={styles.tab} tab="ОДПУ" key="1">
+            {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
+                <div>
+                <div className={styles.devices}>{deviceElems}</div>
+            <div className={styles.pages}>
+                {pages.map((page, index) => <span
+                    key={index}
+                    className={currentPage == page ? styles.currentPage : styles.page}
+                    onClick={() => dispatch(setCurrentPage(page))}
+                >{page}</span> )}
+            </div>
+                </div>}
+        </TabPane>
+        <TabPane tab="ИПУ" key="2">
+            Content of Tab Pane 2
+        </TabPane>
+    </Tabs>
+}
+
+
+
+export default TabsDevices
