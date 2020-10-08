@@ -5,10 +5,9 @@ import {
 } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
+import { button } from '01/r_comp';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../store/actions';
-import { button } from '01/r_comp';
-
 
 const CommonTab = () => {
   const {
@@ -21,14 +20,14 @@ const CommonTab = () => {
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
   const buttonHandler = () => {
-   console.log("serialNumber", serialNumber)
-  }
+    console.log('serialNumber', serialNumber);
+  };
   return (
     <ConfigProvider locale={ruRu}>
       <button onClick={buttonHandler}>test</button>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/*<Form.Item name="text" label="Серийный номер устройства">*/}
-          <Form.Item label="Серийный номер устройства">
+        {/* <Form.Item name="text" label="Серийный номер устройства"> */}
+        <Form.Item label="Серийный номер устройства">
           <Input
             value={serialNumber}
             placeholder="Серийный номер..."
@@ -48,8 +47,8 @@ const CommonTab = () => {
 
            // options={[{ label: 'fdf', value: '1' }, { label: 'wefse', value: '2' }, { label: 'fdsg', value: '3' }, { label: 'gsd', value: '4' }]}
             value={infoId.toString()}
-                        onChange={(event, target) => {
-              console.log(event, target)
+            onChange={(event, target) => {
+              console.log(event, target);
               const value = event;
               const path = ['infoId'];
               dispatch(onChangeFormValueByPath(path, Number(target.value)));

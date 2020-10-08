@@ -6,13 +6,13 @@ import { onChangeFormValueByPath } from '../../store/actions';
 
 const SettingConnectionTab = () => {
   const {
-    connection: { port, ipV4 },
+    connection: { port, ipV4, deviceAddress },
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Form.Item name="text" label="IP адрес вычислителя">
+      <Form.Item label="IP адрес вычислителя">
         <Input
           type="text"
           value={ipV4}
@@ -24,7 +24,7 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="IP адрес вычислителя">
+      <Form.Item label="Порт">
         <Input
           type="number"
           required
@@ -32,6 +32,19 @@ const SettingConnectionTab = () => {
           value={port}
           onChange={(event) => {
             const path = ['connection', 'port'];
+            dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item label="Адрес уйстроства">
+        <Input
+          type="number"
+          required
+          placeholder="Укажите адреса устройства"
+          value={deviceAddress}
+          onChange={(event) => {
+            const path = ['connection', 'deviceAddress'];
             dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
           }}
         />

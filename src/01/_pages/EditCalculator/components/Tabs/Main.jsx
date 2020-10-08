@@ -3,23 +3,29 @@ import { Tabs } from 'antd';
 import CommonTab from './CommonTab';
 import SettingConnectionTab from './SettingConnectionTab';
 import DocumentsTab from './DocumentsTab';
+import RelatedDevices from './RelatedDevices';
 
 const { TabPane } = Tabs;
 
 const tabs = [
   {
-    title: 'Шаг 1. Общие данные',
+    title: 'Общие данные',
     key: '1',
     Component: CommonTab,
   },
   {
-    title: 'Шаг 2. Настройки соединения',
+    title: 'Настройки соединения',
     key: '2',
     Component: SettingConnectionTab,
   },
   {
-    title: 'Шаг 3. Документы',
+    title: 'Подключенные приборы',
     key: '3',
+    Component: RelatedDevices,
+  },
+  {
+    title: 'Документы',
+    key: '4',
     Component: DocumentsTab,
   },
 ];
