@@ -77,9 +77,10 @@ const EditCalculator = () => {
     
 
     const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
-
-    const { value } = currentInfoId;
-
+    console.log('model', model)
+      console.log("find", _.find(items, { label: model }))
+  console.log(currentInfoId)
+    const { value } = {...currentInfoId};
 
           const initialStateDefaultValues = {
           serialNumber,
@@ -97,7 +98,7 @@ const EditCalculator = () => {
       }
       console.log()
       const temp = _.find(items, { value: value });
-      const {label} = temp
+      const {label} = {...temp}
       console.log("label",label)
       setModel( label)
       dispatch(
@@ -116,20 +117,7 @@ const EditCalculator = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-  // const renderNextButton = () => {
-  //   if (currentTabKey === '3') {
-  //     return null;
-  //   }
-  //   return (
-  //     <ButtonTT
-  //       color="blue"
-  //       style={{ marginLeft: '16px' }}
-  //       onClick={handleNext}
-  //     >
-  //       Далее
-  //     </ButtonTT>
-  //   );
-  // };
+
 
   const renderSubmitButton = () => {
     // if (currentTabKey !== '3') {
@@ -207,3 +195,18 @@ const EditCalculator = () => {
 
 export default connect()(EditCalculator);
 
+
+// const renderNextButton = () => {
+//   if (currentTabKey === '3') {
+//     return null;
+//   }
+//   return (
+//     <ButtonTT
+//       color="blue"
+//       style={{ marginLeft: '16px' }}
+//       onClick={handleNext}
+//     >
+//       Далее
+//     </ButtonTT>
+//   );
+// };

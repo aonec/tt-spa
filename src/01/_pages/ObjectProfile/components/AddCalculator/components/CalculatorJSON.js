@@ -1,35 +1,25 @@
-export const items = [
+export   const items = [
   {
-    value: '1',
-    label: 'ТЭМ-106',
-    id: 1,
-    parent: 'infoId',
+      "id": 1,
+      "model": "ТЭМ-106"
   },
   {
-    value: '2',
-    label: 'ТЭМ-104',
-    id: 2,
-    parent: 'infoId',
+      "id": 2,
+      "model": "ТЭМ-104"
   },
   {
-    value: '3',
-    label: 'ТЭМ-104',
-    id: 3,
-    parent: 'infoId',
+      "id": 3,
+      "model": "ВКТ-7"
   },
   {
-    value: '4',
-    label: 'ВКТ-7',
-    id: 4,
-    parent: 'infoId',
+      "id": 4,
+      "model": "ТВ-7"
   },
   {
-    value: '5',
-    label: 'ВИСТ',
-    id: 5,
-    parent: 'infoId',
-  },
-];
+      "id": 5,
+      "model": "ВИСТ"
+  }
+]
 
 export const serviceLife = [
   { value: '4', label: '4 года', id: 1 },
