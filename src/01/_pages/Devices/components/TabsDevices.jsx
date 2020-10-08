@@ -1,11 +1,16 @@
+import React, {useEffect, useState} from "react";
 
 import { Tabs } from 'antd';
 import {devicesAPI} from "../../../_api/devices_page";
 import {Loader} from "../../../components/Loader";
-import {getDevices} from "../../../Redux/reducers/reducerDevicesPage";
-import {compose} from "redux";
-import DeviceBlock from "./DeviceBlock/DeviceBlock";
 import {getDevices, setCurrentPage, toggleIsLoading} from "../../../Redux/reducers/reducerDevicesPage";
+
+
+import Device from "./Device";
+import {useDispatch, useSelector} from "react-redux";
+
+import styles from './TabsDevices.module.css'
+import {createPages} from "../../../utils/pagesCreator";
 
 
 const { TabPane } = Tabs;
@@ -16,10 +21,23 @@ function callback(key) {
 
 
 
+const TabsDevices = () => {
+    const dispatch = useDispatch();
+    const pageSize = useSelector((state) => state.devicePage.pageSize);
+    const currentPage = useSelector((state) => state.devicePage.currentPage);
+    const totalPages = useSelector((state) => state.devicePage.totalPages);
+    const isLoading = useSelector((state) => state.devicePage.isLoading);
 
 
 
+    const pages = [];
+    createPages(pages, totalPages, currentPage);
 
+    useEffect( () => {
+        dispatch(toggleIsLoading());
+        dispatch(getDevices(currentPage, pageSize));
+        dispatch(toggleIsLoading());
+    }, [currentPage, pageSize]);
 
     const deviceItems = useSelector((state) => state.devicePage.devices);
 
