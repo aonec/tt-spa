@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import $ from 'jquery';
-import axios from '01/axios';
 import { useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import '01/tt-components/antd.scss';
+import '../../../../tt-components/antd.scss';
 import {
   Modal,
   ModalWrap,
@@ -12,17 +11,16 @@ import {
   ModalMain,
   ModalBottom,
   ModalClose,
-} from '01/tt-components/Modal';
-import './styles.scss';
-
+} from '../../../../tt-components/Modal';
 import { Title, ButtonTT } from '../../../../tt-components';
+import axios from '../../../../axios';
 import TabsComponent from './components/Tabs/Main';
-import { DefaultFormValueFullfill } from '../store/actions';
-
-export const AddDeviceContext = React.createContext();
+import { setAddCalculatorForm } from '../../../../Redux/actions/actions';
+import { ConfigProvider } from "antd";
+import ruRu from "antd/es/locale/ru_RU";
 
 const ModalCalculator = () => {
-  const { 0: objid } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
   const dispatch = useDispatch();
@@ -44,11 +42,8 @@ const ModalCalculator = () => {
   };
 
   useEffect(() => {
-    // initialStateFullfill.map((item) => {
-    //   dispatch(onChangeFormValueByPath(item.id, item.value));
-    // });
     dispatch(
-      DefaultFormValueFullfill(calculatorPage, initialStateDefaultValues),
+      setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
     );
   }, []);
 
@@ -94,14 +89,15 @@ const ModalCalculator = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {};
+  const buttonHandler = () => {
+    console.log("buttonHandler")
+  };
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
       const res = await axios.post('Calculators', calculatorPage);
       alert('Вычислитель успешно создан !');
-      // console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -113,15 +109,15 @@ const ModalCalculator = () => {
   };
 
   return (
-    <AddDeviceContext.Provider value={{}}>
-      <Modal id="add-calculator" ref={modalRef}>
+    <ConfigProvider locale={ruRu}>
+    <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
+          {/*<button onClick={buttonHandler}>buttonHandler</button>*/}
           <ModalClose getModal={modalRef} />
           <ModalTop>
             <Title size="middle" color="black">
               Добавление нового вычислителя
             </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
           </ModalTop>
           <ModalMain>
             <TabsComponent
@@ -139,41 +135,8 @@ const ModalCalculator = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </AddDeviceContext.Provider>
+    </ConfigProvider>
   );
 };
 
 export default connect()(ModalCalculator);
-
-// const initialState = {
-//   serialNumber: '',
-//   checkingDate: moment().toISOString(),
-//   futureCheckingDate: moment().toISOString(),
-//   lastCommercialAccountingDate: moment().toISOString(),
-//   connection: {
-//     ipV4: '192.168.0.1',
-//     deviceAddress: 0,
-//     port: 1234,
-//   },
-//   futureCommercialAccountingDate: moment().toISOString(),
-//   housingStockId: Number(objid),
-//   infoId: 1,
-// };
-
-// const initialStateFullfill = [
-//   { id: ['serialNumber'], value: 'serialNumber' },
-//   { id: ['housingStockId'], value: Number(objid) },
-//   { id: ['infoId'], value: 1 },
-//   { id: ['lastCommercialAccountingDate'], value: moment().toISOString() },
-//   { id: ['checkingDate'], value: moment().toISOString() },
-//   { id: ['futureCheckingDate'], value: moment().toISOString() },
-//   { id: ['connection', 'ipV4'], value: '192.168.1.1' },
-//   { id: ['connection', 'deviceAddress'], value: 0 },
-//   { id: ['connection', 'port'], value: 1 },
-//   {
-//     id: ['futureCommercialAccountingDate'],
-//     value: moment()
-//       .add(4, 'year')
-//       .toISOString(),
-//   },
-// ];

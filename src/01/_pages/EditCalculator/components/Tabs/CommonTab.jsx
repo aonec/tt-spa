@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { DatePicker, Select, Input, Form} from 'antd';
+import {
+  ConfigProvider, DatePicker, Select, Input, Form,
+} from 'antd';
+import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
-import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
+import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
 
 const CommonTab = () => {
   const {
@@ -16,15 +19,12 @@ const CommonTab = () => {
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
   return (
-    <>
+    <ConfigProvider locale={ruRu}>
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/*<button onClick={buttonHandler}>test</button>*/}
-        <Form.Item name="text" label="Серийный номер устройства">
+
+        <Form.Item label="Серийный номер устройства">
           <Input
             value={serialNumber}
             placeholder="Серийный номер..."
@@ -52,6 +52,7 @@ const CommonTab = () => {
             id="lastCommercialAccountingDate"
             value={moment(lastCommercialAccountingDate)}
             placeholder="Укажите дату..."
+            name="lastCommercialAccountingDate"
             onChange={(date) => {
               const path = ['lastCommercialAccountingDate'];
               const value = date.toISOString();
@@ -62,20 +63,19 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Поверки">
           <DatePicker
-            id="checkingDate"
+            name="checkingDate"
             placeholder="Укажите дату..."
-            value={moment(checkingDate)}
             onChange={(date) => {
               const path = ['checkingDate'];
               const value = date.toISOString();
               dispatch(onChangeFormValueByPath(path, value));
             }}
+            value={moment(checkingDate)}
           />
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
           <DatePicker
-            id="futureCheckingDate"
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -83,23 +83,24 @@ const CommonTab = () => {
               const value = date.toISOString();
               dispatch(onChangeFormValueByPath(path, value));
             }}
+            name="futureCheckingDate"
           />
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
           <Select
-            placeholder="Укажите оперид эксплуатации"
-            options={serviceLife}
-            value={serviceLife[0].value}
             onChange={(event) => {
               const value = moment().add(event, 'year').toISOString();
               const path = ['futureCommercialAccountingDate'];
               dispatch(onChangeFormValueByPath(path, value));
             }}
+            placeholder="Укажите оперид эксплуатации"
+            options={serviceLife}
+            defaultValue={serviceLife[0].value}
           />
         </Form.Item>
       </div>
-    </>
+    </ConfigProvider>
   );
 };
 
