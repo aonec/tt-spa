@@ -33,7 +33,7 @@ const tabs = [
 const TabsComponent = (props) => {
   const { currentTabKey, handleChangeTab } = props;
   return (
-    <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
+    <Tabs style={{height: 'fit-content'}} activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {
         const { title, key, Component } = currentTab;
         return (
