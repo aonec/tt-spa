@@ -24,7 +24,7 @@ const CommonTab = () => {
   };
   return (
     <ConfigProvider locale={ruRu}>
-      <button onClick={buttonHandler}>test</button>
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {/* <Form.Item name="text" label="Серийный номер устройства"> */}
         <Form.Item label="Серийный номер устройства">

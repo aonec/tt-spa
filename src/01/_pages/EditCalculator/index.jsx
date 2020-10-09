@@ -7,14 +7,12 @@ import ruRu from 'antd/es/locale/ru_RU';
 import { useParams } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import '01/tt-components/antd.scss';
-import {items} from './components/CalculatorJSON'
-
 import { ButtonTT, Header } from '01/tt-components';
+import { ConfigProvider } from 'antd';
+import { items } from './components/CalculatorJSON';
+
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from './store/actions';
-import {
-  ConfigProvider
-} from 'antd';
 
 export const AddDeviceContext = React.createContext();
 
@@ -24,8 +22,7 @@ const EditCalculator = () => {
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
   const [currentCalc, setCurrentCalc] = useState();
-  const [model, setModel] = useState()
-
+  const [model, setModel] = useState();
 
   async function getCalculator(url = '') {
     try {
@@ -40,13 +37,11 @@ const EditCalculator = () => {
     getCalculator(deviceId).then((result) => {
       setCurrentCalc(result);
     });
-
   }, []);
 
   useEffect(() => {
     if (currentCalc) {
-
-      let {
+      const {
         calculator,
         canBeEdited,
         closingDate,
@@ -66,39 +61,34 @@ const EditCalculator = () => {
         type,
         underTransaction,
       } = currentCalc;
-    
 
-    const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
-    console.log('model', model)
-      console.log("find", _.find(items, { label: model }))
-  console.log(currentInfoId)
-    const { value } = {...currentInfoId};
+      const currentInfoId = _.find(items, { label: model || 'ТЭМ-106' });
+      console.log('model', model);
+      console.log('find', _.find(items, { label: model }));
+      console.log(currentInfoId);
+      const { value } = { ...currentInfoId };
 
-          const initialStateDefaultValues = {
-          serialNumber,
-          checkingDate: lastCommercialAccountingDate,
-          futureCheckingDate,
-          lastCommercialAccountingDate,
-          connection: {
-              ipV4,
-              deviceAddress: deviceAddress || 124,
-              port,
-          },
-          futureCommercialAccountingDate: futureCommercialAccountingDate,
-          housingStockId,
-          infoId: Number(value)
-      }
-      console.log()
-      const temp = _.find(items, { value: value });
-      const {label} = {...temp}
-      console.log("label",label)
-      setModel( label)
-      dispatch(
-        setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
-      )
-  }
- 
-  
+      const initialStateDefaultValues = {
+        serialNumber,
+        checkingDate: lastCommercialAccountingDate,
+        futureCheckingDate,
+        lastCommercialAccountingDate,
+        connection: {
+          ipV4,
+          deviceAddress: deviceAddress || 124,
+          port,
+        },
+        futureCommercialAccountingDate,
+        housingStockId,
+        infoId: Number(value),
+      };
+      console.log();
+      const temp = _.find(items, { value });
+      const { label } = { ...temp };
+      console.log('label', label);
+      setModel(label);
+      dispatch(setAddCalculatorForm(calculatorPage, initialStateDefaultValues));
+    }
   }, [currentCalc]);
 
   function handleChangeTab(value) {
@@ -109,14 +99,12 @@ const EditCalculator = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-
   const hideMe = () => {
     $('#add-calculator').css('display', 'none');
   };
 
   const buttonHandler = () => {
     console.log('test');
-   
   };
 
   const handleSubmit = async () => {
@@ -126,7 +114,7 @@ const EditCalculator = () => {
       alert('Вычислитель успешно изменен!');
       console.log(res);
       return res;
-        console.log(calculatorPage,"calculatorPage")
+      console.log(calculatorPage, 'calculatorPage');
     } catch (error) {
       console.log(error);
       alert(
@@ -136,52 +124,46 @@ const EditCalculator = () => {
     }
   };
 
- 
-
-
   return (
     <AddDeviceContext.Provider value={{}}>
- <ConfigProvider locale={ruRu}>
-
-      {/* <ModalTop> */}
+      <ConfigProvider locale={ruRu}>
+        {/* <ModalTop> */}
 
         <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
 
         {/* <button onClick={buttonHandler}>getKey</button> */}
 
-      {/* <ModalMain> */}
+        {/* <ModalMain> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-      {/* </ModalMain> */}
+        {/* </ModalMain> */}
 
-      {/* <ModalBottom> */}
-      <div>
-      <ButtonTT
-        color='blue'
-        style={{ marginRight: '16px' }}
-        onClick={handleSubmit}
-      >
-        Сохранить
-       </ButtonTT>
+        {/* <ModalBottom> */}
+        <div>
+          <ButtonTT
+            color="blue"
+            style={{ marginRight: '16px' }}
+            onClick={handleSubmit}
+          >
+            Сохранить
+          </ButtonTT>
 
-        <ButtonTT color="white" onClick={hideMe}>
-          Отмена
-        </ButtonTT>
-      </div>
+          <ButtonTT color="white" onClick={hideMe}>
+            Отмена
+          </ButtonTT>
+        </div>
 
         {/* {renderNextButton()} */}
-     
 
-      {/* </ModalBottom> */}
+        {/* </ModalBottom> */}
       </ConfigProvider>
     </AddDeviceContext.Provider>
   );
 };
 
 export default connect()(EditCalculator);
-
 
 // const renderNextButton = () => {
 //   if (currentTabKey === '3') {
