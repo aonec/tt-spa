@@ -73,7 +73,7 @@ const TabsDevices = () => {
 
 
     const deviceElems = deviceItems.map((device) => <DeviceBlock device={device} />)
-
+    //
 
     return <div>
 
