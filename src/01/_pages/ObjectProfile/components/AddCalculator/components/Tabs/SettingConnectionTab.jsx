@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { Wrap } from '01/tt-components';
 import { Input, Form } from 'antd';
+import { Wrap } from '../../../../../../tt-components';
 import { onChangeFormValueByPath } from '../../../store/actions';
 
 const SettingConnectionTab = () => {
@@ -27,7 +27,6 @@ const SettingConnectionTab = () => {
       <Form.Item name="text" label="IP адрес вычислителя">
         <Input
           type="number"
-          required
           placeholder="Укажите порт устройства (например, 1234)"
           value={port}
           onChange={(event) => {
