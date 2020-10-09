@@ -5,15 +5,16 @@ import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/a
 import { magistrals } from '../DeviceJSON';
 
 const SettingConnectionTab = () => {
-
   const {
-    pipe: {entryNumber, hubNumber, pipeNumber, magistral}
+    connection: { port, ipV4 },
+    pipe: { magistral },
   } = useSelector((state) => state.deviceReducer);
   const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Form.Item
+        name="text"
         label="Выберите вычислитель, к которому подключен прибор"
       >
         <Input
@@ -28,12 +29,11 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item label="Номер ввода">
+      <Form.Item name="text" label="Номер ввода">
         <Input
-          id="entryNumber"
+          id="hubNumber"
           type="number"
           placeholder="1"
-          value={entryNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'entryNumber'];
@@ -42,12 +42,11 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item label="Номер узла">
+      <Form.Item name="text" label="Номер узла">
         <Input
-          id="hubNumber"
+          id="pipeNumber"
           type="number"
           placeholder="1"
-          value={hubNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'hubNumber'];
@@ -56,12 +55,11 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item label="Номер трубы">
+      <Form.Item name="text" label="Номер трубы">
         <Input
           id="pipeNumber"
           type="number"
           placeholder="1"
-          value={pipeNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'pipeNumber'];
