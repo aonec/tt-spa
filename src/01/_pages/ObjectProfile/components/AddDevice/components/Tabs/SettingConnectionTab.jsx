@@ -1,8 +1,10 @@
-import React  from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { Input, Form, Select } from 'antd';
-import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
-import { magistrals } from '../DeviceJSON';
+import React from 'react';
+import { connect, useSelector } from 'react-redux';
+import {
+  Label, InputTT, Wrap, InputWrap,
+} from '01/tt-components';
+import _ from 'lodash';
+import { Select } from "antd";
 
 const SettingConnectionTab = () => {
   const {
@@ -68,23 +70,58 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="Номер трубы">
+            />
+        </InputWrap>
+        <InputWrap>
+            <Label color="grey" htmlFor="#resource">
+                Номер трубы
+            </Label>
+            <InputTT
+              id="pipeNumber"
+              type="number"
+              required
+              defaultValue={1}
+              onChange={(event) => {
+                  const { value } = event.target;
+                  const path = ['pipeNumber'];
+                  onChangeFormValueByPath2(path, Number(value));
+              }}
 
-        <Select
-          placeholder="Выберите тип устройства"
-          id="magistral"
-          options={magistrals}
-          defaultValue={magistrals[0].value}
-          onChange={(event) => {
-            const value = event;
-            const path = ['pipe', 'magistral'];
-            dispatch(onChangeDeviceFormValueByPath(path, value));
-          }}
-        />
+            />
+        </InputWrap>
+        <InputWrap>
+            <Label color="grey" htmlFor="#resource">
+                Выберите тип ресурса
+            </Label>
 
-      </Form.Item>
+            <Select
+              id="magistral"
+              options={magistrals}
+              defaultValue={magistrals[0].value}
+              onChange={(event) => {
+                  const  value  = event;
+                  const path = ['magistral'];
+                  onChangeFormValueByPath2(path, value);
+              }}
+            />
+        </InputWrap>
+
     </div>
   );
 };
 
-export default connect()(SettingConnectionTab);
+const mapDispatchToProps = (dispatch) => ({
+    onChangeFormValueByPath2: (path, value) => {
+        dispatch({
+            type: 'CALC_UPDATE_FORM_VALUE_BY_PATH2',
+            payload: { path, value },
+        });
+    },
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SettingConnectionTab);
+
+// export default SettingConnectionTab;

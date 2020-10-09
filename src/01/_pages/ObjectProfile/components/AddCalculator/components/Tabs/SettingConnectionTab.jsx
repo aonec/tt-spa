@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
+import { Wrap } from '01/tt-components';
 import { Input, Form } from 'antd';
-import { Wrap } from '../../../../../../tt-components';
-import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
+import { onChangeFormValueByPath } from '../../../store/actions';
 
 const SettingConnectionTab = () => {
   const {
@@ -14,6 +14,7 @@ const SettingConnectionTab = () => {
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Form.Item name="text" label="IP адрес вычислителя">
         <Input
+          id="ipV4"
           type="text"
           value={ipV4}
           placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
@@ -26,7 +27,9 @@ const SettingConnectionTab = () => {
 
       <Form.Item name="text" label="IP адрес вычислителя">
         <Input
+          id="port"
           type="number"
+          required
           placeholder="Укажите порт устройства (например, 1234)"
           value={port}
           onChange={(event) => {

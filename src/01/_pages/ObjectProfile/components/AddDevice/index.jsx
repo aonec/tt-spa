@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import React, {
+  useState, useRef, useContext, useEffect,
+} from 'react';
 import $ from 'jquery';
 import axios from '01/axios';
 import { useParams } from 'react-router-dom';
@@ -14,16 +15,16 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
+import ruRu from 'antd/es/locale/ru_RU';
+import { ConfigProvider } from 'antd';
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { setAddDeviceForm } from '../../../../Redux/actions/actions';
-import ruRu from "antd/es/locale/ru_RU";
-import { ConfigProvider } from "antd";
 
 export const AddDeviceContext = React.createContext();
 
 const ModalAddDevice = () => {
-  const { 0: objid} = useParams();
+  const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const ModalAddDevice = () => {
   };
 
   useEffect(() => {
-      dispatch(
+    dispatch(
       setAddDeviceForm(deviceReducer, initialStateDefaultValues),
     );
   }, []);
@@ -127,7 +128,7 @@ const ModalAddDevice = () => {
   };
 
   return (
-    <ConfigProvider locale={ruRu}>
+    <AddDeviceContext.Provider value={{}}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
@@ -135,7 +136,7 @@ const ModalAddDevice = () => {
             <Title size="middle" color="black">
               Добавление нового ОДПУ
             </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
+            <button onClick={buttonHandler}>getKey</button>
           </ModalTop>
           <ModalMain>
             <TabsComponent
@@ -153,8 +154,26 @@ const ModalAddDevice = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </ConfigProvider>
+    </AddDeviceContext.Provider>
   );
 };
 
-export default connect()(ModalAddDevice);
+function mapStateToProps(state) {
+  return {
+    reducerDev: state.reducerDev,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  onChangeFormValueByPath: (path, value) => {
+    dispatch({
+      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+      payload: { path, value },
+    });
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ModalAddDevice);

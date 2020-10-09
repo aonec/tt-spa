@@ -45,3 +45,5 @@ export default function reducerCalc(state = initialState, action) {
 
   return state;
 }
+
+export const housingMeteringDeviceTypeAC = () => ({ type: 'housingMeteringDeviceType' });
