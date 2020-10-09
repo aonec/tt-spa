@@ -1,21 +1,19 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Input, Form, Select } from 'antd';
-import moment from 'moment';
-import { onChangeDeviceFormValueByPath } from '../../../store/actions';
+import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
 import { magistrals } from '../DeviceJSON';
 
 const SettingConnectionTab = () => {
+
   const {
-    connection: { port, ipV4 },
-    pipe: { magistral },
+    pipe: {entryNumber, hubNumber, pipeNumber, magistral}
   } = useSelector((state) => state.deviceReducer);
   const dispatch = useDispatch();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Form.Item
-        name="text"
         label="Выберите вычислитель, к которому подключен прибор"
       >
         <Input
@@ -30,11 +28,12 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="Номер ввода">
+      <Form.Item label="Номер ввода">
         <Input
-          id="hubNumber"
+          id="entryNumber"
           type="number"
           placeholder="1"
+          value={entryNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'entryNumber'];
@@ -43,11 +42,12 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="Номер узла">
+      <Form.Item label="Номер узла">
         <Input
-          id="pipeNumber"
+          id="hubNumber"
           type="number"
           placeholder="1"
+          value={hubNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'hubNumber'];
@@ -56,11 +56,12 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="Номер трубы">
+      <Form.Item label="Номер трубы">
         <Input
           id="pipeNumber"
           type="number"
           placeholder="1"
+          value={pipeNumber}
           onChange={(event) => {
             const { value } = event.target;
             const path = ['pipe', 'pipeNumber'];

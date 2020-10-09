@@ -15,7 +15,7 @@ import {
 import { Title, ButtonTT } from '../../../../tt-components';
 import axios from '../../../../axios';
 import TabsComponent from './components/Tabs/Main';
-import { setAddCalculatorForm } from '../store/actions';
+import { setAddCalculatorForm } from '../../../../Redux/actions/actions';
 import { ConfigProvider } from "antd";
 import ruRu from "antd/es/locale/ru_RU";
 
