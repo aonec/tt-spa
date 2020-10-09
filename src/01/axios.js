@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // const baseURL = process.env.REACT_APP_URL
 
-const baseURL = 'https://transparent-production.herokuapp.com/api';
-// const baseURL = 'https://transparent-staging.herokuapp.com/api';
+//const baseURL = 'https://transparent-production.herokuapp.com/api';
+const baseURL = 'https://transparent-staging.herokuapp.com/api';
 
 axios.defaults.baseURL = baseURL;
 
@@ -66,14 +66,17 @@ export default axios;
 export { cancel };
 
 // utils
-function saveToLocStor(name, data) {
+function saveToLocStor(name, data){
   localStorage.setItem(name, JSON.stringify(data));
 }
 
-function takeFromLocStor(name) {
+function takeFromLocStor(name){
   return JSON.parse(localStorage.getItem(name));
 }
 
-function checkUrl(str, url) {
+function checkUrl(str, url){
   return new RegExp(str, 'gi').test(url);
 }
+
+
+
