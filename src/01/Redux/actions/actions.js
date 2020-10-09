@@ -1,35 +1,13 @@
-import {ADD, ADD2, ADD_NUMBER, SUB} from './actionTypes'
-
-export function add() {
+export function onChangeFormValueByPath(path, value) {
   return {
-    type: ADD
-  }
+    type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+    payload: { path, value },
+  };
 }
 
-export function sub() {
+export function setAddCalculatorForm(path, value) {
   return {
-    type: SUB
-  }
-}
-
-export function addNumber(number) {
-  return {
-    type: ADD_NUMBER,
-    payload: number
-  }
-}
-
-export function asyncAdd(number) {
-  return (dispatch) => {
-    setTimeout(() => {
-      dispatch(addNumber(number))
-    }, 3000)
-  }
-}
-
-export function add2(number) {
-  return {
-    type: ADD2,
-    payload: number
-  }
+    type: 'CALC_UPDATE_FORM',
+    payload: { path, value },
+  };
 }

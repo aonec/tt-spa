@@ -1,10 +1,9 @@
-import React, {
-  useState, useRef, useContext, useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import $ from 'jquery';
-import axios from 'axios';
+import axios from '01/axios';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import '01/tt-components/antd.scss';
 import {
   Modal,
@@ -15,23 +14,53 @@ import {
   ModalClose,
 } from '01/tt-components/Modal';
 
-import { store } from '01/App/App';
-
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
+import { setAddDeviceForm } from '../store/actions';
 
 export const AddDeviceContext = React.createContext();
 
-const ModalAddDevice = (props) => {
-  const { onChangeFormValueByPath, reducerDev } = props;
-  const { 0: objid } = useParams();
+const ModalAddDevice = () => {
+  const { 0: objid} = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
+  const dispatch = useDispatch();
+  const deviceReducer = useSelector((state) => state.deviceReducer);
+
+  function randomInteger(min, max) {
+    // случайное число от min до (max+1)
+    const rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+  }
+
+  const initialStateDefaultValues = {
+    calculatorId: '',
+    checkingDate: moment().toISOString(),
+    connection: {
+      ipV4: '10.90.128.1',
+      deviceAddress: randomInteger(1, 255),
+      port: 0,
+    },
+    futureCheckingDate: moment().toISOString(),
+    futureCommercialAccountingDate: moment().toISOString(),
+    housingMeteringDeviceType: 'FlowMeter',
+    housingStockId: Number(objid),
+    lastCommercialAccountingDate: moment().toISOString(),
+    model: '',
+    pipe: {
+      entryNumber: 1,
+      hubNumber: 1,
+      pipeNumber: 1,
+      magistral: 'FeedFlow',
+    },
+    resource: 'ColdWaterSupply',
+    serialNumber: '',
+  };
 
   useEffect(() => {
-    const name = 'housingStockId';
-    const value = Number(objid);
-    onChangeFormValueByPath(name, value);
+      dispatch(
+      setAddDeviceForm(deviceReducer, initialStateDefaultValues),
+    );
   }, []);
 
   function handleChangeTab(value) {
@@ -77,17 +106,14 @@ const ModalAddDevice = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log(reducerDev);
   };
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      console.log(store.getState());
-      // const res = await axios.post('Calculators', reference.current);
-      const res = await axios.post('HousingMeteringDevices', reducerDev);
-      alert('Вычислитель успешно создан !');
-      console.log(res);
+      const res = await axios.post('HousingMeteringDevices', deviceReducer);
+      alert('ОДПУ успешно создан !');
+      // console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -107,7 +133,7 @@ const ModalAddDevice = (props) => {
             <Title size="middle" color="black">
               Добавление нового ОДПУ
             </Title>
-            <button onClick={buttonHandler}>getKey</button>
+            {/* <button onClick={buttonHandler}>getKey</button> */}
           </ModalTop>
           <ModalMain>
             <TabsComponent
@@ -129,22 +155,4 @@ const ModalAddDevice = (props) => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    reducerDev: state.reducerDev,
-  };
-}
-
-const mapDispatchToProps = (dispatch) => ({
-  onChangeFormValueByPath: (path, value) => {
-    dispatch({
-      type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-      payload: { path, value },
-    });
-  },
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ModalAddDevice);
+export default connect()(ModalAddDevice);

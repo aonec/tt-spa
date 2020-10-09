@@ -52,7 +52,7 @@ align-items: center;
 `;
 
 export const EditButton = () => {
-  const { 0: objid } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   const { push } = useHistory();
 
   const menuShowHide = () => {
