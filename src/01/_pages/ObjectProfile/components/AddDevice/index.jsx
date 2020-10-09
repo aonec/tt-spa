@@ -16,7 +16,9 @@ import {
 
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { setAddDeviceForm } from '../store/actions';
+import { setAddDeviceForm } from '../../../../Redux/actions/actions';
+import ruRu from "antd/es/locale/ru_RU";
+import { ConfigProvider } from "antd";
 
 export const AddDeviceContext = React.createContext();
 
@@ -34,7 +36,7 @@ const ModalAddDevice = () => {
   }
 
   const initialStateDefaultValues = {
-    calculatorId: '',
+    calculatorId: '55',
     checkingDate: moment().toISOString(),
     connection: {
       ipV4: '10.90.128.1',
@@ -125,7 +127,7 @@ const ModalAddDevice = () => {
   };
 
   return (
-    <AddDeviceContext.Provider value={{}}>
+    <ConfigProvider locale={ruRu}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
@@ -151,7 +153,7 @@ const ModalAddDevice = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </AddDeviceContext.Provider>
+    </ConfigProvider>
   );
 };
 

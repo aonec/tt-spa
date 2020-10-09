@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import {
-  ConfigProvider, DatePicker, Select, Input, Form,
+   DatePicker, Select, Input, Form,
 } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
 import { serviceLife, resources, types } from '../DeviceJSON';
-import { onChangeDeviceFormValueByPath } from '../../../store/actions';
+import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
 
 
 const CommonTab = () => {
@@ -21,7 +20,7 @@ const CommonTab = () => {
   const dispatch = useDispatch();
 
   return (
-    <ConfigProvider locale={ruRu}>
+
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Form.Item name="select" label="Выберите тип прибора">
           <Select
@@ -117,7 +116,6 @@ const CommonTab = () => {
           />
         </Form.Item>
       </div>
-    </ConfigProvider>
   );
 };
 

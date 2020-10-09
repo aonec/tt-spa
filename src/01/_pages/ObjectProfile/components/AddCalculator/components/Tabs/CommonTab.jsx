@@ -3,7 +3,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import { DatePicker, Select, Input, Form} from 'antd';
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
-import { onChangeFormValueByPath } from '../../../store/actions';
+import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
 
 const CommonTab = () => {
   const {

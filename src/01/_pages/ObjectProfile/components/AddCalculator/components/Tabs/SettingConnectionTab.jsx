@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Input, Form } from 'antd';
 import { Wrap } from '../../../../../../tt-components';
-import { onChangeFormValueByPath } from '../../../store/actions';
+import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
 
 const SettingConnectionTab = () => {
   const {
