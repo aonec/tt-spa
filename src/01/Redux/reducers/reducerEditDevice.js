@@ -16,11 +16,11 @@ export const initialState = {
   infoId: 1,
 };
 
-export default function reducerCalc(state = initialState, action) {
+export default function reducerEditDevice(state = initialState, action) {
   const { connection } = state;
   let { ipV4, deviceAddress, port } = connection;
 
-  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
+  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH3') {
     const newState = _.cloneDeep(state);
     const {
       payload: { path, value },
@@ -33,6 +33,7 @@ export default function reducerCalc(state = initialState, action) {
         return newState;
       case 'ipV4':
         ipV4 = value;
+        const res = { value, deviceAddress, port };
         _.set(newState, 'connection', { ipV4, deviceAddress, port });
         return newState;
 

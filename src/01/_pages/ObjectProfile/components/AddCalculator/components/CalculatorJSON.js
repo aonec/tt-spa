@@ -2,22 +2,32 @@ export const items = [
   {
     value: '1',
     label: 'ТЭМ-106',
+    id: 1,
+    parent: 'infoId',
   },
   {
     value: '2',
     label: 'ТЭМ-104',
+    id: 2,
+    parent: 'infoId',
   },
   {
     value: '3',
-    label: 'ВКТ-7',
+    label: 'ТЭМ-104',
+    id: 3,
+    parent: 'infoId',
   },
   {
     value: '4',
-    label: 'ТВ-7',
+    label: 'ВКТ-7',
+    id: 4,
+    parent: 'infoId',
   },
   {
     value: '5',
     label: 'ВИСТ',
+    id: 5,
+    parent: 'infoId',
   },
 ];
 
