@@ -19,7 +19,7 @@ import {
   Devices,
 } from '01/_pages';
 
-import EditCalculator from '01/_pages/EditCalculator';
+import EditDevice from '01/_pages/EditDevice';
 
 import { IndividualDevice } from '01/_pages/IndividualDevice';
 import moment from 'moment';
@@ -91,7 +91,7 @@ export function App() {
 
                   <Route
                     path="/objects/(\\d+)/devices/(\\d+)/edit/"
-                    component={EditCalculator}
+                    component={EditDevice}
                     exact
                   />
 

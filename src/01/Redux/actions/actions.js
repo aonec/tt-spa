@@ -1,27 +1,35 @@
-export function onChangeFormValueByPath(path, value) {
+import {ADD, ADD2, ADD_NUMBER, SUB} from './actionTypes'
+
+export function add() {
   return {
-    type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-    payload: { path, value },
-  };
+    type: ADD
+  }
 }
 
-export function setAddCalculatorForm(path, value) {
+export function sub() {
   return {
-    type: 'CALC_UPDATE_FORM',
-    payload: { path, value },
-  };
+    type: SUB
+  }
 }
 
-export function onChangeDeviceFormValueByPath(path, value) {
+export function addNumber(number) {
   return {
-    type: 'DEV_UPDATE_FORM_VALUE_BY_PATH',
-    payload: { path, value },
-  };
+    type: ADD_NUMBER,
+    payload: number
+  }
 }
 
-export function setAddDeviceForm(path, value) {
+export function asyncAdd(number) {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(addNumber(number))
+    }, 3000)
+  }
+}
+
+export function add2(number) {
   return {
-    type: 'DEV_UPDATE_FORM',
-    payload: { path, value },
-  };
+    type: ADD2,
+    payload: number
+  }
 }

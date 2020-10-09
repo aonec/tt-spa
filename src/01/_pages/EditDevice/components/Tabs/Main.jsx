@@ -3,42 +3,37 @@ import { Tabs } from 'antd';
 import CommonTab from './CommonTab';
 import SettingConnectionTab from './SettingConnectionTab';
 import DocumentsTab from './DocumentsTab';
-import RelatedDevices from './RelatedDevices';
 
 const { TabPane } = Tabs;
 
 const tabs = [
   {
-    title: 'Общие данные',
+    title: 'Шаг 1. Общие данные',
     key: '1',
     Component: CommonTab,
   },
   {
-    title: 'Настройки соединения',
+    title: 'Шаг 2. Настройки соединения',
     key: '2',
     Component: SettingConnectionTab,
   },
   {
-    title: 'Подключенные приборы',
+    title: 'Шаг 3. Документы',
     key: '3',
-    Component: RelatedDevices,
-  },
-  {
-    title: 'Документы',
-    key: '4',
     Component: DocumentsTab,
   },
 ];
 
-const TabsComponent = (props) => {
-  const { currentTabKey, handleChangeTab } = props;
+export const TabsComponent = (props) => {
+  const { currentTabKey, handleChangeTab, calculator } = props;
+  console.log('calculator is into Tabs', calculator);
   return (
-    <Tabs style={{height: 'fit-content'}} activeKey={currentTabKey} onChange={handleChangeTab}>
+    <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-            <Component />
+            <Component calculator={calculator} />
           </TabPane>
         );
       })}
