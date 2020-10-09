@@ -15,7 +15,7 @@ const DeviceBlock = (props) => {
                     to={`/objects/${device.housingStockId}/devices/${device.id}`}>
                     <Icon className={styles.icon} icon={"device"} fill={"var(--main-100)"}/>
                     {device.model}
-                    <span className={styles.deviceId}> ({device.id})</span>
+                    <span className={styles.deviceId}> ({device.serialNumber})</span>
                 </NavLink>
             </div>
             <div className={styles.subDevices}>
@@ -25,7 +25,7 @@ const DeviceBlock = (props) => {
                                  to={`/objects/${device.housingStockId}/devices/${device.id}`}>
                             <Icon className={styles.icon} icon={"water"} fill={"var(--hot-water)"}/>
                             {device.model}
-                            <span className={styles.deviceId}> ({device.id})</span>
+                            <span className={styles.deviceId}> ({device.serialNumber})</span>
                         </NavLink>
                     </div>) :
                     'Подприборов нет'}
