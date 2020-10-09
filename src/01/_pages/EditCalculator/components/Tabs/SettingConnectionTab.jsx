@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { Wrap } from '01/tt-components';
+import { Wrap } from '../../../../tt-components';
 import { Input, Form } from 'antd';
-import { onChangeFormValueByPath } from '../../store/actions';
+import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
 
 const SettingConnectionTab = () => {
   const {
@@ -37,7 +37,7 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item label="Адрес уйстроства">
+      <Form.Item label="Адрес устройства">
         <Input
           type="number"
           required

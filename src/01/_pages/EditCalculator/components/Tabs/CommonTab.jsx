@@ -5,9 +5,8 @@ import {
 } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import moment from 'moment';
-import { button } from '01/r_comp';
 import { items, serviceLife } from '../CalculatorJSON';
-import { onChangeFormValueByPath } from '../../store/actions';
+import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
 
 const CommonTab = () => {
   const {
@@ -19,14 +18,12 @@ const CommonTab = () => {
     futureCheckingDate,
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
-  const buttonHandler = () => {
-    console.log('serialNumber', serialNumber);
-  };
+
   return (
     <ConfigProvider locale={ruRu}>
 
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/* <Form.Item name="text" label="Серийный номер устройства"> */}
+
         <Form.Item label="Серийный номер устройства">
           <Input
             value={serialNumber}
@@ -42,14 +39,8 @@ const CommonTab = () => {
           <Select
             placeholder="Выберите тип устройства"
             options={items}
-            // defaultValue={items[0].value}
-            // value={items[0].value}
-
-           // options={[{ label: 'fdf', value: '1' }, { label: 'wefse', value: '2' }, { label: 'fdsg', value: '3' }, { label: 'gsd', value: '4' }]}
             value={infoId.toString()}
             onChange={(event, target) => {
-              console.log(event, target);
-              const value = event;
               const path = ['infoId'];
               dispatch(onChangeFormValueByPath(path, Number(target.value)));
             }}

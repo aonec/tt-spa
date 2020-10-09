@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import calculatorReducer from '01/_pages/ObjectProfile/components/store/reducer';
+import calculatorReducer from './reducers/reducerCalc';
 import reducerDevicesPage from './reducers/reducerDevicesPage';
 import deviceReducer from '01/_pages/ObjectProfile/components/store/reducerAddDevice';
 
