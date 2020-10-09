@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
+import {
+  useHistory, useRouteMatch, useParams, NavLink,
+} from 'react-router-dom';
 import { Icon } from '../../../_components/Icon';
+import styles from './styles.module.scss';
 
 export const Template = styled.div``;
 
@@ -51,6 +55,9 @@ align-items: center;
 `;
 
 export const EditButton = () => {
+  const { 0: objid, 1: deviceId } = useParams();
+  const { push } = useHistory();
+
   const menuShowHide = () => {
     $('#edit-button__list').toggle();
   };
@@ -63,10 +70,15 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
+  const { 0: objid, 1: deviceId } = useParams();
+
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
-    if ((editButtonList.has(e.target).length === 0) && (editButton.has(e.target).length === 0)) {
+    if (
+      editButtonList.has(e.target).length === 0
+      && editButton.has(e.target).length === 0
+    ) {
       editButtonList.hide();
     }
   });
@@ -83,11 +95,15 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
+  function editDevice() {
+    console.log(`/objects/${objid}/devices/${deviceId}/edit`);
+  }
+
   return (
     <>
       <EditButton />
       <List id="edit-button__list">
-        <ListItem>Редактировать вычислитель</ListItem>
+        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}><ListItem>Редактировать вычислитель</ListItem></NavLink>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении

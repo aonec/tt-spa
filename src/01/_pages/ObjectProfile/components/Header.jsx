@@ -3,8 +3,8 @@ import styled, { css } from 'reshadow/macro';
 import { Loader } from '01/components/Loader';
 import { Menu, EditButton } from './EditButton';
 import { HeaderWrap } from '../../../_components/Headers';
-import { ModalAddDevice } from './AddDevice';
-import { ModalCalculator } from './AddCalculator';
+import ModalAddDevice from './AddDevice';
+import ModalCalculator from './AddCalculator';
 
 const styles = css`
   h {
