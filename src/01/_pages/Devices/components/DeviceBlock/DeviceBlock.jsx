@@ -1,38 +1,75 @@
 import React from 'react';
+import * as antd from "antd";
+//
+// const DeviceBlock = (props) => {
+//     return (
+//         <div>
+//             <MainDevice />
+//             <ul>
+//                 <li><SubDevice/></li>
+//                 <li><SubDevice/></li>
+//                 <li><SubDevice/></li>
+//             </ul>
+//         </div>
+//     )
+// }
+//
+// export default DeviceBlock;
 
-import styles from "./../TabsDevices.module.css"
-import {Icon} from "../../../../tt-components/Icon";
-import {NavLink} from "react-router-dom";
+const {  Checkbox  } = antd;
+
+const CheckboxGroup = Checkbox.Group;
+
+const plainOptions = [{id: 1, name: 'Прибор1'}, {id: 2, name: 'Прибор2'}, {id: 3, name: 'Прибор3'}];
+const defaultCheckedList = [];
+
+class DeviceBlock extends React.Component {
+    state = {
+        checkedList: defaultCheckedList,
+        checkAll: false,
+    };
+
+    onChange = checkedList => {
+        this.setState({
+            checkedList,
+            checkAll: checkedList.length === plainOptions.length,
+        });
+    };
+
+    onCheckAllChange = e => {
+        this.setState({
+            checkedList: e.target.checked ? plainOptions : [],
+            indeterminate: false,
+            checkAll: e.target.checked,
+        });
+    };
+
+    render() {
+        return (
+            <>
+                <div className="site-checkbox-all-wrapper">
+                    <Checkbox
+                        onChange={this.onCheckAllChange}
+                        checked={this.state.checkAll}
+                    >
+                        Check all
+                    </Checkbox>
+                </div>
+                <br />
+                <CheckboxGroup
+                    // options={plainOptions}
+                    value={this.state.checkedList}
+                    onChange={this.onChange}
+                >
+                    <Checkbox><h1>БЛОК1</h1><div>Картинка1</div></Checkbox>
+                    <Checkbox><h1>БЛОК2</h1><div>Картинка2</div></Checkbox>
+                    <Checkbox><h1>БЛОК3</h1><div>Картинка3</div></Checkbox>
 
 
-const DeviceBlock = (props) => {
-    const {device} = props;
-    return <div className={styles.device}>
-        <div>
-            <div className={styles.device__main_wrapper}>
-                <NavLink
-                    className={styles.device__main + ' ' + styles.device__title}
-                    to={`/objects/${device.housingStockId}/devices/${device.id}`}>
-                    <Icon className={styles.icon} icon={"device"} fill={"var(--main-100)"}/>
-                    {device.model}
-                    <span className={styles.deviceId}> ({device.serialNumber})</span>
-                </NavLink>
-            </div>
-            <div className={styles.subDevices}>
-                {device.relatedDevices.length ?
-                    device.relatedDevices.map((device) => <div className={styles.device__sub}>
-                        <NavLink className={styles.device__title}
-                                 to={`/objects/${device.housingStockId}/devices/${device.id}`}>
-                            <Icon className={styles.icon} icon={"water"} fill={"var(--hot-water)"}/>
-                            {device.model}
-                            <span className={styles.deviceId}> ({device.serialNumber})</span>
-                        </NavLink>
-                    </div>) :
-                    'Подприборов нет'}
-
-            </div>
-        </div>
-    </div>
+                </CheckboxGroup>
+            </>
+        );
+    }
 }
 
 export default DeviceBlock;

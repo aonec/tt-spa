@@ -13,7 +13,7 @@ const initialState = {
   hasNextPage: true,
   nextPageNumber: 2,
   previousPageNumber: 1,
-  items: [],
+  devices: [],
   currentPage: 1,
   isLoading: false,
 };
@@ -21,7 +21,7 @@ const initialState = {
 export default function reducerDevicesPage(state = initialState, action) {
   switch (action.type) {
     case SET_DEVICES:
-      return { ...state, ...action.devices };
+      return { ...state, devices: [...action.devices] };
 
     case SET_CURRENT_PAGE:
       return { ...state, currentPage: action.currentPage}
@@ -39,60 +39,15 @@ export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, curren
 export const toggleIsLoading = () => ({ type: TOGGLE_IS_LOADING});
 
 
-// const deviceFilterFunction = (item) => {
-//   if (item.id.toString().includes(searchTerm) || item.relatedDevices.some((subItem) => subItem.id.toString().includes(searchTerm))) {
-//     return true
-//   }
-//   return false
-// }
-
 
 export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
   dispatch(toggleIsLoading());
   const devices = await devicesAPI.getDevices(pageNumber, pageSize);
-  const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
+  const devicesWithRelated = await Promise.all(devices.map(async (d) => {
     const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
     // if (!relatedDevices.length) return {...d, relatedDevices}
     return { ...d, relatedDevices: [...relatedDevices] };
   }));
-  const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
   dispatch(toggleIsLoading());
-  dispatch(setDevices(devicesWithFullInfo));
+  dispatch(setDevices(devicesWithRelated));
 };
-
-export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
-  debugger;
-  dispatch(toggleIsLoading());
-  const devices = await devicesAPI.getDevicesBySerialNumber(serialNumber);
-
-  if (!devices) {
-    dispatch(toggleIsLoading());
-    return;
-  }
-
-  if (devices.items.length === 1) {
-    const relatedDevices = await devicesAPI.getRelatedDevices(serialNumber) || [];
-    devices.items[0].relatedDevices = [...relatedDevices];
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devices));
-  } else {
-    const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-      debugger;
-      d.relatedDevices = [];
-
-      // const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-      // d.relatedDevices = [...relatedDevices]
-      // if (!relatedDevices.length) return {...d, relatedDevices}
-      // return { ...d, relatedDevices: [...relatedDevices] };
-      return d
-    }));
-    const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devicesWithFullInfo));
-  }
-
-}
-
-
-
-

@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
-import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
+import {
+  useHistory, useRouteMatch, useParams, NavLink,
+} from 'react-router-dom';
 import { Icon } from '../../../_components/Icon';
+import styles from './styles.module.scss';
 
 export const Template = styled.div``;
 
@@ -52,7 +55,7 @@ align-items: center;
 `;
 
 export const EditButton = () => {
-  const { 0: objid } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   const { push } = useHistory();
 
   const menuShowHide = () => {
@@ -67,6 +70,8 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
+  const { 0: objid, 1: deviceId } = useParams();
+
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
@@ -91,22 +96,14 @@ export const Menu = (showPopupHandler) => {
   };
 
   function editDevice() {
-    console.log('editDevice');
-    console.log('window.location.pathname', window.location.pathname);
-    window.location.assign(`${window.location.pathname}/edit`);
+    console.log(`/objects/${objid}/devices/${deviceId}/edit`);
   }
-
-  //   <Apartments
-  //   path="/*/apartments"
-  //   onClick={(id) => push(`/objects/${objid}/apartments/${id}`)}
-  //   {...state?.apartments}
-  // />
 
   return (
     <>
       <EditButton />
       <List id="edit-button__list">
-        <ListItem onClick={editDevice}>Редактировать вычислитель</ListItem>
+        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}><ListItem>Редактировать вычислитель</ListItem></NavLink>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении

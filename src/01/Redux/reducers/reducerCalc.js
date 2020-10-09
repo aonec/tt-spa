@@ -1,47 +1,34 @@
-import moment from 'moment';
 import _ from 'lodash';
 
-export const initialState = {
+const initialState = {
   serialNumber: '',
-  checkingDate: moment().toISOString(),
-  futureCheckingDate: moment().toISOString(),
-  lastCommercialAccountingDate: moment().toISOString(),
+  checkingDate: '',
+  futureCheckingDate: '',
+  lastCommercialAccountingDate: '',
   connection: {
-    ipV4: '192.168.0.1',
-    deviceAddress: 0,
-    port: 1234,
+    ipV4: '',
+    deviceAddress: '',
+    port: '',
   },
-  futureCommercialAccountingDate: moment().toISOString(),
-  housingStockId: 0,
-  infoId: 1,
+  futureCommercialAccountingDate: '',
+  housingStockId: '',
+  infoId: '',
 };
 
-export default function reducerCalc(state = initialState, action) {
-  const { connection } = state;
-  let { ipV4, deviceAddress, port } = connection;
+export default function calculatorReducer(state = initialState, action) {
+  const newState = _.cloneDeep(state);
 
-  if (action.type === 'CALC_UPDATE_FORM_VALUE_BY_PATH') {
-    const newState = _.cloneDeep(state);
-    const {
-      payload: { path, value },
-    } = action;
-
-    switch (path[0]) {
-      case 'port':
-        port = value;
-        _.set(newState, 'connection', { ipV4, deviceAddress, port });
-        return newState;
-      case 'ipV4':
-        ipV4 = value;
-        _.set(newState, 'connection', { ipV4, deviceAddress, port });
-        return newState;
-
-      default:
-        _.set(newState, path, value);
-    }
-
-    return newState;
+  switch (action.type) {
+    case 'CALC_UPDATE_FORM_VALUE_BY_PATH':
+      const {
+        payload: { path, value },
+      } = action;
+      _.set(newState, path, value);
+      return newState;
+    case 'CALC_UPDATE_FORM':
+      console.log(action);
+      return action.payload.value;
+    default:
+      return newState;
   }
-
-  return state;
 }
