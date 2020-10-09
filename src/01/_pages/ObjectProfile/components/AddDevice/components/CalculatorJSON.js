@@ -1,23 +1,33 @@
 export const items = [
   {
+    value: '1',
+    label: 'ТЭМ-106',
     id: 1,
-    model: 'ТЭМ-106',
+    parent: 'infoId',
   },
   {
+    value: '2',
+    label: 'ТЭМ-104',
     id: 2,
-    model: 'ТЭМ-104',
+    parent: 'infoId',
   },
   {
+    value: '3',
+    label: 'ТЭМ-104',
     id: 3,
-    model: 'ВКТ-7',
+    parent: 'infoId',
   },
   {
+    value: '4',
+    label: 'ВКТ-7',
     id: 4,
-    model: 'ТВ-7',
+    parent: 'infoId',
   },
   {
+    value: '5',
+    label: 'ВИСТ',
     id: 5,
-    model: 'ВИСТ',
+    parent: 'infoId',
   },
 ];
 
@@ -25,6 +35,7 @@ export const serviceLife = [
   { value: '4', label: '4 года', id: 1 },
   { value: '6', label: '6 лет', id: 2 },
 ];
+
 
 export const types = [
   {
@@ -61,10 +72,14 @@ export const resources = [
 export const magistrals = [
   {
     value: 'FeedFlow',
-    label: 'Подающая',
+    label: 'Прямая',
+    id: 1,
+    parent: 'magistral',
   },
   {
     value: 'FeedBackFlow',
     label: 'Обратная',
+    id: 2,
+    parent: 'magistral',
   },
 ];
