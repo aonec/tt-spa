@@ -3,7 +3,12 @@ import React, {useEffect, useState} from "react";
 import { Tabs } from 'antd';
 import {devicesAPI} from "../../../_api/devices_page";
 import {Loader} from "../../../components/Loader";
-import {getDevices, setCurrentPage, toggleIsLoading} from "../../../Redux/reducers/reducerDevicesPage";
+import {
+    getDevicesBySerialNumber,
+    getDevices,
+    setCurrentPage,
+    toggleIsLoading
+} from "../../../Redux/reducers/reducerDevicesPage";
 
 
 import {useDispatch, useSelector} from "react-redux";
@@ -11,8 +16,8 @@ import {useDispatch, useSelector} from "react-redux";
 import styles from './TabsDevices.module.css'
 import {createPages} from "../../../utils/pagesCreator";
 
-import {Icon} from "../../../tt-components/Icon";
-import {NavLink} from "react-router-dom";
+import DeviceBlock from "./DeviceBlock/DeviceBlock";
+import ButtonTT from "../../../tt-components/ButtonTT";
 
 
 const { TabPane } = Tabs;
@@ -36,54 +41,57 @@ const TabsDevices = () => {
     }
 
 
+
+
     const pages = [];
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
+        if (searchTerm) return;
         dispatch(toggleIsLoading());
         dispatch(getDevices(currentPage, pageSize));
         dispatch(toggleIsLoading());
-    }, [currentPage, pageSize, searchTerm]);
+    }, [currentPage, pageSize]);
 
-    const deviceFilterFunction = (item) => {
-        if (item.id.toString().includes(searchTerm) || item.relatedDevices.some((subItem) => subItem.id.toString().includes(searchTerm))) {
-            return true
-        }
-        return false
+    // const deviceFilterFunction = (item) => {
+    //     if (item.id.toString().includes(searchTerm) || item.relatedDevices.some((subItem) => subItem.id.toString().includes(searchTerm))) {
+    //         return true
+    //     }
+    //     return false
+    // }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!e.target[0].value) return;
+        dispatch(getDevicesBySerialNumber(e.target[0].value));
     }
 
     const deviceItems = useSelector((state) =>
-        state.devicePage.devices.filter(deviceFilterFunction)
+        state.devicePage.items
     )
 
 
 
-    const deviceElems = deviceItems.map((device) => {
-        return <div className={styles.device}>
-            <NavLink className={styles.device__title} to={`/objects/${device.housingStockId}/devices/${device.id}`}><Icon className={styles.icon} icon={"device"} fill={"var(--main-100)"}/>{device.model}</NavLink>
-                <div className={styles.subDevices}>
-                {device.relatedDevices.length ?
-                device.relatedDevices.map((device) => <div><NavLink to={`/objects/${device.housingStockId}/devices/${device.id}`}><Icon className={styles.icon} icon={"water"} fill={"var(--hot-water)"}/>{device.model}</NavLink></div>) :
-                'Подприборов нет'}
+    const deviceElems = deviceItems.map((device) => <DeviceBlock device={device} />)
 
-            </div>
-
-        </div>
-    })
-
-    // if (isLoading) return <div>LOADING...</div>
 
     return <div>
 
         <Tabs defaultActiveKey="1" onChange={callback}>
 
             <TabPane className={styles.tab} tab="ОДПУ" key="1">
-                <input
-                    className={styles.form}
-                    type="text"
-                    value={searchTerm}
-                    onChange={editSearchTerm}
-                    placeholder="Введите серийный номер прибора..."/>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <label>
+                        Поиск по серийному номеру прибора:
+                        <input
+                            className={styles.input__form}
+                            type="text"
+                            value={searchTerm}
+                            onChange={editSearchTerm}
+                            placeholder="Введите серийный номер прибора..."/>
+                    </label>
+                        <input className={styles.btn} type="submit" value="Отправить" />
+                </form>
                 {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
@@ -96,11 +104,12 @@ const TabsDevices = () => {
                         </div>
                     </div>}
             </TabPane>
-            <TabPane tab="ИПУ" key="2">
-                Content of Tab Pane 2
-            </TabPane>
+            {/*<TabPane tab="ИПУ" key="2">*/}
+            {/*    Content of Tab Pane 2*/}
+            {/*</TabPane>*/}
         </Tabs>
     </div>
+
 }
 
 
