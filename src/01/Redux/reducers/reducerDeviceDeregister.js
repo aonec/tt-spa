@@ -7,19 +7,18 @@ const initialState = {
 
 export default function reducerDeviceDeregister(state = initialState, action) {
   const newState = _.cloneDeep(state);
-  // switch (action.type) {
-  //   case 'DEV_UPDATE_FORM_VALUE_BY_PATH':
-  //     const {
-  //       payload: { path, value },
-  //     } = action;
-  //     _.set(newState, path, value);
-  //     return newState;
-  //   case 'DEV_UPDATE_FORM':
-  //     console.log(action);
-  //     return action.payload.value;
-  //   default:
+  switch (action.type) {
+    case 'DEREGISTER_VISIBLE':
+      const {
+        payload: { path, value },
+      } = action;
+      _.set(newState, path, value);
       return newState;
-  // }
+    case 'SOME_ACTION':
+      return action.payload.value;
+    default:
+      return newState;
+  }
 }
 
 

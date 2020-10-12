@@ -1,32 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
+import { setModalVisible } from "../../../../Redux/actions/actions";
 
-const ModalDeregisterDevice = (props) => {
+const ModalDeregisterDevice = () => {
 
-  const {visible} = useSelector((state) => state.reducerDeviceDeregister);
+  const { visible } = useSelector((state) => state.reducerDeviceDeregister);
   const dispatch = useDispatch();
 
-  console.log("visible = ", visible)
-
-  const [state, setState] = useState(true);
-
-  // useEffect(() => {
-  //   console.log(props.someValue);
-  //   if (props.someValue === true) {
-  //     setState(true);
-  //   }
-  // }, [props.someValue]);
-
   const handleOk = (e) => {
-    console.log(e);
-    setState(false);
+    dispatch(setModalVisible(['visible'], false));
   };
 
   const handleCancel = (e) => {
-    console.log(e);
-    setState(false);
+    dispatch(setModalVisible(['visible'], false));
   };
 
   return (

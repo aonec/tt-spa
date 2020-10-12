@@ -25,3 +25,11 @@ export function setAddDeviceForm(path, value) {
     payload: { path, value },
   };
 }
+
+// Изменение отображния модального окна ModalDeregisterDevice
+export function setModalVisible(path, value) {
+  return {
+    type: 'DEREGISTER_VISIBLE',
+    payload: { path, value },
+  };
+}
