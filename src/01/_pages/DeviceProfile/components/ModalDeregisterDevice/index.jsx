@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Modal } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import { setModalVisible } from '../../../../Redux/actions/actions';
+import { setModalDeregisterVisible } from '../../../../Redux/actions/actions';
 
 const ModalDeregisterDevice = () => {
 
@@ -10,11 +10,11 @@ const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
 
   const handleOk = (e) => {
-    dispatch(setModalVisible(['visible'], false));
+    dispatch(setModalDeregisterVisible(['visible'], false));
   };
 
   const handleCancel = (e) => {
-    dispatch(setModalVisible(['visible'], false));
+    dispatch(setModalDeregisterVisible(['visible'], false));
   };
 
   useEffect(()=>{
