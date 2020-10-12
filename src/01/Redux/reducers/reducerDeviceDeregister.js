@@ -4,7 +4,7 @@ import moment from "moment";
 const initialState = {
   visible: false,
   deregisterFormState: {
-    deviceId: 1553348,
+    deviceId: '',
     documentsIds: [],
     closingDateTime: moment(),
   },
