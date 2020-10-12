@@ -15,14 +15,14 @@ const DeviceBlock = (props) => {
                     to={`/objects/${device.housingStockId}/devices/${device.id}`}>
                     <Icon className={styles.icon} icon={"device"} fill={"var(--main-100)"}/>
                     {device.model}
-                    <span className={styles.deviceId}> ({device.id})</span>
+                    <span className={styles.deviceId}> ({device.serialNumber})</span>
                 </NavLink>
             </div>
             <div className={styles.subDevices}>
                 {device.relatedDevices.length ?
                     device.relatedDevices.map((device) => <div className={styles.device__sub}>
                         <NavLink className={styles.device__title}
-                                 to={`/objects/${device.housingStockId}/devices/${device.id}`}>
+                                 to={`/objects/${device.housingStockId}/devices/${device.serialNumber}`}>
                             <Icon className={styles.icon} icon={"water"} fill={"var(--hot-water)"}/>
                             {device.model}
                             <span className={styles.deviceId}> ({device.id})</span>
