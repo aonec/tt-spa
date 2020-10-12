@@ -8,7 +8,7 @@ const initialState = {
 export default function reducerDeviceDeregister(state = initialState, action) {
   const newState = _.cloneDeep(state);
   switch (action.type) {
-    case 'DEREGISTER_VISIBLE':
+    case 'DEREGISTER_FORM_VISIBLE':
       const {
         payload: { path, value },
       } = action;
