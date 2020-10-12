@@ -123,7 +123,6 @@ const ModalAddDevice = () => {
   };
 
   return (
-    <ConfigProvider locale={ruRu}>
       <Modal id="add-device" ref={modalRef}>
         <ModalWrap>
           <ModalClose getModal={modalRef} />
@@ -149,7 +148,6 @@ const ModalAddDevice = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </ConfigProvider>
   );
 };
 

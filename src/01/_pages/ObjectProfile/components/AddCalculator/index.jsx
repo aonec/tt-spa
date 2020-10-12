@@ -109,7 +109,6 @@ const ModalCalculator = () => {
   };
 
   return (
-    <ConfigProvider locale={ruRu}>
     <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           {/*<button onClick={buttonHandler}>buttonHandler</button>*/}
@@ -135,7 +134,6 @@ const ModalCalculator = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </ConfigProvider>
   );
 };
 
