@@ -1,11 +1,10 @@
 import _ from 'lodash';
 
 const initialState = {
-  visible: false
-}
+  visible: false,
+};
 
-
-export default function reducerDeviceDeregister(state = initialState, action) {
+export default function deviceDeregisterReducer(state = initialState, action){
   const newState = _.cloneDeep(state);
   switch (action.type) {
     case 'DEREGISTER_FORM_VISIBLE':
@@ -14,13 +13,10 @@ export default function reducerDeviceDeregister(state = initialState, action) {
       } = action;
       _.set(newState, path, value);
       return newState;
-    case 'SOME_ACTION':
-      return action.payload.value;
     default:
       return newState;
   }
 }
-
 
 // const initialState = {
 //   calculatorId: '',
