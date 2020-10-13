@@ -1,27 +1,16 @@
-export function onChangeFormValueByPath(path, value) {
-  return {
-    type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
-    payload: { path, value },
-  };
-}
+export const onChangeFormValueByPath = (path, value) => ({
+  type: 'CALC_UPDATE_FORM_VALUE_BY_PATH',
+  payload: { path, value }
+});
 
-export function setAddCalculatorForm(path, value) {
-  return {
-    type: 'CALC_UPDATE_FORM',
-    payload: { path, value },
-  };
-}
+export const setAddCalculatorForm = (path, value) => ({ type: 'CALC_UPDATE_FORM', payload: { path, value } });
 
-export function onChangeDeviceFormValueByPath(path, value) {
-  return {
-    type: 'DEV_UPDATE_FORM_VALUE_BY_PATH',
-    payload: { path, value },
-  };
-}
+export const onChangeDeviceFormValueByPath = (path, value) => ({
+  type: 'DEV_UPDATE_FORM_VALUE_BY_PATH',
+  payload: { path, value }
+});
 
-export function setAddDeviceForm(path, value) {
-  return {
-    type: 'DEV_UPDATE_FORM',
-    payload: { path, value },
-  };
-}
+export const setAddDeviceForm = (path, value) => ({ type: 'DEV_UPDATE_FORM', payload: { path, value } });
+
+// Изменение отображния модального окна ModalDeregisterDevice
+export const setModalDeregisterVisible = (path, value) => ({ type: 'DEREGISTER_FORM_VISIBLE', payload: { path, value } });

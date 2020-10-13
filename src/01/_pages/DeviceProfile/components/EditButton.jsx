@@ -4,8 +4,10 @@ import $ from 'jquery';
 import {
   useHistory, useRouteMatch, useParams, NavLink,
 } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
+import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -71,6 +73,7 @@ export const EditButton = () => {
 
 export const Menu = (showPopupHandler) => {
   const { 0: objid, 1: deviceId } = useParams();
+  const dispatch = useDispatch();
 
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -89,10 +92,8 @@ export const Menu = (showPopupHandler) => {
     $('#edit-button__list').toggle();
   };
 
-  const deregisterDevice = () => {
-    console.log('deleteDevice', $('#modal-deregister-device'));
-    $('#modal-deregister-device').toggle();
-    $('#edit-button__list').toggle();
+  const showDeregisterDeviceModal = () => {
+    dispatch(setModalDeregisterVisible('visible', true));
   };
 
   function editDevice() {
@@ -103,12 +104,17 @@ export const Menu = (showPopupHandler) => {
     <>
       <EditButton />
       <List id="edit-button__list">
-        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}><ListItem>Редактировать вычислитель</ListItem></NavLink>
+        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>
+          <ListItem>
+            Редактировать
+            вычислитель
+          </ListItem>
+        </NavLink>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
-        <ListItem onClick={deregisterDevice} style={{ color: '#FC525B' }}>
+        <ListItem onClick={showDeregisterDeviceModal} style={{ color: '#FC525B' }}>
           Снять вычислитель с учета
         </ListItem>
       </List>
