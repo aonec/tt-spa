@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Modal, DatePicker, Button } from 'antd';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import {
-  Formik, Form, Field, ErrorMessage,
-} from 'formik';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import moment from 'moment';
 import { deregisterDevice, getDevice } from '01/_api/device_page';
 import { useParams } from 'react-router-dom';
@@ -21,64 +20,60 @@ const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
   const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
   const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
-  const { closingDateTime, documentsIds } = deregisterFormState
+  const { closingDateTime, documentsIds } = deregisterFormState;
 
   const DeregisterForm = () => {
-    const onSubmit = (values, { setSubmitting }, errors) => {
-      deregisterDevice()
-    };
+    const {
+      handleSubmit, handleChange, values, touched, errors, handleBlur,
+    } = useFormik({
+      initialValues: {
+        datepicker: '',
+        login: '',
+      },
+      validationSchema: Yup.object({
+        login: Yup.string().max(10, 'Login must be shorter than 10 characters').required('Required'),
 
-    const emptyValidate = (values) => {
-      const errors = {};
-      if (!values.email) {
-        errors.email = 'Required';
-      }
-      if (!values.text) {
-        errors.text = 'Required Text';
-      }
-      if (!values.datepicker) {
-        errors.datepicker = 'Required Date';
-      }
-
-      return errors;
-    };
+      }),
+      onSubmit: ({ login, datepicker }) => {
+        alert(`Login: ${login}; DatePicker: ${datepicker}`);
+      },
+    });
 
     return (
       <>
-        <Title size="middle" color="black">
-          Вы действительно хотите снять () с учета?
-        </Title>
-        <Formik
-          initialValues={{ email: '', text: '', datepicker: moment() }}
-          validate={emptyValidate}
-          onSubmit={onSubmit}
-        >
-          {({ isSubmitting, values, errors }) => (
-            <Form id="formikForm">
+        <form id="formikForm" onSubmit={handleSubmit}>
+          <Title size="middle" color="black">
+            Вы действительно хотите снять () с учета?
+          </Title>
+          <div style={{ padding: '10px' }}>
+            <DatePicker
+              name="datepicker"
+              // allowClear={false}
+              onChange={(date) => {
+                const path = ['deregisterFormState', 'closingDateTime'];
+                // const value = date.toISOString();
+                // dispatch(updateModalDeregisterForm(path, value));
+              }}
+              // value={moment(closingDateTime)}
+            />
+            {touched.datepicker && errors.datepicker ? (
+              <div>{errors.datepicker}</div>
+            ) : null}
+          </div>
+          <input
+            value={values.login}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            id="login"
+            name="login"
+            type="text"
+          />
+          {touched.login && errors.login ? (
+            <div>{errors.login}</div>
+          ) : null}
 
-              <div style={{ padding: '10px' }}>
-                <DatePicker
-                  name="datepicker"
-                  allowClear={false}
-                  onChange={(date) => {
-                    const path = ['deregisterFormState', 'closingDateTime'];
-                    const value = date.toISOString();
-                    dispatch(updateModalDeregisterForm(path, value));
-                  }}
-                  value={moment(closingDateTime)}
-                />
-                <ErrorMessage name="datepicker" component="div"/>
-              </div>
-
-              <div style={{ padding: '10px' }}>
-                <p>Text</p>
-                <Field type="text" name="text"/>
-                <ErrorMessage name="text" component="div"/>
-              </div>
-
-            </Form>
-          )}
-        </Formik>
+          <button type="submit">Log in</button>
+        </form>
       </>
     );
   };
@@ -122,7 +117,8 @@ const ModalDeregisterDevice = () => {
       footer={null}
     >
       <Button onClick={buttonHandler}>Button</Button>
-      <DeregisterForm/>
+      <Button type="submit" form="formikForm">Button</Button>
+      <DeregisterForm />
     </Modal>
   );
 };
