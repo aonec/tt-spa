@@ -21,7 +21,7 @@ const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
   const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
   const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
-  const { closingDateTime, documentsIds } = deregisterFormState;
+  const { closingDateTime } = deregisterFormState;
 
   const DeregisterForm = () => {
     const {
