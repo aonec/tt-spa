@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Modal, DatePicker, Button } from 'antd';
+import _ from 'lodash';
+import {
+  Modal, DatePicker, Button, Form, Input,
+} from 'antd';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +14,7 @@ import {
   setModalDeregisterVisible,
   updateModalDeregisterForm,
 } from '../../../../Redux/actions/actions';
-import { Title } from '../../../../tt-components';
+import { Title, ButtonTT } from '../../../../tt-components';
 
 const ModalDeregisterDevice = () => {
   const { 1: deviceId } = useParams();
@@ -27,53 +30,57 @@ const ModalDeregisterDevice = () => {
       handleSubmit, handleChange, values, touched, errors, handleBlur,
     } = useFormik({
       initialValues: {
-        datepicker: '',
-        login: '',
+        test: 'test',
       },
       validationSchema: Yup.object({
-        login: Yup.string().max(10, 'Login must be shorter than 10 characters').required('Required'),
-
+        test: Yup.string().required('Введите данные'),
       }),
-      onSubmit: ({ login, datepicker }) => {
-        alert(`Login: ${login}; DatePicker: ${datepicker}`);
+      onSubmit: ({ test }) => {
+        alert('Done!');
       },
     });
+    const Alert = ({ name }) => {
+      const touch = _.get(touched, `${name}`);
+      const error = _.get(errors, `${name}`);
+      if (touch && error) {
+        return (
+          <div>{error}</div>
+        );
+      }
+      return null;
+    };
 
     return (
       <>
-        <form id="formikForm" onSubmit={handleSubmit}>
+        <Form id="formikForm" onSubmit={handleSubmit}>
           <Title size="middle" color="black">
             Вы действительно хотите снять () с учета?
           </Title>
-          <div style={{ padding: '10px' }}>
+
+          <Form.Item label="Дата снятия прибора с учета">
             <DatePicker
               name="datepicker"
-              // allowClear={false}
+              allowClear={false}
               onChange={(date) => {
                 const path = ['deregisterFormState', 'closingDateTime'];
-                // const value = date.toISOString();
-                // dispatch(updateModalDeregisterForm(path, value));
+                const value = date.toISOString();
+                dispatch(updateModalDeregisterForm(path, value));
               }}
-              // value={moment(closingDateTime)}
+              value={moment(closingDateTime)}
             />
-            {touched.datepicker && errors.datepicker ? (
-              <div>{errors.datepicker}</div>
-            ) : null}
-          </div>
-          <input
-            value={values.login}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            id="login"
-            name="login"
-            type="text"
-          />
-          {touched.login && errors.login ? (
-            <div>{errors.login}</div>
-          ) : null}
+          </Form.Item>
 
-          <button type="submit">Log in</button>
-        </form>
+          <Form.Item label="Введите Да для подтверждения изменений">
+            <Input
+              value={values.test}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="test"
+              type="text"
+            />
+            <Alert name="test" />
+          </Form.Item>
+        </Form>
       </>
     );
   };
@@ -108,17 +115,13 @@ const ModalDeregisterDevice = () => {
 
   return (
     <Modal
-      // title="DeregisterForm Modal"
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
-      // cancelText="Отмена"
-      // okText="Сохранить"
       footer={null}
     >
-      <Button onClick={buttonHandler}>Button</Button>
-      <Button type="submit" form="formikForm">Button</Button>
       <DeregisterForm />
+      <ButtonTT type="submit" color="blue" form="formikForm">ОК</ButtonTT>
     </Modal>
   );
 };
