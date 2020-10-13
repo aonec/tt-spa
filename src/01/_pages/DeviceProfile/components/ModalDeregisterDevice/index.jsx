@@ -8,9 +8,10 @@ import {
 import moment from 'moment';
 import { deregisterDevice } from '01/_api/device_page';
 import { useParams } from 'react-router-dom';
-import { setAddCalculatorForm, setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
+import { setAddCalculatorForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
 import { Title } from '../../../../tt-components';
 import axios from '../../../../axios';
+import { updateModalDeregisterForm } from '../../../../Redux/actions/actions'
 
 const ModalDeregisterDevice = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -58,13 +59,13 @@ const ModalDeregisterDevice = () => {
                 defaultValue={closingDateTime}
                 allowClear={false}
               />
-              <ErrorMessage name="datepicker" component="div" />
+              <ErrorMessage name="datepicker" component="div"/>
             </div>
 
             <div style={{ padding: '10px' }}>
               <p>Text</p>
-              <Field type="text" name="text" />
-              <ErrorMessage name="text" component="div" />
+              <Field type="text" name="text"/>
+              <ErrorMessage name="text" component="div"/>
             </div>
 
           </Form>
@@ -73,7 +74,7 @@ const ModalDeregisterDevice = () => {
     </div>
   );
 
-  async function getInfo(url = '') {
+  async function getInfo(url = ''){
     try {
       const res = await axios.get(`MeteringDevices/${url}`);
       console.log('res', res);
@@ -93,6 +94,7 @@ const ModalDeregisterDevice = () => {
   const { documentsIds, closingDateTime } = deregisterFormState;
 
   useEffect(() => {
+
     getInfo(deviceId).then((res) => {
       setDevice(res);
     });
@@ -101,11 +103,14 @@ const ModalDeregisterDevice = () => {
       deviceId: 123,
       documentsIds: [],
       closingDateTime: moment().toISOString(),
-    };
+    }
     dispatch(
       setAddCalculatorForm(deregisterFormState, someValue),
     );
+
+
   }, []);
+
 
   // deregisterFormState: {
   //   deviceId: '',
@@ -136,7 +141,7 @@ const ModalDeregisterDevice = () => {
       footer={null}
     >
       <Button onClick={buttonHandler}>Button</Button>
-      <Basic />
+      <Basic/>
     </Modal>
   );
 };
