@@ -1,5 +1,9 @@
 import React from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
+
+const ADD_DATE = "add_date";
+
+
 export const usePanel = (
   { panel = {}, panelLoading = false },
   pageDispatch
@@ -14,6 +18,8 @@ export const usePanel = (
   // React.useEffect(() => {
   //   panel.actions?.SwitchDevices && replace(url + "/step1")
   // }, [panel.actions?.SwitchDevices])
+
+
 
   const pushProps = {
     onClick() {
@@ -34,21 +40,31 @@ export const usePanel = (
   }
 }
 
-function dataReducer(state, action) {
+export function dataReducer(state, action) {
   const { type, data } = action
   switch (type) {
     case "add_data":
       return { ...state, ...data }
+
     case "email_notify":
       const { emailNotify = {} } = state
       return { ...state, emailNotify: { ...emailNotify, ...data } }
+
+    case ADD_DATE:
+      return { ...state, date: action.date }
+
     case "reset":
       return {}
+
     default:
       console.error("panel", type)
       return state
   }
 }
+
+export const addDate = (date) => ({type: ADD_DATE, date})
+
+
 
 function isDisabled(
   { nextPerpetratorId = null, documentsIds = [], nextStageId = null },

@@ -1,11 +1,12 @@
-import React from "react"
-import styled, { css, use } from "reshadow/macro"
-import { Route } from "react-router-dom"
+import React, {useEffect} from "react"
+import styled, {css, use} from "reshadow/macro"
+import {Route} from "react-router-dom"
 
 import * as s from "01/r_comp"
-import { Perpetrator, Contractors, NextStage } from "01/components/Select"
-import { Loader } from "01/components"
-import { UploadButton, useUpload, UploadList } from "01/components/Upload"
+import {Perpetrator, Contractors, NextStage} from "01/components/Select"
+import {Loader} from "01/components"
+import {UploadButton, useUpload, UploadList} from "01/components/Upload"
+import AddDate from "../../../../components/Select/selects/AddDate";
 
 
 // display:flex;
@@ -64,81 +65,90 @@ const styles = css`
 `
 
 export const Panel = ({
-  hiddenPanel = true,
-  actions = {},
-  state = {},
-  pushProps = {},
-  isObserver = false,
-  perpName = "",
-  dispatch = () => { },
-}) => {
-  const upload = useUpload((data) => dispatch({ type: "add_data", data }))
-  if (hiddenPanel) return null
+                          hiddenPanel = true,
+                          actions = {},
+                          state = {},
+                          pushProps = {},
+                          isObserver = false,
+                          perpName = "",
+                          dispatch = () => {
+                          },
+                      }) => {
+    const upload = useUpload((data) => dispatch({type: "add_data", data}));
 
-  if (isObserver)
-    return styled(styles, s.input)(
-      <panel>
-        <input_frame data-disabled={true} data-big>
-          <input disabled value={perpName} />
-        </input_frame>
-      </panel>
+    useEffect(() => {
+      console.log(pushProps)
+    }, [pushProps])
+
+    if (hiddenPanel) return null
+
+    if (isObserver)
+        return styled(styles, s.input)(
+            <panel>
+                <input_frame data-disabled={true} data-big>
+                    <input disabled value={perpName}/>
+                </input_frame>
+            </panel>
+        )
+
+    const {
+        AddPerpetrator,
+        EmailNotify,
+        AddDocuments,
+        Switch,
+        Completion,
+        SwitchDevices,
+        SetNextStageDeadline,
+    } = actions
+    const {emailNotify = {}} = state
+
+    return styled(styles)(
+        // <Route path="/tasks/(\\d+)" exact>
+        <panel
+            {...use({
+                one: AddPerpetrator && EmailNotify,
+                two: AddDocuments,
+                tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
+                four: Completion,
+                five: Switch && PushButton
+            })}
+        >
+            {AddPerpetrator && (
+                <>
+                    <Perpetrator getData={(data) => dispatch({type: "add_data", data})}/>
+                    {!EmailNotify && <AddDate />}
+                </>
+            )}
+            {EmailNotify && <Contractors/>}
+            {EmailNotify && (
+                <Textarea
+                    value={emailNotify.message ?? ""}
+                    onChange={(e) =>
+                        dispatch({
+                            type: "email_notify",
+                            data: {message: e.target.value},
+                        })
+                    }
+                />
+            )}
+            {EmailNotify && <TemplateButton/>}
+            {AddDocuments && (
+                <>
+                    <UploadButton {...upload.button} />
+                    <UploadList {...upload.list} />
+                </>
+            )}
+            {Switch && (
+                <NextStage getData={(data) => dispatch({type: "add_data", data})}/>
+            )}
+            <PushButton {...pushProps} />
+        </panel>
+        // </Route>
     )
-
-  const {
-    AddPerpetrator,
-    EmailNotify,
-    AddDocuments,
-    Switch,
-    Completion,
-    SwitchDevices,
-    SetNextStageDeadline,
-  } = actions
-  const { emailNotify = {} } = state
-
-  return styled(styles)(
-    // <Route path="/tasks/(\\d+)" exact>
-    <panel
-      {...use({
-        one: AddPerpetrator && EmailNotify,
-        two: AddDocuments,
-        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
-        four: Completion,
-        five: Switch && PushButton
-      })}
-    >
-      {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: "add_data", data })} />
-      )}
-      {EmailNotify && <Contractors />}
-      {EmailNotify && (
-        <Textarea
-          value={emailNotify.message ?? ""}
-          onChange={(e) =>
-            dispatch({
-              type: "email_notify",
-              data: { message: e.target.value },
-            })
-          }
-        />
-      )}
-      {EmailNotify && <TemplateButton />}
-      {AddDocuments && (
-        <>
-          <UploadButton {...upload.button} />
-          <UploadList {...upload.list} />
-        </>
-      )}
-      {Switch && (
-        <NextStage getData={(data) => dispatch({ type: "add_data", data })} />
-      )}
-      <PushButton {...pushProps} />
-    </panel>
-    // </Route>
-  )
 }
 
 const Textarea = (props) =>
-  styled`
+    styled`
     textarea {
       --h: var(--h-big);
       grid-area: ta;
@@ -159,25 +169,25 @@ const Textarea = (props) =>
   `(<textarea rows="0" {...props} />)
 
 const TemplateButton = () =>
-  styled(s.button)`
+    styled(s.button)`
     button {
       grid-area: tmp;
     }
   `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>
-  )
+        <button data-big>
+            <span>Выбрать из шаблона</span>
+        </button>
+    )
 
-const PushButton = ({ loading = false, ...props }) =>
-  styled(s.button)`
+const PushButton = ({loading = false, ...props}) =>
+    styled(s.button)`
     button {
       grid-area: push;
       margin-left: 10px;
     }
   `(
-    <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
-    </button>
-  )
+        <button data-big data-primary {...props}>
+            <Loader show={loading}/>
+            <span>Завершить этап</span>
+        </button>
+    )
