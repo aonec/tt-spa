@@ -6,40 +6,26 @@ import {
   Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import moment from 'moment';
-import { deregisterDevice } from '01/_api/device_page';
+import { deregisterDevice, getDevice } from '01/_api/device_page';
 import { useParams } from 'react-router-dom';
-import { setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
+import {
+  setModalDeregisterVisible,
+  updateModalDeregisterForm,
+} from '../../../../Redux/actions/actions';
 import { Title } from '../../../../tt-components';
-import axios from '../../../../axios';
 
 const ModalDeregisterDevice = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const { 1: deviceId } = useParams();
   const [device, setDevice] = useState({});
-
-  async function getInfo(url = '') {
-    try {
-      const res = await axios.get(`MeteringDevices/${url}`);
-      console.log('res', res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса устройства',
-      };
-    }
-  }
 
   const dispatch = useDispatch();
   const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
   const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
+  const { closingDateTime, documentsIds } = deregisterFormState
 
   const DeregisterForm = () => {
     const onSubmit = (values, { setSubmitting }, errors) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        setSubmitting(false);
-      }, 400);
+      deregisterDevice()
     };
 
     const emptyValidate = (values) => {
@@ -74,14 +60,20 @@ const ModalDeregisterDevice = () => {
                 <DatePicker
                   name="datepicker"
                   allowClear={false}
+                  onChange={(date) => {
+                    const path = ['deregisterFormState', 'closingDateTime'];
+                    const value = date.toISOString();
+                    dispatch(updateModalDeregisterForm(path, value));
+                  }}
+                  value={moment(closingDateTime)}
                 />
-                <ErrorMessage name="datepicker" component="div" />
+                <ErrorMessage name="datepicker" component="div"/>
               </div>
 
               <div style={{ padding: '10px' }}>
                 <p>Text</p>
-                <Field type="text" name="text" />
-                <ErrorMessage name="text" component="div" />
+                <Field type="text" name="text"/>
+                <ErrorMessage name="text" component="div"/>
               </div>
 
             </Form>
@@ -92,7 +84,7 @@ const ModalDeregisterDevice = () => {
   };
 
   useEffect(() => {
-    getInfo(deviceId).then((res) => {
+    getDevice(deviceId).then((res) => {
       setDevice(res);
     });
 
@@ -130,7 +122,7 @@ const ModalDeregisterDevice = () => {
       footer={null}
     >
       <Button onClick={buttonHandler}>Button</Button>
-      <DeregisterForm />
+      <DeregisterForm/>
     </Modal>
   );
 };

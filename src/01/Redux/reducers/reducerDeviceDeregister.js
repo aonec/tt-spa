@@ -22,7 +22,6 @@ export default function deviceDeregisterReducer(state = initialState, action){
     case 'DEREGISTER_FORM_UPDATE':
       _.set(newState, action.payload.path, action.payload.value);
       return newState
-
     default:
       return newState;
   }
