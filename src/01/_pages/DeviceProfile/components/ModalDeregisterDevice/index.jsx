@@ -1,80 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Modal, DatePicker, Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
 import {
   Formik, Form, Field, ErrorMessage,
 } from 'formik';
 import moment from 'moment';
 import { deregisterDevice } from '01/_api/device_page';
 import { useParams } from 'react-router-dom';
-import { setAddCalculatorForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
+import { setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
 import { Title } from '../../../../tt-components';
 import axios from '../../../../axios';
-import { updateModalDeregisterForm } from '../../../../Redux/actions/actions'
 
 const ModalDeregisterDevice = () => {
   const { 0: objid, 1: deviceId } = useParams();
   const [device, setDevice] = useState({});
-  const { serialNumber, id } = device;
-  const emptyValidate = (values) => {
-    const errors = {};
-    if (!values.email) {
-      errors.email = 'Required';
-    }
-    if (!values.text) {
-      errors.text = 'Required Text';
-    }
-    if (!values.datepicker) {
-      errors.datepicker = 'Required Date';
-    }
 
-    return errors;
-  };
-
-  const onSubmit = (values, { setSubmitting }, errors) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
-  };
-
-  const Basic = () => (
-    <div>
-
-      <Title size="middle" color="black">
-        {`Вы действительно хотите снять (${serialNumber}) с учета?`}
-      </Title>
-      <Formik
-        initialValues={{ email: '', text: '', datepicker: moment() }}
-        validate={emptyValidate}
-        onSubmit={onSubmit}
-      >
-        {({ isSubmitting, values, errors }) => (
-          <Form id="formikForm">
-
-            <div style={{ padding: '10px' }}>
-              <DatePicker
-                name="datepicker"
-                defaultValue={closingDateTime}
-                allowClear={false}
-              />
-              <ErrorMessage name="datepicker" component="div"/>
-            </div>
-
-            <div style={{ padding: '10px' }}>
-              <p>Text</p>
-              <Field type="text" name="text"/>
-              <ErrorMessage name="text" component="div"/>
-            </div>
-
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-
-  async function getInfo(url = ''){
+  async function getInfo(url = '') {
     try {
       const res = await axios.get(`MeteringDevices/${url}`);
       console.log('res', res);
@@ -91,32 +33,79 @@ const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
   const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
   const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
-  const { documentsIds, closingDateTime } = deregisterFormState;
+
+  const DeregisterForm = () => {
+    const onSubmit = (values, { setSubmitting }, errors) => {
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+      }, 400);
+    };
+
+    const emptyValidate = (values) => {
+      const errors = {};
+      if (!values.email) {
+        errors.email = 'Required';
+      }
+      if (!values.text) {
+        errors.text = 'Required Text';
+      }
+      if (!values.datepicker) {
+        errors.datepicker = 'Required Date';
+      }
+
+      return errors;
+    };
+
+    return (
+      <>
+        <Title size="middle" color="black">
+          Вы действительно хотите снять () с учета?
+        </Title>
+        <Formik
+          initialValues={{ email: '', text: '', datepicker: moment() }}
+          validate={emptyValidate}
+          onSubmit={onSubmit}
+        >
+          {({ isSubmitting, values, errors }) => (
+            <Form id="formikForm">
+
+              <div style={{ padding: '10px' }}>
+                <DatePicker
+                  name="datepicker"
+                  allowClear={false}
+                />
+                <ErrorMessage name="datepicker" component="div" />
+              </div>
+
+              <div style={{ padding: '10px' }}>
+                <p>Text</p>
+                <Field type="text" name="text" />
+                <ErrorMessage name="text" component="div" />
+              </div>
+
+            </Form>
+          )}
+        </Formik>
+      </>
+    );
+  };
 
   useEffect(() => {
-
     getInfo(deviceId).then((res) => {
       setDevice(res);
     });
 
-    const someValue = {
-      deviceId: 123,
+    const setForm = {
+      deviceId: Number(deviceId),
       documentsIds: [],
       closingDateTime: moment().toISOString(),
-    }
+    };
+
     dispatch(
-      setAddCalculatorForm(deregisterFormState, someValue),
+      updateModalDeregisterForm('deregisterFormState', setForm),
     );
-
-
   }, []);
-
-
-  // deregisterFormState: {
-  //   deviceId: '',
-  //     documentsIds: [],
-  //     closingDateTime: moment(),
-  // },
 
   const handleOk = (e) => {
     dispatch(setModalDeregisterVisible(['visible'], false));
@@ -132,7 +121,7 @@ const ModalDeregisterDevice = () => {
 
   return (
     <Modal
-      // title="Basic Modal"
+      // title="DeregisterForm Modal"
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -141,9 +130,8 @@ const ModalDeregisterDevice = () => {
       footer={null}
     >
       <Button onClick={buttonHandler}>Button</Button>
-      <Basic/>
+      <DeregisterForm />
     </Modal>
   );
 };
-
-export default ModalDeregisterDevice;
+export default connect()(ModalDeregisterDevice);
