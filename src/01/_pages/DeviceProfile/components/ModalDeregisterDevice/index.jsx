@@ -1,201 +1,144 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Modal } from 'antd';
+import { Modal, DatePicker, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setModalDeregisterVisible } from '../../../../Redux/actions/actions';
-import { Formik } from 'formik';
+import {
+  Formik, Form, Field, ErrorMessage,
+} from 'formik';
+import moment from 'moment';
+import { deregisterDevice } from '01/_api/device_page';
+import { useParams } from 'react-router-dom';
+import { setAddCalculatorForm, setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
+import { Title } from '../../../../tt-components';
+import axios from '../../../../axios';
 
 const ModalDeregisterDevice = () => {
+  const { 0: objid, 1: deviceId } = useParams();
+  const [device, setDevice] = useState({});
+  const { serialNumber, id } = device;
+  const emptyValidate = (values) => {
+    const errors = {};
+    if (!values.email) {
+      errors.email = 'Required';
+    }
+    if (!values.text) {
+      errors.text = 'Required Text';
+    }
+    if (!values.datepicker) {
+      errors.datepicker = 'Required Date';
+    }
+
+    return errors;
+  };
+
+  const onSubmit = (values, { setSubmitting }, errors) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false);
+    }, 400);
+  };
+
   const Basic = () => (
     <div>
-      <h1>Anywhere in your app!</h1>
+
+      <Title size="middle" color="black">
+        {`Вы действительно хотите снять (${serialNumber}) с учета?`}
+      </Title>
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = 'Invalid email address';
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
+        initialValues={{ email: '', text: '', datepicker: moment() }}
+        validate={emptyValidate}
+        onSubmit={onSubmit}
       >
-        {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-            /* and other goodies */
-          }) => (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.email}
-            />
-            {errors.email && touched.email && errors.email}
-            <input
-              type="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-            />
-            {errors.password && touched.password && errors.password}
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </form>
+        {({ isSubmitting, values, errors }) => (
+          <Form id="formikForm">
+
+            <div style={{ padding: '10px' }}>
+              <DatePicker
+                name="datepicker"
+                defaultValue={closingDateTime}
+                allowClear={false}
+              />
+              <ErrorMessage name="datepicker" component="div" />
+            </div>
+
+            <div style={{ padding: '10px' }}>
+              <p>Text</p>
+              <Field type="text" name="text" />
+              <ErrorMessage name="text" component="div" />
+            </div>
+
+          </Form>
         )}
       </Formik>
     </div>
   );
-  const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
+
+  async function getInfo(url = '') {
+    try {
+      const res = await axios.get(`MeteringDevices/${url}`);
+      console.log('res', res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
+  }
+
   const dispatch = useDispatch();
+  const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
+  const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
+  const { documentsIds, closingDateTime } = deregisterFormState;
+
+  useEffect(() => {
+    getInfo(deviceId).then((res) => {
+      setDevice(res);
+    });
+
+    const someValue = {
+      deviceId: 123,
+      documentsIds: [],
+      closingDateTime: moment().toISOString(),
+    };
+    dispatch(
+      setAddCalculatorForm(deregisterFormState, someValue),
+    );
+  }, []);
+
+  // deregisterFormState: {
+  //   deviceId: '',
+  //     documentsIds: [],
+  //     closingDateTime: moment(),
+  // },
 
   const handleOk = (e) => {
     dispatch(setModalDeregisterVisible(['visible'], false));
+  };
+
+  const buttonHandler = () => {
+    console.log(device);
   };
 
   const handleCancel = (e) => {
     dispatch(setModalDeregisterVisible(['visible'], false));
   };
 
-  useEffect(() => {
-
-  }, []);
-
   return (
     <Modal
-      title="Basic Modal"
+      // title="Basic Modal"
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
-      cancelText="Отмена"
-      okText="Сохранить"
+      // cancelText="Отмена"
+      // okText="Сохранить"
+      footer={null}
     >
-      <Basic/>
+      <Button onClick={buttonHandler}>Button</Button>
+      <Basic />
     </Modal>
   );
 };
 
 export default ModalDeregisterDevice;
-
-// import React, { useState, useContext } from 'react';
-// import { ConfigProvider, DatePicker } from 'antd';
-// import 'antd/dist/antd.css';
-// import { deregisterDevice } from '01/_api/device_page';
-// import moment from 'moment';
-// import $ from 'jquery';
-// import ruRu from 'antd/es/locale/ru_RU';
-// import {
-//   Modal,
-//   ModalWrap,
-//   ModalTop,
-//   ModalMain,
-//   ModalBottom,
-//   ModalClose,
-// } from '01/tt-components/Modal';
-//
-// import { DeviceContext } from '../../DeviceProfile';
-// import {
-//   Label, Title, Text, Icon,
-// } from '../../../../tt-components';
-// import { ButtonTT } from '../../../../tt-components/ButtonTT';
-// import '01/tt-components/antd.scss';
-//
-// const hideMe = () => {
-//   $('#modal-deregister-device').css('display', 'none');
-// };
-//
-// export const ReportContext = React.createContext();
-//
-// export const ModalDeregisterDevice = () => {
-//   const { device, calcModel } = useContext(DeviceContext);
-//   const modalRef = React.createRef();
-//   const { id, model, serialNumber } = device;
-//   const [selecteddate, setSelecteddate] = useState(moment().toISOString());
-//
-//   const onSubmit = () => {
-//     const Device = {
-//       deviceId: id,
-//       documentsIds: [],
-//       closingDateTime: `${selecteddate}`,
-//     };
-//
-//     deregisterDevice(Device);
-//   };
-//   // const DEFAULT_DEVICE = {
-//   //   deviceId: 1553348,
-//   //   documentsIds: [],
-//   //   closingDateTime: '2020-09-20T00:00:00.373Z',
-//   // };
-//
-//   const someFunc = () => {
-//     console.log('someFunc');
-//   };
-//
-//   const datePickerHandler = (date) => {
-//     setSelecteddate(date.toISOString());
-//   };
-//
-//   return (
-//     <ReportContext.Provider value={{}}>
-//       <Modal id="modal-deregister-device" ref={modalRef}>
-//         <ModalWrap>
-//           {/* <ModalClose onClick={hideMe} /> */}
-//           <ModalClose getModal={modalRef} />
-//           <ModalTop>
-//             <Title size="middle" color="black">
-//               {`Вы действительно хотите снять ${model
-//                 || calcModel} (${serialNumber}) с учета?`}
-//             </Title>
-//             <Text>
-//               После этого прибор перейдет в архив и показания по нему перестанут
-//               учитываться
-//             </Text>
-//           </ModalTop>
-//
-//           <ModalMain>
-//             <Label color="rgba">Дата снятия прибора с учета</Label>
-//             <ConfigProvider locale={ruRu}>
-//               <DatePicker
-//                 required
-//                 onChange={datePickerHandler}
-//                 defaultValue={moment()}
-//                 format="DD.MM.YYYY"
-//               />
-//             </ConfigProvider>
-//           </ModalMain>
-//
-//           <ModalBottom>
-//             <ButtonTT onClick={hideMe}>Отмена</ButtonTT>
-//             <ButtonTT
-//               color="red"
-//               onClick={onSubmit}
-//               style={{ marginLeft: '24px' }}
-//             >
-//               Снять прибор с учета
-//             </ButtonTT>
-//           </ModalBottom>
-//         </ModalWrap>
-//       </Modal>
-//     </ReportContext.Provider>
-//   );
-// };
-//
-// export default ModalDeregisterDevice;

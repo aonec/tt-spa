@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import moment from "moment";
+import moment from 'moment';
 
 const initialState = {
   visible: false,
   deregisterFormState: {
     deviceId: '',
     documentsIds: [],
-    closingDateTime: moment(),
+    closingDateTime: '',
   },
 };
 
@@ -19,6 +19,9 @@ export default function deviceDeregisterReducer(state = initialState, action){
       } = action;
       _.set(newState, path, value);
       return newState;
+    case 'DEREGISTER_FORM_UPDATE':
+      console.log(action);
+      return action.payload.value;
     default:
       return newState;
   }
