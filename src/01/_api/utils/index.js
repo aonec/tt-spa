@@ -128,6 +128,7 @@ export function changeItemStage(item, i, arr, uos) {
 
 export function createPanel(props = null) {
   if (!props) return []
-  const { actions = [] } = props
+  const { actions = [] } = props;
+
   return actions.reduce((obj, act) => ({ ...obj, [act]: true }), {})
 }

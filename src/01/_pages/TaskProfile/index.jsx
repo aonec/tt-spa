@@ -51,7 +51,7 @@ export const TaskProfile = () => {
   const docs = useDocuments(state, dispatch);
   const info = useInformation(state);
   const infoDevice = useInformationDevice(state);
-  debugger;
+  // debugger;
   console.log('TaskProfile info', info);
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>

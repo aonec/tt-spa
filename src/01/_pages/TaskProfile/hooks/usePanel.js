@@ -19,8 +19,6 @@ export const usePanel = (
   //   panel.actions?.SwitchDevices && replace(url + "/step1")
   // }, [panel.actions?.SwitchDevices])
 
-
-
   const pushProps = {
     onClick() {
       !panelLoading && pageDispatch({ type: "push_stage", data: state })
@@ -50,9 +48,6 @@ export function dataReducer(state, action) {
       const { emailNotify = {} } = state
       return { ...state, emailNotify: { ...emailNotify, ...data } }
 
-    case ADD_DATE:
-      return { ...state, date: action.date }
-
     case "reset":
       return {}
 
@@ -62,16 +57,12 @@ export function dataReducer(state, action) {
   }
 }
 
-export const addDate = (date) => ({type: ADD_DATE, date})
-
-
-
 function isDisabled(
-  { nextPerpetratorId = null, documentsIds = [], nextStageId = null },
+  { nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null },
   { AddPerpetrator, AddDocuments, Switch, Completion }
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId
-  if (AddPerpetrator) return !nextPerpetratorId
+  if (AddPerpetrator) return !nextPerpetratorId || !nextStageDeadline
   if (AddDocuments) return !documentsIds.length
   if (Completion) return false
   return true

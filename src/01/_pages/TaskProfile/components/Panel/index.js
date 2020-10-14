@@ -82,15 +82,6 @@ export const Panel = ({
 
     if (hiddenPanel) return null
 
-    if (isObserver)
-        return styled(styles, s.input)(
-            <panel>
-                <input_frame data-disabled={true} data-big>
-                    <input disabled value={perpName}/>
-                </input_frame>
-            </panel>
-        )
-
     const {
         AddPerpetrator,
         EmailNotify,
@@ -100,6 +91,23 @@ export const Panel = ({
         SwitchDevices,
         SetNextStageDeadline,
     } = actions
+
+    if (isObserver)
+        return styled(styles, s.input) (
+            <panel style={{display:'flex'}}>
+
+                <input_frame data-disabled={true} data-big style={{width: '50%'}}>
+                    <input disabled value={perpName}/>
+                </input_frame>
+                <input_frame data-disabled={true} data-big>
+                    <input disabled value={SetNextStageDeadline}/>
+                </input_frame>
+            </panel>
+        )
+
+    // const [deadline, setDeadline] = useState();
+
+
     const {emailNotify = {}} = state
 
     return styled(styles)(
@@ -113,12 +121,9 @@ export const Panel = ({
                 five: Switch && PushButton
             })}
         >
-            {AddPerpetrator && (
-                <>
-                    <Perpetrator getData={(data) => dispatch({type: "add_data", data})}/>
-                    {!EmailNotify && <AddDate />}
-                </>
-            )}
+            {AddPerpetrator && <Perpetrator getData={(data) => dispatch({type: "add_data", data})}/> }
+            {SetNextStageDeadline && <AddDate getData={(data) => dispatch({type: "add_data", data})}/> }
+
             {EmailNotify && <Contractors/>}
             {EmailNotify && (
                 <Textarea
