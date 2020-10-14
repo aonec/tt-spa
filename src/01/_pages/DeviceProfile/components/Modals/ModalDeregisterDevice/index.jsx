@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import { Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import {
   setModalDeregisterVisible,
 } from '../../../../../Redux/actions/actions';
@@ -10,7 +11,10 @@ import DeregisterForm from './DeregisterForm';
 
 const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
-  const visible = useSelector((state) => state.deviceDeregisterReducer.visible) || false;
+  // const visible = useSelector((state) => state.deviceDeregisterReducer.visible) || false;
+  const visible = useSelector(
+    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
+  );
 
   const handleCancel = (e) => {
     dispatch(setModalDeregisterVisible(['visible'], false));

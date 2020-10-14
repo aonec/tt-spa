@@ -13,8 +13,11 @@ import { Title } from '../../../../../tt-components/Title';
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();
   const dispatch = useDispatch();
-  const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState) || {};
-  const { closingDateTime = moment() } = deregisterFormState;
+  // const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState) || {};
+  const form = useSelector(
+    (state) => _.get(state, ['deviceDeregisterReducer', 'deregisterFormState'], {}),
+  );
+  const { closingDateTime = moment() } = form;
 
   useEffect(() => {
     const setForm = {
@@ -35,13 +38,14 @@ const DeregisterForm = () => {
       deviceId: Number(deviceId),
       documentsIds: [],
       closingDateTime: moment().toISOString(),
+      test: ''
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Введите данные'),
       closingDateTime: Yup.string().min(6, 'Возможно, некорректно указана дата').required('Укажите дату'),
     }),
     onSubmit: ({ test, closingDateTime }) => {
-      deregisterDevice(deregisterFormState).then(() => {
+      deregisterDevice(form).then(() => {
         dispatch(updateModalDeregisterForm('visible', false));
       });
     },
