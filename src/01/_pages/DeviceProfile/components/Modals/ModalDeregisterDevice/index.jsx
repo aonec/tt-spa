@@ -10,7 +10,7 @@ import DeregisterForm from './DeregisterForm';
 
 const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
-  const visible = useSelector((state) => state.deviceDeregisterReducer.visible);
+  const visible = useSelector((state) => state.deviceDeregisterReducer.visible) || false;
 
   const handleCancel = (e) => {
     dispatch(setModalDeregisterVisible(['visible'], false));

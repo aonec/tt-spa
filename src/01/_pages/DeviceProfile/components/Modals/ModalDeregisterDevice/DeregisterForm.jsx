@@ -13,8 +13,8 @@ import { Title } from '../../../../../tt-components/Title';
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();
   const dispatch = useDispatch();
-  const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState);
-  const { closingDateTime } = deregisterFormState;
+  const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState) || {};
+  const { closingDateTime = moment() } = deregisterFormState;
 
   useEffect(() => {
     const setForm = {
