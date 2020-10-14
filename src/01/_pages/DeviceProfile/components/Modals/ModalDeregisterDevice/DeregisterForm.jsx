@@ -38,7 +38,7 @@ const DeregisterForm = () => {
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Введите данные'),
-      closingDateTime: Yup.string().required('Введите дату')
+      closingDateTime: Yup.string().min(6, 'Возможно, некорректно указана дата').required('Укажите дату'),
     }),
     onSubmit: ({ test, closingDateTime }) => {
       deregisterDevice(deregisterFormState).then(() => {
@@ -67,18 +67,17 @@ const DeregisterForm = () => {
         <Form.Item label="Дата снятия прибора с учета">
           <DatePicker
             name="closingDateTime"
-
             allowClear={false}
+            onBlur={handleBlur}
             onChange={(date) => {
               handleChange(date.toISOString());
               const path = ['deregisterFormState', 'closingDateTime'];
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));
             }}
-            value={moment(values.closingDateTime)}
-            // value={moment(closingDateTime)}
+            value={moment(closingDateTime)}
           />
-          <Alert name="closingDateTime"/>
+          <Alert name="closingDateTime" />
         </Form.Item>
 
         <Form.Item label="Дополнительное поле">
@@ -89,12 +88,11 @@ const DeregisterForm = () => {
             name="test"
             type="text"
           />
-          <Alert name="test"/>
+          <Alert name="test" />
         </Form.Item>
       </form>
     </>
-  )
-    ;
+  );
 };
 
 export default DeregisterForm;
