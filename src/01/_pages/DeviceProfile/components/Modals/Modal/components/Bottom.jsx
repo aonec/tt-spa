@@ -3,7 +3,7 @@ import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
-import { ReportContext } from '..';
+import { ReportContext } from '../index';
 
 const { RangePicker } = DatePicker;
 

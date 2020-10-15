@@ -93,12 +93,9 @@ export const Menu = (showPopupHandler) => {
   };
 
   const showDeregisterDeviceModal = () => {
-    dispatch(setModalDeregisterVisible('visible', true));
+    $('#edit-button__list').toggle();
+    dispatch(setModalDeregisterVisible(true));
   };
-
-  function editDevice() {
-    console.log(`/objects/${objid}/devices/${deviceId}/edit`);
-  }
 
   return (
     <>
