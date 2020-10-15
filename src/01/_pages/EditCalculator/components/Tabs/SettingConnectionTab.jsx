@@ -1,7 +1,7 @@
-import React  from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { Wrap } from '../../../../tt-components';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Input, Form } from 'antd';
+import { Wrap } from '../../../../tt-components';
 import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
 
 const SettingConnectionTab = () => {
@@ -63,4 +63,4 @@ const SettingConnectionTab = () => {
   );
 };
 
-export default connect()(SettingConnectionTab);
+export default SettingConnectionTab;

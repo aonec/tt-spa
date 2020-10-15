@@ -142,6 +142,7 @@ export async function getPagination(id = ''){
 
 export async function deregisterDevice(Device = {}){
   try {
+    alert('Отправляется запрос на снятие прибора с учета !');
     const res = await axios.post('MeteringDevices/close', Device);
     alert('Вычислитель успешно снят с учета !');
     return res;

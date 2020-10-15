@@ -100,4 +100,4 @@ const CommonTab = () => {
   );
 };
 
-export default connect()(CommonTab);
+export default CommonTab;

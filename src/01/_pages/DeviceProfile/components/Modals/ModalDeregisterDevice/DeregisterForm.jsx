@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { DatePicker, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
-import { setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
+import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
 import { Title } from '../../../../../tt-components/Title';
 
 const DeregisterForm = () => {
@@ -44,13 +44,16 @@ const DeregisterForm = () => {
       test: Yup.string().required('Введите данные'),
       closingDateTime: Yup.string().required('Введите данные'),
     }),
-    onSubmit: () => {
-      deregisterDevice(form).then(() => {
-        dispatch(setModalDeregisterVisible(false));
-      });
+    onSubmit: async () => {
+      try {
+        const res = deregisterDevice(form);
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
-  const Alert = (name) => {
+  const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
