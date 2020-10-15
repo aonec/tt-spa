@@ -18,14 +18,13 @@ const DeregisterForm = () => {
   const form = useSelector(
     (state) => _.get(state, ['deviceDeregisterReducer', 'deregisterFormState'], {}),
   );
-  const { closingDateTime } = form;
+  const { closingDateTime = moment() } = form;
   useEffect(() => {
     const setForm = {
       deviceId: Number(deviceId),
       documentsIds: [],
       closingDateTime,
     };
-
     getDevice(deviceId).then((res) => setDevice(res));
     dispatch(
       updateModalDeregisterForm('deregisterFormState', setForm),
@@ -43,16 +42,15 @@ const DeregisterForm = () => {
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Введите данные'),
-      closingDateTime: Yup.string().required('Укажите дату'),
+      closingDateTime: Yup.string().required('Введите данные'),
     }),
-    onSubmit: ({ test, closingDateTime }) => {
-      console.log("form",form);
-      // deregisterDevice(form).then(() => {
-      //   dispatch(setModalDeregisterVisible(false));
-      // });
+    onSubmit: () => {
+      deregisterDevice(form).then(() => {
+        dispatch(setModalDeregisterVisible(false));
+      });
     },
   });
-  const Alert = ({ name }) => {
+  const Alert = (name) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -76,7 +74,7 @@ const DeregisterForm = () => {
             allowClear={false}
             onBlur={handleBlur}
             onChange={(date) => {
-              handleChange(date.toISOString());
+              values.closingDateTime = date.toISOString();
               const path = ['deregisterFormState', 'closingDateTime'];
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));

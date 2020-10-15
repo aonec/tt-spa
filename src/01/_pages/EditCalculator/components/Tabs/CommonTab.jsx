@@ -12,7 +12,6 @@ const CommonTab = () => {
     serialNumber,
     checkingDate,
     lastCommercialAccountingDate,
-    futureCommercialAccountingDate,
     infoId,
     futureCheckingDate,
   } = useSelector((state) => state.calculatorPage);
@@ -92,7 +91,7 @@ const CommonTab = () => {
             const path = ['futureCommercialAccountingDate'];
             dispatch(onChangeFormValueByPath(path, value));
           }}
-          placeholder="Укажите оперид эксплуатации"
+          placeholder="Укажите период эксплуатации"
           options={serviceLife}
           defaultValue={serviceLife[0].value}
         />
