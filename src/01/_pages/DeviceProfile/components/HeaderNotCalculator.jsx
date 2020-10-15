@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { Menu, EditButton } from './EditButton';
+import { Menu } from './EditButtonODPU';
 import { DeviceContext } from '../DeviceProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 
@@ -49,13 +49,6 @@ export const HeaderNotCalculator = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  const buttonHandler = () => {
-    console.log('loadings', loadings);
-    console.log('error', error);
-    console.log('errors', errors);
-  };
-
-  const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -90,7 +83,7 @@ export const HeaderNotCalculator = () => {
           <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          {MenuOPDU}
+          <Menu/>
         </div>
       </Loader>
     </HeaderWrap>
