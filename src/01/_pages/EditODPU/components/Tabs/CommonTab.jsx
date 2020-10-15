@@ -9,6 +9,9 @@ import {
 } from 'antd';
 import { onChangeDeviceFormValueByPath, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
 import { types, resources } from '../CalculatorJSON';
+import { ButtonTT } from '../../../../tt-components/ButtonTT';
+import deviceReducer from '../../../../Redux/reducers/reducerDev';
+import axios from '../../../../axios';
 
 const CommonTab = () => {
   const { 1: deviceId } = useParams();
@@ -16,7 +19,7 @@ const CommonTab = () => {
 
   const form = useSelector((state) => state.deviceReducer) || {};
 
-  let {
+  const {
     serialNumber,
     checkingDate,
     lastCommercialAccountingDate,
@@ -54,6 +57,26 @@ const CommonTab = () => {
       );
     }
     return null;
+  };
+
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+  };
+  const saveButtonHandler = async () => {
+    console.log(form)
+    alert('Cейчас будем отправлять данные!');
+    try {
+      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
+      console.log('saveButtonHandler', res);
+      alert('ОДПУ успешно изменен !');
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
   };
 
   return (
@@ -130,6 +153,31 @@ const CommonTab = () => {
           />
           <Alert name="test"/>
         </Form.Item>
+
+        <div>
+          <ButtonTT
+            color="red"
+            onClick={buttonHandler}
+          >
+            TEST
+          </ButtonTT>
+          <ButtonTT
+            type="submit"
+            color="blue"
+            form="formikForm"
+            onClick={saveButtonHandler}
+          >
+            Сохранить
+          </ButtonTT>
+          <ButtonTT
+            style={{ marginLeft: '16px' }}
+            type="submit"
+            color="white"
+          >
+            Отмена
+          </ButtonTT>
+        </div>
+
       </form>
     </>
   );

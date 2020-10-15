@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { getDevice } from '../../_api/device_page';
-import { setAddDeviceForm } from '../../Redux/actions/actions';
+import { setAddDeviceForm, onChangeDeviceFormValueByPath } from '../../Redux/actions/actions';
+import { getRelatedDevices } from '../../_api/device_page'
 
 const EditODPU = () => {
   const [currentTabKey, setTab] = useState('1');
+  const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState({});
   const {
     model, serialNumber,
@@ -33,9 +35,19 @@ const EditODPU = () => {
     getDevice(deviceId).then((res) => {
       setDevice(res);
     });
+    getRelatedDevices(deviceId).then((res) => {
+      const { id } = res[0]
+      console.log(id)
+      setCalculatorId(id)
+    })
   }, []);
 
   useEffect(() => {
+    dispatch(onChangeDeviceFormValueByPath(['calculatorId'], calculatorId))
+  }, [calculatorId])
+
+  useEffect(() => {
+    console.log(calculatorId)
     if (device) {
       const {
         calculator,
@@ -58,8 +70,9 @@ const EditODPU = () => {
         underTransaction,
       } = device;
 
+
       const initialStateDefaultValues = {
-        calculatorId: '',
+        calculatorId: calculatorId,
         checkingDate: lastCheckingDate,
         connection: {
           ipV4: ipV4 || '10.90.128.1',
@@ -100,29 +113,29 @@ const EditODPU = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      <div>
-        <ButtonTT
-          color="red"
-          onClick={buttonHandler}
-        >
-          TEST
-        </ButtonTT>
-        <ButtonTT
-          type="submit"
-          color="blue"
-          form="formikForm"
-          onClick={saveButtonHandler}
-        >
-          Снять прибор с учета
-        </ButtonTT>
-        <ButtonTT
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          color="white"
-        >
-          Отмена
-        </ButtonTT>
-      </div>
+      {/*<div>*/}
+      {/*  <ButtonTT*/}
+      {/*    color="red"*/}
+      {/*    onClick={buttonHandler}*/}
+      {/*  >*/}
+      {/*    TEST*/}
+      {/*  </ButtonTT>*/}
+      {/*  <ButtonTT*/}
+      {/*    type="submit"*/}
+      {/*    color="blue"*/}
+      {/*    form="formikForm"*/}
+      {/*    onClick={saveButtonHandler}*/}
+      {/*  >*/}
+      {/*    Снять прибор с учета*/}
+      {/*  </ButtonTT>*/}
+      {/*  <ButtonTT*/}
+      {/*    style={{ marginLeft: '16px' }}*/}
+      {/*    type="submit"*/}
+      {/*    color="white"*/}
+      {/*  >*/}
+      {/*    Отмена*/}
+      {/*  </ButtonTT>*/}
+      {/*</div>*/}
 
     </>
   );
