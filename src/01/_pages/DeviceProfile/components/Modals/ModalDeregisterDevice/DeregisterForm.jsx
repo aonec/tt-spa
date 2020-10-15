@@ -45,12 +45,7 @@ const DeregisterForm = () => {
       closingDateTime: Yup.string().required('Введите данные'),
     }),
     onSubmit: async () => {
-      try {
-        const res = deregisterDevice(form);
-        return res;
-      } catch (error) {
-        console.log(error);
-      }
+      deregisterDevice(form);
     },
   });
   const Alert = ({ name }) => {
