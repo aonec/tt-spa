@@ -11,17 +11,15 @@ const initialState = {
 
 export default function deviceDeregisterReducer(state = initialState, action){
   const newState = _.cloneDeep(state);
+  const { payload } = action;
   switch (action.type) {
     case 'DEREGISTER_FORM_VISIBLE': {
-      const {
-        payload: { path, value },
-      } = action;
-      _.set(newState, path, value);
+      _.set(newState, 'visible', payload.value);
       return newState;
     }
     case 'DEREGISTER_FORM_UPDATE':
-      _.set(newState, action.payload.path, action.payload.value);
-      return newState
+      _.set(newState, payload.path, payload.value);
+      return newState;
     default:
       return newState;
   }

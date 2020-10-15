@@ -11,13 +11,12 @@ import DeregisterForm from './DeregisterForm';
 
 const ModalDeregisterDevice = () => {
   const dispatch = useDispatch();
-  // const visible = useSelector((state) => state.deviceDeregisterReducer.visible) || false;
   const visible = useSelector(
     (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
   );
 
-  const handleCancel = (e) => {
-    dispatch(setModalDeregisterVisible(['visible'], false));
+  const handleCancel = () => {
+    dispatch(setModalDeregisterVisible(false));
   };
 
   return (
@@ -26,9 +25,22 @@ const ModalDeregisterDevice = () => {
       onCancel={handleCancel}
       footer={null}
     >
-      <DeregisterForm/>
-      <ButtonTT type="submit" color="red" form="formikForm">Снять прибор с учета</ButtonTT>
-      <ButtonTT style={{ marginLeft: '16px' }} type="submit" color="white" onClick={handleCancel}>Отмена</ButtonTT>
+      <DeregisterForm />
+      <ButtonTT
+        type="submit"
+        color="red"
+        form="formikForm"
+      >
+        Снять прибор с учета
+      </ButtonTT>
+      <ButtonTT
+        style={{ marginLeft: '16px' }}
+        type="submit"
+        color="white"
+        onClick={handleCancel}
+      >
+        Отмена
+      </ButtonTT>
     </Modal>
   );
 };

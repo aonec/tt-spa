@@ -5,7 +5,6 @@ const URL = 'HousingStocks';
 export async function getDevice(url = ''){
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
-    console.log('res', res);
     return res;
   } catch (error) {
     console.log(error);
@@ -144,7 +143,6 @@ export async function deregisterDevice(Device = {}) {
   try {
     const res = await axios.post('MeteringDevices/close', Device);
     alert('Вычислитель успешно снят с учета !');
-    console.log("res", res);
     return res;
   } catch (error) {
     console.log(error);

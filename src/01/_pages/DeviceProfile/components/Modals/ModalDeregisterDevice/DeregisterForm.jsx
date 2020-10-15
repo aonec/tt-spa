@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -7,25 +7,26 @@ import _ from 'lodash';
 import { DatePicker, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
-import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
+import { setModalDeregisterVisible, updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
 import { Title } from '../../../../../tt-components/Title';
 
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();
+  const [device, setDevice] = useState({});
+  const { serialNumber, model } = device;
   const dispatch = useDispatch();
-  // const deregisterFormState = useSelector((state) => state.deviceDeregisterReducer.deregisterFormState) || {};
   const form = useSelector(
     (state) => _.get(state, ['deviceDeregisterReducer', 'deregisterFormState'], {}),
   );
-  const { closingDateTime = moment() } = form;
-
+  const { closingDateTime } = form;
   useEffect(() => {
     const setForm = {
       deviceId: Number(deviceId),
       documentsIds: [],
-      closingDateTime: moment().toISOString(),
+      closingDateTime,
     };
-    getDevice(deviceId);
+
+    getDevice(deviceId).then((res) => setDevice(res));
     dispatch(
       updateModalDeregisterForm('deregisterFormState', setForm),
     );
@@ -37,17 +38,18 @@ const DeregisterForm = () => {
     initialValues: {
       deviceId: Number(deviceId),
       documentsIds: [],
-      closingDateTime: moment().toISOString(),
-      test: ''
+      closingDateTime: '',
+      test: '',
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Введите данные'),
-      closingDateTime: Yup.string().min(6, 'Возможно, некорректно указана дата').required('Укажите дату'),
+      closingDateTime: Yup.string().required('Укажите дату'),
     }),
     onSubmit: ({ test, closingDateTime }) => {
-      deregisterDevice(form).then(() => {
-        dispatch(updateModalDeregisterForm('visible', false));
-      });
+      console.log("form",form);
+      // deregisterDevice(form).then(() => {
+      //   dispatch(setModalDeregisterVisible(false));
+      // });
     },
   });
   const Alert = ({ name }) => {
@@ -65,7 +67,7 @@ const DeregisterForm = () => {
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
         <Title size="middle" color="black">
-          Вы действительно хотите снять () с учета?
+          {`Вы действительно хотите снять ${model || 'Вычислитель'} (${serialNumber}) с учета?`}
         </Title>
 
         <Form.Item label="Дата снятия прибора с учета">
@@ -79,7 +81,7 @@ const DeregisterForm = () => {
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));
             }}
-            value={moment(closingDateTime)}
+            values={values.closingDateTime}
           />
           <Alert name="closingDateTime" />
         </Form.Item>
