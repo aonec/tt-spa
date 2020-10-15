@@ -1,27 +1,64 @@
 export const items = [
   {
-    value: '1',
-    label: 'ТЭМ-106',
+    id: 1,
+    model: 'ТЭМ-106',
   },
   {
-    value: '2',
-    label: 'ТЭМ-104',
+    id: 2,
+    model: 'ТЭМ-104',
   },
   {
-    value: '3',
-    label: 'ВКТ-7',
+    id: 3,
+    model: 'ВКТ-7',
   },
   {
-    value: '4',
-    label: 'ТВ-7',
+    id: 4,
+    model: 'ТВ-7',
   },
   {
-    value: '5',
-    label: 'ВИСТ',
+    id: 5,
+    model: 'ВИСТ',
   },
 ];
 
 export const serviceLife = [
   { value: '4', label: '4 года', id: 1 },
   { value: '6', label: '6 лет', id: 2 },
+];
+
+export const types = [
+  {
+    value: 'FlowMeter',
+    label: 'Расходомер',
+  },
+  {
+    value: 'TemperatureSensor',
+    label: 'Термодатчик',
+  },
+];
+
+export const resources = [
+  {
+    value: 'HotWaterSupply',
+    label: 'Горячая вода',
+  },
+  {
+    value: 'ColdWaterSupply',
+    label: 'Холодная вода',
+  },
+  {
+    value: 'Heat',
+    label: 'Отопление',
+  },
+];
+
+export const magistrals = [
+  {
+    value: 'FeedFlow',
+    label: 'Подающая',
+  },
+  {
+    value: 'FeedBackFlow',
+    label: 'Обратная',
+  },
 ];
