@@ -1,19 +1,66 @@
-import React from 'react';
+// import $ from 'jquery';
+// import React, { useEffect } from 'react';
+// import '../editodpu.scss';
+
+// const visibleInputs = [
+//   [1, 2], [3, 4], [5, 6],
+// ];
+//
+// const FormEditODPU = (props) => {
+//   const { currentTabKey } = props;
+//   console.log('FormEditODPU');
+//
+//   useEffect(() => {
+//     $(`#${Number(1)}`).addClass('hide');
+//     $(`#${Number(2)}`).addClass('hide');
+//     $(`#${Number(3)}`).addClass('hide');
+//     $(`#${Number(4)}`).addClass('hide');
+//     $(`#${Number(5)}`).addClass('hide');
+//     $(`#${Number(6)}`).addClass('hide');
+//
+//     visibleInputs[currentTabKey - 1].map((item) => {
+//       $(`#${Number(item)}`).removeClass('hide');
+//     });
+//   }, [props]);
+//   return (
+//     <div>
+//       formEditODPU
+//       <hr />
+//       <div>
+//         currentTabKey
+//         {currentTabKey}
+//       </div>
+//       <hr />
+//       <p id={1}>p1</p>
+//       <p id={2}>p2</p>
+//       <p id={3}>p3</p>
+//       <p id={4}>p4</p>
+//       <p id={5}>p5</p>
+//       <p id={6}>p6</p>
+//     </div>
+//   );
+// };
+//
+// export default FormEditODPU;
+
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import $ from 'jquery';
 import {
   DatePicker,
   Form, Input, Select,
 } from 'antd';
-import { onChangeDeviceFormValueByPath } from '../../../../Redux/actions/actions';
-import { types, resources } from '../CalculatorJSON';
-import moment from "moment";
-import { serviceLife } from "../../../ObjectProfile/components/AddDevice/components/DeviceJSON";
+import moment from 'moment';
+import { onChangeDeviceFormValueByPath } from '../../../Redux/actions/actions';
+import { types, resources, serviceLife } from './CalculatorJSON';
+import '../editodpu.scss'
 
-const CommonTab = () => {
+const FormEditODPU = (props) => {
+  const { currentTabKey } = props;
   const { 1: deviceId } = useParams();
   const dispatch = useDispatch();
 
@@ -51,6 +98,38 @@ const CommonTab = () => {
       console.log('Submit');
     },
   });
+
+  const visibleInputs = [
+    ['housingMeteringDeviceType', 'resource','lastCommercialAccountingDate', 'futureCommercialAccountingDate'], ['model'], ['serialNumber'],
+  ];
+  useEffect(() => {
+    console.log($('.housingMeteringDeviceType'))
+
+
+
+    // $('.housingMeteringDeviceType').addClass('hide')
+
+  }, [])
+
+  useEffect(() => {
+    console.log($('.housingMeteringDeviceType'))
+
+    visibleInputs.map((item) =>{
+      item.map((someItem)=>{
+        $(`.${someItem}`).addClass('hide')
+      })
+    })
+    
+    visibleInputs[currentTabKey - 1].map((item) =>{
+
+        $(`.${item}`).removeClass('hide')
+
+    })
+
+    $('.housingMeteringDeviceType').addClass('hide')
+
+  }, [props])
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -65,10 +144,10 @@ const CommonTab = () => {
   return (
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
-        <Form.Item label="Выберите тип прибора">
+
+        <Form.Item label="Выберите тип прибора" className={"housingMeteringDeviceType"}>
           <Select
-            height={'60px'}
-            id="housingMeteringDeviceType"
+            height="60px"
             name="housingMeteringDeviceType"
             onChange={(event) => {
               values.housingMeteringDeviceType = event;
@@ -79,12 +158,11 @@ const CommonTab = () => {
             options={types}
             value={values.housingMeteringDeviceType}
           />
-          <Alert name="closingDateTime" />
+          <Alert name="closingDateTime"/>
         </Form.Item>
 
-        <Form.Item label="Выберите тип ресурса">
+        <Form.Item label="Выберите тип ресурса" className="resource">
           <Select
-            id="resource"
             name="resource"
             onChange={(event) => {
               values.resource = event;
@@ -98,9 +176,9 @@ const CommonTab = () => {
           />
         </Form.Item>
 
-        <Form.Item label="Выберите модель прибора">
+        <Form.Item label="Выберите модель прибора" className="model">
           <Input
-            id="model"
+
             name="model"
             type="text"
             onChange={(event) => {
@@ -115,12 +193,12 @@ const CommonTab = () => {
           <Alert name="model"/>
         </Form.Item>
 
-        <Form.Item label="Серийный номер">
+        <Form.Item label="Серийный номер" className="serialNumber">
           <Input
-            id="serialNumber"
+
             name="serialNumber"
             type="text"
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             onChange={(event) => {
               const { value } = event.target;
               const path = ['serialNumber'];
@@ -132,11 +210,11 @@ const CommonTab = () => {
           <Alert name="serialNumber"/>
         </Form.Item>
 
-        <Form.Item label="Дата выпуска прибора">
+        <Form.Item label="Дата выпуска прибора" className={'lastCommercialAccountingDate'}>
           <DatePicker
             name="lastCommercialAccountingDate"
             placeholder="Укажите дату..."
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             onChange={(date) => {
               const path = ['checkingDate'];
               const value = date.toISOString();
@@ -147,11 +225,11 @@ const CommonTab = () => {
           <Alert name="lastCommercialAccountingDate"/>
         </Form.Item>
 
-        <Form.Item label="Дата ввода в эксплуатацию">
+        <Form.Item label="Дата ввода в эксплуатацию" className={'lastCommercialAccountingDate'} >
           <DatePicker
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             onChange={(date) => {
               const path = ['lastCommercialAccountingDate'];
               const value = date.toISOString();
@@ -162,10 +240,10 @@ const CommonTab = () => {
           <Alert name="futureCheckingDate"/>
         </Form.Item>
 
-        <Form.Item label="Срок эксплуатации по нормативу">
+        <Form.Item label="Срок эксплуатации по нормативу" className={'futureCommercialAccountingDate'}>
           <Select
-            id="futureCommercialAccountingDate"
-            name={'futureCommercialAccountingDate'}
+
+            name="futureCommercialAccountingDate"
             onChange={(event) => {
               const value = moment()
                 .add(event, 'year')
@@ -181,11 +259,9 @@ const CommonTab = () => {
           <Alert name="futureCommercialAccountingDate"/>
         </Form.Item>
 
-
-
       </form>
     </>
   );
 };
 
-export default CommonTab;
+export default FormEditODPU;

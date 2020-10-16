@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import $ from 'jquery';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { getDevice, getObjectOfDevice, getRelatedDevices } from '../../_api/device_page';
@@ -10,7 +11,9 @@ import {
   setObjectForm,
   onChangeObjectFormValueByPath,
 } from '../../Redux/actions/actions';
+import './editodpu.scss';
 import axios from '../../axios';
+import FormEditODPU from './components/form'
 
 const EditODPU = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -42,7 +45,6 @@ const EditODPU = () => {
       const { id } = res[0];
       setCalculatorId(id);
     });
-    
   }, []);
 
   useEffect(() => {
@@ -96,6 +98,9 @@ const EditODPU = () => {
         setAddDeviceForm(deviceReducer, initialStateDefaultValues),
       );
     }
+
+
+
   }, [device]);
 
   const buttonHandler = () => {
@@ -119,13 +124,31 @@ const EditODPU = () => {
     }
   };
 
+
+  useEffect(() => {
+    getDevice(deviceId).then((res) => {
+      setDevice(res);
+    });
+    getRelatedDevices(deviceId).then((res) => {
+      const { id } = res[0];
+      setCalculatorId(id);
+    });
+  }, []);
+
+
   return (
     <>
       <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
+
+
+
       <TabsComponent
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
+
+      <FormEditODPU currentTabKey={currentTabKey}/>
+
       <div>
         <ButtonTT
           color="red"

@@ -32,8 +32,9 @@ const TabsComponent = (props) => {
         const { title, key, Component } = currentTab;
         return (
           <TabPane tab={title} key={key}>
-            <Component/>
+            {/*<Component/>*/}
           </TabPane>
+
         );
       })}
     </Tabs>
