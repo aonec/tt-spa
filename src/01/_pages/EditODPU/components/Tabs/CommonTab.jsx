@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -7,10 +7,8 @@ import * as Yup from 'yup';
 import {
   Form, Input, Select,
 } from 'antd';
-import { onChangeDeviceFormValueByPath, updateModalDeregisterForm } from '../../../../Redux/actions/actions';
+import { onChangeDeviceFormValueByPath } from '../../../../Redux/actions/actions';
 import { types, resources } from '../CalculatorJSON';
-import { ButtonTT } from '../../../../tt-components/ButtonTT';
-import deviceReducer from '../../../../Redux/reducers/reducerDev';
 import axios from '../../../../axios';
 
 const CommonTab = () => {
@@ -40,6 +38,8 @@ const CommonTab = () => {
       test: '',
     },
     validationSchema: Yup.object({
+      serialNumber: Yup.string().required('Введите серийный номер'),
+      model: Yup.string().required('Введите модель прибора'),
       // test: Yup.string().required('Введите данные'),
       // closingDateTime: Yup.string().required('Введите данные'),
     }),
@@ -59,26 +59,6 @@ const CommonTab = () => {
     return null;
   };
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-  const saveButtonHandler = async () => {
-    console.log(form)
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
-      console.log('saveButtonHandler', res);
-      alert('ОДПУ успешно изменен !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
   return (
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
@@ -95,7 +75,7 @@ const CommonTab = () => {
             options={types}
             value={values.housingMeteringDeviceType}
           />
-          <Alert name="closingDateTime"/>
+          <Alert name="closingDateTime" />
         </Form.Item>
 
         <Form.Item label="Выберите тип ресурса">
@@ -116,8 +96,8 @@ const CommonTab = () => {
 
         <Form.Item label="Выберите модель прибора">
           <Input
-            // id="model"
-            // name="model"
+            id="model"
+            name="model"
             type="text"
             onChange={(event) => {
               handleChange(event);
@@ -126,7 +106,9 @@ const CommonTab = () => {
               dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             value={values.model || model}
+            onBlur={handleBlur}
           />
+          <Alert name="model" />
         </Form.Item>
 
         <Form.Item label="Серийный номер">
@@ -140,43 +122,11 @@ const CommonTab = () => {
               dispatch(onChangeDeviceFormValueByPath(path, value));
             }}
             value={values.serialNumber || serialNumber}
-          />
-        </Form.Item>
-
-        <Form.Item label="Дополнительное поле">
-          <Input
-            value={values.test}
-            onChange={handleChange}
             onBlur={handleBlur}
-            name="test"
-            type="text"
           />
-          <Alert name="test"/>
+          <Alert name="serialNumber" />
         </Form.Item>
 
-        <div>
-          <ButtonTT
-            color="red"
-            onClick={buttonHandler}
-          >
-            TEST
-          </ButtonTT>
-          <ButtonTT
-            type="submit"
-            color="blue"
-            form="formikForm"
-            onClick={saveButtonHandler}
-          >
-            Сохранить
-          </ButtonTT>
-          <ButtonTT
-            style={{ marginLeft: '16px' }}
-            type="submit"
-            color="white"
-          >
-            Отмена
-          </ButtonTT>
-        </div>
 
       </form>
     </>

@@ -3,23 +3,20 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { getDevice } from '../../_api/device_page';
+import { getDevice, getRelatedDevices } from '../../_api/device_page';
 import { setAddDeviceForm, onChangeDeviceFormValueByPath } from '../../Redux/actions/actions';
-import { getRelatedDevices } from '../../_api/device_page'
+import axios from '../../axios';
 
 const EditODPU = () => {
+  const { 1: deviceId } = useParams();
+
   const [currentTabKey, setTab] = useState('1');
   const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState({});
-  const {
-    model, serialNumber,
-  } = device;
-
-  const { 0: objid, 1: deviceId } = useParams();
+  const { model, serialNumber } = device;
 
   const dispatch = useDispatch();
   const deviceReducer = useSelector((state) => state.deviceReducer);
-
 
   function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
@@ -31,30 +28,24 @@ const EditODPU = () => {
   }
 
   useEffect(() => {
-    console.log('device');
     getDevice(deviceId).then((res) => {
       setDevice(res);
     });
     getRelatedDevices(deviceId).then((res) => {
-      const { id } = res[0]
-      console.log(id)
-      setCalculatorId(id)
-    })
+      const { id } = res[0];
+      setCalculatorId(id);
+    });
   }, []);
 
   useEffect(() => {
-    dispatch(onChangeDeviceFormValueByPath(['calculatorId'], calculatorId))
-  }, [calculatorId])
+    dispatch(onChangeDeviceFormValueByPath(['calculatorId'], calculatorId));
+  }, [calculatorId]);
 
   useEffect(() => {
-    console.log(calculatorId)
     if (device) {
       const {
-        calculator,
-        canBeEdited,
         closingDate,
         deviceAddress,
-        diameter,
         futureCheckingDate,
         futureCommercialAccountingDate,
         housingStockId,
@@ -67,12 +58,9 @@ const EditODPU = () => {
         resource,
         serialNumber,
         type,
-        underTransaction,
       } = device;
-
-
       const initialStateDefaultValues = {
-        calculatorId: calculatorId,
+        calculatorId,
         checkingDate: lastCheckingDate,
         connection: {
           ipV4: ipV4 || '10.90.128.1',
@@ -95,17 +83,34 @@ const EditODPU = () => {
         serialNumber,
       };
 
+      dispatch(onChangeDeviceFormValueByPath(['calculatorId'], calculatorId));
       dispatch(
         setAddDeviceForm(deviceReducer, initialStateDefaultValues),
       );
     }
   }, [device]);
+
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
-  const saveButtonHandler = () => {
-    console.log("saveButtonHandler")
-  }
+
+  const saveButtonHandler = async () => {
+    console.log(deviceReducer);
+    alert('Cейчас будем отправлять данные!');
+    try {
+      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, deviceReducer);
+      console.log('saveButtonHandler', res);
+      alert('ОДПУ успешно изменен !');
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
+  };
+
   return (
     <>
       <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
@@ -113,29 +118,29 @@ const EditODPU = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      {/*<div>*/}
-      {/*  <ButtonTT*/}
-      {/*    color="red"*/}
-      {/*    onClick={buttonHandler}*/}
-      {/*  >*/}
-      {/*    TEST*/}
-      {/*  </ButtonTT>*/}
-      {/*  <ButtonTT*/}
-      {/*    type="submit"*/}
-      {/*    color="blue"*/}
-      {/*    form="formikForm"*/}
-      {/*    onClick={saveButtonHandler}*/}
-      {/*  >*/}
-      {/*    Снять прибор с учета*/}
-      {/*  </ButtonTT>*/}
-      {/*  <ButtonTT*/}
-      {/*    style={{ marginLeft: '16px' }}*/}
-      {/*    type="submit"*/}
-      {/*    color="white"*/}
-      {/*  >*/}
-      {/*    Отмена*/}
-      {/*  </ButtonTT>*/}
-      {/*</div>*/}
+      <div>
+        <ButtonTT
+          color="red"
+          onClick={buttonHandler}
+        >
+          TEST
+        </ButtonTT>
+        <ButtonTT
+          type="submit"
+          color="blue"
+          form="formikForm"
+          onClick={saveButtonHandler}
+        >
+          Снять прибор с учета
+        </ButtonTT>
+        <ButtonTT
+          style={{ marginLeft: '16px' }}
+          type="submit"
+          color="white"
+        >
+          Отмена
+        </ButtonTT>
+      </div>
 
     </>
   );

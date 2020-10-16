@@ -62,3 +62,24 @@ export const magistrals = [
     label: 'Обратная',
   },
 ];
+
+// "successResponse": {
+//   "id": 1554081,
+//     "housingStockId": 485,
+//     "model": "TEST",
+//     "serialNumber": "",
+//     "diameter": null,
+//     "ipV4": "192.168.0.9",
+//     "port": 1234,
+//     "deviceAddress": 181,
+//     "type": "FlowMeter",
+//     "resource": "HotWaterSupply",
+//     "underTransaction": false,
+//     "canBeEdited": true,
+//     "lastCommercialAccountingDate": "2020-09-25T10:52:36.303",
+//     "futureCommercialAccountingDate": "2024-09-25T10:52:47.26",
+//     "lastCheckingDate": "2020-09-25T10:52:36.303",
+//     "futureCheckingDate": "2020-09-25T10:52:36.303",
+//     "closingDate": null,
+//     "calculator": null
+// }

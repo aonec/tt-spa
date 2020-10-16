@@ -2,26 +2,28 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input, Form, Select } from 'antd';
 
+import { useParams } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import _ from 'lodash';
+import { resources, types } from '../CalculatorJSON';
+import { magistrals } from '../../../ObjectProfile/components/AddDevice/components/DeviceJSON';
 import { onChangeDeviceFormValueByPath, onChangeFormValueByPath } from '../../../../Redux/actions/actions';
-import { magistrals } from "../../../ObjectProfile/components/AddDevice/components/DeviceJSON";
-import { useParams } from "react-router-dom";
-import { useFormik } from "formik";
-import { resources, types } from "../CalculatorJSON";
-import * as Yup from "yup";
-import _ from "lodash";
-import axios from "../../../../axios";
-import { ButtonTT } from "../../../../tt-components/ButtonTT";
+import axios from '../../../../axios';
+import { ButtonTT } from '../../../../tt-components/ButtonTT';
 
 const SettingConnectionTab = () => {
   const { 1: deviceId } = useParams();
   const {
-    pipe: { entryNumber, hubNumber, pipeNumber, magistral },
-    calculatorId
+    pipe: {
+      entryNumber, hubNumber, pipeNumber, magistral,
+    },
+    calculatorId,
   } = useSelector((state) => state.deviceReducer);
 
   const form = useSelector((state) => state.deviceReducer);
   const dispatch = useDispatch();
-  console.log("calculatorId", calculatorId)
+  console.log('calculatorId', calculatorId);
 
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur,
@@ -57,7 +59,7 @@ const SettingConnectionTab = () => {
     console.log('buttonHandler');
   };
   const saveButtonHandler = async () => {
-    console.log(form)
+    console.log(form);
     alert('Cейчас будем отправлять данные!');
     try {
       const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
@@ -72,7 +74,6 @@ const SettingConnectionTab = () => {
       throw new Error(error);
     }
   };
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -151,30 +152,6 @@ const SettingConnectionTab = () => {
           />
 
         </Form.Item>
-
-        <div>
-          <ButtonTT
-            color="red"
-            onClick={buttonHandler}
-          >
-            TEST
-          </ButtonTT>
-          <ButtonTT
-            type="submit"
-            color="blue"
-            form="formikForm"
-            onClick={saveButtonHandler}
-          >
-            Сохранить
-          </ButtonTT>
-          <ButtonTT
-            style={{ marginLeft: '16px' }}
-            type="submit"
-            color="white"
-          >
-            Отмена
-          </ButtonTT>
-        </div>
       </form>
     </div>
   );
