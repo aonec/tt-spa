@@ -103,28 +103,6 @@ const EditODPU = () => {
 
   }, [device]);
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
-  const saveButtonHandler = async () => {
-    console.log(deviceReducer);
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, deviceReducer);
-      console.log('saveButtonHandler', res);
-      alert('ОДПУ успешно изменен !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
-
   useEffect(() => {
     getDevice(deviceId).then((res) => {
       setDevice(res);
@@ -139,39 +117,12 @@ const EditODPU = () => {
   return (
     <>
       <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
-
-
-
       <TabsComponent
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
+      <FormEditODPU currentTabKey={currentTabKey} device={device}/>
 
-      <FormEditODPU currentTabKey={currentTabKey}/>
-
-      <div>
-        <ButtonTT
-          color="red"
-          onClick={buttonHandler}
-        >
-          TEST
-        </ButtonTT>
-        <ButtonTT
-          type="submit"
-          color="blue"
-          form="formikForm"
-          onClick={saveButtonHandler}
-        >
-          Снять прибор с учета
-        </ButtonTT>
-        <ButtonTT
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          color="white"
-        >
-          Отмена
-        </ButtonTT>
-      </div>
 
     </>
   );
