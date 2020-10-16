@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs/Main';
 import { getDevice, getObjectOfDevice, getRelatedDevices } from '../../_api/device_page';
-import { setAddDeviceForm, onChangeDeviceFormValueByPath } from '../../Redux/actions/actions';
+import {
+  setAddDeviceForm,
+  onChangeDeviceFormValueByPath,
+  setObjectForm,
+  onChangeObjectFormValueByPath,
+} from '../../Redux/actions/actions';
 import axios from '../../axios';
 
 const EditODPU = () => {
@@ -37,11 +42,7 @@ const EditODPU = () => {
       const { id } = res[0];
       setCalculatorId(id);
     });
-
-    getObjectOfDevice(objid).then((res) => {
-      setObject(res);
-    });
-    console.log('objectReducer', objectReducer)
+    
   }, []);
 
   useEffect(() => {
@@ -94,15 +95,11 @@ const EditODPU = () => {
       dispatch(
         setAddDeviceForm(deviceReducer, initialStateDefaultValues),
       );
-      // dispatch(
-      //   setObjForm(Reducer, initialStateDefaultValues),
-      // );
     }
   }, [device]);
 
   const buttonHandler = () => {
     console.log('buttonHandler');
-
   };
 
   const saveButtonHandler = async () => {

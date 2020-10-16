@@ -23,3 +23,11 @@ export const updateModalDeregisterForm = (path, value) => ({
   type: 'DEREGISTER_FORM_UPDATE',
   payload: { path, value },
 });
+
+
+export const onChangeObjectFormValueByPath = (path, value) => ({
+  type: 'OBJECT_UPDATE_FORM_VALUE_BY_PATH',
+  payload: { path, value },
+});
+
+export const setObjectForm = (path, value) => ({ type: 'OBJECT_UPDATE_FORM', payload: { path, value } });

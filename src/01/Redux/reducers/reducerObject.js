@@ -1,43 +1,40 @@
 import _ from 'lodash';
 
 const initialState = {
-  calculatorId: '',
-  checkingDate: '',
-  connection: {
-    ipV4: '',
-    deviceAddress: '',
-    port: '',
-  },
-  futureCheckingDate: '',
-  futureCommercialAccountingDate: '',
-  housingMeteringDeviceType: '',
-  housingStockId: '',
-  lastCommercialAccountingDate: '',
-  model: '',
-  pipe: {
-    entryNumber: '',
-    hubNumber: '',
-    pipeNumber: '',
-    magistral: '',
-  },
-  resource: '',
-  serialNumber: '',
+  id: 0,
+  index: null,
+  region: null,
+  city: '',
+  district: null,
+  street: '',
+  number: '',
+  corpus: null,
+  houseCategory: null,
+  numberOfEntrances: null,
+  numberOfFloors: null,
+  isThereElevator: null,
+  numberOfApartments: null,
+  totalLivingArea: null,
+  areaOfNonResidential: null,
+  houseArea: null,
+  totalArea: null,
+  constructionDate: null,
 };
 
 export default function objectReducer(state = initialState, action) {
   const newState = _.cloneDeep(state);
-  return newState
-  // switch (action.type) {
-  //   case 'DEV_UPDATE_FORM_VALUE_BY_PATH':
-  //     const {
-  //       payload: { path, value },
-  //     } = action;
-  //     _.set(newState, path, value);
-  //     return newState;
-  //   case 'DEV_UPDATE_FORM':
-  //     console.log(action);
-  //     return action.payload.value;
-  //   default:
-  //     return newState;
-  // }
+  return newState;
+  switch (action.type) {
+    case 'OBJECT_UPDATE_FORM_VALUE_BY_PATH':
+      const {
+        payload: { path, value },
+      } = action;
+      _.set(newState, path, value);
+      return newState;
+    case 'OBJECT_UPDATE_FORM':
+      console.log(action);
+      return action.payload.value;
+    default:
+      return newState;
+  }
 }

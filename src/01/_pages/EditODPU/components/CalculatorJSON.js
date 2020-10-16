@@ -63,6 +63,18 @@ export const magistrals = [
   },
 ];
 
+export const connection = [
+  {
+    value: 'Connected',
+    label: 'Есть',
+  },
+  {
+    value: 'NotConnected',
+    label: 'Отсутствует',
+  },
+];
+
+
 // "successResponse": {
 //   "id": 1554081,
 //     "housingStockId": 485,
