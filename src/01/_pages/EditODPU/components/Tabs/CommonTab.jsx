@@ -5,17 +5,20 @@ import _ from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
+  DatePicker,
   Form, Input, Select,
 } from 'antd';
 import { onChangeDeviceFormValueByPath } from '../../../../Redux/actions/actions';
 import { types, resources } from '../CalculatorJSON';
-import axios from '../../../../axios';
+import moment from "moment";
+import { serviceLife } from "../../../ObjectProfile/components/AddDevice/components/DeviceJSON";
 
 const CommonTab = () => {
   const { 1: deviceId } = useParams();
   const dispatch = useDispatch();
 
   const form = useSelector((state) => state.deviceReducer) || {};
+  const object = useSelector((state) => state.objectReducer) || {};
 
   const {
     serialNumber,
@@ -64,6 +67,7 @@ const CommonTab = () => {
       <form id="formikForm" onSubmit={handleSubmit}>
         <Form.Item label="Выберите тип прибора">
           <Select
+            height={'60px'}
             id="housingMeteringDeviceType"
             name="housingMeteringDeviceType"
             onChange={(event) => {
@@ -75,7 +79,7 @@ const CommonTab = () => {
             options={types}
             value={values.housingMeteringDeviceType}
           />
-          <Alert name="closingDateTime" />
+          <Alert name="closingDateTime"/>
         </Form.Item>
 
         <Form.Item label="Выберите тип ресурса">
@@ -108,7 +112,7 @@ const CommonTab = () => {
             value={values.model || model}
             onBlur={handleBlur}
           />
-          <Alert name="model" />
+          <Alert name="model"/>
         </Form.Item>
 
         <Form.Item label="Серийный номер">
@@ -116,6 +120,7 @@ const CommonTab = () => {
             id="serialNumber"
             name="serialNumber"
             type="text"
+            format={'DD.MM.YYYY'}
             onChange={(event) => {
               const { value } = event.target;
               const path = ['serialNumber'];
@@ -124,9 +129,57 @@ const CommonTab = () => {
             value={values.serialNumber || serialNumber}
             onBlur={handleBlur}
           />
-          <Alert name="serialNumber" />
+          <Alert name="serialNumber"/>
         </Form.Item>
 
+        <Form.Item label="Дата выпуска прибора">
+          <DatePicker
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            format={'DD.MM.YYYY'}
+            onChange={(date) => {
+              const path = ['checkingDate'];
+              const value = date.toISOString();
+              dispatch(onChangeDeviceFormValueByPath(path, value));
+            }}
+            value={moment(checkingDate)}
+          />
+          <Alert name="lastCommercialAccountingDate"/>
+        </Form.Item>
+
+        <Form.Item label="Дата ввода в эксплуатацию">
+          <DatePicker
+            value={moment(futureCheckingDate)}
+            placeholder="Укажите дату..."
+            format={'DD.MM.YYYY'}
+            onChange={(date) => {
+              const path = ['lastCommercialAccountingDate'];
+              const value = date.toISOString();
+              dispatch(onChangeDeviceFormValueByPath(path, value));
+            }}
+            name="futureCheckingDate"
+          />
+          <Alert name="futureCheckingDate"/>
+        </Form.Item>
+
+        <Form.Item label="Срок эксплуатации по нормативу">
+          <Select
+            id="futureCommercialAccountingDate"
+            name={'futureCommercialAccountingDate'}
+            onChange={(event) => {
+              const value = moment()
+                .add(event, 'year')
+                .toISOString();
+              const path = ['futureCommercialAccountingDate'];
+              dispatch(onChangeDeviceFormValueByPath(path, value));
+            }}
+            name="futureCommercialAccountingDate"
+            placeholder="Укажите оперид эксплуатации"
+            options={serviceLife}
+            defaultValue={serviceLife[0].value}
+          />
+          <Alert name="futureCommercialAccountingDate"/>
+        </Form.Item>
 
       </form>
     </>

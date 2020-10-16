@@ -3,20 +3,22 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs/Main';
-import { getDevice, getRelatedDevices } from '../../_api/device_page';
+import { getDevice, getObjectOfDevice, getRelatedDevices } from '../../_api/device_page';
 import { setAddDeviceForm, onChangeDeviceFormValueByPath } from '../../Redux/actions/actions';
 import axios from '../../axios';
 
 const EditODPU = () => {
-  const { 1: deviceId } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
 
   const [currentTabKey, setTab] = useState('1');
   const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState({});
+  const [object, setObject] = useState({});
   const { model, serialNumber } = device;
 
   const dispatch = useDispatch();
   const deviceReducer = useSelector((state) => state.deviceReducer);
+  const objectReducer = useSelector((state) => state.objectReducer);
 
   function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
@@ -35,6 +37,11 @@ const EditODPU = () => {
       const { id } = res[0];
       setCalculatorId(id);
     });
+
+    getObjectOfDevice(objid).then((res) => {
+      setObject(res);
+    });
+    console.log('objectReducer', objectReducer)
   }, []);
 
   useEffect(() => {
@@ -87,11 +94,15 @@ const EditODPU = () => {
       dispatch(
         setAddDeviceForm(deviceReducer, initialStateDefaultValues),
       );
+      // dispatch(
+      //   setObjForm(Reducer, initialStateDefaultValues),
+      // );
     }
   }, [device]);
 
   const buttonHandler = () => {
     console.log('buttonHandler');
+
   };
 
   const saveButtonHandler = async () => {
