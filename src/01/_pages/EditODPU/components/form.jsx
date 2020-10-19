@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -17,6 +17,7 @@ import {
 import '../editodpu.scss';
 import { ButtonTT } from '../../../tt-components/ButtonTT';
 import axios from '../../../axios';
+import { button } from '../../../r_comp';
 
 const FormEditODPU = (props) => {
   const { currentTabKey, device } = props;
@@ -33,9 +34,13 @@ const FormEditODPU = (props) => {
     entryNumber,
     hubNumber,
     pipeNumber,
+    type,
+    resource,
     magistral,
     // calculatorId,
   } = device;
+
+  const [forceRender, setForceRender] = useState();
 
   const saveButtonHandler = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -57,10 +62,12 @@ const FormEditODPU = (props) => {
     handleSubmit, handleChange, values, touched, errors, handleBlur,
   } = useFormik({
     initialValues: {
-      housingMeteringDeviceType: types[0].value,
-      resource: resources[0].value,
-      model: model || '',
-      serialNumber: '',
+      // _.filter(types, {value: 'TemperatureSensor'})[0]
+      // housingMeteringDeviceType: types[0].value,
+      housingMeteringDeviceType: _.filter(types, { value: type })[0].value,
+      resource: _.filter(resources, { value: resource })[0].value,
+      model: model || 'Модель не указана',
+      serialNumber: serialNumber || 'Серийный номер не указан',
       test: '',
       lastCommercialAccountingDate: moment().toISOString(),
     },
@@ -77,14 +84,10 @@ const FormEditODPU = (props) => {
   });
 
   useEffect(() => {
-
+    console.log('type', type);
   }, [props]);
 
-  const visibleInputs = [
-    ['housingMeteringDeviceType', 'resource', 'lastCommercialAccountingDate', 'futureCommercialAccountingDate', 'model', 'serialNumber'], ['connection', 'entryNumber', 'hubNumber', 'pipeNumber', 'magistral', 'calculatorId'], [],
-  ];
-
-  const VisibleItems = currentTabKey
+  const VisibleItems = currentTabKey;
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -96,32 +99,35 @@ const FormEditODPU = (props) => {
     }
     return null;
   };
-
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+    console.log('_.get(types, type )', _.filter(types, { value: 'TemperatureSensor' })[0]);
+    console.log(_.filter(types, { value: 'TemperatureSensor' })[0].value);
+  };
   return (
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
-
+        <test onClick={buttonHandler}>GETINFO</test>
         <div hidden={!(currentTabKey == 1)}>
-          <Form.Item label="Выберите тип прибора" >
+          <Form.Item label="Выберите тип прибора">
             <Select
               name="housingMeteringDeviceType"
               onChange={(event) => {
                 values.housingMeteringDeviceType = event;
+                setForceRender(event);
               }}
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="closingDateTime"/>
+            <Alert name="closingDateTime" />
           </Form.Item>
 
-          <Form.Item label="Выберите тип ресурса" >
+          <Form.Item label="Выберите тип ресурса">
             <Select
               name="resource"
               onChange={(event) => {
                 values.resource = event;
-                const value = event;
-                const path = ['resource'];
-                // dispatch(onChangeDeviceFormValueByPath(path, value));
+                setForceRender(event);
               }}
               options={resources}
               value={values.resource}
@@ -134,13 +140,13 @@ const FormEditODPU = (props) => {
               name="model"
               type="text"
               onChange={handleChange}
-              value={values.model || model}
+              value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model"/>
+            <Alert name="model" />
           </Form.Item>
 
-          <Form.Item label="Серийный номер" >
+          <Form.Item label="Серийный номер">
             <Input
               name="serialNumber"
               type="text"
@@ -148,23 +154,21 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber"/>
+            <Alert name="serialNumber" />
           </Form.Item>
 
-
-          <Form.Item label="Дата выпуска прибора" >
+          <Form.Item label="Дата выпуска прибора">
             <DatePicker
               name="lastCommercialAccountingDate"
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
               value={moment(values.lastCommercialAccountingDate)}
               onChange={(date, dateString) => {
-                values.lastCommercialAccountingDate = dateString
+                values.lastCommercialAccountingDate = dateString;
               }}
             />
-            <Alert name="lastCommercialAccountingDate"/>
+            <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
-
 
           <Form.Item label="Дата ввода в эксплуатацию">
             <DatePicker
@@ -172,14 +176,10 @@ const FormEditODPU = (props) => {
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
               onChange={(date) => {
-                const path = ['lastCommercialAccountingDate'];
-                const value = date.toISOString();
-
-                // dispatch(onChangeDeviceFormValueByPath(path, value));
               }}
               name="futureCheckingDate"
             />
-            <Alert name="futureCheckingDate"/>
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу">
@@ -191,17 +191,15 @@ const FormEditODPU = (props) => {
                   .add(event, 'year')
                   .toISOString();
                 const path = ['futureCommercialAccountingDate'];
-                // dispatch(onChangeDeviceFormValueByPath(path, value));
               }}
               name="futureCommercialAccountingDate"
               placeholder="Укажите оперид эксплуатации"
               options={serviceLife}
               defaultValue={serviceLife[0].value}
             />
-            <Alert name="futureCommercialAccountingDate"/>
+            <Alert name="futureCommercialAccountingDate" />
           </Form.Item>
         </div>
-
 
         <div hidden={!(currentTabKey == 2)}>
           <Form.Item label="Подключение к вычислителю">
@@ -210,9 +208,6 @@ const FormEditODPU = (props) => {
               name="connection"
               onChange={(event) => {
                 values.connection = event;
-                const value = event;
-                const path = ['resource'];
-                // dispatch(onChangeDeviceFormValueByPath(path, value));
               }}
               options={connection}
               value={values.connection}
@@ -231,12 +226,10 @@ const FormEditODPU = (props) => {
               placeholder="Начните вводить ID прибора"
               // value={calculatorId}
               onChange={(event) => {
-                const { value } = event.target;
-                const path = ['calculatorId'];
-                // dispatch(onChangeDeviceFormValueByPath(path, Number(value)));
+
               }}
             />
-            <Alert name="calculatorId"/>
+            <Alert name="calculatorId" />
           </Form.Item>
 
           <Form.Item label="Номер ввода">
@@ -246,9 +239,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={entryNumber}
               onChange={(event) => {
-                const { value } = event.target;
-                const path = ['pipe', 'entryNumber'];
-                // dispatch(onChangeDeviceFormValueByPath(path, Number(value)));
+
               }}
             />
           </Form.Item>
@@ -260,9 +251,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={hubNumber}
               onChange={(event) => {
-                const { value } = event.target;
-                const path = ['pipe', 'hubNumber'];
-                // dispatch(onChangeDeviceFormValueByPath(path, Number(value)));
+
               }}
             />
           </Form.Item>
@@ -274,9 +263,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={pipeNumber}
               onChange={(event) => {
-                const { value } = event.target;
-                const path = ['pipe', 'pipeNumber'];
-                // dispatch(onChangeDeviceFormValueByPath(path, Number(value)));
+
               }}
             />
           </Form.Item>

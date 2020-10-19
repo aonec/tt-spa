@@ -99,8 +99,6 @@ const EditODPU = () => {
       );
     }
 
-
-
   }, [device]);
 
   useEffect(() => {
