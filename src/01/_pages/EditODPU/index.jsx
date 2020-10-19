@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import TabsComponent from './components/Main';
-import { getDevice, getRelatedDevices } from '../../_api/device_page';
+import { getDevice, getRelatedDevices, getObjectOfDevice } from '../../_api/device_page';
 import FormEditODPU from './components/EditOPDUForm';
 
 const EditODPU = () => {
@@ -20,13 +20,17 @@ const EditODPU = () => {
     getDevice(deviceId).then((res) => {
       setDevice(res);
     });
+    getObjectOfDevice(objid).then((res) => {
+      setObject(res);
+    });
+    console.log("device", device)
     getRelatedDevices(deviceId).then((res) => {
       const { id } = res[0];
       setCalculatorId(id);
     });
   }, []);
 
-  if (device && calculatorId) {
+  if (device && calculatorId && object) {
     return (
       <>
         <Header>{`${device.model || 'Не указана модель'} (${device.serialNumber || 'Не указан серийный номер'}). Редактирование`}</Header>
@@ -34,7 +38,7 @@ const EditODPU = () => {
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId}/>
+        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId} object={object}/>
       </>
     );
   }

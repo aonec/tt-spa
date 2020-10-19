@@ -9,13 +9,19 @@ import moment from 'moment';
 import {
   types, resources, serviceLife, connection,
 } from './JSON';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../tt-components';
+import {
+  Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
+} from '../../../tt-components';
 import axios from '../../../axios';
 
 const FormEditODPU = (props) => {
-  const { currentTabKey, device, calculatorId } = props;
+  const [forceRender, setForceRender] = useState();
+  const {
+    currentTabKey, device, calculatorId, object,
+  } = props;
   const { 0: objid, 1: deviceId } = useParams();
   const {
+    calculator,
     serialNumber,
     checkingDate,
     lastCommercialAccountingDate,
@@ -31,12 +37,33 @@ const FormEditODPU = (props) => {
     // calculatorId,
   } = device;
 
-  const [forceRender, setForceRender] = useState();
+  const {
+    areaOfNonResidential,
+    city,
+    constructionDate,
+    corpus,
+    district,
+    houseArea,
+    houseCategory,
+    id,
+    index,
+    isThereElevator,
+    number,
+    numberOfApartments,
+    numberOfEntrances,
+    numberOfFloors,
+    region,
+    street,
+    totalArea,
+    totalLivingArea,
+  } = object;
+
+  //Параметры потом будут приходить в device
   const entryNumber = 1;
   const hubNumber = 1;
   const pipeNumber = 1;
 
-  function randomInteger(min, max){
+  function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
@@ -81,6 +108,10 @@ const FormEditODPU = (props) => {
       connection: connection[0].value,
       port: port || 0,
       checkingDate: moment().toISOString(),
+      city,
+      street,
+      number,
+      calculator,
 
     },
     validationSchema: Yup.object({
@@ -130,7 +161,7 @@ const FormEditODPU = (props) => {
   const editOPDU = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      const res = await axios.put(`Calculators/${deviceId}`, PUT_EDIT_FORM);
+      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, PUT_EDIT_FORM);
       alert('Вычислитель успешно изменен!');
       console.log(res);
       return res;
@@ -161,7 +192,7 @@ const FormEditODPU = (props) => {
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="closingDateTime"/>
+            <Alert name="closingDateTime" />
           </Form.Item>
 
           <Form.Item label="Выберите тип ресурса">
@@ -185,7 +216,7 @@ const FormEditODPU = (props) => {
               value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model"/>
+            <Alert name="model" />
           </Form.Item>
 
           <Form.Item label="Серийный номер">
@@ -196,7 +227,7 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber"/>
+            <Alert name="serialNumber" />
           </Form.Item>
 
           <Form.Item label="Дата выпуска прибора">
@@ -210,7 +241,7 @@ const FormEditODPU = (props) => {
                 setForceRender(randomInteger(1, 255));
               }}
             />
-            <Alert name="lastCommercialAccountingDate"/>
+            <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
 
           <Form.Item label="Дата ввода в эксплуатацию">
@@ -225,7 +256,7 @@ const FormEditODPU = (props) => {
               }}
 
             />
-            <Alert name="futureCheckingDate"/>
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу">
@@ -236,13 +267,48 @@ const FormEditODPU = (props) => {
                 const value = moment()
                   .add(event, 'year')
                   .toISOString();
-                console.log(values);
+                values.futureCommercialAccountingDate = value;
+                setForceRender(randomInteger(1, 255));
               }}
               options={serviceLife}
               defaultValue={serviceLife[0].value}
             />
-            <Alert name="futureCommercialAccountingDate"/>
+            <Alert name="futureCommercialAccountingDate" />
           </Form.Item>
+
+          <Form.Item label="Город">
+            <InputTT
+              name="city"
+              type="text"
+              placeholder="Укажите город"
+              onChange={handleChange}
+              value={values.city}
+            />
+            <Alert name="city" />
+          </Form.Item>
+
+          <Form.Item label="Улица">
+            <InputTT
+              name="street"
+              type="text"
+              placeholder="Укажите город"
+              onChange={handleChange}
+              value={values.street}
+            />
+            <Alert name="street" />
+          </Form.Item>
+
+          <Form.Item label="Номер дома">
+            <InputTT
+              name="number"
+              type="text"
+              placeholder="Укажите город"
+              onChange={handleChange}
+              value={values.number}
+            />
+            <Alert name="number" />
+          </Form.Item>
+
         </div>
 
         <div hidden={!(Number(currentTabKey) === 2)}>
@@ -270,7 +336,7 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               value={values.calculatorId}
             />
-            <Alert name="calculatorId"/>
+            <Alert name="calculatorId" />
           </Form.Item>
 
           <Form.Item label="Номер ввода">
@@ -308,10 +374,68 @@ const FormEditODPU = (props) => {
           <Header>Компонент в разработке</Header>
         </div>
 
-        <EditODPUButtons/>
+        <EditODPUButtons />
       </form>
     </>
   );
 };
 
 export default FormEditODPU;
+
+const GET_ODPU_TEMPLATE = {
+  calculator: null,
+  closingDate: null,
+  deviceAddress: null,
+  diameter: null,
+  futureCheckingDate: '2022-05-14T03:00:00',
+  futureCommercialAccountingDate: '0001-01-01T03:00:00',
+  housingStockId: 338,
+  id: 1394,
+  ipV4: null,
+  lastCheckingDate: '2018-06-18T03:00:00',
+  lastCommercialAccountingDate: '0001-01-01T03:00:00',
+  model: 'ВКТ-7',
+  port: null,
+  resource: null,
+  serialNumber: '72453',
+  transactionType: '',
+  type: 'Calculator',
+};
+
+const GET_CALC_TEMPLATE = {
+  calculator: {
+    calculator: null,
+    closingDate: null,
+    deviceAddress: null,
+    diameter: null,
+    futureCheckingDate: '2019-07-06T03:00:00',
+    futureCommercialAccountingDate: '0001-01-01T03:00:00',
+    housingStockId: 304,
+    id: 1518,
+    ipV4: null,
+    lastCheckingDate: '2015-07-06T03:00:00',
+    lastCommercialAccountingDate: '0001-01-01T03:00:00',
+    model: 'ТВ-7.03.1',
+    port: null,
+    resource: null,
+    serialNumber: '15017696',
+    transactionType: '',
+    type: 'Calculator',
+  },
+  closingDate: null,
+  deviceAddress: null,
+  diameter: '32 мм',
+  futureCheckingDate: '2019-06-04T03:00:00',
+  futureCommercialAccountingDate: '0001-01-01T03:00:00',
+  housingStockId: 304,
+  id: 8230,
+  ipV4: null,
+  lastCheckingDate: '2015-06-04T03:00:00',
+  lastCommercialAccountingDate: '0001-01-01T03:00:00',
+  model: 'РС',
+  port: null,
+  resource: 'ColdWaterSupply',
+  serialNumber: '018315',
+  transactionType: '',
+  type: 'FlowMeter',
+};
