@@ -14,6 +14,7 @@ import {
 } from './OdpuJSON';
 import { ButtonTT } from '../../../tt-components/ButtonTT';
 import axios from '../../../axios';
+import Header from "../../../tt-components/Header";
 
 const FormEditODPU = (props) => {
   const { currentTabKey, device, calculatorId } = props;
@@ -43,6 +44,25 @@ const FormEditODPU = (props) => {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
+
+  const EditODPUButtons = () => (
+    <div>
+      <ButtonTT
+        type="submit"
+        color="blue"
+        form="formikForm"
+      >
+        Снять прибор с учета
+      </ButtonTT>
+      <ButtonTT
+        style={{ marginLeft: '16px' }}
+        type="submit"
+        color="white"
+      >
+        Отмена
+      </ButtonTT>
+    </div>
+  );
 
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur,
@@ -130,8 +150,7 @@ const FormEditODPU = (props) => {
   };
   return (
     <>
-      <form id="formikForm" onSubmit={handleSubmit}>
-        <test onClick={buttonHandler}>GETINFO</test>
+      <form id="formikForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
         <div hidden={!(Number(currentTabKey) === 1)}>
           <Form.Item label="Выберите тип прибора">
             <Select
@@ -243,7 +262,6 @@ const FormEditODPU = (props) => {
 
           <Form.Item
             label="Выберите вычислитель, к которому подключен прибор"
-
           >
             <Input
               id="calculatorId"
@@ -287,28 +305,11 @@ const FormEditODPU = (props) => {
           </Form.Item>
         </div>
 
-        <div>
-          <ButtonTT
-            color="red"
-          >
-            TEST
-          </ButtonTT>
-          <ButtonTT
-            type="submit"
-            color="blue"
-            form="formikForm"
-          >
-            Снять прибор с учета
-          </ButtonTT>
-          <ButtonTT
-            style={{ marginLeft: '16px' }}
-            type="submit"
-            color="white"
-          >
-            Отмена
-          </ButtonTT>
+        <div hidden={!(Number(currentTabKey) === 3)}>
+          <Header>Компонент в разработке</Header>
         </div>
 
+        <EditODPUButtons />
       </form>
     </>
   );

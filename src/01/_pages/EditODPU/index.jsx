@@ -14,7 +14,7 @@ const EditODPU = () => {
   const [object, setObject] = useState();
   const { model, serialNumber } = { ...device };
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -28,7 +28,6 @@ const EditODPU = () => {
     });
   }, []);
 
-
   if (device && calculatorId) {
     return (
       <>
@@ -37,8 +36,7 @@ const EditODPU = () => {
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId}/>
-
+        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId} />
       </>
     );
   }
