@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import _ from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {
-  DatePicker,
-  Form, Input, Select,
-} from 'antd';
+import { Form } from 'antd';
 import moment from 'moment';
 
 import {
   types, resources, serviceLife, connection,
-} from './OdpuJSON';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../tt-components'
+} from './JSON';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../tt-components';
 import axios from '../../../axios';
 
 const FormEditODPU = (props) => {
   const { currentTabKey, device, calculatorId } = props;
-  const { 1: deviceId } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   const {
     serialNumber,
     checkingDate,
@@ -53,13 +50,16 @@ const FormEditODPU = (props) => {
       >
         Снять прибор с учета
       </ButtonTT>
-      <ButtonTT
-        style={{ marginLeft: '16px' }}
-        type="submit"
-        color="white"
-      >
-        Отмена
-      </ButtonTT>
+
+      <NavLink to={`/objects/${objid}/devices/${deviceId}/`}>
+        <ButtonTT
+          style={{ marginLeft: '16px' }}
+          color="white"
+        >
+          Отмена
+        </ButtonTT>
+      </NavLink>
+
     </div>
   );
 

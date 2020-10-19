@@ -8,7 +8,9 @@ import { DatePicker, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
 import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT, Title } from '../../../../../tt-components'
+import {
+  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, Title,
+} from '../../../../../tt-components';
 
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();

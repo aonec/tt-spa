@@ -7,14 +7,12 @@ import FormEditODPU from './components/EditOPDUForm';
 
 const EditODPU = () => {
   const { 0: objid, 1: deviceId } = useParams();
-
   const [currentTabKey, setTab] = useState('1');
   const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState();
   const [object, setObject] = useState();
-  const { model, serialNumber } = { ...device };
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     setTab(value);
   }
 
@@ -31,12 +29,12 @@ const EditODPU = () => {
   if (device && calculatorId) {
     return (
       <>
-        <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
+        <Header>{`${device.model || 'Не указана модель'} (${device.serialNumber || 'Не указан серийный номер'}). Редактирование`}</Header>
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId} />
+        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId}/>
       </>
     );
   }
