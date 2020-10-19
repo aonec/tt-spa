@@ -20,9 +20,9 @@ const EditODPU = () => {
 
   const [currentTabKey, setTab] = useState('1');
   const [calculatorId, setCalculatorId] = useState();
-  const [device, setDevice] = useState({});
+  const [device, setDevice] = useState();
   const [object, setObject] = useState({});
-  const { model, serialNumber } = device;
+  const { model, serialNumber } = {...device};
 
   const dispatch = useDispatch();
   const deviceReducer = useSelector((state) => state.deviceReducer);
@@ -113,18 +113,21 @@ const EditODPU = () => {
     });
   }, []);
 
+  if (device) {
+    return (
+      <>
+        <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        <FormEditODPU currentTabKey={currentTabKey} device={device}/>
 
-  return (
-    <>
-      <Header>{`${model || 'Загрузка данных'} (${serialNumber || 'Загрузка данных'}). Редактирование`}</Header>
-      <TabsComponent
-        currentTabKey={currentTabKey}
-        handleChangeTab={handleChangeTab}
-      />
-      <FormEditODPU currentTabKey={currentTabKey} device={device}/>
 
+      </>
+    )
+  }
+  else return (<div>Загрузка данных</div>)
 
-    </>
-  );
 };
 export default EditODPU;
