@@ -6,7 +6,7 @@ import {
 import moment from 'moment';
 import { serviceLife, resources, types } from '../DeviceJSON';
 import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
-
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
 
 const CommonTab = () => {
   const {
@@ -23,7 +23,7 @@ const CommonTab = () => {
 
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Form.Item name="select" label="Выберите тип прибора">
-          <Select
+          <SelectTT
             id="housingMeteringDeviceType"
             onChange={(event) => {
               const value = event;
@@ -36,7 +36,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item name="select" label="Выберите тип ресурса">
-          <Select
+          <SelectTT
             id="housingMeteringDeviceType"
             id="resource"
             onChange={(event) => {
@@ -50,7 +50,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item name="text" label="Выберите модель прибора">
-          <Input
+          <InputTT
             id="model"
             type="text"
             onChange={(event) => {
@@ -62,7 +62,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item name="text" label="Серийный номер">
-          <Input
+          <InputTT
             id="serialNumber"
             type="text"
             onChange={(event) => {
@@ -74,7 +74,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата выпуска прибора">
-          <DatePicker
+          <DatePickerTT
             name="lastCommercialAccountingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -87,7 +87,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата ввода в эксплуатацию">
-          <DatePicker
+          <DatePickerTT
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -100,7 +100,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Срок эксплуатации по нормативу">
-          <Select
+          <SelectTT
             id="futureCommercialAccountingDate"
             onChange={(event) => {
               const value = moment()

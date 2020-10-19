@@ -6,6 +6,7 @@ import {
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../tt-components'
 
 const CommonTab = () => {
   const {
@@ -22,7 +23,7 @@ const CommonTab = () => {
     <div style={{ display: 'flex', flexDirection: 'column' }}>
 
       <Form.Item label="Серийный номер устройства">
-        <Input
+        <InputTT
           value={serialNumber}
           placeholder="Серийный номер..."
           onChange={(event) => {
@@ -33,7 +34,7 @@ const CommonTab = () => {
       </Form.Item>
 
       <Form.Item label="Тип вычислителя">
-        <Select
+        <SelectTT
           placeholder="Выберите тип устройства"
           options={items}
           value={infoId.toString()}
@@ -45,7 +46,7 @@ const CommonTab = () => {
       </Form.Item>
 
       <Form.Item label="Дата ввода в эксплуатацию">
-        <DatePicker
+        <DatePickerTT
           id="lastCommercialAccountingDate"
           value={moment(lastCommercialAccountingDate)}
           placeholder="Укажите дату..."
@@ -59,7 +60,7 @@ const CommonTab = () => {
       </Form.Item>
 
       <Form.Item label="Дата Поверки">
-        <DatePicker
+        <DatePickerTT
           name="checkingDate"
           placeholder="Укажите дату..."
           onChange={(date) => {
@@ -72,7 +73,7 @@ const CommonTab = () => {
       </Form.Item>
 
       <Form.Item label="Дата Следующей поверки">
-        <DatePicker
+        <DatePickerTT
           value={moment(futureCheckingDate)}
           placeholder="Укажите дату..."
           onChange={(date) => {
@@ -85,7 +86,7 @@ const CommonTab = () => {
       </Form.Item>
 
       <Form.Item label="Дата Следующей поверки">
-        <Select
+        <SelectTT
           onChange={(event) => {
             const value = moment().add(event, 'year').toISOString();
             const path = ['futureCommercialAccountingDate'];

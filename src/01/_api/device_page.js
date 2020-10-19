@@ -2,7 +2,7 @@ import axios from '01/axios';
 
 const URL = 'HousingStocks';
 
-export async function getDevice(url = ''){
+export async function getDevice(url = '') {
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
     return res;
@@ -15,8 +15,7 @@ export async function getDevice(url = ''){
   }
 }
 
-
-export async function getInfo(url = ''){
+export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/${url}`);
@@ -34,11 +33,12 @@ export async function getInfo(url = ''){
 
 const housingStocksURL = 'HousingStocks';
 
-export async function getObjectOfDevice(url = ''){
+export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     // console.log('url', url);
     const res = await axios.get(`${housingStocksURL}/${url}`);
+    console.log("getObjectOfDevice", res)
     return res;
   } catch (error) {
     console.log(error);
@@ -49,7 +49,7 @@ export async function getObjectOfDevice(url = ''){
   }
 }
 
-export async function getODPUTasks(url = ''){
+export async function getODPUTasks(url = '') {
   try {
     const newURL = `Tasks?DeviceId=${url}`;
     const res = await axios.get(newURL);
@@ -66,11 +66,10 @@ export async function getODPUTasks(url = ''){
 
 // Поиск связанных устройств
 // http://transparent-staging.herokuapp.com/api/MeteringDevices/related?DeviceId=1469976
-export async function getRelatedDevices(url = ''){
+export async function getRelatedDevices(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/related?DeviceId=${url}`);
-    // console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {
@@ -83,7 +82,7 @@ export async function getRelatedDevices(url = ''){
   }
 }
 
-export async function getTypeODPU(url = ''){
+export async function getTypeODPU(url = '') {
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
     // console.log(res.type);
@@ -98,7 +97,7 @@ export async function getTypeODPU(url = ''){
 }
 
 // Получить ресурсы Вычислителя
-export async function getCalculatorResources(id = ''){
+export async function getCalculatorResources(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
     console.log(res);
@@ -112,7 +111,7 @@ export async function getCalculatorResources(id = ''){
   }
 }
 
-export async function getCalculator(id = ''){
+export async function getCalculator(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
     console.log(res);
@@ -126,7 +125,7 @@ export async function getCalculator(id = ''){
   }
 }
 
-export async function getPagination(id = ''){
+export async function getPagination(id = '') {
   try {
     const res = await axios.get('MeteringDevices');
     console.log(res);
@@ -140,7 +139,7 @@ export async function getPagination(id = ''){
   }
 }
 
-export async function deregisterDevice(Device = {}){
+export async function deregisterDevice(Device = {}) {
   try {
     alert('Отправляется запрос на снятие прибора с учета !');
     const res = await axios.post('MeteringDevices/close', Device);
