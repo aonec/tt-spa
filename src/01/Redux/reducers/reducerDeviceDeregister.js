@@ -1,49 +1,26 @@
 import _ from 'lodash';
-import moment from "moment";
 
 const initialState = {
   visible: false,
   deregisterFormState: {
     deviceId: '',
     documentsIds: [],
-    closingDateTime: moment(),
+    closingDateTime: '',
   },
 };
 
 export default function deviceDeregisterReducer(state = initialState, action){
   const newState = _.cloneDeep(state);
+  const { payload } = action;
   switch (action.type) {
-    case 'DEREGISTER_FORM_VISIBLE':
-      const {
-        payload: { path, value },
-      } = action;
-      _.set(newState, path, value);
+    case 'DEREGISTER_FORM_VISIBLE': {
+      _.set(newState, 'visible', payload.value);
+      return newState;
+    }
+    case 'DEREGISTER_FORM_UPDATE':
+      _.set(newState, payload.path, payload.value);
       return newState;
     default:
       return newState;
   }
 }
-
-// const initialState = {
-//   calculatorId: '',
-//   checkingDate: '',
-//   connection: {
-//     ipV4: '',
-//     deviceAddress: '',
-//     port: '',
-//   },
-//   futureCheckingDate: '',
-//   futureCommercialAccountingDate: '',
-//   housingMeteringDeviceType: '',
-//   housingStockId: '',
-//   lastCommercialAccountingDate: '',
-//   model: '',
-//   pipe: {
-//     entryNumber: '',
-//     hubNumber: '',
-//     pipeNumber: '',
-//     magistral: '',
-//   },
-//   resource: '',
-//   serialNumber: '',
-// };

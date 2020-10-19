@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Tabs } from 'antd';
-import { ReportContext } from '..';
+import { ReportContext } from '../index';
 
 const { TabPane } = Tabs;
 

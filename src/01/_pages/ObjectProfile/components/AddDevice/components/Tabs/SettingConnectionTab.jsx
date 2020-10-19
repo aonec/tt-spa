@@ -2,6 +2,7 @@ import React  from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Input, Form, Select } from 'antd';
 import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
 import { magistrals } from '../DeviceJSON';
 
 const SettingConnectionTab = () => {
@@ -16,7 +17,7 @@ const SettingConnectionTab = () => {
       <Form.Item
         label="Выберите вычислитель, к которому подключен прибор"
       >
-        <Input
+        <InputTT
           id="calculatorId"
           type="number"
           placeholder="Начните вводить ID прибора"
@@ -29,7 +30,7 @@ const SettingConnectionTab = () => {
       </Form.Item>
 
       <Form.Item label="Номер ввода">
-        <Input
+        <InputTT
           id="entryNumber"
           type="number"
           placeholder="1"
@@ -43,7 +44,7 @@ const SettingConnectionTab = () => {
       </Form.Item>
 
       <Form.Item label="Номер узла">
-        <Input
+        <InputTT
           id="hubNumber"
           type="number"
           placeholder="1"
@@ -57,7 +58,7 @@ const SettingConnectionTab = () => {
       </Form.Item>
 
       <Form.Item label="Номер трубы">
-        <Input
+        <InputTT
           id="pipeNumber"
           type="number"
           placeholder="1"
@@ -72,7 +73,7 @@ const SettingConnectionTab = () => {
 
       <Form.Item name="text" label="Номер трубы">
 
-        <Select
+        <SelectTT
           placeholder="Выберите тип устройства"
           id="magistral"
           options={magistrals}

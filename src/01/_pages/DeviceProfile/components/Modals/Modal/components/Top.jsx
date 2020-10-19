@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { DevicesListDiv } from './Tabs';
-import { ReportContext } from '..';
+import { ReportContext } from '../index';
 
 export const Uzel = () => {
   console.log('Uzel');

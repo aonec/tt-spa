@@ -66,7 +66,7 @@ export const EditButton = () => {
 
   return (
     <EditButtonWrap onClick={menuShowHide} id="edit-button">
-      <Icon icon="menu" />
+      <Icon icon="menu"/>
     </EditButtonWrap>
   );
 };
@@ -99,12 +99,11 @@ export const Menu = (showPopupHandler) => {
 
   return (
     <>
-      <EditButton />
+      <EditButton/>
       <List id="edit-button__list">
-        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>
+        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit_odpu`}>
           <ListItem>
-            Редактировать
-            вычислитель
+            Редактировать ОДПУ
           </ListItem>
         </NavLink>
         <ListItem>Поверить вычислитель</ListItem>

@@ -3,6 +3,7 @@ import { connect, useSelector, useDispatch } from 'react-redux';
 import { Input, Form } from 'antd';
 import { Wrap } from '../../../../../../tt-components';
 import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
 
 const SettingConnectionTab = () => {
   const {
@@ -13,7 +14,7 @@ const SettingConnectionTab = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Form.Item name="text" label="IP адрес вычислителя">
-        <Input
+        <InputTT
           type="text"
           value={ipV4}
           placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
@@ -25,7 +26,7 @@ const SettingConnectionTab = () => {
       </Form.Item>
 
       <Form.Item name="text" label="IP адрес вычислителя">
-        <Input
+        <InputTT
           type="number"
           placeholder="Укажите порт устройства (например, 1234)"
           value={port}

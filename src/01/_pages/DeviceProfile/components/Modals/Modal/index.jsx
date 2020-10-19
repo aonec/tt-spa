@@ -10,6 +10,8 @@ import {
   Radio, ConfigProvider, DatePicker, Tabs, Select,
 } from 'antd';
 
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../tt-components'
+
 import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
@@ -17,9 +19,9 @@ import $ from 'jquery';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { label } from '01/r_comp';
-import { DEFAULT_ICON } from '../Templates';
-import { Icon } from '../../../../_components/Icon';
-import { DeviceContext } from '../../DeviceProfile';
+import { DEFAULT_ICON } from '../../Templates';
+import { Icon } from '../../../../../_components/Icon';
+import { DeviceContext } from '../../../DeviceProfile';
 import { DevicesListDiv } from './components/Tabs';
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
