@@ -32,6 +32,7 @@ import { useApp } from './useApp';
 import thunkMiddleWare from "redux-thunk";
 import { ConfigProvider } from "antd";
 import ruRu from "antd/es/locale/ru_RU";
+import DeviceSearchForm from "../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm";
 
 moment.locale('ru');
 
@@ -62,6 +63,7 @@ export function App(){
             {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage/>}/>
             <Route path="/access-denied/" render={() => <AccessDeniedPage/>}/>
+            <Route path="/form/" render={() => <DeviceSearchForm/>}/>
             <Route path="/">
               <layout>
                 <menu as="div">

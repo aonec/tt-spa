@@ -71,7 +71,7 @@ export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
   }
 
   if (devices.items.length === 1) {
-    const relatedDevices = await devicesAPI.getRelatedDevices(serialNumber) || [];
+    const relatedDevices = await devicesAPI.getRelatedDevices(devices.items[0].id) || [];
     devices.items[0].relatedDevices = [...relatedDevices];
     dispatch(toggleIsLoading());
     dispatch(setDevices(devices));

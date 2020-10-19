@@ -13,6 +13,7 @@ import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import ButtonTT from '../../tt-components/ButtonTT';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -29,12 +30,14 @@ export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   useFetchPage(state, dispatch);
   const { 0: objid } = useParams();
+  debugger;
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
 
   return styled(grid)(
     <>
+      <Breadcrumb />
       <Header {...header} />
       <div style={{}}>
         {/* <ButtonTT disabled={true}> */}

@@ -40,47 +40,7 @@
     margin-right: 8px;
 }
 
-.form {
-    display: flex;
-    align-items: center;
-}
 
-.form:focus {
-    border: 2px solid black;
-}
-
-.input__form {
-    border: 1px solid #DCDEE4;
-    box-sizing: border-box;
-    border-radius: 4px;
-    padding-left: 10px;
-    margin-bottom: 20px;
-}
-
-.input__form:focus {
-    border: 2px solid #DCDEE4;
-}
-
-.input__form:hover {
-    cursor: pointer;
-}
-
-.btn {
-    width: 180px;
-    border-radius: 4px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 32px;
-    margin-left: 20px;
-
-    border: 1px solid #dcdee4;
-    background-color: #189EE9;
-    transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
-}
-
-.btn:hover {
-    cursor: pointer;
-}
 
 
 .pages {

@@ -36,6 +36,7 @@ export const useUpload = (callback = () => {}) => {
   return {
     button: {
       onChange(e) {
+        debugger
         dispatch({ type: "change", file: e.target.files[0] })
       },
       loading: state.loading,
