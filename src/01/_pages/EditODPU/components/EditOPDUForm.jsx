@@ -1,103 +1,78 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import $ from 'jquery';
 import {
   DatePicker,
   Form, Input, Select,
 } from 'antd';
 import moment from 'moment';
-import { onChangeDeviceFormValueByPath } from '../../../Redux/actions/actions';
+
 import {
   types, resources, serviceLife, connection,
-} from './CalculatorJSON';
-import '../editodpu.scss';
+} from './OdpuJSON';
 import { ButtonTT } from '../../../tt-components/ButtonTT';
 import axios from '../../../axios';
-import { button } from '../../../r_comp';
 
 const FormEditODPU = (props) => {
-  const { currentTabKey, device } = props;
+  const { currentTabKey, device, calculatorId } = props;
   const { 1: deviceId } = useParams();
-
   const {
     serialNumber,
     checkingDate,
     lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
     infoId,
     futureCheckingDate,
     closingDateTime,
     model,
-    entryNumber,
-    hubNumber,
-    pipeNumber,
     type,
     resource,
+    port,
     magistral,
     // calculatorId,
   } = device;
 
   const [forceRender, setForceRender] = useState();
-  console.log(device);
+  const entryNumber = 1;
+  const hubNumber = 1;
+  const pipeNumber = 1;
 
-  function randomInteger(min, max){
-    // случайное число от min до (max+1)
+  function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
-
-  const saveButtonHandler = async () => {
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.put(`HousingMeteringDevices/${deviceId}`);
-      console.log('saveButtonHandler', res);
-      alert('ОДПУ успешно изменен !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
-  console.log('checkingDate', checkingDate);
 
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur,
   } = useFormik({
     initialValues: {
-      // _.filter(types, {value: 'TemperatureSensor'})[0]
-      // housingMeteringDeviceType: types[0].value,
       housingMeteringDeviceType: _.filter(types, { value: type })[0].value,
       resource: _.filter(resources, { value: resource })[0].value,
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
-      test: '',
+      futureCheckingDate: moment().toISOString(),
+      futureCommercialAccountingDate,
+      calculatorId: calculatorId || 'Вычислитель не выбран',
+      entryNumber,
+      hubNumber,
+      pipeNumber,
+      connection: connection[0].value,
+      port: port || 0,
+      checkingDate: moment().toISOString(),
 
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
-      // model: Yup.string().required('Введите модель прибора'),
-      // test: Yup.string().required('Введите данные'),
-      // closingDateTime: Yup.string().required('Введите данные'),
     }),
     onSubmit: async () => {
-      // deregisterDevice(form);
       console.log('Submit');
+      console.log(PUT_EDIT_FORM);
+      editOPDU();
     },
   });
-
-  useEffect(() => {
-    console.log('type', type);
-  }, [props]);
-
-  const VisibleItems = currentTabKey;
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -109,8 +84,49 @@ const FormEditODPU = (props) => {
     }
     return null;
   };
+
+  const PUT_EDIT_FORM = {
+    serialNumber: values.serialNumber,
+    checkingDate: values.checkingDate,
+    futureCheckingDate: values.futureCheckingDate,
+    lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+    futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+    connection: {
+      ipV4: 'string',
+      deviceAddress: randomInteger(1, 255),
+      port: values.port || 0,
+    },
+    calculatorId: values.calculatorId,
+    housingMeteringDeviceType: values.housingMeteringDeviceType,
+    resource: values.resource,
+    model: values.model,
+    pipe: {
+      entryNumber: values.entryNumber || 0,
+      hubNumber: values.hubNumber || 0,
+      pipeNumber: values.pipeNumber || 0,
+      magistral: 'string',
+    },
+  };
+
+  const editOPDU = async () => {
+    alert('Cейчас будем отправлять данные!');
+    try {
+      const res = await axios.put(`Calculators/${deviceId}`, PUT_EDIT_FORM);
+      alert('Вычислитель успешно изменен!');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
+      );
+      throw new Error(error);
+    }
+  };
+
   const buttonHandler = () => {
     console.log('buttonHandler');
+    console.log('PUT_TEMPLATE', PUT_EDIT_FORM);
   };
   return (
     <>
@@ -127,7 +143,7 @@ const FormEditODPU = (props) => {
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="closingDateTime"/>
+            <Alert name="closingDateTime" />
           </Form.Item>
 
           <Form.Item label="Выберите тип ресурса">
@@ -151,7 +167,7 @@ const FormEditODPU = (props) => {
               value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model"/>
+            <Alert name="model" />
           </Form.Item>
 
           <Form.Item label="Серийный номер">
@@ -162,7 +178,7 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber"/>
+            <Alert name="serialNumber" />
           </Form.Item>
 
           <Form.Item label="Дата выпуска прибора">
@@ -176,7 +192,7 @@ const FormEditODPU = (props) => {
                 setForceRender(randomInteger(1, 255));
               }}
             />
-            <Alert name="lastCommercialAccountingDate"/>
+            <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
 
           <Form.Item label="Дата ввода в эксплуатацию">
@@ -191,7 +207,7 @@ const FormEditODPU = (props) => {
               }}
 
             />
-            <Alert name="futureCheckingDate"/>
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу">
@@ -207,14 +223,13 @@ const FormEditODPU = (props) => {
               options={serviceLife}
               defaultValue={serviceLife[0].value}
             />
-            <Alert name="futureCommercialAccountingDate"/>
+            <Alert name="futureCommercialAccountingDate" />
           </Form.Item>
         </div>
 
         <div hidden={!(Number(currentTabKey) === 2)}>
           <Form.Item label="Подключение к вычислителю">
             <Select
-              id="connection"
               name="connection"
               onChange={(event) => {
                 values.connection = event;
@@ -228,19 +243,17 @@ const FormEditODPU = (props) => {
 
           <Form.Item
             label="Выберите вычислитель, к которому подключен прибор"
-            className="calculatorId"
+
           >
             <Input
               id="calculatorId"
               name="calculatorId"
               type="number"
               placeholder="Начните вводить ID прибора"
-              // value={calculatorId}
-              onChange={(event) => {
-                setForceRender(randomInteger(1, 255));
-              }}
+              onChange={handleChange}
+              value={values.calculatorId}
             />
-            <Alert name="calculatorId"/>
+            <Alert name="calculatorId" />
           </Form.Item>
 
           <Form.Item label="Номер ввода">
@@ -248,10 +261,8 @@ const FormEditODPU = (props) => {
               id="entryNumber"
               type="number"
               placeholder="1"
-              value={entryNumber}
-              onChange={(event) => {
-                setForceRender(randomInteger(1, 255));
-              }}
+              onChange={handleChange}
+              value={values.entryNumber}
             />
           </Form.Item>
 
@@ -260,10 +271,8 @@ const FormEditODPU = (props) => {
               id="hubNumber"
               type="number"
               placeholder="1"
-              value={hubNumber}
-              onChange={(event) => {
-                setForceRender(randomInteger(1, 255));
-              }}
+              onChange={handleChange}
+              value={values.hubNumber}
             />
           </Form.Item>
 
@@ -272,10 +281,8 @@ const FormEditODPU = (props) => {
               id="pipeNumber"
               type="number"
               placeholder="1"
-              value={pipeNumber}
-              onChange={(event) => {
-                setForceRender(randomInteger(1, 255));
-              }}
+              onChange={handleChange}
+              value={values.pipeNumber}
             />
           </Form.Item>
         </div>
