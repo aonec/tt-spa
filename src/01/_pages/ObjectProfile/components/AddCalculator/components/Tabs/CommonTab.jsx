@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { DatePicker, Select, Input, Form} from 'antd';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
@@ -25,7 +26,7 @@ const CommonTab = () => {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {/*<button onClick={buttonHandler}>test</button>*/}
         <Form.Item name="text" label="Серийный номер устройства">
-          <Input
+          <InputTT
             value={serialNumber}
             placeholder="Серийный номер..."
             onChange={(event) => {
@@ -36,7 +37,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Тип вычислителя">
-          <Select
+          <SelectTT
             placeholder="Выберите тип устройства"
             options={items}
             value={infoId.toString()}
@@ -48,7 +49,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата ввода в эксплуатацию">
-          <DatePicker
+          <DatePickerTT
             id="lastCommercialAccountingDate"
             value={moment(lastCommercialAccountingDate)}
             placeholder="Укажите дату..."
@@ -61,7 +62,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата Поверки">
-          <DatePicker
+          <DatePickerTT
             id="checkingDate"
             placeholder="Укажите дату..."
             value={moment(checkingDate)}
@@ -74,7 +75,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
-          <DatePicker
+          <DatePickerTT
             id="futureCheckingDate"
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
@@ -87,7 +88,7 @@ const CommonTab = () => {
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
-          <Select
+          <SelectTT
             placeholder="Укажите оперид эксплуатации"
             options={serviceLife}
             value={serviceLife[0].value}

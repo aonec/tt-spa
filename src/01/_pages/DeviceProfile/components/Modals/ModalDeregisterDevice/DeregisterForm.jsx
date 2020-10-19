@@ -8,7 +8,7 @@ import { DatePicker, Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
 import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
-import { Title } from '../../../../../tt-components/Title';
+import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT, Title } from '../../../../../tt-components'
 
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();
@@ -67,7 +67,7 @@ const DeregisterForm = () => {
         </Title>
 
         <Form.Item label="Дата снятия прибора с учета">
-          <DatePicker
+          <DatePickerTT
             name="closingDateTime"
             allowClear={false}
             onBlur={handleBlur}
@@ -83,7 +83,7 @@ const DeregisterForm = () => {
         </Form.Item>
 
         <Form.Item label="Дополнительное поле">
-          <Input
+          <InputTT
             value={values.test}
             onChange={handleChange}
             onBlur={handleBlur}
