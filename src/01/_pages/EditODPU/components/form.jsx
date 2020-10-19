@@ -41,6 +41,13 @@ const FormEditODPU = (props) => {
   } = device;
 
   const [forceRender, setForceRender] = useState();
+  console.log(device);
+
+  function randomInteger(min, max){
+    // случайное число от min до (max+1)
+    const rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+  }
 
   const saveButtonHandler = async () => {
     alert('Cейчас будем отправлять данные!');
@@ -58,6 +65,8 @@ const FormEditODPU = (props) => {
     }
   };
 
+  console.log('checkingDate', checkingDate);
+
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur,
   } = useFormik({
@@ -68,8 +77,9 @@ const FormEditODPU = (props) => {
       resource: _.filter(resources, { value: resource })[0].value,
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
+      lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
       test: '',
-      lastCommercialAccountingDate: moment().toISOString(),
+
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
@@ -101,25 +111,23 @@ const FormEditODPU = (props) => {
   };
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log('_.get(types, type )', _.filter(types, { value: 'TemperatureSensor' })[0]);
-    console.log(_.filter(types, { value: 'TemperatureSensor' })[0].value);
   };
   return (
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
         <test onClick={buttonHandler}>GETINFO</test>
-        <div hidden={!(currentTabKey == 1)}>
+        <div hidden={!(Number(currentTabKey) === 1)}>
           <Form.Item label="Выберите тип прибора">
             <Select
               name="housingMeteringDeviceType"
               onChange={(event) => {
                 values.housingMeteringDeviceType = event;
-                setForceRender(event);
+                setForceRender(randomInteger(1, 255));
               }}
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="closingDateTime" />
+            <Alert name="closingDateTime"/>
           </Form.Item>
 
           <Form.Item label="Выберите тип ресурса">
@@ -127,7 +135,7 @@ const FormEditODPU = (props) => {
               name="resource"
               onChange={(event) => {
                 values.resource = event;
-                setForceRender(event);
+                setForceRender(randomInteger(1, 255));
               }}
               options={resources}
               value={values.resource}
@@ -143,7 +151,7 @@ const FormEditODPU = (props) => {
               value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model" />
+            <Alert name="model"/>
           </Form.Item>
 
           <Form.Item label="Серийный номер">
@@ -154,7 +162,7 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber" />
+            <Alert name="serialNumber"/>
           </Form.Item>
 
           <Form.Item label="Дата выпуска прибора">
@@ -163,51 +171,54 @@ const FormEditODPU = (props) => {
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
               value={moment(values.lastCommercialAccountingDate)}
-              onChange={(date, dateString) => {
-                values.lastCommercialAccountingDate = dateString;
+              onChange={(date) => {
+                values.lastCommercialAccountingDate = date;
+                setForceRender(randomInteger(1, 255));
               }}
             />
-            <Alert name="lastCommercialAccountingDate" />
+            <Alert name="lastCommercialAccountingDate"/>
           </Form.Item>
 
           <Form.Item label="Дата ввода в эксплуатацию">
             <DatePicker
-              value={moment(futureCheckingDate)}
+              name="futureCheckingDate"
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
+              value={moment(values.futureCheckingDate)}
               onChange={(date) => {
+                values.futureCheckingDate = date;
+                setForceRender(randomInteger(1, 255));
               }}
-              name="futureCheckingDate"
+
             />
-            <Alert name="futureCheckingDate" />
+            <Alert name="futureCheckingDate"/>
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу">
             <Select
-
               name="futureCommercialAccountingDate"
+              placeholder="Укажите оперид эксплуатации"
               onChange={(event) => {
                 const value = moment()
                   .add(event, 'year')
                   .toISOString();
-                const path = ['futureCommercialAccountingDate'];
+                console.log(values);
               }}
-              name="futureCommercialAccountingDate"
-              placeholder="Укажите оперид эксплуатации"
               options={serviceLife}
               defaultValue={serviceLife[0].value}
             />
-            <Alert name="futureCommercialAccountingDate" />
+            <Alert name="futureCommercialAccountingDate"/>
           </Form.Item>
         </div>
 
-        <div hidden={!(currentTabKey == 2)}>
+        <div hidden={!(Number(currentTabKey) === 2)}>
           <Form.Item label="Подключение к вычислителю">
             <Select
               id="connection"
               name="connection"
               onChange={(event) => {
                 values.connection = event;
+                setForceRender(randomInteger(1, 255));
               }}
               options={connection}
               value={values.connection}
@@ -226,10 +237,10 @@ const FormEditODPU = (props) => {
               placeholder="Начните вводить ID прибора"
               // value={calculatorId}
               onChange={(event) => {
-
+                setForceRender(randomInteger(1, 255));
               }}
             />
-            <Alert name="calculatorId" />
+            <Alert name="calculatorId"/>
           </Form.Item>
 
           <Form.Item label="Номер ввода">
@@ -239,7 +250,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={entryNumber}
               onChange={(event) => {
-
+                setForceRender(randomInteger(1, 255));
               }}
             />
           </Form.Item>
@@ -251,7 +262,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={hubNumber}
               onChange={(event) => {
-
+                setForceRender(randomInteger(1, 255));
               }}
             />
           </Form.Item>
@@ -263,7 +274,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               value={pipeNumber}
               onChange={(event) => {
-
+                setForceRender(randomInteger(1, 255));
               }}
             />
           </Form.Item>
