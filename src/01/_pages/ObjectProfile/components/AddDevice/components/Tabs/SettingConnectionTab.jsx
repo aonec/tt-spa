@@ -1,9 +1,9 @@
 import React  from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { Input, Form, Select } from 'antd';
+import { Form } from 'antd';
 import { onChangeDeviceFormValueByPath } from '../../../../../../Redux/actions/actions';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
-import { magistrals } from '../DeviceJSON';
+import {  SelectTT, InputTT } from '../../../../../../tt-components'
+import { magistrals } from '../../DeviceJSON';
 
 const SettingConnectionTab = () => {
 
@@ -18,7 +18,7 @@ const SettingConnectionTab = () => {
         label="Выберите вычислитель, к которому подключен прибор"
       >
         <InputTT
-          id="calculatorId"
+          name="calculatorId"
           type="number"
           placeholder="Начните вводить ID прибора"
           onChange={(event) => {
@@ -31,7 +31,7 @@ const SettingConnectionTab = () => {
 
       <Form.Item label="Номер ввода">
         <InputTT
-          id="entryNumber"
+          name="entryNumber"
           type="number"
           placeholder="1"
           value={entryNumber}
@@ -45,7 +45,7 @@ const SettingConnectionTab = () => {
 
       <Form.Item label="Номер узла">
         <InputTT
-          id="hubNumber"
+          name="hubNumber"
           type="number"
           placeholder="1"
           value={hubNumber}
@@ -59,7 +59,7 @@ const SettingConnectionTab = () => {
 
       <Form.Item label="Номер трубы">
         <InputTT
-          id="pipeNumber"
+          name="pipeNumber"
           type="number"
           placeholder="1"
           value={pipeNumber}
@@ -75,7 +75,7 @@ const SettingConnectionTab = () => {
 
         <SelectTT
           placeholder="Выберите тип устройства"
-          id="magistral"
+          name="magistral"
           options={magistrals}
           defaultValue={magistrals[0].value}
           onChange={(event) => {
@@ -90,4 +90,4 @@ const SettingConnectionTab = () => {
   );
 };
 
-export default connect()(SettingConnectionTab);
+export default SettingConnectionTab;

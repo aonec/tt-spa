@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
-import TabsComponent from './components/Main';
+import TabsComponent from './components/Tabs';
 import { getDevice, getRelatedDevices, getObjectOfDevice } from '../../_api/device_page';
 import FormEditODPU from './components/EditOPDUForm';
 
@@ -12,7 +12,7 @@ const EditODPU = () => {
   const [device, setDevice] = useState();
   const [object, setObject] = useState();
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -23,7 +23,6 @@ const EditODPU = () => {
     getObjectOfDevice(objid).then((res) => {
       setObject(res);
     });
-    console.log("device", device)
     getRelatedDevices(deviceId).then((res) => {
       const { id } = res[0];
       setCalculatorId(id);
@@ -31,14 +30,21 @@ const EditODPU = () => {
   }, []);
 
   if (device && calculatorId && object) {
+    const model = device.model || 'Не указана модель';
+    const serialNumber = device.serialNumber || 'Не указан серийный номер';
     return (
       <>
-        <Header>{`${device.model || 'Не указана модель'} (${device.serialNumber || 'Не указан серийный номер'}). Редактирование`}</Header>
+        <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId} object={object}/>
+        <FormEditODPU
+          currentTabKey={currentTabKey}
+          device={device}
+          calculatorId={calculatorId}
+          object={object}
+        />
       </>
     );
   }
