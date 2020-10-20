@@ -9,6 +9,7 @@ import {UploadButton, useUpload, UploadList} from "01/components/Upload"
 import AddDate from "../../../../components/Select/selects/AddDate";
 
 
+
 // display:flex;
 // align-items: flex-end;
 // justify-content: space-between;
@@ -123,6 +124,7 @@ export const Panel = ({
         >
             {AddPerpetrator && <Perpetrator getData={(data) => dispatch({type: "add_data", data})}/> }
             {SetNextStageDeadline && <AddDate getData={(data) => dispatch({type: "add_data", data})}/> }
+            {/*Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты*/}
 
             {EmailNotify && <Contractors/>}
             {EmailNotify && (
