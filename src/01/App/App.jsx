@@ -28,9 +28,6 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
-import thunkMiddleWare from 'redux-thunk';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './useApp';
 import thunkMiddleWare from "redux-thunk";
 import { ConfigProvider } from "antd";

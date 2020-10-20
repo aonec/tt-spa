@@ -99,7 +99,7 @@ export const Panel = ({
                 <input_frame data-disabled={true} data-big style={{width: '50%'}}>
                     <input disabled value={perpName}/>
                 </input_frame>
-                <input_frame data-disabled={true} data-big>
+                <input_frame data-disabled={true} data-big style={{width: '50%'}}>
                     <input disabled value={SetNextStageDeadline}/>
                 </input_frame>
             </panel>
