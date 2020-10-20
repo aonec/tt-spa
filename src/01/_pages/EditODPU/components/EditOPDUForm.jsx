@@ -74,7 +74,7 @@ const FormEditODPU = (props) => {
         color="blue"
         form="formikForm"
       >
-        Снять прибор с учета
+        Сохранить
       </ButtonTT>
 
       <NavLink to={`/objects/${objid}/devices/${deviceId}/`}>
