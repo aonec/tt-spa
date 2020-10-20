@@ -91,7 +91,7 @@ const FormEditODPU = (props) => {
   );
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur,
+    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
   } = useFormik({
     initialValues: {
       housingMeteringDeviceType: _.filter(types, { value: type })[0].value,
@@ -178,6 +178,7 @@ const FormEditODPU = (props) => {
     console.log('buttonHandler');
     console.log('PUT_TEMPLATE', PUT_EDIT_FORM);
   };
+
   return (
     <>
       <form id="formikForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
@@ -187,7 +188,7 @@ const FormEditODPU = (props) => {
               name="housingMeteringDeviceType"
               onChange={(event) => {
                 values.housingMeteringDeviceType = event;
-                setForceRender(randomInteger(1, 255));
+                // setForceRender(randomInteger(1, 255));
               }}
               options={types}
               value={values.housingMeteringDeviceType}
@@ -206,6 +207,7 @@ const FormEditODPU = (props) => {
               value={values.resource}
 
             />
+            <Alert name="resource" />
           </Form.Item>
 
           <Form.Item label="Выберите модель прибора">
@@ -236,10 +238,15 @@ const FormEditODPU = (props) => {
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
               value={moment(values.lastCommercialAccountingDate)}
-              onChange={(date) => {
-                values.lastCommercialAccountingDate = date;
-                setForceRender(randomInteger(1, 255));
+              onChange={(date)=> {
+                setFieldValue('lastCommercialAccountingDate', date)
+                console.log(values)
               }}
+              // onChange={(date) => {
+              //   handleChange(event.target.value)
+              //   values.lastCommercialAccountingDate = date;
+              //   setForceRender(randomInteger(1, 255));
+              // }}
             />
             <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
@@ -250,10 +257,13 @@ const FormEditODPU = (props) => {
               placeholder="Укажите дату..."
               format="DD.MM.YYYY"
               value={moment(values.futureCheckingDate)}
-              onChange={(date) => {
-                values.futureCheckingDate = date;
-                setForceRender(randomInteger(1, 255));
+              onChange={(date, dateString)=> {
+                setFieldValue('futureCheckingDate', dateString)
               }}
+              // onChange={(date) => {
+              //   values.futureCheckingDate = date;
+              //   setForceRender(randomInteger(1, 255));
+              // }}
 
             />
             <Alert name="futureCheckingDate" />

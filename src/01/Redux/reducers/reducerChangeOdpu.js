@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const initialState = {
-  visible: false,
+  visible: true,
   deregisterFormState: {
     deviceId: '',
     documentsIds: [],
@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-export default function changeOdpuReducer(state = initialState, action){
+export default function changeOdpuReducer(state = initialState, action) {
   const newState = _.cloneDeep(state);
   const { payload } = action;
   switch (action.type) {

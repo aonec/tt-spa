@@ -23,7 +23,6 @@ const EditODPU = () => {
     getObjectOfDevice(objid).then((res) => {
       setObject(res);
     });
-    console.log("device", device)
     getRelatedDevices(deviceId).then((res) => {
       const { id } = res[0];
       setCalculatorId(id);

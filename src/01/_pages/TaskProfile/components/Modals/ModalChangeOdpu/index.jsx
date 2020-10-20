@@ -1,5 +1,4 @@
 import React from 'react';
-import 'antd/dist/antd.css';
 import { Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -7,7 +6,7 @@ import {
   setModalDeregisterVisible,
 } from '../../../../../Redux/actions/actions';
 import { ButtonTT } from '../../../../../tt-components';
-import DeregisterForm from './DeregisterForm';
+import ChangeOdpuForm from './ChangeOdpuForm';
 
 const ModalChangeOdpu = () => {
   const dispatch = useDispatch();
@@ -24,8 +23,9 @@ const ModalChangeOdpu = () => {
       visible={visible}
       onCancel={handleCancel}
       footer={null}
+      width="964px"
     >
-      <DeregisterForm />
+      <ChangeOdpuForm />
       <ButtonTT
         type="submit"
         color="red"
