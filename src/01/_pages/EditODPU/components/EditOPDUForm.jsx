@@ -15,7 +15,7 @@ import axios from '../../../axios';
 
 const FormEditODPU = (props) => {
   const {
-    currentTabKey, device
+    currentTabKey, device,
   } = props;
 
   const { 0: objid, 1: deviceId } = useParams();
@@ -41,9 +41,11 @@ const FormEditODPU = (props) => {
   const {
     city, street, housingStockNumber, corpus,
   } = address;
-  const { isConnected, ipV4, port, deviceAddress  } = connection;
+  const {
+    isConnected, ipV4, port, deviceAddress,
+  } = connection;
 
-  function randomInteger(min, max){
+  function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
@@ -70,7 +72,12 @@ const FormEditODPU = (props) => {
   );
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
+    handleSubmit,
+    handleChange, values,
+    touched,
+    errors,
+    handleBlur,
+    setFieldValue,
   } = useFormik({
     initialValues: {
       housingMeteringDeviceType: types[0].value,
@@ -84,7 +91,7 @@ const FormEditODPU = (props) => {
       entryNumber,
       hubNumber,
       pipeNumber,
-      connection: connections[0].value,
+      connection: String(isConnected),
       port: port || 0,
       checkingDate: moment().toISOString(),
       city,
@@ -154,11 +161,13 @@ const FormEditODPU = (props) => {
 
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log(device)
+    console.log(device);
   };
+  console.log('values.connection', values.connection);
   // return (
   //   <button onClick={buttonHandler}>BUTTON</button>
   // )
+  const disable = !(JSON.parse(values.connection));
 
   return (
     <div style={{ maxWidth: '480px' }}>
@@ -173,14 +182,14 @@ const FormEditODPU = (props) => {
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="housingMeteringDeviceType"/>
+            <Alert name="housingMeteringDeviceType" />
           </Form.Item>
 
           <Form.Item label="Выберите тип ресурса">
             <SelectTT
               name="resource"
-              onChange={(event) => {
-                setFieldValue('resource', event);
+              onChange={(value) => {
+                setFieldValue('resource', value);
               }}
               options={resources}
               value={values.resource}
@@ -196,7 +205,7 @@ const FormEditODPU = (props) => {
               value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model"/>
+            <Alert name="model" />
           </Form.Item>
 
           <Form.Item label="Серийный номер">
@@ -208,7 +217,7 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber"/>
+            <Alert name="serialNumber" />
           </Form.Item>
 
           <Form.Item label="Дата выпуска прибора">
@@ -221,7 +230,7 @@ const FormEditODPU = (props) => {
                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
             />
-            <Alert name="lastCommercialAccountingDate"/>
+            <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
 
           <Form.Item label="Дата ввода в эксплуатацию">
@@ -233,25 +242,22 @@ const FormEditODPU = (props) => {
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', date.toISOString());
               }}
-
             />
-            <Alert name="futureCheckingDate"/>
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу">
             <SelectTT
               name="futureCommercialAccountingDate"
               placeholder="Укажите оперид эксплуатации"
-              onChange={(event) => {
-                const value = moment()
-                  .add(event, 'year')
-                  .toISOString();
-                setFieldValue('futureCheckingDate', value);
+              onChange={(value) => {
+                setFieldValue('futureCheckingDate', moment()
+                  .add(value, 'year').toISOString());
               }}
               options={serviceLife}
               defaultValue={serviceLife[0].value}
             />
-            <Alert name="futureCommercialAccountingDate"/>
+            <Alert name="futureCommercialAccountingDate" />
           </Form.Item>
 
           <Form.Item label="Город">
@@ -262,7 +268,7 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               value={values.city}
             />
-            <Alert name="city"/>
+            <Alert name="city" />
           </Form.Item>
 
           <Form.Item label="Улица">
@@ -273,7 +279,7 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               value={values.street}
             />
-            <Alert name="street"/>
+            <Alert name="street" />
           </Form.Item>
 
           <Form.Item label="Номер дома">
@@ -284,7 +290,7 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               value={values.number}
             />
-            <Alert name="number"/>
+            <Alert name="number" />
           </Form.Item>
 
         </div>
@@ -293,12 +299,11 @@ const FormEditODPU = (props) => {
           <Form.Item label="Подключение к вычислителю">
             <SelectTT
               name="connection"
-              onChange={(event) => {
-                setFieldValue('connection', event);
+              onChange={(value) => {
+                setFieldValue('connection', value);
               }}
               options={connections}
               value={values.connection}
-
             />
           </Form.Item>
 
@@ -311,8 +316,9 @@ const FormEditODPU = (props) => {
               placeholder="Начните вводить ID прибора"
               onChange={handleChange}
               value={values.calculatorId}
+              disabled={disable}
             />
-            <Alert name="calculatorId"/>
+            <Alert name="calculatorId" />
           </Form.Item>
 
           <Form.Item label="Номер ввода">
@@ -322,6 +328,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               onChange={handleChange}
               value={values.entryNumber}
+              disabled={disable}
             />
           </Form.Item>
 
@@ -332,6 +339,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               onChange={handleChange}
               value={values.hubNumber}
+              disabled={disable}
             />
           </Form.Item>
 
@@ -342,6 +350,7 @@ const FormEditODPU = (props) => {
               placeholder="1"
               onChange={handleChange}
               value={values.pipeNumber}
+              disabled={disable}
             />
           </Form.Item>
         </div>
@@ -350,7 +359,7 @@ const FormEditODPU = (props) => {
           <Header>Компонент в разработке</Header>
         </div>
 
-        <EditODPUButtons/>
+        <EditODPUButtons />
       </form>
     </div>
   );

@@ -65,11 +65,11 @@ export const magistrals = [
 
 export const connections = [
   {
-    value: 'isConnected',
+    value: 'true',
     label: 'Есть',
   },
   {
-    value: 'NotConnected',
+    value: 'false',
     label: 'Отсутствует',
   },
 ];

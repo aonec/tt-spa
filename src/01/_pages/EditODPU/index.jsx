@@ -19,7 +19,7 @@ const EditODPU = () => {
   useEffect(() => {
     getODPU(deviceId).then((res) => {
       setDevice(res);
-      console.log(res)
+      console.log('getODPU = ', res);
     });
   }, []);
 
