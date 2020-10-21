@@ -15,6 +15,19 @@ export async function getDevice(url = '') {
   }
 }
 
+export async function getODPU(url = '') {
+  try {
+    const res = await axios.get(`HousingMeteringDevices/${url}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса ОДПУ',
+    };
+  }
+}
+
 export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));

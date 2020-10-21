@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  types, resources, serviceLife, connection,
+  types, resources, serviceLife, connections,
 } from '../CONSTANTS';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -15,52 +15,41 @@ import axios from '../../../axios';
 
 const FormEditODPU = (props) => {
   const {
-    currentTabKey, device, calculatorId, object,
+    currentTabKey, device
   } = props;
 
+
   const { 0: objid, 1: deviceId } = useParams();
+
+
+
+  // const {type, resource} = meteringDevices;
+  // console.log(meteringDevices);
+
   const {
-    calculator,
+    address,
+    hubConnection,
+    id,
+    transactionType,
+    model,
     serialNumber,
-    checkingDate,
+    connection,
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
-    infoId,
+    lastCheckingDate,
     futureCheckingDate,
-    closingDateTime,
-    model,
-    type,
-    resource,
-    port,
-    magistral,
-    // calculatorId,
+    closingDate,
   } = device;
 
   const {
-    areaOfNonResidential,
-    city,
-    constructionDate,
-    corpus,
-    district,
-    houseArea,
-    houseCategory,
-    id,
-    index,
-    isThereElevator,
-    number,
-    numberOfApartments,
-    numberOfEntrances,
-    numberOfFloors,
-    region,
-    street,
-    totalArea,
-    totalLivingArea,
-  } = object;
-
-  // Параметры потом будут приходить в device
-  const entryNumber = 1;
-  const hubNumber = 1;
-  const pipeNumber = 1;
+    calculatorId, entryNumber, hubNumber, pipeNumber, calculatorSerialNumber, calculatorModel,
+  } = hubConnection;
+  const {
+    city, street, housingStockNumber, corpus,
+  } = address;
+  const {
+    isConnected, ipV4, port, deviceAddress,
+  } = connection;
 
   function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
@@ -89,13 +78,11 @@ const FormEditODPU = (props) => {
   );
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
+    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      // housingMeteringDeviceType: _.find(types, { value: type }).value,
-      housingMeteringDeviceType: type,
-      // resource: _.find(resources, { value: resource }).value,
-      resource: resource,
+      housingMeteringDeviceType: types[0].value,
+      resource: resources[0].value,
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
@@ -105,14 +92,13 @@ const FormEditODPU = (props) => {
       entryNumber,
       hubNumber,
       pipeNumber,
-      connection: connection[0].value,
+      connection: connections[0].value,
       port: port || 0,
       checkingDate: moment().toISOString(),
       city,
       street,
-      number,
-      calculator,
-
+      number: housingStockNumber,
+      calculator: calculatorId,
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
@@ -176,7 +162,11 @@ const FormEditODPU = (props) => {
 
   const buttonHandler = () => {
     console.log('buttonHandler');
+    console.log(device)
   };
+  // return (
+  //   <button onClick={buttonHandler}>BUTTON</button>
+  // )
 
   return (
     <div style={{ maxWidth: '480px' }}>
@@ -186,19 +176,19 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="housingMeteringDeviceType"
               onChange={(event) => {
-                setFieldValue('housingMeteringDeviceType', event)
+                setFieldValue('housingMeteringDeviceType', event);
               }}
               options={types}
               value={values.housingMeteringDeviceType}
             />
-            <Alert name="closingDateTime"/>
+            <Alert name="housingMeteringDeviceType"/>
           </Form.Item>
 
           <Form.Item label="Выберите тип ресурса">
             <SelectTT
               name="resource"
               onChange={(event) => {
-                setFieldValue('resource', event)
+                setFieldValue('resource', event);
               }}
               options={resources}
               value={values.resource}
@@ -214,7 +204,7 @@ const FormEditODPU = (props) => {
               value={values.model}
               onBlur={handleBlur}
             />
-            <Alert name="model" />
+            <Alert name="model"/>
           </Form.Item>
 
           <Form.Item label="Серийный номер">
@@ -226,7 +216,7 @@ const FormEditODPU = (props) => {
               value={values.serialNumber}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber" />
+            <Alert name="serialNumber"/>
           </Form.Item>
 
           <Form.Item label="Дата выпуска прибора">
@@ -239,7 +229,7 @@ const FormEditODPU = (props) => {
                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
             />
-            <Alert name="lastCommercialAccountingDate" />
+            <Alert name="lastCommercialAccountingDate"/>
           </Form.Item>
 
           <Form.Item label="Дата ввода в эксплуатацию">
@@ -249,7 +239,7 @@ const FormEditODPU = (props) => {
               format="DD.MM.YYYY"
               value={moment(values.futureCheckingDate)}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString())
+                setFieldValue('futureCheckingDate', date.toISOString());
               }}
 
             />
@@ -264,7 +254,7 @@ const FormEditODPU = (props) => {
                 const value = moment()
                   .add(event, 'year')
                   .toISOString();
-                setFieldValue('futureCheckingDate', value)
+                setFieldValue('futureCheckingDate', value);
               }}
               options={serviceLife}
               defaultValue={serviceLife[0].value}
@@ -280,7 +270,7 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               value={values.city}
             />
-            <Alert name="city" />
+            <Alert name="city"/>
           </Form.Item>
 
           <Form.Item label="Улица">
@@ -312,9 +302,9 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="connection"
               onChange={(event) => {
-                setFieldValue('connection', event)
+                setFieldValue('connection', event);
               }}
-              options={connection}
+              options={connections}
               value={values.connection}
 
             />
@@ -377,59 +367,34 @@ const FormEditODPU = (props) => {
 export default FormEditODPU;
 
 const GET_ODPU_TEMPLATE = {
-  calculator: null,
-  closingDate: null,
-  deviceAddress: null,
-  diameter: null,
-  futureCheckingDate: '2022-05-14T03:00:00',
-  futureCommercialAccountingDate: '0001-01-01T03:00:00',
-  housingStockId: 338,
-  id: 1394,
-  ipV4: null,
-  lastCheckingDate: '2018-06-18T03:00:00',
-  lastCommercialAccountingDate: '0001-01-01T03:00:00',
-  model: 'ВКТ-7',
-  port: null,
-  resource: null,
-  serialNumber: '72453',
-  transactionType: '',
-  type: 'Calculator',
-};
-//
-const GET_CALC_TEMPLATE = {
-  calculator: {
-    calculator: null,
-    closingDate: null,
-    deviceAddress: null,
-    diameter: null,
-    futureCheckingDate: '2019-07-06T03:00:00',
-    futureCommercialAccountingDate: '0001-01-01T03:00:00',
-    housingStockId: 304,
-    id: 1518,
-    ipV4: null,
-    lastCheckingDate: '2015-07-06T03:00:00',
-    lastCommercialAccountingDate: '0001-01-01T03:00:00',
-    model: 'ТВ-7.03.1',
-    port: null,
-    resource: null,
-    serialNumber: '15017696',
-    transactionType: '',
-    type: 'Calculator',
+  address: {
+    city: 'Нижнекамск',
+    street: 'Тихая Аллея',
+    housingStockNumber: '4',
+    corpus: null,
   },
+  hubConnection: {
+    calculatorId: 1212,
+    entryNumber: 1,
+    hubNumber: 1,
+    pipeNumber: 1,
+    calculatorSerialNumber: '142834',
+    calculatorModel: 'ВКТ-7',
+    connection: null,
+  },
+  id: 1559216,
+  transactionType: null,
+  model: 'ПРЭМ 2010',
+  serialNumber: '201020201735',
+  connection: {
+    isConnected: true,
+    ipV4: '10.90.128.1',
+    port: 0,
+    deviceAddress: 119,
+  },
+  lastCommercialAccountingDate: '2020-10-20T14:19:28.556',
+  futureCommercialAccountingDate: '2026-10-20T14:19:51.346',
+  lastCheckingDate: '2020-10-21T06:15:57.349',
+  futureCheckingDate: '2020-10-21T06:15:57.349',
   closingDate: null,
-  deviceAddress: null,
-  diameter: '32 мм',
-  futureCheckingDate: '2019-06-04T03:00:00',
-  futureCommercialAccountingDate: '0001-01-01T03:00:00',
-  housingStockId: 304,
-  id: 8230,
-  ipV4: null,
-  lastCheckingDate: '2015-06-04T03:00:00',
-  lastCommercialAccountingDate: '0001-01-01T03:00:00',
-  model: 'РС',
-  port: null,
-  resource: 'ColdWaterSupply',
-  serialNumber: '018315',
-  transactionType: '',
-  type: 'FlowMeter',
 };

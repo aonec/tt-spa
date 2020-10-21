@@ -63,9 +63,9 @@ export const magistrals = [
   },
 ];
 
-export const connection = [
+export const connections = [
   {
-    value: 'Connected',
+    value: 'isConnected',
     label: 'Есть',
   },
   {
