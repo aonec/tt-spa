@@ -92,8 +92,10 @@ const FormEditODPU = (props) => {
     handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
   } = useFormik({
     initialValues: {
-      housingMeteringDeviceType: _.find(types, { value: type }).value,
-      resource: _.find(resources, { value: resource }).value,
+      // housingMeteringDeviceType: _.find(types, { value: type }).value,
+      housingMeteringDeviceType: type,
+      // resource: _.find(resources, { value: resource }).value,
+      resource: resource,
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
