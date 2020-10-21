@@ -10,10 +10,7 @@ import FormEditODPU from './components/EditOPDUForm';
 const EditODPU = () => {
   const { 0: objid, 1: deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
-  const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState();
-  const [meteringDevices, setMeteringDevices] = useState();
-  const [object, setObject] = useState();
 
   function handleChangeTab(value) {
     setTab(value);
@@ -22,23 +19,13 @@ const EditODPU = () => {
   useEffect(() => {
     getODPU(deviceId).then((res) => {
       setDevice(res);
+      console.log(res)
     });
-    getDevice(deviceId).then((res) => {
-      setMeteringDevices(res);
-    });
-    getObjectOfDevice(objid).then((res) => {
-      setObject(res);
-    });
-    // getRelatedDevices(deviceId).then((res) => {
-    //   const { id } = res[0];
-    //   setCalculatorId(id);
-    // });
   }, []);
 
-  if (device && object) {
+  if (device) {
     const model = device.model || 'Не указана модель';
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
-    console.log("devicedevice", device)
     return (
       <>
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
@@ -49,9 +36,6 @@ const EditODPU = () => {
         <FormEditODPU
           currentTabKey={currentTabKey}
           device={device}
-          // calculatorId={calculatorId}
-          // object={object}
-          // meteringDevices = {meteringDevices}
         />
       </>
     );

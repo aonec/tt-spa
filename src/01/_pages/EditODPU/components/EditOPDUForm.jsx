@@ -7,7 +7,7 @@ import { Form } from 'antd';
 import moment from 'moment';
 import {
   types, resources, serviceLife, connections,
-} from '../CONSTANTS';
+} from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
 } from '../../../tt-components';
@@ -18,13 +18,7 @@ const FormEditODPU = (props) => {
     currentTabKey, device
   } = props;
 
-
   const { 0: objid, 1: deviceId } = useParams();
-
-
-
-  // const {type, resource} = meteringDevices;
-  // console.log(meteringDevices);
 
   const {
     address,
@@ -47,9 +41,7 @@ const FormEditODPU = (props) => {
   const {
     city, street, housingStockNumber, corpus,
   } = address;
-  const {
-    isConnected, ipV4, port, deviceAddress,
-  } = connection;
+  const { isConnected, ipV4, port, deviceAddress  } = connection;
 
   function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
