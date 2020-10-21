@@ -9,29 +9,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
 import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
 import {
-  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, Title,
+  ButtonTT,
+  Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
-import TabsComponent from "../../../../EditODPU/components/Main";
+import TabsComponent from '../../../../EditODPU/components/Main';
 
 const ChangeOdpuForm = () => {
   const { 1: deviceId } = useParams();
   const [device, setDevice] = useState({});
-  const { serialNumber, model } = device;
   const dispatch = useDispatch();
   const form = useSelector(
     (state) => _.get(state, ['deviceDeregisterReducer', 'deregisterFormState'], {}),
   );
   const { closingDateTime = moment() } = form;
   useEffect(() => {
-    const setForm = {
-      deviceId: Number(deviceId),
-      documentsIds: [],
-      closingDateTime,
-    };
     getDevice(deviceId).then((res) => setDevice(res));
-    dispatch(
-      updateModalDeregisterForm('deregisterFormState', setForm),
-    );
   }, []);
 
   const {
@@ -63,33 +55,42 @@ const ChangeOdpuForm = () => {
   };
 
   const [currentTabKey, setTab] = useState('1');
-  function handleChangeTab(value){
+
+  function handleChangeTab(value) {
     setTab(value);
   }
+  const handleFormButton = () => {
+    console.log('handleFormButton');
+    console.log(currentTabKey);
 
+    setTab(String(Number(currentTabKey) + 1));
+  };
+  const Header = () => (
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Form.Item label="Выберите дальнейшее действие" style={{ width: '49%' }}>
+        <SelectTT
+          disabled
+          placeholder="Замена прибора"
+        />
+        <Alert name="Выберите дальнейшее действие" />
+      </Form.Item>
 
-  const Header = () => {
-    console.log("Header")
+      <Form.Item label="Исполнитель" style={{ width: '49%' }}>
+        <SelectTT
+          placeholder="Константинопольский К.К."
+          disabled
+        />
+        <Alert name="Исполнитель" />
+      </Form.Item>
+    </div>
+  );
+
+  const ButtonNext = () => {
+    console.log('ButtonNext');
     return (
-      <div style={{display: 'flex', justifyContent:'space-between'}}>
-        <Form.Item label="Выберите дальнейшее действие" style={{width: '49%'}}>
-          <SelectTT
-            disable
-            placeholder={'Замена прибора'}
-          />
-          <Alert name="Выберите дальнейшее действие"/>
-        </Form.Item>
-
-        <Form.Item label="Исполнитель" style={{width: '49%'}}>
-          <SelectTT
-            placeholder={'Константинопольский К.К.'}
-            disable
-          />
-          <Alert name="Исполнитель"/>
-        </Form.Item>
-      </div>
-    )
-  }
+      <ButtonTT color="blue" disabled onClick={handleFormButton}>Далее</ButtonTT>
+    );
+  };
 
   return (
     <>
@@ -98,83 +99,79 @@ const ChangeOdpuForm = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      <form id="formikForm" onSubmit={handleSubmit}>
-        <Form.Item label="Серийный номер">
+      <form
+        id="formikForm"
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}
+      >
+        <Form.Item label="Серийный номер" style={{ width: '49%' }}>
           <InputTT
-            placeholder={'1234567890'}
+            placeholder="1234567890"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        <Form.Item label="Тип прибора">
+        <Form.Item label="Тип прибора" style={{ width: '49%' }}>
           <InputTT
             disabled
-            placeholder={'Тип прибора'}
+            placeholder="Тип прибора"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        <Form.Item label="Тип ресурса">
+        <Form.Item label="Тип ресурса" style={{ width: '49%' }}>
           <SelectTT
             disabled
-            placeholder={'Холодная вода'}
+            placeholder="Холодная вода"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        <Form.Item label="Модель прибора">
+        <Form.Item label="Модель прибора" style={{ width: '49%' }}>
           <InputTT
             disabled
-            placeholder={'Модель прибора'}
+            placeholder="Модель прибора"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        <Form.Item label="Дата поверки пробора">
+        <Form.Item label="Дата поверки пробора" style={{ width: '49%' }}>
           <DatePickerTT
             disabled
             value={moment()}
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        <Form.Item label="Модель прибора">
+        <Form.Item label="Дата следующей поверки пробора" style={{ width: '49%' }}>
           <DatePickerTT
             disabled
             value={moment()}
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
           />
-          <Alert name="Alert"/>
+          <Alert name="Alert" />
         </Form.Item>
 
-        ++++++++++++++++++++++++
-        <Form.Item label="Дата снятия прибора с учета">
-          <DatePickerTT
-            name="closingDateTime"
-            allowClear={false}
-            onBlur={handleBlur}
-            onChange={(date) => {
-              values.closingDateTime = date.toISOString();
-              const path = ['deregisterFormState', 'closingDateTime'];
-              const value = date.toISOString();
-              dispatch(updateModalDeregisterForm(path, value));
-            }}
-            values={values.closingDateTime}
+        <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
+          <SelectTT
+            disabled
+            placeholder="Срок эксплуатации по нормативу"
           />
-          <Alert name="closingDateTime"/>
+          <Alert name="Alert" />
         </Form.Item>
+        <ButtonNext />
 
-        <Form.Item label="Дополнительное поле">
-          <InputTT
-            value={values.test}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="test"
-            type="text"
-          />
-          <Alert name="test"/>
-        </Form.Item>
+        {/* <Form.Item label="Дополнительное поле"> */}
+        {/*  <InputTT */}
+        {/*    value={values.test} */}
+        {/*    onChange={handleChange} */}
+        {/*    onBlur={handleBlur} */}
+        {/*    name="test" */}
+        {/*    type="text" */}
+        {/*  /> */}
+        {/*  <Alert name="test" /> */}
+        {/* </Form.Item> */}
       </form>
     </>
   );

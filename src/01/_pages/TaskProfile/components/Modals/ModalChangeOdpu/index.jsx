@@ -17,6 +17,28 @@ const ModalChangeOdpu = () => {
   const handleCancel = () => {
     dispatch(setModalDeregisterVisible(false));
   };
+  const Buttons = () => {
+    console.log("Buttons");
+    return (
+        <div>
+          <ButtonTT
+              type="submit"
+              color="red"
+              form="formikForm"
+          >
+            Снять прибор с учета
+          </ButtonTT>
+          <ButtonTT
+              style={{ marginLeft: '16px' }}
+              type="submit"
+              color="white"
+              onClick={handleCancel}
+          >
+            Отмена
+          </ButtonTT>
+        </div>
+    )
+  }
 
   return (
     <Modal
@@ -26,21 +48,7 @@ const ModalChangeOdpu = () => {
       width="964px"
     >
       <ChangeOdpuForm />
-      <ButtonTT
-        type="submit"
-        color="red"
-        form="formikForm"
-      >
-        Снять прибор с учета
-      </ButtonTT>
-      <ButtonTT
-        style={{ marginLeft: '16px' }}
-        type="submit"
-        color="white"
-        onClick={handleCancel}
-      >
-        Отмена
-      </ButtonTT>
+
     </Modal>
   );
 };
