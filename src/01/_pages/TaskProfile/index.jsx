@@ -18,7 +18,7 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import ModalChangeOdpu from './components/Modals/ModalChangeOdpu'
+import ModalChangeOdpu from './components/Modals/ModalChangeOdpu';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -52,10 +52,11 @@ export const TaskProfile = () => {
   const docs = useDocuments(state, dispatch);
   const info = useInformation(state);
   const infoDevice = useInformationDevice(state);
-  console.log('TaskProfile info', info);
+  console.log('TaskProfile info', infoDevice);
+  // console.log('infoDevice', infoDevice);
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-      <Header {...state.header} />
+      <Header {...state.header} />useInformation
       <Panel {...panel} />
       <Steps />
       <Documents {...docs} />
@@ -64,7 +65,7 @@ export const TaskProfile = () => {
         <Stages {...stages} />
         <InformationDevice {...infoDevice} />
       </grid>
-      <ModalChangeOdpu />
+      <ModalChangeOdpu {...infoDevice} />
     </TasksProfileContext.Provider>,
   );
 };

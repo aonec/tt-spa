@@ -1,22 +1,16 @@
 import React from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Route } from 'react-router-dom';
+import _ from 'lodash'
+import {useSelector,useDispatch} from "react-redux";
 
 import * as s from '01/r_comp';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-
-import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
 import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
-
-
-
-
-
 // display:flex;
 // align-items: flex-end;
 // justify-content: space-between;
@@ -80,14 +74,19 @@ export const Panel = ({
   perpName = '',
   dispatch = () => { },
 }) => {
+  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
   const dispatchRedux = useDispatch();
 
   const visible = useSelector(
-    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
+      (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
   );
+  const handleSwitchDevices = () => {
+    console.log('handleSwitchDevices');
+    console.log("visible", visible)
+    dispatchRedux(setModalDeregisterVisible(true));
 
-  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
+  };
 
   if (hiddenPanel) return null;
 
@@ -101,6 +100,7 @@ export const Panel = ({
     );
   }
 
+
   const {
     AddPerpetrator,
     EmailNotify,
@@ -112,14 +112,6 @@ export const Panel = ({
   } = actions;
   const { emailNotify = {} } = state;
 
-
-
-  const handleSwitchDevices = () => {
-    console.log('handleSwitchDevices');
-    console.log("visible", visible)
-    dispatchRedux(setModalDeregisterVisible(true));
-
-  };
   return styled(styles)(
     // <Route path="/tasks/(\\d+)" exact>
     <panel
@@ -135,7 +127,6 @@ export const Panel = ({
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
       {EmailNotify && <Contractors />}
-      {SwitchDevices && <button onClick={handleSwitchDevices}>SwitchDevices</button>}
       {EmailNotify && (
         <Textarea
           value={emailNotify.message ?? ''}
@@ -145,6 +136,7 @@ export const Panel = ({
           })}
         />
       )}
+      {SwitchDevices && <button onClick={handleSwitchDevices}>SwitchDevices</button>}
       {EmailNotify && <TemplateButton />}
       {AddDocuments && (
         <>
