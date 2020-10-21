@@ -76,9 +76,21 @@ const FormEditODPU = (props) => {
     </div>
   );
 
-
-
-
+  const editOPDU = async () => {
+    alert('Cейчас будем отправлять данные!');
+    try {
+      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, PUT_EDIT_FORM);
+      alert('Вычислитель успешно изменен!');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: перепроверьте введеные параметры!',
+      );
+      throw new Error(error);
+    }
+  };
 
   const {
     handleSubmit,
@@ -113,9 +125,11 @@ const FormEditODPU = (props) => {
     }),
     onSubmit: async () => {
       console.log(PUT_EDIT_FORM);
-      editOPDU()
+      // editOPDU();
     },
   });
+
+
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -135,7 +149,7 @@ const FormEditODPU = (props) => {
     lastCommercialAccountingDate: values.lastCommercialAccountingDate,
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
     connection: {
-      ipV4: 'string',
+      ipV4: '',
       deviceAddress: randomInteger(1, 255),
       port: values.port || 0,
     },
@@ -149,22 +163,6 @@ const FormEditODPU = (props) => {
       pipeNumber: values.pipeNumber || 0,
       magistral: values.magistral || 'Направление не выбрано',
     },
-  };
-
-  const editOPDU = async () => {
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, PUT_EDIT_FORM);
-      alert('Вычислитель успешно изменен!');
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: перепроверьте введеные параметры!',
-      );
-      throw new Error(error);
-    }
   };
 
   const buttonHandler = () => {
@@ -308,7 +306,7 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="connection"
               onChange={(value) => {
-                console.log(value)
+                console.log(value);
                 if (!value) {
                   values.calculatorId = null;
                   values.entryNumber = null;
@@ -316,7 +314,6 @@ const FormEditODPU = (props) => {
                   values.hubNumber = null;
                 }
                 setFieldValue('connection', value);
-
               }}
               options={connections}
               value={values.connection}

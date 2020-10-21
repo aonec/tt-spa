@@ -3,26 +3,19 @@ import React, {
   useContext,
   useRef,
   useEffect,
-  Children,
 } from 'react';
 import '01/tt-components/antd.scss';
-import {
-  Radio, ConfigProvider, DatePicker, Tabs, Select,
-} from 'antd';
+import { DatePicker, Tabs, Select } from 'antd';
 
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../tt-components'
-
-import ruRu from 'antd/es/locale/ru_RU';
 import { convertDateOnly } from '01/_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
-import DeviceIcons from '01/_components/DeviceIcons';
+
 import _ from 'lodash';
-import { label } from '01/r_comp';
-import { DEFAULT_ICON } from '../../Templates';
+
 import { Icon } from '../../../../../_components/Icon';
 import { DeviceContext } from '../../../DeviceProfile';
-import { DevicesListDiv } from './components/Tabs';
+
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
@@ -61,10 +54,6 @@ export const ModalODPU = () => {
   const entryNumberRes = useRef();
   const [type, setType] = useState(list[0]);
 
-  // const [type, setType] = useState();
-  // const [begin, setBegin] = useState(moment().subtract(1, 'month'));
-  // const [end, setEnd] = useState(moment());
-
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
   const [end, setEnd] = useState(moment());
 
@@ -80,18 +69,13 @@ export const ModalODPU = () => {
   }, [hubs]);
 
   useEffect(() => {
-    function foo() {
+    function foo(){
       $('.ant-tabs-tab-active').click();
     }
 
     console.log('device = ', device);
     setTimeout(foo, 1000);
   }, []);
-  // function foo() {
-  //   $('.ant-tabs-tab-active').click();
-  // }
-
-  // setTimeout(foo, 1000);
 
   const onTabsChangeHandler = (resource) => {
     console.log('onTabsChangeHandler', resource);
@@ -174,19 +158,20 @@ export const ModalODPU = () => {
     }
   };
 
-  function handleChange(value) {
+  function handleChange(value){
     const b = _.filter(selectOptions, { value: `${value}` });
     const { number } = { ...b[0] };
     console.log('number', number);
     entryNumberRes.current = number;
   }
 
-  function onDetailChange(e) {
+  function onDetailChange(e){
     const res = e.target.value;
     detail.current = res;
     // setBegin(moment().subtract(1, res));
     // setEnd(moment());
   }
+
   const someFunc = () => {
     console.log('type = ', type);
     console.log('entryNumberRes.current', entryNumberRes.current);
@@ -229,8 +214,8 @@ export const ModalODPU = () => {
             <h3 className="modal__title">
               Выгрузка отчета о общедомовом потреблении
             </h3>
-            <Top />
-            <Bottom />
+            <Top/>
+            <Bottom/>
           </div>
 
           <div className="modal__bottom">

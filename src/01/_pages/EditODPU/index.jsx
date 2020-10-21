@@ -23,7 +23,7 @@ const EditODPU = () => {
       console.log(error);
       throw {
         resource: 'device',
-        message: 'Произошла ошибка запроса ОДПУ',
+        message: 'Произошла ошибка запроса Вычислителей в этом доме',
       };
     }
   }
