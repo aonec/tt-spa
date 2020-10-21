@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
-import _ from 'lodash';
 import { Grid } from '01/_components';
 import {
   getInfo,
@@ -12,7 +11,6 @@ import {
   getCalculator,
   getPagination,
 } from '01/_api/device_page';
-import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
@@ -128,12 +126,8 @@ export const DeviceProfile = () => {
           calcModel,
         }}
       >
-        {/* <button onClick={buttonHandler}>getPagination</button> */}
         <Header />
-
-        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
-        {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
             <Information />

@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import $ from 'jquery';
-import axios from '../../../../axios';
 import { useParams } from 'react-router-dom';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import '../../../../tt-components/antd.scss';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
 import {
   Modal,
@@ -104,7 +101,7 @@ const ModalAddDevice = () => {
   };
 
   const buttonHandler = () => {
-    console.log("buttonHandler")
+    console.log('buttonHandler');
   };
 
   const handleSubmit = async () => {
@@ -123,32 +120,31 @@ const ModalAddDevice = () => {
   };
 
   return (
-      <Modal id="add-device" ref={modalRef}>
-        <ModalWrap>
-          <ModalClose getModal={modalRef} />
-          <ModalTop>
-            <Title size="middle" color="black">
-              Добавление нового ОДПУ
-            </Title>
-            {/* <button onClick={buttonHandler}>getKey</button> */}
-          </ModalTop>
-          <ModalMain>
-            <TabsComponent
-              currentTabKey={currentTabKey}
-              handleChangeTab={handleChangeTab}
-            />
-          </ModalMain>
+    <Modal id="add-device" ref={modalRef}>
+      <ModalWrap>
+        <ModalClose getModal={modalRef} />
+        <ModalTop>
+          <Title size="middle" color="black">
+            Добавление нового ОДПУ
+          </Title>
+        </ModalTop>
+        <ModalMain>
+          <TabsComponent
+            currentTabKey={currentTabKey}
+            handleChangeTab={handleChangeTab}
+          />
+        </ModalMain>
 
-          <ModalBottom>
-            <ButtonTT color="white" onClick={hideMe}>
-              Отмена
-            </ButtonTT>
-            {renderNextButton()}
-            {renderSubmitButton()}
-          </ModalBottom>
-        </ModalWrap>
-      </Modal>
+        <ModalBottom>
+          <ButtonTT color="white" onClick={hideMe}>
+            Отмена
+          </ButtonTT>
+          {renderNextButton()}
+          {renderSubmitButton()}
+        </ModalBottom>
+      </ModalWrap>
+    </Modal>
   );
 };
 
-export default connect()(ModalAddDevice);
+export default ModalAddDevice;
