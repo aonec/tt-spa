@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import _ from 'lodash';
 import { useFormik } from 'formik';
@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  types, resources, serviceLife, connections,
+  housingMeteringDeviceTypes, resources, serviceLife, connections,
 } from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -15,7 +15,7 @@ import axios from '../../../axios';
 
 const FormEditODPU = (props) => {
   const {
-    currentTabKey, device,
+    currentTabKey, device, calculators,
   } = props;
 
   const { 0: objid, 1: deviceId } = useParams();
@@ -33,17 +33,22 @@ const FormEditODPU = (props) => {
     lastCheckingDate,
     futureCheckingDate,
     closingDate,
+    diameter,
+    resource,
+    housingMeteringDeviceType,
   } = device;
 
   const {
-    calculatorId, entryNumber, hubNumber, pipeNumber, calculatorSerialNumber, calculatorModel,
+    hub, calculatorId, calculatorSerialNumber, calculatorModel,
   } = hubConnection;
+
+  const {
+    entryNumber, hubNumber, pipeNumber, magistral,
+  } = hub;
+
   const {
     city, street, housingStockNumber, corpus,
   } = address;
-  const {
-    isConnected, ipV4, port, deviceAddress,
-  } = connection;
 
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
@@ -71,6 +76,10 @@ const FormEditODPU = (props) => {
     </div>
   );
 
+
+
+
+
   const {
     handleSubmit,
     handleChange, values,
@@ -80,32 +89,31 @@ const FormEditODPU = (props) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      housingMeteringDeviceType: types[0].value,
-      resource: resources[0].value,
+      housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
+      resource: resource || 'Тип ресурса не указан',
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
-      futureCommercialAccountingDate,
+      futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
       hubNumber,
       pipeNumber,
-      connection: String(isConnected),
-      port: port || 0,
+      connection: !!hub,
+      // connection: hub ? true : false,
       checkingDate: moment().toISOString(),
-      city,
-      street,
-      number: housingStockNumber,
-      calculator: calculatorId,
+      city: city || 'Город не указан',
+      street: street || 'Улица не указана',
+      number: housingStockNumber || 'Номер дома не указан',
+      magistral: magistral || 'Не выбрано',
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
     }),
     onSubmit: async () => {
-      console.log('Submit');
       console.log(PUT_EDIT_FORM);
-      editOPDU();
+      editOPDU()
     },
   });
 
@@ -139,7 +147,7 @@ const FormEditODPU = (props) => {
       entryNumber: values.entryNumber || 0,
       hubNumber: values.hubNumber || 0,
       pipeNumber: values.pipeNumber || 0,
-      magistral: 'string',
+      magistral: values.magistral || 'Направление не выбрано',
     },
   };
 
@@ -163,10 +171,7 @@ const FormEditODPU = (props) => {
     console.log('buttonHandler');
     console.log(device);
   };
-  console.log('values.connection', values.connection);
-  // return (
-  //   <button onClick={buttonHandler}>BUTTON</button>
-  // )
+
   const disable = !(JSON.parse(values.connection));
 
   return (
@@ -179,7 +184,7 @@ const FormEditODPU = (props) => {
               onChange={(event) => {
                 setFieldValue('housingMeteringDeviceType', event);
               }}
-              options={types}
+              options={housingMeteringDeviceTypes}
               value={values.housingMeteringDeviceType}
             />
             <Alert name="housingMeteringDeviceType" />
@@ -267,6 +272,7 @@ const FormEditODPU = (props) => {
               placeholder="Укажите город"
               onChange={handleChange}
               value={values.city}
+              disabled
             />
             <Alert name="city" />
           </Form.Item>
@@ -278,6 +284,7 @@ const FormEditODPU = (props) => {
               placeholder="Укажите город"
               onChange={handleChange}
               value={values.street}
+              disabled
             />
             <Alert name="street" />
           </Form.Item>
@@ -289,6 +296,7 @@ const FormEditODPU = (props) => {
               placeholder="Укажите город"
               onChange={handleChange}
               value={values.number}
+              disabled
             />
             <Alert name="number" />
           </Form.Item>
@@ -300,7 +308,15 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="connection"
               onChange={(value) => {
+                console.log(value)
+                if (!value) {
+                  values.calculatorId = null;
+                  values.entryNumber = null;
+                  values.pipeNumber = null;
+                  values.hubNumber = null;
+                }
                 setFieldValue('connection', value);
+
               }}
               options={connections}
               value={values.connection}
@@ -310,22 +326,41 @@ const FormEditODPU = (props) => {
           <Form.Item
             label="Выберите вычислитель, к которому подключен прибор"
           >
-            <InputTT
+            <SelectTT
               name="calculatorId"
-              type="number"
-              placeholder="Начните вводить ID прибора"
-              onChange={handleChange}
+              onChange={(value) => {
+                values.entryNumber = entryNumber;
+                values.pipeNumber = pipeNumber;
+                values.hubNumber = hubNumber;
+                setFieldValue('calculatorId', value);
+                console.log(value);
+              }}
+              options={calculators}
               value={values.calculatorId}
               disabled={disable}
             />
             <Alert name="calculatorId" />
           </Form.Item>
 
+          {/* <Form.Item */}
+          {/*  label="Выберите вычислитель, к которому подключен прибор" */}
+          {/* > */}
+          {/*  <InputTT */}
+          {/*    name="calculatorId" */}
+          {/*    type="number" */}
+          {/*    placeholder="Начните вводить ID прибора" */}
+          {/*    onChange={handleChange} */}
+          {/*    value={values.calculatorId} */}
+          {/*    disabled={disable} */}
+          {/*  /> */}
+          {/*  <Alert name="calculatorId" /> */}
+          {/* </Form.Item> */}
+
           <Form.Item label="Номер ввода">
             <InputTT
               name="entryNumber"
               type="number"
-              placeholder="1"
+              placeholder="Номер ввода"
               onChange={handleChange}
               value={values.entryNumber}
               disabled={disable}
@@ -336,7 +371,7 @@ const FormEditODPU = (props) => {
             <InputTT
               name="hubNumber"
               type="number"
-              placeholder="1"
+              placeholder="Номер узла"
               onChange={handleChange}
               value={values.hubNumber}
               disabled={disable}
@@ -347,7 +382,7 @@ const FormEditODPU = (props) => {
             <InputTT
               name="pipeNumber"
               type="number"
-              placeholder="1"
+              placeholder="Номер трубы"
               onChange={handleChange}
               value={values.pipeNumber}
               disabled={disable}
@@ -368,6 +403,9 @@ const FormEditODPU = (props) => {
 export default FormEditODPU;
 
 const GET_ODPU_TEMPLATE = {
+  diameter: null,
+  resource: 'HotWaterSupply',
+  housingMeteringDeviceType: 'TemperatureSensor',
   address: {
     city: 'Нижнекамск',
     street: 'Тихая Аллея',
@@ -375,24 +413,20 @@ const GET_ODPU_TEMPLATE = {
     corpus: null,
   },
   hubConnection: {
+    hub: {
+      entryNumber: 1,
+      hubNumber: 1,
+      pipeNumber: 1,
+      magistral: 'FeedBackFlow',
+    },
     calculatorId: 1212,
-    entryNumber: 1,
-    hubNumber: 1,
-    pipeNumber: 1,
     calculatorSerialNumber: '142834',
     calculatorModel: 'ВКТ-7',
-    connection: null,
   },
   id: 1559216,
   transactionType: null,
   model: 'ПРЭМ 2010',
   serialNumber: '201020201735',
-  connection: {
-    isConnected: true,
-    ipV4: '10.90.128.1',
-    port: 0,
-    deviceAddress: 119,
-  },
   lastCommercialAccountingDate: '2020-10-20T14:19:28.556',
   futureCommercialAccountingDate: '2026-10-20T14:19:51.346',
   lastCheckingDate: '2020-10-21T06:15:57.349',
