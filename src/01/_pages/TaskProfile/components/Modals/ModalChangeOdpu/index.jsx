@@ -9,16 +9,19 @@ import {
 import { ButtonTT } from '../../../../../tt-components';
 import ChangeOdpuForm from './ChangeOdpuForm';
 import axios from '../../../../../axios';
-import { useInformation } from '../../../hooks/useInformation';
 
 const ModalChangeOdpu = (props) => {
   const [task, setTask] = useState();
   const { 0: taskId } = useParams();
+  const dispatch = useDispatch();
+  const visible = useSelector(
+    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
+  );
 
-  async function getTask(url = '') {
+  async function getTask(url = ''){
     try {
       const res = await axios.get(`Tasks/${url}`);
-      console.log("res = ", res)
+      console.log('res = ', res);
       return res;
     } catch (error) {
       console.log(error);
@@ -28,49 +31,19 @@ const ModalChangeOdpu = (props) => {
       };
     }
   }
+
+
   useEffect(() => {
-      console.log(taskId)
-      getTask(taskId).then((res) => {
+    console.log(taskId);
+    getTask(taskId).then((res) => {
       setTask(res);
-    }).then(()=>{
-        console.log(task)
-      });
+    }).then(() => {
+      console.log(task);
+    });
   }, [props]);
-
-
-  const dispatch = useDispatch();
-  const visible = useSelector(
-    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
-  );
 
   const handleCancel = () => {
     dispatch(setModalDeregisterVisible(false));
-  };
-
-  const [device, setDevice] = useState();
-
-
-  const Buttons = () => {
-    console.log('Buttons');
-    return (
-      <div>
-        <ButtonTT
-          type="submit"
-          color="red"
-          form="formikForm"
-        >
-          Снять прибор с учета
-        </ButtonTT>
-        <ButtonTT
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          color="white"
-          onClick={handleCancel}
-        >
-          Отмена
-        </ButtonTT>
-      </div>
-    );
   };
 
   return (
@@ -80,7 +53,7 @@ const ModalChangeOdpu = (props) => {
       footer={null}
       width="964px"
     >
-      <ChangeOdpuForm device={device} />
+      <ChangeOdpuForm task={task}/>
 
     </Modal>
   );

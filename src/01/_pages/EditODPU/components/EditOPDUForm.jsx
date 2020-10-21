@@ -129,6 +129,8 @@ const FormEditODPU = (props) => {
     },
   });
 
+
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -195,7 +197,6 @@ const FormEditODPU = (props) => {
               options={resources}
               value={values.resource}
             />
-            <Alert name="resource" />
           </Form.Item>
 
           <Form.Item label="Выберите модель прибора">
@@ -231,11 +232,6 @@ const FormEditODPU = (props) => {
               onChange={(date) => {
                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
-              // onChange={(date) => {
-              //   handleChange(event.target.value)
-              //   values.lastCommercialAccountingDate = date;
-              //   setForceRender(randomInteger(1, 255));
-              // }}
             />
             <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
