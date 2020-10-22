@@ -1,9 +1,6 @@
 import React from "react"
 import { useHistory, useRouteMatch } from "react-router-dom"
 
-const ADD_DATE = "add_date";
-
-
 export const usePanel = (
   { panel = {}, panelLoading = false },
   pageDispatch
