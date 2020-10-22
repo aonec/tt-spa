@@ -28,9 +28,11 @@ const EditODPU = () => {
     }
   }
 
+  //Получить устройство
   async function getODPU(id = '') {
     try {
       const res = await axios.get(`HousingMeteringDevices/${id}`);
+      console.log("HousingMeteringDevices", res)
       return res;
     } catch (error) {
       console.log(error);
@@ -44,12 +46,14 @@ const EditODPU = () => {
   useEffect(() => {
     getODPU(deviceId).then((res) => {
       setDevice(res);
+
     });
     getCalculators(objid).then((res) => {
       let selectCalculators = [];
       res.devices.map((item) => {
         if (item.type === 'Calculator') {
-          const label = `${item.model} (${item.serialNumber}) IP: 8.8.8.8 (1234)`;
+          console.log("item", item)
+          const label = `${item.model} (${item.serialNumber}) IP: ${item.ipV4} (${item.port})`;
           const value = item.id;
           selectCalculators = [...selectCalculators, { ...item, label, value }];
         }
@@ -70,7 +74,7 @@ const EditODPU = () => {
     return (
       <>
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-        {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
+         <ButtonTT onClick={buttonHandler}>Button</ButtonTT>
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}

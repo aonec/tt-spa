@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -12,25 +11,36 @@ import {
 import TabsComponent from './components/Tabs';
 import axios from '../../../../../axios';
 
-import { housingMeteringDeviceTypes, resources } from './constants';
-import { connections } from '../../../../EditODPU/constants';
+import { housingMeteringDeviceTypes, resources, connections, serviceLife } from './constants';
 
 const ChangeOdpuForm = () => {
-  const { 1: deviceId } = useParams();
+  const [calcId, setCalcId] = useState('211020202141');
+  const [disable, setDisable] = useState(false);
+  const [odpu, setOdpu] = useState({});
 
-  const [calcId, setCalcId] = useState();
-  const [calculator, setCalculator] = useState({});
   const {
-    housingMeteringDeviceType, resource, model, lastCheckingDate, futureCheckingDate,
-  } = calculator;
+    address, closingDate, diameter, housingMeteringDeviceType,
+    resource, model, lastCheckingDate, futureCheckingDate,
+    futureCommercialAccountingDate, hubConnection, id, lastCommercialAccountingDate, serialNumber, transactionType,
+  } = odpu;
+  console.log('hubConnection', hubConnection);
+  const {
+    calculatorConnection, calculatorId, calculatorModel, calculatorSerialNumber, hub,
+  } = { ...hubConnection };
+  const {
+    isConnected, deviceAddress, ipV4, port,
+  } = { ...calculatorConnection };
+  const {
+    entryNumber, hubNumber, pipeNumber, magistral,
+  } = { ...hub };
+  const {
+    id: houseId, city, street, housingStockNumber,
+  } = { ...address };
 
-  const [disable, setDisable] = useState(true);
-
-  //Поиск устройства по серийному номеру
+  // Поиск устройства по серийному номеру
   async function getMeteringDevices(url = ''){
     try {
       const res = await axios.get(`MeteringDevices/search?DeviceType=Housing&Question=${url}`);
-      console.log(res)
       return res;
     } catch (error) {
       console.log(error);
@@ -41,7 +51,7 @@ const ChangeOdpuForm = () => {
     }
   }
 
-  //Поиск ОДПУ по id, который можно получить из getMeteringDevices
+  // Поиск ОДПУ по id, который можно получить из getMeteringDevices
   async function getHousingMeteringDevices(url = ''){
     try {
       const res = await axios.get(`HousingMeteringDevices/${url}`);
@@ -56,26 +66,26 @@ const ChangeOdpuForm = () => {
   }
 
   const searchCalculator = () => {
-    console.log('searchCalculator');
+    console.log(odpu);
     getMeteringDevices(calcId).then((res) => {
-
-      console.log("res.id",)
       setCalcId(res[0].id);
       getHousingMeteringDevices(res[0].id).then((res) => {
-        console.log(res)
-      })
-    })
+        setOdpu(res);
+        setDisable(false);
+      });
+    });
   };
-
 
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      resource,
-      housingMeteringDeviceType,
-      entryNumber: '1',
-      test: '',
+      resource: '',
+      housingMeteringDeviceType: '',
+      model: '',
+      entryNumber: '',
+      pipeNumber: '',
+      hubNumber: '',
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Введите данные'),
@@ -104,13 +114,11 @@ const ChangeOdpuForm = () => {
     }
   }
 
-
   const handleFormButton = () => {
     console.log('handleFormButton');
     console.log(currentTabKey);
     setTab(String(Number(currentTabKey) + 1));
   };
-
 
   const Header = () => (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -137,6 +145,11 @@ const ChangeOdpuForm = () => {
     alert('Сохраняем данные об замененном ОДПУ');
   };
 
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+    console.log(odpu);
+  };
+
   const ResButton = () => {
     if (Number(currentTabKey) === 3) {
       return (<ButtonTT color="blue" disabled={disable} onClick={handleFinishForm}>Завершить</ButtonTT>);
@@ -145,28 +158,13 @@ const ChangeOdpuForm = () => {
     return (<ButtonTT color="blue" disabled={disable} onClick={handleFormButton}>Далее</ButtonTT>);
   };
 
-  // address: {city: "Нижнекамск", street: "Тихая Аллея", housingStockNumber: "4", corpus: null}
-  // closingDate: null
-  // diameter: null
-  // futureCheckingDate: "2020-10-21T18:48:06.063"
-  // futureCommercialAccountingDate: "2026-10-20T14:19:51.346"
-  // housingMeteringDeviceType: "FlowMeter"
-  // hubConnection: {hub: {…}, calculatorId: 1212, calculatorSerialNumber: "142834", calculatorModel: "ВКТ-7"}
-  // id: 1559216
-  // lastCheckingDate: "2020-10-21T18:48:06.063"
-  // lastCommercialAccountingDate: "2020-10-20T14:19:28.556"
-  // model: "ПРЭМ 2110"
-  // resource: "ColdWaterSupply"
-  // serialNumber: "211020202141"
-  // transactionType: null
-
   return (
     <>
       <Header/>
+      <ButtonTT color="blue" onClick={buttonHandler}>Button</ButtonTT>
       <TabsComponent
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
-        disabled
       />
       <form
         id="formikForm"
@@ -180,20 +178,24 @@ const ChangeOdpuForm = () => {
             <InputTT
               style={{ width: '75%' }}
               placeholder="1234567890"
+              value="211020202141"
               onChange={(event) => {
                 setCalcId(event.target.value);
               }}
             />
             <ButtonTT color="blue" onClick={searchCalculator}>Поиск</ButtonTT>
-            <Alert name="Alert"/>
+            <Alert name="Alert" />
           </Form.Item>
 
           <Form.Item label="Тип прибора" style={{ width: '49%' }}>
             <SelectTT
               placeholder="Тип прибора"
-              options={housingMeteringDeviceTypes}
-              value={housingMeteringDeviceType}
-              disabled
+              name="housingMeteringDeviceType"
+              onChange={(event) => {
+                setFieldValue('housingMeteringDeviceType', event);
+              }}
+              value={values.housingMeteringDeviceType || housingMeteringDeviceTypes[housingMeteringDeviceType]}
+              disabled={disable}
             />
             <Alert name="Alert"/>
           </Form.Item>
@@ -202,23 +204,25 @@ const ChangeOdpuForm = () => {
             <SelectTT
               placeholder="Холодная вода"
               options={resources}
-              value={resource}
-              disabled
+              value={values.resource}
+              disabled={disable}
             />
             <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Модель прибора" style={{ width: '49%' }}>
             <InputTT
-              disabled
-              placeholder={model || 'Модель прибора'}
+              name="model"
+              // disabled={disable}
+              onChange={handleChange}
+              value={values.model || model || ''}
             />
-            <Alert name="Alert"/>
+            <Alert name="model"/>
           </Form.Item>
 
           <Form.Item label="Дата поверки пробора" style={{ width: '49%' }}>
             <DatePickerTT
-              disabled
+              disabled={disable}
               value={moment(lastCheckingDate)}
               format="DD.MM.YYYY"
             />
@@ -227,7 +231,7 @@ const ChangeOdpuForm = () => {
 
           <Form.Item label="Дата следующей поверки пробора" style={{ width: '49%' }}>
             <DatePickerTT
-              disabled
+              disabled={disable}
               value={moment(futureCheckingDate)}
               format="DD.MM.YYYY"
             />
@@ -236,25 +240,22 @@ const ChangeOdpuForm = () => {
 
           <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
             <SelectTT
-              disabled
+              disabled={disable}
               placeholder="Срок эксплуатации по нормативу"
             />
             <Alert name="Alert"/>
           </Form.Item>
         </div>
 
-        <div hidden={!(Number(currentTabKey) === 2)}>
-          <Form.Item label="Подключение к вычислителю">
+        <div
+          hidden={!(Number(currentTabKey) === 2)}
+          style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}
+        >
+          <Form.Item label="Подключение к вычислителю" style={{ width: '49%' }}>
             <SelectTT
               name="connection"
               onChange={(value) => {
                 console.log(value);
-                if (!value) {
-                  values.calculatorId = null;
-                  values.entryNumber = null;
-                  values.pipeNumber = null;
-                  values.hubNumber = null;
-                }
                 setFieldValue('connection', value);
               }}
               options={connections}
@@ -262,40 +263,7 @@ const ChangeOdpuForm = () => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Выберите вычислитель, к которому подключен прибор"
-          >
-            {/* <SelectTT */}
-            {/*  name="calculatorId" */}
-            {/*  onChange={(value) => { */}
-            {/*    // values.entryNumber = entryNumber; */}
-            {/*    // values.pipeNumber = pipeNumber; */}
-            {/*    // values.hubNumber = hubNumber; */}
-            {/*    setFieldValue('calculatorId', value); */}
-            {/*    console.log(value); */}
-            {/*  }} */}
-            {/*  options={calculators} */}
-            {/*  value={values.calculatorId} */}
-            {/*  disabled={disable} */}
-            {/* /> */}
-            <Alert name="calculatorId"/>
-          </Form.Item>
-
-          {/* <Form.Item */}
-          {/*  label="Выберите вычислитель, к которому подключен прибор" */}
-          {/* > */}
-          {/*  <InputTT */}
-          {/*    name="calculatorId" */}
-          {/*    type="number" */}
-          {/*    placeholder="Начните вводить ID прибора" */}
-          {/*    onChange={handleChange} */}
-          {/*    value={values.calculatorId} */}
-          {/*    disabled={disable} */}
-          {/*  /> */}
-          {/*  <Alert name="calculatorId" /> */}
-          {/* </Form.Item> */}
-
-          <Form.Item label="Номер ввода">
+          <Form.Item label="Номер ввода" style={{ width: '49%' }}>
             <InputTT
               name="entryNumber"
               type="number"
@@ -306,7 +274,7 @@ const ChangeOdpuForm = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Номер узла" className="hubNumber">
+          <Form.Item label="Номер узла" className="hubNumber" style={{ width: '49%' }}>
             <InputTT
               name="hubNumber"
               type="number"
@@ -317,7 +285,7 @@ const ChangeOdpuForm = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Номер трубы">
+          <Form.Item label="Номер трубы" style={{ width: '49%' }}>
             <InputTT
               name="pipeNumber"
               type="number"
@@ -330,17 +298,6 @@ const ChangeOdpuForm = () => {
         </div>
 
         <ResButton/>
-
-        {/* <Form.Item label="Дополнительное поле"> */}
-        {/*  <InputTT */}
-        {/*    value={values.test} */}
-        {/*    onChange={handleChange} */}
-        {/*    onBlur={handleBlur} */}
-        {/*    name="test" */}
-        {/*    type="text" */}
-        {/*  /> */}
-        {/*  <Alert name="test" /> */}
-        {/* </Form.Item> */}
       </form>
     </>
   );

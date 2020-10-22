@@ -39,8 +39,10 @@ const FormEditODPU = (props) => {
   } = device;
 
   const {
-    hub, calculatorId, calculatorSerialNumber, calculatorModel,
+    hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection
   } = hubConnection;
+
+  const {isConnected, ipV4, port, deviceAddress} = calculatorConnection
 
   const {
     entryNumber, hubNumber, pipeNumber, magistral,
@@ -112,6 +114,7 @@ const FormEditODPU = (props) => {
       entryNumber,
       hubNumber,
       pipeNumber,
+      port: port || 0,
       connection: !!hub,
       // connection: hub ? true : false,
       checkingDate: moment().toISOString(),
@@ -119,17 +122,18 @@ const FormEditODPU = (props) => {
       street: street || 'Улица не указана',
       number: housingStockNumber || 'Номер дома не указан',
       magistral: magistral || 'Не выбрано',
+      ipV4: ipV4
+      // ipV4: _find(connections. {},
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
     }),
     onSubmit: async () => {
       console.log(PUT_EDIT_FORM);
+      console.log(deviceId)
       // editOPDU();
     },
   });
-
-
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -149,7 +153,7 @@ const FormEditODPU = (props) => {
     lastCommercialAccountingDate: values.lastCommercialAccountingDate,
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
     connection: {
-      ipV4: '',
+      ipV4: values.ipV4,
       deviceAddress: randomInteger(1, 255),
       port: values.port || 0,
     },
@@ -326,11 +330,14 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="calculatorId"
               onChange={(value) => {
-                values.entryNumber = entryNumber;
-                values.pipeNumber = pipeNumber;
-                values.hubNumber = hubNumber;
+                const calculator = _.find(calculators, { value });
+                setFieldValue('entryNumber', entryNumber);
+                setFieldValue('pipeNumber', pipeNumber);
+                setFieldValue('hubNumber', hubNumber);
                 setFieldValue('calculatorId', value);
-                console.log(value);
+                setFieldValue('ipV4',calculator.ipV4 )
+                console.log('value', value);
+                console.log('calculator', calculator);
               }}
               options={calculators}
               value={values.calculatorId}
@@ -338,20 +345,6 @@ const FormEditODPU = (props) => {
             />
             <Alert name="calculatorId" />
           </Form.Item>
-
-          {/* <Form.Item */}
-          {/*  label="Выберите вычислитель, к которому подключен прибор" */}
-          {/* > */}
-          {/*  <InputTT */}
-          {/*    name="calculatorId" */}
-          {/*    type="number" */}
-          {/*    placeholder="Начните вводить ID прибора" */}
-          {/*    onChange={handleChange} */}
-          {/*    value={values.calculatorId} */}
-          {/*    disabled={disable} */}
-          {/*  /> */}
-          {/*  <Alert name="calculatorId" /> */}
-          {/* </Form.Item> */}
 
           <Form.Item label="Номер ввода">
             <InputTT
