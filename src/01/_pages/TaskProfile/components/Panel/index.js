@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Route } from 'react-router-dom';
 import _ from 'lodash'
-import {useSelector,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import * as s from '01/r_comp';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
@@ -11,6 +11,7 @@ import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
+import ButtonTT from "../../../../tt-components/ButtonTT";
 // display:flex;
 // align-items: flex-end;
 // justify-content: space-between;
@@ -66,26 +67,24 @@ const styles = css`
 `;
 
 export const Panel = ({
-  hiddenPanel = true,
-  actions = {},
-  state = {},
-  pushProps = {},
-  isObserver = false,
-  perpName = '',
-  dispatch = () => { },
-}) => {
+                        hiddenPanel = true,
+                        actions = {},
+                        state = {},
+                        pushProps = {},
+                        isObserver = false,
+                        perpName = '',
+                        dispatch = () => {
+                        },
+                      }) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
   const dispatchRedux = useDispatch();
 
   const visible = useSelector(
-      (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
+    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
   );
   const handleSwitchDevices = () => {
-    console.log('handleSwitchDevices');
-    console.log("visible", visible)
     dispatchRedux(setModalDeregisterVisible(true));
-
   };
 
   if (hiddenPanel) return null;
@@ -94,7 +93,7 @@ export const Panel = ({
     return styled(styles, s.input)(
       <panel>
         <input_frame data-disabled data-big>
-          <input disabled value={perpName} />
+          <input disabled value={perpName}/>
         </input_frame>
       </panel>,
     );
@@ -124,9 +123,9 @@ export const Panel = ({
       })}
     >
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
+        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
-      {EmailNotify && <Contractors />}
+      {EmailNotify && <Contractors/>}
       {EmailNotify && (
         <Textarea
           value={emailNotify.message ?? ''}
@@ -136,8 +135,9 @@ export const Panel = ({
           })}
         />
       )}
-      {SwitchDevices && <button onClick={handleSwitchDevices}>SwitchDevices</button>}
-      {EmailNotify && <TemplateButton />}
+      {SwitchDevices && <ButtonTT color={"blue"} onClick={handleSwitchDevices}>Снять прибор с учета</ButtonTT>}
+      {SwitchDevices && <ButtonTT color={"blue"} onClick={handleSwitchDevices}>Заменить расходомер</ButtonTT>}
+      {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
@@ -145,7 +145,7 @@ export const Panel = ({
         </>
       )}
       {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
       <PushButton {...pushProps} />
     </panel>,
@@ -178,9 +178,9 @@ const TemplateButton = () => styled(s.button)`
       grid-area: tmp;
     }
   `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>,
+  <button data-big>
+    <span>Выбрать из шаблона</span>
+  </button>,
 );
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
@@ -189,8 +189,8 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       margin-left: 10px;
     }
   `(
-    <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
-    </button>,
+  <button data-big data-primary {...props}>
+    <Loader show={loading}/>
+    <span>Завершить этап</span>
+  </button>,
 );

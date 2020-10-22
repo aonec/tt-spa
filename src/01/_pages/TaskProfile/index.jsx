@@ -54,8 +54,13 @@ export const TaskProfile = () => {
   const infoDevice = useInformationDevice(state);
   console.log('TaskProfile info', infoDevice);
   // console.log('infoDevice', infoDevice);
+  const buttonHandler = () => {
+    console.log("buttonHandler")
+    console.log(panel,info,infoDevice )
+  }
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+      <button onClick={buttonHandler}>buttonHandler</button>
       <Header {...state.header} />useInformation
       <Panel {...panel} />
       <Steps />

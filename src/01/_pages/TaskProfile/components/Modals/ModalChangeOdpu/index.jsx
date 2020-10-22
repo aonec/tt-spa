@@ -11,14 +11,35 @@ import ChangeOdpuForm from './ChangeOdpuForm';
 import axios from '../../../../../axios';
 
 const ModalChangeOdpu = (props) => {
+  console.log("props", props)
   const [task, setTask] = useState();
   const { 0: taskId } = useParams();
   const dispatch = useDispatch();
   const visible = useSelector(
     (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
   );
+  const getPropsHandler = () => {
+    console.log("getPropsHandler")
+    console.log(props)
+    const {number} = props;
+    // MeteringDevices
 
-  async function getTask(url = ''){
+  }
+  async function MeteringDevices (url = '') {
+    try {
+      const res = await axios.get(`MeteringDevices?SerialNumber=${url}`);
+      console.log('res = ', res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса задачи',
+      };
+    }
+  }
+
+  async function getTask(url = '') {
     try {
       const res = await axios.get(`Tasks/${url}`);
       console.log('res = ', res);
@@ -31,7 +52,6 @@ const ModalChangeOdpu = (props) => {
       };
     }
   }
-
 
   useEffect(() => {
     console.log(taskId);
@@ -53,7 +73,8 @@ const ModalChangeOdpu = (props) => {
       footer={null}
       width="964px"
     >
-      <ChangeOdpuForm task={task}/>
+      <button onClick={getPropsHandler}>getProps</button>
+      <ChangeOdpuForm task={task} />
 
     </Modal>
   );
