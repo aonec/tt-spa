@@ -26,14 +26,48 @@ const ChangeOdpuForm = () => {
 
   const [disable, setDisable] = useState(true);
 
+  //Поиск устройства по серийному номеру
+  async function getMeteringDevices(url = ''){
+    try {
+      const res = await axios.get(`MeteringDevices/search?DeviceType=Housing&Question=${url}`);
+      console.log(res)
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
+  }
+
+  //Поиск ОДПУ по id, который можно получить из getMeteringDevices
+  async function getHousingMeteringDevices(url = ''){
+    try {
+      const res = await axios.get(`HousingMeteringDevices/${url}`);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
+  }
+
   const searchCalculator = () => {
     console.log('searchCalculator');
-    getCalculator(calcId).then((res) => {
-      setCalculator(res);
-      setDisable(false);
-      console.log(calculator);
-    });
+    getMeteringDevices(calcId).then((res) => {
+
+      console.log("res.id",)
+      setCalcId(res[0].id);
+      getHousingMeteringDevices(res[0].id).then((res) => {
+        console.log(res)
+      })
+    })
   };
+
+
   const {
     handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
   } = useFormik({
@@ -63,25 +97,13 @@ const ChangeOdpuForm = () => {
 
   const [currentTabKey, setTab] = useState('1');
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     if (disable) {
     } else {
       setTab(value);
     }
   }
 
-  async function getCalculators(objid = '') {
-    try {
-      const res = await axios.get(`HousingStocks/${objid}/Devices`);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса Вычислителей в этом доме',
-      };
-    }
-  }
 
   const handleFormButton = () => {
     console.log('handleFormButton');
@@ -89,18 +111,6 @@ const ChangeOdpuForm = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-  async function getCalculator(id = '') {
-    try {
-      const res = await axios.get(`HousingMeteringDevices/${id}`);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса ОДПУ',
-      };
-    }
-  }
 
   const Header = () => (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -109,7 +119,7 @@ const ChangeOdpuForm = () => {
           disabled
           placeholder="Замена прибора"
         />
-        <Alert name="Выберите дальнейшее действие" />
+        <Alert name="Выберите дальнейшее действие"/>
       </Form.Item>
 
       <Form.Item label="Исполнитель" style={{ width: '49%' }}>
@@ -117,7 +127,7 @@ const ChangeOdpuForm = () => {
           placeholder="Константинопольский К.К."
           disabled
         />
-        <Alert name="Исполнитель" />
+        <Alert name="Исполнитель"/>
       </Form.Item>
     </div>
   );
@@ -152,7 +162,7 @@ const ChangeOdpuForm = () => {
 
   return (
     <>
-      <Header />
+      <Header/>
       <TabsComponent
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
@@ -175,7 +185,7 @@ const ChangeOdpuForm = () => {
               }}
             />
             <ButtonTT color="blue" onClick={searchCalculator}>Поиск</ButtonTT>
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Тип прибора" style={{ width: '49%' }}>
@@ -185,7 +195,7 @@ const ChangeOdpuForm = () => {
               value={housingMeteringDeviceType}
               disabled
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Тип ресурса" style={{ width: '49%' }}>
@@ -195,7 +205,7 @@ const ChangeOdpuForm = () => {
               value={resource}
               disabled
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Модель прибора" style={{ width: '49%' }}>
@@ -203,7 +213,7 @@ const ChangeOdpuForm = () => {
               disabled
               placeholder={model || 'Модель прибора'}
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Дата поверки пробора" style={{ width: '49%' }}>
@@ -212,7 +222,7 @@ const ChangeOdpuForm = () => {
               value={moment(lastCheckingDate)}
               format="DD.MM.YYYY"
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Дата следующей поверки пробора" style={{ width: '49%' }}>
@@ -221,7 +231,7 @@ const ChangeOdpuForm = () => {
               value={moment(futureCheckingDate)}
               format="DD.MM.YYYY"
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
@@ -229,7 +239,7 @@ const ChangeOdpuForm = () => {
               disabled
               placeholder="Срок эксплуатации по нормативу"
             />
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
         </div>
 
@@ -268,7 +278,7 @@ const ChangeOdpuForm = () => {
             {/*  value={values.calculatorId} */}
             {/*  disabled={disable} */}
             {/* /> */}
-            <Alert name="calculatorId" />
+            <Alert name="calculatorId"/>
           </Form.Item>
 
           {/* <Form.Item */}
@@ -319,7 +329,7 @@ const ChangeOdpuForm = () => {
           </Form.Item>
         </div>
 
-        <ResButton />
+        <ResButton/>
 
         {/* <Form.Item label="Дополнительное поле"> */}
         {/*  <InputTT */}

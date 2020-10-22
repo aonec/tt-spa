@@ -81,6 +81,8 @@ export const Panel = ({
   const dispatchRedux = useDispatch();
   const showModalDeregister = () => {
     dispatchRedux(setModalDeregisterVisible(true));
+    console.log("showModalDeregister")
+    console.log(dispatchRedux(setModalDeregisterVisible(true)))
   };
 
   const showModalChangeOdpu = () => {

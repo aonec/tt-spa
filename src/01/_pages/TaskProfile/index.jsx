@@ -19,6 +19,7 @@ import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import ModalChangeOdpu from './components/Modals/ModalChangeOdpu';
+import ModalDeregisterDevice from "./components/Modals/ModalDeregisterDevice";
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -71,6 +72,7 @@ export const TaskProfile = () => {
         <InformationDevice {...infoDevice} />
       </grid>
       <ModalChangeOdpu {...infoDevice} />
+      <ModalDeregisterDevice {...infoDevice} />
     </TasksProfileContext.Provider>,
   );
 };
