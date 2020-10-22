@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 import {
-  setModalDeregisterVisible,
+  setModalChangeODPUVisible,
 } from '../../../../../Redux/actions/actions';
 import { ButtonTT } from '../../../../../tt-components';
 import ChangeOdpuForm from './ChangeOdpuForm';
@@ -16,7 +16,7 @@ const ModalChangeOdpu = (props) => {
   const { 0: taskId } = useParams();
   const dispatch = useDispatch();
   const visible = useSelector(
-    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
+    (state) => _.get(state, ['changeOdpuReducer', 'visible'], false),
   );
   const getPropsHandler = () => {
     console.log("getPropsHandler")
@@ -63,7 +63,7 @@ const ModalChangeOdpu = (props) => {
   }, [props]);
 
   const handleCancel = () => {
-    dispatch(setModalDeregisterVisible(false));
+    dispatch(setModalChangeODPUVisible(false));
   };
 
   return (

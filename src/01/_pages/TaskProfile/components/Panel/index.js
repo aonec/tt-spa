@@ -79,12 +79,12 @@ export const Panel = ({
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
   const dispatchRedux = useDispatch();
-
-  const visible = useSelector(
-    (state) => _.get(state, ['deviceDeregisterReducer', 'visible'], false),
-  );
-  const handleSwitchDevices = () => {
+  const showModalDeregister = () => {
     dispatchRedux(setModalDeregisterVisible(true));
+  };
+
+  const showModalChangeOdpu = () => {
+    dispatchRedux(setModalChangeODPUVisible(true));
   };
 
   if (hiddenPanel) return null;
@@ -135,8 +135,8 @@ export const Panel = ({
           })}
         />
       )}
-      {SwitchDevices && <ButtonTT color={"blue"} onClick={handleSwitchDevices}>Снять прибор с учета</ButtonTT>}
-      {SwitchDevices && <ButtonTT color={"blue"} onClick={handleSwitchDevices}>Заменить расходомер</ButtonTT>}
+      {SwitchDevices && <ButtonTT color={"blue"} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}
+      {SwitchDevices && <ButtonTT color={"blue"} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
       {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>

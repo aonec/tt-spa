@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const initialState = {
-  visible: true,
+  visible: false,
   deregisterFormState: {
     deviceId: '',
     documentsIds: [],
