@@ -15,7 +15,6 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
     const dispatch = useDispatch();
 
     const handleSubmit = (values) => {
-        debugger;
         if (!values.search) return;
         dispatch(getDevicesBySerialNumber(values.search));
     }
@@ -25,14 +24,13 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
     }
 
     const onFinish = () => {
-        debugger;
     }
 
     const searchForm = useRef(null);
 
     const handleKeyPress = (e) => {
         if (e.key === "Enter") {
-            searchForm.submit();
+            searchForm.current.submit();
         }
     }
 

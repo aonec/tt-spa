@@ -16,7 +16,7 @@ import {
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
-  Devices,
+  DevicesFromSearch,
 } from '01/_pages';
 
 import EditCalculator from '01/_pages/EditCalculator';
@@ -34,6 +34,7 @@ import { ConfigProvider } from "antd";
 import ruRu from "antd/es/locale/ru_RU";
 import DeviceSearchForm from "../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm";
 import EditODPU from '../_pages/EditODPU';
+import {Devices} from "../_pages/ObjectProfile/components/Devices";
 
 moment.locale('ru');
 
@@ -43,9 +44,12 @@ const loggerMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+
 export const store = createStore(
   rootReducer,
-  applyMiddleware(loggerMiddleware, thunkMiddleWare),
+  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare)),
 );
 
 window.store = store;
@@ -80,7 +84,9 @@ export function App(){
                     />
                     <Route path="/tasks/(\\d+)" component={TaskProfile}/>
                     <Route path="/objects/" component={Objects} exact/>
-                    <Route path="/devices/" component={Devices} exact/>
+                    <Route path="/devices/" component={DevicesFromSearch} exact/>
+
+                    <Route path="/devices/(\\d+)" component={Devices} exact/>
 
                     <Route
                       path="/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?"

@@ -39,6 +39,7 @@ const styles = css`
 `
 
 export const UploadList = ({ items = [], del = () => {}, ...props }) => {
+  debugger;
   // console.log(items)
   return styled(styles)(
     <upload_list {...props}>
@@ -48,7 +49,7 @@ export const UploadList = ({ items = [], del = () => {}, ...props }) => {
             {name}
           </file>
           <Loader show={deleted}>
-            <Icon icon="del" />
+            <Icon icon="del" onClick={() => del(id)}/>
           </Loader>
         </file_wrapper>
       ))}

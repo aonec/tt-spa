@@ -26,13 +26,13 @@ export const usePanel = (
     disabled: isDisabled(state, panel.actions ?? {}) || panelLoading,
     loading: panelLoading,
   }
-
   return {
     hiddenPanel: !panel.actions,
     isObserver: panel.userOperatingStatus === "Observer",
     perpName: panel.perpName,
     pushProps,
     dispatch,
+    expectedCompletionTime: panel.expectedCompletionTime,
     actions: panel?.actions,
     state,
   }

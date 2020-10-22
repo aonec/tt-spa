@@ -7,6 +7,7 @@ import {Perpetrator, Contractors, NextStage} from "01/components/Select"
 import {Loader} from "01/components"
 import {UploadButton, useUpload, UploadList} from "01/components/Upload"
 import AddDate from "../../../../components/Select/selects/AddDate";
+import moment from 'moment';
 
 
 // display:flex;
@@ -65,6 +66,7 @@ const styles = css`
 `
 
 export const Panel = ({
+                          expectedCompletionTime,
                           hiddenPanel = true,
                           actions = {},
                           state = {},
@@ -90,7 +92,10 @@ export const Panel = ({
         Completion,
         SwitchDevices,
         SetNextStageDeadline,
+        UploadReadings
     } = actions
+
+    const deadline = new Date(expectedCompletionTime).toLocaleDateString();
 
     if (isObserver)
         return styled(styles, s.input) (
@@ -100,7 +105,7 @@ export const Panel = ({
                     <input disabled value={perpName}/>
                 </input_frame>
                 <input_frame data-disabled={true} data-big style={{width: '50%'}}>
-                    <input disabled value={SetNextStageDeadline}/>
+                    <input disabled value={deadline}/>
                 </input_frame>
             </panel>
         )

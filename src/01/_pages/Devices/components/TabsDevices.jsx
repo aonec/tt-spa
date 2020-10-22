@@ -11,7 +11,7 @@ import {
 
 import {useDispatch, useSelector} from "react-redux";
 
-import styles from './TabsDevices.module.css'
+import styles from './TabsDevices.module.scss'
 import {createPages} from "../../../utils/pagesCreator";
 
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
@@ -60,8 +60,7 @@ const TabsDevices = () => {
     return <div>
 
         <Tabs defaultActiveKey="1" onChange={callback}>
-
-            <TabPane className={styles.tab} tab="ОДПУ" key="1">
+            <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
                 {/*<form className={styles.form} onSubmit={handleSubmit}>*/}
                 {/*    <label>*/}
                 {/*        Поиск по серийному номеру прибора:*/}

@@ -30,7 +30,6 @@ export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   useFetchPage(state, dispatch);
   const { 0: objid } = useParams();
-  debugger;
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;

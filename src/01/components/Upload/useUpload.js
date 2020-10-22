@@ -1,6 +1,8 @@
 import React from "react"
 import { uploadFile } from "01/_api/upload"
 
+const DELETE_FILE = 'DELETE_FILE';
+
 function uploadReducer(state, action) {
   const { type, data, file } = action
   const { fileList } = state
@@ -14,13 +16,24 @@ function uploadReducer(state, action) {
         file: null,
         loading: false,
       }
+    case DELETE_FILE:
+      debugger;
+      return {
+        ...state,
+        fileList: fileList.filter(file => file.id !== action.fileId)
+      }
     default:
       console.error("upload", type)
       return state
   }
 }
 
-export const useUpload = (callback = () => {}) => {
+const deleteFile = (fileId) => {
+  debugger;
+  return {type: DELETE_FILE, fileId};
+}
+
+export const  useUpload = (callback = () => {}) => {
   const [state, dispatch] = React.useReducer(uploadReducer, {
     file: null,
     fileList: [],
@@ -36,11 +49,10 @@ export const useUpload = (callback = () => {}) => {
   return {
     button: {
       onChange(e) {
-        debugger
         dispatch({ type: "change", file: e.target.files[0] })
       },
       loading: state.loading,
     },
-    list: { items: state.fileList, del: () => {} },
+    list: { items: state.fileList, del: (id) => {dispatch(deleteFile(id)) }},
   }
 }
