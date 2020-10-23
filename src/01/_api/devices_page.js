@@ -22,7 +22,8 @@ export const devicesAPI = {
 
     async getDevicesBySerialNumber(serialNumber) {
         try {
-            const res = await axios.get(`MeteringDevices/?SerialNumber=${serialNumber}`);
+            const res = await axios.get(`Calculators?Question=${serialNumber}`);
+            debugger;
                 if (res.totalItems === 0) {
                     alert('Прибора с таким серийным номером не существует')
                     return

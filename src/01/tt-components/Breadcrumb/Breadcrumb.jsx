@@ -6,6 +6,10 @@ const StyledBreadcrumb = styled.span`
 font-weight: 500;
 color: #272F5A;
 cursor: pointer;
+
+&: hover {
+color: #189EE9;
+}
 `
 
 const Breadcrumb = () => {

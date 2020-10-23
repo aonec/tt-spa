@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ConfigProvider, DatePicker, Space } from 'antd';
 
-import '../../../tt-components/antd.scss';
+import styles from './antd.module.scss';
 import { NavLink } from 'react-router-dom';
 import { addDate, dataReducer } from '../../../_pages/TaskProfile/hooks/usePanel';
 import 'moment/locale/ru';
@@ -17,7 +17,7 @@ const AddDate = ({
 
   return (
     <Space direction="vertical">
-      <DatePicker format="DD.MM.YYYY" onChange={onChange} />
+      <DatePicker style={{height: 50, width: '100%'}} format="DD.MM.YYYY" onChange={onChange} />
     </Space>
   );
 };

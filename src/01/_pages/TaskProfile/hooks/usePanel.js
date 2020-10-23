@@ -62,5 +62,6 @@ function isDisabled(
   if (AddPerpetrator) return !nextPerpetratorId || !nextStageDeadline
   if (AddDocuments) return !documentsIds.length
   if (Completion) return false
+
   return true
 }

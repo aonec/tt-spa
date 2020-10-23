@@ -85,6 +85,7 @@ export async function getRelatedDevices(url = '') {
 export async function getTypeODPU(url = '') {
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
+    debugger;
     // console.log(res.type);
     return res.type;
   } catch (error) {

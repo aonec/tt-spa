@@ -89,7 +89,9 @@ export function App(){
                     <Route path="/devices/(\\d+)" component={Devices} exact/>
 
                     <Route
-                      path="/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?"
+                      path={["/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?",
+                        "/calculators/(\\d+)/(connection|related|documents)?",
+                        "/housingMeteringDevices/(\\d+)/(related|documents)?"]}
                       component={DeviceProfile}
                       exact
                     />

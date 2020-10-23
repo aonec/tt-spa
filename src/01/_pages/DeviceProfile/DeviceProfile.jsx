@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Route, useParams } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import { Route, useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import { Grid } from '01/_components';
 import {
@@ -30,7 +30,15 @@ import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+    const params = useParams();
+
+    let deviceId;
+    let objid;
+    let path;
+
+  // let { 0: objid, 1: deviceId } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
@@ -47,7 +55,7 @@ export const DeviceProfile = () => {
     building: true,
     tasks: true,
     related: true,
-    typeODPU: true,
+    typeODPU: false,
   });
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
@@ -58,8 +66,29 @@ export const DeviceProfile = () => {
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
+    const {pathname} = useLocation();
+    debugger;
+
+    if (Object.keys(params).length === 3) {
+        deviceId = params[1];
+        objid = params[0];
+        path = `/objects/${objid}/devices/${deviceId}/`;
+    } else {
+        deviceId = params[0];
+        // path = `/calculators/${deviceId}/`;
+    }
+
+
+    // else if (pathname.includes('calculator')) {
+    //     deviceId = params[0];
+    //     path = `/calculators/${deviceId}/`;
+    // } else if (pathname.includes('housingMeteringDevices')) {
+    //     deviceId = params[0];
+    //     path = `/housingMeteringDevices/${deviceId}/`
+    // }
+
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       getInfo(deviceId),
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
@@ -68,7 +97,13 @@ export const DeviceProfile = () => {
       // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        const [device, building, tasks, related, typeODPU] = responses;
+        // const [device, building, tasks, related, typeODPU] = responses;
+          debugger;
+          let device = responses[0].value;
+          let building = responses[1].value;
+          let tasks = responses[2].value;
+          let related = responses[3].value;
+          let typeODPU = responses[4].value;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
@@ -82,6 +117,7 @@ export const DeviceProfile = () => {
         setError({ resource, text });
       })
       .finally(() => {
+
         setLoadings((prev) => ({
           ...prev,
           device: false,
@@ -90,8 +126,10 @@ export const DeviceProfile = () => {
           related: false,
           typeODPU: false,
         }));
+        setIsLoading(false)
       });
   }, []);
+
 
   useEffect(() => {
     if (typeODPU === 'Calculator') {
@@ -104,9 +142,10 @@ export const DeviceProfile = () => {
       });
       console.log('calcModel= ', calcModel);
     }
+
   }, [typeODPU]);
 
-  const path = `/objects/${objid}/devices/${deviceId}/`;
+  // const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
     console.log('calculator');
@@ -135,16 +174,16 @@ export const DeviceProfile = () => {
         <Tabs />
         {/* Здесь делим экран на две части: main and aside */}
         <Grid>
-          <Route path={path} exact>
+          <Route path={pathname} exact>
             <Information />
           </Route>
-          <Route path={`${path}connection`} exact>
+          <Route path={`${pathname}connection`} exact>
             <Connection />
           </Route>
-          <Route path={`${path}related`} exact>
+          <Route path={`${pathname}related`} exact>
             <RelatedDevices />
           </Route>
-          <Route path={`${path}documents`} exact>
+          <Route path={`${pathname}documents`} exact>
             <div>Документы</div>
           </Route>
 
@@ -156,6 +195,9 @@ export const DeviceProfile = () => {
     );
   }
 
+
+if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...'
+    debugger;
   return (
     <DeviceContext.Provider
       value={{
