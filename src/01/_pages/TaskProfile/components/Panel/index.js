@@ -67,21 +67,23 @@ const styles = css`
 `;
 
 export const Panel = ({
-  expectedCompletionTime,
-  hiddenPanel = true,
-  actions = {},
-  state = {},
-  pushProps = {},
-  isObserver = false,
-  perpName = '',
-  dispatch = () => {
-  },
-}) => {
+                        expectedCompletionTime,
+                        hiddenPanel = true,
+                        actions = {},
+                        state = {},
+                        pushProps = {},
+                        isObserver = false,
+                        perpName = '',
+                        dispatch = () => {
+                        },
+                      }) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
   useEffect(() => {
     console.log(pushProps);
   }, [pushProps]);
+
+  const dispatchRedux = useDispatch();
 
   if (hiddenPanel) return null;
 
@@ -97,16 +99,21 @@ export const Panel = ({
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
-
+  const showModalChangeOdpu = () => {
+    dispatchRedux(setModalChangeODPUVisible, true)
+  }
+  const showModalDeregister = () => {
+    dispatchRedux(setModalDeregisterVisible, true)
+  }
   if (isObserver) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
 
         <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={perpName} />
+          <input disabled value={perpName}/>
         </input_frame>
         <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={deadline} />
+          <input disabled value={deadline}/>
         </input_frame>
       </panel>,
     );
@@ -127,11 +134,11 @@ export const Panel = ({
         five: Switch && PushButton,
       })}
     >
-      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} /> }
-      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} /> }
+      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>}
+      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })}/>}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
 
-      {EmailNotify && <Contractors />}
+      {EmailNotify && <Contractors/>}
       {EmailNotify && (
         <Textarea
           value={emailNotify.message ?? ''}
@@ -142,10 +149,13 @@ export const Panel = ({
         />
       )}
 
-      {/* {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>} */}
 
-      {/* {Switch && <ButtonTT color={"red"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}  */}
-      {EmailNotify && <TemplateButton />}
+      {SwitchDevices && <ButtonTT color={"blue"} style={{ width: 'fit-content' }} onClick={showModalChangeOdpu}>Заменить
+        расходомер</ButtonTT>}
+
+      {Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с
+        учета</ButtonTT>}
+      {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
@@ -153,7 +163,7 @@ export const Panel = ({
         </>
       )}
       {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
       <PushButton {...pushProps} />
     </panel>,
@@ -186,9 +196,9 @@ const TemplateButton = () => styled(s.button)`
       grid-area: tmp;
     }
   `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>,
+  <button data-big>
+    <span>Выбрать из шаблона</span>
+  </button>,
 );
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
@@ -197,8 +207,8 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       margin-left: 10px;
     }
   `(
-    <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
-    </button>,
+  <button data-big data-primary {...props}>
+    <Loader show={loading}/>
+    <span>Завершить этап</span>
+  </button>,
 );
