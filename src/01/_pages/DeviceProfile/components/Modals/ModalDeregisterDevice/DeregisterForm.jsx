@@ -4,13 +4,11 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { DatePicker, Form, Input } from 'antd';
+import { Form } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
 import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
-import {
-  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, Title,
-} from '../../../../../tt-components';
+import { DatePickerTT, Title } from '../../../../../tt-components';
 
 const DeregisterForm = () => {
   const { 1: deviceId } = useParams();
@@ -34,17 +32,15 @@ const DeregisterForm = () => {
   }, []);
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur,
+    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
   } = useFormik({
     initialValues: {
       deviceId: Number(deviceId),
       documentsIds: [],
-      closingDateTime: '',
-      test: '',
+      closingDateTime: moment().toISOString(),
     },
     validationSchema: Yup.object({
-      test: Yup.string().required('Введите данные'),
-      closingDateTime: Yup.string().required('Введите данные'),
+
     }),
     onSubmit: async () => {
       deregisterDevice(form);
@@ -71,28 +67,18 @@ const DeregisterForm = () => {
         <Form.Item label="Дата снятия прибора с учета">
           <DatePickerTT
             name="closingDateTime"
+            format={'DD.MM.YYYY'}
             allowClear={false}
             onBlur={handleBlur}
             onChange={(date) => {
-              values.closingDateTime = date.toISOString();
+              setFieldValue(' closingDateTime', date.toISOString());
               const path = ['deregisterFormState', 'closingDateTime'];
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));
             }}
-            values={values.closingDateTime}
+            value={moment(values.closingDateTime)}
           />
-          <Alert name="closingDateTime" />
-        </Form.Item>
-
-        <Form.Item label="Дополнительное поле">
-          <InputTT
-            value={values.test}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="test"
-            type="text"
-          />
-          <Alert name="test" />
+          <Alert name="closingDateTime"/>
         </Form.Item>
       </form>
     </>
