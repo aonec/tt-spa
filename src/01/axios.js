@@ -66,17 +66,14 @@ export default axios;
 export { cancel };
 
 // utils
-function saveToLocStor(name, data){
+function saveToLocStor(name, data) {
   localStorage.setItem(name, JSON.stringify(data));
 }
 
-function takeFromLocStor(name){
+function takeFromLocStor(name) {
   return JSON.parse(localStorage.getItem(name));
 }
 
-function checkUrl(str, url){
+function checkUrl(str, url) {
   return new RegExp(str, 'gi').test(url);
 }
-
-
-

@@ -162,9 +162,9 @@ const FormEditODPU = (props) => {
     resource: values.resource,
     model: values.model,
     pipe: {
-      entryNumber: values.entryNumber || 0,
-      hubNumber: values.hubNumber || 0,
-      pipeNumber: values.pipeNumber || 0,
+      entryNumber: values.entryNumber || null,
+      hubNumber: values.hubNumber || null,
+      pipeNumber: values.pipeNumber || null,
       magistral: values.magistral || 'Направление не выбрано',
     },
   };
