@@ -12,7 +12,7 @@ const tabItems = [
 ];
 
 export const Tabs = React.memo(() => {
-  const { url } = useRouteMatch('/*/*/devices/(\\d+)/');
+  const { url } = useRouteMatch('/*/*/devices/(\\d+)/') || useRouteMatch('/calculators/(\\d+)');
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (

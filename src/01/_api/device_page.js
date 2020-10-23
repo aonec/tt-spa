@@ -2,6 +2,32 @@ import axios from '01/axios';
 
 const URL = 'HousingStocks';
 
+export async function getDevice(url = '') {
+  try {
+    const res = await axios.get(`MeteringDevices/${url}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса устройства',
+    };
+  }
+}
+
+export async function getODPU(url = '') {
+  try {
+    const res = await axios.get(`HousingMeteringDevices/${url}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса ОДПУ',
+    };
+  }
+}
+
 export async function getInfo(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
@@ -19,11 +45,13 @@ export async function getInfo(url = '') {
 }
 
 const housingStocksURL = 'HousingStocks';
+
 export async function getObjectOfDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     // console.log('url', url);
     const res = await axios.get(`${housingStocksURL}/${url}`);
+    console.log("getObjectOfDevice", res)
     return res;
   } catch (error) {
     console.log(error);
@@ -55,7 +83,6 @@ export async function getRelatedDevices(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`MeteringDevices/related?DeviceId=${url}`);
-    // console.log('res', res);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {
@@ -71,6 +98,7 @@ export async function getRelatedDevices(url = '') {
 export async function getTypeODPU(url = '') {
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
+    // debugger;
     // console.log(res.type);
     return res.type;
   } catch (error) {
@@ -127,9 +155,9 @@ export async function getPagination(id = '') {
 
 export async function deregisterDevice(Device = {}) {
   try {
+    alert('Отправляется запрос на снятие прибора с учета !');
     const res = await axios.post('MeteringDevices/close', Device);
     alert('Вычислитель успешно снят с учета !');
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

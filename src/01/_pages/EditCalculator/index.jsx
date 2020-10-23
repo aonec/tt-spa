@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
-import $ from 'jquery';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import '../../tt-components/antd.scss';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import axios from '../../axios';
 import { ButtonTT, Header } from '../../tt-components';
 import { items } from './components/CalculatorJSON';
@@ -13,19 +10,19 @@ import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from '../../Redux/actions/actions';
 
 const EditCalculator = () => {
-  const { 1: deviceId } = useParams();
+  const { 0: objid, 1: deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
   const [currentCalc, setCurrentCalc] = useState();
   const [model, setModel] = useState();
 
-  function randomInteger(min, max) {
+  function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
 
-  async function getCalculator(url = '') {
+  async function getCalculator(url = ''){
     try {
       const res = await axios.get(`MeteringDevices/${url}`);
       return res;
@@ -87,7 +84,7 @@ const EditCalculator = () => {
     }
   }, [currentCalc]);
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     setTab(value);
   }
 
@@ -116,7 +113,7 @@ const EditCalculator = () => {
   };
 
   return (
-    <ConfigProvider locale={ruRu}>
+    <>
       <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
       {/* <button onClick={buttonHandler}>getKey</button> */}
       <TabsComponent
@@ -132,11 +129,13 @@ const EditCalculator = () => {
           Сохранить
         </ButtonTT>
 
+        <NavLink to={`/objects/${objid}/devices/${deviceId}`}>
         <ButtonTT color="white" onClick={hideMe}>
           Отмена
         </ButtonTT>
+        </NavLink>
       </div>
-    </ConfigProvider>
+    </>
   );
 };
 

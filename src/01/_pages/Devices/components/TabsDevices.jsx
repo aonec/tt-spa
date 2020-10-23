@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react";
 
 import { Tabs } from 'antd';
-import {devicesAPI} from "../../../_api/devices_page";
 import {Loader} from "../../../components/Loader";
 import {
-    getDevicesBySerialNumber,
     getDevices,
     setCurrentPage,
     toggleIsLoading
@@ -13,11 +11,11 @@ import {
 
 import {useDispatch, useSelector} from "react-redux";
 
-import styles from './TabsDevices.module.css'
+import styles from './TabsDevices.module.scss'
 import {createPages} from "../../../utils/pagesCreator";
 
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
-import ButtonTT from "../../../tt-components/ButtonTT";
+import DeviceSearchForm from "./DeviceSearchForm/DeviceSearchForm";
 
 
 const { TabPane } = Tabs;
@@ -34,13 +32,7 @@ const TabsDevices = () => {
     const currentPage = useSelector((state) => state.devicePage.currentPage);
     const totalPages = useSelector((state) => state.devicePage.totalPages);
     const isLoading = useSelector((state) => state.devicePage.isLoading);
-
     const [searchTerm, setSearchTerm] = useState('');
-    const editSearchTerm = (e) => {
-        setSearchTerm(e.target.value)
-    }
-
-
 
 
     const pages = [];
@@ -53,18 +45,8 @@ const TabsDevices = () => {
         dispatch(toggleIsLoading());
     }, [currentPage, pageSize]);
 
-    // const deviceFilterFunction = (item) => {
-    //     if (item.id.toString().includes(searchTerm) || item.relatedDevices.some((subItem) => subItem.id.toString().includes(searchTerm))) {
-    //         return true
-    //     }
-    //     return false
-    // }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!e.target[0].value) return;
-        dispatch(getDevicesBySerialNumber(e.target[0].value));
-    }
+
 
     const deviceItems = useSelector((state) =>
         state.devicePage.items
@@ -78,20 +60,20 @@ const TabsDevices = () => {
     return <div>
 
         <Tabs defaultActiveKey="1" onChange={callback}>
-
-            <TabPane className={styles.tab} tab="ОДПУ" key="1">
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    <label>
-                        Поиск по серийному номеру прибора:
-                        <input
-                            className={styles.input__form}
-                            type="text"
-                            value={searchTerm}
-                            onChange={editSearchTerm}
-                            placeholder="Введите серийный номер прибора..."/>
-                    </label>
-                        <input className={styles.btn} type="submit" value="Отправить" />
-                </form>
+            <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
+                {/*<form className={styles.form} onSubmit={handleSubmit}>*/}
+                {/*    <label>*/}
+                {/*        Поиск по серийному номеру прибора:*/}
+                {/*        <input*/}
+                {/*            className={styles.input__form}*/}
+                {/*            type="text"*/}
+                {/*            value={searchTerm}*/}
+                {/*            onChange={editSearchTerm}*/}
+                {/*            placeholder="Введите серийный номер прибора..."/>*/}
+                {/*    </label>*/}
+                {/*        <input className={styles.btn} type="submit" value="Отправить" />*/}
+                {/*</form>*/}
+                <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>

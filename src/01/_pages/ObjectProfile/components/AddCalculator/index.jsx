@@ -16,8 +16,6 @@ import { Title, ButtonTT } from '../../../../tt-components';
 import axios from '../../../../axios';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from '../../../../Redux/actions/actions';
-import { ConfigProvider } from "antd";
-import ruRu from "antd/es/locale/ru_RU";
 
 const ModalCalculator = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -109,7 +107,6 @@ const ModalCalculator = () => {
   };
 
   return (
-    <ConfigProvider locale={ruRu}>
     <Modal id="add-calculator" ref={modalRef}>
         <ModalWrap>
           {/*<button onClick={buttonHandler}>buttonHandler</button>*/}
@@ -135,7 +132,6 @@ const ModalCalculator = () => {
           </ModalBottom>
         </ModalWrap>
       </Modal>
-    </ConfigProvider>
   );
 };
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Route, useParams } from 'react-router-dom';
+import { Route, useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import {
   getInfo,
@@ -12,7 +12,6 @@ import {
   getCalculator,
   getPagination,
 } from '01/_api/device_page';
-import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
@@ -21,8 +20,8 @@ import { InformationNotCalculator } from './components/InformationNotCalculator'
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-import { ModalODPU } from './components/Modal';
-import ModalDeregisterDevice from './components/ModalDeregisterDevice';
+import { ModalODPU } from './components/Modals/Modal';
+import ModalDeregisterDevice from './components/Modals/ModalDeregisterDevice';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -30,7 +29,15 @@ import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const params = useParams();
+
+  let deviceId;
+  let objid;
+  let path;
+
+  // let { 0: objid, 1: deviceId } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
@@ -47,7 +54,7 @@ export const DeviceProfile = () => {
     building: true,
     tasks: true,
     related: true,
-    typeODPU: true,
+    typeODPU: false,
   });
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
@@ -58,8 +65,24 @@ export const DeviceProfile = () => {
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
+  const { pathname } = useLocation();
+  // debugger;
+
+  if (Object.keys(params).length === 3) {
+    deviceId = params[1];
+    objid = params[0];
+    path = `/objects/${objid}/devices/${deviceId}/`;
+  } else if (pathname.includes('calculator')) {
+    deviceId = params[0];
+    path = `/calculators/${deviceId}/`;
+  } else if (pathname.includes('housingMeteringDevices')) {
+    deviceId = params[0];
+    path = `/housingMeteringDevices/${deviceId}/`
+  }
+
+
   useEffect(() => {
-    Promise.all([
+    Promise.allSettled([
       getInfo(deviceId),
       getObjectOfDevice(objid),
       getODPUTasks(deviceId),
@@ -68,7 +91,13 @@ export const DeviceProfile = () => {
       // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        const [device, building, tasks, related, typeODPU] = responses;
+        // const [device, building, tasks, related, typeODPU] = responses;
+        // debugger;
+        const device = responses[0].value;
+        const building = responses[1].value;
+        const tasks = responses[2].value;
+        const related = responses[3].value;
+        const typeODPU = responses[4].value;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
@@ -90,6 +119,7 @@ export const DeviceProfile = () => {
           related: false,
           typeODPU: false,
         }));
+        setIsLoading(false);
       });
   }, []);
 
@@ -106,7 +136,7 @@ export const DeviceProfile = () => {
     }
   }, [typeODPU]);
 
-  const path = `/objects/${objid}/devices/${deviceId}/`;
+  // const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
     console.log('calculator');
@@ -128,12 +158,8 @@ export const DeviceProfile = () => {
           calcModel,
         }}
       >
-        {/* <button onClick={buttonHandler}>getPagination</button> */}
         <Header />
-
-        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
-        {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={path} exact>
             <Information />
@@ -156,6 +182,8 @@ export const DeviceProfile = () => {
     );
   }
 
+  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+  // debugger;
   return (
     <DeviceContext.Provider
       value={{
@@ -191,6 +219,7 @@ export const DeviceProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
+      <ModalDeregisterDevice />
     </DeviceContext.Provider>
   );
 };
