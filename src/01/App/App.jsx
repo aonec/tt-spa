@@ -16,7 +16,7 @@ import {
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
-  Devices,
+  DevicesFromSearch,
 } from '01/_pages';
 
 import EditCalculator from '01/_pages/EditCalculator';
@@ -28,11 +28,13 @@ import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import rootReducer from '01/Redux/rootReducer';
-import thunkMiddleWare from 'redux-thunk';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './useApp';
+import thunkMiddleWare from "redux-thunk";
+import { ConfigProvider } from "antd";
+import ruRu from "antd/es/locale/ru_RU";
+import DeviceSearchForm from "../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm";
 import EditODPU from '../_pages/EditODPU';
+import {Devices} from "../_pages/ObjectProfile/components/Devices";
 
 moment.locale('ru');
 
@@ -42,9 +44,12 @@ const loggerMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+
 export const store = createStore(
   rootReducer,
-  applyMiddleware(loggerMiddleware, thunkMiddleWare),
+  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare)),
 );
 
 window.store = store;
@@ -63,6 +68,7 @@ export function App(){
             {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage/>}/>
             <Route path="/access-denied/" render={() => <AccessDeniedPage/>}/>
+            <Route path="/form/" render={() => <DeviceSearchForm/>}/>
             <Route path="/">
               <layout>
                 <menu as="div">
@@ -78,10 +84,14 @@ export function App(){
                     />
                     <Route path="/tasks/(\\d+)" component={TaskProfile}/>
                     <Route path="/objects/" component={Objects} exact/>
-                    <Route path="/devices/" component={Devices} exact/>
+                    <Route path="/devices/" component={DevicesFromSearch} exact/>
+
+                    <Route path="/devices/(\\d+)" component={Devices} exact/>
 
                     <Route
-                      path="/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?"
+                      path={["/objects/(\\d+)/devices/(\\d+)/(connection|related|documents)?",
+                        "/calculators/(\\d+)/(connection|related|documents)?",
+                        "/housingMeteringDevices/(\\d+)/(related|documents)?"]}
                       component={DeviceProfile}
                       exact
                     />

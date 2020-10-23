@@ -88,7 +88,8 @@ export const ModalODPU = () => {
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
     hubsarr.map((value) => {
-      const { resource, entryNumber, pipes } = { ...value };
+      let { resource, entryNumber, pipes } = { ...value };
+      pipes = pipes || [];
       const pipesList = pipes.map((values) => {
         const { devices } = { ...values };
         const devicesRes = devices.map((value) => {

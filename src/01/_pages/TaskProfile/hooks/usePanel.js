@@ -23,28 +23,31 @@ export const usePanel = (
     disabled: isDisabled(state, panel.actions ?? {}) || panelLoading,
     loading: panelLoading,
   };
-
   return {
     hiddenPanel: !panel.actions,
     isObserver: panel.userOperatingStatus === 'Observer',
     perpName: panel.perpName,
     pushProps,
     dispatch,
+    expectedCompletionTime: panel.expectedCompletionTime,
     actions: panel?.actions,
     state,
   };
 };
 
-function dataReducer(state, action) {
+export function dataReducer(state, action) {
   const { type, data } = action;
   switch (type) {
     case 'add_data':
       return { ...state, ...data };
+
     case 'email_notify':
       const { emailNotify = {} } = state;
       return { ...state, emailNotify: { ...emailNotify, ...data } };
+
     case 'reset':
       return {};
+
     default:
       console.error('panel', type);
       return state;
@@ -52,14 +55,17 @@ function dataReducer(state, action) {
 }
 
 function isDisabled(
-  { nextPerpetratorId = null, documentsIds = [], nextStageId = null },
+  {
+    nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
+  },
   {
     AddPerpetrator, AddDocuments, Switch, Completion,
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
-  if (AddPerpetrator) return !nextPerpetratorId;
+  if (AddPerpetrator) return !nextPerpetratorId || !nextStageDeadline;
   if (AddDocuments) return !documentsIds.length;
   if (Completion) return false;
+
   return true;
 }

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
@@ -62,6 +63,10 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevices = () => {
+debugger;
+
+
+
   const { related, loadings } = useContext(DeviceContext);
 
   // const loadingRelated = _.get(loadings, 'related', true);

@@ -24,7 +24,7 @@ export const UploadList = ({
           {name}
         </a>
         {!loading ? (
-          <button onClick={() => click(id)}>
+          <button onClick={() => {click(id)}>
             <Icon icon="close" />
           </button>
         ) : (

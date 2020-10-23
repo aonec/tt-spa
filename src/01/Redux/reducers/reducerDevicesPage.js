@@ -50,20 +50,20 @@ export const toggleIsLoading = () => ({ type: TOGGLE_IS_LOADING});
 export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
   dispatch(toggleIsLoading());
   const devices = await devicesAPI.getDevices(pageNumber, pageSize);
-  const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-    const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-    // if (!relatedDevices.length) return {...d, relatedDevices}
-    return { ...d, relatedDevices: [...relatedDevices] };
-  }));
-  const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
+  // const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
+  //   const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
+  //   if (!relatedDevices.length) return {...d, relatedDevices}
+  //   return { ...d, relatedDevices: [...relatedDevices] };
+  // }));
+  // const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
   dispatch(toggleIsLoading());
-  dispatch(setDevices(devicesWithFullInfo));
+  dispatch(setDevices(devices));
 };
 
 export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
-  debugger;
   dispatch(toggleIsLoading());
   const devices = await devicesAPI.getDevicesBySerialNumber(serialNumber);
+  debugger;
 
   if (!devices) {
     dispatch(toggleIsLoading());
@@ -71,13 +71,12 @@ export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
   }
 
   if (devices.items.length === 1) {
-    const relatedDevices = await devicesAPI.getRelatedDevices(serialNumber) || [];
+    const relatedDevices = await devicesAPI.getRelatedDevices(devices.items[0].id) || [];
     devices.items[0].relatedDevices = [...relatedDevices];
     dispatch(toggleIsLoading());
     dispatch(setDevices(devices));
   } else {
     const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-      debugger;
       d.relatedDevices = [];
 
       // const relatedDevices = await devicesAPI.getRelatedDevices(d.id);

@@ -19,7 +19,7 @@ export const Perpetrator = ({ getData = () => {}, ...props }) => {
     <Select
       big
       placeholder="Выберите исполнителя"
-      labelText={"Исполнитель"}
+      labelText="Исполнитель"
       list={data.items ?? []}
       loading={data.loading}
       onClick={() => !data.items && setData({ loading: true })}
