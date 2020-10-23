@@ -131,7 +131,7 @@ const FormEditODPU = (props) => {
     onSubmit: async () => {
       console.log(PUT_EDIT_FORM);
       console.log(deviceId)
-      // editOPDU();
+      editOPDU();
     },
   });
 
