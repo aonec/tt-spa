@@ -1,44 +1,89 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Header } from '../../tt-components';
-import TabsComponent from './components/Main';
-import { getDevice, getRelatedDevices, getObjectOfDevice } from '../../_api/device_page';
+import { ButtonTT, Header } from '../../tt-components';
+import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
+import axios from '../../axios';
 
 const EditODPU = () => {
   const { 0: objid, 1: deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
-  const [calculatorId, setCalculatorId] = useState();
   const [device, setDevice] = useState();
-  const [object, setObject] = useState();
+  const [calculators, setCalculators] = useState();
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
+  async function getCalculators(objid = '') {
+    try {
+      const res = await axios.get(`HousingStocks/${objid}/Devices`);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса Вычислителей в этом доме',
+      };
+    }
+  }
+
+  //Получить устройство
+  async function getODPU(id = '') {
+    try {
+      const res = await axios.get(`HousingMeteringDevices/${id}`);
+      console.log("HousingMeteringDevices", res)
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса ОДПУ',
+      };
+    }
+  }
+
   useEffect(() => {
-    getDevice(deviceId).then((res) => {
+    getODPU(deviceId).then((res) => {
       setDevice(res);
+
     });
-    getObjectOfDevice(objid).then((res) => {
-      setObject(res);
-    });
-    console.log("device", device)
-    getRelatedDevices(deviceId).then((res) => {
-      const { id } = res[0];
-      setCalculatorId(id);
+    getCalculators(objid).then((res) => {
+      let selectCalculators = [];
+      res.devices.map((item) => {
+        if (item.type === 'Calculator') {
+          console.log("item", item)
+          const label = `${item.model} (${item.serialNumber}) IP: ${item.ipV4} (${item.port})`;
+          const value = item.id;
+          selectCalculators = [...selectCalculators, { ...item, label, value }];
+        }
+      });
+      setCalculators(selectCalculators);
     });
   }, []);
 
-  if (device && calculatorId && object) {
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+    console.log(device);
+    console.log(calculators);
+  };
+
+  if (device && calculators) {
+    const model = device.model || 'Не указана модель';
+    const serialNumber = device.serialNumber || 'Не указан серийный номер';
     return (
       <>
-        <Header>{`${device.model || 'Не указана модель'} (${device.serialNumber || 'Не указан серийный номер'}). Редактирование`}</Header>
+        <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
+         {/*<ButtonTT onClick={buttonHandler}>Button</ButtonTT>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
-        <FormEditODPU currentTabKey={currentTabKey} device={device} calculatorId={calculatorId} object={object}/>
+        <FormEditODPU
+          currentTabKey={currentTabKey}
+          device={device}
+          calculators={calculators}
+        />
       </>
     );
   }

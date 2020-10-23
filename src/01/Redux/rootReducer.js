@@ -5,6 +5,7 @@ import deviceReducer from './reducers/reducerDev';
 import reducerDevicesPage from './reducers/reducerDevicesPage';
 import deviceDeregisterReducer from './reducers/reducerDeviceDeregister';
 import objectReducer from './reducers/reducerObject';
+import changeOdpuReducer from './reducers/reducerChangeOdpu';
 
 export default combineReducers({
   deviceReducer,
@@ -12,4 +13,5 @@ export default combineReducers({
   calculatorPage: calculatorReducer,
   devicePage: reducerDevicesPage,
   deviceDeregisterReducer,
+  changeOdpuReducer,
 });

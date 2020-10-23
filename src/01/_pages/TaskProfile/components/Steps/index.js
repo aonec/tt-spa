@@ -1,11 +1,14 @@
-import React from "react"
-import styled, { css } from "reshadow/macro"
-import { Route, Switch, useRouteMatch, Link } from "react-router-dom"
+import React from 'react';
+import styled, { css } from 'reshadow/macro';
+import {
+  Route, Switch, useRouteMatch, Link,
+} from 'react-router-dom';
 
-import { Pig } from "./Pig"
-import { Tabs } from "./Tabs"
-import * as s from "01/r_comp"
-import { UploadButton } from "01/components/Upload"
+import * as s from '01/r_comp';
+import { UploadButton } from '01/components/Upload';
+import { Pig } from './Pig';
+import { Tabs } from './Tabs';
+
 const styles = css`
   steps {
     padding: 8px;
@@ -29,10 +32,10 @@ const styles = css`
       grid-row: 6;
     }
   }
-`
+`;
 
 export const Steps = () => {
-  const { url } = useRouteMatch()
+  const { url } = useRouteMatch();
   return styled(styles, s.input, s.button, s.label)(
     <Route path={`${url}/(step1|step2|step3)`}>
       <steps>
@@ -56,13 +59,13 @@ export const Steps = () => {
             <input_frame data-big>
               <input />
             </input_frame>
-            <button as="Link" to={url + "/step2"} data-big data-primary>
+            <button as="Link" to={`${url}/step2`} data-big data-primary>
               <span>Далее</span>
             </button>
           </Route>
           <Route path="/tasks/(\\d+)/step2">
             <label>
-              IP адресс вычеслителя
+              IP адрес вычислителя
               <input_frame data-big>
                 <input />
               </input_frame>
@@ -73,7 +76,7 @@ export const Steps = () => {
                 <input />
               </input_frame>
             </label>
-            <button as="Link" to={url + "/step3"} data-big data-primary>
+            <button as="Link" to={`${url}/step3`} data-big data-primary>
               <span>Далее</span>
             </button>
           </Route>
@@ -87,6 +90,6 @@ export const Steps = () => {
           </Route>
         </Switch>
       </steps>
-    </Route>
-  )
-}
+    </Route>,
+  );
+};

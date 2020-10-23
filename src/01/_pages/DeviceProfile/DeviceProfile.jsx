@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
 import { Route, useParams, useLocation } from 'react-router-dom';
 import _ from 'lodash';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import {
   getInfo,
@@ -12,7 +12,6 @@ import {
   getCalculator,
   getPagination,
 } from '01/_api/device_page';
-import $ from 'jquery';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { TabsNotCalculator } from './components/TabsNotCalculator';
@@ -30,11 +29,11 @@ import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
-    const params = useParams();
+  const params = useParams();
 
-    let deviceId;
-    let objid;
-    let path;
+  let deviceId;
+  let objid;
+  let path;
 
   // let { 0: objid, 1: deviceId } = useParams();
 
@@ -66,26 +65,25 @@ export const DeviceProfile = () => {
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
-    const {pathname} = useLocation();
-    debugger;
+  const { pathname } = useLocation();
+  debugger;
 
-    if (Object.keys(params).length === 3) {
-        deviceId = params[1];
-        objid = params[0];
-        path = `/objects/${objid}/devices/${deviceId}/`;
-    } else {
-        deviceId = params[0];
-        // path = `/calculators/${deviceId}/`;
-    }
+  if (Object.keys(params).length === 3) {
+    deviceId = params[1];
+    objid = params[0];
+    path = `/objects/${objid}/devices/${deviceId}/`;
+  } else {
+    deviceId = params[0];
+    // path = `/calculators/${deviceId}/`;
+  }
 
-
-    // else if (pathname.includes('calculator')) {
-    //     deviceId = params[0];
-    //     path = `/calculators/${deviceId}/`;
-    // } else if (pathname.includes('housingMeteringDevices')) {
-    //     deviceId = params[0];
-    //     path = `/housingMeteringDevices/${deviceId}/`
-    // }
+  // else if (pathname.includes('calculator')) {
+  //     deviceId = params[0];
+  //     path = `/calculators/${deviceId}/`;
+  // } else if (pathname.includes('housingMeteringDevices')) {
+  //     deviceId = params[0];
+  //     path = `/housingMeteringDevices/${deviceId}/`
+  // }
 
   useEffect(() => {
     Promise.allSettled([
@@ -98,12 +96,12 @@ export const DeviceProfile = () => {
     ])
       .then((responses) => {
         // const [device, building, tasks, related, typeODPU] = responses;
-          debugger;
-          let device = responses[0].value;
-          let building = responses[1].value;
-          let tasks = responses[2].value;
-          let related = responses[3].value;
-          let typeODPU = responses[4].value;
+        debugger;
+        const device = responses[0].value;
+        const building = responses[1].value;
+        const tasks = responses[2].value;
+        const related = responses[3].value;
+        const typeODPU = responses[4].value;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);
@@ -117,7 +115,6 @@ export const DeviceProfile = () => {
         setError({ resource, text });
       })
       .finally(() => {
-
         setLoadings((prev) => ({
           ...prev,
           device: false,
@@ -126,10 +123,9 @@ export const DeviceProfile = () => {
           related: false,
           typeODPU: false,
         }));
-        setIsLoading(false)
+        setIsLoading(false);
       });
   }, []);
-
 
   useEffect(() => {
     if (typeODPU === 'Calculator') {
@@ -142,7 +138,6 @@ export const DeviceProfile = () => {
       });
       console.log('calcModel= ', calcModel);
     }
-
   }, [typeODPU]);
 
   // const path = `/objects/${objid}/devices/${deviceId}/`;
@@ -167,12 +162,8 @@ export const DeviceProfile = () => {
           calcModel,
         }}
       >
-        {/* <button onClick={buttonHandler}>getPagination</button> */}
         <Header />
-
-        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
         <Tabs />
-        {/* Здесь делим экран на две части: main and aside */}
         <Grid>
           <Route path={pathname} exact>
             <Information />
@@ -195,9 +186,8 @@ export const DeviceProfile = () => {
     );
   }
 
-
-if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...'
-    debugger;
+  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+  debugger;
   return (
     <DeviceContext.Provider
       value={{
@@ -233,6 +223,7 @@ if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...'
 
         <Events title="Задачи с объектом" />
       </Grid>
+      <ModalDeregisterDevice />
     </DeviceContext.Provider>
   );
 };

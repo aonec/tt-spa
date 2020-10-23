@@ -1,7 +1,6 @@
 import React, {useEffect} from "react"
 import styled, {css, use} from "reshadow/macro"
 import {Route} from "react-router-dom"
-
 import * as s from "01/r_comp"
 import {Perpetrator, Contractors, NextStage} from "01/components/Select"
 import {Loader} from "01/components"
@@ -10,11 +9,20 @@ import AddDate from "../../../../components/Select/selects/AddDate";
 import moment from 'moment';
 
 
+import _ from 'lodash'
+import { useSelector, useDispatch } from "react-redux";
 
+import * as s from '01/r_comp';
+import { Perpetrator, Contractors, NextStage } from '01/components/Select';
+import { Loader } from '01/components';
+import { UploadButton, useUpload, UploadList } from '01/components/Upload';
+import {
+  setModalChangeODPUVisible, setModalDeregisterVisible,
+} from '../../../../Redux/actions/actions';
+import ButtonTT from "../../../../tt-components/ButtonTT";
 // display:flex;
 // align-items: flex-end;
 // justify-content: space-between;
-
 
 const styles = css`
   panel {
@@ -64,7 +72,7 @@ const styles = css`
   NextStage {
     grid-area: ta;
   }
-`
+`;
 
 export const Panel = ({
                           expectedCompletionTime,
@@ -143,6 +151,10 @@ export const Panel = ({
                     }
                 />
             )}
+            
+            {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
+
+            {Switch && <ButtonTT color={"red"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}  
             {EmailNotify && <TemplateButton/>}
             {AddDocuments && (
                 <>
@@ -178,7 +190,7 @@ const Textarea = (props) =>
         border-color: var(--primary-100);
       }
     }
-  `(<textarea rows="0" {...props} />)
+  `(<textarea rows="0" {...props} />);
 
 const TemplateButton = () =>
     styled(s.button)`
