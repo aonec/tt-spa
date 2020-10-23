@@ -58,12 +58,22 @@
 //  height: 104px;
 //  margin-top: 16px;
 //}
-
-.ant-form-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: baseline !important;
-  .ant-form-item-control {
-    width: 100%;
-  }
-}
+//.ant-form-item {
+//  display: flex !important;
+//  flex-direction: column !important;
+//  align-items: baseline !important;
+//  .ant-form-item-control {
+//    width: 100%;
+//    .ant-input {
+//      color: rgba(39, 47, 90, 0.8);
+//      // border: 1px solid #dcdee4;
+//      box-sizing: border-box;
+//      border-radius: 4px;
+//      width: 100%;
+//      height: $height;
+//      padding: 8px 24px;
+//      font-size: 16px;
+//      line-height: 32px;
+//    }
+//  }
+//}
