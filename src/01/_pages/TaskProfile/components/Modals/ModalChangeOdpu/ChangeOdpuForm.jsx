@@ -166,6 +166,17 @@ const ChangeOdpuForm = () => {
     console.log(odpu);
   };
 
+
+  const formData = new FormData()
+  async function uploadFile(file, type = "AdditionalMaterials") {
+    formData.append("type", type)
+    formData.append("file", file)
+    try {
+      const res = await axios.post("documents/upload", formData)
+      return { newFile: res[0] }
+    } catch (error) {}
+  }
+
   const ResButton = () => {
     if (Number(currentTabKey) === 3) {
       return (<ButtonTT color="blue" disabled={disable} type='submit' onClick={handleSubmit}>Завершить</ButtonTT>);
@@ -321,7 +332,7 @@ const ChangeOdpuForm = () => {
               value={values.pipeNumber}
               disabled={disable}
             />
-            <Alert name={'pipeNumber'} />
+            <Alert name={'pipeNumber'}/>
           </Form.Item>
         </div>
 

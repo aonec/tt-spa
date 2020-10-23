@@ -137,8 +137,8 @@ export const Panel = ({
           })}
         />
       )}
-      {SwitchDevices && <ButtonTT color={"blue"} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}
-      {SwitchDevices && <ButtonTT color={"blue"} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
+      {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}
+      {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
       {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>

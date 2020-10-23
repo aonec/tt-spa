@@ -107,10 +107,10 @@ const ModalAddDevice = () => {
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
     try {
-      const res = await axios.post('HousingMeteringDevices', deviceReducer);
+      // const res = await axios.post('HousingMeteringDevices', deviceReducer);
       console.log(deviceReducer)
       alert('ОДПУ успешно создан !');
-      return res;
+      // return res;
     } catch (error) {
       console.log(error);
       alert(

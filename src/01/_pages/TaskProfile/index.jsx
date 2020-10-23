@@ -62,7 +62,7 @@ export const TaskProfile = () => {
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <button onClick={buttonHandler}>buttonHandler</button>
-      <Header {...state.header} />useInformation
+      <Header {...state.header} />
       <Panel {...panel} />
       <Steps />
       <Documents {...docs} />
