@@ -72,18 +72,14 @@ export const DeviceProfile = () => {
     deviceId = params[1];
     objid = params[0];
     path = `/objects/${objid}/devices/${deviceId}/`;
-  } else {
+  } else if (pathname.includes('calculator')) {
     deviceId = params[0];
-    // path = `/calculators/${deviceId}/`;
+    path = `/calculators/${deviceId}/`;
+  } else if (pathname.includes('housingMeteringDevices')) {
+    deviceId = params[0];
+    path = `/housingMeteringDevices/${deviceId}/`
   }
 
-  // else if (pathname.includes('calculator')) {
-  //     deviceId = params[0];
-  //     path = `/calculators/${deviceId}/`;
-  // } else if (pathname.includes('housingMeteringDevices')) {
-  //     deviceId = params[0];
-  //     path = `/housingMeteringDevices/${deviceId}/`
-  // }
 
   useEffect(() => {
     Promise.allSettled([
@@ -165,16 +161,16 @@ export const DeviceProfile = () => {
         <Header />
         <Tabs />
         <Grid>
-          <Route path={pathname} exact>
+          <Route path={path} exact>
             <Information />
           </Route>
-          <Route path={`${pathname}connection`} exact>
+          <Route path={`${path}connection`} exact>
             <Connection />
           </Route>
-          <Route path={`${pathname}related`} exact>
+          <Route path={`${path}related`} exact>
             <RelatedDevices />
           </Route>
-          <Route path={`${pathname}documents`} exact>
+          <Route path={`${path}documents`} exact>
             <div>Документы</div>
           </Route>
 

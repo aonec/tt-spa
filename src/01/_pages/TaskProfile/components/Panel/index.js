@@ -1,7 +1,6 @@
 import React, {useEffect} from "react"
 import styled, {css, use} from "reshadow/macro"
 import {Route} from "react-router-dom"
-import * as s from "01/r_comp"
 import {Perpetrator, Contractors, NextStage} from "01/components/Select"
 import {Loader} from "01/components"
 import {UploadButton, useUpload, UploadList} from "01/components/Upload"
@@ -13,16 +12,11 @@ import _ from 'lodash'
 import { useSelector, useDispatch } from "react-redux";
 
 import * as s from '01/r_comp';
-import { Perpetrator, Contractors, NextStage } from '01/components/Select';
-import { Loader } from '01/components';
-import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
 import ButtonTT from "../../../../tt-components/ButtonTT";
-// display:flex;
-// align-items: flex-end;
-// justify-content: space-between;
+
 
 const styles = css`
   panel {
@@ -152,9 +146,9 @@ export const Panel = ({
                 />
             )}
             
-            {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
+            {/*{SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}*/}
 
-            {Switch && <ButtonTT color={"red"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}  
+            {/*{Switch && <ButtonTT color={"red"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}  */}
             {EmailNotify && <TemplateButton/>}
             {AddDocuments && (
                 <>
