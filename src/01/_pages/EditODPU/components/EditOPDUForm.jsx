@@ -312,10 +312,10 @@ const FormEditODPU = (props) => {
               onChange={(value) => {
                 console.log(value);
                 if (!value) {
-                  values.calculatorId = null;
-                  values.entryNumber = null;
-                  values.pipeNumber = null;
-                  values.hubNumber = null;
+                  setFieldValue('calculatorId', null)
+                  setFieldValue('entryNumber', null)
+                  setFieldValue('pipeNumber', null)
+                  setFieldValue('hubNumber', null)
                 }
                 setFieldValue('connection', value);
               }}

@@ -74,7 +74,7 @@ const EditODPU = () => {
     return (
       <>
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-         <ButtonTT onClick={buttonHandler}>Button</ButtonTT>
+         {/*<ButtonTT onClick={buttonHandler}>Button</ButtonTT>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
