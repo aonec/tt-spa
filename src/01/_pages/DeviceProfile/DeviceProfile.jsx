@@ -66,7 +66,7 @@ export const DeviceProfile = () => {
   };
 
   const { pathname } = useLocation();
-  debugger;
+  // debugger;
 
   if (Object.keys(params).length === 3) {
     deviceId = params[1];
@@ -92,7 +92,7 @@ export const DeviceProfile = () => {
     ])
       .then((responses) => {
         // const [device, building, tasks, related, typeODPU] = responses;
-        debugger;
+        // debugger;
         const device = responses[0].value;
         const building = responses[1].value;
         const tasks = responses[2].value;
@@ -183,7 +183,7 @@ export const DeviceProfile = () => {
   }
 
   if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
-  debugger;
+  // debugger;
   return (
     <DeviceContext.Provider
       value={{

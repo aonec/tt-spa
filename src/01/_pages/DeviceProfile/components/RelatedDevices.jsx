@@ -63,7 +63,7 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevices = () => {
-debugger;
+// debugger;
 
 
 
