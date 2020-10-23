@@ -15,7 +15,7 @@ export const useDocuments = ({ documents = null }, pageDispatch) => {
   }, [documents])
 
   React.useEffect(() => {
-    debugger;
+    // debugger;
     const { deleteId } = state
     if (deleteId) {
       deleteDoc(taskId, deleteId).then((deleteId) => {

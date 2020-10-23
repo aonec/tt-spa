@@ -100,10 +100,12 @@ export const Panel = ({
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const showModalChangeOdpu = () => {
-    dispatchRedux(setModalChangeODPUVisible, true)
+    console.log("showModalChangeOdpu")
+    dispatchRedux(setModalChangeODPUVisible(true));
   }
   const showModalDeregister = () => {
-    dispatchRedux(setModalDeregisterVisible, true)
+    console.log("showModalDeregister")
+    dispatchRedux(setModalDeregisterVisible(true));
   }
   if (isObserver) {
     return styled(styles, s.input)(
