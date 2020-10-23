@@ -32,9 +32,9 @@ const ModalAddDevice = () => {
     calculatorId: '',
     checkingDate: moment().toISOString(),
     connection: {
-      ipV4: '10.90.128.1',
+      ipV4: '192.168.1.1',
       deviceAddress: randomInteger(1, 255),
-      port: 0,
+      port: 1234,
     },
     futureCheckingDate: moment().toISOString(),
     futureCommercialAccountingDate: moment().toISOString(),
@@ -108,6 +108,7 @@ const ModalAddDevice = () => {
     alert('Cейчас будем отправлять данные!');
     try {
       const res = await axios.post('HousingMeteringDevices', deviceReducer);
+     // console.log(deviceReducer)
       alert('ОДПУ успешно создан !');
       return res;
     } catch (error) {

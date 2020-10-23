@@ -185,6 +185,7 @@ export const DeviceProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
+      <ModalDeregisterDevice />
     </DeviceContext.Provider>
   );
 };

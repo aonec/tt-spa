@@ -10,7 +10,8 @@ import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
 import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
 import { DatePickerTT, Title } from '../../../../../tt-components';
 
-const DeregisterForm = () => {
+const DeregisterForm = (props) => {
+  const { deviceOdpu } = props;
   const { 1: deviceId } = useParams();
   const [device, setDevice] = useState({});
   const { serialNumber, model } = device;
@@ -21,28 +22,33 @@ const DeregisterForm = () => {
   const { closingDateTime = moment() } = form;
   useEffect(() => {
     const setForm = {
-      deviceId: Number(deviceId),
+      // deviceId: Number(deviceId),
+      deviceId: Number(deviceOdpu.id),
       documentsIds: [],
-      closingDateTime,
+      closingDateTime: moment().toISOString(),
     };
-    getDevice(deviceId).then((res) => setDevice(res));
+    // getDevice(deviceId).then((res) => setDevice(res));
+    getDevice(deviceOdpu.id).then((res) => setDevice(res));
     dispatch(
       updateModalDeregisterForm('deregisterFormState', setForm),
     );
   }, []);
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
+    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      deviceId: Number(deviceId),
+      deviceId: Number(deviceId) || deviceOdpu.id,
       documentsIds: [],
       closingDateTime: moment().toISOString(),
+      // test: '',
     },
     validationSchema: Yup.object({
-
+      // test: Yup.string().required('Введите данные'),
+      closingDateTime: Yup.string().required('Введите данные'),
     }),
     onSubmit: async () => {
+      console.log(form)
       deregisterDevice(form);
     },
   });
@@ -61,24 +67,24 @@ const DeregisterForm = () => {
     <>
       <form id="formikForm" onSubmit={handleSubmit}>
         <Title size="middle" color="black">
-          {`Вы действительно хотите снять ${model || 'Вычислитель'} (${serialNumber}) с учета?`}
+          {`Вы действительно хотите снять ${model || deviceOdpu.model || 'Вычислитель'} (${serialNumber || deviceOdpu.serialNumber}) с учета?`}
         </Title>
 
         <Form.Item label="Дата снятия прибора с учета">
           <DatePickerTT
             name="closingDateTime"
-            format={'DD.MM.YYYY'}
             allowClear={false}
+            format="DD.MM.YYYY"
             onBlur={handleBlur}
             onChange={(date) => {
-              setFieldValue(' closingDateTime', date.toISOString());
               const path = ['deregisterFormState', 'closingDateTime'];
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));
+              setFieldValue('closingDateTime', date.toISOString());
             }}
             value={moment(values.closingDateTime)}
           />
-          <Alert name="closingDateTime"/>
+          <Alert name="closingDateTime" />
         </Form.Item>
       </form>
     </>
@@ -86,3 +92,14 @@ const DeregisterForm = () => {
 };
 
 export default DeregisterForm;
+
+{ /* <Form.Item label="Дополнительное поле"> */ }
+{ /*  <InputTT */ }
+{ /*    value={values.test} */ }
+{ /*    onChange={handleChange} */ }
+{ /*    onBlur={handleBlur} */ }
+{ /*    name="test" */ }
+{ /*    type="text" */ }
+{ /*  /> */ }
+{ /*  <Alert name="test" /> */ }
+{ /* </Form.Item> */ }

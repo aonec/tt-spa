@@ -1,17 +1,20 @@
-import React from "react"
-import styled, { css, use } from "reshadow/macro"
-import { Route } from "react-router-dom"
+import React from 'react';
+import styled, { css, use } from 'reshadow/macro';
+import { Route } from 'react-router-dom';
+import _ from 'lodash'
+import { useSelector, useDispatch } from "react-redux";
 
-import * as s from "01/r_comp"
-import { Perpetrator, Contractors, NextStage } from "01/components/Select"
-import { Loader } from "01/components"
-import { UploadButton, useUpload, UploadList } from "01/components/Upload"
-
-
+import * as s from '01/r_comp';
+import { Perpetrator, Contractors, NextStage } from '01/components/Select';
+import { Loader } from '01/components';
+import { UploadButton, useUpload, UploadList } from '01/components/Upload';
+import {
+  setModalChangeODPUVisible, setModalDeregisterVisible,
+} from '../../../../Redux/actions/actions';
+import ButtonTT from "../../../../tt-components/ButtonTT";
 // display:flex;
 // align-items: flex-end;
 // justify-content: space-between;
-
 
 const styles = css`
   panel {
@@ -61,28 +64,43 @@ const styles = css`
   NextStage {
     grid-area: ta;
   }
-`
+`;
 
 export const Panel = ({
-  hiddenPanel = true,
-  actions = {},
-  state = {},
-  pushProps = {},
-  isObserver = false,
-  perpName = "",
-  dispatch = () => { },
-}) => {
-  const upload = useUpload((data) => dispatch({ type: "add_data", data }))
-  if (hiddenPanel) return null
+                        hiddenPanel = true,
+                        actions = {},
+                        state = {},
+                        pushProps = {},
+                        isObserver = false,
+                        perpName = '',
+                        dispatch = () => {
+                        },
+                      }) => {
+  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
-  if (isObserver)
+  const dispatchRedux = useDispatch();
+  const showModalDeregister = () => {
+    dispatchRedux(setModalDeregisterVisible(true));
+    console.log("showModalDeregister")
+    console.log(dispatchRedux(setModalDeregisterVisible(true)))
+  };
+
+  const showModalChangeOdpu = () => {
+    dispatchRedux(setModalChangeODPUVisible(true));
+  };
+
+  if (hiddenPanel) return null;
+
+  if (isObserver) {
     return styled(styles, s.input)(
       <panel>
-        <input_frame data-disabled={true} data-big>
-          <input disabled value={perpName} />
+        <input_frame data-disabled data-big>
+          <input disabled value={perpName}/>
         </input_frame>
-      </panel>
-    )
+      </panel>,
+    );
+  }
+
 
   const {
     AddPerpetrator,
@@ -92,8 +110,8 @@ export const Panel = ({
     Completion,
     SwitchDevices,
     SetNextStageDeadline,
-  } = actions
-  const { emailNotify = {} } = state
+  } = actions;
+  const { emailNotify = {} } = state;
 
   return styled(styles)(
     // <Route path="/tasks/(\\d+)" exact>
@@ -103,25 +121,29 @@ export const Panel = ({
         two: AddDocuments,
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
-        five: Switch && PushButton
+        five: Switch && PushButton,
       })}
     >
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: "add_data", data })} />
+        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
-      {EmailNotify && <Contractors />}
+      {EmailNotify && <Contractors/>}
       {EmailNotify && (
         <Textarea
-          value={emailNotify.message ?? ""}
-          onChange={(e) =>
-            dispatch({
-              type: "email_notify",
-              data: { message: e.target.value },
-            })
-          }
+          value={emailNotify.message ?? ''}
+          onChange={(e) => dispatch({
+            type: 'email_notify',
+            data: { message: e.target.value },
+          })}
         />
       )}
-      {EmailNotify && <TemplateButton />}
+
+      {SwitchDevices && <ButtonTT color={"blue"} style={{width: 'fit-content'}} onClick={showModalChangeOdpu}>Заменить расходомер</ButtonTT>}
+
+      {Switch && <ButtonTT color={"red"} style={{width: 'fit-content'}} onClick={showModalDeregister}>Снять прибор с учета</ButtonTT>}
+
+
+      {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
@@ -129,16 +151,15 @@ export const Panel = ({
         </>
       )}
       {Switch && (
-        <NextStage getData={(data) => dispatch({ type: "add_data", data })} />
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
       <PushButton {...pushProps} />
-    </panel>
+    </panel>,
     // </Route>
-  )
-}
+  );
+};
 
-const Textarea = (props) =>
-  styled`
+const Textarea = (props) => styled`
     textarea {
       --h: var(--h-big);
       grid-area: ta;
@@ -156,28 +177,26 @@ const Textarea = (props) =>
         border-color: var(--primary-100);
       }
     }
-  `(<textarea rows="0" {...props} />)
+  `(<textarea rows="0" {...props} />);
 
-const TemplateButton = () =>
-  styled(s.button)`
+const TemplateButton = () => styled(s.button)`
     button {
       grid-area: tmp;
     }
   `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>
-  )
+  <button data-big>
+    <span>Выбрать из шаблона</span>
+  </button>,
+);
 
-const PushButton = ({ loading = false, ...props }) =>
-  styled(s.button)`
+const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
       grid-area: push;
       margin-left: 10px;
     }
   `(
-    <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
-    </button>
-  )
+  <button data-big data-primary {...props}>
+    <Loader show={loading}/>
+    <span>Завершить этап</span>
+  </button>,
+);
