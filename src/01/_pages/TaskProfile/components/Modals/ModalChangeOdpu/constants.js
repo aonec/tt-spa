@@ -96,4 +96,3 @@ export const OPDU_PUT_TEMPLATE = {
     magistral: 'string',
   },
 };
-

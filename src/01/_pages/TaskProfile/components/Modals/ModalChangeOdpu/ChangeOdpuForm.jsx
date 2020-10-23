@@ -11,31 +11,14 @@ import {
 import TabsComponent from './components/Tabs';
 import axios from '../../../../../axios';
 
-import { housingMeteringDeviceTypes, resources, connections, serviceLife } from './constants';
+import {
+  housingMeteringDeviceTypes, resources, connections, serviceLife,
+} from './constants';
 
 const ChangeOdpuForm = () => {
   const [calcId, setCalcId] = useState('211020202141');
   const [disable, setDisable] = useState(false);
   const [odpu, setOdpu] = useState({});
-
-  const {
-    address, closingDate, diameter, housingMeteringDeviceType,
-    resource, model, lastCheckingDate, futureCheckingDate,
-    futureCommercialAccountingDate, hubConnection, id, lastCommercialAccountingDate, serialNumber, transactionType,
-  } = odpu;
-  console.log('hubConnection', hubConnection);
-  const {
-    calculatorConnection, calculatorId, calculatorModel, calculatorSerialNumber, hub,
-  } = { ...hubConnection };
-  const {
-    isConnected, deviceAddress, ipV4, port,
-  } = { ...calculatorConnection };
-  const {
-    entryNumber, hubNumber, pipeNumber, magistral,
-  } = { ...hub };
-  const {
-    id: houseId, city, street, housingStockNumber,
-  } = { ...address };
 
   // Поиск устройства по серийному номеру
   async function getMeteringDevices(url = ''){
@@ -66,14 +49,44 @@ const ChangeOdpuForm = () => {
   }
 
   const searchCalculator = () => {
-    console.log(odpu);
     getMeteringDevices(calcId).then((res) => {
       setCalcId(res[0].id);
       getHousingMeteringDevices(res[0].id).then((res) => {
-        setOdpu(res);
+        const {
+          address, closingDate, diameter, housingMeteringDeviceType,
+          resource, model, lastCheckingDate, futureCheckingDate,
+          futureCommercialAccountingDate, hubConnection, id, lastCommercialAccountingDate, serialNumber, transactionType,
+        } = res;
+        const {
+          calculatorConnection, calculatorId, calculatorModel, calculatorSerialNumber, hub,
+        } = hubConnection;
+        const {
+          isConnected, deviceAddress, ipV4, port,
+        } = calculatorConnection;
+        const {
+          entryNumber, hubNumber, pipeNumber, magistral,
+        } = hub;
+
+        const {
+          id: houseId, city, street, housingStockNumber,
+        } = address;
+
+        setFieldValue('housingMeteringDeviceType', housingMeteringDeviceType);
+        setFieldValue('resource', resource);
+        setFieldValue('futureCheckingDate', futureCheckingDate);
+        setFieldValue('lastCheckingDate', lastCheckingDate);
+        setFieldValue('model', model);
+        setFieldValue('entryNumber', entryNumber);
+        setFieldValue('hubNumber', hubNumber);
+        setFieldValue('pipeNumber', pipeNumber);
+        setFieldValue('connection', isConnected)
+        setFieldValue('calculator', calculatorId)
         setDisable(false);
       });
+    }).catch((error) => {
+      console.log(error)
     });
+
   };
 
   const {
@@ -86,9 +99,17 @@ const ChangeOdpuForm = () => {
       entryNumber: '',
       pipeNumber: '',
       hubNumber: '',
+      calculator: '',
     },
     validationSchema: Yup.object({
-      test: Yup.string().required('Введите данные'),
+      resource: Yup.string().required('Введите данные'),
+      housingMeteringDeviceType: Yup.string().required('Введите данные'),
+      model: Yup.string().required('Введите данные'),
+      entryNumber: Yup.string().required('Введите данные'),
+      pipeNumber: Yup.string().required('Введите данные'),
+      hubNumber: Yup.string().required('Введите данные'),
+      calculator: Yup.string().required('Введите данные'),
+      // test: Yup.string().required('Введите данные'),
     }),
     onSubmit: async () => {
       console.log('Submit');
@@ -140,11 +161,6 @@ const ChangeOdpuForm = () => {
     </div>
   );
 
-  const handleFinishForm = () => {
-    console.log('handleFinishForm');
-    alert('Сохраняем данные об замененном ОДПУ');
-  };
-
   const buttonHandler = () => {
     console.log('buttonHandler');
     console.log(odpu);
@@ -152,7 +168,7 @@ const ChangeOdpuForm = () => {
 
   const ResButton = () => {
     if (Number(currentTabKey) === 3) {
-      return (<ButtonTT color="blue" disabled={disable} onClick={handleFinishForm}>Завершить</ButtonTT>);
+      return (<ButtonTT color="blue" disabled={disable} type='submit' onClick={handleSubmit}>Завершить</ButtonTT>);
     }
 
     return (<ButtonTT color="blue" disabled={disable} onClick={handleFormButton}>Далее</ButtonTT>);
@@ -178,13 +194,13 @@ const ChangeOdpuForm = () => {
             <InputTT
               style={{ width: '75%' }}
               placeholder="1234567890"
-              value="211020202141"
+              defaultValue="211020202141"
               onChange={(event) => {
                 setCalcId(event.target.value);
               }}
             />
             <ButtonTT color="blue" onClick={searchCalculator}>Поиск</ButtonTT>
-            <Alert name="Alert" />
+            <Alert name="Alert"/>
           </Form.Item>
 
           <Form.Item label="Тип прибора" style={{ width: '49%' }}>
@@ -194,7 +210,8 @@ const ChangeOdpuForm = () => {
               onChange={(event) => {
                 setFieldValue('housingMeteringDeviceType', event);
               }}
-              value={values.housingMeteringDeviceType || housingMeteringDeviceTypes[housingMeteringDeviceType]}
+              options={housingMeteringDeviceTypes}
+              value={values.housingMeteringDeviceType}
               disabled={disable}
             />
             <Alert name="Alert"/>
@@ -215,7 +232,7 @@ const ChangeOdpuForm = () => {
               name="model"
               // disabled={disable}
               onChange={handleChange}
-              value={values.model || model || ''}
+              value={values.model || ''}
             />
             <Alert name="model"/>
           </Form.Item>
@@ -223,7 +240,7 @@ const ChangeOdpuForm = () => {
           <Form.Item label="Дата поверки пробора" style={{ width: '49%' }}>
             <DatePickerTT
               disabled={disable}
-              value={moment(lastCheckingDate)}
+              value={moment(values.lastCheckingDate)}
               format="DD.MM.YYYY"
             />
             <Alert name="Alert"/>
@@ -232,7 +249,7 @@ const ChangeOdpuForm = () => {
           <Form.Item label="Дата следующей поверки пробора" style={{ width: '49%' }}>
             <DatePickerTT
               disabled={disable}
-              value={moment(futureCheckingDate)}
+              value={moment(values.futureCheckingDate)}
               format="DD.MM.YYYY"
             />
             <Alert name="Alert"/>
@@ -242,6 +259,7 @@ const ChangeOdpuForm = () => {
             <SelectTT
               disabled={disable}
               placeholder="Срок эксплуатации по нормативу"
+              options={serviceLife}
             />
             <Alert name="Alert"/>
           </Form.Item>
@@ -260,6 +278,15 @@ const ChangeOdpuForm = () => {
               }}
               options={connections}
               value={values.connection}
+            />
+          </Form.Item>
+
+
+          <Form.Item label="Выберите вычислитель, к которому подключен прибор" style={{ width: '49%' }}>
+            <InputTT
+              name='calculator'
+              onChange={handleChange}
+              value={values.calculator}
             />
           </Form.Item>
 
@@ -285,7 +312,7 @@ const ChangeOdpuForm = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Номер трубы" style={{ width: '49%' }}>
+          <Form.Item label="Номер трубы" style={{ width: '100%' }}>
             <InputTT
               name="pipeNumber"
               type="number"
@@ -294,6 +321,7 @@ const ChangeOdpuForm = () => {
               value={values.pipeNumber}
               disabled={disable}
             />
+            <Alert name={'pipeNumber'} />
           </Form.Item>
         </div>
 
