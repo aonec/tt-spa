@@ -121,6 +121,7 @@ const FormEditODPU = (props) => {
       city: city || 'Город не указан',
       street: street || 'Улица не указана',
       number: housingStockNumber || 'Номер дома не указан',
+      corpus: corpus,
       magistral: magistral || 'Не выбрано',
       ipV4: ipV4
       // ipV4: _find(connections. {},
@@ -301,6 +302,18 @@ const FormEditODPU = (props) => {
               disabled
             />
             <Alert name="number" />
+          </Form.Item>
+          
+          <Form.Item label="Номер корпуса">
+            <InputTT
+              name="corpus"
+              type="text"
+              placeholder=""
+              onChange={handleChange}
+              value={values.corpus}
+              disabled
+            />
+            <Alert name="corpus" />
           </Form.Item>
 
         </div>
