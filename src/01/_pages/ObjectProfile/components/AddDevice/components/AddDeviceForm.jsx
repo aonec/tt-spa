@@ -88,6 +88,7 @@ const AddDeviceForm = () => {
           <DatePickerTT
             name="lastCommercialAccountingDate"
             placeholder="Укажите дату..."
+            format={'DD.MM.YYYY'}
             onChange={(date) => {
               setFieldValue('checkingDate', date.toISOString());
             }}
@@ -99,6 +100,7 @@ const AddDeviceForm = () => {
           <DatePickerTT
             name="futureCheckingDate"
             placeholder="Укажите дату..."
+            format={'DD.MM.YYYY'}
             onChange={(date) => {
               setFieldValue('futureCheckingDate', date.toISOString());
             }}
