@@ -23,7 +23,7 @@ const DeregisterForm = () => {
     const setForm = {
       deviceId: Number(deviceId),
       documentsIds: [],
-      closingDateTime,
+      closingDateTime: moment().toISOString(),
     };
     getDevice(deviceId).then((res) => setDevice(res));
     dispatch(
@@ -32,7 +32,7 @@ const DeregisterForm = () => {
   }, []);
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue
+    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
       deviceId: Number(deviceId),
@@ -67,18 +67,18 @@ const DeregisterForm = () => {
         <Form.Item label="Дата снятия прибора с учета">
           <DatePickerTT
             name="closingDateTime"
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             allowClear={false}
             onBlur={handleBlur}
             onChange={(date) => {
-              setFieldValue(' closingDateTime', date.toISOString());
               const path = ['deregisterFormState', 'closingDateTime'];
               const value = date.toISOString();
               dispatch(updateModalDeregisterForm(path, value));
+              setFieldValue('closingDateTime', date.toISOString());
             }}
             value={moment(values.closingDateTime)}
           />
-          <Alert name="closingDateTime"/>
+          <Alert name="closingDateTime" />
         </Form.Item>
       </form>
     </>

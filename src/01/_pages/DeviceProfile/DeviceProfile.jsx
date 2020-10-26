@@ -93,11 +93,12 @@ export const DeviceProfile = () => {
       .then((responses) => {
         // const [device, building, tasks, related, typeODPU] = responses;
         // debugger;
-        const device = responses[0].value;
-        const building = responses[1].value;
-        const tasks = responses[2].value;
-        const related = responses[3].value;
-        const typeODPU = responses[4].value;
+        const [{value: device}, {value: building}, {value: tasks}, {value: related}, {value: typeODPU}] = responses;
+        // const device = responses[0].value;
+        // const building = responses[1].value;
+        // const tasks = responses[2].value;
+        // const related = responses[3].value;
+        // const typeODPU = responses[4].value;
         setDevice(device);
         setBuilding(building);
         setTasks(tasks.items);

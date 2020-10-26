@@ -69,7 +69,7 @@ export const ModalODPU = () => {
   }, [hubs]);
 
   useEffect(() => {
-    function foo(){
+    function foo() {
       $('.ant-tabs-tab-active').click();
     }
 
@@ -159,14 +159,14 @@ export const ModalODPU = () => {
     }
   };
 
-  function handleChange(value){
+  function handleChange(value) {
     const b = _.filter(selectOptions, { value: `${value}` });
     const { number } = { ...b[0] };
     console.log('number', number);
     entryNumberRes.current = number;
   }
 
-  function onDetailChange(e){
+  function onDetailChange(e) {
     const res = e.target.value;
     detail.current = res;
     // setBegin(moment().subtract(1, res));
@@ -215,8 +215,8 @@ export const ModalODPU = () => {
             <h3 className="modal__title">
               Выгрузка отчета о общедомовом потреблении
             </h3>
-            <Top/>
-            <Bottom/>
+            <Top />
+            <Bottom />
           </div>
 
           <div className="modal__bottom">
