@@ -63,13 +63,13 @@ export const magistrals = [
   },
 ];
 
-export  const isConnected = [
+export const isConnected = [
   {
     value: 'isConnected',
-    label: 'Есть'
+    label: 'Есть',
   },
   {
     value: 'notConnected',
-    label: 'Отсутствует'
-  }
-]
+    label: 'Отсутствует',
+  },
+];

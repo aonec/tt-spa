@@ -19,8 +19,9 @@ function randomInteger(min, max) {
 
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
-  // console.log(calculators);
-  const arr = [
+  const [disable, setDisable] = useState(false);
+
+  const tabsArr = [
     ['housingMeteringDeviceType', 'resource', 'model',
       'serialNumber',
       'lastCommercialAccountingDate',
@@ -46,22 +47,18 @@ const AddDeviceForm = (props) => {
     return null;
   };
 
-  const isVisible = (name) => arr[Number(currentTabKey) - 1].includes(name);
+  const isVisible = (name) => tabsArr[Number(currentTabKey) - 1].includes(name);
 
-  async function addOdpu(url = '') {
-    console.log(JSON.stringify(TEMPLATE));
+  async function addOdpu(url = '') {;
     try {
       const res = await axios.post('HousingMeteringDevices', TEMPLATE);
       alert('ОДПУ успешно создан !');
-      console.log(TEMPLATE);
-      console.log(res)
       return res;
     } catch (error) {
       console.log(error);
-
       throw {
         resource: 'device',
-        message: 'Произошла ошибка добавления устройства',
+        message: 'Произошла ошибка добавления ОДПУ',
       };
     }
   }
@@ -102,7 +99,6 @@ const AddDeviceForm = (props) => {
     }),
 
     onSubmit: async () => {
-      // console.log('TEST');
       addOdpu();
     },
   });
@@ -135,8 +131,6 @@ const AddDeviceForm = (props) => {
     console.log(TEMPLATE);
   };
 
-  const [disable, setDisable] = useState(false);
-
   return (
 
     <form
@@ -144,7 +138,7 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>
+      {/*<ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>*/}
 
       {isVisible('housingMeteringDeviceType')
       && (

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import $ from 'jquery';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
 import {
@@ -14,7 +12,6 @@ import {
   ModalClose,
 } from '../../../../tt-components/Modal';
 import TabsComponent from './components/Main';
-import { setAddDeviceForm } from '../../../../Redux/actions/actions';
 import AddDeviceForm from './components/AddDeviceForm';
 
 const ModalAddDevice = () => {
@@ -39,23 +36,15 @@ const ModalAddDevice = () => {
   useEffect(() => {
     getObjectDevices(objid).then((res) => {
       const calcOnly = [];
-      console.log('res', res);
       const { devices } = res;
-      console.log(devices);
       devices.map((item) => {
-        console.log(item);
         if (item.type === 'Calculator') {
-          console.log('Calculator');
           const deviceForSelect = { ...item, value: item.id, label: item.model };
           calcOnly.push(deviceForSelect);
-        } else {
-          console.log('Not Calculator');
         }
       });
-      console.log(calcOnly);
       setCalculators(calcOnly);
     });
-    console.log('getObjectDevices');
   }, []);
 
   function handleChangeTab(value) {
@@ -101,12 +90,6 @@ const ModalAddDevice = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
-
-
   return (
     <Modal id="add-device" ref={modalRef}>
       <ModalWrap>
@@ -121,10 +104,8 @@ const ModalAddDevice = () => {
             currentTabKey={currentTabKey}
             handleChangeTab={handleChangeTab}
           />
-
           <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
         </ModalMain>
-
         <ModalBottom>
           <ButtonTT color="white" onClick={hideMe}>
             Отмена
