@@ -46,6 +46,7 @@ export const DeviceProfile = () => {
   const [related, setRelated] = useState();
   const [hubs, setHubs] = useState();
   const [calcModel, setCalcModel] = useState();
+  const [calcId, setCalcId] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -98,26 +99,18 @@ export const DeviceProfile = () => {
 // getInfo(typeODPU, deviceId)
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     Promise.allSettled([
       getInfo(typeODPU, deviceId),
-      // getObjectOfDevice(objid),
       getODPUTasks(deviceId),
-      getRelatedDevices(deviceId),
-      // getTypeODPU(deviceId),
-      // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        debugger;
-        // const [{value: device}, {value: building}, {value: tasks}, {value: related}, {value: typeODPU}] = responses;
-        // const [{value: device}, {value: building}, {value: tasks}, {value: related}] = responses;
-        // const [{value: device}, {value: tasks}, {value: related}] = responses;
         const [{value: device}, {value: tasks}] = responses;
-
         setDevice(device);
         setBuilding(device.address);
         setTasks(tasks.items);
-        setRelated(device.hubs );
+        setRelated(device.hubs);
+        setCalcId(device.hubConnection.calculatorId);
         setIsLoading(false);
         // setTypeODPU(typeODPU);
         console.log('device', device);
@@ -152,8 +145,6 @@ export const DeviceProfile = () => {
       console.log('calcModel= ', calcModel);
     }
   }, [typeODPU]);
-
-  // const path = `/objects/${objid}/devices/${deviceId}/`;
 
   const buttonHandler = () => {
     console.log('calculator');
@@ -228,7 +219,7 @@ export const DeviceProfile = () => {
         </Route>
 
         <Route path={`${path}related`} exact>
-          <RelatedDevicesNotCalculator />
+          <RelatedDevicesNotCalculator calcId={calcId} />
         </Route>
 
         <Route path={`${path}documents`} exact>

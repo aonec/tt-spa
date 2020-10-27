@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
 import { Loader } from '01/components';
@@ -6,6 +6,7 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
+import {getInfo} from "../../../_api/device_page";
 
 export const Template = styled.div``;
 
@@ -62,42 +63,67 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevicesNotCalculator = (loading = true) => {
-  const {
-    related, loadings, errors, calcModel,
-  } = useContext(DeviceContext);
+// export const RelatedDevicesNotCalculator = (loading = true) => {
+export const RelatedDevicesNotCalculator = ({calcId}) => {
+    console.log('render')
 
-  const loadingRelated = _.get(loadings, 'related', true);
-  loading = loadingRelated;
 
-  const buttonHandler = () => {
-    console.log(related);
-  };
+  // let {
+  //   loadings, errors, calcModel,
+  // } = useContext(DeviceContext);
+  //
+  // const loadingRelated = _.get(loadings, 'related', true);
+  // loading = loadingRelated;
+  //
+  // const buttonHandler = () => {
+  //   console.log(related);
+  // };
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [related, setRelated] = useState();
+
+
+
+
+
 
   // Превратим в массив
   const relatedArr = Object.values(related || {});
-  debugger;
 
+  useEffect( () => {
+    setIsLoading(true);
+    getInfo('Calculator', calcId)
+        .then((calc) => {
+            setRelated(calc);
+            setIsLoading(false);
+        })
+  }, [])
+  console.log(related);
 
-  const result = relatedArr.map((value) => {
     const {
       model,
       serialNumber,
       futureCheckingDate,
       closingdate,
-      hub,
+      // hub,
       resource,
       id,
-      housingStockId,
-    } = value;
+      // housingStockId,
+    } = related || {};
+  if (isLoading) return <Loader show={isLoading}/>;
 
-    const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
-    const { icon, color } = DeviceIcons[resource];
+
+
+
+    // const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
     // номер трубы - это pipe.number
     // номер ввода - это pipe.entryNumber
+    let CalcItem;
 
-    return (
-      <ListItem key={id}>
+  const { icon, color } = DeviceIcons[resource] || {};
+
+
+  CalcItem = () => <ListItem key={id}>
         <NameWrap href={`/calculators/${id}`}>
           <Icon icon={icon} color={color} />
           <Name>{model || 'Вычислитель'}</Name>
@@ -109,16 +135,18 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
         <Span>{convertDate(futureCheckingDate)}</Span>
-      </ListItem>
-    );
-  });
+      </ListItem>;
+
+
+
+
 
   return (
     <ListWrap>
       {/* <button onClick={buttonHandler}>related</button> */}
-      <Loader show={loading} size="32">
+      <Loader show={isLoading} size="32">
         <Title>Соединение с вычислителем</Title>
-        {result}
+        <CalcItem />
       </Loader>
     </ListWrap>
   );
