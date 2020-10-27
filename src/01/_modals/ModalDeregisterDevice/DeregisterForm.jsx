@@ -1,48 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { deregisterDevice, getDevice } from '../../../../../_api/device_page';
-import { updateModalDeregisterForm } from '../../../../../Redux/actions/actions';
-import { DatePickerTT, Title } from '../../../../../tt-components';
+import { DatePickerTT, Title } from '../../tt-components';
+import axios from '../../axios';
 
-const DeregisterForm = () => {
-  const { 1: deviceId } = useParams();
-  const [device, setDevice] = useState({});
-  const { serialNumber, model } = device;
-  const dispatch = useDispatch();
-  const form = useSelector(
-    (state) => _.get(state, ['deviceDeregisterReducer', 'deregisterFormState'], {}),
-  );
-  const { closingDateTime = moment() } = form;
-  useEffect(() => {
-    const setForm = {
-      deviceId: Number(deviceId),
-      documentsIds: [],
-      closingDateTime: moment().toISOString(),
-    };
-    getDevice(deviceId).then((res) => setDevice(res));
-    dispatch(
-      updateModalDeregisterForm('deregisterFormState', setForm),
-    );
-  }, []);
+async function deregisterDevice(device) {
+  try {
+    alert('Отправляется запрос на снятие прибора с учета !');
+    const res = await axios.post('MeteringDevices/close', device);
+    alert('Вычислитель успешно снят с учета !');
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert('Что-то пошло не так: попробуйте еще раз');
+    throw new Error(error);
+  }
+}
+
+const DeregisterForm = ({ device }) => {
+  const { serialNumber, model, id } = device;
 
   const {
-    handleSubmit, handleChange, values, touched, errors, handleBlur, setFieldValue,
+    handleSubmit, handleChange, values, touched, errors,
+    handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      deviceId: Number(deviceId),
+      deviceId: Number(id),
       documentsIds: [],
       closingDateTime: moment().toISOString(),
     },
-    validationSchema: Yup.object({
-
-    }),
+    validationSchema: Yup.object({}),
     onSubmit: async () => {
+      const form = {
+        deviceId: values.deviceId,
+        documentsIds: values.documentsIds,
+        closingDateTime: values.closingDateTime,
+      };
+      console.log(form)
       deregisterDevice(form);
     },
   });
@@ -63,7 +60,6 @@ const DeregisterForm = () => {
         <Title size="middle" color="black">
           {`Вы действительно хотите снять ${model || 'Вычислитель'} (${serialNumber}) с учета?`}
         </Title>
-
         <Form.Item label="Дата снятия прибора с учета">
           <DatePickerTT
             name="closingDateTime"
@@ -71,9 +67,6 @@ const DeregisterForm = () => {
             allowClear={false}
             onBlur={handleBlur}
             onChange={(date) => {
-              const path = ['deregisterFormState', 'closingDateTime'];
-              const value = date.toISOString();
-              dispatch(updateModalDeregisterForm(path, value));
               setFieldValue('closingDateTime', date.toISOString());
             }}
             value={moment(values.closingDateTime)}
