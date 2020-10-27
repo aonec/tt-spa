@@ -65,30 +65,10 @@ export const Span = styled.span`
 
 // export const RelatedDevicesNotCalculator = (loading = true) => {
 export const RelatedDevicesNotCalculator = ({calcId}) => {
-    console.log('render')
-
-
-  // let {
-  //   loadings, errors, calcModel,
-  // } = useContext(DeviceContext);
-  //
-  // const loadingRelated = _.get(loadings, 'related', true);
-  // loading = loadingRelated;
-  //
-  // const buttonHandler = () => {
-  //   console.log(related);
-  // };
 
   const [isLoading, setIsLoading] = useState(false);
   const [related, setRelated] = useState();
 
-
-
-
-
-
-  // Превратим в массив
-  const relatedArr = Object.values(related || {});
 
   useEffect( () => {
     setIsLoading(true);
@@ -98,7 +78,6 @@ export const RelatedDevicesNotCalculator = ({calcId}) => {
             setIsLoading(false);
         })
   }, [])
-  console.log(related);
 
     const {
       model,
@@ -110,17 +89,12 @@ export const RelatedDevicesNotCalculator = ({calcId}) => {
       id,
       // housingStockId,
     } = related || {};
+    debugger;
   if (isLoading) return <Loader show={isLoading}/>;
 
-
-
-
-    // const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
-    // номер трубы - это pipe.number
-    // номер ввода - это pipe.entryNumber
     let CalcItem;
 
-  const { icon, color } = DeviceIcons[resource] || {};
+  const { icon, color } = DeviceIcons[null] || {};
 
 
   CalcItem = () => <ListItem key={id}>
