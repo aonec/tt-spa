@@ -21,42 +21,41 @@ const ModalAddDevice = () => {
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
-  const dispatch = useDispatch();
-  const deviceReducer = useSelector((state) => state.deviceReducer);
+  const [calculators, setCalculators] = useState([]);
 
-  function randomInteger(min, max) {
-    const rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
+  async function getObjectDevices(id = '') {
+    try {
+      const res = await axios.get(`HousingStocks/${id}/Devices`);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
   }
 
-  const initialStateDefaultValues = {
-    calculatorId: '',
-    checkingDate: moment().toISOString(),
-    connection: {
-      ipV4: '192.168.1.1',
-      deviceAddress: randomInteger(1, 255),
-      port: 1234,
-    },
-    futureCheckingDate: moment().toISOString(),
-    futureCommercialAccountingDate: moment().toISOString(),
-    housingMeteringDeviceType: 'FlowMeter',
-    housingStockId: Number(objid),
-    lastCommercialAccountingDate: moment().toISOString(),
-    model: '',
-    pipe: {
-      entryNumber: 1,
-      hubNumber: 1,
-      pipeNumber: 1,
-      magistral: 'FeedFlow',
-    },
-    resource: 'ColdWaterSupply',
-    serialNumber: '',
-  };
-
   useEffect(() => {
-    dispatch(
-      setAddDeviceForm(deviceReducer, initialStateDefaultValues),
-    );
+    getObjectDevices(objid).then((res) => {
+      const calcOnly = [];
+      console.log('res', res);
+      const { devices } = res;
+      console.log(devices);
+      devices.map((item) => {
+        console.log(item);
+        if (item.type === 'Calculator') {
+          console.log('Calculator');
+          const deviceForSelect = { ...item, value: item.id, label: item.model };
+          calcOnly.push(deviceForSelect);
+        } else {
+          console.log('Not Calculator');
+        }
+      });
+      console.log(calcOnly);
+      setCalculators(calcOnly);
+    });
+    console.log('getObjectDevices');
   }, []);
 
   function handleChangeTab(value) {
@@ -90,7 +89,8 @@ const ModalAddDevice = () => {
       <ButtonTT
         color="blue"
         style={{ marginLeft: '16px' }}
-        onClick={handleSubmit}
+        type="submit"
+        form="formikFormAddOdpu"
       >
         Выгрузить
       </ButtonTT>
@@ -105,21 +105,7 @@ const ModalAddDevice = () => {
     console.log('buttonHandler');
   };
 
-  const handleSubmit = async () => {
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.post('HousingMeteringDevices', deviceReducer);
-      // console.log(deviceReducer)
-      alert('ОДПУ успешно создан !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
+
 
   return (
     <Modal id="add-device" ref={modalRef}>
@@ -136,7 +122,7 @@ const ModalAddDevice = () => {
             handleChangeTab={handleChangeTab}
           />
 
-          <AddDeviceForm currentTabKey={currentTabKey} />
+          <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
         </ModalMain>
 
         <ModalBottom>

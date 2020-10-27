@@ -1,24 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import {
-  serviceLife, resources, magistrals, housingMeteringDeviceTypes,
+  serviceLife, resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../DeviceJSON';
 import {
   ButtonTT, Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
+import axios from "../../../../../axios";
 
-const AddDeviceForm = ({ currentTabKey }) => {
+const AddDeviceForm = (props) => {
+  const { currentTabKey, calculators } = props;
+  // console.log(calculators);
   const arr = [
     ['housingMeteringDeviceType', 'resource', 'model',
       'serialNumber',
       'lastCommercialAccountingDate',
       'futureCheckingDate',
       'futureCommercialAccountingDate'],
-    ['calculatorId',
+    ['isConnected',
+      'calculatorId',
       'entryNumber',
       'hubNumber',
       'pipeNumber',
@@ -31,7 +35,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
     const error = _.get(errors, `${name}`);
     if (touch && error) {
       return (
-        <div>{error}</div>
+        <div>Корректно введите значение</div>
       );
     }
     return null;
@@ -39,11 +43,29 @@ const AddDeviceForm = ({ currentTabKey }) => {
 
   const isVisible = (name) => arr[Number(currentTabKey) - 1].includes(name);
 
+  async function addOdpu(url = '') {
+    console.log(TEMPLATE)
+    try {
+      const res = await axios.post(`HousingMeteringDevices`, TEMPLATE);
+      alert('ОДПУ успешно создан !');
+      console.log(TEMPLATE)
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка добавления устройства',
+      };
+    }
+  }
+
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
+      isConnected: isConnected[0].value,
       serialNumber: '',
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
@@ -60,20 +82,23 @@ const AddDeviceForm = ({ currentTabKey }) => {
       entryNumber: null,
       hubNumber: null,
       pipeNumber: null,
-      magistral: '',
+      magistral: magistrals[0].value,
 
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
+      pipeNumber: Yup.number().required('Введите данные'),
+      hubNumber: Yup.number().required('Введите данные'),
+      entryNumber: Yup.number().required('Введите данные'),
+      model: Yup.string().required('Введите данные'),
+      serialNumber: Yup.string().required('Введите данные'),
+      calculatorId: Yup.string().required('Выберите вычислитель'),
     }),
 
     onSubmit: async () => {
-      const form = {
-        deviceId: values.deviceId,
-        documentsIds: values.documentsIds,
-        closingDateTime: values.closingDateTime,
-      };
-      console.log(form);
+      // console.log('TEST');
+      addOdpu();
+
     },
   });
 
@@ -82,9 +107,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
     checkingDate: values.checkingDate,
     futureCheckingDate: values.futureCheckingDate,
     lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-    documentsIds: [
-      0,
-    ],
+    documentsIds: [],
     connection: {
       ipV4: values.ipV4,
       deviceAddress: values.deviceAddress,
@@ -103,12 +126,18 @@ const AddDeviceForm = ({ currentTabKey }) => {
     },
   };
   const buttonHandler = () => {
-    console.log('buttonHandler');
     console.log(TEMPLATE);
   };
+
+  const [disable, setDisable] = useState(false);
+
   return (
 
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <form
+      id="formikFormAddOdpu"
+      onSubmit={handleSubmit}
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>
 
       {isVisible('housingMeteringDeviceType')
@@ -122,6 +151,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
             options={housingMeteringDeviceTypes}
             value={values.housingMeteringDeviceType}
           />
+          <Alert name={'housingMeteringDeviceType'}/>
         </Form.Item>
       )}
 
@@ -136,6 +166,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
             options={resources}
             defaultValue={resources[0].value}
           />
+          <Alert name={'resource'}/>
         </Form.Item>
       )}
 
@@ -148,6 +179,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
             onChange={handleChange}
             value={values.model}
           />
+          <Alert name={'model'}/>
         </Form.Item>
       )}
 
@@ -160,6 +192,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
             onChange={handleChange}
             value={values.serialNumber}
           />
+          <Alert name={'serialNumber'}/>
         </Form.Item>
       )}
 
@@ -167,7 +200,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
       && (
         <Form.Item label="Дата выпуска прибора">
           <DatePickerTT
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             name="lastCommercialAccountingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -182,7 +215,7 @@ const AddDeviceForm = ({ currentTabKey }) => {
       && (
         <Form.Item label="Дата ввода в эксплуатацию">
           <DatePickerTT
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             name="futureCheckingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -199,11 +232,10 @@ const AddDeviceForm = ({ currentTabKey }) => {
           <SelectTT
             id="futureCommercialAccountingDate"
             onChange={(item) => {
-              const value = moment( values.lastCommercialAccountingDate)
+              const value = moment(values.lastCommercialAccountingDate)
                 .add(item, 'year')
                 .toISOString();
-              setFieldValue('futureCommercialAccountingDate',value )
-
+              setFieldValue('futureCommercialAccountingDate', value);
             }}
             name="futureCommercialAccountingDate"
             placeholder="Укажите оперид эксплуатации"
@@ -213,18 +245,50 @@ const AddDeviceForm = ({ currentTabKey }) => {
         </Form.Item>
       )}
 
+      {/* Second Tabs */}
+      {isVisible('isConnected')
+      && (
+        <Form.Item label="Подключение к вычислителю">
+          <SelectTT
+            name="isConnected"
+            onChange={(item) => {
+              (item === 'notConnected') ? setDisable(true) : setDisable(false);
+              setFieldValue('isConnected', item);
+            }}
+            placeholder="Подключение к вычислителю"
+            options={isConnected}
+            value={values.isConnected}
+            disabled
+          />
+        </Form.Item>
+      )}
+
       {isVisible('calculatorId')
       && (
         <Form.Item
           label="Выберите вычислитель, к которому подключен прибор"
         >
-          <InputTT
+          <SelectTT
             name="calculatorId"
-            type="number"
-            placeholder="Начните вводить ID прибора"
-            onChange={handleChange}
+            type="text"
+            placeholder="Начните вводить серийный номер или IP адрес прибора"
+            onChange={(value) => {
+              const selected = _.find(calculators, { value });
+              const { ipV4, deviceAddress, port } = selected;
+              if (value !== values.calculatorId) {
+                setFieldValue('ipV4', ipV4);
+                setFieldValue('deviceAddress', deviceAddress);
+                setFieldValue('port', port);
+                setFieldValue('calculatorId', value);
+                const newValue = _.find(calculators, { value });
+                setFieldValue('calculatorId', newValue.value);
+              }
+            }}
+            options={calculators}
             value={values.calculatorId}
+            disabled={disable}
           />
+          <Alert name={'calculatorId'}/>
         </Form.Item>
       )}
 
@@ -236,7 +300,9 @@ const AddDeviceForm = ({ currentTabKey }) => {
             placeholder="Номер ввода"
             value={values.entryNumber}
             onChange={handleChange}
+            disabled={disable}
           />
+          <Alert name="entryNumber" />
         </Form.Item>
       )}
 
@@ -248,7 +314,9 @@ const AddDeviceForm = ({ currentTabKey }) => {
             placeholder="Номер узла"
             value={values.hubNumber}
             onChange={handleChange}
+            disabled={disable}
           />
+          <Alert name="hubNumber" />
         </Form.Item>
       )}
 
@@ -260,30 +328,32 @@ const AddDeviceForm = ({ currentTabKey }) => {
             placeholder="Номер трубы"
             value={values.pipeNumber}
             onChange={handleChange}
+            disabled={disable}
           />
+          <Alert name="pipeNumber" />
         </Form.Item>
       )}
 
       {isVisible('magistral') && (
         <Form.Item name="text" label="Выберите тип устройства">
-
           <SelectTT
             placeholder="Выберите тип устройства"
             name="magistral"
             options={magistrals}
-            defaultValue={magistrals[0].value}
             onChange={(value) => {
               setFieldValue('magistral', value);
             }}
+            value={values.magistral}
           />
+          <Alert name="magistral" />
         </Form.Item>
       )}
 
       {isVisible('documents') && (
-      <Header>Компонент в разработке</Header>
+        <Header>Компонент в разработке</Header>
       )}
 
-    </div>
+    </form>
   );
 };
 

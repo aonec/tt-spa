@@ -62,3 +62,14 @@ export const magistrals = [
     label: 'Обратная',
   },
 ];
+
+export  const isConnected = [
+  {
+    value: 'isConnected',
+    label: 'Есть'
+  },
+  {
+    value: 'notConnected',
+    label: 'Отсутствует'
+  }
+]
