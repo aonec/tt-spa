@@ -8,7 +8,7 @@ import {
   serviceLife, resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../DeviceJSON';
 import {
-  ButtonTT, Header, SelectTT, InputTT, DatePickerTT,
+  Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
 
@@ -111,7 +111,7 @@ const AddDeviceForm = (props) => {
     documentsIds: [],
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: randomInteger(0, 255) || values.deviceAddress,
+      deviceAddress: values.deviceAddress || randomInteger(0, 255),
       port: values.port,
     },
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,

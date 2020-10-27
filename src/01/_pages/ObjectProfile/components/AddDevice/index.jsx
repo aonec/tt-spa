@@ -39,7 +39,7 @@ const ModalAddDevice = () => {
       const calcOnly = [];
       const { items } = res;
       items.map((item) => {
-        const deviceForSelect = { ...item, value: item.id, label: `${item.model } (${item.serialNumber })`};
+        const deviceForSelect = { ...item, value: item.id, label: `${item.model} (${item.serialNumber})` };
         calcOnly.push(deviceForSelect);
       });
       setCalculators(calcOnly);
@@ -55,7 +55,7 @@ const ModalAddDevice = () => {
   };
 
   const buttonHandler = () => {
-        console.log(calculators)
+    console.log(calculators);
   };
 
   const renderNextButton = () => {
@@ -98,7 +98,7 @@ const ModalAddDevice = () => {
       <ModalWrap>
         <ModalClose getModal={modalRef} />
         <ModalTop>
-          {/*<ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>*/}
+          <ButtonTT onClick={buttonHandler} hidden>ButtonTT</ButtonTT>
           <Title size="middle" color="black">
             Добавление нового ОДПУ
           </Title>
