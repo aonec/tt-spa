@@ -63,32 +63,31 @@ export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
 export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
   dispatch(toggleIsLoading());
   const devices = await devicesAPI.getDevicesBySerialNumber(serialNumber);
-  // debugger;
 
   if (!devices) {
     dispatch(toggleIsLoading());
     return;
   }
 
-  if (devices.items.length === 1) {
-    const relatedDevices = await devicesAPI.getRelatedDevices(devices.items[0].id) || [];
-    devices.items[0].relatedDevices = [...relatedDevices];
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devices));
-  } else {
-    const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-      d.relatedDevices = [];
-
-      // const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-      // d.relatedDevices = [...relatedDevices]
-      // if (!relatedDevices.length) return {...d, relatedDevices}
-      // return { ...d, relatedDevices: [...relatedDevices] };
-      return d
-    }));
-    const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devicesWithFullInfo));
-  }
+  // if (devices.items.length === 1) {
+  //   const relatedDevices = await devicesAPI.getRelatedDevices(devices.items[0].id) || [];
+  //   devices.items[0].relatedDevices = [...relatedDevices];
+  //   dispatch(toggleIsLoading());
+  //   dispatch(setDevices(devices));
+  // } else {
+  //   const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
+  //     d.relatedDevices = [];
+  //
+  //     // const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
+  //     // d.relatedDevices = [...relatedDevices]
+  //     // if (!relatedDevices.length) return {...d, relatedDevices}
+  //     // return { ...d, relatedDevices: [...relatedDevices] };
+  //     return d
+  //   }));
+  //   const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
+  //   dispatch(toggleIsLoading());
+  //   dispatch(setDevices(devicesWithFullInfo));
+  // }
 
 }
 

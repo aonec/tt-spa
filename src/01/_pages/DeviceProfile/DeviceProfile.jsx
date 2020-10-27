@@ -1,4 +1,4 @@
-import { Route, useParams, useLocation } from 'react-router-dom';
+import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
@@ -30,10 +30,12 @@ export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
   const params = useParams();
+  const match = useRouteMatch();
 
-  let deviceId;
-  let objid;
+  // let deviceId;
+  // let objid;
   let path;
+  let typeODPU;
 
   // let { 0: objid, 1: deviceId } = useParams();
 
@@ -42,7 +44,6 @@ export const DeviceProfile = () => {
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
-  const [typeODPU, setTypeODPU] = useState();
   const [hubs, setHubs] = useState();
   const [calcModel, setCalcModel] = useState();
 
@@ -65,44 +66,60 @@ export const DeviceProfile = () => {
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
-  const { pathname } = useLocation();
-  // debugger;
 
-  if (Object.keys(params).length === 3) {
-    deviceId = params[1];
-    objid = params[0];
-    path = `/objects/${objid}/devices/${deviceId}/`;
-  } else if (pathname.includes('calculator')) {
-    deviceId = params[0];
-    path = `/calculators/${deviceId}/`;
-  } else if (pathname.includes('housingMeteringDevices')) {
-    deviceId = params[0];
-    path = `/housingMeteringDevices/${deviceId}/`
-  }
+  const {pathname} = useLocation();
 
+
+
+  // if (Object.keys(params).length === 3) {
+  //   deviceId = params[1];
+  //   objid = params[0];
+  //   path = `/objects/${objid}/devices/${deviceId}/`;
+  // } else if (pathname.includes('calculator')) {
+  //   deviceId = params[0];
+  //   path = `/calculators/${deviceId}/`;
+  // } else if (pathname.includes('housingMeteringDevices')) {
+  //   deviceId = params[0];
+  //   path = `/housingMeteringDevices/${deviceId}/`
+  // }
+
+  const {deviceId, objid} = params;
+
+
+  if (pathname.includes('calculator')) {
+    typeODPU = 'Calculator';
+      path = `/calculators/${deviceId}/`;
+    } else if (pathname.includes('housingMeteringDevices')) {
+      path = `/housingMeteringDevices/${deviceId}/`;
+    typeODPU = 'HousingMeteringDevice';
+    }
+
+
+// getInfo(typeODPU, deviceId)
 
   useEffect(() => {
+    setIsLoading(true)
     Promise.allSettled([
-      getInfo(deviceId),
-      getObjectOfDevice(objid),
+      getInfo(typeODPU, deviceId),
+      // getObjectOfDevice(objid),
       getODPUTasks(deviceId),
       getRelatedDevices(deviceId),
-      getTypeODPU(deviceId),
+      // getTypeODPU(deviceId),
       // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        // const [device, building, tasks, related, typeODPU] = responses;
-        // debugger;
-        const device = responses[0].value;
-        const building = responses[1].value;
-        const tasks = responses[2].value;
-        const related = responses[3].value;
-        const typeODPU = responses[4].value;
+        debugger;
+        // const [{value: device}, {value: building}, {value: tasks}, {value: related}, {value: typeODPU}] = responses;
+        // const [{value: device}, {value: building}, {value: tasks}, {value: related}] = responses;
+        // const [{value: device}, {value: tasks}, {value: related}] = responses;
+        const [{value: device}, {value: tasks}] = responses;
+
         setDevice(device);
-        setBuilding(building);
+        setBuilding(device.address);
         setTasks(tasks.items);
-        setRelated(related);
-        setTypeODPU(typeODPU);
+        setRelated(device.hubs );
+        setIsLoading(false);
+        // setTypeODPU(typeODPU);
         console.log('device', device);
         // setHubs(hubs);
       })
@@ -142,6 +159,9 @@ export const DeviceProfile = () => {
     console.log('calculator');
     getPagination();
   };
+
+  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+
   if (typeODPU === 'Calculator') {
     return (
       <DeviceContext.Provider
@@ -161,7 +181,7 @@ export const DeviceProfile = () => {
         <Header />
         <Tabs />
         <Grid>
-          <Route path={path} exact>
+          <Route path={`${path}`} exact>
             <Information />
           </Route>
           <Route path={`${path}connection`} exact>
@@ -182,8 +202,6 @@ export const DeviceProfile = () => {
     );
   }
 
-  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
-  // debugger;
   return (
     <DeviceContext.Provider
       value={{
@@ -205,7 +223,7 @@ export const DeviceProfile = () => {
 
       {/* Здесь делим экран на две части: main and aside */}
       <Grid>
-        <Route path={path} exact>
+        <Route path={`${path}`} exact>
           <InformationNotCalculator />
         </Route>
 

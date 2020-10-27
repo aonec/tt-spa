@@ -39,7 +39,6 @@ const styles = css`
 `
 
 export const UploadList = ({ items = [], del = () => {}, ...props }) => {
-  // debugger;
   // console.log(items)
   return styled(styles)(
     <upload_list {...props}>

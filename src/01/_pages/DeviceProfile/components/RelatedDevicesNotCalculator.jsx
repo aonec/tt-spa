@@ -76,6 +76,8 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
 
   // Превратим в массив
   const relatedArr = Object.values(related || {});
+  debugger;
+
 
   const result = relatedArr.map((value) => {
     const {
@@ -83,21 +85,20 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       serialNumber,
       futureCheckingDate,
       closingdate,
-      pipe,
+      hub,
       resource,
       id,
       housingStockId,
-
     } = value;
 
-    const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
+    const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
     const { icon, color } = DeviceIcons[resource];
     // номер трубы - это pipe.number
     // номер ввода - это pipe.entryNumber
 
     return (
       <ListItem key={id}>
-        <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
+        <NameWrap href={`/calculators/${id}`}>
           <Icon icon={icon} color={color} />
           <Name>{model || 'Вычислитель'}</Name>
           <Serial>{` (${serialNumber})`}</Serial>

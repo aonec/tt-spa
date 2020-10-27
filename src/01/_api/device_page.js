@@ -28,11 +28,30 @@ export async function getODPU(url = '') {
   }
 }
 
-export async function getInfo(url = '') {
+// export async function getInfo(url = '') {
+//   try {
+//     // const res = await axios.get(replaceURL(url));
+//     const res = await axios.get(`MeteringDevices/${url}`);
+//     console.log('res', res);
+//     //  return { ...res, info: true, header: createTitleObject(res) };
+//     return res;
+//   } catch (error) {
+//     console.log(error);
+//     throw {
+//       resource: 'device',
+//       message: 'Произошла ошибка запроса устройства',
+//     };
+//   }
+// }
+
+
+// getInfo(typeODPU, deviceId)
+
+export async function getInfo(typeODPU, deviceId) {
+  let deviceTypeURL = typeODPU === 'Calculator' ? 'Calculators' : 'HousingMeteringDevices'
   try {
     // const res = await axios.get(replaceURL(url));
-    const res = await axios.get(`MeteringDevices/${url}`);
-    console.log('res', res);
+    const res = await axios.get(`${deviceTypeURL}/${deviceId}`);
     //  return { ...res, info: true, header: createTitleObject(res) };
     return res;
   } catch (error) {
@@ -43,6 +62,22 @@ export async function getInfo(url = '') {
     };
   }
 }
+
+// export async function getInfo(url = '') {
+//   try {
+//     // const res = await axios.get(replaceURL(url));
+//     const res = await axios.get(`MeteringDevices/${url}`);
+//     console.log('res', res);
+//     //  return { ...res, info: true, header: createTitleObject(res) };
+//     return res;
+//   } catch (error) {
+//     console.log(error);
+//     throw {
+//       resource: 'device',
+//       message: 'Произошла ошибка запроса устройства',
+//     };
+//   }
+// }
 
 const housingStocksURL = 'HousingStocks';
 
@@ -98,7 +133,6 @@ export async function getRelatedDevices(url = '') {
 export async function getTypeODPU(url = '') {
   try {
     const res = await axios.get(`MeteringDevices/${url}`);
-    // debugger;
     // console.log(res.type);
     return res.type;
   } catch (error) {

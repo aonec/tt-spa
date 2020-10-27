@@ -14,7 +14,7 @@ export const api = {
     return { url: this.getObjectId(id).url + "/devices/" }
   },
 
-  getDevcieId(objId, devId) {
+  getDeviceId(objId, devId) {
     return { url: this.getObjectDevices(objId).url + devId }
   },
 
@@ -25,9 +25,9 @@ export const api = {
     }
   },
   getDeviceDevices(objId, devId) {
-    return { url: this.getDevcieId(objId, devId).url + "/related/" }
+    return { url: this.getDeviceId(objId, devId).url + "/related/" }
   },
   getDevicePipes(objId, devId) {
-    return { url: this.getDevcieId(objId, devId).url + "/communicationpipes" }
+    return { url: this.getDeviceId(objId, devId).url + "/communicationpipes" }
   },
 }
