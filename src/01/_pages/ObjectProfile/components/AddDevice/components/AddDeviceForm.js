@@ -49,7 +49,7 @@ const AddDeviceForm = (props) => {
 
   const isVisible = (name) => tabsArr[Number(currentTabKey) - 1].includes(name);
 
-  async function addOdpu(url = '') {;
+  async function addOdpu(url = '') {
     try {
       const res = await axios.post('HousingMeteringDevices', TEMPLATE);
       alert('ОДПУ успешно создан !');
@@ -93,8 +93,8 @@ const AddDeviceForm = (props) => {
       pipeNumber: Yup.number().required('Введите данные'),
       hubNumber: Yup.number().required('Введите данные'),
       entryNumber: Yup.number().required('Введите данные'),
-      model: Yup.string().required('Введите данные'),
-      serialNumber: Yup.string().required('Введите данные'),
+      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
+      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
     }),
 
@@ -111,7 +111,7 @@ const AddDeviceForm = (props) => {
     documentsIds: [],
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: randomInteger(0,255) || values.deviceAddress,
+      deviceAddress: randomInteger(0, 255) || values.deviceAddress,
       port: values.port,
     },
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
@@ -138,7 +138,7 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      {/*<ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>*/}
+      {/* <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT> */}
 
       {isVisible('housingMeteringDeviceType')
       && (

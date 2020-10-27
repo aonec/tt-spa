@@ -20,9 +20,9 @@ const ModalAddDevice = () => {
   const modalRef = React.createRef();
   const [calculators, setCalculators] = useState([]);
 
-  async function getObjectDevices(id = '') {
+  async function getObjectCalculators(id = '') {
     try {
-      const res = await axios.get(`HousingStocks/${id}/Devices`);
+      const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
       return res;
     } catch (error) {
       console.log(error);
@@ -34,14 +34,13 @@ const ModalAddDevice = () => {
   }
 
   useEffect(() => {
-    getObjectDevices(objid).then((res) => {
+    getObjectCalculators(objid).then((res) => {
+      // console.log(res)
       const calcOnly = [];
-      const { devices } = res;
-      devices.map((item) => {
-        if (item.type === 'Calculator') {
-          const deviceForSelect = { ...item, value: item.id, label: item.model };
-          calcOnly.push(deviceForSelect);
-        }
+      const { items } = res;
+      items.map((item) => {
+        const deviceForSelect = { ...item, value: item.id, label: `${item.model } (${item.serialNumber })`};
+        calcOnly.push(deviceForSelect);
       });
       setCalculators(calcOnly);
     });
@@ -53,6 +52,10 @@ const ModalAddDevice = () => {
 
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
+  };
+
+  const buttonHandler = () => {
+        console.log(calculators)
   };
 
   const renderNextButton = () => {
@@ -95,6 +98,7 @@ const ModalAddDevice = () => {
       <ModalWrap>
         <ModalClose getModal={modalRef} />
         <ModalTop>
+          {/*<ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>*/}
           <Title size="middle" color="black">
             Добавление нового ОДПУ
           </Title>
