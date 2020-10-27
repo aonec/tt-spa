@@ -7,10 +7,10 @@ import { Form } from 'antd';
 import { DatePickerTT, Title } from '../../tt-components';
 import axios from '../../axios';
 
-async function deregisterDevice(Device = {}) {
+async function deregisterDevice(device) {
   try {
     alert('Отправляется запрос на снятие прибора с учета !');
-    const res = await axios.post('MeteringDevices/close', Device);
+    const res = await axios.post('MeteringDevices/close', device);
     alert('Вычислитель успешно снят с учета !');
     return res;
   } catch (error) {
