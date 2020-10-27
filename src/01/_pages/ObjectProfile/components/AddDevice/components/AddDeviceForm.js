@@ -10,7 +10,7 @@ import {
 import {
   ButtonTT, Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
-import axios from "../../../../../axios";
+import axios from '../../../../../axios';
 
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
@@ -44,21 +44,22 @@ const AddDeviceForm = (props) => {
   const isVisible = (name) => arr[Number(currentTabKey) - 1].includes(name);
 
   async function addOdpu(url = '') {
-    console.log(TEMPLATE)
+    console.log(JSON.stringify(TEMPLATE));
     try {
-      const res = await axios.post(`HousingMeteringDevices`, TEMPLATE);
+      const res = await axios.post('HousingMeteringDevices', TEMPLATE);
       alert('ОДПУ успешно создан !');
-      console.log(TEMPLATE)
+      console.log(TEMPLATE);
+      console.log(res)
       return res;
     } catch (error) {
       console.log(error);
+
       throw {
         resource: 'device',
         message: 'Произошла ошибка добавления устройства',
       };
     }
   }
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -98,7 +99,6 @@ const AddDeviceForm = (props) => {
     onSubmit: async () => {
       // console.log('TEST');
       addOdpu();
-
     },
   });
 
@@ -125,6 +125,7 @@ const AddDeviceForm = (props) => {
       magistral: values.magistral,
     },
   };
+
   const buttonHandler = () => {
     console.log(TEMPLATE);
   };
@@ -151,7 +152,7 @@ const AddDeviceForm = (props) => {
             options={housingMeteringDeviceTypes}
             value={values.housingMeteringDeviceType}
           />
-          <Alert name={'housingMeteringDeviceType'}/>
+          <Alert name="housingMeteringDeviceType" />
         </Form.Item>
       )}
 
@@ -166,7 +167,7 @@ const AddDeviceForm = (props) => {
             options={resources}
             defaultValue={resources[0].value}
           />
-          <Alert name={'resource'}/>
+          <Alert name="resource" />
         </Form.Item>
       )}
 
@@ -179,7 +180,7 @@ const AddDeviceForm = (props) => {
             onChange={handleChange}
             value={values.model}
           />
-          <Alert name={'model'}/>
+          <Alert name="model" />
         </Form.Item>
       )}
 
@@ -192,7 +193,7 @@ const AddDeviceForm = (props) => {
             onChange={handleChange}
             value={values.serialNumber}
           />
-          <Alert name={'serialNumber'}/>
+          <Alert name="serialNumber" />
         </Form.Item>
       )}
 
@@ -288,7 +289,7 @@ const AddDeviceForm = (props) => {
             value={values.calculatorId}
             disabled={disable}
           />
-          <Alert name={'calculatorId'}/>
+          <Alert name="calculatorId" />
         </Form.Item>
       )}
 
