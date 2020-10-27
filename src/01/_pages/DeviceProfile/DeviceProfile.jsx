@@ -21,7 +21,7 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modals/Modal';
-import ModalDeregisterDevice from './components/Modals/ModalDeregisterDevice';
+import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -112,9 +112,6 @@ export const DeviceProfile = () => {
         setRelated(device.hubs);
         setCalcId(device.hubConnection.calculatorId);
         setIsLoading(false);
-        // setTypeODPU(typeODPU);
-        console.log('device', device);
-        // setHubs(hubs);
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -188,7 +185,7 @@ export const DeviceProfile = () => {
           <Events title="Задачи с объектом" />
         </Grid>
         <ModalODPU />
-        <ModalDeregisterDevice />
+        <ModalDeregisterDevice deviceId={deviceId} />
       </DeviceContext.Provider>
     );
   }
@@ -228,7 +225,7 @@ export const DeviceProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      <ModalDeregisterDevice />
+      <ModalDeregisterDevice deviceId={deviceId} />
     </DeviceContext.Provider>
   );
 };
