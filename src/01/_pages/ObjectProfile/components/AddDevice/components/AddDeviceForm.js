@@ -12,6 +12,11 @@ import {
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
 
+function randomInteger(min, max) {
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+}
+
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
   // console.log(calculators);
@@ -110,7 +115,7 @@ const AddDeviceForm = (props) => {
     documentsIds: [],
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: values.deviceAddress,
+      deviceAddress: randomInteger(0,255) || values.deviceAddress,
       port: values.port,
     },
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
