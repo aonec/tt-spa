@@ -3,19 +3,19 @@ import moment from 'moment';
 import $ from 'jquery';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from 'antd';
 import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
-import AddDeviceForm from './components/AddDeviceForm'
 import {
+  Modal,
   ModalWrap,
   ModalTop,
   ModalMain,
   ModalBottom,
   ModalClose,
 } from '../../../../tt-components/Modal';
-import TabsComponent from './components/Tabs/Main';
-import { setAddDeviceForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
+import TabsComponent from './components/Main';
+import { setAddDeviceForm } from '../../../../Redux/actions/actions';
+import AddDeviceForm from './components/AddDeviceForm';
 
 const ModalAddDevice = () => {
   const { 0: objid } = useParams();
@@ -28,11 +28,6 @@ const ModalAddDevice = () => {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
-  const visible = true;
-
-  const handleCancel = () => {
-    dispatch(setModalDeregisterVisible(false));
-  };
 
   const initialStateDefaultValues = {
     calculatorId: '',
@@ -102,6 +97,9 @@ const ModalAddDevice = () => {
     );
   };
 
+  const hideMe = () => {
+    $('#add-calculator').css('display', 'none');
+  };
 
   const buttonHandler = () => {
     console.log('buttonHandler');
@@ -124,31 +122,31 @@ const ModalAddDevice = () => {
   };
 
   return (
-    <Modal
-      visible={visible}
-      onCancel={handleCancel}
-      footer={null}
-      width={'800px'}
-    >
-      <ModalTop>
-        <Title size="middle" color="black">
-          Добавление нового ОДПУ
-        </Title>
-      </ModalTop>
-      <ModalMain>
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
-      </ModalMain>
-      <AddDeviceForm />
-      <ModalBottom>
-        <ButtonTT color="white" onClick={handleCancel}>
-          Отмена
-        </ButtonTT>
-        {renderNextButton()}
-        {renderSubmitButton()}
-      </ModalBottom>
+    <Modal id="add-device" ref={modalRef}>
+      <ModalWrap>
+        <ModalClose getModal={modalRef} />
+        <ModalTop>
+          <Title size="middle" color="black">
+            Добавление нового ОДПУ
+          </Title>
+        </ModalTop>
+        <ModalMain>
+          <TabsComponent
+            currentTabKey={currentTabKey}
+            handleChangeTab={handleChangeTab}
+          />
+
+          <AddDeviceForm currentTabKey={currentTabKey} />
+        </ModalMain>
+
+        <ModalBottom>
+          <ButtonTT color="white" onClick={hideMe}>
+            Отмена
+          </ButtonTT>
+          {renderNextButton()}
+          {renderSubmitButton()}
+        </ModalBottom>
+      </ModalWrap>
     </Modal>
   );
 };

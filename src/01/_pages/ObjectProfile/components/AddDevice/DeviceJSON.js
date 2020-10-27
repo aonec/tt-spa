@@ -26,7 +26,7 @@ export const serviceLife = [
   { value: '6', label: '6 лет', id: 2 },
 ];
 
-export const types = [
+export const housingMeteringDeviceTypes = [
   {
     value: 'FlowMeter',
     label: 'Расходомер',
