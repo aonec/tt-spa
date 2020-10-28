@@ -120,7 +120,7 @@ const AddDeviceForm = (props) => {
           magistral: values.magistral,
         },
       };
-      console.log(JSON.stringify(form));
+      // console.log(JSON.stringify(form));
       addOdpu(form);
     },
   });
