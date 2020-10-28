@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -21,19 +21,29 @@ const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
   const [disable, setDisable] = useState(false);
 
-  const tabsArr = [
-    ['housingMeteringDeviceType', 'resource', 'model',
-      'serialNumber',
-      'lastCommercialAccountingDate',
-      'futureCheckingDate',
-      'futureCommercialAccountingDate'],
-    ['isConnected',
-      'calculatorId',
-      'entryNumber',
-      'hubNumber',
-      'pipeNumber',
-      'magistral'],
-    ['documents'],
+  const visibleValuesByTab1 = ['housingMeteringDeviceType', 'resource', 'model',
+    'serialNumber',
+    'lastCommercialAccountingDate',
+    'futureCheckingDate',
+    'futureCommercialAccountingDate'];
+  const visibleValuesByTab2 = ['isConnected',
+    'calculatorId',
+    'entryNumber',
+    'hubNumber',
+    'pipeNumber',
+    'magistral'];
+  const visibleValuesByTab3 = ['documents'];
+
+  const visibleValuesByTab = [
+    {
+      key: 1,
+      value: visibleValuesByTab1,
+    },
+    {
+      key: 2,
+      value: visibleValuesByTab2,
+    },
+    { key: 3, value: visibleValuesByTab3 },
   ];
 
   const Alert = ({ name }) => {
@@ -47,28 +57,16 @@ const AddDeviceForm = (props) => {
     return null;
   };
 
-  const isVisible = (name) => tabsArr[Number(currentTabKey) - 1].includes(name);
+  const isVisible = (name) => _.find(visibleValuesByTab, { key: Number(currentTabKey) }).value.includes(name);
 
-  async function addOdpu(url = '') {
-    try {
-      const res = await axios.post('HousingMeteringDevices', TEMPLATE);
-      alert('ОДПУ успешно создан !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка добавления ОДПУ',
-      };
-    }
-  }
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setValues,
   } = useFormik({
     initialValues: {
-      isConnected: 'isConnected',
+      isConnected: isConnected[0].value,
       serialNumber: '',
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
@@ -99,38 +97,48 @@ const AddDeviceForm = (props) => {
     }),
 
     onSubmit: async () => {
-      console.log(JSON.stringify(TEMPLATE));
-      addOdpu();
+      const form = {
+        serialNumber: values.serialNumber,
+        checkingDate: values.checkingDate,
+        futureCheckingDate: values.futureCheckingDate,
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        documentsIds: [],
+        connection: {
+          ipV4: values.ipV4,
+          deviceAddress: values.deviceAddress,
+          port: values.port,
+        },
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        housingMeteringDeviceType: values.housingMeteringDeviceType,
+        resource: values.resource,
+        model: values.model,
+        pipe: {
+          calculatorId: values.calculatorId,
+          entryNumber: values.entryNumber,
+          hubNumber: values.hubNumber,
+          pipeNumber: values.pipeNumber,
+          magistral: values.magistral,
+        },
+      };
+      console.log(JSON.stringify(form));
+      addOdpu(form);
     },
   });
 
-  const TEMPLATE = {
-    serialNumber: values.serialNumber,
-    checkingDate: values.checkingDate,
-    futureCheckingDate: values.futureCheckingDate,
-    lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-    documentsIds: [],
-    connection: {
-      ipV4: values.ipV4,
-      deviceAddress: values.deviceAddress,
-      port: values.port,
-    },
-    futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-    housingMeteringDeviceType: values.housingMeteringDeviceType,
-    resource: values.resource,
-    model: values.model,
-    pipe: {
-      calculatorId: values.calculatorId,
-      entryNumber: values.entryNumber,
-      hubNumber: values.hubNumber,
-      pipeNumber: values.pipeNumber,
-      magistral: values.magistral,
-    },
-  };
+  async function addOdpu(form) {
+    try {
+      const res = await axios.post('HousingMeteringDevices', form);
+      alert('ОДПУ успешно создан !');
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка добавления ОДПУ',
+      };
+    }
+  }
 
-  const buttonHandler = () => {
-    console.log(TEMPLATE);
-  };
 
   return (
 
@@ -275,19 +283,17 @@ const AddDeviceForm = (props) => {
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
               if (value !== values.calculatorId) {
-                const selected = _.find(calculators, {value});
-                const {connection: {ipV4, deviceAddress, port}} = selected;
-                const newValue = _.find(calculators, {value});
+                const selected = _.find(calculators, { value });
+                const { connection: { ipV4, deviceAddress, port } } = selected;
                 setValues((prevValues) => ({
                   ...prevValues,
                   ipV4,
                   deviceAddress,
                   port,
-                  calculatorId: newValue.value,
+                  calculatorId: value
                 }));
               }
             }}
-
             options={calculators}
             value={values.calculatorId}
             disabled={disable}

@@ -34,16 +34,17 @@ const ModalAddDevice = () => {
   }
 
   useEffect(() => {
-    getObjectCalculators(objid).then((res) => {
-      // console.log(res)
-      const calcOnly = [];
-      const { items } = res;
-      items.map((item) => {
-        const deviceForSelect = { ...item, value: item.id, label: `${item.model} (${item.serialNumber})` };
-        calcOnly.push(deviceForSelect);
-      });
-      setCalculators(calcOnly);
-    });
+    async function someFunc() {
+      try {
+        const objCalculators = await getObjectCalculators(objid);
+        const { items } = objCalculators;
+        const calcOnly = await items.map((item) => ({ ...item, value: item.id, label: `${item.model} (${item.serialNumber})` }));
+        setCalculators(calcOnly);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    someFunc();
   }, []);
 
   function handleChangeTab(value) {
