@@ -65,10 +65,10 @@ const AddDeviceForm = (props) => {
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue,
+    handleBlur, setFieldValue, setValues,
   } = useFormik({
     initialValues: {
-      isConnected: isConnected[0].value,
+      isConnected: 'isConnected',
       serialNumber: '',
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
@@ -99,6 +99,7 @@ const AddDeviceForm = (props) => {
     }),
 
     onSubmit: async () => {
+      console.log(JSON.stringify(TEMPLATE));
       addOdpu();
     },
   });
@@ -111,7 +112,7 @@ const AddDeviceForm = (props) => {
     documentsIds: [],
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: values.deviceAddress || randomInteger(0, 255),
+      deviceAddress: values.deviceAddress,
       port: values.port,
     },
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
@@ -252,7 +253,7 @@ const AddDeviceForm = (props) => {
           <SelectTT
             name="isConnected"
             onChange={(item) => {
-              (item === 'notConnected') ? setDisable(true) : setDisable(false);
+              (item === false) ? setDisable(true) : setDisable(false);
               setFieldValue('isConnected', item);
             }}
             placeholder="Подключение к вычислителю"
@@ -273,17 +274,20 @@ const AddDeviceForm = (props) => {
             type="text"
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
-              const selected = _.find(calculators, { value });
-              const { ipV4, deviceAddress, port } = selected;
               if (value !== values.calculatorId) {
-                setFieldValue('ipV4', ipV4);
-                setFieldValue('deviceAddress', deviceAddress);
-                setFieldValue('port', port);
-                setFieldValue('calculatorId', value);
-                const newValue = _.find(calculators, { value });
-                setFieldValue('calculatorId', newValue.value);
+                const selected = _.find(calculators, {value});
+                const {connection: {ipV4, deviceAddress, port}} = selected;
+                const newValue = _.find(calculators, {value});
+                setValues((prevValues) => ({
+                  ...prevValues,
+                  ipV4,
+                  deviceAddress,
+                  port,
+                  calculatorId: newValue.value,
+                }));
               }
             }}
+
             options={calculators}
             value={values.calculatorId}
             disabled={disable}
