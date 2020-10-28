@@ -148,7 +148,7 @@ export const DeviceProfile = () => {
     getPagination();
   };
 
-  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+  if (isLoading || typeODPU === undefined) return 'ЗАГРУЗКА...';
 
   if (typeODPU === 'Calculator') {
     return (
