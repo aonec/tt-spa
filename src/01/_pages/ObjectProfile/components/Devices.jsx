@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import styled from 'reshadow/macro';
 import { Loader, Icon } from '01/components';
 import * as style from '_reshadow';
-import convertDate, { convertDateDots } from '../../../_api/utils/convertDate';
+import { convertDateDots } from '../../../_api/utils/convertDate';
 
 export const Devices = React.memo(
   ({
@@ -28,9 +28,9 @@ export const Devices = React.memo(
           {items.map(
             ({
               id, fill, icon, model, serialNumber, futureCheckingDate, commercialAccountingDate,
-            }) =>
-              // console.log(model, id);
-              (
+            }) =>{
+              // console.log(model, id)
+              return (
                 <device key={id} onClick={() => onClick(id)}>
                   <h4>
                     <Icon {...{ fill, icon }} />
@@ -47,7 +47,7 @@ export const Devices = React.memo(
                   </devcie_date>
                 </device>
               )
-            ,
+            }
           )}
         </devices>
       </Route>,

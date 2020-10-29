@@ -49,14 +49,14 @@ const EditODPU = () => {
     setDevice(device);
 
     const calculators = await getCalculators(objid);
-    console.log(calculators);
+    // console.log(calculators);
     const selectCalculators = calculators.items.map((item) => {
-      console.log(item);
+      // console.log(item);
       const label = `${item.model} (${item.serialNumber}) IP: ${item.connection.ipV4} (${item.connection.port})`;
       const value = item.id;
       return ({ ...item, label, value });
     });
-    console.log(selectCalculators);
+    // console.log(selectCalculators);
     setCalculators(selectCalculators);
   }, []);
 

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, serviceLife, connections, isConnected,
+  housingMeteringDeviceTypes, resources, serviceLife, isConnectedValue,
 } from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -151,8 +151,6 @@ const FormEditODPU = (props) => {
       deviceAddress,
       pipeNumber,
       port: port || 0,
-      connection: !!hub,
-      // connection: hub ? true : false,
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
       street: street || 'Улица не указана',
@@ -160,13 +158,21 @@ const FormEditODPU = (props) => {
       corpus,
       magistral: magistral || 'Не выбрано',
       ipV4,
+      isConnected: isConnectedValue[0].value
     },
     validationSchema: Yup.object({
-      serialNumber: Yup.string().required('Введите серийный номер'),
+      resource: Yup.string().required('Введите данные'),
+      pipeNumber: Yup.number().required('Введите данные'),
+      hubNumber: Yup.number().required('Введите данные'),
+      entryNumber: Yup.number().required('Введите данные'),
+      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
+      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
+      calculatorId: Yup.string().required('Выберите вычислитель'),
     }),
-    onSubmit: async () => {
+    onSubmit: () => {
       console.log(PUT_EDIT_FORM);
-      console.log(deviceId);
+      console.log(JSON.stringify(PUT_EDIT_FORM))
+      // console.log(deviceId);
       editOPDU();
     },
   });
@@ -193,17 +199,16 @@ const FormEditODPU = (props) => {
       deviceAddress: values.deviceAddress,
       port: values.port || 0,
     },
-    calculatorId: values.calculatorId,
     housingMeteringDeviceType: values.housingMeteringDeviceType,
     resource: values.resource,
     model: values.model,
     pipe: {
+      calculatorId: values.calculatorId,
       entryNumber: values.entryNumber || null,
       hubNumber: values.hubNumber || null,
       pipeNumber: values.pipeNumber || null,
       magistral: values.magistral || 'Направление не выбрано',
     },
-    isConnected: isConnected
   };
 
   const buttonHandler = () => {
@@ -386,7 +391,6 @@ const FormEditODPU = (props) => {
         </Form.Item>
         )}
 
-
         {isVisible('isConnected')
         && (
           <Form.Item label="Подключение к вычислителю">
@@ -397,7 +401,7 @@ const FormEditODPU = (props) => {
                 setFieldValue('isConnected', item);
               }}
               placeholder="Подключение к вычислителю"
-              options={isConnected}
+              options={isConnectedValue}
               value={values.isConnected}
               disabled
             />
