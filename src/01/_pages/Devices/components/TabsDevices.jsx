@@ -57,7 +57,7 @@ const TabsDevices = () => {
 
     return <div>
 
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1" onChange={callback} style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
                 <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
