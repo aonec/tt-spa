@@ -4,14 +4,10 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import '01/tt-components/antd.scss';
-import { DatePicker, Tabs, Select } from 'antd';
-
-import { convertDateOnly } from '01/_api/utils/convertDate';
+import _ from 'lodash';
+import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
-
-import _ from 'lodash';
 
 import { Icon } from '../../../../../_components/Icon';
 import { DeviceContext } from '../../../DeviceProfile';
@@ -20,10 +16,7 @@ import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
 import './modal.scss';
-
-const { TabPane } = Tabs;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import {ButtonTT} from '../../../../../tt-components';
 
 const Translate = {
   Heat: 'Отопление',
@@ -41,13 +34,13 @@ export const ReportContext = React.createContext();
 
 export const ModalODPU = () => {
   const { device, building, hubs } = useContext(DeviceContext);
+  console.log("hubs", hubs)
   const { id, model, serialNumber } = { ...device };
   const serialNumberODPU = serialNumber;
   const { number, street } = { ...building };
 
   const list = [];
   const devicesList = [];
-  let b;
 
   const period = useRef('month');
   const detail = useRef('daily');
@@ -87,11 +80,28 @@ export const ModalODPU = () => {
 
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
+
+    // closingDate: null
+    // diameter: null
+    // futureCheckingDate: null
+    // futureCommercialAccountingDate: "2017-12-10T03:00:00"
+    // housingMeteringDeviceType: "FlowMeter"
+    // hub: {entryNumber: 1, hubNumber: 3, pipeNumber: 1, magistral: "FeedFlow"}
+    // id: 1348105
+    // lastCheckingDate: null
+    // lastCommercialAccountingDate: "2017-12-10T03:00:00"
+    // managementFirm: {id: 1347937, name: "ЖК "Спутник" (Самолёт-Сервис)", phoneNumber: null, information: null, timeZoneOffset: "03:00:00"}
+    // model: "SONO 1500CT ДУ50"
+    // resource: "Heat"
+    // serialNumber: "55987340"
+    // transactionType: null
+
+
     hubsarr.map((value) => {
-      let { resource, entryNumber, pipes } = { ...value };
+      let { resource, entryNumber, pipes } = value;
       pipes = pipes || [];
       const pipesList = pipes.map((values) => {
-        const { devices } = { ...values };
+        const { devices } = values;
         const devicesRes = devices.map((value) => {
           const { serialNumber, type } = { ...value };
           if (type === 'FlowMeter') {
@@ -205,6 +215,7 @@ export const ModalODPU = () => {
     >
       <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
+          <ButtonTT>TEST</ButtonTT>
           <Icon
             className="modal__close"
             icon="close"
