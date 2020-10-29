@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
@@ -63,25 +62,14 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevices = () => {
-
-
-
   const { related, loadings } = useContext(DeviceContext);
-
-  // const loadingRelated = _.get(loadings, 'related', true);
   const loading = _.get(loadings, 'related', true);
 
   const buttonHandler = () => {
     console.log(related);
   };
 
-  // Превратим в массив
-  // const relatedArr = Object.values(related || {});
-
-  debugger;
-
   const result = related.map((value) => {
-      debugger;
     const {
       model,
       serialNumber,
@@ -92,11 +80,8 @@ export const RelatedDevices = () => {
       housingStockId,
     } = value;
 
-    const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
+    const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
     const { icon, color } = DeviceIcons[resource];
-
-    // номер трубы - это pipe.number
-    // номер ввода - это pipe.entryNumber
 
     return (
       <ListItem key={id}>
@@ -111,7 +96,7 @@ export const RelatedDevices = () => {
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
         <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${'-'}`}</Span>
+        <Span>{`Узел: ${hubNumber}`}</Span>
         <Span>{`Труба: ${pipeNumber}`}</Span>
       </ListItem>
     );
