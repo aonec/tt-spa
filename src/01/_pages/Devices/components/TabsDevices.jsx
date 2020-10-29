@@ -39,11 +39,10 @@ const TabsDevices = () => {
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
-        if (searchTerm) return;
         dispatch(toggleIsLoading());
-        dispatch(getDevices(currentPage, pageSize));
+        dispatch(getDevices(currentPage, pageSize, searchTerm));
         dispatch(toggleIsLoading());
-    }, [currentPage, pageSize]);
+    }, [currentPage, searchTerm]);
 
     const deviceItems = useSelector((state) =>
         state.devicePage.items

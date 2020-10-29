@@ -2,9 +2,9 @@ import axios from '01/axios';
 
 
 export const devicesAPI = {
-    async getDevices(pageNumber, pageSize) {
+    async getDevices(pageNumber, pageSize, searchTerm) {
         try {
-            const res = await axios.get(`Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}`)
+            const res = await axios.get(`Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${searchTerm ? `&Question=${searchTerm}` : ''}`)
             return res
         } catch (error) {
         }

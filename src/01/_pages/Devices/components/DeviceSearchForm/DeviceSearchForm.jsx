@@ -26,18 +26,20 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
 
     const onFinish = () => {
     }
-
-    const searchForm = useRef(null);
-
-    const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-            searchForm.current.submit();
-        }
-    }
+    //
+    //
+    // const handleKeyPress = (e) => {
+    //     if (e.key === "Enter") {
+    //         searchForm.current.submit();
+    //     }
+    // }
 
     const onValuesChangeHandler = (values) => {
-        dispatch(getDevicesBySerialNumber(values.search));
-
+        if (values.search.length >= 4) {
+            setSearchTerm(values.search)
+            // dispatch(getDevicesBySerialNumber(values.search));
+        }
+        return;
     }
 
 
@@ -47,10 +49,8 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
-            onFinish={handleSubmit}
+            // onFinish={handleSubmit}
             // style={{maxWidth: 960}}
-            onKeyPress={handleKeyPress}
-            ref={searchForm}
             onValuesChange={onValuesChangeHandler}
             style={{marginBottom: 20}}
         >
@@ -69,7 +69,7 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
                     rules={[{ required: true, message:  'Введите адрес дома или серийный номер прибора' }]}
                     style={{marginRight: 16}}
                 >
-                    <Input className={styles.input} value={searchTerm} onChange={editSearchTerm} placeholder="Введите адрес дома или серийный номер прибора" prefix={<Icon icon="search" />} />
+                    <Input className={styles.input} value={searchTerm} placeholder="Введите адрес дома или серийный номер прибора" prefix={<Icon icon="search" />} />
                 </Form.Item>
 
                 <Form.Item
