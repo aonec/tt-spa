@@ -414,7 +414,6 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="isConnected"
               onChange={(item) => {
-                (item === false) ? setDisable(true) : setDisable(false);
                 setFieldValue('isConnected', item);
               }}
               placeholder="Подключение к вычислителю"
