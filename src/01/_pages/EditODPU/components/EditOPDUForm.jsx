@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, serviceLife, connections,
+  housingMeteringDeviceTypes, resources, serviceLife, connections,isConnected
 } from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -19,6 +19,7 @@ const FormEditODPU = (props) => {
   } = props;
 
   const { 0: objid, 1: deviceId } = useParams();
+
 
   const {
     address,
@@ -39,10 +40,12 @@ const FormEditODPU = (props) => {
   } = device;
 
   const {
-    hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection
+    hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
   } = hubConnection;
 
-  const {isConnected, ipV4, port, deviceAddress} = calculatorConnection
+  const {
+    isConnected, ipV4, port, deviceAddress,
+  } = calculatorConnection;
 
   const {
     entryNumber, hubNumber, pipeNumber, magistral,
@@ -52,10 +55,42 @@ const FormEditODPU = (props) => {
     city, street, housingStockNumber, corpus,
   } = address;
 
+  console.log("housingStockNumber", housingStockNumber)
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
+
+  const visibleValuesByTab1 = ['housingMeteringDeviceType', 'resource', 'model',
+    'serialNumber',
+    'lastCommercialAccountingDate',
+    'futureCheckingDate',
+    'futureCommercialAccountingDate',
+    'city',
+    'street',
+    'housingStockNumber',
+    'corpus'];
+  const visibleValuesByTab2 = ['isConnected',
+    'calculatorId',
+    'entryNumber',
+    'hubNumber',
+    'pipeNumber',
+    'magistral'];
+  const visibleValuesByTab3 = ['documents'];
+
+  const visibleValuesByTab = [
+    {
+      key: 1,
+      value: visibleValuesByTab1,
+    },
+    {
+      key: 2,
+      value: visibleValuesByTab2,
+    },
+    { key: 3, value: visibleValuesByTab3 },
+  ];
+
+  const isVisible = (name) => _.find(visibleValuesByTab, { key: Number(currentTabKey) }).value.includes(name);
 
   const EditODPUButtons = () => (
     <div>
@@ -101,6 +136,7 @@ const FormEditODPU = (props) => {
     errors,
     handleBlur,
     setFieldValue,
+    setValues,
   } = useFormik({
     initialValues: {
       housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
@@ -113,6 +149,7 @@ const FormEditODPU = (props) => {
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
       hubNumber,
+      deviceAddress,
       pipeNumber,
       port: port || 0,
       connection: !!hub,
@@ -120,18 +157,17 @@ const FormEditODPU = (props) => {
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
       street: street || 'Улица не указана',
-      number: housingStockNumber || 'Номер дома не указан',
-      corpus: corpus,
+      housingStockNumber: housingStockNumber || 'Номер дома не указан',
+      corpus,
       magistral: magistral || 'Не выбрано',
-      ipV4: ipV4
-      // ipV4: _find(connections. {},
+      ipV4,
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
     }),
     onSubmit: async () => {
       console.log(PUT_EDIT_FORM);
-      console.log(deviceId)
+      console.log(deviceId);
       editOPDU();
     },
   });
@@ -155,7 +191,7 @@ const FormEditODPU = (props) => {
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: randomInteger(1, 255),
+      deviceAddress: values.deviceAddress,
       port: values.port || 0,
     },
     calculatorId: values.calculatorId,
@@ -180,7 +216,9 @@ const FormEditODPU = (props) => {
   return (
     <div style={{ maxWidth: '480px' }}>
       <form id="formikForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
-        <div hidden={!(Number(currentTabKey) === 1)}>
+
+        {isVisible('housingMeteringDeviceType')
+        && (
           <Form.Item label="Выберите тип прибора">
             <SelectTT
               name="housingMeteringDeviceType"
@@ -189,10 +227,14 @@ const FormEditODPU = (props) => {
               }}
               options={housingMeteringDeviceTypes}
               value={values.housingMeteringDeviceType}
+              disabled
             />
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
+        )}
 
+        {isVisible('resource')
+        && (
           <Form.Item label="Выберите тип ресурса">
             <SelectTT
               name="resource"
@@ -203,7 +245,10 @@ const FormEditODPU = (props) => {
               value={values.resource}
             />
           </Form.Item>
+        )}
 
+        {isVisible('model')
+        && (
           <Form.Item label="Выберите модель прибора">
             <InputTT
               name="model"
@@ -215,187 +260,244 @@ const FormEditODPU = (props) => {
             />
             <Alert name="model" />
           </Form.Item>
+        )}
 
-          <Form.Item label="Серийный номер">
-            <InputTT
-              name="serialNumber"
-              placeholder="Укажите серийный номер..."
-              type="text"
-              onChange={handleChange}
-              value={values.serialNumber}
-              onBlur={handleBlur}
-            />
-            <Alert name="serialNumber" />
-          </Form.Item>
+        {isVisible('serialNumber')
+        && (
+        <Form.Item label="Серийный номер">
+          <InputTT
+            name="serialNumber"
+            placeholder="Укажите серийный номер..."
+            type="text"
+            onChange={handleChange}
+            value={values.serialNumber}
+            onBlur={handleBlur}
+          />
+          <Alert name="serialNumber" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Дата выпуска прибора">
-            <DatePickerTT
-              name="lastCommercialAccountingDate"
-              placeholder="Укажите дату..."
-              format="DD.MM.YYYY"
-              value={moment(values.lastCommercialAccountingDate)}
-              onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString());
-              }}
-            />
-            <Alert name="lastCommercialAccountingDate" />
-          </Form.Item>
+        {isVisible('lastCommercialAccountingDate')
+        && (
+        <Form.Item label="Дата выпуска прибора">
+          <DatePickerTT
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            format="DD.MM.YYYY"
+            value={moment(values.lastCommercialAccountingDate)}
+            onChange={(date) => {
+              setFieldValue('lastCommercialAccountingDate', date.toISOString());
+            }}
+          />
+          <Alert name="lastCommercialAccountingDate" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Дата ввода в эксплуатацию">
-            <DatePickerTT
-              name="futureCheckingDate"
-              placeholder="Укажите дату..."
-              format="DD.MM.YYYY"
-              value={moment(values.futureCheckingDate)}
-              onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
-              }}
-            />
-            <Alert name="futureCheckingDate" />
-          </Form.Item>
+        {isVisible('futureCheckingDate')
+        && (
+        <Form.Item label="Дата ввода в эксплуатацию">
+          <DatePickerTT
+            name="futureCheckingDate"
+            placeholder="Укажите дату..."
+            format="DD.MM.YYYY"
+            value={moment(values.futureCheckingDate)}
+            onChange={(date) => {
+              setFieldValue('futureCheckingDate', date.toISOString());
+            }}
+          />
+          <Alert name="futureCheckingDate" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Срок эксплуатации по нормативу">
-            <SelectTT
-              name="futureCommercialAccountingDate"
-              placeholder="Укажите оперид эксплуатации"
-              onChange={(value) => {
-                setFieldValue('futureCheckingDate', moment()
-                  .add(value, 'year').toISOString());
-              }}
-              options={serviceLife}
-              defaultValue={serviceLife[0].value}
-            />
-            <Alert name="futureCommercialAccountingDate" />
-          </Form.Item>
+        {isVisible('futureCommercialAccountingDate')
+        && (
+        <Form.Item label="Срок эксплуатации по нормативу">
+          <SelectTT
+            name="futureCommercialAccountingDate"
+            placeholder="Укажите оперид эксплуатации"
+            onChange={(value) => {
+              setFieldValue('futureCheckingDate', moment()
+                .add(value, 'year').toISOString());
+            }}
+            options={serviceLife}
+            defaultValue={serviceLife[0].value}
+          />
+          <Alert name="futureCommercialAccountingDate" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Город">
-            <InputTT
-              name="city"
-              type="text"
-              placeholder="Укажите город"
-              onChange={handleChange}
-              value={values.city}
-              disabled
-            />
-            <Alert name="city" />
-          </Form.Item>
+        {isVisible('city')
+        && (
+        <Form.Item label="Город">
+          <InputTT
+            name="city"
+            type="text"
+            placeholder="Укажите город"
+            onChange={handleChange}
+            value={values.city}
+            disabled
+          />
+          <Alert name="city" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Улица">
-            <InputTT
-              name="street"
-              type="text"
-              placeholder="Укажите город"
-              onChange={handleChange}
-              value={values.street}
-              disabled
-            />
-            <Alert name="street" />
-          </Form.Item>
+        {isVisible('street')
+        && (
+        <Form.Item label="Улица">
+          <InputTT
+            name="street"
+            type="text"
+            placeholder="Укажите улицу"
+            onChange={handleChange}
+            value={values.street}
+            disabled
+          />
+          <Alert name="street" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Номер дома">
-            <InputTT
-              name="number"
-              type="text"
-              placeholder="Укажите город"
-              onChange={handleChange}
-              value={values.number}
-              disabled
-            />
-            <Alert name="number" />
-          </Form.Item>
-          
-          <Form.Item label="Номер корпуса">
-            <InputTT
-              name="corpus"
-              type="text"
-              placeholder=""
-              onChange={handleChange}
-              value={values.corpus}
-              disabled
-            />
-            <Alert name="corpus" />
-          </Form.Item>
+        {isVisible('housingStockNumber')
+        && (
+        <Form.Item label="Номер дома">
+          <InputTT
+            name="housingStockNumber"
+            type="text"
+            placeholder="Укажите дом"
+            onChange={handleChange}
+            value={values.housingStockNumber}
+            disabled
+          />
+          <Alert name="number" />
+        </Form.Item>
+        )}
 
-        </div>
+        {isVisible('corpus')
+        && (
+        <Form.Item label="Номер корпуса">
+          <InputTT
+            name="corpus"
+            type="text"
+            placeholder=""
+            onChange={handleChange}
+            value={values.corpus}
+            disabled
+          />
+          <Alert name="corpus" />
+        </Form.Item>
+        )}
 
-        <div hidden={!(Number(currentTabKey) === 2)}>
+        {isVisible('connection')
+        && (
+        <Form.Item label="Подключение к вычислителю">
+          <SelectTT
+            name="connection"
+            onChange={(value) => {
+              console.log(value);
+              if (!value) {
+                setFieldValue('calculatorId', null);
+                setFieldValue('entryNumber', null);
+                setFieldValue('pipeNumber', null);
+                setFieldValue('hubNumber', null);
+              }
+              setFieldValue('connection', value);
+            }}
+            options={connections}
+            value={values.connection}
+          />
+        </Form.Item>
+        )}
+
+
+        {isVisible('isConnected')
+        && (
           <Form.Item label="Подключение к вычислителю">
             <SelectTT
-              name="connection"
-              onChange={(value) => {
-                console.log(value);
-                if (!value) {
-                  setFieldValue('calculatorId', null)
-                  setFieldValue('entryNumber', null)
-                  setFieldValue('pipeNumber', null)
-                  setFieldValue('hubNumber', null)
-                }
-                setFieldValue('connection', value);
+              name="isConnected"
+              onChange={(item) => {
+                (item === false) ? setDisable(true) : setDisable(false);
+                setFieldValue('isConnected', item);
               }}
-              options={connections}
-              value={values.connection}
+              placeholder="Подключение к вычислителю"
+              options={isConnected}
+              value={values.isConnected}
+              disabled
             />
           </Form.Item>
+        )}
 
-          <Form.Item
-            label="Выберите вычислитель, к которому подключен прибор"
-          >
-            <SelectTT
-              name="calculatorId"
-              onChange={(value) => {
-                const calculator = _.find(calculators, { value });
-                setFieldValue('entryNumber', entryNumber);
-                setFieldValue('pipeNumber', pipeNumber);
-                setFieldValue('hubNumber', hubNumber);
-                setFieldValue('calculatorId', value);
-                setFieldValue('ipV4',calculator.ipV4 )
-                console.log('value', value);
-                console.log('calculator', calculator);
-              }}
-              options={calculators}
-              value={values.calculatorId}
-              disabled={disable}
-            />
-            <Alert name="calculatorId" />
-          </Form.Item>
+        {isVisible('calculatorId')
+        && (
+        <Form.Item
+          label="Выберите вычислитель, к которому подключен прибор"
+        >
+          <SelectTT
+            name="calculatorId"
+            placeholder="Начните вводить серийный номер или IP адрес прибора"
+            onChange={(value) => {
+              if (value !== values.calculatorId) {
+                const selected = _.find(calculators, { value });
+                const { connection: { ipV4, deviceAddress, port } } = selected;
+                console.log( "ipV4, deviceAddress, port",
+                  ipV4, deviceAddress, port)
+                setValues((prevValues) => ({
+                  ...prevValues,
+                  ipV4,
+                  deviceAddress,
+                  port,
+                  calculatorId: value,
+                }));
+              }
+            }}
+            options={calculators}
+            value={values.calculatorId}
+            disabled={disable}
+          />
+          <Alert name="calculatorId" />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Номер ввода">
-            <InputTT
-              name="entryNumber"
-              type="number"
-              placeholder="Номер ввода"
-              onChange={handleChange}
-              value={values.entryNumber}
-              disabled={disable}
-            />
-          </Form.Item>
+        {isVisible('entryNumber') && (
+        <Form.Item label="Номер ввода">
+          <InputTT
+            name="entryNumber"
+            type="number"
+            placeholder="Номер ввода"
+            onChange={handleChange}
+            value={values.entryNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Номер узла" className="hubNumber">
-            <InputTT
-              name="hubNumber"
-              type="number"
-              placeholder="Номер узла"
-              onChange={handleChange}
-              value={values.hubNumber}
-              disabled={disable}
-            />
-          </Form.Item>
+        {isVisible('hubNumber') && (
+        <Form.Item label="Номер узла" className="hubNumber">
+          <InputTT
+            name="hubNumber"
+            type="number"
+            placeholder="Номер узла"
+            onChange={handleChange}
+            value={values.hubNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+        )}
 
-          <Form.Item label="Номер трубы">
-            <InputTT
-              name="pipeNumber"
-              type="number"
-              placeholder="Номер трубы"
-              onChange={handleChange}
-              value={values.pipeNumber}
-              disabled={disable}
-            />
-          </Form.Item>
-        </div>
+        {isVisible('pipeNumber') && (
+        <Form.Item label="Номер трубы">
+          <InputTT
+            name="pipeNumber"
+            type="number"
+            placeholder="Номер трубы"
+            onChange={handleChange}
+            value={values.pipeNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+        )}
 
-        <div hidden={!(Number(currentTabKey) === 3)}>
-          <Header>Компонент в разработке</Header>
-        </div>
+        {isVisible('documents') && (
+        <Header>Компонент в разработке</Header>
+        )}
 
         <EditODPUButtons />
       </form>
@@ -404,35 +506,3 @@ const FormEditODPU = (props) => {
 };
 
 export default FormEditODPU;
-
-const GET_ODPU_TEMPLATE = {
-  diameter: null,
-  resource: 'HotWaterSupply',
-  housingMeteringDeviceType: 'TemperatureSensor',
-  address: {
-    city: 'Нижнекамск',
-    street: 'Тихая Аллея',
-    housingStockNumber: '4',
-    corpus: null,
-  },
-  hubConnection: {
-    hub: {
-      entryNumber: 1,
-      hubNumber: 1,
-      pipeNumber: 1,
-      magistral: 'FeedBackFlow',
-    },
-    calculatorId: 1212,
-    calculatorSerialNumber: '142834',
-    calculatorModel: 'ВКТ-7',
-  },
-  id: 1559216,
-  transactionType: null,
-  model: 'ПРЭМ 2010',
-  serialNumber: '201020201735',
-  lastCommercialAccountingDate: '2020-10-20T14:19:28.556',
-  futureCommercialAccountingDate: '2026-10-20T14:19:51.346',
-  lastCheckingDate: '2020-10-21T06:15:57.349',
-  futureCheckingDate: '2020-10-21T06:15:57.349',
-  closingDate: null,
-};
