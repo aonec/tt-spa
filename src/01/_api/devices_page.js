@@ -11,14 +11,14 @@ export const devicesAPI = {
         }
     },
 
-    async getRelatedDevices(deviceId) {
-        try {
-            const res = await axios.get(`MeteringDevices/related?DeviceId=${deviceId}`);
-            return res
-        } catch (error) {
-
-        }
-    },
+    // async getRelatedDevices(deviceId) {
+    //     try {
+    //         const res = await axios.get(`MeteringDevices/related?DeviceId=${deviceId}`);
+    //         return res
+    //     } catch (error) {
+    //
+    //     }
+    // },
 
     async getDevicesBySerialNumber(serialNumber) {
         try {

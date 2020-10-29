@@ -1,7 +1,7 @@
 export const DEFAULT_BUILDING = {
   city: null,
   street: null,
-  number: null,
+  housingStockNumber: null,
 };
 
 export const DEFAULT_DEVICE = {

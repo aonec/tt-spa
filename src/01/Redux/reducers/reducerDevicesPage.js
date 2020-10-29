@@ -38,24 +38,9 @@ export const setDevices = (devices) => ({ type: SET_DEVICES, devices });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage});
 export const toggleIsLoading = () => ({ type: TOGGLE_IS_LOADING});
 
-
-// const deviceFilterFunction = (item) => {
-//   if (item.id.toString().includes(searchTerm) || item.relatedDevices.some((subItem) => subItem.id.toString().includes(searchTerm))) {
-//     return true
-//   }
-//   return false
-// }
-
-
 export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
   dispatch(toggleIsLoading());
   const devices = await devicesAPI.getDevices(pageNumber, pageSize);
-  // const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-  //   const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-  //   if (!relatedDevices.length) return {...d, relatedDevices}
-  //   return { ...d, relatedDevices: [...relatedDevices] };
-  // }));
-  // const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
   dispatch(toggleIsLoading());
   dispatch(setDevices(devices));
 };
@@ -69,28 +54,5 @@ export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
     return;
   }
 
-  if (devices.items.length === 1) {
-    const relatedDevices = await devicesAPI.getRelatedDevices(devices.items[0].id) || [];
-    devices.items[0].relatedDevices = [...relatedDevices];
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devices));
-  } else {
-    const devicesWithRelated = await Promise.all(devices.items.map(async (d) => {
-      d.relatedDevices = [];
-
-      // const relatedDevices = await devicesAPI.getRelatedDevices(d.id);
-      // d.relatedDevices = [...relatedDevices]
-      // if (!relatedDevices.length) return {...d, relatedDevices}
-      // return { ...d, relatedDevices: [...relatedDevices] };
-      return d
-    }));
-    const devicesWithFullInfo = {...devices, items:[...devicesWithRelated]}
-    dispatch(toggleIsLoading());
-    dispatch(setDevices(devicesWithFullInfo));
-  }
-
+  dispatch(setDevices(devices))
 }
-
-
-
-

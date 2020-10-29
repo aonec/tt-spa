@@ -30,10 +30,6 @@ function uploadReducer(state, action) {
 
 const deleteFileAC = (fileId) => ({type: DELETE_FILE, fileId});
 
-
-
-
-
 export const  useUpload = (callback = () => {}) => {
   const [state, dispatch] = React.useReducer(uploadReducer, {
     file: null,

@@ -46,7 +46,7 @@ export const Header = () => {
 
   const loading = loadingDevice || loadingBuilding;
 
-  const { city, street, number } = building || DEFAULT_BUILDING;
+  const { city, street, housingStockNumber } = building || DEFAULT_BUILDING;
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
@@ -90,7 +90,7 @@ export const Header = () => {
             {`${calcModel || 'Вычислитель'} (${serialNumber})`}
           </Title>
 
-          <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+          <Subtitle>{`${city}, ${street}, ${housingStockNumber}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
           {MenuOPDU}

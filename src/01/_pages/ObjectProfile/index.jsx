@@ -26,6 +26,8 @@ function reducer(state, action) {
   }
 }
 
+
+
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   useFetchPage(state, dispatch);
@@ -56,7 +58,6 @@ export const ObjectProfile = () => {
         />
         <Devices
           path="/*/devices"
-          onClick={(id) => push(`/objects/${objid}/devices/${id}`)}
           {...state?.devices}
         />
         <Events title="События с объектом" {...events} />
