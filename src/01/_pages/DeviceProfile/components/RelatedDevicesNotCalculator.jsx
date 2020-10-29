@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
 import { Loader } from '01/components';
@@ -6,7 +6,7 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
-import {getInfo} from "../../../_api/device_page";
+import { getInfo } from '../../../_api/device_page';
 
 export const Template = styled.div``;
 
@@ -64,56 +64,51 @@ export const Span = styled.span`
 `;
 
 // export const RelatedDevicesNotCalculator = (loading = true) => {
-export const RelatedDevicesNotCalculator = ({calcId}) => {
-
+export const RelatedDevicesNotCalculator = ({ calcId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [related, setRelated] = useState();
 
-
-  useEffect( () => {
+  useEffect(() => {
     setIsLoading(true);
     getInfo('Calculator', calcId)
-        .then((calc) => {
-            setRelated(calc);
-            setIsLoading(false);
-        })
-  }, [])
+      .then((calc) => {
+        setRelated(calc);
+        setIsLoading(false);
+      });
+  }, []);
 
-    const {
-      model,
-      serialNumber,
-      futureCheckingDate,
-      closingdate,
-      // hub,
-      resource,
-      id,
-      // housingStockId,
-    } = related || {};
-    debugger;
-  if (isLoading) return <Loader show={isLoading}/>;
+  const {
+    model,
+    serialNumber,
+    futureCheckingDate,
+    closingdate,
+    // hub,
+    resource,
+    id,
+    // housingStockId,
+  } = related || {};
+  // debugger;
+  if (isLoading) return <Loader show={isLoading} />;
 
-    let CalcItem;
+  let CalcItem;
 
-  const { icon, color } = DeviceIcons[null] || {};
+  const { icon, color } = DeviceIcons.null || {};
 
+  CalcItem = () => (
+    <ListItem key={id}>
+      <NameWrap href={`/calculators/${id}`}>
+        <Icon icon={icon} color={color} />
+        <Name>{model || 'Вычислитель'}</Name>
+        <Serial>{` (${serialNumber})`}</Serial>
+      </NameWrap>
 
-  CalcItem = () => <ListItem key={id}>
-        <NameWrap href={`/calculators/${id}`}>
-          <Icon icon={icon} color={color} />
-          <Name>{model || 'Вычислитель'}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{convertDate(futureCheckingDate)}</Span>
-      </ListItem>;
-
-
-
-
+      <State>
+        <Icon icon="status" color="#17B45A" />
+        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+      </State>
+      <Span>{convertDate(futureCheckingDate)}</Span>
+    </ListItem>
+  );
 
   return (
     <ListWrap>

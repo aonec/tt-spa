@@ -18,7 +18,7 @@ const FormEditODPU = (props) => {
     currentTabKey, device, calculators,
   } = props;
 
-  const { 0: objid, 1: deviceId } = useParams();
+  const { deviceId } = useParams();
 
   const {
     address,
@@ -43,18 +43,13 @@ const FormEditODPU = (props) => {
   } = hubConnection;
 
   const {
-    isConnected, ipV4, port, deviceAddress,
-  } = calculatorConnection;
+    isConnected, ipV4, port, deviceAddress} = calculatorConnection;
 
   const {
-    entryNumber, hubNumber, pipeNumber, magistral,
-  } = hub;
+    entryNumber, hubNumber, pipeNumber, magistral } = hub;
 
-  const {
-    city, street, housingStockNumber, corpus,
-  } = address;
+  const { city, street, housingStockNumber, corpus } = address;
 
-  console.log('housingStockNumber', housingStockNumber);
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
@@ -101,7 +96,7 @@ const FormEditODPU = (props) => {
         Сохранить
       </ButtonTT>
 
-      <NavLink to={`/objects/${objid}/devices/${deviceId}/`}>
+      <NavLink to={`/devices/${deviceId}/`}>
         <ButtonTT
           style={{ marginLeft: '16px' }}
           color="white"
@@ -111,22 +106,6 @@ const FormEditODPU = (props) => {
       </NavLink>
     </div>
   );
-
-  const editOPDU = async () => {
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, PUT_EDIT_FORM);
-      alert('Вычислитель успешно изменен!');
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: перепроверьте введеные параметры!',
-      );
-      throw new Error(error);
-    }
-  };
 
   const {
     handleSubmit,
@@ -148,7 +127,7 @@ const FormEditODPU = (props) => {
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
       hubNumber,
-      deviceAddress,
+      // deviceAddress,
       pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
@@ -158,7 +137,7 @@ const FormEditODPU = (props) => {
       corpus,
       magistral: magistral || 'Не выбрано',
       ipV4,
-      isConnected: isConnectedValue[0].value
+      isConnected: isConnectedValue[0].value,
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
@@ -171,11 +150,27 @@ const FormEditODPU = (props) => {
     }),
     onSubmit: () => {
       console.log(PUT_EDIT_FORM);
-      console.log(JSON.stringify(PUT_EDIT_FORM))
-      // console.log(deviceId);
-      editOPDU();
+      console.log(JSON.stringify(PUT_EDIT_FORM));
+
+      editOPDU(PUT_EDIT_FORM);
     },
   });
+
+  async function editOPDU(form={}) {
+    alert('Cейчас будем отправлять данные!');
+    try {
+      const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
+      alert('Вычислитель успешно изменен!');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      alert(
+        'Что-то пошло не так: перепроверьте введеные параметры!',
+      );
+      throw new Error(error);
+    }
+  }
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -196,7 +191,6 @@ const FormEditODPU = (props) => {
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
     connection: {
       ipV4: values.ipV4,
-      deviceAddress: values.deviceAddress,
       port: values.port || 0,
     },
     housingMeteringDeviceType: values.housingMeteringDeviceType,
