@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import $ from 'jquery';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
 import {
@@ -13,49 +11,40 @@ import {
   ModalBottom,
   ModalClose,
 } from '../../../../tt-components/Modal';
-import TabsComponent from './components/Tabs/Main';
-import { setAddDeviceForm } from '../../../../Redux/actions/actions';
+import TabsComponent from './components/Main';
+import AddDeviceForm from './components/AddDeviceForm';
 
 const ModalAddDevice = () => {
   const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
-  const dispatch = useDispatch();
-  const deviceReducer = useSelector((state) => state.deviceReducer);
+  const [calculators, setCalculators] = useState([]);
 
-  function randomInteger(min, max) {
-    const rand = min + Math.random() * (max + 1 - min);
-    return Math.floor(rand);
+  async function getObjectCalculators(id = '') {
+    try {
+      const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
   }
 
-  const initialStateDefaultValues = {
-    calculatorId: '',
-    checkingDate: moment().toISOString(),
-    connection: {
-      ipV4: '192.168.1.1',
-      deviceAddress: randomInteger(1, 255),
-      port: 1234,
-    },
-    futureCheckingDate: moment().toISOString(),
-    futureCommercialAccountingDate: moment().toISOString(),
-    housingMeteringDeviceType: 'FlowMeter',
-    housingStockId: Number(objid),
-    lastCommercialAccountingDate: moment().toISOString(),
-    model: '',
-    pipe: {
-      entryNumber: 1,
-      hubNumber: 1,
-      pipeNumber: 1,
-      magistral: 'FeedFlow',
-    },
-    resource: 'ColdWaterSupply',
-    serialNumber: '',
-  };
-
   useEffect(() => {
-    dispatch(
-      setAddDeviceForm(deviceReducer, initialStateDefaultValues),
-    );
+    async function someFunc() {
+      try {
+        const objCalculators = await getObjectCalculators(objid);
+        const { items } = objCalculators;
+        const calcOnly = items.map((item) => ({ ...item, value: item.id, label: `${item.model} (${item.serialNumber})` }));
+        setCalculators(calcOnly);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    someFunc();
   }, []);
 
   function handleChangeTab(value) {
@@ -64,6 +53,10 @@ const ModalAddDevice = () => {
 
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
+  };
+
+  const buttonHandler = () => {
+    console.log(calculators);
   };
 
   const renderNextButton = () => {
@@ -89,7 +82,8 @@ const ModalAddDevice = () => {
       <ButtonTT
         color="blue"
         style={{ marginLeft: '16px' }}
-        onClick={handleSubmit}
+        type="submit"
+        form="formikFormAddOdpu"
       >
         Выгрузить
       </ButtonTT>
@@ -100,31 +94,12 @@ const ModalAddDevice = () => {
     $('#add-calculator').css('display', 'none');
   };
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
-  const handleSubmit = async () => {
-    alert('Cейчас будем отправлять данные!');
-    try {
-      const res = await axios.post('HousingMeteringDevices', deviceReducer);
-     // console.log(deviceReducer)
-      alert('ОДПУ успешно создан !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
   return (
     <Modal id="add-device" ref={modalRef}>
       <ModalWrap>
         <ModalClose getModal={modalRef} />
         <ModalTop>
+          <ButtonTT onClick={buttonHandler} hidden>ButtonTT</ButtonTT>
           <Title size="middle" color="black">
             Добавление нового ОДПУ
           </Title>
@@ -134,8 +109,8 @@ const ModalAddDevice = () => {
             currentTabKey={currentTabKey}
             handleChangeTab={handleChangeTab}
           />
+          <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
         </ModalMain>
-
         <ModalBottom>
           <ButtonTT color="white" onClick={hideMe}>
             Отмена

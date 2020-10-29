@@ -26,7 +26,7 @@ export const serviceLife = [
   { value: '6', label: '6 лет', id: 2 },
 ];
 
-export const housingMeteringDeviceTypes = [
+export const types = [
   {
     value: 'FlowMeter',
     label: 'Расходомер',
@@ -60,16 +60,5 @@ export const magistrals = [
   {
     value: 'FeedBackFlow',
     label: 'Обратная',
-  },
-];
-
-export const isConnected = [
-  {
-    value: true,
-    label: 'Есть',
-  },
-  {
-    value: false,
-    label: 'Отсутствует',
   },
 ];

@@ -63,7 +63,6 @@ export const Span = styled.span`
 `;
 
 export const RelatedDevices = () => {
-// debugger;
 
 
 
@@ -77,20 +76,23 @@ export const RelatedDevices = () => {
   };
 
   // Превратим в массив
-  const relatedArr = Object.values(related || {});
+  // const relatedArr = Object.values(related || {});
 
-  const result = relatedArr.map((value) => {
+  debugger;
+
+  const result = related.map((value) => {
+      debugger;
     const {
       model,
       serialNumber,
       closingdate,
-      pipe,
+      hub,
       resource,
       id,
       housingStockId,
     } = value;
 
-    const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
+    const { pipeNumber, entryNumber } = hub === null ? { number: 'X', entryNumber: 'X' } : hub;
     const { icon, color } = DeviceIcons[resource];
 
     // номер трубы - это pipe.number
@@ -98,7 +100,7 @@ export const RelatedDevices = () => {
 
     return (
       <ListItem key={id}>
-        <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
+        <NameWrap href={`/housingMeteringDevices/${id}`}>
           <Icon icon={icon} color={color} />
           <Name>{model}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
@@ -110,7 +112,7 @@ export const RelatedDevices = () => {
         </State>
         <Span>{`Ввод: ${entryNumber}`}</Span>
         <Span>{`Узел: ${'-'}`}</Span>
-        <Span>{`Труба: ${number}`}</Span>
+        <Span>{`Труба: ${pipeNumber}`}</Span>
       </ListItem>
     );
   });
