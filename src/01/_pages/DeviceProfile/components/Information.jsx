@@ -20,7 +20,7 @@ export const Information = (loading = true) => {
     console.log('buttonHandler');
   };
 
-  const { city, street, number } = building || DEFAULT_BUILDING;
+  const { city, street, housingStockNumber } = building || DEFAULT_BUILDING;
   const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
@@ -42,7 +42,7 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${number}`}
+            {`${city}, ${street}, ${housingStockNumber}`}
           </span>
         </ListItem>
         <ListItem>

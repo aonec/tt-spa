@@ -17,7 +17,6 @@ function uploadReducer(state, action) {
         loading: false,
       }
     case DELETE_FILE:
-      debugger;
       return {
         ...state,
         fileList: fileList.filter(file => file.id !== action.fileId)
@@ -29,7 +28,6 @@ function uploadReducer(state, action) {
 }
 
 const deleteFile = (fileId) => {
-  debugger;
   return {type: DELETE_FILE, fileId};
 }
 

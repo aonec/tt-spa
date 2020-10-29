@@ -11,19 +11,18 @@ export const devicesAPI = {
         }
     },
 
-    async getRelatedDevices(deviceId) {
-        try {
-            const res = await axios.get(`MeteringDevices/related?DeviceId=${deviceId}`);
-            return res
-        } catch (error) {
-
-        }
-    },
+    // async getRelatedDevices(deviceId) {
+    //     try {
+    //         const res = await axios.get(`MeteringDevices/related?DeviceId=${deviceId}`);
+    //         return res
+    //     } catch (error) {
+    //
+    //     }
+    // },
 
     async getDevicesBySerialNumber(serialNumber) {
         try {
             const res = await axios.get(`Calculators?Question=${serialNumber}`);
-            // debugger;
                 if (res.totalItems === 0) {
                     alert('Прибора с таким серийным номером не существует')
                     return

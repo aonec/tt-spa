@@ -61,18 +61,6 @@ const TabsDevices = () => {
 
         <Tabs defaultActiveKey="1" onChange={callback}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
-                {/*<form className={styles.form} onSubmit={handleSubmit}>*/}
-                {/*    <label>*/}
-                {/*        Поиск по серийному номеру прибора:*/}
-                {/*        <input*/}
-                {/*            className={styles.input__form}*/}
-                {/*            type="text"*/}
-                {/*            value={searchTerm}*/}
-                {/*            onChange={editSearchTerm}*/}
-                {/*            placeholder="Введите серийный номер прибора..."/>*/}
-                {/*    </label>*/}
-                {/*        <input className={styles.btn} type="submit" value="Отправить" />*/}
-                {/*</form>*/}
                 <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
