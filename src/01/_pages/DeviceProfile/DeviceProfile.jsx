@@ -37,7 +37,6 @@ export const DeviceProfile = () => {
   let path;
   let typeODPU;
 
-  // let { 0: objid, 1: deviceId } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
@@ -71,19 +70,6 @@ export const DeviceProfile = () => {
   const {pathname} = useLocation();
 
 
-
-  // if (Object.keys(params).length === 3) {
-  //   deviceId = params[1];
-  //   objid = params[0];
-  //   path = `/objects/${objid}/devices/${deviceId}/`;
-  // } else if (pathname.includes('calculator')) {
-  //   deviceId = params[0];
-  //   path = `/calculators/${deviceId}/`;
-  // } else if (pathname.includes('housingMeteringDevices')) {
-  //   deviceId = params[0];
-  //   path = `/housingMeteringDevices/${deviceId}/`
-  // }
-
   const {deviceId, objid} = params;
 
 
@@ -95,8 +81,6 @@ export const DeviceProfile = () => {
     typeODPU = 'HousingMeteringDevice';
     }
 
-
-// getInfo(typeODPU, deviceId)
 
   useEffect(() => {
     setIsLoading(true);
