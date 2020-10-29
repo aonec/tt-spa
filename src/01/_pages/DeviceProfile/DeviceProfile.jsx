@@ -32,8 +32,6 @@ export const DeviceProfile = () => {
   const params = useParams();
   const match = useRouteMatch();
 
-  // let deviceId;
-  // let objid;
   let path;
   let typeODPU;
 
