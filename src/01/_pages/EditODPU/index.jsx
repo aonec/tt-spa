@@ -6,7 +6,7 @@ import FormEditODPU from './components/EditOPDUForm';
 import axios from '../../axios';
 
 const EditODPU = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const { deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [device, setDevice] = useState();
   const [calculators, setCalculators] = useState();
@@ -16,7 +16,7 @@ const EditODPU = () => {
   }
 
   // Получить устройство
-  async function getOdpu(id = '') {
+  async function getOdpu(id = 0) {
     try {
       const res = await axios.get(`HousingMeteringDevices/${id}`);
       console.log('HousingMeteringDevices', res);
@@ -30,7 +30,7 @@ const EditODPU = () => {
     }
   }
 
-  async function getCalculators(objid = '') {
+  async function getCalculators(objid = 0) {
     try {
       const res = await axios.get(`Calculators?Filter.HousingStockId=${objid}`);
       console.log('Calculators', res);
@@ -47,8 +47,7 @@ const EditODPU = () => {
   useEffect(async () => {
     const device = await getOdpu(deviceId);
     setDevice(device);
-
-    const calculators = await getCalculators(objid);
+    const calculators = await getCalculators(device.address.id);
     // console.log(calculators);
     const selectCalculators = calculators.items.map((item) => {
       // console.log(item);
