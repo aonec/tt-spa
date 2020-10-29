@@ -66,7 +66,6 @@ export const DeviceProfile = () => {
   };
 
   const { pathname } = useLocation();
-  // debugger;
 
   if (Object.keys(params).length === 3) {
     deviceId = params[1];
@@ -91,8 +90,6 @@ export const DeviceProfile = () => {
       // getCalculatorResources(deviceId),
     ])
       .then((responses) => {
-        // const [device, building, tasks, related, typeODPU] = responses;
-        // debugger;
         const [{value: device}, {value: building}, {value: tasks}, {value: related}, {value: typeODPU}] = responses;
         // const device = responses[0].value;
         // const building = responses[1].value;
@@ -184,7 +181,6 @@ export const DeviceProfile = () => {
   }
 
   if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
-  // debugger;
   return (
     <DeviceContext.Provider
       value={{

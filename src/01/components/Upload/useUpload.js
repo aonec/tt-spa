@@ -46,7 +46,6 @@ export const  useUpload = (callback = () => {}) => {
     }
     callback({ documentsIds: fileList.map((i) => i.id) })
   }, [state])
-  // console.log(state)
   const deleteFile = (id) => async () => {
     let response = await deleteDoc(id);
     await dispatch(deleteFileAC(id));

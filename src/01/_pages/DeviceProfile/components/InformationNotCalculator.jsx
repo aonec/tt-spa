@@ -37,7 +37,6 @@ export const InformationNotCalculator = (loading = true) => {
       </ListWrap>
     );
   }
-// debugger;
   return (
     <ListWrap>
       <Loader show={loading} size="32">
