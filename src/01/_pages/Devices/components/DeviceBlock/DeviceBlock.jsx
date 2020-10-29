@@ -68,8 +68,8 @@ const DeviceBlock = (props) => {
                 <Icon className={styles.icon} icon="device" fill="var(--main-100)" />
                 {calculator.model}
                 <span className={styles.deviceId}>
-              {` (${calculator.serialNumber})`}
-            </span>
+              {`(${calculator.serialNumber})`}
+                </span>
               </NavLink>
             </div>
 

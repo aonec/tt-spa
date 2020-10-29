@@ -36,6 +36,7 @@
 }
 
 .deviceId {
+    margin-left: 6px;
     font-weight: normal;
     color: rgba(39, 47, 90, 0.6);
 }
@@ -44,7 +45,7 @@
 
 .device__wrapper {
     display: grid;
-    grid-template-columns: 3fr 2fr 3fr 2fr 2fr;
+    grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
     margin-bottom: 24px;
     align-items: center;
     justify-content: center;
@@ -53,9 +54,6 @@
 .icon {
     margin-right: 8px;
 }
-
-
-
 
 .pages {
     margin: 20px 0;

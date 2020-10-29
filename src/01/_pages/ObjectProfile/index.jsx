@@ -40,7 +40,7 @@ export const ObjectProfile = () => {
   return styled(grid)(
     <>
       <Breadcrumb />
-      <Header {...header} corpus={state.corpus} />
+      <Header {...header} />
       <div style={{}}>
         {/* <ButtonTT disabled={true}> */}
         {/*  button */}
