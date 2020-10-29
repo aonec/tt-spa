@@ -87,13 +87,10 @@ export const RelatedDevicesNotCalculator = (loading = true) => {
       resource,
       id,
       housingStockId,
-
     } = value;
 
     const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
     const { icon, color } = DeviceIcons[resource];
-    // номер трубы - это pipe.number
-    // номер ввода - это pipe.entryNumber
 
     return (
       <ListItem key={id}>

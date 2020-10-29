@@ -20,7 +20,8 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
     }
 
     const editSearchTerm = (e) => {
-        setSearchTerm(e.target.value)
+        // setSearchTerm(e.target.value);
+        dispatch(getDevicesBySerialNumber(e.target.value));
     }
 
     const onFinish = () => {
@@ -34,30 +35,23 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
         }
     }
 
+    const onValuesChangeHandler = (values) => {
+        dispatch(getDevicesBySerialNumber(values.search));
+
+    }
+
 
     return (
-        // <form className={styles.form} onSubmit={handleSubmit}>
-        //     <label>
-        //         Поиск по серийному номеру прибора:
-        //         <input
-        //             className={styles.input__form}
-        //             type="text"
-        //             value={searchTerm}
-        //             onChange={editSearchTerm}
-        //             placeholder="Введите серийный номер прибора..."/>
-        //     </label>
-        //     <input className={styles.btn} type="submit" value="Отправить"/>
-        // </form>
-
         <Form
             id="searchForm"
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
             onFinish={handleSubmit}
-            style={{maxWidth: 960}}
+            // style={{maxWidth: 960}}
             onKeyPress={handleKeyPress}
             ref={searchForm}
+            onValuesChange={onValuesChangeHandler}
         >
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
                 <Form.Item
@@ -121,11 +115,11 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
                     </div>
                 </Form.Item>
 
-                <Form.Item style={{width: '20%'}}>
-                    <Button type="primary" htmlType="submit" style={{width: '100%'}}>
-                        Поиск
-                    </Button>
-                </Form.Item>
+                {/*<Form.Item style={{width: '20%'}}>*/}
+                {/*    <Button type="primary" htmlType="submit" style={{width: '100%'}}>*/}
+                {/*        Поиск*/}
+                {/*    </Button>*/}
+                {/*</Form.Item>*/}
             </div>
 
 

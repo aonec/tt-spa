@@ -3,46 +3,93 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from '../TabsDevices.module.scss';
 import { Icon } from '../../../../tt-components/Icon';
+import DeviceIcons from "../../../../_components/DeviceIcons";
 
 const DeviceBlock = (props) => {
-  const { device: calculator } = props;
-  const housingStockNumber = calculator.address.housingStockNumber;
-  return (
-    <div className={styles.device}>
-      <div>
-        <div className={styles.device__main_wrapper}>
-          <NavLink
-            className={`${styles.device__main} ${styles.device__title}`}
-            to={`/calculators/${calculator.id}`}
-          >
-            <Icon className={styles.icon} icon="device" fill="var(--main-100)" />
-            {calculator.model}
-            <span className={styles.deviceId}>
-              {` (${calculator.serialNumber})`}
-            </span>
-          </NavLink>
-        </div>
-        <div className={styles.subDevices}>
-          {calculator.hubs && calculator.hubs.length
-            ? calculator.hubs.map((odpu) => (
-              <div className={styles.device__sub}>
+  const { device: calculator} = props;
+  let transformDate = (date) => new Date(date).toLocaleDateString();
+  let lastCheckingDate = transformDate(calculator.lastCheckingDate);
+  let futureCheckingDate = transformDate(calculator.futureCheckingDate);
+  let futureCommercialAccountingDate = transformDate(calculator.futureCommercialAccountingDate);
+
+  const subdevices = calculator.hubs && calculator.hubs.length
+      ? calculator.hubs.map((odpu) => {
+
+        const { icon, color } = DeviceIcons[odpu.resource];
+
+        return (
+            <div className={styles.device__wrapper}>
+
+              <div>
                 <NavLink
-                  className={styles.device__title}
-                  to={`/housingMeteringDevices/${odpu.id}`}
+                    className={styles.device__title + ' ' + styles.subdevice__title}
+                    to={`/housingMeteringDevices/${odpu.id}`}
                 >
-                  <Icon className={styles.icon} icon="water" fill="var(--hot-water)" />
+                  <Icon className={styles.icon} icon={icon} fill={color} />
                   {odpu.model}
                   <span className={styles.deviceId}>
-                    {` (${odpu.serialNumber})`}
-                  </span>
+                            {` (${odpu.serialNumber})`}
+                          </span>
                 </NavLink>
               </div>
-            ))
-            : 'Подприборов нет'}
 
+              <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.8}}>
+                {transformDate(odpu.lastCheckingDate)} — {transformDate(odpu.futureCheckingDate)}
+              </div>
+
+              <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
+                {transformDate(odpu.futureCommercialAccountingDate)}
+              </div>
+
+              <div className={styles.justify_center}>
+                {odpu.diameter ? odpu.diameter + ' мм' : ''}
+              </div>
+
+              {/*<div className={styles.justify_center}>*/}
+              {/*  1*/}
+              {/*</div>*/}
+
+            </div>
+        )
+      })
+      : 'Подприборов нет';
+
+  // const housingStockNumber = calculator.address.housingStockNumber;
+  return (
+      <div className={styles.device}>
+        <div>
+          <div className={styles.device__wrapper}>
+
+            <div>
+              <NavLink
+                  className={`${styles.device__main} ${styles.device__title}`}
+                  to={`/calculators/${calculator.id}`}
+              >
+                <Icon className={styles.icon} icon="device" fill="var(--main-100)" />
+                {calculator.model}
+                <span className={styles.deviceId}>
+              {` (${calculator.serialNumber})`}
+            </span>
+              </NavLink>
+            </div>
+
+            <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.8}}>
+              {lastCheckingDate} — {futureCheckingDate}
+            </div>
+
+            <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
+              {futureCommercialAccountingDate}
+            </div>
+
+
+
+          </div>
+          <div className={styles.subDevices}>
+            {subdevices}
+
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
