@@ -10,7 +10,7 @@ const DeviceBlock = (props) => {
   let transformDate = (date) => new Date(date).toLocaleDateString();
   let lastCheckingDate = transformDate(calculator.lastCheckingDate);
   let futureCheckingDate = transformDate(calculator.futureCheckingDate);
-  let futureCommercialAccountingDate = transformDate(calculator.futureCommercialAccountingDate);
+  let lastCommercialAccountingDate = transformDate(calculator.lastCommercialAccountingDate);
 
   const subdevices = calculator.hubs && calculator.hubs.length
       ? calculator.hubs.map((odpu) => {
@@ -38,7 +38,7 @@ const DeviceBlock = (props) => {
               </div>
 
               <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
-                {transformDate(odpu.futureCommercialAccountingDate)}
+                {transformDate(odpu.lastCommercialAccountingDate)}
               </div>
 
               <div className={styles.justify_center}>
@@ -78,7 +78,7 @@ const DeviceBlock = (props) => {
             </div>
 
             <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
-              {futureCommercialAccountingDate}
+              {lastCommercialAccountingDate}
             </div>
 
 
