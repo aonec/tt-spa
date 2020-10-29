@@ -203,6 +203,7 @@ const FormEditODPU = (props) => {
       pipeNumber: values.pipeNumber || null,
       magistral: values.magistral || 'Направление не выбрано',
     },
+    isConnected: isConnected
   };
 
   const buttonHandler = () => {
@@ -210,7 +211,7 @@ const FormEditODPU = (props) => {
     console.log(device);
   };
 
-  const disable = !(JSON.parse(values.connection));
+  const [disable, setDisable] = useState(false);
 
   return (
     <div style={{ maxWidth: '480px' }}>
@@ -385,20 +386,6 @@ const FormEditODPU = (props) => {
         </Form.Item>
         )}
 
-        {isVisible('connection')
-        && (
-        <Form.Item label="Подключение к вычислителю">
-          <SelectTT
-            name="connection"
-            onChange={(value) => {
-              setFieldValue('connection', value);
-            }}
-            options={connections}
-            value={values.connection}
-            disabled
-          />
-        </Form.Item>
-        )}
 
         {isVisible('isConnected')
         && (
@@ -406,6 +393,7 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="isConnected"
               onChange={(item) => {
+                // (item === false) ? setDisable(true) : setDisable(false);
                 setFieldValue('isConnected', item);
               }}
               placeholder="Подключение к вычислителю"
