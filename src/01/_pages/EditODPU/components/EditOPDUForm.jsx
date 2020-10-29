@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, serviceLife, connections,isConnected
+  housingMeteringDeviceTypes, resources, serviceLife, connections, isConnected,
 } from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -19,7 +19,6 @@ const FormEditODPU = (props) => {
   } = props;
 
   const { 0: objid, 1: deviceId } = useParams();
-
 
   const {
     address,
@@ -55,7 +54,7 @@ const FormEditODPU = (props) => {
     city, street, housingStockNumber, corpus,
   } = address;
 
-  console.log("housingStockNumber", housingStockNumber)
+  console.log('housingStockNumber', housingStockNumber);
   function randomInteger(min, max) {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
@@ -392,21 +391,14 @@ const FormEditODPU = (props) => {
           <SelectTT
             name="connection"
             onChange={(value) => {
-              console.log(value);
-              if (!value) {
-                setFieldValue('calculatorId', null);
-                setFieldValue('entryNumber', null);
-                setFieldValue('pipeNumber', null);
-                setFieldValue('hubNumber', null);
-              }
               setFieldValue('connection', value);
             }}
             options={connections}
             value={values.connection}
+            disabled
           />
         </Form.Item>
         )}
-
 
         {isVisible('isConnected')
         && (
@@ -436,8 +428,8 @@ const FormEditODPU = (props) => {
               if (value !== values.calculatorId) {
                 const selected = _.find(calculators, { value });
                 const { connection: { ipV4, deviceAddress, port } } = selected;
-                console.log( "ipV4, deviceAddress, port",
-                  ipV4, deviceAddress, port)
+                console.log('ipV4, deviceAddress, port',
+                  ipV4, deviceAddress, port);
                 setValues((prevValues) => ({
                   ...prevValues,
                   ipV4,
