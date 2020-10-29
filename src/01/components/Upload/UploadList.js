@@ -49,7 +49,7 @@ export const UploadList = ({ items = [], del = () => {}, ...props }) => {
             {name}
           </file>
           <Loader show={deleted}>
-            <Icon icon="del" onClick={() => del(id)}/>
+            <Icon icon="del" onClick={del(id)}/>
           </Loader>
         </file_wrapper>
       ))}
