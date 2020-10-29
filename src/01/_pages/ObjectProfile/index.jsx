@@ -35,11 +35,12 @@ export const ObjectProfile = () => {
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
+  debugger;
 
   return styled(grid)(
     <>
       <Breadcrumb />
-      <Header {...header} />
+      <Header {...header} corpus={state.corpus} />
       <div style={{}}>
         {/* <ButtonTT disabled={true}> */}
         {/*  button */}

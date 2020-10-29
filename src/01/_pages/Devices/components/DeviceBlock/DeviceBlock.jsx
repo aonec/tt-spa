@@ -26,7 +26,7 @@ const DeviceBlock = (props) => {
                     to={`/housingMeteringDevices/${odpu.id}`}
                 >
                   <Icon className={styles.icon} icon={icon} fill={color} />
-                  {odpu.model}
+                  {`${odpu.model} `}
                   <span className={styles.deviceId}>
                             {` (${odpu.serialNumber})`}
                           </span>
@@ -52,7 +52,7 @@ const DeviceBlock = (props) => {
             </div>
         )
       })
-      : 'Подприборов нет';
+      : 'Подключенных приборов нет';
 
   // const housingStockNumber = calculator.address.housingStockNumber;
   return (
