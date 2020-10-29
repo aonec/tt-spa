@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { Input, Form } from 'antd';
-import { Wrap } from '../../../../../../tt-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { Form } from 'antd';
+import { Wrap, InputTT } from '../../../../../../tt-components';
 import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
 
 const SettingConnectionTab = () => {
   const {
@@ -13,8 +12,9 @@ const SettingConnectionTab = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Form.Item name="text" label="IP адрес вычислителя">
+      <Form.Item label="IP адрес вычислителя">
         <InputTT
+          name="ipV4"
           type="text"
           value={ipV4}
           placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
@@ -25,13 +25,27 @@ const SettingConnectionTab = () => {
         />
       </Form.Item>
 
-      <Form.Item name="text" label="IP адрес вычислителя">
+      <Form.Item label="Порт вычислителя">
         <InputTT
+          name="port"
           type="number"
           placeholder="Укажите порт устройства (например, 1234)"
           value={port}
           onChange={(event) => {
             const path = ['connection', 'port'];
+            dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item label="Адрес вычислителя">
+        <InputTT
+          name="deviceAddress"
+          type="number"
+          placeholder="Укажите адрес устройства (от 0 до 255)"
+          value={port}
+          onChange={(event) => {
+            const path = ['connection', 'deviceAddress'];
             dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
           }}
         />
@@ -50,4 +64,4 @@ const SettingConnectionTab = () => {
   );
 };
 
-export default connect()(SettingConnectionTab);
+export default SettingConnectionTab;

@@ -63,7 +63,7 @@ export const magistrals = [
   },
 ];
 
-export const connections = [
+export const isConnectedValue = [
   {
     value: true,
     label: 'Есть',
@@ -96,4 +96,3 @@ export const OPDU_PUT_TEMPLATE = {
     magistral: 'string',
   },
 };
-
