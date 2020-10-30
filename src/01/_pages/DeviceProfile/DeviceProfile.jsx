@@ -30,6 +30,7 @@ import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
+
   const params = useParams();
   const match = useRouteMatch();
 
@@ -88,6 +89,7 @@ export const DeviceProfile = () => {
       getODPUTasks(deviceId),
     ])
       .then((responses) => {
+        debugger
         const [{value: device}, {value: tasks}] = responses;
         setDevice(device);
         setBuilding(device.address);
@@ -175,6 +177,7 @@ export const DeviceProfile = () => {
   }
 
   if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+  debugger;
   return (
     <DeviceContext.Provider
       value={{
