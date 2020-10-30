@@ -86,7 +86,6 @@ export const RelatedDevicesNotCalculator = ({calcId}) => {
         closingdate,
         id,
     } = related || {};
-    debugger;
     if (isLoading) return <Loader show={isLoading}/>;
 
     let CalcItem;

@@ -35,7 +35,6 @@ export const ObjectProfile = () => {
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
-  debugger;
 
   return styled(grid)(
     <>

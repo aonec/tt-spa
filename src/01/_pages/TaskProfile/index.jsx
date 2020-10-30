@@ -63,7 +63,6 @@ export const TaskProfile = () => {
 
   console.log('TaskProfile info', info);
   // ?
-  // debugger;
   // console.log('TaskProfile info', info);
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху

@@ -16,7 +16,6 @@ export const useInformationDevice = ({
     lastCommercialAccountingDate,
     diameter,
   } = device;
-  debugger;
   return {
     hidden: false,
     icon: { icon, fill },
