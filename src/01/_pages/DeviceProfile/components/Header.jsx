@@ -36,7 +36,7 @@ export const ListItem = styled.li`
 
 export const Header = () => {
   const {
-    device, building, loadings, errors, error, typeODPU, calcModel, ...props
+    device, building, loadings, errors, error, typeODPU, calcModel,
   } = useContext(
     DeviceContext,
   );
