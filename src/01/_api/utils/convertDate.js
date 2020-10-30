@@ -17,6 +17,7 @@ export function convertDateOnly(date) {
 }
 
 export function convertDateDots(date) {
+  if (date === null) return ''
   const dateOnly = 'DD.MM.YYYY';
   const newDate = moment(date).format(dateOnly);
   return newDate;
