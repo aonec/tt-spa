@@ -21,9 +21,9 @@ export const InformationNotCalculator = (loading = true) => {
   };
 
   // const { city, street, number } = building || DEFAULT_BUILDING;
-  const { city, street, housingStockNumber } = building;
+  const { city, street, housingStockNumber, corpus } = building;
   // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
 
   const errorOfComponent = _.get(error, 'resource', null);
   // console.log('error', error);
@@ -43,12 +43,12 @@ export const InformationNotCalculator = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${housingStockNumber}`}
+            {`${city}, ${street}, ${housingStockNumber} ${corpus? `, к.${corpus}` : ''}`}
           </span>
         </ListItem>
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDateDots(commercialAccountingDate)}</span>
+          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>

@@ -20,6 +20,7 @@ import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import ModalChangeOdpu from './components/Modals/ModalChangeOdpu';
 import ModalDeregisterDevice from './components/Modals/ModalDeregisterDevice';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -66,6 +67,7 @@ export const TaskProfile = () => {
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+      <Breadcrumb path={`/tasks/`}/>
       <Header {...state.header} />
       <Panel {...panel} />
       <Steps />
