@@ -93,12 +93,14 @@ export const ModalODPU = ({ device }) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
+      console.log("pipeNumber = ", pipeNumber)
       const { entryNumber, pipeNumber } = hub;
       console.log(`item ${index}`, resource, entryNumber, pipeNumber);
       if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
           resource,
           entryNumber,
+          pipeNumber,
           housingMeteringDeviceType,
           serialNumber,
         });
@@ -118,7 +120,7 @@ export const ModalODPU = ({ device }) => {
 
   console.log('devicesList', devicesList);
 
-  devicesList.map(({ resource, serialNumber, entryNumber }) => {
+  devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
       console.log('res', res);
@@ -131,12 +133,14 @@ export const ModalODPU = ({ device }) => {
         )} ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
+        pipeNumber
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
+        pipeNumber
       });
     }
   });
