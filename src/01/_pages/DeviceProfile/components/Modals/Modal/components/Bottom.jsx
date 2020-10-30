@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import {
-  Radio, ConfigProvider, DatePicker, Tabs, Select,
+  Radio, DatePicker, Tabs, Select,
 } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import { ReportContext } from '../index';
 
 const { RangePicker } = DatePicker;
@@ -73,17 +72,16 @@ export const Bottom = () => {
         <label className="modal__label" htmlFor="#period">
           Период выгрузки
         </label>
-        <ConfigProvider locale={ruRu}>
-          <RangePicker
-            allowClear={false}
-            size="48px"
-            value={[begin, end]}
-            placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event) => {
-              datePickerHandler(event);
-            }}
-          />
-        </ConfigProvider>
+        <RangePicker
+          format={'DD.MM.YYYY'}
+          allowClear={false}
+          size="48px"
+          value={[begin, end]}
+          placeholder={['Дата Начала', 'Дата окончания']}
+          onChange={(event) => {
+            datePickerHandler(event);
+          }}
+        />
       </div>
     </>
   );

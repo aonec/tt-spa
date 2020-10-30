@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -83,9 +83,10 @@ export const Menu = (showPopupHandler) => {
   });
 
   const reportDevice = () => {
-    console.log("$('#modal-report-device')", $('#modal-report-device'));
-    $('#modal-report-device').toggle();
+    // console.log("$('#modal-report-device')", $('#modal-report-device'));
+    // $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
+    dispatch(setModalCalcReportVisible(true));
   };
 
   const showDeregisterDeviceModal = () => {

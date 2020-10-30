@@ -22,6 +22,7 @@ import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modals/Modal';
 import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
+import ModalCalcReport from './components/Modals/ModalCalcReport'
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -168,6 +169,7 @@ export const DeviceProfile = () => {
         </Grid>
         <ModalODPU />
         <ModalDeregisterDevice deviceId={deviceId} />
+        <ModalCalcReport deviceId={deviceId} />
       </DeviceContext.Provider>
     );
   }
