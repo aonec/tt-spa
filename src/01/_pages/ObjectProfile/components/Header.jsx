@@ -23,7 +23,7 @@ const styles = css`
   }
 `;
 
-export const Header = React.memo(({ 0: title, 1: subtitle }) => styled(styles)(
+export const Header = React.memo(({ 0: title, 1: subtitle, corpus}) => styled(styles)(
   <h>
     <HeaderWrap
       style={{
@@ -33,7 +33,7 @@ export const Header = React.memo(({ 0: title, 1: subtitle }) => styled(styles)(
     >
       <Loader show={!title} size="48">
         <div>
-          <h_title>{title}</h_title>
+          <h_title>{`${title}`}</h_title>
           <h_subtitle style={{ paddingTop: '8px' }}>{subtitle}</h_subtitle>
         </div>
         <div style={{ position: 'relative' }}>
