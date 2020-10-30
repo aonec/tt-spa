@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
 import { Loader } from '01/components';
@@ -6,6 +6,7 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../DeviceProfile';
+import {getInfo} from "../../../_api/device_page";
 
 export const Template = styled.div``;
 
@@ -62,59 +63,61 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const RelatedDevicesNotCalculator = (loading = true) => {
+// export const RelatedDevicesNotCalculator = (loading = true) => {
+export const RelatedDevicesNotCalculator = ({calcId}) => {
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [related, setRelated] = useState();
+
+
+    useEffect( () => {
+        setIsLoading(true);
+        getInfo('Calculator', calcId)
+            .then((calc) => {
+                setRelated(calc);
+                setIsLoading(false);
+            })
+    }, [])
+
     const {
-        related, loadings, errors, calcModel,
-    } = useContext(DeviceContext);
+        model,
+        serialNumber,
+        futureCheckingDate,
+        closingdate,
+        id,
+    } = related || {};
+    debugger;
+    if (isLoading) return <Loader show={isLoading}/>;
 
-    const loadingRelated = _.get(loadings, 'related', true);
-    loading = loadingRelated;
+    let CalcItem;
 
-    const buttonHandler = () => {
-        console.log(related);
-    };
+    const { icon, color } = DeviceIcons[null] || {};
 
-    // Превратим в массив
-    const relatedArr = Object.values(related || {});
 
-    const result = relatedArr.map((value) => {
-        const {
-            model,
-            serialNumber,
-            futureCheckingDate,
-            closingdate,
-            pipe,
-            resource,
-            id,
-            housingStockId,
-        } = value;
+    CalcItem = () => <ListItem key={id}>
+        <NameWrap href={`/calculators/${id}`}>
+            <Icon icon={icon} color={color} />
+            <Name>{model || 'Вычислитель'}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
 
-        const { number, entryNumber } = pipe === null ? { number: 'X', entryNumber: 'X' } : pipe;
-        const { icon, color } = DeviceIcons[resource];
+        <State>
+            <Icon icon="status" color="#17B45A" />
+            {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        </State>
+        <Span>{convertDate(futureCheckingDate)}</Span>
+    </ListItem>;
 
-        return (
-            <ListItem key={id}>
-                <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
-                    <Icon icon={icon} color={color} />
-                    <Name>{model || 'Вычислитель'}</Name>
-                    <Serial>{` (${serialNumber})`}</Serial>
-                </NameWrap>
 
-                <State>
-                    <Icon icon="status" color="#17B45A" />
-                    {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-                </State>
-                <Span>{convertDate(futureCheckingDate)}</Span>
-            </ListItem>
-        );
-    });
+
+
 
     return (
         <ListWrap>
             {/* <button onClick={buttonHandler}>related</button> */}
-            <Loader show={loading} size="32">
+            <Loader show={isLoading} size="32">
                 <Title>Соединение с вычислителем</Title>
-                {result}
+                <CalcItem />
             </Loader>
         </ListWrap>
     );
