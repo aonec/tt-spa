@@ -33,10 +33,8 @@ export const Header = React.memo(({ 0: title, 1: subtitle, corpus}) => styled(st
     >
       <Loader show={!title} size="48">
         <div>
-            {/*если корпус есть, то показываем его*/}
           <h_title>{`${title}`}</h_title>
           <h_subtitle style={{ paddingTop: '8px' }}>{subtitle}</h_subtitle>
-          {/*<h_subtitle style={{ paddingTop: '8px' }}>, {corpus}</h_subtitle>*/}
         </div>
         <div style={{ position: 'relative' }}>
           <Menu />
