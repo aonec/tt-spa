@@ -69,8 +69,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { 0: objid, 1: deviceId } = useParams();
-  const { pathname } = useLocation();
+  const { deviceId } = useParams();
   const history = useLocation();
   // debugger;
   const dispatch = useDispatch();
@@ -101,7 +100,7 @@ export const Menu = (showPopupHandler) => {
     <>
       <EditButton />
       <List id="edit-button__list">
-        <NavLink className={styles.menu} to={`${pathname}/edit_odpu`}>
+        <NavLink className={styles.menu} to={`/housingMeteringDevices/${deviceId}/edit_odpu`}>
           <ListItem>
             Редактировать ОДПУ
           </ListItem>
