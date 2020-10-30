@@ -86,11 +86,9 @@ export const RelatedDevicesNotCalculator = ({ calcId }) => {
   } = related || {};
   if (isLoading) return <Loader show={isLoading} />;
 
-  let CalcItem;
-
   const { icon, color } = DeviceIcons.null || {};
 
-  CalcItem = () => (
+  const CalcItem = () => (
     <ListItem key={id}>
       <NameWrap href={`/calculators/${id}`}>
         <Icon icon={icon} color={color} />

@@ -5,9 +5,9 @@ import React, {
   useEffect,
 } from 'react';
 import _ from 'lodash';
-import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 import moment from 'moment';
 import $ from 'jquery';
+import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 import { Icon } from '../../../../../_components/Icon';
 import { DeviceContext } from '../../../DeviceProfile';
@@ -16,7 +16,7 @@ import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
 import './modal.scss';
-import {ButtonTT} from '../../../../../tt-components';
+import { ButtonTT } from '../../../../../tt-components';
 
 const Translate = {
   Heat: 'Отопление',
@@ -32,9 +32,11 @@ const translate = (resource) => Translate[resource];
 
 export const ReportContext = React.createContext();
 
+
+
 export const ModalODPU = () => {
   const { device, building, hubs } = useContext(DeviceContext);
-  console.log("hubs", hubs)
+  console.log('hubs', hubs);
   const { id, model, serialNumber } = { ...device };
   const serialNumberODPU = serialNumber;
   const { number, street } = { ...building };
@@ -80,7 +82,6 @@ export const ModalODPU = () => {
 
   // Получаем массив всех ПРЭМ, которые походят
   if (hubsarr) {
-
     // closingDate: null
     // diameter: null
     // futureCheckingDate: null
@@ -95,7 +96,6 @@ export const ModalODPU = () => {
     // resource: "Heat"
     // serialNumber: "55987340"
     // transactionType: null
-
 
     hubsarr.map((value) => {
       let { resource, entryNumber, pipes } = value;
