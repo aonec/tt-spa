@@ -189,10 +189,10 @@ const FormEditODPU = (props) => {
     futureCheckingDate: values.futureCheckingDate,
     lastCommercialAccountingDate: values.lastCommercialAccountingDate,
     futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-    connection: {
-      ipV4: values.ipV4,
-      port: values.port || 0,
-    },
+    // connection: {
+    //   ipV4: values.ipV4,
+    //   port: values.port || 0,
+    // },
     housingMeteringDeviceType: values.housingMeteringDeviceType,
     resource: values.resource,
     model: values.model,
@@ -413,16 +413,17 @@ const FormEditODPU = (props) => {
             onChange={(value) => {
               if (value !== values.calculatorId) {
                 const selected = _.find(calculators, { value });
-                const { connection: { ipV4, deviceAddress, port } } = selected;
-                console.log('ipV4, deviceAddress, port',
-                  ipV4, deviceAddress, port);
-                setValues((prevValues) => ({
-                  ...prevValues,
-                  ipV4,
-                  deviceAddress,
-                  port,
-                  calculatorId: value,
-                }));
+                // const { connection: { ipV4, deviceAddress, port } } = selected;
+                // console.log('ipV4, deviceAddress, port',
+                //   ipV4, deviceAddress, port);
+                // setValues((prevValues) => ({
+                //   ...prevValues,
+                //   ipV4,
+                //   deviceAddress,
+                //   port,
+                //   calculatorId: value,
+                // }));
+                setFieldValue('calculatorId', value)
               }
             }}
             options={calculators}
