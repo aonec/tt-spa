@@ -32,13 +32,17 @@ export const InformationDevice = ({
   number = '',
   hidden = true,
   url = '',
+  id = '',
+  type = '',
   ...props
 }) => {
   const { push } = useHistory();
+  const path = type === 'Calculator' ? `/calculators/${id}` : `/housingMeteringDevices/${id}`;
+
   if (hidden) return null;
   return styled(information, style)(
     <information {...props}>
-      <device_title as="h3" onClick={() => push(url)}>
+      <device_title as="h3" onClick={() => push(path)}>
         <Icon {...icon} />
         <d_model>{model}</d_model>
         <s_number>{`(${number})`}</s_number>
@@ -48,7 +52,7 @@ export const InformationDevice = ({
           <info_item
             key={title}
             {...use({ url })}
-            onClick={url ? () => push(url) : null}
+            onClick={url ? () => push('') : null}
           >
             <span>{title}</span>
             <span>{value}</span>
