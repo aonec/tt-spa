@@ -35,11 +35,11 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
     // }
 
     const onValuesChangeHandler = (values) => {
-        if (values.search.length >= 4) {
+        if (values.search.length < 4) {
+            setSearchTerm('')
+        } else {
             setSearchTerm(values.search)
-            // dispatch(getDevicesBySerialNumber(values.search));
         }
-        return;
     }
 
 
