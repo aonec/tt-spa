@@ -38,9 +38,9 @@ export const setDevices = (devices) => ({ type: SET_DEVICES, devices });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage});
 export const toggleIsLoading = () => ({ type: TOGGLE_IS_LOADING});
 
-export const getDevices = (pageNumber, pageSize) => async (dispatch) => {
+export const getDevices = (pageNumber, pageSize, searchTerm) => async (dispatch) => {
   dispatch(toggleIsLoading());
-  const devices = await devicesAPI.getDevices(pageNumber, pageSize);
+  const devices = await devicesAPI.getDevices(pageNumber, pageSize, searchTerm);
   dispatch(toggleIsLoading());
   dispatch(setDevices(devices));
 };
@@ -53,6 +53,7 @@ export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
     dispatch(toggleIsLoading());
     return;
   }
+  dispatch(setDevices(devices));
 
   dispatch(setDevices(devices))
 }

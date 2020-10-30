@@ -17,7 +17,7 @@ export const useFetchPage = (state, dispatch) => {
   const pageDevice = useRouteMatch(path + "/devices")
 
   React.useEffect(() => {
-    const { info, events, devices } = state
+    const { id, info, events, devices } = state
     if (isExact && !info) {
       getInfo(url).then((data) => dispatch({ type: "success", data }))
     }
@@ -32,7 +32,7 @@ export const useFetchPage = (state, dispatch) => {
         replace(url)
       } else {
         !apartments &&
-          getApartments({ city, street, HousingStockNumber }).then((data) =>
+          getApartments({ housingStockId: id }).then((data) =>
             dispatch({ type: "success", data })
           )
       }

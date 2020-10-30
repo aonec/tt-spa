@@ -59,11 +59,12 @@ function isDisabled(
     nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
   },
   {
-    AddPerpetrator, AddDocuments, Switch, Completion,
+    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
-  if (AddPerpetrator) return !nextPerpetratorId || !nextStageDeadline;
+  if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
+  if (AddPerpetrator) return !nextPerpetratorId;
   if (AddDocuments) return !documentsIds.length;
   if (Completion) return false;
 

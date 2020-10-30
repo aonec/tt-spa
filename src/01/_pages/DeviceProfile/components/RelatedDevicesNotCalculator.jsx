@@ -66,64 +66,60 @@ export const Span = styled.span`
 // export const RelatedDevicesNotCalculator = (loading = true) => {
 export const RelatedDevicesNotCalculator = ({calcId}) => {
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [related, setRelated] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [related, setRelated] = useState();
 
 
-  useEffect( () => {
-    setIsLoading(true);
-    getInfo('Calculator', calcId)
-        .then((calc) => {
-            setRelated(calc);
-            setIsLoading(false);
-        })
-  }, [])
+    useEffect( () => {
+        setIsLoading(true);
+        getInfo('Calculator', calcId)
+            .then((calc) => {
+                setRelated(calc);
+                setIsLoading(false);
+            })
+    }, [])
 
     const {
-      model,
-      serialNumber,
-      futureCheckingDate,
-      closingdate,
-      // hub,
-      resource,
-      id,
-      // housingStockId,
+        model,
+        serialNumber,
+        futureCheckingDate,
+        closingdate,
+        id,
     } = related || {};
-    debugger;
-  if (isLoading) return <Loader show={isLoading}/>;
+    if (isLoading) return <Loader show={isLoading}/>;
 
     let CalcItem;
 
-  const { icon, color } = DeviceIcons[null] || {};
+    const { icon, color } = DeviceIcons[null] || {};
 
 
-  CalcItem = () => <ListItem key={id}>
+    CalcItem = () => <ListItem key={id}>
         <NameWrap href={`/calculators/${id}`}>
-          <Icon icon={icon} color={color} />
-          <Name>{model || 'Вычислитель'}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
+            <Icon icon={icon} color={color} />
+            <Name>{model || 'Вычислитель'}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
         <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+            <Icon icon="status" color="#17B45A" />
+            {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
         <Span>{convertDate(futureCheckingDate)}</Span>
-      </ListItem>;
+    </ListItem>;
 
 
 
 
 
-  return (
-    <ListWrap>
-      {/* <button onClick={buttonHandler}>related</button> */}
-      <Loader show={isLoading} size="32">
-        <Title>Соединение с вычислителем</Title>
-        <CalcItem />
-      </Loader>
-    </ListWrap>
-  );
+    return (
+        <ListWrap>
+            {/* <button onClick={buttonHandler}>related</button> */}
+            <Loader show={isLoading} size="32">
+                <Title>Соединение с вычислителем</Title>
+                <CalcItem />
+            </Loader>
+        </ListWrap>
+    );
 };
 
 export default RelatedDevicesNotCalculator;
