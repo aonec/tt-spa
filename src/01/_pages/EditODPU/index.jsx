@@ -4,6 +4,7 @@ import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
 import axios from '../../axios';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 const EditODPU = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -71,6 +72,8 @@ const EditODPU = () => {
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
     return (
       <>
+        <Breadcrumb path={`/houseMeteringDevices/${deviceId}`}/>
+
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
         {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
         <TabsComponent
