@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import {
-  useHistory, useRouteMatch, useParams, NavLink,
+  useHistory, useRouteMatch, useParams, NavLink, useLocation,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
@@ -57,22 +57,22 @@ align-items: center;
 `;
 
 export const EditButton = () => {
-  const { 0: objid, 1: deviceId } = useParams();
-  const { push } = useHistory();
-
   const menuShowHide = () => {
     $('#edit-button__list').toggle();
   };
 
   return (
     <EditButtonWrap onClick={menuShowHide} id="edit-button">
-      <Icon icon="menu"/>
+      <Icon icon="menu" />
     </EditButtonWrap>
   );
 };
 
 export const Menu = (showPopupHandler) => {
   const { 0: objid, 1: deviceId } = useParams();
+  const { pathname } = useLocation();
+  const history = useLocation();
+  // debugger;
   const dispatch = useDispatch();
 
   $(document).mouseup((e) => {
@@ -99,9 +99,9 @@ export const Menu = (showPopupHandler) => {
 
   return (
     <>
-      <EditButton/>
+      <EditButton />
       <List id="edit-button__list">
-        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit_odpu`}>
+        <NavLink className={styles.menu} to={`${pathname}/edit_odpu`}>
           <ListItem>
             Редактировать ОДПУ
           </ListItem>

@@ -6,7 +6,7 @@ import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions
 
 const SettingConnectionTab = () => {
   const {
-    connection: { port, ipV4 },
+    connection: { port, ipV4 ,deviceAddress},
   } = useSelector((state) => state.calculatorPage);
   const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ const SettingConnectionTab = () => {
           name="deviceAddress"
           type="number"
           placeholder="Укажите адрес устройства (от 0 до 255)"
-          value={port}
+          value={deviceAddress}
           onChange={(event) => {
             const path = ['connection', 'deviceAddress'];
             dispatch(onChangeFormValueByPath(path, Number(event.target.value)));
