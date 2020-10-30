@@ -76,7 +76,7 @@ export async function moveStage(id = "", move = "", data = {}) {
 
 export async function deleteDoc(docId = "") {
   try {
-    const res = await axios.delete(`/documents/${docId}`)
+    const res = await axios.delete(`documents/${docId}`)
     const { url = "" } = res
     const responseId = Number(url.match(/(\d*)$/)[0])
     return responseId

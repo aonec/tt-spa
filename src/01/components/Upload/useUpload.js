@@ -1,5 +1,6 @@
 import React from "react"
 import { uploadFile } from "01/_api/upload"
+import {deleteDoc} from "../../_api/task_profile_page";
 
 const DELETE_FILE = 'DELETE_FILE';
 
@@ -19,7 +20,7 @@ function uploadReducer(state, action) {
     case DELETE_FILE:
       return {
         ...state,
-        fileList: fileList.filter(file => file.id !== action.fileId)
+        fileList: fileList.filter((file) => file.id !== action.fileId)
       }
     default:
       console.error("upload", type)
@@ -27,9 +28,7 @@ function uploadReducer(state, action) {
   }
 }
 
-const deleteFile = (fileId) => {
-  return {type: DELETE_FILE, fileId};
-}
+const deleteFileAC = (fileId) => ({type: DELETE_FILE, fileId});
 
 export const  useUpload = (callback = () => {}) => {
   const [state, dispatch] = React.useReducer(uploadReducer, {
@@ -43,14 +42,19 @@ export const  useUpload = (callback = () => {}) => {
     }
     callback({ documentsIds: fileList.map((i) => i.id) })
   }, [state])
-  // console.log(state)
+  const deleteFile = (id) => async () => {
+    let response = await deleteDoc(id);
+    await dispatch(deleteFileAC(id));
+    return response
+  }
+
   return {
     button: {
-      onChange(e) {
-        dispatch({ type: "change", file: e.target.files[0] })
+      onChange(file) {
+        dispatch({ type: "change", file })
       },
       loading: state.loading,
     },
-    list: { items: state.fileList, del: (id) => {dispatch(deleteFile(id)) }},
+    list: { items: state.fileList, del: deleteFile },
   }
 }
