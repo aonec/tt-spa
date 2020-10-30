@@ -96,7 +96,7 @@ const FormEditODPU = (props) => {
         Сохранить
       </ButtonTT>
 
-      <NavLink to={`/devices/${deviceId}/`}>
+      <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
         <ButtonTT
           style={{ marginLeft: '16px' }}
           color="white"
