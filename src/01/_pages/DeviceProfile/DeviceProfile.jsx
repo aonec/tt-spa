@@ -174,6 +174,7 @@ export const DeviceProfile = () => {
     );
   }
 
+  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
   return (
     <DeviceContext.Provider
       value={{
