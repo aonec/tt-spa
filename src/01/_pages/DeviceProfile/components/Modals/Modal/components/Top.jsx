@@ -17,6 +17,11 @@ export const Uzel = () => {
   } = useContext(ReportContext);
 
   console.log('selectOptions', selectOptions);
+  console.log("type", type)
+
+  const modifiedSelectOptions = selectOptions.filter(option => option.value == type);
+  console.log("modifiedSelectOptions",modifiedSelectOptions)
+
   {
     return (
       <div>
@@ -33,7 +38,7 @@ export const Uzel = () => {
         </div>
         <Form.Item label="Выбор узла">
           <SelectTT
-            options={selectOptions}
+            options={modifiedSelectOptions}
             placeholder="Выберите узел"
             onChange={handleChange}
           />

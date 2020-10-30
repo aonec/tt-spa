@@ -8,6 +8,7 @@ import TabsComponent from './components/Tabs';
 import {
   SelectTT, InputTT, ButtonTT, Header,
 } from '../../../../../tt-components';
+import { convertDateOnly } from "../../../../../_api/utils/convertDate";
 
 
 
@@ -51,9 +52,7 @@ const CalcReportForm = ({ device }) => {
     },
     validationSchema: Yup.object({}),
     onSubmit: async () => {
-      alert(JSON.stringify(values));
-      console.log("begin", values.begin);
-      console.log("end", values.end);
+      downloadReport();
 
       // const form = {
       //   deviceId: values.deviceId,
@@ -73,6 +72,30 @@ const CalcReportForm = ({ device }) => {
       );
     }
     return null;
+  };
+
+
+  const downloadReport = () => {
+    console.log("downloadReport");
+    // console.log("entryNumberRes.current = ", entryNumberRes.current)
+    // if (entryNumberRes.current) {
+    //   console.log('entryNumberRes', entryNumberRes.current);
+    //   const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
+    //     detail.current
+    //   }&resourcetype=${type}&entrynumber=${
+    //     entryNumberRes.current
+    //   }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
+    //     end,
+    //   )}T00:00:00Z`;
+    //
+    //   const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
+    //   const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
+    //   // window.location.assign(link);
+    //   console.log(link)
+    //   // window.open(link);
+    // } else {
+    //   alert('Выберите узел!');
+    // }
   };
 
   const handleButton = () => {

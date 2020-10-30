@@ -83,10 +83,10 @@ export const Menu = (showPopupHandler) => {
   });
 
   const reportDevice = () => {
-    // console.log("$('#modal-report-device')", $('#modal-report-device'));
-    // $('#modal-report-device').toggle();
+    console.log("$('#modal-report-device')", $('#modal-report-device'));
+    $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
-    dispatch(setModalCalcReportVisible(true));
+    // dispatch(setModalCalcReportVisible(true));
   };
 
   const showDeregisterDeviceModal = () => {

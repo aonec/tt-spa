@@ -37,14 +37,14 @@ export const PeriodType = () => {
         </label>
 
         <Radio.Group
-          defaultValue="daily"
+          defaultValue="hourly"
           size="large"
           onChange={(event) => onDetailChange(event)}
         >
-          <Radio.Button value="daily" checked>
+          <Radio.Button value="daily" disabled>
             Суточная
           </Radio.Button>
-          <Radio.Button value="hourly">Часовая</Radio.Button>
+          <Radio.Button value="hourly" checked>Часовая</Radio.Button>
         </Radio.Group>
       </div>
     </div>
