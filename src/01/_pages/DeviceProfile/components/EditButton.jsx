@@ -70,6 +70,7 @@ export const EditButton = () => {
 
 export const Menu = (showPopupHandler) => {
   const { pathname } = useLocation();
+  const {deviceId} = useParams()
   const dispatch = useDispatch();
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -99,7 +100,7 @@ export const Menu = (showPopupHandler) => {
       <EditButton />
       <List id="edit-button__list">
         {/*<NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>*/}
-        <NavLink className={styles.menu} to={`${pathname}/edit`} >
+        <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
           <ListItem>
             Редактировать
             вычислитель
