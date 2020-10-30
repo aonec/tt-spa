@@ -62,6 +62,9 @@ export const TaskProfile = () => {
   // ?
   const infoDevice = useInformationDevice(state);
 
+  const {device} = state;
+  const {type, id} = device || {};
+
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
@@ -75,7 +78,7 @@ export const TaskProfile = () => {
       <grid>
         <Information {...info} />
         <Stages {...stages} />
-        <InformationDevice {...infoDevice} />
+        <InformationDevice {...infoDevice} type={type} id={id}/>
       </grid>
       <ModalChangeOdpu {...infoDevice} />
       <ModalDeregisterDevice {...infoDevice} />
