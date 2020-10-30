@@ -8,6 +8,8 @@ import { ButtonTT, Header } from '../../tt-components';
 import { items } from './components/CalculatorJSON';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from '../../Redux/actions/actions';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import {TasksProfileContext} from "../TaskProfile/context";
 
 const EditCalculator = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -114,6 +116,8 @@ const EditCalculator = () => {
 
   return (
     <>
+      <Breadcrumb path={`/calculators/${deviceId}`}/>
+
       <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
       {/* <button onClick={buttonHandler}>getKey</button> */}
       <TabsComponent

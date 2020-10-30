@@ -1,8 +1,8 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
+import {NavLink, useHistory} from 'react-router-dom';
 import styled from 'styled-components'
 
-const StyledBreadcrumb = styled.span`
+const StyledBreadcrumb = styled(NavLink)`
 font-weight: 500;
 color: #272F5A;
 cursor: pointer;
@@ -12,18 +12,15 @@ color: #189EE9;
 }
 `
 
-const Breadcrumb = () => {
+const Breadcrumb = ({path}) => {
 
-    const {goBack} = useHistory();
 
     return (
         <div>
 
-        <StyledBreadcrumb onClick={goBack}>
 
-            <span>&#60; </span>Назад
+            <StyledBreadcrumb to={`${path}`}>&lt; Назад</StyledBreadcrumb>
 
-        </StyledBreadcrumb>
         </div>
     )
 }

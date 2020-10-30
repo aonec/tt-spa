@@ -19,9 +19,8 @@ export const Information = (loading = true) => {
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
-
-  const { city, street, housingStockNumber } = building || DEFAULT_BUILDING;
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
+  const { city, street, housingStockNumber, corpus } = building || DEFAULT_BUILDING;
+  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
   // console.log('error', error);
@@ -42,12 +41,12 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${housingStockNumber}`}
+            {`${city}, ${street}, ${housingStockNumber}${corpus? `, к.${corpus}` : ''}`}
           </span>
         </ListItem>
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDateDots(commercialAccountingDate)}</span>
+          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>

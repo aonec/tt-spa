@@ -38,7 +38,7 @@ export const ObjectProfile = () => {
 
   return styled(grid)(
     <>
-      <Breadcrumb />
+      <Breadcrumb path={`/objects/`}/>
       <Header {...header} />
       <div style={{}}>
         {/* <ButtonTT disabled={true}> */}
