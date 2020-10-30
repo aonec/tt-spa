@@ -82,12 +82,8 @@ export const RelatedDevicesNotCalculator = ({ calcId }) => {
     serialNumber,
     futureCheckingDate,
     closingdate,
-    // hub,
-    resource,
     id,
-    // housingStockId,
   } = related || {};
-  // debugger;
   if (isLoading) return <Loader show={isLoading} />;
 
   let CalcItem;

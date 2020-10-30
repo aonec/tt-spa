@@ -5,15 +5,26 @@
     height: 100%;
 }
 
-.devices {
-    /*height: 80%;*/
+.justify_center {
+    margin: 0 auto;
+}
+
+.button {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .device__title {
+    display: flex;
+    align-items: center;
     font-weight: bold;
     font-size: 16px;
     line-height: 2;
     color: #272f5A;
+}
+
+.subdevice__title {
+    margin-left: 23px;
 }
 
 .device {
@@ -25,24 +36,24 @@
 }
 
 .deviceId {
+    margin-left: 6px;
     font-weight: normal;
     color: rgba(39, 47, 90, 0.6);
 }
 
-.subDevices {
-    margin-left: 44px;
-}
 
-.device__sub, .device__main_wrapper {
+
+.device__wrapper {
+    display: grid;
+    grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
     margin-bottom: 24px;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon {
     margin-right: 8px;
 }
-
-
-
 
 .pages {
     margin: 20px 0;

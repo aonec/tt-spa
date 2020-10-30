@@ -13,7 +13,7 @@ export const useInformationDevice = ({
     id,
     futureCheckingDate,
     lastCheckingDate,
-    commercialAccountingDate,
+    lastCommercialAccountingDate,
     diameter,
   } = device;
   return {
@@ -28,7 +28,7 @@ export const useInformationDevice = ({
       [
         'Постановка на учет',
         // new Date(commercialAccountingDate).toLocaleDateString(),
-        convertDateDots((commercialAccountingDate))
+        convertDateDots(lastCommercialAccountingDate)
       ],
       ['Диаметр', diameter],
       [
