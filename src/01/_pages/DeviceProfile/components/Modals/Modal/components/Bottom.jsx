@@ -41,10 +41,10 @@ export const PeriodType = () => {
           size="large"
           onChange={(event) => onDetailChange(event)}
         >
-          <Radio.Button value="daily" disabled>
+          <Radio.Button value="daily" checked>
             Суточная
           </Radio.Button>
-          <Radio.Button value="hourly" checked>Часовая</Radio.Button>
+          <Radio.Button value="hourly">Часовая</Radio.Button>
         </Radio.Group>
       </div>
     </div>
@@ -73,7 +73,7 @@ export const Bottom = () => {
           Период выгрузки
         </label>
         <RangePicker
-          format={'DD.MM.YYYY'}
+          format="DD.MM.YYYY"
           allowClear={false}
           size="48px"
           value={[begin, end]}
