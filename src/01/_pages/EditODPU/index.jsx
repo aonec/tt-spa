@@ -4,9 +4,10 @@ import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
 import axios from '../../axios';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 const EditODPU = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const { deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [device, setDevice] = useState();
   const [calculators, setCalculators] = useState();
@@ -15,24 +16,11 @@ const EditODPU = () => {
     setTab(value);
   }
 
-  async function getCalculators(objid = '') {
-    try {
-      const res = await axios.get(`HousingStocks/${objid}/Devices`);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса Вычислителей в этом доме',
-      };
-    }
-  }
-
-  //Получить устройство
-  async function getODPU(id = '') {
+  // Получить устройство
+  async function getOdpu(id = 0) {
     try {
       const res = await axios.get(`HousingMeteringDevices/${id}`);
-      console.log("HousingMeteringDevices", res)
+      console.log('HousingMeteringDevices', res);
       return res;
     } catch (error) {
       console.log(error);
@@ -43,23 +31,40 @@ const EditODPU = () => {
     }
   }
 
-  useEffect(() => {
-    getODPU(deviceId).then((res) => {
-      setDevice(res);
+  async function getCalculators(objid = 0) {
+    try {
+      const res = await axios.get(`Calculators?Filter.HousingStockId=${objid}`);
+      console.log('Calculators', res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса Вычислителей в этом доме',
+      };
+    }
+  }
 
-    });
-    getCalculators(objid).then((res) => {
-      let selectCalculators = [];
-      res.devices.map((item) => {
-        if (item.type === 'Calculator') {
-          console.log("item", item)
-          const label = `${item.model} (${item.serialNumber}) IP: ${item.ipV4} (${item.port})`;
-          const value = item.id;
-          selectCalculators = [...selectCalculators, { ...item, label, value }];
-        }
+
+
+  useEffect(() => {
+    async function getData() {
+      const device = await getOdpu(deviceId);
+      setDevice(device);
+      const calculators = await getCalculators(device.address.id);
+      // console.log(calculators);
+      const selectCalculators = calculators.items.map((item) => {
+        // console.log(item);
+        const label = `${item.model} (${item.serialNumber}) IP: ${item.connection?.ipV4} (${item.connection?.port})`;
+        const value = item.id;
+        return ({ ...item, label, value });
       });
       setCalculators(selectCalculators);
-    });
+    }
+
+    getData()
+
+    // console.log(selectCalculators);
   }, []);
 
   const buttonHandler = () => {
@@ -73,8 +78,10 @@ const EditODPU = () => {
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
     return (
       <>
+        <Breadcrumb path={`/housingMeteringDevices/${deviceId}`}/>
+
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-         {/*<ButtonTT onClick={buttonHandler}>Button</ButtonTT>*/}
+        {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}

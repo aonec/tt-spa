@@ -28,13 +28,19 @@ export const UploadButton = ({
   onChange,
   ...props
 }) => {
+
+    const onChangeHandler = (e) => {
+        onChange(e.target.files[0]);
+        e.target.value = null;
+    }
+
   return styled(styles)(
     <upload as="label" {...props}>
       {text}
       <Loader show={loading}>
         <Icon icon="upload" />
       </Loader>
-      <input type="file" onChange={onChange} disabled={loading} />
+      <input type="file" onChange={onChangeHandler} disabled={loading} />
     </upload>
   )
 }

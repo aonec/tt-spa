@@ -8,14 +8,17 @@ import { ButtonTT, Header } from '../../tt-components';
 import { items } from './components/CalculatorJSON';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm } from '../../Redux/actions/actions';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import {TasksProfileContext} from "../TaskProfile/context";
 
 const EditCalculator = () => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const { deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
   const [currentCalc, setCurrentCalc] = useState();
   const [model, setModel] = useState();
+  const [serial, setSerial] = useState();
 
   function randomInteger(min, max){
     const rand = min + Math.random() * (max + 1 - min);
@@ -37,6 +40,7 @@ const EditCalculator = () => {
 
   useEffect(() => {
     if (currentCalc) {
+      console.log("currentCalc",currentCalc)
       const {
         calculator,
         canBeEdited,
@@ -80,6 +84,7 @@ const EditCalculator = () => {
       const { label } = temp
       console.log('label', label);
       setModel(label);
+      setSerial(serialNumber)
       dispatch(setAddCalculatorForm(calculatorPage, initialStateDefaultValues));
     }
   }, [currentCalc]);
@@ -112,8 +117,11 @@ const EditCalculator = () => {
     }
   };
 
+
   return (
     <>
+      <Breadcrumb path={`/calculators/${deviceId}`}/>
+
       <Header>{`${model} (${calculatorPage.serialNumber}). Редактирование`}</Header>
       {/* <button onClick={buttonHandler}>getKey</button> */}
       <TabsComponent
@@ -129,7 +137,7 @@ const EditCalculator = () => {
           Сохранить
         </ButtonTT>
 
-        <NavLink to={`/objects/${objid}/devices/${deviceId}`}>
+        <NavLink to={`/calculators/${deviceId}`}>
         <ButtonTT color="white" onClick={hideMe}>
           Отмена
         </ButtonTT>
@@ -139,4 +147,4 @@ const EditCalculator = () => {
   );
 };
 
-export default connect()(EditCalculator);
+export default EditCalculator;

@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import {
-  useHistory, useRouteMatch, useParams, NavLink,
+  useHistory, useRouteMatch, useParams, NavLink, useLocation,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -57,9 +57,6 @@ align-items: center;
 `;
 
 export const EditButton = () => {
-  const { 0: objid, 1: deviceId } = useParams();
-  const { push } = useHistory();
-
   const menuShowHide = () => {
     $('#edit-button__list').toggle();
   };
@@ -72,9 +69,9 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { 0: objid, 1: deviceId } = useParams();
+  const { pathname } = useLocation();
+  const {deviceId} = useParams()
   const dispatch = useDispatch();
-
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
@@ -90,6 +87,7 @@ export const Menu = (showPopupHandler) => {
     console.log("$('#modal-report-device')", $('#modal-report-device'));
     $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
+    // dispatch(setModalCalcReportVisible(true));
   };
 
   const showDeregisterDeviceModal = () => {
@@ -101,7 +99,8 @@ export const Menu = (showPopupHandler) => {
     <>
       <EditButton />
       <List id="edit-button__list">
-        <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>
+        {/*<NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>*/}
+        <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
           <ListItem>
             Редактировать
             вычислитель

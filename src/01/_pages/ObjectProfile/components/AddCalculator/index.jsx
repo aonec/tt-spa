@@ -29,12 +29,13 @@ const ModalCalculator = () => {
     checkingDate: moment().toISOString(),
     futureCheckingDate: moment().toISOString(),
     lastCommercialAccountingDate: moment().toISOString(),
+    documentsIds: [],
     connection: {
-      ipV4: '192.168.0.1',
-      deviceAddress: 0,
-      port: 1234,
+      ipV4: '',
+      deviceAddress: null,
+      port: null,
     },
-    futureCommercialAccountingDate: moment().toISOString(),
+    futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),
     housingStockId: Number(objid),
     infoId: 1,
   };
@@ -88,14 +89,16 @@ const ModalCalculator = () => {
   };
 
   const buttonHandler = () => {
-    console.log("buttonHandler")
+    console.log('buttonHandler');
   };
 
   const handleSubmit = async () => {
     alert('Cейчас будем отправлять данные!');
+    console.log(JSON.stringify(calculatorPage));
     try {
       const res = await axios.post('Calculators', calculatorPage);
       alert('Вычислитель успешно создан !');
+      console.log(res)
       return res;
     } catch (error) {
       console.log(error);
@@ -108,31 +111,31 @@ const ModalCalculator = () => {
 
   return (
     <Modal id="add-calculator" ref={modalRef}>
-        <ModalWrap>
-          {/*<button onClick={buttonHandler}>buttonHandler</button>*/}
-          <ModalClose getModal={modalRef} />
-          <ModalTop>
-            <Title size="middle" color="black">
-              Добавление нового вычислителя
-            </Title>
-          </ModalTop>
-          <ModalMain>
-            <TabsComponent
-              currentTabKey={currentTabKey}
-              handleChangeTab={handleChangeTab}
-            />
-          </ModalMain>
+      <ModalWrap>
+        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
+        <ModalClose getModal={modalRef} />
+        <ModalTop>
+          <Title size="middle" color="black">
+            Добавление нового вычислителя
+          </Title>
+        </ModalTop>
+        <ModalMain>
+          <TabsComponent
+            currentTabKey={currentTabKey}
+            handleChangeTab={handleChangeTab}
+          />
+        </ModalMain>
 
-          <ModalBottom>
-            <ButtonTT color="white" onClick={hideMe}>
-              Отмена
-            </ButtonTT>
-            {renderNextButton()}
-            {renderSubmitButton()}
-          </ModalBottom>
-        </ModalWrap>
-      </Modal>
+        <ModalBottom>
+          <ButtonTT color="white" onClick={hideMe}>
+            Отмена
+          </ButtonTT>
+          {renderNextButton()}
+          {renderSubmitButton()}
+        </ModalBottom>
+      </ModalWrap>
+    </Modal>
   );
 };
 
-export default connect()(ModalCalculator);
+export default ModalCalculator;

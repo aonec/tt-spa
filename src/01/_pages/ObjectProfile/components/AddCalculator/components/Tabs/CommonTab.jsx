@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { DatePicker, Select, Input, Form} from 'antd';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../../../tt-components'
+import { Form } from 'antd';
 import moment from 'moment';
+import { SelectTT, InputTT, DatePickerTT } from '../../../../../../tt-components';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
 
@@ -24,9 +24,10 @@ const CommonTab = () => {
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {/*<button onClick={buttonHandler}>test</button>*/}
-        <Form.Item name="text" label="Серийный номер устройства">
+        {/* <button onClick={buttonHandler}>test</button> */}
+        <Form.Item label="Серийный номер устройства">
           <InputTT
+            name="serialNumber"
             value={serialNumber}
             placeholder="Серийный номер..."
             onChange={(event) => {
@@ -38,6 +39,7 @@ const CommonTab = () => {
 
         <Form.Item label="Тип вычислителя">
           <SelectTT
+            name="infoId"
             placeholder="Выберите тип устройства"
             options={items}
             value={infoId.toString()}
@@ -50,7 +52,8 @@ const CommonTab = () => {
 
         <Form.Item label="Дата ввода в эксплуатацию">
           <DatePickerTT
-            id="lastCommercialAccountingDate"
+            format={'DD.MM.YYYY'}
+            name="lastCommercialAccountingDate"
             value={moment(lastCommercialAccountingDate)}
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -63,7 +66,8 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Поверки">
           <DatePickerTT
-            id="checkingDate"
+            format={'DD.MM.YYYY'}
+            name="checkingDate"
             placeholder="Укажите дату..."
             value={moment(checkingDate)}
             onChange={(date) => {
@@ -76,7 +80,8 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Следующей поверки">
           <DatePickerTT
-            id="futureCheckingDate"
+            format={'DD.MM.YYYY'}
+            name="futureCheckingDate"
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
             onChange={(date) => {
@@ -89,6 +94,7 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Следующей поверки">
           <SelectTT
+            name='futureCommercialAccountingDate'
             placeholder="Укажите оперид эксплуатации"
             options={serviceLife}
             value={serviceLife[0].value}
@@ -104,4 +110,4 @@ const CommonTab = () => {
   );
 };
 
-export default connect()(CommonTab);
+export default CommonTab;

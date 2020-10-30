@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import {
-  Radio, ConfigProvider, DatePicker, Tabs, Select,
+  Radio, DatePicker, Tabs, Select,
 } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import { ReportContext } from '../index';
 
 const { RangePicker } = DatePicker;
@@ -38,14 +37,14 @@ export const PeriodType = () => {
         </label>
 
         <Radio.Group
-          defaultValue="daily"
+          defaultValue="hourly"
           size="large"
           onChange={(event) => onDetailChange(event)}
         >
-          <Radio.Button value="daily" checked>
+          <Radio.Button value="daily" disabled>
             Суточная
           </Radio.Button>
-          <Radio.Button value="hourly">Часовая</Radio.Button>
+          <Radio.Button value="hourly" checked>Часовая</Radio.Button>
         </Radio.Group>
       </div>
     </div>
@@ -73,17 +72,16 @@ export const Bottom = () => {
         <label className="modal__label" htmlFor="#period">
           Период выгрузки
         </label>
-        <ConfigProvider locale={ruRu}>
-          <RangePicker
-            allowClear={false}
-            size="48px"
-            value={[begin, end]}
-            placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event) => {
-              datePickerHandler(event);
-            }}
-          />
-        </ConfigProvider>
+        <RangePicker
+          format={'DD.MM.YYYY'}
+          allowClear={false}
+          size="48px"
+          value={[begin, end]}
+          placeholder={['Дата Начала', 'Дата окончания']}
+          onChange={(event) => {
+            datePickerHandler(event);
+          }}
+        />
       </div>
     </>
   );

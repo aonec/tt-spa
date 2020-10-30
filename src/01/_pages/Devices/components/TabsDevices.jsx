@@ -39,40 +39,25 @@ const TabsDevices = () => {
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
-        if (searchTerm) return;
         dispatch(toggleIsLoading());
-        dispatch(getDevices(currentPage, pageSize));
+        dispatch(getDevices(currentPage, pageSize, searchTerm));
         dispatch(toggleIsLoading());
-    }, [currentPage, pageSize]);
-
-
-
+    }, [currentPage, searchTerm]);
 
     const deviceItems = useSelector((state) =>
         state.devicePage.items
     )
 
-
-
-    const deviceElems = deviceItems.map((device) => <DeviceBlock device={device} />)
+    const deviceElems = deviceItems.map((device) => {
+        return <DeviceBlock device={device}/>
+    }
+    )
 
 
     return <div>
 
-        <Tabs defaultActiveKey="1" onChange={callback}>
+        <Tabs defaultActiveKey="1" onChange={callback} style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
-                {/*<form className={styles.form} onSubmit={handleSubmit}>*/}
-                {/*    <label>*/}
-                {/*        Поиск по серийному номеру прибора:*/}
-                {/*        <input*/}
-                {/*            className={styles.input__form}*/}
-                {/*            type="text"*/}
-                {/*            value={searchTerm}*/}
-                {/*            onChange={editSearchTerm}*/}
-                {/*            placeholder="Введите серийный номер прибора..."/>*/}
-                {/*    </label>*/}
-                {/*        <input className={styles.btn} type="submit" value="Отправить" />*/}
-                {/*</form>*/}
                 <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
