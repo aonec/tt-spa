@@ -72,7 +72,6 @@ export const Menu = (showPopupHandler) => {
   const { 0: objid, 1: deviceId } = useParams();
   const { pathname } = useLocation();
   const history = useLocation();
-  // debugger;
   const dispatch = useDispatch();
 
   $(document).mouseup((e) => {
