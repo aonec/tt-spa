@@ -3,15 +3,13 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form, Modal, Radio } from 'antd';
-import {
-  SelectTT, InputTT, ButtonTT, DatePickerTT, Header, Title,
-} from '../../../../../tt-components';
-import axios from '../../../../../axios';
+import { DatePicker, Form, Modal, Radio } from 'antd';
 import TabsComponent from './components/Tabs';
-import SelectDate from './components/SelectDate';
-import Period from './components/Period';
-import Details from './components/Details';
+import {
+  SelectTT, InputTT, ButtonTT, Header,
+} from '../../../../../tt-components';
+
+
 
 // async function deregisterDevice(device) {
 //   try {
@@ -25,7 +23,7 @@ import Details from './components/Details';
 //     throw new Error(error);
 //   }
 // }
-
+const { RangePicker } = DatePicker;
 const selectTemplate = [
   {
     value: 1,
@@ -47,11 +45,16 @@ const CalcReportForm = ({ device }) => {
     initialValues: {
       details: 'daily',
       period: 'year',
+      begin: moment(),
+      end: moment()
 
     },
     validationSchema: Yup.object({}),
     onSubmit: async () => {
       alert(JSON.stringify(values));
+      console.log("begin", values.begin);
+      console.log("end", values.end);
+
       // const form = {
       //   deviceId: values.deviceId,
       //   documentsIds: values.documentsIds,
@@ -103,8 +106,9 @@ const CalcReportForm = ({ device }) => {
           <div style={{ display: 'flex' }}>
             <Form.Item label="Период выгрузки" style={{ width: '48%' }}>
               <Radio.Group
-                name={'period'}
-                defaultValue="year" buttonStyle="solid"
+                name="period"
+                value={values.period}
+                buttonStyle="solid"
                 onChange={handleChange}
               >
                 <Radio.Button value="year">Год</Radio.Button>
@@ -114,23 +118,37 @@ const CalcReportForm = ({ device }) => {
               </Radio.Group>
             </Form.Item>
 
+            <Form.Item label="Детализация отчета" style={{ width: '48%' }}>
+              <Radio.Group
+                name="details"
+                onChange={handleChange}
+                value={values.details}
+                buttonStyle="solid"
+              >
+                <Radio.Button value="daily">Суточная</Radio.Button>
+                <Radio.Button value="hourly">Часовая</Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+
           </div>
 
-          {/* <Form.Item label="Дата снятия прибора с учета"> */}
-          {/*  <DatePickerTT */}
-          {/*    name="closingDateTime" */}
-          {/*    format="DD.MM.YYYY" */}
-          {/*    allowClear={false} */}
-          {/*    onBlur={handleBlur} */}
-          {/*    onChange={(date) => { */}
-          {/*      setFieldValue('closingDateTime', date.toISOString()); */}
-          {/*    }} */}
-          {/*    value={moment(values.closingDateTime)} */}
-          {/*  /> */}
-          {/*  <Alert name="closingDateTime" /> */}
-          {/* </Form.Item> */}
+          <Form.Item label="Период" >
+          <RangePicker
+            format={'DD.MM.YYYY'}
+            allowClear={false}
+            placeholder={['Дата Начала', 'Дата окончания']}
+            onChange={(value)=>{
+              console.log(value[0]);
+              console.log(value[1]);
+            setFieldValue('begin', value[0]);
+            setFieldValue('end', value[1]);
+            }}
+            value={[values.begin, values.end]}
+            style={{width: '100%', height: '50px'}}
+          />
+          </Form.Item>
 
-          <SelectDate />
+
           <ButtonTT
             style={{ marginLeft: '16px' }}
             color="red"
