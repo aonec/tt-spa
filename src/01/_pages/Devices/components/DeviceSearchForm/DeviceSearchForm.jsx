@@ -66,10 +66,10 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
 
                 <Form.Item
                     name="search"
-                    rules={[{ required: true, message:  'Введите адрес дома или серийный номер прибора' }]}
+                    rules={[{ required: true, message:  'Введите серийный номер прибора' }]}
                     style={{marginRight: 16}}
                 >
-                    <Input className={styles.input} value={searchTerm} placeholder="Введите адрес дома или серийный номер прибора" prefix={<Icon icon="search" />} />
+                    <Input className={styles.input} value={searchTerm} placeholder="Введите серийный номер прибора" prefix={<Icon icon="search" />} />
                 </Form.Item>
 
                 <Form.Item

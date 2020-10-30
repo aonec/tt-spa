@@ -43,7 +43,7 @@ const FormEditODPU = (props) => {
   } = hubConnection;
 
   const {
-    isConnected, ipV4, port, deviceAddress} = calculatorConnection;
+    isConnected, ipV4, port, deviceAddress} = calculatorConnection || {};
 
   const {
     entryNumber, hubNumber, pipeNumber, magistral } = hub;

@@ -4,6 +4,7 @@ import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
 import axios from '../../axios';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 const EditODPU = () => {
   const { deviceId } = useParams();
@@ -44,19 +45,26 @@ const EditODPU = () => {
     }
   }
 
-  useEffect(async () => {
-    const device = await getOdpu(deviceId);
-    setDevice(device);
-    const calculators = await getCalculators(device.address.id);
-    // console.log(calculators);
-    const selectCalculators = calculators.items.map((item) => {
-      // console.log(item);
-      const label = `${item.model} (${item.serialNumber}) IP: ${item.connection.ipV4} (${item.connection.port})`;
-      const value = item.id;
-      return ({ ...item, label, value });
-    });
+
+
+  useEffect(() => {
+    async function getData() {
+      const device = await getOdpu(deviceId);
+      setDevice(device);
+      const calculators = await getCalculators(device.address.id);
+      // console.log(calculators);
+      const selectCalculators = calculators.items.map((item) => {
+        // console.log(item);
+        const label = `${item.model} (${item.serialNumber}) IP: ${item.connection?.ipV4} (${item.connection?.port})`;
+        const value = item.id;
+        return ({ ...item, label, value });
+      });
+      setCalculators(selectCalculators);
+    }
+
+    getData()
+
     // console.log(selectCalculators);
-    setCalculators(selectCalculators);
   }, []);
 
   const buttonHandler = () => {
@@ -70,6 +78,8 @@ const EditODPU = () => {
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
     return (
       <>
+        <Breadcrumb path={`/housingMeteringDevices/${deviceId}`}/>
+
         <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
         {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
         <TabsComponent
