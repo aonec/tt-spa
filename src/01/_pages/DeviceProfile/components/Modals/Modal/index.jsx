@@ -55,6 +55,7 @@ export const ModalODPU = ({ device }) => {
   const period = useRef('month');
   const detail = useRef('hourly');
   const entryNumberRes = useRef();
+  const pipeNumberRes = useRef();
   const [type, setType] = useState(list[0]);
 
   const [begin, setBegin] = useState(moment().subtract(1, 'month'));
@@ -85,25 +86,7 @@ export const ModalODPU = ({ device }) => {
     $('.ant-select-selection-item').html('Выберите узел');
     setType(resource);
     entryNumberRes.current = undefined;
-    // console.log(type);
   };
-
-  // Получаем массив всех ПРЭМ, которые подходят
-
-  // closingDate: null
-  // diameter: "80"
-  // futureCheckingDate: "2019-08-05T03:00:00"
-  // futureCommercialAccountingDate: "2019-08-05T03:00:00"
-  // housingMeteringDeviceType: "FlowMeter"
-  // hub: {entryNumber: 1, hubNumber: null, pipeNumber: 0, magistral: "FeedFlow"}
-  // id: 1546256
-  // lastCheckingDate: "2015-08-05T03:00:00"
-  // lastCommercialAccountingDate: "2018-10-22T03:00:00"
-  // managementFirm: {id: 4, name: "ООО УК"ПЖКХ-17"", phoneNumber: null, information: null, timeZoneOffset: "03:00:00"}
-  // model: "РС (90-А)"
-  // resource: "Heat"
-  // serialNumber: "057904"
-  // transactionType: null
 
   if (hubsarr) {
     hubsarr.map((item, index) => {
@@ -112,7 +95,7 @@ export const ModalODPU = ({ device }) => {
       } = item;
       const { entryNumber, pipeNumber } = hub;
       console.log(`item ${index}`, resource, entryNumber, pipeNumber);
-      if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply' && resource !== 'ColdWaterSupply') {
+      if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
           resource,
           entryNumber,
@@ -123,43 +106,6 @@ export const ModalODPU = ({ device }) => {
     });
     console.log('devicesList', devicesList);
   }
-
-  // pipes = pipes || [];
-  // const pipesList = pipes.map((values) => {
-  //   const { devices } = values;
-  //   const devicesRes = devices.map((value) => {
-  //     const { serialNumber, type } = { ...value };
-  //     if (type === 'FlowMeter') {
-  //       devicesList.push({
-  //         resource,
-  //         entryNumber,
-  //         type,
-  //         serialNumber,
-  //       });
-  //     }
-  //   });
-  // });
-
-  // if (hubsarr) {
-  //   hubsarr.map((value) => {
-  //     let { resource, entryNumber, pipes } = value;
-  //     pipes = pipes || [];
-  //     const pipesList = pipes.map((values) => {
-  //       const { devices } = values;
-  //       const devicesRes = devices.map((value) => {
-  //         const { serialNumber, type } = { ...value };
-  //         if (type === 'FlowMeter') {
-  //           devicesList.push({
-  //             resource,
-  //             entryNumber,
-  //             type,
-  //             serialNumber,
-  //           });
-  //         }
-  //       });
-  //     });
-  //   });
-  // }
 
   const onPeriodChange = (e) => {
     const res = e.target.value;
@@ -203,7 +149,7 @@ export const ModalODPU = ({ device }) => {
         detail.current
       }&resourcetype=${type}&entrynumber=${
         entryNumberRes.current
-      }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
+      }&pipenumber=${pipeNumberRes.current || 5}&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
         end,
       )}T00:00:00Z`;
       const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
@@ -212,7 +158,7 @@ export const ModalODPU = ({ device }) => {
       const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
       // window.location.assign(link);
       console.log(link);
-      console.log(lastTemplate);
+      // console.log(lastTemplate);
       window.open(link);
     } else {
       alert('Выберите узел!');
@@ -222,9 +168,10 @@ export const ModalODPU = ({ device }) => {
   function handleChange(value) {
     console.log(value);
     const b = _.filter(selectOptions, { value: `${value}` });
-    const { entryNumber } = { ...b[0] };
+    const { entryNumber, pipeNumber } = { ...b[0] };
     console.log('number', entryNumber);
     entryNumberRes.current = entryNumber;
+    pipeNumberRes.current = pipeNumber;
   }
 
   function onDetailChange(e) {
@@ -258,7 +205,7 @@ export const ModalODPU = ({ device }) => {
     >
       <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
-          {/*<ButtonTT>TEST</ButtonTT>*/}
+          {/* <ButtonTT>TEST</ButtonTT> */}
           <Icon
             className="modal__close"
             icon="close"
