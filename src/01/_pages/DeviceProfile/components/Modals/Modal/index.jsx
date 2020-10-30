@@ -99,6 +99,7 @@ export const ModalODPU = ({ device }) => {
         devicesList.push({
           resource,
           entryNumber,
+          pipeNumber,
           housingMeteringDeviceType,
           serialNumber,
         });
