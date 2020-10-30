@@ -103,11 +103,11 @@ const AddDeviceForm = (props) => {
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         documentsIds: [],
-        connection: {
-          ipV4: values.ipV4,
-          deviceAddress: values.deviceAddress,
-          port: values.port,
-        },
+        // connection: {
+        //   ipV4: values.ipV4,
+        //   deviceAddress: values.deviceAddress,
+        //   port: values.port,
+        // },
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
@@ -283,15 +283,16 @@ const AddDeviceForm = (props) => {
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
               if (value !== values.calculatorId) {
-                const selected = _.find(calculators, { value });
-                const { connection: { ipV4, deviceAddress, port } } = selected;
-                setValues((prevValues) => ({
-                  ...prevValues,
-                  ipV4,
-                  deviceAddress,
-                  port,
-                  calculatorId: value
-                }));
+                setFieldValue('calculatorId', value)
+                // const selected = _.find(calculators, { value });
+                // const { connection: { ipV4, deviceAddress, port } } = selected;
+                // setValues((prevValues) => ({
+                //   ...prevValues,
+                //   ipV4,
+                //   deviceAddress,
+                //   port,
+                //   calculatorId: value
+                // }));
               }
             }}
             options={calculators}

@@ -6,7 +6,9 @@ import {
 import moment from 'moment';
 import { items, serviceLife } from '../CalculatorJSON';
 import { onChangeFormValueByPath } from '../../../../Redux/actions/actions';
-import { Header, SelectTT, InputTT, ButtonTT, DatePickerTT } from '../../../../tt-components'
+import {
+  Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
+} from '../../../../tt-components';
 
 const CommonTab = () => {
   const {
@@ -47,10 +49,10 @@ const CommonTab = () => {
 
       <Form.Item label="Дата ввода в эксплуатацию">
         <DatePickerTT
-          id="lastCommercialAccountingDate"
+          format="DD.MM.YYYY"
+          name="lastCommercialAccountingDate"
           value={moment(lastCommercialAccountingDate)}
           placeholder="Укажите дату..."
-          name="lastCommercialAccountingDate"
           onChange={(date) => {
             const path = ['lastCommercialAccountingDate'];
             const value = date.toISOString();
@@ -61,6 +63,7 @@ const CommonTab = () => {
 
       <Form.Item label="Дата Поверки">
         <DatePickerTT
+          format="DD.MM.YYYY"
           name="checkingDate"
           placeholder="Укажите дату..."
           onChange={(date) => {
@@ -74,6 +77,7 @@ const CommonTab = () => {
 
       <Form.Item label="Дата Следующей поверки">
         <DatePickerTT
+          format="DD.MM.YYYY"
           value={moment(futureCheckingDate)}
           placeholder="Укажите дату..."
           onChange={(date) => {

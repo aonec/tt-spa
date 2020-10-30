@@ -42,3 +42,15 @@ export const updateModalChangeODPUForm = (path, value) => ({
   type: 'CHANGE_ODPU_FORM_UPDATE',
   payload: { path, value },
 });
+
+// Изменение отображния модального окна ModalCalcReport
+export const setModalCalcReportVisible = (value) => ({
+  type: 'REPORT_FORM_VISIBLE',
+  payload: { value },
+});
+
+// Изменение отображения модального окна ModalCalcReport
+export const updateModalCalcReportForm = (path, value) => ({
+  type: 'REPORT_FORM_UPDATE',
+  payload: { path, value },
+});

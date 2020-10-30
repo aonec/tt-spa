@@ -32,7 +32,7 @@ const ModalCalculator = () => {
     documentsIds: [],
     connection: {
       ipV4: '',
-      deviceAddress: 0,
+      deviceAddress: null,
       port: null,
     },
     futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),

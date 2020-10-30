@@ -97,12 +97,12 @@ export function App(){
                     />
 
                     <Route
-                      path="/objects/(\\d+)/devices/(\\d+)/edit/"
+                      path="/calculators/:deviceId/edit"
                       component={EditCalculator}
                       exact
                     />
                     <Route
-                      path="/objects/(\\d+)/devices/(\\d+)/edit_odpu/"
+                      path="/housingMeteringDevices/:deviceId/edit_odpu/"
                       component={EditODPU}
                       exact
                     />

@@ -4,14 +4,10 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import '01/tt-components/antd.scss';
-import { DatePicker, Tabs, Select } from 'antd';
-
-import { convertDateOnly } from '01/_api/utils/convertDate';
+import _ from 'lodash';
 import moment from 'moment';
 import $ from 'jquery';
-
-import _ from 'lodash';
+import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 import { Icon } from '../../../../../_components/Icon';
 import { DeviceContext } from '../../../DeviceProfile';
@@ -20,10 +16,8 @@ import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
 import './modal.scss';
-
-const { TabPane } = Tabs;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import { ButtonTT } from '../../../../../tt-components';
+import { CalculatorTemplate } from './components/CalculatorTemplate.js';
 
 const Translate = {
   Heat: 'Отопление',
@@ -40,17 +34,20 @@ const translate = (resource) => Translate[resource];
 export const ReportContext = React.createContext();
 
 export const ModalODPU = () => {
-  const { device, building, hubs } = useContext(DeviceContext);
-  const { id, model, serialNumber } = { ...device };
+  // const { device, building, hubs } = useContext(DeviceContext);
+  // const { device, building } = useContext(DeviceContext);
+  const device = CalculatorTemplate;
+  const building = CalculatorTemplate.address;
+  const { hubs } = CalculatorTemplate;
+  const { id, model, serialNumber } = device;
   const serialNumberODPU = serialNumber;
-  const { number, street } = { ...building };
+  const { housingStockNumber, street } = building;
 
   const list = [];
   const devicesList = [];
-  let b;
 
   const period = useRef('month');
-  const detail = useRef('daily');
+  const detail = useRef('hourly');
   const entryNumberRes = useRef();
   const [type, setType] = useState(list[0]);
 
@@ -85,27 +82,77 @@ export const ModalODPU = () => {
     // console.log(type);
   };
 
-  // Получаем массив всех ПРЭМ, которые походят
+  // Получаем массив всех ПРЭМ, которые подходят
+
+  // closingDate: null
+  // diameter: "80"
+  // futureCheckingDate: "2019-08-05T03:00:00"
+  // futureCommercialAccountingDate: "2019-08-05T03:00:00"
+  // housingMeteringDeviceType: "FlowMeter"
+  // hub: {entryNumber: 1, hubNumber: null, pipeNumber: 0, magistral: "FeedFlow"}
+  // id: 1546256
+  // lastCheckingDate: "2015-08-05T03:00:00"
+  // lastCommercialAccountingDate: "2018-10-22T03:00:00"
+  // managementFirm: {id: 4, name: "ООО УК"ПЖКХ-17"", phoneNumber: null, information: null, timeZoneOffset: "03:00:00"}
+  // model: "РС (90-А)"
+  // resource: "Heat"
+  // serialNumber: "057904"
+  // transactionType: null
+
   if (hubsarr) {
-    hubsarr.map((value) => {
-      let { resource, entryNumber, pipes } = { ...value };
-      pipes = pipes || [];
-      const pipesList = pipes.map((values) => {
-        const { devices } = { ...values };
-        const devicesRes = devices.map((value) => {
-          const { serialNumber, type } = { ...value };
-          if (type === 'FlowMeter') {
-            devicesList.push({
-              resource,
-              entryNumber,
-              type,
-              serialNumber,
-            });
-          }
+    hubsarr.map((item, index) => {
+      const { resource, housingMeteringDeviceType, hub, serialNumber } = item;
+      const { entryNumber, pipeNumber } = hub;
+      console.log(`item ${index}`, resource, entryNumber, pipeNumber);
+      if (housingMeteringDeviceType === 'FlowMeter' && resource !=='HotWaterSupply') {
+        devicesList.push({
+          resource,
+          entryNumber,
+          housingMeteringDeviceType,
+          serialNumber,
         });
-      });
+      }
     });
+    console.log("devicesList", devicesList)
   }
+
+
+  // pipes = pipes || [];
+  // const pipesList = pipes.map((values) => {
+  //   const { devices } = values;
+  //   const devicesRes = devices.map((value) => {
+  //     const { serialNumber, type } = { ...value };
+  //     if (type === 'FlowMeter') {
+  //       devicesList.push({
+  //         resource,
+  //         entryNumber,
+  //         type,
+  //         serialNumber,
+  //       });
+  //     }
+  //   });
+  // });
+
+  // if (hubsarr) {
+  //   hubsarr.map((value) => {
+  //     let { resource, entryNumber, pipes } = value;
+  //     pipes = pipes || [];
+  //     const pipesList = pipes.map((values) => {
+  //       const { devices } = values;
+  //       const devicesRes = devices.map((value) => {
+  //         const { serialNumber, type } = { ...value };
+  //         if (type === 'FlowMeter') {
+  //           devicesList.push({
+  //             resource,
+  //             entryNumber,
+  //             type,
+  //             serialNumber,
+  //           });
+  //         }
+  //       });
+  //     });
+  //   });
+  // }
 
   const onPeriodChange = (e) => {
     const res = e.target.value;
@@ -114,11 +161,14 @@ export const ModalODPU = () => {
     setEnd(moment());
   };
 
-  const selectOptions = [];
+  const selectOptions =[]
+
+  console.log("devicesList", devicesList)
+
   devicesList.map(({ resource, serialNumber, entryNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
-
+      console.log("res", res)
       const ind = selectOptions.indexOf(res);
       selectOptions.splice(ind, 1, {
         label: `${_.get(
@@ -127,18 +177,19 @@ export const ModalODPU = () => {
           'default',
         )} ПРЭМ (${serialNumber})`,
         value: resource,
-        number: entryNumber,
+        entryNumber: entryNumber,
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
-        number: entryNumber,
+        entryNumber: entryNumber,
       });
     }
   });
 
   const downloadReport = () => {
+    console.log('entryNumberRes.current = ', entryNumberRes.current);
     if (entryNumberRes.current) {
       console.log('entryNumberRes', entryNumberRes.current);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
@@ -148,40 +199,35 @@ export const ModalODPU = () => {
       }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
         end,
       )}T00:00:00Z`;
+      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z'
 
       const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
       const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
-      window.location.assign(link);
-      // window.open(link);
+      // window.location.assign(link);
       console.log(link);
+      console.log(lastTemplate)
+      window.open(link);
     } else {
       alert('Выберите узел!');
     }
   };
 
   function handleChange(value) {
+    console.log(value);
     const b = _.filter(selectOptions, { value: `${value}` });
-    const { number } = { ...b[0] };
-    console.log('number', number);
-    entryNumberRes.current = number;
+    const { entryNumber } = { ...b[0] };
+    console.log('number', entryNumber);
+    entryNumberRes.current = entryNumber;
   }
 
   function onDetailChange(e) {
     const res = e.target.value;
     detail.current = res;
-    // setBegin(moment().subtract(1, res));
-    // setEnd(moment());
   }
 
   const someFunc = () => {
-    console.log('type = ', type);
-    console.log('entryNumberRes.current', entryNumberRes.current);
-    console.log('begin', begin);
-    console.log('end', end);
-    console.log('period', period);
-    console.log('detail', detail);
   };
-  const a = 55;
+
   return (
     <ReportContext.Provider
       value={{
@@ -194,7 +240,7 @@ export const ModalODPU = () => {
         onTabsChangeHandler,
         model,
         street,
-        number,
+        housingStockNumber,
         SelectReport,
         type,
         selectOptions,
@@ -205,6 +251,7 @@ export const ModalODPU = () => {
     >
       <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
+          <ButtonTT>TEST</ButtonTT>
           <Icon
             className="modal__close"
             icon="close"
