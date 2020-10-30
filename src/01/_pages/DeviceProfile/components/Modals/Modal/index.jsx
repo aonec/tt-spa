@@ -93,6 +93,7 @@ export const ModalODPU = ({ device }) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
+      console.log("pipeNumber = ", pipeNumber)
       const { entryNumber, pipeNumber } = hub;
       console.log(`item ${index}`, resource, entryNumber, pipeNumber);
       if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
