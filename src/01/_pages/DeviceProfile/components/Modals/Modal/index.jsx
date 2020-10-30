@@ -120,7 +120,7 @@ export const ModalODPU = ({ device }) => {
 
   console.log('devicesList', devicesList);
 
-  devicesList.map(({ resource, serialNumber, entryNumber }) => {
+  devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
       console.log('res', res);
@@ -133,12 +133,14 @@ export const ModalODPU = ({ device }) => {
         )} ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
+        pipeNumber
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
+        pipeNumber
       });
     }
   });
