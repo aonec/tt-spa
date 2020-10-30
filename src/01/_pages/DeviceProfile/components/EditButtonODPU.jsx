@@ -71,7 +71,6 @@ export const EditButton = () => {
 export const Menu = (showPopupHandler) => {
   const { deviceId } = useParams();
   const history = useLocation();
-  // debugger;
   const dispatch = useDispatch();
 
   $(document).mouseup((e) => {
