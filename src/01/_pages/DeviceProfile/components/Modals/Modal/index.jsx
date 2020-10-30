@@ -33,12 +33,18 @@ const translate = (resource) => Translate[resource];
 
 export const ReportContext = React.createContext();
 
-export const ModalODPU = () => {
+export const ModalODPU = ({ device }) => {
+  console.log('props', device);
   // const { device, building, hubs } = useContext(DeviceContext);
   // const { device, building } = useContext(DeviceContext);
-  const device = CalculatorTemplate;
-  const building = CalculatorTemplate.address;
-  const { hubs } = CalculatorTemplate;
+
+  const building = device.address;
+  const { hubs } = device;
+
+  // const device = CalculatorTemplate;
+  // const building = CalculatorTemplate.address;
+  // const { hubs } = CalculatorTemplate;
+
   const { id, model, serialNumber } = device;
   const serialNumberODPU = serialNumber;
   const { housingStockNumber, street } = building;
@@ -101,10 +107,12 @@ export const ModalODPU = () => {
 
   if (hubsarr) {
     hubsarr.map((item, index) => {
-      const { resource, housingMeteringDeviceType, hub, serialNumber } = item;
+      const {
+        resource, housingMeteringDeviceType, hub, serialNumber,
+      } = item;
       const { entryNumber, pipeNumber } = hub;
       console.log(`item ${index}`, resource, entryNumber, pipeNumber);
-      if (housingMeteringDeviceType === 'FlowMeter' && resource !=='HotWaterSupply') {
+      if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
           resource,
           entryNumber,
@@ -113,9 +121,8 @@ export const ModalODPU = () => {
         });
       }
     });
-    console.log("devicesList", devicesList)
+    console.log('devicesList', devicesList);
   }
-
 
   // pipes = pipes || [];
   // const pipesList = pipes.map((values) => {
@@ -161,14 +168,14 @@ export const ModalODPU = () => {
     setEnd(moment());
   };
 
-  const selectOptions =[]
+  const selectOptions = [];
 
-  console.log("devicesList", devicesList)
+  console.log('devicesList', devicesList);
 
   devicesList.map(({ resource, serialNumber, entryNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
-      console.log("res", res)
+      console.log('res', res);
       const ind = selectOptions.indexOf(res);
       selectOptions.splice(ind, 1, {
         label: `${_.get(
@@ -177,13 +184,13 @@ export const ModalODPU = () => {
           'default',
         )} ПРЭМ (${serialNumber})`,
         value: resource,
-        entryNumber: entryNumber,
+        entryNumber,
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
-        entryNumber: entryNumber,
+        entryNumber,
       });
     }
   });
@@ -199,13 +206,13 @@ export const ModalODPU = () => {
       }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
         end,
       )}T00:00:00Z`;
-      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z'
+      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
 
       const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
       const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
       // window.location.assign(link);
       console.log(link);
-      console.log(lastTemplate)
+      console.log(lastTemplate);
       window.open(link);
     } else {
       alert('Выберите узел!');
@@ -251,7 +258,7 @@ export const ModalODPU = () => {
     >
       <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
-          <ButtonTT>TEST</ButtonTT>
+          {/*<ButtonTT>TEST</ButtonTT>*/}
           <Icon
             className="modal__close"
             icon="close"
