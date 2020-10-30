@@ -6,7 +6,12 @@ import { DeviceContext } from '../DeviceProfile';
 
 export const Connection = () => {
   const { device, loadings } = useContext(DeviceContext);
-  const {connection: {ipV4, port, deviceAddress }} = device
+  const {connection} = device;
+  const {ipV4, port, deviceAddress} = connection || {
+    ipV4:'',
+    port: null,
+    deviceAddress: null
+  }
   const loading = _.get(loadings, 'device', true);
 
   const buttonHandler = () => {
