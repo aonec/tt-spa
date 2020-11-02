@@ -52,7 +52,7 @@ const CommonTab = () => {
 
         <Form.Item label="Дата ввода в эксплуатацию">
           <DatePickerTT
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             name="lastCommercialAccountingDate"
             value={moment(lastCommercialAccountingDate)}
             placeholder="Укажите дату..."
@@ -66,7 +66,7 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Поверки">
           <DatePickerTT
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             name="checkingDate"
             placeholder="Укажите дату..."
             value={moment(checkingDate)}
@@ -80,7 +80,7 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Следующей поверки">
           <DatePickerTT
-            format={'DD.MM.YYYY'}
+            format="DD.MM.YYYY"
             name="futureCheckingDate"
             value={moment(futureCheckingDate)}
             placeholder="Укажите дату..."
@@ -94,7 +94,7 @@ const CommonTab = () => {
 
         <Form.Item label="Дата Следующей поверки">
           <SelectTT
-            name='futureCommercialAccountingDate'
+            name="futureCommercialAccountingDate"
             placeholder="Укажите оперид эксплуатации"
             options={serviceLife}
             value={serviceLife[0].value}
