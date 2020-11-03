@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, List } from 'antd';
-import moment from "moment";
+import moment from 'moment';
 import { red } from '@material-ui/core/colors';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,43 +8,211 @@ import {
   SelectTT, ButtonTT, InputTT, DatePickerTT, Header,
 } from '../../../../tt-components';
 import axios from '../../../../axios';
-import {housingMeteringDeviceTypes, resources} from "./constants";
-import _ from "lodash";
+import { housingMeteringDeviceTypes, resources } from './constants';
+import TabsComponent from './components/Tabs';
+import { isConnectedValue } from '../../../EditODPU/constants';
 
+const ChangeOdpu = ({
+  getData = () => {
+  }, id, type,
+}) => {
+  const [disable, setDisable] = useState(true);
 
-const visibleValuesByTab1 = ['housingMeteringDeviceType', 'resource', 'model',
-  'serialNumber',
-  'lastCommercialAccountingDate',
-  'futureCheckingDate',
-  'futureCommercialAccountingDate',
-  'city',
-  'street',
-  'housingStockNumber',
-  'corpus'];
-const visibleValuesByTab2 = ['isConnected',
-  'calculatorId',
-  'entryNumber',
-  'hubNumber',
-  'pipeNumber',
-  'magistral'];
-const visibleValuesByTab3 = ['documents'];
+  const FormHeader = () => {
+    console.log('Header');
+    return (
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <Form.Item label="Выберите дальнейшее действие" style={{ width: '48%' }}>
+          <SelectTT
+            placeholder="Замена прибора"
+            disabled
+          />
+        </Form.Item>
 
-const visibleValuesByTab = [
-  {
-    key: 1,
-    value: visibleValuesByTab1,
-  },
-  {
-    key: 2,
-    value: visibleValuesByTab2,
-  },
-  { key: 3, value: visibleValuesByTab3 },
-];
+        <Form.Item label="Исполнитель" style={{ width: '48%' }}>
+          <SelectTT
+            placeholder="Константинопольский К.К."
+            disabled
+          />
+        </Form.Item>
+      </div>
+    );
+  };
 
-const isVisible = (name) => _.find(visibleValuesByTab, { key: Number(currentTabKey) }).value.includes(name);
+  const FirstTab = () => {
+    console.log('FirstTab');
+    return (
+      <div
+        hidden={!(currentTabKey == '1')}
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+      >
+        <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
+          <InputTT
+            name="serialNumber"
+            placeholder="Серийный номер"
+            onChange={(event) => {
+              serialHandler(event);
+              setFieldValue('serialNumber', event.target.value);
+            }}
+            value={values.serialNumber}
+          />
+          <DevicesList />
+        </Form.Item>
+        <Form.Item label="Тип прибора" style={{ width: '48%' }}>
+          <SelectTT
+            name="housingMeteringDeviceType"
+            options={housingMeteringDeviceTypes}
+            value={values.housingMeteringDeviceType}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
+          <SelectTT
+            name="resource"
+            options={resources}
+            value={values.resource}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Модель прибора" style={{ width: '48%' }}>
+          <InputTT
+            name="model"
+            value={values.model}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCheckingDate"
+            value={moment(values.lastCheckingDate)}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="futureCheckingDate"
+            value={moment(values.futureCheckingDate)}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
+          <SelectTT
+            disabled={disable}
+          />
+        </Form.Item>
+      </div>
+    );
+  };
 
+  const SecondTab = () => {
+    console.log('SecondTab');
+    return (
+      <div
+        hidden={!(currentTabKey == '2')}
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+      >
+        <Form.Item label="Подключение к вычислителю" style={{ width: '48%' }}>
+          <SelectTT
+            name="isConnected"
+            onChange={(item) => {
+              // (item === false) ? setDisable(true) : setDisable(false);
+              setFieldValue('isConnected', item);
+            }}
+            placeholder="Подключение к вычислителю"
+            options={isConnectedValue}
+            value={values.isConnected}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item
+          style={{ width: '48%' }}
+          label="Выберите вычислитель, к которому подключен прибор"
+        >
+          <SelectTT
+            name="calculatorId"
+            placeholder="Начните вводить серийный номер или IP адрес прибора"
+            onChange={(value) => {
+              if (value !== values.calculatorId) {
+                setFieldValue('calculatorId', value);
+              }
+            }}
+            value={values.hubConnection.calculatorId}
+            disabled={disable}
+          />
+          {/* <Alert name="calculatorId" /> */}
+        </Form.Item>
+        <Form.Item label="Номер ввода" style={{ width: '48%' }}>
+          <InputTT
+            name="entryNumber"
+            type="number"
+            placeholder="Номер ввода"
+            onChange={handleChange}
+            value={values.hubConnection.hub.entryNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Номер узла" className="hubNumber" style={{ width: '48%' }}>
+          <InputTT
+            name="hubNumber"
+            type="number"
+            placeholder="Номер узла"
+            onChange={handleChange}
+            value={values.hubConnection.hub.hubNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+        <Form.Item label="Номер трубы" style={{ width: '100%' }}>
+          <InputTT
+            name="pipeNumber"
+            type="number"
+            placeholder="Номер трубы"
+            onChange={handleChange}
+            value={values.hubConnection.hub.pipeNumber}
+            disabled={disable}
+          />
+        </Form.Item>
+      </div>
+    );
+  };
+  const Buttons = () => {
+    console.log('Buttons');
+    const Next = () => {
+      console.log('Next');
+      setTab(String(Number(currentTabKey) + 1));
+    };
 
-const ChangeOdpu = ({ getData = () => { }, id, type }) => {
+    const Done = () => {
+        getData({ calculatorSwitch: {id:1,value:1} ?? null });
+    };
+
+    if (Number(currentTabKey) === 3) {
+      return (
+        <ButtonTT color="blue" onClick={Done}>Завершить</ButtonTT>
+      );
+    }
+    return (
+      <ButtonTT color="blue" onClick={Next}>Далее</ButtonTT>
+    );
+  };
+  const ThirdTab = () => {
+    console.log('SecondTab');
+    return (
+      <div
+        hidden={!(currentTabKey == '3')}
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+      >
+        Компонент в разработке
+      </div>
+    );
+  };
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+  const [currentTabKey, setTab] = useState('1');
   const [newDeviceId, setNewDeviceId] = useState();
   const [newDevice, setNewDevice] = useState({});
   const [list, setList] = useState([]);
@@ -65,8 +233,13 @@ const ChangeOdpu = ({ getData = () => { }, id, type }) => {
   }
 
   const setInputs = (device) => {
+    console.log(device);
+
     setValues({ ...values, ...device });
+
+    console.log(values);
   };
+
   async function getHousingMeteringDevice(HousingMeteringDeviceId = '') {
     try {
       const res = await axios.get(`HousingMeteringDevices/${HousingMeteringDeviceId}`);
@@ -102,6 +275,19 @@ const ChangeOdpu = ({ getData = () => { }, id, type }) => {
       lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       closingDate: moment().toISOString(),
+
+      hubConnection: {
+        calculatorConnection: null,
+        calculatorId: null,
+        calculatorModel: '',
+        calculatorSerialNumber: '',
+        hub: {
+          entryNumber: null,
+          hubNumber: null,
+          magistral: '',
+          pipeNumber: null,
+        },
+      },
     },
     validationSchema: Yup.object({
       // resource: Yup.string().required('Введите данные'),
@@ -174,91 +360,80 @@ const ChangeOdpu = ({ getData = () => { }, id, type }) => {
   };
 
   return (
-    <div>
-      <Form style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <Form style={{ width: '100%' }}>
         <Header>Замена расходомера/термодатчика</Header>
-
         <ButtonTT color={red} onClick={buttonHandler}>BUTTON</ButtonTT>
-        <Form.Item label="Выберите дальнейшее действие" style={{ width: '48%' }}>
-          <SelectTT
-            placeholder="Замена прибора"
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Исполнитель" style={{ width: '48%' }}>
-          <SelectTT
-            placeholder="Константинопольский К.К."
-            disabled
-          />
-        </Form.Item>
-
-        {isVisible('resource')
-        && (
-        <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
-          <InputTT
-            name="serialNumber"
-            placeholder="Серийный номер"
-            onChange={(event) => {
-              serialHandler(event);
-              setFieldValue('serialNumber', event.target.value);
-            }}
-            value={values.serialNumber}
-          />
-          <DevicesList />
-        </Form.Item>
-        )}
-
-        <Form.Item label="Тип прибора" style={{ width: '48%' }}>
-          <SelectTT
-            name="housingMeteringDeviceType"
-            options={housingMeteringDeviceTypes}
-            value={values.housingMeteringDeviceType}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
-          <SelectTT
-            name="resource"
-            options={resources}
-            value={values.resource}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Модель прибора" style={{ width: '48%' }}>
-          <InputTT
-            name="model"
-            value={values.model}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
-          <DatePickerTT
-            format={'DD.MM.YYYY'}
-            name="lastCheckingDate"
-            value={moment(values.lastCheckingDate)}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
-          <DatePickerTT
-            format={'DD.MM.YYYY'}
-            name="futureCheckingDate"
-            value={moment(values.futureCheckingDate)}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
-          <SelectTT
-            disabled
-          />
-        </Form.Item>
-
+        <FormHeader />
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        {/* <FirstTab /> */}
+        <div
+          hidden={!(currentTabKey == '1')}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        >
+          <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
+            <InputTT
+              name="serialNumber"
+              placeholder="Серийный номер"
+              onChange={(event) => {
+                serialHandler(event);
+                setFieldValue('serialNumber', event.target.value);
+              }}
+              value={values.serialNumber}
+            />
+            <DevicesList />
+          </Form.Item>
+          <Form.Item label="Тип прибора" style={{ width: '48%' }}>
+            <SelectTT
+              name="housingMeteringDeviceType"
+              options={housingMeteringDeviceTypes}
+              value={values.housingMeteringDeviceType}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
+            <SelectTT
+              name="resource"
+              options={resources}
+              value={values.resource}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Модель прибора" style={{ width: '48%' }}>
+            <InputTT
+              name="model"
+              value={values.model}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="lastCheckingDate"
+              value={moment(values.lastCheckingDate)}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="futureCheckingDate"
+              value={moment(values.futureCheckingDate)}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
+            <SelectTT
+              disabled
+            />
+          </Form.Item>
+        </div>
+        <SecondTab />
+        <ThirdTab />
+        <Buttons />
       </Form>
     </div>
 
@@ -266,25 +441,3 @@ const ChangeOdpu = ({ getData = () => { }, id, type }) => {
 };
 
 export default ChangeOdpu;
-
-// const {
-//   model,
-//   resource,
-//   housingMeteringDeviceType,
-//   serialNumber,
-//   lastCommercialAccountingDate,
-//   futureCommercialAccountingDate,
-//   lastCheckingDate,
-//   futureCheckingDate,
-//   closingDate,
-// } = device;
-
-// setValues({...values,      model,
-//   resource,
-//   housingMeteringDeviceType,
-//   serialNumber,
-//   lastCommercialAccountingDate,
-//   futureCommercialAccountingDate,
-//   lastCheckingDate,
-//   futureCheckingDate,
-//   closingDate, });
