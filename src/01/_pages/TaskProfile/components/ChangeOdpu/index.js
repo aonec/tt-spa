@@ -9,8 +9,42 @@ import {
 } from '../../../../tt-components';
 import axios from '../../../../axios';
 import {housingMeteringDeviceTypes, resources} from "./constants";
+import _ from "lodash";
 
-const ChangeDevice = ({ getData = () => { }, id, type }) => {
+
+const visibleValuesByTab1 = ['housingMeteringDeviceType', 'resource', 'model',
+  'serialNumber',
+  'lastCommercialAccountingDate',
+  'futureCheckingDate',
+  'futureCommercialAccountingDate',
+  'city',
+  'street',
+  'housingStockNumber',
+  'corpus'];
+const visibleValuesByTab2 = ['isConnected',
+  'calculatorId',
+  'entryNumber',
+  'hubNumber',
+  'pipeNumber',
+  'magistral'];
+const visibleValuesByTab3 = ['documents'];
+
+const visibleValuesByTab = [
+  {
+    key: 1,
+    value: visibleValuesByTab1,
+  },
+  {
+    key: 2,
+    value: visibleValuesByTab2,
+  },
+  { key: 3, value: visibleValuesByTab3 },
+];
+
+const isVisible = (name) => _.find(visibleValuesByTab, { key: Number(currentTabKey) }).value.includes(name);
+
+
+const ChangeOdpu = ({ getData = () => { }, id, type }) => {
   const [newDeviceId, setNewDeviceId] = useState();
   const [newDevice, setNewDevice] = useState({});
   const [list, setList] = useState([]);
@@ -63,11 +97,11 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
       resource: '',
       housingMeteringDeviceType: '',
       serialNumber: '',
-      lastCommercialAccountingDate: '',
-      futureCommercialAccountingDate: '',
-      lastCheckingDate: '',
-      futureCheckingDate: '',
-      closingDate: '',
+      lastCommercialAccountingDate: moment().toISOString(),
+      futureCommercialAccountingDate: moment().toISOString(),
+      lastCheckingDate: moment().toISOString(),
+      futureCheckingDate: moment().toISOString(),
+      closingDate: moment().toISOString(),
     },
     validationSchema: Yup.object({
       // resource: Yup.string().required('Введите данные'),
@@ -159,6 +193,8 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
           />
         </Form.Item>
 
+        {isVisible('resource')
+        && (
         <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
           <InputTT
             name="serialNumber"
@@ -169,21 +205,9 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
             }}
             value={values.serialNumber}
           />
-
           <DevicesList />
-
         </Form.Item>
-
-
-        {/*model: '',*/}
-        {/*resource: '',*/}
-        {/*housingMeteringDeviceType: '',*/}
-        {/*serialNumber: '',*/}
-        {/*lastCommercialAccountingDate: '',*/}
-        {/*futureCommercialAccountingDate: '',*/}
-        {/*lastCheckingDate: '',*/}
-        {/*futureCheckingDate: '',*/}
-        {/*closingDate: '',*/}
+        )}
 
         <Form.Item label="Тип прибора" style={{ width: '48%' }}>
           <SelectTT
@@ -241,7 +265,7 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
   );
 };
 
-export default ChangeDevice;
+export default ChangeOdpu;
 
 // const {
 //   model,
