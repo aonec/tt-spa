@@ -66,7 +66,7 @@ function isDisabled(
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
-  if (AddDocuments) return !documentsIds.length || !calculatorSwitch;
+  if (AddDocuments) return !documentsIds.length;
   if (Completion) return false;
 
   return true;

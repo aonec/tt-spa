@@ -18,7 +18,7 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -34,21 +34,22 @@ function reducer(state, action) {
       };
     // вернуть этап
     case 'push_stage':
-      // console.log("stagedata", data)
-      console.log("data", {
+      console.log(
+        {
           ...state,
           stageData: { data, move: 'push' },
           panelLoading: true,
-      })
-      return {
-        ...state,
-        stageData: { data, move: 'push' },
-        panelLoading: true,
-      };
+        }
+      )
+      // return {
+      //   ...state,
+      //   stageData: { data, move: 'push' },
+      //   panelLoading: true,
+      // };
     // после нажатия на "Завершить этап"
     default:
-      console.error('task id', type);
-      return state;
+      // console.error('task id', type);
+      // return state;
   }
 }
 
@@ -65,22 +66,22 @@ export const TaskProfile = () => {
   // ?
   const infoDevice = useInformationDevice(state);
 
-  const {device} = state;
-  const {type, id} = device || {};
+  const { device } = state;
+  const { type, id } = device || {};
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-      <Breadcrumb path={`/tasks/`}/>
+      <Breadcrumb path="/tasks/" />
       <Header {...state.header} />
-      <Panel {...panel} type={type} id={id}/>
+      <Panel {...panel} type={type} id={id} />
       <Steps />
       <Documents {...docs} />
       <grid>
         <Information {...info} />
         <Stages {...stages} />
-        <InformationDevice {...infoDevice} type={type} id={id}/>
+        <InformationDevice {...infoDevice} type={type} id={id} />
       </grid>
     </TasksProfileContext.Provider>,
   );

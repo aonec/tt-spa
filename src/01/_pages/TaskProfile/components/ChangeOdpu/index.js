@@ -17,7 +17,7 @@ const ChangeOdpu = ({
   }, id, type,
 }) => {
   const [disable, setDisable] = useState(true);
-
+  const [prevDevice, setPrevDevice] = useState(id)
   const FormHeader = () => {
     console.log('Header');
     return (
@@ -134,11 +134,11 @@ const ChangeOdpu = ({
             name="calculatorId"
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
-              if (value !== values.calculatorId) {
-                setFieldValue('calculatorId', value);
-              }
+              // if (value !== values.calculatorId) {
+              //   setFieldValue('calculatorId', value);
+              // }
             }}
-            value={values.hubConnection.calculatorId}
+            // value={values.hubConnection.calculatorId}
             disabled={disable}
           />
           {/* <Alert name="calculatorId" /> */}
@@ -149,7 +149,6 @@ const ChangeOdpu = ({
             type="number"
             placeholder="Номер ввода"
             onChange={handleChange}
-            value={values.hubConnection.hub.entryNumber}
             disabled={disable}
           />
         </Form.Item>
@@ -159,7 +158,6 @@ const ChangeOdpu = ({
             type="number"
             placeholder="Номер узла"
             onChange={handleChange}
-            value={values.hubConnection.hub.hubNumber}
             disabled={disable}
           />
         </Form.Item>
@@ -169,7 +167,7 @@ const ChangeOdpu = ({
             type="number"
             placeholder="Номер трубы"
             onChange={handleChange}
-            value={values.hubConnection.hub.pipeNumber}
+
             disabled={disable}
           />
         </Form.Item>
@@ -184,7 +182,14 @@ const ChangeOdpu = ({
     };
 
     const Done = () => {
-        getData({ calculatorSwitch: {id:1,value:1} ?? null });
+      console.log(id);
+      console.log(values.id);
+      getData({
+        calculatorSwitch: {
+          deviceId: id,
+          newDeviceId: values.id,
+        } ?? null,
+      });
     };
 
     if (Number(currentTabKey) === 3) {
@@ -234,9 +239,9 @@ const ChangeOdpu = ({
 
   const setInputs = (device) => {
     console.log(device);
-
+    const {id: bla} = device;
+    console.log(bla)
     setValues({ ...values, ...device });
-
     console.log(values);
   };
 
@@ -275,7 +280,6 @@ const ChangeOdpu = ({
       lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       closingDate: moment().toISOString(),
-
       hubConnection: {
         calculatorConnection: null,
         calculatorId: null,
