@@ -31,28 +31,35 @@ const TabsDevices = () => {
     const pageSize = useSelector((state) => state.devicePage.pageSize);
     const currentPage = useSelector((state) => state.devicePage.currentPage);
     const totalPages = useSelector((state) => state.devicePage.totalPages);
-    const isLoading = useSelector((state) => state.devicePage.isLoading);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [deviceElems, setDeviceElems] = useState([]);
 
 
     const pages = [];
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
-        dispatch(toggleIsLoading());
+        setIsLoading(true)
         dispatch(getDevices(currentPage, pageSize, searchTerm));
-        dispatch(toggleIsLoading());
+        setIsLoading(false)
     }, [currentPage, searchTerm]);
 
     const deviceItems = useSelector((state) =>
         state.devicePage.items
     )
 
-    const deviceElems = deviceItems.map((device) => {
-        return <DeviceBlock device={device}/>
-    }
-    )
+    useEffect(() => {
+        const deviceArray = deviceItems.map((device) => {
+                return <DeviceBlock device={device}/>
+            }
+        );
+        setDeviceElems(deviceArray)
+    }, [deviceItems])
 
+
+
+    if (isLoading) return 'ЗАГРУЗКА...'
 
     return <div>
 

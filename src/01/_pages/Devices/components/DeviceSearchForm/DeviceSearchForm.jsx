@@ -1,6 +1,6 @@
 import styles from "./DeviceSearchForm.module.scss"
-import React, {useRef} from "react";
-import {getDevicesBySerialNumber} from "../../../../Redux/reducers/reducerDevicesPage";
+import React, {useRef, useState} from "react";
+import {getDevicesBySerialNumber, setCurrentPage} from "../../../../Redux/reducers/reducerDevicesPage";
 import {useDispatch} from "react-redux";
 import {Form, Input, Button, Checkbox, Tooltip, Select} from 'antd';
 import { UserOutlined, LockOutlined, SearchOutlined } from '@ant-design/icons';
@@ -13,33 +13,19 @@ const { Option } = Select;
 const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
 
     const dispatch = useDispatch();
+    const [prevSearchTerm, setPrevSearchTerm] = useState('');
 
-    const handleSubmit = (values) => {
-        if (!values.search) return;
-        dispatch(getDevicesBySerialNumber(values.search));
-    }
-
-    const editSearchTerm = (e) => {
-        // setSearchTerm(e.target.value);
-        dispatch(getDevicesBySerialNumber(e.target.value));
-    }
-
-    const onFinish = () => {
-    }
-    //
-    //
-    // const handleKeyPress = (e) => {
-    //     if (e.key === "Enter") {
-    //         searchForm.current.submit();
-    //     }
-    // }
-
-    const onValuesChangeHandler = (values) => {
-        if (values.search.length < 4) {
-            setSearchTerm('')
+    const onValuesChangeHandler = (e) => {
+        let previousValue = e.target.defaultValue;
+        let targetValue = e.target.value;
+        if (previousValue.length < 4 && targetValue.length < 4) {
+            return
+        } else if (targetValue.length >= 4) {
+            setSearchTerm(targetValue);
         } else {
-            setSearchTerm(values.search)
+            setSearchTerm('');
         }
+        dispatch(setCurrentPage(1))
     }
 
 
@@ -51,7 +37,7 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
             initialValues={{ remember: true }}
             // onFinish={handleSubmit}
             // style={{maxWidth: 960}}
-            onValuesChange={onValuesChangeHandler}
+            onChange={onValuesChangeHandler}
             style={{marginBottom: 20}}
         >
             <div style={{display: 'grid', gridTemplateColumns: '0.5fr 8fr 3.5fr'}}>
