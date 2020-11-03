@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form, List } from 'antd';
-import 'moment/locale/ru';
+import moment from "moment";
 import { red } from '@material-ui/core/colors';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,9 +8,9 @@ import {
   SelectTT, ButtonTT, InputTT, DatePickerTT, Header,
 } from '../../../../tt-components';
 import axios from '../../../../axios';
+import {housingMeteringDeviceTypes, resources} from "./constants";
 
 const ChangeDevice = ({ getData = () => { }, id, type }) => {
-
   const [newDeviceId, setNewDeviceId] = useState();
   const [newDevice, setNewDevice] = useState({});
   const [list, setList] = useState([]);
@@ -31,7 +31,7 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
   }
 
   const setInputs = (device) => {
-    // setValues({ ...values, ...device });
+    setValues({ ...values, ...device });
   };
   async function getHousingMeteringDevice(HousingMeteringDeviceId = '') {
     try {
@@ -104,8 +104,8 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
     }
   };
 
-  const List = () =>{
-    console.log("List");
+  const DevicesList = () => {
+    console.log('List');
     return (
       <div style={{ position: 'absolute' }}>
         {list.length > 0 && (
@@ -136,8 +136,8 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
         )}
 
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -169,45 +169,36 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
             }}
             value={values.serialNumber}
           />
-          <div style={{ position: 'absolute' }}>
-            {list.length > 0 && (
-              <List
-                size="large"
-                style={{
-                  zIndex: '2',
-                  backgroundColor: 'white',
-                }}
-                bordered
-                dataSource={list}
-                renderItem={(item) => (
-                  <List.Item onClick={() => {
-                    console.log(item.value);
-                    setFieldValue('serialNumber', item.value);
 
-                    getHousingMeteringDevice(item.id);
-                    console.log(item.id);
+          <DevicesList />
 
-                    showModalChangeOdpu();
-                    setList([]);
-                  }}
-                  >
-                    {item.label}
-                  </List.Item>
-                )}
-              />
-            )}
-
-          </div>
         </Form.Item>
+
+
+        {/*model: '',*/}
+        {/*resource: '',*/}
+        {/*housingMeteringDeviceType: '',*/}
+        {/*serialNumber: '',*/}
+        {/*lastCommercialAccountingDate: '',*/}
+        {/*futureCommercialAccountingDate: '',*/}
+        {/*lastCheckingDate: '',*/}
+        {/*futureCheckingDate: '',*/}
+        {/*closingDate: '',*/}
 
         <Form.Item label="Тип прибора" style={{ width: '48%' }}>
           <SelectTT
+            name="housingMeteringDeviceType"
+            options={housingMeteringDeviceTypes}
+            value={values.housingMeteringDeviceType}
             disabled
           />
         </Form.Item>
 
         <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
           <SelectTT
+            name="resource"
+            options={resources}
+            value={values.resource}
             disabled
           />
         </Form.Item>
@@ -222,12 +213,18 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
 
         <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
           <DatePickerTT
+            format={'DD.MM.YYYY'}
+            name="lastCheckingDate"
+            value={moment(values.lastCheckingDate)}
             disabled
           />
         </Form.Item>
 
         <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
           <DatePickerTT
+            format={'DD.MM.YYYY'}
+            name="futureCheckingDate"
+            value={moment(values.futureCheckingDate)}
             disabled
           />
         </Form.Item>
