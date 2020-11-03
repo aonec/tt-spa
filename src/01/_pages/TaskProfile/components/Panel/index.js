@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
+import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
@@ -47,6 +48,11 @@ const styles = css`
       grid-template-areas:
         "ta ta ta ta ta push";
     }
+    &[|six] {
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-areas:
+        "";
+    }
   }
 
   Perpetrator {
@@ -64,6 +70,9 @@ const styles = css`
   NextStage {
     grid-area: ta;
   }
+  AddReadings {
+    grid-area: ar;
+  }
 `;
 
 export const Panel = ({
@@ -74,14 +83,11 @@ export const Panel = ({
                         pushProps = {},
                         isObserver = false,
                         perpName = '',
+                        apartment,
                         dispatch = () => {
                         },
-                      }) => {
+                      }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
-
-  useEffect(() => {
-    console.log(pushProps);
-  }, [pushProps]);
 
   const dispatchRedux = useDispatch();
 
@@ -107,7 +113,8 @@ export const Panel = ({
     console.log("showModalDeregister")
     dispatchRedux(setModalDeregisterVisible(true));
   }
-  if (isObserver) {
+
+  if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
 
@@ -157,6 +164,7 @@ export const Panel = ({
 
       {/*{Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с*/}
       {/*  учета</ButtonTT>}*/}
+
       {EmailNotify && <TemplateButton/>}
       {AddDocuments && (
         <>
@@ -167,6 +175,12 @@ export const Panel = ({
       {Switch && (
         <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
+        {UploadReadings && (
+            <>
+            <AddReadings apartmentId={apartment.id}/>
+            </>
+        )
+        }
       <PushButton {...pushProps} />
     </panel>,
     // </Route>

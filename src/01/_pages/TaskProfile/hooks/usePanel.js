@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
 export const usePanel = (
-  { panel = {}, panelLoading = false },
+  { panel = {}, panelLoading = false, apartment },
   pageDispatch,
 ) => {
   const { replace } = useHistory();
@@ -31,6 +31,7 @@ export const usePanel = (
     dispatch,
     expectedCompletionTime: panel.expectedCompletionTime,
     actions: panel?.actions,
+    apartment,
     state,
   };
 };
