@@ -1,41 +1,24 @@
-import React, { useState } from 'react';
-import {
-  Form, List, Typography, Divider,
-} from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, List } from 'antd';
 import 'moment/locale/ru';
-import { useDispatch } from 'react-redux';
 import { red } from '@material-ui/core/colors';
-import { setModalChangeODPUVisible } from '../../../../Redux/actions/actions';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import {
   SelectTT, ButtonTT, InputTT, DatePickerTT, Header,
 } from '../../../../tt-components';
 import axios from '../../../../axios';
-import { housingMeteringDeviceTypes } from "../../../EditODPU/constants";
 
 const ChangeDevice = ({ getData = () => { }, id, type }) => {
-  console.log('id', id);
-  console.log('type', type);
 
-  const [device, setDevice] = useState({});
-  const [serialNumber, setSerialNumber] = useState('');
+  const [newDeviceId, setNewDeviceId] = useState();
+  const [newDevice, setNewDevice] = useState({});
   const [list, setList] = useState([]);
-  const [newDevice, setNewDevice] = useState();
-
 
   async function getClosedDevices(serialNumber = '') {
-    let typeRes;
-    // const typeRes = type === 'Calculator' ? 'Calculator' : 'Housing';
-    if (type === 'Calculator') {
-      console.log('Calculator');
-      typeRes = 'Calculator';
-    } else {
-      console.log('NotCalculator');
-      typeRes = 'Housing';
-    }
-    console.log(typeRes);
+    const typeRes = type === 'Calculator' ? 'Calculator' : 'Housing';
     try {
       const res = await axios.get(`MeteringDevices/search?DeviceType=${typeRes}&Status=Closed&Question=${serialNumber}`);
-      // setDevice(res[0]);
       console.log(res);
       return res;
     } catch (error) {
@@ -47,47 +30,114 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
     }
   }
 
-  function onChange(date) {
-    getData({ calculatorSwitch: date.toISOString() ?? null });
+  const setInputs = (device) => {
+    // setValues({ ...values, ...device });
+  };
+  async function getHousingMeteringDevice(HousingMeteringDeviceId = '') {
+    try {
+      const res = await axios.get(`HousingMeteringDevices/${HousingMeteringDeviceId}`);
+      console.log(res);
+      setNewDevice(res);
+      setInputs(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+      throw {
+        resource: 'device',
+        message: 'Произошла ошибка запроса устройства',
+      };
+    }
   }
 
-  const showModalChangeOdpu = () => {
+  const {
+    handleSubmit,
+    handleChange, values,
+    touched,
+    errors,
+    handleBlur,
+    setFieldValue,
+    setValues,
+  } = useFormik({
+    initialValues: {
+      model: '',
+      resource: '',
+      housingMeteringDeviceType: '',
+      serialNumber: '',
+      lastCommercialAccountingDate: '',
+      futureCommercialAccountingDate: '',
+      lastCheckingDate: '',
+      futureCheckingDate: '',
+      closingDate: '',
+    },
+    validationSchema: Yup.object({
+      // resource: Yup.string().required('Введите данные'),
 
+    }),
+    onSubmit: () => {
+
+    },
+  });
+
+  const showModalChangeOdpu = () => {
     getData({
       calculatorSwitch: {
-        deviceId: device,
-        newDeviceId: newDevice,
+        deviceId: id,
+        newDeviceId,
       } ?? null,
     });
-
   };
 
   const buttonHandler = () => {
-    console.log(list);
+    console.log('buttonHandler');
   };
 
   const serialHandler = (event) => {
-    console.log('serialHandler');
-    console.log(event.target.value);
     const input = event.target.value;
-    setSerialNumber(input);
-    if (serialNumber.length > 2) {
+    if (input.length > 2) {
       getClosedDevices(input).then((res) => {
-        const test = res.map((item) => {
-          const { model, serialNumber } = item;
-          console.log(item);
-          return { value: serialNumber, label: `${model} (${serialNumber})` };
-          // const {serialNumber, model} = item
-          // data.push({value: serialNumber, label: model})
+        const devicesList = res.map((item) => {
+          const { model, serialNumber, id } = item;
+          return { value: serialNumber, label: `${model} (${serialNumber})`, id };
         });
-
-        setList(test);
-        console.log(test);
+        setList(devicesList);
       });
     }
   };
 
+  const List = () =>{
+    console.log("List");
+    return (
+      <div style={{ position: 'absolute' }}>
+        {list.length > 0 && (
+          <List
+            size="large"
+            style={{
+              zIndex: '2',
+              backgroundColor: 'white',
+            }}
+            bordered
+            dataSource={list}
+            renderItem={(item) => (
+              <List.Item onClick={() => {
+                console.log(item.value);
+                setFieldValue('serialNumber', item.value);
 
+                getHousingMeteringDevice(item.id);
+                console.log(item.id);
+
+                showModalChangeOdpu();
+                setList([]);
+              }}
+              >
+                {item.label}
+              </List.Item>
+            )}
+          />
+        )}
+
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -111,12 +161,16 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
 
         <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
           <InputTT
+            name="serialNumber"
             placeholder="Серийный номер"
-            onChange={serialHandler}
-            value={serialNumber}
+            onChange={(event) => {
+              serialHandler(event);
+              setFieldValue('serialNumber', event.target.value);
+            }}
+            value={values.serialNumber}
           />
           <div style={{ position: 'absolute' }}>
-            {list.length>0 && (
+            {list.length > 0 && (
               <List
                 size="large"
                 style={{
@@ -125,16 +179,23 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
                 }}
                 bordered
                 dataSource={list}
-                renderItem={(item) => <List.Item onClick={() => { console.log(item.value);
-                setSerialNumber(item.value);
-                setNewDevice[item.value];
-                  showModalChangeOdpu();
-                setList([])
-                }}>{item.label}</List.Item>}
+                renderItem={(item) => (
+                  <List.Item onClick={() => {
+                    console.log(item.value);
+                    setFieldValue('serialNumber', item.value);
+
+                    getHousingMeteringDevice(item.id);
+                    console.log(item.id);
+
+                    showModalChangeOdpu();
+                    setList([]);
+                  }}
+                  >
+                    {item.label}
+                  </List.Item>
+                )}
               />
             )}
-
-
 
           </div>
         </Form.Item>
@@ -152,7 +213,9 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
         </Form.Item>
 
         <Form.Item label="Модель прибора" style={{ width: '48%' }}>
-          <SelectTT
+          <InputTT
+            name="model"
+            value={values.model}
             disabled
           />
         </Form.Item>
@@ -182,3 +245,25 @@ const ChangeDevice = ({ getData = () => { }, id, type }) => {
 };
 
 export default ChangeDevice;
+
+// const {
+//   model,
+//   resource,
+//   housingMeteringDeviceType,
+//   serialNumber,
+//   lastCommercialAccountingDate,
+//   futureCommercialAccountingDate,
+//   lastCheckingDate,
+//   futureCheckingDate,
+//   closingDate,
+// } = device;
+
+// setValues({...values,      model,
+//   resource,
+//   housingMeteringDeviceType,
+//   serialNumber,
+//   lastCommercialAccountingDate,
+//   futureCommercialAccountingDate,
+//   lastCheckingDate,
+//   futureCheckingDate,
+//   closingDate, });
