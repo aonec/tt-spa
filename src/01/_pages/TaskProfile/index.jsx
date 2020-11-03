@@ -68,16 +68,13 @@ export const TaskProfile = () => {
   const {device} = state;
   const {type, id} = device || {};
 
-  console.log("TaskState = ", state)
-
-
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Breadcrumb path={`/tasks/`}/>
       <Header {...state.header} />
-      <Panel {...panel} />
+      <Panel {...panel} type={type} id={id}/>
       <Steps />
       <Documents {...docs} />
       <grid>

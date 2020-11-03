@@ -7,6 +7,7 @@ import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import ChangeDevice from "../ChangeDevice";
+import { InformationDevice } from "../InformationDevice";
 
 const styles = css`
   panel {
@@ -72,6 +73,8 @@ export const Panel = ({
   pushProps = {},
   isObserver = false,
   perpName = '',
+                        type,
+                        id,
   dispatch = () => {
   },
 }) => {
@@ -141,7 +144,7 @@ export const Panel = ({
         />
       )}
       {(AddDocuments && SwitchDevices) && (
-        <ChangeDevice getData={(data) => dispatch({ type: 'add_data', data })} />
+        <ChangeDevice getData={(data) => dispatch({ type: 'add_data', data })} type={type} id={id} />
       ) }
 
       {/* {Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с */}
