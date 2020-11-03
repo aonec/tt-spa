@@ -13,7 +13,6 @@ const { Option } = Select;
 const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
 
     const dispatch = useDispatch();
-    const [prevSearchTerm, setPrevSearchTerm] = useState('');
 
     const onValuesChangeHandler = (e) => {
         let previousValue = e.target.defaultValue;
@@ -35,8 +34,6 @@ const DeviceSearchForm = ({searchTerm, setSearchTerm}) => {
             name="normal_login"
             className="login-form"
             initialValues={{ remember: true }}
-            // onFinish={handleSubmit}
-            // style={{maxWidth: 960}}
             onChange={onValuesChangeHandler}
             style={{marginBottom: 20}}
         >

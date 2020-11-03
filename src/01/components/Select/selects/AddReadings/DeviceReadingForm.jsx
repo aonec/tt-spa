@@ -1,20 +1,51 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import rateTypeToNumber from "../../../../_api/utils/rateTypeToNumber";
 
 
 const DeviceReadingForm = ({device}) => {
 
+    const [readingsState, setReadingsState] = useState([]);
+
     const numberOfReadings = rateTypeToNumber(device.rateType);
+    // const readingsArray = [];
+    // setReadingsArray([45, 66, 1243]);
 
-    const readingsArray = [];
-    for (let i=1; i <= numberOfReadings; i++) {
-        readingsArray.push(device.readings[0][`value${i}`])
+    useEffect(() => {
+        const readingsArray = [];
+
+        for (let i=1; i <= numberOfReadings; i++) {
+            readingsArray.push(device.readings[0][`value${i}`])
+        }
+        setReadingsState(readingsArray)
+
+    }, [])
+
+
+
+
+    const onInputChange = (e, index) => {
+        e.preventDefault();
+        // readingsArray[index] = e.target.value;
+        let newState = [...readingsState];
+        newState[index] = e.target.value;
+        setReadingsState(newState)
     }
-    debugger;
+
+    // setReadingsArray(readingsArray)
 
 
-    const DeviceReadingsLine = () => readingsArray.map((value, index) => (
-        <span style={{width: `${100/readingsArray.length}%`}}>Тариф {index+1}: {value}</span>
+
+    const DeviceReadingsLine = () => readingsState.map((value, index) => (
+        <>
+        <span style={{width: `${100/readingsState.length}%`}}>Тариф {index+1}: {value}</span>
+        <input
+        // name="numberOfGuests"
+        key={index}
+        type="text"
+        value={readingsState[index]}
+        onChange={(e) => onInputChange(e, index)}
+        />
+        </>
     ));
 
     // switch (numberOfReadings) {

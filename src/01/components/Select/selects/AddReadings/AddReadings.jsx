@@ -26,11 +26,10 @@ const AddReadings = ({apartmentId}) => {
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
-    const readings = devices.map((device) => <DeviceReadingForm device={device} />)
+    const readings = devices.map((device) => <DeviceReadingForm key={device.id} device={device} />)
 
     console.log(devices);
 
-    if (isLoading) return 'ЗАГРУЗКА...'
     return styled(s.input)(
     <div>
         <input_frame data-disabled data-big>
