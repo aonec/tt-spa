@@ -82,7 +82,7 @@ export function App(){
                       path="/tasks/(executing|observing|archived)/"
                       component={Tasks}
                     />
-                    <Route path="/tasks/(\\d+)" component={TaskProfile}/>
+                    <Route path="/tasks/(\\d+)" render={() => <TaskProfile/>}/>
                     <Route path="/objects/" component={Objects} exact/>
                     <Route path="/devices/" component={DevicesFromSearch} exact/>
 
