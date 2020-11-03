@@ -1,20 +1,12 @@
 import React, { useEffect } from 'react';
 import styled, { css, use } from 'reshadow/macro';
-import { Route } from 'react-router-dom';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-import moment from 'moment';
-
-import _ from 'lodash';
-import { useSelector, useDispatch } from 'react-redux';
 
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
-import {
-  setModalChangeODPUVisible, setModalDeregisterVisible,
-} from '../../../../Redux/actions/actions';
-import ButtonTT from '../../../../tt-components/ButtonTT';
+import ChangeDevice from "../ChangeDevice";
 
 const styles = css`
   panel {
@@ -47,6 +39,12 @@ const styles = css`
       grid-template-areas:
         "ta ta ta ta ta push";
     }
+       &[|seven] {
+      
+      display: flex;
+      flex-direction: column;
+    }
+   
   }
 
   Perpetrator {
@@ -67,23 +65,22 @@ const styles = css`
 `;
 
 export const Panel = ({
-                        expectedCompletionTime,
-                        hiddenPanel = true,
-                        actions = {},
-                        state = {},
-                        pushProps = {},
-                        isObserver = false,
-                        perpName = '',
-                        dispatch = () => {
-                        },
-                      }) => {
+  expectedCompletionTime,
+  hiddenPanel = true,
+  actions = {},
+  state = {},
+  pushProps = {},
+  isObserver = false,
+  perpName = '',
+  dispatch = () => {
+  },
+}) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
   useEffect(() => {
     console.log(pushProps);
   }, [pushProps]);
 
-  const dispatchRedux = useDispatch();
 
   if (hiddenPanel) return null;
 
@@ -99,23 +96,16 @@ export const Panel = ({
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
-  const showModalChangeOdpu = () => {
-    console.log("showModalChangeOdpu")
-    dispatchRedux(setModalChangeODPUVisible(true));
-  }
-  const showModalDeregister = () => {
-    console.log("showModalDeregister")
-    dispatchRedux(setModalDeregisterVisible(true));
-  }
+
   if (isObserver) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
 
         <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={perpName}/>
+          <input disabled value={perpName} />
         </input_frame>
         <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={deadline}/>
+          <input disabled value={deadline} />
         </input_frame>
       </panel>,
     );
@@ -130,17 +120,17 @@ export const Panel = ({
     <panel
       {...use({
         one: AddPerpetrator && EmailNotify,
-        two: AddDocuments,
+        two: AddDocuments && !SwitchDevices,
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
         five: Switch && PushButton,
+        seven: AddDocuments && SwitchDevices && PushButton,
       })}
     >
-      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>}
-      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })}/>}
+      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
+      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
-
-      {EmailNotify && <Contractors/>}
+      {EmailNotify && <Contractors />}
       {EmailNotify && (
         <Textarea
           value={emailNotify.message ?? ''}
@@ -150,14 +140,13 @@ export const Panel = ({
           })}
         />
       )}
+      {(AddDocuments && SwitchDevices) && (
+        <ChangeDevice getData={(data) => dispatch({ type: 'add_data', data })} />
+      ) }
 
-
-      {/*{SwitchDevices && <ButtonTT color={"blue"} style={{ width: 'fit-content' }} onClick={showModalChangeOdpu}>Заменить*/}
-      {/*  расходомер</ButtonTT>}*/}
-
-      {/*{Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с*/}
-      {/*  учета</ButtonTT>}*/}
-      {EmailNotify && <TemplateButton/>}
+      {/* {Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с */}
+      {/*  учета</ButtonTT>} */}
+      {EmailNotify && <TemplateButton />}
       {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
@@ -165,7 +154,7 @@ export const Panel = ({
         </>
       )}
       {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
       <PushButton {...pushProps} />
     </panel>,
@@ -198,9 +187,9 @@ const TemplateButton = () => styled(s.button)`
       grid-area: tmp;
     }
   `(
-  <button data-big>
-    <span>Выбрать из шаблона</span>
-  </button>,
+    <button data-big>
+      <span>Выбрать из шаблона</span>
+    </button>,
 );
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
@@ -209,8 +198,8 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       margin-left: 10px;
     }
   `(
-  <button data-big data-primary {...props}>
-    <Loader show={loading}/>
-    <span>Завершить этап</span>
-  </button>,
+    <button data-big data-primary {...props}>
+      <Loader show={loading} />
+      <span>Завершить этап</span>
+    </button>,
 );

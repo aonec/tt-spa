@@ -57,6 +57,7 @@ export function dataReducer(state, action) {
 function isDisabled(
   {
     nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
+    calculatorSwitch = null
   },
   {
     AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline
@@ -65,7 +66,7 @@ function isDisabled(
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
-  if (AddDocuments) return !documentsIds.length;
+  if (AddDocuments) return !documentsIds.length || !calculatorSwitch;
   if (Completion) return false;
 
   return true;
