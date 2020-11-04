@@ -73,26 +73,3 @@ export const isConnectedValue = [
     label: 'Отсутствует',
   },
 ];
-
-export const OPDU_PUT_TEMPLATE = {
-  serialNumber: 'string',
-  checkingDate: '2020-10-19T11:19:54.947Z',
-  futureCheckingDate: '2020-10-19T11:19:54.947Z',
-  lastCommercialAccountingDate: '2020-10-19T11:19:54.947Z',
-  futureCommercialAccountingDate: '2020-10-19T11:19:54.947Z',
-  connection: {
-    ipV4: 'string',
-    deviceAddress: 0,
-    port: 0,
-  },
-  calculatorId: 0,
-  housingMeteringDeviceType: 'string',
-  resource: 'string',
-  model: 'string',
-  pipe: {
-    entryNumber: 0,
-    hubNumber: 0,
-    pipeNumber: 0,
-    magistral: 'string',
-  },
-};
