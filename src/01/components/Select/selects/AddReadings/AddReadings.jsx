@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import * as s from '01/r_comp';
 import styled, { css } from 'reshadow/macro';
 import {getDevicesByApartment} from "../../../../_api/readings_page";
-import DeviceReadingForm from "./DeviceReadingForm";
+import DeviceReadingForm from "./DeviceReadingForm/DeviceReadingForm";
 
 
 
@@ -32,7 +32,7 @@ const AddReadings = ({apartmentId}) => {
 
     return styled(s.input)(
     <div>
-        <input_frame data-disabled data-big>
+        <input_frame data-disabled data-big style={{marginBottom: 30}}>
             <input disabled value={'Ввод показаний'}/>
         </input_frame>
         {readings}
