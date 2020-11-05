@@ -18,26 +18,7 @@ const ChangeOdpu = ({
 }) => {
   const [disable, setDisable] = useState(true);
   const [prevDevice, setPrevDevice] = useState(id)
-  const FormHeader = () => {
-    console.log('Header');
-    return (
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-        <Form.Item label="Выберите дальнейшее действие" style={{ width: '48%' }}>
-          <SelectTT
-            placeholder="Замена прибора"
-            disabled
-          />
-        </Form.Item>
 
-        <Form.Item label="Исполнитель" style={{ width: '48%' }}>
-          <SelectTT
-            placeholder="Константинопольский К.К."
-            disabled
-          />
-        </Form.Item>
-      </div>
-    );
-  };
 
   const FirstTab = () => {
     console.log('FirstTab');

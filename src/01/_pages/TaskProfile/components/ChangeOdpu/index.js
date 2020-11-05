@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form } from 'antd';
 import InputTT from '../../../../tt-components/InputTT';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import Header from '../../../../tt-components/Header';
+import { SelectTT } from "../../../../tt-components/Select";
 
 const ChangeOpdu = () => {
+
+  const [addform, setAddForm] = useState(false);
+
   const SearchOrAddOdpu = () => {
     console.log('SearchOrAddOdpu');
     const Search = () => {
@@ -18,8 +22,11 @@ const ChangeOpdu = () => {
     };
     const Add = () => {
       console.log('Add');
+      const addformHandler = () =>{
+        setAddForm(true)
+      }
       return (
-        <ButtonTT color="blue">Добавить ОДПУ</ButtonTT>
+        <ButtonTT color="blue" onClick={addformHandler}>Добавить ОДПУ</ButtonTT>
       );
     };
     return (
@@ -55,7 +62,26 @@ const ChangeOpdu = () => {
       </Form>
     );
   };
+  const FormHeader = () => {
+    console.log('Header');
+    return (
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <Form.Item label="Выберите дальнейшее действие" style={{ width: '48%' }}>
+          <SelectTT
+            placeholder="Замена прибора"
+            disabled
+          />
+        </Form.Item>
 
+        <Form.Item label="Исполнитель" style={{ width: '48%' }}>
+          <SelectTT
+            placeholder="Константинопольский К.К."
+            disabled
+          />
+        </Form.Item>
+      </div>
+    );
+  };
   const ChangeOdpuRes = () => {
     console.log('ChangeOdpuRes');
     return (
@@ -63,12 +89,22 @@ const ChangeOpdu = () => {
     );
   };
 
+  const AddOpduForm = () =>{
+    console.log("AddOpduForm");
+    if (setAddForm ===true) {
+      return (
+        <div>AddOpduForm</div>
+      )
+    }
+  }
+
   console.log('ChangeOpdu');
   return (
     <div>
       <Header>Замена расходомера/термодатчика</Header>
+      <FormHeader />
       <SearchOrAddOdpu />
-      <ChangeOdpuRes />
+      <ChangeOdpuRes style={{padding:'32px'}}/>
     </div>
   );
 };
