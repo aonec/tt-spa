@@ -364,96 +364,82 @@ const ChangeOdpu = ({
   };
 
   return (
-
-    <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
-      <InputTT
-        name="serialNumber"
-        placeholder="Серийный номер"
-        onChange={(event) => {
-          serialHandler(event);
-          setFieldValue('serialNumber', event.target.value);
-        }}
-        value={values.serialNumber}
-      />
-      <DevicesList />
-    </Form.Item>
-
-    // <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-    //   <Form style={{ width: '100%' }}>
-    //     <Header>Замена расходомера/термодатчика</Header>
-    //     <ButtonTT color={red} onClick={buttonHandler}>BUTTON</ButtonTT>
-    //     <FormHeader />
-    //     <TabsComponent
-    //       currentTabKey={currentTabKey}
-    //       handleChangeTab={handleChangeTab}
-    //     />
-    //     {/* <FirstTab /> */}
-    //     <div
-    //       hidden={!(currentTabKey == '1')}
-    //       style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
-    //     >
-    //       <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
-    //         <InputTT
-    //           name="serialNumber"
-    //           placeholder="Серийный номер"
-    //           onChange={(event) => {
-    //             serialHandler(event);
-    //             setFieldValue('serialNumber', event.target.value);
-    //           }}
-    //           value={values.serialNumber}
-    //         />
-    //         <DevicesList />
-    //       </Form.Item>
-    //       <Form.Item label="Тип прибора" style={{ width: '48%' }}>
-    //         <SelectTT
-    //           name="housingMeteringDeviceType"
-    //           options={housingMeteringDeviceTypes}
-    //           value={values.housingMeteringDeviceType}
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //       <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
-    //         <SelectTT
-    //           name="resource"
-    //           options={resources}
-    //           value={values.resource}
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //       <Form.Item label="Модель прибора" style={{ width: '48%' }}>
-    //         <InputTT
-    //           name="model"
-    //           value={values.model}
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //       <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
-    //         <DatePickerTT
-    //           format="DD.MM.YYYY"
-    //           name="lastCheckingDate"
-    //           value={moment(values.lastCheckingDate)}
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //       <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
-    //         <DatePickerTT
-    //           format="DD.MM.YYYY"
-    //           name="futureCheckingDate"
-    //           value={moment(values.futureCheckingDate)}
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //       <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
-    //         <SelectTT
-    //           disabled
-    //         />
-    //       </Form.Item>
-    //     </div>
-    //     <SecondTab />
-    //     <ThirdTab />
-    //     <Buttons />
-    //   </Form>
-    // </div>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <Form style={{ width: '100%' }}>
+        <Header>Замена расходомера/термодатчика</Header>
+        <ButtonTT color={red} onClick={buttonHandler}>BUTTON</ButtonTT>
+        <FormHeader />
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        {/* <FirstTab /> */}
+        <div
+          hidden={!(currentTabKey == '1')}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        >
+          <Form.Item label="Серийный номер" style={{ width: '48%', position: 'relative' }}>
+            <InputTT
+              name="serialNumber"
+              placeholder="Серийный номер"
+              onChange={(event) => {
+                serialHandler(event);
+                setFieldValue('serialNumber', event.target.value);
+              }}
+              value={values.serialNumber}
+            />
+            <DevicesList />
+          </Form.Item>
+          <Form.Item label="Тип прибора" style={{ width: '48%' }}>
+            <SelectTT
+              name="housingMeteringDeviceType"
+              options={housingMeteringDeviceTypes}
+              value={values.housingMeteringDeviceType}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Тип ресурса" style={{ width: '48%' }}>
+            <SelectTT
+              name="resource"
+              options={resources}
+              value={values.resource}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Модель прибора" style={{ width: '48%' }}>
+            <InputTT
+              name="model"
+              value={values.model}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Дата поверки пробора" style={{ width: '48%' }}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="lastCheckingDate"
+              value={moment(values.lastCheckingDate)}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Дата следующей поверки пробора" style={{ width: '48%' }}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="futureCheckingDate"
+              value={moment(values.futureCheckingDate)}
+              disabled
+            />
+          </Form.Item>
+          <Form.Item label="Срок эксплуатации по нормативу" style={{ width: '100%' }}>
+            <SelectTT
+              disabled
+            />
+          </Form.Item>
+        </div>
+        <SecondTab />
+        <ThirdTab />
+        <Buttons />
+      </Form>
+    </div>
 
   );
 };

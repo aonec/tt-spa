@@ -41,15 +41,15 @@ function reducer(state, action) {
           panelLoading: true,
         }
       )
-      // return {
-      //   ...state,
-      //   stageData: { data, move: 'push' },
-      //   panelLoading: true,
-      // };
+      return {
+        ...state,
+        stageData: { data, move: 'push' },
+        panelLoading: true,
+      };
     // после нажатия на "Завершить этап"
     default:
       // console.error('task id', type);
-      // return state;
+      return state;
   }
 }
 
