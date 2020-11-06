@@ -1,3 +1,5 @@
+// items, serviceLife, housingMeteringDeviceTypes, resources, magistrals, isConnectedValue
+
 export const items = [
   {
     id: 1,

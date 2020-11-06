@@ -1,10 +1,16 @@
-import React from 'react';
-import { InputTT } from '../../../../../tt-components/InputTT';
-import { ButtonTT } from '../../../../../tt-components/ButtonTT';
+import React, { useContext } from 'react';
+import { InputTT } from '../../../../../../tt-components/InputTT';
+import { ButtonTT } from '../../../../../../tt-components/ButtonTT';
 import {Form} from "antd";
+import { ChangeOdpuContext } from "../../index";
 
 const SearchOrAdd = (props) => {
-  const { updateSeriaNumber, DevicesList, serialNumber, showEmpty, showAdd, showEdit } = props;
+  const { updateSeriaNumber,  handleChangeTab,
+    newDevice,
+    currentTabKey,
+    setTab, DevicesList, serialNumber, showEmpty, showAdd, showEdit } = useContext(ChangeOdpuContext);
+
+
   console.log('SearchOrAdd');
   return (
     <div>
