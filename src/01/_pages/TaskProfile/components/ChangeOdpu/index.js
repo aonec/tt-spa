@@ -13,7 +13,9 @@ import {
 export const ChangeOdpuContext = React.createContext();
 
 const ChangeOpdu = (props) => {
-  const { id, type } = props;
+  const { id, type, getData = () => {} } = props;
+  console.log(props)
+
   const [serialNumber, setSerialNumber] = useState('');
   const [list, setList] = useState([]);
   const [oldDevice, setOldDevice] = useState({});

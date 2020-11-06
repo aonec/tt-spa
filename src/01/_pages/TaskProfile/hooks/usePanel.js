@@ -60,13 +60,15 @@ function isDisabled(
     calculatorSwitch = null
   },
   {
-    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline
+    AddPerpetrator, AddDocuments, Switch,SwitchDevices, Completion, SetNextStageDeadline
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
+  if (AddDocuments && SwitchDevices) return !documentsIds.length || (calculatorSwitch === null);
   if (AddDocuments) return !documentsIds.length;
+
   if (Completion) return false;
 
   return true;
