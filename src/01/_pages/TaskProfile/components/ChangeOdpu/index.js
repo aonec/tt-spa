@@ -14,7 +14,7 @@ export const ChangeOdpuContext = React.createContext();
 
 const ChangeOpdu = (props) => {
   const { id, type, getData = () => {} } = props;
-  console.log(props)
+  console.log(props);
 
   const [serialNumber, setSerialNumber] = useState('');
   const [list, setList] = useState([]);
@@ -97,6 +97,13 @@ const ChangeOpdu = (props) => {
                 console.log(item.value);
                 getHousingMeteringDevice(item.id);
                 showEdit();
+                console.log("item.id", item.id)
+                // setNewDevice(item.id)
+
+                getData({
+                  calculatorSwitch: { deviceId: id, newDeviceId: item.id } ?? null,
+                });
+
                 setList([]);
               }}
               >
