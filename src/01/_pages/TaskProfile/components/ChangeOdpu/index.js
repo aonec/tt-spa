@@ -14,19 +14,16 @@ export const ChangeOdpuContext = React.createContext();
 
 const ChangeOpdu = (props) => {
   const { id, type } = props;
-  const [state, setState] = useState();
   const [serialNumber, setSerialNumber] = useState('');
   const [list, setList] = useState([]);
   const [oldDevice, setOldDevice] = useState({});
   const [newDevice, setNewDevice] = useState({});
-  const [inputs, setInputs] = useState();
 
   async function getHousingMeteringDevice(HousingMeteringDeviceId = '') {
     try {
       const res = await axios.get(`HousingMeteringDevices/${HousingMeteringDeviceId}`);
       console.log(res);
       setNewDevice(res);
-      setInputs(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -73,6 +70,11 @@ const ChangeOpdu = (props) => {
     }
     getHousingMeteringDevice(id);
   }, []);
+
+  useEffect(() => {
+    console.log('oldDevice', oldDevice);
+    console.log(JSON.stringify(oldDevice));
+  }, [oldDevice]);
 
   const DevicesList = () => {
     console.log('List');

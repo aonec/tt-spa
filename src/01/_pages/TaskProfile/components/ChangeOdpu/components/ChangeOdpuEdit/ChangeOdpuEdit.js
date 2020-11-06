@@ -17,7 +17,7 @@ const ChangeOdpuEdit = () => {
   const Buttons = () => {
     console.log('Buttons');
     return (
-      <ButtonTT color="blue">Сохранить</ButtonTT>
+      <ButtonTT color="blue" disabled>Сохранить</ButtonTT>
     );
   };
   const {

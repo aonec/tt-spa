@@ -25,9 +25,9 @@ const SearchOrAdd = (props) => {
         <DevicesList />
       </Form.Item>
 
-      <ButtonTT color='blue' style={{marginRight: '32px'}} onClick={showAdd}>Добавить ОДПУ</ButtonTT>
+      <ButtonTT color='blue' disabled style={{marginRight: '32px'}} onClick={showAdd}>Добавить ОДПУ</ButtonTT>
       <ButtonTT color='red' style={{marginRight: '32px'}} onClick={showEmpty}>Сбросить</ButtonTT>
-      <ButtonTT color='white' onClick={showEdit}>Редактировать</ButtonTT>
+      <ButtonTT color='white' disabled onClick={showEdit}>Редактировать</ButtonTT>
     </div>
   );
 };
