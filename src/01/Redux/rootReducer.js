@@ -7,6 +7,7 @@ import deviceDeregisterReducer from './reducers/reducerDeviceDeregister';
 import objectReducer from './reducers/reducerObject';
 import changeOdpuReducer from './reducers/reducerChangeOdpu';
 import calcReportDeregisterReducer from './reducers/reducerCalcReport';
+import modalsReducer from "./reducers/reducerModals";
 
 export default combineReducers({
   calcReportDeregisterReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   devicePage: reducerDevicesPage,
   deviceDeregisterReducer,
   changeOdpuReducer,
+  modalsReducer
 });

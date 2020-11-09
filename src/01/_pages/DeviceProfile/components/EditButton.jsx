@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { setModalCalcReportVisible, setModalDeregisterVisible, setModalTemplateVisible, setModalCalculatorReportVisible} from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -95,6 +95,11 @@ export const Menu = (showPopupHandler) => {
     dispatch(setModalDeregisterVisible(true));
   };
 
+  const showModalCalculatorReport = () => {
+    $('#edit-button__list').toggle();
+    dispatch(setModalCalculatorReportVisible(['ModalCalculatorReport', 'visible'], true));
+  }
+
   return (
     <>
       <EditButton />
@@ -112,6 +117,9 @@ export const Menu = (showPopupHandler) => {
         </ListItem>
         <ListItem onClick={showDeregisterDeviceModal} style={{ color: '#FC525B' }}>
           Снять вычислитель с учета
+        </ListItem>
+        <ListItem onClick={showModalCalculatorReport} style={{ color: '#FC525B' }}>
+          Выгрузить отчет о общедомовом потреблении
         </ListItem>
       </List>
     </>
