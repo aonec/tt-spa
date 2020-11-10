@@ -38,7 +38,7 @@ export const InformationNotCalculator = (loading = true) => {
   }
 
   console.log(convertDateDots(lastCommercialAccountingDate))
-  debugger;
+
   return (
     <ListWrap>
       <Loader show={loading} size="32">
