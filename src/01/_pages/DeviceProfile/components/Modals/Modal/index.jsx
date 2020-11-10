@@ -1,23 +1,18 @@
 import React, {
-  useState,
-  useContext,
-  useRef,
-  useEffect,
+  useState, useEffect,
 } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import $ from 'jquery';
+import { Modal } from 'antd';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Title, ButtonTT } from '../../../../../tt-components';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-
-import { Icon } from '../../../../../_components/Icon';
-import { DeviceContext } from '../../../DeviceProfile';
-
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
-import './modal.scss';
-import { ButtonTT } from '../../../../../tt-components';
-import { CalculatorTemplate } from './components/CalculatorTemplate.js';
+import { CalculatorTemplate } from './components/CalculatorTemplate';
 
 const Translate = {
   Heat: 'Отопление',
@@ -25,52 +20,55 @@ const Translate = {
   HotWaterSupply: 'Горячая вода',
 };
 
-const hideMe = () => {
-  $('.overlay').css('display', 'none');
-};
-
 const translate = (resource) => Translate[resource];
 
 export const ReportContext = React.createContext();
 
-export const ModalODPU = ({ device }) => {
-  console.log('props', device);
-  // const { device, building, hubs } = useContext(DeviceContext);
-  // const { device, building } = useContext(DeviceContext);
-
-  const building = device.address;
-  const { hubs } = device;
-
-  // const device = CalculatorTemplate;
-  // const building = CalculatorTemplate.address;
-  // const { hubs } = CalculatorTemplate;
-
-  const { id, model, serialNumber } = device;
+// export const ModalODPU = ({ device }) => {
+export const ModalODPU = () => {
+  const device = CalculatorTemplate;
+  console.log('CalculatorTemplate', device);
+  const {
+    id, model, serialNumber, address, hubs,
+  } = device;
   const serialNumberODPU = serialNumber;
-  const { housingStockNumber, street } = building;
+  const { housingStockNumber, street, corpus } = address;
 
   const list = [];
   const devicesList = [];
 
-  const period = useRef('month');
-  const detail = useRef('hourly');
-  const entryNumberRes = useRef();
-  const pipeNumberRes = useRef();
+  const {
+    handleSubmit, handleChange, values, touched, errors,
+    handleBlur, setFieldValue,
+  } = useFormik({
+    initialValues: {
+      period: 'month',
+      detail: 'hourly',
+      entryNumberRes: null,
+      pipeNumberRes: null,
+      begin: moment().subtract(1, 'month'),
+      end: moment(),
+
+
+    },
+    validationSchema: Yup.object({
+      test: Yup.string().required('Строка не должна быть пустой'),
+    }),
+    onSubmit: async () => {
+      const form = {
+        input1: values.test,
+      };
+      console.log(JSON.stringify(form));
+      alert('Посмотрите результат в консоли');
+    },
+  });
+
   const [type, setType] = useState(list[0]);
 
-  const [begin, setBegin] = useState(moment().subtract(1, 'month'));
-  const [end, setEnd] = useState(moment());
-
-  const [hubsarr, setHubsarr] = useState();
-
   const datePickerHandler = (event) => {
-    setBegin(event[0] || begin);
-    setEnd(event[1] || end);
+    setFieldValue('begin', event[0]);
+    setFieldValue('end',event[1]);
   };
-
-  useEffect(() => {
-    setHubsarr(hubs);
-  }, [hubs]);
 
   useEffect(() => {
     function foo() {
@@ -85,16 +83,16 @@ export const ModalODPU = ({ device }) => {
     console.log('onTabsChangeHandler', resource);
     $('.ant-select-selection-item').html('Выберите узел');
     setType(resource);
-    entryNumberRes.current = undefined;
+    setFieldValue('entryNumberRes', undefined);
   };
 
-  if (hubsarr) {
-    hubsarr.map((item, index) => {
+  if (hubs) {
+    hubs.map((item, index) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
       const { entryNumber, pipeNumber } = hub;
-      if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
+      if (housingMeteringDeviceType === 'FlowMeter') {
         devicesList.push({
           resource,
           entryNumber,
@@ -109,16 +107,18 @@ export const ModalODPU = ({ device }) => {
 
   const onPeriodChange = (e) => {
     const res = e.target.value;
-    period.current = res;
-    setBegin(moment().subtract(1, res));
-    setEnd(moment());
+    setFieldValue('period', res);
+    setFieldValue('begin',moment().subtract(1, res));
+    setFieldValue('end',moment());
   };
 
   const selectOptions = [];
 
   console.log('devicesList', devicesList);
 
-  devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
+  devicesList.map(({
+    resource, serialNumber, entryNumber, pipeNumber,
+  }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
       console.log('res', res);
@@ -131,120 +131,103 @@ export const ModalODPU = ({ device }) => {
         )} ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
-        pipeNumber
+        pipeNumber,
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
-        pipeNumber
+        pipeNumber,
       });
     }
   });
 
   const downloadReport = () => {
-    console.log('entryNumberRes.current = ', entryNumberRes.current);
-    if (entryNumberRes.current) {
-      console.log('entryNumberRes', entryNumberRes.current);
+    console.log('entryNumberRes.current = ', values.entryNumberRes);
+    if (values.entryNumberRes) {
+      console.log('entryNumberRes', values.entryNumberRes);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-        detail.current
+        values.detail
       }&resourcetype=${type}&entrynumber=${
-        entryNumberRes.current
-      }&pipenumber=${pipeNumberRes.current}&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
-        end,
+        values.entryNumberRes
+      }&pipenumber=${values.pipeNumberRes}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
+        values.end,
       )}T00:00:00Z`;
-      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
 
-      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-      const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
-      // window.location.assign(link);
       console.log(link);
-      // console.log(lastTemplate);
       window.open(link);
     } else {
       alert('Выберите узел!');
     }
   };
 
-  function handleChange(value) {
+  function handleSomeChange(value) {
     console.log(value);
     const b = _.filter(selectOptions, { value: `${value}` });
     const { entryNumber, pipeNumber } = { ...b[0] };
     console.log('number', entryNumber);
-    entryNumberRes.current = entryNumber;
-    pipeNumberRes.current = pipeNumber;
+    setFieldValue('entryNumberRes', entryNumber);
+    setFieldValue('pipeNumberRes', pipeNumber);
   }
 
   function onDetailChange(e) {
     const res = e.target.value;
-    detail.current = res;
+    setFieldValue('detail', res);
   }
 
-  const someFunc = () => {
+  const context = {
+values,
+    datePickerHandler,
+    list,
+    devicesList,
+    translate,
+    onTabsChangeHandler,
+    model,
+    street,
+    housingStockNumber,
+    SelectReport,
+    type,
+    selectOptions,
+    handleSomeChange,
+    onPeriodChange,
+    onDetailChange,
   };
 
   return (
     <ReportContext.Provider
-      value={{
-        begin,
-        end,
-        datePickerHandler,
-        list,
-        devicesList,
-        translate,
-        onTabsChangeHandler,
-        model,
-        street,
-        housingStockNumber,
-        SelectReport,
-        type,
-        selectOptions,
-        handleChange,
-        onPeriodChange,
-        onDetailChange,
-      }}
+      value={context}
     >
-      <div className="overlay" id="modal-report-device">
-        <div className="modal-odpu">
-          {/* <ButtonTT>TEST</ButtonTT> */}
-          <Icon
-            className="modal__close"
-            icon="close"
-            color="#272F5A"
-            onClick={hideMe}
-          />
-          <div className="modal__top">
-            <h3 className="modal__title">
-              Выгрузка отчета о общедомовом потреблении
-            </h3>
-            <Top />
-            <Bottom />
-          </div>
-
-          <div className="modal__bottom">
-            <button
-              className="modal__button modal__button_cancel"
-              onClick={hideMe}
-            >
-              Отмена
-            </button>
-            <button
-              className="modal__button modal__button_ok"
-              onClick={downloadReport}
-            >
-              Выгрузить
-            </button>
-          </div>
+      <Modal
+        visible
+        width="800px"
+        footer={null}
+      >
+        <div className="modal__top">
+          <Title color="black">
+            Выгрузка отчета о общедомовом потреблении
+          </Title>
+          <Top />
+          <Bottom />
         </div>
-      </div>
+
+        <div className="modal__bottom">
+          <ButtonTT
+            color="white"
+          >
+            Отмена
+          </ButtonTT>
+          <ButtonTT
+            color="blue"
+            onClick={downloadReport}
+          >
+            Выгрузить
+          </ButtonTT>
+        </div>
+
+      </Modal>
     </ReportContext.Provider>
   );
 };
 
 export default ModalODPU;
-
-// const selectOptions = [
-//   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-//   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
-// ];

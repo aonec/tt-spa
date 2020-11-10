@@ -1,4 +1,4 @@
-const CalculatorTemplate = {
+export const CalculatorTemplate = {
   connection: {
     isConnected: true,
     ipV4: '192.168.100.6',
@@ -213,5 +213,3 @@ const CalculatorTemplate = {
   futureCheckingDate: '2020-10-11T03:00:00',
   closingDate: null,
 };
-
-export default CalculatorTemplate;

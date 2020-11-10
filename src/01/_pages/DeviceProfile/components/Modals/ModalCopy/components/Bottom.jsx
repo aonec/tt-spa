@@ -53,7 +53,8 @@ export const PeriodType = () => {
 
 export const Bottom = () => {
   const {
-  values,
+    begin,
+    end,
     datePickerHandler,
     selectOptions,
     onPeriodChange,
@@ -75,7 +76,7 @@ export const Bottom = () => {
           format="DD.MM.YYYY"
           allowClear={false}
           size="48px"
-          value={[values.begin, values.end]}
+          value={[begin, end]}
           placeholder={['Дата Начала', 'Дата окончания']}
           onChange={(event) => {
             datePickerHandler(event);

@@ -22,11 +22,9 @@ import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modals/Modal';
 import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
-import ModalCalcReport from './components/Modals/ModalCalcReport'
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
-import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 
 export const DeviceContext = React.createContext();
 
@@ -169,8 +167,7 @@ export const DeviceProfile = () => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-        {/*<ModalODPU device={device}/>*/}
-        <ModalCalculatorReport />
+        <ModalODPU device={device}/>
         <ModalDeregisterDevice />
       </DeviceContext.Provider>
     );

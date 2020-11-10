@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Form } from 'antd';
 import { DevicesListDiv } from './Tabs';
 import { ReportContext } from '../index';
-import  { InputTT, SelectTT } from '../../../../../../tt-components';
+import { SelectTT } from '../../../../../../tt-components';
+
 
 export const Uzel = () => {
   console.log('Uzel');
@@ -12,32 +13,34 @@ export const Uzel = () => {
     SelectReport,
     type,
     selectOptions,
-    handleSomeChange,
+    handleChange,
   } = useContext(ReportContext);
 
   console.log('selectOptions', selectOptions);
-  console.log('type', type);
+  console.log("type", type)
 
-  const modifiedSelectOptions = selectOptions.filter((option) => option.value == type);
-  console.log('modifiedSelectOptions', modifiedSelectOptions);
+  const modifiedSelectOptions = selectOptions.filter(option => option.value == type);
+  console.log("modifiedSelectOptions",modifiedSelectOptions)
 
   {
     return (
       <div>
-
-        <Form.Item label=" Название отчета">
-          <InputTT
+        <div>
+          <label className="modal__label" htmlFor="#input">
+            Название отчета
+          </label>
+          <input
+            className="modal__input"
+            id="input"
             value={`${street}_${housingStockNumber}.exls`}
             disabled
           />
-
-        </Form.Item>
-
+        </div>
         <Form.Item label="Выбор узла">
           <SelectTT
             options={modifiedSelectOptions}
             placeholder="Выберите узел"
-            onChange={handleSomeChange}
+            onChange={handleChange}
           />
         </Form.Item>
       </div>

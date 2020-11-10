@@ -6,7 +6,7 @@ export const SelectReport = ({
   type,
   selectOptions,
   defaultValue,
-  handleSomeChange,
+  handleChange,
 }) => {
   const b = _.filter(selectOptions, { value: `${type}` });
 
@@ -14,7 +14,7 @@ export const SelectReport = ({
     <Select
       defaultValue={defaultValue}
       style={{ width: '100%' }}
-      onChange={handleSomeChange}
+      onChange={handleChange}
       className="inner"
       options={b}
     />
