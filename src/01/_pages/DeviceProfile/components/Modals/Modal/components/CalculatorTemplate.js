@@ -1,3 +1,9 @@
+export const Translate = {
+  Heat: 'Отопление',
+  ColdWaterSupply: 'Холодная вода',
+  HotWaterSupply: 'Горячая вода',
+};
+
 export const CalculatorTemplate = {
   connection: {
     isConnected: true,
@@ -189,6 +195,33 @@ export const CalculatorTemplate = {
       transactionType: null,
       model: 'ПРЭМ',
       serialNumber: '372202',
+      managementFirm: {
+        id: 4,
+        name: 'ООО УК"ПЖКХ-17"',
+        phoneNumber: null,
+        information: null,
+        timeZoneOffset: '03:00:00',
+      },
+      lastCommercialAccountingDate: '2019-02-01T03:00:00',
+      futureCommercialAccountingDate: '2019-07-23T03:00:00',
+      lastCheckingDate: '2015-07-23T03:00:00',
+      futureCheckingDate: '2019-07-23T03:00:00',
+      closingDate: null,
+    },
+    {
+      hub: {
+        entryNumber: 2,
+        hubNumber: null,
+        pipeNumber: 6,
+        magistral: 'FeedFlow',
+      },
+      diameter: '40',
+      resource: 'ColdWaterSupply',
+      housingMeteringDeviceType: 'FlowMeter',
+      id: 1548363,
+      transactionType: null,
+      model: 'ПРЭМ',
+      serialNumber: '10112020',
       managementFirm: {
         id: 4,
         name: 'ООО УК"ПЖКХ-17"',

@@ -4,29 +4,21 @@ import { ReportContext } from '../index';
 
 const { TabPane } = Tabs;
 
-export function DevicesListDiv() {
+const DevicesListDiv = () => {
   const {
-    list, devicesList, translate, onTabsChangeHandler,
+    resources, translate, onTabsChangeHandler,
   } = useContext(
     ReportContext,
   );
 
-  devicesList.map(({ resource }) => {
-    if (!list.includes(resource)) {
-      list.push(resource);
-    }
-  });
-
-  const someList = list.map((value, index) => {
+  const resList = resources.map((value) => {
     const res = translate(value);
     return <TabPane tab={res} key={value} />;
   });
 
-  const defaultRes = translate(someList[0]);
-
   return (
-    <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
-      {someList}
+    <Tabs defaultActiveKey="1" onChange={onTabsChangeHandler}>
+      {resList}
     </Tabs>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Form } from 'antd';
-import { DevicesListDiv } from './Tabs';
+import DevicesListDiv  from './Tabs';
 import { ReportContext } from '../index';
 import  { InputTT, SelectTT } from '../../../../../../tt-components';
 

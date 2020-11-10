@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select } from 'antd';
+import {SelectTT} from '../../../../../../tt-components';
 import _ from 'lodash';
 
 export const SelectReport = ({
@@ -11,11 +11,9 @@ export const SelectReport = ({
   const b = _.filter(selectOptions, { value: `${type}` });
 
   return (
-    <Select
+    <SelectTT
       defaultValue={defaultValue}
-      style={{ width: '100%' }}
       onChange={handleSomeChange}
-      className="inner"
       options={b}
     />
   );
