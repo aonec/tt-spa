@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -7,7 +7,34 @@ import { InputTT, Title } from '../../../../../tt-components';
 
 const ModalCalculatorReportForm = (device) => {
 
-  console.log("ModalCalculatorReportForm", device)
+  const devicesList = [];
+
+  const {hubsarr} = device;
+
+  if (hubsarr) {
+    hubsarr.map((item, index) => {
+      const {
+        resource, housingMeteringDeviceType, hub, serialNumber,
+      } = item;
+      const { entryNumber, pipeNumber } = hub;
+      // if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
+      if (housingMeteringDeviceType === 'FlowMeter') {
+        console.log("item = ", index, item)
+        devicesList.push({
+          resource,
+          entryNumber,
+          pipeNumber,
+          housingMeteringDeviceType,
+          serialNumber,
+        });
+      }
+    });
+    console.log('devicesList', devicesList);
+  }
+
+  useEffect(()=>{
+    console.log("ModalCalculatorReportForm", device)
+  },[])
 
 
 
@@ -45,6 +72,7 @@ const ModalCalculatorReportForm = (device) => {
       <Form id="formikForm" onSubmit={handleSubmit}>
         <Title size="middle" color="black">
           Выгрузка отчета о общедомовом потреблении</Title>
+        <p>{`test${device.id}`}</p>
         <Form.Item label="Label ввода">
           <InputTT
             name="test"

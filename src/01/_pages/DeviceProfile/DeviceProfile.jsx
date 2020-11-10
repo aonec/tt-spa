@@ -169,7 +169,7 @@ export const DeviceProfile = () => {
 
           <Events title="Задачи с объектом" />
         </Grid>
-        <ModalODPU device={device}/>
+        {/*<ModalODPU device={device}/>*/}
         <ModalCalculatorReport />
         <ModalDeregisterDevice />
       </DeviceContext.Provider>
