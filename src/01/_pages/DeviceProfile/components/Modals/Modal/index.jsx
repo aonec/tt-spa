@@ -147,10 +147,12 @@ export const ModalODPU = () => {
   };
 
   function handleSomeChange(value) {
-    const b = _.filter(selectOptions, { value: `${value}` });
+    const b = _.filter(selectOptions, { resource: `${value}` });
     const { entryNumber, pipeNumber } = { ...b[0] };
     setFieldValue('entryNumberRes', entryNumber);
     setFieldValue('pipeNumberRes', pipeNumber);
+
+    console.log("BBBB", b)
   }
 
   function onDetailChange(e) {
