@@ -68,9 +68,6 @@ const EditODPU = () => {
   }, []);
 
   const buttonHandler = () => {
-    console.log('buttonHandler');
-    console.log(device);
-    console.log(calculators);
   };
 
   if (device && calculators) {

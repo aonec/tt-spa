@@ -4,10 +4,10 @@ import { NavLink } from 'react-router-dom';
 import styles from '../TabsDevices.module.scss';
 import { Icon } from '../../../../tt-components/Icon';
 import DeviceIcons from "../../../../_components/DeviceIcons";
+import transformDate from "../../../../utils/transformDate";
 
 const DeviceBlock = (props) => {
   const { device: calculator} = props;
-  let transformDate = (date) => new Date(date).toLocaleDateString();
   let lastCheckingDate = transformDate(calculator.lastCheckingDate);
   let futureCheckingDate = transformDate(calculator.futureCheckingDate);
   let lastCommercialAccountingDate = transformDate(calculator.lastCommercialAccountingDate);
@@ -80,8 +80,6 @@ const DeviceBlock = (props) => {
             <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
               {lastCommercialAccountingDate}
             </div>
-
-
 
           </div>
           <div className={styles.subDevices}>

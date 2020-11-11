@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Route } from 'react-router-dom';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
@@ -16,6 +16,7 @@ import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
 import ButtonTT from '../../../../tt-components/ButtonTT';
+import {addReadings} from "../../hooks/usePanel";
 
 const styles = css`
   panel {
@@ -49,9 +50,11 @@ const styles = css`
         "ta ta ta ta ta push";
     }
     &[|six] {
-      grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 4fr 1fr;
       grid-template-areas:
-        "";
+        "ar ar ar ar"
+        ". . . push"
     }
   }
 
@@ -70,9 +73,7 @@ const styles = css`
   NextStage {
     grid-area: ta;
   }
-  AddReadings {
-    grid-area: ar;
-  }
+
 `;
 
 export const Panel = ({
@@ -86,6 +87,7 @@ export const Panel = ({
                         apartment,
                         dispatch = () => {
                         },
+                        stages = {}
                       }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
 
@@ -129,6 +131,10 @@ export const Panel = ({
   }
 
   // const [deadline, setDeadline] = useState();
+  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+
+
+  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
   const { emailNotify = {} } = state;
 
@@ -141,6 +147,7 @@ export const Panel = ({
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
         five: Switch && PushButton,
+        six: UploadReadings || addReadingsDone
       })}
     >
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>}
@@ -166,7 +173,7 @@ export const Panel = ({
       {/*  учета</ButtonTT>}*/}
 
       {EmailNotify && <TemplateButton/>}
-      {AddDocuments && (
+      {(AddDocuments && !isObserver) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
@@ -175,10 +182,8 @@ export const Panel = ({
       {Switch && (
         <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
-        {UploadReadings && (
-            <>
-            <AddReadings apartmentId={apartment.id}/>
-            </>
+        {(UploadReadings || addReadingsDone) && (
+            <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver}/>
         )
         }
       <PushButton {...pushProps} />
@@ -186,6 +191,7 @@ export const Panel = ({
     // </Route>
   );
 };
+
 
 const Textarea = (props) => styled`
     textarea {

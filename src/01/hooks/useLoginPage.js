@@ -14,7 +14,6 @@ export const useLoginPage = () => {
     if (name === "password") setPassword({ value })
   }
 
-  console.log(isAuth)
 
   const validData = () => email.value.trim() && password.value.trim()
 

@@ -25,7 +25,6 @@ export async function getDevice(url = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get('MeteringDevices/1306927');
-    console.log('MeteringDevices')
     return {
       ...res,
       info: true,

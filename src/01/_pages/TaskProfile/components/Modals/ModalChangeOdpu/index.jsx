@@ -9,7 +9,7 @@ import {
 import ChangeOdpuForm from './ChangeOdpuForm';
 import axios from '../../../../../axios';
 
-const ModalChangeOdpu = (props) => {
+const ModalChangeOdpu = () => {
   const [task, setTask] = useState();
   const { 0: taskId } = useParams();
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ const ModalChangeOdpu = (props) => {
   async function getTask(url = '') {
     try {
       const res = await axios.get(`Tasks/${url}`);
-      console.log('res = ', res);
       return res;
     } catch (error) {
       console.log(error);
@@ -35,7 +34,7 @@ const ModalChangeOdpu = (props) => {
     getTask(taskId).then((res) => {
       setTask(res);
     });
-  }, [props]);
+  }, []);
 
   const handleCancel = () => {
     dispatch(setModalChangeODPUVisible(false));

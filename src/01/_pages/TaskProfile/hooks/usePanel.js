@@ -1,16 +1,22 @@
 import React from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
+const ADD_READINGS = 'ADD_READINGS';
+const UPDATE_READINGS = 'UPDATE_READINGS';
+
 export const usePanel = (
-  { panel = {}, panelLoading = false, apartment },
+  { panel = {}, panelLoading = false, apartment, stages },
   pageDispatch,
 ) => {
   const { replace } = useHistory();
   const { url } = useRouteMatch();
   const [state, dispatch] = React.useReducer(dataReducer, {});
+
   React.useEffect(() => {
-    if (!panelLoading) dispatch({ type: 'reset' });
-  }, [panelLoading]);
+    if (!panelLoading && !state.readings) dispatch({ type: 'reset' });
+  }, [panelLoading])
+
+  window.state = state;
 
   // React.useEffect(() => {
   //   panel.actions?.SwitchDevices && replace(url + "/step1")
@@ -33,6 +39,7 @@ export const usePanel = (
     actions: panel?.actions,
     apartment,
     state,
+    stages
   };
 };
 
@@ -46,6 +53,30 @@ export function dataReducer(state, action) {
       const { emailNotify = {} } = state;
       return { ...state, emailNotify: { ...emailNotify, ...data } };
 
+    case ADD_READINGS:
+      return {...state, readings: action.readings}
+
+    case UPDATE_READINGS:
+      return {
+        ...state,
+        devices: state.devices.map(
+            (device) => device.id === action.deviceId ?
+                {
+                  ...device,
+                  readings: device.readings.map(
+                      (reading, index) => {
+                        return index === 0 ?
+                            {
+                              ...reading,
+                              [`value${action.readingNumber}`]: action.readingValue
+                            } :
+                            reading
+                      }
+                  )
+                } : device
+        )
+      }
+
     case 'reset':
       return {};
 
@@ -55,12 +86,14 @@ export function dataReducer(state, action) {
   }
 }
 
+export const addReadings = (readings) => ({ type: ADD_READINGS, readings })
+
 function isDisabled(
   {
     nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
   },
   {
-    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline
+    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline, UploadReadings
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
@@ -68,6 +101,7 @@ function isDisabled(
   if (AddPerpetrator) return !nextPerpetratorId;
   if (AddDocuments) return !documentsIds.length;
   if (Completion) return false;
+  if (UploadReadings) return false
 
   return true;
 }

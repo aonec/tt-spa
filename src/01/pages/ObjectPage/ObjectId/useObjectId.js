@@ -17,8 +17,6 @@ async function fetchObjectId(config) {
     const url = res.config.url
     const data = res.data.successResponse
     const header = createObjHeader(data)
-    console.log(header)
-    console.log(data)
     return Promise.resolve({ info: {}, header })
   } catch (error) {}
 }

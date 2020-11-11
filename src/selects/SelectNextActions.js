@@ -12,7 +12,6 @@ export const SelectNextActions = (props) => {
   useEffect(() => {
     touched &&
       axios(`/tasks/${taskId}/nextstages`).then((res) => {
-        console.log(res)
         setOptions(res.data.successResponse?.items)
       })
   }, [touched])

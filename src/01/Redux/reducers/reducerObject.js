@@ -32,7 +32,6 @@ export default function objectReducer(state = initialState, action) {
       _.set(newState, path, value);
       return newState;
     case 'OBJECT_UPDATE_FORM':
-      console.log(action);
       return action.payload.value;
     default:
       return newState;

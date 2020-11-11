@@ -1,19 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
 import styled from 'styled-components'
-import ReadingLine from "./ReadingsLine/ReadingLine";
+import DeviceRates from "./ReadingsLine/DeviceRates";
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {Icon} from "../../../../../tt-components/Icon";
+import {setDevices, updateReadings} from "../readingsReducer";
+import ActiveLine from "./ActiveLine/ActiveLine";
+import transformDate from "../../../../../utils/transformDate";
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(300px, 3.5fr) 5fr 3.5fr;
+    grid-template-columns: minmax(250px, 2.5fr) 6fr 3.5fr;
     column-gap: 10px;
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #DCDEE4;
     `
 
 let ReadingLineStyled = styled.div`
@@ -26,60 +31,47 @@ display: flex;
 min-width: 60px;
 `
 
-const DeviceReadingForm = ({device}) => {
+const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
 
-    const [readingsState, setReadingsState] = useState([]);
+    const [readingsState, setReadingsState] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const isActive = device.closingDate === null;
 
     const numberOfReadings = rateTypeToNumber(device.rateType);
     // const readingsArray = [];
-    // setReadingsState([45, 66, 1243]);
+    // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
 
     useEffect(() => {
-        const readingsArray = [];
+        setIsLoading(true)
+        // const readingsArray = [];
+        const readings = device.readings[0];
 
-        for (let i=1; i <= numberOfReadings; i++) {
-            readingsArray.push(device.readings[0][`value${i}`])
-            // readingsArray.push(12)
-            // readingsArray.push(23)
-            // readingsArray.push(43)
-        }
-        setReadingsState(readingsArray)
+        // for (let i=1; i <= numberOfReadings; i++) {
+        //     readingsArray.push(readings[`value${i}`])
+        // }
 
-    }, [])
+        let readingsArray = [45, 66, 1243]
+        setReadingsState({readingsArray, id: readings.id })
+        setIsLoading(false);
+    }, [device.readings, numberOfReadings, readingsBlocked])
 
     const onInputChange = (e, index) => {
         e.preventDefault();
         // readingsArray[index] = e.target.value;
-        let newState = [...readingsState];
-        newState[index] = e.target.value;
-        setReadingsState(newState);
-        debugger;
+        // let newState = [...readingsState];
+        // newState[index] = e.target.value;
+        dispatch(updateReadings(device.id, index+1, e.target.value));
     }
 
+    if (isLoading) return 'ЗАГРУЗКА...'
 
-    // {/*<span style={{width: `${100/readingsState.length}%`}}>Тариф {index+1}: {value}</span>*/}
-
-
-
-
-    const deviceReadingsLine = readingsState.map((value, index) => (
-        <ReadingLine key={'value' + index} index={index} onChange={(e) => onInputChange(e, index)} readingsState={readingsState}/>
+    const deviceReadingsLine = readingsState.readingsArray.map((value, index) => (
+        <DeviceRates key={readingsState.id + index}
+                     index={index}
+                     readingsBlocked={readingsBlocked || !isActive}
+                     onChange={(e) => onInputChange(e, index)}
+                     value={value}/>
     ));
-
-    // const deviceReadingsLine = readingsState.map((value, index) => (
-    //     <div key={index}>
-    //         {/*<span style={{width: `${100/readingsState.length}%`}}>Тариф {index+1}: {value}</span>*/}
-    //         <Label htmlFor={'id' + index} style={{paddingLeft: 10, marginRight:10}}><span style={{color: '#DCDEE4'}}>Тариф {index+1}: </span></Label>
-    //         <input
-    //             // name="numberOfGuests"
-    //             type="text"
-    //             id={'id' + index}
-    //             value={readingsState[index]}
-    //             onChange={(e) => onInputChange(e, index)}
-    //         />
-    //     </div>
-    // ));
-
 
 
     const { icon, color } = DeviceIcons[device.resource];
@@ -97,9 +89,13 @@ const DeviceReadingForm = ({device}) => {
                             {` (${device.serialNumber})`}
                     </span>
                 </span>
-                <div style={{display: 'flex'}}>{deviceReadingsLine}</div>
+            <div style={{display: 'flex'}}>{deviceReadingsLine}</div>
+            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                <ActiveLine isActive={isActive}/>
+                {transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}
+            </div>
         </FullDeviceLine>
     )
-            }
+}
 
-            export default DeviceReadingForm;
+export default DeviceReadingForm;

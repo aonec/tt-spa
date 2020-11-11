@@ -161,7 +161,6 @@ const FormEditODPU = (props) => {
     try {
       const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
       alert('Вычислитель успешно изменен!');
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -206,8 +205,6 @@ const FormEditODPU = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log('buttonHandler');
-    console.log(device);
   };
 
   const [disable, setDisable] = useState(false);

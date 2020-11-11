@@ -12,7 +12,6 @@ export const InfoList = ({ ...props }) => {
     TaskIdContext,
   );
 
-  console.log('TaskIdContext = ', TaskIdContext);
   return styled(title_section)`
     title_section {
       margin-bottom: 16px;
