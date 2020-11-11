@@ -44,7 +44,7 @@ export const ModalODPU = () => {
       end: moment(),
     },
     validationSchema: Yup.object({
-      test: Yup.string().required('Строка не должна быть пустой'),
+      // test: Yup.string().required('Строка не должна быть пустой'),
     }),
     onSubmit: async () => {
       const form = {
@@ -147,12 +147,16 @@ export const ModalODPU = () => {
   };
 
   function handleSomeChange(value) {
-    const b = _.filter(selectOptions, { resource: `${value}` });
-    const { entryNumber, pipeNumber } = { ...b[0] };
+    console.log("value", value)
+    const b = _.filter(selectOptions, { value});
+    const { entryNumber, pipeNumber } = b[0];
     setFieldValue('entryNumberRes', entryNumber);
     setFieldValue('pipeNumberRes', pipeNumber);
+    console.log("NNN", b)
+    console.log("entryNumber", entryNumber)
+    console.log("pipeNumber", pipeNumber)
+    console.log("selectOptions", selectOptions)
 
-    console.log("BBBB", b)
   }
 
   function onDetailChange(e) {
