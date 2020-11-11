@@ -6,7 +6,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Title, ButtonTT } from '../../../../../tt-components';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
 import { CalculatorTemplate, Translate } from './components/CalculatorTemplate';
@@ -94,10 +93,10 @@ export const ModalODPU = () => {
   };
 
   devicesList.map(({
-    resource, serialNumber, entryNumber, pipeNumber,
+    resource, entryNumber, pipeNumber, serialNumber
   }) => {
-    const currentSelection = _.find(selectOptions, { value: resource });
-    if (currentSelection && (resource !== 'ColdWaterSupply') ) {
+    const currentSelection = _.find(selectOptions, { resource });
+    if (currentSelection && (resource !== 'ColdWaterSupply')) {
       const index = selectOptions.indexOf(currentSelection);
       selectOptions.splice(index, 1, {
         label: `${_.get(
@@ -105,19 +104,23 @@ export const ModalODPU = () => {
           'label',
           'default',
         )} ПРЭМ(${serialNumber})`,
-        value: resource,
+        value: selectOptions.length,
+        resource,
         entryNumber,
         pipeNumber,
       });
     } else {
       selectOptions.push({
         label: `Узел ${entryNumber} ${model}: ПРЭМ (${serialNumber})`,
-        value: resource,
+        value: selectOptions.length,
+        resource,
         entryNumber,
         pipeNumber,
       });
     }
   });
+
+
 
   devicesList.map((item) => {
     const { resource } = item;
@@ -164,7 +167,6 @@ export const ModalODPU = () => {
     model,
     street,
     housingStockNumber,
-    SelectReport,
     type,
     selectOptions,
     handleSomeChange,
@@ -184,7 +186,7 @@ export const ModalODPU = () => {
       >
         <form onSubmit={handleSubmit}>
 
-          <div>{JSON.stringify(devicesList)}</div>
+          {/* <div>{JSON.stringify(devicesList)}</div> */}
 
           <div className="modal__top">
             <Title color="black">

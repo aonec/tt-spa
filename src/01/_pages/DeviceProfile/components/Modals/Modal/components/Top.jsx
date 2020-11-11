@@ -18,7 +18,7 @@ export const Uzel = () => {
   console.log('selectOptions', selectOptions);
   console.log('type', type);
 
-  const modifiedSelectOptions = selectOptions.filter((option) => option.value == type);
+  const modifiedSelectOptions = selectOptions.filter((option) => option.resource == type);
   console.log('modifiedSelectOptions', modifiedSelectOptions);
 
   {
