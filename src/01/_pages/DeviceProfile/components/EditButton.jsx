@@ -7,7 +7,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalCalcReportVisible, setModalDeregisterVisible, setModalTemplateVisible, setModalCalculatorReportVisible} from '../../../Redux/actions/actions';
+import {
+  setModalCalcReportVisible, setModalDeregisterVisible, setModalTemplateVisible, setModalCalculatorReportVisible,
+} from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -70,7 +72,7 @@ export const EditButton = () => {
 
 export const Menu = (showPopupHandler) => {
   const { pathname } = useLocation();
-  const {deviceId} = useParams()
+  const { deviceId } = useParams();
   const dispatch = useDispatch();
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -83,13 +85,6 @@ export const Menu = (showPopupHandler) => {
     }
   });
 
-  const reportDevice = () => {
-    console.log("$('#modal-report-device')", $('#modal-report-device'));
-    $('#modal-report-device').toggle();
-    $('#edit-button__list').toggle();
-    // dispatch(setModalCalcReportVisible(true));
-  };
-
   const showDeregisterDeviceModal = () => {
     $('#edit-button__list').toggle();
     dispatch(setModalDeregisterVisible(true));
@@ -97,14 +92,14 @@ export const Menu = (showPopupHandler) => {
 
   const showModalCalculatorReport = () => {
     $('#edit-button__list').toggle();
-    dispatch(setModalCalculatorReportVisible(['ModalCalculatorReport', 'visible'], true));
-  }
+    dispatch(setModalCalculatorReportVisible(true));
+  };
 
   return (
     <>
       <EditButton />
       <List id="edit-button__list">
-        {/*<NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>*/}
+        {/* <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}> */}
         <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
           <ListItem>
             Редактировать
@@ -112,14 +107,11 @@ export const Menu = (showPopupHandler) => {
           </ListItem>
         </NavLink>
         <ListItem>Поверить вычислитель</ListItem>
-        <ListItem onClick={reportDevice}>
+        <ListItem onClick={showModalCalculatorReport}>
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
         <ListItem onClick={showDeregisterDeviceModal} style={{ color: '#FC525B' }}>
           Снять вычислитель с учета
-        </ListItem>
-        <ListItem onClick={showModalCalculatorReport} style={{ color: '#FC525B' }}>
-          Выгрузить отчет о общедомовом потреблении
         </ListItem>
       </List>
     </>

@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import {
@@ -6,11 +6,13 @@ import {
 } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Title, ButtonTT, RangePickerTT, InputTT, SelectTT,
 } from '../../../../../tt-components';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 import { CalculatorTemplate, Translate } from './components/CalculatorTemplate';
+import { setModalCalculatorReportVisible } from '../../../../../Redux/actions/actions';
 
 const { TabPane } = Tabs;
 
@@ -23,9 +25,14 @@ export const ModalODPU = () => {
   } = device;
   const { housingStockNumber, street, corpus } = address;
 
+  const dispatch = useDispatch();
+  const visible = useSelector(
+    (state) => _.get(state, ['calcReportReducer', 'visible'], false),
+  );
+
   // Список всех устройств, которые являются расходомерами
   // const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
-  const devicesList = useMemo((device) => hubs.reduce((result, item) => {
+  const devicesList = hubs.reduce((result, item) => {
     const {
       resource, housingMeteringDeviceType, hub, serialNumber,
     } = item;
@@ -40,22 +47,22 @@ export const ModalODPU = () => {
       });
     }
     return result;
-  }, []));
+  }, []);
 
   console.log('devicesList', devicesList);
 
-  // Список всех типов Расходомеров: ХВС, ГВС, Отопление
-  const resources = useMemo((device) => devicesList.reduce((result, item) => {
+  // Список всех типов Расходомеров: ХВС, ГВС, Отопление //filter
+  const resources = devicesList.reduce((result, item) => {
     const { resource } = item;
     if (!(result.includes(resource))) {
       result.push(resource);
     }
     return result;
-  }, []));
-
-  console.log('resources', resources);
+  }, []);
 
   // Список всех доступных строк для выбора Узла
+
+  // lodash groupby
   const selectOptions = devicesList.reduce((result, item) => {
     const {
       resource, entryNumber, pipeNumber, serialNumber,
@@ -106,15 +113,20 @@ export const ModalODPU = () => {
     },
     validationSchema: Yup.object({
       // test: Yup.string().required('Строка не должна быть пустой'),
+      currentSelect: Yup.number().required('Выберите узел'),
     }),
     onSubmit: async () => {
       const form = {
         input1: values.test,
       };
-      console.log(JSON.stringify(form));
-      alert('Посмотрите результат в консоли');
+      downloadReport();
     },
   });
+
+  const modifiedSelectOptions = selectOptions.filter((option) => option.resource == values.currentTab);
+  const some = _.find(modifiedSelectOptions, { value: values.currentSelect });
+  console.log('some', some);
+  // console.log("some.value", some.value)
 
   const Top = () => {
     console.log('Top');
@@ -132,7 +144,10 @@ export const ModalODPU = () => {
             options={modifiedSelectOptions}
             placeholder="Выберите узел"
             onChange={handleSomeChange}
+            value={values.currentSelect}
+            name="currentSelect"
           />
+          <Alert name="currentSelect" />
         </Form.Item>
       </>
     );
@@ -211,13 +226,12 @@ export const ModalODPU = () => {
     );
   };
 
-  const modifiedSelectOptions = selectOptions.filter((option) => option.resource == values.currentTab);
-
   const onTabsChangeHandler = (resource) => {
     setFieldValue('currentTab', resource);
     // setType(resource);
     setFieldValue('entryNumberRes', undefined);
     setFieldValue('pipeNumberRes', undefined);
+    setFieldValue('currentSelect', undefined);
   };
 
   console.log('sources', resources);
@@ -239,17 +253,24 @@ export const ModalODPU = () => {
     }
   };
 
-  function handleSomeChange(value) {
-    console.log('value', value);
-    console.log(modifiedSelectOptions[value]);
-    const b = _.find(modifiedSelectOptions, { value });
-    console.log("b", b)
-    // // setFieldValue('currentSelect', value);
-    // // const b = _.filter(selectOptions, { value });
-    const { entryNumber, pipeNumber } = b;
-    console.log("entryNumber, pipeNumber", entryNumber, pipeNumber)
-    // setFieldValue('entryNumberRes', entryNumber);
-    // setFieldValue('pipeNumberRes', pipeNumber);
+  const Alert = ({ name }) => {
+    const touch = _.get(touched, `${name}`);
+    const error = _.get(errors, `${name}`);
+    if (touch && error) {
+      return (
+        <div>Выберите узел</div>
+      );
+    }
+    return null;
+  };
+
+  function handleSomeChange(value, value2) {
+    console.log('value = ', value);
+    console.log('value2', value2);
+    console.log('value2', value2.value);
+    setFieldValue('currentSelect', value2.value);
+    setFieldValue('entryNumberRes', value2.entryNumber);
+    setFieldValue('pipeNumberRes', value2.pipeNumber);
   }
 
   function onDetailChange(e) {
@@ -259,13 +280,20 @@ export const ModalODPU = () => {
 
   const buttonHandler = () => {
     console.log(values);
+    console.log('modifiedSelectOptions', modifiedSelectOptions);
+    console.log('selectOptions', selectOptions);
+  };
+
+  const handleCancel = () => {
+    dispatch(setModalCalculatorReportVisible(false));
   };
 
   return (
     <Modal
-      visible
+      visible={visible}
       width="800px"
       footer={null}
+      onCancel={handleCancel}
     >
       <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>
       <form onSubmit={handleSubmit}>
@@ -287,7 +315,7 @@ export const ModalODPU = () => {
           </ButtonTT>
           <ButtonTT
             color="blue"
-            onClick={downloadReport}
+            onClick={handleSubmit}
           >
             Выгрузить
           </ButtonTT>

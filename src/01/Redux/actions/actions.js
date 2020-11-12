@@ -63,7 +63,7 @@ export const setModalTemplateVisible = (path,value) => ({
 });
 
 // Изменение отображния модального окна ModalCalculatorReport
-export const setModalCalculatorReportVisible = (path,value) => ({
-  type: 'MODAL_CALCULATOR_REPORT_FORM_VISIBLE',
-  payload: { path, value },
+export const setModalCalculatorReportVisible = (value) => ({
+  type: 'REPORT_FORM_VISIBLE',
+  payload: { value },
 });
