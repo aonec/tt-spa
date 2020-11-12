@@ -96,8 +96,8 @@ export const HousingProfile = () => {
       }}
     >
       <Header />
-      <h1>HousingProfile</h1>
-      <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>
+      {/*<h1>HousingProfile</h1>*/}
+      {/*<ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>*/}
       <Tabs />
       <Grid>
         <Route path={`${path}`} exact>
