@@ -83,8 +83,6 @@ function ApartmentDevice(props) {
   const { icon, color } = currentIcon;
 
   const buttonHandler = () => {
-    console.log('buttonHandler');
-    console.log(id);
   };
 
   return (

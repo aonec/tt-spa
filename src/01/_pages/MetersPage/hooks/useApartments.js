@@ -1,7 +1,6 @@
 export const useApartments = ({ apartments = {} }, { filter = "" }) => {
   const { loading, items = [], housingStock } = apartments;
   const {housingStockNumber} = {...housingStock};
-  console.log(housingStockNumber)
   return {
     loading,
     items: items

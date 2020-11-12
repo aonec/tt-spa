@@ -28,7 +28,6 @@ export const ModalODPU = () => {
     $('.ant-tabs-tab-active').next().click();
 
 
-    console.log("tab", tab)
 
   }
   const postODPU = () => {

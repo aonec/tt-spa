@@ -106,7 +106,6 @@ const EditCalculator = () => {
     try {
       const res = await axios.put(`Calculators/${deviceId}`, calculatorPage);
       alert('Вычислитель успешно изменен!');
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

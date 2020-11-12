@@ -121,14 +121,11 @@ export const DeviceProfile = () => {
       });
       getCalculator(deviceId).then((response) => {
         setCalcModel(response);
-        console.log('calcModel', response);
       });
-      console.log('calcModel= ', calcModel);
     }
   }, [typeODPU]);
 
   const buttonHandler = () => {
-    console.log('calculator');
     getPagination();
   };
 

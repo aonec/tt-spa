@@ -49,12 +49,7 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  console.log('device = ', device);
-  console.log(model);
   const buttonHandler = () => {
-    console.log('loadings', loadings);
-    console.log('error', error);
-    console.log('errors', errors);
   };
 
   const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;

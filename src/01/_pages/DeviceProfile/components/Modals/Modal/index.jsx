@@ -121,7 +121,6 @@ export const ModalODPU = ({ device }) => {
   devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
-      console.log('res', res);
       const ind = selectOptions.indexOf(res);
       selectOptions.splice(ind, 1, {
         label: `${_.get(
