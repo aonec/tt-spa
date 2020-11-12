@@ -1,4 +1,6 @@
-import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
+import {
+  Route, useParams, useLocation, useRouteMatch,
+} from 'react-router-dom';
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
@@ -19,24 +21,22 @@ import { Information } from './components/Information';
 import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
-import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
-import { ModalODPU } from './components/Modals/Modal';
-import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
-import ModalCalcReport from './components/Modals/ModalCalcReport'
+
+
+
 import { RelatedDevices } from './components/RelatedDevices';
-import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
-import { HeaderNotCalculator } from './components/HeaderNotCalculator';
+
 
 export const DeviceContext = React.createContext();
 
 export const HousingProfile = () => {
-
   const params = useParams();
   const match = useRouteMatch();
 
+  console.log("HousingProfile")
+
   let path;
   let typeODPU;
-
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
@@ -66,12 +66,9 @@ export const HousingProfile = () => {
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
-
   const { pathname } = useLocation();
 
-
   const { deviceId, objid } = params;
-
 
   if (pathname.includes('calculator')) {
     typeODPU = 'Calculator';
@@ -80,7 +77,6 @@ export const HousingProfile = () => {
     path = `/housingMeteringDevices/${deviceId}/`;
     typeODPU = 'HousingMeteringDevice';
   }
-
 
   useEffect(() => {
     setIsLoading(true);
@@ -129,49 +125,43 @@ export const HousingProfile = () => {
     getPagination();
   };
 
-  if (isLoading || typeODPU === undefined) return 'ЗАГРУЗКА...';
+  return (
+    <DeviceContext.Provider
+      value={{
+        device,
+        building,
+        tasks,
+        related,
+        typeODPU,
+        loadings,
+        errors,
+        error,
+        hubs,
+        calcModel,
+      }}
+    >
+      <Header />
+      <h1>HousingProfile</h1>
+      <Tabs />
+      <Grid>
+        <Route path={`${path}`} exact>
+          <Information />
+        </Route>
+        <Route path={`${path}connection`} exact>
+          <Connection />
+        </Route>
+        <Route path={`${path}related`} exact>
+          <RelatedDevices />
+        </Route>
+        <Route path={`${path}documents`} exact>
+          <div>Документы</div>
+        </Route>
 
+        <Events title="Задачи с объектом" />
+      </Grid>
 
-    return (
-      <DeviceContext.Provider
-        value={{
-          device,
-          building,
-          tasks,
-          related,
-          typeODPU,
-          loadings,
-          errors,
-          error,
-          hubs,
-          calcModel,
-        }}
-      >
-        <Header/>
-        <h1>HousingProfile</h1>
-        <Tabs/>
-        <Grid>
-          <Route path={`${path}`} exact>
-            <Information/>
-          </Route>
-          <Route path={`${path}connection`} exact>
-            <Connection/>
-          </Route>
-          <Route path={`${path}related`} exact>
-            <RelatedDevices/>
-          </Route>
-          <Route path={`${path}documents`} exact>
-            <div>Документы</div>
-          </Route>
-
-          <Events title="Задачи с объектом"/>
-        </Grid>
-        <ModalODPU device={device}/>
-        <ModalDeregisterDevice deviceId={deviceId}/>
-      </DeviceContext.Provider>
-    );
-
-}
-
+    </DeviceContext.Provider>
+  );
+};
 
 export default HousingProfile;
