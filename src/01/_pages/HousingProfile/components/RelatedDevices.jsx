@@ -65,7 +65,6 @@ export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-// export const RelatedDevicesNotCalculator = (loading = true) => {
 export const RelatedDevices = () => {
   const {
     related, loadings,

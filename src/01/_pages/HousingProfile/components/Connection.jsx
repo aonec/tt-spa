@@ -6,8 +6,8 @@ import { HousingContext } from '../HousingProfile';
 
 export const Connection = () => {
   const { device, loadings } = useContext(HousingContext);
-  // const loadingDevice = _.get(loadings, 'device', true);
-  const loading = _.get(loadings, 'device', true);
+
+  const isLoading = _.get(loadings, 'device', true);
 
   const buttonHandler = () => {
     console.log('buttonHandler');
@@ -16,8 +16,7 @@ export const Connection = () => {
   return (
     <ListWrap>
       <Title>Настройки (не вычислитель)</Title>
-      <Loader show={loading} size="32">
-        ;
+      <Loader show={isLoading} size="32">
         <ListItem>
           <span>IP адрес вычислителя</span>
           <span>{device.ipV4 || 'X'}</span>
