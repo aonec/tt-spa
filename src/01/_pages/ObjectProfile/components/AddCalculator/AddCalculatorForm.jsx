@@ -23,7 +23,8 @@ async function deregisterDevice(device) {
   }
 }
 
-const AddCalculatorForm = () => {
+const AddCalculatorForm = (props) => {
+  const {currentTabKey, objid} = props
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -41,7 +42,7 @@ const AddCalculatorForm = () => {
         port: null,
       },
       futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),
-      housingStockId: 0,
+      housingStockId: Number(objid),
       infoId: 1,
     },
     validationSchema: Yup.object({}),
@@ -65,10 +66,17 @@ const AddCalculatorForm = () => {
     return null;
   };
 
+  const buttonHandler = () => {
+    console.log("buttonHandler")
+    console.log("values = ", values)
+  }
   return (
     <>
+      <button onClick={buttonHandler}>test</button>
       <form id="formikForm" onSubmit={handleSubmit}>
-        <Title size="middle" color="black" />
+
+
+       <div hidden>
         <Form.Item label="Дата снятия прибора с учета">
           <DatePickerTT
             name="closingDateTime"
@@ -82,9 +90,10 @@ const AddCalculatorForm = () => {
           />
           <Alert name="closingDateTime" />
         </Form.Item>
+        </div>
 
-        <div hidden={false} style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* <button onClick={buttonHandler}>test</button> */}
+        <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexDirection: 'column' }}>
+
           <Form.Item label="Серийный номер устройства">
             <InputTT
               name="serialNumber"
@@ -100,8 +109,8 @@ const AddCalculatorForm = () => {
               placeholder="Выберите тип устройства"
               options={items}
               value={values.infoId.toString()}
-              onChange={(event, target) => {
-                const path = ['infoId'];
+              onChange={(event) => {
+                setFieldValue('infoId', Number(event))
               }}
             />
           </Form.Item>
@@ -113,8 +122,7 @@ const AddCalculatorForm = () => {
               value={moment(values.lastCommercialAccountingDate)}
               placeholder="Укажите дату..."
               onChange={(date) => {
-                const path = ['lastCommercialAccountingDate'];
-                const value = date.toISOString();
+                setFieldValue('lastCommercialAccountingDate', date.toISOString())
               }}
             />
           </Form.Item>
@@ -126,8 +134,7 @@ const AddCalculatorForm = () => {
               placeholder="Укажите дату..."
               value={moment(values.checkingDate)}
               onChange={(date) => {
-                const path = ['checkingDate'];
-                const value = date.toISOString();
+                setFieldValue('checkingDate', date.toISOString())
               }}
             />
           </Form.Item>
@@ -139,28 +146,26 @@ const AddCalculatorForm = () => {
               value={moment(values.futureCheckingDate)}
               placeholder="Укажите дату..."
               onChange={(date) => {
-                const path = ['futureCheckingDate'];
-                const value = date.toISOString();
+                setFieldValue('futureCheckingDate', date.toISOString())
               }}
             />
           </Form.Item>
 
           <Form.Item label="Дата Следующей поверки">
-            <SelectTT
+            <DatePickerTT
+              format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
-              placeholder="Укажите оперид эксплуатации"
-              options={serviceLife}
-              value={serviceLife[0].value}
-              onChange={(event) => {
-                const value = moment().add(event, 'year').toISOString();
-                const path = ['futureCommercialAccountingDate'];
+              value={moment(values.futureCommercialAccountingDate)}
+              placeholder="Укажите дату..."
+              onChange={(date) => {
+                setFieldValue('futureCommercialAccountingDate', date.toISOString())
               }}
             />
           </Form.Item>
         </div>
 
 
-        <div hidden={true} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexDirection: 'column' }}>
           <Form.Item label="IP адрес вычислителя">
             <InputTT
               name="ipV4"
@@ -168,8 +173,7 @@ const AddCalculatorForm = () => {
               value={values.ipV4}
               placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
               onChange={(event) => {
-                const path = ['connection', 'ipV4'];
-
+                setFieldValue(['connection','ipV4'], event.target.value )
               }}
             />
           </Form.Item>
@@ -181,8 +185,7 @@ const AddCalculatorForm = () => {
               placeholder="Укажите порт устройства (например, 1234)"
               value={values.port}
               onChange={(event) => {
-                const path = ['connection', 'port'];
-
+                setFieldValue(['connection','port'], Number(event.target.value))
               }}
             />
           </Form.Item>
@@ -194,8 +197,7 @@ const AddCalculatorForm = () => {
               placeholder="Укажите адрес устройства (от 0 до 255)"
               value={values.deviceAddress}
               onChange={(event) => {
-                const path = ['connection', 'deviceAddress'];
-
+                setFieldValue(['connection','deviceAddress'], Number(event.target.value))
               }}
             />
           </Form.Item>
@@ -211,7 +213,7 @@ const AddCalculatorForm = () => {
           </Wrap>
         </div>
 
-        <div hidden={true}>
+        <div hidden={Number(currentTabKey) !== 3}>
           <Header>Компонент Документы в разработке</Header>
         </div>
       </form>

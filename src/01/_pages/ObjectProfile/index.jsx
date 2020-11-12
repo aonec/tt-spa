@@ -39,7 +39,7 @@ export const ObjectProfile = () => {
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
-  const context = {addCalculator, setAddCalculator, addOdpu, setAddOdpu}
+  const context = {addCalculator, setAddCalculator, addOdpu, setAddOdpu, objid}
 
   return styled(grid)(
     <>
