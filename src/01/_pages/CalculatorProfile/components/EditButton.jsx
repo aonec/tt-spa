@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
-import {
-  useHistory, useRouteMatch, useParams, NavLink, useLocation,
-} from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams, NavLink, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
 import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
@@ -69,8 +67,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { pathname } = useLocation();
-  const {deviceId} = useParams()
+  const { deviceId } = useParams();
   const dispatch = useDispatch();
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -99,7 +96,7 @@ export const Menu = (showPopupHandler) => {
     <>
       <EditButton />
       <List id="edit-button__list">
-        {/*<NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>*/}
+        {/* <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}> */}
         <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
           <ListItem>
             Редактировать

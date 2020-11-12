@@ -22,10 +22,7 @@ import { InformationNotCalculator } from './components/InformationNotCalculator'
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 
-
-
 import { RelatedDevices } from './components/RelatedDevices';
-
 
 export const DeviceContext = React.createContext();
 
@@ -33,7 +30,7 @@ export const HousingProfile = () => {
   const params = useParams();
   const match = useRouteMatch();
 
-  console.log("HousingProfile")
+  console.log('HousingProfile');
 
   let path;
   let typeODPU;

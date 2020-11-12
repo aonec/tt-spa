@@ -19,7 +19,9 @@ export const Information = (loading = true) => {
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
-  const { city, street, housingStockNumber, corpus } = building || DEFAULT_BUILDING;
+  const {
+    city, street, housingStockNumber, corpus,
+  } = building || DEFAULT_BUILDING;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
@@ -41,7 +43,7 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${housingStockNumber}${corpus? `, к.${corpus}` : ''}`}
+            {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
           </span>
         </ListItem>
         <ListItem>

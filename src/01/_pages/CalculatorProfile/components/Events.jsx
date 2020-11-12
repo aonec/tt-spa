@@ -6,7 +6,6 @@ import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
 import { DeviceContext } from '../CalculatorProfile';
 
-const Template = styled.div``;
 
 const Task = styled.a`
   display: flex;

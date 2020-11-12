@@ -15,11 +15,11 @@ export const Connection = () => {
       <Loader show={loading} size="32">
         <ListItem>
           <span>IP адрес вычислителя</span>
-          <span>{ipV4 }</span>
+          <span>{ipV4}</span>
         </ListItem>
         <ListItem>
           <span>Порт</span>
-          <span>{port }</span>
+          <span>{port}</span>
         </ListItem>
         <ListItem>
           <span>Адрес прибора</span>

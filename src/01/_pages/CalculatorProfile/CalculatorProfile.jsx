@@ -1,42 +1,23 @@
-import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
-import _ from 'lodash';
+import { Route, useParams, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Grid } from '01/_components';
-import {
-  getInfo,
-  getObjectOfDevice,
-  getODPUTasks,
-  getRelatedDevices,
-  getTypeODPU,
-  getCalculatorResources,
-  getCalculator,
-  getPagination,
-} from '01/_api/device_page';
+import { getCalculatorTasks, getCalculator} from './apiCalculatorProfile';
+import { Grid } from '../../_components';
+
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
-import { TabsNotCalculator } from './components/TabsNotCalculator';
 import { Information } from './components/Information';
-import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
-import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
+import { RelatedDevices } from './components/RelatedDevices';
+
 import { ModalODPU } from './components/Modals/Modal';
 import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
-import ModalCalcReport from './components/Modals/ModalCalcReport'
-import { RelatedDevices } from './components/RelatedDevices';
-import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
-import { HeaderNotCalculator } from './components/HeaderNotCalculator';
 
 export const DeviceContext = React.createContext();
 
 export const CalculatorProfile = () => {
-
-  const params = useParams();
-  const match = useRouteMatch();
-
-  let path;
-  let typeODPU;
-
+  const { deviceId } = useParams();;
+  const path = `/calculators/${deviceId}/`
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
@@ -44,8 +25,6 @@ export const CalculatorProfile = () => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [hubs, setHubs] = useState();
-  const [calcModel, setCalcModel] = useState();
-  const [calcId, setCalcId] = useState();
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -55,46 +34,27 @@ export const CalculatorProfile = () => {
     building: true,
     tasks: true,
     related: true,
-    typeODPU: false,
   });
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
     building: 'Произошла ошибка при загрузке данных по зданию',
     tasks: 'Произошла ошибка при загрузке данных по задачам',
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
-    calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
-
-
-  const { pathname } = useLocation();
-
-
-  const { deviceId, objid } = params;
-
-
-  if (pathname.includes('calculator')) {
-    typeODPU = 'Calculator';
-    path = `/calculators/${deviceId}/`;
-  } else if (pathname.includes('housingMeteringDevices')) {
-    path = `/housingMeteringDevices/${deviceId}/`;
-    typeODPU = 'HousingMeteringDevice';
-  }
-
 
   useEffect(() => {
     setIsLoading(true);
     Promise.allSettled([
-      getInfo(typeODPU, deviceId),
-      getODPUTasks(deviceId),
+      getCalculator(deviceId),
+      getCalculatorTasks(deviceId)
     ])
       .then((responses) => {
         const [{ value: device }, { value: tasks }] = responses;
         setDevice(device);
         setBuilding(device.address);
+        setHubs(device.hubs);
         setTasks(tasks.items);
         setRelated(device.hubs);
-        setCalcId(device.hubConnection.calculatorId);
         setIsLoading(false);
       })
       .catch(({ resource, message }) => {
@@ -108,70 +68,49 @@ export const CalculatorProfile = () => {
           building: false,
           tasks: false,
           related: false,
-          typeODPU: false,
         }));
         setIsLoading(false);
       });
   }, []);
 
-  useEffect(() => {
-    if (typeODPU === 'Calculator') {
-      getCalculatorResources(deviceId).then((response) => {
-        setHubs(response);
-      });
-      getCalculator(deviceId).then((response) => {
-        setCalcModel(response);
-      });
-    }
-  }, [typeODPU]);
 
-  const buttonHandler = () => {
-    getPagination();
-  };
+  if (isLoading) return 'ЗАГРУЗКА...';
 
-  if (isLoading || typeODPU === undefined) return 'ЗАГРУЗКА...';
+  return (
+    <DeviceContext.Provider
+      value={{
+        device,
+        building,
+        tasks,
+        related,
+        loadings,
+        errors,
+        error,
+        hubs,
+      }}
+    >
+      <Header />
+      <Tabs />
+      <Grid>
+        <Route path={`${path}`} exact>
+          <Information />
+        </Route>
+        <Route path={`${path}connection`} exact>
+          <Connection />
+        </Route>
+        <Route path={`${path}related`} exact>
+          <RelatedDevices />
+        </Route>
+        <Route path={`${path}documents`} exact>
+          <div>Документы</div>
+        </Route>
 
-  if (typeODPU === 'Calculator') {
-    return (
-      <DeviceContext.Provider
-        value={{
-          device,
-          building,
-          tasks,
-          related,
-          typeODPU,
-          loadings,
-          errors,
-          error,
-          hubs,
-          calcModel,
-        }}
-      >
-        <Header/>
-        <h1>CalculatorProfile</h1>
-        <Tabs/>
-        <Grid>
-          <Route path={`${path}`} exact>
-            <Information/>
-          </Route>
-          <Route path={`${path}connection`} exact>
-            <Connection/>
-          </Route>
-          <Route path={`${path}related`} exact>
-            <RelatedDevices/>
-          </Route>
-          <Route path={`${path}documents`} exact>
-            <div>Документы</div>
-          </Route>
-
-          <Events title="Задачи с объектом"/>
-        </Grid>
-        <ModalODPU device={device}/>
-        <ModalDeregisterDevice deviceId={deviceId}/>
-      </DeviceContext.Provider>
-    );
-  }
-}
-
+        <Events title="Задачи с объектом" />
+      </Grid>
+      {/*<ModalODPU device={device} />*/}
+      {/*<ModalDeregisterDevice deviceId={deviceId} />*/}
+    </DeviceContext.Provider>
+  );
+};
 
 export default CalculatorProfile;
