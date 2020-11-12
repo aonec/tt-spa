@@ -5,26 +5,77 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
 import {
-  DatePickerTT, Header, InputTT, SelectTT, Title, Wrap,
+  ButtonTT,
+  DatePickerTT, Header, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
 import axios from '../../../../axios';
-import { items, serviceLife } from '../../../../tt-components/localBases';
-import { onChangeFormValueByPath } from "../../../../Redux/actions/actions";
+import { items } from '../../../../tt-components/localBases';
 
-async function deregisterDevice(device) {
+async function addCalculator(form) {
   try {
-    alert('Отправляется запрос на снятие прибора с учета !');
-    const res = await axios.post('MeteringDevices/close', device);
-    alert('Вычислитель успешно снят с учета !');
+    const res = await axios.post('Calculators', form);
+    alert('Вычислитель успешно создан !');
     return res;
   } catch (error) {
-    alert('Что-то пошло не так: попробуйте еще раз');
-    throw new Error(error);
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка добавления Вычислителя',
+    };
   }
 }
 
 const AddCalculatorForm = (props) => {
-  const {currentTabKey, objid} = props
+  const {
+    currentTabKey, objid, setTab, setAddCalculator, handleCancel, handleNext,
+  } = props;
+
+  const Buttons = () => {
+    const RenderNextButton = () => {
+      if (currentTabKey === '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          onClick={handleNext}
+        >
+          Далее
+        </ButtonTT>
+      );
+    };
+
+    const RenderSubmitButton = () => {
+      if (currentTabKey !== '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Выгрузить
+        </ButtonTT>
+      );
+    };
+
+    const CancelButton = () => (
+      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+        Отмена
+      </ButtonTT>
+    );
+
+    return (
+      <div style={{margin:'32px 0'}}>
+        <RenderNextButton />
+        <RenderSubmitButton />
+        <CancelButton />
+      </div>
+    );
+  };
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -36,23 +87,37 @@ const AddCalculatorForm = (props) => {
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
-      connection: {
-        ipV4: '',
-        deviceAddress: null,
-        port: null,
-      },
+      ipV4: '',
+      deviceAddress: '',
+      port: '',
       futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),
       housingStockId: Number(objid),
       infoId: 1,
     },
-    validationSchema: Yup.object({}),
+    validationSchema: Yup.object({
+      serialNumber: Yup.string().required('Введите серийный номер'),
+      ipV4: Yup.string().required('Введите IP-адрес устройства'),
+      deviceAddress: Yup.string().required('Введите сетевой адрес устройства'),
+      port: Yup.string().required('Введите порт устройства'),
+
+    }),
     onSubmit: async () => {
       const form = {
-        deviceId: values.deviceId,
+        serialNumber: values.serialNumber,
+        checkingDate: values.checkingDate,
+        futureCheckingDate: values.futureCheckingDate,
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         documentsIds: values.documentsIds,
-        closingDateTime: values.closingDateTime,
+        connection: {
+          ipV4: values.ipV4,
+          deviceAddress: values.deviceAddress,
+          port: values.port,
+        },
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        housingStockId: values.housingStockId,
+        infoId: values.infoId,
       };
-      deregisterDevice(form);
+      addCalculator(form);
     },
   });
   const Alert = ({ name }) => {
@@ -67,29 +132,29 @@ const AddCalculatorForm = (props) => {
   };
 
   const buttonHandler = () => {
-    console.log("buttonHandler")
-    console.log("values = ", values)
-  }
+    console.log('buttonHandler');
+    console.log('values = ', values);
+    console.log(errors);
+  };
   return (
     <>
-      <button onClick={buttonHandler}>test</button>
+      {/*<button onClick={buttonHandler}>test</button>*/}
       <form id="formikForm" onSubmit={handleSubmit}>
 
-
-       <div hidden>
-        <Form.Item label="Дата снятия прибора с учета">
-          <DatePickerTT
-            name="closingDateTime"
-            format="DD.MM.YYYY"
-            allowClear={false}
-            onBlur={handleBlur}
-            onChange={(date) => {
-              setFieldValue('closingDateTime', date.toISOString());
-            }}
-            value={moment(values.closingDateTime)}
-          />
-          <Alert name="closingDateTime" />
-        </Form.Item>
+        <div hidden>
+          <Form.Item label="Дата снятия прибора с учета">
+            <DatePickerTT
+              name="closingDateTime"
+              format="DD.MM.YYYY"
+              allowClear={false}
+              onBlur={handleBlur}
+              onChange={(date) => {
+                setFieldValue('closingDateTime', date.toISOString());
+              }}
+              value={moment(values.closingDateTime)}
+            />
+            <Alert name="closingDateTime" />
+          </Form.Item>
         </div>
 
         <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexDirection: 'column' }}>
@@ -100,7 +165,9 @@ const AddCalculatorForm = (props) => {
               value={values.serialNumber}
               placeholder="Серийный номер..."
               onChange={handleChange}
+              onBlue={handleBlur}
             />
+            <Alert name="serialNumber" />
           </Form.Item>
 
           <Form.Item label="Тип вычислителя">
@@ -110,7 +177,7 @@ const AddCalculatorForm = (props) => {
               options={items}
               value={values.infoId.toString()}
               onChange={(event) => {
-                setFieldValue('infoId', Number(event))
+                setFieldValue('infoId', Number(event));
               }}
             />
           </Form.Item>
@@ -122,7 +189,7 @@ const AddCalculatorForm = (props) => {
               value={moment(values.lastCommercialAccountingDate)}
               placeholder="Укажите дату..."
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString())
+                setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
             />
           </Form.Item>
@@ -134,36 +201,35 @@ const AddCalculatorForm = (props) => {
               placeholder="Укажите дату..."
               value={moment(values.checkingDate)}
               onChange={(date) => {
-                setFieldValue('checkingDate', date.toISOString())
+                setFieldValue('checkingDate', date.toISOString());
               }}
             />
           </Form.Item>
 
-          <Form.Item label="Дата Следующей поверки">
+          <Form.Item label="Дата начала Акта действия допуска">
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
               value={moment(values.futureCheckingDate)}
               placeholder="Укажите дату..."
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString())
+                setFieldValue('futureCheckingDate', date.toISOString());
               }}
             />
           </Form.Item>
 
-          <Form.Item label="Дата Следующей поверки">
+          <Form.Item label="Дата окончания Акта действия допуска">
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
               value={moment(values.futureCommercialAccountingDate)}
               placeholder="Укажите дату..."
               onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date.toISOString())
+                setFieldValue('futureCommercialAccountingDate', date.toISOString());
               }}
             />
           </Form.Item>
         </div>
-
 
         <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexDirection: 'column' }}>
           <Form.Item label="IP адрес вычислителя">
@@ -171,11 +237,13 @@ const AddCalculatorForm = (props) => {
               name="ipV4"
               type="text"
               value={values.ipV4}
+              onBlur={handleBlur}
               placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
               onChange={(event) => {
-                setFieldValue(['connection','ipV4'], event.target.value )
+                setFieldValue('ipV4', event.target.value);
               }}
             />
+            <Alert name="ipV4" />
           </Form.Item>
 
           <Form.Item label="Порт вычислителя">
@@ -184,10 +252,12 @@ const AddCalculatorForm = (props) => {
               type="number"
               placeholder="Укажите порт устройства (например, 1234)"
               value={values.port}
+              onBlur={handleBlur}
               onChange={(event) => {
-                setFieldValue(['connection','port'], Number(event.target.value))
+                setFieldValue('port', Number(event.target.value));
               }}
             />
+            <Alert name="port" />
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя">
@@ -196,10 +266,12 @@ const AddCalculatorForm = (props) => {
               type="number"
               placeholder="Укажите адрес устройства (от 0 до 255)"
               value={values.deviceAddress}
+              onBlur={handleBlur}
               onChange={(event) => {
-                setFieldValue(['connection','deviceAddress'], Number(event.target.value))
+                setFieldValue('deviceAddress', Number(event.target.value));
               }}
             />
+            <Alert name="deviceAddress" />
           </Form.Item>
 
           <Wrap
@@ -216,6 +288,8 @@ const AddCalculatorForm = (props) => {
         <div hidden={Number(currentTabKey) !== 3}>
           <Header>Компонент Документы в разработке</Header>
         </div>
+
+        <Buttons />
       </form>
     </>
   );
