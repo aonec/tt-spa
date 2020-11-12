@@ -50,32 +50,33 @@ const TabsDevices = () => {
     )
 
     useEffect(() => {
+        setIsLoading(true)
         const deviceArray = deviceItems.map((device) => {
                 return <DeviceBlock device={device}/>
             }
         );
-        setDeviceElems(deviceArray)
+        setDeviceElems(deviceArray);
+        setIsLoading(false)
+
     }, [deviceItems])
 
+    const pagination = pages.map((page, index) => <span
+            key={index}
+            className={currentPage == page ? styles.currentPage : styles.page}
+            onClick={() => dispatch(setCurrentPage(page))}
+        >{page}</span> )
 
-
-    if (isLoading) return 'ЗАГРУЗКА...'
+    // if (isLoading) return 'ЗАГРУЗКА...'
 
     return <div>
 
         <Tabs defaultActiveKey="1" onChange={callback} style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
                 <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-                {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
+                {isLoading || deviceElems.length === 0 ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
-                        <div className={styles.pages}>
-                            {pages.map((page, index) => <span
-                                key={index}
-                                className={currentPage == page ? styles.currentPage : styles.page}
-                                onClick={() => dispatch(setCurrentPage(page))}
-                            >{page}</span> )}
-                        </div>
+                        <div className={styles.pages}>{pagination}</div>
                     </div>}
             </TabPane>
             {/*<TabPane tab="ИПУ" key="2">*/}
