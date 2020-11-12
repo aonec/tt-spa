@@ -1,50 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import $ from 'jquery';
-import { useParams } from 'react-router-dom';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../../../tt-components/antd.scss';
+import { Modal } from 'antd';
 import {
-  Modal,
-  ModalWrap,
-  ModalTop,
-  ModalMain,
-  ModalBottom,
-  ModalClose,
-} from '../../../../tt-components/Modal';
-import { Title, ButtonTT } from '../../../../tt-components';
-import axios from '../../../../axios';
-import TabsComponent from './components/Tabs/Main';
-import { setAddCalculatorForm } from '../../../../Redux/actions/actions';
+  Title, ButtonTT,
+} from '../../../../tt-components';
+import TabsComponent from './components/addCalculatorTabs';
+import { ObjectContext } from '../../index';
+import AddCalculatorForm from './AddCalculatorForm';
 
 const ModalCalculator = () => {
-  const { 0: objid, 1: deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
-  const modalRef = React.createRef();
-  const dispatch = useDispatch();
-  const calculatorPage = useSelector((state) => state.calculatorPage);
-
-  const initialStateDefaultValues = {
-    serialNumber: '',
-    checkingDate: moment().toISOString(),
-    futureCheckingDate: moment().toISOString(),
-    lastCommercialAccountingDate: moment().toISOString(),
-    documentsIds: [],
-    connection: {
-      ipV4: '',
-      deviceAddress: null,
-      port: null,
-    },
-    futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),
-    housingStockId: Number(objid),
-    infoId: 1,
-  };
-
-  useEffect(() => {
-    dispatch(
-      setAddCalculatorForm(calculatorPage, initialStateDefaultValues),
-    );
-  }, []);
+  const { addCalculator, setAddCalculator, objid } = useContext(ObjectContext);
 
   function handleChangeTab(value) {
     setTab(value);
@@ -54,84 +20,40 @@ const ModalCalculator = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-  const renderNextButton = () => {
-    if (currentTabKey === '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleNext}
-      >
-        Далее
-      </ButtonTT>
-    );
-  };
-
-  const renderSubmitButton = () => {
-    if (currentTabKey !== '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleSubmit}
-      >
-        Выгрузить
-      </ButtonTT>
-    );
-  };
-
-  const hideMe = () => {
-    $('#add-calculator').css('display', 'none');
+  const handleCancel = () => {
+    setAddCalculator(false);
   };
 
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
-  const handleSubmit = async () => {
-    alert('Cейчас будем отправлять данные!');
-    console.log(JSON.stringify(calculatorPage));
-    try {
-      const res = await axios.post('Calculators', calculatorPage);
-      alert('Вычислитель успешно создан !');
-      return res;
-    } catch (error) {
-      alert(
-        'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
-      );
-      throw new Error(error);
-    }
-  };
-
   return (
-    <Modal id="add-calculator" ref={modalRef}>
-      <ModalWrap>
-        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
-        <ModalClose getModal={modalRef} />
-        <ModalTop>
-          <Title size="middle" color="black">
-            Добавление нового вычислителя
-          </Title>
-        </ModalTop>
-        <ModalMain>
-          <TabsComponent
-            currentTabKey={currentTabKey}
-            handleChangeTab={handleChangeTab}
-          />
-        </ModalMain>
+    <Modal
+      visible={addCalculator}
+      onCancel={handleCancel}
+      footer={null}
+      width={800}
+    >
+      {/*<ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>*/}
+      <Title size="middle" color="black">
+        Добавление нового вычислителя
+      </Title>
 
-        <ModalBottom>
-          <ButtonTT color="white" onClick={hideMe}>
-            Отмена
-          </ButtonTT>
-          {renderNextButton()}
-          {renderSubmitButton()}
-        </ModalBottom>
-      </ModalWrap>
+      <TabsComponent
+        currentTabKey={currentTabKey}
+        handleChangeTab={handleChangeTab}
+      />
+
+      <AddCalculatorForm
+        currentTabKey={currentTabKey}
+        objid={objid}
+        addCalculator={addCalculator}
+        setAddCalculator={setAddCalculator}
+        handleCancel={handleCancel}
+        handleNext={handleNext}
+      />
+
     </Modal>
   );
 };
