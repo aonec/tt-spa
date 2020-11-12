@@ -1,13 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import $ from 'jquery';
 import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { Menu, EditButton } from './EditButton';
-import { DeviceContext } from '../HousingProfile';
+import { Menu } from './EditButton';
+import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 
 export const Template = styled.div``;
@@ -38,8 +37,9 @@ export const Header = () => {
   const {
     device, building, loadings, errors, error, typeODPU, calcModel,
   } = useContext(
-    DeviceContext,
+    HousingContext
   );
+
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
 
@@ -49,10 +49,6 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  const buttonHandler = () => {
-  };
-
-  const MenuOPDU = typeODPU === 'Calculator' ? <Menu /> : null;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -81,13 +77,13 @@ export const Header = () => {
               size="24"
               style={{ marginRight: '8px' }}
             />
-            {`${calcModel || 'Вычислитель'} (${serialNumber})`}
+            {`${model} (${serialNumber})`}
           </Title>
 
           <Subtitle>{`${city}, ${street}, ${housingStockNumber}${corpus? `, к.${corpus}` : ''}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          {MenuOPDU}
+          <Menu/>
         </div>
       </Loader>
     </HeaderWrap>

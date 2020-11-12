@@ -85,7 +85,7 @@ export const Header = () => {
             />
             {`${model || 'Вычислитель'} (${serialNumber})`}
           </Title>
-          <ButtonTT onClick={buttonHandler}>TEST</ButtonTT>
+          {/*<ButtonTT onClick={buttonHandler}>TEST</ButtonTT>*/}
           <Subtitle>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>

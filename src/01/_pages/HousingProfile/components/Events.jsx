@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
-import { DeviceContext } from '../HousingProfile';
+import { HousingContext } from '../HousingProfile';
 
 const Template = styled.div``;
 
@@ -57,7 +57,7 @@ const buttonHandler = () => {
   console.log('buttonHandler');
 };
 export const Events = ({ title = '' }) => {
-  const { tasks, loadings } = useContext(DeviceContext);
+  const { tasks, loadings } = useContext(HousingContext);
   // const loadingTasks = _.get(loadings, 'device', true);
   const loading = _.get(loadings, 'device', true);
 

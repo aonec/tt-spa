@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
-import { useParams, NavLink, useLocation } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';

@@ -3,13 +3,13 @@ import { convertDateDots } from '01/_api/utils/convertDate';
 import { Loader } from '01/components';
 import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
-import { DeviceContext } from '../HousingProfile';
+import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 
 export const Information = (loading = true) => {
   const {
     device, building, loadings, error,
-  } = useContext(DeviceContext);
+  } = useContext(HousingContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
@@ -19,12 +19,15 @@ export const Information = (loading = true) => {
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
+
+  // const { city, street, number } = building || DEFAULT_BUILDING;
   const { city, street, housingStockNumber, corpus } = building || DEFAULT_BUILDING;
-  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
+  // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
+  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;;
 
   const errorOfComponent = _.get(error, 'resource', null);
   // console.log('error', error);
-
+  console.log("device", device)
   if (errorOfComponent) {
     return (
       <ListWrap>
@@ -34,6 +37,7 @@ export const Information = (loading = true) => {
     );
   }
 
+  console.log(convertDateDots(lastCommercialAccountingDate))
   return (
     <ListWrap>
       <Loader show={loading} size="32">
@@ -41,7 +45,7 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city}, ${street}, ${housingStockNumber}${corpus? `, к.${corpus}` : ''}`}
+            {`${city}, ${street}, ${housingStockNumber} ${corpus? `, к.${corpus}` : ''}`}
           </span>
         </ListItem>
         <ListItem>

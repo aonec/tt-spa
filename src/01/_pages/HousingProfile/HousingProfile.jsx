@@ -1,39 +1,22 @@
-import {
-  Route, useParams, useLocation, useRouteMatch,
-} from 'react-router-dom';
-import _ from 'lodash';
+import {  Route, useParams} from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
-import {
-  getInfo,
-  getObjectOfDevice,
-  getODPUTasks,
-  getRelatedDevices,
-  getTypeODPU,
-  getCalculatorResources,
-  getCalculator,
-  getPagination,
-} from '01/_api/device_page';
+import { getHousingTasks, getHousing } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
-import { TabsNotCalculator } from './components/TabsNotCalculator';
 import { Information } from './components/Information';
-import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
+import Documents from './components/Documents';
 
 import { RelatedDevices } from './components/RelatedDevices';
+import ButtonTT from "../../tt-components/ButtonTT";
 
-export const DeviceContext = React.createContext();
+export const HousingContext = React.createContext();
 
 export const HousingProfile = () => {
-  const params = useParams();
-  const match = useRouteMatch();
-
-  console.log('HousingProfile');
-
-  let path;
-  let typeODPU;
+  const { deviceId, objid } = useParams();
+  const path = `/housingMeteringDevices/${deviceId}/`;
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
@@ -59,34 +42,21 @@ export const HousingProfile = () => {
     building: 'Произошла ошибка при загрузке данных по зданию',
     tasks: 'Произошла ошибка при загрузке данных по задачам',
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-    typeODPU: 'Произошла ошибка при загрузке данных по типу устройства',
     calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
-
-  const { pathname } = useLocation();
-
-  const { deviceId, objid } = params;
-
-  if (pathname.includes('calculator')) {
-    typeODPU = 'Calculator';
-    path = `/calculators/${deviceId}/`;
-  } else if (pathname.includes('housingMeteringDevices')) {
-    path = `/housingMeteringDevices/${deviceId}/`;
-    typeODPU = 'HousingMeteringDevice';
-  }
 
   useEffect(() => {
     setIsLoading(true);
     Promise.allSettled([
-      getInfo(typeODPU, deviceId),
-      getODPUTasks(deviceId),
+      getHousing(deviceId),
+      getHousingTasks(deviceId),
     ])
       .then((responses) => {
         const [{ value: device }, { value: tasks }] = responses;
         setDevice(device);
         setBuilding(device.address);
         setTasks(tasks.items);
-        setRelated(device.hubs);
+        setRelated(device.hubConnection);
         setCalcId(device.hubConnection.calculatorId);
         setIsLoading(false);
       })
@@ -101,35 +71,23 @@ export const HousingProfile = () => {
           building: false,
           tasks: false,
           related: false,
-          typeODPU: false,
         }));
         setIsLoading(false);
       });
   }, []);
 
-  useEffect(() => {
-    if (typeODPU === 'Calculator') {
-      getCalculatorResources(deviceId).then((response) => {
-        setHubs(response);
-      });
-      getCalculator(deviceId).then((response) => {
-        setCalcModel(response);
-      });
-    }
-  }, [typeODPU]);
-
   const buttonHandler = () => {
-    getPagination();
+    console.log('buttonHandler');
+    console.log(related)
   };
 
   return (
-    <DeviceContext.Provider
+    <HousingContext.Provider
       value={{
         device,
         building,
         tasks,
         related,
-        typeODPU,
         loadings,
         errors,
         error,
@@ -139,6 +97,7 @@ export const HousingProfile = () => {
     >
       <Header />
       <h1>HousingProfile</h1>
+      <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>
       <Tabs />
       <Grid>
         <Route path={`${path}`} exact>
@@ -151,13 +110,13 @@ export const HousingProfile = () => {
           <RelatedDevices />
         </Route>
         <Route path={`${path}documents`} exact>
-          <div>Документы</div>
+          <Documents />
         </Route>
 
         <Events title="Задачи с объектом" />
       </Grid>
 
-    </DeviceContext.Provider>
+    </HousingContext.Provider>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Route, useParams, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { getCalculatorTasks, getCalculator} from './apiCalculatorProfile';
+import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 
 import { Header } from './components/Header';
@@ -12,12 +12,14 @@ import { RelatedDevices } from './components/RelatedDevices';
 
 import { ModalODPU } from './components/Modals/Modal';
 import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
+import { Loader } from '../../components/Loader';
+import Documents from "./components/Documents";
 
 export const DeviceContext = React.createContext();
 
 export const CalculatorProfile = () => {
-  const { deviceId } = useParams();;
-  const path = `/calculators/${deviceId}/`
+  const { deviceId } = useParams();
+  const path = `/calculators/${deviceId}/`;
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
@@ -46,7 +48,7 @@ export const CalculatorProfile = () => {
     setIsLoading(true);
     Promise.allSettled([
       getCalculator(deviceId),
-      getCalculatorTasks(deviceId)
+      getCalculatorTasks(deviceId),
     ])
       .then((responses) => {
         const [{ value: device }, { value: tasks }] = responses;
@@ -73,8 +75,7 @@ export const CalculatorProfile = () => {
       });
   }, []);
 
-
-  if (isLoading) return 'ЗАГРУЗКА...';
+  if (isLoading) return <Loader show size={32} />;
 
   return (
     <DeviceContext.Provider
@@ -102,13 +103,13 @@ export const CalculatorProfile = () => {
           <RelatedDevices />
         </Route>
         <Route path={`${path}documents`} exact>
-          <div>Документы</div>
+          <Documents />
         </Route>
 
         <Events title="Задачи с объектом" />
       </Grid>
-      {/*<ModalODPU device={device} />*/}
-      {/*<ModalDeregisterDevice deviceId={deviceId} />*/}
+      {/* <ModalODPU device={device} /> */}
+      {/* <ModalDeregisterDevice deviceId={deviceId} /> */}
     </DeviceContext.Provider>
   );
 };

@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
 
 export const Template = styled.div``;
 
@@ -69,9 +69,10 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { pathname } = useLocation();
-  const {deviceId} = useParams()
+  const { deviceId } = useParams();
+  const history = useLocation();
   const dispatch = useDispatch();
+
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
@@ -87,7 +88,6 @@ export const Menu = (showPopupHandler) => {
     console.log("$('#modal-report-device')", $('#modal-report-device'));
     $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
-    // dispatch(setModalCalcReportVisible(true));
   };
 
   const showDeregisterDeviceModal = () => {
@@ -99,11 +99,9 @@ export const Menu = (showPopupHandler) => {
     <>
       <EditButton />
       <List id="edit-button__list">
-        {/*<NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}>*/}
-        <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
+        <NavLink className={styles.menu} to={`/housingMeteringDevices/${deviceId}/edit_odpu`}>
           <ListItem>
-            Редактировать
-            вычислитель
+            Редактировать ОДПУ
           </ListItem>
         </NavLink>
         <ListItem>Поверить вычислитель</ListItem>

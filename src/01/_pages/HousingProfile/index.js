@@ -1,1 +1,1 @@
-export { HousingProfile, DeviceContext } from './HousingProfile';
+export { HousingProfile, HousingContext } from './HousingProfile';
