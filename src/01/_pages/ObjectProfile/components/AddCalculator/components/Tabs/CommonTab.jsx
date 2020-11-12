@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import {  useSelector, useDispatch } from 'react-redux';
 import { Form } from 'antd';
 import moment from 'moment';
 import { SelectTT, InputTT, DatePickerTT } from '../../../../../../tt-components';
-import { items, serviceLife } from '../CalculatorJSON';
+import { items, serviceLife } from '../../../../../../tt-components/localBases';
 import { onChangeFormValueByPath } from '../../../../../../Redux/actions/actions';
 
 const CommonTab = () => {
