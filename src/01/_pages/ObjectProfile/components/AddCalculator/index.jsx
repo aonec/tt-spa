@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import $ from 'jquery';
 import { useParams } from 'react-router-dom';
@@ -9,6 +9,8 @@ import { Title, ButtonTT } from '../../../../tt-components';
 import axios from '../../../../axios';
 import TabsComponent from './components/Tabs/Main';
 import { setAddCalculatorForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
+import { ObjectContext } from '../../index';
+
 
 const ModalCalculator = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -16,7 +18,7 @@ const ModalCalculator = () => {
   const modalRef = React.createRef();
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
-
+  const { addCalculator, setAddCalculator} = useContext(ObjectContext);
   const initialStateDefaultValues = {
     serialNumber: '',
     checkingDate: moment().toISOString(),
@@ -47,42 +49,60 @@ const ModalCalculator = () => {
     setTab(String(Number(currentTabKey) + 1));
   };
 
-  const renderNextButton = () => {
-    if (currentTabKey === '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleNext}
-      >
-        Далее
+  const Buttons = () => {
+    const RenderNextButton = () => {
+      if (currentTabKey === '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          onClick={handleNext}
+        >
+          Далее
+        </ButtonTT>
+      );
+    };
+
+    const RenderSubmitButton = () => {
+      if (currentTabKey !== '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          onClick={handleSubmit}
+        >
+          Выгрузить
+        </ButtonTT>
+      );
+    };
+
+    const CancelButton = () => (
+
+      <ButtonTT color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
+        Отмена
       </ButtonTT>
+    );
+    return (
+      <div>
+        <RenderNextButton />
+        <RenderSubmitButton />
+        <CancelButton />
+      </div>
     );
   };
 
-  const renderSubmitButton = () => {
-    if (currentTabKey !== '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleSubmit}
-      >
-        Выгрузить
-      </ButtonTT>
-    );
-  };
-
-  const hideMe = () => {
-    $('#add-calculator').css('display', 'none');
-  };
 
   const buttonHandler = () => {
     console.log('buttonHandler');
+    console.log(addCalculator)
+  };
+
+  const handleCancel = () => {
+    setAddCalculator(false)
   };
 
   const handleSubmit = async () => {
@@ -100,42 +120,28 @@ const ModalCalculator = () => {
     }
   };
 
-  const handleCancel = () => {
-    dispatch(setModalDeregisterVisible(false));
-  };
+
 
   return (
     <Modal
-      visible
+      visible={addCalculator}
       onCancel={handleCancel}
       footer={null}
       ref={modalRef}
       width={800}
     >
+    <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>
+      <Title size="middle" color="black">
+        Добавление нового вычислителя
+      </Title>
 
-      <div>
-        {/* <button onClick={buttonHandler}>buttonHandler</button> */}
+      <TabsComponent
+        currentTabKey={currentTabKey}
+        handleChangeTab={handleChangeTab}
+      />
 
-        <div>
-          <Title size="middle" color="black">
-            Добавление нового вычислителя
-          </Title>
-        </div>
-        <div>
-          <TabsComponent
-            currentTabKey={currentTabKey}
-            handleChangeTab={handleChangeTab}
-          />
-        </div>
+      <Buttons style={{margin:'16px 0'}}/>
 
-        <div>
-          <ButtonTT color="white" onClick={hideMe}>
-            Отмена
-          </ButtonTT>
-          {renderNextButton()}
-          {renderSubmitButton()}
-        </div>
-      </div>
     </Modal>
   );
 };
