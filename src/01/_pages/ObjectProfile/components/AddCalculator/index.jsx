@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
-import $ from 'jquery';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../../tt-components/antd.scss';
-import { Modal } from 'antd';
-import { Title, ButtonTT } from '../../../../tt-components';
+import { Form, Modal } from 'antd';
+import { Title, ButtonTT, InputTT, SelectTT, DatePickerTT } from '../../../../tt-components';
 import axios from '../../../../axios';
-import TabsComponent from './components/Tabs/Main';
-import { setAddCalculatorForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
+import TabsComponent from './components/addCalculatorTabs';
+import { onChangeFormValueByPath, setAddCalculatorForm } from '../../../../Redux/actions/actions';
 import { ObjectContext } from '../../index';
-
+import AddCalculatorForm from './AddCalculatorForm'
+import { items, serviceLife } from "../../../../tt-components/localBases";
 
 const ModalCalculator = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -18,7 +18,7 @@ const ModalCalculator = () => {
   const modalRef = React.createRef();
   const dispatch = useDispatch();
   const calculatorPage = useSelector((state) => state.calculatorPage);
-  const { addCalculator, setAddCalculator} = useContext(ObjectContext);
+  const { addCalculator, setAddCalculator } = useContext(ObjectContext);
   const initialStateDefaultValues = {
     serialNumber: '',
     checkingDate: moment().toISOString(),
@@ -34,6 +34,10 @@ const ModalCalculator = () => {
     housingStockId: Number(objid),
     infoId: 1,
   };
+
+
+
+
 
   useEffect(() => {
     dispatch(
@@ -82,7 +86,7 @@ const ModalCalculator = () => {
 
     const CancelButton = () => (
 
-      <ButtonTT color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
+      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
         Отмена
       </ButtonTT>
     );
@@ -95,14 +99,13 @@ const ModalCalculator = () => {
     );
   };
 
-
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log(addCalculator)
+    console.log(addCalculator);
   };
 
   const handleCancel = () => {
-    setAddCalculator(false)
+    setAddCalculator(false);
   };
 
   const handleSubmit = async () => {
@@ -120,17 +123,16 @@ const ModalCalculator = () => {
     }
   };
 
-
-
   return (
     <Modal
-      visible={addCalculator}
+      // visible={addCalculator}
+      visible={true}
       onCancel={handleCancel}
       footer={null}
       ref={modalRef}
       width={800}
     >
-    <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>
+      <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>
       <Title size="middle" color="black">
         Добавление нового вычислителя
       </Title>
@@ -140,7 +142,8 @@ const ModalCalculator = () => {
         handleChangeTab={handleChangeTab}
       />
 
-      <Buttons style={{margin:'16px 0'}}/>
+      <AddCalculatorForm />
+      <Buttons style={{ margin: '16px 0' }} />
 
     </Modal>
   );
