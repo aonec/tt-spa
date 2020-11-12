@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 
 import { Tabs } from 'antd';
 import {Loader} from "../../../components/Loader";
@@ -16,38 +16,41 @@ import {createPages} from "../../../utils/pagesCreator";
 
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
 import DeviceSearchForm from "./DeviceSearchForm/DeviceSearchForm";
+import devicesSearchReducer from "./../devicesSearchReducer"
 
 
 const { TabPane } = Tabs;
 
-function callback(key) {
-    console.log(key);
+const initialState = {
+    expirationDate: '',
+    lowerDiameterRange: null,
+    upperDiameterRange: null,
+    searchTerm: ''
 }
 
 
-
-const TabsDevices = () => {
+const TabsDevices = ({devicePage}) => {
+    debugger;
     const dispatch = useDispatch();
-    const pageSize = useSelector((state) => state.devicePage.pageSize);
-    const currentPage = useSelector((state) => state.devicePage.currentPage);
-    const totalPages = useSelector((state) => state.devicePage.totalPages);
-    const [searchTerm, setSearchTerm] = useState('');
+    const pageSize = devicePage.pageSize;
+    const currentPage = devicePage.currentPage;
+    const totalPages = devicePage.totalPages;
+    // const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [deviceElems, setDeviceElems] = useState([]);
 
+    const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState)
 
     const pages = [];
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
         setIsLoading(true)
-        dispatch(getDevices(currentPage, pageSize, searchTerm));
+        dispatch(getDevices(currentPage, pageSize, searchState));
         setIsLoading(false)
-    }, [currentPage, searchTerm]);
+    }, [currentPage, searchState]);
 
-    const deviceItems = useSelector((state) =>
-        state.devicePage.items
-    )
+    const deviceItems = devicePage.items;
 
     useEffect(() => {
         setIsLoading(true)
@@ -57,22 +60,19 @@ const TabsDevices = () => {
         );
         setDeviceElems(deviceArray);
         setIsLoading(false)
-
     }, [deviceItems])
 
     const pagination = pages.map((page, index) => <span
             key={index}
-            className={currentPage == page ? styles.currentPage : styles.page}
+            className={currentPage === page ? styles.currentPage : styles.page}
             onClick={() => dispatch(setCurrentPage(page))}
         >{page}</span> )
 
-    // if (isLoading) return 'ЗАГРУЗКА...'
 
-    return <div>
-
-        <Tabs defaultActiveKey="1" onChange={callback} style={{maxWidth: 960}}>
+    return <Tabs defaultActiveKey="1" style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
-                <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+                {/*<DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>*/}
+                <DeviceSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
                 {isLoading || deviceElems.length === 0 ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
@@ -83,8 +83,6 @@ const TabsDevices = () => {
             {/*    Content of Tab Pane 2*/}
             {/*</TabPane>*/}
         </Tabs>
-    </div>
-
 }
 
 
