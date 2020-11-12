@@ -11,7 +11,6 @@ export const useSelectOptions = (type) => {
   function getAll() {
     axios.all([axios("ManagingFirmUsers"), axios("Contractors")]).then(
       axios.spread((p, c) => {
-        console.log(c)
         setPerpetrators(p.data.successResponse.items)
         setContractors(c.data.successResponse.items)
       })

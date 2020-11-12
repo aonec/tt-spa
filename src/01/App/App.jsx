@@ -56,7 +56,6 @@ window.store = store;
 
 export function App(){
   const AppProvider = useApp();
-  console.log('store', store);
 
   return styled(app)(
     <Provider store={store}>

@@ -98,10 +98,8 @@ const ModalCalculator = () => {
     try {
       const res = await axios.post('Calculators', calculatorPage);
       alert('Вычислитель успешно создан !');
-      console.log(res)
       return res;
     } catch (error) {
-      console.log(error);
       alert(
         'Что-то пошло не так: попробуйте исправить CЕРИЙНЫЙ НОМЕР И АДРЕС УСТРОЙСТВА',
       );

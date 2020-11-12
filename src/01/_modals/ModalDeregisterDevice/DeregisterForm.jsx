@@ -14,7 +14,6 @@ async function deregisterDevice(device) {
     alert('Вычислитель успешно снят с учета !');
     return res;
   } catch (error) {
-    console.log(error);
     alert('Что-то пошло не так: попробуйте еще раз');
     throw new Error(error);
   }
@@ -39,7 +38,6 @@ const DeregisterForm = ({ device }) => {
         documentsIds: values.documentsIds,
         closingDateTime: values.closingDateTime,
       };
-      console.log(form)
       deregisterDevice(form);
     },
   });

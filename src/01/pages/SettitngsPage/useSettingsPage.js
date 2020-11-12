@@ -36,7 +36,6 @@ export const useSettingsPage = () => {
         case "start":
           return { ...state, config: payload, loading: true }
         case "finish":
-          console.log(payload)
           return { ...state, ...payload, loading: false }
         default:
           console.error("settings", type)
@@ -56,7 +55,6 @@ export const useSettingsPage = () => {
   React.useEffect(() => () => cancel(), [])
 
   React.useEffect(() => {
-    console.log(1)
     config &&
       settingFetch(config).then((data) =>
         dispatch({ type: "finish", payload: data })

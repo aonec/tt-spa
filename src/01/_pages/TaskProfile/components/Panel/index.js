@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Route } from 'react-router-dom';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
@@ -11,10 +11,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
+import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import {
   setModalChangeODPUVisible, setModalDeregisterVisible,
 } from '../../../../Redux/actions/actions';
 import ButtonTT from '../../../../tt-components/ButtonTT';
+import {addReadings} from "../../hooks/usePanel";
 
 const styles = css`
   panel {
@@ -47,6 +49,13 @@ const styles = css`
       grid-template-areas:
         "ta ta ta ta ta push";
     }
+    &[|six] {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 4fr 1fr;
+      grid-template-areas:
+        "ar ar ar ar"
+        ". . . push"
+    }
   }
 
   Perpetrator {
@@ -64,6 +73,7 @@ const styles = css`
   NextStage {
     grid-area: ta;
   }
+
 `;
 
 export const Panel = ({
@@ -74,14 +84,12 @@ export const Panel = ({
                         pushProps = {},
                         isObserver = false,
                         perpName = '',
+                        apartment,
                         dispatch = () => {
                         },
-                      }) => {
+                        stages = {}
+                      }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
-
-  useEffect(() => {
-    console.log(pushProps);
-  }, [pushProps]);
 
   const dispatchRedux = useDispatch();
 
@@ -107,7 +115,8 @@ export const Panel = ({
     console.log("showModalDeregister")
     dispatchRedux(setModalDeregisterVisible(true));
   }
-  if (isObserver) {
+
+  if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
 
@@ -122,6 +131,10 @@ export const Panel = ({
   }
 
   // const [deadline, setDeadline] = useState();
+  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+
+
+  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
   const { emailNotify = {} } = state;
 
@@ -134,6 +147,7 @@ export const Panel = ({
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
         five: Switch && PushButton,
+        six: UploadReadings || addReadingsDone
       })}
     >
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>}
@@ -157,8 +171,9 @@ export const Panel = ({
 
       {/*{Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с*/}
       {/*  учета</ButtonTT>}*/}
+
       {EmailNotify && <TemplateButton/>}
-      {AddDocuments && (
+      {(AddDocuments && !isObserver) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
@@ -167,11 +182,16 @@ export const Panel = ({
       {Switch && (
         <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
       )}
+        {(UploadReadings || addReadingsDone) && (
+            <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver}/>
+        )
+        }
       <PushButton {...pushProps} />
     </panel>,
     // </Route>
   );
 };
+
 
 const Textarea = (props) => styled`
     textarea {

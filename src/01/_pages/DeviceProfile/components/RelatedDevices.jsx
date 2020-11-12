@@ -66,7 +66,6 @@ export const RelatedDevices = () => {
   const loading = _.get(loadings, 'related', true);
 
   const buttonHandler = () => {
-    console.log(related);
   };
 
   const result = related.map((value) => {

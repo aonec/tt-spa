@@ -1,328 +1,249 @@
-import React from 'react';
+import React, {
+  useState,
+  useContext,
+  useRef,
+  useEffect,
+} from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import {
-  Form, Modal, Radio, Tabs,
-} from 'antd';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Title, ButtonTT, RangePickerTT, InputTT, SelectTT,
-} from '../../../../../tt-components';
+import $ from 'jquery';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import { CalculatorTemplate, Translate } from './components/CalculatorTemplate';
-import { setModalCalculatorReportVisible } from '../../../../../Redux/actions/actions';
 
-const { TabPane } = Tabs;
+import { Icon } from '../../../../../_components/Icon';
+import { DeviceContext } from '../../../DeviceProfile';
 
-// export const ModalODPU = ({ device }) => {
-export const ModalODPU = () => {
-  const translate = (resource) => Translate[resource];
-  const device = CalculatorTemplate;
-  const {
-    id, model, serialNumber, address, hubs,
-  } = device;
-  const { housingStockNumber, street, corpus } = address;
+import { SelectReport } from './components/SelectReport';
+import { Bottom } from './components/Bottom';
+import { Top } from './components/Top';
+import './modal.scss';
+import { ButtonTT } from '../../../../../tt-components';
+import { CalculatorTemplate } from './components/CalculatorTemplate.js';
 
-  const dispatch = useDispatch();
-  const visible = useSelector(
-    (state) => _.get(state, ['calcReportReducer', 'visible'], false),
-  );
+const Translate = {
+  Heat: 'Отопление',
+  ColdWaterSupply: 'Холодная вода',
+  HotWaterSupply: 'Горячая вода',
+};
 
-  // Список всех устройств, которые являются расходомерами
-  // const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
-  const devicesList = hubs.reduce((result, item) => {
-    const {
-      resource, housingMeteringDeviceType, hub, serialNumber,
-    } = item;
-    const { entryNumber, pipeNumber } = hub;
-    if (housingMeteringDeviceType === 'FlowMeter') {
-      result.push({
-        resource,
-        entryNumber,
-        pipeNumber,
-        housingMeteringDeviceType,
-        serialNumber,
-      });
+const hideMe = () => {
+  $('.overlay').css('display', 'none');
+};
+
+const translate = (resource) => Translate[resource];
+
+export const ReportContext = React.createContext();
+
+export const ModalODPU = ({ device }) => {
+  console.log('props', device);
+  // const { device, building, hubs } = useContext(DeviceContext);
+  // const { device, building } = useContext(DeviceContext);
+
+  const building = device.address;
+  const { hubs } = device;
+
+  // const device = CalculatorTemplate;
+  // const building = CalculatorTemplate.address;
+  // const { hubs } = CalculatorTemplate;
+
+  const { id, model, serialNumber } = device;
+  const serialNumberODPU = serialNumber;
+  const { housingStockNumber, street } = building;
+
+  const list = [];
+  const devicesList = [];
+
+  const period = useRef('month');
+  const detail = useRef('hourly');
+  const entryNumberRes = useRef();
+  const pipeNumberRes = useRef();
+  const [type, setType] = useState(list[0]);
+
+  const [begin, setBegin] = useState(moment().subtract(1, 'month'));
+  const [end, setEnd] = useState(moment());
+
+  const [hubsarr, setHubsarr] = useState();
+
+  const datePickerHandler = (event) => {
+    setBegin(event[0] || begin);
+    setEnd(event[1] || end);
+  };
+
+  useEffect(() => {
+    setHubsarr(hubs);
+  }, [hubs]);
+
+  useEffect(() => {
+    function foo() {
+      $('.ant-tabs-tab-active').click();
     }
-    return result;
+
+    console.log('device = ', device);
+    setTimeout(foo, 1000);
   }, []);
+
+  const onTabsChangeHandler = (resource) => {
+    console.log('onTabsChangeHandler', resource);
+    $('.ant-select-selection-item').html('Выберите узел');
+    setType(resource);
+    entryNumberRes.current = undefined;
+  };
+
+  if (hubsarr) {
+    hubsarr.map((item, index) => {
+      const {
+        resource, housingMeteringDeviceType, hub, serialNumber,
+      } = item;
+      const { entryNumber, pipeNumber } = hub;
+      if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
+        devicesList.push({
+          resource,
+          entryNumber,
+          pipeNumber,
+          housingMeteringDeviceType,
+          serialNumber,
+        });
+      }
+    });
+    console.log('devicesList', devicesList);
+  }
+
+  const onPeriodChange = (e) => {
+    const res = e.target.value;
+    period.current = res;
+    setBegin(moment().subtract(1, res));
+    setEnd(moment());
+  };
+
+  const selectOptions = [];
 
   console.log('devicesList', devicesList);
 
-  // Список всех типов Расходомеров: ХВС, ГВС, Отопление //filter
-  const resources = devicesList.reduce((result, item) => {
-    const { resource } = item;
-    if (!(result.includes(resource))) {
-      result.push(resource);
-    }
-    return result;
-  }, []);
-
-  // Список всех доступных строк для выбора Узла
-
-  // lodash groupby
-  const selectOptions = devicesList.reduce((result, item) => {
-    const {
-      resource, entryNumber, pipeNumber, serialNumber,
-    } = item;
-    const currentSelection = _.find(result, { resource });
-    console.log('resource = ', resource);
-    if (!currentSelection || (resource === 'ColdWaterSupply')) {
-      result.push({
-        key: result.length,
-        label: `Узел ${entryNumber} ${model}: ПРЭМ (${serialNumber})`,
-        resource,
-        entryNumber,
-        pipeNumber,
-        value: result.length,
-      });
-    } else {
-      const ind = result.indexOf(currentSelection);
-      result.splice(ind, 1, {
+  devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
+    if (_.find(selectOptions, (o) => o.value === resource)) {
+      const res = _.find(selectOptions, (o) => o.value === resource);
+      const ind = selectOptions.indexOf(res);
+      selectOptions.splice(ind, 1, {
         label: `${_.get(
-          result[ind],
+          selectOptions[ind],
           'label',
           'default',
-        )} ПРЭМ(${serialNumber})`,
-        resource,
-        value: currentSelection.value,
+        )} ПРЭМ (${serialNumber})`,
+        value: resource,
         entryNumber,
-        pipeNumber,
-        key: currentSelection.key,
+        pipeNumber
+      });
+    } else {
+      selectOptions.push({
+        label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
+        value: resource,
+        entryNumber,
+        pipeNumber
       });
     }
-    return result;
-  }, []);
-  console.log('selectOptions', selectOptions);
-
-  const {
-    handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue,
-  } = useFormik({
-    initialValues: {
-      period: 'month',
-      detail: 'daily',
-      entryNumberRes: undefined,
-      pipeNumberRes: undefined,
-      begin: moment().subtract(1, 'month').toISOString(),
-      end: moment().toISOString(),
-      currentTab: resources[0],
-      currentSelect: null,
-    },
-    validationSchema: Yup.object({
-      // test: Yup.string().required('Строка не должна быть пустой'),
-      currentSelect: Yup.number().required('Выберите узел'),
-    }),
-    onSubmit: async () => {
-      const form = {
-        input1: values.test,
-      };
-      downloadReport();
-    },
   });
 
-  const modifiedSelectOptions = selectOptions.filter((option) => option.resource == values.currentTab);
-  const some = _.find(modifiedSelectOptions, { value: values.currentSelect });
-  console.log('some', some);
-  // console.log("some.value", some.value)
-
-  const Top = () => {
-    console.log('Top');
-    return (
-      <>
-        <Form.Item label=" Название отчета">
-          <InputTT
-            value={`${street}_${housingStockNumber}.exls`}
-            disabled
-          />
-        </Form.Item>
-
-        <Form.Item label="Выбор узла">
-          <SelectTT
-            options={modifiedSelectOptions}
-            placeholder="Выберите узел"
-            onChange={handleSomeChange}
-            value={values.currentSelect}
-            name="currentSelect"
-          />
-          <Alert name="currentSelect" />
-        </Form.Item>
-      </>
-    );
-  };
-
-  const ReportTabs = () => {
-    const resList = resources.map((value) => {
-      const res = translate(value);
-      return <TabPane tab={res} key={value} />;
-    });
-
-    return (
-      <Tabs activeKey={values.currentTab} onChange={onTabsChangeHandler}>
-        {resList}
-      </Tabs>
-    );
-  };
-
-  const Bottom = () => {
-    console.log('Bottom');
-
-    const datePickerHandler = (event) => {
-      setFieldValue('begin', event[0].toISOString());
-      setFieldValue('end', event[1].toISOString());
-    };
-
-    const onPeriodChange = (event) => {
-      const res = event.target.value;
-      setFieldValue('period', res);
-      setFieldValue('begin', (moment().subtract(1, res)).toISOString());
-      setFieldValue('end', moment().toISOString());
-    };
-
-    return (
-      <>
-        <Form.Item label="Тип архива">
-          <Radio.Group
-            defaultValue={values.period}
-            size="large"
-            onChange={(event) => onPeriodChange(event)}
-          >
-            <Radio.Button value="month" checked>
-              Месячный
-            </Radio.Button>
-            <Radio.Button value="day">Суточный</Radio.Button>
-            <Radio.Button value="year">Годовой</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item label="Детализация отчета">
-          <Radio.Group
-            defaultValue={values.detail}
-            size="large"
-            onChange={(event) => onDetailChange(event)}
-          >
-            <Radio.Button value="daily" checked>
-              Суточная
-            </Radio.Button>
-            <Radio.Button value="hourly">Часовая</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item label="Период выгрузки">
-          <RangePickerTT
-            format="DD.MM.YYYY"
-            allowClear={false}
-            value={[moment(values.begin), moment(values.end)]}
-            placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event) => {
-              datePickerHandler(event);
-            }}
-          />
-        </Form.Item>
-
-      </>
-    );
-  };
-
-  const onTabsChangeHandler = (resource) => {
-    setFieldValue('currentTab', resource);
-    // setType(resource);
-    setFieldValue('entryNumberRes', undefined);
-    setFieldValue('pipeNumberRes', undefined);
-    setFieldValue('currentSelect', undefined);
-  };
-
-  console.log('sources', resources);
-
   const downloadReport = () => {
-    if (values.entryNumberRes) {
+    console.log('entryNumberRes.current = ', entryNumberRes.current);
+    if (entryNumberRes.current) {
+      console.log('entryNumberRes', entryNumberRes.current);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-        values.detail
-      }&resourcetype=${values.currentTab}&entrynumber=${
-        values.entryNumberRes
-      }&pipenumber=${values.pipeNumberRes}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
-        values.end,
+        detail.current
+      }&resourcetype=${type}&entrynumber=${
+        entryNumberRes.current
+      }&pipenumber=${pipeNumberRes.current}&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
+        end,
       )}T00:00:00Z`;
+      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
 
+      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
+      const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
+      // window.location.assign(link);
       console.log(link);
+      // console.log(lastTemplate);
       window.open(link);
     } else {
       alert('Выберите узел!');
     }
   };
 
-  const Alert = ({ name }) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return (
-        <div>Выберите узел</div>
-      );
-    }
-    return null;
-  };
-
-  function handleSomeChange(value, value2) {
-    console.log('value = ', value);
-    console.log('value2', value2);
-    console.log('value2', value2.value);
-    setFieldValue('currentSelect', value2.value);
-    setFieldValue('entryNumberRes', value2.entryNumber);
-    setFieldValue('pipeNumberRes', value2.pipeNumber);
+  function handleChange(value) {
+    console.log(value);
+    const b = _.filter(selectOptions, { value: `${value}` });
+    const { entryNumber, pipeNumber } = { ...b[0] };
+    console.log('number', entryNumber);
+    entryNumberRes.current = entryNumber;
+    pipeNumberRes.current = pipeNumber;
   }
 
   function onDetailChange(e) {
     const res = e.target.value;
-    setFieldValue('detail', res);
+    detail.current = res;
   }
 
-  const buttonHandler = () => {
-    console.log(values);
-    console.log('modifiedSelectOptions', modifiedSelectOptions);
-    console.log('selectOptions', selectOptions);
-  };
-
-  const handleCancel = () => {
-    dispatch(setModalCalculatorReportVisible(false));
+  const someFunc = () => {
   };
 
   return (
-    <Modal
-      visible={visible}
-      width="800px"
-      footer={null}
-      onCancel={handleCancel}
+    <ReportContext.Provider
+      value={{
+        begin,
+        end,
+        datePickerHandler,
+        list,
+        devicesList,
+        translate,
+        onTabsChangeHandler,
+        model,
+        street,
+        housingStockNumber,
+        SelectReport,
+        type,
+        selectOptions,
+        handleChange,
+        onPeriodChange,
+        onDetailChange,
+      }}
     >
-      <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT>
-      <form onSubmit={handleSubmit}>
+      <div className="overlay" id="modal-report-device">
+        <div className="modal-odpu">
+          {/* <ButtonTT>TEST</ButtonTT> */}
+          <Icon
+            className="modal__close"
+            icon="close"
+            color="#272F5A"
+            onClick={hideMe}
+          />
+          <div className="modal__top">
+            <h3 className="modal__title">
+              Выгрузка отчета о общедомовом потреблении
+            </h3>
+            <Top />
+            <Bottom />
+          </div>
 
-        <div className="modal__top">
-          <Title color="black">
-            {`Выгрузка отчета о общедомовом потреблении ${model} (${serialNumber})`}
-          </Title>
-          <ReportTabs />
-          <Top />
-          <Bottom />
+          <div className="modal__bottom">
+            <button
+              className="modal__button modal__button_cancel"
+              onClick={hideMe}
+            >
+              Отмена
+            </button>
+            <button
+              className="modal__button modal__button_ok"
+              onClick={downloadReport}
+            >
+              Выгрузить
+            </button>
+          </div>
         </div>
-
-        <div className="modal__bottom">
-          <ButtonTT
-            color="white"
-          >
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={handleSubmit}
-          >
-            Выгрузить
-          </ButtonTT>
-        </div>
-      </form>
-    </Modal>
+      </div>
+    </ReportContext.Provider>
   );
 };
 
 export default ModalODPU;
+
+// const selectOptions = [
+//   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
+//   'Узел 2: ВКТ-7 (9876543210), ПРЭМ (23549579374023), ПРЭМ(29387592701)',
+// ];

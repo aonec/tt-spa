@@ -65,7 +65,6 @@ export const TaskProfile = () => {
   const {device} = state;
   const {type, id} = device || {};
 
-
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   return styled(s.grid)(
@@ -80,8 +79,8 @@ export const TaskProfile = () => {
         <Stages {...stages} />
         <InformationDevice {...infoDevice} type={type} id={id}/>
       </grid>
-      <ModalChangeOdpu {...infoDevice} />
-      <ModalDeregisterDevice {...infoDevice} />
+      {/*<ModalChangeOdpu {...infoDevice} />*/}
+      {/*<ModalDeregisterDevice {...infoDevice} />*/}
     </TasksProfileContext.Provider>,
   );
 };

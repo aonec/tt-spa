@@ -21,9 +21,9 @@ export const InformationNotCalculator = (loading = true) => {
   };
 
   // const { city, street, number } = building || DEFAULT_BUILDING;
-  const { city, street, housingStockNumber, corpus } = building;
+  const { city, street, housingStockNumber, corpus } = building || DEFAULT_BUILDING;
   // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
-  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;;
 
   const errorOfComponent = _.get(error, 'resource', null);
   // console.log('error', error);

@@ -6,10 +6,7 @@ import { DeviceContext } from '../DeviceProfile';
 
 export const Connection = () => {
   const { device, loadings } = useContext(DeviceContext);
-  const { connection } = device;
-  const ipV4 = connection.ipV4 || 'X';
-  const port = connection.port || 'X';
-  const deviceAddress = connection.deviceAddress || 'X';
+  const {connection: {ipV4, port, deviceAddress }} = device;
   const loading = _.get(loadings, 'device', true);
 
   return (

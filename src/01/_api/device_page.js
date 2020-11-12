@@ -103,7 +103,6 @@ export async function getTypeODPU(url = '') {
 export async function getCalculatorResources(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
-    console.log(res);
     return res.hubs;
   } catch (error) {
     console.log(error);
@@ -117,7 +116,6 @@ export async function getCalculatorResources(id = '') {
 export async function getCalculator(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
-    console.log(res);
     return res.model;
   } catch (error) {
     console.log(error);
@@ -131,7 +129,6 @@ export async function getCalculator(id = '') {
 export async function getPagination(id = '') {
   try {
     const res = await axios.get('MeteringDevices');
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
