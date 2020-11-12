@@ -4,18 +4,11 @@ import $ from 'jquery';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../../../tt-components/antd.scss';
-import {
-  Modal,
-  ModalWrap,
-  ModalTop,
-  ModalMain,
-  ModalBottom,
-  ModalClose,
-} from '../../../../tt-components/Modal';
+import { Modal } from 'antd';
 import { Title, ButtonTT } from '../../../../tt-components';
 import axios from '../../../../axios';
 import TabsComponent from './components/Tabs/Main';
-import { setAddCalculatorForm } from '../../../../Redux/actions/actions';
+import { setAddCalculatorForm, setModalDeregisterVisible } from '../../../../Redux/actions/actions';
 
 const ModalCalculator = () => {
   const { 0: objid, 1: deviceId } = useParams();
@@ -107,31 +100,42 @@ const ModalCalculator = () => {
     }
   };
 
+  const handleCancel = () => {
+    dispatch(setModalDeregisterVisible(false));
+  };
+
   return (
-    <Modal id="add-calculator" ref={modalRef}>
-      <ModalWrap>
+    <Modal
+      visible
+      onCancel={handleCancel}
+      footer={null}
+      ref={modalRef}
+      width={800}
+    >
+
+      <div>
         {/* <button onClick={buttonHandler}>buttonHandler</button> */}
-        <ModalClose getModal={modalRef} />
-        <ModalTop>
+
+        <div>
           <Title size="middle" color="black">
             Добавление нового вычислителя
           </Title>
-        </ModalTop>
-        <ModalMain>
+        </div>
+        <div>
           <TabsComponent
             currentTabKey={currentTabKey}
             handleChangeTab={handleChangeTab}
           />
-        </ModalMain>
+        </div>
 
-        <ModalBottom>
+        <div>
           <ButtonTT color="white" onClick={hideMe}>
             Отмена
           </ButtonTT>
           {renderNextButton()}
           {renderSubmitButton()}
-        </ModalBottom>
-      </ModalWrap>
+        </div>
+      </div>
     </Modal>
   );
 };
