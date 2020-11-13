@@ -20,7 +20,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { addCalculator, setAddCalculator } = useContext(ObjectContext);
+  const { addCalculator, setAddCalculator, addOdpu, setAddOdpu } = useContext(ObjectContext);
 
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -36,7 +36,7 @@ export const Menu = (showPopupHandler) => {
   };
 
   const showAddDevice = () => {
-    $('#add-device').toggle();
+    setAddOdpu(true);
     $('#edit-button__list').toggle();
   };
 
