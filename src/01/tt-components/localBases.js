@@ -1,23 +1,33 @@
 export const items = [
   {
     id: 1,
+    value: 1,
     model: 'ТЭМ-106',
+    label: 'ТЭМ-106'
   },
   {
     id: 2,
+    value: 2,
     model: 'ТЭМ-104',
+    label: 'ТЭМ-104',
   },
   {
     id: 3,
+    value: 3,
     model: 'ВКТ-7',
+    label: 'ВКТ-7',
   },
   {
     id: 4,
+    value: 4,
     model: 'ТВ-7',
+    label: 'ТВ-7',
   },
   {
     id: 5,
+    value: 5,
     model: 'ВИСТ',
+    label: 'ВИСТ',
   },
 ];
 

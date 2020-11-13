@@ -175,7 +175,7 @@ const AddCalculatorForm = (props) => {
               name="infoId"
               placeholder="Выберите тип устройства"
               options={items}
-              value={values.infoId.toString()}
+              value={values.infoId}
               onChange={(event) => {
                 setFieldValue('infoId', Number(event));
               }}
