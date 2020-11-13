@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT} from '../../tt-components';
+import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../tt-components';
 import { items } from './components/CalculatorJSON';
 import { EditCalculatorContext } from './index';
 
@@ -143,6 +143,7 @@ const EditCalculatorForm = () => {
             onChange={(event, target) => {
               setFieldValue('infoId', Number(target.value));
             }}
+            disabled
           />
         </Form.Item>
 
@@ -239,8 +240,12 @@ const EditCalculatorForm = () => {
           Подключение к новому прибору может занять до 30 минут.
         </Wrap>
       </div>
-      <div hidden={Number(currentTabKey) !== 3} />
-      <div hidden={Number(currentTabKey) !== 4} />
+      <div hidden={Number(currentTabKey) !== 3}>
+        <Title color={'black'}>Компонент в разработке </Title>
+      </div>
+      <div hidden={Number(currentTabKey) !== 4}>
+        <Title color={'black'}>Компонент в разработке </Title>
+      </div>
       <Buttons />
     </form>
   );
