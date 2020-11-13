@@ -86,11 +86,11 @@ const AddCalculatorForm = (props) => {
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
+      futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
       ipV4: '',
       deviceAddress: '',
       port: '',
-      futureCommercialAccountingDate: moment().add(4, 'year').toISOString(),
       housingStockId: Number(objid),
       infoId: 1,
     },
@@ -107,13 +107,13 @@ const AddCalculatorForm = (props) => {
         checkingDate: values.checkingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         documentsIds: values.documentsIds,
         connection: {
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
         },
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
@@ -182,39 +182,42 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата ввода в эксплуатацию">
+          <Form.Item label="Дата поверки">
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="lastCommercialAccountingDate"
-              value={moment(values.lastCommercialAccountingDate)}
+              name="lastCheckingDate"
               placeholder="Укажите дату..."
+              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date.toISOString());
               }}
+              value={moment(values.lastCheckingDate)}
             />
           </Form.Item>
 
-          <Form.Item label="Дата Поверки">
+          <Form.Item label="Дата следующей поверки">
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="checkingDate"
+              name="futureCheckingDate"
               placeholder="Укажите дату..."
-              value={moment(values.checkingDate)}
+              allowClear={false}
               onChange={(date) => {
-                setFieldValue('checkingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date.toISOString());
               }}
+              value={moment(values.futureCheckingDate)}
             />
           </Form.Item>
 
           <Form.Item label="Дата начала Акта действия допуска">
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="futureCheckingDate"
-              value={moment(values.futureCheckingDate)}
+              name="lastCommercialAccountingDate"
               placeholder="Укажите дату..."
+              allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
+              value={moment(values.lastCommercialAccountingDate)}
             />
           </Form.Item>
 
@@ -222,11 +225,12 @@ const AddCalculatorForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
-              value={moment(values.futureCommercialAccountingDate)}
               placeholder="Укажите дату..."
+              allowClear={false}
               onChange={(date) => {
                 setFieldValue('futureCommercialAccountingDate', date.toISOString());
               }}
+              value={moment(values.futureCommercialAccountingDate)}
             />
           </Form.Item>
         </div>
