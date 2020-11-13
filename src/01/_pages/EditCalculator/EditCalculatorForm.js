@@ -61,10 +61,10 @@ const EditCalculatorForm = () => {
       infoId: 1,
     },
     validationSchema: Yup.object({
-      // serialNumber: Yup.string().required('Введите серийный номер'),
-      // ipV4: Yup.string().required('Введите IP-адрес устройства'),
-      // deviceAddress: Yup.string().required('Введите сетевой адрес устройства'),
-      // port: Yup.string().required('Введите порт устройства'),
+      serialNumber: Yup.string().required('Введите серийный номер'),
+      ipV4: Yup.string().required('Введите IP-адрес устройства'),
+      deviceAddress: Yup.string().required('Введите сетевой адрес устройства'),
+      port: Yup.string().required('Введите порт устройства'),
 
     }),
     onSubmit: async () => {
