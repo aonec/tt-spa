@@ -30,7 +30,6 @@ const initialState = {
 
 
 const TabsDevices = ({devicePage}) => {
-    debugger;
     const dispatch = useDispatch();
     const pageSize = devicePage.pageSize;
     const currentPage = devicePage.currentPage;
@@ -50,7 +49,8 @@ const TabsDevices = ({devicePage}) => {
         setIsLoading(false)
     }, [currentPage, searchState]);
 
-    const deviceItems = devicePage.items;
+    const deviceItems = devicePage.items
+
 
     useEffect(() => {
         setIsLoading(true)
@@ -73,7 +73,7 @@ const TabsDevices = ({devicePage}) => {
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
                 {/*<DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>*/}
                 <DeviceSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
-                {isLoading || deviceElems.length === 0 ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
+                {isLoading? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
                         <div className={styles.pages}>{pagination}</div>

@@ -6,7 +6,7 @@ import {Form, Input, Button, Checkbox, Tooltip, Select} from 'antd';
 import { UserOutlined, LockOutlined, SearchOutlined } from '@ant-design/icons';
 import {Icon} from "../../../../_components/Icon";
 import {EditButtonWrap} from "../../../DeviceProfile/components/EditButton";
-import {setSearchTerm, setExpirationDate} from "../../devicesSearchReducer"
+import {setSearchTerm, setExpirationDate, setLowerDiameterRange, setUpperDiameterRange} from "../../devicesSearchReducer"
 
 const { Option } = Select;
 
@@ -29,8 +29,16 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
         dispatch(setCurrentPage(1))
     }
 
-    const handleOnChange = (value, event) => {
+    const handleOnExpirationChange = (value, event) => {
         dispatchSearchState(setExpirationDate(value))
+    }
+
+    const onMinChange = (e) => {
+        dispatchSearchState(setLowerDiameterRange(e.target.value))
+    }
+
+    const onMaxChange = (e) => {
+        dispatchSearchState(setUpperDiameterRange(e.target.value))
     }
 
 
@@ -80,7 +88,7 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                 >
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <label htmlFor="expirationDate" style={{minWidth: 152, marginRight: 8}}>Истекает дата поверки: </label>
-                        <Select id="expirationDate" style={{ width: '55%' }} onSelect={(value, event) => handleOnChange(value, event)}>
+                        <Select id="expirationDate" style={{ width: '55%' }} onSelect={(value, event) => handleOnExpirationChange(value, event)}>
                             <Option value={0}>Ближайший месяц</Option>
                             <Option value={1}>В следующие два месяца</Option>
                             <Option value={2}>Истекла</Option>
@@ -97,17 +105,41 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                         <label htmlFor="deviceDiameter"
                                style={{width: '30%', minWidth: 120}}>Диаметр прибора </label>
                         <div style={{display: 'flex', width: '70%'}}>
-                            <Select id="minValue"
-                                    defaultValue="0"
-                                    style={{width: '50%', marginRight: 8}}
-                                    disabled >
+                            <Select
+                                showSearch
+                                placeholder="Select a person"
+                                // optionFilterProp="children"
+                                onChange={onMinChange}
+                                // onFocus={onFocus}
+                                // onBlur={onBlur}
+                                // onSearch={onSearch}
+                                // filterOption={(input, option) =>
+                                //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+
+                                id="minValue"
+                                defaultValue="0"
+                                style={{width: '50%', marginRight: 8}}
+                                disabled
+                            >
                                 <Option value="0">От 0</Option>
                             </Select>
 
-                            <Select id="maxValue"
-                                    defaultValue="До 255"
+                            <Select
+                                    showSearch
+                                    placeholder="Select a person"
+                                    optionFilterProp="children"
+                                    onChange={onMaxChange}
+                                    // onFocus={onFocus}
+                                    // onBlur={onBlur}
+                                    // onSearch={onSearch}
+                                    // filterOption={(input, option) =>
+                                    //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+
+                                    id="maxValue"
+                                    defaultValue="255"
                                     style={{width: '50%'}}
-                                    disabled>
+                                    disabled
+                                    >
                                 <Option value="255">До 255</Option>
                             </Select>
                         </div>
