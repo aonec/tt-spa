@@ -11,6 +11,7 @@ import {
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
 } from '../../../tt-components';
+import { putOdpu } from './apiEditOdpu';
 
 const FormEditODPU = (props) => {
   const {
@@ -114,7 +115,8 @@ const FormEditODPU = (props) => {
           magistral: values.magistral || 'Направление не выбрано',
         },
       };
-          console.log("PUT_EDIT_FORM", PUT_EDIT_FORM)
+      putOdpu(id, PUT_EDIT_FORM);
+      console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
     },
   });
 
@@ -125,7 +127,7 @@ const FormEditODPU = (props) => {
         color="blue"
         style={{ marginRight: '16px' }}
         onClick={handleSubmit}
-        type={'submit'}
+        type="submit"
       >
         Сохранить
       </ButtonTT>
@@ -151,7 +153,6 @@ const FormEditODPU = (props) => {
     }
     return null;
   };
-
 
   const [disable, setDisable] = useState(false);
 
@@ -209,44 +210,56 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Дата выпуска прибора">
+          <Form.Item label="Дата поверки">
             <DatePickerTT
-              name="lastCommercialAccountingDate"
-              placeholder="Укажите дату..."
               format="DD.MM.YYYY"
-              value={moment(values.lastCommercialAccountingDate)}
+              name="lastCheckingDate"
+              placeholder="Укажите дату..."
+              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date.toISOString());
               }}
+              value={moment(values.lastCheckingDate)}
             />
-            <Alert name="lastCommercialAccountingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата ввода в эксплуатацию">
+          <Form.Item label="Дата следующей поверки">
             <DatePickerTT
+              format="DD.MM.YYYY"
               name="futureCheckingDate"
               placeholder="Укажите дату..."
-              format="DD.MM.YYYY"
-              value={moment(values.futureCheckingDate)}
+              allowClear={false}
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', date.toISOString());
               }}
+              value={moment(values.futureCheckingDate)}
             />
-            <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Срок эксплуатации по нормативу">
-            <SelectTT
-              name="futureCommercialAccountingDate"
-              placeholder="Укажите оперид эксплуатации"
-              onChange={(value) => {
-                setFieldValue('futureCheckingDate', moment()
-                  .add(value, 'year').toISOString());
+          <Form.Item label="Дата начала Акта действия допуска">
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="lastCommercialAccountingDate"
+              placeholder="Укажите дату..."
+              allowClear={false}
+              onChange={(date) => {
+                setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
-              options={serviceLife}
-              defaultValue={serviceLife[0].value}
+              value={moment(values.lastCommercialAccountingDate)}
             />
-            <Alert name="futureCommercialAccountingDate" />
+          </Form.Item>
+
+          <Form.Item label="Дата окончания Акта действия допуска">
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="futureCommercialAccountingDate"
+              placeholder="Укажите дату..."
+              allowClear={false}
+              onChange={(date) => {
+                setFieldValue('futureCommercialAccountingDate', date.toISOString());
+              }}
+              value={moment(values.futureCommercialAccountingDate)}
+            />
           </Form.Item>
 
           <Form.Item label="Город">
@@ -285,17 +298,19 @@ const FormEditODPU = (props) => {
             <Alert name="number" />
           </Form.Item>
 
-          {corpus ? <Form.Item label="Номер корпуса">
-            <InputTT
-              name="corpus"
-              type="text"
-              placeholder=""
-              onChange={handleChange}
-              value={values.corpus}
-              disabled
-            />
-            <Alert name="corpus" />
-          </Form.Item> : null}
+          {corpus ? (
+            <Form.Item label="Номер корпуса">
+              <InputTT
+                name="corpus"
+                type="text"
+                placeholder="Номер корпуса"
+                onChange={handleChange}
+                value={values.corpus}
+                disabled
+              />
+              <Alert name="corpus" />
+            </Form.Item>
+          ) : null}
 
         </div>
 
@@ -320,7 +335,7 @@ const FormEditODPU = (props) => {
             <SelectTT
               name="calculatorId"
               placeholder="Начните вводить серийный номер или IP адрес прибора"
-              onChange={(value) => {setFieldValue('calculatorId', value)}}
+              onChange={(value) => { setFieldValue('calculatorId', value); }}
               options={calculators}
               value={values.calculatorId}
               disabled={disable}

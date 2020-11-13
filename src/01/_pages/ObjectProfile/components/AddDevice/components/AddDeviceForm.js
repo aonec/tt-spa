@@ -39,11 +39,11 @@ const AddDeviceForm = (props) => {
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
+      futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,
       port: null,
-      futureCommercialAccountingDate: moment().toISOString(),
       housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
       resource: resources[0].value,
       model: '',
@@ -68,8 +68,8 @@ const AddDeviceForm = (props) => {
         checkingDate: values.checkingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        documentsIds: [],
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
@@ -155,23 +155,30 @@ const AddDeviceForm = (props) => {
           <Alert name="serialNumber" />
         </Form.Item>
 
-        <Form.Item label="Дата выпуска прибора">
+        {/*"lastCommercialAccountingDate": "2020-11-09T13:07:26.129",*/}
+        {/*"futureCommercialAccountingDate": "2020-11-09T13:07:26.13",*/}
+        {/*"lastCheckingDate": "2020-11-13T13:28:13.355",*/}
+        {/*"futureCheckingDate": "2020-11-13T13:28:13.355",*/}
+
+        <Form.Item label="Дата поверки">
           <DatePickerTT
             format="DD.MM.YYYY"
-            name="lastCommercialAccountingDate"
+            name="lastCheckingDate"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
-              setFieldValue('lastCommercialAccountingDate', date.toISOString());
+              setFieldValue('lastCheckingDate', date.toISOString());
             }}
-            value={moment(values.lastCommercialAccountingDate)}
+            value={moment(values.lastCheckingDate)}
           />
         </Form.Item>
 
-        <Form.Item label="Дата ввода в эксплуатацию">
+        <Form.Item label="Дата следующей поверки">
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCheckingDate"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('futureCheckingDate', date.toISOString());
             }}
@@ -179,19 +186,29 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Срок эксплуатации по нормативу">
-          <SelectTT
-            id="futureCommercialAccountingDate"
-            onChange={(item) => {
-              const value = moment(values.lastCommercialAccountingDate)
-                .add(item, 'year')
-                .toISOString();
-              setFieldValue('futureCommercialAccountingDate', value);
+        <Form.Item label="Дата начала Акта действия допуска">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(date) => {
+              setFieldValue('lastCommercialAccountingDate', date.toISOString());
             }}
+            value={moment(values.lastCommercialAccountingDate)}
+          />
+        </Form.Item>
+
+        <Form.Item label="Дата окончания Акта действия допуска">
+          <DatePickerTT
+            format="DD.MM.YYYY"
             name="futureCommercialAccountingDate"
-            placeholder="Укажите оперид эксплуатации"
-            options={serviceLife}
-            defaultValue={serviceLife[0].value}
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(date) => {
+              setFieldValue('futureCommercialAccountingDate', date.toISOString());
+            }}
+            value={moment(values.futureCommercialAccountingDate)}
           />
         </Form.Item>
       </div>
