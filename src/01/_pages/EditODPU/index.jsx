@@ -5,7 +5,6 @@ import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
 import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
 import { getOdpu, getCalculators } from './components/apiEditOdpu';
-import { EditCalculatorContext } from '../EditCalculator';
 
 export const EditOdpuContext = React.createContext();
 
@@ -27,7 +26,8 @@ const EditODPU = () => {
       const selectCalculators = calculators.items.map((item) => {
         const label = `${item.model} (${item.serialNumber}) IP: ${item.connection?.ipV4} (${item.connection?.port})`;
         const value = item.id;
-        return ({ ...item, label, value });
+        const key = item.id;
+        return ({ ...item, label, value, key });
       });
       setCalculators(selectCalculators);
     }
