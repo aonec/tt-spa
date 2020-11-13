@@ -106,7 +106,7 @@ export const RelatedDevices = () => {
   };
   return (
     <ListWrap>
-      <button onClick={buttonHandler}>related</button>
+      {/* <button onClick={buttonHandler}>related</button> */}
       <Loader show={isLoading} size="32">
         <Title>Соединение с вычислителем</Title>
         <CalcItem />
