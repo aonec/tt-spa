@@ -5,9 +5,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../tt-components';
-import { items } from './components/CalculatorJSON';
-import { EditCalculatorContext } from './index';
+import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../../tt-components';
+import { items } from './CalculatorJSON';
+import { EditCalculatorContext } from '../index';
 
 import { putCalculator } from './apiEditCalculator';
 
@@ -91,7 +91,7 @@ const EditCalculatorForm = () => {
   const Buttons = () => {
     console.log('Buttons');
     return (
-      <div>
+      <div style={{padding:'32px 0'}}>
         <ButtonTT
           form='editCalculatorForm'
           color="blue"

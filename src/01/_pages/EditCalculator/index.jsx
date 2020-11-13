@@ -2,10 +2,10 @@ import React, { useState, useEffect} from 'react';
 import '../../tt-components/antd.scss';
 import {  useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
-import EditCalculatorTabs from './EditCalculatorTabs';
+import EditCalculatorTabs from './components/EditCalculatorTabs';
 import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
-import { getCalculator, putCalculator } from './apiEditCalculator';
-import EditCalculatorForm from './EditCalculatorForm';
+import { getCalculator, putCalculator } from './components/apiEditCalculator';
+import EditCalculatorForm from './components/EditCalculatorForm';
 
 export const EditCalculatorContext = React.createContext();
 
