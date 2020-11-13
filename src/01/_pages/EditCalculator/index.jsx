@@ -1,10 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../tt-components/antd.scss';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import EditCalculatorTabs from './components/EditCalculatorTabs';
 import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
-import { getCalculator, putCalculator } from './components/apiEditCalculator';
+import { getCalculator } from './components/apiEditCalculator';
 import EditCalculatorForm from './components/EditCalculatorForm';
 
 export const EditCalculatorContext = React.createContext();
@@ -25,28 +25,26 @@ const EditCalculator = () => {
     console.log('buttonHandler');
   };
 
-
   if (!currentCalc) {
-    return <div>ЗАГРУЗКА</div>
+    return <div>ЗАГРУЗКА</div>;
   }
-  else {
-    const context = {currentCalc, currentTabKey}
-    return (
-      <>
-        <EditCalculatorContext.Provider value={context}>
-          <Breadcrumb path={`/calculators/${deviceId}`} />
 
-          <Header>{`${currentCalc.model} (${currentCalc.serialNumber}). Редактирование`}</Header>
-          {/* <button onClick={buttonHandler}>getKey</button> */}
-          <EditCalculatorTabs
-            currentTabKey={currentTabKey}
-            handleChangeTab={handleChangeTab}
-          />
-          <EditCalculatorForm />
-        </EditCalculatorContext.Provider>
-      </>
-    );
-  }
+  const context = { currentCalc, currentTabKey };
+  return (
+    <>
+      <EditCalculatorContext.Provider value={context}>
+        <Breadcrumb path={`/calculators/${deviceId}`} />
+
+        <Header>{`${currentCalc.model} (${currentCalc.serialNumber}). Редактирование`}</Header>
+        {/* <button onClick={buttonHandler}>getKey</button> */}
+        <EditCalculatorTabs
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        <EditCalculatorForm />
+      </EditCalculatorContext.Provider>
+    </>
+  );
 };
 
 export default EditCalculator;

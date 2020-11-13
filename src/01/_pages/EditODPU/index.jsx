@@ -3,8 +3,11 @@ import { useParams } from 'react-router-dom';
 import { ButtonTT, Header } from '../../tt-components';
 import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
-import axios from '../../axios';
-import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import { getOdpu, getCalculators } from './components/apiEditOdpu';
+import { EditCalculatorContext } from '../EditCalculator';
+
+export const EditOdpuContext = React.createContext();
 
 const EditODPU = () => {
   const { deviceId } = useParams();
@@ -16,78 +19,44 @@ const EditODPU = () => {
     setTab(value);
   }
 
-  // Получить устройство
-  async function getOdpu(id = 0) {
-    try {
-      const res = await axios.get(`HousingMeteringDevices/${id}`);
-      console.log('HousingMeteringDevices', res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса ОДПУ',
-      };
-    }
-  }
-
-  async function getCalculators(objid = 0) {
-    try {
-      const res = await axios.get(`Calculators?Filter.HousingStockId=${objid}`);
-      console.log('Calculators', res);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса Вычислителей в этом доме',
-      };
-    }
-  }
-
-
-
   useEffect(() => {
     async function getData() {
       const device = await getOdpu(deviceId);
       setDevice(device);
       const calculators = await getCalculators(device.address.id);
-      // console.log(calculators);
       const selectCalculators = calculators.items.map((item) => {
-        // console.log(item);
         const label = `${item.model} (${item.serialNumber}) IP: ${item.connection?.ipV4} (${item.connection?.port})`;
         const value = item.id;
         return ({ ...item, label, value });
       });
       setCalculators(selectCalculators);
     }
-
-    getData()
-
-    // console.log(selectCalculators);
+    getData();
   }, []);
-
-  const buttonHandler = () => {
-  };
 
   if (device && calculators) {
     const model = device.model || 'Не указана модель';
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
+
+    const context = { device, calculators, currentTabKey };
+
     return (
       <>
-        <Breadcrumb path={`/housingMeteringDevices/${deviceId}`}/>
+        <EditOdpuContext.Provider value={context}>
+          <Breadcrumb path={`/housingMeteringDevices/${deviceId}`} />
 
-        <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-        {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
-        <FormEditODPU
-          currentTabKey={currentTabKey}
-          device={device}
-          calculators={calculators}
-        />
+          <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
+          {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
+          <TabsComponent
+            currentTabKey={currentTabKey}
+            handleChangeTab={handleChangeTab}
+          />
+          <FormEditODPU
+            currentTabKey={currentTabKey}
+            device={device}
+            calculators={calculators}
+          />
+        </EditOdpuContext.Provider>
       </>
     );
   }
