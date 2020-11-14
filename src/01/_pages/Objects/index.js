@@ -51,8 +51,8 @@ const styles = css`
 
 const initialState = {
     city: '',
-    street: '',
-    houseNumber: ''
+    Street: '',
+    HousingStockNumber: ''
 }
 
 export const Objects = () => {
@@ -61,11 +61,28 @@ export const Objects = () => {
 
     React.useEffect(() => {
         (async () => {
-            const res = await axios.get('housingstocks');
+            let queryArray = [];
+            for (let key in searchState) {
+                if (!searchState[key]) continue
+                queryArray.push(key + '=' + searchState[key])
+            }
+            let queryString = queryArray.join('&');
+            if (queryArray.length) {
+                queryString = '?' + queryString
+            }
+
+            debugger;
+
+            // let query = searchState.street ? `&Street=${searchState.street}` : '' +
+            // searchState.houseNumber ? `&HousingStockNumber=${searchState.houseNumber}` : '';
+            // if (query.length) {
+            //     query = '?' + query;
+            // }
+            const res = await axios.get('housingstocks' + queryString);
             setState(res);
         })();
         return () => cancel();
-    }, []);
+    }, [searchState]);
 
     const { items } = state;
     return styled(styles)(

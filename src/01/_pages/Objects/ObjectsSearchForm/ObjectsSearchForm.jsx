@@ -4,23 +4,34 @@ import {setCurrentPage} from "../../../Redux/reducers/reducerDevicesPage";
 import {Button, Form, Input, Select, Tooltip} from "antd";
 import {Icon} from "../../../_components/Icon";
 import styles from "../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.scss";
+import {setHouseNumber, setStreet} from "./objectsSearchReducer";
 
 const { Option } = Select;
 
-const ObjectsSearchForm = (searchState, dispatchSearchState) => {
+const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
 
     const onValuesChangeHandler = (changedValues, allValues) => {
-        const changedParam = Object.keys(changedValues)[0]
-        let previousValue = searchState.searchState[changedParam];
         debugger;
-        // let targetValue = e.target.value;
-        // if (previousValue.length < 4 && targetValue.length < 4) {
-        //     return
-        // } else if (targetValue.length >= 4) {
-            // setSearchTerm(targetValue);
-        // } else {
-            // setSearchTerm('');
-        // }
+        const changedParam = Object.keys(changedValues)[0]
+        let previousValue = searchState[changedParam];
+        let targetValue = Object.values(changedValues)[0]
+        let setParam;
+
+        if (changedParam === 'HousingStockNumber') {
+            setParam = setHouseNumber;
+            dispatchSearchState(setParam(targetValue))
+            return
+        } else {
+            setParam = setStreet
+        }
+
+        if (previousValue.length < 4 && targetValue.length < 4) {
+            return
+        } else if (targetValue.length >= 4) {
+            dispatchSearchState(setParam(targetValue));
+        } else {
+            dispatchSearchState(setParam(''));
+        }
         // dispatch(setCurrentPage(1))
     }
 
@@ -55,7 +66,7 @@ const ObjectsSearchForm = (searchState, dispatchSearchState) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="street"
+                    name="Street"
                     rules={[{ required: true, message:  "Введите название улицы" }]}
                     style={{marginRight: 16}}
                 >
@@ -63,7 +74,7 @@ const ObjectsSearchForm = (searchState, dispatchSearchState) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="houseNumber"
+                    name="HousingStockNumber"
                     rules={[{ required: true, message:  "Дом" }]}
                     style={{marginRight: 24}}
                 >

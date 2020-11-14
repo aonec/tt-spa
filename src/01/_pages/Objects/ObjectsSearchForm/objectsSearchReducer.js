@@ -7,13 +7,13 @@ export const objectsSearchReducer = (state, action) => {
     switch (action.type) {
 
     case SET_CITY:
-    return { ...state, city: action.city }
+    return { ...state, City: action.city }
 
     case SET_STREET:
-    return { ...state, street: action.street }
+    return { ...state, Street: action.street }
 
     case SET_HOUSE_NUMBER:
-    return { ...state, houseNumber: action.houseNumber }
+    return { ...state, HousingStockNumber: action.HousingStockNumber }
 
     default:
         return state
@@ -23,4 +23,4 @@ export const objectsSearchReducer = (state, action) => {
 
 export const setCity = (city) => ({ type: SET_CITY, city});
 export const setStreet = (street) => ({ type: SET_STREET, street});
-export const setHouseNumber = (houseNumber) => ({ type: SET_HOUSE_NUMBER, houseNumber});
+export const setHouseNumber = (HousingStockNumber) => ({ type: SET_HOUSE_NUMBER, HousingStockNumber});
