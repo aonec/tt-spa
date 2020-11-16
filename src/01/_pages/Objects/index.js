@@ -71,7 +71,7 @@ export const Objects = () => {
                 queryString = '?' + queryString
             }
 
-            debugger;
+          //  debugger;
 
             // let query = searchState.street ? `&Street=${searchState.street}` : '' +
             // searchState.houseNumber ? `&HousingStockNumber=${searchState.houseNumber}` : '';

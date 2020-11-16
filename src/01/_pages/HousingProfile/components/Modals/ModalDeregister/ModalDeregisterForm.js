@@ -7,14 +7,14 @@ import * as Yup from 'yup';
 import {
   ButtonTT, DatePickerTT, InputTT, Header,
 } from '../../../../../tt-components';
-import { DeviceContext } from '../../../CalculatorProfile';
+import { HousingContext } from '../../../HousingProfile';
 import { deregisterDevice } from './apiDeregisterDevice';
 
 const ModalDeregisterForm = (props) => {
   const { handleCancel } = props;
 
   console.log('ModalDeregisterForm.js');
-  const { deregister, setDeregister, device } = useContext(DeviceContext);
+  const { deregister, setDeregister, device } = useContext(HousingContext);
   const { model, serialNumber } = device;
 
   const Alert = ({ name }) => {
@@ -91,6 +91,7 @@ const ModalDeregisterForm = (props) => {
           placeholder="Укажите дату"
           format="DD.MM.YYYY"
           allowClear={false}
+          onBlue={handleBlur}
           onChange={(date) => {
             setFieldValue('closingDateTime', date.toISOString());
           }}
