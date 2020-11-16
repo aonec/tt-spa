@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow } from 'react-router-dom';
 
 import axios, { cancel } from '01/axios';
 import { Loader, Icon } from '01/components';
+import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
+import {objectsSearchReducer} from "./ObjectsSearchForm/objectsSearchReducer";
 
 const styles = css`
   obj_item {
@@ -46,60 +48,86 @@ const styles = css`
   }
 `;
 
+
+const initialState = {
+    city: '',
+    Street: '',
+    HousingStockNumber: ''
+}
+
 export const Objects = () => {
-  const [state, setState] = React.useState({ items: null });
+    const [state, setState] = React.useState({ items: null });
+    const [searchState, dispatchSearchState] = useReducer(objectsSearchReducer, initialState)
 
-  React.useEffect(() => {
-    (async () => {
-      const res = await axios.get('housingstocks');
-      setState(res);
-    })();
-    return () => cancel();
-  }, []);
+    React.useEffect(() => {
+        (async () => {
+            let queryArray = [];
+            for (let key in searchState) {
+                if (!searchState[key]) continue
+                queryArray.push(key + '=' + searchState[key])
+            }
+            let queryString = queryArray.join('&');
+            if (queryArray.length) {
+                queryString = '?' + queryString
+            }
 
-  const { items } = state;
-  return styled(styles)(
-    <>
-      <h1 style={{ fontWeight: 300 }}>Объекты</h1>
-      <Loader show={!items} size="32">
-        {items?.map(
-          ({
-            city, id, number, numberOfTasks, street, numberOfApartments,
-          }) => {
-            const task = numberOfTasks ? (
-              <task>
-                <Icon icon="alarm" />
-                Задач:
-                {' '}
-                {numberOfTasks}
-              </task>
-            ) : null;
+          //  debugger;
 
-            return (
-              <obj_item key={id}>
-                <LinkRow to={`/objects/${id}`}>
+            // let query = searchState.street ? `&Street=${searchState.street}` : '' +
+            // searchState.houseNumber ? `&HousingStockNumber=${searchState.houseNumber}` : '';
+            // if (query.length) {
+            //     query = '?' + query;
+            // }
+            const res = await axios.get('HousingStocks' + queryString);
+            setState(res);
+        })();
+        return () => cancel();
+    }, [searchState]);
+
+    const { items } = state;
+    return styled(styles)(
+        <div style={{width: 960}}>
+            <h1 style={{ fontWeight: 300 }}>Объекты</h1>
+            <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
+            <Loader show={!items} size="32">
+                {items?.map(
+                    ({
+                         city, id, number, numberOfTasks, street, numberOfApartments,
+                     }) => {
+                        const task = numberOfTasks ? (
+                            <task>
+                                <Icon icon="alarm" />
+                                Задач:
+                                {' '}
+                                {numberOfTasks}
+                            </task>
+                        ) : null;
+
+                        return (
+                            <obj_item key={id}>
+                                <LinkRow to={`/objects/${id}`}>
                   <span>
                     <h4>
                       {street}
-                      ,
-                      {' '}
-                      {number}
+                        ,
+                        {' '}
+                        {number}
                     </h4>
-                    {task}
+                      {task}
                   </span>
-                  <city>{city}</city>
-                  <span />
-                  <aparts>
-                    {numberOfApartments}
-                    {' '}
-                    квартир
-                  </aparts>
-                </LinkRow>
-              </obj_item>
-            );
-          },
-        )}
-      </Loader>
-    </>,
-  );
+                                    <city>{city}</city>
+                                    <span />
+                                    <aparts>
+                                        {numberOfApartments}
+                                        {' '}
+                                        квартир
+                                    </aparts>
+                                </LinkRow>
+                            </obj_item>
+                        );
+                    },
+                )}
+            </Loader>
+        </div>,
+    );
 };

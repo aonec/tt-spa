@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import {Input} from "antd";
+import {InputNumber} from "antd";
 
-export const InputTT = styled(Input)`
+export const InputNunmberTT = styled(InputNumber)`
       color: rgba(39, 47, 90, 0.8);
       box-sizing: border-box;
       border-radius: 4px;
@@ -13,4 +13,4 @@ export const InputTT = styled(Input)`
 `;
 
 
-export default InputTT;
+export default InputNunmberTT;

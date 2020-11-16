@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import $ from 'jquery';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { Modal } from 'antd';
 import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
-import {
-  Modal,
-  ModalWrap,
-  ModalTop,
-  ModalMain,
-  ModalBottom,
-  ModalClose,
-} from '../../../../tt-components/Modal';
 import TabsComponent from './components/Main';
 import AddDeviceForm from './components/AddDeviceForm';
+import { ObjectContext } from '../../index';
 
 const ModalAddDevice = () => {
-  const { 0: objid } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const modalRef = React.createRef();
   const [calculators, setCalculators] = useState([]);
+  const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
+  const handleCancel = () => {
+    setAddOdpu(false);
+  };
 
   async function getObjectCalculators(id = '') {
     try {
@@ -59,66 +54,75 @@ const ModalAddDevice = () => {
     console.log(calculators);
   };
 
-  const renderNextButton = () => {
-    if (currentTabKey === '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        onClick={handleNext}
-      >
-        Далее
+
+
+
+  const Buttons = () => {
+    const RenderNextButton = () => {
+      if (currentTabKey === '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          onClick={handleNext}
+        >
+          Далее
+        </ButtonTT>
+      );
+    };
+
+    const RenderSubmitButton = () => {
+      if (currentTabKey !== '3') {
+        return null;
+      }
+      return (
+        <ButtonTT
+          color="blue"
+          style={{ marginLeft: '16px' }}
+          type="submit"
+          form="formikFormAddOdpu"
+        >
+          Выгрузить
+        </ButtonTT>
+      );
+    };
+
+    const CancelButton = () => (
+      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+        Отмена
       </ButtonTT>
+    );
+
+    return (
+      <div style={{margin:'32px 0'}}>
+        <RenderNextButton />
+        <RenderSubmitButton />
+        <CancelButton />
+      </div>
     );
   };
 
-  const renderSubmitButton = () => {
-    if (currentTabKey !== '3') {
-      return null;
-    }
-    return (
-      <ButtonTT
-        color="blue"
-        style={{ marginLeft: '16px' }}
-        type="submit"
-        form="formikFormAddOdpu"
-      >
-        Выгрузить
-      </ButtonTT>
-    );
-  };
-
-  const hideMe = () => {
-    $('#add-calculator').css('display', 'none');
-  };
 
   return (
-    <Modal id="add-device" ref={modalRef}>
-      <ModalWrap>
-        <ModalClose getModal={modalRef} />
-        <ModalTop>
-          <ButtonTT onClick={buttonHandler} hidden>ButtonTT</ButtonTT>
-          <Title size="middle" color="black">
-            Добавление нового ОДПУ
-          </Title>
-        </ModalTop>
-        <ModalMain>
-          <TabsComponent
-            currentTabKey={currentTabKey}
-            handleChangeTab={handleChangeTab}
-          />
-          <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
-        </ModalMain>
-        <ModalBottom>
-          <ButtonTT color="white" onClick={hideMe}>
-            Отмена
-          </ButtonTT>
-          {renderNextButton()}
-          {renderSubmitButton()}
-        </ModalBottom>
-      </ModalWrap>
+    <Modal
+      onCancel={handleCancel}
+      footer={null}
+      width={800}
+      visible={addOdpu}
+    >
+      <ButtonTT onClick={buttonHandler} hidden>ButtonTT</ButtonTT>
+      <Title size="middle" color="black">
+        Добавление нового ОДПУ
+      </Title>
+      <TabsComponent
+        currentTabKey={currentTabKey}
+        handleChangeTab={handleChangeTab}
+      />
+      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
+
+    <Buttons />
     </Modal>
   );
 };
