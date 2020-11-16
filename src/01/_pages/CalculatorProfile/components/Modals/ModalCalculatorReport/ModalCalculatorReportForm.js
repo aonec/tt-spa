@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Radio } from 'antd';
+import { Form, Modal, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -7,8 +7,12 @@ import _ from 'lodash';
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
+
+
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 import { device } from './components/CalculatorTemplate';
+
+const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const selectOptions = [];
@@ -156,6 +160,19 @@ const ModalCalculatorReportForm = (props) => {
     return null;
   };
 
+  devicesList.map(({ resource }) => {
+    if (!list.includes(resource)) {
+      list.push(resource);
+    }
+  });
+
+  const someList = list.map((value, index) => {
+    const res = translate(value);
+    return <TabPane tab={res} key={value} />;
+  });
+
+  const defaultRes = translate(someList[0]);
+
   const Buttons = () => {
     console.log('Buttons');
     return (
@@ -181,7 +198,11 @@ const ModalCalculatorReportForm = (props) => {
       <Header>
         Выгрузка отчета о общедомовом потреблении
       </Header>
+      {/*<Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>*/}
+      <Tabs defaultActiveKey={defaultRes}>
 
+      {someList}
+      </Tabs>
       <Form.Item label="Название отчета">
         <InputTT
           value={`${street}_${housingStockNumber}.exls`}
