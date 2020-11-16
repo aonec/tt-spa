@@ -206,7 +206,7 @@ export const ModalODPU = ({ device }) => {
         onDetailChange,
       }}
     >
-      <div className="overlay" id="modal-report-device">
+      <div className="overlay" style={{overflow: 'auto'}} id="modal-report-device">
         <div className="modal-odpu">
           {/* <ButtonTT>TEST</ButtonTT> */}
           <Icon
