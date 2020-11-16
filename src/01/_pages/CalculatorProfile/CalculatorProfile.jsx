@@ -13,7 +13,7 @@ import { RelatedDevices } from './components/RelatedDevices';
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister'
-import ModalCalculatorReport from "./components/Modals/ModalCalculatorReport";
+import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 
 
 export const DeviceContext = React.createContext();

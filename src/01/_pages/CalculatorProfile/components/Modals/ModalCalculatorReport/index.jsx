@@ -9,15 +9,13 @@ import moment from 'moment';
 import $ from 'jquery';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
-import { Icon } from '../../../../../_components/Icon';
-import { DeviceContext } from '../../../DeviceProfile';
-
 import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
-import './modal.scss';
-import { ButtonTT } from '../../../../../tt-components';
-import { CalculatorTemplate } from './components/CalculatorTemplate.js';
+
+import {Header, ButtonTT } from '../../../../../tt-components';
+import { Modal } from "antd";
+import {device} from './components/CalculatorTemplate'
 
 const Translate = {
   Heat: 'Отопление',
@@ -25,15 +23,12 @@ const Translate = {
   HotWaterSupply: 'Горячая вода',
 };
 
-const hideMe = () => {
-  $('.overlay').css('display', 'none');
-};
 
 const translate = (resource) => Translate[resource];
 
 export const ReportContext = React.createContext();
 
-export const ModalODPU = ({ device }) => {
+export const ModalCalculatorReport = () => {
   console.log('props', device);
   // const { device, building, hubs } = useContext(DeviceContext);
   // const { device, building } = useContext(DeviceContext);
@@ -93,8 +88,9 @@ export const ModalODPU = ({ device }) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
-      console.log("pipeNumber = ", pipeNumber)
+
       const { entryNumber, pipeNumber } = hub;
+      console.log("pipeNumber = ", pipeNumber)
       if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
           resource,
@@ -206,27 +202,21 @@ export const ModalODPU = ({ device }) => {
         onDetailChange,
       }}
     >
-      <div className="overlay" style={{overflow: 'auto'}} id="modal-report-device">
-        <div className="modal-odpu">
-          {/* <ButtonTT>TEST</ButtonTT> */}
-          <Icon
-            className="modal__close"
-            icon="close"
-            color="#272F5A"
-            onClick={hideMe}
-          />
-          <div className="modal__top">
-            <h3 className="modal__title">
+      <Modal visible={true}
+             width={800}
+             footer={null}
+             >
+
+            <Header>
               Выгрузка отчета о общедомовом потреблении
-            </h3>
+            </Header>
             <Top />
             <Bottom />
-          </div>
 
-          <div className="modal__bottom">
+
+          <div>
             <button
               className="modal__button modal__button_cancel"
-              onClick={hideMe}
             >
               Отмена
             </button>
@@ -237,13 +227,13 @@ export const ModalODPU = ({ device }) => {
               Выгрузить
             </button>
           </div>
-        </div>
-      </div>
+
+      </Modal>
     </ReportContext.Provider>
   );
 };
 
-export default ModalODPU;
+export default ModalCalculatorReport;
 
 // const selectOptions = [
 //   'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
