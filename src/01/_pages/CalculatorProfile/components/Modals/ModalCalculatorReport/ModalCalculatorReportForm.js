@@ -5,22 +5,77 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import {
-  ButtonTT, Header, InputTT, SelectTT, RangePickerTT
+  ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
-import { convertDateOnly } from "../../../../../_api/utils/convertDate";
-import { device } from "./components/CalculatorTemplate";
+import { convertDateOnly } from '../../../../../_api/utils/convertDate';
+import { device } from './components/CalculatorTemplate';
 
 const ModalCalculatorReportForm = (props) => {
   const selectOptions = [];
-  const {device} = props;
+  const { device } = props;
+  console.log("DEVICE = ", device)
   const building = device.address;
-  const { housingStockNumber, street } = building;
-  const { hubs } = device;
   const { id, model, serialNumber } = device;
   const serialNumberODPU = serialNumber;
 
-  console.log("PROPS",device )
+  const list = [];
+  const devicesList = [];
 
+  const { housingStockNumber, street } = building;
+  const { hubs } = device;
+
+  hubs.map((item, index) => {
+    const {
+      resource, housingMeteringDeviceType, hub, serialNumber,
+    } = item;
+
+    const { entryNumber, pipeNumber } = hub;
+    console.log('pipeNumber = ', pipeNumber);
+    if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
+      devicesList.push({
+        resource,
+        entryNumber,
+        pipeNumber,
+        housingMeteringDeviceType,
+        serialNumber,
+      });
+    }
+  });
+
+  devicesList.map(({
+    resource, serialNumber, entryNumber, pipeNumber,
+  }) => {
+    if (_.find(selectOptions, (o) => o.value === resource)) {
+      const res = _.find(selectOptions, (o) => o.value === resource);
+      console.log('res', res);
+      const ind = selectOptions.indexOf(res);
+      selectOptions.splice(ind, 1, {
+        label: `${_.get(
+          selectOptions[ind],
+          'label',
+          'default',
+        )} ПРЭМ (${serialNumber})`,
+        value: resource,
+        entryNumber,
+        pipeNumber,
+      });
+    } else {
+      selectOptions.push({
+        label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
+        value: resource,
+        entryNumber,
+        pipeNumber,
+      });
+    }
+  });
+
+  const Translate = {
+    Heat: 'Отопление',
+    ColdWaterSupply: 'Холодная вода',
+    HotWaterSupply: 'Горячая вода',
+  };
+
+  const translate = (resource) => Translate[resource];
 
   console.log('ModalCalculatorReportForm');
 
@@ -65,8 +120,8 @@ const ModalCalculatorReportForm = (props) => {
     setFieldValue('end', event[1]);
   };
 
-  const modifiedSelectOptions = selectOptions.filter(option => option.value == 'type');
-  console.log("modifiedSelectOptions",modifiedSelectOptions)
+  const modifiedSelectOptions = selectOptions.filter((option) => option.value == 'type');
+  console.log('modifiedSelectOptions', modifiedSelectOptions);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -77,6 +132,7 @@ const ModalCalculatorReportForm = (props) => {
       detail: 'daily',
       begin: moment().subtract(1, 'month'),
       end: moment(),
+      type: list[0],
     },
     validationSchema: Yup.object({}),
     onSubmit: async () => {
@@ -103,7 +159,7 @@ const ModalCalculatorReportForm = (props) => {
   const Buttons = () => {
     console.log('Buttons');
     return (
-      <div style={{ display: 'flex', justifyContent:'flex-end' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
         >
@@ -111,7 +167,7 @@ const ModalCalculatorReportForm = (props) => {
         </ButtonTT>
         <ButtonTT
           color="blue"
-          style={{width:'224px', marginLeft: '16px' }}
+          style={{ width: '224px', marginLeft: '16px' }}
           // onClick={downloadReport}
         >
           Выгрузить
@@ -140,9 +196,9 @@ const ModalCalculatorReportForm = (props) => {
         />
       </Form.Item>
 
-      <div id="period_and_type " style={{display: 'flex'}}>
+      <div id="period_and_type " style={{ display: 'flex' }}>
 
-        <Form.Item label="Тип архива" style={{marginRight:'24px'}}>
+        <Form.Item label="Тип архива" style={{ marginRight: '24px' }}>
           <Radio.Group
             defaultValue="month"
             size="large"
