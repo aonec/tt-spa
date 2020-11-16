@@ -17,6 +17,8 @@ import {
   ErrorPage,
   AccessDeniedPage,
   DevicesFromSearch,
+  CalculatorProfile,
+  HousingProfile
 } from '01/_pages';
 
 import EditCalculator from '01/_pages/EditCalculator';
@@ -87,13 +89,26 @@ export function App(){
 
                     <Route path="/devices/(\\d+)" component={Devices} exact/>
 
+                    {/*<Route*/}
+                    {/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?",*/}
+                    {/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]}*/}
+                    {/*  component={DeviceProfile}*/}
+                    {/*  exact*/}
+                    {/*/>*/}
+
                     <Route
-                      path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?",
-                        "/calculators/:deviceId/(connection|related|documents)?",
-                        "/housingMeteringDevices/:deviceId/(related|documents)?"]}
-                      component={DeviceProfile}
+                      path={["/calculators/:deviceId/(connection|related|documents)?"]}
+                      component={CalculatorProfile}
                       exact
                     />
+
+                    <Route
+                      path={["/housingMeteringDevices/:deviceId/(related|documents)?"]}
+                      component={HousingProfile}
+                      exact
+                    />
+
+
 
                     <Route
                       path="/calculators/:deviceId/edit"
