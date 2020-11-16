@@ -1,60 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import $ from 'jquery';
-import {
-  useHistory, useRouteMatch, useParams, NavLink, useLocation,
-} from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams, NavLink} from 'react-router-dom';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
-import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
-
-export const Template = styled.div``;
-
-export const EditButtonTemplate = styled.button`
-  border: 1px solid #dcdee4;
-  box-sizing: border-box;
-  border-radius: 4px;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const List = styled.ul`
-  border: 1px solid #dcdee4;
-  position: absolute;
-  right: 0;
-  width: max-content;
-  z-index: 1;
-  background: white;
-  display: none;
-`;
-
-export const ListItem = styled.li`
-  font-size: 16px;
-  line-height: 32px;
-  padding: 8px 24px;
-  cursor: pointer;
-  border-bottom: 1px solid #dcdee4;
-  &:hover {
-    background: #189ee9;
-    color: #ffffff !important;
-  }
-`;
-
-export const EditButtonWrap = styled.button`
-border: 1px solid #DCDEE4;
-box-sizing: border-box;
-border-radius: 4px;
-width: 48px;
-height: 48px;
-display: flex;
-justify-content: center;
-align-items: center;
-}
-`;
+import { List , ListItem , EditButtonWrap} from '../../../tt-components/EditButton'
 
 export const EditButton = () => {
   const menuShowHide = () => {
@@ -68,10 +17,8 @@ export const EditButton = () => {
   );
 };
 
-export const Menu = (showPopupHandler) => {
+export const Menu = () => {
   const { deviceId } = useParams();
-  const history = useLocation();
-  const dispatch = useDispatch();
 
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -85,14 +32,12 @@ export const Menu = (showPopupHandler) => {
   });
 
   const reportDevice = () => {
-    console.log("$('#modal-report-device')", $('#modal-report-device'));
     $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
   };
 
   const showDeregisterDeviceModal = () => {
     $('#edit-button__list').toggle();
-    dispatch(setModalDeregisterVisible(true));
   };
 
   return (

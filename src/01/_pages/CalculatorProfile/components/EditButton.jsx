@@ -98,10 +98,7 @@ export const Menu = (showPopupHandler) => {
       <List id="edit-button__list">
         {/* <NavLink className={styles.menu} to={`/objects/${objid}/devices/${deviceId}/edit`}> */}
         <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
-          <ListItem>
-            Редактировать
-            вычислитель
-          </ListItem>
+          <ListItem>Редактировать вычислитель</ListItem>
         </NavLink>
         <ListItem>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
