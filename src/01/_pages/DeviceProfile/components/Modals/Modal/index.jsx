@@ -88,6 +88,7 @@ export const ModalODPU = ({ device }) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
+      console.log("pipeNumber = ", pipeNumber)
       const { entryNumber, pipeNumber } = hub;
       if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
@@ -198,7 +199,7 @@ export const ModalODPU = ({ device }) => {
         onDetailChange,
       }}
     >
-      <div className="overlay" id="modal-report-device">
+      <div className="overlay" style={{overflow: 'auto'}} id="modal-report-device">
         <div className="modal-odpu">
           {/* <ButtonTT>TEST</ButtonTT> */}
           <Icon
