@@ -3,7 +3,6 @@ import axios from '01/axios';
 
 export const devicesAPI = {
     async getDevices(pageNumber, pageSize, {searchTerm, expirationDate, destination, rule}) {
-        debugger;
         try {
             const extraQuery = (searchTerm ? `&Question=${searchTerm}` : '') +
                 ((expirationDate || expirationDate === 0) ? `&Filter.ExpiresCheckingDateAt=${expirationDate}` : '') +
