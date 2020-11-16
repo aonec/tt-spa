@@ -10,8 +10,6 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { RelatedDevices } from './components/RelatedDevices';
 
-import { ModalODPU } from './components/Modals/Modal';
-import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
 import { Loader } from '../../components/Loader';
 import Documents from "./components/Documents";
 
