@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +9,7 @@ import {
   SelectTT, InputTT, ButtonTT, Header,
 } from '../../../../../tt-components';
 import { convertDateOnly } from "../../../../../_api/utils/convertDate";
+import { DeviceContext } from "../../../CalculatorProfile";
 
 
 
@@ -37,6 +38,29 @@ const selectTemplate = [
 ];
 
 const CalcReportForm = ({ device }) => {
+  const { report, setReport} = useContext(DeviceContext);
+  const Buttons = () => {
+    console.log("Buttons");
+    return (
+      <div style={{display:'flex', justifyContent: 'flex-end'}}>
+        <ButtonTT
+        color="white"
+        onClick={handleCancel}
+      >
+        Отмена
+      </ButtonTT>
+
+        <ButtonTT
+          style={{ marginLeft: '16px' }}
+          type="submit"
+          color="blue"
+          form="reportForm"
+        >
+          Выгрузить
+        </ButtonTT></div>
+      )
+
+  }
   const { serialNumber, model, address } = device;
   const { street, housingStockNumber, corpus } = address;
   const {
@@ -103,10 +127,14 @@ const CalcReportForm = ({ device }) => {
     console.log('device', device);
   };
 
+  const handleCancel = () => {
+   setReport(false)
+  };
+
   if (device) {
     return (
       <>
-        <form id="formikForm" onSubmit={handleSubmit}>
+        <Form id="reportForm" onSubmit={handleSubmit}>
           <Header>
             Выгрузка отчета о общедомовом потреблении
           </Header>
@@ -179,7 +207,9 @@ const CalcReportForm = ({ device }) => {
           >
             TEST
           </ButtonTT>
-        </form>
+
+          <Buttons />
+        </Form>
       </>
     );
   }

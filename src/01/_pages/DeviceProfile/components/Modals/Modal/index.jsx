@@ -10,14 +10,9 @@ import $ from 'jquery';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 import { Icon } from '../../../../../_components/Icon';
-import { DeviceContext } from '../../../DeviceProfile';
-
-import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
-import './modal.scss';
-import { ButtonTT } from '../../../../../tt-components';
-import { CalculatorTemplate } from './components/CalculatorTemplate.js';
+
 
 const Translate = {
   Heat: 'Отопление',
@@ -196,7 +191,6 @@ export const ModalODPU = ({ device }) => {
         model,
         street,
         housingStockNumber,
-        SelectReport,
         type,
         selectOptions,
         handleChange,

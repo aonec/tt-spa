@@ -111,7 +111,7 @@ const AddDeviceForm = (props) => {
       <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Выберите тип прибора">
           <SelectTT
-            id="housingMeteringDeviceType"
+            name="housingMeteringDeviceType"
             onChange={(value) => {
               setFieldValue('housingMeteringDeviceType', value);
             }}
@@ -123,7 +123,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Выберите тип ресурса">
           <SelectTT
-            id="resource"
+            name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
             }}
@@ -135,7 +135,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Выберите модель прибора">
           <InputTT
-            id="model"
+            name="model"
             type="text"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -146,7 +146,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Серийный номер">
           <InputTT
-            id="serialNumber"
+            name="serialNumber"
             type="text"
             onBlur={handleBlur}
             onChange={handleChange}
