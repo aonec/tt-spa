@@ -11,7 +11,7 @@ import { Connection } from './components/Connection';
 import { RelatedDevices } from './components/RelatedDevices';
 
 import { Loader } from '../../components/Loader';
-import Documents from "./components/Documents";
+import Documents from './components/Documents';
 
 export const DeviceContext = React.createContext();
 
@@ -25,6 +25,7 @@ export const CalculatorProfile = () => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [hubs, setHubs] = useState();
+  const [deregister, setDeregister] = useState(true);
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -74,19 +75,21 @@ export const CalculatorProfile = () => {
   }, []);
 
   if (isLoading) return <Loader show size={32} />;
-
+  const context = {
+    device,
+    building,
+    tasks,
+    related,
+    loadings,
+    errors,
+    error,
+    hubs,
+    deregister,
+    setDeregister,
+  };
   return (
     <DeviceContext.Provider
-      value={{
-        device,
-        building,
-        tasks,
-        related,
-        loadings,
-        errors,
-        error,
-        hubs,
-      }}
+      value={context}
     >
       <Header />
       <Tabs />
