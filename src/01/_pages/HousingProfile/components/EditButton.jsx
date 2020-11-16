@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import $ from 'jquery';
 import { useParams, NavLink} from 'react-router-dom';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
 import { List , ListItem , EditButtonWrap} from '../../../tt-components/EditButton'
+import { HousingContext } from '../HousingProfile';
 
 export const EditButton = () => {
   const menuShowHide = () => {
@@ -19,6 +20,7 @@ export const EditButton = () => {
 
 export const Menu = () => {
   const { deviceId } = useParams();
+  const {deregister, setDeregister} = useContext(HousingContext)
 
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -38,6 +40,7 @@ export const Menu = () => {
 
   const showDeregisterDeviceModal = () => {
     $('#edit-button__list').toggle();
+    setDeregister(true)
   };
 
   return (

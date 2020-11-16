@@ -10,10 +10,9 @@ import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { RelatedDevices } from './components/RelatedDevices';
 
-import { ModalODPU } from './components/Modals/Modal';
-import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
 import { Loader } from '../../components/Loader';
-import Documents from "./components/Documents";
+import Documents from './components/Documents';
+import DeregisterDevice from './components/Modals/ModalDeregister'
 
 export const DeviceContext = React.createContext();
 
@@ -27,6 +26,7 @@ export const CalculatorProfile = () => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [hubs, setHubs] = useState();
+  const [deregister, setDeregister] = useState(false);
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -76,19 +76,21 @@ export const CalculatorProfile = () => {
   }, []);
 
   if (isLoading) return <Loader show size={32} />;
-
+  const context = {
+    device,
+    building,
+    tasks,
+    related,
+    loadings,
+    errors,
+    error,
+    hubs,
+    deregister,
+    setDeregister,
+  };
   return (
     <DeviceContext.Provider
-      value={{
-        device,
-        building,
-        tasks,
-        related,
-        loadings,
-        errors,
-        error,
-        hubs,
-      }}
+      value={context}
     >
       <Header />
       <Tabs />
@@ -108,6 +110,7 @@ export const CalculatorProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
+      <DeregisterDevice />
       {/* <ModalODPU device={device} /> */}
       {/* <ModalDeregisterDevice deviceId={deviceId} /> */}
     </DeviceContext.Provider>

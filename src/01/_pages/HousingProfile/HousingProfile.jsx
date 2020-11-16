@@ -1,4 +1,4 @@
-import {  Route, useParams} from 'react-router-dom';
+import { Route, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import { getHousingTasks, getHousing } from './apiHousingProfile';
@@ -10,7 +10,8 @@ import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 
 import { RelatedDevices } from './components/RelatedDevices';
-import ButtonTT from "../../tt-components/ButtonTT";
+import ButtonTT from '../../tt-components/ButtonTT';
+import DeregisterDevice from "./components/Modals/ModalDeregister";
 
 export const HousingContext = React.createContext();
 
@@ -26,6 +27,7 @@ export const HousingProfile = () => {
   const [hubs, setHubs] = useState();
   const [calcModel, setCalcModel] = useState();
   const [calcId, setCalcId] = useState();
+  const [deregister, setDeregister] = useState(false);
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -78,26 +80,28 @@ export const HousingProfile = () => {
 
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log(related)
+    console.log(related);
   };
-
+  const context = {
+    device,
+    building,
+    tasks,
+    related,
+    loadings,
+    errors,
+    error,
+    hubs,
+    calcModel,
+    deregister,
+    setDeregister,
+  };
   return (
     <HousingContext.Provider
-      value={{
-        device,
-        building,
-        tasks,
-        related,
-        loadings,
-        errors,
-        error,
-        hubs,
-        calcModel,
-      }}
+      value={context}
     >
       <Header />
-      {/*<h1>HousingProfile</h1>*/}
-      {/*<ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>*/}
+      {/* <h1>HousingProfile</h1> */}
+      {/* <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT> */}
       <Tabs />
       <Grid>
         <Route path={`${path}`} exact>
@@ -112,10 +116,9 @@ export const HousingProfile = () => {
         <Route path={`${path}documents`} exact>
           <Documents />
         </Route>
-
         <Events title="Задачи с объектом" />
       </Grid>
-
+      <DeregisterDevice />
     </HousingContext.Provider>
   );
 };
