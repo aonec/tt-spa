@@ -12,6 +12,7 @@ import { RelatedDevices } from './components/RelatedDevices';
 
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
+import DeregisterDevice from './components/Modals/ModalDeregister'
 
 export const DeviceContext = React.createContext();
 
@@ -25,7 +26,7 @@ export const CalculatorProfile = () => {
   const [tasks, setTasks] = useState();
   const [related, setRelated] = useState();
   const [hubs, setHubs] = useState();
-  const [deregister, setDeregister] = useState(true);
+  const [deregister, setDeregister] = useState(false);
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -109,6 +110,7 @@ export const CalculatorProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
+      <DeregisterDevice />
       {/* <ModalODPU device={device} /> */}
       {/* <ModalDeregisterDevice deviceId={deviceId} /> */}
     </DeviceContext.Provider>

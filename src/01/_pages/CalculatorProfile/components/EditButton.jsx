@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import { useParams, NavLink } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
 import { setModalCalcReportVisible, setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { DeviceContext } from '../CalculatorProfile';
 
 export const Template = styled.div``;
 
@@ -67,6 +68,8 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
+  const { deregister, setDeregister } = useContext(DeviceContext);
+
   const { deviceId } = useParams();
   const dispatch = useDispatch();
   $(document).mouseup((e) => {
@@ -89,7 +92,7 @@ export const Menu = (showPopupHandler) => {
 
   const showDeregisterDeviceModal = () => {
     $('#edit-button__list').toggle();
-    dispatch(setModalDeregisterVisible(true));
+    setDeregister(true)
   };
 
   return (
