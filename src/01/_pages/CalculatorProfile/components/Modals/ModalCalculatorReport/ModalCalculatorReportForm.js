@@ -9,12 +9,13 @@ import {
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
+import { number } from "yup";
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
-  console.log('DEVICE = ', device);
+  // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
   } = device;
@@ -28,7 +29,7 @@ const ModalCalculatorReportForm = (props) => {
       resource, housingMeteringDeviceType, hub, serialNumber, model,
     } = item;
     const { entryNumber, pipeNumber } = hub;
-    console.log('pipeNumber = ', pipeNumber);
+    // console.log('pipeNumber = ', pipeNumber);
     if (housingMeteringDeviceType === 'FlowMeter') {
       result.push({
         resource,
@@ -56,10 +57,10 @@ const ModalCalculatorReportForm = (props) => {
     const {
       resource, serialNumber, entryNumber, pipeNumber, model,
     } = item;
-    console.log(item);
+    // console.log(item);
     if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
       const res = _.find(result, (o) => o.resource === resource);
-      console.log('res', res);
+      // console.log('res', res);
       const ind = result.indexOf(res);
       result.splice(ind, 1, {
         label: `${_.get(
@@ -95,16 +96,23 @@ const ModalCalculatorReportForm = (props) => {
       end: moment(),
       resource: resources[0],
       currentValue: undefined,
-      entryNumber: undefined,
+      entryNumber: null,
       pipeNumber: undefined,
+      test: undefined
     },
-    validationSchema: Yup.object({}),
+    validationSchema: Yup.object({
+      entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
+        .max(10, 'Скорее всего, выбран некорректный номер узла')
+    }),
     onSubmit: async () => {
       const form = {
         period: values.period,
         detail: values.detail,
         begin: values.begin,
       };
+
+      console.log("DONE")
+      downloadReport()
       // deregisterDevice(form);
     },
   });
@@ -120,12 +128,12 @@ const ModalCalculatorReportForm = (props) => {
 
   const translate = (resource) => Translate[resource];
 
-  console.log('ModalCalculatorReportForm');
+  // console.log('ModalCalculatorReportForm');
 
   const downloadReport = () => {
     console.log('entryNumberRes.current = ', values.entryNumber);
     if (values.entryNumber) {
-      console.log('entryNumberRes', values.entryNumberRes);
+      console.log('entryNumberRes', values.entryNumber);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         values.detail
       }&resourcetype=${values.resource}&entrynumber=${
@@ -133,13 +141,8 @@ const ModalCalculatorReportForm = (props) => {
       }&pipenumber=${values.pipeNumber}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
         values.end,
       )}T00:00:00Z`;
-      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
 
-      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-      const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
-      // window.location.assign(link);
       console.log(link);
-      // console.log(lastTemplate);
       window.open(link);
     } else {
       alert('Выберите узел!');
@@ -183,15 +186,17 @@ const ModalCalculatorReportForm = (props) => {
   const defaultRes = translate(TabsList[0]);
 
   const onTabsChangeHandler = (value) => {
-    console.log('resource = ', value);
+    // console.log('resource = ', value);
     setFieldValue('resource', value);
     setFieldValue('currentValue', undefined);
+    setFieldValue('entryNumber', null)
+    setFieldValue('pipeNumber', null)
   };
 
-  console.log(devicesList);
+  // console.log(devicesList);
 
   const Buttons = () => {
-    console.log('Buttons');
+    // console.log('Buttons');
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
@@ -202,8 +207,10 @@ const ModalCalculatorReportForm = (props) => {
         </ButtonTT>
         <ButtonTT
           color="blue"
+          type={'submit'}
+          form={'formReport'}
           style={{ width: '224px', marginLeft: '16px' }}
-          onClick={downloadReport}
+          onClick={handleSubmit}
         >
           Выгрузить
         </ButtonTT>
@@ -219,7 +226,7 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   return (
-    <Form>
+    <Form id={'formReport'}>
       <Header>
         Выгрузка отчета о общедомовом потреблении
       </Header>
@@ -240,7 +247,9 @@ const ModalCalculatorReportForm = (props) => {
           placeholder="Выберите узел"
           onChange={handleSelect}
           value={values.currentValue}
+          name={'entryNumber'}
         />
+        <Alert name={'entryNumber'} />
       </Form.Item>
 
       <div id="period_and_type " style={{ display: 'flex' }}>

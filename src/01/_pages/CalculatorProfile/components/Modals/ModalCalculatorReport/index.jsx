@@ -4,7 +4,7 @@ import ModalCalculatorReportForm from './ModalCalculatorReportForm';
 import { DeviceContext } from "../../../CalculatorProfile";
 
 export const ModalCalculatorReport = () => {
-  console.log('ModalCalculatorReport');
+  // console.log('ModalCalculatorReport');
 
   const { report, setReport, device } = useContext(DeviceContext);
   const handleCancel = () => {

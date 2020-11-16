@@ -4,7 +4,7 @@ import ModalDeregisterForm from './ModalDeregisterForm';
 import { DeviceContext } from '../../../CalculatorProfile';
 
 const DeregisterDevice = () => {
-  console.log('DeregisterDevice');
+  // console.log('DeregisterDevice');
   const { deregister, setDeregister, device } = useContext(DeviceContext);
   const handleCancel = () => {
     setDeregister(false);
