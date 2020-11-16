@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Radio, Tabs } from 'antd';
+import { Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -8,70 +8,109 @@ import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
 
-
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import { device } from './components/CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  const selectOptions = [];
   const { device } = props;
-  console.log("DEVICE = ", device)
-  const building = device.address;
-  const { id, model, serialNumber } = device;
-  const serialNumberODPU = serialNumber;
+  console.log('DEVICE = ', device);
+  const {
+    id, model, serialNumber, address, hubs,
+  } = device;
+  const { housingStockNumber, street } = address;
+  const serialNumberCalculator = serialNumber;
+  const modelCalculator = model;
 
-  const list = [];
-  const devicesList = [];
+  // const selectOptions = [];
 
-  const { housingStockNumber, street } = building;
-  const { hubs } = device;
-
-  hubs.map((item, index) => {
+  // Все Расходомеры
+  const devicesList = hubs.reduce((result, item) => {
     const {
-      resource, housingMeteringDeviceType, hub, serialNumber,
+      resource, housingMeteringDeviceType, hub, serialNumber, model,
     } = item;
-
     const { entryNumber, pipeNumber } = hub;
     console.log('pipeNumber = ', pipeNumber);
-    if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
-      devicesList.push({
+    if (housingMeteringDeviceType === 'FlowMeter') {
+      result.push({
         resource,
         entryNumber,
         pipeNumber,
         housingMeteringDeviceType,
         serialNumber,
+        model,
       });
     }
-  });
+    return result;
+  }, []);
 
-  devicesList.map(({
-    resource, serialNumber, entryNumber, pipeNumber,
-  }) => {
-    if (_.find(selectOptions, (o) => o.value === resource)) {
-      const res = _.find(selectOptions, (o) => o.value === resource);
+  // Список всех ресурсов
+  const resources = devicesList.reduce((result, item) => {
+    const { resource } = item;
+    if (!result.includes(resource)) {
+      result.push(resource);
+    }
+    return result;
+  }, []);
+
+  // Все строки, разделенные по типам Ресурсов
+  const selectOptions = devicesList.reduce((result, item) => {
+    const {
+      resource, serialNumber, entryNumber, pipeNumber, model,
+    } = item;
+    console.log(item);
+    if (_.find(result, (o) => o.value === resource)) {
+      const res = _.find(result, (o) => o.value === resource);
       console.log('res', res);
-      const ind = selectOptions.indexOf(res);
-      selectOptions.splice(ind, 1, {
+      const ind = result.indexOf(res);
+      result.splice(ind, 1, {
         label: `${_.get(
-          selectOptions[ind],
+          result[ind],
           'label',
           'default',
-        )} ПРЭМ (${serialNumber})`,
+        )} ${model} (${serialNumber})`,
         value: resource,
+        resource,
         entryNumber,
         pipeNumber,
       });
     } else {
-      selectOptions.push({
-        label: `Узел ${entryNumber} ${model}: (${serialNumberODPU}), ПРЭМ (${serialNumber})`,
+      result.push({
+        label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
         value: resource,
         entryNumber,
         pipeNumber,
+        resource
       });
     }
+    return result
+  },[]);
+
+  const {
+    handleSubmit, handleChange, values, touched, errors,
+    handleBlur, setFieldValue,
+  } = useFormik({
+    initialValues: {
+      period: 'month',
+      detail: 'daily',
+      begin: moment().subtract(1, 'month'),
+      end: moment(),
+      resource: resources[0],
+    },
+    validationSchema: Yup.object({}),
+    onSubmit: async () => {
+      const form = {
+        period: values.period,
+        detail: values.detail,
+        begin: values.begin,
+      };
+      // deregisterDevice(form);
+    },
   });
+
+
+  // Строки для выбранного типа Ресурса
+  const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
 
   const Translate = {
     Heat: 'Отопление',
@@ -124,30 +163,7 @@ const ModalCalculatorReportForm = (props) => {
     setFieldValue('end', event[1]);
   };
 
-  const modifiedSelectOptions = selectOptions.filter((option) => option.value == 'type');
-  console.log('modifiedSelectOptions', modifiedSelectOptions);
 
-  const {
-    handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue,
-  } = useFormik({
-    initialValues: {
-      period: 'month',
-      detail: 'daily',
-      begin: moment().subtract(1, 'month'),
-      end: moment(),
-      type: list[0],
-    },
-    validationSchema: Yup.object({}),
-    onSubmit: async () => {
-      const form = {
-        period: values.period,
-        detail: values.detail,
-        begin: values.begin,
-      };
-      // deregisterDevice(form);
-    },
-  });
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -160,18 +176,22 @@ const ModalCalculatorReportForm = (props) => {
     return null;
   };
 
-  devicesList.map(({ resource }) => {
-    if (!list.includes(resource)) {
-      list.push(resource);
-    }
-  });
 
-  const someList = list.map((value, index) => {
+
+  // Список Вкладок/Ресурсов
+  const TabsList = resources.map((value, index) => {
     const res = translate(value);
     return <TabPane tab={res} key={value} />;
   });
 
-  const defaultRes = translate(someList[0]);
+  const defaultRes = translate(TabsList[0]);
+
+  const onTabsChangeHandler = (value) => {
+    console.log('resource = ', value);
+    setFieldValue('resource', value);
+  };
+
+  console.log(devicesList);
 
   const Buttons = () => {
     console.log('Buttons');
@@ -193,15 +213,17 @@ const ModalCalculatorReportForm = (props) => {
     );
   };
 
+  const handleSelect = (value1, value2) =>{
+    console.log("value1 = ", value1, value2)
+  }
   return (
     <Form>
       <Header>
         Выгрузка отчета о общедомовом потреблении
       </Header>
-      {/*<Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>*/}
-      <Tabs defaultActiveKey={defaultRes}>
-
-      {someList}
+      {/* <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}> */}
+      <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
+        {TabsList}
       </Tabs>
       <Form.Item label="Название отчета">
         <InputTT
@@ -212,8 +234,9 @@ const ModalCalculatorReportForm = (props) => {
 
       <Form.Item label="Выбор узла">
         <SelectTT
-      // options={modifiedSelectOptions}
+          options={modifiedSelectOptions}
           placeholder="Выберите узел"
+          onChange={handleSelect}
         />
       </Form.Item>
 
