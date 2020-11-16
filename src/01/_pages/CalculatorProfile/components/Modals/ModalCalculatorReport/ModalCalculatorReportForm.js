@@ -13,7 +13,7 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  const { device } = props;
+  const { device, handleCancel } = props;
   console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
@@ -196,6 +196,7 @@ const ModalCalculatorReportForm = (props) => {
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
+          onClick={handleCancel}
         >
           Отмена
         </ButtonTT>
