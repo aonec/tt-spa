@@ -54,3 +54,16 @@ export const updateModalCalcReportForm = (path, value) => ({
   type: 'REPORT_FORM_UPDATE',
   payload: { path, value },
 });
+
+
+// Изменение отображния модального окна ModalTemplate
+export const setModalTemplateVisible = (path,value) => ({
+  type: 'MODAL_TEMPLATE_FORM_VISIBLE',
+  payload: { path, value },
+});
+
+// Изменение отображния модального окна ModalCalculatorReport
+export const setModalCalculatorReportVisible = (value) => ({
+  type: 'REPORT_FORM_VISIBLE',
+  payload: { value },
+});

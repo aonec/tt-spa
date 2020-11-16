@@ -12,11 +12,9 @@ import {
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
 
-
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
   const [disable, setDisable] = useState(false);
-
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -58,8 +56,10 @@ const AddDeviceForm = (props) => {
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
       calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-      entryNumber: Yup.number().min(0).max(10,'Укажите число до 10').typeError('Введите число, значение не может быть пустым').required('Введите номер'),
-      pipeNumber: Yup.number().min(0).max(10,'Укажите число до 10').typeError('Введите число, значение не может быть пустым').required('Введите номер'),
+      entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+        .required('Введите номер'),
+      pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+        .required('Введите номер'),
     }),
 
     onSubmit: async () => {
@@ -111,7 +111,7 @@ const AddDeviceForm = (props) => {
       <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Выберите тип прибора">
           <SelectTT
-            id="housingMeteringDeviceType"
+            name="housingMeteringDeviceType"
             onChange={(value) => {
               setFieldValue('housingMeteringDeviceType', value);
             }}
@@ -123,7 +123,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Выберите тип ресурса">
           <SelectTT
-            id="resource"
+            name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
             }}
@@ -135,7 +135,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Выберите модель прибора">
           <InputTT
-            id="model"
+            name="model"
             type="text"
             onChange={handleChange}
             onBlur={handleBlur}
@@ -146,7 +146,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item label="Серийный номер">
           <InputTT
-            id="serialNumber"
+            name="serialNumber"
             type="text"
             onBlur={handleBlur}
             onChange={handleChange}
@@ -155,10 +155,10 @@ const AddDeviceForm = (props) => {
           <Alert name="serialNumber" />
         </Form.Item>
 
-        {/*"lastCommercialAccountingDate": "2020-11-09T13:07:26.129",*/}
-        {/*"futureCommercialAccountingDate": "2020-11-09T13:07:26.13",*/}
-        {/*"lastCheckingDate": "2020-11-13T13:28:13.355",*/}
-        {/*"futureCheckingDate": "2020-11-13T13:28:13.355",*/}
+        {/* "lastCommercialAccountingDate": "2020-11-09T13:07:26.129", */}
+        {/* "futureCommercialAccountingDate": "2020-11-09T13:07:26.13", */}
+        {/* "lastCheckingDate": "2020-11-13T13:28:13.355", */}
+        {/* "futureCheckingDate": "2020-11-13T13:28:13.355", */}
 
         <Form.Item label="Дата поверки">
           <DatePickerTT
@@ -238,8 +238,8 @@ const AddDeviceForm = (props) => {
             onBlur={handleBlur}
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
-                setFieldValue('calculatorId', value);
-              }}
+              setFieldValue('calculatorId', value);
+            }}
             options={calculators}
             value={values.calculatorId}
             disabled={disable}
@@ -250,7 +250,7 @@ const AddDeviceForm = (props) => {
         <Form.Item label="Номер ввода">
           <InputTT
             name="entryNumber"
-            type={"number"}
+            type="number"
             onBlur={handleBlur}
             placeholder="Номер ввода"
             value={values.entryNumber}
@@ -263,7 +263,7 @@ const AddDeviceForm = (props) => {
         <Form.Item label="Номер узла">
           <InputTT
             name="hubNumber"
-            type={"number"}
+            type="number"
             placeholder="Номер узла"
             onBlur={handleBlur}
             value={values.hubNumber}
@@ -277,8 +277,8 @@ const AddDeviceForm = (props) => {
           <InputTT
             name="pipeNumber"
             type="number"
-            min='0'
-            step='1'
+            min="0"
+            step="1"
             placeholder="Номер трубы"
             value={values.pipeNumber}
             onBlur={handleBlur}
