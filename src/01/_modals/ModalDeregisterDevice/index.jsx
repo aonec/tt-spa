@@ -14,10 +14,8 @@ async function getHousingMeteringDevices(id = '') {
   try {
     // const res = await axios.get(replaceURL(url));
     const res = await axios.get(`HousingMeteringDevices/${id}`);
-    console.log('res', res);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -48,7 +46,7 @@ const ModalDeregisterDevice = ({ deviceId }) => {
       onCancel={handleCancel}
       footer={null}
     >
-      <DeregisterForm device={device} />
+      <DeregisterForm device={device}  />
       <ButtonTT
         type="submit"
         color="red"

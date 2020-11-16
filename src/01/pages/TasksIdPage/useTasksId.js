@@ -53,7 +53,6 @@ export const useTasksId = () => {
       const { type, payload } = action
       switch (type) {
         case "success":
-          console.log(payload)
           return { ...state, ...initialState, ...payload }
         case "get_users":
           return { ...state, config: !state.users && api.getUsers() }

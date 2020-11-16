@@ -22,7 +22,6 @@ import { Connection } from './components/Connection';
 import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modals/Modal';
 import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
-import ModalCalcReport from './components/Modals/ModalCalcReport'
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -121,14 +120,11 @@ export const DeviceProfile = () => {
       });
       getCalculator(deviceId).then((response) => {
         setCalcModel(response);
-        console.log('calcModel', response);
       });
-      console.log('calcModel= ', calcModel);
     }
   }, [typeODPU]);
 
   const buttonHandler = () => {
-    console.log('calculator');
     getPagination();
   };
 
@@ -169,7 +165,7 @@ export const DeviceProfile = () => {
           <Events title="Задачи с объектом" />
         </Grid>
         <ModalODPU device={device}/>
-        <ModalDeregisterDevice deviceId={deviceId} />
+        <ModalDeregisterDevice />
       </DeviceContext.Provider>
     );
   }

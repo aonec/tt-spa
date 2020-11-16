@@ -44,10 +44,8 @@ axios.interceptors.response.use(
     return res;
   },
   (error) => {
-    console.log(error.message);
     const status = error?.response?.status;
     if (status === 401 && !checkUrl('login', error.config.url)) {
-      console.log('refresh');
       const { config } = error;
       return new Promise((resolve, reject) => {
         axios.post('/auth/refreshToken').then(

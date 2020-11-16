@@ -1,23 +1,18 @@
 import React, { useContext } from 'react';
-import {
-  Radio, DatePicker, Tabs, Select,
-} from 'antd';
+import { Radio, DatePicker, Form } from 'antd';
 import { ReportContext } from '../index';
+import { RangePickerTT } from '../../../../../../tt-components/RangePicker';
 
-const { RangePicker } = DatePicker;
-
-export const PeriodType = () => {
-  console.log('PeriodType');
-
-  const { onPeriodChange, onDetailChange } = useContext(ReportContext);
+export const Bottom = () => {
+  console.log('Bottom');
+  const {
+    onPeriodChange, onDetailChange, values,
+    datePickerHandler,
+  } = useContext(ReportContext);
 
   return (
-    <div className="period_and_type ">
-      <div className="type">
-        <label className="modal__label" htmlFor="#type">
-          Тип архива
-        </label>
-
+    <>
+      <Form.Item label="Тип архива">
         <Radio.Group
           defaultValue="month"
           size="large"
@@ -29,13 +24,9 @@ export const PeriodType = () => {
           <Radio.Button value="day">Суточный</Radio.Button>
           <Radio.Button value="year">Годовой</Radio.Button>
         </Radio.Group>
-      </div>
+      </Form.Item>
 
-      <div className="detail">
-        <label className="modal__label" htmlFor="#type">
-          Детализация отчета
-        </label>
-
+      <Form.Item label="Детализация отчета">
         <Radio.Group
           defaultValue="hourly"
           size="large"
@@ -46,43 +37,20 @@ export const PeriodType = () => {
           </Radio.Button>
           <Radio.Button value="hourly">Часовая</Radio.Button>
         </Radio.Group>
-      </div>
-    </div>
-  );
-};
+      </Form.Item>
 
-export const Bottom = () => {
-  const {
-    begin,
-    end,
-    datePickerHandler,
-    selectOptions,
-    onPeriodChange,
-    onDetailChange,
-  } = useContext(ReportContext);
-  const getContext = () => {
-    console.log('selectOptions', selectOptions);
-  };
-
-  return (
-    <>
-      <PeriodType />
-      <div className="period">
-        {/* <button onClick={getContext}>getContext</button> */}
-        <label className="modal__label" htmlFor="#period">
-          Период выгрузки
-        </label>
-        <RangePicker
+      <Form.Item label="Период выгрузки">
+        <RangePickerTT
           format="DD.MM.YYYY"
           allowClear={false}
-          size="48px"
-          value={[begin, end]}
+          value={[values.begin, values.end]}
           placeholder={['Дата Начала', 'Дата окончания']}
           onChange={(event) => {
             datePickerHandler(event);
           }}
         />
-      </div>
+      </Form.Item>
+
     </>
   );
 };

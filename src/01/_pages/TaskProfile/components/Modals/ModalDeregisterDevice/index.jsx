@@ -20,7 +20,6 @@ const ModalDeregisterDevice = (props) => {
   async function getDevice(url = '') {
     try {
       const res = await axios.get(`MeteringDevices/search?DeviceType=Housing&Question=${url}`);
-      console.log(res)
       return res;
     } catch (error) {
       console.log(error);
@@ -32,7 +31,6 @@ const ModalDeregisterDevice = (props) => {
   }
   useEffect(() => {
     getDevice(number).then((res) => {
-      console.log('Res', res[0]);
       setDevice(res[0]);
     });
   }, [number]);

@@ -28,7 +28,6 @@ export const useAxios = (config) => {
     ...config,
     transformResponse: [
       (data, ...p) => {
-        console.log("data", JSON.parse(data), p)
         return data
       },
     ],

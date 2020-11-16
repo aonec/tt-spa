@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import { Icon } from '../../../_components/Icon';
-import {
-  EditButtonTemplate, List, ListItem, EditButtonWrap,
-} from './Styled-Components';
+import { List, ListItem, EditButtonWrap } from './Styled-Components';
+import { ObjectContext } from '../index';
 
 export const Template = styled.div``;
 
@@ -21,6 +20,8 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
+  const { addCalculator, setAddCalculator, addOdpu, setAddOdpu } = useContext(ObjectContext);
+
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
     const editButtonList = $('#edit-button__list');
@@ -29,18 +30,13 @@ export const Menu = (showPopupHandler) => {
     }
   });
 
-  const showModal = () => {
-    $('.overlay').toggle();
-    $('#edit-button__list').toggle();
-  };
-
   const showAddCalculator = () => {
-    $('#add-calculator').toggle();
+    setAddCalculator(true);
     $('#edit-button__list').toggle();
   };
 
   const showAddDevice = () => {
-    $('#add-device').toggle();
+    setAddOdpu(true);
     $('#edit-button__list').toggle();
   };
 

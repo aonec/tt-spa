@@ -12,54 +12,20 @@ import {
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
 
-function randomInteger(min, max) {
-  const rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-}
-
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
   const [disable, setDisable] = useState(false);
-
-  const visibleValuesByTab1 = ['housingMeteringDeviceType', 'resource', 'model',
-    'serialNumber',
-    'lastCommercialAccountingDate',
-    'futureCheckingDate',
-    'futureCommercialAccountingDate'];
-  const visibleValuesByTab2 = ['isConnected',
-    'calculatorId',
-    'entryNumber',
-    'hubNumber',
-    'pipeNumber',
-    'magistral'];
-  const visibleValuesByTab3 = ['documents'];
-
-  const visibleValuesByTab = [
-    {
-      key: 1,
-      value: visibleValuesByTab1,
-    },
-    {
-      key: 2,
-      value: visibleValuesByTab2,
-    },
-    { key: 3, value: visibleValuesByTab3 },
-  ];
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
       return (
-        <div>Корректно введите значение</div>
+        <div>{error}</div>
       );
     }
     return null;
   };
-
-  const isVisible = (name) => _.find(visibleValuesByTab, { key: Number(currentTabKey) }).value.includes(name);
-
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -71,11 +37,11 @@ const AddDeviceForm = (props) => {
       checkingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
+      futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,
       port: null,
-      futureCommercialAccountingDate: moment().toISOString(),
       housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
       resource: resources[0].value,
       model: '',
@@ -87,13 +53,13 @@ const AddDeviceForm = (props) => {
 
     },
     validationSchema: Yup.object({
-      resource: Yup.string().required('Введите данные'),
-      pipeNumber: Yup.number().required('Введите данные'),
-      hubNumber: Yup.number().required('Введите данные'),
-      entryNumber: Yup.number().required('Введите данные'),
-      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
-      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
-      calculatorId: Yup.string().required('Выберите вычислитель'),
+      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
+      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
+      calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
+      entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+        .required('Введите номер'),
+      pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+        .required('Введите номер'),
     }),
 
     onSubmit: async () => {
@@ -102,25 +68,21 @@ const AddDeviceForm = (props) => {
         checkingDate: values.checkingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        documentsIds: [],
-        // connection: {
-        //   ipV4: values.ipV4,
-        //   deviceAddress: values.deviceAddress,
-        //   port: values.port,
-        // },
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber,
+          hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },
       };
-      // console.log(JSON.stringify(form));
+      console.log(form);
+      console.log(JSON.stringify(form));
       addOdpu(form);
     },
   });
@@ -139,7 +101,6 @@ const AddDeviceForm = (props) => {
     }
   }
 
-
   return (
 
     <form
@@ -147,13 +108,10 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      {/* <ButtonTT onClick={buttonHandler}>ButtonTT</ButtonTT> */}
-
-      {isVisible('housingMeteringDeviceType')
-      && (
+      <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Выберите тип прибора">
           <SelectTT
-            id="housingMeteringDeviceType"
+            name="housingMeteringDeviceType"
             onChange={(value) => {
               setFieldValue('housingMeteringDeviceType', value);
             }}
@@ -162,13 +120,10 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="housingMeteringDeviceType" />
         </Form.Item>
-      )}
 
-      {isVisible('resource')
-      && (
         <Form.Item label="Выберите тип ресурса">
           <SelectTT
-            id="resource"
+            name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
             }}
@@ -177,86 +132,89 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="resource" />
         </Form.Item>
-      )}
 
-      {isVisible('model')
-      && (
         <Form.Item label="Выберите модель прибора">
           <InputTT
-            id="model"
+            name="model"
             type="text"
             onChange={handleChange}
+            onBlur={handleBlur}
             value={values.model}
           />
           <Alert name="model" />
         </Form.Item>
-      )}
 
-      {isVisible('serialNumber')
-      && (
         <Form.Item label="Серийный номер">
           <InputTT
-            id="serialNumber"
+            name="serialNumber"
             type="text"
+            onBlur={handleBlur}
             onChange={handleChange}
             value={values.serialNumber}
           />
           <Alert name="serialNumber" />
         </Form.Item>
-      )}
 
-      {isVisible('lastCommercialAccountingDate')
-      && (
-        <Form.Item label="Дата выпуска прибора">
+        {/* "lastCommercialAccountingDate": "2020-11-09T13:07:26.129", */}
+        {/* "futureCommercialAccountingDate": "2020-11-09T13:07:26.13", */}
+        {/* "lastCheckingDate": "2020-11-13T13:28:13.355", */}
+        {/* "futureCheckingDate": "2020-11-13T13:28:13.355", */}
+
+        <Form.Item label="Дата поверки">
           <DatePickerTT
             format="DD.MM.YYYY"
-            name="lastCommercialAccountingDate"
+            name="lastCheckingDate"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
-              setFieldValue('lastCommercialAccountingDate', date.toISOString());
+              setFieldValue('lastCheckingDate', date.toISOString());
             }}
-            value={moment(values.lastCommercialAccountingDate)}
+            value={moment(values.lastCheckingDate)}
           />
         </Form.Item>
-      )}
 
-      {isVisible('futureCheckingDate')
-      && (
-        <Form.Item label="Дата ввода в эксплуатацию">
+        <Form.Item label="Дата следующей поверки">
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCheckingDate"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('futureCheckingDate', date.toISOString());
             }}
             value={moment(values.futureCheckingDate)}
           />
         </Form.Item>
-      )}
 
-      {isVisible('futureCommercialAccountingDate')
-      && (
-        <Form.Item label="Срок эксплуатации по нормативу">
-          <SelectTT
-            id="futureCommercialAccountingDate"
-            onChange={(item) => {
-              const value = moment(values.lastCommercialAccountingDate)
-                .add(item, 'year')
-                .toISOString();
-              setFieldValue('futureCommercialAccountingDate', value);
+        <Form.Item label="Дата начала Акта действия допуска">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(date) => {
+              setFieldValue('lastCommercialAccountingDate', date.toISOString());
             }}
-            name="futureCommercialAccountingDate"
-            placeholder="Укажите оперид эксплуатации"
-            options={serviceLife}
-            defaultValue={serviceLife[0].value}
+            value={moment(values.lastCommercialAccountingDate)}
           />
         </Form.Item>
-      )}
+
+        <Form.Item label="Дата окончания Акта действия допуска">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="futureCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(date) => {
+              setFieldValue('futureCommercialAccountingDate', date.toISOString());
+            }}
+            value={moment(values.futureCommercialAccountingDate)}
+          />
+        </Form.Item>
+      </div>
 
       {/* Second Tabs */}
-      {isVisible('isConnected')
-      && (
+      <div hidden={Number(currentTabKey) !== 2}>
         <Form.Item label="Подключение к вычислителю">
           <SelectTT
             name="isConnected"
@@ -270,30 +228,17 @@ const AddDeviceForm = (props) => {
             disabled
           />
         </Form.Item>
-      )}
 
-      {isVisible('calculatorId')
-      && (
         <Form.Item
           label="Выберите вычислитель, к которому подключен прибор"
         >
           <SelectTT
             name="calculatorId"
             type="text"
+            onBlur={handleBlur}
             placeholder="Начните вводить серийный номер или IP адрес прибора"
             onChange={(value) => {
-              if (value !== values.calculatorId) {
-                setFieldValue('calculatorId', value)
-                // const selected = _.find(calculators, { value });
-                // const { connection: { ipV4, deviceAddress, port } } = selected;
-                // setValues((prevValues) => ({
-                //   ...prevValues,
-                //   ipV4,
-                //   deviceAddress,
-                //   port,
-                //   calculatorId: value
-                // }));
-              }
+              setFieldValue('calculatorId', value);
             }}
             options={calculators}
             value={values.calculatorId}
@@ -301,13 +246,12 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="calculatorId" />
         </Form.Item>
-      )}
 
-      {isVisible('entryNumber') && (
         <Form.Item label="Номер ввода">
           <InputTT
             name="entryNumber"
             type="number"
+            onBlur={handleBlur}
             placeholder="Номер ввода"
             value={values.entryNumber}
             onChange={handleChange}
@@ -315,37 +259,35 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="entryNumber" />
         </Form.Item>
-      )}
 
-      {isVisible('hubNumber') && (
         <Form.Item label="Номер узла">
           <InputTT
             name="hubNumber"
             type="number"
             placeholder="Номер узла"
+            onBlur={handleBlur}
             value={values.hubNumber}
             onChange={handleChange}
             disabled={disable}
           />
           <Alert name="hubNumber" />
         </Form.Item>
-      )}
 
-      {isVisible('pipeNumber') && (
         <Form.Item label="Номер трубы">
           <InputTT
             name="pipeNumber"
             type="number"
+            min="0"
+            step="1"
             placeholder="Номер трубы"
             value={values.pipeNumber}
+            onBlur={handleBlur}
             onChange={handleChange}
             disabled={disable}
           />
           <Alert name="pipeNumber" />
         </Form.Item>
-      )}
 
-      {isVisible('magistral') && (
         <Form.Item name="text" label="Выберите тип устройства">
           <SelectTT
             placeholder="Выберите тип устройства"
@@ -358,11 +300,11 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="magistral" />
         </Form.Item>
-      )}
+      </div>
 
-      {isVisible('documents') && (
+      <div hidden={Number(currentTabKey) !== 3}>
         <Header>Компонент в разработке</Header>
-      )}
+      </div>
 
     </form>
   );

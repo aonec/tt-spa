@@ -16,7 +16,6 @@ export const useGetInfo = () => {
         setInfo(createObjInfoList(res.data.successResponse))
       })()
   }, [infoPage.isExact])
-  console.log(info)
   return { list: info }
 }
 

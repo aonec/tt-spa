@@ -19,7 +19,6 @@ export function usePageFetch() {
       case "error":
         return { ...initData, error }
       default:
-        console.log("fetch", type)
         return state
     }
   }, initData)

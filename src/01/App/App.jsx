@@ -17,6 +17,8 @@ import {
   ErrorPage,
   AccessDeniedPage,
   DevicesFromSearch,
+  CalculatorProfile,
+  HousingProfile
 } from '01/_pages';
 
 import EditCalculator from '01/_pages/EditCalculator';
@@ -56,7 +58,6 @@ window.store = store;
 
 export function App(){
   const AppProvider = useApp();
-  console.log('store', store);
 
   return styled(app)(
     <Provider store={store}>
@@ -82,19 +83,32 @@ export function App(){
                       path="/tasks/(executing|observing|archived)/"
                       component={Tasks}
                     />
-                    <Route path="/tasks/(\\d+)" component={TaskProfile}/>
+                    <Route path="/tasks/(\\d+)" render={() => <TaskProfile/>}/>
                     <Route path="/objects/" component={Objects} exact/>
                     <Route path="/devices/" component={DevicesFromSearch} exact/>
 
                     <Route path="/devices/(\\d+)" component={Devices} exact/>
 
+                    {/*<Route*/}
+                    {/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?",*/}
+                    {/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]}*/}
+                    {/*  component={DeviceProfile}*/}
+                    {/*  exact*/}
+                    {/*/>*/}
+
                     <Route
-                      path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?",
-                        "/calculators/:deviceId/(connection|related|documents)?",
-                        "/housingMeteringDevices/:deviceId/(related|documents)?"]}
-                      component={DeviceProfile}
+                      path={["/calculators/:deviceId/(connection|related|documents)?"]}
+                      component={CalculatorProfile}
                       exact
                     />
+
+                    <Route
+                      path={["/housingMeteringDevices/:deviceId/(related|documents)?"]}
+                      component={HousingProfile}
+                      exact
+                    />
+
+
 
                     <Route
                       path="/calculators/:deviceId/edit"

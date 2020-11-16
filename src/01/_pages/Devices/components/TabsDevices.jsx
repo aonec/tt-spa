@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 
 import { Tabs } from 'antd';
 import {Loader} from "../../../components/Loader";
@@ -16,67 +16,73 @@ import {createPages} from "../../../utils/pagesCreator";
 
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
 import DeviceSearchForm from "./DeviceSearchForm/DeviceSearchForm";
+import devicesSearchReducer from "./../devicesSearchReducer"
 
 
 const { TabPane } = Tabs;
 
-function callback(key) {
-    console.log(key);
+const initialState = {
+    expirationDate: '',
+    lowerDiameterRange: null,
+    upperDiameterRange: null,
+    searchTerm: ''
 }
 
 
-
-const TabsDevices = () => {
+const TabsDevices = ({devicePage}) => {
     const dispatch = useDispatch();
-    const pageSize = useSelector((state) => state.devicePage.pageSize);
-    const currentPage = useSelector((state) => state.devicePage.currentPage);
-    const totalPages = useSelector((state) => state.devicePage.totalPages);
-    const isLoading = useSelector((state) => state.devicePage.isLoading);
-    const [searchTerm, setSearchTerm] = useState('');
+    const pageSize = devicePage.pageSize;
+    const currentPage = devicePage.currentPage;
+    const totalPages = devicePage.totalPages;
+    // const [searchTerm, setSearchTerm] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [deviceElems, setDeviceElems] = useState([]);
 
+    const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState)
 
     const pages = [];
     createPages(pages, totalPages, currentPage);
 
     useEffect( () => {
-        dispatch(toggleIsLoading());
-        dispatch(getDevices(currentPage, pageSize, searchTerm));
-        dispatch(toggleIsLoading());
-    }, [currentPage, searchTerm]);
+        setIsLoading(true)
+        dispatch(getDevices(currentPage, pageSize, searchState));
+        setIsLoading(false)
+    }, [currentPage, searchState]);
 
-    const deviceItems = useSelector((state) =>
-        state.devicePage.items
-    )
-
-    const deviceElems = deviceItems.map((device) => {
-        return <DeviceBlock device={device}/>
-    }
-    )
+    const deviceItems = devicePage.items
 
 
-    return <div>
+    useEffect(() => {
+        setIsLoading(true)
+        const deviceArray = deviceItems.map((device) => {
+                return <DeviceBlock device={device}/>
+            }
+        );
+        setDeviceElems(deviceArray);
+        setIsLoading(false)
+    }, [deviceItems])
 
-        <Tabs defaultActiveKey="1" onChange={callback} style={{maxWidth: 960}}>
+    const pagination = pages.map((page, index) => <span
+            key={index}
+            className={currentPage === page ? styles.currentPage : styles.page}
+            onClick={() => dispatch(setCurrentPage(page))}
+        >{page}</span> )
+
+
+    return <Tabs defaultActiveKey="1" style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
-                <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
-                {isLoading ? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
+                {/*<DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>*/}
+                <DeviceSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
+                {isLoading? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
-                        <div className={styles.pages}>
-                            {pages.map((page, index) => <span
-                                key={index}
-                                className={currentPage == page ? styles.currentPage : styles.page}
-                                onClick={() => dispatch(setCurrentPage(page))}
-                            >{page}</span> )}
-                        </div>
+                        <div className={styles.pages}>{pagination}</div>
                     </div>}
             </TabPane>
             {/*<TabPane tab="ИПУ" key="2">*/}
             {/*    Content of Tab Pane 2*/}
             {/*</TabPane>*/}
         </Tabs>
-    </div>
-
 }
 
 

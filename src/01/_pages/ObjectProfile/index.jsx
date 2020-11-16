@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'reshadow/macro';
 
 import {
@@ -15,6 +15,8 @@ import { useObjectInformation, useFetchPage } from './hooks';
 import ButtonTT from '../../tt-components/ButtonTT';
 import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
+export const ObjectContext = React.createContext();
+
 function reducer(state, action) {
   const { type, data } = action;
   switch (type) {
@@ -26,25 +28,26 @@ function reducer(state, action) {
   }
 }
 
-
-
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
+
+  const [addCalculator, setAddCalculator] = useState(false)
+  const [addOdpu, setAddOdpu] = useState(false)
+
   useFetchPage(state, dispatch);
   const { 0: objid } = useParams();
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
+  const context = {addCalculator, setAddCalculator, addOdpu, setAddOdpu, objid}
 
   return styled(grid)(
     <>
+      <ObjectContext.Provider
+        value={context}
+      >
       <Breadcrumb path={`/objects/`}/>
-      <Header {...header} />
-      <div style={{}}>
-        {/* <ButtonTT disabled={true}> */}
-        {/*  button */}
-        {/* </ButtonTT> */}
-      </div>
+      <Header {...header}  />
       <Tabs />
       <grid>
         <Route path="/*/(\\d+)" exact>
@@ -62,6 +65,7 @@ export const ObjectProfile = () => {
         />
         <Events title="События с объектом" {...events} />
       </grid>
+        </ObjectContext.Provider>
     </>,
   );
 };
