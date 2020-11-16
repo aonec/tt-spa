@@ -78,7 +78,7 @@ export const Objects = () => {
             // if (query.length) {
             //     query = '?' + query;
             // }
-            const res = await axios.get('housingstocks' + queryString);
+            const res = await axios.get('HousingStocks' + queryString);
             setState(res);
         })();
         return () => cancel();

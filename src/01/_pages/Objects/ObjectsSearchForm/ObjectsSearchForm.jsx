@@ -11,7 +11,6 @@ const { Option } = Select;
 const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
 
     const onValuesChangeHandler = (changedValues, allValues) => {
-        debugger;
         const changedParam = Object.keys(changedValues)[0]
         let previousValue = searchState[changedParam];
         let targetValue = Object.values(changedValues)[0]
@@ -78,7 +77,7 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
                     rules={[{ required: true, message:  "Дом" }]}
                     style={{marginRight: 24}}
                 >
-                    <Input className={styles.input} value={searchState.houseNumber} placeholder="Дом" />
+                    <Input className={styles.input} value={searchState.HousingStockNumber} placeholder="Дом" />
                 </Form.Item>
 
                 <Form.Item
