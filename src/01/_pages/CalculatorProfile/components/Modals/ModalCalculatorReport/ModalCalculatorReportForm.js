@@ -22,8 +22,6 @@ const ModalCalculatorReportForm = (props) => {
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
-  // const selectOptions = [];
-
   // Все Расходомеры
   const devicesList = hubs.reduce((result, item) => {
     const {
@@ -59,8 +57,8 @@ const ModalCalculatorReportForm = (props) => {
       resource, serialNumber, entryNumber, pipeNumber, model,
     } = item;
     console.log(item);
-    if (_.find(result, (o) => o.value === resource)) {
-      const res = _.find(result, (o) => o.value === resource);
+    if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
+      const res = _.find(result, (o) => o.resource === resource);
       console.log('res', res);
       const ind = result.indexOf(res);
       result.splice(ind, 1, {
@@ -69,7 +67,7 @@ const ModalCalculatorReportForm = (props) => {
           'label',
           'default',
         )} ${model} (${serialNumber})`,
-        value: resource,
+        value: ind,
         resource,
         entryNumber,
         pipeNumber,
@@ -77,14 +75,14 @@ const ModalCalculatorReportForm = (props) => {
     } else {
       result.push({
         label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-        value: resource,
+        value: result.length,
         entryNumber,
         pipeNumber,
-        resource
+        resource,
       });
     }
-    return result
-  },[]);
+    return result;
+  }, []);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -96,6 +94,7 @@ const ModalCalculatorReportForm = (props) => {
       begin: moment().subtract(1, 'month'),
       end: moment(),
       resource: resources[0],
+      currentValue: undefined,
     },
     validationSchema: Yup.object({}),
     onSubmit: async () => {
@@ -107,7 +106,6 @@ const ModalCalculatorReportForm = (props) => {
       // deregisterDevice(form);
     },
   });
-
 
   // Строки для выбранного типа Ресурса
   const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
@@ -163,8 +161,6 @@ const ModalCalculatorReportForm = (props) => {
     setFieldValue('end', event[1]);
   };
 
-
-
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -175,8 +171,6 @@ const ModalCalculatorReportForm = (props) => {
     }
     return null;
   };
-
-
 
   // Список Вкладок/Ресурсов
   const TabsList = resources.map((value, index) => {
@@ -189,6 +183,7 @@ const ModalCalculatorReportForm = (props) => {
   const onTabsChangeHandler = (value) => {
     console.log('resource = ', value);
     setFieldValue('resource', value);
+    setFieldValue('currentValue', undefined);
   };
 
   console.log(devicesList);
@@ -213,9 +208,11 @@ const ModalCalculatorReportForm = (props) => {
     );
   };
 
-  const handleSelect = (value1, value2) =>{
-    console.log("value1 = ", value1, value2)
-  }
+  const handleSelect = (value1, value2) => {
+    console.log('value1 = ', value1, value2);
+    setFieldValue('currentValue', value1);
+  };
+
   return (
     <Form>
       <Header>
@@ -237,6 +234,7 @@ const ModalCalculatorReportForm = (props) => {
           options={modifiedSelectOptions}
           placeholder="Выберите узел"
           onChange={handleSelect}
+          value={values.currentValue}
         />
       </Form.Item>
 
