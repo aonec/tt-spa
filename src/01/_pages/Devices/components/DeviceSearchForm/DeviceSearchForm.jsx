@@ -6,7 +6,11 @@ import {Form, Input, Button, Checkbox, Tooltip, Select} from 'antd';
 import { UserOutlined, LockOutlined, SearchOutlined } from '@ant-design/icons';
 import {Icon} from "../../../../_components/Icon";
 import {EditButtonWrap} from "../../../DeviceProfile/components/EditButton";
-import {setSearchTerm, setExpirationDate, setLowerDiameterRange, setUpperDiameterRange} from "../../devicesSearchReducer"
+import {setSearchTerm,
+    setExpirationDate,
+    setLowerDiameterRange,
+    setUpperDiameterRange,
+    setDevicesFilter} from "../../devicesSearchReducer"
 
 const { Option } = Select;
 
@@ -29,9 +33,13 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
         dispatch(setCurrentPage(1))
     }
 
-    const handleOnExpirationChange = (value, event) => {
+    const handleOnExpirationChange = (value) => {
         dispatchSearchState(setExpirationDate(value))
     }
+
+    const handleOnSortChange = (value) => {
+        dispatchSearchState(setDevicesFilter(value))
+}
 
     const onMinChange = (e) => {
         dispatchSearchState(setLowerDiameterRange(e.target.value))
@@ -74,8 +82,11 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                 >
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <label htmlFor="sortBy" style={{minWidth: 120, marginRight: 8}}>Сортировать по:</label>
-                        <Select id="sortBy" defaultValue="lastCheckingDate" style={{ width: '61%' }} disabled>
-                            <Option value="lastCheckingDate">Дате поверки</Option>
+                        <Select id="sortBy" onSelect={handleOnSortChange}>
+                            <Option value="descendingFutureCheckingDate">Дате поверки (уб.)</Option>
+                            <Option value="ascendingFutureCheckingDate">Дате поверки (возр.)</Option>
+                            <Option value="descendingStreet">Улице (уб.)</Option>
+                            <Option value="ascendingStreet">Улице (возр.)</Option>
                         </Select>
                     </div>
                 </Form.Item>
@@ -88,7 +99,7 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                 >
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <label htmlFor="expirationDate" style={{minWidth: 152, marginRight: 8}}>Истекает дата поверки: </label>
-                        <Select id="expirationDate" style={{ width: '55%' }} onSelect={(value, event) => handleOnExpirationChange(value, event)}>
+                        <Select id="expirationDate" style={{ width: '55%', marginRight: 16 }} onSelect={(value, event) => handleOnExpirationChange(value, event)}>
                             <Option value={0}>Ближайший месяц</Option>
                             <Option value={1}>В следующие два месяца</Option>
                             <Option value={2}>Истекла</Option>
