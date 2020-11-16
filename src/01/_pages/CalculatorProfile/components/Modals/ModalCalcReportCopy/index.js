@@ -6,7 +6,7 @@ import CalculatorTemplate from './CalculatorTemplate';
 import { DeviceContext } from '../../../CalculatorProfile';
 
 const ModalCalcReport = ({ deviceId }) => {
-  const { report, setReport } = useContext(DeviceContext);
+  // const { report, setReport } = useContext(DeviceContext);
   const [device, setDevice] = useState();
 
   useEffect(() => {
@@ -18,17 +18,22 @@ const ModalCalcReport = ({ deviceId }) => {
   }, []);
 
   const handleCancel = () => {
-    setReport(false);
+    // setReport(false);
   };
+  if (!device) {
+    return (
+      null
+    )
 
+  }
   return (
     <Modal
-      visible={report}
+      visible={true}
       onCancel={handleCancel}
       footer={null}
       width="800px"
     >
-      {device ? <CalcReportForm device={CalculatorTemplate} /> : <div>ЗАГРУЗКА</div>}
+    <CalcReportForm device={device} />
     </Modal>
   );
 };

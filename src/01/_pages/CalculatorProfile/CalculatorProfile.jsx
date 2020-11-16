@@ -13,7 +13,8 @@ import { RelatedDevices } from './components/RelatedDevices';
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister'
-import ModalCalcReport from "./components/Modals/ModalCalcReport";
+import ModalCalculatorReport from "./components/Modals/ModalCalculatorReport";
+
 
 export const DeviceContext = React.createContext();
 
@@ -114,7 +115,7 @@ export const CalculatorProfile = () => {
         <Events title="Задачи с объектом" />
       </Grid>
       <DeregisterDevice />
-      <ModalCalcReport />
+      <ModalCalculatorReport />
     </DeviceContext.Provider>
   );
 };
