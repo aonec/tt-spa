@@ -95,6 +95,8 @@ const ModalCalculatorReportForm = (props) => {
       end: moment(),
       resource: resources[0],
       currentValue: undefined,
+      entryNumber: undefined,
+      pipeNumber: undefined,
     },
     validationSchema: Yup.object({}),
     onSubmit: async () => {
@@ -120,29 +122,29 @@ const ModalCalculatorReportForm = (props) => {
 
   console.log('ModalCalculatorReportForm');
 
-  // const downloadReport = () => {
-  //   console.log('entryNumberRes.current = ', values.entryNumberRes);
-  //   if (values.entryNumberRes) {
-  //     console.log('entryNumberRes', values.entryNumberRes);
-  //     const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-  //       values.detail
-  //     }&resourcetype=${type}&entrynumber=${
-  //       values.entryNumberRes
-  //     }&pipenumber=${values.pipeNumberRes}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
-  //       values.end,
-  //     )}T00:00:00Z`;
-  //     const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
-  //
-  //     const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
-  //     const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
-  //     // window.location.assign(link);
-  //     console.log(link);
-  //     // console.log(lastTemplate);
-  //     window.open(link);
-  //   } else {
-  //     alert('Выберите узел!');
-  //   }
-  // };
+  const downloadReport = () => {
+    console.log('entryNumberRes.current = ', values.entryNumber);
+    if (values.entryNumber) {
+      console.log('entryNumberRes', values.entryNumberRes);
+      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
+        values.detail
+      }&resourcetype=${values.resource}&entrynumber=${
+        values.entryNumber
+      }&pipenumber=${values.pipeNumber}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
+        values.end,
+      )}T00:00:00Z`;
+      const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
+
+      const template = 'http://84.201.132.164:8080/api/reports/xlsx?deviceId=1510&ereporttype=daily&resourcetype=heat&entrynumber=1&from=2020-08-15T00:00:00Z&to=2020-08-25T00:00:00Z';
+      const template2 = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
+      // window.location.assign(link);
+      console.log(link);
+      // console.log(lastTemplate);
+      window.open(link);
+    } else {
+      alert('Выберите узел!');
+    }
+  };
 
   const onPeriodChange = (event) => {
     const res = event.target.value;
@@ -200,7 +202,7 @@ const ModalCalculatorReportForm = (props) => {
         <ButtonTT
           color="blue"
           style={{ width: '224px', marginLeft: '16px' }}
-          // onClick={downloadReport}
+          onClick={downloadReport}
         >
           Выгрузить
         </ButtonTT>
@@ -208,9 +210,11 @@ const ModalCalculatorReportForm = (props) => {
     );
   };
 
-  const handleSelect = (value1, value2) => {
-    console.log('value1 = ', value1, value2);
-    setFieldValue('currentValue', value1);
+  const handleSelect = (value, object) => {
+    console.log('value1 = ', value, object);
+    setFieldValue('currentValue', value);
+    setFieldValue('entryNumber', object.entryNumber)
+    setFieldValue('pipeNumber', object.pipeNumber)
   };
 
   return (
