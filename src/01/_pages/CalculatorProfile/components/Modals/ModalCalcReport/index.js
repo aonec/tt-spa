@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import 'antd/dist/antd.css';
 import { Modal } from 'antd';
-
 import CalcReportForm from './CalcReportForm';
 import CalculatorTemplate from './CalculatorTemplate';
 
-import { DeviceContext } from "../../../CalculatorProfile";
+import { DeviceContext } from '../../../CalculatorProfile';
 
 const ModalCalcReport = ({ deviceId }) => {
-
-  const {report, setReport} =useContext(DeviceContext)
+  const { report, setReport } = useContext(DeviceContext);
   const [device, setDevice] = useState();
 
   useEffect(() => {
@@ -31,9 +28,7 @@ const ModalCalcReport = ({ deviceId }) => {
       footer={null}
       width="800px"
     >
-
-      <CalcReportForm device={CalculatorTemplate} />
-
+      {device ? <CalcReportForm device={CalculatorTemplate} /> : <div>ЗАГРУЗКА</div>}
     </Modal>
   );
 };
