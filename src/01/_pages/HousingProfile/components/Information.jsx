@@ -5,6 +5,7 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
+import {Subtitle} from "../../../_components/Headers";
 
 export const Information = (loading = true) => {
   const {
@@ -21,7 +22,7 @@ export const Information = (loading = true) => {
   };
 
   // const { city, street, number } = building || DEFAULT_BUILDING;
-  const { city, street, housingStockNumber, corpus } = building || DEFAULT_BUILDING;
+  const { city, street, housingStockNumber, corpus, id } = building || DEFAULT_BUILDING;
   // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;;
 
@@ -44,9 +45,9 @@ export const Information = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <span style={{ fontWeight: '500' }}>
+          <Subtitle to={`/objects/${id}`} style={{ fontWeight: '500' }}>
             {`${city}, ${street}, ${housingStockNumber} ${corpus? `, к.${corpus}` : ''}`}
-          </span>
+          </Subtitle>
         </ListItem>
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
