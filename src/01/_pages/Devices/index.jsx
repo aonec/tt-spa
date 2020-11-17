@@ -9,7 +9,7 @@ export const DevicesFromSearch = () => {
     const devicePage = useSelector((state) => state.devicePage);
     return  (
         <div>
-            <h1 style={{fontWeight: 300, marginBottom: 24}}>Приборы</h1>
+            <h1 style={{fontWeight: 300, marginBottom: 16}}>Приборы</h1>
             <TabsDevices devicePage={devicePage}/>
         </div>
     )
