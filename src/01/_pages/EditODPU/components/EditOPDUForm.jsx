@@ -111,7 +111,7 @@ const FormEditODPU = (props) => {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber || null,
           hubNumber: values.hubNumber || null,
-          pipeNumber: values.pipeNumber || null,
+          pipeNumber: values.pipeNumber || 0,
           magistral: values.magistral || 'Направление не выбрано',
         },
       };
