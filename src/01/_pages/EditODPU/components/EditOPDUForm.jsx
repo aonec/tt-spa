@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, serviceLife, isConnectedValue,
-} from '../constants';
+  housingMeteringDeviceTypes, resources, isConnectedValue,
+} from '../../../tt-components/localBases';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
 } from '../../../tt-components';
