@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../../tt-components';
-import { items } from './CalculatorJSON';
+import { items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 
 import { putCalculator } from './apiEditCalculator';
@@ -33,7 +33,12 @@ const EditCalculatorForm = () => {
     connection,
     address,
   } = currentCalc;
+    // console.log("model", model)
 
+
+  const currentInfoId = items.find(o => o.model === model)
+
+  // console.log("ee", ee)
   const {
     isConnected, ipV4, port, deviceAddress,
   } = connection || {
@@ -58,7 +63,7 @@ const EditCalculatorForm = () => {
       port,
       futureCommercialAccountingDate,
       housingStockId: houseId,
-      infoId: 1,
+      infoId: currentInfoId.value,
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
@@ -73,6 +78,7 @@ const EditCalculatorForm = () => {
         checkingDate: values.lastCommercialAccountingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        isConnected: true,
         connection: {
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
@@ -82,6 +88,7 @@ const EditCalculatorForm = () => {
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
+
       console.log('FORM', form);
       putCalculator(id, form);
 
@@ -139,11 +146,10 @@ const EditCalculatorForm = () => {
           <SelectTT
             placeholder="Выберите тип устройства"
             options={items}
-            value={values.infoId.toString()}
+            value={values.infoId}
             onChange={(event, target) => {
               setFieldValue('infoId', Number(target.value));
             }}
-            disabled
           />
         </Form.Item>
 

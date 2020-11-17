@@ -83,3 +83,14 @@ export const isConnected = [
     label: 'Отсутствует',
   },
 ];
+
+export const isConnectedValue = [
+  {
+    value: true,
+    label: 'Есть',
+  },
+  {
+    value: false,
+    label: 'Отсутствует',
+  },
+];
