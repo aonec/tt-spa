@@ -87,7 +87,7 @@ export const Objects = () => {
     const { items } = state;
     return styled(styles)(
         <div style={{width: 960}}>
-            <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1>
+            <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Объекты</h1>
             <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
             <Loader show={!items} size="32">
                 {items?.map(
