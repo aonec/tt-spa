@@ -29,7 +29,7 @@ export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks()
   return (
     <div style={{maxWidth: 960}}>
-      <h1 style={{fontWeight:300}}>Задачи</h1>
+      <h1 style={{fontWeight:300, marginBottom: 24}}>Задачи</h1>
       <Tabs total={[executingTasksCount, observingTasksCount]} />
       <TasksList items={items} />
     </div>
