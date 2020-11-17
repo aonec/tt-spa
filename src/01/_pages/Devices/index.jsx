@@ -7,9 +7,9 @@ import {useSelector} from "react-redux";
 export const DevicesFromSearch = () => {
 
     const devicePage = useSelector((state) => state.devicePage);
-  return  (
+    return  (
         <div>
-            <Header>Приборы</Header>
+            <h1 style={{fontWeight: 300}}>Приборы</h1>
             <TabsDevices devicePage={devicePage}/>
         </div>
     )
