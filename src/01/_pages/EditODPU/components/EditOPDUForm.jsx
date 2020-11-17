@@ -91,8 +91,8 @@ const FormEditODPU = (props) => {
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
-      pipeNumber: Yup.number().required('Введите данные'),
-      entryNumber: Yup.number().required('Введите данные'),
+      pipeNumber: Yup.number().required('Введите число от 0 до 255'),
+      entryNumber: Yup.number().required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
@@ -111,7 +111,7 @@ const FormEditODPU = (props) => {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber || null,
           hubNumber: values.hubNumber || null,
-          pipeNumber: values.pipeNumber || 0,
+          pipeNumber: values.pipeNumber,
           magistral: values.magistral || 'Направление не выбрано',
         },
       };
@@ -349,9 +349,11 @@ const FormEditODPU = (props) => {
               type="number"
               placeholder="Номер ввода"
               onChange={handleChange}
+              onBlur={handleBlur}
               value={values.entryNumber}
               disabled={disable}
             />
+            <Alert name="entryNumber" />
           </Form.Item>
 
           <Form.Item label="Номер узла">
@@ -360,9 +362,11 @@ const FormEditODPU = (props) => {
               type="number"
               placeholder="Номер узла"
               onChange={handleChange}
+              onBlur={handleBlur}
               value={values.hubNumber}
               disabled={disable}
             />
+            <Alert name="hubNumber" />
           </Form.Item>
 
           <Form.Item label="Номер трубы">
@@ -371,9 +375,11 @@ const FormEditODPU = (props) => {
               type="number"
               placeholder="Номер трубы"
               onChange={handleChange}
+              onBlur={handleBlur}
               value={values.pipeNumber}
               disabled={disable}
             />
+            <Alert name="pipeNumber" />
           </Form.Item>
         </div>
 
