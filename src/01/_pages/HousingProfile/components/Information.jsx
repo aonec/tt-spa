@@ -45,7 +45,7 @@ export const Information = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <Subtitle to={`/objects/${id}`} style={{ fontWeight: '500' }}>
+          <Subtitle to={`/objects/${id}`}>
             {`${city}, ${street}, ${housingStockNumber} ${corpus? `, к.${corpus}` : ''}`}
           </Subtitle>
         </ListItem>

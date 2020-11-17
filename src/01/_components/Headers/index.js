@@ -17,7 +17,9 @@ export const Title = styled.h2`
 `;
 
 export const Subtitle = styled(Link)`
+  color: #272F5A;
+  font-weight: 500;
   padding: 0;
   margin: 0;
-  opacity: 0.8;
+  opacity: 0.9;
 `;
