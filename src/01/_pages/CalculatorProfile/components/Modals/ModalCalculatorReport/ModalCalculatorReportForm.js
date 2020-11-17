@@ -58,8 +58,8 @@ const ModalCalculatorReportForm = (props) => {
       resource, serialNumber, entryNumber, pipeNumber, model,
     } = item;
     // console.log(item);
-    if (_.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber) && (resource !== 'ColdWaterSupply')) {
-      const res = _.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber);
+    if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
+      const res = _.find(result, (o) => o.resource === resource);
       // console.log('res', res);
       const ind = result.indexOf(res);
       result.splice(ind, 1, {

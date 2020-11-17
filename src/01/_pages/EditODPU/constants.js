@@ -1,33 +1,23 @@
 export const items = [
   {
     id: 1,
-    value: 1,
     model: 'ТЭМ-106',
-    label: 'ТЭМ-106'
   },
   {
     id: 2,
-    value: 2,
     model: 'ТЭМ-104',
-    label: 'ТЭМ-104',
   },
   {
     id: 3,
-    value: 3,
     model: 'ВКТ-7',
-    label: 'ВКТ-7',
   },
   {
     id: 4,
-    value: 4,
     model: 'ТВ-7',
-    label: 'ТВ-7',
   },
   {
     id: 5,
-    value: 5,
     model: 'ВИСТ',
-    label: 'ВИСТ',
   },
 ];
 
@@ -73,7 +63,7 @@ export const magistrals = [
   },
 ];
 
-export const isConnected = [
+export const isConnectedValue = [
   {
     value: true,
     label: 'Есть',
@@ -83,3 +73,26 @@ export const isConnected = [
     label: 'Отсутствует',
   },
 ];
+
+export const OPDU_PUT_TEMPLATE = {
+  serialNumber: 'string',
+  checkingDate: '2020-10-19T11:19:54.947Z',
+  futureCheckingDate: '2020-10-19T11:19:54.947Z',
+  lastCommercialAccountingDate: '2020-10-19T11:19:54.947Z',
+  futureCommercialAccountingDate: '2020-10-19T11:19:54.947Z',
+  connection: {
+    ipV4: 'string',
+    deviceAddress: 0,
+    port: 0,
+  },
+  calculatorId: 0,
+  housingMeteringDeviceType: 'string',
+  resource: 'string',
+  model: 'string',
+  pipe: {
+    entryNumber: 0,
+    hubNumber: 0,
+    pipeNumber: 0,
+    magistral: 'string',
+  },
+};
