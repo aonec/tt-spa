@@ -1,44 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { DatePicker, Form, Modal, Radio } from 'antd';
+import {
+  DatePicker, Form, Modal, Radio,
+} from 'antd';
 import TabsComponent from './components/Tabs';
 import {
   SelectTT, InputTT, ButtonTT, Header,
 } from '../../../../../tt-components';
-import { convertDateOnly } from "../../../../../_api/utils/convertDate";
+import { DeviceContext } from '../../../CalculatorProfile';
 
-
-
-// async function deregisterDevice(device) {
-//   try {
-//     alert('Отправляется запрос на снятие прибора с учета !');
-//     const res = await axios.post('MeteringDevices/close', device);
-//     alert('Вычислитель успешно снят с учета !');
-//     return res;
-//   } catch (error) {
-//     console.log(error);
-//     alert('Что-то пошло не так: попробуйте еще раз');
-//     throw new Error(error);
-//   }
-// }
 const { RangePicker } = DatePicker;
-const selectTemplate = [
-  {
-    value: 1,
-    label: 'Узел 1: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-  },
-  {
-    value: 2,
-    label: 'Узел 2: ВКТ-7 (1234567890), ПРЭМ (1234567890), ПРЭМ (9876543210)',
-  },
-];
 
 const CalcReportForm = ({ device }) => {
+  const { report, setReport } = useContext(DeviceContext);
   const { serialNumber, model, address } = device;
   const { street, housingStockNumber, corpus } = address;
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -46,8 +26,8 @@ const CalcReportForm = ({ device }) => {
     initialValues: {
       details: 'daily',
       period: 'year',
-      begin: moment(),
-      end: moment()
+      begin: moment().toISOString(),
+      end: moment().toISOString(),
 
     },
     validationSchema: Yup.object({}),
@@ -74,9 +54,8 @@ const CalcReportForm = ({ device }) => {
     return null;
   };
 
-
   const downloadReport = () => {
-    console.log("downloadReport");
+    console.log('downloadReport');
     // console.log("entryNumberRes.current = ", entryNumberRes.current)
     // if (entryNumberRes.current) {
     //   console.log('entryNumberRes', entryNumberRes.current);
@@ -101,12 +80,40 @@ const CalcReportForm = ({ device }) => {
   const handleButton = () => {
     console.log('handleButton');
     console.log('device', device);
+    console.log("values = ", values)
+  };
+
+  const handleCancel = () => {
+    setReport(false);
+  };
+
+  const Buttons = () => {
+    console.log('Buttons');
+    return (
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <ButtonTT
+          color="white"
+          onClick={handleCancel}
+        >
+          Отмена
+        </ButtonTT>
+
+        <ButtonTT
+          style={{ marginLeft: '16px' }}
+          type="submit"
+          color="blue"
+          form="reportForm"
+        >
+          Выгрузить
+        </ButtonTT>
+      </div>
+    );
   };
 
   if (device) {
     return (
       <>
-        <form id="formikForm" onSubmit={handleSubmit}>
+        <Form id="reportForm" onSubmit={handleSubmit}>
           <Header>
             Выгрузка отчета о общедомовом потреблении
           </Header>
@@ -122,7 +129,7 @@ const CalcReportForm = ({ device }) => {
 
           <Form.Item label="Выбор узла">
             <SelectTT
-              options={selectTemplate}
+
             />
           </Form.Item>
 
@@ -155,22 +162,21 @@ const CalcReportForm = ({ device }) => {
 
           </div>
 
-          <Form.Item label="Период" >
-          <RangePicker
-            format={'DD.MM.YYYY'}
-            allowClear={false}
-            placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(value)=>{
-              console.log(value[0]);
-              console.log(value[1]);
-            setFieldValue('begin', value[0]);
-            setFieldValue('end', value[1]);
-            }}
-            value={[values.begin, values.end]}
-            style={{width: '100%', height: '50px'}}
-          />
+          <Form.Item label="Период">
+            <RangePicker
+              format="DD.MM.YYYY"
+              allowClear={false}
+              placeholder={['Дата Начала', 'Дата окончания']}
+              onChange={(value) => {
+                console.log(value[0]);
+                console.log(value[1]);
+                setFieldValue('begin', value[0]);
+                setFieldValue('end', value[1]);
+              }}
+              value={[values.begin, values.end]}
+              style={{ width: '100%', height: '50px' }}
+            />
           </Form.Item>
-
 
           <ButtonTT
             style={{ marginLeft: '16px' }}
@@ -179,7 +185,9 @@ const CalcReportForm = ({ device }) => {
           >
             TEST
           </ButtonTT>
-        </form>
+
+          <Buttons />
+        </Form>
       </>
     );
   }

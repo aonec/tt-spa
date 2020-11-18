@@ -1,4 +1,4 @@
-const CalculatorTemplate = {
+export const device = {
   connection: {
     isConnected: true,
     ipV4: '192.168.100.6',
@@ -202,6 +202,33 @@ const CalculatorTemplate = {
       futureCheckingDate: '2019-07-21T03:00:00',
       closingDate: null,
     },
+    {
+      hub: {
+        entryNumber: 2,
+        hubNumber: null,
+        pipeNumber: 6,
+        magistral: 'FeedFlow',
+      },
+      diameter: '32',
+      resource: 'ColdWaterSupply',
+      housingMeteringDeviceType: 'FlowMeter',
+      id: 1546262,
+      transactionType: null,
+      model: 'ПРЭМ',
+      serialNumber: 'SECONDWATER',
+      managementFirm: {
+        id: 4,
+        name: 'ООО УК"ПЖКХ-17"',
+        phoneNumber: null,
+        information: null,
+        timeZoneOffset: '03:00:00',
+      },
+      lastCommercialAccountingDate: '2018-10-31T03:00:00',
+      futureCommercialAccountingDate: '2019-07-21T03:00:00',
+      lastCheckingDate: '2015-07-21T03:00:00',
+      futureCheckingDate: '2019-07-21T03:00:00',
+      closingDate: null,
+    },
   ],
   id: 1542041,
   transactionType: null,
@@ -213,5 +240,3 @@ const CalculatorTemplate = {
   futureCheckingDate: '2020-10-11T03:00:00',
   closingDate: null,
 };
-
-export default CalculatorTemplate;

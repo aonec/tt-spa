@@ -10,9 +10,14 @@ import $ from 'jquery';
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 import { Icon } from '../../../../../_components/Icon';
+import { DeviceContext } from '../../../DeviceProfile';
+
+import { SelectReport } from './components/SelectReport';
 import { Bottom } from './components/Bottom';
 import { Top } from './components/Top';
-
+import './modal.scss';
+import { ButtonTT } from '../../../../../tt-components';
+import { CalculatorTemplate } from './components/CalculatorTemplate.js';
 
 const Translate = {
   Heat: 'Отопление',
@@ -88,7 +93,6 @@ export const ModalODPU = ({ device }) => {
       const {
         resource, housingMeteringDeviceType, hub, serialNumber,
       } = item;
-      console.log("pipeNumber = ", pipeNumber)
       const { entryNumber, pipeNumber } = hub;
       if (housingMeteringDeviceType === 'FlowMeter' && resource !== 'HotWaterSupply') {
         devicesList.push({
@@ -117,6 +121,7 @@ export const ModalODPU = ({ device }) => {
   devicesList.map(({ resource, serialNumber, entryNumber,pipeNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
       const res = _.find(selectOptions, (o) => o.value === resource);
+      console.log('res', res);
       const ind = selectOptions.indexOf(res);
       selectOptions.splice(ind, 1, {
         label: `${_.get(
@@ -192,6 +197,7 @@ export const ModalODPU = ({ device }) => {
         model,
         street,
         housingStockNumber,
+        SelectReport,
         type,
         selectOptions,
         handleChange,
@@ -199,7 +205,7 @@ export const ModalODPU = ({ device }) => {
         onDetailChange,
       }}
     >
-      <div className="overlay" style={{overflow: 'auto'}} id="modal-report-device">
+      <div className="overlay" id="modal-report-device">
         <div className="modal-odpu">
           {/* <ButtonTT>TEST</ButtonTT> */}
           <Icon

@@ -46,7 +46,7 @@ const ModalDeregisterDevice = ({ deviceId }) => {
       onCancel={handleCancel}
       footer={null}
     >
-      <DeregisterForm device={device} />
+      <DeregisterForm device={device}  />
       <ButtonTT
         type="submit"
         color="red"

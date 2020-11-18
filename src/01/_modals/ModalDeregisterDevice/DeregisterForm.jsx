@@ -41,6 +41,7 @@ const DeregisterForm = ({ device }) => {
       deregisterDevice(form);
     },
   });
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);

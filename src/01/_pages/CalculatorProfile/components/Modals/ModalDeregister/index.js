@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { Modal } from 'antd';
 import ModalDeregisterForm from './ModalDeregisterForm';
-import { DeviceContext } from "../../../CalculatorProfile";
+import { DeviceContext } from '../../../CalculatorProfile';
 
 const DeregisterDevice = () => {
-  console.log('DeregisterDevice');
-  const {deregister, setDeregister, device} = useContext(DeviceContext)
-  const handleCancel = () =>{
+  // console.log('DeregisterDevice');
+  const { deregister, setDeregister, device } = useContext(DeviceContext);
+  const handleCancel = () => {
     setDeregister(false);
-  }
+  };
   return (
     <Modal
       visible={deregister}
@@ -17,7 +17,7 @@ const DeregisterDevice = () => {
       footer={null}
       onCancel={handleCancel}
     >
-      <ModalDeregisterForm handleCancel={handleCancel} device={device}/>
+      <ModalDeregisterForm handleCancel={handleCancel} device={device} />
     </Modal>
   );
 };

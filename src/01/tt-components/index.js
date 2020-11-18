@@ -11,3 +11,4 @@ export * from './Modal';
 export * from './Header';
 export * from './Select';
 export * from './DatePicker';
+export * from './RangePicker'

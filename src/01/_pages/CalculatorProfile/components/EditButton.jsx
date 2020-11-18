@@ -20,7 +20,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { deregister, setDeregister } = useContext(DeviceContext);
+  const { deregister, setDeregister,report, setReport } = useContext(DeviceContext);
   const { deviceId } = useParams();
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -34,9 +34,8 @@ export const Menu = (showPopupHandler) => {
   });
 
   const reportDevice = () => {
-    console.log("$('#modal-report-device')", $('#modal-report-device'));
-    $('#modal-report-device').toggle();
     $('#edit-button__list').toggle();
+    setReport(true)
   };
 
   const showDeregisterDeviceModal = () => {
