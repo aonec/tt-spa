@@ -72,7 +72,7 @@ const TabsDevices = ({devicePage}) => {
     return <Tabs defaultActiveKey="1" style={{maxWidth: 960}}>
             <TabPane className={styles.tab} tab={<span style={{fontSize: 16}}>ОДПУ</span>} key="1">
                 {/*<DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>*/}
-                <DeviceSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
+                <DeviceSearchForm dispatch={dispatch} searchState={searchState} dispatchSearchState={dispatchSearchState}/>
                 {isLoading? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>

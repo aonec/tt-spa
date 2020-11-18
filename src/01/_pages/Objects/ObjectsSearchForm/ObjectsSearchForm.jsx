@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {setCurrentPage} from "../../../Redux/reducers/reducerDevicesPage";
 import {Button, Form, Input, Select, Tooltip} from "antd";
 import {Icon} from "../../../_components/Icon";
-import styles from "../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.scss";
+import styles from "../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
 import {setHouseNumber, setStreet} from "./objectsSearchReducer";
 
 const { Option } = Select;
@@ -42,7 +42,7 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
             className="login-form"
             initialValues={{ remember: true }}
             onValuesChange={onValuesChangeHandler}
-            style={{marginBottom: 20}}
+            style={{marginBottom: 20, borderBottom: '1px solid var(--frame)'}}
         >
             <div style={{display: 'grid', gridTemplateColumns: '0.5fr 2fr 4fr 1.5fr 4fr'}}>
                 <Form.Item
@@ -59,7 +59,7 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
                 >
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <Select id="sortBy" defaultValue="lastCheckingDate" style={{marginRight: 8}} disabled>
-                            <Option value="lastCheckingDate">Нижнекамск</Option>
+                            <Option value="lastCheckingDate">Город</Option>
                         </Select>
                     </div>
                 </Form.Item>

@@ -28,9 +28,8 @@ const Tabs = React.memo(({ total = [] }) =>
 export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks()
   return (
-    // <div style={{maxWidth: 960}}>
-    <div style={{maxWidth: 1080}}>
-      <h1 style={{fontWeight:300}}>Задачи</h1>
+    <div style={{maxWidth: 960}}>
+      <h1 style={{fontWeight:300, marginBottom: 16}}>Задачи</h1>
       <Tabs total={[executingTasksCount, observingTasksCount]} />
       <TasksList items={items} />
     </div>

@@ -71,7 +71,7 @@ export const Objects = () => {
                 queryString = '?' + queryString
             }
 
-          //  debugger;
+            //  debugger;
 
             // let query = searchState.street ? `&Street=${searchState.street}` : '' +
             // searchState.houseNumber ? `&HousingStockNumber=${searchState.houseNumber}` : '';
@@ -86,9 +86,8 @@ export const Objects = () => {
 
     const { items } = state;
     return styled(styles)(
-        // <div style={{width: 960}}>
-      <div style={{width: 1080}}>
-            <h1 style={{ fontWeight: 300 }}>Объекты</h1>
+        <div style={{width: 960}}>
+            <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1>
             <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
             <Loader show={!items} size="32">
                 {items?.map(
@@ -107,15 +106,15 @@ export const Objects = () => {
                         return (
                             <obj_item key={id}>
                                 <LinkRow to={`/objects/${id}`}>
-                  <span>
-                    <h4>
-                      {street}
-                        ,
-                        {' '}
-                        {number}
-                    </h4>
-                      {task}
-                  </span>
+                              <span>
+                                <h4 style={{whiteSpace: 'nowrap'}}>
+                                  {street}
+                                    ,
+                                    {' '}
+                                    {number}
+                                </h4>
+                                  {task}
+                              </span>
                                     <city>{city}</city>
                                     <span />
                                     <aparts>
