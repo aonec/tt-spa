@@ -46,7 +46,7 @@ export const Header = () => {
   const loading = loadingDevice || loadingBuilding;
 
   const {
-    city, street, housingStockNumber, corpus,
+    city, street, housingStockNumber, corpus, id
   } = building || DEFAULT_BUILDING;
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
@@ -86,7 +86,7 @@ export const Header = () => {
             {`${model || 'Вычислитель'} (${serialNumber})`}
           </Title>
           {/*<ButtonTT onClick={buttonHandler}>TEST</ButtonTT>*/}
-          <Subtitle>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
+          <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
           <Menu />

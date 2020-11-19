@@ -156,6 +156,9 @@ export const TasksList = ({ items }) => {
               {address.street}
               ,
               {address.housingStockNumber}
+                {address.corpus
+                    ? `, к.${address.corpus}`
+                : ''}
             </addr>
             <num>
               <Icon icon="number" />

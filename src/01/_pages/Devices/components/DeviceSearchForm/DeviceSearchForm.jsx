@@ -1,4 +1,5 @@
-import styles from "./DeviceSearchForm.module.scss"
+import styles from "./DeviceSearchForm.module.less";
+import "./DeviceSearchForm.module.less";
 import React, {useRef, useState} from "react";
 import {getDevicesBySerialNumber, setCurrentPage} from "../../../../Redux/reducers/reducerDevicesPage";
 import {useDispatch} from "react-redux";
@@ -34,12 +35,14 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
     }
 
     const handleOnExpirationChange = (value) => {
-        dispatchSearchState(setExpirationDate(value))
+        dispatchSearchState(setExpirationDate(value));
+        dispatch(setCurrentPage(1))
     }
 
     const handleOnSortChange = (value) => {
-        dispatchSearchState(setDevicesFilter(value))
-}
+        dispatchSearchState(setDevicesFilter(value));
+        dispatch(setCurrentPage(1));
+    }
 
     const onMinChange = (e) => {
         dispatchSearchState(setLowerDiameterRange(e.target.value))
@@ -57,7 +60,7 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
             className="login-form"
             initialValues={{ remember: true }}
             onChange={onValuesChangeHandler}
-            style={{marginBottom: 20}}
+            style={{marginBottom: 20, marginTop: 10}}
         >
             <div style={{display: 'grid', gridTemplateColumns: '0.5fr 8fr 3.5fr'}}>
                 <Form.Item
@@ -83,9 +86,9 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <label htmlFor="sortBy" style={{minWidth: 120, marginRight: 8}}>Сортировать по:</label>
                         <Select id="sortBy" onSelect={handleOnSortChange}>
-                            <Option value="descendingFutureCheckingDate">Дате поверки (уб.)</Option>
+                            <Option value="descendingFutureCheckingDate" disabled>Дате поверки (уб.)</Option>
                             <Option value="ascendingFutureCheckingDate">Дате поверки (возр.)</Option>
-                            <Option value="descendingStreet">Улице (уб.)</Option>
+                            <Option value="descendingStreet" disabled>Улице (уб.)</Option>
                             <Option value="ascendingStreet">Улице (возр.)</Option>
                         </Select>
                     </div>

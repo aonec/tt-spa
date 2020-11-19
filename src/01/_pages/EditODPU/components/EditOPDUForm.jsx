@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, isConnectedValue,
+  housingMeteringDeviceTypes, resources,  isConnectedValue,magistrals
 } from '../../../tt-components/localBases';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
@@ -77,8 +77,7 @@ const FormEditODPU = (props) => {
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
       hubNumber,
-      // deviceAddress,
-      pipeNumber,
+      pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
@@ -91,7 +90,7 @@ const FormEditODPU = (props) => {
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
-      pipeNumber: Yup.number().required('Введите число от 0 до 255'),
+      pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
@@ -109,7 +108,7 @@ const FormEditODPU = (props) => {
         model: values.model,
         pipe: {
           calculatorId: values.calculatorId,
-          entryNumber: values.entryNumber || null,
+          entryNumber: values.entryNumber,
           hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral || 'Направление не выбрано',
@@ -117,6 +116,7 @@ const FormEditODPU = (props) => {
       };
       putOdpu(id, PUT_EDIT_FORM);
       console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
+      // console.log(values)
     },
   });
 
@@ -381,13 +381,49 @@ const FormEditODPU = (props) => {
             />
             <Alert name="pipeNumber" />
           </Form.Item>
+
+
+          <Form.Item label="Направление магистрали">
+            <SelectTT
+              name="magistral"
+              options={magistrals}
+              placeholder="Направление магистрали"
+              onChange={(value) => { setFieldValue('magistral', value); }}
+              onBlur={handleBlur}
+              value={values.magistral}
+            />
+            <Alert name="magistral" />
+          </Form.Item>
+
         </div>
 
         <div hidden={Number(currentTabKey) !== 3}>
           <Header>Компонент в разработке</Header>
         </div>
 
-        <EditODPUButtons />
+        {/* <EditODPUButtons /> */}
+
+        <div style={{ padding: '32px 0' }}>
+          <ButtonTT
+            form="editOdpuForm"
+            color="blue"
+            style={{ marginRight: '16px' }}
+            onClick={handleSubmit}
+            type="submit"
+          >
+            Сохранить
+          </ButtonTT>
+
+          <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
+            <ButtonTT
+              style={{ marginLeft: '16px' }}
+              color="white"
+            >
+              Отмена
+            </ButtonTT>
+          </NavLink>
+        </div>
+
       </form>
     </div>
   );
