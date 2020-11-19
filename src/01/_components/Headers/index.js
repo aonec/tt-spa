@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {Link} from "react-router-dom";
 
 export const HeaderWrap = styled.div`
   display: grid;
@@ -15,8 +16,10 @@ export const Title = styled.h2`
   line-height: 48px;
 `;
 
-export const Subtitle = styled.p`
+export const Subtitle = styled(Link)`
+  color: #272F5A;
+  font-weight: 500;
   padding: 0;
   margin: 0;
-  opacity: 0.8;
+  opacity: 0.9;
 `;
