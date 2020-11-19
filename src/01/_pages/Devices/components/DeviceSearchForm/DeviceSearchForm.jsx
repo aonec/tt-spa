@@ -86,9 +86,9 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <label htmlFor="sortBy" style={{minWidth: 120, marginRight: 8}}>Сортировать по:</label>
                         <Select id="sortBy" onSelect={handleOnSortChange}>
-                            <Option value="descendingFutureCheckingDate">Дате поверки (уб.)</Option>
+                            <Option value="descendingFutureCheckingDate" disabled>Дате поверки (уб.)</Option>
                             <Option value="ascendingFutureCheckingDate">Дате поверки (возр.)</Option>
-                            <Option value="descendingStreet">Улице (уб.)</Option>
+                            <Option value="descendingStreet" disabled>Улице (уб.)</Option>
                             <Option value="ascendingStreet">Улице (возр.)</Option>
                         </Select>
                     </div>

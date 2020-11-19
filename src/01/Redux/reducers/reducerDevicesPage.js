@@ -21,6 +21,7 @@ const initialState = {
 export default function reducerDevicesPage(state = initialState, action) {
   switch (action.type) {
     case SET_DEVICES:
+      debugger;
       return { ...state, ...action.devices };
 
     case SET_CURRENT_PAGE:
