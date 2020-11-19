@@ -97,6 +97,7 @@ function isDisabled(
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
+  if (Switch) return !nextStageId;
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
   if (AddDocuments) return !documentsIds.length;
