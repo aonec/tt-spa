@@ -11,12 +11,12 @@ import {
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 // import { device } from './CalculatorTemplate';
-
+import { device } from './CalculatorTemplate';
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  const { device, handleCancel } = props;
-  // const { handleCancel } = props;
+  // const { device, handleCancel } = props;
+ const { handleCancel } = props;
   // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
@@ -86,6 +86,33 @@ const ModalCalculatorReportForm = (props) => {
     }
     return result;
   }, []);
+
+  const filteredGroup = devicesList.reduce((result, item) => {
+    const { resource } = item;
+    result[resource] = result[resource]
+      ? [...result[resource], item]
+      : [item];
+    return result;
+  }, {});
+
+  console.log("filteredGroup", filteredGroup)
+
+  const cold = filteredGroup.ColdWaterSupply.reduce((result, item) =>{
+    result.push({...item, value: result.length + 1 , label: `${result.length} + 1`})
+    return result
+  },[])
+
+  const hot = filteredGroup.HotWaterSupply.reduce((result, item) =>{
+    result.push({...item, value: result.length + 1 , label: `${result.length} + 2`})
+    return result
+  },[])
+
+  const heat = filteredGroup.Heat.reduce((result, item) =>{
+    result.push({...item, value: result.length + 1 , label: `${result.length} + 3`})
+    return result
+  },[])
+
+  console.log("cold", cold)
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -245,6 +272,19 @@ const ModalCalculatorReportForm = (props) => {
           readOnly
         />
       </Form.Item>
+
+
+      <Form.Item label="Выбор узла">
+        <SelectTT
+          options={final}
+          // placeholder="Выберите узел"
+          // onChange={handleSelect}
+          // value={values.currentValue}
+          // name="entryNumber"
+        />
+        <Alert name="entryNumber" />
+      </Form.Item>
+
 
       <Form.Item label="Выбор узла">
         <SelectTT
