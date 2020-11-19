@@ -3,7 +3,6 @@ import {Subtitle} from "../../../../_components/Headers";
 import DeviceBlock from "../DeviceBlock/DeviceBlock";
 
 const DevicesByAddress = ({addressDevicesGroup}) => {
-    debugger;
 const {city, street, housingStockNumber, corpus, id} = addressDevicesGroup.address;
 const deviceElems = addressDevicesGroup.devices.map((device) => <DeviceBlock device={device} />);
 
