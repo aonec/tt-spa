@@ -75,7 +75,7 @@ export const RelatedDevices = () => {
   const isLoading = _.get(loadings, 'related', true);
 
   const {
-    calculatorModel,
+    model,
     calculatorSerialNumber,
     futureCheckingDate,
     closingdate,
@@ -89,7 +89,7 @@ export const RelatedDevices = () => {
       <NavLink to={`/calculators/${calculatorId}`}>
         <NameWrap>
           <Icon icon={icon} color={color} />
-          <Name>{calculatorModel || 'Вычислитель'}</Name>
+          <Name>{model || 'Вычислитель'}</Name>
           <Serial>{` (${calculatorSerialNumber})`}</Serial>
         </NameWrap>
       </NavLink>

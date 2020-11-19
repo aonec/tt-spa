@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, isConnectedValue,
-} from '../../../tt-components/localBases';
+  housingMeteringDeviceTypes, resources, serviceLife, isConnectedValue,
+} from '../constants';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
 } from '../../../tt-components';
@@ -111,7 +111,7 @@ const FormEditODPU = (props) => {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber || null,
           hubNumber: values.hubNumber || null,
-          pipeNumber: values.pipeNumber,
+          pipeNumber: values.pipeNumber || null,
           magistral: values.magistral || 'Направление не выбрано',
         },
       };
