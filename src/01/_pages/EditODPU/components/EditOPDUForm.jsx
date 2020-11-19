@@ -78,7 +78,6 @@ const FormEditODPU = (props) => {
       entryNumber,
       hubNumber,
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
-      // pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
@@ -91,7 +90,7 @@ const FormEditODPU = (props) => {
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
-      pipeNumber:  Yup.number().required('Введите число от 0'),
+      pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
@@ -116,7 +115,7 @@ const FormEditODPU = (props) => {
         },
       };
       putOdpu(id, PUT_EDIT_FORM);
-     console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
+      console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
       // console.log(values)
     },
   });
