@@ -14,7 +14,6 @@ grid-template-columns: 1fr 1fr;
 grid-template-rows: 48px;
 align-items: center;
 border-bottom: 1px solid var(--frame);
-opacity: 0.8;
 &[|url] {
   cursor: pointer;
   font-weight: 500;
@@ -25,8 +24,9 @@ opacity: 0.8;
 }
 & span {
   padding: 8px;
+  opacity: 0.7;
   &:first-of-type {
-    opacity: 0.6;
+    opacity: 0.9;
     font-weight: normal;
   }
 }
