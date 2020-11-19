@@ -17,6 +17,7 @@ import {createPages} from "../../../utils/pagesCreator";
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
 import DeviceSearchForm from "./DeviceSearchForm/DeviceSearchForm";
 import devicesSearchReducer from "./../devicesSearchReducer"
+import DevicesByAddress from "./DevicesByAddress/DevicesByAddress";
 
 
 const { TabPane } = Tabs;
@@ -49,24 +50,44 @@ const TabsDevices = ({devicePage}) => {
         setIsLoading(false)
     }, [currentPage, searchState]);
 
-    const deviceItems = devicePage.items
+    const devicesByObject = [];
 
+    const deviceItems = devicePage.items.map(device => {
+        const {address, ...rest} = device;
+        const index = devicesByObject.findIndex(el => el.address.id === address.id);
+        index === -1
+           ? devicesByObject.push({ address, devices: [{ rest }] })
+           : devicesByObject[index].devices.push({rest})
+    })
+
+    debugger;
+
+    // useEffect(() => {
+    //     setIsLoading(true)
+    //     const deviceArray = deviceItems.map((device) => {
+    //             return <DeviceBlock device={device}/>
+    //         }
+    //     );
+    //     setDeviceElems(deviceArray);
+    //     setIsLoading(false)
+    // }, [deviceItems])
 
     useEffect(() => {
         setIsLoading(true)
-        const deviceArray = deviceItems.map((device) => {
-                return <DeviceBlock device={device}/>
+        const deviceArray = deviceItems.map((addressDevicesGroup) => {
+                return <DevicesByAddress addressDevicesGroup={addressDevicesGroup}/>
             }
         );
         setDeviceElems(deviceArray);
         setIsLoading(false)
     }, [deviceItems])
 
-    const pagination = pages.map((page, index) => <span
-            key={index}
-            className={currentPage === page ? styles.currentPage : styles.page}
-            onClick={() => dispatch(setCurrentPage(page))}
-        >{page}</span> )
+
+    // const pagination = pages.map((page, index) => <span
+    //         key={index}
+    //         className={currentPage === page ? styles.currentPage : styles.page}
+    //         onClick={() => dispatch(setCurrentPage(page))}
+    //     >{page}</span> )
 
 
     return <Tabs defaultActiveKey="1" style={{maxWidth: 960}}>
@@ -76,7 +97,7 @@ const TabsDevices = ({devicePage}) => {
                 {isLoading? <div>ЗАГРУЗКА... <Loader show={true}/></div> :
                     <div>
                         <div className={styles.devices}>{deviceElems}</div>
-                        <div className={styles.pages}>{pagination}</div>
+                        {/*<div className={styles.pages}>{pagination}</div>*/}
                     </div>}
             </TabPane>
             {/*<TabPane tab="ИПУ" key="2">*/}
