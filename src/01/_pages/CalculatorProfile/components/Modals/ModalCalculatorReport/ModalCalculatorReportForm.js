@@ -10,13 +10,13 @@ import {
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
-import { device } from './CalculatorTemplate';
+// import { device } from './CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  // const { device, handleCancel } = props;
-  const { handleCancel } = props;
+  const { device, handleCancel } = props;
+  // const { handleCancel } = props;
   // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
