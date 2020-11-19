@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources, serviceLife, isConnectedValue,
-} from '../constants';
+  housingMeteringDeviceTypes, resources,  isConnectedValue,magistrals
+} from '../../../tt-components/localBases';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT,
 } from '../../../tt-components';
@@ -381,6 +381,20 @@ const FormEditODPU = (props) => {
             />
             <Alert name="pipeNumber" />
           </Form.Item>
+
+
+          <Form.Item label="Направление магистрали">
+            <SelectTT
+              name="magistral"
+              options={magistrals}
+              placeholder="Направление магистрали"
+              onChange={(value) => { setFieldValue('magistral', value); }}
+              onBlur={handleBlur}
+              value={values.magistral}
+            />
+            <Alert name="magistral" />
+          </Form.Item>
+
         </div>
 
         <div hidden={Number(currentTabKey) !== 3}>
