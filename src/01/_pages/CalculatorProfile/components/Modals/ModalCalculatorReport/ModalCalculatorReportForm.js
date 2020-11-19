@@ -12,11 +12,12 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 // import { device } from './CalculatorTemplate';
 import { device } from './CalculatorTemplate';
+
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   // const { device, handleCancel } = props;
- const { handleCancel } = props;
+  const { handleCancel } = props;
   // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
@@ -87,32 +88,45 @@ const ModalCalculatorReportForm = (props) => {
     return result;
   }, []);
 
-  const filteredGroup = devicesList.reduce((result, item) => {
-    const { resource } = item;
-    result[resource] = result[resource]
-      ? [...result[resource], item]
-      : [item];
-    return result;
+  const filteredGroup = _.groupBy(devicesList, 'resource');
+
+  // const getDevicesSelectionByType = (group) => _.map(group, (item, key) => {
+  //   console.log(item, key);
+  //   return item;
+  // });
+  const getSelectionsFormatterByType = (list, type) => {
+    const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
+
+    switch (type) {
+      case 'ColdWaterSupply':
+        return list.map((item, index) => ({ ...item, value: index + 1, label: `${index + 1} label` }));
+      case 'HotWaterSupply':
+
+        const res = _.values(sortedByEntryNumber).map((item, index) => {
+         if (item.length > 1 ) {
+           const {entryNumber, pipeNumber} = item[0];
+           return {entryNumber, pipeNumber, label: `${item[0].model} и ${item[1].model}`}
+         }
+         else return item[0]
+
+        })
+        return res;
+      case 'Heat':
+        return list;
+      default:
+        return list;
+    }
+  };
+
+  const getDevicesSelectionByType = (group) => _.keys(group).reduce((acc, item) => {
+    acc[item] = getSelectionsFormatterByType(group[item], item);
+    return acc;
   }, {});
 
-  console.log("filteredGroup", filteredGroup)
+  console.log('getDevicesSelectionByType', getDevicesSelectionByType(filteredGroup));
+  // console.log("filteredGroup", filteredGroup)
 
-  const cold = filteredGroup.ColdWaterSupply.reduce((result, item) =>{
-    result.push({...item, value: result.length + 1 , label: `${result.length} + 1`})
-    return result
-  },[])
-
-  const hot = filteredGroup.HotWaterSupply.reduce((result, item) =>{
-    result.push({...item, value: result.length + 1 , label: `${result.length} + 2`})
-    return result
-  },[])
-
-  const heat = filteredGroup.Heat.reduce((result, item) =>{
-    result.push({...item, value: result.length + 1 , label: `${result.length} + 3`})
-    return result
-  },[])
-
-  console.log("cold", cold)
+  const final = getDevicesSelectionByType(filteredGroup);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -273,18 +287,12 @@ const ModalCalculatorReportForm = (props) => {
         />
       </Form.Item>
 
-
       <Form.Item label="Выбор узла">
         <SelectTT
-          options={final}
-          // placeholder="Выберите узел"
-          // onChange={handleSelect}
-          // value={values.currentValue}
-          // name="entryNumber"
+          options={final[values.resource]}
         />
-        <Alert name="entryNumber" />
-      </Form.Item>
 
+      </Form.Item>
 
       <Form.Item label="Выбор узла">
         <SelectTT

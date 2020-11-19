@@ -123,6 +123,33 @@ export const device = {
     },
     {
       hub: {
+        entryNumber: 6,
+        hubNumber: null,
+        pipeNumber: 18,
+        magistral: 'FeedFlow',
+      },
+      diameter: '80',
+      resource: 'HotWaterSupply',
+      housingMeteringDeviceType: 'FlowMeter',
+      id: 1546259,
+      transactionType: null,
+      model: 'РС (90-А)',
+      serialNumber: '067618',
+      managementFirm: {
+        id: 4,
+        name: 'ООО УК"ПЖКХ-17"',
+        phoneNumber: null,
+        information: null,
+        timeZoneOffset: '03:00:00',
+      },
+      lastCommercialAccountingDate: '2019-03-07T03:00:00',
+      futureCommercialAccountingDate: '2019-08-17T03:00:00',
+      lastCheckingDate: '2020-07-22T03:00:00',
+      futureCheckingDate: '2024-07-22T03:00:00',
+      closingDate: null,
+    },
+    {
+      hub: {
         entryNumber: 2,
         hubNumber: null,
         pipeNumber: 3,
