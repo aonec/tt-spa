@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../../tt-components';
-import { items } from './CalculatorJSON';
+import { items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 
 import { putCalculator } from './apiEditCalculator';
