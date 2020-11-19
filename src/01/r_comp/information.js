@@ -24,7 +24,7 @@ export const information = css`
     & span {
       padding: 8px;
       &:first-of-type {
-        opacity: 0.6;
+        opacity: 0.9;
         font-weight: normal;
       }
     }

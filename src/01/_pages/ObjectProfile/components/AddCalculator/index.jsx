@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import {
   Title, ButtonTT,
 } from '../../../../tt-components';
-import TabsComponent from './components/addCalculatorTabs';
+import TabsComponent from './addCalculatorTabs';
 import { ObjectContext } from '../../index';
 import AddCalculatorForm from './AddCalculatorForm';
 

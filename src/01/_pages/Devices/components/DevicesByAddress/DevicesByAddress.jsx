@@ -3,12 +3,7 @@ import {Subtitle} from "../../../../_components/Headers";
 import DeviceBlock from "../DeviceBlock/DeviceBlock";
 
 const DevicesByAddress = ({addressDevicesGroup}) => {
-<<<<<<< Updated upstream
-    debugger;
-const {city, street, housingStockNumber, corpus, id} = addressDevicesGroup.address;
-=======
 const {city = '', street = '', housingStockNumber = null, corpus = null, id = null} = addressDevicesGroup?.address || {};
->>>>>>> Stashed changes
 const deviceElems = addressDevicesGroup.devices.map((device) => <DeviceBlock device={device} />);
 
     return (
