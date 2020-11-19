@@ -77,8 +77,8 @@ const FormEditODPU = (props) => {
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
       hubNumber,
-      // deviceAddress,
-      pipeNumber,
+      pipeNumber: pipeNumber == null ? 0 : pipeNumber,
+      // pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
@@ -91,7 +91,7 @@ const FormEditODPU = (props) => {
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
-      pipeNumber: Yup.number().required('Введите число от 0 до 255'),
+      pipeNumber:  Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
@@ -109,14 +109,15 @@ const FormEditODPU = (props) => {
         model: values.model,
         pipe: {
           calculatorId: values.calculatorId,
-          entryNumber: values.entryNumber || null,
+          entryNumber: values.entryNumber,
           hubNumber: values.hubNumber || null,
-          pipeNumber: values.pipeNumber || null,
+          pipeNumber: values.pipeNumber,
           magistral: values.magistral || 'Направление не выбрано',
         },
       };
       putOdpu(id, PUT_EDIT_FORM);
-      console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
+     console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
+      // console.log(values)
     },
   });
 
@@ -387,7 +388,29 @@ const FormEditODPU = (props) => {
           <Header>Компонент в разработке</Header>
         </div>
 
-        <EditODPUButtons />
+        {/* <EditODPUButtons /> */}
+
+        <div style={{ padding: '32px 0' }}>
+          <ButtonTT
+            form="editOdpuForm"
+            color="blue"
+            style={{ marginRight: '16px' }}
+            onClick={handleSubmit}
+            type="submit"
+          >
+            Сохранить
+          </ButtonTT>
+
+          <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
+            <ButtonTT
+              style={{ marginLeft: '16px' }}
+              color="white"
+            >
+              Отмена
+            </ButtonTT>
+          </NavLink>
+        </div>
+
       </form>
     </div>
   );

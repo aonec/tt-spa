@@ -4,26 +4,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
-import {
+import {Title,
   ButtonTT,
   DatePickerTT, Header, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
-import axios from '../../../../axios';
 import { items } from '../../../../tt-components/localBases';
-
-async function addCalculator(form) {
-  try {
-    const res = await axios.post('Calculators', form);
-    alert('Вычислитель успешно создан !');
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка добавления Вычислителя',
-    };
-  }
-}
+import {addCalculator} from './apiAddCalculator'
 
 const AddCalculatorForm = (props) => {
   const {
@@ -133,9 +119,8 @@ const AddCalculatorForm = (props) => {
 
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log('values = ', values);
-    console.log(errors);
   };
+
   return (
     <>
       {/*<button onClick={buttonHandler}>test</button>*/}
@@ -290,7 +275,7 @@ const AddCalculatorForm = (props) => {
         </div>
 
         <div hidden={Number(currentTabKey) !== 3}>
-          <Header>Компонент Документы в разработке</Header>
+          <Title color={'black'}>Компонент Документы в разработке</Title>
         </div>
 
         <Buttons />

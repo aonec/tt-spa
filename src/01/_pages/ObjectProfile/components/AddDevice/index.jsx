@@ -1,35 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Modal } from 'antd';
-import axios from '../../../../axios';
 import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Main';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
+import {getObjectCalculators} from './apiAddOdpu'
 
 const ModalAddDevice = () => {
   const [currentTabKey, setTab] = useState('1');
-  const modalRef = React.createRef();
   const [calculators, setCalculators] = useState([]);
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
   const handleCancel = () => {
     setAddOdpu(false);
   };
 
-  async function getObjectCalculators(id = '') {
-    try {
-      const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка запроса устройства',
-      };
-    }
-  }
+
 
   useEffect(() => {
-    async function someFunc() {
+    async function setCalculatorsList() {
       try {
         const objCalculators = await getObjectCalculators(objid);
         const { items } = objCalculators;
@@ -39,7 +27,7 @@ const ModalAddDevice = () => {
         console.log(error);
       }
     }
-    someFunc();
+    setCalculatorsList();
   }, []);
 
   function handleChangeTab(value) {
@@ -53,9 +41,6 @@ const ModalAddDevice = () => {
   const buttonHandler = () => {
     console.log(calculators);
   };
-
-
-
 
   const Buttons = () => {
     const RenderNextButton = () => {
@@ -96,14 +81,13 @@ const ModalAddDevice = () => {
     );
 
     return (
-      <div style={{margin:'32px 0'}}>
+      <div style={{ margin: '32px 0' }}>
         <RenderNextButton />
         <RenderSubmitButton />
         <CancelButton />
       </div>
     );
   };
-
 
   return (
     <Modal
@@ -122,7 +106,7 @@ const ModalAddDevice = () => {
       />
       <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
 
-    <Buttons />
+      <Buttons />
     </Modal>
   );
 };

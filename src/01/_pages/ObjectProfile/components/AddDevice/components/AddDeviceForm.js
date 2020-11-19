@@ -5,12 +5,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import {
-  serviceLife, resources, magistrals, housingMeteringDeviceTypes, isConnected,
-} from '../DeviceJSON';
+  resources, magistrals, housingMeteringDeviceTypes, isConnected,
+} from '../../../../../tt-components/localBases';
 import {
-  Header, SelectTT, InputTT, DatePickerTT,
+  Title, Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
-import axios from '../../../../../axios';
+import {addOdpu} from '../apiAddOdpu'
 
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
@@ -87,19 +87,7 @@ const AddDeviceForm = (props) => {
     },
   });
 
-  async function addOdpu(form) {
-    try {
-      const res = await axios.post('HousingMeteringDevices', form);
-      alert('ОДПУ успешно создан !');
-      return res;
-    } catch (error) {
-      console.log(error);
-      throw {
-        resource: 'device',
-        message: 'Произошла ошибка добавления ОДПУ',
-      };
-    }
-  }
+
 
   return (
 
@@ -154,11 +142,6 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="serialNumber" />
         </Form.Item>
-
-        {/* "lastCommercialAccountingDate": "2020-11-09T13:07:26.129", */}
-        {/* "futureCommercialAccountingDate": "2020-11-09T13:07:26.13", */}
-        {/* "lastCheckingDate": "2020-11-13T13:28:13.355", */}
-        {/* "futureCheckingDate": "2020-11-13T13:28:13.355", */}
 
         <Form.Item label="Дата поверки">
           <DatePickerTT
@@ -303,7 +286,7 @@ const AddDeviceForm = (props) => {
       </div>
 
       <div hidden={Number(currentTabKey) !== 3}>
-        <Header>Компонент в разработке</Header>
+        <Title color="black">Компонент в разработке</Title>
       </div>
 
     </form>
@@ -311,3 +294,8 @@ const AddDeviceForm = (props) => {
 };
 
 export default AddDeviceForm;
+
+{ /* "lastCommercialAccountingDate": "2020-11-09T13:07:26.129", */ }
+{ /* "futureCommercialAccountingDate": "2020-11-09T13:07:26.13", */ }
+{ /* "lastCheckingDate": "2020-11-13T13:28:13.355", */ }
+{ /* "futureCheckingDate": "2020-11-13T13:28:13.355", */ }
