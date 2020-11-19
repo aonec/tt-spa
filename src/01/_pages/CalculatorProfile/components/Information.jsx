@@ -21,7 +21,7 @@ export const Information = (loading = true) => {
     console.log('buttonHandler');
   };
   const {
-    city, street, housingStockNumber, corpus,
+    city, street, housingStockNumber, corpus, id
   } = building || DEFAULT_BUILDING;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
@@ -43,7 +43,7 @@ export const Information = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <Subtitle>
+          <Subtitle to={`/objects/${id}`}>
             {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
         </ListItem>
