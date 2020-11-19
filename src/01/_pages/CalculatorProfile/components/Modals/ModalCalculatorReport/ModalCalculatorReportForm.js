@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import { number } from 'yup';
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import { number } from "yup";
+import { item } from "../../../../../../_reshadow";
 
 const { TabPane } = Tabs;
 
@@ -42,6 +43,77 @@ const ModalCalculatorReportForm = (props) => {
     }
     return result;
   }, []);
+
+
+  function ColdWaterSupply() {
+    if (_.find(devicesList, {resource: 'ColdWaterSupply'})) {
+      const coldWater = _.filter(devicesList, {resource: 'ColdWaterSupply'})
+      const res =coldWater.reduce((result, item)=>{
+        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
+        result.push({
+          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+          value: result.length,
+          entryNumber,
+          pipeNumber,
+          resource,
+        });
+        console.log("result", result)
+        return result;
+      },[])
+      return res;
+    }
+    else {
+      console.log("No")
+    }
+  }
+
+  function HotWaterSupply() {
+    if (_.find(devicesList, {resource: 'HotWaterSupply'})) {
+      const coldWater = _.filter(devicesList, {resource: 'HotWaterSupply'})
+      const res =coldWater.reduce((result, item)=>{
+        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
+        result.push({
+          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+          value: result.length,
+          entryNumber,
+          pipeNumber,
+          resource,
+        });
+        console.log("result", result)
+        return result;
+      },[])
+      return res;
+    }
+    else {
+      console.log("No")
+    }
+  }
+
+
+  function Heat(){
+    if (_.find(devicesList, {resource: 'Heat'})) {
+      const coldWater = _.filter(devicesList, {resource: 'Heat'})
+      const res =coldWater.reduce((result, item)=>{
+        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
+        result.push({
+          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+          value: result.length,
+          entryNumber,
+          pipeNumber,
+          resource,
+        });
+        console.log("result", result)
+        return result;
+      },[])
+      return res;
+    }
+    else {
+      console.log("No")
+    }
+  }
+
+
+
 
   // Список всех ресурсов
   const resources = devicesList.reduce((result, item) => {
@@ -85,6 +157,44 @@ const ModalCalculatorReportForm = (props) => {
     return result;
   }, []);
 
+
+
+
+
+  // devicesList.reduce((result, item) => {
+  //     const {
+  //       resource, serialNumber, entryNumber, pipeNumber, model,
+  //     } = item;
+  //     // console.log(item);
+  //     if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
+  //       const res = _.find(result, (o) => o.resource === resource);
+  //       // console.log('res', res);
+  //       const ind = result.indexOf(res);
+  //       result.splice(ind, 1, {
+  //         label: `${_.get(
+  //           result[ind],
+  //           'label',
+  //           'default',
+  //         )} ${model} (${serialNumber})`,
+  //         value: ind,
+  //         resource,
+  //         entryNumber,
+  //         pipeNumber,
+  //       });
+  //     } else {
+  //       result.push({
+  //         label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+  //         value: result.length,
+  //         entryNumber,
+  //         pipeNumber,
+  //         resource,
+  //       });
+  //     }
+  //     return result;
+  //   }, []);
+  // }
+
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -98,11 +208,11 @@ const ModalCalculatorReportForm = (props) => {
       currentValue: undefined,
       entryNumber: null,
       pipeNumber: undefined,
-      test: undefined
+      test: undefined,
     },
     validationSchema: Yup.object({
       entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
-        .max(10, 'Скорее всего, выбран некорректный номер узла')
+        .max(10, 'Скорее всего, выбран некорректный номер узла'),
     }),
     onSubmit: async () => {
       const form = {
@@ -111,15 +221,20 @@ const ModalCalculatorReportForm = (props) => {
         begin: values.begin,
       };
 
-      console.log("DONE")
-      downloadReport()
+      console.log('DONE');
+      downloadReport();
       // deregisterDevice(form);
     },
   });
 
   // Строки для выбранного типа Ресурса
-  const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
-
+  //const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
+  const modifiedSelectOptions = {HotWaterSupply}
+    // if (values.resource === 'HotWaterSupply') {
+    //   return {HotWaterSupply}
+    // }
+  //   return <HotWaterSupply />
+  // }
   const Translate = {
     Heat: 'Отопление',
     ColdWaterSupply: 'Холодная вода',
@@ -189,15 +304,15 @@ const ModalCalculatorReportForm = (props) => {
     // console.log('resource = ', value);
     setFieldValue('resource', value);
     setFieldValue('currentValue', undefined);
-    setFieldValue('entryNumber', null)
-    setFieldValue('pipeNumber', null)
+    setFieldValue('entryNumber', null);
+    setFieldValue('pipeNumber', null);
   };
 
   // console.log(devicesList);
 
-  const Buttons = () => {
+  const Buttons = () =>
     // console.log('Buttons');
-    return (
+    (
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
@@ -207,8 +322,8 @@ const ModalCalculatorReportForm = (props) => {
         </ButtonTT>
         <ButtonTT
           color="blue"
-          type={'submit'}
-          form={'formReport'}
+          type="submit"
+          form="formReport"
           style={{ width: '224px', marginLeft: '16px' }}
           onClick={handleSubmit}
         >
@@ -216,17 +331,15 @@ const ModalCalculatorReportForm = (props) => {
         </ButtonTT>
       </div>
     );
-  };
-
   const handleSelect = (value, object) => {
     console.log('value1 = ', value, object);
     setFieldValue('currentValue', value);
-    setFieldValue('entryNumber', object.entryNumber)
-    setFieldValue('pipeNumber', object.pipeNumber)
+    setFieldValue('entryNumber', object.entryNumber);
+    setFieldValue('pipeNumber', object.pipeNumber);
   };
 
   return (
-    <Form id={'formReport'}>
+    <Form id="formReport">
       <Header>
         Выгрузка отчета о общедомовом потреблении
       </Header>
@@ -247,9 +360,9 @@ const ModalCalculatorReportForm = (props) => {
           placeholder="Выберите узел"
           onChange={handleSelect}
           value={values.currentValue}
-          name={'entryNumber'}
+          name="entryNumber"
         />
-        <Alert name={'entryNumber'} />
+        <Alert name="entryNumber" />
       </Form.Item>
 
       <div id="period_and_type " style={{ display: 'flex' }}>
@@ -295,7 +408,25 @@ const ModalCalculatorReportForm = (props) => {
         />
       </Form.Item>
 
-      <Buttons />
+      {/* <Buttons /> */}
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <ButtonTT
+          color="white"
+          onClick={handleCancel}
+        >
+          Отмена
+        </ButtonTT>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form="formReport"
+          style={{ width: '224px', marginLeft: '16px' }}
+          onClick={handleSubmit}
+        >
+          Выгрузить
+        </ButtonTT>
+      </div>
     </Form>
   );
 };

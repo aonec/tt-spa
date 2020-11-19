@@ -10,7 +10,7 @@ import {
 import {
   Title, Header, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
-import {addOdpu} from '../apiAddOdpu'
+import { addOdpu } from '../apiAddOdpu';
 
 const AddDeviceForm = (props) => {
   const { currentTabKey, calculators } = props;
@@ -86,8 +86,6 @@ const AddDeviceForm = (props) => {
       addOdpu(form);
     },
   });
-
-
 
   return (
 
@@ -271,9 +269,9 @@ const AddDeviceForm = (props) => {
           <Alert name="pipeNumber" />
         </Form.Item>
 
-        <Form.Item name="text" label="Выберите тип устройства">
+        <Form.Item name="text" label="Выберите направление магистрали">
           <SelectTT
-            placeholder="Выберите тип устройства"
+            placeholder="Выберите направление магистрали"
             name="magistral"
             options={magistrals}
             onChange={(value) => {
