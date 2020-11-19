@@ -17,6 +17,7 @@ import {createPages} from "../../../utils/pagesCreator";
 import DeviceBlock from "./DeviceBlock/DeviceBlock";
 import DeviceSearchForm from "./DeviceSearchForm/DeviceSearchForm";
 import devicesSearchReducer from "./../devicesSearchReducer"
+import DevicesByAddress from "./DevicesByAddress/DevicesByAddress";
 
 
 const { TabPane } = Tabs;
@@ -49,18 +50,38 @@ const TabsDevices = ({devicePage}) => {
         setIsLoading(false)
     }, [currentPage, searchState]);
 
-    const deviceItems = devicePage.items
 
+
+
+    // useEffect(() => {
+    //     setIsLoading(true)
+    //     const deviceArray = deviceItems.map((device) => {
+    //             return <DeviceBlock device={device}/>
+    //         }
+    //     );
+    //     setDeviceElems(deviceArray);
+    //     setIsLoading(false)
+    // }, [deviceItems])
 
     useEffect(() => {
-        setIsLoading(true)
-        const deviceArray = deviceItems.map((device) => {
-                return <DeviceBlock device={device}/>
+        setIsLoading(true);
+        const devicesByObject = [];
+
+        devicePage.items.forEach((device) => {
+            const {address, ...rest} = device;
+            const index = devicesByObject.findIndex((el) => el.address.id === address.id);
+            index === -1
+                ? devicesByObject.push({ address, devices: [{ ...rest }] })
+                : devicesByObject[index].devices.push({...rest})
+        })
+        const deviceArray = devicesByObject.map((addressDevicesGroup) => {
+                return <DevicesByAddress addressDevicesGroup={addressDevicesGroup}/>
             }
         );
         setDeviceElems(deviceArray);
         setIsLoading(false)
-    }, [deviceItems])
+    }, [devicePage.items])
+
 
     const pagination = pages.map((page, index) => <span
             key={index}

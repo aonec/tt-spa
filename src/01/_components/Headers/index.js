@@ -18,8 +18,15 @@ export const Title = styled.h2`
 
 export const Subtitle = styled(Link)`
   color: #272F5A;
-  font-weight: 500;
+  font-weight: ${props => props.fontWeight};
   padding: 0;
   margin: 0;
   opacity: 0.9;
 `;
+
+Subtitle.defaultProps = {
+    fontWeight: 500
+}
+
+
+
