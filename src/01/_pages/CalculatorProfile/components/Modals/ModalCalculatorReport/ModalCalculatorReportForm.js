@@ -55,64 +55,29 @@ const ModalCalculatorReportForm = (props) => {
     return result;
   }, []);
 
-  // Все строки, разделенные по типам Ресурсов
-  const selectOptions = devicesList.reduce((result, item) => {
-    const {
-      resource, serialNumber, entryNumber, pipeNumber, model,
-    } = item;
-    // console.log(item);
-    if (_.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber) && (resource !== 'ColdWaterSupply')) {
-      const res = _.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber);
-      // console.log('res', res);
-      const ind = result.indexOf(res);
-      result.splice(ind, 1, {
-        label: `${_.get(
-          result[ind],
-          'label',
-          'default',
-        )} ${model} (${serialNumber})`,
-        value: ind,
-        resource,
-        entryNumber,
-        pipeNumber,
-      });
-    } else {
-      result.push({
-        label: `Узел ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-        value: result.length,
-        entryNumber,
-        pipeNumber,
-        resource,
-      });
-    }
-    return result;
-  }, []);
-
   const filteredGroup = _.groupBy(devicesList, 'resource');
 
-  // const getDevicesSelectionByType = (group) => _.map(group, (item, key) => {
-  //   console.log(item, key);
-  //   return item;
-  // });
   const getSelectionsFormatterByType = (list, type) => {
     const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
+    let count = 0;
+    const res = _.values(sortedByEntryNumber).map((item, index) => {
+      count += 1;
+      if (item.length === 2) {
+        const { entryNumber, pipeNumber } = item[0];
+        return {
+          entryNumber, pipeNumber, value: count, label: `Узел ${count} ${modelCalculator}: ${item[0].model} (${item[0].serialNumber}), ${item[1].model} (${item[1].serialNumber})`,
+        };
+      }
+      return { ...item[0], value: count, label: `Узел ${count} ${modelCalculator} : ${item[0].model} (${item[0].serialNumber})`};
+    });
 
     switch (type) {
       case 'ColdWaterSupply':
-        return list.map((item, index) => ({ ...item, value: index + 1, label: `${index + 1} label` }));
+        return list.map((item, index) => ({ ...item, value: index + 1, label: `Узел ${index + 1} ${modelCalculator}: ${item.model} (${item.serialNumber})`}));
       case 'HotWaterSupply':
-
-        const res = _.values(sortedByEntryNumber).map((item, index) => {
-         if (item.length > 1 ) {
-           const {entryNumber, pipeNumber} = item[0];
-           return {entryNumber, pipeNumber, label: `${item[0].model} и ${item[1].model}`}
-         }
-         else return item[0]
-
-        })
         return res;
       case 'Heat':
-        return list;
+        return res;
       default:
         return list;
     }
@@ -123,11 +88,9 @@ const ModalCalculatorReportForm = (props) => {
     return acc;
   }, {});
 
-  console.log('getDevicesSelectionByType', getDevicesSelectionByType(filteredGroup));
-  // console.log("filteredGroup", filteredGroup)
-
   const final = getDevicesSelectionByType(filteredGroup);
 
+  // console.log('getDevicesSelectionByType', getDevicesSelectionByType(filteredGroup));
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -148,26 +111,10 @@ const ModalCalculatorReportForm = (props) => {
         .max(10, 'Скорее всего, выбран некорректный номер узла'),
     }),
     onSubmit: async () => {
-      const form = {
-        period: values.period,
-        detail: values.detail,
-        begin: values.begin,
-      };
-
-      console.log('DONE');
       downloadReport();
-      // deregisterDevice(form);
     },
   });
 
-  // Строки для выбранного типа Ресурса
-  const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
-
-  // if (values.resource === 'HotWaterSupply') {
-  //   return {HotWaterSupply}
-  // }
-  //   return <HotWaterSupply />
-  // }
   const Translate = {
     Heat: 'Отопление',
     ColdWaterSupply: 'Холодная вода',
@@ -175,8 +122,6 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   const translate = (resource) => Translate[resource];
-
-  // console.log('ModalCalculatorReportForm');
 
   const downloadReport = () => {
     console.log('entryNumberRes.current = ', values.entryNumber);
@@ -241,29 +186,6 @@ const ModalCalculatorReportForm = (props) => {
     setFieldValue('pipeNumber', null);
   };
 
-  // console.log(devicesList);
-
-  const Buttons = () =>
-    // console.log('Buttons');
-    (
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ButtonTT
-          color="white"
-          onClick={handleCancel}
-        >
-          Отмена
-        </ButtonTT>
-        <ButtonTT
-          color="blue"
-          type="submit"
-          form="formReport"
-          style={{ width: '224px', marginLeft: '16px' }}
-          onClick={handleSubmit}
-        >
-          Выгрузить
-        </ButtonTT>
-      </div>
-    );
   const handleSelect = (value, object) => {
     console.log('value1 = ', value, object);
     setFieldValue('currentValue', value);
@@ -290,13 +212,6 @@ const ModalCalculatorReportForm = (props) => {
       <Form.Item label="Выбор узла">
         <SelectTT
           options={final[values.resource]}
-        />
-
-      </Form.Item>
-
-      <Form.Item label="Выбор узла">
-        <SelectTT
-          options={modifiedSelectOptions}
           placeholder="Выберите узел"
           onChange={handleSelect}
           value={values.currentValue}
@@ -372,3 +287,36 @@ const ModalCalculatorReportForm = (props) => {
 };
 
 export default ModalCalculatorReportForm;
+
+// Все строки, разделенные по типам Ресурсов
+// const selectOptions = devicesList.reduce((result, item) => {
+//   const {
+//     resource, serialNumber, entryNumber, pipeNumber, model,
+//   } = item;
+//   // console.log(item);
+//   if (_.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber) && (resource !== 'ColdWaterSupply')) {
+//     const res = _.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber);
+//     // console.log('res', res);
+//     const ind = result.indexOf(res);
+//     result.splice(ind, 1, {
+//       label: `${_.get(
+//           result[ind],
+//           'label',
+//           'default',
+//       )} ${model} (${serialNumber})`,
+//       value: ind,
+//       resource,
+//       entryNumber,
+//       pipeNumber,
+//     });
+//   } else {
+//     result.push({
+//       label: `Узел ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+//       value: result.length,
+//       entryNumber,
+//       pipeNumber,
+//       resource,
+//     });
+//   }
+//   return result;
+// }, []);
