@@ -10,13 +10,13 @@ import {
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
-// import {device} from "./CalculatorTemplate";
+// import { device } from './CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
-  // const {  handleCancel } = props;
+  // const { handleCancel } = props;
   // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
@@ -45,7 +45,6 @@ const ModalCalculatorReportForm = (props) => {
     return result;
   }, []);
 
-
   // Список всех ресурсов
   const resources = devicesList.reduce((result, item) => {
     const { resource } = item;
@@ -61,8 +60,8 @@ const ModalCalculatorReportForm = (props) => {
       resource, serialNumber, entryNumber, pipeNumber, model,
     } = item;
     // console.log(item);
-    if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
-      const res = _.find(result, (o) => o.resource === resource);
+    if (_.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber) && (resource !== 'ColdWaterSupply')) {
+      const res = _.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber);
       // console.log('res', res);
       const ind = result.indexOf(res);
       result.splice(ind, 1, {
@@ -78,7 +77,7 @@ const ModalCalculatorReportForm = (props) => {
       });
     } else {
       result.push({
-        label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
+        label: `Узел ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
         value: result.length,
         entryNumber,
         pipeNumber,
@@ -87,13 +86,6 @@ const ModalCalculatorReportForm = (props) => {
     }
     return result;
   }, []);
-
-
-
-
-
-
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -130,9 +122,9 @@ const ModalCalculatorReportForm = (props) => {
   // Строки для выбранного типа Ресурса
   const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
 
-    // if (values.resource === 'HotWaterSupply') {
-    //   return {HotWaterSupply}
-    // }
+  // if (values.resource === 'HotWaterSupply') {
+  //   return {HotWaterSupply}
+  // }
   //   return <HotWaterSupply />
   // }
   const Translate = {
