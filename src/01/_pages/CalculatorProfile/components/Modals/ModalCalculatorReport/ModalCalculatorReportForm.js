@@ -4,18 +4,19 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { number } from 'yup';
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import { item } from "../../../../../../_reshadow";
+
+// import {device} from "./CalculatorTemplate";
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
+  // const {  handleCancel } = props;
   // console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs,
@@ -43,76 +44,6 @@ const ModalCalculatorReportForm = (props) => {
     }
     return result;
   }, []);
-
-
-  function ColdWaterSupply() {
-    if (_.find(devicesList, {resource: 'ColdWaterSupply'})) {
-      const coldWater = _.filter(devicesList, {resource: 'ColdWaterSupply'})
-      const res =coldWater.reduce((result, item)=>{
-        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
-        result.push({
-          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-          value: result.length,
-          entryNumber,
-          pipeNumber,
-          resource,
-        });
-        console.log("result", result)
-        return result;
-      },[])
-      return res;
-    }
-    else {
-      console.log("No")
-    }
-  }
-
-  function HotWaterSupply() {
-    if (_.find(devicesList, {resource: 'HotWaterSupply'})) {
-      const coldWater = _.filter(devicesList, {resource: 'HotWaterSupply'})
-      const res =coldWater.reduce((result, item)=>{
-        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
-        result.push({
-          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-          value: result.length,
-          entryNumber,
-          pipeNumber,
-          resource,
-        });
-        console.log("result", result)
-        return result;
-      },[])
-      return res;
-    }
-    else {
-      console.log("No")
-    }
-  }
-
-
-  function Heat(){
-    if (_.find(devicesList, {resource: 'Heat'})) {
-      const coldWater = _.filter(devicesList, {resource: 'Heat'})
-      const res =coldWater.reduce((result, item)=>{
-        const {entryNumber,pipeNumber, resource, model, serialNumber } = item;
-        result.push({
-          label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-          value: result.length,
-          entryNumber,
-          pipeNumber,
-          resource,
-        });
-        console.log("result", result)
-        return result;
-      },[])
-      return res;
-    }
-    else {
-      console.log("No")
-    }
-  }
-
-
 
 
   // Список всех ресурсов
@@ -161,38 +92,7 @@ const ModalCalculatorReportForm = (props) => {
 
 
 
-  // devicesList.reduce((result, item) => {
-  //     const {
-  //       resource, serialNumber, entryNumber, pipeNumber, model,
-  //     } = item;
-  //     // console.log(item);
-  //     if (_.find(result, (o) => o.resource === resource) && (resource !== 'ColdWaterSupply')) {
-  //       const res = _.find(result, (o) => o.resource === resource);
-  //       // console.log('res', res);
-  //       const ind = result.indexOf(res);
-  //       result.splice(ind, 1, {
-  //         label: `${_.get(
-  //           result[ind],
-  //           'label',
-  //           'default',
-  //         )} ${model} (${serialNumber})`,
-  //         value: ind,
-  //         resource,
-  //         entryNumber,
-  //         pipeNumber,
-  //       });
-  //     } else {
-  //       result.push({
-  //         label: `Узел ${entryNumber} ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-  //         value: result.length,
-  //         entryNumber,
-  //         pipeNumber,
-  //         resource,
-  //       });
-  //     }
-  //     return result;
-  //   }, []);
-  // }
+
 
 
   const {
@@ -228,8 +128,8 @@ const ModalCalculatorReportForm = (props) => {
   });
 
   // Строки для выбранного типа Ресурса
-  //const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
-  const modifiedSelectOptions = {HotWaterSupply}
+  const modifiedSelectOptions = selectOptions.filter((option) => option.resource === (values.resource));
+
     // if (values.resource === 'HotWaterSupply') {
     //   return {HotWaterSupply}
     // }
