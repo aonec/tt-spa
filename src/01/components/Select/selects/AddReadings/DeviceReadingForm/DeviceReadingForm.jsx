@@ -11,12 +11,12 @@ import transformDate from "../../../../../utils/transformDate";
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(250px, 2.5fr) 6fr 3.5fr;
+    grid-template-columns: minmax(250px, 300px) auto minmax(300px, 350px);
     column-gap: 10px;
     margin-bottom: 8px;
     align-items: center;
-    justify-content: center;
-    white-space: nowrap;
+    justify-content: flex-start;
+    white-space: nowr
     padding-bottom: 7px;
     border-bottom: 1px solid #DCDEE4;
     `
@@ -49,6 +49,7 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
         for (let i=1; i <= numberOfReadings; i++) {
             readingsArray.push(readings[`value${i}`])
         }
+
 
         setReadingsState({readingsArray, id: readings.id })
         setIsLoading(false);
@@ -89,9 +90,9 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
                     </span>
                 </span>
             <div style={{display: 'flex'}}>{deviceReadingsLine}</div>
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            <div style={{display: 'flex'}}>
                 <ActiveLine isActive={isActive}/>
-                {transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}
+                <div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>
             </div>
         </FullDeviceLine>
     )
