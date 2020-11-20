@@ -3,12 +3,17 @@ import {Subtitle} from "../../../../_components/Headers";
 import DeviceBlock from "../DeviceBlock/DeviceBlock";
 
 const DevicesByAddress = ({addressDevicesGroup}) => {
-const {city, street, housingStockNumber, corpus, id} = addressDevicesGroup.address;
+const {city = '', street = '', housingStockNumber = null, corpus = null, id = null} = addressDevicesGroup?.address || {};
 const deviceElems = addressDevicesGroup.devices.map((device) => <DeviceBlock device={device} />);
 
     return (
         <>
-            <Subtitle fontWeight={400} to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
+            {addressDevicesGroup.address
+                ? <Subtitle fontWeight={400} to={`/objects/${id}`}>
+                    {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
+            </Subtitle>
+                : 'У данного прибора не указан адрес'
+            }
             <div style={{borderTop: '1px solid var(--frame)', paddingTop: 24, marginTop: 7}}>{deviceElems}</div>
         </>
     )
