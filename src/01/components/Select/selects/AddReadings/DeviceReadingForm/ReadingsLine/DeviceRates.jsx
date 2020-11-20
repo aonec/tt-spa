@@ -5,6 +5,7 @@ import { Input} from 'antd';
 
 let ReadingLineStyled = styled.div`
 display: flex;
+max-width: 180px;
 border: 1px solid #DCDEE4;
 margin-right: 8px;
 // padding: 16px 24px;
@@ -45,17 +46,7 @@ const DeviceRates = ({index, onChange, value, readingsBlocked}) => {
 
    return (
        <ReadingLineStyled>
-        {/*<span style={{width: `${100/readingsState.length}%`}}>Тариф {index+1}: {value}</span>*/}
-        {/*<Label htmlFor={'id' + index} style={{}}><span style={{color: '#DCDEE4'}}>Тариф {index+1}: </span></Label>*/}
-        {/*<Input*/}
-        {/*    // name="numberOfGuests"*/}
-        {/*    disabled={readingsBlocked}*/}
-        {/*    type="text"*/}
-        {/*    value={value}*/}
-        {/*    onChange={onChange}*/}
-        {/*/>*/}
            <Input
-               // placeholder="Enter your username"
                prefix={<TarifLabel>Тариф {index+1}: </TarifLabel>}
                suffix={`м³`}
                disabled={readingsBlocked}
