@@ -45,6 +45,7 @@ const AddDeviceForm = (props) => {
       housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
       resource: resources[0].value,
       model: '',
+      diameter: null,
       calculatorId: null,
       entryNumber: null,
       hubNumber: null,
@@ -60,6 +61,7 @@ const AddDeviceForm = (props) => {
         .required('Введите номер'),
       pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
         .required('Введите номер'),
+      diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
     }),
 
     onSubmit: async () => {
@@ -73,6 +75,7 @@ const AddDeviceForm = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
+        diameter: values.diameter,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
@@ -139,6 +142,18 @@ const AddDeviceForm = (props) => {
             value={values.serialNumber}
           />
           <Alert name="serialNumber" />
+        </Form.Item>
+
+        <Form.Item label="Диаметр трубы (мм)">
+          <InputTT
+            name="diameter"
+            placeholder="Укажите диаметр трубы в мм"
+            type={'number'}
+            onChange={handleChange}
+            value={values.diameter}
+            onBlur={handleBlur}
+          />
+          <Alert name="diameter" />
         </Form.Item>
 
         <Form.Item label="Дата поверки">
