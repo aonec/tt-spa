@@ -97,7 +97,6 @@ function isDisabled(
     AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline, UploadReadings, isObserver
   },
 ) {
-  debugger;
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
   if (Switch && AddDocuments) return !documentsIds.length;
   if (Switch) return !nextStageId;
