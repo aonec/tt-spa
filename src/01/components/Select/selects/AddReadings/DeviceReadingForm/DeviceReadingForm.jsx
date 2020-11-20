@@ -43,14 +43,13 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
 
     useEffect(() => {
         setIsLoading(true)
-        // const readingsArray = [];
+        const readingsArray = [];
         const readings = device.readings[0];
 
-        // for (let i=1; i <= numberOfReadings; i++) {
-        //     readingsArray.push(readings[`value${i}`])
-        // }
+        for (let i=1; i <= numberOfReadings; i++) {
+            readingsArray.push(readings[`value${i}`])
+        }
 
-        let readingsArray = [45, 66, 1243]
         setReadingsState({readingsArray, id: readings.id })
         setIsLoading(false);
     }, [device.readings, numberOfReadings, readingsBlocked])
