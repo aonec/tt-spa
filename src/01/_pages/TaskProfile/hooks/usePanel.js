@@ -11,6 +11,7 @@ export const usePanel = (
   const { replace } = useHistory();
   const { url } = useRouteMatch();
   const [state, dispatch] = React.useReducer(dataReducer, {});
+  const isObserver = panel.userOperatingStatus === 'Observer';
 
   React.useEffect(() => {
     if (!panelLoading && !state.readings) dispatch({ type: 'reset' });
@@ -26,7 +27,7 @@ export const usePanel = (
     onClick() {
       !panelLoading && pageDispatch({ type: 'push_stage', data: state });
     },
-    disabled: isDisabled(state, panel.actions ?? {}) || panelLoading,
+    disabled: isDisabled(state, panel.actions ?? {}) || panelLoading || isObserver,
     loading: panelLoading,
   };
   return {
@@ -93,14 +94,15 @@ function isDisabled(
     nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
   },
   {
-    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline, UploadReadings
+    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline, UploadReadings, isObserver
   },
 ) {
+  debugger;
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
+  if (Switch && AddDocuments) return !documentsIds.length;
   if (Switch) return !nextStageId;
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
-  if (AddDocuments) return !documentsIds.length;
   if (Completion) return false;
   if (UploadReadings) return false
 
