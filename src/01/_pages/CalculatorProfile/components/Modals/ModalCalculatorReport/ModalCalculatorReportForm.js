@@ -32,7 +32,6 @@ const ModalCalculatorReportForm = (props) => {
       resource, housingMeteringDeviceType, hub, serialNumber, model,
     } = item;
     const { entryNumber, pipeNumber } = hub;
-    // console.log('pipeNumber = ', pipeNumber);
     if (housingMeteringDeviceType === 'FlowMeter') {
       result.push({
         resource,
@@ -46,51 +45,56 @@ const ModalCalculatorReportForm = (props) => {
     return result;
   }, []);
 
-  // Список всех ресурсов
-  const resources = devicesList.reduce((result, item) => {
-    const { resource } = item;
-    if (!result.includes(resource)) {
-      result.push(resource);
-    }
-    return result;
-  }, []);
-
+  // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(devicesList, 'resource');
 
-  const getSelectionsFormatterByType = (list, type) => {
-    const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
-    let count = 0;
-    const res = _.values(sortedByEntryNumber).map((item, index) => {
-      count += 1;
-      if (item.length === 2) {
-        const { entryNumber, pipeNumber } = item[0];
-        return {
-          entryNumber, pipeNumber, value: count, label: `Узел ${count} ${modelCalculator}: ${item[0].model} (${item[0].serialNumber}), ${item[1].model} (${item[1].serialNumber})`,
-        };
-      }
-      return { ...item[0], value: count, label: `Узел ${count} ${modelCalculator} : ${item[0].model} (${item[0].serialNumber})`};
-    });
+  // Получаем весь список ресурсов для табов
+  const resources = _.keys(filteredGroup);
 
-    switch (type) {
-      case 'ColdWaterSupply':
-        return list.map((item, index) => ({ ...item, value: index + 1, label: `Узел ${index + 1} ${modelCalculator}: ${item.model} (${item.serialNumber})`}));
-      case 'HotWaterSupply':
-        return res;
-      case 'Heat':
-        return res;
-      default:
-        return list;
-    }
-  };
-
+  // Создать объект с ключами из списка ресурсов, а значений - модифицириваннные массивы из getSelectionsFormatterByType
   const getDevicesSelectionByType = (group) => _.keys(group).reduce((acc, item) => {
     acc[item] = getSelectionsFormatterByType(group[item], item);
     return acc;
   }, {});
 
-  const final = getDevicesSelectionByType(filteredGroup);
+  // Редюсер по типу ресура
+  const getSelectionsFormatterByType = (list, type) => {
+    switch (type) {
+      case 'ColdWaterSupply':
+        return list.map((item, index) => ({ ...item, value: index + 1, label: `Узел ${index + 1} ${modelCalculator}: ${item.model} (${item.serialNumber})` }));
+      case 'HotWaterSupply':
+        return reduceList(list);
+      case 'Heat':
+        return reduceList(list);
+      default:
+        return list;
+    }
+  };
 
-  // console.log('getDevicesSelectionByType', getDevicesSelectionByType(filteredGroup));
+  // Функция для возврата измененного массива по ресурсу, сравниваем entryNumber
+  const reduceList = (list) => {
+    const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
+    return _.values(sortedByEntryNumber).map((item, index) => {
+      if (item.length > 1) {
+        const { entryNumber, pipeNumber } = item[0];
+        return {
+          entryNumber,
+          pipeNumber,
+          value: index + 1,
+          label: `Узел ${index + 1} ${modelCalculator}(${serialNumberCalculator}): ${item[0].model} (${item[0].serialNumber}), ${item[1].model} (${item[1].serialNumber})`,
+        };
+      }
+      return {
+        ...item[0],
+        value: index + 1,
+        label: `Узел ${index + 1} ${modelCalculator} (${serialNumberCalculator}): ${item[0].model} (${item[0].serialNumber})`,
+      };
+    });
+  };
+
+  // Итоговый объект для Select
+  const devicesSelectionByType = getDevicesSelectionByType(filteredGroup);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -179,7 +183,6 @@ const ModalCalculatorReportForm = (props) => {
   const defaultRes = translate(TabsList[0]);
 
   const onTabsChangeHandler = (value) => {
-    // console.log('resource = ', value);
     setFieldValue('resource', value);
     setFieldValue('currentValue', undefined);
     setFieldValue('entryNumber', null);
@@ -187,7 +190,6 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   const handleSelect = (value, object) => {
-    console.log('value1 = ', value, object);
     setFieldValue('currentValue', value);
     setFieldValue('entryNumber', object.entryNumber);
     setFieldValue('pipeNumber', object.pipeNumber);
@@ -211,7 +213,7 @@ const ModalCalculatorReportForm = (props) => {
 
       <Form.Item label="Выбор узла">
         <SelectTT
-          options={final[values.resource]}
+          options={devicesSelectionByType[values.resource]}
           placeholder="Выберите узел"
           onChange={handleSelect}
           value={values.currentValue}
@@ -263,8 +265,6 @@ const ModalCalculatorReportForm = (props) => {
         />
       </Form.Item>
 
-      {/* <Buttons /> */}
-
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
@@ -287,36 +287,3 @@ const ModalCalculatorReportForm = (props) => {
 };
 
 export default ModalCalculatorReportForm;
-
-// Все строки, разделенные по типам Ресурсов
-// const selectOptions = devicesList.reduce((result, item) => {
-//   const {
-//     resource, serialNumber, entryNumber, pipeNumber, model,
-//   } = item;
-//   // console.log(item);
-//   if (_.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber) && (resource !== 'ColdWaterSupply')) {
-//     const res = _.find(result, (o) => o.resource === resource && o.entryNumber === entryNumber);
-//     // console.log('res', res);
-//     const ind = result.indexOf(res);
-//     result.splice(ind, 1, {
-//       label: `${_.get(
-//           result[ind],
-//           'label',
-//           'default',
-//       )} ${model} (${serialNumber})`,
-//       value: ind,
-//       resource,
-//       entryNumber,
-//       pipeNumber,
-//     });
-//   } else {
-//     result.push({
-//       label: `Узел ${modelCalculator}: (${serialNumberCalculator}), ${model} (${serialNumber})`,
-//       value: result.length,
-//       entryNumber,
-//       pipeNumber,
-//       resource,
-//     });
-//   }
-//   return result;
-// }, []);
