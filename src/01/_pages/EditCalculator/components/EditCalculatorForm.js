@@ -63,7 +63,7 @@ const EditCalculatorForm = () => {
       port,
       futureCommercialAccountingDate,
       housingStockId: houseId,
-      infoId: currentInfoId,
+      infoId: Number(currentInfoId),
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
