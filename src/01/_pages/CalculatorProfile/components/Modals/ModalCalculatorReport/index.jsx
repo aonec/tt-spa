@@ -13,7 +13,7 @@ export const ModalCalculatorReport = () => {
 
   return (
     <Modal
-      visible={report}
+      visible={true}
       width={800}
       footer={null}
       onCancel={handleCancel}
