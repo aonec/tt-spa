@@ -34,6 +34,11 @@ const EditCalculatorForm = () => {
     address,
   } = currentCalc;
 
+  console.log("model", model)
+
+  const currentInfoId = _.find(items, {label: model}).value
+  console.log(currentInfoId)
+
   const {
     isConnected, ipV4, port, deviceAddress,
   } = connection || {
@@ -58,13 +63,13 @@ const EditCalculatorForm = () => {
       port,
       futureCommercialAccountingDate,
       housingStockId: houseId,
-      infoId: 1,
+      infoId: Number(currentInfoId),
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
       ipV4: Yup.string().required('Введите IP-адрес устройства'),
-      deviceAddress: Yup.string().required('Введите сетевой адрес устройства'),
-      port: Yup.string().required('Введите порт устройства'),
+      deviceAddress: Yup.number().typeError('Не может быть пустым значением').required('Введите сетевой адрес устройства'),
+      port: Yup.number().typeError('Не может быть пустым значением').required('Введите порт устройства'),
 
     }),
     onSubmit: async () => {
@@ -139,11 +144,10 @@ const EditCalculatorForm = () => {
           <SelectTT
             placeholder="Выберите тип устройства"
             options={items}
-            value={values.infoId.toString()}
+            value={values.infoId}
             onChange={(event, target) => {
               setFieldValue('infoId', Number(target.value));
             }}
-            disabled
           />
         </Form.Item>
 
