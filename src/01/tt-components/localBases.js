@@ -3,7 +3,7 @@ export const items = [
     id: 1,
     value: 1,
     model: 'ТЭМ-106',
-    label: 'ТЭМ-106'
+    label: 'ТЭМ-106',
   },
   {
     id: 2,
@@ -93,5 +93,12 @@ export const isConnectedValue = [
     value: false,
     label: 'Отсутствует',
   },
+];
+
+export const timeZones = [
+  { value: 1, item: '01:00:00', label: 'UTC+1' },
+  { value: 2, item: '02:00:00', label: 'UTC+2' },
+  { value: 3, item: '03:00:00', label: 'UTC+3' },
+  { value: 4, item: '04:00:00', label: 'UTC+4' },
 ];
 

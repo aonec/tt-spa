@@ -31,7 +31,8 @@
     "reshadow": "^0.0.1-alpha.75",
     "styled-components": "^5.2.0",
     "svg-sprite-loader": "^5.0.0",
-    "yup": "^0.29.3"
+    "yup": "^0.29.3",
+    "yup-phone": "^1.2.15"
   },
   "scripts": {
     "start": "react-scripts start",
