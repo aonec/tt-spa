@@ -4,7 +4,7 @@ import DeviceBlock from "../DeviceBlock/DeviceBlock";
 
 const DevicesByAddress = ({addressDevicesGroup}) => {
 const {city = '', street = '', housingStockNumber = null, corpus = null, id = null} = addressDevicesGroup?.address || {};
-const deviceElems = addressDevicesGroup.devices.map((device) => <DeviceBlock device={device} />);
+const deviceElems = addressDevicesGroup.devices.map((device) => <DeviceBlock key={device.id} device={device} />);
 
     return (
         <>
