@@ -61,35 +61,42 @@ export const ListItem = styled.div`
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
+
 export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
 
 export const RelatedDevices = () => {
   const {
-    related, loadings,
+    device, loadings, errors, error
   } = useContext(
     HousingContext,
   );
 
-  const isLoading = _.get(loadings, 'related', true);
+  const isLoading = _.get(loadings, 'device', true);
 
+  const {hubConnection} = device;
+  console.log("device", device)
   const {
-    model,
+    calculatorModel,
     calculatorSerialNumber,
     futureCheckingDate,
     closingdate,
     calculatorId,
-  } = related || {};
+  } = hubConnection || {};
 
   const { icon, color } = DeviceIcons.null || {};
+
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+  };
 
   const CalcItem = () => (
     <ListItem key={calculatorId}>
       <NavLink to={`/calculators/${calculatorId}`}>
         <NameWrap>
           <Icon icon={icon} color={color} />
-          <Name>{model || 'Вычислитель'}</Name>
+          <Name>{calculatorModel || 'Вычислитель'}</Name>
           <Serial>{` (${calculatorSerialNumber})`}</Serial>
         </NameWrap>
       </NavLink>
@@ -101,9 +108,7 @@ export const RelatedDevices = () => {
     </ListItem>
   );
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
+
   return (
     <ListWrap>
       {/* <button onClick={buttonHandler}>related</button> */}

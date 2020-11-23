@@ -21,12 +21,7 @@ export const HousingProfile = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState();
-  const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
-  const [related, setRelated] = useState();
-  const [hubs, setHubs] = useState();
-  const [calcModel, setCalcModel] = useState();
-  const [calcId, setCalcId] = useState();
   const [deregister, setDeregister] = useState(false);
 
   const [error, setError] = useState();
@@ -34,17 +29,11 @@ export const HousingProfile = () => {
 
   const [loadings, setLoadings] = useState({
     device: true,
-    building: true,
     tasks: true,
-    related: true,
-    typeODPU: false,
   });
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
-    building: 'Произошла ошибка при загрузке данных по зданию',
     tasks: 'Произошла ошибка при загрузке данных по задачам',
-    related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
-    calculator: 'Произошла ошибка при загрузке ресурсов вычислителя',
   };
 
   useEffect(() => {
@@ -56,10 +45,7 @@ export const HousingProfile = () => {
       .then((responses) => {
         const [{ value: device }, { value: tasks }] = responses;
         setDevice(device);
-        setBuilding(device.address);
         setTasks(tasks.items);
-        setRelated(device.hubConnection);
-        setCalcId(device.hubConnection.calculatorId);
         setIsLoading(false);
       })
       .catch(({ resource, message }) => {
@@ -70,9 +56,7 @@ export const HousingProfile = () => {
         setLoadings((prev) => ({
           ...prev,
           device: false,
-          building: false,
           tasks: false,
-          related: false,
         }));
         setIsLoading(false);
       });
@@ -80,18 +64,14 @@ export const HousingProfile = () => {
 
   const buttonHandler = () => {
     console.log('buttonHandler');
-    console.log(related);
+    // console.log(related);
   };
   const context = {
     device,
-    building,
     tasks,
-    related,
     loadings,
     errors,
     error,
-    hubs,
-    calcModel,
     deregister,
     setDeregister,
   };
