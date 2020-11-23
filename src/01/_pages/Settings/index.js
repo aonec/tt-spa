@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../../tt-components';
+import { EditButtonWrap, Header } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
 import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
+import { Icon } from "../../_components/Icon";
 
 export const Settings = () => {
   console.log('Settings');
@@ -35,10 +36,46 @@ export const Settings = () => {
     )
   }
 
+  const HeaderButton = () => {
+    console.log("HeaderButton")
+
+    const handleContractors = () => {
+      console.log("handleContractors")
+    }
+    const handleStaff = () => {
+      console.log("handleStaff")
+    }
+
+    if (currentTabKey == 1) {
+      return null
+    }
+    if (currentTabKey == 2) {
+      return (
+        <EditButtonWrap size={'48'} onClick={handleStaff}>
+          <Icon icon="plus" />
+        </EditButtonWrap>
+      )
+    }
+    if (currentTabKey == 3) {
+      return (
+        <EditButtonWrap size={'48'} onClick={handleContractors}>
+          <Icon icon="plus" />
+        </EditButtonWrap>
+      )
+    }
+
+
+  }
+
+
   console.log("users", users)
   return (
     <div>
-      <Header>Настройки</Header>
+      <div style={{display: 'flex', justifyContent:'space-between'}}>
+        <Header>Настройки</Header>
+        <HeaderButton />
+      </div>
+
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
       {Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm}/> : null }
       {Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }

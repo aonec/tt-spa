@@ -1,10 +1,11 @@
-import React from "react";
+import React from 'react';
+import { Title } from '../../../tt-components';
 
 const Contractors = () => {
-  console.log("Common");
+  console.log('Common');
   return (
-    <div>Contractors</div>
-  )
-}
+    <Title color="black">Компонент находится в разработке</Title>
+  );
+};
 
-export default Contractors
+export default Contractors;
