@@ -5,30 +5,28 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
-import {Subtitle} from "../../../_components/Headers";
+import { Subtitle } from '../../../_components/Headers';
 
 export const Information = (loading = true) => {
-  const {
-    device, building, loadings, error,
-  } = useContext(HousingContext);
+  const { device, loadings, error } = useContext(HousingContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
-  const loadingBuilding = _.get(loadings, 'building', true);
 
-  loading = loadingDevice || loadingBuilding;
+  loading = loadingDevice;
 
   const buttonHandler = () => {
     console.log('buttonHandler');
   };
 
-  // const { city, street, number } = building || DEFAULT_BUILDING;
-  const { city, street, housingStockNumber, corpus, id } = building || DEFAULT_BUILDING;
-  // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
-  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;;
+  const { address } = device || {};
+  const {
+    city, street, housingStockNumber, corpus, id,
+  } = address || DEFAULT_BUILDING;
+  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
-  // console.log('error', error);
-  console.log("device", device)
+
+  console.log('device', device);
   if (errorOfComponent) {
     return (
       <ListWrap>
@@ -38,7 +36,7 @@ export const Information = (loading = true) => {
     );
   }
 
-  console.log(convertDateDots(lastCommercialAccountingDate))
+  console.log(convertDateDots(lastCommercialAccountingDate));
   return (
     <ListWrap>
       <Loader show={loading} size="32">
@@ -46,7 +44,7 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
-            {`${city}, ${street}, ${housingStockNumber} ${corpus? `, к.${corpus}` : ''}`}
+            {`${city}, ${street}, ${housingStockNumber} ${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
         </ListItem>
         <ListItem>

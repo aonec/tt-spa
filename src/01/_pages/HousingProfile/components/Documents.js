@@ -1,9 +1,9 @@
 import React from 'react';
-import { Header } from '../../../tt-components';
+import { Title } from '../../../tt-components';
 
 const Documents = () => (
   <>
-    <Header>Компонент Документы в процессе разработки</Header>
+    <Title color={'black'}>Компонент Документы в процессе разработки</Title>
   </>
 );
 

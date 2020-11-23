@@ -34,22 +34,14 @@ export const ListItem = styled.li`
 `;
 
 export const Header = () => {
-  const {
-    device, building, loadings, errors, error, typeODPU, calcModel,
-  } = useContext(
-    HousingContext
-  );
-
+  const { device,  loadings, errors, error } = useContext( HousingContext );
   const loadingDevice = _.get(loadings, 'device', true);
-  const loadingBuilding = _.get(loadings, 'building', true);
-
-  const loading = loadingDevice || loadingBuilding;
-
-  const { city, street, housingStockNumber, corpus, id } = building || DEFAULT_BUILDING;
-  const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
+  const loading = loadingDevice;
+  const { address, model, serialNumber, resource } = device || DEFAULT_DEVICE;
+  const {
+    city, street, housingStockNumber, corpus, id,
+  } = address || DEFAULT_BUILDING;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
-
-
   const errorOfComponent = _.get(error, 'resource', null);
 
   if (errorOfComponent) {
@@ -80,10 +72,10 @@ export const Header = () => {
             {`${model} (${serialNumber})`}
           </Title>
 
-          <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus? `, к.${corpus}` : ''}`}</Subtitle>
+          <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          <Menu/>
+          <Menu />
         </div>
       </Loader>
     </HeaderWrap>
