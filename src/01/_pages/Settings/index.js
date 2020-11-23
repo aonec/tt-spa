@@ -6,6 +6,7 @@ import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
+import {Route} from 'react-router-dom'
 
 export const Settings = () => {
   console.log('Settings');
@@ -71,10 +72,10 @@ export const Settings = () => {
         <HeaderButton />
       </div>
 
-      <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
-      {Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm} /> : null }
-      {Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }
-      {Number(currentTabKey) === 3 ? <Contractors /> : null }
+     <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
+  <Route exact path={'/settings'}> <Common firm={firm} setFirm={setFirm} /></Route>
+      <Route exact path={'/settings/staff'}> <Staff users={users} setUsers={setUsers} /></Route>
+        <Route exact path={'/settings/contractors'}>  <Contractors /></Route>
     </div>
   );
 };
