@@ -1,9 +1,11 @@
 import React from "react";
 
-const Staff = () => {
+const Staff = (props) => {
   console.log("Common");
+  // сonst {users} = props;
+
   return (
-    <div>Staff.js</div>
+    <div>Staff</div>
   )
 }
 

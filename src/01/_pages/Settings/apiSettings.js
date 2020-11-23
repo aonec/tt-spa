@@ -13,6 +13,22 @@ export async function getCurrentManagingFirm() {
   }
 }
 
+export async function getManagingFirmUsers() {
+  try {
+    const res = await axios.get('ManagingFirmUsers/current');
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'firmusers',
+      message: 'Произошла ошибка запроса Списка Сотрудников',
+    };
+  }
+}
+
+
+
+
 export async function putCurrentManagingFirm(id = 0, form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
