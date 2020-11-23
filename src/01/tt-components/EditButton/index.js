@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 export const Template = styled.div``;
 
@@ -44,5 +44,23 @@ height: 48px;
 display: flex;
 justify-content: center;
 align-items: center;
-}
+  ${({ size }) => (size === '32'
+  && css`
+        width: 32px;
+height: 32px;
+      `)
+  || (size === '48'
+    && css`
+        width: 48px;
+height: 48px;
+      `)};
+      
+  ${({ someprop }) => (someprop === 'somevalue'
+  && css`
+        color: blue;
+      `)
+  || (someprop === 'red'
+    && css`
+        color: red;
+      `)};
 `;

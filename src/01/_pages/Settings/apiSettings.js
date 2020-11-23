@@ -15,7 +15,7 @@ export async function getCurrentManagingFirm() {
 
 export async function getManagingFirmUsers() {
   try {
-    const res = await axios.get('ManagingFirmUsers/current');
+    const res = await axios.get('ManagingFirmUsers');
     return res;
   } catch (error) {
     console.log(error);
@@ -25,9 +25,6 @@ export async function getManagingFirmUsers() {
     };
   }
 }
-
-
-
 
 export async function putCurrentManagingFirm(id = 0, form = {}) {
   alert('Cейчас будем отправлять данные!');

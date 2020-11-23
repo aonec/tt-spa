@@ -41,7 +41,7 @@ export const Settings = () => {
       <Header>Настройки</Header>
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
       {Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm}/> : null }
-      {Number(currentTabKey) === 2 ? <Staff /> : null }
+      {Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }
       {Number(currentTabKey) === 3 ? <Contractors /> : null }
     </div>
   );
