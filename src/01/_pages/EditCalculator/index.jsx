@@ -9,7 +9,7 @@ import EditCalculatorForm from './components/EditCalculatorForm';
 
 export const EditCalculatorContext = React.createContext();
 
-const EditCalculator = () => {
+export const EditCalculator = () => {
   const { deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [currentCalc, setCurrentCalc] = useState();
