@@ -1,3 +1,4 @@
+import './../utils/wdyr'
 import React, { useEffect } from 'react';
 import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
