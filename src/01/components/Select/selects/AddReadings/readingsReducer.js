@@ -44,7 +44,7 @@ const initialState = {
 
 
 
-const readingsReducer = (state=initialState, action) => {
+const readingsReducer = (state= initialState, action) => {
     switch (action.type) {
 
         case SET_DEVICES:

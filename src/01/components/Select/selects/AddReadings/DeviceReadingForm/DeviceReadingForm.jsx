@@ -51,7 +51,7 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
         }
 
 
-        setReadingsState({readingsArray, id: readings.id })
+        setReadingsState({readingsArray, id: readings.id, resource: device.resource })
         setIsLoading(false);
     }, [device.readings, numberOfReadings, readingsBlocked])
 
@@ -70,7 +70,9 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
                      index={index}
                      readingsBlocked={readingsBlocked || !isActive}
                      onChange={(e) => onInputChange(e, index)}
-                     value={value}/>
+                     value={value}
+                     resource={readingsState.resource}
+        />
     ));
 
 
