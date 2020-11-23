@@ -67,6 +67,10 @@ const TabsDevices = ({devicePage}) => {
         setIsLoading(true);
         const devicesByObject = [];
 
+        if (!devicePage.items.length) {
+            return
+        }
+
         devicePage.items.forEach((device) => {
             if (!device.address) {
                 devicesByObject.push({ devices: [{ ...device }]});
@@ -79,11 +83,14 @@ const TabsDevices = ({devicePage}) => {
                 : devicesByObject[index].devices.push({...rest})
         })
         const deviceArray = devicesByObject.map((addressDevicesGroup) => {
-                return <DevicesByAddress addressDevicesGroup={addressDevicesGroup}/>
+                return <DevicesByAddress key={addressDevicesGroup.address.id} addressDevicesGroup={addressDevicesGroup}/>
             }
         );
-        setDeviceElems(deviceArray);
-        setIsLoading(false)
+        if (deviceArray.length) {
+            setDeviceElems(deviceArray);
+            setIsLoading(false)
+        }
+
     }, [devicePage.items])
 
 
@@ -109,7 +116,6 @@ const TabsDevices = ({devicePage}) => {
             {/*</TabPane>*/}
         </Tabs>
 }
-
 
 
 export default TabsDevices
