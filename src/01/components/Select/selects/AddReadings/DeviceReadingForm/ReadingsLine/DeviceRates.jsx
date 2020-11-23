@@ -8,7 +8,6 @@ display: flex;
 max-width: 180px;
 border: 1px solid #DCDEE4;
 margin-right: 8px;
-// padding: 16px 24px;
 `
 
 const Label = styled.label`
@@ -20,27 +19,12 @@ margin-right:10px;
 background-color: #E5E5E5
 `
 
-// const Input = styled.Input`
-//       color: rgba(39, 47, 90, 0.8);
-//       box-sizing: border-box;
-//       border-radius: 4px;
-//       width: 100%;
-//       height: 48px;
-//       font-size: 14px;
-//       line-height: 1.6;
-//
-//       &:after {
-//       content: "м",
-//       display: block;
-//       }
-// `
-
 const TarifLabel = styled.span`
 color: rgba(39, 47, 90, 0.32);
 `
 
 
-const DeviceRates = ({index, onChange, value, readingsBlocked}) => {
+const DeviceRates = ({index, onChange, value, readingsBlocked, resource}) => {
 
 
 
@@ -48,7 +32,7 @@ const DeviceRates = ({index, onChange, value, readingsBlocked}) => {
        <ReadingLineStyled>
            <Input
                prefix={<TarifLabel>Тариф {index+1}: </TarifLabel>}
-               suffix={`м³`}
+               suffix={resource === 'Electricity' ? 'кВтч' : 'м³'}
                disabled={readingsBlocked}
                type="text"
                value={value}
