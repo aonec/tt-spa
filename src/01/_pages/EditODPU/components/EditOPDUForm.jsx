@@ -9,7 +9,7 @@ import {
   housingMeteringDeviceTypes, resources,  isConnectedValue,magistrals
 } from '../../../tt-components/localBases';
 import {
-  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT} from '../../../tt-components';
+  Header, SelectTT, InputTT, ButtonTT, DatePickerTT} from '../../../tt-components';
 import { putOdpu } from './apiEditOdpu';
 
 
@@ -75,7 +75,7 @@ const FormEditODPU = (props) => {
       futureCheckingDate: moment().toISOString(),
       futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
       calculatorId: calculatorId || 'Вычислитель не выбран',
-      entryNumber: hubNumber,
+      entryNumber: entryNumber,
       hubNumber: hubNumber,
       diameter: diameter,
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
