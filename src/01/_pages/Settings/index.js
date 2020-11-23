@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Route, useHistory } from 'react-router-dom';
 import { EditButtonWrap, Header } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
@@ -6,10 +7,12 @@ import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
-import {Route} from 'react-router-dom'
 
-export const Settings = () => {
+export const Settings = (props) => {
   console.log('Settings');
+  console.log(props);
+  const { push, location } = useHistory();
+  const { pathname } = location;
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
@@ -25,8 +28,18 @@ export const Settings = () => {
 
   console.log('setFirm', firm);
   function handleChangeTab(value) {
-    setTab(value);
     console.log('currentTabKey', currentTabKey);
+
+    setTab(value);
+    if (value == '1') {
+      push('/settings');
+    }
+    if (value == '2') {
+      push('/settings/staff');
+    }
+    if (value == '3') {
+      push('/settings/contractors');
+    }
   }
   if (!firm || !users) {
     console.log('Загрузка');
@@ -72,10 +85,19 @@ export const Settings = () => {
         <HeaderButton />
       </div>
 
-     <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
-  <Route exact path={'/settings'}> <Common firm={firm} setFirm={setFirm} /></Route>
-      <Route exact path={'/settings/staff'}> <Staff users={users} setUsers={setUsers} /></Route>
-        <Route exact path={'/settings/contractors'}>  <Contractors /></Route>
+      <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
+      <Route exact path="/settings">
+        {' '}
+        <Common firm={firm} setFirm={setFirm} />
+      </Route>
+      <Route exact path="/settings/staff">
+        {' '}
+        <Staff users={users} setUsers={setUsers} />
+      </Route>
+      <Route exact path="/settings/contractors">
+        {' '}
+        <Contractors />
+      </Route>
     </div>
   );
 };

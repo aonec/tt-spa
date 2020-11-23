@@ -26,7 +26,7 @@ const SettingsTabs = (props) => {
       {tabs.map((currentTab) => {
         const { title, key } = currentTab;
         return (
-          <TabPane tab={title} key={key} />
+          <TabPane tab={title} key={key}/>
         );
       })}
     </Tabs>
