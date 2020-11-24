@@ -6,7 +6,7 @@ import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
-
+import {Route} from 'react-router-dom'
 export const Settings = () => {
 
   const [currentTabKey, setTab] = useState('1');
@@ -72,6 +72,9 @@ export const Settings = () => {
       </div>
 
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
+      <Route path={`settings`}><Common firm={firm} setFirm={setFirm} /></Route>
+      <Route path={`settings/staff`}><Staff users={users} setUsers={setUsers} /></Route>
+      <Route path={`settings/contractors`}><Contractors /></Route>
       {/*{Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm} /> : null }*/}
       {/*{Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }*/}
       {/*{Number(currentTabKey) === 3 ? <Contractors /> : null }*/}
