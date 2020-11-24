@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import _ from 'lodash';
-import { Device } from 'components';
 import { Icon } from '../../../../_components/Icon';
 
 const Wrap = styled.div`
