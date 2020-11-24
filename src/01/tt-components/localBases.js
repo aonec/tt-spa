@@ -3,7 +3,7 @@ export const items = [
     id: 1,
     value: 1,
     model: 'ТЭМ-106',
-    label: 'ТЭМ-106'
+    label: 'ТЭМ-106',
   },
   {
     id: 2,
@@ -95,3 +95,46 @@ export const isConnectedValue = [
   },
 ];
 
+export const timeZones = [
+  { value: 1, item: '01:00:00', label: 'UTC+1' },
+  { value: 2, item: '02:00:00', label: 'UTC+2' },
+  { value: 3, item: '03:00:00', label: 'UTC+3' },
+  { value: 4, item: '04:00:00', label: 'UTC+4' },
+];
+
+export const UserRoles = [
+  {
+    value: 1334536,
+    label: 'Собственник квартиры',
+  },
+  {
+    value: 1334537,
+    label: 'Администратор системы',
+  },
+  {
+    value: 1334533,
+    label: 'Администратор УК',
+  },
+  {
+    value: 1334539,
+    label: 'Сервис Scada',
+  },
+  {
+    value: 1334538,
+    label: 'Сервис ЕРЦ',
+  },
+  {
+    value: 1371329,
+    label: 'Фоновый рабочий',
+  },
+  {
+    value: 1334534,
+    label: 'Исполнитель УК',
+  },
+  {
+    value: 1334535,
+    label: 'Оператор УК',
+  },
+];
+
+export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;

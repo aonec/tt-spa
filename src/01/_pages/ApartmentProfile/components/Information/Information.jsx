@@ -16,7 +16,7 @@ export const Information = (props) => {
   const mapProps = [square, numberOfLiving, normativeNumberOfLiving];
 
   const list = data.map((value, index) => (
-    <ListItem>
+    <ListItem key={index}>
       <ListItemDescription>{descriptions[index]}</ListItemDescription>
       <ListItemValue>{mapProps[index]}</ListItemValue>
     </ListItem>

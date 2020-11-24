@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import moment from 'moment';
-import {Form} from "antd";
+import { Form } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import { InputTT,SelectTT, DatePickerTT, Wrap , ButtonTT, Title} from '../../../tt-components';
+import {
+  InputTT, SelectTT, DatePickerTT, Wrap, ButtonTT, Title,
+} from '../../../tt-components';
 import { items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 
@@ -34,10 +36,10 @@ const EditCalculatorForm = () => {
     address,
   } = currentCalc;
 
-  console.log("model", model)
+  console.log('model', model);
 
-  const currentInfoId = _.find(items, {label: model}).value
-  console.log(currentInfoId)
+  const getCurrentInfoId = _.find(items, { label: model });
+  const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
 
   const {
     isConnected, ipV4, port, deviceAddress,
@@ -63,13 +65,14 @@ const EditCalculatorForm = () => {
       port,
       futureCommercialAccountingDate,
       housingStockId: houseId,
-      infoId: Number(currentInfoId),
+      infoId: currentInfoId === null ? null : Number(currentInfoId),
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
       ipV4: Yup.string().required('Введите IP-адрес устройства'),
       deviceAddress: Yup.number().typeError('Не может быть пустым значением').required('Введите сетевой адрес устройства'),
       port: Yup.number().typeError('Не может быть пустым значением').required('Введите порт устройства'),
+      infoId: Yup.number().typeError('Выберите модель').required('Выберите модель')
 
     }),
     onSubmit: async () => {
@@ -89,16 +92,15 @@ const EditCalculatorForm = () => {
       };
       console.log('FORM', form);
       putCalculator(id, form);
-
     },
   });
 
   const Buttons = () => {
     console.log('Buttons');
     return (
-      <div style={{padding:'32px 0'}}>
+      <div style={{ padding: '32px 0' }}>
         <ButtonTT
-          form='editCalculatorForm'
+          form="editCalculatorForm"
           color="blue"
           style={{ marginRight: '16px' }}
           type="submit"
@@ -128,7 +130,7 @@ const EditCalculatorForm = () => {
   };
 
   return (
-    <form id='editCalculatorForm'>
+    <form id="editCalculatorForm" style={{ maxWidth: 800 }}>
       <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Серийный номер устройства">
           <InputTT
@@ -149,6 +151,7 @@ const EditCalculatorForm = () => {
               setFieldValue('infoId', Number(target.value));
             }}
           />
+          <Alert name='infoId' />
         </Form.Item>
 
         <Form.Item label="Дата ввода в эксплуатацию">
@@ -245,10 +248,10 @@ const EditCalculatorForm = () => {
         </Wrap>
       </div>
       <div hidden={Number(currentTabKey) !== 3}>
-        <Title color={'black'}>Компонент в разработке </Title>
+        <Title color="black">Компонент в разработке </Title>
       </div>
       <div hidden={Number(currentTabKey) !== 4}>
-        <Title color={'black'}>Компонент в разработке </Title>
+        <Title color="black">Компонент в разработке </Title>
       </div>
       <Buttons />
     </form>
