@@ -102,3 +102,37 @@ export const timeZones = [
   { value: 4, item: '04:00:00', label: 'UTC+4' },
 ];
 
+export const UserRoles = [
+  {
+    value: 1334536,
+    label: 'Собственник квартиры',
+  },
+  {
+    value: 1334537,
+    label: 'Администратор системы',
+  },
+  {
+    value: 1334533,
+    label: 'Администратор УК',
+  },
+  {
+    value: 1334539,
+    label: 'Сервис Scada',
+  },
+  {
+    value: 1334538,
+    label: 'Сервис ЕРЦ',
+  },
+  {
+    value: 1371329,
+    label: 'Фоновый рабочий',
+  },
+  {
+    value: 1334534,
+    label: 'Исполнитель УК',
+  },
+  {
+    value: 1334535,
+    label: 'Оператор УК',
+  },
+];

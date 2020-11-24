@@ -8,7 +8,7 @@ import {
 } from '../../../../../tt-components';
 import {UserRoles} from '../../../../../tt-components/localBases'
 
-const ModalAddStaffForm = () => {
+const ModalAddContractorForm = () => {
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -73,60 +73,40 @@ const ModalAddStaffForm = () => {
     <>
       <form id="modalAddStaffForm" onSubmit={handleSubmit}>
         <Title size="middle" color="black">
-          Добавление нового сотрудника
+          Добавление нового подрядчика
         </Title>
         <Form.Item label="Имя">
           <InputTT
             name="name"
-            placeholder="Имя"
+            placeholder="Инженерный центр"
             onChange={handleChange}
             value={values.name}
           />
           <Alert name="name" />
         </Form.Item>
 
-        <Form.Item label="Фамилия">
-          <InputTT
-            name="surname"
-            placeholder="Фамилия"
-            onChange={handleChange}
-            value={values.surname}
-          />
-          <Alert name="surname" />
-        </Form.Item>
-
-        <Form.Item label="Отчество">
-          <InputTT
-            name="middlename"
-            placeholder="Отчество"
-            onChange={handleChange}
-            value={values.middlename}
-          />
-          <Alert name="middlename" />
-        </Form.Item>
 
         <Form.Item label="Электронная почта">
           <InputTT
             name="email"
-            placeholder="Электронная почта"
+            placeholder="qwerty@yandex.ru"
             onChange={handleChange}
             value={values.email}
           />
           <Alert name="email" />
         </Form.Item>
 
-        <Form.Item label="Роль в системе">
-          <SelectTT
-            name="role"
-            placeholder="Роль в системе"
-            onChange={(value) => {
-              setFieldValue('role', value);
-            }}
-            options={UserRoles}
-            value={values.role}
+        <Form.Item label="Контактный телефон">
+          <InputTT
+            name="email"
+            placeholder="8 999 999 99-99"
+            onChange={handleChange}
+            value={values.email}
           />
-          <Alert name="role" />
+          <Alert name="email" />
         </Form.Item>
+
+
 
         <div>
           <ButtonTT color="white">Отмена</ButtonTT>
@@ -139,4 +119,4 @@ const ModalAddStaffForm = () => {
   );
 };
 
-export default ModalAddStaffForm;
+export default ModalAddContractorForm;

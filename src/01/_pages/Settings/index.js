@@ -8,6 +8,7 @@ import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
 import ModalAddStaff from './components/Modals/ModalAddStaff'
+import ModalAddContractor from './components/Modals/ModalAddContractor'
 
 export const Settings = () => {
   console.log(useHistory())
@@ -108,6 +109,7 @@ export const Settings = () => {
       <Route path="/settings/staff" exact><Staff users={users} setUsers={setUsers} /></Route>
       <Route path="/settings/contractors" exact><Contractors /></Route>
       <ModalAddStaff />
+      <ModalAddContractor />
     </div>
   );
 };
