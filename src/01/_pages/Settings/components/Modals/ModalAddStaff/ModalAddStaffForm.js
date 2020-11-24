@@ -22,15 +22,16 @@ const ModalAddStaffForm = () => {
       lastName: '',
       middleName: '',
       email: '',
-      role: '',
+      userRolesIds: 1334534,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('Строка не должна быть пустой'),
       lastName: Yup.string().required('Строка не должна быть пустой'),
       middleName: Yup.string().required('Строка не должна быть пустой'),
-      email: Yup.string().required('Строка не должна быть пустой'),
+      email: Yup.string().email('Укажите адрес в формате name@mail.ru').required('Строка не должна быть пустой'),
     }),
     onSubmit: async () => {
+      console.log("1334534")
       const template = {
         email: 'string',
         firstName: 'string',
@@ -49,10 +50,9 @@ const ModalAddStaffForm = () => {
         lastName: values.lastName,
         middleName: values.middleName,
         email: values.email,
-        position: 'string',
-        number: 'string',
-        userRolesIds: [0],
+        userRolesIds: [values.userRolesIds]
       };
+
       console.log(JSON.stringify(form));
       alert('Посмотрите результат в консоли');
     },
@@ -67,12 +67,11 @@ const ModalAddStaffForm = () => {
     }
     return null;
   };
-  const options = [
-    { value: 1, label: 'Паук1' },
-    { value: 2, label: 'Паук2' },
-    { value: 3, label: 'Паук3' },
 
-  ];
+  const handleButton = () =>{
+    console.log("errors", errors)
+  }
+
   return (
     <>
       <form id="modalAddStaffForm" onSubmit={handleSubmit}>
@@ -81,32 +80,32 @@ const ModalAddStaffForm = () => {
         </Title>
         <Form.Item label="Имя">
           <InputTT
-            name="name"
+            name="firstName"
             placeholder="Имя"
             onChange={handleChange}
-            value={values.name}
+            value={values.firstName}
           />
-          <Alert name="name" />
+          <Alert name="firstName" />
         </Form.Item>
 
         <Form.Item label="Фамилия">
           <InputTT
-            name="surname"
+            name="lastName"
             placeholder="Фамилия"
             onChange={handleChange}
-            value={values.surname}
+            value={values.lastName}
           />
-          <Alert name="surname" />
+          <Alert name="lastName" />
         </Form.Item>
 
         <Form.Item label="Отчество">
           <InputTT
-            name="middlename"
+            name="middleName"
             placeholder="Отчество"
             onChange={handleChange}
-            value={values.middlename}
+            value={values.middleName}
           />
-          <Alert name="middlename" />
+          <Alert name="middleName" />
         </Form.Item>
 
         <Form.Item label="Электронная почта">
@@ -124,17 +123,18 @@ const ModalAddStaffForm = () => {
             name="role"
             placeholder="Роль в системе"
             onChange={(value) => {
-              setFieldValue('role', value);
+              setFieldValue('userRolesIds', value);
             }}
             options={UserRoles}
-            value={values.role}
+            value={values.userRolesIds}
           />
           <Alert name="role" />
         </Form.Item>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
+          <ButtonTT color="white" onClick={handleButton} style={{marginRight: 16}}>handleButton</ButtonTT>
           <ButtonTT color="white" onClick={hideStaff} style={{marginRight: 16}}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type="submit" onClick={handleSubmit} style={{width: 224}}>Добавить</ButtonTT>
+          <ButtonTT color="blue" type={"submit"} onClick={handleSubmit} form='modalAddStaffForm' style={{width: 224}}>Добавить</ButtonTT>
         </div>
 
       </form>

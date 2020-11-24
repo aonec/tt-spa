@@ -15,8 +15,6 @@ const Staff = (props) => {
     executingTaskCount: 31,
   };
 
-
-
   const res = items.map((item, index) => {
     const {
       id, email, name, cellphone, executingTaskCount,
@@ -26,7 +24,7 @@ const Staff = (props) => {
         <div className={classes.name}>{name}</div>
         <div className={classes.cellphone}>{cellphone || 'Телефон не указан'}</div>
         <div className={classes.status}>Работает</div>
-        <div className={classes.button}><EditButton /></div>
+        <div className={classes.button}><EditButton/></div>
 
       </li>
     );

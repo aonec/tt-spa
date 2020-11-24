@@ -5,11 +5,11 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ButtonTT, InputTT, SelectTT } from '../../../tt-components';
-import { timeZones } from '../../../tt-components/localBases';
+import { timeZones, phoneRegExp } from '../../../tt-components/localBases';
 import { putCurrentManagingFirm } from '../apiSettings';
 import { SettingsContext } from "../index";
 
-const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
+
 
 const Common = () => {
   const {firm} = useContext(SettingsContext)

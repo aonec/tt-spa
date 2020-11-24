@@ -7,6 +7,7 @@ import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
 import { SettingsContext } from '../../../index';
+import {postContractor} from "../../../apiSettings";
 
 const ModalAddContractorForm = () => {
   const { contractor, hideContractor } = useContext(SettingsContext);
@@ -23,36 +24,16 @@ const ModalAddContractorForm = () => {
       role: '',
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required('Строка не должна быть пустой'),
-      lastName: Yup.string().required('Строка не должна быть пустой'),
-      middleName: Yup.string().required('Строка не должна быть пустой'),
+      name: Yup.string().required('Строка не должна быть пустой'),
       email: Yup.string().required('Строка не должна быть пустой'),
     }),
     onSubmit: async () => {
-      const template = {
-        email: 'string',
-        firstName: 'string',
-        lastName: 'string',
-        middleName: 'string',
-        cellphone: 'string',
-        department: 'string',
-        position: 'string',
-        number: 'string',
-        password: 'string',
-        userRolesIds: [0],
-      };
-
       const form = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        middleName: values.middleName,
+        name: values.name,
         email: values.email,
-        position: 'string',
-        number: 'string',
-        userRolesIds: [0],
       };
-      console.log(JSON.stringify(form));
-      alert('Посмотрите результат в консоли');
+      postContractor(form)
+
     },
   });
   const Alert = ({ name }) => {
@@ -94,10 +75,11 @@ const ModalAddContractorForm = () => {
 
         <Form.Item label="Контактный телефон">
           <InputTT
-            name="email"
+            name="cellphone"
             placeholder="8 999 999 99-99"
             onChange={handleChange}
-            value={values.email}
+            value={values.cellphone}
+            disabled
           />
           <Alert name="email" />
         </Form.Item>
