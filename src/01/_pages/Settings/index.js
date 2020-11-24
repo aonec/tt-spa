@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Route, useHistory } from 'react-router-dom';
 import { EditButtonWrap, Header } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
@@ -6,9 +7,10 @@ import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
-import {Route} from 'react-router-dom'
-export const Settings = () => {
 
+export const Settings = () => {
+  console.log(useHistory())
+  const { push, location } = useHistory();
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
@@ -20,11 +22,42 @@ export const Settings = () => {
     getManagingFirmUsers().then((res) => {
       setUsers(res);
     });
+    currentTabInLink(location);
   }, []);
 
+  const currentTabInLink = (location) =>{
+    const {pathname} = location;
+    switch (pathname) {
+      case '/settings':
+        setTab('1')
+        break;
+      case '/settings/staff':
+        setTab('2')
+        break;
+      case '/settings/contractors':
+        setTab('3')
+        break;
+      default:
+        setTab('1')
+    }
+
+  }
 
   function handleChangeTab(value) {
     setTab(value);
+    switch (value) {
+      case '1':
+        push('/settings');
+        break;
+      case '2':
+        push('/settings/staff');
+        break;
+      case '3':
+        push('/settings/contractors');
+        break;
+      default:
+        push('/settings');
+    }
   }
 
   if (!firm || !users) {
@@ -35,7 +68,6 @@ export const Settings = () => {
   }
 
   const HeaderButton = () => {
-
     const handleContractors = () => {
       console.log('handleContractors');
     };
@@ -72,12 +104,9 @@ export const Settings = () => {
       </div>
 
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
-      <Route path={`settings`}><Common firm={firm} setFirm={setFirm} /></Route>
-      <Route path={`settings/staff`}><Staff users={users} setUsers={setUsers} /></Route>
-      <Route path={`settings/contractors`}><Contractors /></Route>
-      {/*{Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm} /> : null }*/}
-      {/*{Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }*/}
-      {/*{Number(currentTabKey) === 3 ? <Contractors /> : null }*/}
+      <Route path="/settings" exact><Common firm={firm} setFirm={setFirm} /></Route>
+      <Route path="/settings/staff" exact><Staff users={users} setUsers={setUsers} /></Route>
+      <Route path="/settings/contractors" exact><Contractors /></Route>
     </div>
   );
 };
