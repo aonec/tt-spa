@@ -69,7 +69,7 @@ const ModalAddStaffForm = () => {
             name="surname"
             placeholder="Фамилия"
             onChange={handleChange}
-            value={values.name}
+            value={values.surname}
           />
           <Alert name="surname" />
         </Form.Item>
