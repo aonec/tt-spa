@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
-import { Button, Title } from '..';
-import { ListItem, ListItemDescription, ListItemValue } from '../ListItem';
+import { Button, Title } from '.';
+import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
 
 const TitleWrap = styled.div`
   display: flex;
@@ -13,20 +13,13 @@ const TitleWrap = styled.div`
   color: white;
   `};
 `;
-export const Owner = (props) => {
+const Owner = (props) => {
   const descriptions = [
     'Номер лицевого счета',
     'Статус собственник',
     'Юридическое состояние',
     'Контактный номер телефона',
   ];
-  // mock base
-  // const data = [
-  //     '12345678',
-  //     'Передает показания',
-  //     'Физическое лицо',
-  //     '+7 999 999-99-99'
-  // ];
 
   const {
     firstName, personalAccountNumber, phoneNumber, test, test2,
@@ -59,3 +52,5 @@ export const Owner = (props) => {
     </>
   );
 };
+
+export default Owner
