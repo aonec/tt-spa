@@ -30,7 +30,7 @@ export async function getTasks(id = 0) {
 
 export async function getApartmentDevices(id = '') {
   try {
-    const res = await axios.get(`MeteringDevices?ApartmentId=${id}`);
+    const res = await axios.get(`IndividualDevices?ApartmentId=${id}`);
     console.log('getApartmentDevices', res);
     return res;
   } catch (error) {
