@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
-import SelectTT, { InputTT, Title } from '../../../../../tt-components';
+import  {ButtonTT, SelectTT, InputTT, Title } from '../../../../../tt-components';
 
 const ModalAddStaffForm = () => {
   const {
@@ -11,10 +11,18 @@ const ModalAddStaffForm = () => {
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      test: 'test',
+      name: '',
+      surname: '',
+      middlename: '',
+      email: '',
+      role: ''
     },
     validationSchema: Yup.object({
       test: Yup.string().required('Строка не должна быть пустой'),
+      name: Yup.string().required('Строка не должна быть пустой'),
+      surname: Yup.string().required('Строка не должна быть пустой'),
+      middlename: Yup.string().required('Строка не должна быть пустой'),
+      email: Yup.string().required('Строка не должна быть пустой'),
     }),
     onSubmit: async () => {
       const form = {
@@ -34,14 +42,17 @@ const ModalAddStaffForm = () => {
     }
     return null;
   };
-  const options = {
-    value:
-  }
+  const options = [
+    {value: 1, label: 'Паук1'},
+    {value: 2, label: 'Паук2'},
+    {value: 3, label: 'Паук3'},
+
+  ]
   return (
     <>
       <form id="modalAddStaffForm" onSubmit={handleSubmit}>
         <Title size="middle" color="black">
-          Тестовое модальное окно
+          Добавление нового сотрудника
         </Title>
         <Form.Item label="Имя">
           <InputTT
@@ -60,7 +71,7 @@ const ModalAddStaffForm = () => {
             onChange={handleChange}
             value={values.name}
           />
-          <Alert name="name" />
+          <Alert name="surname" />
         </Form.Item>
 
         <Form.Item label="Отчество">
@@ -68,18 +79,17 @@ const ModalAddStaffForm = () => {
             name="middlename"
             placeholder="Отчество"
             onChange={handleChange}
-            value={values.name}
+            value={values.middlename}
           />
-          <Alert name="name" />
+          <Alert name="middlename" />
         </Form.Item>
 
         <Form.Item label="Электронная почта">
           <InputTT
-            type={'email'}
-            name="middlename"
+            name="email"
             placeholder="Электронная почта"
             onChange={handleChange}
-            value={values.name}
+            value={values.email}
           />
           <Alert name="email" />
         </Form.Item>
@@ -91,12 +101,17 @@ const ModalAddStaffForm = () => {
             onChange={(value)=>{
               setFieldValue('role', value)}
             }
-            options={}
+            options={options}
             value={values.role}
           />
           <Alert name="role" />
         </Form.Item>
 
+        <div>
+          <ButtonTT color={'white'}>Отмена</ButtonTT>
+          <ButtonTT color={'blue'}  type={'submit'} onClick={handleSubmit}>Добавить</ButtonTT>
+
+        </div>
 
       </form>
     </>
