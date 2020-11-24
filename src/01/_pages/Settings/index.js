@@ -7,6 +7,7 @@ import Staff from './components/Staff';
 import Contractors from './components/Contractors';
 import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
+import ModalAddStaff from './components/Modals/ModalAddStaff'
 
 export const Settings = () => {
   console.log(useHistory())
@@ -22,10 +23,10 @@ export const Settings = () => {
     getManagingFirmUsers().then((res) => {
       setUsers(res);
     });
-    currentTabInLink(location);
+    setCurrentTabFromLink(location);
   }, []);
 
-  const currentTabInLink = (location) =>{
+  function setCurrentTabFromLink(location){
     const {pathname} = location;
     switch (pathname) {
       case '/settings':
@@ -102,11 +103,11 @@ export const Settings = () => {
         <Header>Настройки</Header>
         <HeaderButton />
       </div>
-
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
       <Route path="/settings" exact><Common firm={firm} setFirm={setFirm} /></Route>
       <Route path="/settings/staff" exact><Staff users={users} setUsers={setUsers} /></Route>
       <Route path="/settings/contractors" exact><Contractors /></Route>
+      <ModalAddStaff />
     </div>
   );
 };
