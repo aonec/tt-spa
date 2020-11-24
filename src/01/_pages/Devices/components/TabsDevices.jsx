@@ -83,7 +83,7 @@ const TabsDevices = ({devicePage}) => {
                 : devicesByObject[index].devices.push({...rest})
         })
         const deviceArray = devicesByObject.map((addressDevicesGroup) => {
-                return <DevicesByAddress key={addressDevicesGroup.address.id} addressDevicesGroup={addressDevicesGroup}/>
+                return <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup}/>
             }
         );
         if (deviceArray.length) {
