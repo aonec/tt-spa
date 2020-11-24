@@ -26,6 +26,19 @@ export async function getManagingFirmUsers() {
   }
 }
 
+export async function getContractors() {
+  try {
+    const res = await axios.get('Contractors');
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'contractors',
+      message: 'Произошла ошибка запроса Списка Подрядчиков',
+    };
+  }
+}
+
 export async function putCurrentManagingFirm(id = 0, form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {

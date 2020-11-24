@@ -5,7 +5,7 @@ import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
 import Staff from './components/Staff';
 import Contractors from './components/Contractors';
-import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
+import { getCurrentManagingFirm, getManagingFirmUsers, getContractors } from './apiSettings';
 import { Icon } from '../../_components/Icon';
 import ModalAddStaff from './components/Modals/ModalAddStaff'
 import ModalAddContractor from './components/Modals/ModalAddContractor'
@@ -17,6 +17,8 @@ export const Settings = () => {
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
+  const [contractors, setContractors] = useState();
+
   const [staff, setStaff] = useState(false);
   const [contractor, setContractor] = useState(false);
 
@@ -44,6 +46,9 @@ export const Settings = () => {
     });
     getManagingFirmUsers().then((res) => {
       setUsers(res);
+    });
+    getContractors().then((res) => {
+      setContractors(res);
     });
     setCurrentTabFromLink(location);
   }, []);
@@ -112,7 +117,7 @@ export const Settings = () => {
     }
   };
 
-  const context = {users, firm, staff, contractor, showStaff, hideStaff, showContractor, hideContractor}
+  const context = {users, firm, staff, contractor, showStaff, hideStaff, showContractor, hideContractor, contractors}
 
   return (
     <SettingsContext.Provider value={context} >

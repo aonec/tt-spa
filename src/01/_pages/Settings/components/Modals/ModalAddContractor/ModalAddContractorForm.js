@@ -6,11 +6,10 @@ import { Form } from 'antd';
 import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
-import { SettingsContext } from "../../../index";
-
+import { SettingsContext } from '../../../index';
 
 const ModalAddContractorForm = () => {
-  const {contractor, hideContractor} = useContext(SettingsContext);
+  const { contractor, hideContractor } = useContext(SettingsContext);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -83,7 +82,6 @@ const ModalAddContractorForm = () => {
           <Alert name="name" />
         </Form.Item>
 
-
         <Form.Item label="Электронная почта">
           <InputTT
             name="email"
@@ -104,11 +102,9 @@ const ModalAddContractorForm = () => {
           <Alert name="email" />
         </Form.Item>
 
-
-
-        <div>
-          <ButtonTT color="white" onClick={hideContractor}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type="submit" onClick={handleSubmit}>Добавить</ButtonTT>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
+          <ButtonTT color="white" onClick={hideContractor} style={{ marginRight: 16 }}>Отмена</ButtonTT>
+          <ButtonTT color="blue" type="submit" onClick={handleSubmit} style={{ width: 224 }}>Добавить</ButtonTT>
 
         </div>
 

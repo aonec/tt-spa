@@ -132,10 +132,9 @@ const ModalAddStaffForm = () => {
           <Alert name="role" />
         </Form.Item>
 
-        <div>
-          <ButtonTT color="white" onClick={hideStaff}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type="submit" onClick={handleSubmit}>Добавить</ButtonTT>
-
+        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
+          <ButtonTT color="white" onClick={hideStaff} style={{marginRight: 16}}>Отмена</ButtonTT>
+          <ButtonTT color="blue" type="submit" onClick={handleSubmit} style={{width: 224}}>Добавить</ButtonTT>
         </div>
 
       </form>
