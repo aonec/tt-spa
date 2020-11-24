@@ -7,21 +7,24 @@ import { ShowHidden } from './components/ShowHidden';
 
 export const ApartmentDevicesContext = React.createContext();
 
-export const ApartmentDevices = () => {
+export const ApartmentDevices = (props) => {
   const params = useParams();
   const apartmentId = params[1];
-  const [devices, setDevices] = useState({});
-  const items = { ...devices.items };
-  useEffect(() => {
-    async function getDevicesWrap() {
-      await getApartmentDevices(apartmentId).then((response) => setDevices(response));
-    }
-    getDevicesWrap();
-    // console.log('useEffect');
-  }, []);
-  const buttonHandler = () => {
-    // console.log('apartmentId = ', apartmentId);
-  };
+  const {devices} = props
+  // const [devices, setDevices] = useState();
+
+  // useEffect(() => {
+  //   async function getDevicesWrap() {
+  //     await getApartmentDevices(apartmentId).then((response) => setDevices(response));
+  //   }
+  //   getDevicesWrap();
+  //   // console.log('useEffect');
+  // }, []);
+
+  // if (!devices) {
+  //   return <div>Загрузка</div>
+  // }
+  const {items} = devices;
 
   return (
     <>
