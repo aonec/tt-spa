@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -6,9 +6,12 @@ import { Form } from 'antd';
 import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
-import {UserRoles} from '../../../../../tt-components/localBases'
+import { SettingsContext } from "../../../index";
+
 
 const ModalAddContractorForm = () => {
+  const {contractor, hideContractor} = useContext(SettingsContext);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -63,12 +66,7 @@ const ModalAddContractorForm = () => {
     }
     return null;
   };
-  const options = [
-    { value: 1, label: 'Паук1' },
-    { value: 2, label: 'Паук2' },
-    { value: 3, label: 'Паук3' },
 
-  ];
   return (
     <>
       <form id="modalAddStaffForm" onSubmit={handleSubmit}>
@@ -109,7 +107,7 @@ const ModalAddContractorForm = () => {
 
 
         <div>
-          <ButtonTT color="white">Отмена</ButtonTT>
+          <ButtonTT color="white" onClick={hideContractor}>Отмена</ButtonTT>
           <ButtonTT color="blue" type="submit" onClick={handleSubmit}>Добавить</ButtonTT>
 
         </div>

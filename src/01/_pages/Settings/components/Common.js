@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Form } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -7,11 +7,12 @@ import * as Yup from 'yup';
 import { ButtonTT, InputTT, SelectTT } from '../../../tt-components';
 import { timeZones } from '../../../tt-components/localBases';
 import { putCurrentManagingFirm } from '../apiSettings';
+import { SettingsContext } from "../index";
 
 const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 
-const Common = (props) => {
-  const { firm, setFirm } = props;
+const Common = () => {
+  const {firm} = useContext(SettingsContext)
   const {
     id, name, phoneNumber, timeZoneOffset,
   } = firm || {};

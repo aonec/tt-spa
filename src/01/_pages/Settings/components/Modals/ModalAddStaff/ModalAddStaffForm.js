@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -7,8 +7,12 @@ import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
 import {UserRoles} from '../../../../../tt-components/localBases'
+import { SettingsContext } from "../../../index";
 
 const ModalAddStaffForm = () => {
+
+  const {staff, setStaff, hideStaff} = useContext(SettingsContext);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -129,7 +133,7 @@ const ModalAddStaffForm = () => {
         </Form.Item>
 
         <div>
-          <ButtonTT color="white">Отмена</ButtonTT>
+          <ButtonTT color="white" onClick={hideStaff}>Отмена</ButtonTT>
           <ButtonTT color="blue" type="submit" onClick={handleSubmit}>Добавить</ButtonTT>
 
         </div>

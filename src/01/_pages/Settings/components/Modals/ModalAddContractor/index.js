@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal } from 'antd';
 import ModalAddContractorForm from './ModalAddContractorForm';
+import { SettingsContext } from "../../../index";
 
-export const ModalAddContractor = (props) => {
-  const {contractor, setContractor} = props;
+export const ModalAddContractor = () => {
+  const {contractor, hideContractor} = useContext(SettingsContext);
+
   console.log('ModalAddStaff');
   return (
     <Modal
       visible={contractor}
       width={800}
       footer={null}
+      onCancel={hideContractor}
     >
       <ModalAddContractorForm />
     </Modal>

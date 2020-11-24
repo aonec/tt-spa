@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import { EditButtonWrap, Header } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
@@ -10,6 +10,7 @@ import { Icon } from '../../_components/Icon';
 import ModalAddStaff from './components/Modals/ModalAddStaff'
 import ModalAddContractor from './components/Modals/ModalAddContractor'
 
+export const SettingsContext = createContext();
 export const Settings = () => {
   console.log(useHistory())
   const { push, location } = useHistory();
@@ -18,6 +19,24 @@ export const Settings = () => {
   const [users, setUsers] = useState();
   const [staff, setStaff] = useState(false);
   const [contractor, setContractor] = useState(false);
+
+  function showStaff(){
+    setStaff(true)
+  }
+
+  function hideStaff(){
+    setStaff(false)
+  }
+
+  function showContractor(){
+    setContractor(true)
+  }
+
+  function hideContractor(){
+    setContractor(false)
+  }
+
+
 
   useEffect(() => {
     getCurrentManagingFirm().then((res) => {
@@ -72,12 +91,6 @@ export const Settings = () => {
   }
 
   const HeaderButton = () => {
-    const handleContractors = () => {
-      console.log('handleContractors');
-    };
-    const handleStaff = () => {
-      console.log('handleStaff');
-    };
 
     if (currentTabKey === '1') {
       return null;
@@ -85,33 +98,37 @@ export const Settings = () => {
 
     if (currentTabKey === '2') {
       return (
-        <EditButtonWrap size="48" onClick={handleStaff}>
+        <EditButtonWrap size="48" onClick={showStaff}>
           <Icon icon="plus" />
         </EditButtonWrap>
       );
     }
     if (currentTabKey === '3') {
       return (
-        <EditButtonWrap size="48" onClick={handleContractors}>
+        <EditButtonWrap size="48" onClick={showContractor}>
           <Icon icon="plus" />
         </EditButtonWrap>
       );
     }
   };
 
+  const context = {users, firm, staff, contractor, showStaff, hideStaff, showContractor, hideContractor}
+
   return (
+    <SettingsContext.Provider value={context} >
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Header>Настройки</Header>
         <HeaderButton />
       </div>
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
-      <Route path="/settings" exact><Common firm={firm} setFirm={setFirm} /></Route>
-      <Route path="/settings/staff" exact><Staff users={users} setUsers={setUsers} /></Route>
+      <Route path="/settings" exact><Common /></Route>
+      <Route path="/settings/staff" exact><Staff /></Route>
       <Route path="/settings/contractors" exact><Contractors /></Route>
-      <ModalAddStaff staff={staff} setStaff={setStaff}/>
-      <ModalAddContractor contractor={contractor} setContractor={setContractor}/>
+      <ModalAddStaff />
+      <ModalAddContractor/>
     </div>
+  </SettingsContext.Provider>
   );
 };
 
