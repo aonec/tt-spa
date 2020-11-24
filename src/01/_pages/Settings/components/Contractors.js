@@ -10,10 +10,10 @@ const Contractors = () => {
   console.log('contractors', items);
 
   const contractorsList = items.map((contractor, index)=>{
-    const {name, email, phoneNumber ='Телефон не указан'} = contractor;
+    const {name, email, phoneNumber} = contractor;
     return (<li className={classes.staff} key={index}>
       <div className={classes.name}>{name}</div>
-      <div className={classes.phoneNumber}>{phoneNumber || 'Номер не указан'}</div>
+      <div className={classes.phoneNumber}>{phoneNumber || 'Телефон не указан'}</div>
       <div className={classes.email}>{email}</div>
       <div className={classes.button}><EditButton /></div>
 

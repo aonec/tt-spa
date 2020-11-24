@@ -24,7 +24,7 @@ const Staff = (props) => {
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
-        <div className={classes.cellphone}>{cellphone || 'Номер не указан'}</div>
+        <div className={classes.cellphone}>{cellphone || 'Телефон не указан'}</div>
         <div className={classes.status}>Работает</div>
         <div className={classes.button}><EditButton /></div>
 
