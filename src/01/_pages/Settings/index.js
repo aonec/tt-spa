@@ -8,7 +8,7 @@ import { getCurrentManagingFirm, getManagingFirmUsers } from './apiSettings';
 import { Icon } from '../../_components/Icon';
 
 export const Settings = () => {
-  console.log('Settings');
+
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
@@ -22,11 +22,11 @@ export const Settings = () => {
     });
   }, []);
 
-  console.log('setFirm', firm);
+
   function handleChangeTab(value) {
     setTab(value);
-    console.log('currentTabKey', currentTabKey);
   }
+
   if (!firm || !users) {
     console.log('Загрузка');
     return (
@@ -35,7 +35,6 @@ export const Settings = () => {
   }
 
   const HeaderButton = () => {
-    console.log('HeaderButton');
 
     const handleContractors = () => {
       console.log('handleContractors');
@@ -44,17 +43,18 @@ export const Settings = () => {
       console.log('handleStaff');
     };
 
-    if (currentTabKey == 1) {
+    if (currentTabKey === '1') {
       return null;
     }
-    if (currentTabKey == 2) {
+
+    if (currentTabKey === '2') {
       return (
         <EditButtonWrap size="48" onClick={handleStaff}>
           <Icon icon="plus" />
         </EditButtonWrap>
       );
     }
-    if (currentTabKey == 3) {
+    if (currentTabKey === '3') {
       return (
         <EditButtonWrap size="48" onClick={handleContractors}>
           <Icon icon="plus" />
@@ -72,9 +72,9 @@ export const Settings = () => {
       </div>
 
       <SettingsTabs currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} />
-      {Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm} /> : null }
-      {Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }
-      {Number(currentTabKey) === 3 ? <Contractors /> : null }
+      {/*{Number(currentTabKey) === 1 ? <Common firm={firm} setFirm={setFirm} /> : null }*/}
+      {/*{Number(currentTabKey) === 2 ? <Staff users={users} setUsers={setUsers} /> : null }*/}
+      {/*{Number(currentTabKey) === 3 ? <Contractors /> : null }*/}
     </div>
   );
 };

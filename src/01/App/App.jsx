@@ -84,7 +84,7 @@ export function App() {
                     <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
                     <Route path="/objects/" component={Objects} exact />
                     <Route path="/devices/" component={DevicesFromSearch} exact />
-                    <Route path="/settings/" component={Settings} exact />
+                    <Route path="/settings/(staff|contractors)?" component={Settings}  />
                     <Route path="/devices/(\\d+)" component={Devices} exact />
 
                     {/* <Route */}
