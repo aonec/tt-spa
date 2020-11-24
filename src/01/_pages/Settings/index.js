@@ -16,6 +16,8 @@ export const Settings = () => {
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
+  const [staff, setStaff] = useState(false);
+  const [contractor, setContractor] = useState(false);
 
   useEffect(() => {
     getCurrentManagingFirm().then((res) => {
@@ -97,7 +99,6 @@ export const Settings = () => {
     }
   };
 
-  console.log('users', users);
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -108,8 +109,8 @@ export const Settings = () => {
       <Route path="/settings" exact><Common firm={firm} setFirm={setFirm} /></Route>
       <Route path="/settings/staff" exact><Staff users={users} setUsers={setUsers} /></Route>
       <Route path="/settings/contractors" exact><Contractors /></Route>
-      <ModalAddStaff />
-      <ModalAddContractor />
+      <ModalAddStaff staff={staff} setStaff={setStaff}/>
+      <ModalAddContractor contractor={contractor} setContractor={setContractor}/>
     </div>
   );
 };

@@ -2,11 +2,12 @@ import React from 'react';
 import { Modal } from 'antd';
 import ModalAddContractorForm from './ModalAddContractorForm';
 
-export const ModalAddContractor = () => {
+export const ModalAddContractor = (props) => {
+  const {contractor, setContractor} = props;
   console.log('ModalAddStaff');
   return (
     <Modal
-      visible
+      visible={contractor}
       width={800}
       footer={null}
     >
