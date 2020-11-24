@@ -17,30 +17,23 @@ export const EditCalculator = () => {
   function handleChangeTab(value) {
     setTab(value);
   }
+
   useEffect(() => {
     getCalculator(deviceId).then((result) => setCurrentCalc(result));
   }, []);
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
 
   if (!currentCalc) {
     return <div>ЗАГРУЗКА</div>;
   }
 
-  const context = { currentCalc, currentTabKey };
+  const context = { currentCalc, currentTabKey, handleChangeTab };
   return (
     <>
       <EditCalculatorContext.Provider value={context}>
         <Breadcrumb path={`/calculators/${deviceId}`} />
-
         <Header>{`${currentCalc.model} (${currentCalc.serialNumber}). Редактирование`}</Header>
-        {/* <button onClick={buttonHandler}>getKey</button> */}
-        <EditCalculatorTabs
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
+        <EditCalculatorTabs />
         <EditCalculatorForm />
       </EditCalculatorContext.Provider>
     </>

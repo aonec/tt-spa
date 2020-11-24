@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tabs } from 'antd';
+import { EditCalculatorContext } from "../index";
 
 const { TabPane } = Tabs;
 
@@ -22,9 +23,9 @@ const tabs = [
   },
 ];
 
-const EditCalculatorTabs = (props) => {
-  console.log("EditCalculatorTabs")
-  const { currentTabKey, handleChangeTab } = props;
+const EditCalculatorTabs = () => {
+  console.log('EditCalculatorTabs');
+  const { currentTabKey, handleChangeTab } = useContext(EditCalculatorContext);
   return (
     <Tabs style={{ height: 'fit-content' }} activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {

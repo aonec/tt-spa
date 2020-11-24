@@ -16,7 +16,7 @@ export async function getCurrentManagingFirm() {
 export async function getManagingFirmUsers() {
   try {
     const res = await axios.get('ManagingFirmUsers');
-    console.log("ManagingFirmUsers", res)
+    console.log('ManagingFirmUsers', res);
     return res;
   } catch (error) {
     console.log(error);
@@ -58,7 +58,7 @@ export async function putCurrentManagingFirm(id = 0, form = {}) {
 export async function postContractor(form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
-    const res = await axios.post(`Contractors`, form);
+    const res = await axios.post('Contractors', form);
     alert('Подрядчик успешно создан!');
     return res;
   } catch (error) {
