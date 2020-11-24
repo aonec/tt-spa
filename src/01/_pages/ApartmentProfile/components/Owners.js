@@ -8,7 +8,8 @@ const Owners = (props) => {
   const res = homeowners.map((homeowner, index) =>{
     const {   firstName, personalAccountNumber, phoneNumber } = homeowner
     return (
-      <Owner firstName={firstName}
+      <Owner key={personalAccountNumber}
+             firstName={firstName}
              personalAccountNumber={personalAccountNumber}
              phoneNumber={phoneNumber} />
     )

@@ -1,4 +1,5 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
+import {Button} from "antd";
 
 export const Template = styled.div``;
 
@@ -35,7 +36,7 @@ export const ListItem = styled.li`
   }
 `;
 
-export const EditButtonWrap = styled.button`
+export const EditButtonTT = styled(Button)`
 border: 1px solid #DCDEE4;
 box-sizing: border-box;
 border-radius: 4px;
@@ -47,12 +48,12 @@ align-items: center;
   ${({ size }) => (size === '32'
   && css`
         width: 32px;
-height: 32px;
+        height: 32px;
       `)
   || (size === '48'
     && css`
         width: 48px;
-height: 48px;
+        height: 48px;
       `)};
       
   ${({ someprop }) => (someprop === 'somevalue'

@@ -1,4 +1,3 @@
-import './../utils/wdyr'
 import React, { useEffect } from 'react';
 import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -12,32 +11,31 @@ import {
   TaskProfile,
   Objects,
   ObjectProfile,
-  DeviceProfile,
   MetersPage,
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
   DevicesFromSearch,
   CalculatorProfile,
-  HousingProfile
-} from '01/_pages';
-
-import EditCalculator from '01/_pages/EditCalculator';
-
+  HousingProfile,
+  Settings,
+  EditCalculator,
+} from '../_pages';
 import { IndividualDevice } from '01/_pages/IndividualDevice';
+
 import moment from 'moment';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
-import rootReducer from '01/Redux/rootReducer';
+import rootReducer from '../Redux/rootReducer';
+import thunkMiddleWare from 'redux-thunk';
+import { ConfigProvider } from 'antd';
+import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './useApp';
-import thunkMiddleWare from "redux-thunk";
-import { ConfigProvider } from "antd";
-import ruRu from "antd/es/locale/ru_RU";
-import DeviceSearchForm from "../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm";
+import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
-import {Devices} from "../_pages/ObjectProfile/components/Devices";
+import { Devices } from '../_pages/ObjectProfile/components/Devices';
 
 moment.locale('ru');
 
@@ -49,7 +47,6 @@ const loggerMiddleware = (store) => (next) => (action) => {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-
 export const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare)),
@@ -57,7 +54,7 @@ export const store = createStore(
 
 window.store = store;
 
-export function App(){
+export function App() {
   const AppProvider = useApp();
 
   return styled(app)(
@@ -65,51 +62,49 @@ export function App(){
       <AppProvider>
         <ConfigProvider locale={ruRu}>
           <Switch>
-            <Route path="/login" component={Login}/>
-            <Route path="/logout" render={() => 'logout'}/>
+            <Route path="/login" component={Login} />
+            <Route path="/logout" render={() => 'logout'} />
             {/* <Route path="/error/" render={() => "404"} /> */}
-            <Route path="/error/" render={() => <ErrorPage/>}/>
-            <Route path="/access-denied/" render={() => <AccessDeniedPage/>}/>
-            <Route path="/form/" render={() => <DeviceSearchForm/>}/>
+            <Route path="/error/" render={() => <ErrorPage />} />
+            <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
+            <Route path="/form/" render={() => <DeviceSearchForm />} />
             <Route path="/">
               <layout>
                 <menu as="div">
-                  <Logotip/>
-                  <Menu/>
+                  <Logotip />
+                  <Menu />
                 </menu>
                 <main>
                   <Switch>
-                    <Redirect from="/tasks" to="/tasks/executing" exact/>
+                    <Redirect from="/tasks" to="/tasks/executing" exact />
                     <Route
                       path="/tasks/(executing|observing|archived)/"
                       component={Tasks}
                     />
-                    <Route path="/tasks/(\\d+)" render={() => <TaskProfile/>}/>
-                    <Route path="/objects/" component={Objects} exact/>
-                    <Route path="/devices/" component={DevicesFromSearch} exact/>
+                    <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
+                    <Route path="/objects/" component={Objects} exact />
+                    <Route path="/devices/" component={DevicesFromSearch} exact />
+                    <Route path="/settings/(staff|contractors)?" component={Settings}  />
+                    <Route path="/devices/(\\d+)" component={Devices} exact />
 
-                    <Route path="/devices/(\\d+)" component={Devices} exact/>
-
-                    {/*<Route*/}
-                    {/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?",*/}
-                    {/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]}*/}
-                    {/*  component={DeviceProfile}*/}
-                    {/*  exact*/}
-                    {/*/>*/}
+                    {/* <Route */}
+                    {/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */}
+                    {/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */}
+                    {/*  component={DeviceProfile} */}
+                    {/*  exact */}
+                    {/* /> */}
 
                     <Route
-                      path={["/calculators/:deviceId/(connection|related|documents)?"]}
+                      path={['/calculators/:deviceId/(connection|related|documents)?']}
                       component={CalculatorProfile}
                       exact
                     />
 
                     <Route
-                      path={["/housingMeteringDevices/:deviceId/(related|documents)?"]}
+                      path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
                       component={HousingProfile}
                       exact
                     />
-
-
 
                     <Route
                       path="/calculators/:deviceId/edit"
@@ -139,12 +134,12 @@ export function App(){
                       exact
                     />
 
-                    <Redirect from="/meters/" to="/meters/apartments" exact/>
+                    <Redirect from="/meters/" to="/meters/apartments" exact />
                     <Route
                       path="/meters/(apartments|houses)"
                       component={MetersPage}
                     />
-                    <Redirect to="/tasks/"/>
+                    <Redirect to="/tasks/" />
                   </Switch>
                 </main>
               </layout>

@@ -18,7 +18,7 @@ const DeviceBlock = (props) => {
         const { icon, color } = DeviceIcons[odpu.resource];
 
         return (
-            <div className={styles.device__wrapper} key={odpu.id}>
+            <div className={styles.device__wrapper}>
 
               <div>
                 <NavLink
