@@ -73,7 +73,9 @@ const TabsDevices = ({ devicePage }) => {
     });
     const deviceArray = devicesByObject.map((addressDevicesGroup) => <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup} />);
     setDeviceElems(deviceArray);
-    setIsLoading(false);
+    if (deviceArray.length) {
+      setIsLoading(false);
+    }
   }, [devicePage.items]);
 
   const pagination = pages.map((page, index) => (
