@@ -78,9 +78,14 @@ const styles = css`
   }
 
   task_title  {
-    width: 70%;
+    width: 65%;
   }
 `;
+
+// task_title  {
+//     было
+//     width: 70%;
+// }
 
 export const TasksList = ({ items }) => {
   const { push } = useHistory();

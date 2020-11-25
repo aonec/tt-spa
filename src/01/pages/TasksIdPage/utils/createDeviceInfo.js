@@ -3,8 +3,8 @@ import { date } from "01/servises/date"
 const info = [
   ["Постановка на учет", "commercialAccountingDate", "date"],
   ["Диаметр", "diameter"],
-  ["Окончание срока эксплуотации", "futureCheckingDate", "date"],
-  ["Последняя проверка приборов", "lastCheckingDate", "date"],
+  ["Окончание срока эксплуатации", "futureCheckingDate", "date"],
+  ["Последняя проверка прибора", "lastCheckingDate", "date"],
 ]
 
 export function createDeviceInfo(device = null) {
