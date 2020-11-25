@@ -36,7 +36,7 @@ export const useInformationDevice = ({
         new Date(futureCheckingDate).toLocaleDateString(),
       ],
       [
-        'Последняя поверка приборов',
+        'Последняя поверка прибора',
         new Date(lastCheckingDate).toLocaleDateString(),
       ],
       // ['Форм-фактор', '-'],
