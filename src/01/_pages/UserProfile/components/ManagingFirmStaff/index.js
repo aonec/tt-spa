@@ -9,6 +9,7 @@ import {
 
 import { UserRoles } from '../../../../tt-components/localBases';
 import { putManagingFirmUsersCurrent } from '../../apiUserProfile';
+import { Link } from "react-router-dom";
 
 const ManagingFirmStaff = (props) => {
   const { user } = props;
@@ -200,7 +201,7 @@ const ManagingFirmStaff = (props) => {
           >
             Сохранить
           </ButtonTT>
-
+          <Link to={'/settings/staff'}>
           <ButtonTT
             color="white"
             style={{ marginLeft: '16px' }}
@@ -209,6 +210,7 @@ const ManagingFirmStaff = (props) => {
           >
             Отмена
           </ButtonTT>
+          </Link>
 
         </div>
       </Form>

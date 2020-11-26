@@ -16,6 +16,7 @@ export const UserProfile = () => {
   useEffect(() => {
 
     getManagingFirmUsers(userId).then((res) => {
+      console.log("ressss", res)
       setUser(res);
     });
 

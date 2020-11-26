@@ -32,6 +32,7 @@ import {
   Settings,
   EditCalculator,
   UserProfile,
+  Contractor,
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -101,8 +102,14 @@ export function App() {
                     />
 
                     <Route
-                      path={['/user/:userId', '/user/(staff|contractor)/:userId']}
+                      path={['/user/:userId', '/user/staff/:userId']}
                       component={UserProfile}
+                      exact
+                    />
+
+                    <Route
+                      path={['/user/:userId', '/user/contractor/:userId']}
+                      component={Contractor}
                       exact
                     />
 
