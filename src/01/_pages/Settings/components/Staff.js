@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import classes from '../Settings.module.scss'
 import EditButton from "./EditButton";
 import { SettingsContext } from "../index";
+import { Link } from "react-router-dom";
 
 const Staff = (props) => {
   const {users} = useContext(SettingsContext);
@@ -24,7 +25,7 @@ const Staff = (props) => {
         <div className={classes.name}>{name}</div>
         <div className={classes.cellphone}>{cellphone || 'Телефон не указан'}</div>
         <div className={classes.status}>Работает</div>
-        <div className={classes.button}><EditButton/></div>
+        <div className={classes.button}><Link to={`/users/${id}`}><EditButton/></Link></div>
 
       </li>
     );

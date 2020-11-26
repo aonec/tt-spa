@@ -133,9 +133,25 @@ const ModalAddStaffForm = () => {
         </Form.Item>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
-          <ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT>
-          <ButtonTT color="white" onClick={hideStaff} style={{ marginRight: 16 }}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type="submit" onClick={handleSubmit} form="modalAddStaffForm" style={{ width: 224 }}>Добавить</ButtonTT>
+          {/*<ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT>*/}
+          <ButtonTT
+            color="white"
+            onClick={hideStaff}
+            style={{ marginRight: 16 }}
+          >
+            Отмена
+          </ButtonTT>
+
+          <ButtonTT
+            color="blue"
+            type="submit"
+            onClick={handleSubmit}
+            form="modalAddStaffForm"
+            style={{ width: 224 }}
+            disabled
+          >
+            Добавить
+          </ButtonTT>
         </div>
 
       </form>
