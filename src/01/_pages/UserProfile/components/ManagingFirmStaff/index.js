@@ -29,7 +29,7 @@ const ManagingFirmStaff = (props) => {
 
   const currentUserRoleIds = _.find(UserRoles, { value: userRoleIds[0] }).value;
 
-  const currentUser = localStorage.getItem(JSON.stringify(user))
+  const currentUser = JSON.parse(localStorage.getItem('user'))
   console.log("currentUser", currentUser)
 
   const {
@@ -95,17 +95,19 @@ const ManagingFirmStaff = (props) => {
   };
 
 
-  const isTrue = (id) => userRoleIds.find((item) => item === id);
+  const isTrue = (array, id) => array.find((item) => item === id);
+
+ // const isAdministrator = currentUser.userRoleIds.find((item) => item === 1334533);
+
+  const isAdministrator = isTrue(currentUser.userRoleIds, 1334533);
+
+  console.log("isAdministrator", isAdministrator)
+
+  const disabled= isAdministrator === undefined ? true : false
+
+  console.log("disabled", disabled)
 
 
-  const isManagingFirmAdministrator = isTrue(1334537);
-
-
-  console.log(userRoleIds)
-
-  const disabled= isManagingFirmAdministrator === undefined ? true : false
-
-  console.log(disabled)
 
   return (
     <div>
@@ -213,7 +215,7 @@ const ManagingFirmStaff = (props) => {
             type="submit"
             form="formReport"
             onClick={handleSubmit}
-            disabled
+            disabled={disabled}
           >
             Сохранить
           </ButtonTT>
@@ -221,7 +223,7 @@ const ManagingFirmStaff = (props) => {
           <ButtonTT
             color="white"
             style={{ marginLeft: '16px' }}
-            disabled={!isManagingFirmAdministrator}
+            disabled={disabled}
             // onClick={handleCancel}
           >
             Отмена
