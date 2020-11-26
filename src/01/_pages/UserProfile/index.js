@@ -22,7 +22,7 @@ export const UserProfile = () => {
     // getManagingFirmUsersCurrent().then((res) => {
     //   setUser(res);
     // });
-  }, []);
+  }, [userId]);
 
 
   const UserRoles = [
@@ -85,7 +85,6 @@ export const UserProfile = () => {
       {isManagingFirmStaff ? <ManagingFirmStaff user={user} /> : null}
       {isManagingFirmOperator ? <ManagingFirmStaff user={user} /> : null}
       {isManagingFirmAdministrator ? <ManagingFirmAdministrator user={user} /> : null}
-
     </div>
   );
 };
