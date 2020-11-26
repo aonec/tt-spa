@@ -29,6 +29,9 @@ const ManagingFirmStaff = (props) => {
 
   const currentUserRoleIds = _.find(UserRoles, { value: userRoleIds[0] }).value;
 
+  const currentUser = localStorage.getItem(JSON.stringify(user))
+  console.log("currentUser", currentUser)
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -90,6 +93,19 @@ const ManagingFirmStaff = (props) => {
     }
     return null;
   };
+
+
+  const isTrue = (id) => userRoleIds.find((item) => item === id);
+
+
+  const isManagingFirmAdministrator = isTrue(1334537);
+
+
+  console.log(userRoleIds)
+
+  const disabled= isManagingFirmAdministrator === undefined ? true : false
+
+  console.log(disabled)
 
   return (
     <div>
@@ -205,7 +221,7 @@ const ManagingFirmStaff = (props) => {
           <ButtonTT
             color="white"
             style={{ marginLeft: '16px' }}
-            disabled
+            disabled={!isManagingFirmAdministrator}
             // onClick={handleCancel}
           >
             Отмена
