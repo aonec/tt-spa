@@ -13,12 +13,13 @@ import { MeterDevices } from "./components/MeterDevices"
 
 export const MetersPage = () => {
   const [state, dispatch] = React.useReducer(reducer, {})
-  useFetchPage(state, dispatch)
+  useFetchPage(state, dispatch);
   const filter = useFilter(dispatch)
   const aparts = useApartments(state, filter)
   const apartInfo = useApartmentInfo(state)
   const meterDev = useMeterDevices(state)
-  return (
+
+    return (
     <>
       <h1>Ввод показаний</h1>
       <Route path="/*/apartments" exact>
@@ -46,3 +47,4 @@ function reducer(state, action) {
       return state
   }
 }
+

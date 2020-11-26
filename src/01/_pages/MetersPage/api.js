@@ -10,16 +10,18 @@ export async function getApartmetns(params) {
 
 export async function getApartmentInfo(id) {
   try {
-    const res = await axios.all([
+    const res = await Promise.allSettled([
       axios.get(`apartments/${id}`),
-      axios.get("MeteringDevices", { params: { ApartmentId: id } }),
+      axios.get("IndividualDevices", { params: { ApartmentId: 863449, TakeReadings: 1} }),
     ])
-    const [apartInfo, meterDevices] = res
+
+    const [{value: apartInfo}, {value: meterDevices}] = res;
+    debugger;
     return {
       apartInfo,
       meterDevices: {
         ...meterDevices,
-        items: meterDevices.items.map(createDevice),
+        // items: meterDevices.items.map(createDevice),
       },
     }
   } catch (error) {}
