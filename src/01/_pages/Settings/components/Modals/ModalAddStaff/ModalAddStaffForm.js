@@ -6,12 +6,12 @@ import { Form } from 'antd';
 import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
-import {UserRoles} from '../../../../../tt-components/localBases'
-import { SettingsContext } from "../../../index";
+import { UserRoles } from '../../../../../tt-components/localBases';
+import { SettingsContext } from '../../../index';
+import { postStaff } from '../../../apiSettings';
 
 const ModalAddStaffForm = () => {
-
-  const {staff, setStaff, hideStaff} = useContext(SettingsContext);
+  const { staff, setStaff, hideStaff } = useContext(SettingsContext);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -31,7 +31,7 @@ const ModalAddStaffForm = () => {
       email: Yup.string().email('Укажите адрес в формате name@mail.ru').required('Строка не должна быть пустой'),
     }),
     onSubmit: async () => {
-      console.log("1334534")
+      console.log('1334534');
       const template = {
         email: 'string',
         firstName: 'string',
@@ -50,11 +50,12 @@ const ModalAddStaffForm = () => {
         lastName: values.lastName,
         middleName: values.middleName,
         email: values.email,
-        userRolesIds: [values.userRolesIds]
+        userRolesIds: [values.userRolesIds],
       };
 
-      console.log(JSON.stringify(form));
-      alert('Посмотрите результат в консоли');
+      console.log(form)
+       console.log(JSON.stringify(form));
+      // postStaff(form);
     },
   });
   const Alert = ({ name }) => {
@@ -68,9 +69,9 @@ const ModalAddStaffForm = () => {
     return null;
   };
 
-  const handleButton = () =>{
-    console.log("errors", errors)
-  }
+  const handleButton = () => {
+    console.log('errors', errors);
+  };
 
   return (
     <>
@@ -132,9 +133,9 @@ const ModalAddStaffForm = () => {
         </Form.Item>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
-          <ButtonTT color="white" onClick={handleButton} style={{marginRight: 16}}>handleButton</ButtonTT>
-          <ButtonTT color="white" onClick={hideStaff} style={{marginRight: 16}}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type={"submit"} onClick={handleSubmit} form='modalAddStaffForm' style={{width: 224}}>Добавить</ButtonTT>
+          <ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT>
+          <ButtonTT color="white" onClick={hideStaff} style={{ marginRight: 16 }}>Отмена</ButtonTT>
+          <ButtonTT color="blue" type="submit" onClick={handleSubmit} form="modalAddStaffForm" style={{ width: 224 }}>Добавить</ButtonTT>
         </div>
 
       </form>
