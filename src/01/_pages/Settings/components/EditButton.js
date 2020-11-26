@@ -11,7 +11,7 @@ const EditButton = () => {
   };
 
   return (
-    <EditButtonWrap size="32" disabled={'true'} >
+    <EditButtonWrap size="32" >
       <Icon icon="menu" />
     </EditButtonWrap>
   );

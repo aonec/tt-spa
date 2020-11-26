@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const Staff = (props) => {
   const {users} = useContext(SettingsContext);
   const { items } = users;
-
   const userTemplate = {
     id: 1334567,
     email: '0.2@mail.ru',
