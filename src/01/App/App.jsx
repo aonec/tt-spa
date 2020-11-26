@@ -20,6 +20,7 @@ import {
   HousingProfile,
   Settings,
   EditCalculator,
+  UserProfile
 } from '../_pages';
 import { IndividualDevice } from '01/_pages/IndividualDevice';
 
@@ -103,6 +104,12 @@ export function App() {
                     <Route
                       path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
                       component={HousingProfile}
+                      exact
+                    />
+
+                    <Route
+                      path={'/user/:userId'}
+                      component={UserProfile}
                       exact
                     />
 

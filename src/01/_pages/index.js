@@ -13,3 +13,4 @@ export * from './Devices';
 export * from './CalculatorProfile';
 export * from './HousingProfile';
 export * from './Settings';
+export * from './UserProfile'
