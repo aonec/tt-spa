@@ -24,7 +24,7 @@ const Staff = (props) => {
         <div className={classes.name}>{name}</div>
         <div className={classes.cellphone}>{cellphone || 'Телефон не указан'}</div>
         <div className={classes.status}>Работает</div>
-        <div className={classes.button}><Link to={`/users/${id}`}><EditButton /></Link></div>
+        <div className={classes.button}><Link to={`/user/staff/${id}`}><EditButton /></Link></div>
 
       </li>
     );

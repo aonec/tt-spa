@@ -3,6 +3,7 @@ import { Title } from '../../../tt-components';
 import { SettingsContext } from "../index";
 import classes from "../Settings.module.scss";
 import EditButton from "./EditButton";
+import {Link} from 'react-router-dom'
 
 const Contractors = () => {
   const {contractors} = useContext(SettingsContext)
@@ -15,7 +16,7 @@ const Contractors = () => {
       <div className={classes.name}>{name}</div>
       <div className={classes.phoneNumber}>{phoneNumber || 'Телефон не указан'}</div>
       <div className={classes.email}>{email}</div>
-      <div className={classes.button}><EditButton /></div>
+      <div className={classes.button}><Link to={`/user/contractor/${contractor.id}`}><EditButton /></Link></div>
 
     </li>)
   })

@@ -101,7 +101,7 @@ export function App() {
                     />
 
                     <Route
-                      path="/user/:userId"
+                      path={['/user/:userId', '/user/(staff|contractor)/:userId']}
                       component={UserProfile}
                       exact
                     />
@@ -154,9 +154,9 @@ export function App() {
 
 export default App;
 
-{/* <Route */}
-{/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */}
-{/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */}
-{/*  component={DeviceProfile} */}
-{/*  exact */}
-{/* /> */}
+{ /* <Route */ }
+{ /*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */ }
+{ /*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */ }
+{ /*  component={DeviceProfile} */ }
+{ /*  exact */ }
+{ /* /> */ }

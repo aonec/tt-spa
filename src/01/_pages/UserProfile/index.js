@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import {useParams} from 'react-router-dom'
 import _ from 'lodash';
 import ManagingFirmAdministrator from './components/ManagingFirmAdministrator';
 import ManagingFirmStaff from "./components/ManagingFirmStaff";
-import { getManagingFirmUsersCurrent } from './apiUserProfile';
+import { getManagingFirmUsersCurrent,getManagingFirmUsers } from './apiUserProfile';
 import { Loader } from '../../components/Loader';
 
+
 export const UserProfile = () => {
+  const {userId} = useParams();
+  console.log("userId", userId)
+
   console.log('UserProfile');
   const [user, setUser] = useState();
   useEffect(() => {
-    getManagingFirmUsersCurrent().then((res) => {
+
+    getManagingFirmUsers(userId).then((res) => {
       setUser(res);
     });
+
+    // getManagingFirmUsersCurrent().then((res) => {
+    //   setUser(res);
+    // });
   }, []);
 
 
@@ -66,11 +76,16 @@ export const UserProfile = () => {
 
   const isManagingFirmStaff = isTrue(1334534);
   const isManagingFirmAdministrator = isTrue(1334533);
+  const isManagingFirmOperator = isTrue(1334535);
+
+
 
   return (
     <div>
       {isManagingFirmStaff ? <ManagingFirmStaff user={user} /> : null}
+      {isManagingFirmOperator ? <ManagingFirmStaff user={user} /> : null}
       {isManagingFirmAdministrator ? <ManagingFirmAdministrator user={user} /> : null}
+
     </div>
   );
 };
