@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Template = styled.div``;
 
@@ -53,6 +53,15 @@ height: 32px;
     && css`
         width: 48px;
 height: 48px;
+      `)};
+     
+       ${({ disabled }) => (disabled === 'true'
+  && css`
+        disabled: true
+      `)
+  || (disabled === 'false'
+    && css`
+        disabled: false
       `)};
       
   ${({ someprop }) => (someprop === 'somevalue'
