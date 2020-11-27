@@ -113,6 +113,7 @@ function isDisabled(
   if (AddPerpetrator) return !nextPerpetratorId;
   if (Completion) return false;
   if (UploadReadings) return false;
+  if (AddDocuments) return !documentsIds.length;
 
   return true;
 }
