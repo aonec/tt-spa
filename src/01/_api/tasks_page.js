@@ -1,9 +1,21 @@
-import axios from "01/axios"
-import { createTimeline, createTimer, createDevice } from "./utils"
+import axios from '../axios';
+import { createTimeline, createTimer, createDevice } from './utils';
 
-export async function getTasks(grouptype = null) {
+export async function getTasks(grouptype = null, searchState = {}) {
   try {
-    const res = await axios.get("tasks", { params: { grouptype } })
+    const params = { grouptype };
+
+    let query = 'tasks';
+    if (searchState.searchTerm) {
+      query += `/${searchState.searchTerm}`;
+    }
+
+    if (searchState.taskTypeNumber) {
+      params.tasktype = searchState.taskTypeNumber;
+    }
+
+    const res = await axios.get(query, { params });
+
     return {
       ...res,
       items: res.items.map((item) => ({
@@ -12,8 +24,10 @@ export async function getTasks(grouptype = null) {
         timer: createTimer(item),
         device: createDevice(item.device),
         calendar: new Date(item.creationTime ?? null).toLocaleString(),
-        showExecutor: grouptype === "observing",
+        showExecutor: grouptype === 'observing',
       })),
-    }
-  } catch (error) {}
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
