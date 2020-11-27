@@ -4,12 +4,12 @@ import { ChangeDeviceContext } from './index';
 
 const Complete = () => {
   const { device, devices } = useContext(ChangeDeviceContext);
-  console.log(device, devices);
 
   const availableDevices = devices.reduce((result, item) => {
     const {
       id, type, serialNumber, model,
     } = item;
+
     if (device.calculator === null && type === 'Calculator') {
       result.push({
         value: id,
@@ -23,7 +23,6 @@ const Complete = () => {
         label: `${model}: ${serialNumber}`,
       });
     }
-
     return result;
   }, []);
 
@@ -32,10 +31,10 @@ const Complete = () => {
   const [options, setOptions] = useState([]);
 
   const onSelect = (data, item) => {
-    console.log('onSelect', data, item);
     setValue(item.label);
     setId(item.value);
   };
+
   const onChange = (data) => {
     setValue(data);
     const devicesList = availableDevices.reduce((result, item) => {
@@ -58,7 +57,7 @@ const Complete = () => {
         }}
         onSelect={onSelect}
         onChange={onChange}
-        placeholder="control mode"
+        placeholder="Введите серийный номер"
       />
     </>
   );
