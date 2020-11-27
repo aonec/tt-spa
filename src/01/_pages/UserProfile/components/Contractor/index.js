@@ -7,8 +7,8 @@ import {
   ButtonTT, SelectTT, InputTT, Title,
 } from '../../../../../tt-components';
 import { SettingsContext } from '../../../index';
-import {postContractor} from "../../../apiSettings";
-import { phoneRegExp } from "../../../../../tt-components/localBases";
+import { postContractor } from '../../../apiSettings';
+import { phoneRegExp } from '../../../../../tt-components/localBases';
 
 const ModalAddContractorForm = () => {
   const { contractor, hideContractor } = useContext(SettingsContext);
@@ -20,7 +20,7 @@ const ModalAddContractorForm = () => {
     initialValues: {
       email: '',
       role: '',
-      phoneNumber:''
+      phoneNumber: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Строка не должна быть пустой'),
@@ -33,8 +33,7 @@ const ModalAddContractorForm = () => {
         email: values.email,
         phoneNumber: values.phoneNumber,
       };
-      postContractor(form)
-
+      postContractor(form);
     },
   });
   const Alert = ({ name }) => {

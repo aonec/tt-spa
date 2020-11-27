@@ -21,7 +21,7 @@ export function useMenu() {
       name: 'Приборы', to: '/devices/', icon: 'devices', perm: ['all'],
     },
     {
-      name: 'Настройки', to: '/settings/', icon: 'setting', perm: ['all'],
+      name: 'Настройки', to: '/settings/', icon: 'setting', perm: ["ManagingFirmAdministrator"],
     },
     {
       name: 'Собственники',
@@ -29,13 +29,6 @@ export function useMenu() {
       icon: 'key',
       // perm: ["ManagingFirmAdministrator", "ManagingFirmOperator"],
       perm: [],
-    },
-    {
-      name: 'Настройки',
-      to: '/settings/',
-      icon: 'setting',
-      perm: [],
-      // perm: ["ManagingFirmAdministrator"],
     },
     {
       name: 'Ввод показаний ',
