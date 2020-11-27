@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from 'react';
+import {updateReadings} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
+import DeviceRates
+    from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ReadingsLine/DeviceRates";
+import ActiveLine from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
+import {DateLine} from "../../../../../_components/DateLine/DateLine";
+import {Icon} from "../../../../../_components/Icon";
 import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
 import styled from 'styled-components'
-import DeviceRates from "./ReadingsLine/DeviceRates";
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
-import {Icon} from "../../../../../tt-components/Icon";
-import {setDevices, updateReadings} from "../readingsReducer";
-import ActiveLine from "./ActiveLine/ActiveLine";
-import {DateLine} from "../../../../../_components/DateLine/DateLine";
+
+// import DeviceIcons from "../../../../../_components/DeviceIcons"
+
 
 const FullDeviceLine = styled.div`
     display: grid;
@@ -21,7 +25,7 @@ const FullDeviceLine = styled.div`
     border-bottom: 1px solid #DCDEE4;
     `
 
-const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
+const OperatorDeviceReadingForm = ({device, dispatch}) => {
 
     const [readingsState, setReadingsState] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -30,20 +34,28 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
     const numberOfReadings = rateTypeToNumber(device.rateType);
     // const readingsArray = [];
     // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
-
+debugger;
     useEffect(() => {
         setIsLoading(true)
-        const readingsArray = [];
-        const readings = device.readings[0];
+        const previousReadingsArray = [];
+        const currentReadingsArray = [];
+        const prevReadings = device.readings[1] || {};
+        const currentReadings = device.readings[0];
 
         for (let i=1; i <= numberOfReadings; i++) {
-            readingsArray.push(readings[`value${i}`])
+            previousReadingsArray.push(prevReadings[`value${i}`]);
+            currentReadingsArray.push(currentReadings[`value${i}`] ?? '-');
         }
 
 
-        setReadingsState({readingsArray, id: readings.id, resource: device.resource })
+        setReadingsState({
+            previousReadingsArray,
+            currentReadingsArray,
+            prevId: prevReadings.id,
+            currId: currentReadings.id,
+            resource: device.resource })
         setIsLoading(false);
-    }, [device.readings, numberOfReadings, readingsBlocked])
+    }, [device.readings, numberOfReadings])
 
     const onInputChange = (e, index) => {
         e.preventDefault();
@@ -52,10 +64,18 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
-    const deviceReadingsLine = readingsState.readingsArray.map((value, index) => (
+    const currentDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
         <DeviceRates key={readingsState.id + index}
                      index={index}
-                     readingsBlocked={readingsBlocked || !isActive}
+                     onChange={(e) => onInputChange(e, index)}
+                     value={value}
+                     resource={readingsState.resource}
+        />
+    ));
+
+    const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
+        <DeviceRates key={readingsState.id + index}
+                     index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
@@ -68,7 +88,8 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
 
     return (
         <FullDeviceLine>
-                <span
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <div
                     className={styles.device__title + ' ' + styles.subdevice__title}
                     to={`/housingMeteringDevices/${device.id}`}
                 >
@@ -77,15 +98,18 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
                     <span className={styles.deviceId}>
                             {` (${device.serialNumber})`}
                     </span>
-                </span>
-            <div style={{display: 'flex'}}>{deviceReadingsLine}</div>
+                </div>
             <div style={{display: 'flex'}}>
                 <ActiveLine isActive={isActive}/>
                 {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
                 <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
             </div>
+            </div>
+            <div style={{display: 'flex'}}>{currentDeviceReadings}</div>
+            <div style={{display: 'flex'}}>{previousDeviceReadings}</div>
+
         </FullDeviceLine>
     )
 }
 
-export default DeviceReadingForm;
+export default OperatorDeviceReadingForm;

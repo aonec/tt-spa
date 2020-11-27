@@ -10,6 +10,7 @@ import { Apartments } from "./components/Apartments"
 import { Filter } from "./components/Filter"
 import { ApartmentInfo } from "./components/ApartmentInfo"
 import { MeterDevices } from "./components/MeterDevices"
+import {MeterDevicesNew} from "./components/MeterDevices/MeterDevicesNew";
 
 export const MetersPage = () => {
   const [state, dispatch] = React.useReducer(reducer, {})
@@ -28,7 +29,8 @@ export const MetersPage = () => {
       </Route>
       <Route path="/*/apartments/:id">
         <ApartmentInfo {...apartInfo} />
-        <MeterDevices {...meterDev} />
+        {/*<MeterDevices {...meterDev} />*/}
+        <MeterDevicesNew {...state.meterDevices} />
       </Route>
     </>
   )

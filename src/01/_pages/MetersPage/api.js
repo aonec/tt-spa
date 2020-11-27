@@ -16,12 +16,11 @@ export async function getApartmentInfo(id) {
     ])
 
     const [{value: apartInfo}, {value: meterDevices}] = res;
-    debugger;
     return {
       apartInfo,
       meterDevices: {
         ...meterDevices,
-        // items: meterDevices.items.map(createDevice),
+        items: meterDevices.items.map(createDevice),
       },
     }
   } catch (error) {}

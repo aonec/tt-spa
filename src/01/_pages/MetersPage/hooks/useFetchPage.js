@@ -21,7 +21,6 @@ export const useFetchPage = (state, dispatch) => {
         if (page?.isExact) {
           const {id} = page.params
           getApartmentInfo(id).then((data) => {
-            debugger;
             dispatch({type: "success", data})
           })
         }
