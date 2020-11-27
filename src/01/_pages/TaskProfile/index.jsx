@@ -71,7 +71,7 @@ export const TaskProfile = () => {
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Breadcrumb path={`/tasks/`}/>
       <Header {...state.header} />
-      <Panel {...panel} />
+      <Panel {...panel} device={device}/>
       <Steps />
       <Documents {...docs} />
       <grid>

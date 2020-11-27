@@ -8,6 +8,7 @@ import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
+import ChangeDevice from '../ChangeDevice'
 
 const styles = css`
   panel {
@@ -46,6 +47,11 @@ const styles = css`
       grid-template-areas:
         "ar ar ar ar"
         ". . . push"
+    }
+    &[|seven] {
+    display: flex;
+    flex-direction: column;
+   
     }
   }
 
@@ -119,14 +125,13 @@ export const Panel = ({
   isObserver = false,
   perpName = '',
   apartment,
+  device,
   dispatch = () => {
   },
   stages = {},
 }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
-
   if (hiddenPanel) return null;
-
   const {
     AddPerpetrator,
     EmailNotify,
@@ -162,6 +167,7 @@ export const Panel = ({
 
   const { emailNotify = {} } = state;
 
+
   return styled(styles)(
     // <Route path="/tasks/(\\d+)" exact>
     <panel
@@ -172,8 +178,10 @@ export const Panel = ({
         four: Completion,
         five: Switch && PushButton,
         six: UploadReadings || addReadingsDone,
+        seven: ChangeDevice && PushButton
       })}
     >
+      {(SwitchDevices && !isObserver) && <ChangeDevice device={device}/>}
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
@@ -188,9 +196,6 @@ export const Panel = ({
           })}
         />
       )}
-
-      {(SwitchDevices && !isObserver) && <div>SwitchDevices</div>}
-
 
       {EmailNotify && <TemplateButton />}
       {(AddDocuments && !isObserver) && (
