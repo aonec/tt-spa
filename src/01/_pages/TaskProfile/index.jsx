@@ -18,8 +18,6 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import ModalChangeOdpu from './components/Modals/ModalChangeOdpu';
-import ModalDeregisterDevice from './components/Modals/ModalDeregisterDevice';
 import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 function reducer(state, action) {
@@ -79,8 +77,6 @@ export const TaskProfile = () => {
         <Stages {...stages} />
         <InformationDevice {...infoDevice} type={type} id={id}/>
       </grid>
-      {/*<ModalChangeOdpu {...infoDevice} />*/}
-      {/*<ModalDeregisterDevice {...infoDevice} />*/}
     </TasksProfileContext.Provider>,
   );
 };
