@@ -189,6 +189,8 @@ export const Panel = ({
         />
       )}
 
+      {(SwitchDevices && !isObserver) && <div>SwitchDevices</div>}
+
 
       {EmailNotify && <TemplateButton />}
       {(AddDocuments && !isObserver) && (
