@@ -17,13 +17,13 @@ function reducer(state, action) {
   }
 }
 
-export const useTasks = () => {
+export const useTasks = (searchState) => {
   const [state, dispatch] = React.useReducer(reducer, {})
   const { 0: grouptype } = useParams()
   useCancelFetch([grouptype])
   React.useEffect(() => {
-    getTasks(grouptype).then((data) => dispatch({ type: "success", data }))
+    getTasks(grouptype, searchState).then((data) => dispatch({ type: "success", data }))
     return () => dispatch({ type: "reset" })
-  }, [grouptype])
+  }, [grouptype, searchState])
   return state
 }

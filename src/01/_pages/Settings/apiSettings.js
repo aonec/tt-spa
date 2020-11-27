@@ -70,6 +70,21 @@ export async function postContractor(form = {}) {
   }
 }
 
+export async function postStaff(form = {}) {
+  alert('Cейчас будем отправлять данные!');
+  try {
+    const res = await axios.post('ManagingFirmUsers', form);
+    alert('Сотрудник успешно создан!');
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert(
+      'Что-то пошло не так: попробуйте проверить все данные',
+    );
+    throw new Error(error);
+  }
+}
+
 export const firmTemplate = {
   id: 4,
   name: 'ООО УК"ПЖКХ-17"',

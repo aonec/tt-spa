@@ -1,26 +1,27 @@
-import React, { useContext } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import _ from 'lodash';
-import { Form } from 'antd';
-import {
-  ButtonTT, SelectTT, InputTT, Title,
-} from '../../../../../tt-components';
-import { SettingsContext } from '../../../index';
-import {postContractor} from "../../../apiSettings";
-import { phoneRegExp } from "../../../../../tt-components/localBases";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { phoneRegExp } from "../../tt-components/localBases";
+import { putContractor } from "./apiContractor";
+import _ from "lodash";
+import { Title } from "../../tt-components/Title";
+import { Form } from "antd";
+import { InputTT } from "../../tt-components/InputTT";
+import { ButtonTT } from "../../tt-components/ButtonTT";
+import React from "react";
+import { Link } from "react-router-dom";
 
-const ModalAddContractorForm = () => {
-  const { contractor, hideContractor } = useContext(SettingsContext);
-
+const ContractorForm = (props) =>{
+  const {contractor} = props
+  const {name, email, id} = contractor
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      email: '',
-      role: '',
-      phoneNumber:''
+      email,
+      name,
+      id,
+      phoneNumber: '',
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Строка не должна быть пустой'),
@@ -31,10 +32,9 @@ const ModalAddContractorForm = () => {
       const form = {
         name: values.name,
         email: values.email,
-        phoneNumber: values.phoneNumber,
+        id: values.id
       };
-      postContractor(form)
-
+      putContractor(id, form);
     },
   });
   const Alert = ({ name }) => {
@@ -50,9 +50,9 @@ const ModalAddContractorForm = () => {
 
   return (
     <>
-      <form id="modalAddStaffForm" onSubmit={handleSubmit}>
+      <form id="modalAddStaffForm" onSubmit={handleSubmit} style={{width:480}}>
         <Title size="middle" color="black">
-          Добавление нового подрядчика
+          Редактирование подрядчика
         </Title>
         <Form.Item label="Имя">
           <InputTT
@@ -85,15 +85,16 @@ const ModalAddContractorForm = () => {
           <Alert name="email" />
         </Form.Item>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
-          <ButtonTT color="white" onClick={hideContractor} style={{ marginRight: 16 }}>Отмена</ButtonTT>
-          <ButtonTT color="blue" type="submit" onClick={handleSubmit} style={{ width: 224 }}>Добавить</ButtonTT>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '32px 0 0 0' }}>
+          <ButtonTT color="blue" type="submit" onClick={handleSubmit} style={{ width: 224 }}>Сохранить</ButtonTT>
+          <Link to={'/settings/contractors'}><ButtonTT color="white" style={{ marginLeft: 16 }}>Отмена</ButtonTT></Link>
+
 
         </div>
 
       </form>
     </>
-  );
-};
+  )
+}
 
-export default ModalAddContractorForm;
+export default ContractorForm
