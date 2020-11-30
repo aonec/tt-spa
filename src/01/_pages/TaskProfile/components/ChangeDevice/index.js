@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 
-import { getClosedDevices } from './apiChangeDevice';
+import { getClosedDevices, getOdpu } from './apiChangeDevice';
 import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
 import EmptyForm from './components/EmptyForm'
@@ -9,9 +9,10 @@ import EditForm from './components/EditForm'
 export const ChangeDeviceContext = createContext();
 
 const ChangeDevice = (props) => {
-  const { device } = props;
+  // const { device } = props;
 
   const [devices, setDevices] = useState();
+  const [device, setDevice] = useState()
   const [selected, setSelected] = useState();
   const [newDevice, setNewDevice] = useState();
 
@@ -41,28 +42,33 @@ const ChangeDevice = (props) => {
     getClosedDevices().then((res) => {
       setDevices(res);
     });
+
+    getOdpu(props.device.id).then((result) => {
+      setDevice(result);
+    });
+    console.log(1,2,3,4,5)
   }, []);
 
-  if (!devices) {
+
+  if (!devices || !device) {
     return <div>Загрузка</div>;
   }
 
-
   const handleButton = () => {
-    console.log('handleButton');
-    console.log(devices);
-    console.log(device);
-    console.log("selected", selected)
-  };
-  const context = { device, devices, selected, setSelected, state, setState };
+    console.log(device)
 
+  };
+  const context = { device , devices, selected, setSelected, state, setState };
+
+
+
+  console.log("deviceIndex", device)
   return (
     <ChangeDeviceContext.Provider value={context}>
       <div>
         <Header>
           Замена расходомера/термодатчика
         </Header>
-
         <SearchInputAndAdd />
         <ResForm />
       </div>

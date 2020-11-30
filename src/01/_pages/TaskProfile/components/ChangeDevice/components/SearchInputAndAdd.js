@@ -36,9 +36,9 @@ const SearchInputAndAdd = () => {
   const [options, setOptions] = useState([]);
 
   const onSelect = (data, item) => {
-    setValue(item.label);
-    setId(item.value);
-    console.log(data);
+    // setValue(item.label);
+    // setId(item.value);
+    // console.log(data);
     getOdpu(data).then((res) => {
       setSelected(res);
     });

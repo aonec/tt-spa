@@ -17,6 +17,7 @@ export async function getClosedDevices(url = '') {
 export async function getOdpu(id = '') {
   try {
     const res = await axios.get(`HousingMeteringDevices/${id}`);
+    console.log("getOdpu",res)
     return res;
   } catch (error) {
     console.log(error);

@@ -15,20 +15,22 @@ import {
   resources,
 } from '../../../../../tt-components/localBases';
 import { putOdpu } from '../../../../EditODPU/components/apiEditOdpu';
-import Alert from '../../../../../tt-components/Alert';
 
 const { TabPane } = Tabs;
 
-const EmptyForm = (props) => {
+const EditForm = (props) => {
   const [currentTabKey, setCurrentTabKey] = useState('1');
 
-  console.log('EmptyForm');
-  const { selected, device } = useContext(ChangeDeviceContext);
 
-  console.log(selected);
+  const device = useContext(ChangeDeviceContext).device
+  const { selected, device: test } = useContext(ChangeDeviceContext);
 
-  console.log('device', device);
+  // console.log("EditFormDevice", device)
+  console.log("test", device)
 
+
+
+  console.log(useContext(ChangeDeviceContext))
   const {
     // address,
     // hubConnection,
@@ -45,10 +47,14 @@ const EmptyForm = (props) => {
     // housingMeteringDeviceType,
   } = selected;
 
-  const {
-    resource,
-    housingMeteringDeviceType,
-  } = device;
+
+  // const {
+  //   hubConnection,
+  //   resource,
+  //   housingMeteringDeviceType,
+  // } = device;
+  //
+  // console.log(device)
 
   // const {
   //   hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
@@ -81,8 +87,8 @@ const EmptyForm = (props) => {
     setValues,
   } = useFormik({
     initialValues: {
-      housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
-      resource: resource || 'Тип ресурса не указан',
+      // housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
+      // resource: resource || 'Тип ресурса не указан',
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
@@ -163,6 +169,7 @@ const EmptyForm = (props) => {
     }
     return null;
   };
+
   const TabsComponent = (props) =>
     // const { currentTabKey, handleChangeTab } = props;
     (
@@ -240,6 +247,7 @@ const EmptyForm = (props) => {
               onChange={handleChange}
               value={values.serialNumber}
               onBlur={handleBlur}
+
             />
             <Alert name="serialNumber" />
           </Form.Item>
@@ -462,4 +470,4 @@ const EmptyForm = (props) => {
   );
 };
 
-export default EmptyForm;
+export default EditForm;

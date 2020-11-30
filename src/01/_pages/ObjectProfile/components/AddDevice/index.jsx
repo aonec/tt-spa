@@ -69,7 +69,7 @@ const ModalAddDevice = () => {
           type="submit"
           form="formikFormAddOdpu"
         >
-          Выгрузить
+          Сохранить
         </ButtonTT>
       );
     };
