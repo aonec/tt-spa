@@ -20,15 +20,14 @@ import Alert from '../../../../../tt-components/Alert';
 const { TabPane } = Tabs;
 
 const EmptyForm = (props) => {
-
-  const [currentTabKey, setCurrentTabKey] = useState('1')
+  const [currentTabKey, setCurrentTabKey] = useState('1');
 
   console.log('EmptyForm');
   const { selected, device } = useContext(ChangeDeviceContext);
 
   console.log(selected);
 
-  console.log("device", device)
+  console.log('device', device);
 
   const {
     // address,
@@ -46,11 +45,10 @@ const EmptyForm = (props) => {
     // housingMeteringDeviceType,
   } = selected;
 
-
   const {
     resource,
     housingMeteringDeviceType,
-  } = device
+  } = device;
 
   // const {
   //   hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
@@ -124,14 +122,6 @@ const EmptyForm = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        // diameter: values.diameter,
-        pipe: {
-          calculatorId: values.calculatorId,
-          entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber || null,
-          pipeNumber: values.pipeNumber,
-          magistral: values.magistral || 'Направление не выбрано',
-        },
       };
       putOdpu(id, PUT_EDIT_FORM);
       console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
@@ -173,9 +163,9 @@ const EmptyForm = (props) => {
     }
     return null;
   };
-  const TabsComponent = (props) => {
+  const TabsComponent = (props) =>
     // const { currentTabKey, handleChangeTab } = props;
-    return (
+    (
       <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
         {tabs.map((currentTab) => {
           const { title, key } = currentTab;
@@ -185,17 +175,14 @@ const EmptyForm = (props) => {
         })}
       </Tabs>
     );
-  };
-
-  function handleChangeTab(value){
-    setCurrentTabKey(value)
+  function handleChangeTab(value) {
+    setCurrentTabKey(value);
   }
 
-  function handleNextChangeTab(){
-    console.log("handleNextChangeTab")
-    setCurrentTabKey(String(Number(currentTabKey) + 1))
+  function handleNextChangeTab() {
+    console.log('handleNextChangeTab');
+    setCurrentTabKey(String(Number(currentTabKey) + 1));
   }
-
 
   return (
     <div>
@@ -241,11 +228,11 @@ const EmptyForm = (props) => {
             justifyContent: 'space-between',
             alignContent: 'baseline',
             maxWidth: '960px',
-            minHeight: '420px'
+            minHeight: '420px',
           }}
         >
 
-          <Form.Item label="Серийный номер" style={{width:460}}>
+          <Form.Item label="Серийный номер" style={{ width: 460 }}>
             <InputTT
               name="serialNumber"
               placeholder="Укажите серийный номер..."
@@ -257,7 +244,7 @@ const EmptyForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Выберите тип прибора" style={{width:460}}>
+          <Form.Item label="Выберите тип прибора" style={{ width: 460 }}>
             <SelectTT
               name="housingMeteringDeviceType"
               onChange={(event) => {
@@ -270,7 +257,7 @@ const EmptyForm = (props) => {
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
 
-          <Form.Item label="Выберите тип ресурса" style={{width:460}}>
+          <Form.Item label="Выберите тип ресурса" style={{ width: 460 }}>
             <SelectTT
               name="resource"
               onChange={(value) => {
@@ -282,7 +269,7 @@ const EmptyForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Выберите модель прибора" style={{width:460}}>
+          <Form.Item label="Выберите модель прибора" style={{ width: 460 }}>
             <InputTT
               name="model"
               placeholder="Укажите модель..."
@@ -294,7 +281,7 @@ const EmptyForm = (props) => {
             <Alert name="model" />
           </Form.Item>
 
-          <Form.Item label="Дата поверки" style={{width:460}}>
+          <Form.Item label="Дата поверки" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
@@ -307,7 +294,7 @@ const EmptyForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки" style={{width:460}}>
+          <Form.Item label="Дата следующей поверки" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
@@ -320,7 +307,7 @@ const EmptyForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска" style={{width:460}}>
+          <Form.Item label="Дата начала Акта действия допуска" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
@@ -333,7 +320,7 @@ const EmptyForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска" style={{width:460}}>
+          <Form.Item label="Дата окончания Акта действия допуска" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
@@ -348,15 +335,16 @@ const EmptyForm = (props) => {
 
         </div>
 
-        <div hidden={Number(currentTabKey) !== 2}
-             style={{
-               display: 'flex',
-               flexWrap: 'wrap',
-               justifyContent: 'space-between',
-               alignContent: 'baseline',
-               maxWidth: '960px',
-               // minHeight: '420px'
-             }}
+        <div
+          hidden={Number(currentTabKey) !== 2}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignContent: 'baseline',
+            maxWidth: '960px',
+            // minHeight: '420px'
+          }}
 
         >
           <Form.Item label="Подключение к вычислителю" style={{ width: 460 }}>
@@ -422,18 +410,18 @@ const EmptyForm = (props) => {
             <Alert name="pipeNumber" />
           </Form.Item>
 
-
         </div>
 
-        <div hidden={Number(currentTabKey) !== 3}
-             style={{
-               display: 'flex',
-               flexWrap: 'wrap',
-               justifyContent: 'space-between',
-               maxWidth: '960px',
-               // minHeight: '420px',
-               alignContent: 'baseline',
-             }}
+        <div
+          hidden={Number(currentTabKey) !== 3}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            maxWidth: '960px',
+            // minHeight: '420px',
+            alignContent: 'baseline',
+          }}
 
         >
           <Header>Компонент в разработке</Header>
@@ -447,26 +435,26 @@ const EmptyForm = (props) => {
         }}
         >
           {
-            Number(currentTabKey)<3 ?      <ButtonTT
-              color="blue"
-              onClick={handleNextChangeTab}
-              type='button'
-            >
-              Далее
-            </ButtonTT>
-
-              :
-
+            Number(currentTabKey) < 3 ? (
               <ButtonTT
                 color="blue"
-                onClick={handleSubmit}
-                type='button'
+                onClick={handleNextChangeTab}
+                type="button"
               >
-                Сохранить
+                Далее
               </ButtonTT>
+            )
+
+              : (
+                <ButtonTT
+                  color="blue"
+                  onClick={handleSubmit}
+                  type="button"
+                >
+                  Сохранить
+                </ButtonTT>
+              )
           }
-
-
 
         </div>
       </form>
