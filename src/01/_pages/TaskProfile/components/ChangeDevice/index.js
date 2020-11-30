@@ -1,17 +1,42 @@
 import React, { createContext, useEffect, useState } from 'react';
-import ChangeDeviceForm from './ChangeDeviceForm';
-import Complete from './SearchInput';
+
 import { getClosedDevices } from './apiChangeDevice';
-import { Header , ButtonTT} from '../../../../tt-components';
-import FormEditODPU from './EditOPDUForm'
-import EmptyForm from "./EmptyForm";
+import { Header, ButtonTT } from '../../../../tt-components';
+import SearchInputAndAdd from './components/SearchInputAndAdd';
+import EmptyForm from './components/EmptyForm'
+import EditForm from './components/EditForm'
 
 export const ChangeDeviceContext = createContext();
+
 const ChangeDevice = (props) => {
   const { device } = props;
-  console.log('ChangeDevice');
 
   const [devices, setDevices] = useState();
+  const [selected, setSelected] = useState();
+  const [newDevice, setNewDevice] = useState();
+
+  const [state, setState]=useState('empty')
+
+  const ResForm = () =>{
+    switch (state) {
+      case "empty":
+        return <div>empty
+        <EmptyForm />
+        </div>
+      case "edit":
+        if (!selected) {
+          return <div>Загрузка</div>
+        }
+        return <div>edit
+          <EditForm />
+        </div>
+      case "add":
+        return <div>add</div>
+      default:
+        return <div>empty</div>
+    }
+  }
+
   useEffect(() => {
     getClosedDevices().then((res) => {
       setDevices(res);
@@ -19,28 +44,29 @@ const ChangeDevice = (props) => {
   }, []);
 
   if (!devices) {
-    return <div>Загрузка</div>
+    return <div>Загрузка</div>;
   }
+
 
   const handleButton = () => {
     console.log('handleButton');
     console.log(devices);
     console.log(device);
+    console.log("selected", selected)
   };
-  const context = { device, devices };
+  const context = { device, devices, selected, setSelected, state, setState };
 
   return (
     <ChangeDeviceContext.Provider value={context}>
       <div>
         <Header>
-          ChangeDevice
+          Замена расходомера/термодатчика
         </Header>
-        <Complete />
 
-        <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
-        <EmptyForm />
-        {/* <ChangeDeviceForm /> */}
+        <SearchInputAndAdd />
+        <ResForm />
       </div>
+      <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
     </ChangeDeviceContext.Provider>
   );
 };

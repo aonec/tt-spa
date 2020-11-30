@@ -12,3 +12,18 @@ export async function getClosedDevices(url = '') {
     };
   }
 }
+
+
+export async function getOdpu(id = '') {
+  try {
+    const res = await axios.get(`HousingMeteringDevices/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса ОДПУ',
+    };
+  }
+}
+

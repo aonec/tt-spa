@@ -178,7 +178,7 @@ export const Panel = ({
         four: Completion,
         five: Switch && PushButton,
         six: UploadReadings || addReadingsDone,
-        seven: ChangeDevice && PushButton
+        seven: ChangeDevice
       })}
     >
       {(SwitchDevices && !isObserver) && <ChangeDevice device={device}/>}

@@ -7,10 +7,10 @@ import { Form } from 'antd';
 import moment from 'moment';
 import {
   housingMeteringDeviceTypes, resources, isConnectedValue, magistrals,
-} from '../../../../tt-components/localBases';
+} from '../../../../../tt-components/localBases';
 import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT,
-} from '../../../../tt-components';
+} from '../../../../../tt-components';
 
 
 const ChangeDeviceForm = (props) => {

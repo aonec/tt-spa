@@ -1,27 +1,38 @@
-import React, { useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import _ from 'lodash';
+import React, { useContext, useState } from 'react';
+import { Form, Tabs } from 'antd';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Form } from 'antd';
 import moment from 'moment';
+import * as Yup from 'yup';
+import _ from 'lodash';
 import {
-  housingMeteringDeviceTypes, resources,  isConnectedValue,magistrals
-} from '../../../../tt-components/localBases';
+  SelectTT, InputTT, DatePickerTT, ButtonTT, Header,
+} from '../../../../../tt-components';
+import { ChangeDeviceContext } from '../index';
 import {
-  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT} from '../../../../tt-components';
-import { putOdpu } from './apiEditOdpu';
+  housingMeteringDeviceTypes,
+  isConnectedValue,
+  magistrals,
+  resources,
+} from '../../../../../tt-components/localBases';
+import { putOdpu } from '../../../../EditODPU/components/apiEditOdpu';
+import Alert from '../../../../../tt-components/Alert';
 
-const FormEditODPU = (props) => {
+const { TabPane } = Tabs;
+
+const EmptyForm = (props) => {
+
+  const [currentTabKey, setCurrentTabKey] = useState('1')
+
+  console.log('EmptyForm');
+  const { selected, device } = useContext(ChangeDeviceContext);
+
+  console.log(selected);
+
+  console.log("device", device)
+
   const {
-    currentTabKey, device, calculators,
-  } = props;
-
-  const { deviceId } = useParams();
-
-  const {
-    address,
-    hubConnection,
+    // address,
+    // hubConnection,
     id,
     model,
     serialNumber,
@@ -31,30 +42,36 @@ const FormEditODPU = (props) => {
     lastCheckingDate,
     futureCheckingDate,
     diameter,
+    // resource,
+    // housingMeteringDeviceType,
+  } = selected;
+
+
+  const {
     resource,
     housingMeteringDeviceType,
-  } = device;
+  } = device
 
-  const {
-    hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
-  } = hubConnection;
+  // const {
+  //   hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
+  // } = hubConnection;
 
-  const {
-    isConnected, ipV4, port, deviceAddress,
-  } = calculatorConnection || {
-    isConnected: false,
-    ipV4: '',
-    port: null,
-    deviceAddress: null,
-  };
+  // const {
+  //   isConnected, ipV4, port, deviceAddress,
+  // } = calculatorConnection || {
+  //   isConnected: false,
+  //   ipV4: '',
+  //   port: null,
+  //   deviceAddress: null,
+  // };
 
-  const {
-    entryNumber, hubNumber, pipeNumber, magistral,
-  } = hub;
+  // const {
+  //   entryNumber, hubNumber, pipeNumber, magistral,
+  // } = hub;
 
-  const {
-    city, street, housingStockNumber, corpus,
-  } = address;
+  // const {
+  //   city, street, housingStockNumber, corpus,
+  // } = address;
 
   const {
     handleSubmit,
@@ -73,19 +90,19 @@ const FormEditODPU = (props) => {
       lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
-      calculatorId: calculatorId || 'Вычислитель не выбран',
-      entryNumber: entryNumber,
-      hubNumber: hubNumber,
-      diameter: diameter,
-      pipeNumber: pipeNumber == null ? 0 : pipeNumber,
-      port: port || 0,
+      // calculatorId: calculatorId || 'Вычислитель не выбран',
+      // entryNumber: entryNumber,
+      // hubNumber: hubNumber,
+      // diameter: diameter,
+      // pipeNumber: pipeNumber == null ? 0 : pipeNumber,
+      // port: port || 0,
       checkingDate: moment().toISOString(),
-      city: city || 'Город не указан',
-      street: street || 'Улица не указана',
-      housingStockNumber: housingStockNumber || 'Номер дома не указан',
-      corpus: corpus,
-      magistral: magistral || 'Не выбрано',
-      ipV4,
+      // city: city || 'Город не указан',
+      // street: street || 'Улица не указана',
+      // housingStockNumber: housingStockNumber || 'Номер дома не указан',
+      // corpus: corpus,
+      // magistral: magistral || 'Не выбрано',
+      // ipV4,
       isConnected: isConnectedValue[0].value,
     },
     validationSchema: Yup.object({
@@ -123,28 +140,28 @@ const FormEditODPU = (props) => {
     },
   });
 
-  const EditODPUButtons = () => (
-    <div style={{ padding: '32px 0' }}>
-      <ButtonTT
-        form="editOdpuForm"
-        color="blue"
-        style={{ marginRight: '16px' }}
-        onClick={handleSubmit}
-        type="submit"
-      >
-        Сохранить
-      </ButtonTT>
+  const actionsList = [
+    { value: 1, label: 'Замена прибора' },
+  ];
 
-      <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
-        <ButtonTT
-          style={{ marginLeft: '16px' }}
-          color="white"
-        >
-          Отмена
-        </ButtonTT>
-      </NavLink>
-    </div>
-  );
+  const executorsList = [
+    { value: 1, label: 'Константинопольский К.К.' },
+  ];
+
+  const tabs = [
+    {
+      title: 'Шаг 1. Общие данные',
+      key: '1',
+    },
+    {
+      title: 'Шаг 2. Настройки соединения',
+      key: '2',
+    },
+    {
+      title: 'Шаг 3. Документы',
+      key: '3',
+    },
+  ];
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -156,14 +173,91 @@ const FormEditODPU = (props) => {
     }
     return null;
   };
-  const [disable, setDisable] = useState(false);
+  const TabsComponent = (props) => {
+    // const { currentTabKey, handleChangeTab } = props;
+    return (
+      <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
+        {tabs.map((currentTab) => {
+          const { title, key } = currentTab;
+          return (
+            <TabPane tab={title} key={key} />
+          );
+        })}
+      </Tabs>
+    );
+  };
+
+  function handleChangeTab(value){
+    setCurrentTabKey(value)
+  }
+
+  function handleNextChangeTab(){
+    console.log("handleNextChangeTab")
+    setCurrentTabKey(String(Number(currentTabKey) + 1))
+  }
+
 
   return (
-    <div style={{ maxWidth: '480px' }}>
-      <form id="editOdpuForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
+    <div>
+      <form>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignContent: 'baseline',
+          maxWidth: '960px',
+        }}
+        >
+          <Form.Item
+            label="Выберите дальнейшее действие"
+            style={{ width: 460 }}
+          >
+            <SelectTT
+              options={actionsList}
+              defaultValue={1}
+              disabled
+            />
+          </Form.Item>
 
-        <div hidden={Number(currentTabKey) !== 1}>
-          <Form.Item label="Выберите тип прибора">
+          <Form.Item
+            label="Исполнитель"
+            style={{ width: 460 }}
+          >
+            <SelectTT
+              options={executorsList}
+              defaultValue={1}
+              disabled
+            />
+          </Form.Item>
+        </div>
+
+        <TabsComponent />
+
+        <div
+          hidden={Number(currentTabKey) !== 1}
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignContent: 'baseline',
+            maxWidth: '960px',
+            minHeight: '420px'
+          }}
+        >
+
+          <Form.Item label="Серийный номер" style={{width:460}}>
+            <InputTT
+              name="serialNumber"
+              placeholder="Укажите серийный номер..."
+              type="text"
+              onChange={handleChange}
+              value={values.serialNumber}
+              onBlur={handleBlur}
+            />
+            <Alert name="serialNumber" />
+          </Form.Item>
+
+          <Form.Item label="Выберите тип прибора" style={{width:460}}>
             <SelectTT
               name="housingMeteringDeviceType"
               onChange={(event) => {
@@ -176,7 +270,7 @@ const FormEditODPU = (props) => {
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
 
-          <Form.Item label="Выберите тип ресурса">
+          <Form.Item label="Выберите тип ресурса" style={{width:460}}>
             <SelectTT
               name="resource"
               onChange={(value) => {
@@ -188,7 +282,7 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Выберите модель прибора">
+          <Form.Item label="Выберите модель прибора" style={{width:460}}>
             <InputTT
               name="model"
               placeholder="Укажите модель..."
@@ -200,31 +294,7 @@ const FormEditODPU = (props) => {
             <Alert name="model" />
           </Form.Item>
 
-          <Form.Item label="Серийный номер">
-            <InputTT
-              name="serialNumber"
-              placeholder="Укажите серийный номер..."
-              type="text"
-              onChange={handleChange}
-              value={values.serialNumber}
-              onBlur={handleBlur}
-            />
-            <Alert name="serialNumber" />
-          </Form.Item>
-
-          <Form.Item label="Диаметр трубы (мм)">
-            <InputTT
-              name="diameter"
-              placeholder="Укажите диаметр трубы в мм"
-              type={'number'}
-              onChange={handleChange}
-              value={values.diameter}
-              onBlur={handleBlur}
-            />
-            <Alert name="diameter" />
-          </Form.Item>
-
-          <Form.Item label="Дата поверки">
+          <Form.Item label="Дата поверки" style={{width:460}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
@@ -237,7 +307,7 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки">
+          <Form.Item label="Дата следующей поверки" style={{width:460}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
@@ -250,7 +320,7 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска">
+          <Form.Item label="Дата начала Акта действия допуска" style={{width:460}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
@@ -263,7 +333,7 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска">
+          <Form.Item label="Дата окончания Акта действия допуска" style={{width:460}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
@@ -276,64 +346,23 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Город">
-            <InputTT
-              name="city"
-              type="text"
-              placeholder="Укажите город"
-              onChange={handleChange}
-              value={values.city}
-              disabled
-            />
-            <Alert name="city" />
-          </Form.Item>
-
-          <Form.Item label="Улица">
-            <InputTT
-              name="street"
-              type="text"
-              placeholder="Укажите улицу"
-              onChange={handleChange}
-              value={values.street}
-              disabled
-            />
-            <Alert name="street" />
-          </Form.Item>
-
-          <Form.Item label="Номер дома">
-            <InputTT
-              name="housingStockNumber"
-              type="text"
-              placeholder="Укажите дом"
-              onChange={handleChange}
-              value={values.housingStockNumber}
-              disabled
-            />
-            <Alert name="number" />
-          </Form.Item>
-
-          {corpus ? (
-            <Form.Item label="Номер корпуса">
-              <InputTT
-                name="corpus"
-                type="text"
-                placeholder="Номер корпуса"
-                onChange={handleChange}
-                value={values.corpus}
-                disabled
-              />
-              <Alert name="corpus" />
-            </Form.Item>
-          ) : null}
-
         </div>
 
-        <div hidden={Number(currentTabKey) !== 2}>
-          <Form.Item label="Подключение к вычислителю">
+        <div hidden={Number(currentTabKey) !== 2}
+             style={{
+               display: 'flex',
+               flexWrap: 'wrap',
+               justifyContent: 'space-between',
+               alignContent: 'baseline',
+               maxWidth: '960px',
+               // minHeight: '420px'
+             }}
+
+        >
+          <Form.Item label="Подключение к вычислителю" style={{ width: 460 }}>
             <SelectTT
               name="isConnected"
               onChange={(item) => {
-                // (item === false) ? setDisable(true) : setDisable(false);
                 setFieldValue('isConnected', item);
               }}
               placeholder="Подключение к вычислителю"
@@ -343,21 +372,21 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item
-            label="Выберите вычислитель, к которому подключен прибор"
-          >
-            <SelectTT
-              name="calculatorId"
-              placeholder="Начните вводить серийный номер или IP адрес прибора"
-              onChange={(value) => { setFieldValue('calculatorId', value); }}
-              options={calculators}
-              value={values.calculatorId}
-              disabled={disable}
-            />
-            <Alert name="calculatorId" />
-          </Form.Item>
+          {/* <Form.Item */}
+          {/*  label="Выберите вычислитель, к которому подключен прибор" */}
+          {/* > */}
+          {/*  <SelectTT */}
+          {/*    name="calculatorId" */}
+          {/*    placeholder="Начните вводить серийный номер или IP адрес прибора" */}
+          {/*    onChange={(value) => { setFieldValue('calculatorId', value); }} */}
+          {/*    options={calculators} */}
+          {/*    value={values.calculatorId} */}
 
-          <Form.Item label="Номер ввода">
+          {/*  /> */}
+          {/*  <Alert name="calculatorId" /> */}
+          {/* </Form.Item> */}
+
+          <Form.Item label="Номер ввода" style={{ width: 460 }}>
             <InputTT
               name="entryNumber"
               type="number"
@@ -365,12 +394,11 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.entryNumber}
-              disabled={disable}
             />
             <Alert name="entryNumber" />
           </Form.Item>
 
-          <Form.Item label="Номер узла">
+          <Form.Item label="Номер узла" style={{ width: 460 }}>
             <InputTT
               name="hubNumber"
               type="number"
@@ -378,12 +406,11 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.hubNumber}
-              disabled={disable}
             />
             <Alert name="hubNumber" />
           </Form.Item>
 
-          <Form.Item label="Номер трубы">
+          <Form.Item label="Номер трубы" style={{ width: 460 }}>
             <InputTT
               name="pipeNumber"
               type="number"
@@ -391,56 +418,60 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.pipeNumber}
-              disabled={disable}
             />
             <Alert name="pipeNumber" />
           </Form.Item>
 
 
-          <Form.Item label="Направление магистрали">
-            <SelectTT
-              name="magistral"
-              options={magistrals}
-              placeholder="Направление магистрали"
-              onChange={(value) => { setFieldValue('magistral', value); }}
-              onBlur={handleBlur}
-              value={values.magistral}
-            />
-            <Alert name="magistral" />
-          </Form.Item>
-
         </div>
 
-        <div hidden={Number(currentTabKey) !== 3}>
+        <div hidden={Number(currentTabKey) !== 3}
+             style={{
+               display: 'flex',
+               flexWrap: 'wrap',
+               justifyContent: 'space-between',
+               maxWidth: '960px',
+               // minHeight: '420px',
+               alignContent: 'baseline',
+             }}
+
+        >
           <Header>Компонент в разработке</Header>
         </div>
 
-        {/* <EditODPUButtons /> */}
-
-        <div style={{ padding: '32px 0' }}>
-          <ButtonTT
-            form="editOdpuForm"
-            color="blue"
-            style={{ marginRight: '16px' }}
-            onClick={handleSubmit}
-            type="submit"
-          >
-            Сохранить
-          </ButtonTT>
-
-          <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
-            <ButtonTT
-              style={{ marginLeft: '16px' }}
-              color="white"
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-end',
+          maxWidth: '960px',
+        }}
+        >
+          {
+            Number(currentTabKey)<3 ?      <ButtonTT
+              color="blue"
+              onClick={handleNextChangeTab}
+              type='button'
             >
-              Отмена
+              Далее
             </ButtonTT>
-          </NavLink>
-        </div>
 
+              :
+
+              <ButtonTT
+                color="blue"
+                onClick={handleSubmit}
+                type='button'
+              >
+                Сохранить
+              </ButtonTT>
+          }
+
+
+
+        </div>
       </form>
     </div>
   );
 };
 
-export default FormEditODPU;
+export default EmptyForm;
