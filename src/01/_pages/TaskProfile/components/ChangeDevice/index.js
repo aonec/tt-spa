@@ -3,6 +3,8 @@ import ChangeDeviceForm from './ChangeDeviceForm';
 import Complete from './SearchInput';
 import { getClosedDevices } from './apiChangeDevice';
 import { Header , ButtonTT} from '../../../../tt-components';
+import FormEditODPU from './EditOPDUForm'
+import EmptyForm from "./EmptyForm";
 
 export const ChangeDeviceContext = createContext();
 const ChangeDevice = (props) => {
@@ -34,8 +36,9 @@ const ChangeDevice = (props) => {
           ChangeDevice
         </Header>
         <Complete />
-        <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
 
+        <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
+        <EmptyForm />
         {/* <ChangeDeviceForm /> */}
       </div>
     </ChangeDeviceContext.Provider>
