@@ -8,7 +8,7 @@ import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
-import ChangeDevice from '../ChangeDevice'
+import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
   panel {
@@ -73,7 +73,6 @@ const styles = css`
 
 `;
 
-
 const Textarea = (props) => styled`
     textarea {
       --h: var(--h-big);
@@ -99,9 +98,9 @@ const TemplateButton = () => styled(s.button)`
       grid-area: tmp;
     }
   `(
-  <button data-big>
-    <span>Выбрать из шаблона</span>
-  </button>,
+    <button data-big>
+      <span>Выбрать из шаблона</span>
+    </button>,
 );
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
@@ -110,10 +109,10 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       margin-left: 10px;
     }
   `(
-  <button data-big data-primary {...props}>
-    <Loader show={loading} />
-    <span>Завершить этап</span>
-  </button>,
+    <button data-big data-primary {...props}>
+      <Loader show={loading} />
+      <span>Завершить этап</span>
+    </button>,
 );
 
 export const Panel = ({
@@ -145,7 +144,6 @@ export const Panel = ({
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
 
-
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
@@ -167,7 +165,6 @@ export const Panel = ({
 
   const { emailNotify = {} } = state;
 
-
   return styled(styles)(
     // <Route path="/tasks/(\\d+)" exact>
     <panel
@@ -178,10 +175,10 @@ export const Panel = ({
         four: Completion,
         five: Switch && PushButton,
         six: UploadReadings || addReadingsDone,
-        seven: ChangeDevice
+        seven: ChangeDevice,
       })}
     >
-      {(SwitchDevices && !isObserver) && <ChangeDevice device={device}/>}
+      {(SwitchDevices && !isObserver) && <ChangeDevice device={device} />}
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
@@ -198,22 +195,22 @@ export const Panel = ({
       )}
 
       {EmailNotify && <TemplateButton />}
-      {(AddDocuments && !isObserver) && (
+      {(!SwitchDevices && AddDocuments && !isObserver) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
         </>
       )}
+
       {Switch && (
         <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
       {(UploadReadings || addReadingsDone) && (
         <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
       )}
-      <PushButton {...pushProps} />
+      {!SwitchDevices && <PushButton {...pushProps} />}
+
     </panel>,
     // </Route>
   );
 };
-
-
