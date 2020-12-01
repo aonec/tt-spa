@@ -205,6 +205,14 @@ const UniversalForm = (props) => {
     setCurrentTabKey(String(Number(currentTabKey) + 1));
   }
 
+  function handleEdit() {
+    console.log("handleEdit")
+  }
+
+  function handleAdd() {
+    console.log("handleAdd")
+  }
+
   function Buttons() {
     const EmptyButtons = () => {
       console.log('EmptyButtons');
@@ -218,11 +226,11 @@ const UniversalForm = (props) => {
     const EditButtons = () => (
       <>
         {currentTabKey !== '3' ? (
-          <ButtonTT color="blue">
+          <ButtonTT color="blue" type='button' onClick={handleNextChangeTab}>
             Далее
           </ButtonTT>
         ) : (
-          <ButtonTT color="blue">
+          <ButtonTT color="blue" onClick={handleEdit}>
             Сохранить
           </ButtonTT>
         )}
@@ -232,17 +240,17 @@ const UniversalForm = (props) => {
     const AddButtons = () => (
       <>
         {currentTabKey !== '3' ? (
-          <ButtonTT color="blue">
+          <ButtonTT color="blue" type='button' onClick={handleNextChangeTab}>
             Далее
           </ButtonTT>
         ) : (
-          <ButtonTT color="blue">
+          <ButtonTT color="blue" onClick={handleAdd}>
             Добавить
           </ButtonTT>
         )}
       </>
     )
-    
+
     {
       switch (state) {
         case 'empty':
