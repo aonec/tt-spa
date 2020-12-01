@@ -22,9 +22,8 @@ const UniversalForm = (props) => {
   const { disabled } = props;
   const [currentTabKey, setCurrentTabKey] = useState('1');
   const { device, state, selected } = useContext(ChangeDeviceContext);
-
   const { resource, housingMeteringDeviceType, hubConnection } = device;
-  console.log('selected', selected);
+
   const {
     hub,
     calculatorConnection,
@@ -38,13 +37,11 @@ const UniversalForm = (props) => {
   } = hub;
 
   function isDisabled(value) {
-    const res = disabled.find((item) => item === value);
-    if (res) {
-      return true;
-    }
-    return false;
+    return disabled.includes(value)
   }
+  //стрелочной и массив в входящих значениях
 
+  // console.log(array1.includes(2));
 
   const {
     serialNumber,
@@ -56,8 +53,7 @@ const UniversalForm = (props) => {
   } = selected;
 
 
-  useEffect(()=>{
-    console.log("selected", selected)
+  useEffect(()=> {
     setFieldValue('serialNumber', serialNumber)
     setFieldValue('model', model)
     setFieldValue('lastCommercialAccountingDate', lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate))
@@ -177,15 +173,12 @@ const UniversalForm = (props) => {
     setCurrentTabKey(String(Number(currentTabKey) + 1));
   }
 
+
+
+
+
   function handleEdit() {
     console.log('handleEdit');
-    const form = {
-      housingMeteringDeviceSwitch: {
-        deviceId: device.id,
-        documentsIds: [0],
-        newDeviceId: selected.id,
-      },
-    };
 
     const PUT_EDIT_FORM = {
       serialNumber: values.serialNumber,
@@ -201,6 +194,17 @@ const UniversalForm = (props) => {
 
     console.log(PUT_EDIT_FORM);
     putOdpu(selected.id, PUT_EDIT_FORM)
+
+    const form = {
+      housingMeteringDeviceSwitch: {
+        deviceId: device.id,
+        documentsIds: [0],
+        newDeviceId: selected.id,
+      },
+    };
+
+
+    //postTask(form)
 
 
   }
@@ -225,6 +229,7 @@ const UniversalForm = (props) => {
     // postOdpu(POST_ODPU_FORM)
   }
 
+  //switch case => убрать const
   function Buttons() {
     const EmptyButtons = () => {
       console.log('EmptyButtons');

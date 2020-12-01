@@ -6,9 +6,42 @@ import UniversalForm from './components/UnversalForm';
 
 export const ChangeDeviceContext = createContext();
 
+const emptyDisabled = ['serialNumber',
+  'lastCheckingDate',
+  'futureCheckingDate',
+  'lastCommercialAccountingDate',
+  'futureCommercialAccountingDate',
+  'housingMeteringDeviceType',
+  'resource',
+  'model',
+  'isConnected',
+  'entryNumber',
+  'hubNumber',
+  'pipeNumber',
+  'calculatorId'];
+
+const editDisabled = ['serialNumber',
+  'resource',
+  'isConnected',
+  'entryNumber',
+  'hubNumber',
+  'pipeNumber',
+  'calculatorId'];
+
+const addDisabled = [
+  'housingMeteringDeviceType',
+  'resource',
+  'isConnected',
+  'entryNumber',
+  'hubNumber',
+  'pipeNumber',
+  'calculatorId'];
+
 const ChangeDevice = (props) => {
+
   const [devices, setDevices] = useState();
   const [device, setDevice] = useState();
+
   const [selected, setSelected] = useState({
     serialNumber: '',
     model: '',
@@ -17,40 +50,10 @@ const ChangeDevice = (props) => {
     lastCheckingDate: null,
     futureCheckingDate: null,
   });
+
   const [newDevice, setNewDevice] = useState();
 
   const [state, setState] = useState('empty');
-
-  const emptyDisabled = ['serialNumber',
-    'lastCheckingDate',
-    'futureCheckingDate',
-    'lastCommercialAccountingDate',
-    'futureCommercialAccountingDate',
-    'housingMeteringDeviceType',
-    'resource',
-    'model',
-    'isConnected',
-    'entryNumber',
-    'hubNumber',
-    'pipeNumber',
-    'calculatorId'];
-
-  const editDisabled = ['serialNumber',
-    'resource',
-    'isConnected',
-    'entryNumber',
-    'hubNumber',
-    'pipeNumber',
-    'calculatorId'];
-
-  const addDisabled = [
-    'housingMeteringDeviceType',
-    'resource',
-    'isConnected',
-    'entryNumber',
-    'hubNumber',
-    'pipeNumber',
-    'calculatorId'];
 
   const [disabled, setDisabled] = useState(emptyDisabled);
 
