@@ -208,6 +208,7 @@ export const Panel = ({
       {(UploadReadings || addReadingsDone) && (
         <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
       )}
+      {/*Скрываю кнопку "Завершить этап" только для задачи "Замена прибора"*/}
       {!SwitchDevices && <PushButton {...pushProps} />}
 
     </panel>,

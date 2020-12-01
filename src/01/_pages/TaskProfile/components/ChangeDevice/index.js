@@ -7,10 +7,16 @@ import UniversalForm from './components/UnversalForm';
 export const ChangeDeviceContext = createContext();
 
 const ChangeDevice = (props) => {
-
   const [devices, setDevices] = useState();
   const [device, setDevice] = useState();
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState({
+    serialNumber: '',
+    model: '',
+    lastCommercialAccountingDate: null,
+    futureCommercialAccountingDate: null,
+    lastCheckingDate: null,
+    futureCheckingDate: null,
+  });
   const [newDevice, setNewDevice] = useState();
 
   const [state, setState] = useState('empty');
@@ -30,9 +36,7 @@ const ChangeDevice = (props) => {
     'calculatorId'];
 
   const editDisabled = ['serialNumber',
-    'lastCheckingDate',
     'resource',
-    'model',
     'isConnected',
     'entryNumber',
     'hubNumber',
@@ -49,7 +53,6 @@ const ChangeDevice = (props) => {
     'calculatorId'];
 
   const [disabled, setDisabled] = useState(emptyDisabled);
-
 
   useEffect(() => {
     getClosedDevices().then((res) => {
@@ -77,7 +80,6 @@ const ChangeDevice = (props) => {
   }, [state]);
 
 
-
   if (!devices || !device) {
     return <div>Загрузка</div>;
   }
@@ -88,6 +90,8 @@ const ChangeDevice = (props) => {
   const context = {
     device, devices, selected, setSelected, state, setState,
   };
+
+  console.log('selected', selected);
 
   return (
     <ChangeDeviceContext.Provider value={context}>

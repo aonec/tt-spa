@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Form, Tabs } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -14,19 +14,20 @@ import {
   magistrals,
   resources,
 } from '../../../../../tt-components/localBases';
-import { putOdpu } from '../../../../EditODPU/components/apiEditOdpu';
+import { putOdpu, postOdpu } from '../../../../EditODPU/components/apiEditOdpu';
 
 const { TabPane } = Tabs;
 
 const UniversalForm = (props) => {
   const { disabled } = props;
   const [currentTabKey, setCurrentTabKey] = useState('1');
+  const { device, state, selected } = useContext(ChangeDeviceContext);
 
-  const { device, selected, state } = useContext(ChangeDeviceContext);
   const { resource, housingMeteringDeviceType, hubConnection } = device;
-
+  console.log('selected', selected);
   const {
-    hub, calculatorConnection,
+    hub,
+    calculatorConnection,
     calculatorId,
     calculatorModel,
     calculatorSerialNumber,
@@ -37,60 +38,40 @@ const UniversalForm = (props) => {
   } = hub;
 
   function isDisabled(value) {
-    const res = disabled.find((item) => item == value);
+    const res = disabled.find((item) => item === value);
     if (res) {
       return true;
     }
-
     return false;
   }
 
-  // console.log(useContext(ChangeDeviceContext))
-  // const {
-  //   // address,
-  //   // hubConnection,
-  //   id,
-  //   model,
-  //   serialNumber,
-  //   connection,
-  //   lastCommercialAccountingDate,
-  //   futureCommercialAccountingDate,
-  //   lastCheckingDate,
-  //   futureCheckingDate,
-  //   diameter,
-  //   // resource,
-  //   // housingMeteringDeviceType,
-  // } = selected;
 
-  // const {
-  //   hubConnection,
-  //   resource,
-  //   housingMeteringDeviceType,
-  // } = device;
-  //
-  // console.log(device)
+  const {
+    serialNumber,
+    model,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
+    lastCheckingDate,
+    futureCheckingDate,
+  } = selected;
 
-  // const {
-  //   hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
-  // } = hubConnection;
 
-  // const {
-  //   isConnected, ipV4, port, deviceAddress,
-  // } = calculatorConnection || {
-  //   isConnected: false,
-  //   ipV4: '',
-  //   port: null,
-  //   deviceAddress: null,
-  // };
+  useEffect(()=>{
+    console.log("selected", selected)
+    setFieldValue('serialNumber', serialNumber)
+    setFieldValue('model', model)
+    setFieldValue('lastCommercialAccountingDate', lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate))
+    setFieldValue('futureCommercialAccountingDate', futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate))
+    setFieldValue('lastCheckingDate', lastCheckingDate === null ? null : moment(lastCheckingDate))
+    setFieldValue('futureCheckingDate', futureCheckingDate === null ? null : moment(futureCheckingDate))
+  },[selected])
 
-  // const {
-  //   entryNumber, hubNumber, pipeNumber, magistral,
-  // } = hub;
-
-  // const {
-  //   city, street, housingStockNumber, corpus,
-  // } = address;
-
+  const PUT_TEMPLATE = {
+    serialNumber: '011220201609',
+    model: 'TEST 1609',
+    housingMeteringDeviceType: 'FlowMeter',
+    resource: 'Heat',
+  };
   const {
     handleSubmit,
     handleChange, values,
@@ -103,30 +84,21 @@ const UniversalForm = (props) => {
     initialValues: {
       housingMeteringDeviceType,
       resource,
-      // model: model || 'Модель не указана',
-      // serialNumber: serialNumber || 'Серийный номер не указан',
-      // lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
-      // futureCheckingDate: moment().toISOString(),
-      // futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
+      model,
+      serialNumber,
+      lastCheckingDate: lastCheckingDate === null ? null : moment(lastCheckingDate),
+      futureCheckingDate: futureCheckingDate === null ? null : moment(futureCheckingDate),
+      lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
       entryNumber,
       hubNumber,
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
-      // diameter: diameter,
-      // port: port || 0,
-      checkingDate: moment().toISOString(),
-      // city: city || 'Город не указан',
-      // street: street || 'Улица не указана',
-      // housingStockNumber: housingStockNumber || 'Номер дома не указан',
-      // corpus: corpus,
-      // magistral: magistral || 'Не выбрано',
-      // ipV4,
       isConnected: isConnectedValue[0].value,
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
       pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
-      // diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
@@ -148,7 +120,7 @@ const UniversalForm = (props) => {
       // console.log(values)
     },
   });
-
+  console.log('values', values);
   const actionsList = [
     { value: 1, label: 'Замена прибора' },
   ];
@@ -196,7 +168,7 @@ const UniversalForm = (props) => {
       </Tabs>
     );
   function handleChangeTab(value) {
-    console.log(currentTabKey)
+    console.log(currentTabKey);
     setCurrentTabKey(value);
   }
 
@@ -206,11 +178,51 @@ const UniversalForm = (props) => {
   }
 
   function handleEdit() {
-    console.log("handleEdit")
+    console.log('handleEdit');
+    const form = {
+      housingMeteringDeviceSwitch: {
+        deviceId: device.id,
+        documentsIds: [0],
+        newDeviceId: selected.id,
+      },
+    };
+
+    const PUT_EDIT_FORM = {
+      serialNumber: values.serialNumber,
+      checkingDate: values.checkingDate,
+      lastCheckingDate: values.lastCheckingDate,
+      futureCheckingDate: values.futureCheckingDate,
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      housingMeteringDeviceType: values.housingMeteringDeviceType,
+      resource: values.resource,
+      model: values.model,
+    };
+
+    console.log(PUT_EDIT_FORM);
+    putOdpu(selected.id, PUT_EDIT_FORM)
+
+
   }
 
   function handleAdd() {
-    console.log("handleAdd")
+    console.log('handleAdd');
+
+    const POST_ODPU_FORM = {
+      serialNumber: values.serialNumber,
+      model: values.model,
+      resource: values.resource,
+      housingMeteringDeviceType: values.housingMeteringDeviceType,
+      lastCheckingDate: values.lastCheckingDate.toISOString(),
+      futureCheckingDate: values.futureCheckingDate.toISOString(),
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+      futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+      closingDate: moment().toISOString(),
+    };
+
+    console.log('POST_ODPU_FORM', POST_ODPU_FORM);
+    console.log('POST_ODPU_FORM', JSON.stringify(POST_ODPU_FORM));
+    // postOdpu(POST_ODPU_FORM)
   }
 
   function Buttons() {
@@ -226,12 +238,12 @@ const UniversalForm = (props) => {
     const EditButtons = () => (
       <>
         {currentTabKey !== '3' ? (
-          <ButtonTT color="blue" type='button' onClick={handleNextChangeTab}>
+          <ButtonTT color="blue" type="button" onClick={handleNextChangeTab}>
             Далее
           </ButtonTT>
         ) : (
-          <ButtonTT color="blue" onClick={handleEdit}>
-            Сохранить
+          <ButtonTT color="blue" type="button" onClick={handleEdit}>
+            Завершить этап
           </ButtonTT>
         )}
       </>
@@ -240,16 +252,16 @@ const UniversalForm = (props) => {
     const AddButtons = () => (
       <>
         {currentTabKey !== '3' ? (
-          <ButtonTT color="blue" type='button' onClick={handleNextChangeTab}>
+          <ButtonTT color="blue" type="button" onClick={handleNextChangeTab}>
             Далее
           </ButtonTT>
         ) : (
-          <ButtonTT color="blue" onClick={handleAdd}>
-            Добавить
+          <ButtonTT color="blue" type="button" onClick={handleAdd}>
+            Завершить этап
           </ButtonTT>
         )}
       </>
-    )
+    );
 
     {
       switch (state) {
@@ -368,59 +380,57 @@ const UniversalForm = (props) => {
             <Alert name="model" />
           </Form.Item>
 
-          <Form.Item label="Дата поверки" style={{ width: 460 }}>
+          <Form.Item label="Дата Поверки" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date);
               }}
-              value={moment(values.lastCheckingDate)}
+              value={values.lastCheckingDate}
               disabled={isDisabled('lastCheckingDate')}
             />
+            <Alert name="lastCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки" style={{ width: 460 }}>
+          <Form.Item label="Дата Следующей поверки" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="futureCheckingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
-              value={moment(values.futureCheckingDate)}
+              value={values.futureCheckingDate}
+              name="futureCheckingDate"
               disabled={isDisabled('futureCheckingDate')}
             />
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска" style={{ width: 460 }}>
+          <Form.Item label="Дата начала действия акта-допуска" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString());
+                setFieldValue('lastCommercialAccountingDate', date);
               }}
-              value={moment(values.lastCommercialAccountingDate)}
               disabled={isDisabled('lastCommercialAccountingDate')}
+              value={values.lastCommercialAccountingDate}
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска" style={{ width: 460 }}>
+          <Form.Item label="Дата окончания действия акта-допуска" style={{ width: 460 }}>
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="futureCommercialAccountingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date.toISOString());
+                setFieldValue('futureCommercialAccountingDate', date);
               }}
-              value={moment(values.futureCommercialAccountingDate)}
               disabled={isDisabled('futureCommercialAccountingDate')}
+              value={values.futureCommercialAccountingDate}
+              name="futureCommercialAccountingDate"
             />
           </Form.Item>
 

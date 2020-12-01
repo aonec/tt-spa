@@ -41,6 +41,7 @@ const SearchInputAndAdd = () => {
     // console.log(data);
     getOdpu(data).then((res) => {
       setSelected(res);
+      console.log(res)
     });
     setState('edit')
   };
