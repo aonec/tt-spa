@@ -1,10 +1,9 @@
-import React from "react";
+import React, {useContext, useState} from "react";
 import styled from "styled-components";
 import {InputTT} from "../../../../../../tt-components/InputTT";
 import { Input} from 'antd';
 
 let ReadingLineStyled = styled.div`
-display: flex;
 max-width: 180px;
 border: 1px solid #DCDEE4;
 margin-right: 8px;
@@ -24,9 +23,15 @@ color: rgba(39, 47, 90, 0.32);
 `
 
 
-const DeviceRates = ({index, onChange, value, readingsBlocked, resource}) => {
+const DeviceRates = ({index, onChange, value, readingsBlocked = false, resource, operatorCabinet = false, sendReadings}) => {
+
+    const [prevValue, setPrevValue] = useState(null)
 
 
+    const onBlurHandler = (e) => {
+        if (prevValue === e.target.value) return;
+        sendReadings();
+    }
 
    return (
        <ReadingLineStyled>
@@ -37,6 +42,8 @@ const DeviceRates = ({index, onChange, value, readingsBlocked, resource}) => {
                type="text"
                value={value}
                onChange={onChange}
+               onBlur={operatorCabinet ? onBlurHandler : null}
+               onFocus={(e) => setPrevValue(e.target.value)}
            />
        </ReadingLineStyled>
 )

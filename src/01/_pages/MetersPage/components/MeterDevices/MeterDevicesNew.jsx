@@ -1,11 +1,13 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import styled, { css } from "reshadow/macro"
 
 import * as style from "01/r_comp"
 import { Icon } from "01/components"
 import DeviceReadingForm from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
-import readingsReducer from "../../../../components/Select/selects/AddReadings/readingsReducer";
+import readingsReducer, {setDevices} from "../../../../components/Select/selects/AddReadings/readingsReducer";
 import OperatorDeviceReadingForm from "./components/OperatorDeviceReadingForm";
+import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
+import axios from "axios";
 
 const styles = css`
   meter_header,
@@ -106,21 +108,39 @@ const styles = css`
   }
 `
 
-
+const ReadingsContext = React.createContext()
 
 export const MeterDevicesNew = ({items = []}) => {
     const [isLoading, setIsLoading] = useState(true);
 
+
     const [state, dispatch] = React.useReducer(readingsReducer, {});
 
-    if (!items.length) return null
+    useEffect(() => {
+        dispatch(setDevices(items))
+    }, [items])
 
-    const readings = items.map((device) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch} />)
+
+    const sendReadings = (device) => {
+        // const json = JSON.stringify(formReadingToPush(device))
+        axios.post('/IndividualDeviceReadings/create', formReadingToPush(device))
+    }
+
+    if (!state.devices?.length) return null
+
+    // let sendReadings = (devices) => {
+    //     const readingsToPush = formReadingsToPush(devices);
+    //     axios.post('IndividualDeviceReadings/create', readingsToPush)
+    // }
+
+    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
+                                                                              sendReadings={() => sendReadings(device)}
+    />)
 
     return styled(styles, style.button)(
-        <meters>
-            <meter_header>Информация o приборe</meter_header>
-            {readings}
-        </meters>
-    )
-}
+            <meters>
+                <meter_header>Информация o приборe</meter_header>
+                {readings}
+            </meters>
+            )
+            }

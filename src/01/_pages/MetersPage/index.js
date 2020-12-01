@@ -30,7 +30,7 @@ export const MetersPage = () => {
       <Route path="/*/apartments/:id">
         <ApartmentInfo {...apartInfo} />
         {/*<MeterDevices {...meterDev} />*/}
-        <MeterDevicesNew {...state.meterDevices} />
+        <MeterDevicesNew {...meterDev} />
       </Route>
     </>
   )

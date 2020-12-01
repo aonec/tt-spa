@@ -20,12 +20,12 @@ const FullDeviceLine = styled.div`
     margin-bottom: 8px;
     align-items: center;
     justify-content: flex-start;
-    white-space: nowr
+    white-space: nowrap
     padding-bottom: 7px;
     border-bottom: 1px solid #DCDEE4;
     `
 
-const OperatorDeviceReadingForm = ({device, dispatch}) => {
+const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
 
     const [readingsState, setReadingsState] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +34,6 @@ const OperatorDeviceReadingForm = ({device, dispatch}) => {
     const numberOfReadings = rateTypeToNumber(device.rateType);
     // const readingsArray = [];
     // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
-debugger;
     useEffect(() => {
         setIsLoading(true)
         const previousReadingsArray = [];
@@ -47,6 +46,10 @@ debugger;
             currentReadingsArray.push(currentReadings[`value${i}`] ?? '-');
         }
 
+        // for (let i=1; i <= 2; i++) {
+        //     previousReadingsArray.push(i);
+        //     currentReadingsArray.push(i);
+        // }
 
         setReadingsState({
             previousReadingsArray,
@@ -64,12 +67,14 @@ debugger;
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
-    const currentDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
+    const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
         <DeviceRates key={readingsState.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
+                     operatorCabinet
+                     sendReadings={sendReadings}
         />
     ));
 
@@ -79,6 +84,7 @@ debugger;
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
+                     readingsBlocked
         />
     ));
 
@@ -105,8 +111,8 @@ debugger;
                 <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
             </div>
             </div>
-            <div style={{display: 'flex'}}>{currentDeviceReadings}</div>
-            <div style={{display: 'flex'}}>{previousDeviceReadings}</div>
+            <div style={{display: 'flex', flexDirection: 'column'}}>{currentDeviceReadings}</div>
+            <div style={{display: 'flex', flexDirection: 'column'}}>{previousDeviceReadings}</div>
 
         </FullDeviceLine>
     )

@@ -45,6 +45,7 @@ const initialState = {
 
 
 const readingsReducer = (state= initialState, action) => {
+    window.readings = state;
     switch (action.type) {
 
         case SET_DEVICES:

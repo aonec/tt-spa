@@ -16,7 +16,7 @@ const FullDeviceLine = styled.div`
     margin-bottom: 8px;
     align-items: center;
     justify-content: flex-start;
-    white-space: nowr
+    white-space: nowrap;
     padding-bottom: 7px;
     border-bottom: 1px solid #DCDEE4;
     `
