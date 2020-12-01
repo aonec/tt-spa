@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const initialState = {
   serialNumber: '',
-  checkingDate: '',
+  lastCheckingDate: '',
   futureCheckingDate: '',
   lastCommercialAccountingDate: '',
   connection: {

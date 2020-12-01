@@ -5,6 +5,8 @@ import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
 import EmptyForm from './components/EmptyForm'
 import EditForm from './components/EditForm'
+import AddForm from './components/AddForm'
+import UniversalForm from './components/UnversalForm'
 
 export const ChangeDeviceContext = createContext();
 
@@ -19,6 +21,7 @@ const ChangeDevice = (props) => {
   const [state, setState]=useState('empty')
 
   const ResForm = () =>{
+
     switch (state) {
       case "empty":
         return <div>empty
@@ -32,7 +35,8 @@ const ChangeDevice = (props) => {
           <EditForm />
         </div>
       case "add":
-        return <div>add</div>
+        return <div>add
+          <AddForm /></div>
       default:
         return <div>empty</div>
     }
@@ -70,7 +74,8 @@ const ChangeDevice = (props) => {
           Замена расходомера/термодатчика
         </Header>
         <SearchInputAndAdd />
-        <ResForm />
+        {/*<ResForm />*/}
+        <UniversalForm />
       </div>
       <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
     </ChangeDeviceContext.Provider>
