@@ -1,57 +1,81 @@
 import React, { createContext, useEffect, useState } from 'react';
-
 import { getClosedDevices, getOdpu } from './apiChangeDevice';
 import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
-import EmptyForm from './components/EmptyForm'
-import EditForm from './components/EditForm'
-import AddForm from './components/AddForm'
-import UniversalForm from './components/UnversalForm'
+import UniversalForm from './components/UnversalForm';
 
 export const ChangeDeviceContext = createContext();
 
 const ChangeDevice = (props) => {
-  // const { device } = props;
 
   const [devices, setDevices] = useState();
-  const [device, setDevice] = useState()
+  const [device, setDevice] = useState();
   const [selected, setSelected] = useState();
   const [newDevice, setNewDevice] = useState();
 
-  const [state, setState]=useState('empty')
+  const [state, setState] = useState('empty');
 
-  const ResForm = () =>{
+  const emptyDisabled = ['serialNumber',
+    'lastCheckingDate',
+    'futureCheckingDate',
+    'lastCommercialAccountingDate',
+    'futureCommercialAccountingDate',
+    'housingMeteringDeviceType',
+    'resource',
+    'model',
+    'isConnected',
+    'entryNumber',
+    'hubNumber',
+    'pipeNumber',
+    'calculatorId'];
 
-    switch (state) {
-      case "empty":
-        return <div>empty
-        <EmptyForm />
-        </div>
-      case "edit":
-        if (!selected) {
-          return <div>Загрузка</div>
-        }
-        return <div>edit
-          <EditForm />
-        </div>
-      case "add":
-        return <div>add
-          <AddForm /></div>
-      default:
-        return <div>empty</div>
-    }
-  }
+  const editDisabled = ['serialNumber',
+    'lastCheckingDate',
+    'resource',
+    'model',
+    'isConnected',
+    'entryNumber',
+    'hubNumber',
+    'pipeNumber',
+    'calculatorId'];
+
+  const addDisabled = [
+    'housingMeteringDeviceType',
+    'resource',
+    'isConnected',
+    'entryNumber',
+    'hubNumber',
+    'pipeNumber',
+    'calculatorId'];
+
+  const [disabled, setDisabled] = useState(emptyDisabled);
+
 
   useEffect(() => {
     getClosedDevices().then((res) => {
       setDevices(res);
     });
-
     getOdpu(props.device.id).then((result) => {
       setDevice(result);
     });
-    console.log(1,2,3,4,5)
   }, []);
+
+  useEffect(() => {
+    switch (state) {
+      case 'empty':
+        setDisabled(emptyDisabled);
+        break;
+      case 'edit':
+        setDisabled(editDisabled);
+        break;
+      case 'add':
+        setDisabled(addDisabled);
+        break;
+      default:
+        setDisabled(emptyDisabled);
+    }
+  }, [state]);
+
 
 
   if (!devices || !device) {
@@ -59,14 +83,12 @@ const ChangeDevice = (props) => {
   }
 
   const handleButton = () => {
-    console.log(device)
-
+    console.log(device);
   };
-  const context = { device , devices, selected, setSelected, state, setState };
+  const context = {
+    device, devices, selected, setSelected, state, setState,
+  };
 
-
-
-  console.log("deviceIndex", device)
   return (
     <ChangeDeviceContext.Provider value={context}>
       <div>
@@ -74,8 +96,7 @@ const ChangeDevice = (props) => {
           Замена расходомера/термодатчика
         </Header>
         <SearchInputAndAdd />
-        {/*<ResForm />*/}
-        <UniversalForm />
+        <UniversalForm disabled={disabled} />
       </div>
       <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
     </ChangeDeviceContext.Provider>

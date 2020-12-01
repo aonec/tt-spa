@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import {
+import Button, {
   SelectTT, InputTT, DatePickerTT, ButtonTT, Header,
 } from '../../../../../tt-components';
 import { ChangeDeviceContext } from '../index';
@@ -19,16 +19,31 @@ import { putOdpu } from '../../../../EditODPU/components/apiEditOdpu';
 const { TabPane } = Tabs;
 
 const UniversalForm = (props) => {
+  const { disabled } = props;
   const [currentTabKey, setCurrentTabKey] = useState('1');
 
+  const { device, selected, state } = useContext(ChangeDeviceContext);
+  const { resource, housingMeteringDeviceType, hubConnection } = device;
 
-  const device = useContext(ChangeDeviceContext).device
-  // const { selected} = useContext(ChangeDeviceContext);
+  const {
+    hub, calculatorConnection,
+    calculatorId,
+    calculatorModel,
+    calculatorSerialNumber,
+  } = hubConnection;
 
-  // console.log("EditFormDevice", device)
-  // console.log("test", device)
+  const {
+    entryNumber, hubNumber, pipeNumber, magistral,
+  } = hub;
 
+  function isDisabled(value) {
+    const res = disabled.find((item) => item == value);
+    if (res) {
+      return true;
+    }
 
+    return false;
+  }
 
   // console.log(useContext(ChangeDeviceContext))
   // const {
@@ -46,7 +61,6 @@ const UniversalForm = (props) => {
   //   // resource,
   //   // housingMeteringDeviceType,
   // } = selected;
-
 
   // const {
   //   hubConnection,
@@ -87,18 +101,17 @@ const UniversalForm = (props) => {
     setValues,
   } = useFormik({
     initialValues: {
-      // housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
-      // resource: resource || 'Тип ресурса не указан',
+      housingMeteringDeviceType,
+      resource,
       // model: model || 'Модель не указана',
       // serialNumber: serialNumber || 'Серийный номер не указан',
       // lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
       // futureCheckingDate: moment().toISOString(),
       // futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
-      // calculatorId: calculatorId || 'Вычислитель не выбран',
-      // entryNumber: entryNumber,
-      // hubNumber: hubNumber,
+      entryNumber,
+      hubNumber,
+      pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       // diameter: diameter,
-      // pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       // port: port || 0,
       checkingDate: moment().toISOString(),
       // city: city || 'Город не указан',
@@ -183,12 +196,68 @@ const UniversalForm = (props) => {
       </Tabs>
     );
   function handleChangeTab(value) {
+    console.log(currentTabKey)
     setCurrentTabKey(value);
   }
 
   function handleNextChangeTab() {
     console.log('handleNextChangeTab');
     setCurrentTabKey(String(Number(currentTabKey) + 1));
+  }
+
+  function Buttons() {
+    const EmptyButtons = () => {
+      console.log('EmptyButtons');
+      return (
+        <ButtonTT color="blue" disabled>
+          EmptyButtons
+        </ButtonTT>
+      );
+    };
+
+    const EditButtons = () => (
+      <>
+        {currentTabKey !== '3' ? (
+          <ButtonTT color="blue">
+            Далее
+          </ButtonTT>
+        ) : (
+          <ButtonTT color="blue">
+            Сохранить
+          </ButtonTT>
+        )}
+      </>
+    );
+
+    const AddButtons = () => (
+      <>
+        {currentTabKey !== '3' ? (
+          <ButtonTT color="blue">
+            Далее
+          </ButtonTT>
+        ) : (
+          <ButtonTT color="blue">
+            Добавить
+          </ButtonTT>
+        )}
+      </>
+    )
+    
+    {
+      switch (state) {
+        case 'empty':
+          return <EmptyButtons />;
+          break;
+        case 'edit':
+          return <EditButtons />;
+          break;
+        case 'add':
+          return <AddButtons />;
+          break;
+        default:
+          return <EmptyButtons />;
+      }
+    }
   }
 
   return (
@@ -247,6 +316,7 @@ const UniversalForm = (props) => {
               onChange={handleChange}
               value={values.serialNumber}
               onBlur={handleBlur}
+              disabled={isDisabled('serialNumber')}
 
             />
             <Alert name="serialNumber" />
@@ -260,7 +330,7 @@ const UniversalForm = (props) => {
               }}
               options={housingMeteringDeviceTypes}
               value={values.housingMeteringDeviceType}
-              disabled
+              disabled={isDisabled('housingMeteringDeviceType')}
             />
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
@@ -273,7 +343,7 @@ const UniversalForm = (props) => {
               }}
               options={resources}
               value={values.resource}
-              disabled
+              disabled={isDisabled('resource')}
             />
           </Form.Item>
 
@@ -285,6 +355,7 @@ const UniversalForm = (props) => {
               onChange={handleChange}
               value={values.model}
               onBlur={handleBlur}
+              disabled={isDisabled('model')}
             />
             <Alert name="model" />
           </Form.Item>
@@ -299,6 +370,7 @@ const UniversalForm = (props) => {
                 setFieldValue('lastCheckingDate', date.toISOString());
               }}
               value={moment(values.lastCheckingDate)}
+              disabled={isDisabled('lastCheckingDate')}
             />
           </Form.Item>
 
@@ -312,6 +384,7 @@ const UniversalForm = (props) => {
                 setFieldValue('futureCheckingDate', date.toISOString());
               }}
               value={moment(values.futureCheckingDate)}
+              disabled={isDisabled('futureCheckingDate')}
             />
           </Form.Item>
 
@@ -325,6 +398,7 @@ const UniversalForm = (props) => {
                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
               }}
               value={moment(values.lastCommercialAccountingDate)}
+              disabled={isDisabled('lastCommercialAccountingDate')}
             />
           </Form.Item>
 
@@ -338,6 +412,7 @@ const UniversalForm = (props) => {
                 setFieldValue('futureCommercialAccountingDate', date.toISOString());
               }}
               value={moment(values.futureCommercialAccountingDate)}
+              disabled={isDisabled('futureCommercialAccountingDate')}
             />
           </Form.Item>
 
@@ -364,23 +439,25 @@ const UniversalForm = (props) => {
               placeholder="Подключение к вычислителю"
               options={isConnectedValue}
               value={values.isConnected}
-              disabled
+              disabled={isDisabled('isConnected')}
             />
           </Form.Item>
 
-          {/* <Form.Item */}
-          {/*  label="Выберите вычислитель, к которому подключен прибор" */}
-          {/* > */}
-          {/*  <SelectTT */}
-          {/*    name="calculatorId" */}
-          {/*    placeholder="Начните вводить серийный номер или IP адрес прибора" */}
-          {/*    onChange={(value) => { setFieldValue('calculatorId', value); }} */}
-          {/*    options={calculators} */}
-          {/*    value={values.calculatorId} */}
-
-          {/*  /> */}
-          {/*  <Alert name="calculatorId" /> */}
-          {/* </Form.Item> */}
+          <Form.Item
+            label="Выберите вычислитель, к которому подключен прибор"
+            style={{ width: 460 }}
+          >
+            <SelectTT
+              name="calculatorId"
+              placeholder="Начните вводить серийный номер или IP адрес прибора"
+              onChange={(value) => { setFieldValue('calculatorId', value); }}
+              defaultValue={`${calculatorModel} (${calculatorSerialNumber})`}
+              // options={calculators}
+              // value={values.calculatorId}
+              disabled={isDisabled('calculatorId')}
+            />
+            <Alert name="calculatorId" />
+          </Form.Item>
 
           <Form.Item label="Номер ввода" style={{ width: 460 }}>
             <InputTT
@@ -390,6 +467,7 @@ const UniversalForm = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.entryNumber}
+              disabled={isDisabled('entryNumber')}
             />
             <Alert name="entryNumber" />
           </Form.Item>
@@ -402,6 +480,7 @@ const UniversalForm = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.hubNumber}
+              disabled={isDisabled('hubNumber')}
             />
             <Alert name="hubNumber" />
           </Form.Item>
@@ -414,6 +493,7 @@ const UniversalForm = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.pipeNumber}
+              disabled={isDisabled('pipeNumber')}
             />
             <Alert name="pipeNumber" />
           </Form.Item>
@@ -442,27 +522,29 @@ const UniversalForm = (props) => {
           maxWidth: '960px',
         }}
         >
-          {
-            Number(currentTabKey) < 3 ? (
-                <ButtonTT
-                  color="blue"
-                  onClick={handleNextChangeTab}
-                  type="button"
-                >
-                  Далее
-                </ButtonTT>
-              )
+          <Buttons />
 
-              : (
-                <ButtonTT
-                  color="blue"
-                  onClick={handleSubmit}
-                  type="button"
-                >
-                  Сохранить
-                </ButtonTT>
-              )
-          }
+          {/* { */}
+          {/*  Number(currentTabKey) < 3 ? ( */}
+          {/*    <ButtonTT */}
+          {/*      color="blue" */}
+          {/*      onClick={handleNextChangeTab} */}
+          {/*      type="button" */}
+          {/*    > */}
+          {/*      Далее */}
+          {/*    </ButtonTT> */}
+          {/*  ) */}
+
+          {/*    : ( */}
+          {/*      <ButtonTT */}
+          {/*        color="blue" */}
+          {/*        onClick={handleSubmit} */}
+          {/*        type="button" */}
+          {/*      > */}
+          {/*        Сохранить */}
+          {/*      </ButtonTT> */}
+          {/*    ) */}
+          {/* } */}
 
         </div>
       </form>

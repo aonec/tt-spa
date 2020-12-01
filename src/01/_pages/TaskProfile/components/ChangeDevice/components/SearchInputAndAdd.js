@@ -58,16 +58,16 @@ const SearchInputAndAdd = () => {
   };
 
   const AddDeviceButton = () =>{
-    console.log("AddDevice");
-
     function handleAddDevice(){
       setState('add');
     }
     return (
       <ButtonTT
-        color={'blue'}
+        color={'white'}
         onClick={handleAddDevice}
-      >Добавить</ButtonTT>
+        style={{marginLeft:16}}
+      >+ Добавить новый прибор
+      </ButtonTT>
     )
   }
 
@@ -81,14 +81,13 @@ const SearchInputAndAdd = () => {
         value={value}
         options={options}
         style={{
-          width: 200,
+          width: 672,
         }}
         onSelect={onSelect}
         onChange={onChange}
         onFocus={handleOnSearchFocus}
-        placeholder="Введите серийный номер"
+        placeholder="Введите номер прибора или выберите из списка"
       />
-      <span>или</span>
       <AddDeviceButton />
     </div>
   );
