@@ -13,7 +13,7 @@ import {
 import { addOdpu } from '../apiAddOdpu';
 
 const AddDeviceForm = (props) => {
-  const { currentTabKey, calculators } = props;
+  const { currentTabKey, calculators, handleCancel } = props;
   const [disable, setDisable] = useState(false);
 
   const Alert = ({ name }) => {
@@ -34,7 +34,7 @@ const AddDeviceForm = (props) => {
     initialValues: {
       isConnected: isConnected[0].value,
       serialNumber: '',
-      checkingDate: moment().toISOString(),
+      lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
@@ -67,7 +67,7 @@ const AddDeviceForm = (props) => {
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        checkingDate: values.checkingDate,
+        lastCheckingDate: values.lastCheckingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
@@ -87,6 +87,7 @@ const AddDeviceForm = (props) => {
       console.log(form);
       console.log(JSON.stringify(form));
       addOdpu(form);
+      setTimeout(handleCancel, 1000)
     },
   });
 

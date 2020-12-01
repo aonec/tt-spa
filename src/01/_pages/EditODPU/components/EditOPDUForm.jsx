@@ -70,10 +70,10 @@ const FormEditODPU = (props) => {
       resource: resource || 'Тип ресурса не указан',
       model: model || 'Модель не указана',
       serialNumber: serialNumber || 'Серийный номер не указан',
-      lastCheckingDate: lastCheckingDate || moment().toISOString(),
-      futureCheckingDate: futureCheckingDate || moment().toISOString(),
-      lastCommercialAccountingDate: lastCommercialAccountingDate || moment().toISOString(),
-      futureCommercialAccountingDate: futureCommercialAccountingDate || moment().toISOString(),
+      lastCheckingDate: lastCheckingDate === null ? null : moment(lastCheckingDate),
+      futureCheckingDate: futureCheckingDate === null ? null : moment(futureCheckingDate),
+      lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber: entryNumber,
       hubNumber: hubNumber,
@@ -90,6 +90,10 @@ const FormEditODPU = (props) => {
       isConnected: isConnectedValue[0].value,
     },
     validationSchema: Yup.object({
+      lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+      futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+      lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+      futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       resource: Yup.string().required('Введите данные'),
       pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
@@ -101,7 +105,7 @@ const FormEditODPU = (props) => {
     onSubmit: () => {
       const PUT_EDIT_FORM = {
         serialNumber: values.serialNumber,
-        checkingDate: values.checkingDate,
+        lastCheckingDate: values.lastCheckingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
@@ -123,29 +127,6 @@ const FormEditODPU = (props) => {
       // console.log(values)
     },
   });
-
-  const EditODPUButtons = () => (
-    <div style={{ padding: '32px 0' }}>
-      <ButtonTT
-        form="editOdpuForm"
-        color="blue"
-        style={{ marginRight: '16px' }}
-        onClick={handleSubmit}
-        type="submit"
-      >
-        Сохранить
-      </ButtonTT>
-
-      <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
-        <ButtonTT
-          style={{ marginLeft: '16px' }}
-          color="white"
-        >
-          Отмена
-        </ButtonTT>
-      </NavLink>
-    </div>
-  );
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -225,55 +206,53 @@ const FormEditODPU = (props) => {
             <Alert name="diameter" />
           </Form.Item>
 
-          <Form.Item label="Дата поверки">
+          <Form.Item label="Дата Поверки">
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date);
               }}
-              value={moment(values.lastCheckingDate)}
+              value={values.lastCheckingDate}
             />
+            <Alert name="lastCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки">
+          <Form.Item label="Дата Следующей поверки">
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="futureCheckingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
-              value={moment(values.futureCheckingDate)}
+              value={values.futureCheckingDate}
+              name="futureCheckingDate"
             />
+            <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска">
+          <Form.Item label="Дата начала действия акта-допуска">
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date.toISOString());
+                setFieldValue('lastCommercialAccountingDate', date);
               }}
-              value={moment(values.lastCommercialAccountingDate)}
+              value={values.lastCommercialAccountingDate}
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска">
+          <Form.Item label="Дата окончания действия акта-допуска">
             <DatePickerTT
               format="DD.MM.YYYY"
-              name="futureCommercialAccountingDate"
               placeholder="Укажите дату..."
-              allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date.toISOString());
+                setFieldValue('futureCommercialAccountingDate', date);
               }}
-              value={moment(values.futureCommercialAccountingDate)}
+              value={values.futureCommercialAccountingDate}
+              name="futureCommercialAccountingDate"
             />
           </Form.Item>
 
