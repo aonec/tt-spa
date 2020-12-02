@@ -10,19 +10,20 @@ import styled from 'styled-components'
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
+import Arrow from "../../../../../_components/Arrow/Arrow";
 
 // import DeviceIcons from "../../../../../_components/DeviceIcons"
 
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
-    column-gap: 10px;
+    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;
+    column-gap: 16px;
     margin-top: 8px;
     align-items: center;
     justify-content: flex-start;
     white-space: nowrap;
-    padding-bottom: 8px;
+    padding: 8px 8px 16px;
     border-bottom: 1px solid #DCDEE4;
     `
 
@@ -107,15 +108,16 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                             {` (${device.serialNumber})`}
                     </span>
                 </div>
-            <div style={{display: 'flex'}}>
-                <ActiveLine isActive={isActive}/>
-                {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
-                <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
-                <div style={{marginLeft: 16, color: 'rgba(39, 47, 90, 0.6)'}}>{translateMountPlace(device.mountPlace)}</div>
-            </div>
+                <div style={{display: 'flex'}}>
+                    <ActiveLine isActive={isActive}/>
+                    {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
+                    <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
+                    <div style={{marginLeft: 16, color: 'rgba(39, 47, 90, 0.6)'}}>{translateMountPlace(device.mountPlace)}</div>
+                </div>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>{currentDeviceReadings}</div>
             <div style={{display: 'flex', flexDirection: 'column'}}>{previousDeviceReadings}</div>
+
 
         </FullDeviceLine>
     )

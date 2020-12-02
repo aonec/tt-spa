@@ -10,9 +10,13 @@ import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadi
 import axios from "axios";
 import moment from 'moment';
 import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
+import Arrow from "../../../../_components/Arrow/Arrow";
 
 
 const styles = css`
+  meters {
+  }
+  
   meter_header,
   meter_device {
     padding: 8px;
@@ -24,11 +28,11 @@ const styles = css`
 
   meter_header {
     display: grid;
-    grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
+    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;
     height: 48px;
     background: var(--bg);
     align-items: center;
-    color: var(--main-80);
+    color: var(--main-90);
   }
 
   device_info {
@@ -96,22 +100,24 @@ const styles = css`
     }
   }
 
-  div {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-gap: 8px;
-    align-content: start;
-    align-items: center;
-    padding: 8px;
-    & button {
-      padding: 8px;
-    }
-    & span {
-      display: contents;
-      cursor: pointer;
-    }
-  }
+  
 `
+
+// div {
+//     display: grid;
+//     grid-template-columns: auto 1fr auto;
+//     grid-gap: 8px;
+//     align-content: start;
+//     align-items: center;
+//     padding: 8px;
+// & button {
+//         padding: 8px;
+//     }
+// & span {
+//         display: contents;
+//         cursor: pointer;
+//     }
+// }
 
 
 export const MeterDevicesNew = ({items = []}) => {
@@ -152,10 +158,14 @@ export const MeterDevicesNew = ({items = []}) => {
             <meters>
                 <meter_header>
                     <span>Информация o приборe</span>
-                    <div style={{display: 'flex'}}>
-                        <div style={{width: '50%'}}>{lastMonth}</div>
-                        <div style={{width: '50%'}}>{previousMonth}</div>
-                    </div>
+
+                        <div>{lastMonth}</div>
+                        <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
+                            <Arrow />
+                            <div>{previousMonth}</div>
+                            <Arrow isRight />
+                        </div>
+
                 </meter_header>
                 {readings}
             </meters>

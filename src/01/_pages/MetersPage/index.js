@@ -11,6 +11,7 @@ import { Filter } from "./components/Filter"
 import { ApartmentInfo } from "./components/ApartmentInfo"
 import { MeterDevices } from "./components/MeterDevices"
 import {MeterDevicesNew} from "./components/MeterDevices/MeterDevicesNew";
+import Arrow from "../../_components/Arrow/Arrow";
 
 export const MetersPage = () => {
   const [state, dispatch] = React.useReducer(reducer, {})
@@ -21,7 +22,7 @@ export const MetersPage = () => {
   const meterDev = useMeterDevices(state)
 
     return (
-    <>
+    <div style={{maxWidth: 960}}>
       <h1>Ввод показаний</h1>
       <Route path="/*/apartments" exact>
         <Filter {...filter} />
@@ -32,7 +33,7 @@ export const MetersPage = () => {
         {/*<MeterDevices {...meterDev} />*/}
         <MeterDevicesNew {...meterDev} />
       </Route>
-    </>
+    </div>
   )
 }
 

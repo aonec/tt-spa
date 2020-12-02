@@ -1,12 +1,16 @@
 import React, {useContext, useState} from "react";
 import styled from "styled-components";
 import {InputTT} from "../../../../../../tt-components/InputTT";
-import { Input} from 'antd';
+import {Input} from 'antd';
 
 let ReadingLineStyled = styled.div`
-max-width: 180px;
+// max-width: 180px;
 // border: 1px solid #DCDEE4;
-margin-right: 8px;
+// margin-right: 8px;
+`
+
+const StyledInput = styled(Input)`
+color: var(--main-70);
 `
 
 const Label = styled.label`
@@ -37,7 +41,7 @@ const DeviceRates = ({index, onChange, value, readingsBlocked = false, resource,
 
    return (
        <ReadingLineStyled>
-           <Input
+           <StyledInput
                prefix={isPrevOperatorReadings ? null : <TarifLabel>Тариф {index+1}: </TarifLabel>}
                suffix={resource === 'Electricity' ? 'кВтч' : 'м³'}
                disabled={readingsBlocked}
