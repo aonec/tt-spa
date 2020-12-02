@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import moment from 'moment';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import Button, {
+import {
   SelectTT, InputTT, DatePickerTT, ButtonTT, Header,
 } from '../../../../../tt-components';
 import { ChangeDeviceContext } from '../index';
@@ -14,12 +14,12 @@ import {
   magistrals,
   resources,
 } from '../../../../../tt-components/localBases';
-import { putOdpu, postOdpu } from '../../../../EditODPU/components/apiEditOdpu';
+import { putOdpu, postOdpu, pushStage } from '../apiChangeDevice';
 
 const { TabPane } = Tabs;
 
 const UniversalForm = (props) => {
-  const { disabled } = props;
+  const { disabled, taskId } = props;
   const [currentTabKey, setCurrentTabKey] = useState('1');
   const { device, state, selected } = useContext(ChangeDeviceContext);
   const { resource, housingMeteringDeviceType, hubConnection } = device;
@@ -116,7 +116,7 @@ const UniversalForm = (props) => {
       // console.log(values)
     },
   });
-  console.log('values', values);
+
   const actionsList = [
     { value: 1, label: 'Замена прибора' },
   ];
@@ -174,9 +174,6 @@ const UniversalForm = (props) => {
   }
 
 
-
-
-
   function handleEdit() {
     console.log('handleEdit');
 
@@ -191,17 +188,21 @@ const UniversalForm = (props) => {
       resource: values.resource,
       model: values.model,
     };
-
-    console.log(PUT_EDIT_FORM);
-    putOdpu(selected.id, PUT_EDIT_FORM)
-
     const form = {
       housingMeteringDeviceSwitch: {
         deviceId: device.id,
-        documentsIds: [0],
         newDeviceId: selected.id,
       },
+      documentsIds: [123456],
     };
+    console.log(PUT_EDIT_FORM);
+    putOdpu(selected.id, PUT_EDIT_FORM).then((res)=>{
+      console.log("res", res)
+
+      pushStage(taskId, form)
+    })
+
+
 
 
     //postTask(form)
@@ -226,7 +227,25 @@ const UniversalForm = (props) => {
 
     console.log('POST_ODPU_FORM', POST_ODPU_FORM);
     console.log('POST_ODPU_FORM', JSON.stringify(POST_ODPU_FORM));
-    // postOdpu(POST_ODPU_FORM)
+
+
+    postOdpu(POST_ODPU_FORM).then((res)=>{
+      console.log("res", res)
+      const {id} = res
+
+      const form = {
+        housingMeteringDeviceSwitch: {
+          deviceId: device.id,
+          newDeviceId: id,
+        },
+        documentsIds: [123456],
+      };
+
+
+      pushStage(taskId, form)
+    })
+
+
   }
 
   //switch case => убрать const

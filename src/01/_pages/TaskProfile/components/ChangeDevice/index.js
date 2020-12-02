@@ -1,61 +1,25 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { getClosedDevices, getOdpu } from './apiChangeDevice';
+import { getClosedDevices, getOdpu, pushStage } from './apiChangeDevice';
 import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
 import UniversalForm from './components/UnversalForm';
+import {disabledValuesByType, selectedTemplate} from './components/localBase'
+import moment from "moment";
 
 export const ChangeDeviceContext = createContext();
-
-const emptyDisabled = ['serialNumber',
-  'lastCheckingDate',
-  'futureCheckingDate',
-  'lastCommercialAccountingDate',
-  'futureCommercialAccountingDate',
-  'housingMeteringDeviceType',
-  'resource',
-  'model',
-  'isConnected',
-  'entryNumber',
-  'hubNumber',
-  'pipeNumber',
-  'calculatorId'];
-
-const editDisabled = ['serialNumber',
-  'resource',
-  'isConnected',
-  'entryNumber',
-  'hubNumber',
-  'pipeNumber',
-  'calculatorId'];
-
-const addDisabled = [
-  'housingMeteringDeviceType',
-  'resource',
-  'isConnected',
-  'entryNumber',
-  'hubNumber',
-  'pipeNumber',
-  'calculatorId'];
-
 const ChangeDevice = (props) => {
-
+  console.log(props)
   const [devices, setDevices] = useState();
-  const [device, setDevice] = useState();
+  const [taskId, setTaskId] = useState(props.state.id)
 
-  const [selected, setSelected] = useState({
-    serialNumber: '',
-    model: '',
-    lastCommercialAccountingDate: null,
-    futureCommercialAccountingDate: null,
-    lastCheckingDate: null,
-    futureCheckingDate: null,
-  });
+  const [device, setDevice] = useState();
+  const [selected, setSelected] = useState(selectedTemplate);
 
   const [newDevice, setNewDevice] = useState();
 
   const [state, setState] = useState('empty');
 
-  const [disabled, setDisabled] = useState(emptyDisabled);
+  const [disabled, setDisabled] = useState(disabledValuesByType[state]);
 
   useEffect(() => {
     getClosedDevices().then((res) => {
@@ -67,25 +31,14 @@ const ChangeDevice = (props) => {
   }, []);
 
   useEffect(() => {
-    switch (state) {
-      case 'empty':
-        setDisabled(emptyDisabled);
-        break;
-      case 'edit':
-        setDisabled(editDisabled);
-        break;
-      case 'add':
-        setDisabled(addDisabled);
-        break;
-      default:
-        setDisabled(emptyDisabled);
-    }
+    setDisabled(disabledValuesByType[state])
   }, [state]);
-
 
   if (!devices || !device) {
     return <div>Загрузка</div>;
   }
+
+  console.log(moment().toISOString())
 
   const handleButton = () => {
     console.log(device);
@@ -94,8 +47,6 @@ const ChangeDevice = (props) => {
     device, devices, selected, setSelected, state, setState,
   };
 
-  console.log('selected', selected);
-
   return (
     <ChangeDeviceContext.Provider value={context}>
       <div>
@@ -103,7 +54,7 @@ const ChangeDevice = (props) => {
           Замена расходомера/термодатчика
         </Header>
         <SearchInputAndAdd />
-        <UniversalForm disabled={disabled} />
+        <UniversalForm disabled={disabled} taskId={taskId} />
       </div>
       <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
     </ChangeDeviceContext.Provider>

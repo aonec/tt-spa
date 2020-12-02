@@ -51,7 +51,7 @@ const styles = css`
     &[|seven] {
     display: flex;
     flex-direction: column;
-   
+
     }
   }
 
@@ -175,10 +175,10 @@ export const Panel = ({
         four: Completion,
         five: Switch && PushButton,
         six: UploadReadings || addReadingsDone,
-        seven: ChangeDevice,
+        seven: SwitchDevices && ChangeDevice,
       })}
     >
-      {(SwitchDevices && !isObserver) && <ChangeDevice device={device} />}
+      {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />}
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
