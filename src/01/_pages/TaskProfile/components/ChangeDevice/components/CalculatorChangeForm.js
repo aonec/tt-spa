@@ -15,53 +15,29 @@ import {
   resources,
   items,
 } from '../../../../../tt-components/localBases';
-import { putOdpu, postOdpu, pushStage, putCalculator } from '../apiChangeDevice';
+import {
+  putOdpu, postOdpu, pushStage, putCalculator,
+} from '../apiChangeDevice';
+import { tabs, actionsList, executorsList } from './localBase';
 
 const { TabPane } = Tabs;
 
-const CalculatorChangeForm = (props) => {
-  const { disabled, taskId } = props;
+const CalculatorChangeForm = () => {
   const [currentTabKey, setCurrentTabKey] = useState('1');
   // const { device, state, selected } = useContext(ChangeDeviceContext);
-  const { state, selected } = useContext(ChangeDeviceContext);
-
-  const device = {
-    connection: {
-      isConnected: true,
-      ipV4: '192.168.1.10',
-      port: 6547,
-      deviceAddress: 9,
-    },
-    address: {
-      id: 383,
-      city: 'Нижнекамск',
-      street: 'Чишмале',
-      housingStockNumber: '10',
-      corpus: null,
-    },
-    id: 1437,
-    transactionType: null,
-    model: 'ТВ-7',
-    serialNumber: '13011204',
-    lastCommercialAccountingDate: '2017-12-09T23:00:00',
-    futureCommercialAccountingDate: '2017-12-09T23:00:00',
-    lastCheckingDate: '2018-06-13T23:00:00',
-    futureCheckingDate: '2019-06-02T23:00:00',
-    closingDate: null,
-  };
+  const {
+    state, device, selected, disabled, taskId,
+  } = useContext(ChangeDeviceContext);
 
   const {
-    connection, address, id,
-    transactionType,
+    connection: {
+      isConnected,
+      ipV4,
+      port,
+      deviceAddress,
+    }, address, id,
     closingDate,
   } = device;
-
-  const {
-    isConnected,
-    ipV4,
-    port,
-    deviceAddress,
-  } = connection;
 
   const getCurrentInfoId = _.find(items, { label: selected.model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
@@ -79,17 +55,9 @@ const CalculatorChangeForm = (props) => {
     futureCheckingDate,
   } = selected;
 
-  useEffect(() => {
-    setFieldValue('infoId', currentInfoId);
-    setFieldValue('serialNumber', serialNumber);
-    setFieldValue('ipV4', ipV4);
-    setFieldValue('port', port);
-    setFieldValue('deviceAddress', deviceAddress);
-    setFieldValue('lastCommercialAccountingDate', lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate));
-    setFieldValue('futureCommercialAccountingDate', futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate));
-    setFieldValue('lastCheckingDate', lastCheckingDate === null ? null : moment(lastCheckingDate));
-    setFieldValue('futureCheckingDate', futureCheckingDate === null ? null : moment(futureCheckingDate));
-  }, [selected]);
+  function isDateEmpty(value) {
+    return value === null ? null : moment(value);
+  }
 
   const {
     handleSubmit,
@@ -104,11 +72,12 @@ const CalculatorChangeForm = (props) => {
       infoId: currentInfoId,
       model,
       serialNumber,
-      lastCheckingDate: lastCheckingDate === null ? null : moment(lastCheckingDate),
-      futureCheckingDate: futureCheckingDate === null ? null : moment(futureCheckingDate),
-      lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
-      futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
+      lastCheckingDate: isDateEmpty(lastCheckingDate),
+      futureCheckingDate: isDateEmpty(futureCheckingDate),
+      lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
       isConnected: isConnectedValue[0].value,
+      deviceAddress: deviceAddress,
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
@@ -119,45 +88,24 @@ const CalculatorChangeForm = (props) => {
       calculatorId: Yup.string().required('Выберите вычислитель'),
     }),
     onSubmit: () => {
-      const PUT_EDIT_FORM = {
-        serialNumber: values.serialNumber,
-        checkingDate: values.checkingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-        housingMeteringDeviceType: values.housingMeteringDeviceType,
-        resource: values.resource,
-        model: values.model,
-      };
-      // putOdpu(id, PUT_EDIT_FORM);
-      console.log('PUT_EDIT_FORM', PUT_EDIT_FORM);
-      console.log('PUT_EDIT_FORM', JSON.stringify(PUT_EDIT_FORM));
-      // console.log(values)
+      console.log('DONE');
     },
   });
 
-  const actionsList = [
-    { value: 1, label: 'Замена прибора' },
-  ];
-
-  const executorsList = [
-    { value: 1, label: 'Константинопольский К.К.' },
-  ];
-
-  const tabs = [
-    {
-      title: 'Шаг 1. Общие данные',
-      key: '1',
-    },
-    {
-      title: 'Шаг 2. Настройки соединения',
-      key: '2',
-    },
-    {
-      title: 'Шаг 3. Документы',
-      key: '3',
-    },
-  ];
+  useEffect(() => {
+    setValues({
+      ...values,
+      infoId: currentInfoId,
+      serialNumber,
+      ipV4,
+      port,
+      deviceAddress: deviceAddress,
+      lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
+      lastCheckingDate: isDateEmpty(lastCheckingDate),
+      futureCheckingDate: isDateEmpty(futureCheckingDate),
+    });
+  }, [selected]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -182,6 +130,7 @@ const CalculatorChangeForm = (props) => {
         })}
       </Tabs>
     );
+
   function handleChangeTab(value) {
     console.log(currentTabKey);
     setCurrentTabKey(value);
@@ -205,8 +154,9 @@ const CalculatorChangeForm = (props) => {
         ipV4: values.ipV4,
         port: values.port,
         deviceAddress: values.deviceAddress,
-      }
+      },
     };
+
     const form = {
       housingMeteringDeviceSwitch: {
         deviceId: device.id,
@@ -214,10 +164,11 @@ const CalculatorChangeForm = (props) => {
       },
       documentsIds: [123456],
     };
+
     console.log(PUT_EDIT_FORM);
+
     putCalculator(selected.id, PUT_EDIT_FORM).then((res) => {
       console.log('res', res);
-
       pushStage(taskId, form);
     });
 
@@ -303,12 +254,11 @@ const CalculatorChangeForm = (props) => {
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           alignContent: 'baseline',
-          maxWidth: '960px',
         }}
         >
           <Form.Item
             label="Выберите дальнейшее действие"
-            style={{ width: 460 }}
+            style={{ width: '49%' }}
           >
             <SelectTT
               options={actionsList}
@@ -319,7 +269,7 @@ const CalculatorChangeForm = (props) => {
 
           <Form.Item
             label="Исполнитель"
-            style={{ width: 460 }}
+            style={{ width: '49%' }}
           >
             <SelectTT
               options={executorsList}
@@ -338,12 +288,11 @@ const CalculatorChangeForm = (props) => {
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignContent: 'baseline',
-            maxWidth: '960px',
-            minHeight: '420px',
+            minHeight: '220px'
           }}
         >
 
-          <Form.Item label="Серийный номер" style={{ width: 460 }}>
+          <Form.Item label="Серийный номер" style={{ width: '49%' }}>
             <InputTT
               name="serialNumber"
               placeholder="Укажите серийный номер..."
@@ -357,7 +306,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Модель вычислителя" style={{ width: 460 }}>
+          <Form.Item label="Модель вычислителя" style={{ width: '49%' }}>
             <SelectTT
               name="infoId"
               onChange={(event) => {
@@ -370,7 +319,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="infoId" />
           </Form.Item>
 
-          <Form.Item label="Дата Поверки" style={{ width: 460 }}>
+          <Form.Item label="Дата Поверки" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
@@ -384,7 +333,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="lastCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата Следующей поверки" style={{ width: 460 }}>
+          <Form.Item label="Дата Следующей поверки" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               placeholder="Укажите дату..."
@@ -398,7 +347,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата начала действия акта-допуска" style={{ width: 460 }}>
+          <Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
@@ -411,7 +360,7 @@ const CalculatorChangeForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания действия акта-допуска" style={{ width: 460 }}>
+          <Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               placeholder="Укажите дату..."
@@ -433,13 +382,12 @@ const CalculatorChangeForm = (props) => {
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignContent: 'baseline',
-            maxWidth: '960px',
             // minHeight: '420px'
           }}
 
         >
 
-          <Form.Item label="IP адрес вычислителя" style={{ width: 460 }}>
+          <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
             <InputTT
               name="ipV4"
               placeholder="Номер ввода"
@@ -451,7 +399,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="ipV4" />
           </Form.Item>
 
-          <Form.Item label="Порт" style={{ width: 460 }}>
+          <Form.Item label="Порт" style={{ width: '49%' }}>
             <InputTT
               name="port"
               type="number"
@@ -464,7 +412,7 @@ const CalculatorChangeForm = (props) => {
             <Alert name="port" />
           </Form.Item>
 
-          <Form.Item label="Сетевой адрес устройства" style={{ width: 460 }}>
+          <Form.Item label="Сетевой адрес устройства" style={{ width: '49%' }}>
             <InputTT
               name="deviceAddress"
               type="number"
@@ -485,8 +433,7 @@ const CalculatorChangeForm = (props) => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
-            maxWidth: '960px',
-            // minHeight: '420px',
+            // minHeight: '220px'
             alignContent: 'baseline',
           }}
 
@@ -498,7 +445,6 @@ const CalculatorChangeForm = (props) => {
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'flex-end',
-          maxWidth: '960px',
         }}
         >
           <Buttons />

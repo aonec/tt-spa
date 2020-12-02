@@ -11,54 +11,29 @@ import { ChangeDeviceContext } from '../index';
 import {
   housingMeteringDeviceTypes,
   isConnectedValue,
-  magistrals,
   resources,
 } from '../../../../../tt-components/localBases';
 import { putOdpu, postOdpu, pushStage } from '../apiChangeDevice';
 
+import { tabs, actionsList, executorsList } from './localBase';
+
 const { TabPane } = Tabs;
 
 const HousingChangeForm = () => {
-  const actionsList = [
-    { value: 1, label: 'Замена прибора' },
-  ];
-
-  const executorsList = [
-    { value: 1, label: 'Константинопольский К.К.' },
-  ];
-
-  const tabs = [
-    {
-      title: 'Шаг 1. Общие данные',
-      key: '1',
-    },
-    {
-      title: 'Шаг 2. Настройки соединения',
-      key: '2',
-    },
-    {
-      title: 'Шаг 3. Документы',
-      key: '3',
-    },
-  ];
-
   const {
     device, state, selected, disabled, taskId,
   } = useContext(ChangeDeviceContext);
+
   const [currentTabKey, setCurrentTabKey] = useState('1');
-  const { resource, housingMeteringDeviceType, hubConnection } = device;
 
   const {
-    hub,
-    calculatorConnection,
-    calculatorId,
-    calculatorModel,
-    calculatorSerialNumber,
-  } = hubConnection;
-
-  const {
-    entryNumber, hubNumber, pipeNumber, magistral,
-  } = hub;
+    resource, housingMeteringDeviceType,
+    hubConnection: {
+      hub: {
+        entryNumber, hubNumber, pipeNumber
+      }, calculatorModel, calculatorSerialNumber
+    },
+  } = device;
 
   const {
     serialNumber,
@@ -69,14 +44,9 @@ const HousingChangeForm = () => {
     futureCheckingDate,
   } = selected;
 
-  useEffect(() => {
-    setFieldValue('serialNumber', serialNumber);
-    setFieldValue('model', model);
-    setFieldValue('lastCommercialAccountingDate', lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate));
-    setFieldValue('futureCommercialAccountingDate', futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate));
-    setFieldValue('lastCheckingDate', lastCheckingDate === null ? null : moment(lastCheckingDate));
-    setFieldValue('futureCheckingDate', futureCheckingDate === null ? null : moment(futureCheckingDate));
-  }, [selected]);
+  function isDateEmpty(value){
+    return value === null ? null : moment(value)
+  }
 
   const {
     handleSubmit,
@@ -114,9 +84,23 @@ const HousingChangeForm = () => {
     },
   });
 
-  function isDisabled(value) {
+  function isDisabled(value){
     return disabled.includes(value);
   }
+
+  useEffect(() => {
+    setValues({
+      ...values,
+      serialNumber,
+      model,
+      lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
+      lastCheckingDate: isDateEmpty(lastCheckingDate),
+      futureCheckingDate: isDateEmpty(futureCheckingDate),
+    });
+  }, [selected]);
+
+
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -134,21 +118,21 @@ const HousingChangeForm = () => {
       {tabs.map((currentTab) => {
         const { title, key } = currentTab;
         return (
-          <TabPane tab={title} key={key} />
+          <TabPane tab={title} key={key}/>
         );
       })}
     </Tabs>
   );
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     setCurrentTabKey(value);
   }
 
-  function handleNextChangeTab() {
+  function handleNextChangeTab(){
     setCurrentTabKey(String(Number(currentTabKey) + 1));
   }
 
-  function handleEdit() {
+  function handleEdit(){
     const putDeviceForm = {
       serialNumber: values.serialNumber,
       checkingDate: values.checkingDate,
@@ -174,7 +158,7 @@ const HousingChangeForm = () => {
     });
   }
 
-  function handleAdd() {
+  function handleAdd(){
     const postOdpuForm = {
       serialNumber: values.serialNumber,
       model: values.model,
@@ -200,7 +184,7 @@ const HousingChangeForm = () => {
     });
   }
 
-  function Buttons() {
+  function Buttons(){
     if (state === 'empty') {
       return (
         <ButtonTT color="blue" disabled>
@@ -243,270 +227,261 @@ const HousingChangeForm = () => {
   }
 
   return (
-    <div>
-      <form>
-        <div style={{
+    <form>
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignContent: 'baseline',
+      }}
+      >
+        <Form.Item
+          label="Выберите дальнейшее действие"
+          style={{ width: '49%' }}
+        >
+          <SelectTT
+            options={actionsList}
+            defaultValue={1}
+            disabled
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Исполнитель"
+          style={{ width: '49%' }}
+        >
+          <SelectTT
+            options={executorsList}
+            defaultValue={1}
+            disabled
+          />
+        </Form.Item>
+      </div>
+
+      <TabsComponent/>
+
+      <div
+        hidden={Number(currentTabKey) !== 1}
+        style={{
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           alignContent: 'baseline',
-          maxWidth: '960px',
+          minHeight: '220px',
         }}
-        >
-          <Form.Item
-            label="Выберите дальнейшее действие"
-            style={{ width: 460 }}
-          >
-            <SelectTT
-              options={actionsList}
-              defaultValue={1}
-              disabled
-            />
-          </Form.Item>
+      >
 
-          <Form.Item
-            label="Исполнитель"
-            style={{ width: 460 }}
-          >
-            <SelectTT
-              options={executorsList}
-              defaultValue={1}
-              disabled
-            />
-          </Form.Item>
-        </div>
+        <Form.Item label="Серийный номер" style={{ width: '49%' }}>
+          <InputTT
+            name="serialNumber"
+            placeholder="Укажите серийный номер..."
+            type="text"
+            onChange={handleChange}
+            value={values.serialNumber}
+            onBlur={handleBlur}
+            disabled={isDisabled('serialNumber')}
+          />
+          <Alert name="serialNumber"/>
+        </Form.Item>
 
-        <TabsComponent />
+        <Form.Item label="Выберите тип прибора" style={{ width: '49%' }}>
+          <SelectTT
+            name="housingMeteringDeviceType"
+            onChange={(event) => {
+              setFieldValue('housingMeteringDeviceType', event);
+            }}
+            options={housingMeteringDeviceTypes}
+            value={values.housingMeteringDeviceType}
+            disabled={isDisabled('housingMeteringDeviceType')}
+          />
+          <Alert name="housingMeteringDeviceType"/>
+        </Form.Item>
 
-        <div
-          hidden={Number(currentTabKey) !== 1}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignContent: 'baseline',
-            maxWidth: '960px',
-            minHeight: '420px',
-          }}
-        >
+        <Form.Item label="Выберите тип ресурса" style={{ width: '49%' }}>
+          <SelectTT
+            name="resource"
+            onChange={(value) => {
+              setFieldValue('resource', value);
+            }}
+            options={resources}
+            value={values.resource}
+            disabled={isDisabled('resource')}
+          />
+        </Form.Item>
 
-          <Form.Item label="Серийный номер" style={{ width: 460 }}>
-            <InputTT
-              name="serialNumber"
-              placeholder="Укажите серийный номер..."
-              type="text"
-              onChange={handleChange}
-              value={values.serialNumber}
-              onBlur={handleBlur}
-              disabled={isDisabled('serialNumber')}
+        <Form.Item label="Выберите модель прибора" style={{ width: '49%' }}>
+          <InputTT
+            name="model"
+            placeholder="Укажите модель..."
+            type="text"
+            onChange={handleChange}
+            value={values.model}
+            onBlur={handleBlur}
+            disabled={isDisabled('model')}
+          />
+          <Alert name="model"/>
+        </Form.Item>
 
-            />
-            <Alert name="serialNumber" />
-          </Form.Item>
+        <Form.Item label="Дата Поверки" style={{ width: '49%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCheckingDate"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              setFieldValue('lastCheckingDate', date);
+            }}
+            value={values.lastCheckingDate}
+            disabled={isDisabled('lastCheckingDate')}
+          />
+          <Alert name="lastCheckingDate"/>
+        </Form.Item>
 
-          <Form.Item label="Выберите тип прибора" style={{ width: 460 }}>
-            <SelectTT
-              name="housingMeteringDeviceType"
-              onChange={(event) => {
-                setFieldValue('housingMeteringDeviceType', event);
-              }}
-              options={housingMeteringDeviceTypes}
-              value={values.housingMeteringDeviceType}
-              disabled={isDisabled('housingMeteringDeviceType')}
-            />
-            <Alert name="housingMeteringDeviceType" />
-          </Form.Item>
+        <Form.Item label="Дата Следующей поверки" style={{ width: '49%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              setFieldValue('futureCheckingDate', date);
+            }}
+            value={values.futureCheckingDate}
+            name="futureCheckingDate"
+            disabled={isDisabled('futureCheckingDate')}
+          />
+          <Alert name="futureCheckingDate"/>
+        </Form.Item>
 
-          <Form.Item label="Выберите тип ресурса" style={{ width: 460 }}>
-            <SelectTT
-              name="resource"
-              onChange={(value) => {
-                setFieldValue('resource', value);
-              }}
-              options={resources}
-              value={values.resource}
-              disabled={isDisabled('resource')}
-            />
-          </Form.Item>
+        <Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              setFieldValue('lastCommercialAccountingDate', date);
+            }}
+            disabled={isDisabled('lastCommercialAccountingDate')}
+            value={values.lastCommercialAccountingDate}
+          />
+        </Form.Item>
 
-          <Form.Item label="Выберите модель прибора" style={{ width: 460 }}>
-            <InputTT
-              name="model"
-              placeholder="Укажите модель..."
-              type="text"
-              onChange={handleChange}
-              value={values.model}
-              onBlur={handleBlur}
-              disabled={isDisabled('model')}
-            />
-            <Alert name="model" />
-          </Form.Item>
+        <Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}>
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              setFieldValue('futureCommercialAccountingDate', date);
+            }}
+            disabled={isDisabled('futureCommercialAccountingDate')}
+            value={values.futureCommercialAccountingDate}
+            name="futureCommercialAccountingDate"
+          />
+        </Form.Item>
 
-          <Form.Item label="Дата Поверки" style={{ width: 460 }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCheckingDate"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('lastCheckingDate', date);
-              }}
-              value={values.lastCheckingDate}
-              disabled={isDisabled('lastCheckingDate')}
-            />
-            <Alert name="lastCheckingDate" />
-          </Form.Item>
+      </div>
 
-          <Form.Item label="Дата Следующей поверки" style={{ width: 460 }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('futureCheckingDate', date);
-              }}
-              value={values.futureCheckingDate}
-              name="futureCheckingDate"
-              disabled={isDisabled('futureCheckingDate')}
-            />
-            <Alert name="futureCheckingDate" />
-          </Form.Item>
-
-          <Form.Item label="Дата начала действия акта-допуска" style={{ width: 460 }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCommercialAccountingDate"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date);
-              }}
-              disabled={isDisabled('lastCommercialAccountingDate')}
-              value={values.lastCommercialAccountingDate}
-            />
-          </Form.Item>
-
-          <Form.Item label="Дата окончания действия акта-допуска" style={{ width: 460 }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date);
-              }}
-              disabled={isDisabled('futureCommercialAccountingDate')}
-              value={values.futureCommercialAccountingDate}
-              name="futureCommercialAccountingDate"
-            />
-          </Form.Item>
-
-        </div>
-
-        <div
-          hidden={Number(currentTabKey) !== 2}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignContent: 'baseline',
-            maxWidth: '960px',
-            // minHeight: '420px'
-          }}
-
-        >
-          <Form.Item label="Подключение к вычислителю" style={{ width: 460 }}>
-            <SelectTT
-              name="isConnected"
-              onChange={(item) => {
-                setFieldValue('isConnected', item);
-              }}
-              placeholder="Подключение к вычислителю"
-              options={isConnectedValue}
-              value={values.isConnected}
-              disabled={isDisabled('isConnected')}
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Выберите вычислитель, к которому подключен прибор"
-            style={{ width: 460 }}
-          >
-            <SelectTT
-              name="calculatorId"
-              placeholder="Начните вводить серийный номер или IP адрес прибора"
-              onChange={(value) => { setFieldValue('calculatorId', value); }}
-              defaultValue={`${calculatorModel} (${calculatorSerialNumber})`}
-              // options={calculators}
-              // value={values.calculatorId}
-              disabled={isDisabled('calculatorId')}
-            />
-            <Alert name="calculatorId" />
-          </Form.Item>
-
-          <Form.Item label="Номер ввода" style={{ width: 460 }}>
-            <InputTT
-              name="entryNumber"
-              type="number"
-              placeholder="Номер ввода"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.entryNumber}
-              disabled={isDisabled('entryNumber')}
-            />
-            <Alert name="entryNumber" />
-          </Form.Item>
-
-          <Form.Item label="Номер узла" style={{ width: 460 }}>
-            <InputTT
-              name="hubNumber"
-              type="number"
-              placeholder="Номер узла"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.hubNumber}
-              disabled={isDisabled('hubNumber')}
-            />
-            <Alert name="hubNumber" />
-          </Form.Item>
-
-          <Form.Item label="Номер трубы" style={{ width: 460 }}>
-            <InputTT
-              name="pipeNumber"
-              type="number"
-              placeholder="Номер трубы"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.pipeNumber}
-              disabled={isDisabled('pipeNumber')}
-            />
-            <Alert name="pipeNumber" />
-          </Form.Item>
-
-        </div>
-
-        <div
-          hidden={Number(currentTabKey) !== 3}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            maxWidth: '960px',
-            // minHeight: '420px',
-            alignContent: 'baseline',
-          }}
-
-        >
-          <Header>Компонент в разработке</Header>
-        </div>
-
-        <div style={{
+      <div
+        hidden={Number(currentTabKey) !== 2}
+        style={{
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'flex-end',
-          maxWidth: '960px',
+          justifyContent: 'space-between',
+          alignContent: 'baseline',
+          minHeight: '220px',
         }}
-        >
-          <Buttons />
+      >
+        <Form.Item label="Подключение к вычислителю" style={{ width: '49%' }}>
+          <SelectTT
+            name="isConnected"
+            onChange={(item) => {
+              setFieldValue('isConnected', item);
+            }}
+            placeholder="Подключение к вычислителю"
+            options={isConnectedValue}
+            value={values.isConnected}
+            disabled={isDisabled('isConnected')}
+          />
+        </Form.Item>
 
-        </div>
-      </form>
-    </div>
+        <Form.Item
+          label="Выберите вычислитель, к которому подключен прибор"
+          style={{ width: '49%' }}
+        >
+          <SelectTT
+            name="calculatorId"
+            placeholder="Начните вводить серийный номер или IP адрес прибора"
+            onChange={(value) => {
+              setFieldValue('calculatorId', value);
+            }}
+            defaultValue={`${calculatorModel} (${calculatorSerialNumber})`}
+            // options={calculators}
+            // value={values.calculatorId}
+            disabled={isDisabled('calculatorId')}
+          />
+          <Alert name="calculatorId"/>
+        </Form.Item>
+
+        <Form.Item label="Номер ввода" style={{ width: '49%' }}>
+          <InputTT
+            name="entryNumber"
+            type="number"
+            placeholder="Номер ввода"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.entryNumber}
+            disabled={isDisabled('entryNumber')}
+          />
+          <Alert name="entryNumber"/>
+        </Form.Item>
+
+        <Form.Item label="Номер узла" style={{ width: '49%' }}>
+          <InputTT
+            name="hubNumber"
+            type="number"
+            placeholder="Номер узла"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.hubNumber}
+            disabled={isDisabled('hubNumber')}
+          />
+          <Alert name="hubNumber"/>
+        </Form.Item>
+
+        <Form.Item label="Номер трубы" style={{ width: '49%' }}>
+          <InputTT
+            name="pipeNumber"
+            type="number"
+            placeholder="Номер трубы"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.pipeNumber}
+            disabled={isDisabled('pipeNumber')}
+          />
+          <Alert name="pipeNumber"/>
+        </Form.Item>
+
+      </div>
+
+      <div
+        hidden={Number(currentTabKey) !== 3}
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          minHeight: '220px',
+          alignContent: 'baseline',
+        }}
+      >
+        <Header>Компонент в разработке</Header>
+      </div>
+
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-end',
+      }}
+      >
+        <Buttons/>
+      </div>
+    </form>
   );
 };
 

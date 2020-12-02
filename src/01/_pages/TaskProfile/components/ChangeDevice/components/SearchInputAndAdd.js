@@ -3,11 +3,15 @@ import { AutoComplete } from 'antd';
 import { ChangeDeviceContext } from '../index';
 import { getCalculator, getOdpu } from '../apiChangeDevice';
 import { ButtonTT } from '../../../../../tt-components';
+import {selectedTemplate} from './localBase'
 
 const SearchInputAndAdd = () => {
   const {
-    device, devices, selected, setSelected, state, setState, deviceType,
+     devices, setSelected,  setState, deviceType,
   } = useContext(ChangeDeviceContext);
+
+  const [value, setValue] = useState('');
+  const [options, setOptions] = useState([]);
 
   const availableDevices = devices.reduce((result, item) => {
     const {
@@ -29,17 +33,13 @@ const SearchInputAndAdd = () => {
     return result;
   }, []);
 
-  const [value, setValue] = useState('');
-  const [id, setId] = useState();
-  const [options, setOptions] = useState([]);
-
-  const onSelect = (data, item) => {
+  const onSelect = (data) => {
     if (deviceType === 'Calculator') {
       getCalculator(data).then((res) => {
         setSelected(res);
       });
     }
-    if (deviceType !== 'Calculator') {
+    else {
       getOdpu(data).then((res) => {
         setSelected(res);
       });
@@ -62,6 +62,7 @@ const SearchInputAndAdd = () => {
   const AddDeviceButton = () => {
     function handleAddDevice() {
       setState('add');
+      setSelected(selectedTemplate)
     }
     return (
       <ButtonTT
@@ -80,7 +81,7 @@ const SearchInputAndAdd = () => {
         value={value}
         options={options}
         style={{
-          width: 672
+          width: '49%'
         }}
         onSelect={onSelect}
         onChange={onChange}

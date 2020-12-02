@@ -1,3 +1,27 @@
+export const actionsList = [
+  { value: 1, label: 'Замена прибора' },
+];
+
+export const executorsList = [
+  { value: 1, label: 'Константинопольский К.К.' },
+];
+
+export const tabs = [
+  {
+    title: 'Шаг 1. Общие данные',
+    key: '1',
+  },
+  {
+    title: 'Шаг 2. Настройки соединения',
+    key: '2',
+  },
+  {
+    title: 'Шаг 3. Документы',
+    key: '3',
+  },
+];
+
+
 export const disabledValuesByType = {
   Calculator: {
     empty: [
