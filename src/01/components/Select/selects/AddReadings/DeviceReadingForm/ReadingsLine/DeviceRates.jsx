@@ -5,7 +5,7 @@ import { Input} from 'antd';
 
 let ReadingLineStyled = styled.div`
 max-width: 180px;
-border: 1px solid #DCDEE4;
+// border: 1px solid #DCDEE4;
 margin-right: 8px;
 `
 
@@ -33,10 +33,12 @@ const DeviceRates = ({index, onChange, value, readingsBlocked = false, resource,
         sendReadings();
     }
 
+    const isPrevOperatorReadings = operatorCabinet && readingsBlocked;
+
    return (
        <ReadingLineStyled>
            <Input
-               prefix={<TarifLabel>Тариф {index+1}: </TarifLabel>}
+               prefix={isPrevOperatorReadings ? null : <TarifLabel>Тариф {index+1}: </TarifLabel>}
                suffix={resource === 'Electricity' ? 'кВтч' : 'м³'}
                disabled={readingsBlocked}
                type="text"

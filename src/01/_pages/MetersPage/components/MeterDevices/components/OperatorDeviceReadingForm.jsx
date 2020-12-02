@@ -9,19 +9,20 @@ import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
 import styled from 'styled-components'
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
+import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 
 // import DeviceIcons from "../../../../../_components/DeviceIcons"
 
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(250px, 300px) auto minmax(300px, 350px);
+    grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
     column-gap: 10px;
-    margin-bottom: 8px;
+    margin-top: 8px;
     align-items: center;
     justify-content: flex-start;
-    white-space: nowrap
-    padding-bottom: 7px;
+    white-space: nowrap;
+    padding-bottom: 8px;
     border-bottom: 1px solid #DCDEE4;
     `
 
@@ -84,6 +85,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
+                     operatorCabinet
                      readingsBlocked
         />
     ));
@@ -96,7 +98,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
         <FullDeviceLine>
             <div style={{display: 'flex', flexDirection: 'column'}}>
                 <div
-                    className={styles.device__title + ' ' + styles.subdevice__title}
+                    className={styles.device__title}
                     to={`/housingMeteringDevices/${device.id}`}
                 >
                     <Icon className={styles.icon} icon={icon} fill={color} />
@@ -109,6 +111,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                 <ActiveLine isActive={isActive}/>
                 {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
                 <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
+                <div style={{marginLeft: 16, color: 'rgba(39, 47, 90, 0.6)'}}>{translateMountPlace(device.mountPlace)}</div>
             </div>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>{currentDeviceReadings}</div>

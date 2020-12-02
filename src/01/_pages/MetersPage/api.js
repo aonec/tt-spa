@@ -12,7 +12,7 @@ export async function getApartmentInfo(id) {
   try {
     const res = await Promise.allSettled([
       axios.get(`apartments/${id}`),
-      axios.get("IndividualDevices", { params: { ApartmentId: 863449, TakeReadings: 1} }),
+      axios.get("IndividualDevices", { params: { ApartmentId: 863449 } }),
     ])
 
     const [{value: apartInfo}, {value: meterDevices}] = res;

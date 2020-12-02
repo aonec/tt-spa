@@ -8,6 +8,9 @@ import readingsReducer, {setDevices} from "../../../../components/Select/selects
 import OperatorDeviceReadingForm from "./components/OperatorDeviceReadingForm";
 import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
+import moment from 'moment';
+import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
+
 
 const styles = css`
   meter_header,
@@ -20,6 +23,8 @@ const styles = css`
   }
 
   meter_header {
+    display: grid;
+    grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
     height: 48px;
     background: var(--bg);
     align-items: center;
@@ -108,7 +113,6 @@ const styles = css`
   }
 `
 
-const ReadingsContext = React.createContext()
 
 export const MeterDevicesNew = ({items = []}) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -135,11 +139,24 @@ export const MeterDevicesNew = ({items = []}) => {
 
     const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
                                                                               sendReadings={() => sendReadings(device)}
-    />)
+    />);
+
+    const lastMonth = getMonthFromDate(state.devices[0].readings[0].uploadTime)
+    const previousMonth = getMonthFromDate(state.devices[0].readings[1].uploadTime)
+
+    // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
+
+    console.log(moment("2027-06-01T02:00:00").format('MMMM'))
 
     return styled(styles, style.button)(
             <meters>
-                <meter_header>Информация o приборe</meter_header>
+                <meter_header>
+                    <span>Информация o приборe</span>
+                    <div style={{display: 'flex'}}>
+                        <div style={{width: '50%'}}>{lastMonth}</div>
+                        <div style={{width: '50%'}}>{previousMonth}</div>
+                    </div>
+                </meter_header>
                 {readings}
             </meters>
             )
