@@ -11,9 +11,14 @@ import axios from "axios";
 import moment from 'moment';
 import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
 
+// meter_header,
+
 
 const styles = css`
-  meter_header,
+  meters {
+      grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
+  }
+  
   meter_device {
     padding: 8px;
     display: grid;
@@ -22,14 +27,14 @@ const styles = css`
     border-bottom: 1px solid var(--frame);
   }
 
-  meter_header {
+ meter_header {
     display: grid;
     grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
     height: 48px;
     background: var(--bg);
     align-items: center;
     color: var(--main-80);
-  }
+}
 
   device_info {
     display: grid;
