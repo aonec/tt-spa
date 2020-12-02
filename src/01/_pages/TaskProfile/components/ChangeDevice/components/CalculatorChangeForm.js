@@ -24,7 +24,6 @@ const { TabPane } = Tabs;
 
 const CalculatorChangeForm = () => {
   const [currentTabKey, setCurrentTabKey] = useState('1');
-  // const { device, state, selected } = useContext(ChangeDeviceContext);
   const {
     state, device, selected, disabled, taskId,
   } = useContext(ChangeDeviceContext);

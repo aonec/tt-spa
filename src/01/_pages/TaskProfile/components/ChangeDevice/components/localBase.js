@@ -109,3 +109,20 @@ export const selectedTemplate = {
   lastCheckingDate: null,
   futureCheckingDate: null,
 };
+
+export const calculatorTemplate = {
+  connection: {
+    isConnected: false,
+    ipV4: '',
+    port: null,
+    deviceAddress: null
+  },
+  isConnected: false,
+  serialNumber: '',
+  model: '',
+  lastCommercialAccountingDate: null,
+  futureCommercialAccountingDate: null,
+  lastCheckingDate: null,
+  futureCheckingDate: null,
+};
+

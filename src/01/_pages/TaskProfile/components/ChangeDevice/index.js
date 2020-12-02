@@ -6,7 +6,7 @@ import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
 import HousingChangeForm from './components/HousingChangeForm';
 import CalculatorChangeForm from './components/CalculatorChangeForm';
-import { disabledValuesByType, selectedTemplate } from './components/localBase';
+import { disabledValuesByType, selectedTemplate, calculatorTemplate } from './components/localBase';
 import { Loader } from '../../../../_components/Loader';
 
 export const ChangeDeviceContext = createContext();
@@ -16,9 +16,9 @@ const ChangeDevice = (props) => {
 
   const [devices, setDevices] = useState();
   const [device, setDevice] = useState();
-  const [selected, setSelected] = useState(selectedTemplate);
+  const [selected, setSelected] = useState();
   const [state, setState] = useState('empty');
-  const [disabled, setDisabled] = useState(disabledValuesByType[deviceType][state]);
+  const [disabled, setDisabled] = useState();
 
   useEffect(() => {
     const { id } = props.device;
@@ -29,12 +29,17 @@ const ChangeDevice = (props) => {
     if (deviceType === 'Calculator') {
       getCalculator(id).then((result) => {
         setDevice(result);
+        setSelected(calculatorTemplate)
+        console.log(result)
       });
     } else {
       getOdpu(id).then((result) => {
         setDevice(result);
+        setSelected(selectedTemplate)
       });
     }
+
+    setDisabled(disabledValuesByType[deviceType][state])
   }, []);
 
   useEffect(() => {
