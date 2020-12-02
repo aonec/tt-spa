@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { getClosedDevices, getOdpu, pushStage } from './apiChangeDevice';
+import { getCalculator, getClosedDevices, getOdpu, pushStage } from './apiChangeDevice';
 import { Header, ButtonTT } from '../../../../tt-components';
 import SearchInputAndAdd from './components/SearchInputAndAdd';
-import UniversalForm from './components/UnversalForm';
+import HousingChangeForm from './components/HousingChangeForm';
+import CalculatorChangeForm from "./components/CalculatorChangeForm";
 import {disabledValuesByType, selectedTemplate} from './components/localBase'
 import moment from "moment";
 
@@ -10,6 +11,8 @@ export const ChangeDeviceContext = createContext();
 const ChangeDevice = (props) => {
   console.log(props)
   const [devices, setDevices] = useState();
+  const deviceType = props.device.type;
+  console.log("deviceType", deviceType)
   const [taskId, setTaskId] = useState(props.state.id)
 
   const [device, setDevice] = useState();
@@ -19,19 +22,36 @@ const ChangeDevice = (props) => {
 
   const [state, setState] = useState('empty');
 
-  const [disabled, setDisabled] = useState(disabledValuesByType[state]);
+  const [disabled, setDisabled] = useState(disabledValuesByType[deviceType][state]);
+
+  // console.log(disabledValuesByType[deviceType][state])
 
   useEffect(() => {
     getClosedDevices().then((res) => {
       setDevices(res);
     });
-    getOdpu(props.device.id).then((result) => {
-      setDevice(result);
-    });
+
+    if (deviceType === 'Calculator') {
+      console.log("Calculator")
+
+      getCalculator(props.device.id).then((result) => {
+        setDevice(result);
+        console.log(result)
+      });
+    }
+    if (deviceType !== 'Calculator') {
+
+      getOdpu(props.device.id).then((result) => {
+        setDevice(result);
+        console.log(result)
+      });
+    }
+
+
   }, []);
 
   useEffect(() => {
-    setDisabled(disabledValuesByType[state])
+    setDisabled(disabledValuesByType[deviceType][state])
   }, [state]);
 
   if (!devices || !device) {
@@ -44,7 +64,7 @@ const ChangeDevice = (props) => {
     console.log(device);
   };
   const context = {
-    device, devices, selected, setSelected, state, setState,
+    device, devices, selected, setSelected, state, setState, deviceType, disabled,taskId
   };
 
   return (
@@ -54,7 +74,8 @@ const ChangeDevice = (props) => {
           Замена расходомера/термодатчика
         </Header>
         <SearchInputAndAdd />
-        <UniversalForm disabled={disabled} taskId={taskId} />
+        {deviceType === 'Calculator'? <CalculatorChangeForm /> : <HousingChangeForm />}
+
       </div>
       <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
     </ChangeDeviceContext.Provider>

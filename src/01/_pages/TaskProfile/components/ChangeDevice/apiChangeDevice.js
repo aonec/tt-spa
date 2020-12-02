@@ -13,6 +13,20 @@ export async function getClosedDevices(url = '') {
   }
 }
 
+export async function getCalculator(id = '') {
+  try {
+    const res = await axios.get(`Calculators/${id}`);
+    console.log("getCalculator",res)
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса Вычислителя',
+    };
+  }
+}
+
 
 export async function getOdpu(id = '') {
   try {
@@ -54,6 +68,21 @@ export async function getCalculators(objid = 0) {
       resource: 'device',
       message: 'Произошла ошибка запроса Вычислителей в этом доме',
     };
+  }
+}
+export async function putCalculator(deviceId = '', form = {}) {
+  alert('Cейчас будем отправлять данные!');
+  try {
+    const res = await axios.put(`Calculators/${deviceId}`, form);
+    // console.log("putCalculator", form)
+    alert('Вычислитель успешно изменен!');
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert(
+      'Что-то пошло не так: попробуйте проверить все данные',
+    );
+    throw new Error(error);
   }
 }
 

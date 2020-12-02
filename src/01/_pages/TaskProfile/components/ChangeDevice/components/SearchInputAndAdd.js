@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { AutoComplete } from 'antd';
 import { ChangeDeviceContext } from '../index';
-import { getOdpu } from '../apiChangeDevice';
-import ButtonTT from "../../../../../tt-components/ButtonTT";
+import { getCalculator, getOdpu } from '../apiChangeDevice';
+import { ButtonTT } from '../../../../../tt-components';
 
 const SearchInputAndAdd = () => {
-
   const {
-    device, devices, selected, setSelected, state, setState
+    device, devices, selected, setSelected, state, setState, deviceType,
   } = useContext(ChangeDeviceContext);
 
   const availableDevices = devices.reduce((result, item) => {
@@ -15,19 +14,18 @@ const SearchInputAndAdd = () => {
       id, type, serialNumber, model,
     } = item;
 
-    // if (device.calculator === null && type === 'Calculator') {
-    //   result.push({
-    //     value: id,
-    //     label: `${model}: ${serialNumber}`,
-    //   });
-    // }
-    //
-    // if (device.calculator !== null && type === 'Housing') {
+    if (deviceType === 'Calculator' && type === 'Calculator') {
       result.push({
         value: id,
         label: `${model}: ${serialNumber}`,
       });
-    // }
+    }
+    if (deviceType === 'FlowMeter' && type === 'Housing') {
+      result.push({
+        value: id,
+        label: `${model}: ${serialNumber}`,
+      });
+    }
     return result;
   }, []);
 
@@ -36,14 +34,17 @@ const SearchInputAndAdd = () => {
   const [options, setOptions] = useState([]);
 
   const onSelect = (data, item) => {
-    // setValue(item.label);
-    // setId(item.value);
-    // console.log(data);
-    getOdpu(data).then((res) => {
-      setSelected(res);
-      console.log(res)
-    });
-    setState('edit')
+    if (deviceType === 'Calculator') {
+      getCalculator(data).then((res) => {
+        setSelected(res);
+      });
+    }
+    if (deviceType !== 'Calculator') {
+      getOdpu(data).then((res) => {
+        setSelected(res);
+      });
+    }
+    setState('edit');
   };
 
   const onChange = (data) => {
@@ -58,23 +59,20 @@ const SearchInputAndAdd = () => {
     setOptions(devicesList);
   };
 
-  const AddDeviceButton = () =>{
-    function handleAddDevice(){
+  const AddDeviceButton = () => {
+    function handleAddDevice() {
       setState('add');
     }
     return (
       <ButtonTT
-        color={'white'}
+        color="white"
         onClick={handleAddDevice}
-        style={{marginLeft:16}}
-      >+ Добавить новый прибор
+        style={{ marginLeft: 16 }}
+      >
+        + Добавить новый прибор
       </ButtonTT>
-    )
-  }
-
-  function handleOnSearchFocus() {
-
-  }
+    );
+  };
 
   return (
     <div>
@@ -82,11 +80,10 @@ const SearchInputAndAdd = () => {
         value={value}
         options={options}
         style={{
-          width: 672,
+          width: 672
         }}
         onSelect={onSelect}
         onChange={onChange}
-        onFocus={handleOnSearchFocus}
         placeholder="Введите номер прибора или выберите из списка"
       />
       <AddDeviceButton />
