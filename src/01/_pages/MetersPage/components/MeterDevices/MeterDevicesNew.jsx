@@ -12,12 +12,14 @@ import moment from 'moment';
 import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 
+// meter_header,
+
 
 const styles = css`
   meters {
+      grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
   }
   
-  meter_header,
   meter_device {
     padding: 8px;
     display: grid;
@@ -26,7 +28,7 @@ const styles = css`
     border-bottom: 1px solid var(--frame);
   }
 
-  meter_header {
+ meter_header {
     display: grid;
     grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;
     height: 48px;
