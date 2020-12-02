@@ -77,7 +77,7 @@ const ChangeDevice = (props) => {
         {deviceType === 'Calculator'? <CalculatorChangeForm /> : <HousingChangeForm />}
 
       </div>
-      <ButtonTT onClick={handleButton}>handleButton</ButtonTT>
+      {/*<ButtonTT onClick={handleButton}>handleButton</ButtonTT>*/}
     </ChangeDeviceContext.Provider>
   );
 };

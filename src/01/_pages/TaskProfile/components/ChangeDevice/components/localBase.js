@@ -58,6 +58,7 @@ export const disabledValuesByType = {
       'pipeNumber',
       'calculatorId'],
     edit: ['serialNumber',
+      'housingMeteringDeviceType',
       'resource',
       'isConnected',
       'entryNumber',
