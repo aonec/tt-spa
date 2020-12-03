@@ -4,64 +4,18 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
-import {Title,
+import {
+  Title,
   ButtonTT,
   DatePickerTT, Header, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
-import {addCalculator} from './apiAddCalculator'
+import { addCalculator } from './apiAddCalculator';
 
 const AddCalculatorForm = (props) => {
   const {
     currentTabKey, objid, setTab, setAddCalculator, handleCancel, handleNext,
   } = props;
-
-  const Buttons = () => {
-    const RenderNextButton = () => {
-      if (currentTabKey === '3') {
-        return null;
-      }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          onClick={handleNext}
-        >
-          Далее
-        </ButtonTT>
-      );
-    };
-
-    const RenderSubmitButton = () => {
-      if (currentTabKey !== '3') {
-        return null;
-      }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          onClick={handleSubmit}
-        >
-          Выгрузить
-        </ButtonTT>
-      );
-    };
-
-    const CancelButton = () => (
-      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-        Отмена
-      </ButtonTT>
-    );
-
-    return (
-      <div style={{margin:'32px 0'}}>
-        <RenderNextButton />
-        <RenderSubmitButton />
-        <CancelButton />
-      </div>
-    );
-  };
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -69,7 +23,7 @@ const AddCalculatorForm = (props) => {
   } = useFormik({
     initialValues: {
       serialNumber: '',
-      checkingDate: moment().toISOString(),
+      lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
@@ -90,7 +44,7 @@ const AddCalculatorForm = (props) => {
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        checkingDate: values.checkingDate,
+        lastCheckingDate: values.lastCheckingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
@@ -103,7 +57,9 @@ const AddCalculatorForm = (props) => {
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
+      console.log('form', form);
       addCalculator(form);
+      setTimeout(()=>{setAddCalculator(false)}, 1000);
     },
   });
   const Alert = ({ name }) => {
@@ -117,30 +73,8 @@ const AddCalculatorForm = (props) => {
     return null;
   };
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
   return (
-    <>
-      {/*<button onClick={buttonHandler}>test</button>*/}
       <form id="formikForm" onSubmit={handleSubmit}>
-
-        <div hidden>
-          <Form.Item label="Дата снятия прибора с учета">
-            <DatePickerTT
-              name="closingDateTime"
-              format="DD.MM.YYYY"
-              allowClear={false}
-              onBlur={handleBlur}
-              onChange={(date) => {
-                setFieldValue('closingDateTime', date.toISOString());
-              }}
-              value={moment(values.closingDateTime)}
-            />
-            <Alert name="closingDateTime" />
-          </Form.Item>
-        </div>
 
         <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexDirection: 'column' }}>
 
@@ -274,13 +208,36 @@ const AddCalculatorForm = (props) => {
           </Wrap>
         </div>
 
-        <div hidden={Number(currentTabKey) !== 3}>
-          <Title color={'black'}>Компонент Документы в разработке</Title>
+        <div hidden={Number(currentTabKey) !== 3} style={{ display: 'flex', flexDirection: 'column' }}>
+          <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
-        <Buttons />
+        <div style={{ margin: '32px 0' }}>
+              <ButtonTT
+                color="blue"
+                style={{ marginLeft: '16px' }}
+                onClick={handleNext}
+                type="button"
+                hidden={currentTabKey === '3'}
+              >
+                Далее
+              </ButtonTT>
+
+              <ButtonTT
+                color="blue"
+                style={{ marginLeft: '16px' }}
+                type="submit"
+                onClick={handleSubmit}
+                hidden={currentTabKey !== '3'}
+              >
+                Сохранить
+              </ButtonTT>
+          <ButtonTT
+            color="white" type="button" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+            Отмена
+          </ButtonTT>
+        </div>
       </form>
-    </>
   );
 };
 

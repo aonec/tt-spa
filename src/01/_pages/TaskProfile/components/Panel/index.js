@@ -1,22 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
-import { Route } from 'react-router-dom';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-import moment from 'moment';
-
-import _ from 'lodash';
-import { useSelector, useDispatch } from 'react-redux';
 
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
-import {
-  setModalChangeODPUVisible, setModalDeregisterVisible,
-} from '../../../../Redux/actions/actions';
-import ButtonTT from '../../../../tt-components/ButtonTT';
-import {addReadings} from "../../hooks/usePanel";
+import { addReadings } from '../../hooks/usePanel';
+import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
   panel {
@@ -56,6 +48,11 @@ const styles = css`
         "ar ar ar ar"
         ". . . push"
     }
+    &[|seven] {
+    display: flex;
+    flex-direction: column;
+
+    }
   }
 
   Perpetrator {
@@ -75,123 +72,6 @@ const styles = css`
   }
 
 `;
-
-export const Panel = ({
-                        expectedCompletionTime,
-                        hiddenPanel = true,
-                        actions = {},
-                        state = {},
-                        pushProps = {},
-                        isObserver = false,
-                        perpName = '',
-                        apartment,
-                        dispatch = () => {
-                        },
-                        stages = {}
-                      }, ...props) => {
-  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
-
-  const dispatchRedux = useDispatch();
-
-  if (hiddenPanel) return null;
-
-  const {
-    AddPerpetrator,
-    EmailNotify,
-    AddDocuments,
-    Switch,
-    Completion,
-    SwitchDevices,
-    SetNextStageDeadline,
-    UploadReadings,
-  } = actions;
-
-  const deadline = new Date(expectedCompletionTime).toLocaleDateString();
-  const showModalChangeOdpu = () => {
-    console.log("showModalChangeOdpu")
-    dispatchRedux(setModalChangeODPUVisible(true));
-  }
-  const showModalDeregister = () => {
-    console.log("showModalDeregister")
-    dispatchRedux(setModalDeregisterVisible(true));
-  }
-
-  if (isObserver && AddDocuments && Switch) {
-    return styled(styles, s.input)(
-      <panel style={{ display: 'flex' }}>
-
-        <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={perpName}/>
-        </input_frame>
-        <input_frame data-disabled data-big style={{ width: '50%' }}>
-          <input disabled value={deadline}/>
-        </input_frame>
-      </panel>,
-    );
-  }
-
-  // const [deadline, setDeadline] = useState();
-  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
-
-
-  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
-
-  const { emailNotify = {} } = state;
-
-  return styled(styles)(
-    // <Route path="/tasks/(\\d+)" exact>
-    <panel
-      {...use({
-        one: AddPerpetrator && EmailNotify,
-        two: AddDocuments,
-        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
-        four: Completion,
-        five: Switch && PushButton,
-        six: UploadReadings || addReadingsDone
-      })}
-    >
-      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}/>}
-      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })}/>}
-      {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
-
-      {EmailNotify && <Contractors/>}
-      {EmailNotify && (
-        <Textarea
-          value={emailNotify.message ?? ''}
-          onChange={(e) => dispatch({
-            type: 'email_notify',
-            data: { message: e.target.value },
-          })}
-        />
-      )}
-
-
-      {/*{SwitchDevices && <ButtonTT color={"blue"} style={{ width: 'fit-content' }} onClick={showModalChangeOdpu}>Заменить*/}
-      {/*  расходомер</ButtonTT>}*/}
-
-      {/*{Switch && <ButtonTT color={"red"} style={{ width: 'fit-content' }} onClick={showModalDeregister}>Снять прибор с*/}
-      {/*  учета</ButtonTT>}*/}
-
-      {EmailNotify && <TemplateButton/>}
-      {(AddDocuments && !isObserver) && (
-        <>
-          <UploadButton {...upload.button} />
-          <UploadList {...upload.list} />
-        </>
-      )}
-      {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })}/>
-      )}
-        {(UploadReadings || addReadingsDone) && (
-            <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver}/>
-        )
-        }
-      <PushButton {...pushProps} />
-    </panel>,
-    // </Route>
-  );
-};
-
 
 const Textarea = (props) => styled`
     textarea {
@@ -218,9 +98,9 @@ const TemplateButton = () => styled(s.button)`
       grid-area: tmp;
     }
   `(
-  <button data-big>
-    <span>Выбрать из шаблона</span>
-  </button>,
+    <button data-big>
+      <span>Выбрать из шаблона</span>
+    </button>,
 );
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
@@ -229,8 +109,111 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       margin-left: 10px;
     }
   `(
-  <button data-big data-primary {...props}>
-    <Loader show={loading}/>
-    <span>Завершить этап</span>
-  </button>,
+    <button data-big data-primary {...props}>
+      <Loader show={loading} />
+      <span>Завершить этап</span>
+    </button>,
 );
+
+export const Panel = ({
+  expectedCompletionTime,
+  hiddenPanel = true,
+  actions = {},
+  state = {},
+  pushProps = {},
+  isObserver = false,
+  perpName = '',
+  apartment,
+  device,
+  dispatch = () => {
+  },
+  stages = {},
+}, ...props) => {
+  const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
+  if (hiddenPanel) return null;
+  const {
+    AddPerpetrator,
+    EmailNotify,
+    AddDocuments,
+    Switch,
+    Completion,
+    SwitchDevices,
+    SetNextStageDeadline,
+    UploadReadings,
+  } = actions;
+
+  const deadline = new Date(expectedCompletionTime).toLocaleDateString();
+
+  if (isObserver && AddDocuments && Switch) {
+    return styled(styles, s.input)(
+      <panel style={{ display: 'flex' }}>
+
+        <input_frame data-disabled data-big style={{ width: '50%' }}>
+          <input disabled value={perpName} />
+        </input_frame>
+        <input_frame data-disabled data-big style={{ width: '50%' }}>
+          <input disabled value={deadline} />
+        </input_frame>
+      </panel>,
+    );
+  }
+
+  // const [deadline, setDeadline] = useState();
+  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+
+  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
+
+  const { emailNotify = {} } = state;
+
+  return styled(styles)(
+    // <Route path="/tasks/(\\d+)" exact>
+    <panel
+      {...use({
+        one: AddPerpetrator && EmailNotify,
+        two: AddDocuments,
+        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
+        four: Completion,
+        five: Switch && PushButton,
+        six: UploadReadings || addReadingsDone,
+        // seven: SwitchDevices && ChangeDevice,
+      })}
+    >
+      {/*{(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />}*/}
+      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
+      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
+      {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
+
+      {EmailNotify && <Contractors />}
+      {EmailNotify && (
+        <Textarea
+          value={emailNotify.message ?? ''}
+          onChange={(e) => dispatch({
+            type: 'email_notify',
+            data: { message: e.target.value },
+          })}
+        />
+      )}
+
+      {EmailNotify && <TemplateButton />}
+      {/*{(!SwitchDevices && AddDocuments && !isObserver) && (*/}
+      {(AddDocuments && !isObserver) && (
+        <>
+          <UploadButton {...upload.button} />
+          <UploadList {...upload.list} />
+        </>
+      )}
+
+      {Switch && (
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+      )}
+      {(UploadReadings || addReadingsDone) && (
+        <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
+      )}
+      {/*Скрываю кнопку "Завершить этап" только для задачи "Замена прибора"*/}
+      {/*{!SwitchDevices && <PushButton {...pushProps} />}*/}
+      <PushButton {...pushProps} />
+
+    </panel>,
+    // </Route>
+  );
+};

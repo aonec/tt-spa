@@ -4,17 +4,12 @@ import { Title, ButtonTT } from '../../../../tt-components';
 import TabsComponent from './components/Main';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
-import {getObjectCalculators} from './apiAddOdpu'
+import { getObjectCalculators } from './apiAddOdpu';
 
 const ModalAddDevice = () => {
   const [currentTabKey, setTab] = useState('1');
   const [calculators, setCalculators] = useState([]);
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
-  const handleCancel = () => {
-    setAddOdpu(false);
-  };
-
-
 
   useEffect(() => {
     async function setCalculatorsList() {
@@ -30,16 +25,16 @@ const ModalAddDevice = () => {
     setCalculatorsList();
   }, []);
 
+  function handleCancel() {
+    setAddOdpu(false);
+  }
+
   function handleChangeTab(value) {
     setTab(value);
   }
 
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
-  };
-
-  const buttonHandler = () => {
-    console.log(calculators);
   };
 
   const Buttons = () => {
@@ -69,7 +64,7 @@ const ModalAddDevice = () => {
           type="submit"
           form="formikFormAddOdpu"
         >
-          Выгрузить
+          Сохранить
         </ButtonTT>
       );
     };
@@ -96,7 +91,6 @@ const ModalAddDevice = () => {
       width={800}
       visible={addOdpu}
     >
-      <ButtonTT onClick={buttonHandler} hidden>ButtonTT</ButtonTT>
       <Title size="middle" color="black">
         Добавление нового ОДПУ
       </Title>
@@ -104,7 +98,7 @@ const ModalAddDevice = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} />
+      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} />
 
       <Buttons />
     </Modal>

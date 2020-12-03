@@ -22,7 +22,7 @@ export const Information = (loading = true) => {
   const {
     city, street, housingStockNumber, corpus, id,
   } = address || DEFAULT_BUILDING;
-  const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
+  const { futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -36,7 +36,6 @@ export const Information = (loading = true) => {
     );
   }
 
-  console.log(convertDateDots(lastCommercialAccountingDate));
   return (
     <ListWrap>
       <Loader show={loading} size="32">
@@ -48,16 +47,20 @@ export const Information = (loading = true) => {
           </Subtitle>
         </ListItem>
         <ListItem>
-          <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
-        </ListItem>
-        <ListItem>
           <span>Дата поверки прибора</span>
           <span>{convertDateDots(lastCheckingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата следующей поверки прибора</span>
           <span>{convertDateDots(futureCheckingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата начала действия акта-допуска</span>
+          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата окончания действия акта-допуска</span>
+          <span>{convertDateDots(futureCommercialAccountingDate)}</span>
         </ListItem>
       </Loader>
     </ListWrap>
