@@ -33,6 +33,7 @@ import {
   EditCalculator,
   UserProfile,
   Contractor,
+  Registration
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -68,6 +69,7 @@ export function App() {
             <Route path="/logout" render={() => 'logout'} />
             {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage />} />
+            <Route path="/registration/" render={() => <Registration />} />
             <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
             <Route path="/form/" render={() => <DeviceSearchForm />} />
             <Route path="/">
