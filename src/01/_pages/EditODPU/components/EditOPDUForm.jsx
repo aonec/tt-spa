@@ -77,7 +77,7 @@ const FormEditODPU = (props) => {
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber: entryNumber,
       hubNumber: hubNumber,
-      diameter: diameter,
+      // diameter: diameter,
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
@@ -194,17 +194,17 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Диаметр трубы (мм)">
-            <InputTT
-              name="diameter"
-              placeholder="Укажите диаметр трубы в мм"
-              type={'number'}
-              onChange={handleChange}
-              value={values.diameter}
-              onBlur={handleBlur}
-            />
-            <Alert name="diameter" />
-          </Form.Item>
+          {/*<Form.Item label="Диаметр трубы (мм)">*/}
+          {/*  <InputTT*/}
+          {/*    name="diameter"*/}
+          {/*    placeholder="Укажите диаметр трубы в мм"*/}
+          {/*    type={'number'}*/}
+          {/*    onChange={handleChange}*/}
+          {/*    value={values.diameter}*/}
+          {/*    onBlur={handleBlur}*/}
+          {/*  />*/}
+          {/*  <Alert name="diameter" />*/}
+          {/*</Form.Item>*/}
 
           <Form.Item label="Дата Поверки">
             <DatePickerTT
