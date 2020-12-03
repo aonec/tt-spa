@@ -16,7 +16,7 @@ import {
   items,
 } from '../../../../../tt-components/localBases';
 import {
-  putOdpu, postOdpu, pushStage, putCalculator,
+  putOdpu, pushStage, putCalculator, createCalculator, deregisterDevice
 } from '../apiChangeDevice';
 import { tabs, actionsList, executorsList } from './localBase';
 
@@ -76,7 +76,7 @@ const CalculatorChangeForm = () => {
       lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
       isConnected: isConnectedValue[0].value,
-      deviceAddress: deviceAddress,
+      deviceAddress,
     },
     validationSchema: Yup.object({
       resource: Yup.string().required('Введите данные'),
@@ -98,7 +98,7 @@ const CalculatorChangeForm = () => {
       serialNumber,
       ipV4,
       port,
-      deviceAddress: deviceAddress,
+      deviceAddress,
       lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
       lastCheckingDate: isDateEmpty(lastCheckingDate),
@@ -157,7 +157,7 @@ const CalculatorChangeForm = () => {
     };
 
     const form = {
-      housingMeteringDeviceSwitch: {
+      calculatorSwitch: {
         deviceId: device.id,
         newDeviceId: selected.id,
       },
@@ -173,34 +173,66 @@ const CalculatorChangeForm = () => {
 
     // postTask(form)
   }
+  function randomInteger(min, max) {
+    // случайное число от min до (max+1)
+    let rand = min + Math.random() * (max + 1 - min);
+    return Math.floor(rand);
+  }
 
   function handleAdd() {
-    console.log('handleAdd');
-
-    const POST_ODPU_FORM = {
+    const POST_CALCULATOR_FORM = {
       serialNumber: values.serialNumber,
-      model: values.model,
-      resource: values.resource,
-      housingMeteringDeviceType: values.housingMeteringDeviceType,
-      lastCheckingDate: values.lastCheckingDate.toISOString(),
-      futureCheckingDate: values.futureCheckingDate.toISOString(),
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
-      closingDate: moment().toISOString(),
+      lastCheckingDate: values.lastCheckingDate,
+      futureCheckingDate: values.futureCheckingDate,
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      infoId: values.infoId,
+      housingStockId: device.address.id,
+      connection: {
+        ipV4: '0.0.0.0',
+        port: randomInteger(256,999),
+        deviceAddress: randomInteger(256,999),
+      },
     };
 
-    postOdpu(POST_ODPU_FORM).then((res) => {
-      console.log('res', res);
-      const { id } = res;
-      const form = {
-        housingMeteringDeviceSwitch: {
-          deviceId: device.id,
-          newDeviceId: id,
-        },
-        documentsIds: [123456],
-      };
-      pushStage(taskId, form);
+
+
+    console.log('res', JSON.stringify(POST_CALCULATOR_FORM));
+
+    createCalculator(POST_CALCULATOR_FORM).then((res)=>{
+          console.log("POST_CALCULATOR_FORM", res)
+      const deregisterForm = {
+          deviceId: res.id,
+          documentsIds: [123456],
+          closingDateTime: moment().toISOString(),
+
+      }
+      deregisterDevice(deregisterForm).then((result)=>{
+        const form = {
+          calculatorSwitch: {
+            deviceId: device.id,
+            newDeviceId: result.id,
+          },
+          documentsIds: [123456],
+        };
+        pushStage(taskId, form);
+
+      })
     });
+
+    // createCalculator(POST_CALCULATOR_FORM).then((res) => {
+    //   console.log('res', res);
+    //   const { id } = res;
+    //   const form = {
+    //     calculatorSwitch: {
+    //       deviceId: device.id,
+    //       newDeviceId: id,
+    //     },
+    //     documentsIds: [123456],
+    //   };
+    //   console.log('form', form);
+    //   // pushStage(taskId, form);
+    // });
   }
 
   function Buttons() {
@@ -287,7 +319,7 @@ const CalculatorChangeForm = () => {
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignContent: 'baseline',
-            minHeight: '220px'
+            minHeight: '220px',
           }}
         >
 

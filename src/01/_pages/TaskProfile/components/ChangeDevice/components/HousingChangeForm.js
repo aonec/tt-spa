@@ -13,7 +13,7 @@ import {
   isConnectedValue,
   resources,
 } from '../../../../../tt-components/localBases';
-import { putOdpu, postOdpu, pushStage } from '../apiChangeDevice';
+import { putOdpu, createOdpu, pushStage } from '../apiChangeDevice';
 
 import { tabs, actionsList, executorsList } from './localBase';
 
@@ -159,7 +159,7 @@ const HousingChangeForm = () => {
   }
 
   function handleAdd(){
-    const postOdpuForm = {
+    const createOdpuForm = {
       serialNumber: values.serialNumber,
       model: values.model,
       resource: values.resource,
@@ -171,7 +171,7 @@ const HousingChangeForm = () => {
       closingDate: moment().toISOString(),
     };
 
-    postOdpu(postOdpuForm).then((res) => {
+    createOdpu(createOdpuForm).then((res) => {
       const { id } = res;
       const form = {
         housingMeteringDeviceSwitch: {

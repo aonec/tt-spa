@@ -57,7 +57,8 @@ const ChangeDevice = (props) => {
   return (
     <ChangeDeviceContext.Provider value={context}>
       <Header>
-        Замена расходомера/термодатчика
+        {deviceType === 'Calculator' ? `Замена вычислителя` : `Замена расходомера/термодатчика`}
+
       </Header>
       <SearchInputAndAdd />
       {deviceType === 'Calculator' ? <CalculatorChangeForm /> : <HousingChangeForm />}

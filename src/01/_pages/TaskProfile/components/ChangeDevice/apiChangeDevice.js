@@ -100,12 +100,41 @@ export async function putOdpu(deviceId = '', form = {}) {
   }
 }
 
-export async function postOdpu(form = {}) {
+export async function createOdpu(form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
     const res = await axios.post('HousingMeteringDevices', form);
     // console.log("putCalculator", form)
     alert('ОДПУ успешно создан!');
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert(
+      'Что-то пошло не так: попробуйте проверить все данные',
+    );
+    throw new Error(error);
+  }
+}
+export async function deregisterDevice(Device = {}) {
+  try {
+    alert('Отправляется запрос на снятие прибора с учета !');
+    const res = await axios.post('MeteringDevices/close', Device);
+    alert('Вычислитель успешно снят с учета !');
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert('Что-то пошло не так: попробуйте еще раз');
+    throw new Error(error);
+  }
+}
+
+export async function createCalculator(form = {}) {
+  alert('Cейчас будем отправлять данные!');
+  try {
+    const res = await axios.post('Calculators', form);
+    // console.log("putCalculator", form)
+    alert('Вычислитель успешно создан!');
     console.log(res);
     return res;
   } catch (error) {
