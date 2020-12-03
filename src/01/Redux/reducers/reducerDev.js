@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const initialState = {
   calculatorId: '',
-  checkingDate: '',
+  lastCheckingDate: '',
   connection: {
     ipV4: '',
     deviceAddress: '',

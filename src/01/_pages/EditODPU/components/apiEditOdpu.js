@@ -42,3 +42,20 @@ export async function putOdpu(deviceId = '', form = {}) {
     throw new Error(error);
   }
 }
+
+export async function postOdpu(form = {}) {
+  alert('Cейчас будем отправлять данные!');
+  try {
+    const res = await axios.post(`HousingMeteringDevices`, form);
+    // console.log("putCalculator", form)
+    alert('ОДПУ успешно создан!');
+    console.log(res)
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert(
+      'Что-то пошло не так: попробуйте проверить все данные',
+    );
+    throw new Error(error);
+  }
+}
