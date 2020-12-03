@@ -40,15 +40,44 @@ export const ButtonTT = styled.button`
         && css`
         background: #189ee9;
         color: #ffffff;
+                          
+                          
         
-      `)|| (color === 'white'
+      `)
+          || (color === 'blueshadow'
+        && css`
+
+        background: #189ee9;
+                    opacity: 0.5;
+        color: #ffffff;
+                          
+                          
+        
+      `)
+          || (color === 'white'
         && css`
         background: transparent;
         color: #272F5A;
         border: 1px solid #DCDEE4;
       `)};
-      
-      
+
+  ${({ color }) => (color === 'red'
+          && css`
+        background: #fc525b;
+        color: #ffffff;
+      `)
+          || (color === 'blue'
+                  && css`
+        background: #189ee9;
+        color: #ffffff;
+        
+      `)|| (color === 'white'
+                  && css`
+        background: transparent;
+        color: #272F5A;
+        border: 1px solid #DCDEE4;
+      `)};
+        
       
        $:disabled {
         background: rgba(39, 47, 90, 0.32);
