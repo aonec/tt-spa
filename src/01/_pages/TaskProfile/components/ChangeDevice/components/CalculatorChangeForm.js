@@ -155,6 +155,7 @@ const CalculatorChangeForm = () => {
         deviceAddress: values.deviceAddress,
       },
     };
+    console.log(JSON.stringify(PUT_EDIT_FORM));
 
     const form = {
       calculatorSwitch: {
@@ -164,11 +165,11 @@ const CalculatorChangeForm = () => {
       documentsIds: [123456],
     };
 
-    console.log(PUT_EDIT_FORM);
+    console.log(JSON.stringify(form));
 
     putCalculator(selected.id, PUT_EDIT_FORM).then((res) => {
       console.log('res', res);
-      pushStage(taskId, form);
+      // pushStage(taskId, form);
     });
 
     // postTask(form)
@@ -194,8 +195,6 @@ const CalculatorChangeForm = () => {
         deviceAddress: randomInteger(256,999),
       },
     };
-
-
 
     console.log('res', JSON.stringify(POST_CALCULATOR_FORM));
 

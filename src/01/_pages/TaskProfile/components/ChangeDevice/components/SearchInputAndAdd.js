@@ -24,7 +24,7 @@ const SearchInputAndAdd = () => {
         label: `${model}: ${serialNumber}`,
       });
     }
-    if (deviceType === 'FlowMeter' && type === 'Housing') {
+    if (deviceType === ('FlowMeter' || 'ThermoSensor') && type === 'Housing') {
       result.push({
         value: id,
         label: `${model}: ${serialNumber}`,
