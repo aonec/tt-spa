@@ -24,23 +24,3 @@
   color: #FFFFFF;
   padding-right: 200px
 }
-
-.hidden {
-  position: absolute;
-  display: flex;
-  right: 0;
-  height: 48px;
-  padding: 16px 24px;
-  background: #FFFFFF;
-  z-index: 3;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 16px;
-}
-
-
-.close {
-  margin-left: 8px;
-  color:rgba(39, 47, 90, 0.9);
-  text-decoration: none;
-}

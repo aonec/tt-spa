@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import { Input, Form } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,9 +9,6 @@ import login from '../../assets/svg/login.svg';
 import { ButtonTT, Title } from '../../tt-components';
 
 export const Registration = () => {
-  console.log('Registration');
-  const [isHidden, setIsHidden] = useState(true);
-
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -23,23 +19,14 @@ export const Registration = () => {
     },
     validationSchema: Yup.object({
       password: Yup.string().required('Введите пароль'),
-      confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли не совпадают').required('Подтвердите пароль')
-      // password: Yup.string().min(6, 'пароль должен быть не меньше 6 знаков').required('Нельзя оставлять пустым'),
-      // confirmPassword: Yup.string().min(6, 'пароль должен быть не меньше 6 знаков').required('Нельзя оставлять пустым'),
+      confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли не совпадают').required('Подтвердите пароль'),
     }),
     onSubmit: async () => {
-      if (values.password == values.confirmPassword) {
-        const form = {
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        };
-        alert('Пароь успешно сохранен!');
-        console.log(JSON.stringify(form));
-      } else {
-        setIsHidden(false);
-        alert('Пароли не совпадают');
-      }
-
+      const form = {
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      };
+      alert('Пароь успешно сохранен!');
     },
   });
 
@@ -52,10 +39,6 @@ export const Registration = () => {
       );
     }
     return null;
-  };
-  const handleClick = () => {
-    console.log('handleClick');
-    setIsHidden(true);
   };
 
   return (
@@ -83,7 +66,7 @@ export const Registration = () => {
             <Alert name="password" />
           </Form.Item>
 
-          <Form.Item style={{ position: 'relative' }} label={<label style={{ color: '#ffffff' }}>Повторите пароль</label>}>
+          <Form.Item label={<label style={{ color: '#ffffff' }}>Повторите пароль</label>}>
             <Input.Password
               value={values.confirmPassword}
               onChange={handleChange}
@@ -91,16 +74,12 @@ export const Registration = () => {
               name="confirmPassword"
               size="large"
             />
-            <div className={styles.hidden} hidden={isHidden}>
-              <span>Пароли не совпадают </span>
-              <a className={styles.close} onClick={handleClick}>X</a>
-            </div>
             <Alert name="confirmPassword" />
           </Form.Item>
 
           <ButtonTT
             type="submit"
-            color={isHidden ? 'blue' : 'blueshadow'}
+            color="blue"
             style={{ width: '100%' }}
           >
             Вход в систему
