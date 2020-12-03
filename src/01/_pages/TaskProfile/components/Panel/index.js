@@ -195,7 +195,8 @@ export const Panel = ({
       )}
 
       {EmailNotify && <TemplateButton />}
-      {(!SwitchDevices && AddDocuments && !isObserver) && (
+      {/*{(!SwitchDevices && AddDocuments && !isObserver) && (*/}
+      {(AddDocuments && !isObserver) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
