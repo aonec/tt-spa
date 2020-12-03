@@ -6,10 +6,11 @@ import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
-  housingMeteringDeviceTypes, resources,  isConnectedValue,magistrals
+  housingMeteringDeviceTypes, resources, isConnectedValue, magistrals,
 } from '../../../tt-components/localBases';
 import {
-  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT} from '../../../tt-components';
+  Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT,
+} from '../../../tt-components';
 import { putOdpu } from './apiEditOdpu';
 
 const FormEditODPU = (props) => {
@@ -75,16 +76,16 @@ const FormEditODPU = (props) => {
       lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
       futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
       calculatorId: calculatorId || 'Вычислитель не выбран',
-      entryNumber: entryNumber,
-      hubNumber: hubNumber,
-      // diameter: diameter,
+      entryNumber,
+      hubNumber,
+      diameter: parseInt(diameter),
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
       checkingDate: moment().toISOString(),
       city: city || 'Город не указан',
       street: street || 'Улица не указана',
       housingStockNumber: housingStockNumber || 'Номер дома не указан',
-      corpus: corpus,
+      corpus,
       magistral: magistral || 'Не выбрано',
       ipV4,
       isConnected: isConnectedValue[0].value,
@@ -97,7 +98,8 @@ const FormEditODPU = (props) => {
       resource: Yup.string().required('Введите данные'),
       pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
-      // diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
+      diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
+        .required('Введите число от 1'),
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
@@ -112,7 +114,7 @@ const FormEditODPU = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        // diameter: values.diameter,
+        diameter: values.diameter,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
@@ -145,7 +147,7 @@ const FormEditODPU = (props) => {
       <form id="editOdpuForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
 
         <div hidden={Number(currentTabKey) !== 1}>
-          <Form.Item label="Выберите тип прибора">
+          <Form.Item label="Тип прибора">
             <SelectTT
               name="housingMeteringDeviceType"
               onChange={(event) => {
@@ -158,7 +160,7 @@ const FormEditODPU = (props) => {
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
 
-          <Form.Item label="Выберите тип ресурса">
+          <Form.Item label="Тип ресурса">
             <SelectTT
               name="resource"
               onChange={(value) => {
@@ -170,7 +172,7 @@ const FormEditODPU = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Выберите модель прибора">
+          <Form.Item label="Модель прибора">
             <InputTT
               name="model"
               placeholder="Укажите модель..."
@@ -194,17 +196,17 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          {/*<Form.Item label="Диаметр трубы (мм)">*/}
-          {/*  <InputTT*/}
-          {/*    name="diameter"*/}
-          {/*    placeholder="Укажите диаметр трубы в мм"*/}
-          {/*    type={'number'}*/}
-          {/*    onChange={handleChange}*/}
-          {/*    value={values.diameter}*/}
-          {/*    onBlur={handleBlur}*/}
-          {/*  />*/}
-          {/*  <Alert name="diameter" />*/}
-          {/*</Form.Item>*/}
+          <Form.Item label="Диаметр прибора, мм">
+            <InputTT
+              name="diameter"
+              placeholder="Укажите диаметр трубы в мм"
+              type="number"
+              onChange={handleChange}
+              value={values.diameter}
+              onBlur={handleBlur}
+            />
+            <Alert name="diameter" />
+          </Form.Item>
 
           <Form.Item label="Дата Поверки">
             <DatePickerTT
@@ -375,7 +377,6 @@ const FormEditODPU = (props) => {
             />
             <Alert name="pipeNumber" />
           </Form.Item>
-
 
           <Form.Item label="Направление магистрали">
             <SelectTT
