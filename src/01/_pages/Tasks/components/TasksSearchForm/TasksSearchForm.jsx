@@ -7,7 +7,7 @@ import styles from '../../../Devices/components/DeviceSearchForm/DeviceSearchFor
 
 import { setCurrentPage } from '../../../../Redux/reducers/reducerDevicesPage';
 import { setHouseNumber, setStreet } from '../../../Objects/ObjectsSearchForm/objectsSearchReducer';
-import { setSearchTerm, setTaskType, setTasks } from './tasksSearchReducer';
+import {setSearchTerm, setTaskType, setTasks, setTaskId} from './tasksSearchReducer';
 import { setDevicesFilter } from '../../../Devices/devicesSearchReducer';
 
 const TasksSearchForm = ({ searchState, dispatchSearchState }) => {
@@ -21,9 +21,9 @@ const TasksSearchForm = ({ searchState, dispatchSearchState }) => {
     if (previousValue.length < 4 && targetValue.length < 4) {
 
     } else if (targetValue.length >= 4) {
-      dispatchSearchState(setSearchTerm(targetValue));
+      dispatchSearchState(setTaskId(targetValue));
     } else {
-      dispatchSearchState(setSearchTerm());
+      dispatchSearchState(setTaskId());
     }
     // dispatch(setCurrentPage(1))
   };
@@ -61,13 +61,22 @@ const TasksSearchForm = ({ searchState, dispatchSearchState }) => {
           </Tooltip>
         </Form.Item>
 
+        {/*<Form.Item*/}
+        {/*  name="Street"*/}
+        {/*  rules={[{ required: true, message: 'Введите название улицы' }]}*/}
+        {/*  style={{ marginRight: 16 }}*/}
+        {/*>*/}
+        {/*  /!* <Input className={styles.input} value={searchState.street} placeholder="Название улицы"/> *!/*/}
+        {/*  <Input className={styles.input} value={1} placeholder="Название улицы" disabled />*/}
+        {/*</Form.Item>*/}
+
         <Form.Item
-          name="Street"
-          rules={[{ required: true, message: 'Введите название улицы' }]}
-          style={{ marginRight: 16 }}
+            name="TaskId"
+            rules={[{ required: true, message: 'Введите номер задачи' }]}
+            style={{ marginRight: 16 }}
         >
           {/* <Input className={styles.input} value={searchState.street} placeholder="Название улицы"/> */}
-          <Input className={styles.input} value={1} placeholder="Название улицы" disabled />
+          <Input className={styles.input} value={searchState.taskId} placeholder="Номер задачи"/>
         </Form.Item>
 
         <Form.Item

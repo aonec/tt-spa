@@ -5,7 +5,9 @@ const ADD_READINGS = 'ADD_READINGS';
 const UPDATE_READINGS = 'UPDATE_READINGS';
 
 export const usePanel = (
-  { panel = {}, panelLoading = false, apartment, stages },
+  {
+    panel = {}, panelLoading = false, apartment, stages,
+  },
   pageDispatch,
 ) => {
   const { replace } = useHistory();
@@ -15,7 +17,7 @@ export const usePanel = (
 
   React.useEffect(() => {
     if (!panelLoading && !state.readings) dispatch({ type: 'reset' });
-  }, [panelLoading])
+  }, [panelLoading]);
 
   window.state = state;
 
@@ -40,7 +42,7 @@ export const usePanel = (
     actions: panel?.actions,
     apartment,
     state,
-    stages
+    stages,
   };
 };
 
@@ -55,28 +57,26 @@ export function dataReducer(state, action) {
       return { ...state, emailNotify: { ...emailNotify, ...data } };
 
     case ADD_READINGS:
-      return {...state, readings: action.readings}
+      return { ...state, readings: action.readings };
 
     case UPDATE_READINGS:
       return {
         ...state,
         devices: state.devices.map(
-            (device) => device.id === action.deviceId ?
-                {
-                  ...device,
-                  readings: device.readings.map(
-                      (reading, index) => {
-                        return index === 0 ?
-                            {
-                              ...reading,
-                              [`value${action.readingNumber}`]: action.readingValue
-                            } :
-                            reading
-                      }
-                  )
-                } : device
-        )
-      }
+          (device) => (device.id === action.deviceId
+            ? {
+              ...device,
+              readings: device.readings.map(
+                (reading, index) => (index === 0
+                  ? {
+                    ...reading,
+                    [`value${action.readingNumber}`]: action.readingValue,
+                  }
+                  : reading),
+              ),
+            } : device),
+        ),
+      };
 
     case 'reset':
       return {};
@@ -87,14 +87,23 @@ export function dataReducer(state, action) {
   }
 }
 
-export const addReadings = (readings) => ({ type: ADD_READINGS, readings })
+export const addReadings = (readings) => ({ type: ADD_READINGS, readings });
 
 function isDisabled(
   {
-    nextPerpetratorId = null, documentsIds = [], nextStageId = null, nextStageDeadline = null,
+    nextPerpetratorId = null,
+    documentsIds = [],
+    nextStageId = null,
+    nextStageDeadline = null,
   },
   {
-    AddPerpetrator, AddDocuments, Switch, Completion, SetNextStageDeadline, UploadReadings, isObserver
+    AddPerpetrator,
+    AddDocuments,
+    Switch,
+    Completion,
+    SetNextStageDeadline,
+    UploadReadings,
+    isObserver,
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
@@ -103,7 +112,8 @@ function isDisabled(
   if (AddPerpetrator && SetNextStageDeadline) return !nextPerpetratorId || !nextStageDeadline;
   if (AddPerpetrator) return !nextPerpetratorId;
   if (Completion) return false;
-  if (UploadReadings) return false
+  if (UploadReadings) return false;
+  if (AddDocuments) return !documentsIds.length;
 
   return true;
 }

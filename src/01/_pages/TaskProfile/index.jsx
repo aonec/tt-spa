@@ -18,8 +18,6 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import ModalChangeOdpu from './components/Modals/ModalChangeOdpu';
-import ModalDeregisterDevice from './components/Modals/ModalDeregisterDevice';
 import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 function reducer(state, action) {
@@ -65,13 +63,15 @@ export const TaskProfile = () => {
   const {device} = state;
   const {type, id} = device || {};
 
+  // console.log("TaskProfile", state)
+
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Breadcrumb path={`/tasks/`}/>
       <Header {...state.header} />
-      <Panel {...panel} />
+      <Panel {...panel} device={device} state={state}/>
       <Steps />
       <Documents {...docs} />
       <grid>
@@ -79,8 +79,6 @@ export const TaskProfile = () => {
         <Stages {...stages} />
         <InformationDevice {...infoDevice} type={type} id={id}/>
       </grid>
-      {/*<ModalChangeOdpu {...infoDevice} />*/}
-      {/*<ModalDeregisterDevice {...infoDevice} />*/}
     </TasksProfileContext.Provider>,
   );
 };
