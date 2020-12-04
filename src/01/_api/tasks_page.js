@@ -6,12 +6,16 @@ export async function getTasks(grouptype = null, searchState = {}) {
     const params = { grouptype };
 
     let query = 'tasks';
-    if (searchState.searchTerm) {
-      query += `/${searchState.searchTerm}`;
-    }
+    // if (searchState.searchTerm) {
+    //   query += `/${searchState.searchTerm}`;
+    // }
 
     if (searchState.taskTypeNumber) {
       params.tasktype = searchState.taskTypeNumber;
+    }
+
+    if (searchState.taskId) {
+      params.taskId = searchState.taskId;
     }
 
     const res = await axios.get(query, { params });
