@@ -41,10 +41,14 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
         const previousReadingsArray = [];
         const currentReadingsArray = [];
         const prevReadings = device.readings[1] || {};
-        const currentReadings = device.readings[0];
+        const currentReadings = device.readings[0] || {};
+
+        console.log(prevReadings['value1'])
+
 
         for (let i=1; i <= numberOfReadings; i++) {
-            previousReadingsArray.push(prevReadings[`value${i}`]);
+
+            previousReadingsArray.push(prevReadings[`value${i}`] ?? '-');
             currentReadingsArray.push(currentReadings[`value${i}`] ?? '-');
         }
 
@@ -70,7 +74,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
     if (isLoading) return 'ЗАГРУЗКА...'
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-        <DeviceRates key={readingsState.id + index}
+        <DeviceRates key={readingsState.id || device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
@@ -81,7 +85,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
     ));
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-        <DeviceRates key={readingsState.id + index}
+        <DeviceRates key={readingsState.id || device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}

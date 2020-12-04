@@ -30,7 +30,10 @@ const styles = css`
 
  meter_header {
     display: grid;
-    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;
+    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;    
+    border-bottom: 1px solid var(--frame);
+    padding: 8px;
+    column-gap: 16px;
     height: 48px;
     background: var(--bg);
     align-items: center;
@@ -149,8 +152,8 @@ export const MeterDevicesNew = ({items = []}) => {
                                                                               sendReadings={() => sendReadings(device)}
     />);
 
-    const lastMonth = getMonthFromDate(state.devices[0].readings[0].uploadTime)
-    const previousMonth = getMonthFromDate(state.devices[0].readings[1].uploadTime)
+    const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime)
+    const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime)
 
     // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
 
