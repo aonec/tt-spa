@@ -7,38 +7,38 @@ const UPDATE_READINGS = 'UPDATE_READINGS';
 const initialState = {
   devices: [
     {
-      resource: 'HotWaterSupply',
-      mountPlace: 'Toilet',
-      rateType: 'OneZone',
+      resource: '',
+      mountPlace: '',
+      rateType: '',
       readings: [
         {
-          id: 1764931,
+          id: null,
           hasError: true,
-          status: 'Unknown',
+          status: '',
           statusMessage: null,
-          value1: '52',
+          value1: '',
           value2: null,
           value3: null,
           value4: null,
-          readingDate: '2020-10-31',
-          uploadTime: '2020-11-02T10:23:40.763871',
+          readingDate: '',
+          uploadTime: '',
         },
       ],
-      id: 974319,
+      id: null,
       transactionType: null,
-      model: 'СГВ',
-      serialNumber: '32740910',
+      model: '',
+      serialNumber: '',
       managementFirm: {
-        id: 2,
-        name: 'ООО УК "Жилье"',
+        id: null,
+        name: '',
         phoneNumber: null,
         information: null,
-        timeZoneOffset: '03:00:00',
+        timeZoneOffset: '',
       },
-      lastCommercialAccountingDate: '2017-12-10T03:00:00',
-      futureCommercialAccountingDate: '2017-12-10T03:00:00',
-      lastCheckingDate: '2017-10-02T03:00:00',
-      futureCheckingDate: '2023-10-02T03:00:00',
+      lastCommercialAccountingDate: '',
+      futureCommercialAccountingDate: '',
+      lastCheckingDate: '',
+      futureCheckingDate: '',
       closingDate: null,
     },
   ],
@@ -46,6 +46,7 @@ const initialState = {
 
 const readingsReducer = (state = initialState, action) => {
   window.readings = state;
+  console.log("readingsReducer", state)
   switch (action.type) {
     case SET_DEVICES:
       return { ...state, devices: [...action.devices] };
@@ -89,7 +90,8 @@ const readingsReducer = (state = initialState, action) => {
 
       const newState = {
         ...state,
-        devices: state.devices.map((device, index) => (index === deviceOrder ? _.cloneDeep(state.devices[deviceOrder]) : device)),
+        devices: state.devices.map((device, index) =>
+            (index === deviceOrder ? _.cloneDeep(state.devices[deviceOrder]) : device)),
       };
 
       const readings = newState.devices[deviceOrder].readings[0];
@@ -102,7 +104,7 @@ const readingsReducer = (state = initialState, action) => {
         }
       }
 
-      return newState;
+      // return newState;
 
       return {
         ...state,
@@ -122,6 +124,8 @@ const readingsReducer = (state = initialState, action) => {
             } : device),
         ),
       };
+
+    default: return state;
   }
 };
 
@@ -132,3 +136,44 @@ export const updateReadings = (deviceId, readingNumber, readingValue) => ({
 });
 
 export default readingsReducer;
+
+
+// const initialState = {
+//   devices: [
+//     {
+//       resource: 'HotWaterSupply',
+//       mountPlace: 'Toilet',
+//       rateType: 'OneZone',
+//       readings: [
+//         {
+//           id: 1764931,
+//           hasError: true,
+//           status: 'Unknown',
+//           statusMessage: null,
+//           value1: '52',
+//           value2: null,
+//           value3: null,
+//           value4: null,
+//           readingDate: '2020-10-31',
+//           uploadTime: '2020-11-02T10:23:40.763871',
+//         },
+//       ],
+//       id: 974319,
+//       transactionType: null,
+//       model: 'СГВ',
+//       serialNumber: '32740910',
+//       managementFirm: {
+//         id: 2,
+//         name: 'ООО УК "Жилье"',
+//         phoneNumber: null,
+//         information: null,
+//         timeZoneOffset: '03:00:00',
+//       },
+//       lastCommercialAccountingDate: '2017-12-10T03:00:00',
+//       futureCommercialAccountingDate: '2017-12-10T03:00:00',
+//       lastCheckingDate: '2017-10-02T03:00:00',
+//       futureCheckingDate: '2023-10-02T03:00:00',
+//       closingDate: null,
+//     },
+//   ],
+// };
