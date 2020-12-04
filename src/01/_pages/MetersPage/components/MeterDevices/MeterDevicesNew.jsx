@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from "react"
-import styled, { css } from "reshadow/macro"
+import React, { useEffect, useState, useReducer } from 'react';
+import styled, { css } from 'reshadow/macro';
 
-import * as style from "01/r_comp"
-import { Icon } from "01/components"
-import DeviceReadingForm from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
-import readingsReducer, {setDevices} from "../../../../components/Select/selects/AddReadings/readingsReducer";
-import OperatorDeviceReadingForm from "./components/OperatorDeviceReadingForm";
-import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
-import axios from "axios";
+import * as style from '01/r_comp';
+import { Icon } from '01/components';
+import axios from 'axios';
 import moment from 'moment';
-import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
-import Arrow from "../../../../_components/Arrow/Arrow";
+import DeviceReadingForm from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm';
+import readingsReducer, { setDevices } from '../../../../components/Select/selects/AddReadings/readingsReducer';
+import OperatorDeviceReadingForm from './components/OperatorDeviceReadingForm';
+import { formReadingsToPush, formReadingToPush } from '../../../../utils/formReadingsToPush';
+import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
+import Arrow from '../../../../_components/Arrow/Arrow';
 
 // meter_header,
-
 
 const styles = css`
   meters {
@@ -106,7 +105,61 @@ const styles = css`
   }
 
   
-`
+`;
+
+export const MeterDevicesNew = ({ items = [] }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [state, dispatch] = useReducer(readingsReducer, {});
+
+  useEffect(() => {
+    dispatch(setDevices(items));
+  }, [items]);
+
+  const sendReadings = (device) => {
+    // const json = JSON.stringify(formReadingToPush(device))
+    axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
+  };
+
+  if (!state.devices?.length) return null;
+
+  // let sendReadings = (devices) => {
+  //     const readingsToPush = formReadingsToPush(devices);
+  //     axios.post('IndividualDeviceReadings/create', readingsToPush)
+  // }
+
+  const readings = state.devices.map((device, index) => (
+    <OperatorDeviceReadingForm
+      key={device.id}
+      device={device}
+      dispatch={dispatch}
+      sendReadings={() => sendReadings(device)}
+    />
+  ));
+
+  const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime);
+  const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime);
+
+  // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
+
+  console.log(moment('2027-06-01T02:00:00').format('MMMM'));
+
+  return styled(styles, style.button)(
+    <meters>
+      <meter_header>
+        <span>Информация o приборe</span>
+
+        <div>{lastMonth}</div>
+        <div style={{ display: 'flex', justifyContent: 'space-around', alignContent: 'center' }}>
+          <Arrow />
+          <div>{previousMonth}</div>
+          <Arrow isRight />
+        </div>
+
+      </meter_header>
+      {readings}
+    </meters>,
+  );
+};
 
 // div {
 //     display: grid;
@@ -123,56 +176,3 @@ const styles = css`
 //         cursor: pointer;
 //     }
 // }
-
-
-export const MeterDevicesNew = ({items = []}) => {
-    const [isLoading, setIsLoading] = useState(true);
-
-
-    const [state, dispatch] = React.useReducer(readingsReducer, {});
-
-    useEffect(() => {
-        dispatch(setDevices(items))
-    }, [items])
-
-
-    const sendReadings = (device) => {
-        // const json = JSON.stringify(formReadingToPush(device))
-        axios.post('/IndividualDeviceReadings/create', formReadingToPush(device))
-    }
-
-    if (!state.devices?.length) return null
-
-    // let sendReadings = (devices) => {
-    //     const readingsToPush = formReadingsToPush(devices);
-    //     axios.post('IndividualDeviceReadings/create', readingsToPush)
-    // }
-
-    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
-                                                                              sendReadings={() => sendReadings(device)}
-    />);
-
-    const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime)
-    const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime)
-
-    // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
-
-    console.log(moment("2027-06-01T02:00:00").format('MMMM'))
-
-    return styled(styles, style.button)(
-            <meters>
-                <meter_header>
-                    <span>Информация o приборe</span>
-
-                        <div>{lastMonth}</div>
-                        <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                            <Arrow />
-                            <div>{previousMonth}</div>
-                            <Arrow isRight />
-                        </div>
-
-                </meter_header>
-                {readings}
-            </meters>
-            )
-            }

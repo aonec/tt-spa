@@ -1,11 +1,10 @@
-import React from "react"
+import React from 'react';
 
-import styled, { use } from "reshadow/macro"
+import styled, { use } from 'reshadow/macro';
 
-import { input } from "01/r_comp"
+import { input } from '01/r_comp';
 
-export const Filter = ({ inputs = [] }) => {
-  return styled(input)`
+export const Filter = ({ inputs = [] }) => styled(input)`
     filter {
       grid-column: 1 / -1;
       display: grid;
@@ -23,6 +22,5 @@ export const Filter = ({ inputs = [] }) => {
           <input {...input} />
         </input_frame>
       ))}
-    </filter>
-  )
-}
+    </filter>,
+);
