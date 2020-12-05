@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Header } from '../../tt-components';
-import TabsDevices from './components/TabsDevices';
+import TabsDevices from './components/TabsDevices.tsx';
 import {useSelector} from "react-redux";
 
 export const DevicesFromSearch = () => {

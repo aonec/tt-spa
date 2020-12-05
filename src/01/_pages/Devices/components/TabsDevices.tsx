@@ -10,7 +10,7 @@ import {
 } from '../../../Redux/reducers/reducerDevicesPage';
 
 import styles from './TabsDevices.module.scss';
-import { createPages } from '../../../utils/pagesCreator';
+import { createPages } from '../../../utils/pagesCreator.ts';
 
 import DeviceBlock from './DeviceBlock/DeviceBlock';
 import DeviceSearchForm from './DeviceSearchForm/DeviceSearchForm';
