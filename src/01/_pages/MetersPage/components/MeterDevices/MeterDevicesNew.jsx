@@ -100,40 +100,28 @@ const styles = css`
   }
 `;
 
-async function sendReadings(device={}) {
-  try {
-    const res = await axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка отправки показаний ИПУ',
-    };
-  }
-}
-
 export const MeterDevicesNew = ({ items = [] }) => {
   const [state, dispatch] = useReducer(readingsReducer, {});
-  console.log("state", state)
 
   useEffect(() => {
     dispatch(setDevices(items));
   }, [items]);
 
+  const sendReadings = (device) => {
+    // const json = JSON.stringify(formReadingToPush(device))
+    axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
+  };
+
   if (!state.devices?.length) return <div>Нет устройств</div>;
 
-  const readings = state.devices.map(device => {
-    console.log(device)
-    return (
+  const readings = state.devices.map((device, index) => (
     <OperatorDeviceReadingForm
       key={device.id}
       device={device}
       dispatch={dispatch}
       sendReadings={() => sendReadings(device)}
     />
-    )
-  });
+  ));
 
   const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime);
   const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime);
