@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import '../../../../tt-components/antd.scss';
 import { Modal } from 'antd';
-import {
-  Title, ButtonTT,
-} from '../../../../tt-components';
+import { Title } from '../../../../tt-components';
 import TabsComponent from './addCalculatorTabs';
 import { ObjectContext } from '../../index';
 import AddCalculatorForm from './AddCalculatorForm';
 
 const ModalCalculator = () => {
+
   const [currentTabKey, setTab] = useState('1');
   const { addCalculator, setAddCalculator, objid } = useContext(ObjectContext);
 
@@ -16,16 +15,12 @@ const ModalCalculator = () => {
     setTab(value);
   }
 
-  const handleNext = () => {
+  function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
-  };
+  }
 
   const handleCancel = () => {
     setAddCalculator(false);
-  };
-
-  const buttonHandler = () => {
-    console.log('buttonHandler');
   };
 
   return (
@@ -35,7 +30,6 @@ const ModalCalculator = () => {
       footer={null}
       width={800}
     >
-      {/*<ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT>*/}
       <Title size="middle" color="black">
         Добавление нового вычислителя
       </Title>

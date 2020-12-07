@@ -8,6 +8,7 @@ import {
 } from '../../../../../tt-components';
 import { SettingsContext } from '../../../index';
 import {postContractor} from "../../../apiSettings";
+import { phoneRegExp } from "../../../../../tt-components/localBases";
 
 const ModalAddContractorForm = () => {
   const { contractor, hideContractor } = useContext(SettingsContext);
@@ -17,20 +18,20 @@ const ModalAddContractorForm = () => {
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      middleName: '',
       email: '',
       role: '',
+      phoneNumber:''
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Строка не должна быть пустой'),
-      email: Yup.string().required('Строка не должна быть пустой'),
+      email: Yup.string().email('Укажите адрес в формате name@mail.ru').required('Строка не должна быть пустой'),
+      phoneNumber: Yup.string().matches(phoneRegExp, 'Укажите верно номер телефона'),
     }),
     onSubmit: async () => {
       const form = {
         name: values.name,
         email: values.email,
+        phoneNumber: values.phoneNumber,
       };
       postContractor(form)
 

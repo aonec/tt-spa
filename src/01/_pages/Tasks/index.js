@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useReducer} from "react"
 import styled from "reshadow/macro"
 import { NavLink } from "react-router-dom"
 
@@ -6,6 +6,8 @@ import { tabs } from "01/r_comp"
 
 import { useTasks } from "./useTasks"
 import { TasksList } from "./components/TasksList"
+import TasksSearchForm from "./components/TasksSearchForm/TasksSearchForm";
+import tasksSearchReducer from "./components/TasksSearchForm/tasksSearchReducer";
 
 const tabItems = [
   ["К исполнению", "executing"],
@@ -23,14 +25,18 @@ const Tabs = React.memo(({ total = [] }) =>
       ))}
     </tabs>
   )
-)
+);
+
 
 export const Tasks = () => {
-  const { items, executingTasksCount, observingTasksCount } = useTasks()
+  const [searchState, dispatchSearchState] = useReducer(tasksSearchReducer, {})
+
+  const { items, executingTasksCount, observingTasksCount } = useTasks(searchState)
   return (
     <div style={{maxWidth: 960}}>
       <h1 style={{fontWeight:300, marginBottom: 16}}>Задачи</h1>
       <Tabs total={[executingTasksCount, observingTasksCount]} />
+      <TasksSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
       <TasksList items={items} />
     </div>
   )

@@ -21,13 +21,12 @@ const EditCalculatorForm = () => {
     canBeEdited,
     closingDate,
     diameter,
+    lastCheckingDate,
     futureCheckingDate,
     futureCommercialAccountingDate,
+    lastCommercialAccountingDate,
     housingStockId,
     id,
-    lastCheckingDate,
-    checkingDate,
-    lastCommercialAccountingDate,
     model,
     resource,
     serialNumber,
@@ -35,8 +34,6 @@ const EditCalculatorForm = () => {
     connection,
     address,
   } = currentCalc;
-
-  console.log('model', model);
 
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
@@ -57,36 +54,40 @@ const EditCalculatorForm = () => {
   } = useFormik({
     initialValues: {
       serialNumber,
-      checkingDate,
-      futureCheckingDate,
-      lastCommercialAccountingDate,
+      lastCheckingDate: lastCheckingDate === null ? null : moment(lastCheckingDate),
+      futureCheckingDate: futureCheckingDate === null ? null : moment(futureCheckingDate),
+      lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
       ipV4,
       deviceAddress,
       port,
-      futureCommercialAccountingDate,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
     },
     validationSchema: Yup.object({
+      lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+      futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+      lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+      futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       serialNumber: Yup.string().required('Введите серийный номер'),
       ipV4: Yup.string().required('Введите IP-адрес устройства'),
       deviceAddress: Yup.number().typeError('Не может быть пустым значением').required('Введите сетевой адрес устройства'),
       port: Yup.number().typeError('Не может быть пустым значением').required('Введите порт устройства'),
-      infoId: Yup.number().typeError('Выберите модель').required('Выберите модель')
+      infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
 
     }),
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        checkingDate: values.lastCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         connection: {
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
         },
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
@@ -94,29 +95,6 @@ const EditCalculatorForm = () => {
       putCalculator(id, form);
     },
   });
-
-  const Buttons = () => {
-    console.log('Buttons');
-    return (
-      <div style={{ padding: '32px 0' }}>
-        <ButtonTT
-          form="editCalculatorForm"
-          color="blue"
-          style={{ marginRight: '16px' }}
-          type="submit"
-          onClick={handleSubmit}
-        >
-          Сохранить
-        </ButtonTT>
-
-        <NavLink to={`/calculators/${id}`}>
-          <ButtonTT color="white">
-            Отмена
-          </ButtonTT>
-        </NavLink>
-      </div>
-    );
-  };
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -151,31 +129,20 @@ const EditCalculatorForm = () => {
               setFieldValue('infoId', Number(target.value));
             }}
           />
-          <Alert name='infoId' />
-        </Form.Item>
-
-        <Form.Item label="Дата ввода в эксплуатацию">
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            name="lastCommercialAccountingDate"
-            value={moment(values.lastCommercialAccountingDate)}
-            placeholder="Укажите дату..."
-            onChange={(date) => {
-              setFieldValue('lastCommercialAccountingDate', date.toISOString());
-            }}
-          />
+          <Alert name="infoId" />
         </Form.Item>
 
         <Form.Item label="Дата Поверки">
           <DatePickerTT
             format="DD.MM.YYYY"
-            name="checkingDate"
+            name="lastCheckingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
-              setFieldValue('checkingDate', date.toISOString());
+              setFieldValue('lastCheckingDate', date);
             }}
-            value={moment(values.checkingDate)}
+            value={values.lastCheckingDate}
           />
+          <Alert name="lastCheckingDate" />
         </Form.Item>
 
         <Form.Item label="Дата Следующей поверки">
@@ -183,21 +150,34 @@ const EditCalculatorForm = () => {
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
             onChange={(date) => {
-              setFieldValue('futureCheckingDate', date.toISOString());
+              setFieldValue('futureCheckingDate', date);
             }}
-            value={moment(values.futureCheckingDate)}
+            value={values.futureCheckingDate}
             name="futureCheckingDate"
           />
+          <Alert name="futureCheckingDate" />
         </Form.Item>
 
-        <Form.Item label="Дата Следующей поверки">
+        <Form.Item label="Дата начала действия акта-допуска">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCommercialAccountingDate"
+            placeholder="Укажите дату..."
+            onChange={(date) => {
+              setFieldValue('lastCommercialAccountingDate', date);
+            }}
+            value={values.lastCommercialAccountingDate}
+          />
+        </Form.Item>
+
+        <Form.Item label="Дата окончания действия акта-допуска">
           <DatePickerTT
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
             onChange={(date) => {
-              setFieldValue('futureCommercialAccountingDate', date.toISOString());
+              setFieldValue('futureCommercialAccountingDate', date);
             }}
-            value={moment(values.futureCommercialAccountingDate)}
+            value={values.futureCommercialAccountingDate}
             name="futureCommercialAccountingDate"
           />
         </Form.Item>
@@ -253,7 +233,23 @@ const EditCalculatorForm = () => {
       <div hidden={Number(currentTabKey) !== 4}>
         <Title color="black">Компонент в разработке </Title>
       </div>
-      <Buttons />
+      <div style={{ padding: '32px 0' }}>
+        <ButtonTT
+          form="editCalculatorForm"
+          color="blue"
+          style={{ marginRight: '16px' }}
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Сохранить
+        </ButtonTT>
+
+        <NavLink to={`/calculators/${id}`}>
+          <ButtonTT color="white">
+            Отмена
+          </ButtonTT>
+        </NavLink>
+      </div>
     </form>
   );
 };

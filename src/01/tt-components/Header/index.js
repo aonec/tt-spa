@@ -7,6 +7,16 @@ export const Header = styled.h1`
   line-height: 1.5;
   // margin-bottom: 32px;
    margin-bottom: 22px;
+
+${({ color }) => (color === 'white'
+  && css`
+color: #FFFFFF;
+  `)
+|| (color === 'black'
+  && css`
+  color: #272f5a;
+  `)};
+  
 `;
 
 export default Header;

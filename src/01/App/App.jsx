@@ -5,6 +5,17 @@ import '01/css/index.css';
 import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
+import { IndividualDevice } from '01/_pages/IndividualDevice';
+
+import moment from 'moment';
+import { Provider } from 'react-redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+// библиотека обработки дат и локализация СНГ
+import 'moment/locale/ru';
+import thunkMiddleWare from 'redux-thunk';
+import { ConfigProvider } from 'antd';
+import ruRu from 'antd/es/locale/ru_RU';
+import rootReducer from '../Redux/rootReducer';
 import {
   Tasks,
   Login,
@@ -20,18 +31,10 @@ import {
   HousingProfile,
   Settings,
   EditCalculator,
+  UserProfile,
+  Contractor,
+  Registration
 } from '../_pages';
-import { IndividualDevice } from '01/_pages/IndividualDevice';
-
-import moment from 'moment';
-import { Provider } from 'react-redux';
-import { createStore, compose, applyMiddleware } from 'redux';
-// библиотека обработки дат и локализация СНГ
-import 'moment/locale/ru';
-import rootReducer from '../Redux/rootReducer';
-import thunkMiddleWare from 'redux-thunk';
-import { ConfigProvider } from 'antd';
-import ruRu from 'antd/es/locale/ru_RU';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
@@ -66,6 +69,7 @@ export function App() {
             <Route path="/logout" render={() => 'logout'} />
             {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage />} />
+            <Route path="/registration/" render={() => <Registration />} />
             <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
             <Route path="/form/" render={() => <DeviceSearchForm />} />
             <Route path="/">
@@ -84,15 +88,8 @@ export function App() {
                     <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
                     <Route path="/objects/" component={Objects} exact />
                     <Route path="/devices/" component={DevicesFromSearch} exact />
-                    <Route path="/settings/(staff|contractors)?" component={Settings}  />
+                    <Route path="/settings/(staff|contractors)?" component={Settings} />
                     <Route path="/devices/(\\d+)" component={Devices} exact />
-
-                    {/* <Route */}
-                    {/*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */}
-                    {/*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */}
-                    {/*  component={DeviceProfile} */}
-                    {/*  exact */}
-                    {/* /> */}
 
                     <Route
                       path={['/calculators/:deviceId/(connection|related|documents)?']}
@@ -103,6 +100,18 @@ export function App() {
                     <Route
                       path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
                       component={HousingProfile}
+                      exact
+                    />
+
+                    <Route
+                      path={['/user/:userId', '/user/staff/:userId']}
+                      component={UserProfile}
+                      exact
+                    />
+
+                    <Route
+                      path={['/user/:userId', '/user/contractor/:userId']}
+                      component={Contractor}
                       exact
                     />
 
@@ -153,3 +162,10 @@ export function App() {
 }
 
 export default App;
+
+{ /* <Route */ }
+{ /*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */ }
+{ /*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */ }
+{ /*  component={DeviceProfile} */ }
+{ /*  exact */ }
+{ /* /> */ }
