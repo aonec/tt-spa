@@ -84,6 +84,7 @@ const readingsReducer = (state = initialState, action) => {
       // }
 
       // const newState = _.cloneDeep(state);
+      debugger;
       const deviceOrder = state.devices.findIndex((device) => device.id === action.deviceId);
       const rateType = rateTypeToNumber(state.devices[deviceOrder].rateType);
 
