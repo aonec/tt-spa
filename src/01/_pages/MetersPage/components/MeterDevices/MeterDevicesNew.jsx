@@ -104,69 +104,9 @@ const styles = css`
       opacity: 0.6;
     }
   }
-<<<<<<< HEAD
 
   
 `
-=======
-`;
-
-async function sendReadings(device={}) {
-  try {
-    const res = await axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка отправки показаний ИПУ',
-    };
-  }
-}
-
-export const MeterDevicesNew = ({ items = [] }) => {
-  const [state, dispatch] = useReducer(readingsReducer, {});
-  console.log("state", state)
-
-  useEffect(() => {
-    dispatch(setDevices(items));
-  }, [items]);
-
-  if (!state.devices?.length) return <div>Нет устройств</div>;
-
-  const readings = state.devices.map(device => {
-    console.log(device)
-    return (
-    <OperatorDeviceReadingForm
-      key={device.id}
-      device={device}
-      dispatch={dispatch}
-      sendReadings={() => sendReadings(device)}
-    />
-    )
-  });
-
-  const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime);
-  const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime);
-
-  return styled(styles, style.button)(
-    <meters>
-      <meter_header>
-        <span>Информация o приборe</span>
-        <div>{lastMonth}</div>
-        <div style={{ display: 'flex', justifyContent: 'space-around', alignContent: 'center' }}>
-          <Arrow />
-          <div>{previousMonth}</div>
-          <Arrow isRight />
-        </div>
-      </meter_header>
-      {readings}
-    </meters>,
-  );
-};
-
-// const [isLoading, setIsLoading] = useState(true);
->>>>>>> parent of 713c1cf... Revert "commit"
 
 // div {
 //     display: grid;
