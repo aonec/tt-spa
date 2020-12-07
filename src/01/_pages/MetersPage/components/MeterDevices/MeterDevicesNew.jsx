@@ -142,8 +142,6 @@ export const MeterDevicesNew = ({items = []}) => {
             axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
         }
         catch(e) {
-            console.log(e)
-
             throw new Error();
         }
     }
