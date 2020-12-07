@@ -138,7 +138,14 @@ export const MeterDevicesNew = ({items = []}) => {
 
     const sendReadings = (device) => {
         // const json = JSON.stringify(formReadingToPush(device))
-        axios.post('/IndividualDeviceReadings/create', formReadingToPush(device))
+        try {
+            axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
+        }
+        catch(e) {
+            console.log(e)
+
+            throw new Error();
+        }
     }
 
     if (!state.devices?.length) return null
