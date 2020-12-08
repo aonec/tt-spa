@@ -56,7 +56,6 @@ const readingsReducer = (state = initialState, action) => {
             return {...state, devices: [...action.devices]}
 
         case UPDATE_READINGS:
-            // debugger;
             // const deviceOrder = state.devices.findIndex(device => device.id === action.deviceId) - 1;
             // const isReadingsEmpty = !state.devices[deviceOrder];
             //
@@ -89,7 +88,6 @@ const readingsReducer = (state = initialState, action) => {
             // }
 
             // const newState = _.cloneDeep(state);
-            debugger;
             const deviceOrder = state.devices.findIndex(device => device.id === action.deviceId);
             const rateType = rateTypeToNumber(state.devices[deviceOrder].rateType);
 
@@ -102,12 +100,12 @@ const readingsReducer = (state = initialState, action) => {
             const readings = newState.devices[deviceOrder].readings[0];
 
             readings[`value${action.readingNumber}`] = action.readingValue;
-
-            for (let i = 0; i <= rateType; i++) {
-                if (!readings[`value${i}`]) {
-                    readings[`value${i}`] = 0;
-                }
-            }
+            //
+            // for (let i = 0; i <= rateType; i++) {
+            //     if (!readings[`value${i}`]) {
+            //         readings[`value${i}`] = 0;
+            //     }
+            // }
 
             return newState;
 

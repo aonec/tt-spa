@@ -3,15 +3,21 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import { InputTT } from '../../../../../../tt-components/InputTT';
 
+
+
+const StyledInput = styled(Input)`
+color: var(--main-70);
+border: 0;
+padding: 0;
+`;
+
 const ReadingLineStyled = styled.div`
 // max-width: 180px;
 // border: 1px solid #DCDEE4;
 // margin-right: 8px;
+
 `;
 
-const StyledInput = styled(Input)`
-color: var(--main-70);
-`;
 
 const Label = styled.label`
 display: flex;

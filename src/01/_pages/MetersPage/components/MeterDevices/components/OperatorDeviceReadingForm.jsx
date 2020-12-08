@@ -11,6 +11,7 @@ import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import Arrow from "../../../../../_components/Arrow/Arrow";
+import DeviceRatesVertical from "./DeviceRatesVertical";
 
 // import DeviceIcons from "../../../../../_components/DeviceIcons"
 
@@ -74,7 +75,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
     if (isLoading) return 'ЗАГРУЗКА...'
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-        <DeviceRates key={readingsState.id || device.id + index}
+        <DeviceRatesVertical key={readingsState.id || device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
@@ -119,7 +120,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                     <div style={{marginLeft: 16, color: 'rgba(39, 47, 90, 0.6)'}}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>{currentDeviceReadings}</div>
+            <div style={{display: 'flex', flexDirection: 'column', borderRadius: '4px', border: '1px solid var(--frame)', padding: 8}}>{currentDeviceReadings}</div>
             <div style={{display: 'flex', flexDirection: 'column'}}>{previousDeviceReadings}</div>
 
 
