@@ -45,7 +45,7 @@ const AddDeviceForm = (props) => {
       housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
       resource: resources[0].value,
       model: '',
-      // diameter: null,
+      diameter: null,
       calculatorId: null,
       entryNumber: null,
       hubNumber: null,
@@ -61,7 +61,7 @@ const AddDeviceForm = (props) => {
         .required('Введите номер'),
       pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
         .required('Введите номер'),
-      // diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
+      diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
     }),
 
     onSubmit: async () => {
@@ -75,7 +75,7 @@ const AddDeviceForm = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        // diameter: values.diameter,
+        diameter: values.diameter,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
@@ -157,18 +157,18 @@ const AddDeviceForm = (props) => {
           <Alert name="diameter" />
         </Form.Item>
 
-        {/*<Form.Item label="Дата поверки">*/}
-        {/*  <DatePickerTT*/}
-        {/*    format="DD.MM.YYYY"*/}
-        {/*    name="lastCheckingDate"*/}
-        {/*    placeholder="Укажите дату..."*/}
-        {/*    allowClear={false}*/}
-        {/*    onChange={(date) => {*/}
-        {/*      setFieldValue('lastCheckingDate', date.toISOString());*/}
-        {/*    }}*/}
-        {/*    value={moment(values.lastCheckingDate)}*/}
-        {/*  />*/}
-        {/*</Form.Item>*/}
+        <Form.Item label="Дата поверки">
+          <DatePickerTT
+            format="DD.MM.YYYY"
+            name="lastCheckingDate"
+            placeholder="Укажите дату..."
+            allowClear={false}
+            onChange={(date) => {
+              setFieldValue('lastCheckingDate', date.toISOString());
+            }}
+            value={moment(values.lastCheckingDate)}
+          />
+        </Form.Item>
 
         <Form.Item label="Дата следующей поверки">
           <DatePickerTT
