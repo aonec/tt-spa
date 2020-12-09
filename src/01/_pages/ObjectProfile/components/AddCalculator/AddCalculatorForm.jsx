@@ -10,13 +10,14 @@ import {
   DatePickerTT, Header, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
-import TabsComponent from "./addCalculatorTabs";
-
+import TabsComponent from './addCalculatorTabs';
+import { addCalculator } from './apiAddCalculator';
+import randomInteger from '../../../../utils/randomInteger'
 
 const AddCalculatorForm = (props) => {
-  const { objid, handleCancel } = props;
+  const { objid, handleCancel, setAddCalculator } = props;
 
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(false);
 
   const [currentTabKey, setTab] = useState('1');
 
@@ -26,7 +27,7 @@ const AddCalculatorForm = (props) => {
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue,
+    handleBlur, setFieldValue, setErrors,
   } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -35,17 +36,17 @@ const AddCalculatorForm = (props) => {
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
-      ipV4: '',
+      ipV4: null,
       deviceAddress: null,
       port: null,
       housingStockId: Number(objid),
       infoId: 1,
-      checked: false
+      checked: false,
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: checked === false ? Yup.string().typeError('false').required('Введите IP-адрес устройства') : null,
-      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства'): null,
+      ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
+      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
       port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
 
     }),
@@ -66,23 +67,27 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      // addCalculator(form);
-      // setTimeout(()=>{setAddCalculator(false)}, 1000);
+      console.log(JSON.stringify(form))
+      addCalculator(form);
+      setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
   function onChange(checked) {
     console.log(`switch to ${checked}`);
     if (checked === true) {
-      console.log('tree')
-      setChecked(true)
-      setFieldValue('ipV4', '')
-      setFieldValue('port', null)
-      setFieldValue('deviceAddress', null)
+      console.log('tree');
+      setChecked(true);
+      setFieldValue('ipV4', '');
+      setFieldValue('port', null);
+      setFieldValue('deviceAddress', randomInteger(1000,2000));
+      setErrors('ipV4', null);
+      setErrors('port', null);
+      setErrors('deviceAddress', null);
     }
     if (checked === false) {
-      console.log('false')
-      setChecked(false)
+      console.log('false');
+      setChecked(false);
     }
   }
 
@@ -101,10 +106,8 @@ const AddCalculatorForm = (props) => {
     setTab(value);
   }
 
-
-
   return (
-      <form id="formikForm" onSubmit={handleSubmit}>
+    <form id="formikForm" onSubmit={handleSubmit}>
       <div>
         <Title size="middle" color="black">
           Добавление нового вычислителя
@@ -115,9 +118,9 @@ const AddCalculatorForm = (props) => {
           handleChangeTab={handleChangeTab}
         />
 
-        <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
 
-          <Form.Item label="Серийный номер устройства">
+          <Form.Item label="Серийный номер устройства" style={{ width: '100%' }}>
             <InputTT
               name="serialNumber"
               value={values.serialNumber}
@@ -128,7 +131,7 @@ const AddCalculatorForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Тип вычислителя">
+          <Form.Item label="Тип вычислителя" style={{ width: '100%' }}>
             <SelectTT
               name="infoId"
               placeholder="Выберите тип устройства"
@@ -140,7 +143,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата поверки" style={{width: '49%'}}>
+          <Form.Item label="Дата поверки" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
@@ -153,7 +156,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки" style={{width: '49%'}}>
+          <Form.Item label="Дата следующей поверки" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
@@ -166,7 +169,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска" style={{width: '49%'}}>
+          <Form.Item label="Дата начала Акта действия допуска" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
@@ -179,7 +182,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска" style={{width: '49%'}}>
+          <Form.Item label="Дата окончания Акта действия допуска" style={{ width: '49%' }}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
@@ -193,13 +196,15 @@ const AddCalculatorForm = (props) => {
           </Form.Item>
         </div>
 
-        <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
 
-          <div style={{
+          <Form.Item style={{
             display: 'flex',
-            alignItems: 'center'
-          }}>
-            <Switch style={{width: '48px'}} onChange={onChange} />
+            alignItems: 'center',
+            width: '100%',
+          }}
+          >
+            <Switch style={{ width: '48px' }} onChange={onChange} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -207,17 +212,17 @@ const AddCalculatorForm = (props) => {
               color: 'rgba(39, 47, 90, 0.9)',
             }}
             >
-        Вычислитель без оборудования связи
-      </span>
-          </div>
+              Вычислитель без оборудования связи
+            </span>
+          </Form.Item>
 
-          <Form.Item label="IP адрес вычислителя">
+          <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
             <InputTT
               name="ipV4"
               type="text"
               value={values.ipV4}
               onBlur={handleBlur}
-              placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
+              placeholder="Введите IP адрес вычислителя"
               onChange={(event) => {
                 setFieldValue('ipV4', event.target.value);
               }}
@@ -226,11 +231,11 @@ const AddCalculatorForm = (props) => {
             <Alert name="ipV4" />
           </Form.Item>
 
-          <Form.Item label="Порт вычислителя">
+          <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
             <InputTT
               name="port"
               type="number"
-              placeholder="Укажите порт устройства (например, 1234)"
+              placeholder="Введите номер порта"
               value={values.port}
               onBlur={handleBlur}
               onChange={(event) => {
@@ -241,11 +246,11 @@ const AddCalculatorForm = (props) => {
             <Alert name="port" />
           </Form.Item>
 
-          <Form.Item label="Адрес вычислителя">
+          <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
             <InputTT
               name="deviceAddress"
               type="number"
-              placeholder="Укажите адрес устройства (от 0 до 255)"
+              placeholder="Введите сетевой адрес вычислителя"
               value={values.deviceAddress}
               onBlur={handleBlur}
               onChange={(event) => {
@@ -267,35 +272,39 @@ const AddCalculatorForm = (props) => {
           </Wrap>
         </div>
 
-        <div hidden={Number(currentTabKey) !== 3} style={{ display: 'flex', flexDirection: 'column' }}>
+        <div hidden={Number(currentTabKey) !== 3} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
           <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
       </div>
-        <div style={{ margin: '32px 0' }}>
-              <ButtonTT
-                color="blue"
-                onClick={handleNext}
-                type="button"
-                hidden={currentTabKey === '3'}
-              >
-                Далее
-              </ButtonTT>
+      <div style={{ margin: '32px 0' }}>
+        <ButtonTT
+          color="blue"
+          onClick={handleNext}
+          type="button"
+          hidden={currentTabKey === '3'}
+        >
+          Далее
+        </ButtonTT>
 
-              <ButtonTT
-                color="blue"
-                type="submit"
-                onClick={handleSubmit}
-                hidden={currentTabKey !== '3'}
-              >
-                Сохранить
-              </ButtonTT>
-          <ButtonTT
-            color="white" type="button" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-            Отмена
-          </ButtonTT>
-        </div>
-      </form>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          onClick={handleSubmit}
+          hidden={currentTabKey !== '3'}
+        >
+          Сохранить
+        </ButtonTT>
+        <ButtonTT
+          color="white"
+          type="button"
+          onClick={handleCancel}
+          style={{ marginLeft: '16px' }}
+        >
+          Отмена
+        </ButtonTT>
+      </div>
+    </form>
   );
 };
 
