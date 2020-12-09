@@ -15,7 +15,6 @@ import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister'
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 
-
 export const DeviceContext = React.createContext();
 
 export const CalculatorProfile = () => {
