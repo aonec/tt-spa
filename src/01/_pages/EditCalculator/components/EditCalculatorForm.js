@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
@@ -16,7 +16,10 @@ import randomInteger from "../../../utils/randomInteger";
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
+
   const [checked, setChecked] = useState(false);
+
+  console.log(currentCalc)
 
   const {
     calculator,
@@ -50,6 +53,10 @@ const EditCalculatorForm = () => {
   };
   const { id: houseId } = address;
 
+  useEffect(()=>{
+    setChecked(!isConnected)
+  },[isConnected] )
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setErrors
@@ -65,6 +72,7 @@ const EditCalculatorForm = () => {
       port,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
+      isConnected: isConnected
     },
     validationSchema: Yup.object({
       lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
@@ -81,11 +89,12 @@ const EditCalculatorForm = () => {
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate.toISOString(),
+        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
         connection: {
+          isConnected: values.isConnected,
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
@@ -94,13 +103,15 @@ const EditCalculatorForm = () => {
         infoId: values.infoId,
       };
       console.log('FORM', form);
-      putCalculator(id, form);
+      console.log(JSON.stringify(form))
+      // putCalculator(id, form);
     },
   });
 
   function onSwitchChange(checked) {
     if (checked === true) {
-      setChecked(true);
+      setChecked(true)
+      setFieldValue('isConnected', true)
       setFieldValue('ipV4', '');
       setFieldValue('port', null);
       setFieldValue('deviceAddress', randomInteger(1000, 2000));
@@ -109,7 +120,9 @@ const EditCalculatorForm = () => {
       setErrors('deviceAddress', null);
     }
     if (checked === false) {
-      setChecked(false);
+      setChecked(false)
+      setFieldValue('isConnected', false)
+      setFieldValue('deviceAddress', null);
       setErrors('ipV4', null);
       setErrors('port', null);
       setErrors('deviceAddress', null);
@@ -211,7 +224,7 @@ const EditCalculatorForm = () => {
           width: '100%',
         }}
         >
-          <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
+          <Switch style={{ width: '48px' }} defaultChecked={!isConnected} onChange={onSwitchChange} />
           <span style={{
             fontSize: '16px',
             lineHeight: '32px',
