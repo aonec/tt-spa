@@ -11,6 +11,7 @@ import {
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import { addCalculator } from './apiAddCalculator';
+import SwitchTT from './Switch'
 
 const AddCalculatorForm = (props) => {
   const {
@@ -155,6 +156,8 @@ const AddCalculatorForm = (props) => {
         </div>
 
         <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexDirection: 'column' }}>
+
+          <SwitchTT />
           <Form.Item label="IP адрес вычислителя">
             <InputTT
               name="ipV4"
