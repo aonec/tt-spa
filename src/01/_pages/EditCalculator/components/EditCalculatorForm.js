@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
-import { Form } from 'antd';
+import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -12,9 +12,11 @@ import { items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 
 import { putCalculator } from './apiEditCalculator';
+import randomInteger from "../../../utils/randomInteger";
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
+  const [checked, setChecked] = useState(false);
 
   const {
     calculator,
@@ -50,7 +52,7 @@ const EditCalculatorForm = () => {
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue,
+    handleBlur, setFieldValue, setErrors
   } = useFormik({
     initialValues: {
       serialNumber,
@@ -70,9 +72,9 @@ const EditCalculatorForm = () => {
       lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: Yup.string().required('Введите IP-адрес устройства'),
-      deviceAddress: Yup.number().typeError('Не может быть пустым значением').required('Введите сетевой адрес устройства'),
-      port: Yup.number().typeError('Не может быть пустым значением').required('Введите порт устройства'),
+      ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
+      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
+      port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
       infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
 
     }),
@@ -95,6 +97,24 @@ const EditCalculatorForm = () => {
       putCalculator(id, form);
     },
   });
+
+  function onSwitchChange(checked) {
+    if (checked === true) {
+      setChecked(true);
+      setFieldValue('ipV4', '');
+      setFieldValue('port', null);
+      setFieldValue('deviceAddress', randomInteger(1000, 2000));
+      setErrors('ipV4', null);
+      setErrors('port', null);
+      setErrors('deviceAddress', null);
+    }
+    if (checked === false) {
+      setChecked(false);
+      setErrors('ipV4', null);
+      setErrors('port', null);
+      setErrors('deviceAddress', null);
+    }
+  }
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -184,6 +204,25 @@ const EditCalculatorForm = () => {
       </div>
 
       <div hidden={Number(currentTabKey) !== 2}>
+
+        <Form.Item style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+        }}
+        >
+          <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
+          <span style={{
+            fontSize: '16px',
+            lineHeight: '32px',
+            marginLeft: '16px',
+            color: 'rgba(39, 47, 90, 0.9)',
+          }}
+          >
+              Вычислитель без оборудования связи
+            </span>
+        </Form.Item>
+
         <Form.Item label="IP адрес вычислителя">
           <InputTT
             type="text"
@@ -191,6 +230,7 @@ const EditCalculatorForm = () => {
             placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
             onChange={handleChange}
             name="ipV4"
+            disabled={checked}
           />
           <Alert name="ipV4" />
         </Form.Item>
@@ -202,6 +242,7 @@ const EditCalculatorForm = () => {
             value={values.port}
             onChange={handleChange}
             name="port"
+            disabled={checked}
           />
           <Alert name="port" />
         </Form.Item>
@@ -213,6 +254,7 @@ const EditCalculatorForm = () => {
             value={values.deviceAddress}
             onChange={handleChange}
             name="deviceAddress"
+            disabled={checked}
           />
           <Alert name="deviceAddress" />
         </Form.Item>

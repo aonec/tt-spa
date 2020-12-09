@@ -12,7 +12,7 @@ import {
 import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import randomInteger from '../../../../utils/randomInteger'
+import randomInteger from '../../../../utils/randomInteger';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
@@ -67,26 +67,23 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      console.log(JSON.stringify(form))
+      console.log(JSON.stringify(form));
       addCalculator(form);
       setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
-  function onChange(checked) {
-    console.log(`switch to ${checked}`);
+  function onSwitchChange(checked) {
     if (checked === true) {
-      console.log('tree');
       setChecked(true);
       setFieldValue('ipV4', '');
       setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(1000,2000));
+      setFieldValue('deviceAddress', randomInteger(1000, 2000));
       setErrors('ipV4', null);
       setErrors('port', null);
       setErrors('deviceAddress', null);
     }
     if (checked === false) {
-      console.log('false');
       setChecked(false);
     }
   }
@@ -204,7 +201,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onChange} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -266,7 +263,7 @@ const AddCalculatorForm = (props) => {
               background: ' rgba(255, 140, 104, 0.16)',
               marginTop: '24px',
               padding: '24px',
-              width: '100%'
+              width: '100%',
             }}
           >
             Подключение к новому прибору может занять до 30 минут.
