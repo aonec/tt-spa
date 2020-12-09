@@ -5,8 +5,6 @@ import { ObjectContext } from '../../index';
 import AddCalculatorForm from './AddCalculatorForm';
 
 const ModalCalculator = () => {
-
-
   const { addCalculator, setAddCalculator, objid } = useContext(ObjectContext);
   const handleCancel = () => {
     setAddCalculator(false);

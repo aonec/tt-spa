@@ -105,7 +105,7 @@ const AddCalculatorForm = (props) => {
 
   return (
       <form id="formikForm" onSubmit={handleSubmit}>
-
+      <div>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
@@ -140,7 +140,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата поверки">
+          <Form.Item label="Дата поверки" style={{width: '49%'}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
@@ -153,7 +153,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки">
+          <Form.Item label="Дата следующей поверки" style={{width: '49%'}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
@@ -166,7 +166,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата начала Акта действия допуска">
+          <Form.Item label="Дата начала Акта действия допуска" style={{width: '49%'}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
@@ -179,7 +179,7 @@ const AddCalculatorForm = (props) => {
             />
           </Form.Item>
 
-          <Form.Item label="Дата окончания Акта действия допуска">
+          <Form.Item label="Дата окончания Акта действия допуска" style={{width: '49%'}}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
@@ -271,10 +271,10 @@ const AddCalculatorForm = (props) => {
           <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
+      </div>
         <div style={{ margin: '32px 0' }}>
               <ButtonTT
                 color="blue"
-                style={{ marginLeft: '16px' }}
                 onClick={handleNext}
                 type="button"
                 hidden={currentTabKey === '3'}
@@ -284,7 +284,6 @@ const AddCalculatorForm = (props) => {
 
               <ButtonTT
                 color="blue"
-                style={{ marginLeft: '16px' }}
                 type="submit"
                 onClick={handleSubmit}
                 hidden={currentTabKey !== '3'}
