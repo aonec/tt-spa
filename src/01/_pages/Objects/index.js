@@ -6,6 +6,8 @@ import axios, { cancel } from '01/axios';
 import { Loader, Icon } from '01/components';
 import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
 import {objectsSearchReducer} from "./ObjectsSearchForm/objectsSearchReducer";
+import {formQueryString} from "../../utils/formQueryString";
+import {useDebounce} from "../../hooks/useDebounce";
 
 const styles = css`
   obj_item {
@@ -57,31 +59,18 @@ const initialState = {
 
 export const Objects = () => {
     const [state, setState] = React.useState({ items: null });
-    const [searchState, dispatchSearchState] = useReducer(objectsSearchReducer, initialState)
+    const [searchState, dispatchSearchState] = useReducer(objectsSearchReducer, initialState);
+
+    const debouncedSearchState = useDebounce(searchState, 500);
 
     React.useEffect(() => {
         (async () => {
-            let queryArray = [];
-            for (let key in searchState) {
-                if (!searchState[key]) continue
-                queryArray.push(key + '=' + searchState[key])
-            }
-            let queryString = queryArray.join('&');
-            if (queryArray.length) {
-                queryString = '?' + queryString
-            }
-
-
-            // let query = searchState.street ? `&Street=${searchState.street}` : '' +
-            // searchState.houseNumber ? `&HousingStockNumber=${searchState.houseNumber}` : '';
-            // if (query.length) {
-            //     query = '?' + query;
-            // }
+            const queryString = formQueryString(debouncedSearchState)
             const res = await axios.get('HousingStocks' + queryString);
             setState(res);
         })();
         return () => cancel();
-    }, [searchState]);
+    }, [debouncedSearchState]);
 
     const { items } = state;
     return styled(styles)(

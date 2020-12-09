@@ -3,6 +3,7 @@ import { devicesAPI } from '../../_api/devices_page';
 const SET_DEVICES = 'SET_DEVICES';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const TOGGLE_IS_LOADING = 'TOGGLE_IS_LOADING';
+const SET_IS_LOADING = 'SET_IS_LOADING';
 
 const initialState = {
   totalItems: 0,
@@ -26,8 +27,8 @@ export default function reducerDevicesPage(state = initialState, action) {
     case SET_CURRENT_PAGE:
       return { ...state, currentPage: action.currentPage}
 
-    case TOGGLE_IS_LOADING:
-      return { ...state, isLoading: !state.isLoading}
+    case SET_IS_LOADING:
+      return { ...state, isLoading: action.isLoading}
 
     default: return state;
   }
@@ -36,22 +37,31 @@ export default function reducerDevicesPage(state = initialState, action) {
 
 export const setDevices = (devices) => ({ type: SET_DEVICES, devices });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage});
-export const toggleIsLoading = () => ({ type: TOGGLE_IS_LOADING});
+export const setIsLoading = (isLoading) => ({ type: SET_IS_LOADING, isLoading});
 
 export const getDevices = (pageNumber, pageSize, searchState) => async (dispatch) => {
-  dispatch(toggleIsLoading());
+  dispatch(setIsLoading(true));
   const devices = await devicesAPI.getDevices(pageNumber, pageSize, searchState);
-  dispatch(setDevices(devices));
-  dispatch(toggleIsLoading());
-};
-
-export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
-  dispatch(toggleIsLoading());
-  const devices = await devicesAPI.getDevicesBySerialNumber(serialNumber);
-
   if (!devices) {
-    dispatch(toggleIsLoading());
+    debugger;
+
+    dispatch(setIsLoading(false));
     return;
   }
   dispatch(setDevices(devices));
+  dispatch(setIsLoading(false));
+};
+
+export const getDevicesBySerialNumber = (serialNumber) => async (dispatch) => {
+  dispatch(setIsLoading(true));
+
+  const devices = await devicesAPI.getDevicesBySerialNumber(serialNumber);
+  if (!devices) {
+    dispatch(setIsLoading(false));
+    return;
+  }
+  dispatch(setDevices(devices));
+  dispatch(setIsLoading(false));
+
+
 }

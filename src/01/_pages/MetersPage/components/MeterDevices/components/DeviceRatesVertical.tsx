@@ -3,8 +3,6 @@ import React, {ReactEventHandler, useContext, useState} from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 
-
-
 const ReadingLineStyled = styled.div`
 
 position: relative; 
@@ -18,16 +16,10 @@ padding-top: 8px;
 border-bottom: 1px solid var(--frame);
 padding-bottom: 7px;
 }
-`;
 
-
-const Label = styled.label`
-display: flex;
-min-width: 60px;
-align-items: center;
-padding-left: 10px;
-margin-right:10px; 
-background-color: #E5E5E5
+& .ant-input-affix-wrapper-disabled { 
+background-color: #F3F5F6;
+}
 `;
 
 const TarifLabel = styled.span`
@@ -41,9 +33,10 @@ interface DeviceRatesVerticalProps {
     index: number,
     onChange: () => void,
     value: number,
-    readingsBlocked: boolean,
+    readingsBlocked?: boolean,
     resource: string,
-    sendReadings: () => void
+    sendReadings?: () => void
+    operatorCabinet?: boolean
 }
 
 const SuffixLine = styled.span`
@@ -53,6 +46,7 @@ const StyledInput = styled(Input)`
 color: var(--main-70);
 border: 0;
 padding: 0;
+padding-right: 8px;
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -61,14 +55,18 @@ input[type=number]::-webkit-outer-spin-button {
 `;
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
-                         index, onChange, value, readingsBlocked = false, resource, sendReadings,
+                          index,
+                          onChange,
+                          value,
+                          readingsBlocked = false,
+                          resource,
+                          sendReadings = () => {},
+                          operatorCabinet = false
                      }) => {
-    const width = value.toString().length + 'em';
-
 
     const [prevValue, setPrevValue] = useState(null);
 
-    const onBlurHandler: React.ReactEventHandler<HTMLInputElement> = (e: any) => {
+    const onBlurHandler = (e: any) => {
         if (prevValue === e.target.value) return;
         sendReadings();
     };
@@ -76,9 +74,6 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
     const onFocusHandler  = (e: any) => {
         setPrevValue(e.target.value)
     }
-
-
-
 
     return (
         <ReadingLineStyled>
@@ -95,9 +90,8 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                 type="text"
                 value={value}
                 onChange={onChange}
-                onBlur={onBlurHandler}
-                onFocus={onFocusHandler}
-                width={value.toString().length + 'em'}
+                onBlur={operatorCabinet ? onBlurHandler : undefined}
+                onFocus={operatorCabinet ? onFocusHandler : undefined}
                 required
             />
         </ReadingLineStyled>

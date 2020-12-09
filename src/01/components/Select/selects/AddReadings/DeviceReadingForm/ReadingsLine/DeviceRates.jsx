@@ -6,9 +6,10 @@ import { InputTT } from '../../../../../../tt-components/InputTT';
 
 
 const StyledInput = styled(Input)`
-color: var(--main-70);
-border: 0;
-padding: 0;
+// color: var(--main-70);
+// border: 0; 
+// padding: 0;
+max-width: 200px;
 `;
 
 const ReadingLineStyled = styled.div`
@@ -33,14 +34,8 @@ color: rgba(39, 47, 90, 0.32);
 `;
 
 const DeviceRates = ({
-  index, onChange, value, readingsBlocked = false, resource, operatorCabinet = false, sendReadings,
+  index, onChange, value, readingsBlocked = false, resource, operatorCabinet = false,
 }) => {
-  const [prevValue, setPrevValue] = useState(null);
-
-  const onBlurHandler = (e) => {
-    if (prevValue === e.target.value) return;
-    sendReadings();
-  };
 
   const isPrevOperatorReadings = operatorCabinet && readingsBlocked;
 
@@ -60,8 +55,6 @@ const DeviceRates = ({
         type="number"
         value={value}
         onChange={onChange}
-        onBlur={operatorCabinet ? onBlurHandler : null}
-        onFocus={(e) => setPrevValue(e.target.value)}
       />
     </ReadingLineStyled>
   );

@@ -14,17 +14,18 @@ const TasksSearchForm = ({ searchState, dispatchSearchState }) => {
 
   // onValuesChangeHandler пока не используется
   const onValuesChangeHandler = (changedValues, allValues) => {
-    const changedParam = Object.keys(changedValues)[0];
-    const previousValue = searchState[changedParam] || '';
+    // const changedParam = Object.keys(changedValues)[0];
+    // const previousValue = searchState[changedParam] || '';
     const targetValue = Object.values(changedValues)[0];
-
-    if (previousValue.length < 4 && targetValue.length < 4) {
-
-    } else if (targetValue.length >= 4) {
-      dispatchSearchState(setTaskId(targetValue));
-    } else {
-      dispatchSearchState(setTaskId());
-    }
+    dispatchSearchState(setTaskId(targetValue));
+    // if (previousValue.length < 4 && targetValue.length < 4) {
+    //
+    // } else
+    //   if (targetValue.length >= 4) {
+    //   dispatchSearchState(setTaskId(targetValue));
+    // } else {
+    //   dispatchSearchState(setTaskId(''));
+    // }
     // dispatch(setCurrentPage(1))
   };
 

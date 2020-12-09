@@ -12,6 +12,7 @@ import styles from "../../../../../_pages/Devices/components/TabsDevices.module.
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import Arrow from "../../../../../_components/Arrow/Arrow";
 import DeviceRatesVertical from "./DeviceRatesVertical";
+import {DeviceReadingsContainer} from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
 
 // import DeviceIcons from "../../../../../_components/DeviceIcons"
 
@@ -43,8 +44,6 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
         const currentReadingsArray = [];
         const prevReadings = device.readings[1] || {};
         const currentReadings = device.readings[0] || {};
-
-        console.log(prevReadings['value1'])
 
 
         for (let i=1; i <= numberOfReadings; i++) {
@@ -80,13 +79,13 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
-                     operatorCabinet
                      sendReadings={sendReadings}
+                     operatorCabinet
         />
     ));
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-        <DeviceRates key={readingsState.id || device.id + index}
+        <DeviceRatesVertical key={readingsState.id || device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
@@ -107,7 +106,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                     className={styles.device__title}
                     to={`/housingMeteringDevices/${device.id}`}
                 >
-                    <Icon className={styles.icon} icon={icon} fill={color} />
+                    <Icon className={styles.icon} icon={icon} fill={color}/>
                     {`${device.model} `}
                     <span className={styles.deviceId}>
                             {` (${device.serialNumber})`}
@@ -115,13 +114,16 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                 </div>
                 <div style={{display: 'flex'}}>
                     <ActiveLine isActive={isActive}/>
-                    {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
-                    <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
-                    <div style={{marginLeft: 16, color: 'rgba(39, 47, 90, 0.6)'}}>{translateMountPlace(device.mountPlace)}</div>
+                    <DateLine lastCheckingDate={device.lastCheckingDate}
+                              futureCheckingDate={device.futureCheckingDate}/>
+                    <div style={{
+                        marginLeft: 16,
+                        color: 'rgba(39, 47, 90, 0.6)'
+                    }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', borderRadius: '4px', border: '1px solid var(--frame)', padding: 8}}>{currentDeviceReadings}</div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>{previousDeviceReadings}</div>
+            <DeviceReadingsContainer>{currentDeviceReadings} </DeviceReadingsContainer>
+            <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
 
         </FullDeviceLine>

@@ -104,29 +104,9 @@ const styles = css`
       opacity: 0.6;
     }
   }
-
-  
 `
 
-// div {
-//     display: grid;
-//     grid-template-columns: auto 1fr auto;
-//     grid-gap: 8px;
-//     align-content: start;
-//     align-items: center;
-//     padding: 8px;
-// & button {
-//         padding: 8px;
-//     }
-// & span {
-//         display: contents;
-//         cursor: pointer;
-//     }
-// }
-
-
 export const MeterDevicesNew = ({items = []}) => {
-    const [isLoading, setIsLoading] = useState(true);
 
 
     const [state, dispatch] = React.useReducer(readingsReducer, {});
@@ -137,7 +117,6 @@ export const MeterDevicesNew = ({items = []}) => {
 
 
     const sendReadings = (device) => {
-        // const json = JSON.stringify(formReadingToPush(device))
         try {
             axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
         }
@@ -147,11 +126,6 @@ export const MeterDevicesNew = ({items = []}) => {
     }
 
     if (!state.devices?.length) return null
-
-    // let sendReadings = (devices) => {
-    //     const readingsToPush = formReadingsToPush(devices);
-    //     axios.post('IndividualDeviceReadings/create', readingsToPush)
-    // }
 
     const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
                                                                               sendReadings={() => sendReadings(device)}
