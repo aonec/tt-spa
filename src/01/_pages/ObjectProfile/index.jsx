@@ -31,7 +31,7 @@ function reducer(state, action) {
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
 
-  const [addCalculator, setAddCalculator] = useState(true)
+  const [addCalculator, setAddCalculator] = useState(false)
   const [addOdpu, setAddOdpu] = useState(false)
 
   useFetchPage(state, dispatch);

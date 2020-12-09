@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import $ from 'jquery';
 import { useParams, NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Icon } from '../../../_components/Icon';
 import styles from './styles.module.scss';
 import { DeviceContext } from '../CalculatorProfile';
-import { List, ListItem, EditButtonWrap} from '../../../tt-components/EditButton'
+import { List, ListItem, EditButtonWrap} from '../../../tt-components/EditButton';
 
 
 export const EditButton = () => {
@@ -20,7 +19,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { deregister, setDeregister,report, setReport } = useContext(DeviceContext);
+  const { deregister, setDeregister,report, setReport, setCheck } = useContext(DeviceContext);
   const { deviceId } = useParams();
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -38,6 +37,11 @@ export const Menu = (showPopupHandler) => {
     setReport(true)
   };
 
+  const showCheckDevice = () => {
+    $('#edit-button__list').toggle();
+    setCheck(true)
+  };
+
   const showDeregisterDeviceModal = () => {
     $('#edit-button__list').toggle();
     setDeregister(true)
@@ -50,7 +54,7 @@ export const Menu = (showPopupHandler) => {
         <NavLink className={styles.menu} to={`/calculators/${deviceId}/edit`}>
           <ListItem>Редактировать вычислитель</ListItem>
         </NavLink>
-        <ListItem>Поверить вычислитель</ListItem>
+        <ListItem onClick={showCheckDevice}>Поверить вычислитель</ListItem>
         <ListItem onClick={reportDevice}>
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
