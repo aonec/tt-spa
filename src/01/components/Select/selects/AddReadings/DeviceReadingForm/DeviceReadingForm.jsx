@@ -7,31 +7,31 @@ import styles from "../../../../../_pages/Devices/components/TabsDevices.module.
 import {Icon} from "../../../../../tt-components/Icon";
 import {setDevices, updateReadings} from "../readingsReducer";
 import ActiveLine from "./ActiveLine/ActiveLine";
-import transformDate from "../../../../../utils/transformDate";
+import {DateLine} from "../../../../../_components/DateLine/DateLine";
+import DeviceRatesVertical
+    from "../../../../../_pages/MetersPage/components/MeterDevices/components/DeviceRatesVertical";
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(250px, 300px) auto minmax(300px, 350px);
+    grid-template-columns: minmax(250px, 3fr) 230px 3fr;
     column-gap: 10px;
     margin-bottom: 8px;
     align-items: center;
-    justify-content: flex-start;
-    white-space: nowr
+    justify-content: center;
+    white-space: nowrap;
     padding-bottom: 7px;
     border-bottom: 1px solid #DCDEE4;
     `
 
-let ReadingLineStyled = styled.div`
+export const DeviceReadingsContainer = styled.div`
 display: flex;
-border: 1px solid #DCDEE4;
+flex-direction: column;
+border-radius: 4px;
+border: 1px solid var(--frame);
+padding: 8px
 `
 
-const Label = styled.label`
-display: flex;
-min-width: 60px;
-`
-
-const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
+const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
 
     const [readingsState, setReadingsState] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -57,16 +57,13 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
 
     const onInputChange = (e, index) => {
         e.preventDefault();
-        // readingsArray[index] = e.target.value;
-        // let newState = [...readingsState];
-        // newState[index] = e.target.value;
         dispatch(updateReadings(device.id, index+1, e.target.value));
     }
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
     const deviceReadingsLine = readingsState.readingsArray.map((value, index) => (
-        <DeviceRates key={readingsState.id + index}
+        <DeviceRatesVertical key={readingsState.id + index}
                      index={index}
                      readingsBlocked={readingsBlocked || !isActive}
                      onChange={(e) => onInputChange(e, index)}
@@ -81,7 +78,7 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
 
     return (
         <FullDeviceLine>
-                <span
+                <div
                     className={styles.device__title + ' ' + styles.subdevice__title}
                     to={`/housingMeteringDevices/${device.id}`}
                 >
@@ -90,11 +87,12 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked}) => {
                     <span className={styles.deviceId}>
                             {` (${device.serialNumber})`}
                     </span>
-                </span>
-            <div style={{display: 'flex'}}>{deviceReadingsLine}</div>
-            <div style={{display: 'flex'}}>
+                </div>
+            <DeviceReadingsContainer>{deviceReadingsLine}</DeviceReadingsContainer>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <ActiveLine isActive={isActive}/>
-                <div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>
+                {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
+                <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
             </div>
         </FullDeviceLine>
     )

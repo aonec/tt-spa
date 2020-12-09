@@ -7,6 +7,7 @@ import { Icon } from "01/components"
 const styles = css`
   drower {
     box-shadow: var(--shadow);
+    margin-bottom: 16px;
   }
 
   drower_btn {
