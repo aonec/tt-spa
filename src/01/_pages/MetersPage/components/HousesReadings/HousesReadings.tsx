@@ -8,8 +8,8 @@ const HouseReadings = () => {
 
     return (
         <div>
-            <HousesSearchForm />
-            <HousesDevices />
+            {/*<HousesSearchForm />*/}
+            {/*<HousesDevices />*/}
         </div>
     )
 }
