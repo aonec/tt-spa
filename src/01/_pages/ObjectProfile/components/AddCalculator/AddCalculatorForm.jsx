@@ -7,13 +7,12 @@ import { Form, Modal, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
-  DatePickerTT, Header, InputTT, SelectTT, Wrap,
+  DatePickerTT, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import randomInteger from '../../../../utils/randomInteger'
-
+import randomInteger from "../../../../utils/randomInteger";
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
 
@@ -42,13 +41,13 @@ const AddCalculatorForm = (props) => {
       housingStockId: Number(objid),
       infoId: 1,
       checked: false,
+      isConnected: true
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
       ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
       deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
       port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
-
     }),
     onSubmit: async () => {
       const form = {
@@ -59,6 +58,7 @@ const AddCalculatorForm = (props) => {
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         documentsIds: values.documentsIds,
         connection: {
+          isConnected: values.isConnected,
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
@@ -67,27 +67,23 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      console.log(JSON.stringify(form))
+      console.log(JSON.stringify(form));
       addCalculator(form);
       setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
-  function onChange(checked) {
-    console.log(`switch to ${checked}`);
+  function onSwitchChange(checked) {
     if (checked === true) {
-      console.log('tree');
       setChecked(true);
-      setFieldValue('ipV4', '');
+      setFieldValue('isConnected', false);
+      setFieldValue('ipV4', null);
       setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(1000,2000));
-      setErrors('ipV4', null);
-      setErrors('port', null);
-      setErrors('deviceAddress', null);
+      setFieldValue('deviceAddress', randomInteger(256,999));
     }
     if (checked === false) {
-      console.log('false');
       setChecked(false);
+      setFieldValue('isConnected', true)
     }
   }
 
@@ -204,7 +200,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onChange} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -228,7 +224,7 @@ const AddCalculatorForm = (props) => {
               }}
               disabled={checked}
             />
-            <Alert name="ipV4" />
+            {checked === false ? <Alert name="ipV4" /> : null }
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -243,7 +239,8 @@ const AddCalculatorForm = (props) => {
               }}
               disabled={checked}
             />
-            <Alert name="port" />
+            {/*<Alert name="port" />*/}
+            {checked === false ?   <Alert name="port" /> : null }
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -258,7 +255,8 @@ const AddCalculatorForm = (props) => {
               }}
               disabled={checked}
             />
-            <Alert name="deviceAddress" />
+            {/*<Alert name="deviceAddress" />*/}
+            {checked === false ? <Alert name="deviceAddress" /> : null }
           </Form.Item>
 
           <Wrap
@@ -266,7 +264,7 @@ const AddCalculatorForm = (props) => {
               background: ' rgba(255, 140, 104, 0.16)',
               marginTop: '24px',
               padding: '24px',
-              width: '100%'
+              width: '100%',
             }}
           >
             Подключение к новому прибору может занять до 30 минут.
