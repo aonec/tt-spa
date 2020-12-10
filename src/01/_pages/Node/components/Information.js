@@ -42,7 +42,7 @@ const Information = () => {
       </ListItem>
       <ListItem>
         <span>Зона</span>
-        <span>Апартаменты</span>
+        <div>Апартаменты</div>
         </ListItem>
       <ListItem>
         <span>Тип узла</span>
