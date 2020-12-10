@@ -71,4 +71,5 @@ export const Information = (loading = true) => {
   );
 };
 
+
 export default Information;

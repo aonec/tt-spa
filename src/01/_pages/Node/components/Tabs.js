@@ -5,7 +5,7 @@ import { NavLink, useRouteMatch } from 'react-router-dom';
 import { tabs } from '01/r_comp';
 
 const tabItems = [
-  ['Общая информация', ''],
+  ['Общие данные', ''],
   ['Подключенные приборы', 'related'],
   // ['Документы', 'documents'],
 ];

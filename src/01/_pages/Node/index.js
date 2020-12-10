@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import Header from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Grid } from '../../_components/Grid';
-
+import Information from './components/Information'
 import { Events } from './components/Events';
 
 import { getCalculator } from './apiNodeProfile';
@@ -33,8 +33,7 @@ export const Node = () => {
       <Tabs />
       <Grid>
         <Route path={`/node/25`} exact>
-          {/* <Information /> */}
-          Information
+         <Information />
         </Route>
         <Route path={`/node/25/related`} exact>
           {/* <RelatedDevices /> */}
