@@ -12,6 +12,6 @@ export * from './Header';
 export * from './Select';
 export * from './DatePicker';
 export * from './RangePicker'
-export * from './InputNumberTT';
 export * from './EditButton'
 export * from './RelatedDevices'
+export * from './Buttons'

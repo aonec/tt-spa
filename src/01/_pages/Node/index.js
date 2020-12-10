@@ -17,6 +17,13 @@ export const Node = () => {
   const { nodeId } = useParams();
   const [node, setNode] = useState();
   const [tasks, setTasks] = useState();
+  const [showDisable, setShowDisable] = useState(false)
+  const [showEnable, setShowEnable] = useState(false)
+
+  const [visible, setVisible] = useState({
+    showDisable: false,
+    showEnable: false
+  })
 
   console.log('nodeId', nodeId);
 
@@ -37,7 +44,7 @@ export const Node = () => {
     );
   }
 
-  const context = { node, tasks };
+  const context = { node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible };
   return (
     <NodeContext.Provider value={context}>
       <Header />

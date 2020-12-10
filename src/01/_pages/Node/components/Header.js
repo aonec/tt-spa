@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Icon, Loader, HeaderWrap, Title, Subtitle,
-} from '01/_components';
+import { HeaderWrap, Title, Subtitle } from '01/_components';
 import Breadcrumb from '../../../tt-components/Breadcrumb/Breadcrumb';
 import { NodeContext } from '../index';
 
@@ -21,7 +19,7 @@ export const Header = () => {
     }}
     >
       <div>
-        <Breadcrumb path="/node" />
+        <Breadcrumb path="/nodes" />
         <Title>{`${model || 'Узел 4'} ${serialNumber}`}</Title>
         <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
       </div>

@@ -1,17 +1,34 @@
 import React, { useContext } from 'react';
-import { ListWrap, ListItem, Title } from '01/_components/List';
+import { Form, Switch } from 'antd';
+import { ListWrap, ListItem, Title } from '../../../tt-components/List';
+import { Label } from './Styles';
 import { Subtitle } from '../../../_components/Headers';
 import { NodeContext } from '../index';
+import DisableModal from './Modals/DisableModal';
+import EnableModal from './Modals/EnableModal';
 
 const Information = () => {
-  const { node } = useContext(NodeContext);
+  const {
+    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible,
+  } = useContext(NodeContext);
   const {
     address, diameter,
   } = node;
   const {
     city, street, housingStockNumber, corpus, id,
   } = address;
+  const handleSwitchChange = (checked) =>{
+    if (checked === true) {
+      console.log("true")
+      setVisible(prevState => ({...prevState, showEnable: true}))
 
+    }
+    if (checked === false) {
+      console.log("false")
+      setVisible(prevState => ({...prevState, showDisable: true}))
+    }
+
+  }
   return (
     <ListWrap>
       <Title>Информация</Title>
@@ -23,12 +40,17 @@ const Information = () => {
       </ListItem>
       <ListItem>
         <span>Тип узла</span>
-        <span>Коммерческий учет показетелей прибора</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Switch size="small" defaultChecked onChange={handleSwitchChange}/>
+          <span>Коммерческий учет показетелей прибора</span>
+        </div>
       </ListItem>
       <ListItem>
         <span>Статус узла</span>
-        <span>Сдан</span>
+        <Label color="green">Сдан</Label>
       </ListItem>
+      <DisableModal />
+      <EnableModal />
     </ListWrap>
   );
 };
