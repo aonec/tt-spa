@@ -9,7 +9,7 @@ import EnableModal from './Modals/EnableModal';
 
 const Information = () => {
   const {
-    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible,
+    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible, switched, setSwitched
   } = useContext(NodeContext);
   const {
     address, diameter,
@@ -21,11 +21,13 @@ const Information = () => {
     if (checked === true) {
       console.log("true")
       setVisible(prevState => ({...prevState, showEnable: true}))
+      setSwitched(true)
 
     }
     if (checked === false) {
       console.log("false")
       setVisible(prevState => ({...prevState, showDisable: true}))
+      setSwitched(false)
     }
 
   }
@@ -39,9 +41,13 @@ const Information = () => {
         </Subtitle>
       </ListItem>
       <ListItem>
+        <span>Зона</span>
+        <span>Апартаменты</span>
+        </ListItem>
+      <ListItem>
         <span>Тип узла</span>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Switch size="small" defaultChecked onChange={handleSwitchChange}/>
+          <Switch size="small" checked={switched} onChange={handleSwitchChange}/>
           <span>Коммерческий учет показетелей прибора</span>
         </div>
       </ListItem>

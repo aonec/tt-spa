@@ -6,12 +6,12 @@ import * as Yup from 'yup';
 import { isConnectedValue } from '../../../../tt-components/localBases';
 import { putOdpu } from '../../../EditODPU/components/apiEditOdpu';
 import { Title, ButtonTT } from '../../../../tt-components';
-import {Buttons} from '../../../../tt-components/Buttons'
-import { NodeContext } from "../../index";
+import { Buttons } from '../../../../tt-components/Buttons';
+import { NodeContext } from '../../index';
 
 const DisableModal = () => {
   console.log('DisableModal');
-  const {visible, setVisible} = useContext(NodeContext);
+  const { visible, setVisible,switched,  setSwitched } = useContext(NodeContext);
   const {
     handleSubmit,
     handleChange, values,
@@ -29,11 +29,15 @@ const DisableModal = () => {
     }),
     onSubmit: () => {
       alert('Узел снят с учета!');
+      setTimeout(()=>{
+        setVisible((prevState) => ({ ...prevState, showDisable: false}));
+      }, 1000)
     },
   });
   const handleCancel = () => {
-    setVisible(prevState => ({...prevState, showDisable: false}))
-  }
+    setVisible((prevState) => ({ ...prevState, showDisable: false}));
+    setSwitched( (prevState) => !prevState);
+  };
 
   return (
     <Modal
@@ -45,22 +49,24 @@ const DisableModal = () => {
       }}
       onCancel={handleCancel}
     >
-      <form>
-        <div style={{padding: '24px'}}>
-          <Title color="black" size={'middle'}>
+      <form onSubmit={handleSubmit}>
+        <div style={{ padding: '24px' }}>
+          <Title color="black" size="middle">
             Вы уверены что хотите снять узел с учета?
           </Title>
           <span>Для того, чтобы изменить тип узла повторно, вам нужно будет загрузить акт-допуска</span>
         </div>
 
         <Buttons>
-          <ButtonTT type={'button'}
-                    onClick={handleCancel}
-                    color="white">
+          <ButtonTT
+            type="button"
+            onClick={handleCancel}
+            color="white"
+          >
             Отмена
           </ButtonTT>
 
-          <ButtonTT type={'submit'} color="blue" style={{marginLeft: '16px'}}>
+          <ButtonTT type="submit" color="blue" style={{ marginLeft: '16px' }}>
             Снять с учета
           </ButtonTT>
         </Buttons>
@@ -70,4 +76,4 @@ const DisableModal = () => {
   );
 };
 
-export default DisableModal
+export default DisableModal;

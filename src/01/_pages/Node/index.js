@@ -22,8 +22,9 @@ export const Node = () => {
 
   const [visible, setVisible] = useState({
     showDisable: false,
-    showEnable: false
+    showEnable: false,
   })
+  const [ switched, setSwitched] = useState(true);
 
   console.log('nodeId', nodeId);
 
@@ -44,7 +45,7 @@ export const Node = () => {
     );
   }
 
-  const context = { node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible };
+  const context = { node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible,  switched, setSwitched};
   return (
     <NodeContext.Provider value={context}>
       <Header />
