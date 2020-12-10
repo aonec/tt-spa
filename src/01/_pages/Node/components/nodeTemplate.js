@@ -1,0 +1,25 @@
+export const node = {
+  connection: {
+    isConnected: true,
+    ipV4: '192.168.33.11',
+    port: 4897,
+    deviceAddress: 12,
+  },
+  address: {
+    id: 175,
+    city: 'Нижнекамск',
+    street: 'Тихая Аллея',
+    housingStockNumber: '4',
+    corpus: null,
+  },
+  hubs: [],
+  id: 2210858,
+  transactionType: null,
+  model: 'ТЭМ-106',
+  serialNumber: '101220201103',
+  lastCommercialAccountingDate: '2020-12-10T05:03:09.522',
+  futureCommercialAccountingDate: '2020-12-10T05:03:09.522',
+  lastCheckingDate: '2020-12-17T05:03:09.522',
+  futureCheckingDate: '2020-12-26T05:03:09.522',
+  closingDate: null,
+};
