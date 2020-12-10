@@ -22,7 +22,7 @@ export const Header = () => {
     >
       <div>
         <Breadcrumb path="/node" />
-        <Title>{`${model || 'Узел 4'}`}</Title>
+        <Title>{`${model || 'Узел 4'} ${serialNumber}`}</Title>
         <Subtitle to={`/objects/${id}`}>{`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}</Subtitle>
       </div>
       <div style={{ position: 'relative' }} />

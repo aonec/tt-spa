@@ -4,7 +4,7 @@ export const Template = styled.div``;
 
 export const NameWrap = styled.a`
   display: grid;
-  grid-template-columns: 1fr 7fr 4fr;
+  grid-template-columns: 1fr 5fr 6fr;
   align-items: center;
 
   &:hover {

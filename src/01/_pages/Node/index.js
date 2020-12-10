@@ -25,7 +25,7 @@ export const Node = () => {
       setNode(res);
     });
     getCalculatorTasks(nodeId).then((res) => {
-      setTasks(res);
+      setTasks(res.items);
       console.log(res)
     });
 
