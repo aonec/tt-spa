@@ -3,7 +3,7 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { NodeContext } from '../index';
 
-export const Information = (loading = true) => {
+const Information = () => {
   const { node } = useContext(NodeContext);
   const {
     address, diameter,

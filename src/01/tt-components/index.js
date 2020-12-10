@@ -14,3 +14,4 @@ export * from './DatePicker';
 export * from './RangePicker'
 export * from './InputNumberTT';
 export * from './EditButton'
+export * from './RelatedDevices'

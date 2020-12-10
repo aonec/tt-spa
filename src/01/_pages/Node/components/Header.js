@@ -14,16 +14,6 @@ export const Header = () => {
     id, city, street, housingStockNumber, corpus,
   } = address;
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
-  if (!node) {
-    return (
-      <Loader show size="32" />
-    );
-  }
-
   return (
     <HeaderWrap style={{
       display: 'flex',
