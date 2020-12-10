@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, useParams, useRouteMatch } from 'react-router-dom';
 import Header from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Grid } from '../../_components/Grid';
@@ -8,14 +8,19 @@ import { Events } from './components/Events';
 
 import { getCalculator } from './apiNodeProfile';
 
+
 export const NodeContext = createContext();
 export const Node = () => {
   console.log('Node');
 
+  const { url } = useRouteMatch('/nodes/(\\d+)');
+  const {nodeId} = useParams();
   const [node, setNode] = useState();
 
+  console.log("nodeId", nodeId)
+
   useEffect(() => {
-    getCalculator().then((res) => {
+    getCalculator(nodeId).then((res) => {
       setNode(res);
     });
   }, []);
@@ -32,10 +37,10 @@ export const Node = () => {
       <Header />
       <Tabs />
       <Grid>
-        <Route path={`/node/25`} exact>
+        <Route path={`${url}`} exact>
          <Information />
         </Route>
-        <Route path={`/node/25/related`} exact>
+        <Route path={`${url}/related`} exact>
           {/* <RelatedDevices /> */}
           RelatedDevices
         </Route>

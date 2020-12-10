@@ -103,8 +103,9 @@ export function App() {
                       component={HousingProfile}
                       exact
                     />
+
                     <Route
-                      path={['/node/:id/(related|documents)?']}
+                      path={['/nodes/:nodeId/(related|documents)?']}
                       component={Node}
                       exact
                     />

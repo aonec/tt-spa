@@ -11,7 +11,7 @@ const tabItems = [
 ];
 
 export const Tabs = React.memo(() => {
-  const { url } = useRouteMatch('/node/(\\d+)');
+  const { url } = useRouteMatch('/nodes/(\\d+)');
   return styled(tabs)(
     <tabs>
       {tabItems.map((t) => (
