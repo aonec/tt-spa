@@ -8,6 +8,7 @@ import { useTasks } from "./useTasks"
 import { TasksList } from "./components/TasksList"
 import TasksSearchForm from "./components/TasksSearchForm/TasksSearchForm";
 import tasksSearchReducer from "./components/TasksSearchForm/tasksSearchReducer";
+import {useDebounce} from "../../hooks/useDebounce";
 
 const tabItems = [
   ["К исполнению", "executing"],
@@ -31,7 +32,9 @@ const Tabs = React.memo(({ total = [] }) =>
 export const Tasks = () => {
   const [searchState, dispatchSearchState] = useReducer(tasksSearchReducer, {})
 
-  const { items, executingTasksCount, observingTasksCount } = useTasks(searchState)
+  const debouncedSearchState = useDebounce(searchState, 500);
+
+  const { items, executingTasksCount, observingTasksCount } = useTasks(debouncedSearchState)
   return (
     <div style={{maxWidth: 960}}>
       <h1 style={{fontWeight:300, marginBottom: 16}}>Задачи</h1>

@@ -1,14 +1,13 @@
-import React from 'react';
-import {useDispatch} from "react-redux";
-import {setCurrentPage} from "../../../Redux/reducers/reducerDevicesPage";
+import {setHouseNumber, setStreet} from "../../../../Objects/ObjectsSearchForm/objectsSearchReducer";
 import {Button, Form, Input, Select, Tooltip} from "antd";
-import {Icon} from "../../../_components/Icon";
-import styles from "../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
-import {setHouseNumber, setStreet} from "./objectsSearchReducer";
-
+import {Icon} from "../../../../../_components/Icon";
+import styles from "../../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
+import React from "react";
 const { Option } = Select;
 
-const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
+
+const HousesSearchForm = () => {
+
 
     const onValuesChangeHandler = (changedValues, allValues) => {
         const changedParam = Object.keys(changedValues)[0]
@@ -24,7 +23,9 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
             setParam = setStreet
         }
 
-        if (targetValue.length >= 4) {
+        if (previousValue.length < 4 && targetValue.length < 4) {
+            return
+        } else if (targetValue.length >= 4) {
             dispatchSearchState(setParam(targetValue));
         } else {
             dispatchSearchState(setParam(''));
@@ -94,8 +95,7 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
 
         </Form>
 
-
     )
 }
 
-export default ObjectsSearchForm;
+export default HousesSearchForm;

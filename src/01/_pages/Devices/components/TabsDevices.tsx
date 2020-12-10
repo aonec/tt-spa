@@ -27,6 +27,8 @@ const initialState = {
 };
 
 const TabsDevices = ({ devicePage }) => {
+
+
   const dispatch = useDispatch();
   const { pageSize } = devicePage;
   const { currentPage } = devicePage;
@@ -73,10 +75,10 @@ const TabsDevices = ({ devicePage }) => {
     });
     const deviceArray = devicesByObject.map((addressDevicesGroup) => <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup} />);
     setDeviceElems(deviceArray);
-    if (deviceArray.length) {
+    // if (deviceArray.length) {
       setIsLoading(false);
-    }
-  }, [devicePage.items]);
+    // }
+  }, [devicePage.items, searchState]);
 
   const pagination = pages.map((page, index) => (
     <span
@@ -93,7 +95,7 @@ const TabsDevices = ({ devicePage }) => {
       <TabPane className={styles.tab} tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
         {/* <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/> */}
         <DeviceSearchForm dispatch={dispatch} searchState={searchState} dispatchSearchState={dispatchSearchState} />
-        {isLoading ? (
+        {isLoading || devicePage.isLoading ? (
           <div>
             ЗАГРУЗКА...
             <Loader show />

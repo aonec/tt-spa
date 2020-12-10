@@ -24,10 +24,10 @@ export const useFilter = (pageDispatch = () => {}) => {
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (city && street && house) {
+      if (street && house) {
         pageDispatch({
           type: "get_apartments",
-          params: { city, street, HousingStockNumber: house },
+          params: { street, HousingStockNumber: house },
         })
       }
     }, 500)
