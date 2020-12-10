@@ -43,9 +43,9 @@ export const MetersPage = () => {
             <MeterDevicesNew {...meterDev} />
           </Route>
         </TabPane>
-        {/*<TabPane tab={<NavLink to="/meters/houses">По домам</NavLink>} key="2">*/}
-        {/*  <HousesReadings />*/}
-        {/*</TabPane>*/}
+        <TabPane tab={<NavLink to="/meters/houses">По домам</NavLink>} key="2">
+          <HousesReadings />
+        </TabPane>
       </Tabs>
 
 

@@ -1,35 +1,36 @@
-import {setHouseNumber, setStreet} from "../../../../Objects/ObjectsSearchForm/objectsSearchReducer";
+import {setHouseNumber, setStreet} from "../../../../../Redux/reducers/objectsSearchReducer";
 import {Button, Form, Input, Select, Tooltip} from "antd";
 import {Icon} from "../../../../../_components/Icon";
 import styles from "../../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
 import React from "react";
+import {InitialStateType} from './../HousesReadings'
+
 const { Option } = Select;
 
+interface Props {
+    searchState: InitialStateType;
+    dispatchSearchState: () => void
+}
 
-const HousesSearchForm = () => {
+const HousesSearchForm: React.FC<Props> = ({searchState, dispatchSearchState}) => {
 
 
-    const onValuesChangeHandler = (changedValues, allValues) => {
+    const onValuesChangeHandler = (changedValues: object) => {
         const changedParam = Object.keys(changedValues)[0]
-        let previousValue = searchState[changedParam];
+        // let previousValue = searchState[changedParam];
         let targetValue = Object.values(changedValues)[0]
         let setParam;
 
-        if (changedParam === 'HousingStockNumber') {
-            setParam = setHouseNumber;
-            dispatchSearchState(setParam(targetValue))
-            return
-        } else {
-            setParam = setStreet
+        switch (changedParam) {
+            case 'Street':
+                setParam = setStreet;
+                break;
+            case 'HousingStockNumber':
+                setParam = setHouseNumber;
+                break;
         }
 
-        if (previousValue.length < 4 && targetValue.length < 4) {
-            return
-        } else if (targetValue.length >= 4) {
-            dispatchSearchState(setParam(targetValue));
-        } else {
-            dispatchSearchState(setParam(''));
-        }
+            dispatchSearchState(setParam(targetValue))
         // dispatch(setCurrentPage(1))
     }
 

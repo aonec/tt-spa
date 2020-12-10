@@ -22,15 +22,16 @@ const DeviceSearchForm = ({searchState, dispatchSearchState}) => {
     const dispatch = useDispatch();
 
     const onValuesChangeHandler = (e) => {
-        let previousValue = e.target.defaultValue;
+        // let previousValue = e.target.defaultValue;
         let targetValue = e.target.value;
-        if (previousValue.length < 4 && targetValue.length < 4) {
-            return
-        } else if (targetValue.length >= 4) {
-            dispatchSearchState(setSearchTerm(targetValue));
-        } else {
-            dispatchSearchState(setSearchTerm(''));
-        }
+        // if (previousValue.length < 4 && targetValue.length < 4) {
+        //     return
+        // } else if (targetValue.length >= 4) {
+        //     dispatchSearchState(setSearchTerm(targetValue));
+        // } else {
+        //     dispatchSearchState(setSearchTerm(''));
+        // }
+        dispatchSearchState(setSearchTerm(targetValue))
         dispatch(setCurrentPage(1))
     }
 

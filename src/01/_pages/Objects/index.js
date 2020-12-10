@@ -5,7 +5,7 @@ import { Link as LinkRow } from 'react-router-dom';
 import axios, { cancel } from '01/axios';
 import { Loader, Icon } from '01/components';
 import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
-import {objectsSearchReducer} from "./ObjectsSearchForm/objectsSearchReducer";
+import {objectsSearchReducer} from "../../Redux/reducers/objectsSearchReducer";
 import {formQueryString} from "../../utils/formQueryString";
 import {useDebounce} from "../../hooks/useDebounce";
 
