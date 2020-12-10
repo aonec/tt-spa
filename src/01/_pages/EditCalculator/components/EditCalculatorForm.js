@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import moment from 'moment';
 import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -10,16 +9,16 @@ import {
 } from '../../../tt-components';
 import { items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
-
 import { putCalculator } from './apiEditCalculator';
-import randomInteger from "../../../utils/randomInteger";
+import isDateNull from "../../../utils/isDateNull";
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
 
   const [checked, setChecked] = useState(false);
 
-  console.log(currentCalc)
+
+  console.log(currentCalc);
 
   const {
     calculator,
@@ -53,26 +52,26 @@ const EditCalculatorForm = () => {
   };
   const { id: houseId } = address;
 
-  useEffect(()=>{
-    setChecked(!isConnected)
-  },[isConnected] )
+  useEffect(() => {
+    setChecked(!isConnected);
+  }, []);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors
+    handleBlur, setFieldValue, setErrors,
   } = useFormik({
     initialValues: {
       serialNumber,
-      lastCheckingDate: lastCheckingDate === null ? null : moment(lastCheckingDate),
-      futureCheckingDate: futureCheckingDate === null ? null : moment(futureCheckingDate),
-      lastCommercialAccountingDate: lastCommercialAccountingDate === null ? null : moment(lastCommercialAccountingDate),
-      futureCommercialAccountingDate: futureCommercialAccountingDate === null ? null : moment(futureCommercialAccountingDate),
+      lastCheckingDate: isDateNull(lastCheckingDate),
+      futureCheckingDate: isDateNull(futureCheckingDate),
+      lastCommercialAccountingDate: isDateNull(lastCommercialAccountingDate),
+      futureCommercialAccountingDate: isDateNull(futureCommercialAccountingDate),
       ipV4,
       deviceAddress,
       port,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
-      isConnected: isConnected
+      isConnected,
     },
     validationSchema: Yup.object({
       lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
@@ -84,7 +83,6 @@ const EditCalculatorForm = () => {
       deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
       port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
       infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
-
     }),
     onSubmit: async () => {
       const form = {
@@ -103,29 +101,22 @@ const EditCalculatorForm = () => {
         infoId: values.infoId,
       };
       console.log('FORM', form);
-      console.log(JSON.stringify(form))
-      // putCalculator(id, form);
+      console.log(JSON.stringify(form));
+      putCalculator(id, form);
     },
   });
 
   function onSwitchChange(checked) {
     if (checked === true) {
-      setChecked(true)
-      setFieldValue('isConnected', true)
+      setChecked(true);
+      setFieldValue('isConnected', false);
       setFieldValue('ipV4', '');
       setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(1000, 2000));
-      setErrors('ipV4', null);
-      setErrors('port', null);
-      setErrors('deviceAddress', null);
+      setFieldValue('deviceAddress', null);
     }
     if (checked === false) {
-      setChecked(false)
-      setFieldValue('isConnected', false)
-      setFieldValue('deviceAddress', null);
-      setErrors('ipV4', null);
-      setErrors('port', null);
-      setErrors('deviceAddress', null);
+      setChecked(false);
+      setFieldValue('isConnected', true)
     }
   }
 
@@ -232,8 +223,8 @@ const EditCalculatorForm = () => {
             color: 'rgba(39, 47, 90, 0.9)',
           }}
           >
-              Вычислитель без оборудования связи
-            </span>
+            Вычислитель без оборудования связи
+          </span>
         </Form.Item>
 
         <Form.Item label="IP адрес вычислителя">
@@ -245,7 +236,8 @@ const EditCalculatorForm = () => {
             name="ipV4"
             disabled={checked}
           />
-          <Alert name="ipV4" />
+          {/* <Alert name="ipV4" /> */}
+          {checked === false ? <Alert name="ipV4" /> : null }
         </Form.Item>
 
         <Form.Item label="Порт">
@@ -257,7 +249,9 @@ const EditCalculatorForm = () => {
             name="port"
             disabled={checked}
           />
-          <Alert name="port" />
+          {/* <Alert name="port" /> */}
+          {checked === false ? <Alert name="port" /> : null }
+
         </Form.Item>
 
         <Form.Item label="Адрес устройства">
@@ -269,7 +263,8 @@ const EditCalculatorForm = () => {
             name="deviceAddress"
             disabled={checked}
           />
-          <Alert name="deviceAddress" />
+          {/* <Alert name="deviceAddress" /> */}
+          {checked === false ? <Alert name="deviceAddress" /> : null }
         </Form.Item>
 
         <Wrap
