@@ -14,6 +14,7 @@ export const Apartments = React.memo(
       }
       apartments {
         display: grid;
+        height: fit-content;
       }
       Loader {
         margin: 0 auto;
