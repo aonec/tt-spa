@@ -3,12 +3,12 @@ import {Button, Form, Input, Select, Tooltip} from "antd";
 import {Icon} from "../../../../../_components/Icon";
 import styles from "../../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
 import React from "react";
-import {InitialStateType} from './../HousesReadings'
+import {HouseSearchType} from '../HousesReadings'
 
 const { Option } = Select;
 
 interface Props {
-    searchState: InitialStateType;
+    searchState: HouseSearchType;
     dispatchSearchState: () => void
 }
 

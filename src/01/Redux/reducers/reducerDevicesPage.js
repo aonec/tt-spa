@@ -43,7 +43,6 @@ export const getDevices = (pageNumber, pageSize, searchState) => async (dispatch
   dispatch(setIsLoading(true));
   const devices = await devicesAPI.getDevices(pageNumber, pageSize, searchState);
   if (!devices) {
-    debugger;
 
     dispatch(setIsLoading(false));
     return;

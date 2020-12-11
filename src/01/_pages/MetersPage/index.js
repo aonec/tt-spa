@@ -14,6 +14,8 @@ import {MeterDevicesNew} from "./components/MeterDevices/MeterDevicesNew";
 import HousesReadings from "./components/HousesReadings/HousesReadings";
 import Arrow from "../../_components/Arrow/Arrow";
 import { Tabs } from 'antd';
+import { useHistory } from "react-router-dom";
+
 const { TabPane } = Tabs;
 
 export const MetersPage = () => {
@@ -25,14 +27,22 @@ export const MetersPage = () => {
   const apartInfo = useApartmentInfo(state)
   const meterDev = useMeterDevices(state)
 
+  const history = useHistory();
+  const defaultKey = history.location.pathname.split('/')[2];
+
+
+  const handleTabClick = (key) => {
+    history.push(`${key}`)   // < == router router v4
+  }
+
   const onChange = () => {}
 
-    return (
+
+  return (
     <div style={{maxWidth: 960}}>
       <h1>Ввод показаний</h1>
-
-      <Tabs defaultActiveKey="1">
-        <TabPane tab={<NavLink to="/meters/apartments">По квартирам</NavLink>} key="1">
+      <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
+        <TabPane tab='По квартирам' key="apartments">
           <Route path="/*/apartments" exact>
             <Filter {...filter} />
             <Apartments {...aparts} />
@@ -43,8 +53,10 @@ export const MetersPage = () => {
             <MeterDevicesNew {...meterDev} />
           </Route>
         </TabPane>
-        <TabPane tab={<NavLink to="/meters/houses">По домам</NavLink>} key="2">
+        <TabPane tab='По домам' key="houses">
+          <Route path="/*/houses" exact>
           <HousesReadings />
+          </Route>
         </TabPane>
       </Tabs>
 
