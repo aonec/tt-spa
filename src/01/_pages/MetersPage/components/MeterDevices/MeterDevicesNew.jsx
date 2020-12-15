@@ -136,7 +136,7 @@ export const MeterDevicesNew = ({items = []}) => {
 
     // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
 
-    console.log(moment("2027-06-01T02:00:00").format('MMMM'))
+    // console.log(moment("2027-06-01T02:00:00").format('MMMM'))
 
     return styled(styles, style.button)(
             <meters>

@@ -1,11 +1,14 @@
 import React, {useEffect, useReducer, useState} from "react"
+import {NavLink, Route} from "react-router-dom"
+
 import HousesDevices from "./HousesDevices/HousesDevices";
 import HousesSearchForm from "./HousesSearchForm/HousesSearchForm";
 import {objectsSearchReducer} from "../../../../Redux/reducers/objectsSearchReducer";
 import ObjectsSearchForm from "../../../Objects/ObjectsSearchForm/ObjectsSearchForm";
 import {useDebounce} from "../../../../hooks/useDebounce";
 import { requestDevicesByHouse } from "01/_api/houses_readings_page";
-import { devicesReadingsByHouseReducer } from "01/Redux/reducers/devicesReadingsByHouseReducer";
+import { devicesReadingsByHouseReducer } from "01/_pages/MetersPage/components/HousesReadings/devicesReadingsByHouseReducer";
+import {Objects} from "../../../Objects";
 
 const initialState = {
     city: '' as string,
@@ -25,8 +28,8 @@ const HouseReadings = () => {
 
     return (
         <div>
-            <HousesSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
-            <HousesDevices searchState={searchState}/>
+            <Objects isReadings/>
+
         </div>
     )
 }

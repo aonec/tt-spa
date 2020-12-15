@@ -11,8 +11,6 @@ export type ReadingType = {
     uploadTime: string
 }
 
-export type ReadingArrayType = Array<ReadingType>
-
 export type ManagementFirmType = {
         id: number,
         name: string,
@@ -21,7 +19,8 @@ export type ManagementFirmType = {
         timeZoneOffset: string | null
 }
 
-export type ReadingDeviceType = {
+export type IndividualDeviceType = {
+    apartmentNumber: string
     closingDate: string | null
     futureCheckingDate: string | null
     futureCommercialAccountingDate: string | null
@@ -35,7 +34,7 @@ export type ReadingDeviceType = {
     mountPlace: string | null
     personalAccountNumber: string | null
     rateType: string | null
-    readings: ReadingArrayType
+    readings: Array<ReadingType>
     resource: string | null
     serialNumber: string | null
     transactionType: string | null

@@ -15,6 +15,7 @@ import HousesReadings from "./components/HousesReadings/HousesReadings";
 import Arrow from "../../_components/Arrow/Arrow";
 import { Tabs } from 'antd';
 import { useHistory } from "react-router-dom";
+import HousesDevices from "./components/HousesReadings/HousesDevices/HousesDevices";
 
 const { TabPane } = Tabs;
 
@@ -32,7 +33,7 @@ export const MetersPage = () => {
 
 
   const handleTabClick = (key) => {
-    history.push(`${key}`)   // < == router router v4
+    history.replace(`/meters/${key}`)   // < == router router v4
   }
 
   const onChange = () => {}
@@ -56,6 +57,9 @@ export const MetersPage = () => {
         <TabPane tab='По домам' key="houses">
           <Route path="/*/houses" exact>
           <HousesReadings />
+          </Route>
+          <Route path="/*/houses/:id">
+            <HousesDevices/>
           </Route>
         </TabPane>
       </Tabs>
