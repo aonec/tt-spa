@@ -22,11 +22,11 @@ export const Information = (loading = true) => {
   const {
     city, street, housingStockNumber, corpus, id,
   } = address || DEFAULT_BUILDING;
-  const { futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
+  const { futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate, diameter } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
-  console.log('device', device);
+  // console.log('device', device);
   if (errorOfComponent) {
     return (
       <ListWrap>
@@ -45,6 +45,10 @@ export const Information = (loading = true) => {
           <Subtitle to={`/objects/${id}`}>
             {`${city}, ${street}, ${housingStockNumber} ${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
+        </ListItem>
+        <ListItem>
+          <span>Диаметр трубы</span>
+          <span>{`${diameter} мм`}</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>
@@ -66,5 +70,6 @@ export const Information = (loading = true) => {
     </ListWrap>
   );
 };
+
 
 export default Information;

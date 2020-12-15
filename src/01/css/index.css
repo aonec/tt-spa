@@ -3,7 +3,9 @@
 :root {
   --main: 39, 47, 90;
   --main-100: rgb(var(--main));
+  --main-90: rgb(var(--main), 0.9);
   --main-80: rgba(var(--main), 0.8);
+  --main-70: rgba(var(--main), 0.7);
   --main-60: rgba(var(--main), 0.6);
   --main-45: rgba(var(--main), 0.45);
   --main-32: rgba(var(--main), 0.32);

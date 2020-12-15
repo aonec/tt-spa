@@ -1,68 +1,8 @@
-//$height: 48px !default;
-//
-//.ant-picker {
-//  width: 100%;
-//  height: 50px;
-//  padding: 8px 24px !important;
-//}
-//
-//.ant-picker-range {
-//  border: 1px solid #dcdee4;
-//  box-sizing: border-box;
-//  border-radius: 4px;
-//  height: $height;
-//  width: 408px;
-//  padding: 8px 24px;
-//
-//  input {
-//    font-size: 16px;
-//    line-height: 32px;
-//    color: rgba(39, 47, 90, 0.8);
-//  }
-//}
-//
-//.ant-picker-range-separator {
-//  padding: 0 24px;
-//}
-//
-//.ant-select {
-//  height: $height;
-//  .ant-select-selector {
-//    height: 100% !important;
-//    padding: 8px 24px !important;
-//    span {
-//      font-size: 16px;
-//      line-height: 32px;
-//    }
-//  }
-//  .ant-select-arrow {
-//    padding: 0 28px !important;
-//  }
-//}
-//
-//.ant-radio-group {
-//  height: $height;
-//  label {
-//    height: $height;
-//  }
-//  span {
-//    line-height: 48px;
-//  }
-//}
-//
-//
-//.ant-upload.ant-upload-drag  {
-//  border: 1px dashed #DCDEE4;
-//  box-sizing: border-box;
-//  background: none;
-//  height: 104px;
-//  margin-top: 16px;
-//}
-
 .ant-form-item {
   display: flex !important;
   flex-direction: column !important;
   align-items: baseline !important;
+  margin-bottom: 12px !important;
   .ant-form-item-control {
     width: 100%;
   }

@@ -24,9 +24,7 @@ const ObjectsSearchForm = ({searchState, dispatchSearchState}) => {
             setParam = setStreet
         }
 
-        if (previousValue.length < 4 && targetValue.length < 4) {
-            return
-        } else if (targetValue.length >= 4) {
+        if (targetValue.length >= 4) {
             dispatchSearchState(setParam(targetValue));
         } else {
             dispatchSearchState(setParam(''));

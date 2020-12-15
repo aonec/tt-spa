@@ -12,9 +12,9 @@ import { RelatedDevices } from './components/RelatedDevices';
 
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
-import DeregisterDevice from './components/Modals/ModalDeregister'
-import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
-
+import DeregisterDevice from './components/Modals/ModalDeregister';
+import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
+import CheckDevice from './components/Modals/ModalCheck';
 
 export const DeviceContext = React.createContext();
 
@@ -30,6 +30,7 @@ export const CalculatorProfile = () => {
   const [hubs, setHubs] = useState();
   const [deregister, setDeregister] = useState(false);
   const [report, setReport] = useState(false);
+  const [check, setCheck] = useState(false);
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -79,6 +80,8 @@ export const CalculatorProfile = () => {
   }, []);
 
   if (isLoading) return <Loader show size={32} />;
+
+  console.log(device)
   const context = {
     device,
     building,
@@ -90,7 +93,10 @@ export const CalculatorProfile = () => {
     hubs,
     deregister,
     setDeregister,
-    report, setReport
+    report,
+    setReport,
+    check,
+    setCheck,
   };
   return (
     <DeviceContext.Provider
@@ -116,6 +122,7 @@ export const CalculatorProfile = () => {
       </Grid>
       <DeregisterDevice />
       <ModalCalculatorReport />
+      <CheckDevice />
     </DeviceContext.Provider>
   );
 };

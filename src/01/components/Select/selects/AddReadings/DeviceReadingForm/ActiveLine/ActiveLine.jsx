@@ -5,10 +5,10 @@ const ActiveLine = ({isActive}) => {
 
 
     return (
-        <div style={{marginRight: 16, color: 'rgba(39, 47, 90, 0.8)'}}>
+        <div style={{marginLeft: 4, marginRight: 16, color: 'rgba(39, 47, 90, 0.8)'}}>
         {isActive
-            ? <span> <Badge status="success" /> Активен </span>
-            : <span> <Badge status="error" /> Не активен </span>
+            ? <Badge status="success" text="Активен"/>
+            : <Badge status="error" text="Не активен"/>
         }
         </div>
 )
