@@ -23,6 +23,7 @@ const ModalCalculator = () => {
         objid={objid}
         addCalculator={addCalculator}
         setAddCalculator={setAddCalculator}
+        handleCancel={handleCancel}
       />
 
     </Modal>
