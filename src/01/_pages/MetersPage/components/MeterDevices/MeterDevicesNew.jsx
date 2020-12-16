@@ -127,8 +127,11 @@ export const MeterDevicesNew = ({items = []}) => {
 
     if (!state.devices?.length) return null
 
-    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
-                                                                              sendReadings={() => sendReadings(device)}
+    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm
+        key={device.id}
+        device={device}
+        dispatch={dispatch}
+        sendReadings={() => sendReadings(device)}
     />);
 
     const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime)

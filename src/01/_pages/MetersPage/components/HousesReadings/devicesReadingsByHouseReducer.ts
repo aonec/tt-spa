@@ -5,6 +5,7 @@ import {
 } from "../../../../../types/types";
 
 const SET_INFO = 'SET_INFO'
+const UPDATE_READINGS = 'UPDATE_READINGS'
 
 const initialManagementFirm = {
     id: 2,
@@ -106,9 +107,12 @@ export const initialState = {
 export const devicesReadingsByHouseReducer = (state: RequestDevicesByHouseType = initialState, action: SetDevicesACType):RequestDevicesByHouseType  => {
     switch (action.type) {
         case SET_INFO:
-            debugger;
-
             return {...state, ...action.payload}
+
+        case UPDATE_READINGS:
+
+
+
         default: return state
 
     }

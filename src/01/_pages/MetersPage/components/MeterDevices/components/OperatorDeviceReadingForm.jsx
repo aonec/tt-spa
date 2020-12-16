@@ -36,8 +36,6 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
     const isActive = device.closingDate === null;
 
     const numberOfReadings = rateTypeToNumber(device.rateType);
-    // const readingsArray = [];
-    // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
     useEffect(() => {
         setIsLoading(true)
         const previousReadingsArray = [];
@@ -47,15 +45,9 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
 
 
         for (let i=1; i <= numberOfReadings; i++) {
-
-            previousReadingsArray.push(prevReadings[`value${i}`] ?? '-');
-            currentReadingsArray.push(currentReadings[`value${i}`] ?? '-');
+            previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
+            currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
         }
-
-        // for (let i=1; i <= 2; i++) {
-        //     previousReadingsArray.push(i);
-        //     currentReadingsArray.push(i);
-        // }
 
         setReadingsState({
             previousReadingsArray,
@@ -122,7 +114,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <DeviceReadingsContainer>{currentDeviceReadings} </DeviceReadingsContainer>
+            <DeviceReadingsContainer>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
 

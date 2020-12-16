@@ -6,7 +6,7 @@ import styled from 'styled-components';
 const ReadingLineStyled = styled.div`
 
 position: relative; 
-padding-right: 16px;
+padding-right: ${props => props.houseReadings ? 0 : '16px'};
 
 &:not(:first-child) {
 padding-top: 8px;
@@ -23,7 +23,7 @@ background-color: #F3F5F6;
 `;
 
 const TarifLabel = styled.span`
-width: 72px;
+width: ${props => props.houseReadings ? '35px': '72px'};
 padding-left: 8px;
 padding-right: 8px;
 color: rgba(39, 47, 90, 0.32);
@@ -31,7 +31,7 @@ color: rgba(39, 47, 90, 0.32);
 
 interface DeviceRatesVerticalProps {
     index: number,
-    onChange: () => void,
+    onChange?: () => void,
     value: number,
     readingsBlocked?: boolean,
     resource: string,
@@ -56,13 +56,16 @@ input[type=number]::-webkit-outer-spin-button {
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           index,
-                          onChange,
+                          onChange = () => {},
                           value,
                           readingsBlocked = false,
                           resource,
                           sendReadings = () => {},
-                          operatorCabinet = false
+                          operatorCabinet = false,
+                          houseReadings = false
                      }) => {
+
+
 
     const [prevValue, setPrevValue] = useState(null);
 
@@ -76,11 +79,11 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
     }
 
     return (
-        <ReadingLineStyled>
+        <ReadingLineStyled houseReadings={houseReadings}>
             <StyledInput
                 prefix={readingsBlocked ? null : (
-                    <TarifLabel>
-                        Тариф
+                    <TarifLabel houseReadings={houseReadings}>
+                        {houseReadings ? 'Т' : 'Тариф'}
                         {index + 1}
                         {' '}
                     </TarifLabel>

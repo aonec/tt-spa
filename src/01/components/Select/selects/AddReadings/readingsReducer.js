@@ -49,7 +49,6 @@ const initialState = {
 
 
 const readingsReducer = (state = initialState, action) => {
-    window.readings = state;
     switch (action.type) {
 
         case SET_DEVICES:
@@ -88,29 +87,29 @@ const readingsReducer = (state = initialState, action) => {
             // }
 
             // const newState = _.cloneDeep(state);
-            const deviceOrder = state.devices.findIndex(device => device.id === action.deviceId);
-            const rateType = rateTypeToNumber(state.devices[deviceOrder].rateType);
-
-            const newState = {
-                ...state, devices: state.devices.map((device, index) => {
-                    return index === deviceOrder ? _.cloneDeep(state.devices[deviceOrder]) : device
-                })
-            };
-
-            const readings = newState.devices[deviceOrder].readings[0];
-
-            readings[`value${action.readingNumber}`] = action.readingValue;
+            // const deviceOrder = state.devices.findIndex(device => device.id === action.deviceId);
+            // const rateType = rateTypeToNumber(state.devices[deviceOrder].rateType);
             //
-            // for (let i = 0; i <= rateType; i++) {
-            //     if (!readings[`value${i}`]) {
-            //         readings[`value${i}`] = 0;
-            //     }
-            // }
+            // const newState = {
+            //     ...state, devices: state.devices.map((device, index) => {
+            //         return index === deviceOrder ? _.cloneDeep(state.devices[deviceOrder]) : device
+            //     })
+            // };
+            //
+            // const readings = newState.devices[deviceOrder].readings[0];
+            //
+            // readings[`value${action.readingNumber}`] = action.readingValue;
+            // //
+            // // for (let i = 0; i <= rateType; i++) {
+            // //     if (!readings[`value${i}`]) {
+            // //         readings[`value${i}`] = 0;
+            // //     }
+            // // }
+            //
+            // return newState;
 
-            return newState;
 
-
-
+            //
             return {
                 ...state,
                 devices: state.devices.map(
