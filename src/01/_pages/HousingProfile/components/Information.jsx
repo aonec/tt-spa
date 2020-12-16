@@ -22,7 +22,9 @@ export const Information = (loading = true) => {
   const {
     city, street, housingStockNumber, corpus, id,
   } = address || DEFAULT_BUILDING;
-  const { futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate, diameter } = device || DEFAULT_DEVICE;
+  const {
+    futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate, diameter, housingMeteringDeviceType,
+  } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -46,10 +48,12 @@ export const Information = (loading = true) => {
             {`${city}, ${street}, ${housingStockNumber} ${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
         </ListItem>
-        <ListItem>
-          <span>Диаметр трубы</span>
-          <span>{`${diameter} мм`}</span>
-        </ListItem>
+        {housingMeteringDeviceType === 'FlowMeter' ? (
+          <ListItem>
+            <span>Диаметр трубы</span>
+            <span>{diameter !== null ? `${diameter} мм` : 'не указан'}</span>
+          </ListItem>
+        ) : null}
         <ListItem>
           <span>Дата поверки прибора</span>
           <span>{convertDateDots(lastCheckingDate)}</span>
@@ -70,6 +74,5 @@ export const Information = (loading = true) => {
     </ListWrap>
   );
 };
-
 
 export default Information;
