@@ -12,7 +12,8 @@ import {
 import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import randomInteger from "../../../../utils/randomInteger";
+import randomInteger from '../../../../utils/randomInteger';
+
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
 
@@ -24,9 +25,27 @@ const AddCalculatorForm = (props) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
+  const errorsArr = [
+    {
+      key: 1,
+      value: [
+        'infoId',
+        'serialNumber',
+      ],
+    },
+    {
+      key: 2,
+      value: [
+        'ipV4',
+        'deviceAddress',
+        'port',
+      ],
+    },
+  ];
+
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors
+    handleBlur, setFieldValue, setErrors,
   } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -41,7 +60,7 @@ const AddCalculatorForm = (props) => {
       housingStockId: Number(objid),
       infoId: 1,
       checked: false,
-      isConnected: true
+      isConnected: true,
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
@@ -79,11 +98,11 @@ const AddCalculatorForm = (props) => {
       setFieldValue('isConnected', false);
       setFieldValue('ipV4', null);
       setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(256,999));
+      setFieldValue('deviceAddress', randomInteger(256, 999));
     }
     if (checked === false) {
       setChecked(false);
-      setFieldValue('isConnected', true)
+      setFieldValue('isConnected', true);
     }
   }
 
@@ -101,6 +120,9 @@ const AddCalculatorForm = (props) => {
   function handleChangeTab(value) {
     setTab(value);
   }
+  console.log(errorsArr);
+  console.log(errors);
+  
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -239,8 +261,8 @@ const AddCalculatorForm = (props) => {
               }}
               disabled={checked}
             />
-            {/*<Alert name="port" />*/}
-            {checked === false ?   <Alert name="port" /> : null }
+            {/* <Alert name="port" /> */}
+            {checked === false ? <Alert name="port" /> : null }
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -255,7 +277,7 @@ const AddCalculatorForm = (props) => {
               }}
               disabled={checked}
             />
-            {/*<Alert name="deviceAddress" />*/}
+            {/* <Alert name="deviceAddress" /> */}
             {checked === false ? <Alert name="deviceAddress" /> : null }
           </Form.Item>
 
