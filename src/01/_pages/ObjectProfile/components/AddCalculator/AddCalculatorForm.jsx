@@ -26,7 +26,7 @@ const AddCalculatorForm = (props) => {
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors,
+    handleBlur, setFieldValue, setErrors
   } = useFormik({
     initialValues: {
       serialNumber: '',
