@@ -98,7 +98,7 @@ const ModalAddDevice = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} />
+      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
 
       <Buttons />
     </Modal>

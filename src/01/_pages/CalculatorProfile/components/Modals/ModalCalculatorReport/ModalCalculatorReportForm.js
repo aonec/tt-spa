@@ -12,7 +12,6 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 // import { device } from './CalculatorTemplate';
 
-
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
@@ -49,7 +48,7 @@ const ModalCalculatorReportForm = (props) => {
   const filteredGroup = _.groupBy(devicesList, 'resource');
 
   // Получаем весь список ресурсов для табов
-  const resources = _.keys(filteredGroup);
+  const resources = (model !== 'Sonosafe') ? _.keys(filteredGroup) : ['Heat'];
 
   // Создать объект с ключами из списка ресурсов, а значений - модифицириваннные массивы из getSelectionsFormatterByType
   const getDevicesSelectionByType = (group) => _.keys(group).reduce((acc, item) => {
@@ -92,9 +91,21 @@ const ModalCalculatorReportForm = (props) => {
     });
   };
 
+  const sonorSelection = {
+    Heat: [
+      {
+        entryNumber: 1,
+        pipeNumber: 5,
+        value: 1,
+        label: 'Без узла',
+      }
+    ]
+  };
   // Итоговый объект для Select
-  const devicesSelectionByType = getDevicesSelectionByType(filteredGroup);
+  // const devicesSelectionByType = getDevicesSelectionByType(filteredGroup);
+  const devicesSelectionByType = (model !== 'Sonosafe') ? getDevicesSelectionByType(filteredGroup) : sonorSelection;
 
+  console.log(JSON.stringify(getDevicesSelectionByType(filteredGroup)));
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -244,6 +255,7 @@ const ModalCalculatorReportForm = (props) => {
             size="large"
             onChange={(event) => onDetailChange(event)}
           >
+            <Radio.Button value="monthly">Месячная</Radio.Button>
             <Radio.Button value="daily" checked>
               Суточная
             </Radio.Button>
