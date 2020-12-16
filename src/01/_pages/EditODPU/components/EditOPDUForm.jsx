@@ -36,6 +36,8 @@ const FormEditODPU = (props) => {
     housingMeteringDeviceType,
   } = device;
 
+  console.log(device);
+
   const {
     hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
   } = hubConnection;
@@ -98,8 +100,8 @@ const FormEditODPU = (props) => {
       resource: Yup.string().required('Введите данные'),
       pipeNumber: Yup.number().required('Введите число от 0'),
       entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
-      diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
-        .required('Введите число от 1'),
+      diameter: housingMeteringDeviceType === 'FlowMeter' ? Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
+        .required('Введите число от 1') : null,
       model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
       serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
@@ -196,17 +198,19 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Диаметр прибора, мм">
-            <InputTT
-              name="diameter"
-              placeholder="Укажите диаметр трубы в мм"
-              type="number"
-              onChange={handleChange}
-              value={values.diameter}
-              onBlur={handleBlur}
-            />
-            <Alert name="diameter" />
-          </Form.Item>
+          {housingMeteringDeviceType === 'FlowMeter' ? (
+            <Form.Item label="Диаметр прибора, мм">
+              <InputTT
+                name="diameter"
+                placeholder="Укажите диаметр трубы в мм"
+                type="number"
+                onChange={handleChange}
+                value={values.diameter}
+                onBlur={handleBlur}
+              />
+              <Alert name="diameter" />
+            </Form.Item>
+          ) : null }
 
           <Form.Item label="Дата Поверки">
             <DatePickerTT

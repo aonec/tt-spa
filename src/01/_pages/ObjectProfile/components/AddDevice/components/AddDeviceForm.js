@@ -41,6 +41,17 @@ const AddDeviceForm = (props) => {
 
   const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
 
+  useEffect(() => {
+    console.log('state', state);
+    if (state === 'FlowMeter') {
+      setValidationSchema(validationSchemaFlowMeter)
+    }
+    if (state === 'TemperatureSensor') {
+      setValidationSchema(validationSchemaTemperatureSensor)
+    }
+
+  }, [state]);
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -52,16 +63,6 @@ const AddDeviceForm = (props) => {
     return null;
   };
 
-  useEffect(() => {
-    console.log('state', state);
-    if (state === 'FlowMeter') {
-      setValidationSchema(validationSchemaFlowMeter)
-    }
-    if (state === 'TemperatureSensor') {
-      setValidationSchema(validationSchemaTemperatureSensor)
-    }
-
-  }, [state]);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -316,7 +317,6 @@ const AddDeviceForm = (props) => {
           <Alert name="pipeNumber" />
         </Form.Item>
 
-        {(state === 'FlowMeter') ?
         <Form.Item name="text" label="Выберите направление магистрали">
           <SelectTT
             placeholder="Выберите направление магистрали"
@@ -328,7 +328,7 @@ const AddDeviceForm = (props) => {
             value={values.magistral}
           />
           <Alert name="magistral" />
-        </Form.Item> : null }
+        </Form.Item>
 
       </div>
 
