@@ -151,7 +151,19 @@ const ModalCalculatorReportForm = (props) => {
       )}T00:00:00Z`;
 
       console.log(link);
-      window.open(link);
+
+      const linkToDownload = document.createElement('a');
+      linkToDownload.setAttribute('href',link);
+      linkToDownload.setAttribute('download','download');
+      linkToDownload.click();
+
+      // const linkToDownload = document.createElement('a');
+      // linkToDownload.setAttribute('href','http://javascript.ru/forum/images/ca_serenity/misc/logo.gif');
+      // linkToDownload.setAttribute('download','download');
+      // linkToDownload.click();
+
+
+      // window.open(link);
     } else {
       alert('Выберите узел!');
     }
