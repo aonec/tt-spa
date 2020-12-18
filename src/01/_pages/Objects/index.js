@@ -8,6 +8,7 @@ import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
 import {objectsSearchReducer} from "../../Redux/reducers/objectsSearchReducer";
 import {formQueryString} from "../../utils/formQueryString";
 import {useDebounce} from "../../hooks/useDebounce";
+import {NotConnectedIcon} from "../../components/NotConnectedIcon/NotConnectedIcon";
 
 const styles = css`
   obj_item {
@@ -74,6 +75,7 @@ export const Objects = ({isReadings = false}) => {
 
     const { items } = state;
     return styled(styles)(
+
         <div style={{width: 960}}>
             { !isReadings ? <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1> : null }
             <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
@@ -84,6 +86,7 @@ export const Objects = ({isReadings = false}) => {
                      }) => {
                         const task = numberOfTasks ? (
                             <task>
+
                                 <Icon icon="alarm" />
                                 Задач:
                                 {' '}
