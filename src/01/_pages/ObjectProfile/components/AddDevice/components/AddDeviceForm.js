@@ -8,13 +8,49 @@ import {
   resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
-  Title, Header, SelectTT, InputTT, DatePickerTT,
+  Title, SelectTT, InputTT, DatePickerTT,
 } from '../../../../../tt-components';
 import { addOdpu } from '../apiAddOdpu';
 
 const AddDeviceForm = (props) => {
-  const { currentTabKey, calculators, handleCancel } = props;
+  const { currentTabKey, calculators, handleCancel, setAddOdpu } = props;
   const [disable, setDisable] = useState(false);
+  const [state, setState] = useState('FlowMeter');
+
+  const validationSchemaFlowMeter = Yup.object({
+    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
+    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
+    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
+    entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+      .required('Введите номер'),
+    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+      .required('Введите номер'),
+    diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
+      .required('Введите число от 1'),
+  });
+
+  const validationSchemaTemperatureSensor = Yup.object({
+    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
+    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
+    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
+    entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+      .required('Введите номер'),
+    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+      .required('Введите номер'),
+  });
+
+  const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
+
+  useEffect(() => {
+    console.log('state', state);
+    if (state === 'FlowMeter') {
+      setValidationSchema(validationSchemaFlowMeter)
+    }
+    if (state === 'TemperatureSensor') {
+      setValidationSchema(validationSchemaTemperatureSensor)
+    }
+
+  }, [state]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -26,6 +62,7 @@ const AddDeviceForm = (props) => {
     }
     return null;
   };
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -53,16 +90,7 @@ const AddDeviceForm = (props) => {
       magistral: magistrals[0].value,
 
     },
-    validationSchema: Yup.object({
-      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
-      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
-      calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-      entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-        .required('Введите номер'),
-      pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-        .required('Введите номер'),
-      diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
-    }),
+    validationSchema: validationSchema,
 
     onSubmit: async () => {
       const form = {
@@ -86,8 +114,9 @@ const AddDeviceForm = (props) => {
       };
       console.log(form);
       console.log(JSON.stringify(form));
-      addOdpu(form);
-      setTimeout(handleCancel, 1000)
+      addOdpu(form).then(()=>{
+        setTimeout(()=>{setAddOdpu(false)}, 1000);
+      })
     },
   });
 
@@ -104,6 +133,7 @@ const AddDeviceForm = (props) => {
             name="housingMeteringDeviceType"
             onChange={(value) => {
               setFieldValue('housingMeteringDeviceType', value);
+              setState(value);
             }}
             options={housingMeteringDeviceTypes}
             value={values.housingMeteringDeviceType}
@@ -145,17 +175,19 @@ const AddDeviceForm = (props) => {
           <Alert name="serialNumber" />
         </Form.Item>
 
-        <Form.Item label="Диаметр трубы (мм)">
-          <InputTT
-            name="diameter"
-            placeholder="Укажите диаметр трубы в мм"
-            type={'number'}
-            onChange={handleChange}
-            value={values.diameter}
-            onBlur={handleBlur}
-          />
-          <Alert name="diameter" />
-        </Form.Item>
+        {(state === 'FlowMeter') ? (
+          <Form.Item label="Диаметр трубы (мм)">
+            <InputTT
+              name="diameter"
+              placeholder="Укажите диаметр трубы в мм"
+              type="number"
+              onChange={handleChange}
+              value={values.diameter}
+              onBlur={handleBlur}
+            />
+            <Alert name="diameter" />
+          </Form.Item>
+        ) : null}
 
         <Form.Item label="Дата поверки">
           <DatePickerTT
@@ -297,6 +329,7 @@ const AddDeviceForm = (props) => {
           />
           <Alert name="magistral" />
         </Form.Item>
+
       </div>
 
       <div hidden={Number(currentTabKey) !== 3}>

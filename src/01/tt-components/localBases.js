@@ -28,6 +28,11 @@ export const items = [
     value: 5,
     model: 'ВИСТ',
     label: 'ВИСТ',
+  }, {
+    id: 10,
+    value: 10,
+    model: 'Sonosafe',
+    label: 'Sonosafe',
   },
 ];
 
