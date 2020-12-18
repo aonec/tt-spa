@@ -1,13 +1,5 @@
 import React, {useEffect, useReducer, useState} from "react"
-import {NavLink, Route} from "react-router-dom"
 
-import HousesDevices from "./HousesDevices/HousesDevices";
-import HousesSearchForm from "./HousesSearchForm/HousesSearchForm";
-import {objectsSearchReducer} from "../../../../Redux/reducers/objectsSearchReducer";
-import ObjectsSearchForm from "../../../Objects/ObjectsSearchForm/ObjectsSearchForm";
-import {useDebounce} from "../../../../hooks/useDebounce";
-import { requestDevicesByHouse } from "01/_api/houses_readings_page";
-import { devicesReadingsByHouseReducer } from "01/_pages/MetersPage/components/HousesReadings/devicesReadingsByHouseReducer";
 import {Objects} from "../../../Objects";
 
 const initialState = {
@@ -21,15 +13,9 @@ export type HouseSearchType = typeof initialState;
 
 const HouseReadings = () => {
 
-
-
-    const [searchState, dispatchSearchState] = useReducer(objectsSearchReducer, initialState);
-
-
     return (
         <div>
             <Objects isReadings/>
-
         </div>
     )
 }
