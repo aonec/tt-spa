@@ -7,6 +7,8 @@ const ReadingLineStyled = styled.div`
 
 position: relative; 
 padding-right: ${props => props.houseReadings ? 0 : '16px'};
+padding-right: 8px;
+padding-left: 8px;
 
 &:not(:first-child) {
 padding-top: 8px;
@@ -23,9 +25,9 @@ background-color: #F3F5F6;
 `;
 
 const TarifLabel = styled.span`
-width: ${props => props.houseReadings ? '35px': '72px'};
-padding-left: 8px;
-padding-right: 8px;
+width: ${props => props.houseReadings ? '20px': '72px'};
+padding-left: ${props => props.houseReadings ? 0: '8px'};
+padding-right: ${props => props.houseReadings ? 0: '8px'};
 color: rgba(39, 47, 90, 0.32);
 `;
 
@@ -37,6 +39,7 @@ interface DeviceRatesVerticalProps {
     resource: string,
     sendReadings?: () => void
     operatorCabinet?: boolean
+    houseReadings?: boolean
 }
 
 const SuffixLine = styled.span`
@@ -46,7 +49,7 @@ const StyledInput = styled(Input)`
 color: var(--main-70);
 border: 0;
 padding: 0;
-padding-right: 8px;
+padding-right: '8px';
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -81,7 +84,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
     return (
         <ReadingLineStyled houseReadings={houseReadings}>
             <StyledInput
-                prefix={readingsBlocked ? null : (
+                prefix={readingsBlocked && !houseReadings ? null : (
                     <TarifLabel houseReadings={houseReadings}>
                         {houseReadings ? 'Т' : 'Тариф'}
                         {index + 1}
@@ -92,6 +95,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                 disabled={readingsBlocked}
                 type="text"
                 value={value}
+
                 onChange={onChange}
                 onBlur={operatorCabinet ? onBlurHandler : undefined}
                 onFocus={operatorCabinet ? onFocusHandler : undefined}

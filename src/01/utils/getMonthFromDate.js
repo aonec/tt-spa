@@ -7,3 +7,10 @@ export const getMonthFromDate = (dateString) => {
 
    return firstLetterToUpperCase(month)
 }
+
+export const getPreviousMonthFromDate = (dateString) => {
+   const month = moment(dateString).subtract(1, 'months').format('MMMM');
+
+   return firstLetterToUpperCase(month)
+}
+
