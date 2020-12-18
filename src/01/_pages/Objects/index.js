@@ -5,9 +5,10 @@ import { Link as LinkRow } from 'react-router-dom';
 import axios, { cancel } from '01/axios';
 import { Loader, Icon } from '01/components';
 import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
-import {objectsSearchReducer} from "./ObjectsSearchForm/objectsSearchReducer";
+import {objectsSearchReducer} from "../../Redux/reducers/objectsSearchReducer";
 import {formQueryString} from "../../utils/formQueryString";
 import {useDebounce} from "../../hooks/useDebounce";
+import {NotConnectedIcon} from "../../components/NotConnectedIcon/NotConnectedIcon";
 
 const styles = css`
   obj_item {
@@ -57,7 +58,7 @@ const initialState = {
     HousingStockNumber: ''
 }
 
-export const Objects = () => {
+export const Objects = ({isReadings = false}) => {
     const [state, setState] = React.useState({ items: null });
     const [searchState, dispatchSearchState] = useReducer(objectsSearchReducer, initialState);
 
@@ -74,8 +75,9 @@ export const Objects = () => {
 
     const { items } = state;
     return styled(styles)(
+
         <div style={{width: 960}}>
-            <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1>
+            { !isReadings ? <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1> : null }
             <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
             <Loader show={!items} size="32">
                 {items?.map(
@@ -84,6 +86,7 @@ export const Objects = () => {
                      }) => {
                         const task = numberOfTasks ? (
                             <task>
+
                                 <Icon icon="alarm" />
                                 Задач:
                                 {' '}
@@ -93,7 +96,7 @@ export const Objects = () => {
 
                         return (
                             <obj_item key={id}>
-                                <LinkRow to={`/objects/${id}`}>
+                                <LinkRow to={!isReadings ? `/objects/${id}` : `/meters/houses/${id}`}>
                               <span>
                                 <h4 style={{whiteSpace: 'nowrap'}}>
                                   {street}

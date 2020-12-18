@@ -198,7 +198,7 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          {housingMeteringDeviceType === 'FlowMeter' ? (
+
             <Form.Item label="Диаметр прибора, мм">
               <InputTT
                 name="diameter"
@@ -210,7 +210,6 @@ const FormEditODPU = (props) => {
               />
               <Alert name="diameter" />
             </Form.Item>
-          ) : null }
 
           <Form.Item label="Дата Поверки">
             <DatePickerTT

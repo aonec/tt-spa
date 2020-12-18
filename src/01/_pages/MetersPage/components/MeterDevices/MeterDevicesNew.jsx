@@ -9,7 +9,7 @@ import OperatorDeviceReadingForm from "./components/OperatorDeviceReadingForm";
 import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
 import moment from 'moment';
-import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
+import {getMonthFromDate, getPreviousMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 
 // meter_header,
@@ -106,6 +106,7 @@ const styles = css`
   }
 `
 
+
 export const MeterDevicesNew = ({items = []}) => {
 
 
@@ -127,27 +128,28 @@ export const MeterDevicesNew = ({items = []}) => {
 
     if (!state.devices?.length) return null
 
-    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm key={device.id} device={device} dispatch={dispatch}
-                                                                              sendReadings={() => sendReadings(device)}
+    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm
+        key={device.id}
+        device={device}
+        dispatch={dispatch}
+        sendReadings={() => sendReadings(device)}
     />);
 
-    const lastMonth = getMonthFromDate(state.devices[0].readings[0]?.uploadTime)
-    const previousMonth = getMonthFromDate(state.devices[0].readings[1]?.uploadTime)
-
-    // const month = state.devices[0].readings[0].uploadTime.toLocaleString('default', { month: 'long' });
-
-    console.log(moment("2027-06-01T02:00:00").format('MMMM'))
+    const currentMonth = getMonthFromDate()
+    const previousMonth = getPreviousMonthFromDate();
 
     return styled(styles, style.button)(
             <meters>
                 <meter_header>
                     <span>Информация o приборe</span>
 
-                        <div>{lastMonth}</div>
+                    <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
+                        {currentMonth}
+                    </div>
                         <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                            <Arrow />
+                            {/*<Arrow />*/}
                             <div>{previousMonth}</div>
-                            <Arrow isRight />
+                            {/*<Arrow isRight />*/}
                         </div>
 
                 </meter_header>

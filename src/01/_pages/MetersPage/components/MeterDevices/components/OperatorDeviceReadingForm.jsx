@@ -13,9 +13,9 @@ import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import Arrow from "../../../../../_components/Arrow/Arrow";
 import DeviceRatesVertical from "./DeviceRatesVertical";
 import {DeviceReadingsContainer} from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
-
-// import DeviceIcons from "../../../../../_components/DeviceIcons"
-
+import {useReadings} from "../../../../../hooks/useReadings";
+import moment from "moment";
+import axios from "01/axios"
 
 const FullDeviceLine = styled.div`
     display: grid;
@@ -29,49 +29,51 @@ const FullDeviceLine = styled.div`
     border-bottom: 1px solid #DCDEE4;
     `
 
-const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
 
-    const [readingsState, setReadingsState] = useState({});
+
+
+const OperatorDeviceReadingForm = ({device, dispatch}) => {
     const [isLoading, setIsLoading] = useState(true);
+
     const isActive = device.closingDate === null;
 
-    const numberOfReadings = rateTypeToNumber(device.rateType);
-    // const readingsArray = [];
-    // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
-    useEffect(() => {
-        setIsLoading(true)
-        const previousReadingsArray = [];
-        const currentReadingsArray = [];
-        const prevReadings = device.readings[1] || {};
-        const currentReadings = device.readings[0] || {};
+    const [readingsState, setReadingsState] = useState({});
+
+    useReadings(device, setReadingsState);
 
 
-        for (let i=1; i <= numberOfReadings; i++) {
 
-            previousReadingsArray.push(prevReadings[`value${i}`] ?? '-');
-            currentReadingsArray.push(currentReadings[`value${i}`] ?? '-');
-        }
+    if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
 
-        // for (let i=1; i <= 2; i++) {
-        //     previousReadingsArray.push(i);
-        //     currentReadingsArray.push(i);
-        // }
 
-        setReadingsState({
-            previousReadingsArray,
-            currentReadingsArray,
-            prevId: prevReadings.id,
-            currId: currentReadings.id,
-            resource: device.resource })
-        setIsLoading(false);
-    }, [device.readings, numberOfReadings])
 
     const onInputChange = (e, index) => {
         e.preventDefault();
-        dispatch(updateReadings(device.id, index+1, e.target.value));
+        setReadingsState((state) => ({
+            ...state,
+                currentReadingsArray: state.currentReadingsArray.map((reading, i) => {
+                   return i === index ? e.target.value : reading
+                }
+            )
+
+        }))
     }
 
-    if (isLoading) return 'ЗАГРУЗКА...'
+    const sendReadings = () => {
+        const deviceReadingObject = {
+            deviceId: device.id,
+            value1: +readingsState.currentReadingsArray[0],
+            readingDate: moment().toISOString(),
+            uploadTime: moment().toISOString(),
+            isForced: true
+        }
+        for (let i = 1; i < 4; i++) {
+            if (+readingsState.currentReadingsArray[i]) {
+                deviceReadingObject[`value${i+1}`] = +readingsState.currentReadingsArray[i]
+            }
+        }
+        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+    }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
         <DeviceRatesVertical key={readingsState.id || device.id + index}
@@ -122,7 +124,7 @@ const OperatorDeviceReadingForm = ({device, dispatch, sendReadings}) => {
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <DeviceReadingsContainer>{currentDeviceReadings} </DeviceReadingsContainer>
+            <DeviceReadingsContainer>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
 

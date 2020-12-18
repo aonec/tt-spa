@@ -4,7 +4,7 @@ import {setCurrentPage} from "../../../Redux/reducers/reducerDevicesPage";
 import {Button, Form, Input, Select, Tooltip} from "antd";
 import {Icon} from "../../../_components/Icon";
 import styles from "../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less";
-import {setHouseNumber, setStreet} from "./objectsSearchReducer";
+import {setHouseNumber, setStreet} from "../../../Redux/reducers/objectsSearchReducer";
 
 const { Option } = Select;
 

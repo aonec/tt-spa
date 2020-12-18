@@ -6,7 +6,7 @@ import { Icon } from '../../../../_components/Icon';
 import styles from '../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less';
 
 import { setCurrentPage } from '../../../../Redux/reducers/reducerDevicesPage';
-import { setHouseNumber, setStreet } from '../../../Objects/ObjectsSearchForm/objectsSearchReducer';
+import { setHouseNumber, setStreet } from '../../../../Redux/reducers/objectsSearchReducer';
 import {setSearchTerm, setTaskType, setTasks, setTaskId} from './tasksSearchReducer';
 import { setDevicesFilter } from '../../../Devices/devicesSearchReducer';
 

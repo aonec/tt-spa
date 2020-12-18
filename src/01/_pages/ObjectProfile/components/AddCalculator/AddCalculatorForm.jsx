@@ -25,24 +25,6 @@ const AddCalculatorForm = (props) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  const errorsArr = [
-    {
-      key: 1,
-      value: [
-        'infoId',
-        'serialNumber',
-      ],
-    },
-    {
-      key: 2,
-      value: [
-        'ipV4',
-        'deviceAddress',
-        'port',
-      ],
-    },
-  ];
-
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setErrors,
@@ -120,9 +102,35 @@ const AddCalculatorForm = (props) => {
   function handleChangeTab(value) {
     setTab(value);
   }
-  console.log(errorsArr);
-  console.log(errors);
-  
+
+  function handleSubmitErrors() {
+    console.log('handleSubmitErrors');
+    const keys = _.keys(errors);
+    console.log(keys);
+
+    const errorsArr = [
+      [
+        'infoId',
+        'serialNumber',
+      ],
+      [
+        'ipV4',
+        'deviceAddress',
+        'port',
+      ],
+    ];
+
+    errorsArr.map((item, index) => {
+      const newIndex = errorsArr.length - index - 1;
+      const res = keys.filter((x) => errorsArr[newIndex].includes(x));
+      console.log("res", res)
+      if (res.length > 0) {
+        setTab(String(newIndex + 1))
+      }
+    })
+
+
+  }
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -311,7 +319,10 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmitErrors();
+            handleSubmit();
+          }}
           hidden={currentTabKey !== '3'}
         >
           Сохранить
