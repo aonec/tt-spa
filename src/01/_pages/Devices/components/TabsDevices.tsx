@@ -16,6 +16,7 @@ import DeviceBlock from './DeviceBlock/DeviceBlock';
 import DeviceSearchForm from './DeviceSearchForm/DeviceSearchForm';
 import devicesSearchReducer from '../devicesSearchReducer';
 import DevicesByAddress from './DevicesByAddress/DevicesByAddress';
+import {useDebounce} from "../../../hooks/useDebounce";
 
 const { TabPane } = Tabs;
 
@@ -38,15 +39,17 @@ const TabsDevices = ({ devicePage }) => {
   const [deviceElems, setDeviceElems] = useState([]);
 
   const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState);
+  const debouncedSearchState = useDebounce(searchState, 500);
+
 
   const pages = [];
   createPages(pages, totalPages, currentPage);
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(getDevices(currentPage, pageSize, searchState));
+    dispatch(getDevices(currentPage, pageSize, debouncedSearchState));
     setIsLoading(false);
-  }, [currentPage, searchState]);
+  }, [currentPage, debouncedSearchState]);
 
   // useEffect(() => {
   //     setIsLoading(true)
@@ -78,7 +81,7 @@ const TabsDevices = ({ devicePage }) => {
     // if (deviceArray.length) {
       setIsLoading(false);
     // }
-  }, [devicePage.items, searchState]);
+  }, [devicePage.items]);
 
   const pagination = pages.map((page, index) => (
     <span

@@ -6,7 +6,7 @@ import { getApartmetns, getApartmentInfo } from "../api"
 
 export const useFetchPage = (state, dispatch) => {
   const apatrments = useRouteMatch("/*/apartments")
-  const page = useRouteMatch("/meters/:tab/:id")
+  const page = useRouteMatch("/meters/apartments/:id")
   useCancelFetch()
 
   React.useEffect(() => {

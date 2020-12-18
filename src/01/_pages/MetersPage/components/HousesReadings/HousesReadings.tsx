@@ -1,15 +1,21 @@
-import React, {useEffect, useState} from "react"
-import HousesDevices from "./HousesDevices/HousesDevices";
-import HousesSearchForm from "./HousesSearchForm/HousesSearchForm";
+import React, {useEffect, useReducer, useState} from "react"
+
+import {Objects} from "../../../Objects";
+
+const initialState = {
+    city: '' as string,
+    Street: '' as string,
+    HousingStockNumber: '' as string,
+    corpus: '' as string
+}
+
+export type HouseSearchType = typeof initialState;
 
 const HouseReadings = () => {
 
-
-
     return (
         <div>
-            {/*<HousesSearchForm />*/}
-            {/*<HousesDevices />*/}
+            <Objects isReadings/>
         </div>
     )
 }
