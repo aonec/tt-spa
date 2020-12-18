@@ -5,6 +5,7 @@ import styles from '../TabsDevices.module.scss';
 import { Icon } from '../../../../tt-components/Icon';
 import DeviceIcons from "../../../../_components/DeviceIcons";
 import transformDate from "../../../../utils/transformDate";
+import {NotConnectedIcon} from "../../../../components/NotConnectedIcon/NotConnectedIcon";
 
 const DeviceBlock = (props) => {
   const { device: calculator} = props;
@@ -60,7 +61,7 @@ const DeviceBlock = (props) => {
         <div>
           <div className={styles.device__wrapper}>
 
-            <div>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               <NavLink
                   className={`${styles.device__main} ${styles.device__title}`}
                   to={`/calculators/${calculator.id}`}
@@ -71,6 +72,8 @@ const DeviceBlock = (props) => {
               {`(${calculator.serialNumber})`}
                 </span>
               </NavLink>
+                <div hidden={calculator.connection?.isConnected ?? true}><NotConnectedIcon /></div>
+
             </div>
 
             <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.8}}>
