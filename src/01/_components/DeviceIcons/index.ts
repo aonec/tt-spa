@@ -5,7 +5,7 @@
 // };
 // export default DevicesIcons;
 
-export const DeviceIcons: { [index:string] : { icon: string, color: string, translate: string } } = {
+const DeviceIcons: { [index:string] : { icon: string, color: string, translate: string } } = {
   HotWaterSupply: { icon: 'water', color: '#FF8C68', translate: 'Горячая вода' },
   ColdWaterSupply: { icon: 'water', color: '#79AFFF' ,translate: 'Холодная вода'},
   Electricity: { icon: 'electro', color: '#E2B104', translate: 'Электричество' },
@@ -13,3 +13,5 @@ export const DeviceIcons: { [index:string] : { icon: string, color: string, tran
   Heat: { icon: 'heat', color: '#272F5A', translate: 'Отопление' },
   null: { icon: 'device', color: '#272F5A', translate: ''},
 }
+
+export default DeviceIcons

@@ -7,7 +7,7 @@ import { DeviceReadingsContainer } from "01/components/Select/selects/AddReading
 import axios from "axios";
 import {formReadingToPush} from "../../../../../utils/formReadingsToPush";
 import {updateReadings} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
-import {DeviceIcons} from "../../../../../_components/DeviceIcons";
+import DeviceIcons from "../../../../../_components/DeviceIcons";
 import {Icon} from "../../../../../_components/Icon";
 import styles from "../../../../Devices/components/TabsDevices.module.scss";
 import {useReadings} from "../../../../../hooks/useReadings";
@@ -123,7 +123,7 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
 
 
             const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={readingsState.currId || device.id + index}
+            <DeviceRatesVertical key={readingsState.currId ?? device.id + index}
                                  index={index}
                                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
                                  value={value}
@@ -135,7 +135,7 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
         ));
 
         const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={readingsState.prevId || device.id + index}
+            <DeviceRatesVertical key={readingsState.prevId ?? device.id + index}
                                  index={index}
                                  // onChange={(e) => onInputChange(e, index)}
                                  value={value}
