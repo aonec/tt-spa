@@ -1,7 +1,7 @@
+import {useEffect} from "react";
 import rateTypeToNumber from "../_api/utils/rateTypeToNumber";
 import {formEmptyReadingsObject} from "../utils/formEmptyReadingsObject";
 import {getMonthFromDate} from "../utils/getMonthFromDate";
-import {useEffect, useState} from "react";
 
 
 export const useReadings = (device, setReadingsState) => {

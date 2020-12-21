@@ -1,4 +1,4 @@
-const rateTypeToNumber = (rateType) => {
+const rateTypeToNumber = (rateType: string): number => {
     switch (rateType) {
         case "OneZone":
             return 1;
@@ -8,6 +8,8 @@ const rateTypeToNumber = (rateType) => {
             return 3
         case "FourZone":
             return 4
+        default:
+            return 0
     }
 }
 

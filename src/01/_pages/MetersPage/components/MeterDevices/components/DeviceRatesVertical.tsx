@@ -33,7 +33,7 @@ color: rgba(39, 47, 90, 0.32);
 
 interface DeviceRatesVerticalProps {
     index: number,
-    onChange?: () => void,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
     value: number,
     readingsBlocked?: boolean,
     resource: string,
@@ -59,7 +59,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           index,
-                          onChange = () => {},
+                          onChange,
                           value,
                           readingsBlocked = false,
                           resource,

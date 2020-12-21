@@ -23,7 +23,7 @@ const NotConnectedIconContainer = styled(Container)`
     }
 `
 
-export const NotConnectedIcon = () => {
+export const NotConnectedIcon:React.FC = () => {
     return (
         <Tooltip
             title="Узел учета без оборудования связи"
