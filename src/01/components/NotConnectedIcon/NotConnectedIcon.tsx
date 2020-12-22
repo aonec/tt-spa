@@ -23,7 +23,17 @@ const NotConnectedIconContainer = styled(Container)`
     }
 `
 
-export const NotConnectedIcon:React.FC = () => {
+export const NotConnectedIcon:React.FC = (props) => {
+    const {is} = props;
+    if (is ==='calculator') {
+        return (
+            <Tooltip
+                title="Вычислитель учета без связи"
+                color="var(--main-100)">
+                <span style={{display: 'flex', alignItems: 'center', marginLeft: 8}}><NotConnectedIconContainer /></span>
+            </Tooltip>
+        )
+    }
     return (
         <Tooltip
             title="Узел учета без оборудования связи"

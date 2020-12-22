@@ -62,6 +62,7 @@ export const CalculatorProfile = () => {
         setTasks(tasks.items);
         setRelated(device.hubs);
         setIsLoading(false);
+        console.log("device", device)
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -77,6 +78,7 @@ export const CalculatorProfile = () => {
         }));
         setIsLoading(false);
       });
+
   }, []);
 
   if (isLoading) return <Loader show size={32} />;
