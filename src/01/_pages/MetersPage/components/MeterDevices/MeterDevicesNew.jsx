@@ -11,7 +11,7 @@ import axios from "axios";
 import moment from 'moment';
 import {getMonthFromDate, getPreviousMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
-
+import s from "./MeterDevicesNew.module.scss"
 // meter_header,
 
 
@@ -109,6 +109,9 @@ const styles = css`
 
 export const MeterDevicesNew = ({items = []}) => {
 
+    const [sliderIndex, setSliderIndex] = useState(0)
+
+
 
     const [state, dispatch] = React.useReducer(readingsReducer, {});
 
@@ -129,6 +132,7 @@ export const MeterDevicesNew = ({items = []}) => {
     if (!state.devices?.length) return null
 
     const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm
+        sliderIndex={sliderIndex}
         key={device.id}
         device={device}
         dispatch={dispatch}
@@ -138,22 +142,53 @@ export const MeterDevicesNew = ({items = []}) => {
     const currentMonth = getMonthFromDate()
     const previousMonth = getPreviousMonthFromDate();
 
+    const readingsLength = state.devices[0].readings.length;
+    const isReadingsCurrent = currentMonth === getMonthFromDate(state.devices[0].readings[0].readingDate);
+
+    const isRightArrowDisabled = sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1
+
+    const onClickIncrease = () => {
+        setSliderIndex((index) => {
+            return isRightArrowDisabled
+                ? index
+                : index + 1
+        }
+        )
+    }
+
+    const isLeftArrowDisabled = sliderIndex - 1 < 0;
+
+    const onClickDecrease = () => {
+        setSliderIndex((index) => {
+            return isLeftArrowDisabled
+                ? index
+                : index - 1
+        }
+        )
+    }
+
+
+
     return styled(styles, style.button)(
-            <meters>
-                <meter_header>
-                    <span>Информация o приборe</span>
+        <meters>
+            <meter_header>
+                <span>Информация o приборe</span>
 
-                    <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                        {currentMonth}
+                <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
+                    {currentMonth}
+                </div>
+                <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
+                    <div style={{width: 30, height: 30}} onClick={onClickDecrease} className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
+                        <Arrow isDisabled={isLeftArrowDisabled}/>
                     </div>
-                        <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                            {/*<Arrow />*/}
-                            <div>{previousMonth}</div>
-                            {/*<Arrow isRight />*/}
-                        </div>
+                    <div>{previousMonth}</div>
+                    <div style={{width: 30, height: 30}} className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled} isRight onClick={onClickIncrease}>
+                        <Arrow isRight isDisabled={isRightArrowDisabled}/>
+                    </div>
+                </div>
 
-                </meter_header>
-                {readings}
-            </meters>
-            )
-            }
+            </meter_header>
+            {readings}
+        </meters>
+    )
+}

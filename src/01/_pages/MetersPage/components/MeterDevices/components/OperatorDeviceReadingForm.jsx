@@ -32,14 +32,14 @@ const FullDeviceLine = styled.div`
 
 
 
-const OperatorDeviceReadingForm = ({device, dispatch}) => {
+const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const isActive = device.closingDate === null;
 
     const [readingsState, setReadingsState] = useState({});
 
-    useReadings(device, setReadingsState);
+    useReadings(device, setReadingsState, sliderIndex);
 
 
 

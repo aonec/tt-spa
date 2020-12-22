@@ -1,0 +1,25 @@
+//.arrowEnabled {
+//    fill: var(--main-100);
+//    &:hover {
+//        fill: red
+//    }
+//}
+//
+//.arrowDisabled {
+//    fill: var(--main-32);
+//    &:hover {
+//        fill: blue
+//    }
+//}
+//
+//const SvgContainer = styled.svg`
+//                     fill: {props => debugger; props. isDisabled
+//? "var(--main-32)" : "var(--main-100)"
+//                     }
+//
+//&:hover {
+//    fill: {props => props.isDisabled
+//    ? "var(--main-32)" : "red"
+//    }
+//}
+//`

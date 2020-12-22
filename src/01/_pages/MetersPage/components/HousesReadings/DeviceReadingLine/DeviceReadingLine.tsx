@@ -69,8 +69,9 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
-        const [readingsState, setReadingsState] = useState({} as ReadingsStateType);
 
+
+        const [readingsState, setReadingsState] = useState({} as ReadingsStateType);
         useReadings(device, setReadingsState);
 
         useEffect(() => {
