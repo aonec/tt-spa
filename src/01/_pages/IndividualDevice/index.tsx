@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useParams } from 'react-router-dom';
 import { Grid } from '01/_components';
-import {
-  getInfo,
-  getObjectOfDevice,
-  getODPUTasks,
-  getRelatedDevices,
-} from '01/_api/individual_device_page';
+import {getIndividualDevice, getIndividualDeviceTasks} from "./apiIndividualDevice";
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
+import {Loader} from "../../components";
 
 export const DeviceContext = React.createContext();
 
@@ -19,40 +15,35 @@ export const IndividualDevice = () => {
   const [device, setDevice] = useState();
   const [building, setBuilding] = useState();
   const [tasks, setTasks] = useState();
-  const [related, setRelated] = useState();
   const [mistake, setMistake] = useState();
 
   useEffect(() => {
     Promise.all([
-      getInfo(deviceId),
-      getObjectOfDevice(objid),
-      getODPUTasks(deviceId),
-      getRelatedDevices(deviceId),
+      getIndividualDevice(deviceId),
+      getIndividualDeviceTasks(deviceId),
     ]).then((responses) => {
       // console.log(responses);
-      const [device, building, tasks, related] = responses;
+      const [device, tasks] = responses;
       setDevice(device);
-      setBuilding(building);
       setTasks(tasks);
-      setRelated(related);
     }).catch((error) => {
       setMistake(error);
     });
   }, []);
 
+
   const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
-
+  const context = {
+    device,
+    tasks,
+    mistake,
+  }
+  if (!device) {
+    return <Loader size={'32'} show />
+  }
   return (
-    <>
-      <DeviceContext.Provider
-        value={{
-          device,
-          building,
-          tasks,
-          mistake,
-        }}
+      <DeviceContext.Provider value={context}
       >
-
         <Header />
         <Tabs />
 
@@ -77,7 +68,6 @@ export const IndividualDevice = () => {
           <Events title="Задачи с объектом" />
         </Grid>
       </DeviceContext.Provider>
-    </>
   );
 };
 

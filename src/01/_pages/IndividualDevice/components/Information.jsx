@@ -1,28 +1,22 @@
 import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
-// import { Loader } from '01/components';
-import {
-  ListWrap, ListItem, Title, Loader, HeaderWrap, Subtitle,
-} from '01/_components';
+import {  ListWrap, ListItem, Title, Loader} from '01/_components';
 import { DeviceContext } from '../index';
 
 export const Information = () => {
-  const { device, building, mistake } = useContext(DeviceContext);
-  const loading = !(device && building);
+  const { device, mistake } = useContext(DeviceContext);
+  const loading = !device;
+  const { address } = device;
 
-  const buttonHandler = ({ loading = true }) => {
-    console.log('buttonHandler');
-  };
+  const { city, street, housingStockNumber } = address;
+  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
 
-  const { city, street, number } = building || {};
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
-
-  if(mistake) {
+  if (mistake) {
     return (
       <ListWrap>
-          <Title style={{color:'red'}}>Данные не получены</Title>
+        <Title style={{ color: 'red' }}>Данные не получены</Title>
       </ListWrap>
-    )
+    );
   }
 
   return (
@@ -32,7 +26,7 @@ export const Information = () => {
         <ListItem>
           <span>Адрес</span>
           <span style={{ fontWeight: '500' }}>
-            {`${city},${street},${number}`}
+            {`${city},${street},${housingStockNumber}`}
           </span>
         </ListItem>
         <ListItem>
@@ -60,8 +54,5 @@ export const Information = () => {
     </ListWrap>
   );
 };
-// пока не получили данные - показываем Loader
-// return <Loader show size="32" />;
-// };
 
 export default Information;

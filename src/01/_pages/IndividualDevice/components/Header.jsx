@@ -10,8 +10,10 @@ import { DeviceContext } from '../index';
 export const Template = styled.div``;
 
 export const Header = (loading = true) => {
-  const { device, building, mistake } = useContext(DeviceContext);
-  loading = !(device && building);
+  const { device, mistake } = useContext(DeviceContext);
+  loading = !device;
+  const {address} = device
+
 
   if(mistake) {
     return (
@@ -24,11 +26,8 @@ export const Header = (loading = true) => {
     )
   }
 
-  const buttonHandler = () => {
-    console.log(device, building);
-  };
 
-  const { city, street, number } = building || { city: null, street: null, number: null };
+  const { city, street, housingStockNumber } = address || { city: null, street: null, number: null };
   const { model, serialNumber, resource } = device || { model: null, serialNumber: null, resource: null };
   const { icon, color } = DeviceIcons[resource];
 
@@ -44,8 +43,7 @@ export const Header = (loading = true) => {
           />
           {`${model} (${serialNumber})`}
         </Title>
-        {/* <button onClick={buttonHandler}>button</button> */}
-        <Subtitle>{`${city}, ${street}, ${number}`}</Subtitle>
+        <Subtitle>{`${city}, ${street}, ${housingStockNumber}`}</Subtitle>
       </Loader>
     </HeaderWrap>
   );
