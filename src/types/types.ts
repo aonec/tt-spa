@@ -33,9 +33,9 @@ export type IndividualDeviceType = {
     model: string | null
     mountPlace: string | null
     personalAccountNumber: string | null
-    rateType: string | null
+    rateType: string
     readings: Array<ReadingType>
-    resource: string | null
+    resource: string
     serialNumber: string | null
     transactionType: string | null
 }
