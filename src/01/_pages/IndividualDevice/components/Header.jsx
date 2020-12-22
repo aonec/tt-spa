@@ -5,7 +5,7 @@ import {
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
 
-import { DeviceContext } from '../IndividualDevice';
+import { DeviceContext } from '../index';
 
 export const Template = styled.div``;
 

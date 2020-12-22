@@ -4,7 +4,7 @@ import { convertDate } from '01/_api/utils/convertDate';
 import {
   ListWrap, ListItem, Title, Loader, HeaderWrap, Subtitle,
 } from '01/_components';
-import { DeviceContext } from '../IndividualDevice';
+import { DeviceContext } from '../index';
 
 export const Information = () => {
   const { device, building, mistake } = useContext(DeviceContext);

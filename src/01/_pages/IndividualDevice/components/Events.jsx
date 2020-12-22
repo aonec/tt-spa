@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
-import { Button } from '01/_components/Button';
-import { DeviceContext } from '../IndividualDevice';
-
+import { DeviceContext } from '../index';
 import { Task, StageName, TaskName, TaskRow, TasksTitle, TasksWrap } from "01/_components/Events";
 import _ from 'lodash';
 
-const Template = styled.div``;
-
-const buttonHandler = () => {
-  console.log('buttonHandler');
-};
 export const Events = ({ title = '', loading = true }) => {
   const { tasks, mistake } = useContext(DeviceContext);
   loading = !tasks;
