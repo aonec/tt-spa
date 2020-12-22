@@ -7,13 +7,13 @@ import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import {Loader} from "../../components";
+import {IndividualDeviceType, DeviceContextType, ParamTypes} from "./components/individualDeviceTypes";
 
-export const DeviceContext = React.createContext();
+export const DeviceContext = React.createContext({} as DeviceContextType);
 
 export const IndividualDevice = () => {
-  const { 0: objid, 1: apartmentId, 2: deviceId } = useParams();
-  const [device, setDevice] = useState();
-  const [building, setBuilding] = useState();
+  const { 0: objid, 1: apartmentId, 2: deviceId } = useParams<ParamTypes>();
+  const [device, setDevice] = useState({} as IndividualDeviceType);
   const [tasks, setTasks] = useState();
   const [mistake, setMistake] = useState();
 
@@ -22,7 +22,6 @@ export const IndividualDevice = () => {
       getIndividualDevice(deviceId),
       getIndividualDeviceTasks(deviceId),
     ]).then((responses) => {
-      // console.log(responses);
       const [device, tasks] = responses;
       setDevice(device);
       setTasks(tasks);
@@ -30,7 +29,6 @@ export const IndividualDevice = () => {
       setMistake(error);
     });
   }, []);
-
 
   const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
   const context = {

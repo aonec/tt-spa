@@ -1,6 +1,6 @@
 import {ReadingType} from "../../../../types/types";
 
-export const ipuTemplate = {
+export const individualDeviceTypeTemplate = {
   address: {
     apartmentId: 236276,
     apartmentNumber: '2',
@@ -74,7 +74,7 @@ export const ipuTemplate = {
   closingDate: null,
 };
 
-export type IpuTemplateType = {
+export type IndividualDeviceType = {
   address: {
     apartmentId: number,
     apartmentNumber: string,
@@ -97,4 +97,20 @@ export type IpuTemplateType = {
   lastCheckingDate: string | null,
   futureCheckingDate: string | null,
   closingDate: string | null,
+}
+
+export type DeviceContextType = {
+  device: IndividualDeviceType,
+  tasks: Array<Task>,
+  mistake: Array<any>,
+}
+
+export type Task = {
+  id: number
+}
+
+export interface ParamTypes {
+  0: string
+  1: string
+  2: string
 }

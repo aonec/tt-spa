@@ -8,9 +8,6 @@ import { DeviceContext } from '../index';
 export const Information = () => {
   const { device, mistake } = useContext(DeviceContext);
   const loading = !device;
-  const { address } = device;
-
-  const { city, street, housingStockNumber } = address;
   const {
     commercialAccountingDate, futureCheckingDate, lastCheckingDate, closingDate,
   } = device;
