@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { convertDate } from '01/_api/utils/convertDate';
-import {  ListWrap, ListItem, Title, Loader} from '01/_components';
+import {
+  ListWrap, ListItem, Title, Loader,
+} from '01/_components';
 import { DeviceContext } from '../index';
 
 export const Information = () => {
@@ -9,7 +11,9 @@ export const Information = () => {
   const { address } = device;
 
   const { city, street, housingStockNumber } = address;
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device;
+  const {
+    commercialAccountingDate, futureCheckingDate, lastCheckingDate, closingDate,
+  } = device;
 
   if (mistake) {
     return (
@@ -23,34 +27,64 @@ export const Information = () => {
     <ListWrap>
       <Loader show={loading} size="32">
         <Title>Информация</Title>
+
         <ListItem>
-          <span>Адрес</span>
-          <span style={{ fontWeight: '500' }}>
-            {`${city},${street},${housingStockNumber}`}
-          </span>
+          <span>Статус прибора</span>
+          <span>{closingDate === null ? 'Активен' : 'Не активен'}</span>
         </ListItem>
-        <ListItem>
-          <span>Дата выпуска прибора</span>
-          <span>{convertDate(commercialAccountingDate)}</span>
-        </ListItem>
+
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
           <span>{convertDate(commercialAccountingDate)}</span>
         </ListItem>
+
         <ListItem>
-          <span>Срок эксплуатации по нормативу</span>
-          <span>нет информации</span>
-        </ListItem>
-        <ListItem>
-          <span>Дата поверки прибора</span>
+          <span>Дата начальной поверки</span>
           <span>{convertDate(lastCheckingDate)}</span>
         </ListItem>
+
         <ListItem>
           <span>Дата следующей поверки прибора</span>
           <span>{convertDate(futureCheckingDate)}</span>
         </ListItem>
+
+        <ListItem>
+          <span>Дата следующей поверки прибора</span>
+          <span>{convertDate(futureCheckingDate)}</span>
+        </ListItem>
+
+        <ListItem>
+          <span>Тип ресурса</span>
+          <span>{convertDate(futureCheckingDate)}</span>
+        </ListItem>
+
+        <ListItem>
+          <span>Место установки</span>
+          <span></span>
+        </ListItem>
+
+        <ListItem>
+          <span>Тип пломбы</span>
+          <span></span>
+        </ListItem>
+
+        <ListItem>
+          <span>Магнитная пломба</span>
+          <span></span>
+        </ListItem>
+
+        <ListItem>
+          <span>Организация</span>
+          <span></span>
+        </ListItem>
+
+        <ListItem>
+          <span>Монтажная организация</span>
+          <span></span>
+        </ListItem>
+
+
       </Loader>
-      {/* </info_list> */}
     </ListWrap>
   );
 };

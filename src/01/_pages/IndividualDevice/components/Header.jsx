@@ -9,9 +9,9 @@ import { DeviceContext } from '../index';
 
 export const Template = styled.div``;
 
-export const Header = (loading = true) => {
+export const Header = () => {
   const { device, mistake } = useContext(DeviceContext);
-  loading = !device;
+  let loading = !device;
   const {address} = device
 
 

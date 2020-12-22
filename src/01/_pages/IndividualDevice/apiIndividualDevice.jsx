@@ -1,9 +1,9 @@
-import axios from "../../axios";
+import axios from '../../axios';
 
 export async function getIndividualDevice(id = '') {
   try {
     const res = await axios.get(`IndividualDevices/${id}`);
-    console.log("res", res)
+    console.log('res', res);
     return res;
   } catch (error) {
     console.log(error);
