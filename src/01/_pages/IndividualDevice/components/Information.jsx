@@ -1,67 +1,86 @@
 import React, { useContext } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
-// import { Loader } from '01/components';
+import { convertDateDots } from '01/_api/utils/convertDate';
 import {
-  ListWrap, ListItem, Title, Loader, HeaderWrap, Subtitle,
+  ListWrap, ListItem, Title, Loader,
 } from '01/_components';
-import { DeviceContext } from '../IndividualDevice';
+import { DeviceContext } from '../index';
+import { translateMountPlace } from "../../../utils/translateMountPlace";
+import { translateResource } from "../../../utils/translateResource";
+
 
 export const Information = () => {
-  const { device, building, mistake } = useContext(DeviceContext);
-  const loading = !(device && building);
+  const { device, mistake } = useContext(DeviceContext);
+  const loading = !device;
+  const {
+    commercialAccountingDate, futureCheckingDate, lastCheckingDate, closingDate, mountPlace ,resource} = device;
 
-  const buttonHandler = ({ loading = true }) => {
-    console.log('buttonHandler');
-  };
-
-  const { city, street, number } = building || {};
-  const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || {};
-
-  if(mistake) {
+  if (mistake) {
     return (
       <ListWrap>
-          <Title style={{color:'red'}}>Данные не получены</Title>
+        <Title style={{ color: 'red' }}>Данные не получены</Title>
       </ListWrap>
-    )
+    );
   }
 
   return (
     <ListWrap>
       <Loader show={loading} size="32">
         <Title>Информация</Title>
+
         <ListItem>
-          <span>Адрес</span>
-          <span style={{ fontWeight: '500' }}>
-            {`${city},${street},${number}`}
-          </span>
+          <span>Статус прибора</span>
+          <span>{closingDate === null ? 'Активен' : 'Не активен'}</span>
         </ListItem>
-        <ListItem>
-          <span>Дата выпуска прибора</span>
-          <span>{convertDate(commercialAccountingDate)}</span>
-        </ListItem>
+
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDate(commercialAccountingDate)}</span>
+          <span>{convertDateDots(commercialAccountingDate)}</span>
         </ListItem>
+
         <ListItem>
-          <span>Срок эксплуатации по нормативу</span>
-          <span>нет информации</span>
+          <span>Дата начальной поверки</span>
+          <span>{convertDateDots(lastCheckingDate)}</span>
         </ListItem>
-        <ListItem>
-          <span>Дата поверки прибора</span>
-          <span>{convertDate(lastCheckingDate)}</span>
-        </ListItem>
+
         <ListItem>
           <span>Дата следующей поверки прибора</span>
-          <span>{convertDate(futureCheckingDate)}</span>
+          <span>{convertDateDots(futureCheckingDate)}</span>
         </ListItem>
+
+        <ListItem>
+          <span>Тип ресурса</span>
+          <span>{translateResource(resource)}</span>
+        </ListItem>
+
+        <ListItem>
+          <span>Место установки</span>
+          <span>{translateMountPlace(mountPlace)}</span>
+        </ListItem>
+
+        {/*<ListItem>*/}
+        {/*  <span>Тип пломбы</span>*/}
+        {/*  <span></span>*/}
+        {/*</ListItem>*/}
+
+        {/*<ListItem>*/}
+        {/*  <span>Магнитная пломба</span>*/}
+        {/*  <span></span>*/}
+        {/*</ListItem>*/}
+
+        {/*<ListItem>*/}
+        {/*  <span>Организация</span>*/}
+        {/*  <span></span>*/}
+        {/*</ListItem>*/}
+
+        {/*<ListItem>*/}
+        {/*  <span>Монтажная организация</span>*/}
+        {/*  <span></span>*/}
+        {/*</ListItem>*/}
+
+
       </Loader>
-      {/* </info_list> */}
     </ListWrap>
   );
 };
-// пока не получили данные - показываем Loader
-// return <Loader show size="32" />;
-// };
 
 export default Information;
