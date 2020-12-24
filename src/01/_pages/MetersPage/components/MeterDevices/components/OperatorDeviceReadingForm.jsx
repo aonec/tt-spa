@@ -49,6 +49,8 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
 
     const [readingsState, setReadingsState] = useState({});
 
+    const [isCancel, setIsCancel] = useState(false)
+
     const [initialReadings, setInitialReadings] = useState();
 
     const textInput = React.createRef();
@@ -79,11 +81,12 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                     }))
                 },
                 onCancel() {
+                    setIsCancel(true);
                         setReadingsState((state) => ({
                             ...state,
                             currentReadingsArray: initialReadings
                         }));
-                    // textInput.current.focus()
+
                 }
             }
         )
@@ -103,9 +106,14 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                 // }).then(() => textInput.current.focus());
 
         }
-
+    //
     useEffect(() => {
-        if (textInput.current) textInput.current.focus()
+        // if (textInput.current) textInput.current.focus()
+
+        if (isCancel) {
+            textInput.current.focus()
+            setIsCancel(false)
+        }
 
     }, [readingsState])
 
