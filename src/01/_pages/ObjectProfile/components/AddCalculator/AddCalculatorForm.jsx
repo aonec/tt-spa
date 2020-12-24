@@ -3,9 +3,8 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form, InputNumber, Switch } from 'antd';
+import { Form, Switch } from 'antd';
 import {
-  InputNumberTT,
   Title,
   ButtonTT,
   DatePickerTT, InputTT, SelectTT, Wrap,
@@ -18,7 +17,8 @@ const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [checked, setChecked] = useState(true);
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema] = useState();
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [state, setState] = useState();
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
@@ -62,8 +62,8 @@ const AddCalculatorForm = (props) => {
       };
       console.log('form', form);
       console.log(JSON.stringify(form));
-      addCalculator(form);
-      setTimeout(() => { setAddCalculator(false); }, 1000);
+      // addCalculator(form);
+      // setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
@@ -73,60 +73,57 @@ const AddCalculatorForm = (props) => {
 
   const defaultValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: checked === true ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
-    deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-    port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
-  });
-
-  const notConnectedValidationSchema = Yup.object({
-    serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: checked === false ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
-    deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-    port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
+    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
+    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
+    port: Yup.number().nullable().required('Введите порт устройства'),
   });
 
   const emptyValidationSchema = Yup.object({
-    serialNumber: Yup.string().required('Введите серийный номер'),
+    serialNumber: Yup.string().required('Введите серийный номер')
   });
 
   useEffect(() => {
-    console.log('checked');
-    if (checked === true) {
-      setFieldValue('isConnected', true);
-      setValidationSchema(defaultValidationSchema);
-      setConnectionErrorsEmpty();
 
-    }
-    if (checked === false) {
-      setFieldValue('isConnected', false);
-      setValidationSchema(notConnectedValidationSchema);
-      setConnectionErrorsEmpty();
-
-    }
   }, [checked]);
 
   function setConnectionErrorsEmpty() {
-    setFieldError('deviceAddress');
-    setFieldError('ipV4');
-    setFieldError('port');
+    setFieldError('deviceAddress', undefined);
+    setFieldError('ipV4', undefined);
+    setFieldError('port',undefined);
   }
 
   function onSwitchChange(checked) {
-    setChecked(checked)
+    setChecked(checked);
+  }
+
+  function res(){
+    return (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '')
   }
 
   useEffect(() => {
-    const res = (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '');
-    if (checked === false && res === true) {
-      setValidationSchema(emptyValidationSchema);
-      setConnectionErrorsEmpty();
-      }
-    if (checked === false && res === false) {
-      setValidationSchema(notConnectedValidationSchema);
+    //пустые ли все настройки соединений?
+
+    console.log("Правда, что все строки пустые:?",res())
+    console.log("checkec", checked)
+    if (checked === true) {
+      setFieldValue('isConnected', true);
+      setValidationSchema(defaultValidationSchema);
     }
 
-  }, [values.ipV4, values.port, values.deviceAddress]);
+    if (checked === false && res()) {
+      setConnectionErrorsEmpty()
+      setFieldValue('isConnected', false);
+      setValidationSchema(emptyValidationSchema);
+    }
 
+    if (checked === false && !res()) {
+      setFieldValue('isConnected', false);
+      setValidationSchema(defaultValidationSchema);
+    }
+
+
+
+  }, [checked, values]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -149,7 +146,7 @@ const AddCalculatorForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-
+        <div>{JSON.stringify(errors)}</div>
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -266,7 +263,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
             <Alert name="ipV4" />
-             {/*{checked ? <Alert name="ipV4" /> : null }*/}
+            {/* {checked ? <Alert name="ipV4" /> : null } */}
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
