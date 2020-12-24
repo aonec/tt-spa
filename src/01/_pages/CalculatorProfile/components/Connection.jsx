@@ -8,11 +8,10 @@ import { NotConnectedIcon } from '../../../components/NotConnectedIcon/NotConnec
 
 export const Connection = () => {
   const { device, loadings } = useContext(DeviceContext);
-  const { connection } = device;
+  const { connection, isConnected } = device;
   const {
-    isConnected, ipV4, port, deviceAddress,
+     ipV4, port, deviceAddress,
   } = connection || {
-    isConnected: false,
     ipV4: '',
     port: null,
     deviceAddress: null,
@@ -31,8 +30,8 @@ export const Connection = () => {
 
   return (
     <div>
-      {connection === null ? <NoConnection /> : null }
-      <ListWrap style={{ opacity: connection === null ? '0.5' : null }}>
+      {!isConnected ? <NoConnection /> : null }
+      <ListWrap style={{ opacity: !isConnected ? '0.5' : null }}>
         <Loader show={loading} size="32">
           <Title>Настройки</Title>
           <ListItem>
