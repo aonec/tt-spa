@@ -18,7 +18,7 @@ const EditCalculatorForm = () => {
   const [checked, setChecked] = useState(false);
 
 
-  console.log(currentCalc);
+  // console.log(currentCalc);
 
   const {
     calculator,
@@ -37,15 +37,14 @@ const EditCalculatorForm = () => {
     type,
     connection,
     address,
+    isConnected
   } = currentCalc;
 
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
 
-  const {
-    isConnected, ipV4, port, deviceAddress,
+  const { ipV4, port, deviceAddress,
   } = connection || {
-    isConnected: false,
     ipV4: '',
     port: null,
     deviceAddress: null,
@@ -102,7 +101,7 @@ const EditCalculatorForm = () => {
       };
       console.log('FORM', form);
       console.log(JSON.stringify(form));
-      // putCalculator(id, form);
+      putCalculator(id, form);
     },
   });
 

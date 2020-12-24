@@ -58,8 +58,8 @@ const AddCalculatorForm = (props) => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         documentsIds: values.documentsIds,
+        isConnected: values.isConnected,
         connection: {
-          isConnected: values.isConnected,
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
@@ -80,7 +80,8 @@ const AddCalculatorForm = (props) => {
       setFieldValue('isConnected', false);
       setFieldValue('ipV4', null);
       setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(256, 999));
+      // setFieldValue('deviceAddress', randomInteger(256, 999));
+      setFieldValue('deviceAddress', null);
     }
     if (checked === false) {
       setChecked(false);
@@ -103,34 +104,32 @@ const AddCalculatorForm = (props) => {
     setTab(value);
   }
 
-  function handleSubmitErrors() {
-    console.log('handleSubmitErrors');
-    const keys = _.keys(errors);
-    console.log(keys);
-
-    const errorsArr = [
-      [
-        'infoId',
-        'serialNumber',
-      ],
-      [
-        'ipV4',
-        'deviceAddress',
-        'port',
-      ],
-    ];
-
-    errorsArr.map((item, index) => {
-      const newIndex = errorsArr.length - index - 1;
-      const res = keys.filter((x) => errorsArr[newIndex].includes(x));
-      console.log("res", res)
-      if (res.length > 0) {
-        setTab(String(newIndex + 1))
-      }
-    })
-
-
-  }
+  // function handleSubmitErrors() {
+    // console.log('handleSubmitErrors');
+    // const keys = _.keys(errors);
+    // console.log(keys);
+    //
+    // const errorsArr = [
+    //   [
+    //     'infoId',
+    //     'serialNumber',
+    //   ],
+    //   [
+    //     'ipV4',
+    //     'deviceAddress',
+    //     'port',
+    //   ],
+    // ];
+    //
+    // errorsArr.map((item, index) => {
+    //   const newIndex = errorsArr.length - index - 1;
+    //   const res = keys.filter((x) => errorsArr[newIndex].includes(x));
+    //   console.log("res", res)
+    //   if (res.length > 0) {
+    //     setTab(String(newIndex + 1))
+    //   }
+    // })
+  // }
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -319,10 +318,7 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          onClick={() => {
-            handleSubmitErrors();
-            handleSubmit();
-          }}
+          onClick={handleSubmit}
           hidden={currentTabKey !== '3'}
         >
           Сохранить
