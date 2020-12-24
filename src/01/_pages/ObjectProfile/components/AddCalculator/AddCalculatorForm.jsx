@@ -262,7 +262,7 @@ const AddCalculatorForm = (props) => {
               }}
               // disabled={checked}
             />
-            <Alert name="ipV4" />
+            {(res() && !checked) ? null : <Alert name="ipV4" /> }
             {/* {checked ? <Alert name="ipV4" /> : null } */}
           </Form.Item>
 
@@ -275,7 +275,7 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            <Alert name="port" />
+            {(res() && !checked) ? null : <Alert name="port" /> }
             {/* {checked ? <Alert name="port" /> : null } */}
           </Form.Item>
 
@@ -289,7 +289,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-            <Alert name="deviceAddress" />
+            {(res() && !checked) ? null : <Alert name="deviceAddress" /> }
             {/* {checked ? <Alert name="deviceAddress" /> : null } */}
           </Form.Item>
 
