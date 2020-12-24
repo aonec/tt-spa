@@ -4,7 +4,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, InputNumber, Switch } from 'antd';
-import  {InputNumberTT,
+import {
+  InputNumberTT,
   Title,
   ButtonTT,
   DatePickerTT, InputTT, SelectTT, Wrap,
@@ -13,26 +14,19 @@ import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
 
-
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [checked, setChecked] = useState(true);
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema]= useState();
+  const [validationSchema, setValidationSchema] = useState();
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-
-  useEffect(()=>{
-    setValidationSchema(notConnectedValidationSchema)
-  },[])
-
-
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors,
+    handleBlur, setFieldValue, setErrors, setFieldError,
   } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -67,54 +61,71 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      // console.log(JSON.stringify(form));
-      // addCalculator(form);
-      // setTimeout(() => { setAddCalculator(false); }, 1000);
+      console.log(JSON.stringify(form));
+      addCalculator(form);
+      setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
+
+  useEffect(() => {
+    setValidationSchema(defaultValidationSchema);
+  }, []);
 
   const defaultValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
     ipV4: checked === true ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
     deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
     port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
-  })
+  });
 
   const notConnectedValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') ,
-    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства') ,
-    port:  Yup.number().nullable().required('Введите порт устройства') ,
-  })
+    ipV4: checked === false ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
+    deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
+    port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
+  });
 
-  // useEffect(()=>{
-  //   console.log("onChange={handleChange}s")
-  //   console.log(values)
-  //   if (checked === false) {
-  //     setValidationSchema(notConnectedValidationSchema)
-  //   }
-  // },[values.ipV4, values.port, values.deviceAddress])
+  const emptyValidationSchema = Yup.object({
+    serialNumber: Yup.string().required('Введите серийный номер'),
+  });
 
-  function isSettingForced() {
-    console.log(values)
-  }
-
-  useEffect(()=>{
-      console.log("checked")
-    isSettingForced()
-  }, [checked])
-
-
-  function onSwitchChange(checked) {
+  useEffect(() => {
+    console.log('checked');
     if (checked === true) {
-      setChecked(true);
       setFieldValue('isConnected', true);
+      setValidationSchema(defaultValidationSchema);
+      setConnectionErrorsEmpty();
+
     }
     if (checked === false) {
-      setChecked(false);
       setFieldValue('isConnected', false);
+      setValidationSchema(notConnectedValidationSchema);
+      setConnectionErrorsEmpty();
+
     }
+  }, [checked]);
+
+  function setConnectionErrorsEmpty() {
+    setFieldError('deviceAddress');
+    setFieldError('ipV4');
+    setFieldError('port');
   }
+
+  function onSwitchChange(checked) {
+    setChecked(checked)
+  }
+
+  useEffect(() => {
+    const res = (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '');
+    if (checked === false && res === true) {
+      setValidationSchema(emptyValidationSchema);
+      }
+    if (checked === false && res === false) {
+      setValidationSchema(notConnectedValidationSchema);
+    }
+
+  }, [values.ipV4, values.port, values.deviceAddress]);
+
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -130,8 +141,6 @@ const AddCalculatorForm = (props) => {
   function handleChangeTab(value) {
     setTab(value);
   }
-
-
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -256,7 +265,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
             <Alert name="ipV4" />
-            {/*{checked ? <Alert name="ipV4" /> : null }*/}
+            {/* {checked ? <Alert name="ipV4" /> : null } */}
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -268,8 +277,8 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-             <Alert name="port" />
-            {/*{checked ? <Alert name="port" /> : null }*/}
+            <Alert name="port" />
+            {/* {checked ? <Alert name="port" /> : null } */}
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -282,8 +291,8 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-             <Alert name="deviceAddress" /> 
-            {/*{checked ? <Alert name="deviceAddress" /> : null }*/}
+            <Alert name="deviceAddress" />
+            {/* {checked ? <Alert name="deviceAddress" /> : null } */}
           </Form.Item>
 
           <Wrap
