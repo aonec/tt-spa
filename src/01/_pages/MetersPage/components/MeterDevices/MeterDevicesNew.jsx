@@ -174,15 +174,15 @@ export const MeterDevicesNew = ({items = []}) => {
             <meter_header>
                 <span>Информация o приборe</span>
 
-                <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
+                <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
                     {currentMonth}
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                    <div style={{width: 30, height: 30}} onClick={onClickDecrease} className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
+                    <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={onClickDecrease} className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
                         <Arrow isDisabled={isLeftArrowDisabled}/>
                     </div>
-                    <div>{previousMonth}</div>
-                    <div style={{width: 30, height: 30}} className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled} isRight onClick={onClickIncrease}>
+                    <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>{previousMonth}</div>
+                    <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled} isRight onClick={onClickIncrease}>
                         <Arrow isRight isDisabled={isRightArrowDisabled}/>
                     </div>
                 </div>

@@ -64,20 +64,22 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           resource,
                           sendReadings = () => {},
                           operatorCabinet = false,
-                          houseReadings = false
+                          houseReadings = false,
+                          textInput
                      }) => {
 
-
+    const [isFocused, setIsFocused] = useState(false);
 
     const [prevValue, setPrevValue] = useState(null);
 
     const onBlurHandler = (e: any) => {
+        setIsFocused(false)
         if (prevValue === e.target.value) return;
         sendReadings();
     };
 
     const onFocusHandler  = (e: any) => {
-        setPrevValue(e.target.value)
+        setIsFocused(true)
     }
 
     return (
@@ -94,9 +96,9 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                 disabled={readingsBlocked}
                 type="text"
                 value={value}
-
+                ref={operatorCabinet && isFocused ? textInput : undefined}
                 onChange={onChange}
-                onBlur={operatorCabinet ? onBlurHandler : undefined}
+                // onBlur={operatorCabinet ? onBlurHandler : undefined}
                 onFocus={operatorCabinet ? onFocusHandler : undefined}
                 required
             />

@@ -12,10 +12,14 @@ import styles from "../../../../../_pages/Devices/components/TabsDevices.module.
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import Arrow from "../../../../../_components/Arrow/Arrow";
 import DeviceRatesVertical from "./DeviceRatesVertical";
-import {DeviceReadingsContainer} from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import axios from "01/axios"
+import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
+import { Modal, Button, Space } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 const FullDeviceLine = styled.div`
     display: grid;
@@ -29,18 +33,88 @@ const FullDeviceLine = styled.div`
     border-bottom: 1px solid #DCDEE4;
     `
 
+export const DeviceReadingsContainer = styled.div`
+display: flex;
+flex-direction: column;
+border-radius: 4px;
+border: 1px solid var(--frame);
+padding: 8px
+`
+
+
 
 
 
 const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
-    const [isLoading, setIsLoading] = useState(true);
-
-    const isActive = device.closingDate === null;
 
     const [readingsState, setReadingsState] = useState({});
 
-    useReadings(device, setReadingsState, sliderIndex);
+    const [initialReadings, setInitialReadings] = useState();
 
+    const textInput = React.createRef();
+
+    const onDelete = async () => {
+        await setReadingsState((state) => ({
+            ...state,
+            currentReadingsArray: initialReadings
+        }));
+        textInput.current.focus()
+    }
+// setReadingsState((state) => ({
+    //     ...state,
+    //     currentReadingsArray: state.currentReadingsArray.map((reading) => 0
+    //     )
+    // }))
+    // if (isNullInArray(readingsState.currentReadingsArray)) return
+
+     const showConfirm = () => {
+        confirm({
+                title: 'Вы действительно хотите уйти без сохранения?',
+                icon: <ExclamationCircleOutlined/>,
+                content: 'Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся',
+                onOk() {
+                    setReadingsState((state) => ({
+                        ...state,
+                        currentReadingsArray: initialReadings
+                    }))
+                },
+                onCancel() {
+                        setReadingsState((state) => ({
+                            ...state,
+                            currentReadingsArray: initialReadings
+                        }));
+                    // textInput.current.focus()
+                }
+            }
+        )
+
+
+
+
+
+                // return new Promise((resolve, reject) => {
+                //
+                //         setReadingsState((state) => ({
+                //             ...state,
+                //             currentReadingsArray: initialReadings
+                //         }));
+                //         resolve(1)
+                //
+                // }).then(() => textInput.current.focus());
+
+        }
+
+    useEffect(() => {
+        if (textInput.current) textInput.current.focus()
+
+    }, [readingsState])
+
+
+    const isActive = device.closingDate === null;
+
+
+
+    useReadings(device, setReadingsState, sliderIndex);
 
 
     if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
@@ -59,20 +133,25 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
         }))
     }
 
-    const sendReadings = () => {
-        const deviceReadingObject = {
-            deviceId: device.id,
+    const formDeviceReadingObject = (deviceItem) => {
+        return ({
+            deviceId: deviceItem.id,
             value1: +readingsState.currentReadingsArray[0],
             readingDate: moment().toISOString(),
             uploadTime: moment().toISOString(),
             isForced: true
-        }
+        })
+    }
+
+    const sendReadings = (deviceItem) => {
+        const deviceReadingObject = formDeviceReadingObject(deviceItem)
         for (let i = 1; i < 4; i++) {
             if (+readingsState.currentReadingsArray[i]) {
                 deviceReadingObject[`value${i+1}`] = +readingsState.currentReadingsArray[i]
             }
         }
         axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+        setInitialReadings(readingsState.currentReadingsArray)
     }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
@@ -81,8 +160,9 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
                      resource={readingsState.resource}
-                     sendReadings={sendReadings}
+                     sendReadings={() => sendReadings(device)}
                      operatorCabinet
+                     textInput={textInput}
         />
     ));
 
@@ -96,6 +176,23 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                      readingsBlocked
         />
     ));
+
+    const onBlurHandler = (e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            const isNull = isNullInArray(readingsState.currentReadingsArray)
+            if (isNull) {
+                showConfirm();
+            } else {
+                if (readingsState.currentReadingsArray === initialReadings) return
+                sendReadings(device)
+            }
+        }
+    }
+
+    const onFocusHandler = () => {
+    debugger;
+        setInitialReadings(readingsState.currentReadingsArray);
+    }
 
 
     const { icon, color } = DeviceIcons[device.resource];
@@ -124,7 +221,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <DeviceReadingsContainer>{currentDeviceReadings}</DeviceReadingsContainer>
+            <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
 
