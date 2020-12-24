@@ -8,6 +8,7 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import {Loader} from "../../components";
 import {IndividualDeviceType, DeviceContextType, ParamTypes} from "./components/individualDeviceTypes";
+import {Title} from "../../tt-components/Title";
 
 export const DeviceContext = React.createContext({} as DeviceContextType);
 
@@ -52,15 +53,15 @@ export const IndividualDevice = () => {
           </Route>
 
           <Route path={`${path}readings`} exact>
-            <div>История показаний</div>
+            <Title color="black">Компонент в разработке</Title>
           </Route>
 
           <Route path={`${path}documents`} exact>
-            <div>Документы</div>
+            <Title color="black">Компонент в разработке</Title>
           </Route>
 
           <Route path={`${path}changes`} exact>
-            <div>История изменений</div>
+            <Title color="black">Компонент в разработке</Title>
           </Route>
 
           <Events title="Задачи с объектом" />

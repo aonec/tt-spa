@@ -41,7 +41,7 @@ export const Information = () => {
           <span>Дата начальной поверки</span>
           <span>{convertDateDots(lastCheckingDate)}</span>
         </ListItem>
-        
+
         <ListItem>
           <span>Дата следующей поверки прибора</span>
           <span>{convertDateDots(futureCheckingDate)}</span>
