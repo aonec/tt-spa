@@ -24,7 +24,7 @@ export const Header = () => {
 
   const { city, street, housingStockNumber } = address || { city: null, street: null, number: null };
   const { model, serialNumber, resource } = device || { model: null, serialNumber: null, resource: null };
-  const { icon, color } = DeviceIcons[resource];
+  const { icon, color } = DeviceIcons[resource] || {};
 
   return (
     <HeaderWrap>
