@@ -23,7 +23,7 @@ export const Connection = () => {
     return (
       <div className={styles.warning}>
         <NotConnectedIcon is={"calculator"} />
-        <span>Вычислитель без оборудования связи</span>
+        <span>Вычислитель не опрашивается</span>
       </div>
     );
   };

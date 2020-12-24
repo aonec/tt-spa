@@ -52,7 +52,7 @@ const EditCalculatorForm = () => {
   const { id: houseId } = address;
 
   useEffect(() => {
-    setChecked(!isConnected);
+    setChecked(isConnected);
   }, []);
 
   const {
@@ -78,9 +78,9 @@ const EditCalculatorForm = () => {
       lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
       serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
-      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-      port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
+      ipV4: checked === true ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
+      deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
+      port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
       infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
     }),
     onSubmit: async () => {
@@ -108,14 +108,14 @@ const EditCalculatorForm = () => {
   function onSwitchChange(checked) {
     if (checked === true) {
       setChecked(true);
+      setFieldValue('isConnected', true)
+    }
+    if (checked === false) {
+      setChecked(false);
       setFieldValue('isConnected', false);
       setFieldValue('ipV4', '');
       setFieldValue('port', null);
       setFieldValue('deviceAddress', null);
-    }
-    if (checked === false) {
-      setChecked(false);
-      setFieldValue('isConnected', true)
     }
   }
 
@@ -214,7 +214,7 @@ const EditCalculatorForm = () => {
           width: '100%',
         }}
         >
-          <Switch style={{ width: '48px' }} defaultChecked={!isConnected} onChange={onSwitchChange} />
+          <Switch style={{ width: '48px' }} defaultChecked={isConnected} onChange={onSwitchChange} />
           <span style={{
             fontSize: '16px',
             lineHeight: '32px',
@@ -222,7 +222,7 @@ const EditCalculatorForm = () => {
             color: 'rgba(39, 47, 90, 0.9)',
           }}
           >
-            Вычислитель без оборудования связи
+            Опрашивать вычислитель
           </span>
         </Form.Item>
 
@@ -233,10 +233,10 @@ const EditCalculatorForm = () => {
             placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
             onChange={handleChange}
             name="ipV4"
-            disabled={checked}
+            // disabled={!checked}
           />
           {/* <Alert name="ipV4" /> */}
-          {checked === false ? <Alert name="ipV4" /> : null }
+          {checked === true ? <Alert name="ipV4" /> : null }
         </Form.Item>
 
         <Form.Item label="Порт">
@@ -246,10 +246,11 @@ const EditCalculatorForm = () => {
             value={values.port}
             onChange={handleChange}
             name="port"
-            disabled={checked}
+            // disabled={!checked}
+
           />
           {/* <Alert name="port" /> */}
-          {checked === false ? <Alert name="port" /> : null }
+          {checked === true ? <Alert name="port" /> : null }
 
         </Form.Item>
 
@@ -260,10 +261,10 @@ const EditCalculatorForm = () => {
             value={values.deviceAddress}
             onChange={handleChange}
             name="deviceAddress"
-            disabled={checked}
+            // disabled={!checked}
           />
           {/* <Alert name="deviceAddress" /> */}
-          {checked === false ? <Alert name="deviceAddress" /> : null }
+          {checked === true ? <Alert name="deviceAddress" /> : null }
         </Form.Item>
 
         <Wrap
