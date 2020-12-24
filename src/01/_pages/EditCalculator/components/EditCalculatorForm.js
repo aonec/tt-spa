@@ -91,8 +91,8 @@ const EditCalculatorForm = () => {
         futureCheckingDate: values.futureCheckingDate.toISOString(),
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+        isConnected: values.isConnected,
         connection: {
-          isConnected: values.isConnected,
           ipV4: values.ipV4,
           deviceAddress: values.deviceAddress,
           port: values.port,
@@ -102,7 +102,7 @@ const EditCalculatorForm = () => {
       };
       console.log('FORM', form);
       console.log(JSON.stringify(form));
-      putCalculator(id, form);
+      // putCalculator(id, form);
     },
   });
 
