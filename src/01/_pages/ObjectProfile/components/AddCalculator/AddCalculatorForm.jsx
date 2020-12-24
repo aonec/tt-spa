@@ -13,6 +13,7 @@ import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
 
+
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [checked, setChecked] = useState(true);
@@ -25,7 +26,7 @@ const AddCalculatorForm = (props) => {
 
 
   useEffect(()=>{
-    setValidationSchema(defaultValidationSchema)
+    setValidationSchema(notConnectedValidationSchema)
   },[])
 
 
@@ -75,16 +76,24 @@ const AddCalculatorForm = (props) => {
   const defaultValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
     ipV4: checked === true ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
-    deviceAddress: checked === true ? Yup.number('Введите цифру').nullable().required('Введите сетевой адрес устройства') : null,
-    port: checked === true ? Yup.number('Введите цифру').nullable().required('Введите порт устройства') : null,
+    deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
+    port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
   })
 
   const notConnectedValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: values.deviceAddress === null || '' ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
-    deviceAddress: checked === true ? Yup.number('Введите цифру').required('Введите сетевой адрес устройства') : null,
-    port: checked === true ? Yup.number('Введите цифру').required('Введите порт устройства') : null,
+    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') ,
+    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства') ,
+    port:  Yup.number().nullable().required('Введите порт устройства') ,
   })
+
+  // useEffect(()=>{
+  //   console.log("onChange={handleChange}s")
+  //   console.log(values)
+  //   if (checked === false) {
+  //     setValidationSchema(notConnectedValidationSchema)
+  //   }
+  // },[values.ipV4, values.port, values.deviceAddress])
 
   function isSettingForced() {
     console.log(values)
@@ -246,36 +255,22 @@ const AddCalculatorForm = (props) => {
               }}
               // disabled={checked}
             />
-            {checked ? <Alert name="ipV4" /> : null }
+            <Alert name="ipV4" />
+            {/*{checked ? <Alert name="ipV4" /> : null }*/}
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
-            <InputNumberTT
+            <InputTT
               name="port"
+              type="number"
               placeholder="Введите номер порта"
               value={values.port}
               onBlur={handleBlur}
-              onChange={(value) => setFieldValue('port', value)}
+              onChange={handleChange}
             />
-            {/* <Alert name="port" /> */}
-            {checked ? <Alert name="port" /> : null }
+             <Alert name="port" />
+            {/*{checked ? <Alert name="port" /> : null }*/}
           </Form.Item>
-
-          {/*<Form.Item label="Порт вычислителя" style={{ width: '49%' }}>*/}
-          {/*  <InputTT*/}
-          {/*    name="port"*/}
-          {/*    type="number"*/}
-          {/*    placeholder="Введите номер порта"*/}
-          {/*    value={values.port}*/}
-          {/*    onBlur={handleBlur}*/}
-          {/*    onChange={(event) => {*/}
-          {/*      setFieldValue('port', event.target.value);*/}
-          {/*    }}*/}
-          {/*    // disabled={checked}*/}
-          {/*  />*/}
-          {/*  /!* <Alert name="port" /> *!/*/}
-          {/*  {checked ? <Alert name="port" /> : null }*/}
-          {/*</Form.Item>*/}
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
             <InputTT
@@ -284,13 +279,11 @@ const AddCalculatorForm = (props) => {
               placeholder="Введите сетевой адрес вычислителя"
               value={values.deviceAddress}
               onBlur={handleBlur}
-              onChange={(event) => {
-                setFieldValue('deviceAddress', event.target.value);
-              }}
+              onChange={handleChange}
               // disabled={checked}
             />
-            {/* <Alert name="deviceAddress" /> */}
-            {checked ? <Alert name="deviceAddress" /> : null }
+             <Alert name="deviceAddress" /> 
+            {/*{checked ? <Alert name="deviceAddress" /> : null }*/}
           </Form.Item>
 
           <Wrap
