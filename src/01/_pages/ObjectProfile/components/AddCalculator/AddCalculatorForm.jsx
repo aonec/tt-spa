@@ -119,6 +119,7 @@ const AddCalculatorForm = (props) => {
     const res = (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '');
     if (checked === false && res === true) {
       setValidationSchema(emptyValidationSchema);
+      setConnectionErrorsEmpty();
       }
     if (checked === false && res === false) {
       setValidationSchema(notConnectedValidationSchema);
@@ -265,7 +266,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
             <Alert name="ipV4" />
-            {/* {checked ? <Alert name="ipV4" /> : null } */}
+             {checked ? <Alert name="ipV4" /> : null }
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
