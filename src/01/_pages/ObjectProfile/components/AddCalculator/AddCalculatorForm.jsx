@@ -266,7 +266,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
             <Alert name="ipV4" />
-             {checked ? <Alert name="ipV4" /> : null }
+             {/*{checked ? <Alert name="ipV4" /> : null }*/}
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
