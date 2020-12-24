@@ -17,7 +17,7 @@ import randomInteger from '../../../../utils/randomInteger';
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const [currentTabKey, setTab] = useState('1');
 
@@ -46,9 +46,9 @@ const AddCalculatorForm = (props) => {
     },
     validationSchema: Yup.object({
       serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
-      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-      port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
+      ipV4: checked === true ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
+      deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
+      port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
     }),
     onSubmit: async () => {
       const form = {
@@ -77,15 +77,15 @@ const AddCalculatorForm = (props) => {
   function onSwitchChange(checked) {
     if (checked === true) {
       setChecked(true);
-      setFieldValue('isConnected', false);
-      setFieldValue('ipV4', null);
-      setFieldValue('port', null);
+      setFieldValue('isConnected', true);
       // setFieldValue('deviceAddress', randomInteger(256, 999));
-      setFieldValue('deviceAddress', null);
+      // setFieldValue('deviceAddress', null);
     }
     if (checked === false) {
       setChecked(false);
-      setFieldValue('isConnected', true);
+      setFieldValue('isConnected', false);
+      setFieldValue('ipV4', null);
+      setFieldValue('port', null);
     }
   }
 
@@ -223,13 +223,13 @@ const AddCalculatorForm = (props) => {
 
         <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
 
-          <Form.Item style={{
+          <div style={{
             display: 'flex',
             alignItems: 'center',
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -237,9 +237,9 @@ const AddCalculatorForm = (props) => {
               color: 'rgba(39, 47, 90, 0.9)',
             }}
             >
-              Вычислитель без оборудования связи
+              Опрашивать вычислитель
             </span>
-          </Form.Item>
+          </div>
 
           <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
             <InputTT
@@ -251,9 +251,9 @@ const AddCalculatorForm = (props) => {
               onChange={(event) => {
                 setFieldValue('ipV4', event.target.value);
               }}
-              disabled={checked}
+              // disabled={checked}
             />
-            {checked === false ? <Alert name="ipV4" /> : null }
+            {checked ? <Alert name="ipV4" /> : null }
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -266,10 +266,10 @@ const AddCalculatorForm = (props) => {
               onChange={(event) => {
                 setFieldValue('port', Number(event.target.value) || null);
               }}
-              disabled={checked}
+              // disabled={checked}
             />
             {/* <Alert name="port" /> */}
-            {checked === false ? <Alert name="port" /> : null }
+            {checked ? <Alert name="port" /> : null }
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -282,10 +282,10 @@ const AddCalculatorForm = (props) => {
               onChange={(event) => {
                 setFieldValue('deviceAddress', Number(event.target.value));
               }}
-              disabled={checked}
+              // disabled={checked}
             />
             {/* <Alert name="deviceAddress" /> */}
-            {checked === false ? <Alert name="deviceAddress" /> : null }
+            {checked ? <Alert name="deviceAddress" /> : null }
           </Form.Item>
 
           <Wrap
