@@ -3,27 +3,31 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form, Modal, Switch } from 'antd';
-import {
+import { Form, InputNumber, Switch } from 'antd';
+import  {InputNumberTT,
   Title,
   ButtonTT,
   DatePickerTT, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
-import { items } from '../../../../tt-components/localBases';
+import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import randomInteger from '../../../../utils/randomInteger';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
-
   const [checked, setChecked] = useState(true);
-
   const [currentTabKey, setTab] = useState('1');
+  const [validationSchema, setValidationSchema]= useState();
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
+
+
+  useEffect(()=>{
+    setValidationSchema(defaultValidationSchema)
+  },[])
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -36,20 +40,14 @@ const AddCalculatorForm = (props) => {
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
-      ipV4: null,
+      ipV4: '',
       deviceAddress: null,
       port: null,
       housingStockId: Number(objid),
       infoId: 1,
-      checked: false,
       isConnected: true,
     },
-    validationSchema: Yup.object({
-      serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: checked === true ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
-      deviceAddress: checked === true ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-      port: checked === true ? Yup.number().nullable().required('Введите порт устройства') : null,
-    }),
+    validationSchema,
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
@@ -61,31 +59,51 @@ const AddCalculatorForm = (props) => {
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
-          deviceAddress: values.deviceAddress,
-          port: values.port,
+          deviceAddress: Number(values.deviceAddress),
+          port: Number(values.port),
         },
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
       console.log('form', form);
-      console.log(JSON.stringify(form));
-      addCalculator(form);
-      setTimeout(() => { setAddCalculator(false); }, 1000);
+      // console.log(JSON.stringify(form));
+      // addCalculator(form);
+      // setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
+
+  const defaultValidationSchema = Yup.object({
+    serialNumber: Yup.string().required('Введите серийный номер'),
+    ipV4: checked === true ? Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства') : null,
+    deviceAddress: checked === true ? Yup.number('Введите цифру').nullable().required('Введите сетевой адрес устройства') : null,
+    port: checked === true ? Yup.number('Введите цифру').nullable().required('Введите порт устройства') : null,
+  })
+
+  const notConnectedValidationSchema = Yup.object({
+    serialNumber: Yup.string().required('Введите серийный номер'),
+    ipV4: values.deviceAddress === null || '' ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
+    deviceAddress: checked === true ? Yup.number('Введите цифру').required('Введите сетевой адрес устройства') : null,
+    port: checked === true ? Yup.number('Введите цифру').required('Введите порт устройства') : null,
+  })
+
+  function isSettingForced() {
+    console.log(values)
+  }
+
+  useEffect(()=>{
+      console.log("checked")
+    isSettingForced()
+  }, [checked])
+
 
   function onSwitchChange(checked) {
     if (checked === true) {
       setChecked(true);
       setFieldValue('isConnected', true);
-      // setFieldValue('deviceAddress', randomInteger(256, 999));
-      // setFieldValue('deviceAddress', null);
     }
     if (checked === false) {
       setChecked(false);
       setFieldValue('isConnected', false);
-      setFieldValue('ipV4', null);
-      setFieldValue('port', null);
     }
   }
 
@@ -104,32 +122,7 @@ const AddCalculatorForm = (props) => {
     setTab(value);
   }
 
-  // function handleSubmitErrors() {
-    // console.log('handleSubmitErrors');
-    // const keys = _.keys(errors);
-    // console.log(keys);
-    //
-    // const errorsArr = [
-    //   [
-    //     'infoId',
-    //     'serialNumber',
-    //   ],
-    //   [
-    //     'ipV4',
-    //     'deviceAddress',
-    //     'port',
-    //   ],
-    // ];
-    //
-    // errorsArr.map((item, index) => {
-    //   const newIndex = errorsArr.length - index - 1;
-    //   const res = keys.filter((x) => errorsArr[newIndex].includes(x));
-    //   console.log("res", res)
-    //   if (res.length > 0) {
-    //     setTab(String(newIndex + 1))
-    //   }
-    // })
-  // }
+
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -151,7 +144,7 @@ const AddCalculatorForm = (props) => {
               value={values.serialNumber}
               placeholder="Серийный номер..."
               onChange={handleChange}
-              onBlue={handleBlur}
+              onBlur={handleBlur}
             />
             <Alert name="serialNumber" />
           </Form.Item>
@@ -257,20 +250,32 @@ const AddCalculatorForm = (props) => {
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
-            <InputTT
+            <InputNumberTT
               name="port"
-              type="number"
               placeholder="Введите номер порта"
               value={values.port}
               onBlur={handleBlur}
-              onChange={(event) => {
-                setFieldValue('port', Number(event.target.value) || null);
-              }}
-              // disabled={checked}
+              onChange={(value) => setFieldValue('port', value)}
             />
             {/* <Alert name="port" /> */}
             {checked ? <Alert name="port" /> : null }
           </Form.Item>
+
+          {/*<Form.Item label="Порт вычислителя" style={{ width: '49%' }}>*/}
+          {/*  <InputTT*/}
+          {/*    name="port"*/}
+          {/*    type="number"*/}
+          {/*    placeholder="Введите номер порта"*/}
+          {/*    value={values.port}*/}
+          {/*    onBlur={handleBlur}*/}
+          {/*    onChange={(event) => {*/}
+          {/*      setFieldValue('port', event.target.value);*/}
+          {/*    }}*/}
+          {/*    // disabled={checked}*/}
+          {/*  />*/}
+          {/*  /!* <Alert name="port" /> *!/*/}
+          {/*  {checked ? <Alert name="port" /> : null }*/}
+          {/*</Form.Item>*/}
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
             <InputTT
@@ -280,7 +285,7 @@ const AddCalculatorForm = (props) => {
               value={values.deviceAddress}
               onBlur={handleBlur}
               onChange={(event) => {
-                setFieldValue('deviceAddress', Number(event.target.value));
+                setFieldValue('deviceAddress', event.target.value);
               }}
               // disabled={checked}
             />
