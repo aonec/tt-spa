@@ -255,6 +255,7 @@ const ModalSonoSafeReportForm = (props) => {
     <Modal
       width={800}
       visible={visible}
+      onCancel={handleCancel}
       footer={Footer()}
     >
 
