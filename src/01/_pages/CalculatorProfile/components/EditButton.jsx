@@ -59,7 +59,7 @@ export const Menu = (showPopupHandler) => {
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
         <ListItem onClick={showDeregisterDeviceModal} style={{ color: '#FC525B' }}>
-          Снять вычислитель
+          Закрыть вычислитель
         </ListItem>
       </List>
     </>

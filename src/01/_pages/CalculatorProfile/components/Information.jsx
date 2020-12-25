@@ -7,6 +7,7 @@ import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 import {Subtitle} from "../../../_components/Headers";
 
+
 export const Information = (loading = true) => {
   const {
     device, building, loadings, error,
