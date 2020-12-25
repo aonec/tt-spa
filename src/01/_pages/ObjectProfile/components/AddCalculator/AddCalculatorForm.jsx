@@ -15,10 +15,8 @@ import { addCalculator } from './apiAddCalculator';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
-  // const [checked, setChecked] = useState(true);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const [state, setState] = useState();
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
@@ -85,39 +83,39 @@ const AddCalculatorForm = (props) => {
 
 
   function setConnectionErrorsEmpty() {
-    setFieldError('deviceAddress', undefined);
-    setFieldError('ipV4', undefined);
-    setFieldError('port',undefined);
+    // setFieldError('deviceAddress', undefined);
+    // setFieldError('ipV4', undefined);
+    // setFieldError('port',undefined);
   }
 
-  function res(){
+  function isEmpty(){
     return (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '')
   }
 
   function onSwitchChange(checked) {
     // setChecked(checked);
-    if (checked !== values.checked) {
+    // if (checked !== values.checked) {
       setFieldValue('checked', checked)
-    }
+    // }
   }
 
 
   useEffect(() => {
     //пустые ли все настройки соединений?
-    console.log("Правда, что все строки пустые:?",res())
+    console.log("Правда, что все строки пустые:?",isEmpty())
 
     if (values.checked === true) {
       setFieldValue('isConnected', true);
       setValidationSchema(defaultValidationSchema);
     }
 
-    if (values.checked === false && res()) {
+    if (values.checked === false && isEmpty()) {
       setConnectionErrorsEmpty()
       setFieldValue('isConnected', false);
       setValidationSchema(emptyValidationSchema);
     }
 
-    if (values.checked === false && !res()) {
+    if (values.checked === false && !isEmpty()) {
       setFieldValue('isConnected', false);
       setValidationSchema(defaultValidationSchema);
     }
@@ -147,8 +145,8 @@ const AddCalculatorForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        {/*<div>{JSON.stringify(errors)}</div>*/}
-        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
+        <div>{JSON.stringify(errors)}</div>
+        <div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -264,7 +262,7 @@ const AddCalculatorForm = (props) => {
               }}
               // disabled={checked}
             />
-            {(res() && !values.checked) ? null : <Alert name="ipV4" /> }
+            {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" /> }
             {/* {checked ? <Alert name="ipV4" /> : null } */}
           </Form.Item>
 
@@ -277,7 +275,7 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {(res() && !values.checked) ? null : <Alert name="port" /> }
+            {(isEmpty() && !values.checked) ? null : <Alert name="port" /> }
             {/* {checked ? <Alert name="port" /> : null } */}
           </Form.Item>
 
@@ -291,7 +289,8 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-            {(res() && !values.checked) ? null : <Alert name="deviceAddress" /> }
+            {/*{(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" /> }*/}
+            <Alert name="deviceAddress" />
             {/* {checked ? <Alert name="deviceAddress" /> : null } */}
           </Form.Item>
 
