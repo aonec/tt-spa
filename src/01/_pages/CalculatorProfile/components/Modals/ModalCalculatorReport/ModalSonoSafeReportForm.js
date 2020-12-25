@@ -117,23 +117,25 @@ const ModalSonoSafeReportForm = (props) => {
       detail: 'daily',
       begin: '',
       end: '',
-      // begin: moment().subtract(1, 'month'),
-      // end: moment(),
       resource: resources[0],
       currentValue: undefined,
       entryNumber: null,
       pipeNumber: undefined,
-      test: undefined,
       checked: true,
+      customdisabled: true
     },
     validationSchema: Yup.object({
-      entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
-        .max(10, 'Скорее всего, выбран некорректный номер узла'),
+      entryNumber: Yup.number().typeError('Выберите узел')
     }),
     onSubmit: async () => {
       downloadReport();
     },
   });
+
+  // useEffect(() => {
+  //   console.log(values.period)
+  //   },
+  //   [values.period])
 
   const Translate = {
     Heat: 'Отопление',
@@ -171,18 +173,14 @@ const ModalSonoSafeReportForm = (props) => {
   const onPeriodChange = (event) => {
     const res = event.target.value;
     setFieldValue('period', res);
-    setFieldValue('begin', moment().subtract(1, res));
-    setFieldValue('end', moment());
+    setFieldValue('customdisabled', res === 'month' ? true : false)
+    setFieldValue('begin', res === 'month' ? '' : moment().subtract(1, 'months').startOf('month'))
+    // setFieldValue('end', moment());
   };
 
   const onDetailChange = (event) => {
     const res = event.target.value;
     setFieldValue('detail', res);
-  };
-
-  const datePickerHandler = (event) => {
-    setFieldValue('begin', event[0]);
-    setFieldValue('end', event[1]);
   };
 
   const Alert = ({ name }) => {
@@ -237,9 +235,12 @@ const ModalSonoSafeReportForm = (props) => {
     </div>
   );
 
-  const radioStyle = {
 
-  };
+  useEffect(() => {
+    console.log(values)
+  },[
+    values
+  ])
 
   const RadioStyled = styled(Radio)`
     display: block;
@@ -292,10 +293,14 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onPeriodChange(event)}
             >
-              <RadioStyled value="month" checked>
+              <RadioStyled
+                key='month'
+                value="month" checked>
                 За прошлый месяц
               </RadioStyled>
-              <RadioStyled value="day">Произвольный период</RadioStyled>
+              <RadioStyled
+                key='custom'
+                value="custom">Произвольный период</RadioStyled>
             </Radio.Group>
           </Form.Item>
 
@@ -305,45 +310,51 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onDetailChange(event)}
             >
-              <RadioStyled style={radioStyle} value="monthly">
+              <RadioStyled
+                key={'monthly'}
+                value="monthly">
                 Месячная
               </RadioStyled>
             </Radio.Group>
           </Form.Item>
         </div>
 
-        <Form.Item label="Начало">
-          <DatePickerTT
-            format="MMMM YYYY"
-            allowClear={false}
-            size="48px"
-            picker="month"
-            value={values.begin}
-            name='begin'
-            placeholder="Выберите месяц"
-            onChange={(date) => {
-              console.log(date);
-              setFieldValue('begin', date);
-            }}
-          />
-        </Form.Item>
+        <div style={{display: 'flex'}}>
+          <Form.Item label="Начало" style={{width: 144}}>
+            <DatePickerTT
+              format="MMMM YYYY"
+              allowClear={false}
+              size="48px"
+              picker="month"
+              value={values.begin}
+              name='begin'
+              placeholder="Выберите месяц"
+              onChange={(date) => {
+                console.log(date);
+                setFieldValue('begin', date);
+              }}
+              disabled={values.customdisabled}
+            />
+          </Form.Item>
 
-        <Form.Item label="Окончание">
-          <DatePickerTT
-            format="MMMM YYYY"
-            allowClear={false}
-            size="48px"
-            picker="month"
-            name='end'
-            value={values.end}
-            placeholder="Выберите месяц"
-            onChange={(date) => {
-              console.log(date);
-              setFieldValue('end', date);
-            }}
-            disabled={values.checked}
-          />
-        </Form.Item>
+          <Form.Item label="Окончание" style={{width: 144, marginLeft:32}}>
+            <DatePickerTT
+              format="MMMM YYYY"
+              allowClear={false}
+              size="48px"
+              picker="month"
+              name='end'
+              value={values.end}
+              placeholder="Выберите месяц"
+              onChange={(date) => {
+                console.log(date);
+                setFieldValue('end', date);
+              }}
+              disabled={values.checked || values.customdisabled}
+            />
+          </Form.Item>
+        </div>
+
 
         <Checkbox
           checked={values.checked}
@@ -352,6 +363,7 @@ const ModalSonoSafeReportForm = (props) => {
             console.log(e.target.checked);
             setFieldValue('checked', e.target.checked);
           }}
+          disabled={values.customdisabled}
         >
           {'Отчет за 1 месяц'}
         </Checkbox>
