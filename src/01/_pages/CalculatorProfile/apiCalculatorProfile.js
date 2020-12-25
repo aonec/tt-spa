@@ -13,10 +13,9 @@ export async function getCalculator(id = '') {
   }
 }
 
-export async function getCalculatorTasks(url = '') {
+export async function getCalculatorTasks(id = '') {
   try {
-    const newURL = `Tasks?DeviceId=${url}`;
-    const res = await axios.get(newURL);
+    const res = await axios.get(`Tasks?GroupType=2&DeviceId=${id}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -26,3 +25,8 @@ export async function getCalculatorTasks(url = '') {
     };
   }
 }
+
+//0 - Executing
+//1 - Observing
+//2 - Not Archived
+//3 - Archived
