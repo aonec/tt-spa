@@ -15,7 +15,7 @@ export const ModalCalculatorReport = () => {
     setReport(false);
   };
   console.log(device);
-  // if (device.infoId !== 10) {
+  if (device.infoId !== 10) {
     return (
       <Modal
         visible={report}
@@ -26,11 +26,11 @@ export const ModalCalculatorReport = () => {
         <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
       </Modal>
     );
-  // }
+  }
 
-  // return (
-  //   <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
-  // );
+  return (
+    <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
+  );
 };
 
 export default ModalCalculatorReport;

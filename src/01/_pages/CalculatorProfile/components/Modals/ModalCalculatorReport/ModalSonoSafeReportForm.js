@@ -5,11 +5,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import Modal from 'antd/es/modal/Modal';
+import styled from 'styled-components';
 import {
+  DatePickerTT,
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
-
-import styled from 'styled-components'
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
@@ -114,8 +114,10 @@ const ModalSonoSafeReportForm = (props) => {
     initialValues: {
       period: 'month',
       detail: 'daily',
-      begin: moment().subtract(1, 'month'),
-      end: moment(),
+      begin: '',
+      end: '',
+      // begin: moment().subtract(1, 'month'),
+      // end: moment(),
       resource: resources[0],
       currentValue: undefined,
       entryNumber: null,
@@ -245,10 +247,7 @@ const ModalSonoSafeReportForm = (props) => {
       font-weight: 400;
       color: rgba(39, 47, 90, 0.9);
     }
-    .ant-radio-checked::after {
-      
-    }
-  `
+  `;
 
   return (
     <Modal
@@ -258,7 +257,7 @@ const ModalSonoSafeReportForm = (props) => {
     >
 
       <Form id="formReport">
-        <Header style={{margin: 0, padding: 0}}>
+        <Header style={{ margin: 0, padding: 0 }}>
           Выгрузка отчета о общедомовом потреблении SonoSafe
         </Header>
 
@@ -285,45 +284,60 @@ const ModalSonoSafeReportForm = (props) => {
 
         <div id="period_and_type " style={{ display: 'flex' }}>
 
-          <Form.Item label="Период" style={{ marginRight: '24px' }}>
+          <Form.Item label="Период" style={{ width: '50%' }}>
             <Radio.Group
               defaultValue="month"
               size="large"
               onChange={(event) => onPeriodChange(event)}
             >
-              <Radio.Button value="month" checked>
-                Месячный
-              </Radio.Button>
-              <Radio.Button value="day">Суточный</Radio.Button>
-              <Radio.Button value="year">Годовой</Radio.Button>
+              <RadioStyled value="month" checked>
+                За прошлый месяц
+              </RadioStyled>
+              <RadioStyled value="day">Произвольный период</RadioStyled>
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item label="Детализация отчета">
+          <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
             <Radio.Group
               defaultValue="monthly"
               size="large"
               onChange={(event) => onDetailChange(event)}
             >
-              <RadioStyled style={radioStyle} value={"monthly"}>
+              <RadioStyled style={radioStyle} value="monthly">
                 Месячная
               </RadioStyled>
-              <Radio style={radioStyle} value={"ddd"}>
-                ffff
-              </Radio>
             </Radio.Group>
           </Form.Item>
         </div>
 
-        <Form.Item label="Период выгрузки">
-          <RangePickerTT
-            format="DD.MM.YYYY"
+        <Form.Item label="Начало">
+          <DatePickerTT
+            format="MMMM YYYY"
             allowClear={false}
             size="48px"
-            value={[values.begin, values.end]}
-            placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event) => {
-              datePickerHandler(event);
+            picker="month"
+            value={values.begin}
+            name='begin'
+            placeholder="Выберите месяц"
+            onChange={(date) => {
+              console.log(date);
+              setFieldValue('begin', date);
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item label="Окончание">
+          <DatePickerTT
+            format="MMMM YYYY"
+            allowClear={false}
+            size="48px"
+            picker="month"
+            name='end'
+            value={values.end}
+            placeholder="Выберите месяц"
+            onChange={(date) => {
+              console.log(date);
+              setFieldValue('end', date);
             }}
           />
         </Form.Item>

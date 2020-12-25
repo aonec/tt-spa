@@ -1,25 +1,20 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { DatePicker } from 'antd';
 
+const { RangePicker } = DatePicker;
+
 export const DatePickerTT = styled(DatePicker)`
-  width: 100%;
-  height: 48px;
-  padding: 8px 24px !important;
-  {
-  input {
-   font-size: 16px;
-   line-height: 32px;
-   color: rgba(39, 47, 90, 0.8);
-  }}
-  ${({ color }) => (color == 'rgba'
-  && css`
-     color: rgba(39, 47, 90, 0.6);
-      `)
-  || (color == 'grey'
-    && css`
-       color: rgba(39, 47, 90, 0.6);
-      `)};
-      
+ height: 48px;
+ width: 100%; 
+ {
+ .ant-picker-range {
+   height: 100% !important;
+   padding: 8px 24px !important;
+   span {
+     font-size: 16px;
+     line-height: 32px;
+   }
+ }     
 `;
 
-export default DatePickerTT;
+export default DatePicker;
