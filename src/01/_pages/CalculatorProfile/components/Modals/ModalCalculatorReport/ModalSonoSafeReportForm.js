@@ -6,23 +6,37 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import Modal from 'antd/es/modal/Modal';
 import styled from 'styled-components';
+import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
   DatePickerTT,
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import Checkbox from "antd/es/checkbox/Checkbox";
 
 // import { device } from './CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
+const RadioStyled = styled(Radio)`
+    display: block;
+    span {
+      font-size: 16px;
+      line-height: 32px;
+      font-weight: 400;
+      color: rgba(39, 47, 90, 0.9);
+    }
+  `;
+
 const ModalSonoSafeReportForm = (props) => {
-  const { device, handleCancel } = props;
+  const { device, handleCancel, visible } = props;
+  // const {
+  //   id, model, serialNumber, address, hubs,
+  // } = device;
   const {
-    id, model, serialNumber, address, hubs,
+    model, serialNumber, address, hubs,
   } = device;
+  const id = 2889799;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -114,28 +128,49 @@ const ModalSonoSafeReportForm = (props) => {
   } = useFormik({
     initialValues: {
       period: 'month',
-      detail: 'daily',
+      detail: 'monthly',
       begin: '',
       end: '',
       resource: resources[0],
       currentValue: undefined,
       entryNumber: null,
-      pipeNumber: undefined,
+      pipeNumber: 5,
       checked: true,
-      customdisabled: true
+      customdisabled: true,
     },
     validationSchema: Yup.object({
-      entryNumber: Yup.number().typeError('Выберите узел')
+      entryNumber: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
-      downloadReport();
+      console.log('values', values);
+      // console.log(convertDateOnly(values.begin.toISOString()));
+      // console.log(convertDateOnly(values.end.toISOString()));
+
+      // if (values.period === 'month') {
+      //   setFieldValue('begin', moment().subtract(1, 'months').startOf('month'))
+      //   setFieldValue('end', moment().startOf('month'))
+      // }
+
+      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'))
+      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'))
+
+      console.log(values)
+      console.log('entryNumberRes', values.entryNumber);
+      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
+        values.detail
+      }&resourcetype=${values.resource}&entrynumber=${
+        values.entryNumber
+      }&pipenumber=${values.pipeNumber}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
+
+      console.log(link);
+
+      const linkToDownload = document.createElement('a');
+      linkToDownload.setAttribute('href', link);
+      linkToDownload.setAttribute('download', 'download');
+      linkToDownload.click();
+      // window.open(link);
     },
   });
-
-  // useEffect(() => {
-  //   console.log(values.period)
-  //   },
-  //   [values.period])
 
   const Translate = {
     Heat: 'Отопление',
@@ -145,36 +180,11 @@ const ModalSonoSafeReportForm = (props) => {
 
   const translate = (resource) => Translate[resource];
 
-  const downloadReport = () => {
-    console.log('entryNumberRes.current = ', values.entryNumber);
-    if (values.entryNumber) {
-      console.log('entryNumberRes', values.entryNumber);
-      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-        values.detail
-      }&resourcetype=${values.resource}&entrynumber=${
-        values.entryNumber
-      }&pipenumber=${values.pipeNumber}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
-        values.end,
-      )}T00:00:00Z`;
-
-      console.log(link);
-
-      const linkToDownload = document.createElement('a');
-      linkToDownload.setAttribute('href', link);
-      linkToDownload.setAttribute('download', 'download');
-      linkToDownload.click();
-
-      // window.open(link);
-    } else {
-      alert('Выберите узел!');
-    }
-  };
-
   const onPeriodChange = (event) => {
     const res = event.target.value;
     setFieldValue('period', res);
-    setFieldValue('customdisabled', res === 'month' ? true : false)
-    setFieldValue('begin', res === 'month' ? '' : moment().subtract(1, 'months').startOf('month'))
+    setFieldValue('customdisabled', res === 'month');
+    setFieldValue('begin', res === 'month' ? '' : moment().subtract(1, 'months').startOf('month'));
     // setFieldValue('end', moment());
   };
 
@@ -235,27 +245,16 @@ const ModalSonoSafeReportForm = (props) => {
     </div>
   );
 
-
   useEffect(() => {
-    console.log(values)
-  },[
-    values
-  ])
-
-  const RadioStyled = styled(Radio)`
-    display: block;
-    span {
-      font-size: 16px;
-      line-height: 32px;
-      font-weight: 400;
-      color: rgba(39, 47, 90, 0.9);
-    }
-  `;
+    console.log(values);
+  }, [
+    values,
+  ]);
 
   return (
     <Modal
       width={800}
-      visible
+      visible={visible}
       footer={Footer()}
     >
 
@@ -294,13 +293,18 @@ const ModalSonoSafeReportForm = (props) => {
               onChange={(event) => onPeriodChange(event)}
             >
               <RadioStyled
-                key='month'
-                value="month" checked>
+                key="month"
+                value="month"
+                checked
+              >
                 За прошлый месяц
               </RadioStyled>
               <RadioStyled
-                key='custom'
-                value="custom">Произвольный период</RadioStyled>
+                key="custom"
+                value="custom"
+              >
+                Произвольный период
+              </RadioStyled>
             </Radio.Group>
           </Form.Item>
 
@@ -311,61 +315,64 @@ const ModalSonoSafeReportForm = (props) => {
               onChange={(event) => onDetailChange(event)}
             >
               <RadioStyled
-                key={'monthly'}
-                value="monthly">
+                key="monthly"
+                value="monthly"
+              >
                 Месячная
               </RadioStyled>
             </Radio.Group>
           </Form.Item>
         </div>
 
-        <div style={{display: 'flex'}}>
-          <Form.Item label="Начало" style={{width: 144}}>
+        <div style={{ display: 'flex' }}>
+          <Form.Item label="Начало" style={{ width: 144 }}>
             <DatePickerTT
               format="MMMM YYYY"
               allowClear={false}
               size="48px"
               picker="month"
               value={values.begin}
-              name='begin'
+              name="begin"
               placeholder="Выберите месяц"
               onChange={(date) => {
                 console.log(date);
-                setFieldValue('begin', date);
+                setFieldValue('begin', date.startOf('month'));
               }}
               disabled={values.customdisabled}
             />
           </Form.Item>
 
-          <Form.Item label="Окончание" style={{width: 144, marginLeft:32}}>
+          <Form.Item label="Окончание" style={{ width: 144, marginLeft: 32 }}>
             <DatePickerTT
               format="MMMM YYYY"
               allowClear={false}
               size="48px"
               picker="month"
-              name='end'
+              name="end"
               value={values.end}
               placeholder="Выберите месяц"
               onChange={(date) => {
                 console.log(date);
-                setFieldValue('end', date);
+                setFieldValue('end', date.endOf('month'));
               }}
               disabled={values.checked || values.customdisabled}
             />
           </Form.Item>
         </div>
 
-
         <Checkbox
           checked={values.checked}
           // disabled={this.state.disabled}
-          onChange={(e) =>{
-            console.log(e.target.checked);
-            setFieldValue('checked', e.target.checked);
+          onChange={(e) => {
+            const checked = e.target.checked
+            setFieldValue('checked', checked);
+            if (checked === true) {
+              setFieldValue('end','')
+            }
           }}
           disabled={values.customdisabled}
         >
-          {'Отчет за 1 месяц'}
+          Отчет за 1 месяц
         </Checkbox>
 
       </Form>

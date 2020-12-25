@@ -29,7 +29,7 @@ export const ModalCalculatorReport = () => {
   }
 
   return (
-    <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
+    <ModalSonoSafeReportForm device={device} visible={report} handleCancel={handleCancel} />
   );
 };
 
