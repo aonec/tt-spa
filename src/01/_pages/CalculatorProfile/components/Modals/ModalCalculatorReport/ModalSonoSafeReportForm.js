@@ -12,6 +12,7 @@ import {
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
+import Checkbox from "antd/es/checkbox/Checkbox";
 
 // import { device } from './CalculatorTemplate';
 
@@ -123,6 +124,7 @@ const ModalSonoSafeReportForm = (props) => {
       entryNumber: null,
       pipeNumber: undefined,
       test: undefined,
+      checked: true,
     },
     validationSchema: Yup.object({
       entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
@@ -339,8 +341,20 @@ const ModalSonoSafeReportForm = (props) => {
               console.log(date);
               setFieldValue('end', date);
             }}
+            disabled={values.checked}
           />
         </Form.Item>
+
+        <Checkbox
+          checked={values.checked}
+          // disabled={this.state.disabled}
+          onChange={(e) =>{
+            console.log(e.target.checked);
+            setFieldValue('checked', e.target.checked);
+          }}
+        >
+          {'Отчет за 1 месяц'}
+        </Checkbox>
 
       </Form>
 
