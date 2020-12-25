@@ -30,11 +30,15 @@ align-items: center;
 height: 72px;
 `
 
+type ParamsType = {
+    id: string
+}
+
 
 // const HousesDevices: React.FC<Props> = ({searchState}) => {
 const HousesDevices: React.FC = () => {
 
-    let { id: housingStockId } = useParams();
+    let { id: housingStockId }: ParamsType = useParams();
 
 
     // const [state, dispatch] = useReducer<React.Reducer<RequestDevicesByHouseType, SetDevicesACType>>(devicesReadingsByHouseReducer, initialState);

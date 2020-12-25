@@ -15,7 +15,8 @@ import moment from "moment";
 
 const HouseReadingsDevice = styled.div`
 display: grid;
-grid-template-columns: 1fr 2.5fr 0.5fr 2fr 2fr 2fr 1.3fr 1.2fr;
+grid-template-columns: 1fr 2.5fr 0.3fr 2fr 1.9fr 1.9fr 1.5fr 1.2fr;
+
 // grid-template-columns: 1fr 3fr 0.5fr 2fr 2fr 1.5fr repeat(2, 100px);
 // grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 0.5fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.5fr);
 // 1fr 3fr 0.5fr 2fr 2fr 100px 1fr 1.5fr;
@@ -51,19 +52,24 @@ const Consumption = styled.div`
 }
 `
 
+type ReadingsArray = Array<number>
+type ReadingsStateType = {
+    previousReadingsArray: ReadingsArray
+    currentReadingsArray: ReadingsArray
+    prevId: number
+    currId: number
+    resource: string
+}
 type Props = {
     device: IndividualDeviceType
 }
 
-export const DeviceReadingLine:React.FC<Props> = React.memo(({device, dispatch}) => {
-    const [consumptionState, setConsumptionState] = useState([])
+export const DeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
+    const [consumptionState, setConsumptionState] = useState([] as Array<number>)
 
-    const numberOfReadings = rateTypeToNumber(device.rateType);
+    const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
-
-
-
-        const [readingsState, setReadingsState] = useState({});
+        const [readingsState, setReadingsState] = useState({} as ReadingsStateType);
 
         useReadings(device, setReadingsState);
 
@@ -88,7 +94,7 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device, dispatch})
         })
 
         const sendReadings = () => {
-            const deviceReadingObject = {
+            const deviceReadingObject: any = {
                 deviceId: device.id,
                 value1: +readingsState.currentReadingsArray[0],
                 readingDate: moment().toISOString(),
@@ -103,24 +109,23 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device, dispatch})
             axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
         }
 
-        const onInputChange = (e, index) => {
+        const onInputChange = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
             e.preventDefault();
             setReadingsState((state) => ({
                 ...state,
-                currentReadingsArray: state.currentReadingsArray.map((reading, i) => {
-                        return i === index ? e.target.value : reading
+                currentReadingsArray: state.currentReadingsArray.map((reading, i): number => {
+                        return i === index ? +e.target.value : reading
                     }
                 )
 
             }))
-            // dispatch(updateReadings(device.id, index+1, e.target.value));
         }
 
 
             const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={readingsState.id || device.id + index}
+            <DeviceRatesVertical key={readingsState.currId ?? device.id + index}
                                  index={index}
-                                 onChange={(e) => onInputChange(e, index)}
+                                 onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
                                  value={value}
                                  resource={readingsState.resource}
                                  sendReadings={sendReadings}
@@ -130,7 +135,7 @@ export const DeviceReadingLine:React.FC<Props> = React.memo(({device, dispatch})
         ));
 
         const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={readingsState.id || device.id + index}
+            <DeviceRatesVertical key={readingsState.prevId ?? device.id + index}
                                  index={index}
                                  // onChange={(e) => onInputChange(e, index)}
                                  value={value}

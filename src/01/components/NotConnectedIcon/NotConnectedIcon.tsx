@@ -1,13 +1,13 @@
-import React from "react"
+import React, {ReactNode} from "react"
 import styled from "styled-components";
 import { Tooltip } from 'antd';
 
 
 type props = {
-    className: string
+    className?: string
 }
 
-export const Container: React.FC<props> = ({className}) => {
+const Container: React.FC<props> = ({className}) => {
     return (
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
                 <path d="M7.0029 11.6757C6.86273 11.8049 6.75031 11.9606 6.67233 12.1336C6.59436 12.3066 6.55243 12.4933 6.54905 12.6827C6.54567 12.8721 6.58091 13.0602 6.65266 13.2358C6.72441 13.4114 6.83121 13.5709 6.96669 13.7049C7.10216 13.8388 7.26353 13.9444 7.44117 14.0153C7.61882 14.0862 7.80909 14.1211 8.00065 14.1177C8.19221 14.1144 8.38112 14.0729 8.55613 13.9959C8.73113 13.9188 8.88863 13.8076 9.01924 13.6691C9.28641 13.4046 9.43647 13.0462 9.43647 12.6724C9.43647 12.2987 9.28641 11.9402 9.01924 11.6757C8.74764 11.4194 8.38658 11.2764 8.01107 11.2764C7.63556 11.2764 7.2745 11.4194 7.0029 11.6757ZM8.34871 13.0062C8.25961 13.0938 8.13908 13.1429 8.01345 13.1429C7.88781 13.1429 7.76728 13.0938 7.67818 13.0062C7.58961 12.9181 7.5399 12.799 7.5399 12.6748C7.5399 12.5506 7.58961 12.4314 7.67818 12.3433C7.76728 12.2558 7.88781 12.2066 8.01345 12.2066C8.13908 12.2066 8.25961 12.2558 8.34871 12.3433C8.43728 12.4314 8.487 12.5506 8.487 12.6748C8.487 12.799 8.43728 12.9181 8.34871 13.0062Z" fill="#272F5A"/>
@@ -23,7 +23,17 @@ const NotConnectedIconContainer = styled(Container)`
     }
 `
 
-export const NotConnectedIcon = () => {
+export const NotConnectedIcon:React.FC = (props) => {
+    const {is} = props;
+    if (is ==='calculator') {
+        return (
+            <Tooltip
+                title="Вычислитель учета без связи"
+                color="var(--main-100)">
+                <span style={{display: 'flex', alignItems: 'center', marginLeft: 8}}><NotConnectedIconContainer /></span>
+            </Tooltip>
+        )
+    }
     return (
         <Tooltip
             title="Узел учета без оборудования связи"

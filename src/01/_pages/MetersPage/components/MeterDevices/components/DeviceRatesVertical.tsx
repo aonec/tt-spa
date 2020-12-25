@@ -3,7 +3,7 @@ import React, {ReactEventHandler, useContext, useState} from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 
-const ReadingLineStyled = styled.div`
+const ReadingLineStyled = styled.div<{houseReadings: boolean}>`
 
 position: relative; 
 padding-right: ${props => props.houseReadings ? 0 : '16px'};
@@ -24,7 +24,7 @@ background-color: #F3F5F6;
 }
 `;
 
-const TarifLabel = styled.span`
+const TarifLabel = styled.span<{houseReadings: boolean}>`
 width: ${props => props.houseReadings ? '20px': '72px'};
 padding-left: ${props => props.houseReadings ? 0: '8px'};
 padding-right: ${props => props.houseReadings ? 0: '8px'};
@@ -33,7 +33,7 @@ color: rgba(39, 47, 90, 0.32);
 
 interface DeviceRatesVerticalProps {
     index: number,
-    onChange?: () => void,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
     value: number,
     readingsBlocked?: boolean,
     resource: string,
@@ -59,7 +59,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           index,
-                          onChange = () => {},
+                          onChange,
                           value,
                           readingsBlocked = false,
                           resource,

@@ -3,31 +3,32 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form, Modal, Switch } from 'antd';
+import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
   DatePickerTT, InputTT, SelectTT, Wrap,
 } from '../../../../tt-components';
-import { items } from '../../../../tt-components/localBases';
+import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import randomInteger from '../../../../utils/randomInteger';
+import { useDebounce } from "../../../../hooks/useDebounce";
+import { returnNullIfEmptyString } from "../../../../utils/returnNullIfEmptyString";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
-
-  const [checked, setChecked] = useState(false);
-
   const [currentTabKey, setTab] = useState('1');
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
 
+
+
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors,
+    handleBlur, setFieldValue, setErrors, setFieldError,
   } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -36,20 +37,15 @@ const AddCalculatorForm = (props) => {
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
-      ipV4: null,
+      ipV4: '',
       deviceAddress: null,
       port: null,
       housingStockId: Number(objid),
       infoId: 1,
-      checked: false,
       isConnected: true,
+      checked: true,
     },
-    validationSchema: Yup.object({
-      serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: checked === false ? Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства') : null,
-      deviceAddress: checked === false ? Yup.number().nullable().required('Введите сетевой адрес устройства') : null,
-      port: checked === false ? Yup.number().nullable().required('Введите порт устройства') : null,
-    }),
+    validationSchema,
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
@@ -58,11 +54,11 @@ const AddCalculatorForm = (props) => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         documentsIds: values.documentsIds,
+        isConnected: values.isConnected,
         connection: {
-          isConnected: values.isConnected,
           ipV4: values.ipV4,
-          deviceAddress: values.deviceAddress,
-          port: values.port,
+          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
+          port: returnNullIfEmptyString(values.port),
         },
         housingStockId: values.housingStockId,
         infoId: values.infoId,
@@ -74,19 +70,59 @@ const AddCalculatorForm = (props) => {
     },
   });
 
-  function onSwitchChange(checked) {
-    if (checked === true) {
-      setChecked(true);
-      setFieldValue('isConnected', false);
-      setFieldValue('ipV4', null);
-      setFieldValue('port', null);
-      setFieldValue('deviceAddress', randomInteger(256, 999));
-    }
-    if (checked === false) {
-      setChecked(false);
-      setFieldValue('isConnected', true);
-    }
+  // const debouncedValues = useDebounce(values, 500);
+
+  useEffect(() => {
+    setValidationSchema(defaultValidationSchema);
+  }, []);
+
+  const defaultValidationSchema = Yup.object({
+    serialNumber: Yup.string().required('Введите серийный номер'),
+    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
+    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
+    port: Yup.number().nullable().required('Введите порт устройства'),
+  });
+
+  const emptyValidationSchema = Yup.object({
+    serialNumber: Yup.string().required('Введите серийный номер'),
+  });
+
+  function isEmptyValue(item) {
+    return item === null || item === '';
   }
+
+  function isEmpty() {
+    return isEmptyValue(values.deviceAddress)
+      && isEmptyValue(values.port)
+      && isEmptyValue(values.ipV4);
+  }
+
+  function onSwitchChange(checked) {
+    setFieldValue('checked', checked);
+  }
+  // function clearConnectionError() {
+  //   setFieldError('ipV4',)
+  //   setFieldError('port',)
+  //   setFieldError('deviceAddress',)
+  // }
+
+  useEffect(() => {
+    console.log('Правда, что все строки пустые:?', isEmpty());
+
+    setFieldValue('isConnected', values.checked);
+    if (values.checked === true) {
+      setValidationSchema(defaultValidationSchema);
+    }
+
+    if (values.checked === false && isEmpty()) {
+      // clearConnectionError()
+      setValidationSchema(emptyValidationSchema);
+    }
+
+    if (values.checked === false && !isEmpty()) {
+      setValidationSchema(defaultValidationSchema);
+    }
+  }, [values]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -103,48 +139,23 @@ const AddCalculatorForm = (props) => {
     setTab(value);
   }
 
-  function handleSubmitErrors() {
-    console.log('handleSubmitErrors');
-    const keys = _.keys(errors);
-    console.log(keys);
-
-    const errorsArr = [
-      [
-        'infoId',
-        'serialNumber',
-      ],
-      [
-        'ipV4',
-        'deviceAddress',
-        'port',
-      ],
-    ];
-
-    errorsArr.map((item, index) => {
-      const newIndex = errorsArr.length - index - 1;
-      const res = keys.filter((x) => errorsArr[newIndex].includes(x));
-      console.log("res", res)
-      if (res.length > 0) {
-        setTab(String(newIndex + 1))
-      }
-    })
-
-
-  }
-
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
       <div>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-
+        {/*<div>{JSON.stringify(errors)}</div>*/}
+        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
 
-        <div hidden={Number(currentTabKey) !== 1} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <div
+          hidden={Number(currentTabKey) !== 1}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        >
 
           <Form.Item label="Серийный номер устройства" style={{ width: '100%' }}>
             <InputTT
@@ -152,7 +163,7 @@ const AddCalculatorForm = (props) => {
               value={values.serialNumber}
               placeholder="Серийный номер..."
               onChange={handleChange}
-              onBlue={handleBlur}
+              onBlur={handleBlur}
             />
             <Alert name="serialNumber" />
           </Form.Item>
@@ -222,15 +233,18 @@ const AddCalculatorForm = (props) => {
           </Form.Item>
         </div>
 
-        <div hidden={Number(currentTabKey) !== 2} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <div
+          hidden={Number(currentTabKey) !== 2}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        >
 
-          <Form.Item style={{
+          <div style={{
             display: 'flex',
             alignItems: 'center',
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.checked} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -238,9 +252,9 @@ const AddCalculatorForm = (props) => {
               color: 'rgba(39, 47, 90, 0.9)',
             }}
             >
-              Вычислитель без оборудования связи
+              Опрашивать вычислитель
             </span>
-          </Form.Item>
+          </div>
 
           <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
             <InputTT
@@ -252,9 +266,9 @@ const AddCalculatorForm = (props) => {
               onChange={(event) => {
                 setFieldValue('ipV4', event.target.value);
               }}
-              disabled={checked}
             />
-            {checked === false ? <Alert name="ipV4" /> : null }
+            {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}
+
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -264,13 +278,10 @@ const AddCalculatorForm = (props) => {
               placeholder="Введите номер порта"
               value={values.port}
               onBlur={handleBlur}
-              onChange={(event) => {
-                setFieldValue('port', Number(event.target.value) || null);
-              }}
-              disabled={checked}
+              onChange={handleChange}
             />
-            {/* <Alert name="port" /> */}
-            {checked === false ? <Alert name="port" /> : null }
+            {(isEmpty() && !values.checked) ? null : <Alert name="port" />}
+
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -280,13 +291,12 @@ const AddCalculatorForm = (props) => {
               placeholder="Введите сетевой адрес вычислителя"
               value={values.deviceAddress}
               onBlur={handleBlur}
-              onChange={(event) => {
-                setFieldValue('deviceAddress', Number(event.target.value));
-              }}
-              disabled={checked}
+              onChange={handleChange}
+              // disabled={checked}
             />
-            {/* <Alert name="deviceAddress" /> */}
-            {checked === false ? <Alert name="deviceAddress" /> : null }
+
+            {(isEmpty() && !values.checked) ? null: <Alert name="deviceAddress" /> }
+
           </Form.Item>
 
           <Wrap
@@ -301,7 +311,10 @@ const AddCalculatorForm = (props) => {
           </Wrap>
         </div>
 
-        <div hidden={Number(currentTabKey) !== 3} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <div
+          hidden={Number(currentTabKey) !== 3}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        >
           <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
@@ -319,10 +332,7 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          onClick={() => {
-            handleSubmitErrors();
-            handleSubmit();
-          }}
+          onClick={handleSubmit}
           hidden={currentTabKey !== '3'}
         >
           Сохранить

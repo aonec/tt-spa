@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 const Container = styled.div`
 display: grid;
-grid-template-columns: 1fr 2.5fr 0.5fr 2fr 2fr 2fr 1.3fr 1.2fr;
+grid-template-columns: 1fr 2.5fr 0.3fr 2fr 1.9fr 1.9fr 1.5fr 1.2fr;
+
 
 
 // grid-template-columns: 1fr 3fr 0.5fr 2fr 2fr 100px 1fr 1.5fr;
@@ -29,8 +30,8 @@ export const HouseReadingsHeader:React.FC = () => {
             <div>Прибор</div>
             <div>Посл. показ.</div>
             <div>Тек. показ.</div>
-            <div>Потребл.</div>
-            <div>Комм.</div>
+            <div>Потребление</div>
+            <div>Комментарии</div>
         </Container>
     )
 }
