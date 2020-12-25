@@ -14,7 +14,7 @@ const ModalCalculator = () => {
 
   return (
     <Modal
-      visible={true}
+      visible={addCalculator}
       onCancel={handleCancel}
       footer={null}
       width={800}

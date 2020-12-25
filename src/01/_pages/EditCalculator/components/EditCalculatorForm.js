@@ -7,16 +7,14 @@ import { NavLink } from 'react-router-dom';
 import {
   InputTT, SelectTT, DatePickerTT, Wrap, ButtonTT, Title,
 } from '../../../tt-components';
-import { items } from '../../../tt-components/localBases';
+import { ipv4RegExp, items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 import { putCalculator } from './apiEditCalculator';
 import isDateNull from "../../../utils/isDateNull";
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
-
-  // const [checked, setChecked] = useState(false);
-
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   // console.log(currentCalc);
 
@@ -51,10 +49,6 @@ const EditCalculatorForm = () => {
   };
   const { id: houseId } = address;
 
-  // useEffect(() => {
-  //   setChecked(isConnected);
-  // }, []);
-
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setErrors,
@@ -73,17 +67,7 @@ const EditCalculatorForm = () => {
       isConnected,
       checked: isConnected
     },
-    validationSchema: Yup.object({
-      lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-      futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-      lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-      futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-      serialNumber: Yup.string().required('Введите серийный номер'),
-      ipV4: Yup.string().typeError('Введите IP-адрес устройства').required('Введите IP-адрес устройства'),
-      deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства') ,
-      port:  Yup.number().nullable().required('Введите порт устройства') ,
-      infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
-    }),
+    validationSchema,
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
@@ -106,21 +90,63 @@ const EditCalculatorForm = () => {
     },
   });
 
+  const defaultValidationSchema = Yup.object({
+    lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+    futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+    lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+    futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+    serialNumber: Yup.string().required('Введите серийный номер'),
+    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
+    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства') ,
+    port:  Yup.number().nullable().required('Введите порт устройства') ,
+    infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
+  });
+
+  const emptyValidationSchema = Yup.object({
+    lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+    futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+    lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+    futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+    serialNumber: Yup.string().required('Введите серийный номер'),
+    infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
+  });
+
+  useEffect(() => {
+    setValidationSchema(defaultValidationSchema);
+  }, []);
+
+
   function onSwitchChange(checked) {
-    if (checked === true) {
-      // setChecked(true);
-      setFieldValue('checked',checked)
-      setFieldValue('isConnected', true)
-    }
-    if (checked === false) {
-      // setChecked(false);
-      setFieldValue('checked',checked)
-      setFieldValue('isConnected', false);
-      setFieldValue('ipV4', '');
-      setFieldValue('port', null);
-      setFieldValue('deviceAddress', null);
-    }
+    setFieldValue('checked', checked);
   }
+
+  function isEmptyValue(item) {
+    return item === null || item === '';
+  }
+
+
+  function isEmpty() {
+    return isEmptyValue(values.deviceAddress)
+      && isEmptyValue(values.port)
+      && isEmptyValue(values.ipV4);
+  }
+
+  useEffect(() => {
+    console.log('Правда, что все строки пустые:?', isEmpty());
+
+    setFieldValue('isConnected', values.checked);
+    if (values.checked === true) {
+      setValidationSchema(defaultValidationSchema);
+    }
+
+    if (values.checked === false && isEmpty()) {
+      setValidationSchema(emptyValidationSchema);
+    }
+
+    if (values.checked === false && !isEmpty()) {
+      setValidationSchema(defaultValidationSchema);
+    }
+  }, [values]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
