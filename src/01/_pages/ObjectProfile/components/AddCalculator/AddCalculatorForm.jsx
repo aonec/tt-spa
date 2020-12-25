@@ -15,7 +15,7 @@ import { addCalculator } from './apiAddCalculator';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
-  const [checked, setChecked] = useState(true);
+  // const [checked, setChecked] = useState(true);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const [state, setState] = useState();
@@ -41,6 +41,7 @@ const AddCalculatorForm = (props) => {
       housingStockId: Number(objid),
       infoId: 1,
       isConnected: true,
+      checked: true
     },
     validationSchema,
     onSubmit: async () => {
@@ -82,9 +83,6 @@ const AddCalculatorForm = (props) => {
     serialNumber: Yup.string().required('Введите серийный номер')
   });
 
-  useEffect(() => {
-
-  }, [checked]);
 
   function setConnectionErrorsEmpty() {
     setFieldError('deviceAddress', undefined);
@@ -92,38 +90,41 @@ const AddCalculatorForm = (props) => {
     setFieldError('port',undefined);
   }
 
-  function onSwitchChange(checked) {
-    setChecked(checked);
-  }
-
   function res(){
     return (values.deviceAddress === null || values.deviceAddress === '') && (values.port === null || values.port === '') && (values.ipV4 === null || values.ipV4 === '')
   }
 
+  function onSwitchChange(checked) {
+    // setChecked(checked);
+    if (checked !== values.checked) {
+      setFieldValue('checked', checked)
+    }
+  }
+
+
   useEffect(() => {
     //пустые ли все настройки соединений?
-
     console.log("Правда, что все строки пустые:?",res())
-    console.log("checkec", checked)
-    if (checked === true) {
+
+    if (values.checked === true) {
       setFieldValue('isConnected', true);
       setValidationSchema(defaultValidationSchema);
     }
 
-    if (checked === false && res()) {
+    if (values.checked === false && res()) {
       setConnectionErrorsEmpty()
       setFieldValue('isConnected', false);
       setValidationSchema(emptyValidationSchema);
     }
 
-    if (checked === false && !res()) {
+    if (values.checked === false && !res()) {
       setFieldValue('isConnected', false);
       setValidationSchema(defaultValidationSchema);
     }
 
 
 
-  }, [checked, values]);
+  }, [values]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -146,7 +147,8 @@ const AddCalculatorForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        <div>{JSON.stringify(errors)}</div>
+        {/*<div>{JSON.stringify(errors)}</div>*/}
+        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -238,7 +240,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.checked} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -262,7 +264,7 @@ const AddCalculatorForm = (props) => {
               }}
               // disabled={checked}
             />
-            {(res() && !checked) ? null : <Alert name="ipV4" /> }
+            {(res() && !values.checked) ? null : <Alert name="ipV4" /> }
             {/* {checked ? <Alert name="ipV4" /> : null } */}
           </Form.Item>
 
@@ -275,7 +277,7 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {(res() && !checked) ? null : <Alert name="port" /> }
+            {(res() && !values.checked) ? null : <Alert name="port" /> }
             {/* {checked ? <Alert name="port" /> : null } */}
           </Form.Item>
 
@@ -289,7 +291,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-            {(res() && !checked) ? null : <Alert name="deviceAddress" /> }
+            {(res() && !values.checked) ? null : <Alert name="deviceAddress" /> }
             {/* {checked ? <Alert name="deviceAddress" /> : null } */}
           </Form.Item>
 
