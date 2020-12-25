@@ -10,11 +10,13 @@ import {
 import { ipv4RegExp, items } from '../../../tt-components/localBases';
 import { EditCalculatorContext } from '../index';
 import { putCalculator } from './apiEditCalculator';
-import isDateNull from "../../../utils/isDateNull";
+import isDateNull from '../../../utils/isDateNull';
+import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [empty, setEmpty] = useState();
 
   // console.log(currentCalc);
 
@@ -35,19 +37,21 @@ const EditCalculatorForm = () => {
     type,
     connection,
     address,
-    isConnected
+    isConnected,
   } = currentCalc;
 
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
 
-  const { ipV4, port, deviceAddress,
-  } = connection || {
+  // const { ipV4, port, deviceAddress } = connection;
+  const { id: houseId } = address;
+
+  const { ipV4, port, deviceAddress } = connection || {
     ipV4: '',
     port: null,
     deviceAddress: null,
   };
-  const { id: houseId } = address;
+  // console.log(connection)
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -60,12 +64,12 @@ const EditCalculatorForm = () => {
       lastCommercialAccountingDate: isDateNull(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateNull(futureCommercialAccountingDate),
       ipV4,
-      deviceAddress,
-      port,
+      port: port === null ? null : port,
+      deviceAddress: deviceAddress === null ? null : deviceAddress,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
       isConnected,
-      checked: isConnected
+      checked: isConnected,
     },
     validationSchema,
     onSubmit: async () => {
@@ -78,8 +82,8 @@ const EditCalculatorForm = () => {
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
-          deviceAddress: values.deviceAddress,
-          port: values.port,
+          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
+          port: returnNullIfEmptyString(values.port),
         },
         housingStockId: values.housingStockId,
         infoId: values.infoId,
@@ -90,6 +94,10 @@ const EditCalculatorForm = () => {
     },
   });
 
+  useEffect(() => {
+    setValidationSchema(defaultValidationSchema);
+  }, []);
+
   const defaultValidationSchema = Yup.object({
     lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
     futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
@@ -97,8 +105,8 @@ const EditCalculatorForm = () => {
     futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
     serialNumber: Yup.string().required('Введите серийный номер'),
     ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
-    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства') ,
-    port:  Yup.number().nullable().required('Введите порт устройства') ,
+    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
+    port: Yup.number().nullable().required('Введите порт устройства'),
     infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
   });
 
@@ -111,19 +119,9 @@ const EditCalculatorForm = () => {
     infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
   });
 
-  useEffect(() => {
-    setValidationSchema(defaultValidationSchema);
-  }, []);
-
-
-  function onSwitchChange(checked) {
-    setFieldValue('checked', checked);
-  }
-
   function isEmptyValue(item) {
     return item === null || item === '';
   }
-
 
   function isEmpty() {
     return isEmptyValue(values.deviceAddress)
@@ -131,22 +129,36 @@ const EditCalculatorForm = () => {
       && isEmptyValue(values.ipV4);
   }
 
-  useEffect(() => {
-    console.log('Правда, что все строки пустые:?', isEmpty());
+  function onSwitchChange(checked) {
+    setFieldValue('checked', checked);
+  }
 
+  useEffect(() => {
+    setEmpty(isEmpty())
+
+    console.log('Правда, что все строки пустые:?', empty);
+    if (values.checked === false && isEmpty()) {
+      setValidationSchema(emptyValidationSchema);
+    }
+    if (values.checked === false && !isEmpty()) {
+      setValidationSchema(defaultValidationSchema);
+    }
+  }, [values.deviceAddress, values.ipV4, values.port]);
+
+  useEffect(() => {
     setFieldValue('isConnected', values.checked);
     if (values.checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
-
-    if (values.checked === false && isEmpty()) {
-      setValidationSchema(emptyValidationSchema);
+    if (values.checked === false) {
+      if (isEmpty()) {
+        setValidationSchema(emptyValidationSchema);
+      } else {
+        setValidationSchema(defaultValidationSchema);
+      }
     }
-
-    if (values.checked === false && !isEmpty()) {
-      setValidationSchema(defaultValidationSchema);
-    }
-  }, [values]);
+  },
+  [values.checked]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -262,10 +274,11 @@ const EditCalculatorForm = () => {
             placeholder="Укажите IP-адрес устройства, например 192.168.0.1"
             onChange={handleChange}
             name="ipV4"
+            onBlur={handleBlur}
             // disabled={!checked}
           />
           {/* <Alert name="ipV4" /> */}
-          {values.checked === true ? <Alert name="ipV4" /> : null }
+          {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}
         </Form.Item>
 
         <Form.Item label="Порт">
@@ -274,12 +287,13 @@ const EditCalculatorForm = () => {
             placeholder="Укажите порт устройства (например, 1234)"
             value={values.port}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="port"
             // disabled={!checked}
 
           />
           {/* <Alert name="port" /> */}
-          {values.checked === true ? <Alert name="port" /> : null }
+          {(isEmpty() && !values.checked) ? null : <Alert name="port" /> }
 
         </Form.Item>
 
@@ -289,11 +303,12 @@ const EditCalculatorForm = () => {
             placeholder="Укажите адреса устройства"
             value={values.deviceAddress}
             onChange={handleChange}
+            onBlur={handleBlur}
             name="deviceAddress"
             // disabled={!checked}
           />
           {/* <Alert name="deviceAddress" /> */}
-          {values.checked === true ? <Alert name="deviceAddress" /> : null }
+          {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />}
         </Form.Item>
 
         <Wrap

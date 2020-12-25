@@ -12,6 +12,8 @@ import {
 import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
+import { useDebounce } from "../../../../hooks/useDebounce";
+import { returnNullIfEmptyString } from "../../../../utils/returnNullIfEmptyString";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
@@ -21,6 +23,8 @@ const AddCalculatorForm = (props) => {
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
+
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -53,8 +57,8 @@ const AddCalculatorForm = (props) => {
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
-          deviceAddress: Number(values.deviceAddress),
-          port: Number(values.port),
+          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
+          port: returnNullIfEmptyString(values.port),
         },
         housingStockId: values.housingStockId,
         infoId: values.infoId,
@@ -65,6 +69,8 @@ const AddCalculatorForm = (props) => {
       setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
+
+  // const debouncedValues = useDebounce(values, 500);
 
   useEffect(() => {
     setValidationSchema(defaultValidationSchema);
@@ -94,6 +100,11 @@ const AddCalculatorForm = (props) => {
   function onSwitchChange(checked) {
     setFieldValue('checked', checked);
   }
+  // function clearConnectionError() {
+  //   setFieldError('ipV4',)
+  //   setFieldError('port',)
+  //   setFieldError('deviceAddress',)
+  // }
 
   useEffect(() => {
     console.log('Правда, что все строки пустые:?', isEmpty());
@@ -104,6 +115,7 @@ const AddCalculatorForm = (props) => {
     }
 
     if (values.checked === false && isEmpty()) {
+      // clearConnectionError()
       setValidationSchema(emptyValidationSchema);
     }
 
@@ -133,8 +145,8 @@ const AddCalculatorForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        <div>{JSON.stringify(errors)}</div>
-        <div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>
+        {/*<div>{JSON.stringify(errors)}</div>*/}
+        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -254,10 +266,9 @@ const AddCalculatorForm = (props) => {
               onChange={(event) => {
                 setFieldValue('ipV4', event.target.value);
               }}
-              // disabled={checked}
             />
             {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}
-            {/* {checked ? <Alert name="ipV4" /> : null } */}
+
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -270,7 +281,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
             />
             {(isEmpty() && !values.checked) ? null : <Alert name="port" />}
-            {/* {checked ? <Alert name="port" /> : null } */}
+
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -283,9 +294,9 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-            {/* {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" /> } */}
-            <Alert name="deviceAddress" />
-            {/* {checked ? <Alert name="deviceAddress" /> : null } */}
+
+            {(isEmpty() && !values.checked) ? null: <Alert name="deviceAddress" /> }
+
           </Form.Item>
 
           <Wrap
