@@ -30,13 +30,13 @@ const RadioStyled = styled(Radio)`
 
 const ModalSonoSafeReportForm = (props) => {
   const { device, handleCancel, visible } = props;
-  // const {
-  //   id, model, serialNumber, address, hubs,
-  // } = device;
   const {
-    model, serialNumber, address, hubs,
+    id, model, serialNumber, address, hubs,
   } = device;
-  const id = 2889799;
+  // const {
+  //   model, serialNumber, address, hubs,
+  // } = device;
+  // const id = 2889799;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;

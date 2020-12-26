@@ -127,8 +127,9 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      <div hidden={Number(currentTabKey) !== 1}>
-        <Form.Item label="Выберите тип прибора">
+      <div hidden={Number(currentTabKey) !== 1}
+           style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        <Form.Item label="Выберите тип прибора" style={{ width: '100%' }}>
           <SelectTT
             name="housingMeteringDeviceType"
             onChange={(value) => {
@@ -141,7 +142,7 @@ const AddDeviceForm = (props) => {
           <Alert name="housingMeteringDeviceType" />
         </Form.Item>
 
-        <Form.Item label="Выберите тип ресурса">
+        <Form.Item label="Выберите тип ресурса" style={{ width: '100%' }}>
           <SelectTT
             name="resource"
             onChange={(value) => {
@@ -153,7 +154,7 @@ const AddDeviceForm = (props) => {
           <Alert name="resource" />
         </Form.Item>
 
-        <Form.Item label="Выберите модель прибора">
+        <Form.Item label="Выберите модель прибора" style={{ width: '49%' }}>
           <InputTT
             name="model"
             type="text"
@@ -164,7 +165,7 @@ const AddDeviceForm = (props) => {
           <Alert name="model" />
         </Form.Item>
 
-        <Form.Item label="Серийный номер">
+        <Form.Item label="Серийный номер" style={{ width: '49%' }}>
           <InputTT
             name="serialNumber"
             type="text"
@@ -176,7 +177,7 @@ const AddDeviceForm = (props) => {
         </Form.Item>
 
         {(state === 'FlowMeter') ? (
-          <Form.Item label="Диаметр трубы (мм)">
+          <Form.Item label="Диаметр трубы (мм)" style={{ width: '100%' }}>
             <InputTT
               name="diameter"
               placeholder="Укажите диаметр трубы в мм"
@@ -189,7 +190,7 @@ const AddDeviceForm = (props) => {
           </Form.Item>
         ) : null}
 
-        <Form.Item label="Дата поверки">
+        <Form.Item label="Дата поверки" style={{ width: '49%' }}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="lastCheckingDate"
@@ -202,7 +203,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата следующей поверки">
+        <Form.Item label="Дата следующей поверки" style={{ width: '49%' }}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCheckingDate"
@@ -215,7 +216,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата начала Акта действия допуска">
+        <Form.Item label="Дата начала Акта действия допуска" style={{ width: '49%' }}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="lastCommercialAccountingDate"
@@ -228,7 +229,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата окончания Акта действия допуска">
+        <Form.Item label="Дата окончания Акта действия допуска" style={{ width: '49%' }}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCommercialAccountingDate"

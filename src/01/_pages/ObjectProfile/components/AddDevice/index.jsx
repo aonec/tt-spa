@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Modal } from 'antd';
+import styled from 'styled-components';
 import { Title, ButtonTT } from '../../../../tt-components';
+import  {StyledFooter, StyledModal, StyledModalBody} from '../../../../tt-components/Modal'
 import TabsComponent from './components/Main';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
@@ -47,6 +49,7 @@ const ModalAddDevice = () => {
           color="blue"
           style={{ marginLeft: '16px' }}
           onClick={handleNext}
+          big
         >
           Далее
         </ButtonTT>
@@ -76,32 +79,35 @@ const ModalAddDevice = () => {
     );
 
     return (
-      <div style={{ margin: '32px 0' }}>
+      <StyledFooter>
         <RenderNextButton />
         <RenderSubmitButton />
         <CancelButton />
-      </div>
+      </StyledFooter>
     );
   };
 
   return (
-    <Modal
+    <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={addOdpu}
+      // visible={addOdpu}
+      visible
     >
-      <Title size="middle" color="black">
-        Добавление нового ОДПУ
-      </Title>
-      <TabsComponent
-        currentTabKey={currentTabKey}
-        handleChangeTab={handleChangeTab}
-      />
-      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
-
+      <StyledModalBody>
+        <Title size="middle" color="black">
+          Добавление нового ОДПУ
+        </Title>
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
+      </StyledModalBody>
       <Buttons />
-    </Modal>
+
+    </StyledModal>
   );
 };
 
