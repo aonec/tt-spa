@@ -92,8 +92,8 @@ const ModalAddDevice = () => {
       onCancel={handleCancel}
       footer={null}
       width={800}
-      // visible={addOdpu}
-      visible
+      visible={addOdpu}
+      // visible
     >
       <StyledModalBody>
         <Title size="middle" color="black">

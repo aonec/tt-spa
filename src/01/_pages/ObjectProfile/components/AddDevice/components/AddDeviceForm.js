@@ -48,6 +48,7 @@ const AddDeviceForm = (props) => {
     }
     if (state === 'TemperatureSensor') {
       setValidationSchema(validationSchemaTemperatureSensor)
+      setFieldValue('diameter', null)
     }
 
   }, [state]);
@@ -93,6 +94,7 @@ const AddDeviceForm = (props) => {
     validationSchema: validationSchema,
 
     onSubmit: async () => {
+
       const form = {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate,
