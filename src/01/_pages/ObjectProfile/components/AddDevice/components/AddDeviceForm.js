@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -11,34 +11,29 @@ import {
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter,
 } from '../../../../../tt-components';
-import { addOdpu } from '../apiAddOdpu';
+import { addOdpu, getCalculator } from '../apiAddOdpu';
 import TabsComponent from './Main';
-import {getCalculator} from '../apiAddOdpu'
 
-import {styles, StyledFormPage} from './styledComponents'
-
-
+import { styles, StyledFormPage } from './styledComponents';
 
 const AddDeviceForm = (props) => {
-  const { calculators, setAddOdpu } = props;
-  const [currentTabKey, setTab] = useState('1');
-  const [calculator, setCalculator] = useState({});
+  const {
+    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator,
+  } = props;
 
-  function handleCancel() {
-    setAddOdpu(false);
+  const pipes = useRef([]);
+
+  if (calculator) {
+    const { hubs } = calculator;
+    const res = [];
+    hubs.map((item, index) => {
+      console.log(index);
+      console.log(item.hub.pipeNumber);
+      res.push(item.hub.pipeNumber);
+    });
+
+    pipes.current = res;
   }
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-  useEffect(() => {
-    console.log('calculator', calculator)
-  },[calculator])
-
-  const handleNext = () => {
-    setTab(String(Number(currentTabKey) + 1));
-  };
 
   const [disable, setDisable] = useState(false);
   const [state, setState] = useState('FlowMeter');
@@ -147,64 +142,19 @@ const AddDeviceForm = (props) => {
   });
 
   useEffect(() => {
+    console.log('state', values.pipeNumber);
+    if (pipes.current.includes(values.pipeNumber)) {
+      alert('Уже есть');
+    }
+  }, [values.pipeNumber]);
+
+  useEffect(() => {
     console.log(values);
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
       // alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
       setColdandthermo(true);
     } else setColdandthermo(false);
   }, [values.resource, values.housingMeteringDeviceType]);
-
-  const Buttons = () => {
-    const OkButton = ({handleNext, currentTabKey, handleCancel}) => {
-      if (currentTabKey !== '3') {
-        return (
-          <ButtonTT
-            color="blue"
-            onClick={handleNext}
-            big
-            // disabled={coldandthermo}
-          >
-            Далее
-          </ButtonTT>
-        );
-      }
-      else {return null}
-    }
-    const NextOkButton = () => {
-      if (currentTabKey === '3') {
-        return (
-          <ButtonTT
-            color="blue"
-            type="submit"
-            form="formikFormAddOdpu"
-            big
-            // disabled={coldandthermo}
-          >
-            Добавить
-          </ButtonTT>
-        );
-      }
-      else {return null}
-
-
-    };
-
-    const CancelButton = () => (
-      <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-        Отмена
-      </ButtonTT>
-    );
-
-    return (
-      <StyledFooter>
-        <NextOkButton style={{ marginLeft: '16px' }} />
-        <OkButton style={{ marginLeft: '16px' }} />
-        <CancelButton />
-      </StyledFooter>
-    );
-  };
-  
-
 
   return (
 
@@ -364,9 +314,9 @@ const AddDeviceForm = (props) => {
               onBlur={handleBlur}
               placeholder="Начните вводить серийный номер или IP адрес прибора"
               onChange={(value) => {
-                console.log(value)
+                console.log(value);
                 setFieldValue('calculatorId', value);
-                getCalculator(value).then(result => setCalculator(result));
+                getCalculator(value).then((result) => setCalculator(result));
               }}
               options={calculators}
               value={values.calculatorId}
@@ -435,7 +385,6 @@ const AddDeviceForm = (props) => {
           <Title color="black">Компонент в разработке</Title>
         </StyledFormPage>
       </StyledModalBody>
-      {Buttons}
     </form>
   );
 };
