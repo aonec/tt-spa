@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Modal } from 'antd';
-import { Title, ButtonTT } from '../../../../tt-components';
-import TabsComponent from './components/Main';
+import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
 import { getObjectCalculators } from './apiAddOdpu';
 
 const ModalAddDevice = () => {
-  const [currentTabKey, setTab] = useState('1');
   const [calculators, setCalculators] = useState([]);
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
 
@@ -29,79 +26,18 @@ const ModalAddDevice = () => {
     setAddOdpu(false);
   }
 
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-  const handleNext = () => {
-    setTab(String(Number(currentTabKey) + 1));
-  };
-
-  const Buttons = () => {
-    const RenderNextButton = () => {
-      if (currentTabKey === '3') {
-        return null;
-      }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          onClick={handleNext}
-        >
-          Далее
-        </ButtonTT>
-      );
-    };
-
-    const RenderSubmitButton = () => {
-      if (currentTabKey !== '3') {
-        return null;
-      }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          form="formikFormAddOdpu"
-        >
-          Сохранить
-        </ButtonTT>
-      );
-    };
-
-    const CancelButton = () => (
-      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-        Отмена
-      </ButtonTT>
-    );
-
-    return (
-      <div style={{ margin: '32px 0' }}>
-        <RenderNextButton />
-        <RenderSubmitButton />
-        <CancelButton />
-      </div>
-    );
-  };
-
   return (
-    <Modal
+    <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
       visible={addOdpu}
+      // visible
     >
-      <Title size="middle" color="black">
-        Добавление нового ОДПУ
-      </Title>
-      <TabsComponent
-        currentTabKey={currentTabKey}
-        handleChangeTab={handleChangeTab}
-      />
-      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
 
-      <Buttons />
-    </Modal>
+      <AddDeviceForm calculators={calculators} setAddOdpu={setAddOdpu} />
+
+    </StyledModal>
   );
 };
 
