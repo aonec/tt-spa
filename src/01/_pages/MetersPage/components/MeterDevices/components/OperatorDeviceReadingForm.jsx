@@ -226,6 +226,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     ));
 
     const onBlurHandler = (e) => {
+        debugger;
         if (!e.currentTarget.contains(e.relatedTarget)) {
             const isNull = isNullInArray(readingsState.currentReadingsArray)
             if (isNull) {
@@ -233,21 +234,17 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
             } else {
                 if (readingsState.currentReadingsArray !== initialReadings) {
                     sendReadings(device)
-                    setDisabledState((prevState) => prevState.map((el) => {
-                        return el.deviceId === device.id
-                            ? {...el, isDisabled: false}
-                            : {... el, isDisabled: false}
-                    }))
-                } else {
-                    setDisabledState((prevState) => prevState.map((el) => {
-                        return el.deviceId === device.id
-                            ? {...el, isDisabled: false}
-                            : {... el, isDisabled: false}
-                    }))
+
+                }
+                setDisabledState((prevState) => prevState.map((el) => {
+                    return el.deviceId === device.id
+                        ? {...el, isDisabled: false}
+                        : {... el, isDisabled: false}
+                }))
+
                 }
             }
 
-        }
     }
 
     const onFocusHandler = () => {
