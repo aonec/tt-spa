@@ -18,6 +18,7 @@ import axios from "01/axios"
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import ButtonTT from "../../../../../tt-components/ButtonTT";
 
 const { confirm } = Modal;
 
@@ -30,15 +31,58 @@ const FullDeviceLine = styled.div`
     justify-content: flex-start;
     white-space: nowrap;
     padding: 8px 8px 16px;
-    border-bottom: 1px solid #DCDEE4;
-    `
+    border-bottom: 1px solid #DCDEE4
+    `;
+
+const Footer = styled.div`
+background-color: var(--bg);
+height: 96px;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+padding-right: 32px;
+font-weight: 700;
+`
+
+const Header = styled.h1`
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+`
 
 export const DeviceReadingsContainer = styled.div`
 display: flex;
 flex-direction: column;
 border-radius: 4px;
 border: 1px solid var(--frame);
-padding: 8px
+padding: 8px 
+`;
+
+const StyledModal = styled(Modal)`
+
+.ant-modal-header {
+  padding: 24px 32px;
+  border: 0;
+}
+
+.ant-modal-body {
+  padding: 0 32px 32px 32px;
+}
+
+.ant-modal-footer {
+  padding: 0;
+}
+
+.ant-modal-close-x {
+  fill: var(--main-100)
+}
+
+.ant-modal-footer button + button {
+    margin-bottom: 0;
+    margin-left: 16px;
+}
+
 `
 
 
@@ -46,6 +90,8 @@ padding: 8px
 
 
 const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
+
+    const [isVisible, setIsVisible] = useState(false);
 
     const [readingsState, setReadingsState] = useState({});
 
@@ -62,50 +108,23 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
         }));
         textInput.current.focus()
     }
-// setReadingsState((state) => ({
-    //     ...state,
-    //     currentReadingsArray: state.currentReadingsArray.map((reading) => 0
-    //     )
-    // }))
-    // if (isNullInArray(readingsState.currentReadingsArray)) return
 
-     const showConfirm = () => {
-        confirm({
-                title: 'Вы действительно хотите уйти без сохранения?',
-                icon: <ExclamationCircleOutlined/>,
-                content: 'Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся',
-                onOk() {
-                    setReadingsState((state) => ({
-                        ...state,
-                        currentReadingsArray: initialReadings
-                    }))
-                },
-                onCancel() {
-                    setIsCancel(true);
-                        setReadingsState((state) => ({
-                            ...state,
-                            currentReadingsArray: initialReadings
-                        }));
+     const handleOk = () => {
+         setReadingsState((state) => ({
+             ...state,
+             currentReadingsArray: initialReadings
+         }))
+         setIsVisible(false)
+     }
 
-                }
-            }
-        )
-
-
-
-
-
-                // return new Promise((resolve, reject) => {
-                //
-                //         setReadingsState((state) => ({
-                //             ...state,
-                //             currentReadingsArray: initialReadings
-                //         }));
-                //         resolve(1)
-                //
-                // }).then(() => textInput.current.focus());
-
-        }
+     const handleCancel = () => {
+         setIsCancel(true);
+         setReadingsState((state) => ({
+             ...state,
+             currentReadingsArray: initialReadings
+         }));
+         setIsVisible(false)
+     }
     //
     useEffect(() => {
         // if (textInput.current) textInput.current.focus()
@@ -189,7 +208,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
             const isNull = isNullInArray(readingsState.currentReadingsArray)
             if (isNull) {
-                showConfirm();
+                setIsVisible(true);
             } else {
                 if (readingsState.currentReadingsArray === initialReadings) return
                 sendReadings(device)
@@ -232,6 +251,28 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
             <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
+
+            <StyledModal
+                visible={isVisible}
+                title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                width={800}
+                footer={
+                    <Footer>
+                        <ButtonTT color={'white'} key="back" onClick={handleCancel}>
+                            Отмена
+                        </ButtonTT>
+                        <ButtonTT color={'red'} key="submit" onClick={handleOk}>
+                            Выйти без сохранения
+                        </ButtonTT>
+                    </Footer>
+                }
+            >
+                <p style={{color: 'var(--main-100)', margin: 0}}>
+                    Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся
+                </p>
+            </StyledModal>
 
         </FullDeviceLine>
     )
