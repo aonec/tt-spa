@@ -13,37 +13,16 @@ import {
 } from '../../../../../tt-components';
 import { addOdpu } from '../apiAddOdpu';
 import TabsComponent from './Main';
+import {getCalculator} from '../apiAddOdpu'
+
+import {styles, StyledFormPage} from './styledComponents'
 
 
-const Warning = (props) => {
-  console.log('warning');
-  console.log(props)
-
-  return (
-    <div>
-      Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс
-    </div>
-  );
-};
-
-const styles = {
-  w49: {
-    width: '49%',
-  },
-  w100: {
-    width: '100%',
-  },
-};
-
-const StyledFormPage = styled.div`
-    display: flex;
-    flex-wrap:wrap;
-    justify-content:space-between
-  `;
 
 const AddDeviceForm = (props) => {
   const { calculators, setAddOdpu } = props;
   const [currentTabKey, setTab] = useState('1');
+  const [calculator, setCalculator] = useState({});
 
   function handleCancel() {
     setAddOdpu(false);
@@ -52,6 +31,10 @@ const AddDeviceForm = (props) => {
   function handleChangeTab(value) {
     setTab(value);
   }
+
+  useEffect(() => {
+    console.log('calculator', calculator)
+  },[calculator])
 
   const handleNext = () => {
     setTab(String(Number(currentTabKey) + 1));
@@ -172,6 +155,21 @@ const AddDeviceForm = (props) => {
   }, [values.resource, values.housingMeteringDeviceType]);
 
   const Buttons = () => {
+    const OkButton = ({handleNext, currentTabKey, handleCancel}) => {
+      if (currentTabKey !== '3') {
+        return (
+          <ButtonTT
+            color="blue"
+            onClick={handleNext}
+            big
+            // disabled={coldandthermo}
+          >
+            Далее
+          </ButtonTT>
+        );
+      }
+      else {return null}
+    }
     const NextOkButton = () => {
       if (currentTabKey === '3') {
         return (
@@ -180,23 +178,15 @@ const AddDeviceForm = (props) => {
             type="submit"
             form="formikFormAddOdpu"
             big
-            disabled={coldandthermo}
+            // disabled={coldandthermo}
           >
             Добавить
           </ButtonTT>
         );
       }
+      else {return null}
 
-      return (
-        <ButtonTT
-          color="blue"
-          onClick={handleNext}
-          big
-          disabled={coldandthermo}
-        >
-          Далее
-        </ButtonTT>
-      );
+
     };
 
     const CancelButton = () => (
@@ -208,10 +198,13 @@ const AddDeviceForm = (props) => {
     return (
       <StyledFooter>
         <NextOkButton style={{ marginLeft: '16px' }} />
+        <OkButton style={{ marginLeft: '16px' }} />
         <CancelButton />
       </StyledFooter>
     );
   };
+  
+
 
   return (
 
@@ -371,7 +364,9 @@ const AddDeviceForm = (props) => {
               onBlur={handleBlur}
               placeholder="Начните вводить серийный номер или IP адрес прибора"
               onChange={(value) => {
+                console.log(value)
                 setFieldValue('calculatorId', value);
+                getCalculator(value).then(result => setCalculator(result));
               }}
               options={calculators}
               value={values.calculatorId}
@@ -440,7 +435,7 @@ const AddDeviceForm = (props) => {
           <Title color="black">Компонент в разработке</Title>
         </StyledFormPage>
       </StyledModalBody>
-      <Buttons />
+      {Buttons}
     </form>
   );
 };
