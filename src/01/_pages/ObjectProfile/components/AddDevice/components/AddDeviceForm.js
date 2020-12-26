@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected,
+  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp,
 } from '../../../../../tt-components/localBases';
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter,
@@ -18,22 +18,8 @@ import { styles, StyledFormPage } from './styledComponents';
 
 const AddDeviceForm = (props) => {
   const {
-    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator,
+    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, setPipes, pipes
   } = props;
-
-  const pipes = useRef([]);
-
-  if (calculator) {
-    const { hubs } = calculator;
-    const res = [];
-    hubs.map((item, index) => {
-      console.log(index);
-      console.log(item.hub.pipeNumber);
-      res.push(item.hub.pipeNumber);
-    });
-
-    pipes.current = res;
-  }
 
   const [disable, setDisable] = useState(false);
   const [state, setState] = useState('FlowMeter');
@@ -45,7 +31,9 @@ const AddDeviceForm = (props) => {
     calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
     entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
       .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
+    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').test('test-number', // this is used internally by yup
+      'Credit Card number is invalid', //validation message
+      value => test()).typeError('Введите число, значение не может быть пустым')
       .required('Введите номер'),
     diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
       .required('Введите число от 1'),
@@ -73,6 +61,7 @@ const AddDeviceForm = (props) => {
       setFieldValue('diameter', null);
     }
   }, [state]);
+
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -140,12 +129,16 @@ const AddDeviceForm = (props) => {
       });
     },
   });
+   function test() {
+     console.log(pipes.includes(values.pipeNumber))
+     return pipes.includes(values.pipeNumber) === true ? true : false;
+   }
+
+
 
   useEffect(() => {
     console.log('state', values.pipeNumber);
-    if (pipes.current.includes(values.pipeNumber)) {
-      alert('Уже есть');
-    }
+
   }, [values.pipeNumber]);
 
   useEffect(() => {

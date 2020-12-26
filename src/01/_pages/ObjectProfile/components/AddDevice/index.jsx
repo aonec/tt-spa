@@ -9,7 +9,24 @@ const ModalAddDevice = () => {
   const [calculators, setCalculators] = useState([]);
   const [currentTabKey, setTab] = useState('1');
   const [calculator, setCalculator] = useState();
+  const [pipes, setPipes] = useState()
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
+
+  useEffect(() => {
+    if (calculator) {
+      const { hubs } = calculator;
+      const res = [];
+      hubs.map((item, index) => {
+        // console.log(index);
+        // console.log(item.hub.pipeNumber);
+        res.push(item.hub.pipeNumber);
+      });
+
+      setPipes(res)
+      console.log("res", res)
+
+    }
+  },[calculator])
 
   function handleCancel() {
     setAddOdpu(false);
@@ -30,6 +47,7 @@ const ModalAddDevice = () => {
   function handleCancel() {
     setAddOdpu(false);
   }
+
 
   useEffect(() => {
     async function setCalculatorsList() {
@@ -109,6 +127,8 @@ const ModalAddDevice = () => {
         handleChangeTab={handleChangeTab}
         calculator={calculator}
         setCalculator={setCalculator}
+        pipes={pipes}
+        setPipes={setPipes}
       />
       <Buttons />
     </StyledModal>
