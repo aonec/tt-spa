@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Modal } from 'antd';
-import styled from 'styled-components';
 import { Title, ButtonTT } from '../../../../tt-components';
-import  {StyledFooter, StyledModal, StyledModalBody} from '../../../../tt-components/Modal'
+import { StyledFooter, StyledModal, StyledModalBody } from '../../../../tt-components/Modal';
 import TabsComponent from './components/Main';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
@@ -40,36 +38,30 @@ const ModalAddDevice = () => {
   };
 
   const Buttons = () => {
-    const RenderNextButton = () => {
+    const NextOkButton = () => {
       if (currentTabKey === '3') {
-        return null;
+        return (
+          <ButtonTT
+            color="blue"
+            type="submit"
+            form="formikFormAddOdpu"
+            big
+          >
+            Добавить
+          </ButtonTT>
+        );
       }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          onClick={handleNext}
-          big
-        >
-          Далее
-        </ButtonTT>
-      );
-    };
-
-    const RenderSubmitButton = () => {
-      if (currentTabKey !== '3') {
-        return null;
+      else {
+        return (
+          <ButtonTT
+            color="blue"
+            onClick={handleNext}
+            big
+          >
+            Далее
+          </ButtonTT>
+        );
       }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          form="formikFormAddOdpu"
-        >
-          Сохранить
-        </ButtonTT>
-      );
     };
 
     const CancelButton = () => (
@@ -80,8 +72,7 @@ const ModalAddDevice = () => {
 
     return (
       <StyledFooter>
-        <RenderNextButton />
-        <RenderSubmitButton />
+        <NextOkButton style={{ marginLeft: '16px' }} />
         <CancelButton />
       </StyledFooter>
     );

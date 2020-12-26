@@ -4,6 +4,7 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import styled from 'styled-components';
 import {
   resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
@@ -12,8 +13,19 @@ import {
 } from '../../../../../tt-components';
 import { addOdpu } from '../apiAddOdpu';
 
+const styles = {
+  w49: {
+    width: '49%',
+  },
+  w100: {
+    width: '100%',
+  },
+}
+
 const AddDeviceForm = (props) => {
-  const { currentTabKey, calculators, handleCancel, setAddOdpu } = props;
+  const {
+    currentTabKey, calculators, handleCancel, setAddOdpu,
+  } = props;
   const [disable, setDisable] = useState(false);
   const [state, setState] = useState('FlowMeter');
 
@@ -44,13 +56,12 @@ const AddDeviceForm = (props) => {
   useEffect(() => {
     console.log('state', state);
     if (state === 'FlowMeter') {
-      setValidationSchema(validationSchemaFlowMeter)
+      setValidationSchema(validationSchemaFlowMeter);
     }
     if (state === 'TemperatureSensor') {
-      setValidationSchema(validationSchemaTemperatureSensor)
-      setFieldValue('diameter', null)
+      setValidationSchema(validationSchemaTemperatureSensor);
+      setFieldValue('diameter', null);
     }
-
   }, [state]);
 
   const Alert = ({ name }) => {
@@ -63,7 +74,6 @@ const AddDeviceForm = (props) => {
     }
     return null;
   };
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -91,10 +101,9 @@ const AddDeviceForm = (props) => {
       magistral: magistrals[0].value,
 
     },
-    validationSchema: validationSchema,
+    validationSchema,
 
     onSubmit: async () => {
-
       const form = {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate,
@@ -116,12 +125,17 @@ const AddDeviceForm = (props) => {
       };
       console.log(form);
       console.log(JSON.stringify(form));
-      addOdpu(form).then(()=>{
-        setTimeout(()=>{setAddOdpu(false)}, 1000);
-      })
+      addOdpu(form).then(() => {
+        setTimeout(() => { setAddOdpu(false); }, 1000);
+      });
     },
   });
 
+  const StyledFormPage = styled.div`
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between
+  `;
   return (
 
     <form
@@ -129,9 +143,8 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
-      <div hidden={Number(currentTabKey) !== 1}
-           style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-        <Form.Item label="Выберите тип прибора" style={{ width: '100%' }}>
+      <StyledFormPage hidden={Number(currentTabKey) !== 1}>
+        <Form.Item label="Выберите тип прибора" style={styles.w100}>
           <SelectTT
             name="housingMeteringDeviceType"
             onChange={(value) => {
@@ -144,7 +157,7 @@ const AddDeviceForm = (props) => {
           <Alert name="housingMeteringDeviceType" />
         </Form.Item>
 
-        <Form.Item label="Выберите тип ресурса" style={{ width: '100%' }}>
+        <Form.Item label="Выберите тип ресурса" style={styles.w100}>
           <SelectTT
             name="resource"
             onChange={(value) => {
@@ -156,7 +169,7 @@ const AddDeviceForm = (props) => {
           <Alert name="resource" />
         </Form.Item>
 
-        <Form.Item label="Выберите модель прибора" style={{ width: '49%' }}>
+        <Form.Item label="Выберите модель прибора" style={styles.w49}>
           <InputTT
             name="model"
             type="text"
@@ -167,7 +180,7 @@ const AddDeviceForm = (props) => {
           <Alert name="model" />
         </Form.Item>
 
-        <Form.Item label="Серийный номер" style={{ width: '49%' }}>
+        <Form.Item label="Серийный номер" style={styles.w49}>
           <InputTT
             name="serialNumber"
             type="text"
@@ -179,7 +192,7 @@ const AddDeviceForm = (props) => {
         </Form.Item>
 
         {(state === 'FlowMeter') ? (
-          <Form.Item label="Диаметр трубы (мм)" style={{ width: '100%' }}>
+          <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
             <InputTT
               name="diameter"
               placeholder="Укажите диаметр трубы в мм"
@@ -192,7 +205,7 @@ const AddDeviceForm = (props) => {
           </Form.Item>
         ) : null}
 
-        <Form.Item label="Дата поверки" style={{ width: '49%' }}>
+        <Form.Item label="Дата поверки" style={styles.w49}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="lastCheckingDate"
@@ -205,7 +218,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата следующей поверки" style={{ width: '49%' }}>
+        <Form.Item label="Дата следующей поверки" style={styles.w49}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCheckingDate"
@@ -218,7 +231,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата начала Акта действия допуска" style={{ width: '49%' }}>
+        <Form.Item label="Дата начала Акта действия допуска" style={styles.w49}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="lastCommercialAccountingDate"
@@ -231,7 +244,7 @@ const AddDeviceForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Дата окончания Акта действия допуска" style={{ width: '49%' }}>
+        <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
           <DatePickerTT
             format="DD.MM.YYYY"
             name="futureCommercialAccountingDate"
@@ -243,11 +256,11 @@ const AddDeviceForm = (props) => {
             value={moment(values.futureCommercialAccountingDate)}
           />
         </Form.Item>
-      </div>
+      </StyledFormPage>
 
       {/* Second Tabs */}
-      <div hidden={Number(currentTabKey) !== 2}>
-        <Form.Item label="Подключение к вычислителю">
+      <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+        <Form.Item label="Подключение к вычислителю" style={styles.w100}>
           <SelectTT
             name="isConnected"
             onChange={(item) => {
@@ -263,6 +276,7 @@ const AddDeviceForm = (props) => {
 
         <Form.Item
           label="Выберите вычислитель, к которому подключен прибор"
+          style={styles.w100}
         >
           <SelectTT
             name="calculatorId"
@@ -279,7 +293,7 @@ const AddDeviceForm = (props) => {
           <Alert name="calculatorId" />
         </Form.Item>
 
-        <Form.Item label="Номер ввода">
+        <Form.Item label="Номер ввода" style={styles.w49}>
           <InputTT
             name="entryNumber"
             type="number"
@@ -292,7 +306,7 @@ const AddDeviceForm = (props) => {
           <Alert name="entryNumber" />
         </Form.Item>
 
-        <Form.Item label="Номер узла">
+        <Form.Item label="Номер узла" style={styles.w49}>
           <InputTT
             name="hubNumber"
             type="number"
@@ -305,7 +319,7 @@ const AddDeviceForm = (props) => {
           <Alert name="hubNumber" />
         </Form.Item>
 
-        <Form.Item label="Номер трубы">
+        <Form.Item label="Номер трубы" style={styles.w49}>
           <InputTT
             name="pipeNumber"
             type="number"
@@ -320,7 +334,7 @@ const AddDeviceForm = (props) => {
           <Alert name="pipeNumber" />
         </Form.Item>
 
-        <Form.Item name="text" label="Выберите направление магистрали">
+        <Form.Item name="text" label="Выберите направление магистрали" style={styles.w49}>
           <SelectTT
             placeholder="Выберите направление магистрали"
             name="magistral"
@@ -333,11 +347,11 @@ const AddDeviceForm = (props) => {
           <Alert name="magistral" />
         </Form.Item>
 
-      </div>
+      </StyledFormPage>
 
-      <div hidden={Number(currentTabKey) !== 3}>
+      <StyledFormPage hidden={Number(currentTabKey) !== 3}>
         <Title color="black">Компонент в разработке</Title>
-      </div>
+      </StyledFormPage>
 
     </form>
   );
