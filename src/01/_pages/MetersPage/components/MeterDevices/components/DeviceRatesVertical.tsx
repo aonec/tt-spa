@@ -54,6 +54,7 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none; 
   margin: 0; 
 }
+
 `;
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({

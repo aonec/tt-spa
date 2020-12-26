@@ -93,7 +93,6 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
 
     const isDisabled = disabledState.find((el) => el.deviceId === device.id).isDisabled;
 
-debugger;
     const [isVisible, setIsVisible] = useState(false);
 
     const [readingsState, setReadingsState] = useState({});
@@ -116,6 +115,11 @@ debugger;
          setReadingsState((state) => ({
              ...state,
              currentReadingsArray: initialReadings
+         }));
+         setDisabledState((prevState) => prevState.map((el) => {
+             return el.deviceId === device.id
+                 ? {...el, isDisabled: false}
+                 : {... el, isDisabled: false}
          }))
          setIsVisible(false)
      }
@@ -126,7 +130,20 @@ debugger;
              ...state,
              currentReadingsArray: initialReadings
          }));
+         setDisabledState((prevState) => prevState.map((el) => {
+             return el.deviceId === device.id
+                 ? {...el, isDisabled: false}
+                 : {... el, isDisabled: false}
+         }))
          setIsVisible(false)
+     }
+
+     const afterCloseHandler = () => {
+         setDisabledState((prevState) => prevState.map((el) => {
+             return el.deviceId === device.id
+                 ? {...el, isDisabled: false}
+                 : {... el, isDisabled: false}
+         }))
      }
     //
     useEffect(() => {
@@ -214,14 +231,22 @@ debugger;
             if (isNull) {
                 setIsVisible(true);
             } else {
-                if (readingsState.currentReadingsArray !== initialReadings)
-                sendReadings(device)
+                if (readingsState.currentReadingsArray !== initialReadings) {
+                    sendReadings(device)
+                    setDisabledState((prevState) => prevState.map((el) => {
+                        return el.deviceId === device.id
+                            ? {...el, isDisabled: false}
+                            : {... el, isDisabled: false}
+                    }))
+                } else {
+                    setDisabledState((prevState) => prevState.map((el) => {
+                        return el.deviceId === device.id
+                            ? {...el, isDisabled: false}
+                            : {... el, isDisabled: false}
+                    }))
+                }
             }
-            setDisabledState((prevState) => prevState.map((el) => {
-                return el.deviceId === device.id
-                    ? {...el, isDisabled: false}
-                    : {... el, isDisabled: false}
-            }))
+
         }
     }
 
@@ -270,6 +295,7 @@ debugger;
                 title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
                 onOk={handleOk}
                 onCancel={handleCancel}
+                // afterClose={afterCloseHandler}
                 width={800}
                 footer={
                     <Footer>
