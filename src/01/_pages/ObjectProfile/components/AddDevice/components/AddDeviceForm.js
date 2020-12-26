@@ -9,7 +9,7 @@ import {
   resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter,
 } from '../../../../../tt-components';
 import { addOdpu } from '../apiAddOdpu';
 import TabsComponent from "./Main";
@@ -30,13 +30,26 @@ const StyledFormPage = styled.div`
   `;
 
 const AddDeviceForm = (props) => {
-  const {
-    currentTabKey, calculators, handleCancel, setAddOdpu, handleChangeTab
-  } = props;
+  const { calculators, setAddOdpu} = props;
+  const [currentTabKey, setTab] = useState('1');
+
+  function handleCancel() {
+    setAddOdpu(false);
+  }
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+  const handleNext = () => {
+    setTab(String(Number(currentTabKey) + 1));
+  };
+
   const [disable, setDisable] = useState(false);
   const [state, setState] = useState('FlowMeter');
+  const [coldandthermo, setColdandthermo] = useState(false)
 
-  
+
 
   const validationSchemaFlowMeter = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
@@ -143,10 +156,56 @@ const AddDeviceForm = (props) => {
   useEffect(() => {
     console.log(values);
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
-      alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
+      // alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
+      setColdandthermo(true)
+
     }
+    else setColdandthermo(false)
   }, [values.resource, values.housingMeteringDeviceType]);
 
+
+  const Buttons = () => {
+    const NextOkButton = () => {
+      if (currentTabKey === '3') {
+        return (
+          <ButtonTT
+            color="blue"
+            type="submit"
+            form="formikFormAddOdpu"
+            big
+            disabled={coldandthermo}
+          >
+            Добавить
+          </ButtonTT>
+        );
+      }
+      else {
+        return (
+          <ButtonTT
+            color="blue"
+            onClick={handleNext}
+            big
+            disabled={coldandthermo}
+          >
+            Далее
+          </ButtonTT>
+        );
+      }
+    };
+
+    const CancelButton = () => (
+      <ButtonTT type='button' color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+        Отмена
+      </ButtonTT>
+    );
+
+    return (
+      <StyledFooter>
+        <NextOkButton style={{ marginLeft: '16px' }} />
+        <CancelButton />
+      </StyledFooter>
+    );
+  };
 
   return (
 
@@ -155,9 +214,11 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
+      <StyledModalBody>
       <Title size="middle" color="black">
         Добавление нового ОДПУ
       </Title>
+        <div hidden={!coldandthermo}>Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс</div>
       <TabsComponent
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
@@ -372,7 +433,8 @@ const AddDeviceForm = (props) => {
       <StyledFormPage hidden={Number(currentTabKey) !== 3}>
         <Title color="black">Компонент в разработке</Title>
       </StyledFormPage>
-
+      </StyledModalBody>
+      <Buttons />
     </form>
   );
 };
