@@ -87,14 +87,7 @@ const ModalAddDevice = () => {
       // visible
     >
       <StyledModalBody>
-        <Title size="middle" color="black">
-          Добавление нового ОДПУ
-        </Title>
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
-        <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
+        <AddDeviceForm currentTabKey={currentTabKey} handleChangeTab={handleChangeTab} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
       </StyledModalBody>
       <Buttons />
 

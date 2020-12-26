@@ -9,9 +9,10 @@ import {
   resources, magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody,
 } from '../../../../../tt-components';
 import { addOdpu } from '../apiAddOdpu';
+import TabsComponent from "./Main";
 
 const styles = {
   w49: {
@@ -20,14 +21,22 @@ const styles = {
   w100: {
     width: '100%',
   },
-}
+};
+
+const StyledFormPage = styled.div`
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between
+  `;
 
 const AddDeviceForm = (props) => {
   const {
-    currentTabKey, calculators, handleCancel, setAddOdpu,
+    currentTabKey, calculators, handleCancel, setAddOdpu, handleChangeTab
   } = props;
   const [disable, setDisable] = useState(false);
   const [state, setState] = useState('FlowMeter');
+
+  
 
   const validationSchemaFlowMeter = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
@@ -131,11 +140,14 @@ const AddDeviceForm = (props) => {
     },
   });
 
-  const StyledFormPage = styled.div`
-    display: flex;
-    flex-wrap:wrap;
-    justify-content:space-between
-  `;
+  useEffect(() => {
+    console.log(values);
+    if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
+      alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
+    }
+  }, [values.resource, values.housingMeteringDeviceType]);
+
+
   return (
 
     <form
@@ -143,6 +155,13 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
+      <Title size="middle" color="black">
+        Добавление нового ОДПУ
+      </Title>
+      <TabsComponent
+        currentTabKey={currentTabKey}
+        handleChangeTab={handleChangeTab}
+      />
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Выберите тип прибора" style={styles.w100}>
           <SelectTT
@@ -165,6 +184,7 @@ const AddDeviceForm = (props) => {
             }}
             options={resources}
             defaultValue={resources[0].value}
+            value={values.resource}
           />
           <Alert name="resource" />
         </Form.Item>
