@@ -111,12 +111,13 @@ export const MeterDevicesNew = ({items = []}) => {
 
     const [sliderIndex, setSliderIndex] = useState(0)
 
-
+    const [disabledState, setDisabledState] = useState()
 
     const [state, dispatch] = React.useReducer(readingsReducer, {});
 
     useEffect(() => {
         dispatch(setDevices(items))
+        setDisabledState(items.map((item) => ({ deviceId: item.id, isDisabled: false })))
     }, [items])
 
 
@@ -137,6 +138,8 @@ export const MeterDevicesNew = ({items = []}) => {
         device={device}
         dispatch={dispatch}
         sendReadings={() => sendReadings(device)}
+        disabledState={disabledState}
+        setDisabledState={setDisabledState}
     />);
 
     const currentMonth = getMonthFromDate()

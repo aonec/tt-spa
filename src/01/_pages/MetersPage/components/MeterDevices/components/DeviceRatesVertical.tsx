@@ -65,7 +65,9 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           sendReadings = () => {},
                           operatorCabinet = false,
                           houseReadings = false,
-                          textInput
+                          textInput,
+                          isDisabled
+
                      }) => {
 
     const [isFocused, setIsFocused] = useState(false);
@@ -93,7 +95,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                     </TarifLabel>
                 )}
                 suffix={resource === 'Electricity' ? <SuffixLine>кВтч</SuffixLine> : <SuffixLine>м³</SuffixLine>}
-                disabled={readingsBlocked}
+                disabled={readingsBlocked || isDisabled}
                 type="text"
                 value={value}
                 ref={operatorCabinet && isFocused ? textInput : undefined}

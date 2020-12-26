@@ -89,8 +89,11 @@ const StyledModal = styled(Modal)`
 
 
 
-const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
+const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisabledState}) => {
 
+    const isDisabled = disabledState.find((el) => el.deviceId === device.id).isDisabled;
+
+debugger;
     const [isVisible, setIsVisible] = useState(false);
 
     const [readingsState, setReadingsState] = useState({});
@@ -190,6 +193,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
                      sendReadings={() => sendReadings(device)}
                      operatorCabinet
                      textInput={textInput}
+                     isDisabled={isDisabled}
         />
     ));
 
@@ -210,15 +214,24 @@ const OperatorDeviceReadingForm = ({device, sliderIndex}) => {
             if (isNull) {
                 setIsVisible(true);
             } else {
-                if (readingsState.currentReadingsArray === initialReadings) return
+                if (readingsState.currentReadingsArray !== initialReadings)
                 sendReadings(device)
             }
+            setDisabledState((prevState) => prevState.map((el) => {
+                return el.deviceId === device.id
+                    ? {...el, isDisabled: false}
+                    : {... el, isDisabled: false}
+            }))
         }
     }
 
     const onFocusHandler = () => {
-    debugger;
         setInitialReadings(readingsState.currentReadingsArray);
+        setDisabledState((prevState) => prevState.map((el) => {
+            return el.deviceId === device.id
+            ? {...el, isDisabled: false}
+            : {... el, isDisabled: true}
+        }))
     }
 
 
