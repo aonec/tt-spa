@@ -249,11 +249,15 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
 
     const onFocusHandler = () => {
         setInitialReadings(readingsState.currentReadingsArray);
-        setDisabledState((prevState) => prevState.map((el) => {
-            return el.deviceId === device.id
-            ? {...el, isDisabled: false}
-            : {... el, isDisabled: true}
-        }))
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+        if (isNull) {
+            setDisabledState((prevState) => prevState.map((el) => {
+                return el.deviceId === device.id
+                    ? {...el, isDisabled: false}
+                    : {... el, isDisabled: true}
+            }))
+        }
+
     }
 
 
