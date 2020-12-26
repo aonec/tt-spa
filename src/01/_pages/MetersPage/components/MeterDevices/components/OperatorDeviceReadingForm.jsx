@@ -31,7 +31,8 @@ const FullDeviceLine = styled.div`
     justify-content: flex-start;
     white-space: nowrap;
     padding: 8px 8px 16px;
-    border-bottom: 1px solid #DCDEE4
+    border-bottom: 1px solid #DCDEE4;
+
     `;
 
 const Footer = styled.div`
@@ -56,7 +57,9 @@ display: flex;
 flex-direction: column;
 border-radius: 4px;
 border: 1px solid var(--frame);
-padding: 8px 
+padding: 8px;
+pointer-events: ${props => props.isDisabled === true ? 'none' : 'auto'};
+
 `;
 
 const StyledModal = styled(Modal)`
@@ -130,29 +133,37 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
              ...state,
              currentReadingsArray: initialReadings
          }));
-         setDisabledState((prevState) => prevState.map((el) => {
-             return el.deviceId === device.id
-                 ? {...el, isDisabled: false}
-                 : {... el, isDisabled: false}
-         }))
+         // setDisabledState((prevState) => prevState.map((el) => {
+         //     return el.deviceId === device.id
+         //         ? {...el, isDisabled: false}
+         //         : {... el, isDisabled: false}
+         // }))
          setIsVisible(false)
+
      }
 
      const afterCloseHandler = () => {
-         setDisabledState((prevState) => prevState.map((el) => {
-             return el.deviceId === device.id
-                 ? {...el, isDisabled: false}
-                 : {... el, isDisabled: false}
-         }))
+        // if ()
+        //  setDisabledState((prevState) => prevState.map((el) => {
+        //      return el.deviceId === device.id
+        //          ? {...el, isDisabled: false}
+        //          : {... el, isDisabled: false}
+        //  }))
+         if (isCancel) {
+             setIsCancel(false)
+             textInput.current.focus()
+
+         }
      }
     //
     useEffect(() => {
         // if (textInput.current) textInput.current.focus()
 
-        if (isCancel) {
-            textInput.current.focus()
-            setIsCancel(false)
-        }
+        // if (isCancel) {
+        //     setIsCancel(false)
+        //     textInput.current.focus()
+        //
+        // }
 
     }, [readingsState])
 
@@ -236,18 +247,17 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
                     sendReadings(device)
 
                 }
-                setDisabledState((prevState) => prevState.map((el) => {
-                    return el.deviceId === device.id
-                        ? {...el, isDisabled: false}
-                        : {... el, isDisabled: false}
-                }))
+               setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
+
+                // setDisabledState((prevState) => prevState.map((el) => ({...el, isDisabled: false })));
 
                 }
             }
 
     }
 
-    const onFocusHandler = () => {
+    const onFocusHandler = (e) => {
+        debugger;
         setInitialReadings(readingsState.currentReadingsArray);
         const isNull = isNullInArray(readingsState.currentReadingsArray)
         if (isNull) {
@@ -287,7 +297,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
+            <DeviceReadingsContainer isDisabled={isDisabled} onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
 
@@ -296,7 +306,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
                 title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
                 onOk={handleOk}
                 onCancel={handleCancel}
-                // afterClose={afterCloseHandler}
+                afterClose={afterCloseHandler}
                 width={800}
                 footer={
                     <Footer>

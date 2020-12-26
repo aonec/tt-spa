@@ -10,6 +10,7 @@ padding-right: ${props => props.houseReadings ? 0 : '16px'};
 padding-right: 8px;
 padding-left: 8px;
 
+
 &:not(:first-child) {
 padding-top: 8px;
 }
@@ -86,7 +87,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
     }
 
     return (
-        <ReadingLineStyled houseReadings={houseReadings}>
+        <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
             <StyledInput
                 prefix={readingsBlocked && !houseReadings ? null : (
                     <TarifLabel houseReadings={houseReadings}>
@@ -99,7 +100,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                 disabled={readingsBlocked || isDisabled}
                 type="text"
                 value={value}
-                ref={operatorCabinet && isFocused ? textInput : undefined}
+                ref={operatorCabinet && !isDisabled ? textInput : undefined}
                 onChange={onChange}
                 // onBlur={operatorCabinet ? onBlurHandler : undefined}
                 onFocus={operatorCabinet ? onFocusHandler : undefined}
