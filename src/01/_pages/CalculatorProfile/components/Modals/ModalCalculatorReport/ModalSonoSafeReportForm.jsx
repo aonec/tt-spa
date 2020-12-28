@@ -8,8 +8,9 @@ import Modal from 'antd/es/modal/Modal';
 import styled from 'styled-components';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
+  StyledRadio,
   DatePickerTT,
-  ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
+  ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
@@ -18,15 +19,7 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 const { TabPane } = Tabs;
 
-const RadioStyled = styled(Radio)`
-    display: block;
-    span {
-      font-size: 16px;
-      line-height: 32px;
-      font-weight: 400;
-      color: rgba(39, 47, 90, 0.9);
-    }
-  `;
+
 
 const ModalSonoSafeReportForm = (props) => {
   const { device, handleCancel, visible } = props;
@@ -143,14 +136,6 @@ const ModalSonoSafeReportForm = (props) => {
     }),
     onSubmit: async () => {
       console.log('values', values);
-      // console.log(convertDateOnly(values.begin.toISOString()));
-      // console.log(convertDateOnly(values.end.toISOString()));
-
-      // if (values.period === 'month') {
-      //   setFieldValue('begin', moment().subtract(1, 'months').startOf('month'))
-      //   setFieldValue('end', moment().startOf('month'))
-      // }
-
       const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'))
       const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'))
 
@@ -225,40 +210,17 @@ const ModalSonoSafeReportForm = (props) => {
     setFieldValue('pipeNumber', object.pipeNumber);
   };
 
-  const Footer = () => (
-    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <ButtonTT
-        color="white"
-        onClick={handleCancel}
-      >
-        Отмена
-      </ButtonTT>
-      <ButtonTT
-        color="blue"
-        type="submit"
-        form="formReport"
-        style={{ width: '224px', marginLeft: '16px' }}
-        onClick={handleSubmit}
-      >
-        Выгрузить
-      </ButtonTT>
-    </div>
-  );
 
-  useEffect(() => {
-    console.log(values);
-  }, [
-    values,
-  ]);
+
+  // useEffect(() => {
+  //   console.log(values);
+  // }, [
+  //   values,
+  // ]);
 
   return (
-    <Modal
-      width={800}
-      visible={visible}
-      footer={Footer()}
-    >
-
       <Form id="formReport">
+        <StyledModalBody>
         <Header style={{ margin: 0, padding: 0 }}>
           Выгрузка отчета о общедомовом потреблении SonoSafe
         </Header>
@@ -292,19 +254,19 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onPeriodChange(event)}
             >
-              <RadioStyled
+              <StyledRadio
                 key="month"
                 value="month"
                 checked
               >
                 За прошлый месяц
-              </RadioStyled>
-              <RadioStyled
+              </StyledRadio>
+              <StyledRadio
                 key="custom"
                 value="custom"
               >
                 Произвольный период
-              </RadioStyled>
+              </StyledRadio>
             </Radio.Group>
           </Form.Item>
 
@@ -314,12 +276,12 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onDetailChange(event)}
             >
-              <RadioStyled
+              <StyledRadio
                 key="monthly"
                 value="monthly"
               >
                 Месячная
-              </RadioStyled>
+              </StyledRadio>
             </Radio.Group>
           </Form.Item>
         </div>
@@ -375,9 +337,27 @@ const ModalSonoSafeReportForm = (props) => {
           Отчет за 1 месяц
         </Checkbox>
 
-      </Form>
+        </StyledModalBody>
 
-    </Modal>
+        <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <ButtonTT
+            color="white"
+            onClick={handleCancel}
+          >
+            Отмена
+          </ButtonTT>
+          <ButtonTT
+            color="blue"
+            type="submit"
+            form="formReport"
+            style={{ width: '224px', marginLeft: '16px' }}
+            onClick={handleSubmit}
+          >
+            Выгрузить
+          </ButtonTT>
+        </StyledFooter>
+
+      </Form>
   );
 };
 

@@ -17,3 +17,4 @@ export * from './RelatedDevices'
 export * from './Buttons';
 export * from './InputNumberTT'
 export * from './Warning'
+export * from './Radio'
