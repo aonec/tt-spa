@@ -1,25 +1,46 @@
 import React, { useContext } from 'react';
-import { Modal } from 'antd';
+import { Form, Modal } from 'antd';
 import ModalCalculatorReportForm from './ModalCalculatorReportForm';
-import { DeviceContext } from "../../../CalculatorProfile";
+import { DeviceContext } from '../../../CalculatorProfile';
+import ModalSonoSafeReportForm, { App } from './ModalSonoSafeReportForm';
+import { ButtonTT } from '../../../../../tt-components/ButtonTT';
+import { StyledModal } from "../../../../../tt-components";
 
 export const ModalCalculatorReport = () => {
   // console.log('ModalCalculatorReport');
+
+  // const { report, setReport, device } = useContext(DeviceContext);
 
   const { report, setReport, device } = useContext(DeviceContext);
   const handleCancel = () => {
     setReport(false);
   };
+  console.log(device);
+  if (device.infoId !== 10) {
+    return (
+      <StyledModal
+        visible={report}
+        // visible
+        width={800}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
+      </StyledModal>
+    );
+  }
 
   return (
-    <Modal
+    <StyledModal
       visible={report}
+      // visible
       width={800}
       footer={null}
       onCancel={handleCancel}
     >
-      <ModalCalculatorReportForm device={device} handleCancel={handleCancel}/>
-    </Modal>
+      <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
+    </StyledModal>
+
   );
 };
 

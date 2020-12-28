@@ -57,7 +57,7 @@ export const Menu = () => {
           Выгрузить отчет о общедомовом потреблении
         </ListItem>
         <ListItem onClick={showDeregisterDeviceModal} style={{ color: '#FC525B' }}>
-          Снять оборудование
+          Закрыть ОДПУ
         </ListItem>
       </List>
     </>

@@ -30,6 +30,7 @@ export const CalculatorProfile = () => {
   const [hubs, setHubs] = useState();
   const [deregister, setDeregister] = useState(false);
   const [report, setReport] = useState(false);
+  const [reportSono, setReportSono] = useState(false);
   const [check, setCheck] = useState(false);
 
   const [error, setError] = useState();
@@ -62,6 +63,7 @@ export const CalculatorProfile = () => {
         setTasks(tasks.items);
         setRelated(device.hubs);
         setIsLoading(false);
+        console.log("device", device)
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -77,6 +79,7 @@ export const CalculatorProfile = () => {
         }));
         setIsLoading(false);
       });
+
   }, []);
 
   if (isLoading) return <Loader show size={32} />;
