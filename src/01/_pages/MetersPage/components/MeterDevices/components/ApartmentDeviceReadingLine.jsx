@@ -202,7 +202,8 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisa
     ));
 
     const onBlurHandler = (e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) {
+        if (e.currentTarget.contains(e.relatedTarget)) return
+
             const isNull = isNullInArray(readingsState.currentReadingsArray)
             if (isNull) {
                 setIsVisible(true);
@@ -212,11 +213,11 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisa
                 }
                setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
                 }
-            }
-
     }
 
     const onFocusHandler = (e) => {
+        if (e.currentTarget.contains(e.relatedTarget)) return
+
         setInitialReadings(readingsState.currentReadingsArray);
         const isNull = isNullInArray(readingsState.currentReadingsArray)
         if (isNull) {

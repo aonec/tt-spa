@@ -20,7 +20,9 @@ import uuid from 'react-uuid'
 
 const HouseReadingsDevice = styled.div`
 display: grid;
-grid-template-columns: 1fr 2.5fr 0.2fr 2fr 1.9fr 1.9fr 1.6fr 1.2fr;
+// grid-template-columns: 1fr 2.5fr 0.2fr 2fr 1.9fr 1.9fr 1.6fr 1.2fr;
+grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 0.3fr) minmax(0, 1.8fr) minmax(0, 1.7fr) minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.5fr);
+
 
 // grid-template-columns: 1fr 3fr 0.5fr 2fr 2fr 1.5fr repeat(2, 100px);
 // grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 0.5fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.5fr);
