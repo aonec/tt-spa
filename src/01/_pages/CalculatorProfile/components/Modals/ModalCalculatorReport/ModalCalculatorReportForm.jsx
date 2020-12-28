@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import {
-  ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
+  ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
@@ -98,8 +98,8 @@ const ModalCalculatorReportForm = (props) => {
         pipeNumber: 5,
         value: 1,
         label: 'Без узла',
-      }
-    ]
+      },
+    ],
   };
   // Итоговый объект для Select
   // const devicesSelectionByType = getDevicesSelectionByType(filteredGroup);
@@ -111,7 +111,7 @@ const ModalCalculatorReportForm = (props) => {
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      period: 'month',
+      period: 'lastSevenDays',
       detail: 'daily',
       begin: moment().subtract(1, 'month'),
       end: moment(),
@@ -119,28 +119,13 @@ const ModalCalculatorReportForm = (props) => {
       currentValue: undefined,
       entryNumber: null,
       pipeNumber: undefined,
-      test: undefined,
+      customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
       entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
         .max(10, 'Скорее всего, выбран некорректный номер узла'),
     }),
     onSubmit: async () => {
-      downloadReport();
-    },
-  });
-
-  const Translate = {
-    Heat: 'Отопление',
-    ColdWaterSupply: 'Холодная вода',
-    HotWaterSupply: 'Горячая вода',
-  };
-
-  const translate = (resource) => Translate[resource];
-
-  const downloadReport = () => {
-    console.log('entryNumberRes.current = ', values.entryNumber);
-    if (values.entryNumber) {
       console.log('entryNumberRes', values.entryNumber);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         values.detail
@@ -153,27 +138,44 @@ const ModalCalculatorReportForm = (props) => {
       console.log(link);
 
       const linkToDownload = document.createElement('a');
-      linkToDownload.setAttribute('href',link);
-      linkToDownload.setAttribute('download','download');
+      linkToDownload.setAttribute('href', link);
+      linkToDownload.setAttribute('download', 'download');
       linkToDownload.click();
+    },
+  });
 
-      // const linkToDownload = document.createElement('a');
-      // linkToDownload.setAttribute('href','http://javascript.ru/forum/images/ca_serenity/misc/logo.gif');
-      // linkToDownload.setAttribute('download','download');
-      // linkToDownload.click();
-
-
-      // window.open(link);
-    } else {
-      alert('Выберите узел!');
-    }
+  const Translate = {
+    Heat: 'Отопление',
+    ColdWaterSupply: 'Холодная вода',
+    HotWaterSupply: 'Горячая вода',
   };
+
+  const translate = (resource) => Translate[resource];
 
   const onPeriodChange = (event) => {
     const res = event.target.value;
-    setFieldValue('period', res);
-    setFieldValue('begin', moment().subtract(1, res));
-    setFieldValue('end', moment());
+    switch (res) {
+      case 'lastSevenDays':
+        setFieldValue('begin', moment().subtract(7, 'days'));
+        setFieldValue('end', moment());
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'currentMonth':
+        setFieldValue('begin', moment().startOf('month'));
+        setFieldValue('end', moment());
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'previousMonth':
+        setFieldValue('begin', moment().subtract(1, 'month').startOf('month'));
+        setFieldValue('end', moment().subtract(1, 'month').endOf('month'));
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'customPeriod':
+        setFieldValue('customPeriodDisabled', false);
+        break;
+      default:
+        alert('Возможно, что-то пошло не так');
+    }
   };
 
   const onDetailChange = (event) => {
@@ -220,76 +222,74 @@ const ModalCalculatorReportForm = (props) => {
 
   return (
     <Form id="formReport">
-      <Header>
-        Выгрузка отчета о общедомовом потреблении
-      </Header>
-      {/* <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}> */}
-      <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
-        {TabsList}
-      </Tabs>
-      <Form.Item label="Название отчета">
-        <InputTT
-          value={`${street}_${housingStockNumber}.exls`}
-          readOnly
-        />
-      </Form.Item>
+      <StyledModalBody>
+          <Header>
+            Выгрузка отчета о общедомовом потреблении
+          </Header>
+          <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
+            {TabsList}
+          </Tabs>
+          <Form.Item label="Название отчета">
+            <InputTT
+              value={`${street}_${housingStockNumber}.exls`}
+              readOnly
+            />
+          </Form.Item>
+          <Form.Item label="Выбор узла">
+            <SelectTT
+              options={devicesSelectionByType[values.resource]}
+              placeholder="Выберите узел"
+              onChange={handleSelect}
+              value={values.currentValue}
+              name="entryNumber"
+            />
+            <Alert name="entryNumber" />
+          </Form.Item>
+          <div id="period_and_type " style={{ display: 'flex' }}>
 
-      <Form.Item label="Выбор узла">
-        <SelectTT
-          options={devicesSelectionByType[values.resource]}
-          placeholder="Выберите узел"
-          onChange={handleSelect}
-          value={values.currentValue}
-          name="entryNumber"
-        />
-        <Alert name="entryNumber" />
-      </Form.Item>
+            <Form.Item label="Тип архива" style={{ width: '50%' }}>
+              <Radio.Group
+                defaultValue="currentMonth"
+                size="large"
+                onChange={(event) => onPeriodChange(event)}
+              >
+                <StyledRadio value="lastSevenDays">
+                  Последние 7 дней
+                </StyledRadio>
+                <StyledRadio value="currentMonth" checked>С начала месяца</StyledRadio>
+                <StyledRadio value="previousMonth">За прошлый месяц</StyledRadio>
+                <StyledRadio value="customPeriod">Произвольный период</StyledRadio>
+              </Radio.Group>
+            </Form.Item>
 
-      <div id="period_and_type " style={{ display: 'flex' }}>
-
-        <Form.Item label="Тип архива" style={{ marginRight: '24px' }}>
-          <Radio.Group
-            defaultValue="month"
-            size="large"
-            onChange={(event) => onPeriodChange(event)}
-          >
-            <Radio.Button value="month" checked>
-              Месячный
-            </Radio.Button>
-            <Radio.Button value="day">Суточный</Radio.Button>
-            <Radio.Button value="year">Годовой</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-
-        <Form.Item label="Детализация отчета">
-          <Radio.Group
-            defaultValue="daily"
-            size="large"
-            onChange={(event) => onDetailChange(event)}
-          >
-            <Radio.Button value="monthly">Месячная</Radio.Button>
-            <Radio.Button value="daily" checked>
-              Суточная
-            </Radio.Button>
-            <Radio.Button value="hourly">Часовая</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-      </div>
-
-      <Form.Item label="Период выгрузки">
-        <RangePickerTT
-          format="DD.MM.YYYY"
-          allowClear={false}
-          size="48px"
-          value={[values.begin, values.end]}
-          placeholder={['Дата Начала', 'Дата окончания']}
-          onChange={(event) => {
-            datePickerHandler(event);
-          }}
-        />
-      </Form.Item>
-
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
+              <Radio.Group
+                defaultValue="daily"
+                size="large"
+                onChange={(event) => onDetailChange(event)}
+              >
+                <StyledRadio value="daily" checked>
+                  Суточная
+                </StyledRadio>
+                <StyledRadio value="hourly">Часовая</StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+          </div>
+          <Form.Item label="Период выгрузки" style={{ width: '300px' }}>
+            <RangePickerTT
+              format="DD.MM.YYYY"
+              allowClear={false}
+              size="48px"
+              value={[values.begin, values.end]}
+              placeholder={['Дата Начала', 'Дата окончания']}
+              onChange={(event) => {
+                datePickerHandler(event);
+              }}
+              disabled={values.customPeriodDisabled}
+            />
+          </Form.Item>
+      </StyledModalBody>
+      <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
           onClick={handleCancel}
@@ -305,7 +305,7 @@ const ModalCalculatorReportForm = (props) => {
         >
           Выгрузить
         </ButtonTT>
-      </div>
+      </StyledFooter>
     </Form>
   );
 };
