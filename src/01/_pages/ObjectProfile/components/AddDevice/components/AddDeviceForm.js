@@ -18,12 +18,10 @@ import { styles, StyledFormPage } from './styledComponents';
 
 const AddDeviceForm = (props) => {
   const {
-    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, setPipes, pipes
+    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, coldandthermo, setColdandthermo
   } = props;
 
   const [disable, setDisable] = useState(false);
-  const [state, setState] = useState('FlowMeter');
-  const [coldandthermo, setColdandthermo] = useState(false);
 
   const validationSchemaFlowMeter = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
@@ -31,9 +29,7 @@ const AddDeviceForm = (props) => {
     calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
     entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
       .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').test('test-number', // this is used internally by yup
-      'Credit Card number is invalid', //validation message
-      value => test()).typeError('Введите число, значение не может быть пустым')
+    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
       .required('Введите номер'),
     diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
       .required('Введите число от 1'),
@@ -51,16 +47,7 @@ const AddDeviceForm = (props) => {
 
   const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
 
-  useEffect(() => {
-    console.log('state', state);
-    if (state === 'FlowMeter') {
-      setValidationSchema(validationSchemaFlowMeter);
-    }
-    if (state === 'TemperatureSensor') {
-      setValidationSchema(validationSchemaTemperatureSensor);
-      setFieldValue('diameter', null);
-    }
-  }, [state]);
+
 
 
   const Alert = ({ name }) => {
@@ -129,26 +116,27 @@ const AddDeviceForm = (props) => {
       });
     },
   });
-   function test() {
-     console.log(pipes.includes(values.pipeNumber))
-     return pipes.includes(values.pipeNumber) === true ? true : false;
-   }
+
+
+
 
 
 
   useEffect(() => {
-    console.log('state', values.pipeNumber);
-
-  }, [values.pipeNumber]);
-
-  useEffect(() => {
-    console.log(values);
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
-      // alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
       setColdandthermo(true);
     } else setColdandthermo(false);
   }, [values.resource, values.housingMeteringDeviceType]);
 
+  useEffect(() => {
+    if (values.housingMeteringDeviceType === 'FlowMeter') {
+      setValidationSchema(validationSchemaFlowMeter);
+    }
+    if (values.housingMeteringDeviceType === 'TemperatureSensor') {
+      setValidationSchema(validationSchemaTemperatureSensor);
+      setFieldValue('diameter', null);
+    }
+  },[values.housingMeteringDeviceType])
   return (
 
     <form
@@ -171,7 +159,6 @@ const AddDeviceForm = (props) => {
               name="housingMeteringDeviceType"
               onChange={(value) => {
                 setFieldValue('housingMeteringDeviceType', value);
-                setState(value);
               }}
               options={housingMeteringDeviceTypes}
               value={values.housingMeteringDeviceType}
@@ -214,7 +201,7 @@ const AddDeviceForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          {(state === 'FlowMeter') ? (
+          {(values.housingMeteringDeviceType === 'FlowMeter') ? (
             <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
               <InputTT
                 name="diameter"

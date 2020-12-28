@@ -9,24 +9,9 @@ const ModalAddDevice = () => {
   const [calculators, setCalculators] = useState([]);
   const [currentTabKey, setTab] = useState('1');
   const [calculator, setCalculator] = useState();
-  const [pipes, setPipes] = useState()
+  const [pipes, setPipes] = useState();
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
-
-  useEffect(() => {
-    if (calculator) {
-      const { hubs } = calculator;
-      const res = [];
-      hubs.map((item, index) => {
-        // console.log(index);
-        // console.log(item.hub.pipeNumber);
-        res.push(item.hub.pipeNumber);
-      });
-
-      setPipes(res)
-      console.log("res", res)
-
-    }
-  },[calculator])
+  const [coldandthermo, setColdandthermo] = useState(false);
 
   function handleCancel() {
     setAddOdpu(false);
@@ -47,7 +32,6 @@ const ModalAddDevice = () => {
   function handleCancel() {
     setAddOdpu(false);
   }
-
 
   useEffect(() => {
     async function setCalculatorsList() {
@@ -71,7 +55,7 @@ const ModalAddDevice = () => {
             color="blue"
             onClick={handleNext}
             big
-            // disabled={coldandthermo}
+            disabled={coldandthermo}
           >
             Далее
           </ButtonTT>
@@ -87,7 +71,7 @@ const ModalAddDevice = () => {
             type="submit"
             form="formikFormAddOdpu"
             big
-            // disabled={coldandthermo}
+            disabled={coldandthermo}
           >
             Добавить
           </ButtonTT>
@@ -127,8 +111,8 @@ const ModalAddDevice = () => {
         handleChangeTab={handleChangeTab}
         calculator={calculator}
         setCalculator={setCalculator}
-        pipes={pipes}
-        setPipes={setPipes}
+        coldandthermo={coldandthermo}
+        setColdandthermo={setColdandthermo}
       />
       <Buttons />
     </StyledModal>
