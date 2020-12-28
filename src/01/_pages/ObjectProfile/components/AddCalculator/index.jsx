@@ -3,6 +3,7 @@ import '../../../../tt-components/antd.scss';
 import { Modal } from 'antd';
 import { ObjectContext } from '../../index';
 import AddCalculatorForm from './AddCalculatorForm';
+import { StyledModal } from "../../../../tt-components";
 
 const ModalCalculator = () => {
 
@@ -13,8 +14,9 @@ const ModalCalculator = () => {
   };
 
   return (
-    <Modal
-      visible={addCalculator}
+    <StyledModal
+      // visible={addCalculator}
+      visible
       onCancel={handleCancel}
       footer={null}
       width={800}
@@ -26,7 +28,7 @@ const ModalCalculator = () => {
         handleCancel={handleCancel}
       />
 
-    </Modal>
+    </StyledModal>
   );
 };
 

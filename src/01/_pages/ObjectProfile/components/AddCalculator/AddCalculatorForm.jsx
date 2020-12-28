@@ -7,7 +7,7 @@ import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
-  DatePickerTT, InputTT, SelectTT, Wrap,
+  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter,
 } from '../../../../tt-components';
 import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
@@ -23,8 +23,6 @@ const AddCalculatorForm = (props) => {
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
-
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -141,7 +139,7 @@ const AddCalculatorForm = (props) => {
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
-      <div>
+      <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
@@ -318,8 +316,8 @@ const AddCalculatorForm = (props) => {
           <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
-      </div>
-      <div style={{ margin: '32px 0' }}>
+      </StyledModalBody>
+      <StyledFooter >
         <ButtonTT
           color="blue"
           onClick={handleNext}
@@ -345,7 +343,7 @@ const AddCalculatorForm = (props) => {
         >
           Отмена
         </ButtonTT>
-      </div>
+      </StyledFooter>
     </form>
   );
 };
