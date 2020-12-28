@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { useFormik } from 'formik';
+import { useFormik, Field, getIn } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, Switch } from 'antd';
@@ -12,8 +12,7 @@ import {
 import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import { useDebounce } from "../../../../hooks/useDebounce";
-import { returnNullIfEmptyString } from "../../../../utils/returnNullIfEmptyString";
+import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
@@ -68,7 +67,9 @@ const AddCalculatorForm = (props) => {
     },
   });
 
-  // const debouncedValues = useDebounce(values, 500);
+  function handleSubmitForm(){
+    handleBeforeSubmit()
+  }
 
   useEffect(() => {
     setValidationSchema(defaultValidationSchema);
@@ -98,11 +99,40 @@ const AddCalculatorForm = (props) => {
   function onSwitchChange(checked) {
     setFieldValue('checked', checked);
   }
-  // function clearConnectionError() {
-  //   setFieldError('ipV4',)
-  //   setFieldError('port',)
-  //   setFieldError('deviceAddress',)
-  // }
+
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['serialNumber'],
+    },
+    {
+      key: '2',
+      value: ['ipV4', 'port', 'deviceAddress'],
+    },
+  ];
+
+  function handleBeforeSubmit() {
+    console.log('errors', errors);
+    const keys = _.keys(errors);
+    if (keys.length > 0) {
+      const res = _.find(tabErrors, (item) => item.value.find((x) => keys.includes(x)));
+      // console.log(res)
+      // console.log(res.key)
+      if (res){
+        setTab(String(res.key));
+      }
+      else {
+        handleSubmit()
+      }
+
+    }
+  }
+
+  useEffect(() => {
+    console.log('errors')
+    },
+    [errors])
+
 
   useEffect(() => {
     console.log('Правда, что все строки пустые:?', isEmpty());
@@ -137,14 +167,19 @@ const AddCalculatorForm = (props) => {
     setTab(value);
   }
 
+  // button.addEventListener('click', (event) => {
+  //   // handle the form data
+  //   console.log('done')
+  // });
+
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        {/*<div>{JSON.stringify(errors)}</div>*/}
-        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
+        {/* <div>{JSON.stringify(errors)}</div> */}
+        {/* <div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -293,7 +328,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
 
-            {(isEmpty() && !values.checked) ? null: <Alert name="deviceAddress" /> }
+            {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" /> }
 
           </Form.Item>
 
@@ -317,7 +352,7 @@ const AddCalculatorForm = (props) => {
         </div>
 
       </StyledModalBody>
-      <StyledFooter >
+      <StyledFooter>
         <ButtonTT
           color="blue"
           onClick={handleNext}
@@ -330,7 +365,9 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          onClick={handleSubmit}
+          for="formikForm"
+          id="submit"
+          onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}
         >
           Сохранить
@@ -343,6 +380,7 @@ const AddCalculatorForm = (props) => {
         >
           Отмена
         </ButtonTT>
+        {/* <ButtonTT type="button" onClick={findErrors}>findErrors</ButtonTT> */}
       </StyledFooter>
     </form>
   );
