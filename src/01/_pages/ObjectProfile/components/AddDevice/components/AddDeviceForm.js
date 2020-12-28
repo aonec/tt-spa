@@ -1,65 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
 import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected,
+  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp,
 } from '../../../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning
 } from '../../../../../tt-components';
-import { addOdpu } from '../apiAddOdpu';
+import { addOdpu, getCalculator } from '../apiAddOdpu';
 import TabsComponent from './Main';
 
+import { styles, StyledFormPage } from './styledComponents';
+import styled from 'styled-components'
 
-const Warning = (props) => {
-  console.log('warning');
-  console.log(props)
+const StyledHint = styled.div`
+  color: rgba(39, 47, 90, 0.7)
+`
 
-  return (
-    <div>
-      Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс
-    </div>
-  );
-};
-
-const styles = {
-  w49: {
-    width: '49%',
-  },
-  w100: {
-    width: '100%',
-  },
-};
-
-const StyledFormPage = styled.div`
-    display: flex;
-    flex-wrap:wrap;
-    justify-content:space-between
-  `;
 
 const AddDeviceForm = (props) => {
-  const { calculators, setAddOdpu } = props;
-  const [currentTabKey, setTab] = useState('1');
-
-  function handleCancel() {
-    setAddOdpu(false);
-  }
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-  const handleNext = () => {
-    setTab(String(Number(currentTabKey) + 1));
-  };
+  const {
+    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, coldandthermo, setColdandthermo,
+  } = props;
 
   const [disable, setDisable] = useState(false);
-  const [state, setState] = useState('FlowMeter');
-  const [coldandthermo, setColdandthermo] = useState(false);
 
   const validationSchemaFlowMeter = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
@@ -84,17 +51,6 @@ const AddDeviceForm = (props) => {
   });
 
   const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
-
-  useEffect(() => {
-    console.log('state', state);
-    if (state === 'FlowMeter') {
-      setValidationSchema(validationSchemaFlowMeter);
-    }
-    if (state === 'TemperatureSensor') {
-      setValidationSchema(validationSchemaTemperatureSensor);
-      setFieldValue('diameter', null);
-    }
-  }, [state]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -131,7 +87,6 @@ const AddDeviceForm = (props) => {
       hubNumber: null,
       pipeNumber: null,
       magistral: magistrals[0].value,
-
     },
     validationSchema,
 
@@ -164,57 +119,23 @@ const AddDeviceForm = (props) => {
   });
 
   useEffect(() => {
-    console.log(values);
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
-      // alert('Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс');
       setColdandthermo(true);
     } else setColdandthermo(false);
   }, [values.resource, values.housingMeteringDeviceType]);
 
-  const Buttons = () => {
-    const NextOkButton = () => {
-      if (currentTabKey === '3') {
-        return (
-          <ButtonTT
-            color="blue"
-            type="submit"
-            form="formikFormAddOdpu"
-            big
-            disabled={coldandthermo}
-          >
-            Добавить
-          </ButtonTT>
-        );
-      }
+  useEffect(() => {
+    if (values.housingMeteringDeviceType === 'FlowMeter') {
+      setValidationSchema(validationSchemaFlowMeter);
+    }
+    if (values.housingMeteringDeviceType === 'TemperatureSensor') {
+      setValidationSchema(validationSchemaTemperatureSensor);
+      setFieldValue('diameter', null);
+    }
+  }, [values.housingMeteringDeviceType]);
 
-      return (
-        <ButtonTT
-          color="blue"
-          onClick={handleNext}
-          big
-          disabled={coldandthermo}
-        >
-          Далее
-        </ButtonTT>
-      );
-    };
-
-    const CancelButton = () => (
-      <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-        Отмена
-      </ButtonTT>
-    );
-
-    return (
-      <StyledFooter>
-        <NextOkButton style={{ marginLeft: '16px' }} />
-        <CancelButton />
-      </StyledFooter>
-    );
-  };
 
   return (
-
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
@@ -224,7 +145,7 @@ const AddDeviceForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        <div hidden={!coldandthermo}>Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс</div>
+        <Warning hidden={!coldandthermo} title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс." />
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -235,7 +156,6 @@ const AddDeviceForm = (props) => {
               name="housingMeteringDeviceType"
               onChange={(value) => {
                 setFieldValue('housingMeteringDeviceType', value);
-                setState(value);
               }}
               options={housingMeteringDeviceTypes}
               value={values.housingMeteringDeviceType}
@@ -278,7 +198,7 @@ const AddDeviceForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          {(state === 'FlowMeter') ? (
+          {(values.housingMeteringDeviceType === 'FlowMeter') ? (
             <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
               <InputTT
                 name="diameter"
@@ -329,6 +249,7 @@ const AddDeviceForm = (props) => {
               }}
               value={moment(values.lastCommercialAccountingDate)}
             />
+            <StyledHint>Только для приборов коммерческого учета</StyledHint>
           </Form.Item>
 
           <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
@@ -342,6 +263,7 @@ const AddDeviceForm = (props) => {
               }}
               value={moment(values.futureCommercialAccountingDate)}
             />
+            <StyledHint>Только для приборов коммерческого учета</StyledHint>
           </Form.Item>
         </StyledFormPage>
 
@@ -371,7 +293,9 @@ const AddDeviceForm = (props) => {
               onBlur={handleBlur}
               placeholder="Начните вводить серийный номер или IP адрес прибора"
               onChange={(value) => {
+                console.log(value);
                 setFieldValue('calculatorId', value);
+                getCalculator(value).then((result) => setCalculator(result));
               }}
               options={calculators}
               value={values.calculatorId}
@@ -421,7 +345,7 @@ const AddDeviceForm = (props) => {
             <Alert name="pipeNumber" />
           </Form.Item>
 
-          <Form.Item name="text" label="Выберите направление магистрали" style={styles.w49}>
+          <Form.Item name="text" label="Магистраль" style={styles.w49}>
             <SelectTT
               placeholder="Выберите направление магистрали"
               name="magistral"
@@ -440,7 +364,6 @@ const AddDeviceForm = (props) => {
           <Title color="black">Компонент в разработке</Title>
         </StyledFormPage>
       </StyledModalBody>
-      <Buttons />
     </form>
   );
 };
