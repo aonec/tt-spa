@@ -6,6 +6,15 @@
   .ant-form-item-control {
     width: 100%;
   }
+  .ant-form-item-label {
+    label {
+      color: rgba(39, 47, 90, 0.7) !important;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+
 }
 
 .ant-input-number-handler-wrap {

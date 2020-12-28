@@ -345,7 +345,7 @@ const AddDeviceForm = (props) => {
             <Alert name="pipeNumber" />
           </Form.Item>
 
-          <Form.Item name="text" label="Выберите направление магистрали" style={styles.w49}>
+          <Form.Item name="text" label="Магистраль" style={styles.w49}>
             <SelectTT
               placeholder="Выберите направление магистрали"
               name="magistral"
