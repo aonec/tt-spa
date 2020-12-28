@@ -72,6 +72,7 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
 
                      }) => {
 
+
     const [isFocused, setIsFocused] = useState(false);
 
     const [prevValue, setPrevValue] = useState(null);

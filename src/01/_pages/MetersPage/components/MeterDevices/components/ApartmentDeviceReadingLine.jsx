@@ -24,7 +24,7 @@ const { confirm } = Modal;
 
 const FullDeviceLine = styled.div`
     display: grid;
-    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;
+    grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;
     column-gap: 16px;
     margin-top: 8px;
     align-items: center;
@@ -34,6 +34,19 @@ const FullDeviceLine = styled.div`
     border-bottom: 1px solid #DCDEE4;
 
     `;
+
+
+
+export const DeviceReadingsContainer = styled.div`
+display: flex;
+flex-direction: column;
+border-radius: 4px;
+border: 1px solid var(--frame);
+max-width: 200px;
+padding: 8px;
+pointer-events: ${props => props.isDisabled === true ? 'none' : 'auto'};
+
+`;
 
 const Footer = styled.div`
 background-color: var(--bg);
@@ -51,16 +64,6 @@ const Header = styled.h1`
   font-weight: 300;
   margin: 0;
 `
-
-export const DeviceReadingsContainer = styled.div`
-display: flex;
-flex-direction: column;
-border-radius: 4px;
-border: 1px solid var(--frame);
-padding: 8px;
-pointer-events: ${props => props.isDisabled === true ? 'none' : 'auto'};
-
-`;
 
 const StyledModal = styled(Modal)`
 
@@ -92,7 +95,7 @@ const StyledModal = styled(Modal)`
 
 
 
-const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisabledState}) => {
+const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisabledState}) => {
 
     const isDisabled = disabledState.find((el) => el.deviceId === device.id).isDisabled;
 
@@ -105,14 +108,6 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     const [initialReadings, setInitialReadings] = useState();
 
     const textInput = React.createRef();
-
-    const onDelete = async () => {
-        await setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: initialReadings
-        }));
-        textInput.current.focus()
-    }
 
      const handleOk = () => {
          setReadingsState((state) => ({
@@ -133,51 +128,21 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
              ...state,
              currentReadingsArray: initialReadings
          }));
-         // setDisabledState((prevState) => prevState.map((el) => {
-         //     return el.deviceId === device.id
-         //         ? {...el, isDisabled: false}
-         //         : {... el, isDisabled: false}
-         // }))
          setIsVisible(false)
-
      }
 
      const afterCloseHandler = () => {
-        // if ()
-        //  setDisabledState((prevState) => prevState.map((el) => {
-        //      return el.deviceId === device.id
-        //          ? {...el, isDisabled: false}
-        //          : {... el, isDisabled: false}
-        //  }))
          if (isCancel) {
              setIsCancel(false)
              textInput.current.focus()
-
          }
      }
-    //
-    useEffect(() => {
-        // if (textInput.current) textInput.current.focus()
-
-        // if (isCancel) {
-        //     setIsCancel(false)
-        //     textInput.current.focus()
-        //
-        // }
-
-    }, [readingsState])
-
 
     const isActive = device.closingDate === null;
 
-
-
     useReadings(device, setReadingsState, sliderIndex);
 
-
     if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
-
-
 
     const onInputChange = (e, index) => {
         e.preventDefault();
@@ -213,7 +178,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-        <DeviceRatesVertical key={readingsState.id || device.id + index}
+        <DeviceRatesVertical key={readingsState.currentReadingsArray.id ?? device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
@@ -226,7 +191,7 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     ));
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-        <DeviceRatesVertical key={readingsState.id || device.id + index}
+        <DeviceRatesVertical key={readingsState.previousReadingsArray.id ?? device.id + index}
                      index={index}
                      onChange={(e) => onInputChange(e, index)}
                      value={value}
@@ -237,7 +202,6 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     ));
 
     const onBlurHandler = (e) => {
-        debugger;
         if (!e.currentTarget.contains(e.relatedTarget)) {
             const isNull = isNullInArray(readingsState.currentReadingsArray)
             if (isNull) {
@@ -245,19 +209,14 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
             } else {
                 if (readingsState.currentReadingsArray !== initialReadings) {
                     sendReadings(device)
-
                 }
                setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
-
-                // setDisabledState((prevState) => prevState.map((el) => ({...el, isDisabled: false })));
-
                 }
             }
 
     }
 
     const onFocusHandler = (e) => {
-        debugger;
         setInitialReadings(readingsState.currentReadingsArray);
         const isNull = isNullInArray(readingsState.currentReadingsArray)
         if (isNull) {
@@ -267,7 +226,6 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
                     : {... el, isDisabled: true}
             }))
         }
-
     }
 
 
@@ -328,4 +286,4 @@ const OperatorDeviceReadingForm = ({device, sliderIndex, disabledState, setDisab
     )
 }
 
-export default OperatorDeviceReadingForm;
+export default ApartmentDeviceReadingLine;

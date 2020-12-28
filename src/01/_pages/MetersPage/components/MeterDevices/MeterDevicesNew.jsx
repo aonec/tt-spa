@@ -5,7 +5,7 @@ import * as style from "01/r_comp"
 import { Icon } from "01/components"
 import DeviceReadingForm from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
 import readingsReducer, {setDevices} from "../../../../components/Select/selects/AddReadings/readingsReducer";
-import OperatorDeviceReadingForm from "./components/OperatorDeviceReadingForm";
+import ApartmentDeviceReadingLine from "./components/ApartmentDeviceReadingLine";
 import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
 import moment from 'moment';
@@ -30,7 +30,7 @@ const styles = css`
 
  meter_header {
     display: grid;
-    grid-template-columns: minmax(330px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr) 1fr;    
+    grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;    
     border-bottom: 1px solid var(--frame);
     padding: 8px;
     column-gap: 16px;
@@ -111,9 +111,9 @@ export const MeterDevicesNew = ({items = []}) => {
 
     const [sliderIndex, setSliderIndex] = useState(0)
 
-    const [disabledState, setDisabledState] = useState()
-
     const [state, dispatch] = React.useReducer(readingsReducer, {});
+
+    const [disabledState, setDisabledState] = useState()
 
     useEffect(() => {
         dispatch(setDevices(items))
@@ -132,7 +132,7 @@ export const MeterDevicesNew = ({items = []}) => {
 
     if (!state.devices?.length) return null
 
-    const readings = state.devices.map((device, index) => <OperatorDeviceReadingForm
+    const readings = state.devices.map((device, index) => <ApartmentDeviceReadingLine
         sliderIndex={sliderIndex}
         key={device.id}
         device={device}
