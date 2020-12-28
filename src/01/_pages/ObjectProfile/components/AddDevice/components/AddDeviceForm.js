@@ -4,21 +4,26 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
 import {
   resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp,
 } from '../../../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning
 } from '../../../../../tt-components';
 import { addOdpu, getCalculator } from '../apiAddOdpu';
 import TabsComponent from './Main';
 
 import { styles, StyledFormPage } from './styledComponents';
+import styled from 'styled-components'
+
+const StyledHint = styled.div`
+  color: rgba(39, 47, 90, 0.7)
+`
+
 
 const AddDeviceForm = (props) => {
   const {
-    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, coldandthermo, setColdandthermo
+    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, coldandthermo, setColdandthermo,
   } = props;
 
   const [disable, setDisable] = useState(false);
@@ -46,9 +51,6 @@ const AddDeviceForm = (props) => {
   });
 
   const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
-
-
-
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -85,7 +87,6 @@ const AddDeviceForm = (props) => {
       hubNumber: null,
       pipeNumber: null,
       magistral: magistrals[0].value,
-
     },
     validationSchema,
 
@@ -117,11 +118,6 @@ const AddDeviceForm = (props) => {
     },
   });
 
-
-
-
-
-
   useEffect(() => {
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
       setColdandthermo(true);
@@ -136,9 +132,10 @@ const AddDeviceForm = (props) => {
       setValidationSchema(validationSchemaTemperatureSensor);
       setFieldValue('diameter', null);
     }
-  },[values.housingMeteringDeviceType])
-  return (
+  }, [values.housingMeteringDeviceType]);
 
+
+  return (
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
@@ -148,7 +145,7 @@ const AddDeviceForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        <div hidden={!coldandthermo}>Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс</div>
+        <Warning hidden={!coldandthermo} title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс." />
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -252,6 +249,7 @@ const AddDeviceForm = (props) => {
               }}
               value={moment(values.lastCommercialAccountingDate)}
             />
+            <StyledHint>Только для приборов коммерческого учета</StyledHint>
           </Form.Item>
 
           <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
@@ -265,6 +263,7 @@ const AddDeviceForm = (props) => {
               }}
               value={moment(values.futureCommercialAccountingDate)}
             />
+            <StyledHint>Только для приборов коммерческого учета</StyledHint>
           </Form.Item>
         </StyledFormPage>
 
