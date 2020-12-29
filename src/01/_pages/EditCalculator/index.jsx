@@ -29,7 +29,7 @@ export const EditCalculator = () => {
     return <div>ЗАГРУЗКА</div>;
   }
 
-  const context = { currentCalc, currentTabKey, handleChangeTab };
+  const context = { currentCalc, currentTabKey, handleChangeTab, setTab };
   return (
     <>
       <EditCalculatorContext.Provider value={context}>

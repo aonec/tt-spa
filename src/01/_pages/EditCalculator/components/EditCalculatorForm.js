@@ -12,9 +12,10 @@ import { EditCalculatorContext } from '../index';
 import { putCalculator } from './apiEditCalculator';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
+import { handleTabsBeforeFormSubmit } from "../../../utils/handleTabsBeforeFormSubmit";
 
 const EditCalculatorForm = () => {
-  const { currentCalc, currentTabKey } = useContext(EditCalculatorContext);
+  const { currentCalc, currentTabKey, setTab } = useContext(EditCalculatorContext);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const [empty, setEmpty] = useState();
 
@@ -51,7 +52,6 @@ const EditCalculatorForm = () => {
     port: null,
     deviceAddress: null,
   };
-  // console.log(connection)
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -170,6 +170,27 @@ const EditCalculatorForm = () => {
     }
     return null;
   };
+
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['serialNumber'],
+    },
+    {
+      key: '2',
+      value: ['ipV4', 'port', 'deviceAddress'],
+    },
+  ];
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    if (hasError === true) {
+      setTab(errorTab);
+    }
+    else {
+      handleSubmit()
+    }
+  }
 
   return (
     <form id="editCalculatorForm" style={{ maxWidth: 800 }}>
@@ -336,8 +357,8 @@ const EditCalculatorForm = () => {
           form="editCalculatorForm"
           color="blue"
           style={{ marginRight: '16px' }}
-          type="submit"
-          onClick={handleSubmit}
+          type="button"
+          onClick={handleSubmitForm}
         >
           Сохранить
         </ButtonTT>

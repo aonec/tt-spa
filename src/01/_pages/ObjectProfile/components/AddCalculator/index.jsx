@@ -1,13 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import '../../../../tt-components/antd.scss';
-import { Modal } from 'antd';
 import { ObjectContext } from '../../index';
 import AddCalculatorForm from './AddCalculatorForm';
-import { StyledModal } from "../../../../tt-components";
+import { StyledModal } from '../../../../tt-components';
 
 const ModalCalculator = () => {
-
-
   const { addCalculator, setAddCalculator, objid } = useContext(ObjectContext);
   const handleCancel = () => {
     setAddCalculator(false);
