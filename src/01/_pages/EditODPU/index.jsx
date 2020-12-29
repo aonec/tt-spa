@@ -38,7 +38,7 @@ const EditODPU = () => {
     const model = device.model || 'Не указана модель';
     const serialNumber = device.serialNumber || 'Не указан серийный номер';
 
-    const context = { device, calculators, currentTabKey };
+    const context = { device, calculators, currentTabKey, setTab };
 
     return (
       <>
@@ -55,6 +55,7 @@ const EditODPU = () => {
             currentTabKey={currentTabKey}
             device={device}
             calculators={calculators}
+            setTab={setTab}
           />
         </EditOdpuContext.Provider>
       </>
