@@ -91,7 +91,6 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
             <DeviceReadingsContainer>{deviceReadingsLine}</DeviceReadingsContainer>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <ActiveLine isActive={isActive}/>
-                {/*<div style={{fontWeight: 400, color: 'rgba(39, 47, 90, 0.6)'}}>{transformDate(device.lastCheckingDate)} — {transformDate(device.futureCheckingDate)}</div>*/}
                 <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
             </div>
         </FullDeviceLine>

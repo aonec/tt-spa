@@ -10,9 +10,10 @@ import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { IndividualDeviceType } from "types/types";
-import { DeviceReadingLine } from "../DeviceReadingLine/DeviceReadingLine";
+import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
 import readingsReducer, { setDevices } from "../../../../../components/Select/selects/AddReadings/readingsReducer";
+import uuid from 'react-uuid'
 
 interface Props {
     searchState: HouseSearchType;
@@ -45,6 +46,7 @@ const HousesDevices: React.FC = () => {
 
     const [state, dispatch] = React.useReducer(readingsReducer, {});
 
+    const [disabledState, setDisabledState] = useState()
 
 
     const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +61,9 @@ const HousesDevices: React.FC = () => {
                 // const res = await requestDevicesByHouse(debouncedSearchState);
                 const res = await requestDevicesByHouse(housingStockId);
                 dispatch(setDevices(res.items));
-                setIsLoading(false)
+                setDisabledState(res.items.map((item) => ({ deviceId: item.id, isDisabled: false })))
+
+            setIsLoading(false)
             // }
         };
         setInfoAsync();
@@ -71,7 +75,13 @@ const HousesDevices: React.FC = () => {
         .sort((device1, device2) => {
         return +device1.apartmentNumber - +device2.apartmentNumber
     })
-        .map((device) => <DeviceReadingLine key={device.id} device={device} dispatch={dispatch}/>)
+        .map((device, index) => <HousesDeviceReadingLine
+            key={device.id + 'f'}
+            device={device}
+            dispatch={dispatch}
+            disabledState={disabledState}
+            setDisabledState={setDisabledState}
+        />)
 
 
 

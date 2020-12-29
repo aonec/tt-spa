@@ -40,7 +40,7 @@ export const MetersPage = () => {
 
 
   return (
-    <div style={{maxWidth: 960}}>
+    <div style={{maxWidth: 1200}}>
       <h1>Ввод показаний</h1>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab='По квартирам' key="apartments">

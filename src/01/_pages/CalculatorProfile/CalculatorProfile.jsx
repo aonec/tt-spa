@@ -15,6 +15,8 @@ import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import {HousingContext} from "../HousingProfile";
 
 export const DeviceContext = React.createContext();
 
@@ -105,6 +107,7 @@ export const CalculatorProfile = () => {
     <DeviceContext.Provider
       value={context}
     >
+      {/*<Breadcrumb path='/devices'/>*/}
       <Header />
       <Tabs />
       <Grid>

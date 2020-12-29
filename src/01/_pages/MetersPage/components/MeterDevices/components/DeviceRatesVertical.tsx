@@ -10,6 +10,7 @@ padding-right: ${props => props.houseReadings ? 0 : '16px'};
 padding-right: 8px;
 padding-left: 8px;
 
+
 &:not(:first-child) {
 padding-top: 8px;
 }
@@ -48,13 +49,13 @@ const SuffixLine = styled.span`
 const StyledInput = styled(Input)`
 color: var(--main-70);
 border: 0;
-padding: 0;
-padding-right: '8px';
+padding: 0 8px 0 0 ;
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
 }
+
 `;
 
 const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
@@ -65,24 +66,29 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           resource,
                           sendReadings = () => {},
                           operatorCabinet = false,
-                          houseReadings = false
+                          houseReadings = false,
+                          textInput,
+                          isDisabled
+
                      }) => {
 
 
+    const [isFocused, setIsFocused] = useState(false);
 
     const [prevValue, setPrevValue] = useState(null);
 
     const onBlurHandler = (e: any) => {
+        setIsFocused(false)
         if (prevValue === e.target.value) return;
         sendReadings();
     };
 
     const onFocusHandler  = (e: any) => {
-        setPrevValue(e.target.value)
+        setIsFocused(true)
     }
 
     return (
-        <ReadingLineStyled houseReadings={houseReadings}>
+        <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
             <StyledInput
                 prefix={readingsBlocked && !houseReadings ? null : (
                     <TarifLabel houseReadings={houseReadings}>
@@ -92,12 +98,12 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                     </TarifLabel>
                 )}
                 suffix={resource === 'Electricity' ? <SuffixLine>кВтч</SuffixLine> : <SuffixLine>м³</SuffixLine>}
-                disabled={readingsBlocked}
+                disabled={readingsBlocked || isDisabled}
                 type="text"
                 value={value}
-
+                ref={operatorCabinet && !isDisabled ? textInput : undefined}
                 onChange={onChange}
-                onBlur={operatorCabinet ? onBlurHandler : undefined}
+                // onBlur={operatorCabinet ? onBlurHandler : undefined}
                 onFocus={operatorCabinet ? onFocusHandler : undefined}
                 required
             />
