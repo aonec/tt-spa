@@ -4,7 +4,7 @@ import {formEmptyReadingsObject} from "../utils/formEmptyReadingsObject";
 import {getMonthFromDate} from "../utils/getMonthFromDate";
 
 
-export const useReadings = (device, setReadingsState) => {
+export const useReadings = (device, setReadingsState, sliderIndex = 0) => {
 
     const currentMonth = getMonthFromDate();
     const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -16,9 +16,10 @@ export const useReadings = (device, setReadingsState) => {
     useEffect(() => {
         const previousReadingsArray = [];
         const currentReadingsArray = [];
-        const prevReadings = (isReadingsCurrent ? device.readings[1] : device.readings[0]) || {};
+        const prevReadingsIndex = sliderIndex + +isReadingsCurrent
+        // const prevReadings = (isReadingsCurrent ? device.readings[1] : device.readings[0]) || {};
         const currentReadings = (isReadingsCurrent ? device.readings[0] : emptyReadingsObject) || {};
-
+        const prevReadings = device.readings[prevReadingsIndex] || {};
 
         for (let i=1; i <= numberOfReadings; i++) {
             previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
@@ -31,7 +32,7 @@ export const useReadings = (device, setReadingsState) => {
             prevId: prevReadings.id,
             currId: currentReadings.id,
             resource: device.resource })
-    }, [device.readings, numberOfReadings]);
+    }, [device.readings, numberOfReadings, sliderIndex]);
 
 
 

@@ -11,14 +11,15 @@ export const ButtonTT = styled.button`
   padding: 8px 24px;
   background-color: #189EE9;
   transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
+  width: ${ props => props.big ? '224px' : 'auto'};
 
   &:before {
     display: none;
     content: "";
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     z-index: 0;
     position: absolute;
     border-right: 1px solid rgba(39, 47, 90, 0.8);
@@ -34,6 +35,8 @@ export const ButtonTT = styled.button`
       transform: translate(4px, 4px);
     }
   }
+  
+  
 
   ${({ color }) => (color === 'red'
           && css`

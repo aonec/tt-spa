@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { useFormik } from 'formik';
+import { useFormik, Field, getIn } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
-  DatePickerTT, InputTT, SelectTT, Wrap,
+  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter,
 } from '../../../../tt-components';
 import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
-import { useDebounce } from "../../../../hooks/useDebounce";
-import { returnNullIfEmptyString } from "../../../../utils/returnNullIfEmptyString";
+import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
+import { handleTabsBeforeFormSubmit } from "../../../../utils/handleTabsBeforeFormSubmit";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
-
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -70,8 +64,6 @@ const AddCalculatorForm = (props) => {
     },
   });
 
-  // const debouncedValues = useDebounce(values, 500);
-
   useEffect(() => {
     setValidationSchema(defaultValidationSchema);
   }, []);
@@ -91,6 +83,10 @@ const AddCalculatorForm = (props) => {
     return item === null || item === '';
   }
 
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+
   function isEmpty() {
     return isEmptyValue(values.deviceAddress)
       && isEmptyValue(values.port)
@@ -100,11 +96,26 @@ const AddCalculatorForm = (props) => {
   function onSwitchChange(checked) {
     setFieldValue('checked', checked);
   }
-  // function clearConnectionError() {
-  //   setFieldError('ipV4',)
-  //   setFieldError('port',)
-  //   setFieldError('deviceAddress',)
-  // }
+
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['serialNumber'],
+    },
+    {
+      key: '2',
+      value: ['ipV4', 'port', 'deviceAddress'],
+    },
+  ];
+
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    if (hasError === true) {
+      setTab(errorTab);
+    }
+  }
+
 
   useEffect(() => {
     console.log('Правда, что все строки пустые:?', isEmpty());
@@ -113,12 +124,9 @@ const AddCalculatorForm = (props) => {
     if (values.checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
-
     if (values.checked === false && isEmpty()) {
-      // clearConnectionError()
       setValidationSchema(emptyValidationSchema);
     }
-
     if (values.checked === false && !isEmpty()) {
       setValidationSchema(defaultValidationSchema);
     }
@@ -141,12 +149,12 @@ const AddCalculatorForm = (props) => {
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
-      <div>
+      <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        {/*<div>{JSON.stringify(errors)}</div>*/}
-        {/*<div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div>*/}
+        {/* <div>{JSON.stringify(errors)}</div> */}
+        {/* <div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
@@ -295,7 +303,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
 
-            {(isEmpty() && !values.checked) ? null: <Alert name="deviceAddress" /> }
+            {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" /> }
 
           </Form.Item>
 
@@ -318,13 +326,14 @@ const AddCalculatorForm = (props) => {
           <Title color="black">Компонент Документы в разработке</Title>
         </div>
 
-      </div>
-      <div style={{ margin: '32px 0' }}>
+      </StyledModalBody>
+      <StyledFooter>
         <ButtonTT
           color="blue"
           onClick={handleNext}
           type="button"
           hidden={currentTabKey === '3'}
+          big
         >
           Далее
         </ButtonTT>
@@ -332,10 +341,13 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          onClick={handleSubmit}
+          for="formikForm"
+          id="submit"
+          onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}
+          big
         >
-          Сохранить
+          Добавить
         </ButtonTT>
         <ButtonTT
           color="white"
@@ -345,7 +357,8 @@ const AddCalculatorForm = (props) => {
         >
           Отмена
         </ButtonTT>
-      </div>
+        {/* <ButtonTT type="button" onClick={findErrors}>findErrors</ButtonTT> */}
+      </StyledFooter>
     </form>
   );
 };

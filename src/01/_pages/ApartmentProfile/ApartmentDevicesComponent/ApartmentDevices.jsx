@@ -10,7 +10,7 @@ export const ApartmentDevices = (props) => {
   const params = useParams();
   const { devices } = props;
 
-  const { items } = devices;
+  const { items } = devices || {};
   if (!items) {
     return (
       <div>
