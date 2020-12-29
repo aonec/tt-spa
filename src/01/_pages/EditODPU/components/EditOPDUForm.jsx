@@ -139,11 +139,11 @@ const FormEditODPU = (props) => {
   const tabErrors = [
     {
       key: '1',
-      value: ['serialNumber'],
+      value: ['model', 'serialNumber', 'diameter'],
     },
     {
       key: '2',
-      value: ['ipV4', 'port', 'deviceAddress'],
+      value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
     },
   ];
 
