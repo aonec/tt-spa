@@ -4,7 +4,7 @@ import s from './Arrow.module.scss'
 
 
 const SvgContainer = styled.svg`
-fill: {props => debugger; props. isDisabled 
+fill: {props => props. isDisabled 
 ? "var(--main-32)" : "var(--main-100)"
 }
 

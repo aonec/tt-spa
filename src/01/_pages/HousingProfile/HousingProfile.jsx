@@ -12,6 +12,7 @@ import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import ButtonTT from '../../tt-components/ButtonTT';
 import DeregisterDevice from "./components/Modals/ModalDeregister";
+import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 
 export const HousingContext = React.createContext();
 
@@ -77,8 +78,8 @@ export const HousingProfile = () => {
   };
   return (
     <HousingContext.Provider
-      value={context}
-    >
+      value={context}>
+      {/*<Breadcrumb path='/devices'/>*/}
       <Header />
       {/* <h1>HousingProfile</h1> */}
       {/* <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT> */}

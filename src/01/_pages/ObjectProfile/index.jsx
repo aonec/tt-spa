@@ -50,12 +50,12 @@ export const ObjectProfile = () => {
       <Header {...header}  />
       <Tabs />
       <grid>
-        <Route path="/*/(\\d+)" exact>
+        <Route path="/objects/(\\d+)" exact>
           <Information {...info} />
         </Route>
 
         <Apartments
-          path="/*/apartments"
+          path="/objects/(\\d+)/apartments"
           onClick={(id) => push(`/objects/${objid}/apartments/${id}`)}
           {...state?.apartments}
         />

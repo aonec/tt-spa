@@ -26,17 +26,18 @@ export const useFetchPage = (state, dispatch) => {
         dispatch({ type: "success", data })
       )
     }
-    if (pageApart?.isExact) {
-      const { city, street, number: HousingStockNumber, apartments } = state
-      if ([city, street, HousingStockNumber].some((i) => !i)) {
-        replace(url)
-      } else {
-        !apartments &&
-          getApartments({ housingStockId: id }).then((data) =>
+    if (pageApart?.isExact && !state.apartments && params.id) {
+      // const { city, street, number: HousingStockNumber, apartments } = state
+      // if ([city, street, HousingStockNumber].some((i) => !i)) {
+      //   replace(url)
+      // } else {
+      //   !apartments &&
+      getInfo(url).then((data) => dispatch({ type: "success", data }))
+      getApartments({ housingStockId: params.id }).then((data) =>
             dispatch({ type: "success", data })
           )
       }
-    }
+
 
     if ((info || devices) && !events) {
       // console.log(params)
