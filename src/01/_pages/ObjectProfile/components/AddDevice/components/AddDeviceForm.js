@@ -20,12 +20,11 @@ const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
 `
 
-
 const AddDeviceForm = (props) => {
-  const {
-    calculators, setAddOdpu, currentTabKey, handleChangeTab, calculator, setCalculator, coldandthermo, setColdandthermo,
-  } = props;
-
+  const { calculators, handleCancel, setAddOdpu} = props;
+  const [currentTabKey, setTab] = useState('1');
+  const [calculator, setCalculator] = useState();
+  const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
 
   const validationSchemaFlowMeter = Yup.object({
@@ -62,6 +61,15 @@ const AddDeviceForm = (props) => {
     }
     return null;
   };
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -364,6 +372,34 @@ const AddDeviceForm = (props) => {
           <Title color="black">Компонент в разработке</Title>
         </StyledFormPage>
       </StyledModalBody>
+      <StyledFooter>
+
+        <ButtonTT
+          color="blue"
+          onClick={handleNext}
+          big
+          hidden={currentTabKey === '3'}
+          disabled={coldandthermo}
+          style={{ marginLeft: '16px' }}
+        >
+          Далее
+        </ButtonTT>
+
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form="formikFormAddOdpu"
+          hidden={currentTabKey !== '3'}
+          style={{ marginLeft: '16px' }}
+          big
+          disabled={coldandthermo}
+        >
+          Добавить
+        </ButtonTT>
+        <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+          Отмена
+        </ButtonTT>
+      </StyledFooter>
     </form>
   );
 };
