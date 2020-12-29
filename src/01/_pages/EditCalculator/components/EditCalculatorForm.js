@@ -201,6 +201,7 @@ const EditCalculatorForm = () => {
             format="DD.MM.YYYY"
             name="lastCheckingDate"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
             }}
@@ -213,6 +214,7 @@ const EditCalculatorForm = () => {
           <DatePickerTT
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('futureCheckingDate', date);
             }}
@@ -226,6 +228,7 @@ const EditCalculatorForm = () => {
           <DatePickerTT
             format="DD.MM.YYYY"
             name="lastCommercialAccountingDate"
+            allowClear={false}
             placeholder="Укажите дату..."
             onChange={(date) => {
               setFieldValue('lastCommercialAccountingDate', date);
@@ -238,6 +241,7 @@ const EditCalculatorForm = () => {
           <DatePickerTT
             format="DD.MM.YYYY"
             placeholder="Укажите дату..."
+            allowClear={false}
             onChange={(date) => {
               setFieldValue('futureCommercialAccountingDate', date);
             }}
