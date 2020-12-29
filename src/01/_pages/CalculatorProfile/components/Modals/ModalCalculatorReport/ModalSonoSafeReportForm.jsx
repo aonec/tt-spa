@@ -340,7 +340,8 @@ const ModalSonoSafeReportForm = (props) => {
           color="blue"
           type="submit"
           form="formReport"
-          style={{ width: '224px', marginLeft: '16px' }}
+          big
+          style={{ marginLeft: '16px' }}
           onClick={handleSubmit}
         >
           Выгрузить
