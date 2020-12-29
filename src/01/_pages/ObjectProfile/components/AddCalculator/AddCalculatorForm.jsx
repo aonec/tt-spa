@@ -13,15 +13,12 @@ import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
+import { handleTabsBeforeFormSubmit } from "../../../../utils/handleTabsBeforeFormSubmit";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -67,10 +64,6 @@ const AddCalculatorForm = (props) => {
     },
   });
 
-  function handleSubmitForm(){
-    handleBeforeSubmit()
-  }
-
   useEffect(() => {
     setValidationSchema(defaultValidationSchema);
   }, []);
@@ -88,6 +81,10 @@ const AddCalculatorForm = (props) => {
 
   function isEmptyValue(item) {
     return item === null || item === '';
+  }
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
   }
 
   function isEmpty() {
@@ -111,27 +108,13 @@ const AddCalculatorForm = (props) => {
     },
   ];
 
-  function handleBeforeSubmit() {
-    console.log('errors', errors);
-    const keys = _.keys(errors);
-    if (keys.length > 0) {
-      const res = _.find(tabErrors, (item) => item.value.find((x) => keys.includes(x)));
-      // console.log(res)
-      // console.log(res.key)
-      if (res){
-        setTab(String(res.key));
-      }
-      else {
-        handleSubmit()
-      }
 
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    if (hasError === true) {
+      setTab(errorTab);
     }
   }
-
-  useEffect(() => {
-    console.log('errors')
-    },
-    [errors])
 
 
   useEffect(() => {
@@ -141,12 +124,9 @@ const AddCalculatorForm = (props) => {
     if (values.checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
-
     if (values.checked === false && isEmpty()) {
-      // clearConnectionError()
       setValidationSchema(emptyValidationSchema);
     }
-
     if (values.checked === false && !isEmpty()) {
       setValidationSchema(defaultValidationSchema);
     }
@@ -166,11 +146,6 @@ const AddCalculatorForm = (props) => {
   function handleChangeTab(value) {
     setTab(value);
   }
-
-  // button.addEventListener('click', (event) => {
-  //   // handle the form data
-  //   console.log('done')
-  // });
 
   return (
     <form id="formikForm" onSubmit={handleSubmit}>
@@ -358,6 +333,7 @@ const AddCalculatorForm = (props) => {
           onClick={handleNext}
           type="button"
           hidden={currentTabKey === '3'}
+          big
         >
           Далее
         </ButtonTT>
@@ -369,8 +345,9 @@ const AddCalculatorForm = (props) => {
           id="submit"
           onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}
+          big
         >
-          Сохранить
+          Добавить
         </ButtonTT>
         <ButtonTT
           color="white"

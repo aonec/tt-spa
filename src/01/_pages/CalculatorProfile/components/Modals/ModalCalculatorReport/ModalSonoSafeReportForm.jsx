@@ -19,8 +19,6 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 const { TabPane } = Tabs;
 
-
-
 const ModalSonoSafeReportForm = (props) => {
   const { device, handleCancel, visible } = props;
   const {
@@ -136,10 +134,10 @@ const ModalSonoSafeReportForm = (props) => {
     }),
     onSubmit: async () => {
       console.log('values', values);
-      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'))
-      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'))
+      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'));
+      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'));
 
-      console.log(values)
+      console.log(values);
       console.log('entryNumberRes', values.entryNumber);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         values.detail
@@ -210,17 +208,9 @@ const ModalSonoSafeReportForm = (props) => {
     setFieldValue('pipeNumber', object.pipeNumber);
   };
 
-
-
-  // useEffect(() => {
-  //   console.log(values);
-  // }, [
-  //   values,
-  // ]);
-
   return (
-      <Form id="formReport">
-        <StyledModalBody>
+    <Form id="formReport">
+      <StyledModalBody>
         <Header style={{ margin: 0, padding: 0 }}>
           Выгрузка отчета о общедомовом потреблении SonoSafe
         </Header>
@@ -326,10 +316,10 @@ const ModalSonoSafeReportForm = (props) => {
           checked={values.checked}
           // disabled={this.state.disabled}
           onChange={(e) => {
-            const checked = e.target.checked
+            const { checked } = e.target;
             setFieldValue('checked', checked);
             if (checked === true) {
-              setFieldValue('end','')
+              setFieldValue('end', '');
             }
           }}
           disabled={values.customdisabled}
@@ -337,27 +327,28 @@ const ModalSonoSafeReportForm = (props) => {
           Отчет за 1 месяц
         </Checkbox>
 
-        </StyledModalBody>
+      </StyledModalBody>
 
-        <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <ButtonTT
-            color="white"
-            onClick={handleCancel}
-          >
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="blue"
-            type="submit"
-            form="formReport"
-            style={{ width: '224px', marginLeft: '16px' }}
-            onClick={handleSubmit}
-          >
-            Выгрузить
-          </ButtonTT>
-        </StyledFooter>
+      <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <ButtonTT
+          color="white"
+          onClick={handleCancel}
+        >
+          Отмена
+        </ButtonTT>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form="formReport"
+          big
+          style={{ marginLeft: '16px' }}
+          onClick={handleSubmit}
+        >
+          Выгрузить
+        </ButtonTT>
+      </StyledFooter>
 
-      </Form>
+    </Form>
   );
 };
 
