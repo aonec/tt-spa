@@ -1,15 +1,37 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Modal } from 'antd';
-import { Title, ButtonTT } from '../../../../tt-components';
-import TabsComponent from './components/Main';
+import { StyledFooter, StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { ObjectContext } from '../../index';
 import { getObjectCalculators } from './apiAddOdpu';
+import { ButtonTT } from '../../../../tt-components/ButtonTT';
 
 const ModalAddDevice = () => {
-  const [currentTabKey, setTab] = useState('1');
   const [calculators, setCalculators] = useState([]);
+  const [currentTabKey, setTab] = useState('1');
+  const [calculator, setCalculator] = useState();
+  const [pipes, setPipes] = useState();
   const { addOdpu, setAddOdpu, objid } = useContext(ObjectContext);
+  const [coldandthermo, setColdandthermo] = useState(false);
+
+  function handleCancel() {
+    setAddOdpu(false);
+  }
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+  useEffect(() => {
+    console.log('calculator', calculator);
+  }, [calculator]);
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+
+  function handleCancel() {
+    setAddOdpu(false);
+  }
 
   useEffect(() => {
     async function setCalculatorsList() {
@@ -25,83 +47,75 @@ const ModalAddDevice = () => {
     setCalculatorsList();
   }, []);
 
-  function handleCancel() {
-    setAddOdpu(false);
-  }
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-  const handleNext = () => {
-    setTab(String(Number(currentTabKey) + 1));
-  };
-
   const Buttons = () => {
-    const RenderNextButton = () => {
-      if (currentTabKey === '3') {
-        return null;
-      }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          onClick={handleNext}
-        >
-          Далее
-        </ButtonTT>
-      );
-    };
-
-    const RenderSubmitButton = () => {
+    const OkButton = () => {
       if (currentTabKey !== '3') {
-        return null;
+        return (
+          <ButtonTT
+            color="blue"
+            onClick={handleNext}
+            big
+            disabled={coldandthermo}
+          >
+            Далее
+          </ButtonTT>
+        );
       }
-      return (
-        <ButtonTT
-          color="blue"
-          style={{ marginLeft: '16px' }}
-          type="submit"
-          form="formikFormAddOdpu"
-        >
-          Сохранить
-        </ButtonTT>
-      );
+      return null;
+    };
+    const NextOkButton = () => {
+      if (currentTabKey === '3') {
+        return (
+          <ButtonTT
+            color="blue"
+            type="submit"
+            form="formikFormAddOdpu"
+            big
+            disabled={coldandthermo}
+          >
+            Добавить
+          </ButtonTT>
+        );
+      }
+      return null;
     };
 
     const CancelButton = () => (
-      <ButtonTT color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
+      <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
         Отмена
       </ButtonTT>
     );
 
     return (
-      <div style={{ margin: '32px 0' }}>
-        <RenderNextButton />
-        <RenderSubmitButton />
+      <StyledFooter>
+        <NextOkButton style={{ marginLeft: '16px' }} />
+        <OkButton style={{ marginLeft: '16px' }} />
         <CancelButton />
-      </div>
+      </StyledFooter>
     );
   };
 
   return (
-    <Modal
+    <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
       visible={addOdpu}
+      // visible
     >
-      <Title size="middle" color="black">
-        Добавление нового ОДПУ
-      </Title>
-      <TabsComponent
+
+      <AddDeviceForm
+        calculators={calculators}
+        setAddOdpu={setAddOdpu}
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
+        calculator={calculator}
+        setCalculator={setCalculator}
+        coldandthermo={coldandthermo}
+        setColdandthermo={setColdandthermo}
       />
-      <AddDeviceForm currentTabKey={currentTabKey} calculators={calculators} handelCancel={handleCancel} setAddOdpu={setAddOdpu} />
-
       <Buttons />
-    </Modal>
+    </StyledModal>
   );
 };
 

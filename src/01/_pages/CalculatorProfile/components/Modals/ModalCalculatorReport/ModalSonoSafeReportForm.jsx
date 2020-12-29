@@ -8,8 +8,9 @@ import Modal from 'antd/es/modal/Modal';
 import styled from 'styled-components';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
+  StyledRadio,
   DatePickerTT,
-  ButtonTT, Header, InputTT, SelectTT, RangePickerTT,
+  ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
@@ -18,25 +19,15 @@ import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
 const { TabPane } = Tabs;
 
-const RadioStyled = styled(Radio)`
-    display: block;
-    span {
-      font-size: 16px;
-      line-height: 32px;
-      font-weight: 400;
-      color: rgba(39, 47, 90, 0.9);
-    }
-  `;
-
 const ModalSonoSafeReportForm = (props) => {
   const { device, handleCancel, visible } = props;
-  // const {
-  //   id, model, serialNumber, address, hubs,
-  // } = device;
   const {
-    model, serialNumber, address, hubs,
+    id, model, serialNumber, address, hubs,
   } = device;
-  const id = 2889799;
+  // const {
+  //   model, serialNumber, address, hubs,
+  // } = device;
+  // const id = 2889799;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -143,18 +134,10 @@ const ModalSonoSafeReportForm = (props) => {
     }),
     onSubmit: async () => {
       console.log('values', values);
-      // console.log(convertDateOnly(values.begin.toISOString()));
-      // console.log(convertDateOnly(values.end.toISOString()));
+      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'));
+      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'));
 
-      // if (values.period === 'month') {
-      //   setFieldValue('begin', moment().subtract(1, 'months').startOf('month'))
-      //   setFieldValue('end', moment().startOf('month'))
-      // }
-
-      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'))
-      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'))
-
-      console.log(values)
+      console.log(values);
       console.log('entryNumberRes', values.entryNumber);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         values.detail
@@ -225,41 +208,9 @@ const ModalSonoSafeReportForm = (props) => {
     setFieldValue('pipeNumber', object.pipeNumber);
   };
 
-  const Footer = () => (
-    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <ButtonTT
-        color="white"
-        onClick={handleCancel}
-      >
-        Отмена
-      </ButtonTT>
-      <ButtonTT
-        color="blue"
-        type="submit"
-        form="formReport"
-        style={{ width: '224px', marginLeft: '16px' }}
-        onClick={handleSubmit}
-      >
-        Выгрузить
-      </ButtonTT>
-    </div>
-  );
-
-  useEffect(() => {
-    console.log(values);
-  }, [
-    values,
-  ]);
-
   return (
-    <Modal
-      width={800}
-      visible={visible}
-      onCancel={handleCancel}
-      footer={Footer()}
-    >
-
-      <Form id="formReport">
+    <Form id="formReport">
+      <StyledModalBody>
         <Header style={{ margin: 0, padding: 0 }}>
           Выгрузка отчета о общедомовом потреблении SonoSafe
         </Header>
@@ -293,19 +244,19 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onPeriodChange(event)}
             >
-              <RadioStyled
+              <StyledRadio
                 key="month"
                 value="month"
                 checked
               >
                 За прошлый месяц
-              </RadioStyled>
-              <RadioStyled
+              </StyledRadio>
+              <StyledRadio
                 key="custom"
                 value="custom"
               >
                 Произвольный период
-              </RadioStyled>
+              </StyledRadio>
             </Radio.Group>
           </Form.Item>
 
@@ -315,12 +266,12 @@ const ModalSonoSafeReportForm = (props) => {
               size="large"
               onChange={(event) => onDetailChange(event)}
             >
-              <RadioStyled
+              <StyledRadio
                 key="monthly"
                 value="monthly"
               >
                 Месячная
-              </RadioStyled>
+              </StyledRadio>
             </Radio.Group>
           </Form.Item>
         </div>
@@ -365,10 +316,10 @@ const ModalSonoSafeReportForm = (props) => {
           checked={values.checked}
           // disabled={this.state.disabled}
           onChange={(e) => {
-            const checked = e.target.checked
+            const { checked } = e.target;
             setFieldValue('checked', checked);
             if (checked === true) {
-              setFieldValue('end','')
+              setFieldValue('end', '');
             }
           }}
           disabled={values.customdisabled}
@@ -376,9 +327,27 @@ const ModalSonoSafeReportForm = (props) => {
           Отчет за 1 месяц
         </Checkbox>
 
-      </Form>
+      </StyledModalBody>
 
-    </Modal>
+      <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <ButtonTT
+          color="white"
+          onClick={handleCancel}
+        >
+          Отмена
+        </ButtonTT>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form="formReport"
+          style={{ width: '224px', marginLeft: '16px' }}
+          onClick={handleSubmit}
+        >
+          Выгрузить
+        </ButtonTT>
+      </StyledFooter>
+
+    </Form>
   );
 };
 

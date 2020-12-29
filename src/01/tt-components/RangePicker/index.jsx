@@ -5,7 +5,8 @@ const { RangePicker } = DatePicker;
 
 export const RangePickerTT = styled(RangePicker)`
  height: 48px;
- width: 100%; 
+ width: 100%;
+  border-radius: 4px;
  {
  .ant-picker-range {
    height: 100% !important;
