@@ -12,17 +12,24 @@ import {
   Header, SelectTT, InputTT, ButtonTT, DatePickerTT, InputNunmberTT,
 } from '../../../tt-components';
 import { putOdpu } from './apiEditOdpu';
+import { handleTabsBeforeFormSubmit } from "../../../utils/handleTabsBeforeFormSubmit";
 
 const FormEditODPU = (props) => {
   const {
-    currentTabKey, device, calculators,
+    currentTabKey, device, calculators,setTab
   } = props;
 
   const { deviceId } = useParams();
 
   const {
-    address,
-    hubConnection,
+    address: {
+      city, street, housingStockNumber, corpus,
+    },
+    hubConnection: {
+      hub: {
+        entryNumber, hubNumber, pipeNumber, magistral,
+      }, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
+    },
     id,
     model,
     serialNumber,
@@ -36,12 +43,6 @@ const FormEditODPU = (props) => {
     housingMeteringDeviceType,
   } = device;
 
-  console.log(device);
-
-  const {
-    hub, calculatorId, calculatorSerialNumber, calculatorModel, calculatorConnection,
-  } = hubConnection;
-
   const {
     isConnected, ipV4, port, deviceAddress,
   } = calculatorConnection || {
@@ -52,23 +53,12 @@ const FormEditODPU = (props) => {
   };
 
   const {
-    entryNumber, hubNumber, pipeNumber, magistral,
-  } = hub;
-
-  const {
-    city, street, housingStockNumber, corpus,
-  } = address;
-
-
-
-  const {
     handleSubmit,
     handleChange, values,
     touched,
     errors,
     handleBlur,
     setFieldValue,
-    setValues,
   } = useFormik({
     initialValues: {
       housingMeteringDeviceType: housingMeteringDeviceType || 'Тип прибора не указан',
@@ -146,6 +136,24 @@ const FormEditODPU = (props) => {
   };
   const [disable, setDisable] = useState(false);
 
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['serialNumber'],
+    },
+    {
+      key: '2',
+      value: ['ipV4', 'port', 'deviceAddress'],
+    },
+  ];
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    if (hasError === true) {
+      setTab(errorTab);
+    }
+  }
+
   return (
     <div style={{ maxWidth: '480px' }}>
       <form id="editOdpuForm" onSubmit={handleSubmit} style={{ paddingBottom: '40px' }}>
@@ -200,21 +208,21 @@ const FormEditODPU = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          {device.housingMeteringDeviceType !== 'TemperatureSensor'  ?
-            <Form.Item label="Диаметр прибора, мм">
-              <InputTT
-                name="diameter"
-                placeholder="Укажите диаметр трубы в мм"
-                type="number"
-                onChange={handleChange}
-                value={values.diameter}
-                onBlur={handleBlur}
-              />
-              <Alert name="diameter" />
-            </Form.Item>
-            : null
-          }
-
+          {device.housingMeteringDeviceType !== 'TemperatureSensor'
+            ? (
+              <Form.Item label="Диаметр прибора, мм">
+                <InputTT
+                  name="diameter"
+                  placeholder="Укажите диаметр трубы в мм"
+                  type="number"
+                  onChange={handleChange}
+                  value={values.diameter}
+                  onBlur={handleBlur}
+                />
+                <Alert name="diameter" />
+              </Form.Item>
+            )
+            : null}
 
           <Form.Item label="Дата Поверки">
             <DatePickerTT
@@ -411,7 +419,7 @@ const FormEditODPU = (props) => {
             form="editOdpuForm"
             color="blue"
             style={{ marginRight: '16px' }}
-            onClick={handleSubmit}
+            onClick={handleSubmitForm}
             type="submit"
           >
             Сохранить
