@@ -15,6 +15,7 @@ import TabsComponent from './Main';
 
 import { styles, StyledFormPage } from './styledComponents';
 import styled from 'styled-components'
+import { handleTabsBeforeFormSubmit } from "../../../../../utils/handleTabsBeforeFormSubmit";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -26,6 +27,7 @@ const AddDeviceForm = (props) => {
   const [calculator, setCalculator] = useState();
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   const validationSchemaFlowMeter = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
@@ -38,7 +40,6 @@ const AddDeviceForm = (props) => {
     diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
       .required('Введите число от 1'),
   });
-
   const validationSchemaTemperatureSensor = Yup.object({
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
     serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
@@ -49,27 +50,16 @@ const AddDeviceForm = (props) => {
       .required('Введите номер'),
   });
 
-  const [validationSchema, setValidationSchema] = useState(validationSchemaFlowMeter);
-
-  const Alert = ({ name }) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return (
-        <div>{error}</div>
-      );
-    }
-    return null;
-  };
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['model', 'serialNumber', 'diameter'],
+    },
+    {
+      key: '2',
+      value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
+    },
+  ];
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -127,6 +117,13 @@ const AddDeviceForm = (props) => {
   });
 
   useEffect(() => {
+    setValidationSchema(validationSchemaFlowMeter)
+  },[])
+
+
+
+
+  useEffect(() => {
     if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
       setColdandthermo(true);
     } else setColdandthermo(false);
@@ -141,6 +138,32 @@ const AddDeviceForm = (props) => {
       setFieldValue('diameter', null);
     }
   }, [values.housingMeteringDeviceType]);
+
+  const Alert = ({ name }) => {
+    const touch = _.get(touched, `${name}`);
+    const error = _.get(errors, `${name}`);
+    if (touch && error) {
+      return (
+        <div>{error}</div>
+      );
+    }
+    return null;
+  };
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    if (hasError === true) {
+      setTab(errorTab);
+    }
+  }
 
 
   return (
@@ -381,6 +404,7 @@ const AddDeviceForm = (props) => {
           hidden={currentTabKey === '3'}
           disabled={coldandthermo}
           style={{ marginLeft: '16px' }}
+          type="button"
         >
           Далее
         </ButtonTT>
@@ -393,6 +417,7 @@ const AddDeviceForm = (props) => {
           style={{ marginLeft: '16px' }}
           big
           disabled={coldandthermo}
+          onClick={handleSubmitForm}
         >
           Добавить
         </ButtonTT>
@@ -405,8 +430,3 @@ const AddDeviceForm = (props) => {
 };
 
 export default AddDeviceForm;
-
-{ /* "lastCommercialAccountingDate": "2020-11-09T13:07:26.129", */ }
-{ /* "futureCommercialAccountingDate": "2020-11-09T13:07:26.13", */ }
-{ /* "lastCheckingDate": "2020-11-13T13:28:13.355", */ }
-{ /* "futureCheckingDate": "2020-11-13T13:28:13.355", */ }
