@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -15,9 +15,10 @@ import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString'
 import { handleTabsBeforeFormSubmit } from "../../../utils/handleTabsBeforeFormSubmit";
 
 const EditCalculatorForm = () => {
-  const { currentCalc, currentTabKey, setTab } = useContext(EditCalculatorContext);
+  const { currentCalc, currentTabKey, setTab, setAlertVisible, existCalculator, setExistCalculator } = useContext(EditCalculatorContext);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const [empty, setEmpty] = useState();
+
 
   // console.log(currentCalc);
 
@@ -90,7 +91,12 @@ const EditCalculatorForm = () => {
       };
       console.log('FORM', form);
       console.log(JSON.stringify(form));
-      putCalculator(id, form);
+      putCalculator(id, form).then(({ show, id })=>{
+        if (show === true) {
+          setAlertVisible(true)
+          setExistCalculator(id)
+        }
+      });
     },
   });
 
