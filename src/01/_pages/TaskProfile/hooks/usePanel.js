@@ -48,12 +48,18 @@ export const usePanel = (
 
 export function dataReducer(state, action) {
   const { type, data } = action;
+  console.log(state)
+  console.log("data", data)
+  const { emailNotify = {} } = state;
   switch (type) {
     case 'add_data':
+      console.log('add_data')
       return { ...state, ...data };
 
-    case 'email_notify':
-      const { emailNotify = {} } = state;
+    case 'add_email_message':
+      return { ...state, emailNotify: { ...emailNotify, ...data } };
+
+    case 'add_email_contractor':
       return { ...state, emailNotify: { ...emailNotify, ...data } };
 
     case ADD_READINGS:
@@ -104,6 +110,7 @@ function isDisabled(
     SetNextStageDeadline,
     UploadReadings,
     isObserver,
+    Contractors
   },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
