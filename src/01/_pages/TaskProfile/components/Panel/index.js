@@ -130,6 +130,7 @@ export const Panel = ({
   stages = {},
 }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
+  const [message, setMessage] = useState();
   if (hiddenPanel) return null;
   const {
     AddPerpetrator,
@@ -186,11 +187,14 @@ export const Panel = ({
       {EmailNotify && <Contractors />}
       {EmailNotify && (
         <Textarea
-          value={emailNotify.message ?? ''}
-          onChange={(e) => dispatch({
-            type: 'email_notify',
-            data: { message: e.target.value },
-          })}
+          value={message}
+          onChange={(e) =>
+          {setMessage(e.target.value);
+            dispatch({
+              type: 'add_email_message',
+              data: { message: e.target.value },
+            })
+          }}
         />
       )}
 
