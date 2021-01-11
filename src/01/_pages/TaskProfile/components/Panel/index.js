@@ -129,7 +129,6 @@ export const Panel = ({
   },
   stages = {},
 }, ...props) => {
-  const [message, setMessage] = useState('')
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
   if (hiddenPanel) return null;
   const {
@@ -144,7 +143,6 @@ export const Panel = ({
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
-
 
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
@@ -185,19 +183,14 @@ export const Panel = ({
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
 
-      {EmailNotify && <Contractors
-        getData={(data) => dispatch({ type: 'add_email_contractor', data })}
-      />}
+      {EmailNotify && <Contractors />}
       {EmailNotify && (
         <Textarea
-          // value={emailNotify.message ?? ''}
-          value={message}
-          onChange={(e) =>{
-            setMessage(e.target.value)
-            dispatch({
-            type: 'add_email_message',
+          value={emailNotify.message ?? ''}
+          onChange={(e) => dispatch({
+            type: 'email_notify',
             data: { message: e.target.value },
-          })}}
+          })}
         />
       )}
 
