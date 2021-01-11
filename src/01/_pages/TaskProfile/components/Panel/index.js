@@ -184,7 +184,9 @@ export const Panel = ({
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
 
-      {EmailNotify && <Contractors />}
+      {EmailNotify && <Contractors getData={(data) => dispatch({ type: 'add_email_contractors',
+      data})}
+      />}
       {EmailNotify && (
         <Textarea
           value={message}
