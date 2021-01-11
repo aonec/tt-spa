@@ -44,6 +44,7 @@ const EditCalculatorForm = () => {
 
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
+  const [checked, setChecked] = useState(isConnected)
 
   // const { ipV4, port, deviceAddress } = connection;
   const { id: houseId } = address;
@@ -56,7 +57,7 @@ const EditCalculatorForm = () => {
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors,
+    handleBlur, setFieldValue, setErrors, setFieldError
   } = useFormik({
     initialValues: {
       serialNumber,
@@ -136,35 +137,38 @@ const EditCalculatorForm = () => {
   }
 
   function onSwitchChange(checked) {
-    setFieldValue('checked', checked);
+    setChecked(checked)
   }
 
   useEffect(() => {
     setEmpty(isEmpty())
 
     console.log('Правда, что все строки пустые:?', empty);
-    if (values.checked === false && isEmpty()) {
+    if (checked === false && isEmpty()) {
       setValidationSchema(emptyValidationSchema);
     }
-    if (values.checked === false && !isEmpty()) {
+    if (checked === false && !isEmpty()) {
       setValidationSchema(defaultValidationSchema);
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
 
   useEffect(() => {
-    setFieldValue('isConnected', values.checked);
-    if (values.checked === true) {
+    if (checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
-    if (values.checked === false) {
+    if (checked === false) {
       if (isEmpty()) {
+        // setErrors({})
+        setFieldError('ipV4', )
+        setFieldError('port', )
+        setFieldError('deviceAddress', )
         setValidationSchema(emptyValidationSchema);
       } else {
         setValidationSchema(defaultValidationSchema);
       }
     }
   },
-  [values.checked]);
+  [checked]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -190,6 +194,7 @@ const EditCalculatorForm = () => {
 
   function handleSubmitForm() {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
     }
@@ -286,7 +291,7 @@ const EditCalculatorForm = () => {
           width: '100%',
         }}
         >
-          <Switch style={{ width: '48px' }} defaultChecked={isConnected} onChange={onSwitchChange} checked={values.checked} />
+          <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
           <span style={{
             fontSize: '16px',
             lineHeight: '32px',
@@ -308,8 +313,8 @@ const EditCalculatorForm = () => {
             onBlur={handleBlur}
             // disabled={!checked}
           />
-          {/* <Alert name="ipV4" /> */}
-          {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}
+           <Alert name="ipV4" />
+          {/*{(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}*/}
         </Form.Item>
 
         <Form.Item label="Порт">
@@ -323,8 +328,8 @@ const EditCalculatorForm = () => {
             // disabled={!checked}
 
           />
-          {/* <Alert name="port" /> */}
-          {(isEmpty() && !values.checked) ? null : <Alert name="port" /> }
+           <Alert name="port" />
+          {/*{(isEmpty() && !values.checked) ? null : <Alert name="port" /> }*/}
 
         </Form.Item>
 
@@ -338,8 +343,8 @@ const EditCalculatorForm = () => {
             name="deviceAddress"
             // disabled={!checked}
           />
-          {/* <Alert name="deviceAddress" /> */}
-          {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />}
+           <Alert name="deviceAddress" />
+          {/*{(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />}*/}
         </Form.Item>
 
         <Wrap
