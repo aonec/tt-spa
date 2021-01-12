@@ -48,6 +48,7 @@ export const usePanel = (
 
 export function dataReducer(state, action) {
   const { type, data } = action;
+  console.log(state)
   const { emailNotify = {} } = state;
   switch (type) {
     case 'add_data':
