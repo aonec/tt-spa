@@ -55,6 +55,11 @@ const styles = css`
     flex-wrap: wrap;
     justify-content: space-between;
     }
+    &[|AddPerpetratorAndEmailNotify] {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 
   Perpetrator {
@@ -168,81 +173,78 @@ export const Panel = ({
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
   const { emailNotify = {} } = state;
-  if (!isObserver) {
-    return styled(styles)(
-      <panel
-        {...use({
-          // one: AddPerpetrator && EmailNotify,
-          two: AddDocuments,
-          tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
-          four: Completion,
-          five: Switch && PushButton,
-          six: UploadReadings || addReadingsDone,
-          seven: AddPerpetrator && EmailNotify,
-          // seven: SwitchDevices && ChangeDevice,
-        })}
-      >
-        {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
 
-
-        {(AddPerpetrator && EmailNotify) && (
-          <>
-            <Perpetrator
-              getData={(data) => dispatch({ type: 'add_data', data })}
-              style={{ width: '48%'}}
-            />
-
-            <Contractors
-              style={{ width: '48%' }}
-              getData={(data) => dispatch({
-                type: 'add_email_contractors',
-                data,
-              })}
-            />
-
-            <Form.Item label="Добавьте текст письма" style={{ width: '100%' }}>
-              <TextArea
-                rows={4}
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  dispatch({
-                    type: 'add_email_message',
-                    data: { message: e.target.value },
-                  });
-                }}
-              />
-            </Form.Item>
-            <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
-            <UploadList {...upload.list} />
-          </>
-        )}
-
-        {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
-
-        {(AddDocuments && !isObserver) && (
-          <>
-            <UploadButton {...upload.button} />
-            <UploadList {...upload.list} />
-          </>
-        )}
-
-        {Switch && (
-          <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
-        )}
-        {(UploadReadings || addReadingsDone) && (
-          <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
-        )}
-        {/* Скрываю кнопку "Завершить этап" только для задачи "Замена прибора" */}
-        {/* {!SwitchDevices && <PushButton {...pushProps} />} */}
-        {!isObserver && <PushButton {...pushProps} />}
-
-      </panel>,
-    );
+  if (isObserver) {
+    return null;
   }
-  return null
+  return styled(styles)(
+    <panel
+      {...use({
+        // one: AddPerpetrator && EmailNotify,
+        two: AddDocuments,
+        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
+        four: Completion,
+        five: Switch && PushButton,
+        six: UploadReadings || addReadingsDone,
+        AddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
+        // seven: SwitchDevices && ChangeDevice,
+      })}
+    >
+      {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
 
+      {(AddPerpetrator && EmailNotify) && (
+      <>
+        <Perpetrator
+          getData={(data) => dispatch({ type: 'add_data', data })}
+          style={{ width: '48%' }}
+        />
 
+        <Contractors
+          style={{ width: '48%' }}
+          getData={(data) => dispatch({
+            type: 'add_email_contractors',
+            data,
+          })}
+        />
 
+        <Form.Item label="Добавьте текст письма" style={{ width: '100%' }}>
+          <TextArea
+            rows={4}
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              dispatch({
+                type: 'add_email_message',
+                data: { message: e.target.value },
+              });
+            }}
+          />
+        </Form.Item>
+        <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
+        <UploadList {...upload.list} />
+      </>
+      )}
 
+      {(AddPerpetrator && Switch) && (
+        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+      )}
+
+      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
+
+      {AddDocuments && (
+      <>
+        <UploadButton {...upload.button} />
+        <UploadList {...upload.list} />
+      </>
+      )}
+
+      {(UploadReadings || addReadingsDone) && (
+      <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
+      )}
+      {/* Скрываю кнопку "Завершить этап" только для задачи "Замена прибора" */}
+      {/* {!SwitchDevices && <PushButton {...pushProps} />} */}
+      {!isObserver && <PushButton {...pushProps} />}
+
+    </panel>,
+  );
 };
