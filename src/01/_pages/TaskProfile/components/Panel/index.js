@@ -28,6 +28,10 @@ const styles = css`
       grid-template-areas: "ub ul push";
       grid-template-columns: auto 1fr auto;
     }
+    &[|AddDocuments] {
+      grid-template-areas: "ub ul push";
+      grid-template-columns: auto 1fr auto;
+    }
     &[|tree] {
       grid-template-areas: "p nst push";
       grid-template-columns: 1fr 1fr auto;
@@ -181,12 +185,13 @@ export const Panel = ({
     <panel
       {...use({
         // one: AddPerpetrator && EmailNotify,
-        two: AddDocuments,
+        // two: AddDocuments,
         tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
         four: Completion,
         five: Switch && PushButton,
         six: UploadReadings || addReadingsDone,
         AddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
+        AddDocuments: AddDocuments
         // seven: SwitchDevices && ChangeDevice,
       })}
     >
