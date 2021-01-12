@@ -18,3 +18,4 @@ export * from './Buttons';
 export * from './InputNumberTT'
 export * from './Warning'
 export * from './Radio'
+export * from './Upload'
