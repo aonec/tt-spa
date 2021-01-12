@@ -11,7 +11,7 @@ const styles = css`
     grid-gap: 16px;
     place-self: start;
     align-items: center;
-    padding: 16px;
+    padding: 12px 16px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;

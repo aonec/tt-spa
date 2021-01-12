@@ -186,14 +186,14 @@ export const Panel = ({
     >
       {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}
-      style={{width: EmailNotify ? '49%' : '100%'}}
+      style={{width: EmailNotify ? '48%' : '100%'}}
       />}
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
       {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
 
       {EmailNotify && (
         <>
-        <Contractors style={{width: '49%' }}
+        <Contractors style={{width: '48%' }}
                      getData={(data) => dispatch({
                        type: 'add_email_contractors',
                        data,
@@ -217,7 +217,12 @@ export const Panel = ({
 
       {/* {EmailNotify && <TemplateButton />} */}
       {(EmailNotify) && (
-      <div>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: '10px'
+      }}>
         <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
         <UploadList {...upload.list} />
       </div>
