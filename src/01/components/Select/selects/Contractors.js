@@ -19,7 +19,7 @@ export const Contractors = ({ getData = () => {}, ...props }) => {
       list={data.items ?? []}
       loading={data.loading}
       onClick={() => !data.items && setData({ loading: true })}
-      getSelectData={(contractorIds) => getData({ contractorIds })}
+      getSelectData={(contractorsIds) => getData({ contractorsIds })}
       {...props}
     />
   )
