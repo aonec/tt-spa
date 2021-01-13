@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-
 import * as s from '01/r_comp';
-import TextArea from 'antd/es/input/TextArea';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
 import ChangeDevice from '../ChangeDevice';
+import { StyledTextArea } from "../../../../tt-components";
 
 const styles = css`
   panel {
@@ -84,23 +83,7 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     </button>,
 );
 
-const StyledTextArea = ({ labelText, ...props }) => styled(s.div)`
-  div {
-    grid-area: ta;
-  }
-`(
-    <div>
-      <label style={{
-        fontSize: '14px',
-        lineHeight: '16px',
-        fontWeight: '500',
-      }}
-      >
-        {labelText}
-      </label>
-      <TextArea data-big data-primary {...props} />
-    </div>,
-);
+
 
 export const Panel = ({
   expectedCompletionTime,
