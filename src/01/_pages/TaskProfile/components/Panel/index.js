@@ -157,7 +157,7 @@ export const Panel = ({
       })}
     >
       {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
-
+      {Switch}
       {(AddPerpetrator && EmailNotify) && (
       <>
         <Perpetrator
@@ -190,13 +190,13 @@ export const Panel = ({
           <Perpetrator
             getData={(data) => dispatch({ type: 'add_data', data })}
           />
-          <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+          {/*<NextStage getData={(data) => dispatch({ type: 'add_data', data })} />*/}
         </>
       )}
 
       {(AddDocuments && Switch) && (
         <>
-          <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+          {/*<NextStage getData={(data) => dispatch({ type: 'add_data', data })} />*/}
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
         </>
