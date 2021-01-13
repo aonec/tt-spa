@@ -19,7 +19,6 @@ const styles = css`
     &[|styleSwitchAndAddPerpetrator] {
       grid-template-areas: "p ns push";
       grid-template-columns: 1fr 1fr auto;
-      align-items: end;
     }
     &[|styleAddDocuments] {
       grid-template-areas: "ub ul push";
@@ -67,14 +66,15 @@ const styles = css`
   StyledTextArea {
     grid-area: ta;
   }
+  PushButton {
+    grid-area: push;
+  }
 `;
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
-      grid-area: push;
-      margin-left: 10px;
+      margin-left: auto;
       width: fit-content;
-      align-self: flex-end;
     }
   `(
     <button data-big data-primary {...props}>
@@ -82,8 +82,6 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       <span>Завершить этап</span>
     </button>,
 );
-
-
 
 export const Panel = ({
   expectedCompletionTime,
@@ -133,8 +131,6 @@ export const Panel = ({
 
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
-  const { emailNotify = {} } = state;
-  // AddDocuments", "Switch"
   if (isObserver) {
     return null;
   }

@@ -75,9 +75,11 @@ export const TaskProfile = () => {
       <Steps />
       <Documents {...docs} />
       <grid>
+        <div>
         <Information {...info} />
-        <Stages {...stages} />
         <InformationDevice {...infoDevice} type={type} id={id}/>
+        </div>
+        <Stages {...stages} />
       </grid>
     </TasksProfileContext.Provider>,
   );
