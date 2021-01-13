@@ -7,8 +7,8 @@ import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
+import { StyledTextArea } from '../../../../tt-components';
 import ChangeDevice from '../ChangeDevice';
-import { StyledTextArea } from "../../../../tt-components";
 
 const styles = css`
   panel {
@@ -16,6 +16,13 @@ const styles = css`
     grid-gap: 16px;
     padding: 8px;
     box-shadow: var(--shadow);
+    &[|styleAddPerpetratorAndEmailNotify] {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas:
+        "p p p c c c"
+        "ta ta ta ta ta ta"
+        "ub ub ul ul ul push";
+    }
     &[|styleSwitchAndAddPerpetrator] {
       grid-template-areas: "p ns push";
       grid-template-columns: 1fr 1fr auto;
@@ -39,12 +46,10 @@ const styles = css`
         "ar ar ar ar"
         ". . . push"
     }
-    &[|styleAddPerpetratorAndEmailNotify] {
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-areas:
-        "p p p c c c"
-        "ta ta ta ta ta ta"
-        "ub ub ul ul ul push";
+    &[|styleAddPerpetratorAndSetNextStageDeadline] {
+      grid-template-areas: "p ad push";
+      grid-template-columns: 1fr 1fr auto;
+      align-items: flex-end;
     }
   }
 
@@ -68,6 +73,9 @@ const styles = css`
   }
   PushButton {
     grid-area: push;
+  }
+  AddDate {
+    grid-area: ad;
   }
 `;
 
@@ -112,6 +120,10 @@ export const Panel = ({
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
+  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
+
+  // const [deadline, setDeadline] = useState();
+  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
 
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
@@ -126,10 +138,7 @@ export const Panel = ({
     );
   }
 
-  // const [deadline, setDeadline] = useState();
-  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
-
-  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
+  // AddPerpetrator SetNextStageDeadline
 
   if (isObserver) {
     return null;
@@ -137,12 +146,13 @@ export const Panel = ({
   return styled(styles)(
     <panel
       {...use({
-        styleSwitchAndAddPerpetrator: (Switch && AddPerpetrator) || SetNextStageDeadline,
+        styleSwitchAndAddPerpetrator: Switch && AddPerpetrator,
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
         styleReadings: UploadReadings || addReadingsDone,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
+        styleAddPerpetratorAndSetNextStageDeadline: AddPerpetrator && SetNextStageDeadline,
         // seven: SwitchDevices && ChangeDevice,
       })}
     >
@@ -197,6 +207,14 @@ export const Panel = ({
         <UploadButton {...upload.button} />
         <UploadList {...upload.list} />
       </>
+      )}
+      {(AddPerpetrator && SetNextStageDeadline) && (
+        <>
+          <Perpetrator
+            getData={(data) => dispatch({ type: 'add_data', data })}
+          />
+          <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
+        </>
       )}
 
       {(SetNextStageDeadline && Completion) && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}

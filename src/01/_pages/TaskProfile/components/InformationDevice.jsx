@@ -9,6 +9,7 @@ const style = css`
   device_title {
     display: flex;
     align-items: center;
+    padding-top:16px;
     font-size: 16px;
     cursor: pointer;
     &:hover {
