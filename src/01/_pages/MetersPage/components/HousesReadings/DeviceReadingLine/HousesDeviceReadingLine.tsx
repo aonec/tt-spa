@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {BaseSyntheticEvent, SetStateAction, useEffect, useState} from "react"
 import styled from "styled-components";
 import {IndividualDeviceType} from "../../../../../../types/types";
 import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
@@ -6,7 +6,7 @@ import DeviceRatesVertical from "../../MeterDevices/components/DeviceRatesVertic
 import { DeviceReadingsContainer } from "01/components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
 import axios from "axios";
 import {formReadingToPush} from "../../../../../utils/formReadingsToPush";
-import {updateReadings} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
+import {ActionTypes, updateReadings} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import {Icon} from "../../../../../_components/Icon";
 import styles from "../../../../Devices/components/TabsDevices.module.scss";
@@ -16,6 +16,8 @@ import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {Modal} from "antd";
 import uuid from 'react-uuid'
+import { DisabledStateType } from "../HousesDevices/HousesDevices";
+import { Dispatch } from "react";
 
 
 const HouseReadingsDevice = styled.div`
@@ -112,14 +114,18 @@ type ReadingsStateType = {
 }
 type Props = {
     device: IndividualDeviceType
+    dispatch: Dispatch<ActionTypes>
+    disabledState: DisabledStateType
+    // disabledState: any
+    setDisabledState: Dispatch<SetStateAction<DisabledStateType>>
 }
 
-export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disabledState, setDisabledState}) => {
-    const [consumptionState, setConsumptionState] = useState([] as Array<number>)
+export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disabledState = [], setDisabledState}) => {
+        const [consumptionState, setConsumptionState] = useState([] as Array<number>)
 
-    const numberOfReadings: number = rateTypeToNumber(device.rateType);
+        const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
-        const isDisabled = disabledState.find((el) => el.deviceId === device.id).isDisabled;
+        const isDisabled = disabledState.find((el) => el.deviceId === device.id)?.isDisabled;
 
         const [isVisible, setIsVisible] = useState(false);
 
@@ -127,20 +133,16 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
 
         const [isCancel, setIsCancel] = useState(false)
 
-        const [initialReadings, setInitialReadings] = useState();
+        const [initialReadings, setInitialReadings] = useState<ReadingsArray>([]);
 
-        const textInput = React.createRef();
+        const textInput = React.createRef<HTMLInputElement>();
 
         const handleOk = () => {
             setReadingsState((state) => ({
                 ...state,
                 currentReadingsArray: initialReadings
             }));
-            setDisabledState((prevState) => prevState.map((el) => {
-                return el.deviceId === device.id
-                    ? {...el, isDisabled: false}
-                    : {... el, isDisabled: false}
-            }))
+            setDisabledState((prevState) => prevState.map((el) => ({ ...el, isDisabled: false }) ))
             setIsVisible(false)
         }
 
@@ -156,7 +158,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
         const afterCloseHandler = () => {
             if (isCancel) {
                 setIsCancel(false)
-                textInput.current.focus()
+                textInput.current!.focus()
             }
         }
 
@@ -183,7 +185,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
             return <Consumption key={uuid()}>{el} кВтч</Consumption>
         })
 
-        const formDeviceReadingObject = (deviceItem) => {
+        const formDeviceReadingObject = (deviceItem:IndividualDeviceType) => {
             return ({
                 deviceId: deviceItem.id,
                 value1: +readingsState.currentReadingsArray[0],
@@ -193,8 +195,8 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
             })
         }
 
-        const sendReadings = (deviceItem) => {
-            const deviceReadingObject = formDeviceReadingObject(deviceItem)
+        const sendReadings = (deviceItem: IndividualDeviceType) => {
+            const deviceReadingObject:{ [index:string] : number | string | boolean } = formDeviceReadingObject(deviceItem)
             for (let i = 1; i < 4; i++) {
                 if (+readingsState.currentReadingsArray[i]) {
                     deviceReadingObject[`value${i+1}`] = +readingsState.currentReadingsArray[i]
@@ -216,8 +218,8 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
             }))
         }
 
-        const onBlurHandler = (e) => {
-            if (e.currentTarget.contains(e.relatedTarget)) return
+        const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+            if (e.currentTarget.contains(e.relatedTarget as Node | null)) return
                 const isNull = isNullInArray(readingsState.currentReadingsArray)
                 if (isNull) {
                     setIsVisible(true);
@@ -229,10 +231,12 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
                 }
             }
 
+        // interface BlurEvent<T> extends React.FocusEvent<T> {
+        //     relatedTarget: Node | null
+        // }
 
-
-        const onFocusHandler = (e) => {
-            if (e.currentTarget.contains(e.relatedTarget)) return
+        const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+            if (e.currentTarget.contains(e.relatedTarget as Node | null)) return
 
             setInitialReadings(readingsState.currentReadingsArray);
             const isNull = isNullInArray(readingsState.currentReadingsArray)
@@ -252,7 +256,6 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
                                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
                                  value={value}
                                  resource={readingsState.resource}
-                                 sendReadings={sendReadings}
                                  operatorCabinet
                                  houseReadings
                                  textInput={textInput}
@@ -269,6 +272,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
                                  operatorCabinet
                                  readingsBlocked
                                  houseReadings
+                                 isDisabled
             />
         ));
 
@@ -298,7 +302,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device, disa
                 <div>{device.serialNumber}</div>
             </Column>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
-            <DeviceReadingsContainer isDisabled={isDisabled} onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
+            <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <div>{consumptionElems}</div>
             <div>-</div>
 

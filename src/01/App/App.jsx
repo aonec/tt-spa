@@ -13,6 +13,7 @@ import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
+import createSagaMiddleware from 'redux-saga'
 import rootReducer from '../Redux/rootReducer';
 import {
   Tasks,
@@ -39,6 +40,7 @@ import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
+import rootSaga from "../Redux/sagas/saga";
 
 moment.locale('ru');
 
@@ -48,14 +50,17 @@ const loggerMiddleware = (store) => (next) => (action) => {
   return result;
 };
 
+
+const sagaMiddleware = createSagaMiddleware()
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare)),
+  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare, sagaMiddleware)),
 );
 
-window.store = store;
+sagaMiddleware.run(rootSaga);
 
 export function App() {
   const AppProvider = useApp();

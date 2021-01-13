@@ -1,9 +1,9 @@
-import React, {ReactEventHandler, useContext, useState} from 'react';
+import React, {ReactEventHandler, RefObject, useContext, useState} from 'react';
 
 import { Input } from 'antd';
 import styled from 'styled-components';
 
-const ReadingLineStyled = styled.div<{houseReadings: boolean}>`
+const ReadingLineStyled = styled.div<{houseReadings: boolean, isDisabled: boolean | undefined}>`
 
 position: relative; 
 padding-right: ${props => props.houseReadings ? 0 : '16px'};
@@ -38,9 +38,10 @@ interface DeviceRatesVerticalProps {
     value: number,
     readingsBlocked?: boolean,
     resource: string,
-    sendReadings?: () => void
     operatorCabinet?: boolean
     houseReadings?: boolean
+    isDisabled?: boolean | undefined
+    textInput?: RefObject<HTMLInputElement>
 }
 
 const SuffixLine = styled.span`
@@ -64,7 +65,6 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
                           value,
                           readingsBlocked = false,
                           resource,
-                          sendReadings = () => {},
                           operatorCabinet = false,
                           houseReadings = false,
                           textInput,
@@ -75,13 +75,13 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
 
     const [isFocused, setIsFocused] = useState(false);
 
-    const [prevValue, setPrevValue] = useState(null);
+    // const [prevValue, setPrevValue] = useState(null);
 
-    const onBlurHandler = (e: any) => {
-        setIsFocused(false)
-        if (prevValue === e.target.value) return;
-        sendReadings();
-    };
+    // const onBlurHandler = (e: any) => {
+    //     setIsFocused(false)
+    //     if (prevValue === e.target.value) return;
+    //     sendReadings();
+    // };
 
     const onFocusHandler  = (e: any) => {
         setIsFocused(true)
