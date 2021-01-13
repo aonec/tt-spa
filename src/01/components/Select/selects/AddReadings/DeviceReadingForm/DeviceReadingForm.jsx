@@ -5,11 +5,13 @@ import DeviceRates from "./ReadingsLine/DeviceRates";
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {Icon} from "../../../../../tt-components/Icon";
-import {setDevices, updateReadings} from "../readingsReducer";
+// import {setDevices, updateReadings} from "../../../../../Redux/reducers/readingsReducer";
 import ActiveLine from "./ActiveLine/ActiveLine";
 import {DateLine} from "../../../../../_components/DateLine/DateLine";
 import DeviceRatesVertical
     from "../../../../../_pages/MetersPage/components/MeterDevices/components/DeviceRatesVertical";
+import {updateReadings} from "../../../../../Redux/ducks/readings/actionCreators";
+import {useDispatch} from "react-redux";
 
 const FullDeviceLine = styled.div`
     display: grid;
@@ -31,7 +33,9 @@ border: 1px solid var(--frame);
 padding: 8px
 `
 
-const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
+const DeviceReadingForm = ({device, readingsBlocked = false}) => {
+
+    const dispatch = useDispatch();
 
     const [readingsState, setReadingsState] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +55,7 @@ const DeviceReadingForm = ({device, dispatch, readingsBlocked = false}) => {
         }
 
 
-        setReadingsState({readingsArray, id: readings.id, resource: device.resource })
+        setReadingsState({ readingsArray, id: readings.id, resource: device.resource })
         setIsLoading(false);
     }, [device.readings, numberOfReadings, readingsBlocked])
 

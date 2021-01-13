@@ -4,7 +4,7 @@ import styled, { css } from "reshadow/macro"
 import * as style from "01/r_comp"
 import { Icon } from "01/components"
 import DeviceReadingForm from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
-import readingsReducer, {setDevices} from "../../../../components/Select/selects/AddReadings/readingsReducer";
+// import readingsReducer, {setDevices} from "../../../../Redux/reducers/readingsReducer";
 import ApartmentDeviceReadingLine from "./components/ApartmentDeviceReadingLine";
 import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
@@ -12,6 +12,10 @@ import moment from 'moment';
 import {getMonthFromDate, getPreviousMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 import s from "./MeterDevicesNew.module.scss"
+import {useDispatch, useSelector} from "react-redux";
+// import {setDevices} from "../../../../Redux/reducers/reducerDevicesPage";
+import {selectDevices} from "../../../../Redux/ducks/readings/selectors";
+import {setDevices} from "../../../../Redux/ducks/readings/actionCreators";
 // meter_header,
 
 
@@ -107,19 +111,17 @@ const styles = css`
 `
 
 
-export const MeterDevicesNew = ({items = []}) => {
+export const MeterDevicesNew = ({ items = [] }) => {
 
     const [sliderIndex, setSliderIndex] = useState(0)
 
-    const [state, dispatch] = React.useReducer(readingsReducer, {});
-
-    const [disabledState, setDisabledState] = useState()
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setDevices(items))
-        setDisabledState(items.map((item) => ({ deviceId: item.id, isDisabled: false })))
     }, [items])
 
+    const devices = useSelector(selectDevices);
 
     const sendReadings = (device) => {
         try {
@@ -130,23 +132,23 @@ export const MeterDevicesNew = ({items = []}) => {
         }
     }
 
-    if (!state.devices?.length) return null
+    if (!devices.length) return null
 
-    const readings = state.devices.map((device, index) => <ApartmentDeviceReadingLine
+    const readings = devices.map((device, index) => <ApartmentDeviceReadingLine
         sliderIndex={sliderIndex}
         key={device.id}
         device={device}
-        dispatch={dispatch}
+        // dispatch={dispatch}
         sendReadings={() => sendReadings(device)}
-        disabledState={disabledState}
-        setDisabledState={setDisabledState}
+        // disabledState={disabledState}
+        // setDisabledState={setDisabledState}
     />);
 
     const currentMonth = getMonthFromDate()
     const previousMonth = getPreviousMonthFromDate();
 
-    const readingsLength = state.devices[0].readings.length;
-    const isReadingsCurrent = currentMonth === getMonthFromDate(state.devices[0].readings[0].readingDate);
+    const readingsLength = devices[0].readings?.length;
+    const isReadingsCurrent = currentMonth === getMonthFromDate(devices[0].readings[0].readingDate);
 
     const isRightArrowDisabled = sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1
 
@@ -182,11 +184,11 @@ export const MeterDevicesNew = ({items = []}) => {
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
                     <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}} onClick={onClickDecrease} className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
-                        <Arrow isDisabled={isLeftArrowDisabled}/>
+                        <Arrow isDisabled={isLeftArrowDisabled} />
                     </div>
                     <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>{previousMonth}</div>
                     <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}} className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled} isRight onClick={onClickIncrease}>
-                        <Arrow isRight isDisabled={isRightArrowDisabled}/>
+                        <Arrow isRight isDisabled={isRightArrowDisabled} />
                     </div>
                 </div>
 

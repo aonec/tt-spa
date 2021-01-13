@@ -1,24 +1,22 @@
 import React, {useEffect, useReducer} from "react";
-import {NotConnectedIcon} from "../../../../../components/NotConnectedIcon/NotConnectedIcon";
-import {useDebounce} from "../../../../../hooks/useDebounce";
-import {requestDevicesByHouse, DevicesByHouseType} from "../../../../../_api/houses_readings_page";
+import {requestDevicesByHouse, ReadingsStateType} from "../../../../../_api/houses_readings_page";
 import {HouseSearchType} from "../HousesReadings";
+import { useSelector, useDispatch } from 'react-redux'
 
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
-import { IndividualDeviceType } from "types/types";
 import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
-import readingsReducer, {
-    setDevices
-} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
+// import readingsReducer, {
+//     setDevices
+// } from "../../../../../Redux/reducers/readingsReducer";
+import {selectDevices, selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
+import { setDevices } from "01/Redux/ducks/readings/actionCreators";
 
 interface Props {
     searchState: HouseSearchType;
 }
-
-
 
 const HouseReadingsDevice = styled.div`
 display: grid;
@@ -42,15 +40,10 @@ export type DisabledStateType = {
 
 // const HousesDevices: React.FC<Props> = ({searchState}) => {
 const HousesDevices: React.FC = () => {
-    debugger;
 
     let { id: housingStockId }: ParamsType = useParams();
-
-
-    const [state, dispatch] = React.useReducer(readingsReducer, {} as DevicesByHouseType);
-
-    const [disabledState, setDisabledState] = useState<DisabledStateType>([])
-
+    const dispatch = useDispatch();
+    const devices = useSelector(selectDevices);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -58,7 +51,6 @@ const HousesDevices: React.FC = () => {
                 setIsLoading(true);
                 const res = await requestDevicesByHouse(housingStockId);
                 dispatch(setDevices(res.items));
-                setDisabledState(res.items.map((item) => ({ deviceId: item.id, isDisabled: false })))
             setIsLoading(false)
         };
         setInfoAsync();
@@ -66,16 +58,13 @@ const HousesDevices: React.FC = () => {
 
     if (isLoading) return null
 
-    const deviceElems = state.items
+    const deviceElems = devices
         .sort((device1, device2) => {
         return +device1.apartmentNumber - +device2.apartmentNumber
     })
         .map((device, index) => <HousesDeviceReadingLine
             key={device.id + 'f'}
             device={device}
-            dispatch={dispatch}
-            disabledState={disabledState}
-            setDisabledState={setDisabledState}
         />)
 
 

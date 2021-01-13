@@ -40,27 +40,12 @@ import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import rootSaga from "../Redux/sagas/saga";
+import rootSaga from "../Redux/saga";
+import {store} from "../Redux/store";
 
 moment.locale('ru');
 
-const loggerMiddleware = (store) => (next) => (action) => {
-  const result = next(action);
-  console.log('Middleware', store.getState());
-  return result;
-};
 
-
-const sagaMiddleware = createSagaMiddleware()
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare, sagaMiddleware)),
-);
-
-sagaMiddleware.run(rootSaga);
 
 export function App() {
   const AppProvider = useApp();

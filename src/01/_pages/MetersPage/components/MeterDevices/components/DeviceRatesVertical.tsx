@@ -75,14 +75,6 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
 
     const [isFocused, setIsFocused] = useState(false);
 
-    // const [prevValue, setPrevValue] = useState(null);
-
-    // const onBlurHandler = (e: any) => {
-    //     setIsFocused(false)
-    //     if (prevValue === e.target.value) return;
-    //     sendReadings();
-    // };
-
     const onFocusHandler  = (e: any) => {
         setIsFocused(true)
     }
