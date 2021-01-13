@@ -16,12 +16,17 @@ const styles = css`
     grid-gap: 16px;
     padding: 8px;
     box-shadow: var(--shadow);
+    &[|styleSwitch] {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "ns push";
+    }
     &[|styleAddPerpetratorAndEmailNotify] {
       grid-template-columns: repeat(6, 1fr);
       grid-template-areas:
         "p p p c c c"
         "ta ta ta ta ta ta"
-        "ub ub ul ul ul push";
+        "ub ub ul ul push push";
     }
     &[|styleSwitchAndAddPerpetrator] {
       grid-template-areas: "p ns push";
@@ -35,10 +40,10 @@ const styles = css`
       grid-template-columns: 1fr;
     }
     &[|styleSwitchAndAddDocuments] {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       grid-template-areas:
-        "ns ns ns ns ns ns"
-        "ub ul ul ul ul push";
+        "ns ns ns ns ns"
+        "ub ul ul ul push";
     }
     &[|styleReadings] {
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -81,8 +86,10 @@ const styles = css`
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
+      align-self: end;
       margin-left: auto;
       width: fit-content;
+      
     }
   `(
     <button data-big data-primary {...props}>
@@ -146,6 +153,7 @@ export const Panel = ({
   return styled(styles)(
     <panel
       {...use({
+        styleSwitch: Switch,
         styleSwitchAndAddPerpetrator: Switch && AddPerpetrator,
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
@@ -157,63 +165,41 @@ export const Panel = ({
       })}
     >
       {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
-      {Switch}
-      {(AddPerpetrator && EmailNotify) && (
-      <>
-        <Perpetrator
-          getData={(data) => dispatch({ type: 'add_data', data })}
-        />
 
-        <Contractors
-          getData={(data) => dispatch({ type: 'add_email_contractors', data })}
-        />
+      {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
 
-        <StyledTextArea
-          labelText="Отправка пригласительного письма"
-          rows={4}
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-            dispatch({
-              type: 'add_email_message',
-              data: { message: e.target.value },
-            });
-          }}
-        />
-        <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
-        <UploadList {...upload.list} />
-      </>
-      )}
+      {Switch && <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />}
 
-      {(AddPerpetrator && Switch) && (
+      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
+
+      {EmailNotify
+        && (
         <>
-          <Perpetrator
-            getData={(data) => dispatch({ type: 'add_data', data })}
+          <Contractors
+            getData={(data) => dispatch({ type: 'add_email_contractors', data })}
           />
-          {/*<NextStage getData={(data) => dispatch({ type: 'add_data', data })} />*/}
-        </>
-      )}
+          <StyledTextArea
+            labelText="Отправка пригласительного письма"
+            rows={4}
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              dispatch({
+                type: 'add_email_message',
+                data: { message: e.target.value },
+              });
+            }}
+          />
+            <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
+            <UploadList {...upload.list} />
 
-      {(AddDocuments && Switch) && (
+        </>
+        )}
+
+      {AddDocuments && (
         <>
-          {/*<NextStage getData={(data) => dispatch({ type: 'add_data', data })} />*/}
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
-        </>
-      )}
-
-      {(AddDocuments && !Switch) && (
-      <>
-        <UploadButton {...upload.button} />
-        <UploadList {...upload.list} />
-      </>
-      )}
-      {(AddPerpetrator && SetNextStageDeadline) && (
-        <>
-          <Perpetrator
-            getData={(data) => dispatch({ type: 'add_data', data })}
-          />
-          <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
         </>
       )}
 
