@@ -89,7 +89,6 @@ const PushButton = ({ loading = false, ...props }) => styled(s.button)`
       align-self: end;
       margin-left: auto;
       width: fit-content;
-      
     }
   `(
     <button data-big data-primary {...props}>
@@ -144,9 +143,7 @@ export const Panel = ({
       </panel>,
     );
   }
-
-  // AddPerpetrator SetNextStageDeadline
-
+  
   if (isObserver) {
     return null;
   }
