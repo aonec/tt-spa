@@ -3,7 +3,6 @@ import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-import { Form, Upload } from 'antd';
 
 import * as s from '01/r_comp';
 import TextArea from 'antd/es/input/TextArea';
@@ -18,51 +17,36 @@ const styles = css`
     grid-gap: 16px;
     padding: 8px;
     box-shadow: var(--shadow);
-    &[|one] {
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-areas:
-        "p p p c c c"
-        "ta ta ta ta tmp push";
-    }
-    &[|two] {
-      grid-template-areas: "ub ul push";
-      grid-template-columns: auto 1fr auto;
-    }
-    &[|AddDocuments] {
-      grid-template-areas: "ub ul push";
-      grid-template-columns: auto 1fr auto;
-    }
-    &[|tree] {
-      grid-template-areas: "p nst push";
+    &[|styleSwitchAndAddPerpetrator] {
+      grid-template-areas: "p ns push";
       grid-template-columns: 1fr 1fr auto;
       align-items: end;
     }
-    &[|four] {
-      grid-template-areas: "push .";
-      grid-template-columns: auto 1fr;
+    &[|styleAddDocuments] {
+      grid-template-areas: "ub ul push";
+      grid-template-columns: auto 1fr auto;
     }
-    &[|five] {
+    &[|styleCompletion] {
+      grid-template-columns: 1fr;
+    }
+    &[|styleSwitchAndAddDocuments] {
       grid-template-columns: repeat(6, 1fr);
-      align-items: end;
       grid-template-areas:
-        "ta ta ta ta ta push";
+        "ns ns ns ns ns ns"
+        "ub ul ul ul ul push";
     }
-    &[|six] {
+    &[|styleReadings] {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 4fr 1fr;
-      grid-template-areas:
+    grid-template-areas:
         "ar ar ar ar"
         ". . . push"
     }
-    &[|seven] {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    }
-    &[|AddPerpetratorAndEmailNotify] {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    &[|styleAddPerpetratorAndEmailNotify] {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas:
+        "p p p c c c"
+        "ta ta ta ta ta ta"
+        "ub ub ul ul ul push";
     }
   }
 
@@ -79,52 +63,43 @@ const styles = css`
     grid-area: ul;
   }
   NextStage {
+    grid-area: ns;
+  }
+  StyledTextArea {
     grid-area: ta;
   }
-
 `;
-
-const Textarea = (props) => styled`
-    textarea {
-      --h: var(--h-big);
-      grid-area: ta;
-      font: inherit;
-      outline: 0;
-      color: var(--main-80);
-      border: 1px solid var(--frame);
-      border-radius: 4px;
-      resize: vertical;
-      max-height: calc(var(--h) * 3);
-      min-height: var(--h);
-      padding: 8px 16px;
-
-      &:hover {
-        border-color: var(--primary-100);
-      }
-    }
-  `(<textarea rows="0" {...props} />);
-
-const TemplateButton = () => styled(s.button)`
-    button {
-      grid-area: tmp;
-    }
-  `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>,
-);
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
       grid-area: push;
       margin-left: 10px;
       width: fit-content;
+      align-self: flex-end;
     }
   `(
     <button data-big data-primary {...props}>
       <Loader show={loading} />
       <span>Завершить этап</span>
     </button>,
+);
+
+const StyledTextArea = ({ labelText, ...props }) => styled(s.div)`
+  div {
+    grid-area: ta;
+  }
+`(
+    <div>
+      <label style={{
+        fontSize: '14px',
+        lineHeight: '16px',
+        fontWeight: '500',
+      }}
+      >
+        {labelText}
+      </label>
+      <TextArea data-big data-primary {...props} />
+    </div>,
 );
 
 export const Panel = ({
@@ -160,7 +135,6 @@ export const Panel = ({
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
-
         <input_frame data-disabled data-big style={{ width: '50%' }}>
           <input disabled value={perpName} />
         </input_frame>
@@ -177,21 +151,19 @@ export const Panel = ({
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
   const { emailNotify = {} } = state;
-
+  // AddDocuments", "Switch"
   if (isObserver) {
     return null;
   }
   return styled(styles)(
     <panel
       {...use({
-        // one: AddPerpetrator && EmailNotify,
-        // two: AddDocuments,
-        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
-        four: Completion,
-        five: Switch && PushButton,
-        six: UploadReadings || addReadingsDone,
-        AddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
-        AddDocuments: AddDocuments
+        styleSwitchAndAddPerpetrator: (Switch && AddPerpetrator) || SetNextStageDeadline,
+        styleCompletion: Completion,
+        styleSwitchAndAddDocuments: Switch && AddDocuments,
+        styleReadings: UploadReadings || addReadingsDone,
+        styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
+        styleAddDocuments: AddDocuments,
         // seven: SwitchDevices && ChangeDevice,
       })}
     >
@@ -201,47 +173,54 @@ export const Panel = ({
       <>
         <Perpetrator
           getData={(data) => dispatch({ type: 'add_data', data })}
-          style={{ width: '48%' }}
         />
 
         <Contractors
-          style={{ width: '48%' }}
-          getData={(data) => dispatch({
-            type: 'add_email_contractors',
-            data,
-          })}
+          getData={(data) => dispatch({ type: 'add_email_contractors', data })}
         />
 
-        <Form.Item label="Добавьте текст письма" style={{ width: '100%' }}>
-          <TextArea
-            rows={4}
-            value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-              dispatch({
-                type: 'add_email_message',
-                data: { message: e.target.value },
-              });
-            }}
-          />
-        </Form.Item>
+        <StyledTextArea
+          labelText="Отправка пригласительного письма"
+          rows={4}
+          value={message}
+          onChange={(e) => {
+            setMessage(e.target.value);
+            dispatch({
+              type: 'add_email_message',
+              data: { message: e.target.value },
+            });
+          }}
+        />
         <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
         <UploadList {...upload.list} />
       </>
       )}
 
       {(AddPerpetrator && Switch) && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+        <>
+          <Perpetrator
+            getData={(data) => dispatch({ type: 'add_data', data })}
+          />
+          <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+        </>
       )}
 
-      {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
+      {(AddDocuments && Switch) && (
+        <>
+          <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
+          <UploadButton {...upload.button} />
+          <UploadList {...upload.list} />
+        </>
+      )}
 
-      {AddDocuments && (
+      {(AddDocuments && !Switch) && (
       <>
         <UploadButton {...upload.button} />
         <UploadList {...upload.list} />
       </>
       )}
+
+      {(SetNextStageDeadline && Completion) && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
 
       {(UploadReadings || addReadingsDone) && (
       <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
