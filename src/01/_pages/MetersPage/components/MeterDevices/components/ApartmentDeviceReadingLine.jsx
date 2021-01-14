@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {updateReadings} from "../../../../../components/Select/selects/AddReadings/readingsReducer";
+import {updateReadings} from "../../../../../Redux/reducers/readingsReducer";
 import DeviceRates
     from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ReadingsLine/DeviceRates";
 import ActiveLine from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
@@ -19,6 +19,9 @@ import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import { Modal, Button, Space } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import ButtonTT from "../../../../../tt-components/ButtonTT";
+import {useDispatch, useSelector} from "react-redux";
+import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
+import {setInputFocused, setInputUnfocused} from "../../../../../Redux/ducks/readings/actionCreators";
 
 const { confirm } = Modal;
 
@@ -95,9 +98,13 @@ const StyledModal = styled(Modal)`
 
 
 
-const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisabledState}) => {
+const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
 
-    const isDisabled = disabledState.find((el) => el.deviceId === device.id).isDisabled;
+    const dispatch = useDispatch();
+    
+    const disabledState = useSelector(selectDisabledState);
+
+    const {isDisabled} = disabledState.find((el) => el.deviceId === device.id);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -114,11 +121,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisa
              ...state,
              currentReadingsArray: initialReadings
          }));
-         setDisabledState((prevState) => prevState.map((el) => {
-             return el.deviceId === device.id
-                 ? {...el, isDisabled: false}
-                 : {... el, isDisabled: false}
-         }))
+         dispatch(setInputUnfocused())
          setIsVisible(false)
      }
 
@@ -211,8 +214,9 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisa
                 if (readingsState.currentReadingsArray !== initialReadings) {
                     sendReadings(device)
                 }
-               setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
-                }
+               // setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
+                dispatch(setInputUnfocused())
+            }
     }
 
     const onFocusHandler = (e) => {
@@ -221,11 +225,12 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex, disabledState, setDisa
         setInitialReadings(readingsState.currentReadingsArray);
         const isNull = isNullInArray(readingsState.currentReadingsArray)
         if (isNull) {
-            setDisabledState((prevState) => prevState.map((el) => {
-                return el.deviceId === device.id
-                    ? {...el, isDisabled: false}
-                    : {... el, isDisabled: true}
-            }))
+            // setDisabledState((prevState) => prevState.map((el) => {
+            //     return el.deviceId === device.id
+            //         ? {...el, isDisabled: false}
+            //         : {... el, isDisabled: true}
+            // }))
+            dispatch(setInputFocused(device.id))
         }
     }
 

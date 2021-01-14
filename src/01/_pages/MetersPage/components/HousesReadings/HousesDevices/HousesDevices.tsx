@@ -1,25 +1,22 @@
 import React, {useEffect, useReducer} from "react";
-import {NotConnectedIcon} from "../../../../../components/NotConnectedIcon/NotConnectedIcon";
-import {useDebounce} from "../../../../../hooks/useDebounce";
-import {requestDevicesByHouse, RequestDevicesByHouseType} from "../../../../../_api/houses_readings_page";
+import {requestDevicesByHouse, ReadingsStateType} from "../../../../../_api/houses_readings_page";
 import {HouseSearchType} from "../HousesReadings";
-import {
-    devicesReadingsByHouseReducer, initialReadings, initialState, InitialStateType, SetDevicesACType, setInfo
-} from "../devicesReadingsByHouseReducer";
+import { useSelector, useDispatch } from 'react-redux'
+
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
-import { IndividualDeviceType } from "types/types";
 import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
-import readingsReducer, { setDevices } from "../../../../../components/Select/selects/AddReadings/readingsReducer";
-import uuid from 'react-uuid'
+// import readingsReducer, {
+//     setDevices
+// } from "../../../../../Redux/reducers/readingsReducer";
+import {selectDevices, selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
+import { setDevices } from "01/Redux/ducks/readings/actionCreators";
 
 interface Props {
     searchState: HouseSearchType;
 }
-
-
 
 const HouseReadingsDevice = styled.div`
 display: grid;
@@ -35,52 +32,39 @@ type ParamsType = {
     id: string
 }
 
+export type DisabledStateType = {
+    deviceId: number,
+    isDisabled: boolean
+}[]
+
 
 // const HousesDevices: React.FC<Props> = ({searchState}) => {
 const HousesDevices: React.FC = () => {
 
     let { id: housingStockId }: ParamsType = useParams();
-
-
-    // const [state, dispatch] = useReducer<React.Reducer<RequestDevicesByHouseType, SetDevicesACType>>(devicesReadingsByHouseReducer, initialState);
-
-    const [state, dispatch] = React.useReducer(readingsReducer, {});
-
-    const [disabledState, setDisabledState] = useState()
-
-
+    const dispatch = useDispatch();
+    const devices = useSelector(selectDevices);
     const [isLoading, setIsLoading] = useState(true);
-
-    // const debouncedSearchState: HouseSearchType = useDebounce(searchState, 500);
-
 
     useEffect(() => {
         const setInfoAsync = async () => {
-            // if (debouncedSearchState.Street && debouncedSearchState.HousingStockNumber) {
                 setIsLoading(true);
-                // const res = await requestDevicesByHouse(debouncedSearchState);
                 const res = await requestDevicesByHouse(housingStockId);
                 dispatch(setDevices(res.items));
-                setDisabledState(res.items.map((item) => ({ deviceId: item.id, isDisabled: false })))
-
             setIsLoading(false)
-            // }
         };
         setInfoAsync();
     }, [housingStockId])
 
     if (isLoading) return null
 
-    const deviceElems = state.devices
+    const deviceElems = devices
         .sort((device1, device2) => {
         return +device1.apartmentNumber - +device2.apartmentNumber
     })
         .map((device, index) => <HousesDeviceReadingLine
             key={device.id + 'f'}
             device={device}
-            dispatch={dispatch}
-            disabledState={disabledState}
-            setDisabledState={setDisabledState}
         />)
 
 

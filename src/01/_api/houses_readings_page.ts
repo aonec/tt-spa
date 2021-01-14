@@ -1,7 +1,8 @@
 import axios from "01/axios"
 import {IndividualDeviceType} from "types/types"
+import { DisabledStateType } from "01/Redux/reducers/readingsReducer"
 
-export type RequestDevicesByHouseType = {
+export type ReadingsStateType = {
     hasNextPage: boolean
     hasPreviousPage: boolean
     items: Array<IndividualDeviceType>
@@ -11,16 +12,13 @@ export type RequestDevicesByHouseType = {
     previousPageNumber: number
     totalItems: number
     totalPages: number
+    disabledState?: DisabledStateType
 }
 
 
-export const requestDevicesByHouse = async (HousingStockId: string) => {
+export const requestDevicesByHouse = async (HousingStockId: string): Promise<ReadingsStateType> => {
     // const queryString = formQueryString(searchState)
-    try {
-        // const res:RequestDevicesByHouseType  = await axios.get(`IndividualDevices${queryString}&Resource=Electricity`)
-        const res:RequestDevicesByHouseType  = await axios.get(`IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`)
+
+        const res = await axios.get<ReadingsStateType>(`IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`)
         return res
-    } catch (error) {
-        console.log(error)
-    }
 }

@@ -31,7 +31,7 @@ export type IndividualDeviceType = {
     lastCommercialAccountingDate: string | null
     managementFirm: ManagementFirmType
     model: string | null
-    mountPlace: string | null
+    mountPlace: string
     personalAccountNumber: string | null
     rateType: string
     readings: Array<ReadingType>

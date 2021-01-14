@@ -3,9 +3,12 @@ import * as s from '01/r_comp';
 import styled, { css } from 'reshadow/macro';
 import {getDevicesByApartment} from "../../../../_api/readings_page";
 import DeviceReadingForm from "./DeviceReadingForm/DeviceReadingForm";
-import readingsReducer, {setDevices} from "./readingsReducer";
+// import readingsReducer, {setDevices} from "../../../../Redux/reducers/readingsReducer";
 import moment from 'moment';
 import {formReadingsToPush} from "../../../../utils/formReadingsToPush";
+import {setDevices} from "../../../../Redux/ducks/readings/actionCreators";
+import {selectDevices} from "../../../../Redux/ducks/readings/selectors";
+import {useDispatch, useSelector} from "react-redux";
 
 
 
@@ -55,7 +58,9 @@ const AddReadings = ({apartmentId, addReadings, readingsBlocked}) => {
     const [isLoading, setIsLoading] = useState(true);
     // const [devices, setDevices] = useState();
 
-    const [state, dispatch] = React.useReducer(readingsReducer, initialState);
+    // const [state, dispatch] = React.useReducer(readingsReducer, initialState);
+    const dispatch = useDispatch();
+    const devices = useSelector(selectDevices)
 
     useEffect( () => {
         async function getDevices() {
@@ -70,13 +75,13 @@ const AddReadings = ({apartmentId, addReadings, readingsBlocked}) => {
     },[])
 
     useEffect( () => {
-        const readingsToPush = formReadingsToPush(state.devices)
+        const readingsToPush = formReadingsToPush(devices)
         addReadings(readingsToPush)
-    }, [state.devices, readingsBlocked])
+    }, [devices, readingsBlocked])
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
-    const readings = state.devices.map((device) => <DeviceReadingForm readingsBlocked={readingsBlocked} key={device.id} device={device} dispatch={dispatch} />)
+    const readings = devices.map((device) => <DeviceReadingForm readingsBlocked={readingsBlocked} key={device.id} device={device} />)
 
     // console.log(devices);
 
