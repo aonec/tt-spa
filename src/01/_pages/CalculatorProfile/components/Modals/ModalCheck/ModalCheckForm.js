@@ -64,6 +64,7 @@ const ModalCheckForm = (props) => {
           allowClear={false}
           onChange={(date) => {
             setFieldValue('lastCheckingDate', date.toISOString());
+            setFieldValue('futureCheckingDate', moment(date).add(3, 'years'))
           }}
           value={moment(values.lastCheckingDate)}
           name="lastCheckingDate"
