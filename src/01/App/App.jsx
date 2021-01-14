@@ -13,6 +13,7 @@ import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
+import createSagaMiddleware from 'redux-saga'
 import rootReducer from '../Redux/rootReducer';
 import {
   Tasks,
@@ -39,23 +40,12 @@ import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
+import rootSaga from "../Redux/saga";
+import {store} from "../Redux/store";
 
 moment.locale('ru');
 
-const loggerMiddleware = (store) => (next) => (action) => {
-  const result = next(action);
-  console.log('Middleware', store.getState());
-  return result;
-};
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(loggerMiddleware, thunkMiddleWare)),
-);
-
-window.store = store;
 
 export function App() {
   const AppProvider = useApp();
@@ -80,7 +70,7 @@ export function App() {
                 </menu>
                 <main>
                   <Switch>
-                    <Redirect from="/tasks" to="/tasks/executing" exact />
+                    <Redirect from={['/tasks', '/']} to="/tasks/executing" exact />
                     <Route
                       path="/tasks/(executing|observing|archived)/"
                       component={Tasks}
@@ -154,7 +144,7 @@ export function App() {
                       path="/meters/(apartments|houses)"
                       component={MetersPage}
                     />
-                    <Redirect to="/tasks/" />
+                    <Redirect to="/error/" />
                   </Switch>
                 </main>
               </layout>
