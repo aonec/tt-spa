@@ -70,7 +70,7 @@ export function App() {
                 </menu>
                 <main>
                   <Switch>
-                    <Redirect from="/tasks" to="/tasks/executing" exact />
+                    <Redirect from={['/tasks', '/']} to="/tasks/executing" exact />
                     <Route
                       path="/tasks/(executing|observing|archived)/"
                       component={Tasks}
@@ -144,7 +144,7 @@ export function App() {
                       path="/meters/(apartments|houses)"
                       component={MetersPage}
                     />
-                    <Redirect to="/tasks/" />
+                    <Redirect to="/error/" />
                   </Switch>
                 </main>
               </layout>
