@@ -4,8 +4,6 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import Modal from 'antd/es/modal/Modal';
-import styled from 'styled-components';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
   StyledRadio,
@@ -104,7 +102,7 @@ const ModalSonoSafeReportForm = (props) => {
         entryNumber: 1,
         pipeNumber: 5,
         value: 1,
-        label: 'Без узла',
+        label: 'Sono',
       },
     ],
   };
@@ -135,10 +133,9 @@ const ModalSonoSafeReportForm = (props) => {
     onSubmit: async () => {
       console.log('values', values);
       const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'));
-      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment().subtract(1, 'months').endOf('month'));
-
+      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment(begin).endOf('month'))
       console.log(values);
-      console.log('entryNumberRes', values.entryNumber);
+
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         values.detail
       }&resourcetype=${values.resource}&entrynumber=${
@@ -165,9 +162,15 @@ const ModalSonoSafeReportForm = (props) => {
 
   const onPeriodChange = (event) => {
     const res = event.target.value;
+    if (res === 'custom') {
+      setFieldValue('begin',  moment().subtract(1, 'months').startOf('month'));
+    }
+    if (res === 'month') {
+      setFieldValue('begin', '');
+    }
     setFieldValue('period', res);
     setFieldValue('customdisabled', res === 'month');
-    setFieldValue('begin', res === 'month' ? '' : moment().subtract(1, 'months').startOf('month'));
+
     // setFieldValue('end', moment());
   };
 
@@ -208,6 +211,11 @@ const ModalSonoSafeReportForm = (props) => {
     setFieldValue('pipeNumber', object.pipeNumber);
   };
 
+
+  useEffect(() => {
+    handleSelect(devicesSelectionByType[values.resource][0].value, devicesSelectionByType[values.resource][0])
+  },[])
+
   return (
     <Form id="formReport">
       <StyledModalBody>
@@ -232,6 +240,7 @@ const ModalSonoSafeReportForm = (props) => {
             onChange={handleSelect}
             value={values.currentValue}
             name="entryNumber"
+            disabled
           />
           <Alert name="entryNumber" />
         </Form.Item>
