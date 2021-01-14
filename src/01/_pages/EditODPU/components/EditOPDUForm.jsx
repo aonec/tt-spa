@@ -231,6 +231,7 @@ const FormEditODPU = (props) => {
               placeholder="Укажите дату..."
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', date);
+                setFieldValue('futureCheckingDate', moment(date).add(3, 'years'))
               }}
               value={values.lastCheckingDate}
             />
