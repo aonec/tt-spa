@@ -13,6 +13,7 @@ import { putCalculator } from './apiEditCalculator';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from "../../../utils/handleTabsBeforeFormSubmit";
+import moment from "moment";
 
 const EditCalculatorForm = () => {
   const { currentCalc, currentTabKey, setTab, setAlertVisible, existCalculator, setExistCalculator } = useContext(EditCalculatorContext);
@@ -236,6 +237,7 @@ const EditCalculatorForm = () => {
             allowClear={false}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
+              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'))
             }}
             value={values.lastCheckingDate}
           />
