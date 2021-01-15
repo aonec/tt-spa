@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { useFormik, Field, getIn } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, Switch } from 'antd';
@@ -9,20 +9,24 @@ import {
   ButtonTT,
   DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter,
 } from '../../../../tt-components';
-import { ipv4RegExp, items } from '../../../../tt-components/localBases';
+import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
 import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
-import { handleTabsBeforeFormSubmit } from "../../../../utils/handleTabsBeforeFormSubmit";
+import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
+import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
+import {isEmptyString} from '../../../../utils/isEmptyString';
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [empty, setEmpty] = useState();
+  const [checked, setChecked] = useState(true);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors, setFieldError,
+    handleBlur, setFieldValue, setFieldError,
   } = useFormik({
     initialValues: {
       serialNumber: '',
@@ -36,8 +40,7 @@ const AddCalculatorForm = (props) => {
       port: null,
       housingStockId: Number(objid),
       infoId: 1,
-      isConnected: true,
-      checked: true,
+      isConnected: checked,
     },
     validationSchema,
     onSubmit: async () => {
@@ -68,34 +71,43 @@ const AddCalculatorForm = (props) => {
     setValidationSchema(defaultValidationSchema);
   }, []);
 
-  const defaultValidationSchema = Yup.object({
-    serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
-    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
-    port: Yup.number().nullable().required('Введите порт устройства'),
-  });
-
-  const emptyValidationSchema = Yup.object({
-    serialNumber: Yup.string().required('Введите серийный номер'),
-  });
-
-  function isEmptyValue(item) {
-    return item === null || item === '';
-  }
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
-
-  function isEmpty() {
-    return isEmptyValue(values.deviceAddress)
-      && isEmptyValue(values.port)
-      && isEmptyValue(values.ipV4);
-  }
-
+  function isEmptyConnection() {
+    return isEmptyString(values.deviceAddress)
+      && isEmptyString(values.port)
+      && isEmptyString(values.ipV4);
+ }
   function onSwitchChange(checked) {
-    setFieldValue('checked', checked);
+    setChecked(checked);
+    setFieldValue('isConnected', checked);
+    if (checked === true) {
+      setValidationSchema(defaultValidationSchema);
+    }
+    if (checked === false) {
+      if (isEmptyConnection()) {
+        // setErrors({})
+        setFieldError('ipV4');
+        setFieldError('port');
+        setFieldError('deviceAddress');
+        setValidationSchema(emptyConnectionValidationSchema);
+      } else {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
   }
+
+  useEffect(() => {
+    setEmpty(isEmptyConnection());
+    console.log('Правда, что все строки пустые:?', empty);
+
+    if (checked === false) {
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
+      }
+      if (isEmptyConnection() === false) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }, [values.deviceAddress, values.ipV4, values.port]);
 
   const tabErrors = [
     {
@@ -108,29 +120,23 @@ const AddCalculatorForm = (props) => {
     },
   ];
 
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+  function handleChangeTab(value) {
+    setTab(value);
+  }
 
   function handleSubmitForm() {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
     }
+    else {
+      handleSubmit();
+    }
   }
-
-
-  useEffect(() => {
-    console.log('Правда, что все строки пустые:?', isEmpty());
-
-    setFieldValue('isConnected', values.checked);
-    if (values.checked === true) {
-      setValidationSchema(defaultValidationSchema);
-    }
-    if (values.checked === false && isEmpty()) {
-      setValidationSchema(emptyValidationSchema);
-    }
-    if (values.checked === false && !isEmpty()) {
-      setValidationSchema(defaultValidationSchema);
-    }
-  }, [values]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -143,12 +149,10 @@ const AddCalculatorForm = (props) => {
     return null;
   };
 
-  function handleChangeTab(value) {
-    setTab(value);
-  }
+
 
   return (
-    <form id="formikForm" onSubmit={handleSubmit}>
+    <form id="addCalculatorForm" onSubmit={handleSubmit}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
@@ -252,7 +256,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.checked} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -275,7 +279,7 @@ const AddCalculatorForm = (props) => {
                 setFieldValue('ipV4', event.target.value);
               }}
             />
-            {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}
+            {(isEmptyConnection() && !values.checked) ? null : <Alert name="ipV4" />}
 
           </Form.Item>
 
@@ -288,7 +292,7 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {(isEmpty() && !values.checked) ? null : <Alert name="port" />}
+            {(isEmptyConnection() && !values.checked) ? null : <Alert name="port" />}
 
           </Form.Item>
 
@@ -303,7 +307,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
 
-            {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" /> }
+            {(isEmptyConnection() && !values.checked) ? null : <Alert name="deviceAddress" /> }
 
           </Form.Item>
 
@@ -341,7 +345,7 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          for="formikForm"
+          htmlFor="addCalculatorForm"
           id="submit"
           onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}

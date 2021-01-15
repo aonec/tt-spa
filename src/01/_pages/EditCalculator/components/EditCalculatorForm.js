@@ -167,7 +167,8 @@ const EditCalculatorForm = () => {
     console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
-    } else {
+    }
+    else {
       handleSubmit();
     }
   }
