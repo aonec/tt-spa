@@ -21,6 +21,7 @@ const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [checked, setChecked] = useState(true);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -38,7 +39,7 @@ const AddCalculatorForm = (props) => {
       port: null,
       housingStockId: Number(objid),
       infoId: 1,
-      isConnected: true,
+      isConnected: checked,
     },
     validationSchema,
     onSubmit: async () => {
@@ -76,16 +77,27 @@ const AddCalculatorForm = (props) => {
  }
 
 
-  useEffect(() => {
-    // setEmpty(isEmptyConnection());
-    console.log('Правда, что все строки пустые:?', isEmptyConnection());
-
-    if (values.isConnected === false) {
+  function emptyConnectionListener() {
+    if (checked === false) {
       if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
         setFieldError('ipV4');
         setFieldError('port');
         setFieldError('deviceAddress');
+      }
+      if (isEmptyConnection() === false) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (checked === false) {
+      if (isEmptyConnection() === true) {
         setValidationSchema(emptyConnectionValidationSchema);
+        setFieldError('ipV4');
+        setFieldError('port');
+        setFieldError('deviceAddress');
       }
       if (isEmptyConnection() === false) {
         setValidationSchema(defaultValidationSchema);
@@ -94,6 +106,7 @@ const AddCalculatorForm = (props) => {
   }, [values.deviceAddress, values.ipV4, values.port]);
 
   function onSwitchChange(checked) {
+    setChecked(checked);
     setFieldValue('isConnected', checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
@@ -255,7 +268,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',

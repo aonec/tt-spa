@@ -45,9 +45,9 @@ const EditCalculatorForm = () => {
     isConnected,
   } = currentCalc;
 
-  // const [checked, setChecked] = useState(isConnected);
+  const [checked, setChecked] = useState(isConnected);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  // const [empty, setEmpty] = useState();
+  const [empty, setEmpty] = useState();
 
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
@@ -67,7 +67,7 @@ const EditCalculatorForm = () => {
       deviceAddress: deviceAddress === null ? null : deviceAddress,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
-      isConnected
+      isConnected: checked
     },
     validationSchema,
     onSubmit: async () => {
@@ -108,32 +108,30 @@ const EditCalculatorForm = () => {
   }
 
   function onSwitchChange(checked) {
+    setChecked(checked);
     setFieldValue('isConnected', checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
     if (checked === false) {
-      if (isEmptyConnection() === true) {
+      if (isEmptyConnection()) {
+        // setErrors({})
         setFieldError('ipV4');
         setFieldError('port');
         setFieldError('deviceAddress');
         setValidationSchema(emptyConnectionValidationSchema);
-      }
-      if (isEmptyConnection() === false) {
+      } else {
         setValidationSchema(defaultValidationSchema);
       }
     }
   }
 
   useEffect(() => {
-    // setEmpty(isEmptyConnection());
-    console.log('Правда, что все строки пустые:?', isEmptyConnection());
+    setEmpty(isEmptyConnection());
+    console.log('Правда, что все строки пустые:?', empty);
 
-    if (values.isConnected === false) {
+    if (checked === false) {
       if (isEmptyConnection() === true) {
-        setFieldError('ipV4');
-        setFieldError('port');
-        setFieldError('deviceAddress');
         setValidationSchema(emptyConnectionValidationSchema);
       }
       if (isEmptyConnection() === false) {
@@ -265,7 +263,7 @@ const EditCalculatorForm = () => {
           width: '100%',
         }}
         >
-          <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected} />
+          <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={checked} />
           <span style={{
             fontSize: '16px',
             lineHeight: '32px',
