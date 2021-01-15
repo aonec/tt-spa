@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
+import moment from 'moment';
 import {
   InputTT, SelectTT, DatePickerTT, Wrap, ButtonTT, Title,
 } from '../../../tt-components';
@@ -12,17 +15,16 @@ import { EditCalculatorContext } from '../index';
 import { putCalculator } from './apiEditCalculator';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
-import { handleTabsBeforeFormSubmit } from "../../../utils/handleTabsBeforeFormSubmit";
-import moment from "moment";
+import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
+
+import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
+import isEmptyString from '../../../utils/isEmptyString';
 
 const EditCalculatorForm = () => {
-  const { currentCalc, currentTabKey, setTab, setAlertVisible, existCalculator, setExistCalculator } = useContext(EditCalculatorContext);
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const [empty, setEmpty] = useState();
-
-
+  const {
+    currentCalc, currentTabKey, setTab, setAlertVisible, setExistCalculator,
+  } = useContext(EditCalculatorContext);
   // console.log(currentCalc);
-
   const {
     calculator,
     canBeEdited,
@@ -38,27 +40,21 @@ const EditCalculatorForm = () => {
     resource,
     serialNumber,
     type,
-    connection,
-    address,
+    connection: { ipV4 = '', port = null, deviceAddress = null },
+    address: { id: houseId },
     isConnected,
   } = currentCalc;
 
+  const [checked, setChecked] = useState(isConnected);
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [empty, setEmpty] = useState();
+
   const getCurrentInfoId = _.find(items, { label: model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
-  const [checked, setChecked] = useState(isConnected)
-
-  // const { ipV4, port, deviceAddress } = connection;
-  const { id: houseId } = address;
-
-  const { ipV4, port, deviceAddress } = connection || {
-    ipV4: '',
-    port: null,
-    deviceAddress: null,
-  };
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setErrors, setFieldError
+    handleBlur, setFieldValue, setFieldError,
   } = useFormik({
     initialValues: {
       serialNumber,
@@ -71,8 +67,7 @@ const EditCalculatorForm = () => {
       deviceAddress: deviceAddress === null ? null : deviceAddress,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
-      isConnected,
-      checked: isConnected,
+      isConnected: checked
     },
     validationSchema,
     onSubmit: async () => {
@@ -93,10 +88,10 @@ const EditCalculatorForm = () => {
       };
       console.log('FORM', form);
       console.log(JSON.stringify(form));
-      putCalculator(id, form).then(({ show, id })=>{
+      putCalculator(id, form).then(({ show, id }) => {
         if (show === true) {
-          setAlertVisible(true)
-          setExistCalculator(id)
+          setAlertVisible(true);
+          setExistCalculator(id);
         }
       });
     },
@@ -106,70 +101,44 @@ const EditCalculatorForm = () => {
     setValidationSchema(defaultValidationSchema);
   }, []);
 
-  const defaultValidationSchema = Yup.object({
-    lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-    futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-    lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-    futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-    serialNumber: Yup.string().required('Введите серийный номер'),
-    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
-    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
-    port: Yup.number().nullable().required('Введите порт устройства'),
-    infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
-  });
-
-  const emptyValidationSchema = Yup.object({
-    lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-    futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
-    lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-    futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
-    serialNumber: Yup.string().required('Введите серийный номер'),
-    infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
-  });
-
-  function isEmptyValue(item) {
-    return item === null || item === '';
-  }
-
-  function isEmpty() {
-    return isEmptyValue(values.deviceAddress)
-      && isEmptyValue(values.port)
-      && isEmptyValue(values.ipV4);
+  function isEmptyConnection() {
+    return isEmptyString(values.deviceAddress)
+      && isEmptyString(values.port)
+      && isEmptyString(values.ipV4);
   }
 
   function onSwitchChange(checked) {
-    setChecked(checked)
-  }
-
-  useEffect(() => {
-    setEmpty(isEmpty())
-
-    console.log('Правда, что все строки пустые:?', empty);
-    if (checked === false && isEmpty()) {
-      setValidationSchema(emptyValidationSchema);
-    }
-    if (checked === false && !isEmpty()) {
-      setValidationSchema(defaultValidationSchema);
-    }
-  }, [values.deviceAddress, values.ipV4, values.port]);
-
-  useEffect(() => {
+    setChecked(checked);
+    setFieldValue('isConnected', checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
     }
     if (checked === false) {
-      if (isEmpty()) {
+      if (isEmptyConnection()) {
         // setErrors({})
-        setFieldError('ipV4', )
-        setFieldError('port', )
-        setFieldError('deviceAddress', )
-        setValidationSchema(emptyValidationSchema);
+        setFieldError('ipV4');
+        setFieldError('port');
+        setFieldError('deviceAddress');
+        setValidationSchema(emptyConnectionValidationSchema);
       } else {
         setValidationSchema(defaultValidationSchema);
       }
     }
-  },
-  [checked]);
+  }
+
+  useEffect(() => {
+    setEmpty(isEmptyConnection());
+    console.log('Правда, что все строки пустые:?', empty);
+
+    if (checked === false) {
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
+      }
+      if (isEmptyConnection() === false) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }, [values.deviceAddress, values.ipV4, values.port]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -198,9 +167,8 @@ const EditCalculatorForm = () => {
     console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
-    }
-    else {
-      handleSubmit()
+    } else {
+      handleSubmit();
     }
   }
 
@@ -211,7 +179,8 @@ const EditCalculatorForm = () => {
           <InputTT
             name="serialNumber"
             value={values.serialNumber}
-            placeholder="Серийный номер..."
+            onBlur={handleBlur}
+            placeholder="Серийный номер"
             onChange={handleChange}
           />
           <Alert name="serialNumber" />
@@ -237,7 +206,7 @@ const EditCalculatorForm = () => {
             allowClear={false}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'))
+              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
             }}
             value={values.lastCheckingDate}
           />
@@ -315,8 +284,8 @@ const EditCalculatorForm = () => {
             onBlur={handleBlur}
             // disabled={!checked}
           />
-           <Alert name="ipV4" />
-          {/*{(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />}*/}
+          <Alert name="ipV4" />
+          {/* {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />} */}
         </Form.Item>
 
         <Form.Item label="Порт">
@@ -330,8 +299,8 @@ const EditCalculatorForm = () => {
             // disabled={!checked}
 
           />
-           <Alert name="port" />
-          {/*{(isEmpty() && !values.checked) ? null : <Alert name="port" /> }*/}
+          <Alert name="port" />
+          {/* {(isEmpty() && !values.checked) ? null : <Alert name="port" /> } */}
 
         </Form.Item>
 
@@ -345,8 +314,8 @@ const EditCalculatorForm = () => {
             name="deviceAddress"
             // disabled={!checked}
           />
-           <Alert name="deviceAddress" />
-          {/*{(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />}*/}
+          <Alert name="deviceAddress" />
+          {/* {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />} */}
         </Form.Item>
 
         <Wrap

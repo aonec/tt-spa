@@ -25,3 +25,25 @@ export const emptyConnectionValidationSchema = Yup.object({
     serialNumber: yupSerialNumber,
     infoId: yupInfoId,
 });
+
+
+// const defaultValidationSchema = Yup.object({
+//     lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+//     futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+//     lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+//     futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+//     serialNumber: Yup.string().required('Введите серийный номер'),
+//     ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
+//     deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
+//     port: Yup.number().nullable().required('Введите порт устройства'),
+//     infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
+// });
+//
+// const emptyValidationSchema = Yup.object({
+//     lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+//     futureCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),
+//     lastCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+//     futureCommercialAccountingDate: Yup.date().typeError('Поле обязательное').required('Введите серийный номер'),
+//     serialNumber: Yup.string().required('Введите серийный номер'),
+//     infoId: Yup.number().typeError('Выберите модель').required('Выберите модель'),
+// });
