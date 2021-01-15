@@ -21,7 +21,6 @@ const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-  const [empty, setEmpty] = useState();
   const [checked, setChecked] = useState(true);
 
   const {
@@ -76,6 +75,36 @@ const AddCalculatorForm = (props) => {
       && isEmptyString(values.port)
       && isEmptyString(values.ipV4);
  }
+
+
+  function emptyConnectionListener() {
+    if (checked === false) {
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
+        setFieldError('ipV4');
+        setFieldError('port');
+        setFieldError('deviceAddress');
+      }
+      if (isEmptyConnection() === false) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (checked === false) {
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
+        setFieldError('ipV4');
+        setFieldError('port');
+        setFieldError('deviceAddress');
+      }
+      if (isEmptyConnection() === false) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }, [values.deviceAddress, values.ipV4, values.port]);
+
   function onSwitchChange(checked) {
     setChecked(checked);
     setFieldValue('isConnected', checked);
@@ -83,31 +112,18 @@ const AddCalculatorForm = (props) => {
       setValidationSchema(defaultValidationSchema);
     }
     if (checked === false) {
-      if (isEmptyConnection()) {
-        // setErrors({})
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
         setFieldError('ipV4');
         setFieldError('port');
         setFieldError('deviceAddress');
-        setValidationSchema(emptyConnectionValidationSchema);
-      } else {
-        setValidationSchema(defaultValidationSchema);
-      }
-    }
-  }
-
-  useEffect(() => {
-    setEmpty(isEmptyConnection());
-    console.log('Правда, что все строки пустые:?', empty);
-
-    if (checked === false) {
-      if (isEmptyConnection() === true) {
-        setValidationSchema(emptyConnectionValidationSchema);
       }
       if (isEmptyConnection() === false) {
         setValidationSchema(defaultValidationSchema);
       }
     }
-  }, [values.deviceAddress, values.ipV4, values.port]);
+
+  }
 
   const tabErrors = [
     {
@@ -133,9 +149,6 @@ const AddCalculatorForm = (props) => {
     if (hasError === true) {
       setTab(errorTab);
     }
-    else {
-      handleSubmit();
-    }
   }
 
   const Alert = ({ name }) => {
@@ -148,8 +161,6 @@ const AddCalculatorForm = (props) => {
     }
     return null;
   };
-
-
 
   return (
     <form id="addCalculatorForm" onSubmit={handleSubmit}>
@@ -196,10 +207,11 @@ const AddCalculatorForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
-              placeholder="Укажите дату..."
+              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
               }}
               value={moment(values.lastCheckingDate)}
             />
@@ -209,7 +221,7 @@ const AddCalculatorForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
-              placeholder="Укажите дату..."
+              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', date.toISOString());
@@ -222,7 +234,7 @@ const AddCalculatorForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
-              placeholder="Укажите дату..."
+              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
@@ -235,7 +247,7 @@ const AddCalculatorForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
-              placeholder="Укажите дату..."
+              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
                 setFieldValue('futureCommercialAccountingDate', date.toISOString());
@@ -279,8 +291,8 @@ const AddCalculatorForm = (props) => {
                 setFieldValue('ipV4', event.target.value);
               }}
             />
-            {(isEmptyConnection() && !values.checked) ? null : <Alert name="ipV4" />}
-
+            {/*{isEmptyConnection() && !checked ? null : <Alert name="ipV4" />}*/}
+            <Alert name="ipV4" />
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -292,8 +304,8 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {(isEmptyConnection() && !values.checked) ? null : <Alert name="port" />}
-
+            {/*{isEmptyConnection() && !checked ? null : <Alert name="port" />}*/}
+           <Alert name="port" />
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -306,9 +318,8 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               // disabled={checked}
             />
-
-            {(isEmptyConnection() && !values.checked) ? null : <Alert name="deviceAddress" /> }
-
+            {/*{isEmptyConnection() && !checked ? null : <Alert name="deviceAddress" /> }*/}
+            <Alert name="deviceAddress" />
           </Form.Item>
 
           <Wrap
