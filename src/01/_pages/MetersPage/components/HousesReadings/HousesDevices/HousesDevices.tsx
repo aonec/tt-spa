@@ -1,22 +1,13 @@
 import React, {useEffect, useReducer} from "react";
 import {requestDevicesByHouse, ReadingsStateType} from "../../../../../_api/houses_readings_page";
-import {HouseSearchType} from "../HousesReadings";
 import { useSelector, useDispatch } from 'react-redux'
-
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
-// import readingsReducer, {
-//     setDevices
-// } from "../../../../../Redux/reducers/readingsReducer";
 import {selectDevices, selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import { setDevices } from "01/Redux/ducks/readings/actionCreators";
-
-interface Props {
-    searchState: HouseSearchType;
-}
 
 const HouseReadingsDevice = styled.div`
 display: grid;
@@ -38,7 +29,7 @@ export type DisabledStateType = {
 }[]
 
 
-// const HousesDevices: React.FC<Props> = ({searchState}) => {
+
 const HousesDevices: React.FC = () => {
 
     let { id: housingStockId }: ParamsType = useParams();

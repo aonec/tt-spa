@@ -41,7 +41,7 @@ interface DeviceRatesVerticalProps {
     operatorCabinet?: boolean
     houseReadings?: boolean
     isDisabled?: boolean | undefined
-    textInput?: RefObject<HTMLInputElement>
+    textInput?: RefObject<Input>
 }
 
 const SuffixLine = styled.span`
