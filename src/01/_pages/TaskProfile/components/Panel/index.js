@@ -56,6 +56,11 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
+    &[|styleSwitchDevicesAndChangeDevice] {
+      display: flex;
+      flex-direction:column;
+      justify-content: space-between;
+    }
   }
 
   Perpetrator {
@@ -130,10 +135,10 @@ export const Panel = ({
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  console.log('currentUser', currentUser);
-  console.log('taskPerpetrator', taskPerpetrator);
+  // console.log('currentUser', currentUser);
+  // console.log('taskPerpetrator', taskPerpetrator);
   const isPerpetrator = currentUser.id === taskPerpetrator.id;
-  console.log('isPerpetrator', isPerpetrator);
+  // console.log('isPerpetrator', isPerpetrator);
 
   // const [deadline, setDeadline] = useState();
   // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
@@ -165,10 +170,10 @@ export const Panel = ({
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline: AddPerpetrator && SetNextStageDeadline,
-        // seven: SwitchDevices && ChangeDevice,
+        styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
+      {(SwitchDevices && !isObserver) && <ChangeDevice taskState={state} />}
 
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
 
