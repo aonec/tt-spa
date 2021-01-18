@@ -48,14 +48,14 @@ export const usePanel = (
 
 export function dataReducer(state, action) {
   const { type, data } = action;
+  const { emailNotify = {} } = state;
   switch (type) {
     case 'add_data':
       return { ...state, ...data };
-
-    case 'email_notify':
-      const { emailNotify = {} } = state;
+    case 'add_email_message':
       return { ...state, emailNotify: { ...emailNotify, ...data } };
-
+    case 'add_email_contractors':
+      return { ...state, emailNotify: { ...emailNotify, ...data } };
     case ADD_READINGS:
       return { ...state, readings: action.readings };
 

@@ -57,7 +57,14 @@ axios.interceptors.response.use(
           },
         );
       });
+      
     }
+      if (status === 403 ) {
+          window.location.replace('/access-denied/');
+      }
+      if (status === 404 ) {
+          window.location.replace('/error/');
+      }
     return Promise.reject(error);
   },
 );

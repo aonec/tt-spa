@@ -69,7 +69,7 @@ const AddDeviceForm = (props) => {
       isConnected: isConnected[0].value,
       serialNumber: '',
       lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().toISOString(),
+      futureCheckingDate: moment().add(3, 'years').toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],

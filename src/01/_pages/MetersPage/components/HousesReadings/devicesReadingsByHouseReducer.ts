@@ -1,4 +1,4 @@
-import {requestDevicesByHouse, RequestDevicesByHouseType} from "../../../../_api/houses_readings_page";
+import {requestDevicesByHouse, ReadingsStateType} from "../../../../_api/houses_readings_page";
 import {
     IndividualDeviceType,
     ManagementFirmType,
@@ -104,7 +104,7 @@ export const initialState = {
 
 // initialState
 
-export const devicesReadingsByHouseReducer = (state: RequestDevicesByHouseType = initialState, action: SetDevicesACType):RequestDevicesByHouseType  => {
+export const devicesReadingsByHouseReducer = (state: ReadingsStateType = initialState, action: SetDevicesACType):ReadingsStateType  => {
     switch (action.type) {
         case SET_INFO:
             return {...state, ...action.payload}
@@ -122,7 +122,7 @@ export type DevicesReadingsByHouseReducerType = typeof devicesReadingsByHouseRed
 
 export type SetDevicesACType = {
     type: typeof SET_INFO
-    payload: RequestDevicesByHouseType | undefined
+    payload: ReadingsStateType | undefined
 }
 
-export const setInfo = (payload: RequestDevicesByHouseType | undefined):SetDevicesACType  => ({ type: SET_INFO, payload })
+export const setInfo = (payload: ReadingsStateType | undefined):SetDevicesACType  => ({ type: SET_INFO, payload })
