@@ -142,6 +142,7 @@ export const Panel = ({
 
   // const [deadline, setDeadline] = useState();
   // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+  console.log(state)
 
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
@@ -173,7 +174,7 @@ export const Panel = ({
         styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {(SwitchDevices && !isObserver) && <ChangeDevice taskState={state} />}
+      {(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}
 
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
 
@@ -204,7 +205,7 @@ export const Panel = ({
         </>
         )}
 
-      {AddDocuments && (
+      {(AddDocuments && !SwitchDevices) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />

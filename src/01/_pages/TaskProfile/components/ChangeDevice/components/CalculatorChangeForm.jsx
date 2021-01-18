@@ -8,48 +8,33 @@ import {
   SelectTT, InputTT, DatePickerTT, ButtonTT, Header,
 } from '../../../../../tt-components';
 import { ChangeDeviceContext } from '../index';
-import {
-  housingMeteringDeviceTypes,
-  isConnectedValue,
-  magistrals,
-  resources,
-  items,
-} from '../../../../../tt-components/localBases';
+import { isConnectedValue, items } from '../../../../../tt-components/localBases';
 import {
   putOdpu, pushStage, putCalculator, createCalculator, deregisterDevice,
 } from '../apiChangeDevice';
-import { tabs, actionsList, executorsList } from './localBase';
+import { tabs, actionsList, executorsList, calculatorChangeValidationSchema } from './localBase';
+import { isDateEmpty } from "./utils";
 
 const { TabPane } = Tabs;
 
 const CalculatorChangeForm = () => {
   const [currentTabKey, setCurrentTabKey] = useState('1');
   const {
-    state, device, selected, disabled, taskId,
+    state, device, selected, disabled, taskId, perpetratorName,
   } = useContext(ChangeDeviceContext);
-  console.log("device", device)
+  console.log('device', device);
   const {
     isConnected,
     connection: {
       ipV4,
       port,
       deviceAddress,
-    }
-  } = device || {
-    isConnected: false,
-    connection: {
-      ipV4: '',
-      port: null,
-      deviceAddress: null,
-    }
-  };
+    },
+  } = device;
+  console.log(selected);
 
   const getCurrentInfoId = _.find(items, { label: selected.model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
-
-  function isDisabled(value) {
-    return disabled.includes(value);
-  }
 
   const {
     serialNumber,
@@ -60,8 +45,8 @@ const CalculatorChangeForm = () => {
     futureCheckingDate,
   } = selected;
 
-  function isDateEmpty(value) {
-    return value === null ? null : moment(value);
+  function isDisabled(value) {
+    return disabled.includes(value);
   }
 
   const {
@@ -79,19 +64,10 @@ const CalculatorChangeForm = () => {
       serialNumber,
       lastCheckingDate: isDateEmpty(lastCheckingDate),
       futureCheckingDate: isDateEmpty(futureCheckingDate),
-      lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
-      futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
-      isConnected: isConnectedValue[0].value,
+      isConnected,
       deviceAddress,
     },
-    validationSchema: Yup.object({
-      resource: Yup.string().required('Введите данные'),
-      pipeNumber: Yup.number().required('Введите число от 0'),
-      entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
-      model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
-      serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
-      calculatorId: Yup.string().required('Выберите вычислитель'),
-    }),
+    validationSchema: Yup.object(calculatorChangeValidationSchema),
     onSubmit: () => {
       console.log('DONE');
     },
@@ -105,8 +81,6 @@ const CalculatorChangeForm = () => {
       ipV4,
       port,
       deviceAddress,
-      lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
-      futureCommercialAccountingDate: isDateEmpty(futureCommercialAccountingDate),
       lastCheckingDate: isDateEmpty(lastCheckingDate),
       futureCheckingDate: isDateEmpty(futureCheckingDate),
     });
@@ -153,8 +127,6 @@ const CalculatorChangeForm = () => {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
       futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
       connection: {
         ipV4: values.ipV4,
         port: values.port,
@@ -191,8 +163,6 @@ const CalculatorChangeForm = () => {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
       futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
       infoId: values.infoId,
       housingStockId: device.address.id,
       connection: {
@@ -306,9 +276,8 @@ const CalculatorChangeForm = () => {
             label="Исполнитель"
             style={{ width: '49%' }}
           >
-            <SelectTT
-              options={executorsList}
-              defaultValue={1}
+            <InputTT
+              value={perpetratorName || 'Исполнитель'}
               disabled
             />
           </Form.Item>
@@ -382,31 +351,31 @@ const CalculatorChangeForm = () => {
             <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          {/*<Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}>*/}
-          {/*  <DatePickerTT*/}
-          {/*    format="DD.MM.YYYY"*/}
-          {/*    name="lastCommercialAccountingDate"*/}
-          {/*    placeholder="Укажите дату..."*/}
-          {/*    onChange={(date) => {*/}
-          {/*      setFieldValue('lastCommercialAccountingDate', date);*/}
-          {/*    }}*/}
-          {/*    disabled={isDisabled('lastCommercialAccountingDate')}*/}
-          {/*    value={values.lastCommercialAccountingDate}*/}
-          {/*  />*/}
-          {/*</Form.Item>*/}
+          {/* <Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}> */}
+          {/*  <DatePickerTT */}
+          {/*    format="DD.MM.YYYY" */}
+          {/*    name="lastCommercialAccountingDate" */}
+          {/*    placeholder="Укажите дату..." */}
+          {/*    onChange={(date) => { */}
+          {/*      setFieldValue('lastCommercialAccountingDate', date); */}
+          {/*    }} */}
+          {/*    disabled={isDisabled('lastCommercialAccountingDate')} */}
+          {/*    value={values.lastCommercialAccountingDate} */}
+          {/*  /> */}
+          {/* </Form.Item> */}
 
-          {/*<Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}>*/}
-          {/*  <DatePickerTT*/}
-          {/*    format="DD.MM.YYYY"*/}
-          {/*    placeholder="Укажите дату..."*/}
-          {/*    onChange={(date) => {*/}
-          {/*      setFieldValue('futureCommercialAccountingDate', date);*/}
-          {/*    }}*/}
-          {/*    disabled={isDisabled('futureCommercialAccountingDate')}*/}
-          {/*    value={values.futureCommercialAccountingDate}*/}
-          {/*    name="futureCommercialAccountingDate"*/}
-          {/*  />*/}
-          {/*</Form.Item>*/}
+          {/* <Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}> */}
+          {/*  <DatePickerTT */}
+          {/*    format="DD.MM.YYYY" */}
+          {/*    placeholder="Укажите дату..." */}
+          {/*    onChange={(date) => { */}
+          {/*      setFieldValue('futureCommercialAccountingDate', date); */}
+          {/*    }} */}
+          {/*    disabled={isDisabled('futureCommercialAccountingDate')} */}
+          {/*    value={values.futureCommercialAccountingDate} */}
+          {/*    name="futureCommercialAccountingDate" */}
+          {/*  /> */}
+          {/* </Form.Item> */}
 
         </div>
 
