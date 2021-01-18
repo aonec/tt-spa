@@ -128,6 +128,15 @@ export const Panel = ({
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
+
+  const taskPerpetrator = state.currentStage.perpetrator;
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  console.log("currentUser", currentUser)
+  console.log("taskPerpetrator", taskPerpetrator)
+  const isPerpetrator = currentUser.id === taskPerpetrator.id;
+  console.log("isPerpetrator", isPerpetrator)
+
+
   // const [deadline, setDeadline] = useState();
   // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
 
@@ -144,7 +153,7 @@ export const Panel = ({
     );
   }
   
-  if (isObserver) {
+  if (!isPerpetrator) {
     return null;
   }
   return styled(styles)(

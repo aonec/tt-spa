@@ -1,9 +1,10 @@
-import React from "react"
-import styled, { css, use } from "reshadow/macro"
+import React from 'react';
+import styled, { css, use } from 'reshadow/macro';
 
-import { button } from "01/r_comp"
-import { Icon } from "01/components/Icon"
-import { Loader } from "01/components"
+import { button } from '01/r_comp';
+import { Icon } from '01/components/Icon';
+import { Loader } from '01/components';
+import moment from 'moment'
 
 const styles = css`
   stage_item {
@@ -78,32 +79,42 @@ const styles = css`
     grid-column: 2 / -1;
     justify-self: start;
   }
-`
+`;
 
-export const Stages = ({ items = [], revertProps = {}, panelLoading }) => {
+export const Stages = ({
+  items = [], revertProps = {}, state = {}, panelLoading,
+}) => {
+  console.log('stateStages', state);
+  const { expectedCompletionTime } = state.currentStage || {};
+  const isStageExpired = moment(expectedCompletionTime).isBefore(moment()); // true
+  console.log(items)
+
+
   return styled(styles, button)(
     <section>
       <h2>Этапы задачи</h2>
       <stage_list>
-        {items.map(({ id, name, icon, number, info, status, canRevert }) => (
+        {items.map(({
+          id, name, icon, number, info, status, canRevert,
+        }) => (
           <stage_item key={id} {...use({ status })}>
             <circle as="span">{icon ? <Icon icon={icon} /> : number}</circle>
             <stage_name>{name}</stage_name>
             {info && (
-              <>
-                <user_name>{info.name}</user_name>
-                <time>{info.time}</time>
-              </>
+            <>
+              <user_name>{info.name}</user_name>
+              <time>{info.time}</time>
+            </>
             )}
             {canRevert && (
-              <button {...revertProps} disabled={panelLoading ?? false}>
-                <span>Вернуть этап</span>
-                <Loader show={panelLoading ?? false} />
-              </button>
+            <button {...revertProps} disabled={panelLoading ?? false}>
+              <span>Вернуть этап</span>
+              <Loader show={panelLoading ?? false} />
+            </button>
             )}
           </stage_item>
         ))}
       </stage_list>
-    </section>
-  )
-}
+    </section>,
+  );
+};
