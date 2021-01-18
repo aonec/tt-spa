@@ -16,7 +16,7 @@ import {
   items,
 } from '../../../../../tt-components/localBases';
 import {
-  putOdpu, pushStage, putCalculator, createCalculator, deregisterDevice
+  putOdpu, pushStage, putCalculator, createCalculator, deregisterDevice,
 } from '../apiChangeDevice';
 import { tabs, actionsList, executorsList } from './localBase';
 
@@ -27,16 +27,22 @@ const CalculatorChangeForm = () => {
   const {
     state, device, selected, disabled, taskId,
   } = useContext(ChangeDeviceContext);
-
+  console.log("device", device)
   const {
+    isConnected,
     connection: {
-      isConnected,
       ipV4,
       port,
       deviceAddress,
-    }, address, id,
-    closingDate,
-  } = device;
+    }
+  } = device || {
+    isConnected: false,
+    connection: {
+      ipV4: '',
+      port: null,
+      deviceAddress: null,
+    }
+  };
 
   const getCurrentInfoId = _.find(items, { label: selected.model });
   const currentInfoId = getCurrentInfoId !== undefined ? getCurrentInfoId.value : null;
@@ -176,7 +182,7 @@ const CalculatorChangeForm = () => {
   }
   function randomInteger(min, max) {
     // случайное число от min до (max+1)
-    let rand = min + Math.random() * (max + 1 - min);
+    const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
   }
 
@@ -191,22 +197,22 @@ const CalculatorChangeForm = () => {
       housingStockId: device.address.id,
       connection: {
         ipV4: '0.0.0.0',
-        port: randomInteger(256,999),
-        deviceAddress: randomInteger(256,999),
+        port: randomInteger(256, 999),
+        deviceAddress: randomInteger(256, 999),
       },
     };
 
     console.log('res', JSON.stringify(POST_CALCULATOR_FORM));
 
-    createCalculator(POST_CALCULATOR_FORM).then((res)=>{
-          console.log("POST_CALCULATOR_FORM", res)
+    createCalculator(POST_CALCULATOR_FORM).then((res) => {
+      console.log('POST_CALCULATOR_FORM', res);
       const deregisterForm = {
-          deviceId: res.id,
-          documentsIds: [123456],
-          closingDateTime: moment().toISOString(),
+        deviceId: res.id,
+        documentsIds: [123456],
+        closingDateTime: moment().toISOString(),
 
-      }
-      deregisterDevice(deregisterForm).then((result)=>{
+      };
+      deregisterDevice(deregisterForm).then((result) => {
         const form = {
           calculatorSwitch: {
             deviceId: device.id,
@@ -215,8 +221,7 @@ const CalculatorChangeForm = () => {
           documentsIds: [123456],
         };
         pushStage(taskId, form);
-
-      })
+      });
     });
 
     // createCalculator(POST_CALCULATOR_FORM).then((res) => {
@@ -377,31 +382,31 @@ const CalculatorChangeForm = () => {
             <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCommercialAccountingDate"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date);
-              }}
-              disabled={isDisabled('lastCommercialAccountingDate')}
-              value={values.lastCommercialAccountingDate}
-            />
-          </Form.Item>
+          {/*<Form.Item label="Дата начала действия акта-допуска" style={{ width: '49%' }}>*/}
+          {/*  <DatePickerTT*/}
+          {/*    format="DD.MM.YYYY"*/}
+          {/*    name="lastCommercialAccountingDate"*/}
+          {/*    placeholder="Укажите дату..."*/}
+          {/*    onChange={(date) => {*/}
+          {/*      setFieldValue('lastCommercialAccountingDate', date);*/}
+          {/*    }}*/}
+          {/*    disabled={isDisabled('lastCommercialAccountingDate')}*/}
+          {/*    value={values.lastCommercialAccountingDate}*/}
+          {/*  />*/}
+          {/*</Form.Item>*/}
 
-          <Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
-              onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date);
-              }}
-              disabled={isDisabled('futureCommercialAccountingDate')}
-              value={values.futureCommercialAccountingDate}
-              name="futureCommercialAccountingDate"
-            />
-          </Form.Item>
+          {/*<Form.Item label="Дата окончания действия акта-допуска" style={{ width: '49%' }}>*/}
+          {/*  <DatePickerTT*/}
+          {/*    format="DD.MM.YYYY"*/}
+          {/*    placeholder="Укажите дату..."*/}
+          {/*    onChange={(date) => {*/}
+          {/*      setFieldValue('futureCommercialAccountingDate', date);*/}
+          {/*    }}*/}
+          {/*    disabled={isDisabled('futureCommercialAccountingDate')}*/}
+          {/*    value={values.futureCommercialAccountingDate}*/}
+          {/*    name="futureCommercialAccountingDate"*/}
+          {/*  />*/}
+          {/*</Form.Item>*/}
 
         </div>
 

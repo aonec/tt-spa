@@ -10,9 +10,9 @@ import { disabledValuesByType, selectedTemplate, calculatorTemplate } from './co
 import { Loader } from '../../../../_components/Loader';
 
 export const ChangeDeviceContext = createContext();
-const ChangeDevice = (props) => {
-  const deviceType = props.device.type;
-  const taskId = props.state.id;
+const ChangeDevice = ({ taskState }) => {
+  const deviceType = taskState.device.type;
+  const taskId = taskState.id;
 
   const [devices, setDevices] = useState();
   const [device, setDevice] = useState();
@@ -21,13 +21,15 @@ const ChangeDevice = (props) => {
   const [disabled, setDisabled] = useState();
 
   useEffect(() => {
-    const { id } = props.device;
+    const {id} = taskState.device;
+    console.log("id", id);
     getClosedDevices().then((res) => {
       setDevices(res);
     });
 
     if (deviceType === 'Calculator') {
       getCalculator(id).then((result) => {
+        console.log(result)
         setDevice(result);
         setSelected(calculatorTemplate)
         console.log(result)
@@ -58,7 +60,6 @@ const ChangeDevice = (props) => {
     <ChangeDeviceContext.Provider value={context}>
       <Header>
         {deviceType === 'Calculator' ? `Замена вычислителя` : `Замена расходомера/термодатчика`}
-
       </Header>
       <SearchInputAndAdd />
       {deviceType === 'Calculator' ? <CalculatorChangeForm /> : <HousingChangeForm />}
