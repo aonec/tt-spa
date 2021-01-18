@@ -128,14 +128,12 @@ export const Panel = ({
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
-
-  const taskPerpetrator = state.currentStage.perpetrator;
+  const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  console.log("currentUser", currentUser)
-  console.log("taskPerpetrator", taskPerpetrator)
+  console.log('currentUser', currentUser);
+  console.log('taskPerpetrator', taskPerpetrator);
   const isPerpetrator = currentUser.id === taskPerpetrator.id;
-  console.log("isPerpetrator", isPerpetrator)
-
+  console.log('isPerpetrator', isPerpetrator);
 
   // const [deadline, setDeadline] = useState();
   // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
@@ -152,7 +150,7 @@ export const Panel = ({
       </panel>,
     );
   }
-  
+
   if (!isPerpetrator) {
     return null;
   }
@@ -196,9 +194,8 @@ export const Panel = ({
               });
             }}
           />
-            <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
-            <UploadList {...upload.list} />
-
+          <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
+          <UploadList {...upload.list} />
         </>
         )}
 
