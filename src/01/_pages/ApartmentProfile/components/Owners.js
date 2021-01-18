@@ -1,23 +1,25 @@
 import React from 'react';
-import Owner from "./Owner";
+import Owner from './Owner';
 
 const Owners = (props) => {
-  console.log("homeowners", props)
-  const {homeowners} = props
-  console.log("homeowners", homeowners)
-  const res = homeowners.map((homeowner, index) =>{
-    const {   firstName, personalAccountNumber, phoneNumber } = homeowner
+  console.log('homeowners', props);
+  const { homeowners } = props;
+  console.log('homeowners', homeowners);
+  const res = homeowners.map((homeowner, index) => {
+    const { firstName, personalAccountNumber, phoneNumber } = homeowner;
     return (
-      <Owner key={personalAccountNumber}
-             firstName={firstName}
-             personalAccountNumber={personalAccountNumber}
-             phoneNumber={phoneNumber} />
-    )
-  })
+      <Owner
+        key={personalAccountNumber}
+        firstName={firstName}
+        personalAccountNumber={personalAccountNumber}
+        phoneNumber={phoneNumber}
+      />
+    );
+  });
   return (
-    <div>Owners
-    <div>{res}</div>
+    <div>
+      {res}
     </div>
-  )
-}
-export default Owners
+  );
+};
+export default Owners;
