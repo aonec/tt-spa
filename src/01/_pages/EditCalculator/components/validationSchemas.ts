@@ -2,7 +2,7 @@ import {ipv4RegExp} from "../../../tt-components/localBases";
 import * as Yup from 'yup';
 
 const yupDate = Yup.date().typeError('Поле обязательное').required('Поле обязательное');
-const yupSerialNumber = Yup.string().required('Введите серийный номер');
+const yupSerialNumber = Yup.string().typeError('Поле обязательное').required('Введите серийный номер');
 const yupInfoId = Yup.number().typeError('Выберите модель').required('Выберите модель');
 
 export const defaultValidationSchema = Yup.object({
