@@ -56,11 +56,6 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
-    //&[|styleSwitchDevicesAndChangeDevice] {
-    //  display: flex;
-    //  flex-direction:column;
-    //  justify-content: space-between;
-    //}
   }
 
   Perpetrator {
@@ -88,6 +83,12 @@ const styles = css`
     grid-area: ad;
   }
 `;
+
+//&[|styleSwitchDevicesAndChangeDevice] {
+//  display: flex;
+//  flex-direction:column;
+//  justify-content: space-between;
+//}
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
@@ -171,7 +172,7 @@ export const Panel = ({
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline: AddPerpetrator && SetNextStageDeadline,
-        styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
+        // styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
       {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
