@@ -62,12 +62,12 @@ const EditCalculatorForm = () => {
       futureCheckingDate: isDateNull(futureCheckingDate),
       lastCommercialAccountingDate: isDateNull(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateNull(futureCommercialAccountingDate),
-      ipV4,
-      port: port === null ? null : port,
-      deviceAddress: deviceAddress === null ? null : deviceAddress,
+      ipV4: ipV4 ?? '',
+      port: port ?? null,
+      deviceAddress: deviceAddress ?? null,
       housingStockId: houseId,
       infoId: currentInfoId === null ? null : Number(currentInfoId),
-      isConnected
+      isConnected,
     },
     validationSchema,
     onSubmit: async () => {
@@ -169,8 +169,7 @@ const EditCalculatorForm = () => {
     console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
-    }
-    else {
+    } else {
       handleSubmit();
     }
   }

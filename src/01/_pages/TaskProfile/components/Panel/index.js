@@ -56,6 +56,11 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
+    &[|styleSwitchDevicesAndChangeDevice] {
+      display: flex;
+      flex-direction:column;
+      justify-content: space-between;
+    }
   }
 
   Perpetrator {
@@ -128,8 +133,16 @@ export const Panel = ({
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
 
+  const taskPerpetrator = state.perpetrator;
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  // console.log('currentUser', currentUser);
+  // console.log('taskPerpetrator', taskPerpetrator);
+  const isPerpetrator = currentUser.id === taskPerpetrator.id;
+  // console.log('isPerpetrator', isPerpetrator);
+
   // const [deadline, setDeadline] = useState();
   // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+  console.log(state)
 
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
@@ -143,8 +156,8 @@ export const Panel = ({
       </panel>,
     );
   }
-  
-  if (isObserver) {
+
+  if (!isPerpetrator) {
     return null;
   }
   return styled(styles)(
@@ -158,10 +171,10 @@ export const Panel = ({
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline: AddPerpetrator && SetNextStageDeadline,
-        // seven: SwitchDevices && ChangeDevice,
+        styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/* {(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />} */}
+      {(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}
 
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
 
@@ -187,13 +200,12 @@ export const Panel = ({
               });
             }}
           />
-            <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
-            <UploadList {...upload.list} />
-
+          <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
+          <UploadList {...upload.list} />
         </>
         )}
 
-      {AddDocuments && (
+      {(AddDocuments && !SwitchDevices) && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
