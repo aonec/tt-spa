@@ -50,12 +50,15 @@ export async function putCalculator(deviceId = '', form = {}) {
     console.log(handleError)
     if (handleError.Code === "entityAlreadyExists") {
       const {Message} = handleError;
+      if (Message === null) {
+        const id = null
+        console.log(handleError.Message)
+        return {show: true, id: id}
+      }
       const id = parseInt(Message.replace(/[^\d]/g, ''))
       console.log(handleError.Message)
       return {show: true, id: id}
-
-
-        // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
+      // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
     }
 
 
