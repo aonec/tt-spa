@@ -56,11 +56,11 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
-    &[|styleSwitchDevicesAndChangeDevice] {
-      display: flex;
-      flex-direction:column;
-      justify-content: space-between;
-    }
+    //&[|styleSwitchDevicesAndChangeDevice] {
+    //  display: flex;
+    //  flex-direction:column;
+    //  justify-content: space-between;
+    //}
   }
 
   Perpetrator {
@@ -174,7 +174,7 @@ export const Panel = ({
         styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}
+      {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
 
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
 
@@ -205,7 +205,7 @@ export const Panel = ({
         </>
         )}
 
-      {(AddDocuments && !SwitchDevices) && (
+      {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
