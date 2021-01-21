@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { button } from '01/r_comp';
 import { Icon } from '01/components/Icon';
 import { Loader } from '01/components';
+import test from 'reshadow'
+import { ButtonTT } from "../../../tt-components";
 
 
 //     &[|status] {
@@ -25,17 +27,6 @@ import { Loader } from '01/components';
 //       --status-bg: var(--primary-100);
 //       --status-border: var(--primary-100);
 //     }
-//     &:not(:last-child)::before {
-//       content: "";
-//       position: absolute;
-//       border: 1px solid;
-//       border-color: var(--status-border);
-//       bottom: 2px;
-//       top: 34px;
-//       left: 16px;
-//     }
-//   }
-//
 
 
 const Input = styled.input.attrs(props => ({
@@ -50,6 +41,7 @@ const Input = styled.input.attrs(props => ({
 const StageItem = styled.div.attrs(props => ({
   status: props.status,
 }))`
+    
      display: grid;
      grid-template-columns: auto auto 1fr;
      grid-row-gap: 8px;
@@ -60,7 +52,7 @@ const StageItem = styled.div.attrs(props => ({
          content: "";
          position: absolute;
          border: 1px solid;
-         border-color: var(--status-border);
+         border-color: var(--primary-100);
          bottom: 2px;
          top: 34px;
          left: 16px;
@@ -98,7 +90,7 @@ const UserName = styled.div`
        opacity: 0.32;
 `
 
-const Button = styled.button`
+const Button = styled(ButtonTT)`
        grid-column: 2 / -1;
        justify-self: start;
 `
@@ -126,7 +118,7 @@ export const Stages = ({
             </>
             )}
             {canRevert && (
-            <Button {...revertProps} disabled={panelLoading ?? false}>
+            <Button size="small" {...revertProps} disabled={panelLoading ?? false}>
               <span>Вернуть этап</span>
               <Loader show={panelLoading ?? false} />
             </Button>
