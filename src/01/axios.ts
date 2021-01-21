@@ -48,7 +48,7 @@ axios.interceptors.response.use(
     // return { ...res, url };
     return res;
 
-    return data
+    // return data
   },
   (error) => {
     const status = error?.response?.status;

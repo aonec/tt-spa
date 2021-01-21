@@ -1,5 +1,5 @@
 import React, {useEffect, useReducer} from "react";
-import {requestDevicesByHouse, ReadingsStateType, requestHouse} from "../../../../../_api/houses_readings_page";
+import {requestDevicesByHouse, ReadingsStateType, requestHouse, HouseType} from "../../../../../_api/houses_readings_page";
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import { useParams } from "react-router-dom"
@@ -35,27 +35,27 @@ const HousesDevices: React.FC = () => {
     let { id: housingStockId }: ParamsType = useParams();
     const dispatch = useDispatch();
     const devices = useSelector(selectDevices);
-    const [house, setHouse] = useState();
+    const [house, setHouse] = useState<HouseType>();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const setInfoAsync = async () => {
-                setIsLoading(true);
-                const res = await requestDevicesByHouse(housingStockId);
-                const houseObject = await requestHouse(housingStockId);
-                setHouse(houseObject);
-                dispatch(setDevices(res.items));
+            setIsLoading(true);
+            const res = await requestDevicesByHouse(housingStockId);
+            const houseObject = await requestHouse(housingStockId);
+            setHouse(houseObject);
+            dispatch(setDevices(res.items));
             setIsLoading(false)
         };
         setInfoAsync();
     }, [housingStockId])
 
-    if (isLoading) return null
+    if (isLoading || !house) return null
 
     const deviceElems = devices
         .sort((device1, device2) => {
-        return +device1.apartmentNumber - +device2.apartmentNumber
-    })
+            return +device1.apartmentNumber - +device2.apartmentNumber
+        })
         .map((device, index) => <HousesDeviceReadingLine
             key={device.id + 'f'}
             device={device}
@@ -65,6 +65,7 @@ const HousesDevices: React.FC = () => {
 
     return (
         <div>
+            {house.city}, {house.number}, {house.corpus}
             <HouseReadingsHeader/>
             {deviceElems}
         </div>
