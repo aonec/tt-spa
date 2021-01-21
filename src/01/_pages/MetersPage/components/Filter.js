@@ -18,11 +18,18 @@ export const Filter = ({ inputs = [] }) => {
     }
   `(
     <filter as="div">
-      {inputs.map((input) => (
-        <input_frame key={input.name}>
-          <input {...input} />
-        </input_frame>
-      ))}
+      {inputs.map((input) => {
+           return input.name === 'city'
+               ? (<input_frame data-disabled key={input.name}>
+                 <input {...input} disabled/>
+               </input_frame>)
+               : (<input_frame key={input.name}>
+                 <input {...input}/>
+               </input_frame>)
+      }
+
+
+      )}
     </filter>
   )
 }

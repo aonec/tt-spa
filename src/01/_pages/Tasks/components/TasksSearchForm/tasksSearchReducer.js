@@ -26,18 +26,3 @@ export const setTaskId = (taskId) => ({ type: SET_TASK_ID, taskId });
 export const setDevicesFilter = (filterParameter) => ({ type: SET_DEVICES_FILTER, filterParameter });
 
 export default tasksSearchReducer;
-
-// case SET_DEVICES_FILTER:
-//     switch (action.filterParameter) {
-//         case "descendingFutureCheckingDate":
-//             return { ...state, destination: "Descending", rule: "FutureCheckingDate" }
-//
-//         case "ascendingFutureCheckingDate":
-//             return { ...state, destination: "Ascending", rule: "FutureCheckingDate" }
-//
-//         case "descendingStreet":
-//             return { ...state, destination: "Descending", rule: "Street" }
-//
-//         case "ascendingStreet":
-//             return { ...state, destination: "Ascending", rule: "Street" }
-//     }

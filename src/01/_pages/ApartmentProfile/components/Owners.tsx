@@ -14,7 +14,6 @@ type Props = {
 }
 
 const Owners: React.FC<Props> = (props) => {
-  debugger;
   const { homeowners } = props;
   const homeownersElems = homeowners.map((homeowner) => {
     const { firstName, personalAccountNumber, phoneNumber } = homeowner;

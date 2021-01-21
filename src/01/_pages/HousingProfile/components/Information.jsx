@@ -44,7 +44,7 @@ export const Information = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <Subtitle to={`/objects/${id}`}>
+          <Subtitle to={`/objects/${id}`} style={{padding: 8}}>
             {`${city}, ${street}, ${housingStockNumber} ${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
         </ListItem>
@@ -55,20 +55,20 @@ export const Information = (loading = true) => {
           </ListItem>
         ) : null}
         <ListItem>
-          <span>Дата поверки прибора</span>
-          <span>{convertDateDots(lastCheckingDate)}</span>
-        </ListItem>
-        <ListItem>
-          <span>Дата следующей поверки прибора</span>
-          <span>{convertDateDots(futureCheckingDate)}</span>
-        </ListItem>
-        <ListItem>
           <span>Дата начала действия акта-допуска</span>
           <span>{convertDateDots(lastCommercialAccountingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата окончания действия акта-допуска</span>
           <span>{convertDateDots(futureCommercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата поверки прибора</span>
+          <span>{convertDateDots(lastCheckingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата следующей поверки прибора</span>
+          <span>{convertDateDots(futureCheckingDate)}</span>
         </ListItem>
       </Loader>
     </ListWrap>

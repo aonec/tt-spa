@@ -1,5 +1,5 @@
 import React, {useEffect, useReducer} from "react";
-import {requestDevicesByHouse, ReadingsStateType} from "../../../../../_api/houses_readings_page";
+import {requestDevicesByHouse, ReadingsStateType, requestHouse} from "../../../../../_api/houses_readings_page";
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import { useParams } from "react-router-dom"
@@ -35,12 +35,15 @@ const HousesDevices: React.FC = () => {
     let { id: housingStockId }: ParamsType = useParams();
     const dispatch = useDispatch();
     const devices = useSelector(selectDevices);
+    const [house, setHouse] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const setInfoAsync = async () => {
                 setIsLoading(true);
                 const res = await requestDevicesByHouse(housingStockId);
+                const houseObject = await requestHouse(housingStockId);
+                setHouse(houseObject);
                 dispatch(setDevices(res.items));
             setIsLoading(false)
         };

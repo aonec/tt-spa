@@ -22,6 +22,7 @@ import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import {setInputFocused, setInputUnfocused} from "../../../../../Redux/ducks/readings/actionCreators";
+import {Link} from "react-router-dom";
 
 const { confirm } = Modal;
 
@@ -241,7 +242,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
     return (
         <FullDeviceLine>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div
+                <Link
                     className={styles.device__title}
                     to={`/housingMeteringDevices/${device.id}`}
                 >
@@ -250,7 +251,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
                     <span className={styles.deviceId}>
                             {` (${device.serialNumber})`}
                     </span>
-                </div>
+                </Link>
                 <div style={{display: 'flex'}}>
                     <ActiveLine isActive={isActive}/>
                     <DateLine lastCheckingDate={device.lastCheckingDate}
