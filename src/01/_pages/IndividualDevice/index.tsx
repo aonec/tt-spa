@@ -13,10 +13,12 @@ import {Title} from "../../tt-components/Title";
 export const DeviceContext = React.createContext({} as DeviceContextType);
 
 export const IndividualDevice = () => {
-  const { 0: objid, 1: apartmentId, 2: deviceId } = useParams<ParamTypes>();
+  const { 0: deviceId } = useParams<ParamTypes>();
+
   const [device, setDevice] = useState({} as IndividualDeviceType);
   const [tasks, setTasks] = useState();
   const [mistake, setMistake] = useState();
+
 
   useEffect(() => {
     Promise.all([
@@ -31,7 +33,7 @@ export const IndividualDevice = () => {
     });
   }, []);
 
-  const path = `/objects/${objid}/apartments/${apartmentId}/devices/${deviceId}/`;
+  const path = `/individualDevices/${deviceId}/`;
   const context = {
     device,
     tasks,

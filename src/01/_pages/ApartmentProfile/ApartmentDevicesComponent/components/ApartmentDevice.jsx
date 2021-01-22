@@ -84,7 +84,7 @@ function ApartmentDevice(props) {
   };
 
   return (
-    <Link to={`devices/${id}`}>
+    <Link to={`/individualDevices/${id}`}>
       <Wrap onClick={buttonHandler}>
         <Top>
           <Icon icon={icon} color={color} />

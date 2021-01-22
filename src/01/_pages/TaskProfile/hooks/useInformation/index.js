@@ -6,7 +6,6 @@ const taskInfo = [
   ['Номер задачи', 'id'],
   ['Дата создания', 'creationTime'],
   ['Адрес', 'address', 'housingStockId'],
-  ['Комментарий к квартире', ''],
 ];
 
 
