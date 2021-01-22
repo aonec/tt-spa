@@ -135,7 +135,6 @@ export function App() {
                     />
                     <Route
                       path="/individualDevices/(\\d+)/(readings|documents|changes)?"
-                      // path="/objects/(\\d+)/apartments/(\\d+)/devices/(\\d+)/(readings|documents|changes)?"
                       component={IndividualDevice}
                       exact
                     />
