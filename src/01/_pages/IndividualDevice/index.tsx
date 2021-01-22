@@ -18,6 +18,8 @@ export const IndividualDevice = () => {
   const [tasks, setTasks] = useState();
   const [mistake, setMistake] = useState();
 
+  debugger;
+
   useEffect(() => {
     Promise.all([
       getIndividualDevice(deviceId),
