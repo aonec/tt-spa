@@ -18,7 +18,7 @@ const HouseBanner: React.FC<HouseBannerProps> = ({house}) => {
             </AddressHeader>
             <InfoSticker>
                 <InfoHeader onClick={() => setIsVisible((prevState) => !prevState)}>
-                    <IconContainer><Icon icon="down" /></IconContainer>
+                    <IconContainer show={isVisible}><Icon icon="down" /></IconContainer>
                     Информация о доме
                 </InfoHeader>
                 <InfoContent show={isVisible}>
@@ -94,13 +94,14 @@ const InfoHeader = styled.div`
   line-height: 32px;
 `
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<ShowProps>`
 display: flex;
 align-items: center;
 margin-right: 8px;
+transform: ${(props) => props.show ? 'scale(1, -1)' : 'none' };
 `
 
-const InfoContent = styled.div<InfoContentProps>`
+const InfoContent = styled.div<ShowProps>`
 display: ${(props) => props.show ? 'flex' : 'none'};
 margin-top: 16px;
 gap: 16px;
@@ -138,7 +139,7 @@ interface HouseBannerProps {
     house: HouseType
 }
 
-interface InfoContentProps {
+interface ShowProps {
     show: boolean
 }
 
