@@ -37,7 +37,7 @@ export const InformationDevice = ({
   type = '',
   ...props
 }) => {
-  debugger
+//   debugger
   const { push } = useHistory();
   const path = type === 'Calculator' ? `/calculators/${id}` : `/housingMeteringDevices/${id}`;
 
