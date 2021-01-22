@@ -18,7 +18,7 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -50,7 +50,7 @@ function reducer(state, action) {
 export const TaskProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   usePageFetch(state, dispatch);
-  console.log("state", state)
+  console.log('state', state);
   const panel = usePanel(state, dispatch);
   // панель действий
   const stages = useStages(state, dispatch);
@@ -61,8 +61,8 @@ export const TaskProfile = () => {
   // ?
   const infoDevice = useInformationDevice(state);
 
-  const {device} = state;
-  const {type, id} = device || {};
+  const { device } = state;
+  const { type, id } = device || {};
 
   // console.log("TaskProfile", state)
 
@@ -70,17 +70,17 @@ export const TaskProfile = () => {
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-      <Breadcrumb path={`/tasks/`}/>
+      <Breadcrumb path="/tasks/" />
       <Header {...state.header} />
-      <Panel {...panel} device={device} state={state}/>
+      <Panel {...panel} device={device} state={state} />
       <Steps />
       <Documents {...docs} />
       <grid>
         <div>
-        <Information {...info} />
-        <InformationDevice {...infoDevice} type={type} id={id}/>
+          <Information {...info} />
+          <InformationDevice {...infoDevice} type={type} id={id} />
         </div>
-        <Stages {...stages} state={state}/>
+        <Stages {...stages} state={state} />
       </grid>
     </TasksProfileContext.Provider>,
   );

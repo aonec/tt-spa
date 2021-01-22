@@ -1,22 +1,15 @@
 import React, {useEffect, useReducer} from "react";
-import {requestDevicesByHouse, ReadingsStateType} from "../../../../../_api/houses_readings_page";
-import {HouseSearchType} from "../HousesReadings";
+import {requestDevicesByHouse, ReadingsStateType, requestHouse, HouseType} from "../../../../../_api/houses_readings_page";
 import { useSelector, useDispatch } from 'react-redux'
-
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
-// import readingsReducer, {
-//     setDevices
-// } from "../../../../../Redux/reducers/readingsReducer";
 import {selectDevices, selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import { setDevices } from "01/Redux/ducks/readings/actionCreators";
-
-interface Props {
-    searchState: HouseSearchType;
-}
+import Arrow from "01/_components/Arrow/Arrow";
+import HouseBanner from "./HouseBanner";
 
 const HouseReadingsDevice = styled.div`
 display: grid;
@@ -38,30 +31,33 @@ export type DisabledStateType = {
 }[]
 
 
-// const HousesDevices: React.FC<Props> = ({searchState}) => {
+
 const HousesDevices: React.FC = () => {
 
     let { id: housingStockId }: ParamsType = useParams();
     const dispatch = useDispatch();
     const devices = useSelector(selectDevices);
+    const [house, setHouse] = useState<HouseType>();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const setInfoAsync = async () => {
-                setIsLoading(true);
-                const res = await requestDevicesByHouse(housingStockId);
-                dispatch(setDevices(res.items));
+            setIsLoading(true);
+            const res = await requestDevicesByHouse(housingStockId);
+            const houseObject = await requestHouse(housingStockId);
+            setHouse(houseObject);
+            dispatch(setDevices(res.items));
             setIsLoading(false)
         };
         setInfoAsync();
     }, [housingStockId])
 
-    if (isLoading) return null
+    if (isLoading || !house) return null
 
     const deviceElems = devices
         .sort((device1, device2) => {
-        return +device1.apartmentNumber - +device2.apartmentNumber
-    })
+            return +device1.apartmentNumber - +device2.apartmentNumber
+        })
         .map((device, index) => <HousesDeviceReadingLine
             key={device.id + 'f'}
             device={device}
@@ -70,11 +66,15 @@ const HousesDevices: React.FC = () => {
 
 
     return (
-        <div>
+        <>
+            <HouseBanner house={house}/>
             <HouseReadingsHeader/>
             {deviceElems}
-        </div>
+        </>
     )
 }
 
 export default HousesDevices
+
+
+

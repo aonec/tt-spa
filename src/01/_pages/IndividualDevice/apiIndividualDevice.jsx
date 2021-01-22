@@ -16,7 +16,7 @@ export async function getIndividualDevice(id = '') {
 
 export async function getIndividualDeviceTasks(id = '') {
   try {
-    const res = `Tasks?DeviceId=${id}`;
+    const res = axios.get(`Tasks?DeviceId=${id}`);
     return res;
   } catch (error) {
     console.log(error);

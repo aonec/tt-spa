@@ -14,6 +14,7 @@ export const useInformationDevice = ({
     futureCheckingDate,
     lastCheckingDate,
     lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
     diameter,
   } = device;
   return {
@@ -26,18 +27,25 @@ export const useInformationDevice = ({
       // ["Связь с прибором", "-"],
       ['ID узла', ''],
       [
-        'Постановка на учет',
+        'Дата начала действия акта-допуска',
         // new Date(commercialAccountingDate).toLocaleDateString(),
-        convertDateDots(lastCommercialAccountingDate)
+        convertDateDots(lastCommercialAccountingDate) || '-'
       ],
       ['Диаметр', diameter],
       [
-        'Окончание срока эксплуатации',
-        new Date(futureCheckingDate).toLocaleDateString(),
+        'Дата окончания действия акта-допуска',
+        // new Date(futureCheckingDate).toLocaleDateString(),
+        convertDateDots(futureCommercialAccountingDate) || '-'
       ],
       [
-        'Последняя поверка прибора',
-        new Date(lastCheckingDate).toLocaleDateString(),
+        'Дата поверки прибора',
+        convertDateDots(lastCheckingDate) || '-'
+        // new Date(lastCheckingDate).toLocaleDateString(),
+      ],
+      [
+        'Дата следующей поверки прибора',
+        convertDateDots(futureCheckingDate) || '-'
+        // new Date(lastCheckingDate).toLocaleDateString(),
       ],
       // ['Форм-фактор', '-'],
       // ['Документ', '-'],
