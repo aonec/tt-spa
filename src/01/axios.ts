@@ -5,8 +5,6 @@ import axios from 'axios';
 //const baseURL = 'https://transparent-staging.herokuapp.com/api';
 const baseURL = 'https://transparent-production.herokuapp.com/api';
 
-
-
 axios.defaults.baseURL = baseURL;
 
 let cancel;
@@ -94,4 +92,3 @@ function checkUrl(str: string, url: string) {
 
 export { cancel };
 export default axios;
-//
