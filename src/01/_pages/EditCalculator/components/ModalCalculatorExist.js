@@ -20,8 +20,7 @@ export const ModalCalculatorExist = () => {
     >
       <StyledModalBody>
         <Header>В системе уже есть устройство с совпадающими настройками соединения</Header>
-
-        <Link to={`/calculators/${existCalculator}`}>{`Вычислитель с id: ${existCalculator}`}</Link>
+        {existCalculator === null ? null : <Link to={`/calculators/${existCalculator}`}>{`Вычислитель с id: ${existCalculator}`}</Link>}
       </StyledModalBody>
       <StyledFooter>
         <ButtonTT color={'white'} type='button' onClick={handleCancel}>Отмена</ButtonTT>

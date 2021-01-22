@@ -1,3 +1,14 @@
+import * as Yup from 'yup';
+
+export const calculatorChangeValidationSchema = {
+  resource: Yup.string().required('Введите данные'),
+  pipeNumber: Yup.number().required('Введите число от 0'),
+  entryNumber: Yup.number().min(0, 'от 0').typeError('Нельзя оставлять пустое значение').required('Введите число от 1'),
+  model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите данные'),
+  serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите данные'),
+  calculatorId: Yup.string().required('Выберите вычислитель'),
+};
+
 export const actionsList = [
   { value: 1, label: 'Замена прибора' },
 ];
@@ -20,7 +31,6 @@ export const tabs = [
     key: '3',
   },
 ];
-
 
 export const disabledValuesByType = {
   Calculator: {
@@ -53,7 +63,7 @@ export const disabledValuesByType = {
       'entryNumber',
       'hubNumber',
       'pipeNumber',
-      'calculatorId'
+      'calculatorId',
     ],
     add: [
       'ipV4',
@@ -96,7 +106,7 @@ export const disabledValuesByType = {
       'entryNumber',
       'hubNumber',
       'pipeNumber',
-      'calculatorId']
+      'calculatorId'],
   },
 
   FlowMeter: {
@@ -128,10 +138,10 @@ export const disabledValuesByType = {
       'entryNumber',
       'hubNumber',
       'pipeNumber',
-      'calculatorId']
-  }
+      'calculatorId'],
+  },
 
-}
+};
 
 export const selectedTemplate = {
   serialNumber: '',
@@ -147,7 +157,7 @@ export const calculatorTemplate = {
     isConnected: false,
     ipV4: '',
     port: null,
-    deviceAddress: null
+    deviceAddress: null,
   },
   isConnected: false,
   serialNumber: '',
@@ -157,4 +167,3 @@ export const calculatorTemplate = {
   lastCheckingDate: null,
   futureCheckingDate: null,
 };
-

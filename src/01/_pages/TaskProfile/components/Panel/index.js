@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
-
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
+import { StyledTextArea } from '../../../../tt-components';
 import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
@@ -16,42 +16,45 @@ const styles = css`
     grid-gap: 16px;
     padding: 8px;
     box-shadow: var(--shadow);
-    &[|one] {
+    &[|styleSwitch] {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "ns push";
+    }
+    &[|styleAddPerpetratorAndEmailNotify] {
       grid-template-columns: repeat(6, 1fr);
       grid-template-areas:
         "p p p c c c"
-        "ta ta ta ta tmp push";
+        "ta ta ta ta ta ta"
+        "ub ub ul ul push push";
     }
-    &[|two] {
+    &[|styleSwitchAndAddPerpetrator] {
+      grid-template-areas: "p ns push";
+      grid-template-columns: 1fr 1fr auto;
+    }
+    &[|styleAddDocuments] {
       grid-template-areas: "ub ul push";
       grid-template-columns: auto 1fr auto;
     }
-    &[|tree] {
-      grid-template-areas: "p nst push";
-      grid-template-columns: 1fr 1fr auto;
-      align-items: end;
+    &[|styleCompletion] {
+      grid-template-columns: 1fr;
     }
-    &[|four] {
-      grid-template-areas: "push .";
-      grid-template-columns: auto 1fr;
-    }
-    &[|five] {
-      grid-template-columns: repeat(6, 1fr);
-      align-items: end;
+    &[|styleSwitchAndAddDocuments] {
+      grid-template-columns: repeat(5, 1fr);
       grid-template-areas:
-        "ta ta ta ta ta push";
+        "ns ns ns ns ns"
+        "ub ul ul ul push";
     }
-    &[|six] {
+    &[|styleReadings] {
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 4fr 1fr;
-      grid-template-areas:
+    grid-template-areas:
         "ar ar ar ar"
         ". . . push"
     }
-    &[|seven] {
-    display: flex;
-    flex-direction: column;
-
+    &[|styleAddPerpetratorAndSetNextStageDeadline] {
+      grid-template-areas: "p ad push";
+      grid-template-columns: 1fr 1fr auto;
+      align-items: flex-end;
     }
   }
 
@@ -68,45 +71,30 @@ const styles = css`
     grid-area: ul;
   }
   NextStage {
+    grid-area: ns;
+  }
+  StyledTextArea {
     grid-area: ta;
   }
-
+  PushButton {
+    grid-area: push;
+  }
+  AddDate {
+    grid-area: ad;
+  }
 `;
 
-const Textarea = (props) => styled`
-    textarea {
-      --h: var(--h-big);
-      grid-area: ta;
-      font: inherit;
-      outline: 0;
-      color: var(--main-80);
-      border: 1px solid var(--frame);
-      border-radius: 4px;
-      resize: vertical;
-      max-height: calc(var(--h) * 3);
-      min-height: var(--h);
-      padding: 8px 16px;
-
-      &:hover {
-        border-color: var(--primary-100);
-      }
-    }
-  `(<textarea rows="0" {...props} />);
-
-const TemplateButton = () => styled(s.button)`
-    button {
-      grid-area: tmp;
-    }
-  `(
-    <button data-big>
-      <span>Выбрать из шаблона</span>
-    </button>,
-);
+//&[|styleSwitchDevicesAndChangeDevice] {
+//  display: flex;
+//  flex-direction:column;
+//  justify-content: space-between;
+//}
 
 const PushButton = ({ loading = false, ...props }) => styled(s.button)`
     button {
-      grid-area: push;
-      margin-left: 10px;
+      align-self: end;
+      margin-left: auto;
+      width: fit-content;
     }
   `(
     <button data-big data-primary {...props}>
@@ -130,6 +118,7 @@ export const Panel = ({
   stages = {},
 }, ...props) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
+  const [message, setMessage] = useState();
   if (hiddenPanel) return null;
   const {
     AddPerpetrator,
@@ -143,11 +132,22 @@ export const Panel = ({
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
+  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
+
+  const taskPerpetrator = state.perpetrator;
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  // console.log('currentUser', currentUser);
+  // console.log('taskPerpetrator', taskPerpetrator);
+  const isPerpetrator = currentUser.id === taskPerpetrator.id;
+  // console.log('isPerpetrator', isPerpetrator);
+
+  // const [deadline, setDeadline] = useState();
+  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
+  console.log(state)
 
   if (isObserver && AddDocuments && Switch) {
     return styled(styles, s.input)(
       <panel style={{ display: 'flex' }}>
-
         <input_frame data-disabled data-big style={{ width: '50%' }}>
           <input disabled value={perpName} />
         </input_frame>
@@ -158,62 +158,70 @@ export const Panel = ({
     );
   }
 
-  // const [deadline, setDeadline] = useState();
-  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
-
-  const addReadingsDone = stages.items[2]?.name === 'Ввод показаний' && Completion;
-
-  const { emailNotify = {} } = state;
-
+  if (!isPerpetrator) {
+    return null;
+  }
   return styled(styles)(
-    // <Route path="/tasks/(\\d+)" exact>
     <panel
       {...use({
-        one: AddPerpetrator && EmailNotify,
-        two: AddDocuments,
-        tree: (Switch && AddPerpetrator) || SetNextStageDeadline,
-        four: Completion,
-        five: Switch && PushButton,
-        six: UploadReadings || addReadingsDone,
-        // seven: SwitchDevices && ChangeDevice,
+        styleSwitch: Switch,
+        styleSwitchAndAddPerpetrator: Switch && AddPerpetrator,
+        styleCompletion: Completion,
+        styleSwitchAndAddDocuments: Switch && AddDocuments,
+        styleReadings: UploadReadings || addReadingsDone,
+        styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
+        styleAddDocuments: AddDocuments,
+        styleAddPerpetratorAndSetNextStageDeadline: AddPerpetrator && SetNextStageDeadline,
+        // styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/*{(SwitchDevices && !isObserver) && <ChangeDevice device={device} state={state} />}*/}
+      {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
+
       {AddPerpetrator && <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />}
+
+      {Switch && <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />}
+
       {SetNextStageDeadline && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
-      {/* Когда в actions приходит setNextStageDeadline (указание даты проверки), то показываем компонент добавления даты */}
 
-      {EmailNotify && <Contractors />}
-      {EmailNotify && (
-        <Textarea
-          value={emailNotify.message ?? ''}
-          onChange={(e) => dispatch({
-            type: 'email_notify',
-            data: { message: e.target.value },
-          })}
-        />
-      )}
+      {EmailNotify
+        && (
+        <>
+          <Contractors
+            getData={(data) => dispatch({ type: 'add_email_contractors', data })}
+          />
+          <StyledTextArea
+            labelText="Отправка пригласительного письма"
+            rows={4}
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              dispatch({
+                type: 'add_email_message',
+                data: { message: e.target.value },
+              });
+            }}
+          />
+          <UploadButton {...upload.button} text="Загрузить письмо из шаблона" />
+          <UploadList {...upload.list} />
+        </>
+        )}
 
-      {EmailNotify && <TemplateButton />}
-      {/*{(!SwitchDevices && AddDocuments && !isObserver) && (*/}
-      {(AddDocuments && !isObserver) && (
+      {AddDocuments && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
         </>
       )}
 
-      {Switch && (
-        <NextStage getData={(data) => dispatch({ type: 'add_data', data })} />
-      )}
+      {(SetNextStageDeadline && Completion) && <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />}
+
       {(UploadReadings || addReadingsDone) && (
-        <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
+      <AddReadings apartmentId={apartment.id} addReadings={(readings) => dispatch(addReadings(readings))} readingsBlocked={addReadingsDone || isObserver} />
       )}
-      {/*Скрываю кнопку "Завершить этап" только для задачи "Замена прибора"*/}
-      {/*{!SwitchDevices && <PushButton {...pushProps} />}*/}
-      <PushButton {...pushProps} />
+      {/* Скрываю кнопку "Завершить этап" только для задачи "Замена прибора" */}
+      {/* {!SwitchDevices && <PushButton {...pushProps} />} */}
+      {!isObserver && <PushButton {...pushProps} />}
 
     </panel>,
-    // </Route>
   );
 };

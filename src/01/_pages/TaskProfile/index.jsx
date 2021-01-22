@@ -50,6 +50,7 @@ function reducer(state, action) {
 export const TaskProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   usePageFetch(state, dispatch);
+  console.log("state", state)
   const panel = usePanel(state, dispatch);
   // панель действий
   const stages = useStages(state, dispatch);
@@ -75,9 +76,11 @@ export const TaskProfile = () => {
       <Steps />
       <Documents {...docs} />
       <grid>
+        <div>
         <Information {...info} />
-        <Stages {...stages} />
         <InformationDevice {...infoDevice} type={type} id={id}/>
+        </div>
+        <Stages {...stages} state={state}/>
       </grid>
     </TasksProfileContext.Provider>,
   );

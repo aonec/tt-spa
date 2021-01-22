@@ -11,7 +11,7 @@ export const ButtonTT = styled.button`
   padding: 8px 24px;
   background-color: #189EE9;
   transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
-  width: ${ props => props.big ? '224px' : 'auto'};
+  width: ${ props => props.big ? '224px' : 'fit-content'};
 
   &:before {
     display: none;
