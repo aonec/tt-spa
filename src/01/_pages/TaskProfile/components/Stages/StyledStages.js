@@ -86,6 +86,7 @@ export const UserName = styled.div`
   font-size: 12px;
   opacity: 0.32;
   grid-gap: 8px;
+  
 `;
 
 export const Button = styled(ButtonTT)`
