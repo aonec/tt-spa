@@ -18,16 +18,13 @@ export const Information = (loading = true) => {
 
   loading = loadingDevice || loadingBuilding;
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
+
   const {
     city, street, housingStockNumber, corpus, id
   } = building || DEFAULT_BUILDING;
   const { futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
-  // console.log('error', error);
 
   if (errorOfComponent) {
     return (
@@ -44,17 +41,9 @@ export const Information = (loading = true) => {
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <Subtitle to={`/objects/${id}`}>
-            {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
+          <Subtitle to={`/objects/${id}`} style={{padding: 8}}>
+          {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
-        </ListItem>
-        <ListItem>
-          <span>Дата поверки прибора</span>
-          <span>{convertDateDots(lastCheckingDate)}</span>
-        </ListItem>
-        <ListItem>
-          <span>Дата следующей поверки прибора</span>
-          <span>{convertDateDots(futureCheckingDate)}</span>
         </ListItem>
         <ListItem>
           <span>Дата начала действия акта-допуска</span>
@@ -63,6 +52,14 @@ export const Information = (loading = true) => {
         <ListItem>
           <span>Дата окончания действия акта-допуска</span>
           <span>{convertDateDots(futureCommercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата поверки прибора</span>
+          <span>{convertDateDots(lastCheckingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата следующей поверки прибора</span>
+          <span>{convertDateDots(futureCheckingDate)}</span>
         </ListItem>
       </Loader>
     </ListWrap>

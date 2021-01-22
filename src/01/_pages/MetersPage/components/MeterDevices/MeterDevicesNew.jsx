@@ -2,21 +2,15 @@ import React, {useEffect, useState} from "react"
 import styled, { css } from "reshadow/macro"
 
 import * as style from "01/r_comp"
-import { Icon } from "01/components"
-import DeviceReadingForm from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
-// import readingsReducer, {setDevices} from "../../../../Redux/reducers/readingsReducer";
 import ApartmentDeviceReadingLine from "./components/ApartmentDeviceReadingLine";
-import {formReadingsToPush, formReadingToPush} from "../../../../utils/formReadingsToPush";
+import {formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
-import moment from 'moment';
 import {getMonthFromDate, getPreviousMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 import s from "./MeterDevicesNew.module.scss"
 import {useDispatch, useSelector} from "react-redux";
-// import {setDevices} from "../../../../Redux/reducers/reducerDevicesPage";
 import {selectDevices} from "../../../../Redux/ducks/readings/selectors";
 import {setDevices} from "../../../../Redux/ducks/readings/actionCreators";
-// meter_header,
 
 
 const styles = css`
@@ -134,14 +128,11 @@ export const MeterDevicesNew = ({ items = [] }) => {
 
     if (!devices.length) return null
 
-    const readings = devices.map((device, index) => <ApartmentDeviceReadingLine
+    const readings = devices.map((device) => <ApartmentDeviceReadingLine
         sliderIndex={sliderIndex}
         key={device.id}
         device={device}
-        // dispatch={dispatch}
         sendReadings={() => sendReadings(device)}
-        // disabledState={disabledState}
-        // setDisabledState={setDisabledState}
     />);
 
     const currentMonth = getMonthFromDate()
@@ -171,8 +162,6 @@ export const MeterDevicesNew = ({ items = [] }) => {
         }
         )
     }
-
-
 
     return styled(styles, style.button)(
         <meters>

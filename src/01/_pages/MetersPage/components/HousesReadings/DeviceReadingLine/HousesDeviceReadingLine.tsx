@@ -12,7 +12,7 @@ import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import ButtonTT from "../../../../../tt-components/ButtonTT";
-import {Modal} from "antd";
+import {Input, Modal} from "antd";
 import uuid from 'react-uuid'
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
@@ -128,7 +128,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
 
         const [initialReadings, setInitialReadings] = useState<ReadingsArray>([]);
 
-        const textInput = React.createRef<HTMLInputElement>();
+        const textInput = React.createRef<Input>();
 
         const handleOk = () => {
             setReadingsState((state) => ({

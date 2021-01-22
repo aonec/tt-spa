@@ -15,19 +15,23 @@ axios.interceptors.request.use((req) => {
   req.cancelToken = new axios.CancelToken((e) => {
     cancel = e;
   });
-  if (checkUrl('refresh', req.url)) {
-    req.data = {
-      token: takeFromLocStor('token'),
-      refreshToken: takeFromLocStor('refreshToken'),
-    };
-  }
+
+      if (req.url && checkUrl('refresh', req.url)) {
+          req.data = {
+              token: takeFromLocStor('token'),
+              refreshToken: takeFromLocStor('refreshToken'),
+          };
+      }
+
   return req;
 });
 
 axios.interceptors.response.use(
   ({ data, config }) => {
     const { url } = config;
-    if (checkUrl('(login|refresh)', url)) {
+
+    // const url = config?.url;
+    if (url && checkUrl('(login|refresh)', url)) {
       const { token } = data.successResponse;
       const { refreshToken } = data.successResponse;
       const { roles } = data.successResponse;
@@ -36,13 +40,15 @@ axios.interceptors.response.use(
       checkUrl('login', url) && saveToLocStor('roles', roles);
     }
 
-    if (checkUrl('(users/current)', url)) {
+    if (url && checkUrl('(users/current)', url)) {
       const user = data.successResponse;
       saveToLocStor('user', user);
     }
     const res = data.successResponse ?? data ?? {};
     // return { ...res, url };
     return res;
+
+    // return data
   },
   (error) => {
     const status = error?.response?.status;
@@ -57,7 +63,7 @@ axios.interceptors.response.use(
           },
         );
       });
-      
+
     }
       if (status === 403 ) {
           window.location.replace('/access-denied/');
@@ -69,18 +75,23 @@ axios.interceptors.response.use(
   },
 );
 
-export default axios;
-export { cancel };
+
 
 // utils
-function saveToLocStor(name, data) {
+function saveToLocStor(name: string , data: string ) {
   localStorage.setItem(name, JSON.stringify(data));
 }
 
-function takeFromLocStor(name) {
-  return JSON.parse(localStorage.getItem(name));
+function takeFromLocStor(name: string) {
+    const userName = localStorage.getItem(name);
+    if (!userName) return
+    return JSON.parse(userName);
 }
 
-function checkUrl(str, url) {
+function checkUrl(str: string, url: string) {
   return new RegExp(str, 'gi').test(url);
 }
+
+export { cancel };
+export default axios;
+//
