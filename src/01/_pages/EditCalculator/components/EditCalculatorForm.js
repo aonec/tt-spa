@@ -164,7 +164,8 @@ const EditCalculatorForm = () => {
     },
   ];
 
-  function handleSubmitForm() {
+  function handleSubmitForm(e) {
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
     console.log(errors);
     if (hasError === true) {
@@ -175,7 +176,7 @@ const EditCalculatorForm = () => {
   }
 
   return (
-    <form id="editCalculatorForm" style={{ maxWidth: 800 }}>
+    <form id="editCalculatorForm" onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
       <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Серийный номер устройства">
           <InputTT

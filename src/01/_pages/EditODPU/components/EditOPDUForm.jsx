@@ -147,10 +147,14 @@ const FormEditODPU = (props) => {
     },
   ];
 
-  function handleSubmitForm() {
+  function handleSubmitForm(e) {
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
     if (hasError === true) {
       setTab(errorTab);
+    }
+    else {
+      handleSubmit();
     }
   }
 
@@ -421,7 +425,7 @@ const FormEditODPU = (props) => {
             color="blue"
             style={{ marginRight: '16px' }}
             onClick={handleSubmitForm}
-            type="submit"
+            type="button"
           >
             Сохранить
           </ButtonTT>
