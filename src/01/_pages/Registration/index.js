@@ -55,7 +55,7 @@ export const Registration = () => {
         <form id="registration" style={{ maxWidth: 400 }} onSubmit={handleSubmit}>
           <Title size="40" color="white">Введите пароль для входа в систему</Title>
 
-          <Form.Item label={<label style={{ color: '#ffffff' }}>Пароль</label>}>
+          <Form.Item label={<label>Пароль</label>}>
             <Input.Password
               size="large"
               value={values.password}
@@ -66,7 +66,7 @@ export const Registration = () => {
             <Alert name="password" />
           </Form.Item>
 
-          <Form.Item label={<label style={{ color: '#ffffff' }}>Повторите пароль</label>}>
+          <Form.Item label={<label>Повторите Пароль</label>} >
             <Input.Password
               value={values.confirmPassword}
               onChange={handleChange}
