@@ -176,7 +176,7 @@ const EditCalculatorForm = () => {
   }
 
   return (
-    <form id="editCalculatorForm" onSubmit={handleSubmit} style={{ maxWidth: 800 }}>
+    <form onSubmit={handleSubmitForm} style={{ maxWidth: 800 }}>
       <div hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Серийный номер устройства">
           <InputTT
@@ -256,7 +256,6 @@ const EditCalculatorForm = () => {
           />
         </Form.Item>
       </div>
-
       <div hidden={Number(currentTabKey) !== 2}>
 
         <Form.Item style={{
@@ -337,19 +336,18 @@ const EditCalculatorForm = () => {
       <div hidden={Number(currentTabKey) !== 4}>
         <Title color="black">Компонент в разработке </Title>
       </div>
+
       <div style={{ padding: '32px 0' }}>
         <ButtonTT
-          form="editCalculatorForm"
           color="blue"
           style={{ marginRight: '16px' }}
-          type="button"
-          onClick={handleSubmitForm}
+          type="submit"
         >
           Сохранить
         </ButtonTT>
 
         <NavLink to={`/calculators/${id}`}>
-          <ButtonTT color="white">
+          <ButtonTT color="white" type='button'>
             Отмена
           </ButtonTT>
         </NavLink>
