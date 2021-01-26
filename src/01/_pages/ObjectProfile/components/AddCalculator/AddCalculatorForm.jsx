@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -16,12 +16,15 @@ import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyStri
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
 import {isEmptyString} from '../../../../utils/isEmptyString';
+import { putCalculator } from "../../../EditCalculator/components/apiEditCalculator";
+import { EditCalculatorContext } from "../../../EditCalculator";
+import { AddCalculatorContext } from "./index";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
+  const {setAlertVisible,setExistCalculator} =useContext(AddCalculatorContext);
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setFieldError,
@@ -60,8 +63,14 @@ const AddCalculatorForm = (props) => {
       };
       console.log('form', form);
       console.log(JSON.stringify(form));
-      addCalculator(form);
-      setTimeout(() => { setAddCalculator(false); }, 1000);
+      // addCalculator(form);
+      addCalculator(form).then(({ show, id }) => {
+        if (show === true) {
+          setAlertVisible(true);
+          setExistCalculator(id);
+        }
+      });
+      // setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
@@ -124,17 +133,22 @@ const AddCalculatorForm = (props) => {
   ];
 
   function handleNext() {
+    console.log("12345")
     setTab(String(Number(currentTabKey) + 1));
   }
   function handleChangeTab(value) {
     setTab(value);
   }
 
-  function handleSubmitForm() {
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
-    console.log(errors);
+
+    // console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
+    } else {
+      handleSubmit();
     }
   }
 
@@ -150,7 +164,7 @@ const AddCalculatorForm = (props) => {
   };
 
   return (
-    <form id="addCalculatorForm" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitForm}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
@@ -343,9 +357,6 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          htmlFor="addCalculatorForm"
-          id="submit"
-          onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}
           big
         >

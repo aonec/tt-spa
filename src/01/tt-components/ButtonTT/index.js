@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 export const ButtonTT = styled.button.attrs(props => ({
-  type: "text",
   size: props.size,
   small: props.small
 }))`
