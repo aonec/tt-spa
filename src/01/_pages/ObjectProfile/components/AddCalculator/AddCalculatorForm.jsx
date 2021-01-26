@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -15,13 +15,16 @@ import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
-import {isEmptyString} from '../../../../utils/isEmptyString';
+import { isEmptyString } from '../../../../utils/isEmptyString';
+import { putCalculator } from "../../../EditCalculator/components/apiEditCalculator";
+import { EditCalculatorContext } from "../../../EditCalculator";
+import { AddCalculatorContext } from "./index";
 
 const AddCalculatorForm = (props) => {
   const { objid, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
+  const { setAlertVisible, setExistCalculator } = useContext(AddCalculatorContext);
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setFieldError,
@@ -60,8 +63,16 @@ const AddCalculatorForm = (props) => {
       };
       console.log('form', form);
       console.log(JSON.stringify(form));
-      addCalculator(form);
-      setTimeout(() => { setAddCalculator(false); }, 1000);
+      // addCalculator(form);
+      addCalculator(form).then(({ show, id }) => {
+        if (show === true) {
+          setAlertVisible(true);
+          setExistCalculator(id);
+        } else {
+          setTimeout(setAddCalculator, 2000);
+        }
+      });
+      // setTimeout(() => { setAddCalculator(false); }, 1000);
     },
   });
 
@@ -69,11 +80,11 @@ const AddCalculatorForm = (props) => {
     setValidationSchema(defaultValidationSchema);
   }, []);
 
-  function isEmptyConnection() {
+  function isEmptyConnection(){
     return isEmptyString(values.deviceAddress)
       && isEmptyString(values.port)
       && isEmptyString(values.ipV4);
- }
+  }
 
 
   useEffect(() => {
@@ -93,7 +104,7 @@ const AddCalculatorForm = (props) => {
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
 
-  function onSwitchChange(checked) {
+  function onSwitchChange(checked){
     setFieldValue('isConnected', checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
@@ -123,18 +134,24 @@ const AddCalculatorForm = (props) => {
     },
   ];
 
-  function handleNext() {
+  function handleNext(){
+    console.log("12345")
     setTab(String(Number(currentTabKey) + 1));
   }
-  function handleChangeTab(value) {
+
+  function handleChangeTab(value){
     setTab(value);
   }
 
-  function handleSubmitForm() {
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
-    console.log(errors);
+
+    // console.log(errors);
     if (hasError === true) {
       setTab(errorTab);
+    } else {
+      handleSubmit();
     }
   }
 
@@ -150,7 +167,7 @@ const AddCalculatorForm = (props) => {
   };
 
   return (
-    <form id="addCalculatorForm" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitForm}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
@@ -175,7 +192,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber" />
+            <Alert name="serialNumber"/>
           </Form.Item>
 
           <Form.Item label="Тип вычислителя" style={{ width: '100%' }}>
@@ -255,7 +272,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected} />
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected}/>
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -279,7 +296,7 @@ const AddCalculatorForm = (props) => {
               }}
             />
             {/*{isEmptyConnection() && !checked ? null : <Alert name="ipV4" />}*/}
-            <Alert name="ipV4" />
+            <Alert name="ipV4"/>
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -292,7 +309,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
             />
             {/*{isEmptyConnection() && !checked ? null : <Alert name="port" />}*/}
-           <Alert name="port" />
+            <Alert name="port"/>
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -306,7 +323,7 @@ const AddCalculatorForm = (props) => {
               // disabled={checked}
             />
             {/*{isEmptyConnection() && !checked ? null : <Alert name="deviceAddress" /> }*/}
-            <Alert name="deviceAddress" />
+            <Alert name="deviceAddress"/>
           </Form.Item>
 
           <Wrap
@@ -343,9 +360,6 @@ const AddCalculatorForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          htmlFor="addCalculatorForm"
-          id="submit"
-          onClick={handleSubmitForm}
           hidden={currentTabKey !== '3'}
           big
         >
