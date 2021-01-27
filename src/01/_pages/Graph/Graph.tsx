@@ -111,21 +111,33 @@ const Graph: React.FC = () => {
 
     const CustomTooltip = (props) => {
 
-        const [hovered, setHovered] = useState(true);
+        const [selected, setSelected] = React.useState(false);
+        const [hovered, setHovered] = React.useState(false);
 
         debugger;
         const {x, y} = props;
         return (
             <g onMouseEnter={() => setHovered(true)}
                onMouseLeave={() => setHovered(false)}>
-                {hovered ? <line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
-                                 strokeWidth={0.5}/> : null}
+                {hovered ? <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
+                                 strokeWidth={0.5}/>
+                    <VictoryTooltip  {...props} /></>
+                    : null}
                 {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
-                <VictoryTooltip  {...props} />
+                <circle
+                    cx={x}
+                    cy={y}
+                    r={11}
+                    stroke={hovered ? "purple" : "white"}
+                    strokeWidth={2}
+                    fill={selected ? "cyan" : "magenta"}
+                    onClick={() => setSelected(!selected)}
+
+                />
             </g>
         );
     }
-        const ScatterPoint = ({ x, y, datum }) => {
+        const ScatterPoint = ({ x, y }) => {
             const [selected, setSelected] = React.useState(false);
             const [hovered, setHovered] = React.useState(false);
 
@@ -136,7 +148,7 @@ const Graph: React.FC = () => {
             <circle
                     cx={x}
                     cy={y}
-                    r={datum.x * datum.y}
+                    r={11}
                     stroke={hovered ? "purple" : "white"}
                     strokeWidth={2}
                     fill={selected ? "cyan" : "magenta"}
