@@ -22,7 +22,7 @@ const ModalAddStaffForm = () => {
       lastName: '',
       middleName: '',
       email: '',
-      userRolesIds: 1334534,
+      userRolesIds: 1310772,
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('Строка не должна быть пустой'),
@@ -59,7 +59,7 @@ const ModalAddStaffForm = () => {
 
       console.log(form);
       console.log(JSON.stringify(form));
-      postStaff(form);
+      // postStaff(form);
     },
   });
   const Alert = ({ name }) => {

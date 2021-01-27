@@ -7,8 +7,12 @@ import styles from './registration.module.scss';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
 import { ButtonTT, Title } from '../../tt-components';
+import { confirmRegistration } from './apiRegistration';
 
 export const Registration = () => {
+  const token = window.location.href.split('token=')[1];
+  console.log(token);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -22,11 +26,13 @@ export const Registration = () => {
       confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли не совпадают').required('Подтвердите пароль'),
     }),
     onSubmit: async () => {
+      console.log('accessToken', token);
       const form = {
+        token,
         password: values.password,
-        confirmPassword: values.confirmPassword,
       };
-      alert('Пароь успешно сохранен!');
+      debugger;
+      confirmRegistration(form);
     },
   });
 
@@ -66,7 +72,7 @@ export const Registration = () => {
             <Alert name="password" />
           </Form.Item>
 
-          <Form.Item label={<label>Повторите Пароль</label>} >
+          <Form.Item label={<label>Повторите Пароль</label>}>
             <Input.Password
               value={values.confirmPassword}
               onChange={handleChange}
