@@ -9,7 +9,7 @@ import {
     VictoryTooltip,
     VictoryVoronoiContainer, VictoryArea, VictoryGroup, VictoryCursorContainer, VictoryScatter, VictoryContainer
 } from 'victory';
-import React from "react";
+import React, {useCallback, useRef, useState} from "react";
 import { format, compareAsc } from 'date-fns'
 
 
@@ -18,6 +18,42 @@ import { format, compareAsc } from 'date-fns'
 
 
 const Graph: React.FC = () => {
+
+    function useHover() {
+        const [value, setValue] = useState(false);
+
+        // Wrap in useCallback so we can use in dependencies below
+        const handleMouseEnter = useCallback(() => setValue(true), []);
+        const handleMouseLeave = useCallback(() => setValue(false), []);
+
+        // Keep track of the last node passed to callbackRef
+        // so we can remove its event listeners.
+        const ref = useRef();
+
+        // Use a callback ref instead of useEffect so that event listeners
+        // get changed in the case that the returned ref gets added to
+        // a different element later. With useEffect, changes to ref.current
+        // wouldn't cause a rerender and thus the effect would run again.
+        const callbackRef = useCallback(
+            (node) => {
+                if (ref.current) {
+                    ref.current.removeEventListener("mouseenter", handleMouseEnter);
+                    ref.current.removeEventListener("mouseleave", handleMouseLeave);
+                }
+
+                ref.current = node;
+
+                if (ref.current) {
+                    ref.current.addEventListener("mouseenter", handleMouseEnter);
+                    ref.current.addEventListener("mouseleave", handleMouseLeave);
+                }
+            },
+            [handleMouseEnter, handleMouseLeave]
+        );
+
+        return [callbackRef, value];
+    }
+
 
     const readings = [
         {
@@ -74,15 +110,44 @@ const Graph: React.FC = () => {
     console.log(graphDataNew)
 
     const CustomTooltip = (props) => {
+
+        const [hovered, setHovered] = useState(true);
+
         debugger;
-        const { x, y } = props;
+        const {x, y} = props;
         return (
-            <g>
-                <line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />
-                <VictoryTooltip {...props} />
+            <g onMouseEnter={() => setHovered(true)}
+               onMouseLeave={() => setHovered(false)}>
+                {hovered ? <line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
+                                 strokeWidth={0.5}/> : null}
+                {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
+                <VictoryTooltip  {...props} />
             </g>
         );
     }
+        const ScatterPoint = ({ x, y, datum }) => {
+            const [selected, setSelected] = React.useState(false);
+            const [hovered, setHovered] = React.useState(false);
+
+            return (
+                <>
+                {hovered ? <line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} /> : null}
+
+            <circle
+                    cx={x}
+                    cy={y}
+                    r={datum.x * datum.y}
+                    stroke={hovered ? "purple" : "white"}
+                    strokeWidth={2}
+                    fill={selected ? "cyan" : "magenta"}
+                    onClick={() => setSelected(!selected)}
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                />
+                </>
+            );
+        };
+
 // Component being rendered
 
     return (
@@ -122,9 +187,10 @@ const Graph: React.FC = () => {
                 {/*/>*/}
                 <VictoryArea
                     name="graph"
-                    labelComponent={
 
-                        <CustomTooltip />
+                    labelComponent={
+                        <CustomTooltip
+                                                          />
                         // <VictoryTooltip/>
                             // <VictoryBar data={[{x: 1, y: 1}]}/>
 
@@ -134,6 +200,9 @@ const Graph: React.FC = () => {
                     data={graphDataNew}
                     x="time"
                     y="value"
+                />
+                <VictoryScatter
+                    dataComponent={<ScatterPoint/>}
                 />
 
                 <VictoryAxis
