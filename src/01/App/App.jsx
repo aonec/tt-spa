@@ -57,9 +57,8 @@ export function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/logout" render={() => 'logout'} />
-            {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage />} />
-            <Route path="/registration/" render={() => <Registration />} />
+            <Route path="/registration*" render={() => <Registration />} />
             <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
             <Route path="/form/" render={() => <DeviceSearchForm />} />
             <Route path="/">

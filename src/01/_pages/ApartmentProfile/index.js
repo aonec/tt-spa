@@ -7,7 +7,7 @@ import { Loader } from '01/components/Loader';
 import { getApartment, getTasks, getApartmentDevices } from './apiApartmentProfile';
 import { Tabs } from './components/Tabs';
 import Owners from "./components/Owners";
-import {Comments, Header, Tags, Information} from './components';
+import {Comments, Header, Tags, Information, DropdownTT} from './components';
 
 import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 

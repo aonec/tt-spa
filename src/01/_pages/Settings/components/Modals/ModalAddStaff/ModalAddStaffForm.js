@@ -42,7 +42,7 @@ const ModalAddStaffForm = () => {
         position: 'string',
         number: 'string',
         password: 'string',
-        userRolesIds: [0],
+        // userRolesIds: [0],
       };
 
       const form = {
@@ -51,11 +51,15 @@ const ModalAddStaffForm = () => {
         middleName: values.middleName,
         email: values.email,
         userRolesIds: [values.userRolesIds],
+        number: '123',
+        position: 'Executor',
+        cellphone: '+79372959484',
+        department: 'TT',
       };
 
-      console.log(form)
-       console.log(JSON.stringify(form));
-      // postStaff(form);
+      console.log(form);
+      console.log(JSON.stringify(form));
+      postStaff(form);
     },
   });
   const Alert = ({ name }) => {
@@ -133,7 +137,7 @@ const ModalAddStaffForm = () => {
         </Form.Item>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
-          {/*<ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT>*/}
+          {/* <ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT> */}
           <ButtonTT
             color="white"
             onClick={hideStaff}
@@ -148,7 +152,7 @@ const ModalAddStaffForm = () => {
             onClick={handleSubmit}
             form="modalAddStaffForm"
             style={{ width: 224 }}
-            disabled
+            // disabled
           >
             Добавить
           </ButtonTT>
