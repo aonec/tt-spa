@@ -95,10 +95,6 @@ const StyledModal = styled(Modal)`
 
 `
 
-
-
-
-
 const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
 
     const dispatch = useDispatch();

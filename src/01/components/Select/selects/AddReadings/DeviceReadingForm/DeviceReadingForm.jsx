@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
 import styled from 'styled-components'
 import DeviceRates from "./ReadingsLine/DeviceRates";
@@ -40,7 +40,7 @@ const DeviceReadingForm = ({device, readingsBlocked = false}) => {
     const [readingsState, setReadingsState] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const isActive = device.closingDate === null;
-
+    const ref = useRef();
     const numberOfReadings = rateTypeToNumber(device.rateType);
     // const readingsArray = [];
     // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
