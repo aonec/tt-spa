@@ -5,10 +5,8 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
-import { Subtitle } from "../../../_components";
-import { magistrals } from "../../../tt-components/localBases";
-// import { Subtitle } from '../../../_components/Headers';
-// import { magistrals } from "../../../tt-components/localBases";
+import { Subtitle } from '../../../_components';
+import { magistrals } from '../../../tt-components/localBases';
 
 export const Information = (loading = true) => {
   const { device, loadings, error } = useContext(HousingContext);
@@ -30,12 +28,12 @@ export const Information = (loading = true) => {
         hubNumber,
         pipeNumber,
         magistral,
-      }
-    }
+      },
+    },
   } = device || DEFAULT_DEVICE;
 
   const loadingDevice = _.get(loadings, 'device', true);
-  const direction = _.find(magistrals,{value: magistral})
+  const direction = _.find(magistrals, { value: magistral });
 
   loading = loadingDevice && direction;
 

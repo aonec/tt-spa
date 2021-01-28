@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
+import React, { useContext } from 'react';
 import _ from 'lodash';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
 import { HousingContext } from '../HousingProfile';
-import { StageName, Task, TaskName, TaskRow, TasksTitle, TasksWrap } from "../../../tt-components";
+import {
+  StageName, Task, TaskName, TaskRow, TasksTitle, TasksWrap,
+} from '../../../tt-components';
 
 const buttonHandler = () => {
   console.log('buttonHandler');
 };
 export const Events = ({ title = '' }) => {
   const { tasks, loadings } = useContext(HousingContext);
-  // const loadingTasks = _.get(loadings, 'device', true);
   const loading = _.get(loadings, 'device', true);
 
   const Tasks = (tasks || []).map((task, index) => {
@@ -36,6 +36,7 @@ export const Events = ({ title = '' }) => {
       </Task>
     );
   });
+
   if (Tasks.length > 0) {
     return (
       <TasksWrap>

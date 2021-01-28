@@ -53,8 +53,8 @@ export const Events = ({ title = '' }) => {
       <Loader show={loading} size="32">
         <TasksTitle>{title}</TasksTitle>
         <Task>
-          <StageName>Нет задач </StageName>
-          <TaskName>задачи ОДПУ завершены</TaskName>
+          <StageName>Нет задач</StageName>
+          <TaskName>задачи Вычислителя завершены</TaskName>
 
         </Task>
       </Loader>
