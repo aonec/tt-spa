@@ -1,7 +1,6 @@
 import { Route, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
-import Loader from 'react-loader';
 import { getHousingTasks, getHousing } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -11,10 +10,13 @@ import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import DeregisterDevice from './components/Modals/ModalDeregister';
+import { LoaderTT } from '../../tt-components/LoaderTT'
+
 
 export const HousingContext = React.createContext();
 
 export const HousingProfile = () => {
+
   const { deviceId, objid } = useParams();
   const path = `/housingMeteringDevices/${deviceId}/`;
 
@@ -73,31 +75,31 @@ export const HousingProfile = () => {
 
   if (!device) {
     return (
-      <Loader />
+      <LoaderTT />
     );
   }
   return (
     <HousingContext.Provider
       value={context}
     >
-      <Header />
-      <Tabs />
+      <Header/>
+      <Tabs/>
       <Grid>
         <Route path={`${path}`} exact>
-          <Information />
+          <Information/>
         </Route>
         <Route path={`${path}connection`} exact>
-          <Connection />
+          <Connection/>
         </Route>
         <Route path={`${path}related`} exact>
-          <RelatedDevices />
+          <RelatedDevices/>
         </Route>
         <Route path={`${path}documents`} exact>
-          <Documents />
+          <Documents/>
         </Route>
-        <Events title="Задачи с объектом" />
+        <Events title="Задачи с объектом"/>
       </Grid>
-      <DeregisterDevice />
+      <DeregisterDevice/>
     </HousingContext.Provider>
   );
 };

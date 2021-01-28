@@ -32,7 +32,7 @@ const AddCalculatorForm = (props) => {
     initialValues: {
       serialNumber: '',
       lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(3, 'years').toISOString(),
+      futureCheckingDate: moment().add(4, 'years').toISOString(),
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().toISOString(),
       documentsIds: [],
@@ -126,7 +126,7 @@ const AddCalculatorForm = (props) => {
   const tabErrors = [
     {
       key: '1',
-      value: ['serialNumber'],
+      value: ['serialNumber', 'infoId'],
     },
     {
       key: '2',

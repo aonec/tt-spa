@@ -156,7 +156,7 @@ const EditCalculatorForm = () => {
   const tabErrors = [
     {
       key: '1',
-      value: ['serialNumber'],
+      value: ['serialNumber', 'infoId' ],
     },
     {
       key: '2',
@@ -209,7 +209,7 @@ const EditCalculatorForm = () => {
             allowClear={false}
             onChange={(date) => {
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
+              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
             }}
             value={values.lastCheckingDate}
           />
