@@ -8,6 +8,7 @@ import { useMenu } from "./useMenu"
 
 export const Menu = () => {
   const menuList = useMenu()
+
   return styled(style)(
     <nav>
       {menuList.map(({ name, to, icon, company }, i) => (

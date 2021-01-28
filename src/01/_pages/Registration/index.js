@@ -6,7 +6,7 @@ import _ from 'lodash';
 import styles from './registration.module.scss';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
-import { ButtonTT, Title } from '../../tt-components';
+import { Button, Title } from '../../tt-components';
 import { confirmRegistration } from './apiRegistration';
 
 export const Registration = () => {
@@ -31,7 +31,6 @@ export const Registration = () => {
         token,
         password: values.password,
       };
-      debugger;
       confirmRegistration(form);
     },
   });
@@ -83,13 +82,14 @@ export const Registration = () => {
             <Alert name="confirmPassword" />
           </Form.Item>
 
-          <ButtonTT
+          <Button
+            data-big
+            data-primary
             type="submit"
-            color="blue"
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginTop: '24px' }}
           >
-            Вход в систему
-          </ButtonTT>
+            <span>Вход в систему</span>
+          </Button>
         </form>
 
       </div>
@@ -98,3 +98,11 @@ export const Registration = () => {
 };
 
 export default Registration;
+
+{ /* <ButtonTT */ }
+{ /*  type="submit" */ }
+{ /*  color="blue" */ }
+{ /*  style={{ width: '100%' }} */ }
+{ /* > */ }
+{ /*  Вход в систему */ }
+{ /* </ButtonTT> */ }

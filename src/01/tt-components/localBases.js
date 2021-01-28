@@ -109,37 +109,42 @@ export const timeZones = [
 
 export const UserRoles = [
   {
-    value: 1334536,
-    label: 'Собственник квартиры',
-  },
-  {
-    value: 1334537,
-    label: 'Администратор системы',
-  },
-  {
-    value: 1334533,
+    value: 760,
     label: 'Администратор УК',
   },
   {
-    value: 1334539,
+    value: 1309829,
+    label: 'Оператор УК',
+  },
+  // {
+  //   value: 756,
+  //   label: '4',
+  // },
+  {
+    value: 758,
+    label: 'Собственник квартиры',
+  },
+  {
+    value: 1310772,
+    label: 'Администратор системы',
+  },
+  {
+    value: 757,
     label: 'Сервис Scada',
   },
   {
-    value: 1334538,
+    value: 761,
     label: 'Сервис ЕРЦ',
   },
   {
-    value: 1371329,
+    value: 1503658,
     label: 'Фоновый рабочий',
   },
   {
-    value: 1334534,
+    value: 759,
     label: 'Исполнитель УК',
   },
-  {
-    value: 1334535,
-    label: 'Оператор УК',
-  },
+
 ];
 
 export const DEFAULT_BUILDING = {
