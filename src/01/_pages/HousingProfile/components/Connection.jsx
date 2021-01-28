@@ -1,17 +1,12 @@
 import React, { useContext } from 'react';
-import { Loader } from '01/components';
-import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
+import { Loader } from '../../../components';
+import { ListWrap, ListItem, Title } from '../../../_components/List';
 import { HousingContext } from '../HousingProfile';
 
 export const Connection = () => {
   const { device, loadings } = useContext(HousingContext);
-
   const isLoading = _.get(loadings, 'device', true);
-
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
 
   return (
     <ListWrap>
@@ -33,6 +28,5 @@ export const Connection = () => {
     </ListWrap>
   );
 };
-// пока не получили данные - показываем Loader
 
 export default Connection;
