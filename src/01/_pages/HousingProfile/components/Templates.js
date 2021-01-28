@@ -11,6 +11,14 @@ export const DEFAULT_DEVICE = {
   commercialAccountingDate: null,
   futureCheckingDate: null,
   lastCheckingDate: null,
+  hubConnection: {
+    hub: {
+      entryNumber: null,
+      hubNumber: null,
+      pipeNumber: null,
+      magistral: '',
+    },
+  },
 };
 
 export const DEFAULT_ICON = {
@@ -33,3 +41,8 @@ export const typelList = [
   { label: 'Холодная вода', value: 'coldwatersupply' },
   { label: 'Горячая вода', value: 'heat' },
 ];
+
+export const FeedFlowList = [
+  { label: 'Подающая', value: 'FeedFlow' },
+  { label: 'Обратная', value: 'FeedBackFlow' },
+]
