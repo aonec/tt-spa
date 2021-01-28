@@ -10,6 +10,7 @@ import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import DeregisterDevice from './components/Modals/ModalDeregister';
+import { Loader } from "../../tt-components";
 
 export const HousingContext = React.createContext();
 
@@ -60,10 +61,6 @@ export const HousingProfile = () => {
       });
   }, []);
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-    // console.log(related);
-  };
   const context = {
     device,
     tasks,
@@ -73,14 +70,15 @@ export const HousingProfile = () => {
     deregister,
     setDeregister,
   };
+
+  if (!device) {
+    return <Loader show size="32" />
+  }
   return (
     <HousingContext.Provider
       value={context}
     >
-      {/* <Breadcrumb path='/devices'/> */}
       <Header />
-      {/* <h1>HousingProfile</h1> */}
-      {/* <ButtonTT onClick={buttonHandler}>buttonHandler</ButtonTT> */}
       <Tabs />
       <Grid>
         <Route path={`${path}`} exact>
