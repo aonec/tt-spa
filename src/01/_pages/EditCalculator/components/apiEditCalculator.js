@@ -60,11 +60,5 @@ export async function putCalculator(deviceId = '', form = {}) {
       return {show: true, id: id}
       // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
     }
-
-
-    // alert(
-    //   'Что-то пошло не так: попробуйте проверить все данные',
-    // );
-    // throw new Error(error);
   }
 }

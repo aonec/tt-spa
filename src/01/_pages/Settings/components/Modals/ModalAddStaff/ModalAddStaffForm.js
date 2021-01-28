@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form } from 'antd';
 import {
-  ButtonTT, SelectTT, InputTT, Title,
+  ButtonTT, SelectTT, InputTT, Title, StyledModalBody, StyledFooter, StyledModal,
 } from '../../../../../tt-components';
 import { UserRoles } from '../../../../../tt-components/localBases';
 import { SettingsContext } from '../../../index';
@@ -18,11 +18,15 @@ const ModalAddStaffForm = () => {
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      middleName: '',
+      firstName: 'Иван',
+      lastName: 'Иванов',
+      middleName: 'Иванович',
       email: '',
-      userRolesIds: 1334534,
+      userRolesIds: 760,
+      number: '123',
+      position: 'Новый сотрудник',
+      cellphone: '+79372959484',
+      department: 'TT',
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required('Строка не должна быть пустой'),
@@ -42,7 +46,7 @@ const ModalAddStaffForm = () => {
         position: 'string',
         number: 'string',
         password: 'string',
-        // userRolesIds: [0],
+        userRolesIds: [0],
       };
 
       const form = {
@@ -51,15 +55,15 @@ const ModalAddStaffForm = () => {
         middleName: values.middleName,
         email: values.email,
         userRolesIds: [values.userRolesIds],
-        number: '123',
-        position: 'Executor',
-        cellphone: '+79372959484',
-        department: 'TT',
+        number: values.number,
+        position: values.position,
+        cellphone: values.cellphone,
+        department: values.department
       };
 
       console.log(form);
       console.log(JSON.stringify(form));
-      postStaff(form);
+      postStaff(form)
     },
   });
   const Alert = ({ name }) => {
@@ -73,16 +77,17 @@ const ModalAddStaffForm = () => {
     return null;
   };
 
-  const handleButton = () => {
-    console.log('errors', errors);
-  };
+  // const handleButton = () => {
+  //   console.log('errors', errors);
+  // };
 
   return (
-    <>
-      <form id="modalAddStaffForm" onSubmit={handleSubmit}>
-        <Title size="middle" color="black">
-          Добавление нового сотрудника
-        </Title>
+    <form id="modalAddStaffForm" onSubmit={handleSubmit}>
+      <Title size="middle" color="black" style={{padding: '12px 32px'}}>
+        Добавление нового сотрудника
+      </Title>
+      <StyledModalBody style={{ overflowY: 'scroll', maxHeight: '600px' }}>
+
         <Form.Item label="Имя">
           <InputTT
             name="firstName"
@@ -123,11 +128,52 @@ const ModalAddStaffForm = () => {
           <Alert name="email" />
         </Form.Item>
 
+        <Form.Item label="Телефон">
+          <InputTT
+            name="cellphone"
+            placeholder="Телефон"
+            onChange={handleChange}
+            value={values.cellphone}
+          />
+          <Alert name="cellphone" />
+        </Form.Item>
+
+        <Form.Item label="Департамент">
+          <InputTT
+            name="department"
+            placeholder="Департамент"
+            onChange={handleChange}
+            value={values.department}
+          />
+          <Alert name="department" />
+        </Form.Item>
+
+        <Form.Item label="Должность">
+          <InputTT
+            name="position"
+            placeholder="Должность"
+            onChange={handleChange}
+            value={values.position}
+          />
+          <Alert name="position" />
+        </Form.Item>
+
+        <Form.Item label="Табельный номер">
+          <InputTT
+            name="number"
+            placeholder="Табельный номер"
+            onChange={handleChange}
+            value={values.number}
+          />
+          <Alert name="number" />
+        </Form.Item>
+
         <Form.Item label="Роль в системе">
           <SelectTT
             name="role"
             placeholder="Роль в системе"
             onChange={(value) => {
+              console.log(value);
               setFieldValue('userRolesIds', value);
             }}
             options={UserRoles}
@@ -135,31 +181,27 @@ const ModalAddStaffForm = () => {
           />
           <Alert name="role" />
         </Form.Item>
+      </StyledModalBody>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '32px 0 0 0' }}>
-          {/* <ButtonTT color="white" onClick={handleButton} style={{ marginRight: 16 }}>handleButton</ButtonTT> */}
-          <ButtonTT
-            color="white"
-            onClick={hideStaff}
-            style={{ marginRight: 16 }}
-          >
-            Отмена
-          </ButtonTT>
+      <StyledFooter>
+        <ButtonTT
+          color="white"
+          onClick={hideStaff}
+          style={{ marginRight: 16 }}
+        >
+          Отмена
+        </ButtonTT>
 
-          <ButtonTT
-            color="blue"
-            type="submit"
-            onClick={handleSubmit}
-            form="modalAddStaffForm"
-            style={{ width: 224 }}
-            // disabled
-          >
-            Добавить
-          </ButtonTT>
-        </div>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          big
+        >
+          Добавить
+        </ButtonTT>
+      </StyledFooter>
 
-      </form>
-    </>
+    </form>
   );
 };
 

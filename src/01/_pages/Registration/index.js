@@ -6,9 +6,13 @@ import _ from 'lodash';
 import styles from './registration.module.scss';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
-import { ButtonTT, Title } from '../../tt-components';
+import { Button, Title } from '../../tt-components';
+import { confirmRegistration } from './apiRegistration';
 
 export const Registration = () => {
+  const token = window.location.href.split('token=')[1];
+  console.log(token);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -22,11 +26,12 @@ export const Registration = () => {
       confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли не совпадают').required('Подтвердите пароль'),
     }),
     onSubmit: async () => {
+      console.log('accessToken', token);
       const form = {
+        token,
         password: values.password,
-        confirmPassword: values.confirmPassword,
       };
-      alert('Пароь успешно сохранен!');
+      confirmRegistration(form);
     },
   });
 
@@ -66,7 +71,7 @@ export const Registration = () => {
             <Alert name="password" />
           </Form.Item>
 
-          <Form.Item label={<label>Повторите Пароль</label>} >
+          <Form.Item label={<label>Повторите Пароль</label>}>
             <Input.Password
               value={values.confirmPassword}
               onChange={handleChange}
@@ -77,13 +82,14 @@ export const Registration = () => {
             <Alert name="confirmPassword" />
           </Form.Item>
 
-          <ButtonTT
+          <Button
+            data-big
+            data-primary
             type="submit"
-            color="blue"
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginTop: '24px' }}
           >
-            Вход в систему
-          </ButtonTT>
+            <span>Вход в систему</span>
+          </Button>
         </form>
 
       </div>
@@ -92,3 +98,11 @@ export const Registration = () => {
 };
 
 export default Registration;
+
+{ /* <ButtonTT */ }
+{ /*  type="submit" */ }
+{ /*  color="blue" */ }
+{ /*  style={{ width: '100%' }} */ }
+{ /* > */ }
+{ /*  Вход в систему */ }
+{ /* </ButtonTT> */ }
