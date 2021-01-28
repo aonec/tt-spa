@@ -1,6 +1,7 @@
 import { Route, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
+import Loader from 'react-loader';
 import { getHousingTasks, getHousing } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -10,7 +11,6 @@ import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import DeregisterDevice from './components/Modals/ModalDeregister';
-import { Loader } from "../../tt-components";
 
 export const HousingContext = React.createContext();
 
@@ -72,7 +72,9 @@ export const HousingProfile = () => {
   };
 
   if (!device) {
-    return <Loader show size="32" />
+    return (
+      <Loader />
+    );
   }
   return (
     <HousingContext.Provider
