@@ -9,30 +9,6 @@ import { Menu } from './EditButton';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 
-export const Template = styled.div``;
-
-export const List = styled.ul`
-  border: 1px solid #dcdee4;
-  position: absolute;
-  right: 0;
-  width: max-content;
-  z-index: 50;
-  background: white;
-  display: none;
-`;
-
-export const ListItem = styled.li`
-  font-size: 16px;
-  line-height: 32px;
-  padding: 8px 24px;
-  cursor: pointer;
-  border-bottom: 1px solid #dcdee4;
-  &:hover {
-    background: #189ee9;
-    color: #ffffff !important;
-  }
-`;
-
 export const Header = () => {
   const { device,  loadings, errors, error } = useContext( HousingContext );
   const loadingDevice = _.get(loadings, 'device', true);

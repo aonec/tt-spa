@@ -77,11 +77,12 @@ export async function postStaff(form = {}) {
     alert('Сотрудник успешно создан!');
     return res;
   } catch (error) {
+    const handleError = error.response.data.error
     console.log(error);
     alert(
-      'Что-то пошло не так: попробуйте проверить все данные',
+      'Что-то пошло не так: скорее всего уже есть пользователь с таким email \n' + handleError.Message
     );
-    throw new Error(error);
+    // throw new Error(error);
   }
 }
 
