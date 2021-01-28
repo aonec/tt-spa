@@ -6,29 +6,12 @@ import _ from 'lodash';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 import { Subtitle } from "../../../_components";
+import { magistrals } from "../../../tt-components/localBases";
 // import { Subtitle } from '../../../_components/Headers';
 // import { magistrals } from "../../../tt-components/localBases";
 
 export const Information = (loading = true) => {
   const { device, loadings, error } = useContext(HousingContext);
-
-  const loadingDevice = _.get(loadings, 'device', true);
-  const magistrals = [
-    {
-      value: 'FeedFlow',
-      label: 'Подающая',
-    },
-    {
-      value: 'FeedBackFlow',
-      label: 'Обратная',
-    },
-  ];
-
-  loading = loadingDevice;
-
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
 
   const { address } = device || {};
   const {
@@ -51,6 +34,10 @@ export const Information = (loading = true) => {
     }
   } = device || DEFAULT_DEVICE;
 
+  const loadingDevice = _.get(loadings, 'device', true);
+  const direction = _.find(magistrals,{value: magistral})
+
+  loading = loadingDevice && direction;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -64,13 +51,7 @@ export const Information = (loading = true) => {
     );
   }
 
-  const direction = _.find(magistrals,{value: magistral})
   const directionLabel = direction !== undefined ? direction.label : null;
-
-  console.log('direction', directionLabel)
-  if (!direction) {
-    return <Loader show size="32" />
-  }
 
   return (
     <ListWrap>
