@@ -9,7 +9,7 @@ import {
     VictoryTooltip,
     VictoryVoronoiContainer, VictoryArea, VictoryGroup, VictoryCursorContainer, VictoryScatter, VictoryContainer
 } from 'victory';
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import { format, compareAsc } from 'date-fns'
 
 
@@ -57,31 +57,66 @@ const Graph: React.FC = () => {
 
     const readings = [
         {
-            DateTime: "2021-01-25T12:27:42.2387729+03:00",
+            DateTime: "2021-01-11T12:27:42.2387729+03:00",
             Params: {
                 InputVolume: 0.313,
                 OutputMass: 0.312
             }
         },
         {
-            DateTime: "2021-01-25T13:27:42.241241+03:00",
+            DateTime: "2021-01-12T13:27:42.241241+03:00",
             Params: {
                 InputVolume: 0.317,
                 OutputVolume: 0.319
             }
         },
         {
-            DateTime: "2021-01-25T14:27:42.2387729+03:00",
+            DateTime: "2021-01-13T14:27:42.2387729+03:00",
             Params: {
                 InputVolume: 0.323,
                 OutputMass: 0.354
             }
         },
         {
-            DateTime: "2021-01-25T15:27:42.241241+03:00",
+            DateTime: "2021-01-14T15:27:42.241241+03:00",
             Params: {
                 InputVolume: 0.366,
                 OutputVolume: 0.378
+            }
+        },
+        {
+            DateTime: "2021-01-15T16:27:42.2387729+03:00",
+            Params: {
+                InputVolume: 0.399,
+                OutputMass: 0.312
+            }
+        },
+        {
+            DateTime: "2021-01-16T17:27:42.2387729+03:00",
+            Params: {
+                InputVolume: 0.245,
+                OutputMass: 0.312
+            }
+        },
+        {
+            DateTime: "2021-01-17T18:27:42.2387729+03:00",
+            Params: {
+                InputVolume: 0.100,
+                OutputMass: 0.312
+            }
+        },
+        {
+            DateTime: "2021-01-18T19:27:42.2387729+03:00",
+            Params: {
+                InputVolume: 0.513,
+                OutputMass: 0.312
+            }
+        },
+        {
+            DateTime: "2021-01-19T20:27:42.2387729+03:00",
+            Params: {
+                InputVolume: 0.613,
+                OutputMass: 0.312
             }
         }
     ];
@@ -101,54 +136,67 @@ const Graph: React.FC = () => {
 
     const graphDataNew = readings.map((reading) => {
         return {
-            time: format(new Date(reading.DateTime), 'HH:mm'),
+            time: format(new Date(reading.DateTime), 'dd'),
             value: reading.Params.InputVolume,
-            label: reading.Params.InputVolume
+            label: reading.Params.InputVolume + " м³"
         }
     })
 
     console.log(graphDataNew)
 
-    const CustomTooltip = (props) => {
+    const getTooltip = (d) => {
+        debugger;
+        const { x, y } = d;
+        return `${new Date(x)}\n ${y}`;
+    };
 
+
+
+    const CustomTooltip = (props) => {
+        debugger;
         const [selected, setSelected] = React.useState(false);
         const [hovered, setHovered] = React.useState(false);
 
-        debugger;
-        const {x, y} = props;
+        const {x, y, active} = props;
+
         return (
             <g onMouseEnter={() => setHovered(true)}
-               onMouseLeave={() => setHovered(false)}>
-                {hovered ? <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
-                                 strokeWidth={0.5}/>
-                    <VictoryTooltip  {...props} /></>
-                    : null}
-                {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
-                <circle
-                    cx={x}
-                    cy={y}
-                    r={11}
-                    stroke={hovered ? "purple" : "white"}
-                    strokeWidth={2}
-                    fill={selected ? "cyan" : "magenta"}
-                    onClick={() => setSelected(!selected)}
+               onMouseLeave={() => setHovered(false)} {...props}>
+                {active ?
+                    <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
+                            strokeWidth={0.5}
+                            strokeDasharray={5}/>
+                        <VictoryTooltip  {...props} flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}/>
+                        {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
+                        <circle
+                            cx={x}
+                            cy={y}
+                            r={6}
+                            stroke={hovered ? "#fff" : "#fff"}
+                            strokeWidth={2}
+                            fill={selected ? "var(--main-100)" : "var(--main-100)"}
+                            onClick={() => setSelected(!selected)}
 
-                />
+                        />
+                    </>
+                    : null}
+
             </g>
         );
     }
-        const ScatterPoint = ({ x, y }) => {
-            const [selected, setSelected] = React.useState(false);
-            const [hovered, setHovered] = React.useState(false);
 
-            return (
-                <>
+    const ScatterPoint = ({ x, y }) => {
+        const [selected, setSelected] = React.useState(false);
+        const [hovered, setHovered] = React.useState(false);
+
+        return (
+            <>
                 {hovered ? <line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} /> : null}
 
-            <circle
+                <circle
                     cx={x}
                     cy={y}
-                    r={11}
+                    r={8}
                     stroke={hovered ? "purple" : "white"}
                     strokeWidth={2}
                     fill={selected ? "cyan" : "magenta"}
@@ -156,9 +204,9 @@ const Graph: React.FC = () => {
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                 />
-                </>
-            );
-        };
+            </>
+        );
+    };
 
 // Component being rendered
 
@@ -174,47 +222,30 @@ const Graph: React.FC = () => {
                     </linearGradient>
                 </defs>
             </svg>
-            <VictoryChart domainPadding={50} theme={VictoryTheme.material} style={{parent: {
+            <VictoryChart
+                // domainPadding={50}
+                theme={VictoryTheme.material} style={{parent: {
                     width: '600px',
                     height: '600px',
-                    // fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)"
                 },
-                // data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" }
             }}
 
                           containerComponent={
-                              <VictoryVoronoiContainer/>
+                              <VictoryVoronoiContainer
+                              />
                           }
             >
-
-                {/*<VictoryLine*/}
-                {/*    style={{*/}
-                {/*        data: { stroke: "red", strokeWidth: 2 },*/}
-                {/*        labels: { angle: -90, fill: "red", fontSize: 20 }*/}
-                {/*    }}*/}
-                {/*    labels={["Important"]}*/}
-                {/*    labelComponent={<VictoryLabel/>}*/}
-                {/*    // x={() => "15:27"}*/}
-
-                {/*/>*/}
                 <VictoryArea
                     name="graph"
-
-                    labelComponent={
-                        <CustomTooltip
-                                                          />
-                        // <VictoryTooltip/>
-                            // <VictoryBar data={[{x: 1, y: 1}]}/>
-
-                    }
+                    interpolation="natural"
+                    // labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}}/>}
+                    // labels={(d) => getTooltip(d)}
+                    labels={ ({ datum }) => datum.time }
                     // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
-                    style={{ data: { fill: "url(#myGradient)" } }}
+                    style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
                     data={graphDataNew}
                     x="time"
                     y="value"
-                />
-                <VictoryScatter
-                    dataComponent={<ScatterPoint/>}
                 />
 
                 <VictoryAxis
@@ -222,12 +253,10 @@ const Graph: React.FC = () => {
                         axisLabel: { padding: 40, strokeWidth: 0 },
                         grid: {stroke: 'none'},
                     }}
-                    label="Время"
                 />
                 <VictoryAxis
 
                     dependentAxis
-                    label="Масса"
                     style={{
                         axisLabel: { padding: 40 },
                         grid: {stroke: 'none'},

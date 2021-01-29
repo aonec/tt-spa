@@ -11,7 +11,7 @@ export const DevicesFromSearch = () => {
     return  (
         <div>
             <h1 style={{fontWeight: 300, marginBottom: 16}}>Приборы</h1>
-            <Graph />
+            {/*<Graph />*/}
             <TabsDevices devicePage={devicePage}/>
         </div>
     )
