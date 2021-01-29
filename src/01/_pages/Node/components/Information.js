@@ -9,11 +9,15 @@ import EnableModal from './Modals/EnableModal';
 
 const Information = () => {
   const {
-    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible, switched, setSwitched
+    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible, switched, setSwitched, calculator
   } = useContext(NodeContext);
+  // const {
+  //   address, diameter,
+  // } = node;
+
   const {
     address, diameter,
-  } = node;
+  } = calculator;
   const {
     city, street, housingStockNumber, corpus, id,
   } = address;

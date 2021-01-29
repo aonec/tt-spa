@@ -4,10 +4,15 @@ import Breadcrumb from '../../../tt-components/Breadcrumb/Breadcrumb';
 import { NodeContext } from '../index';
 
 export const Header = () => {
-  const { node } = useContext(NodeContext);
+  const { node, calculator } = useContext(NodeContext);
+  // const {
+  //   model, serialNumber, resource, address,
+  // } = node;
+
   const {
     model, serialNumber, resource, address,
-  } = node;
+  } = calculator;
+
   const {
     id, city, street, housingStockNumber, corpus,
   } = address;
