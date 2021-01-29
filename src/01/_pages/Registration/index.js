@@ -3,15 +3,19 @@ import { Input, Form } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styles from './registration.module.scss';
+import queryString from 'query-string';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
 import { Button, Title } from '../../tt-components';
 import { confirmRegistration } from './apiRegistration';
+import styles from './registration.module.scss';
+import { AccessDeniedPage } from '../AccessDeniedPage';
 
 export const Registration = () => {
-  const token = window.location.href.split('token=')[1];
-  console.log(token);
+  const parsedSearch = queryString.parse(window.location.search);
+  // console.log(parsedSearch);
+  const { token } = parsedSearch;
+  // console.log(token);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -45,6 +49,12 @@ export const Registration = () => {
     }
     return null;
   };
+
+  if (!token) {
+    return (
+      <AccessDeniedPage />
+    );
+  }
 
   return (
     <div className={styles.registration}>
@@ -99,10 +109,17 @@ export const Registration = () => {
 
 export default Registration;
 
-{ /* <ButtonTT */ }
-{ /*  type="submit" */ }
-{ /*  color="blue" */ }
-{ /*  style={{ width: '100%' }} */ }
-{ /* > */ }
-{ /*  Вход в систему */ }
-{ /* </ButtonTT> */ }
+{ /* <ButtonTT */
+}
+{ /*  type="submit" */
+}
+{ /*  color="blue" */
+}
+{ /*  style={{ width: '100%' }} */
+}
+{ /* > */
+}
+{ /*  Вход в систему */
+}
+{ /* </ButtonTT> */
+}
