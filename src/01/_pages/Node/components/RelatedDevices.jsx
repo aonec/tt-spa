@@ -1,16 +1,34 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
+import _ from 'lodash';
 import { NodeContext } from '../index';
+import { IconTT } from '../../../tt-components';
 
-import {ListItem, NameWrap, Name, Serial, State, Span, ListWrap, Title} from '../../../tt-components/RelatedDevices';
-
-const RelatedDevices = () => {
+export const RelatedDevices = () => {
   const { node } = useContext(NodeContext);
 
-  const {hubs} = node;
-  const result = hubs.map((value) => {
+  const { communicationPipes } = node;
+
+  const related = _.flatten(communicationPipes.map((item, index) => {
+    console.log('item', item);
+
+    const res = item.devices.map((resItem) => {
+      console.log('resItem', resItem);
+      return resItem;
+    });
+
+    return res;
+  }));
+
+  console.log('devices', related);
+
+  const buttonHandler = () => {
+  };
+
+  const result = related.map((value) => {
     const {
       model,
       serialNumber,
@@ -21,37 +39,92 @@ const RelatedDevices = () => {
       housingStockId,
     } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
-    const { icon, color } = DeviceIcons[resource];
+    const { pipeNumber, entryNumber, hubNumber } = hub === null ? {
+      number: 'X',
+      entryNumber: 'X',
+      hubNumber: 'X',
+    } : hub;
 
     return (
       <ListItem key={id}>
         <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <Icon icon={icon} color={color} />
-          <Name>{model}</Name>
+          <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }}/>
+          <Name style={{ marginRight: '8px' }}>{model}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
         <State>
-          <Icon icon="status" color="#17B45A" />
+          {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
+        <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
+        <Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>
+        <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
       </ListItem>
     );
   });
 
   return (
     <ListWrap>
-      {/* <button onClick={buttonHandler}>related</button> */}
-      <Loader show={false} size="32">
-        <Title>Приборы</Title>
-        {result}
-      </Loader>
+      <Title>Приборы</Title>
+      {result}
     </ListWrap>
   );
 };
 
 export default RelatedDevices;
+
+export const Template = styled.div``;
+
+export const NameWrap = styled.a`
+            display: grid;
+            grid-template-columns: auto auto 1fr;
+            align-items: center;
+
+            &:hover {
+            h3,
+            p {
+            color: var(--primary-100);
+          }
+          }
+            `;
+
+export const Name = styled.h3`
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 32px;
+            `;
+
+export const Serial = styled.p`
+            padding: 0;
+            margin: 0;
+            color: rgba(39, 47, 90, 0.6);
+            `;
+
+export const State = styled.div`
+            display: flex;
+            align-items: center;
+            color: rgba(39, 47, 90, 0.8);
+            `;
+
+export const Title = styled.h2``;
+
+export const ListWrap = styled.div`
+            display: grid;
+            height: min-content;
+          }
+`;
+
+            export const ListItem = styled.div`
+  display: grid;
+  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-rows: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--frame);
+  opacity: 0.8;
+`;
+            export const Span = styled.span`
+  color: rgba(39, 47, 90, 0.6);
+`;

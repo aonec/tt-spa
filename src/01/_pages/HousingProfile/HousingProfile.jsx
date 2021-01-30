@@ -11,6 +11,7 @@ import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import DeregisterDevice from './components/Modals/ModalDeregister';
 import { LoaderTT } from '../../tt-components/LoaderTT'
+import { Loader } from "../../../components";
 
 
 export const HousingContext = React.createContext();
@@ -75,7 +76,7 @@ export const HousingProfile = () => {
 
   if (!device) {
     return (
-      <LoaderTT />
+      <Loader show={true} size={'32'} />
     );
   }
   return (

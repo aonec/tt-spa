@@ -15,7 +15,7 @@ import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import createSagaMiddleware from 'redux-saga'
 import rootReducer from '../Redux/rootReducer';
-import {
+import  {
   Tasks,
   Login,
   TaskProfile,
@@ -35,6 +35,7 @@ import {
   Registration,
   Node,
   IndividualDevice,
+  MapPage
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -61,6 +62,7 @@ export function App() {
             <Route path="/registration*" render={() => <Registration />} />
             <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
             <Route path="/form/" render={() => <DeviceSearchForm />} />
+            <Route path="/map/" render={() => <MapPage />} />
             <Route path="/">
               <layout>
                 <menu as="div">
@@ -81,7 +83,7 @@ export function App() {
                     <Route path="/devices/(\\d+)" component={Devices} exact />
 
                     <Route
-                      path={['/calculators/:deviceId/(connection|related|documents)?']}
+                      path={['/calculators/:deviceId/(connection|related|nodes|documents)?']}
                       component={CalculatorProfile}
                       exact
                     />
@@ -93,7 +95,7 @@ export function App() {
                     />
 
                     <Route
-                      path={['/nodes/:nodeId/(related|documents)?']}
+                      path={['/nodes/:nodeId/(connection|related|documents)?']}
                       component={Node}
                       exact
                     />
