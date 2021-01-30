@@ -138,7 +138,7 @@ const Graph: React.FC = () => {
         return {
             time: format(new Date(reading.DateTime), 'dd'),
             value: reading.Params.InputVolume,
-            label: reading.Params.InputVolume + " м³"
+            // label: reading.Params.InputVolume + " м³"
         }
     })
 
@@ -166,7 +166,9 @@ const Graph: React.FC = () => {
                     <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
                             strokeWidth={0.5}
                             strokeDasharray={5}/>
-                        <VictoryTooltip  {...props} flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}/>
+                        <VictoryTooltip  {...props}
+                                         flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
+                        />
                         {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
                         <circle
                             cx={x}
@@ -238,11 +240,16 @@ const Graph: React.FC = () => {
                 <VictoryArea
                     name="graph"
                     interpolation="natural"
-                    // labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}}/>}
+                    labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}} />}
+                    labels={ ({ datum }) => [datum.time, datum.value] }
                     // labels={(d) => getTooltip(d)}
-                    labels={ ({ datum }) => datum.time }
                     // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
                     style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
+                    // backgroundPadding={[
+                    //     3,
+                    //     { left: 20, right: 20 },
+                    //     { left: 20}
+                    // ]}
                     data={graphDataNew}
                     x="time"
                     y="value"
