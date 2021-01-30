@@ -1,57 +1,51 @@
 import React, { useContext } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
-import styled from 'styled-components';
+import moment from 'moment'
 import { NavLink } from 'react-router-dom';
 import { NodeContext } from '../index';
 import { InputTT, IconTT } from "../../../tt-components";
+import styled from 'styled-components'
 
-export const RelatedDevices = () => {
+export const Connection = () => {
   const { calculator } = useContext(NodeContext);
-  const { hubConnection } = calculator;
-
   console.log(calculator,"calculator")
 
-  const {
-    calculatorModel,
-    calculatorSerialNumber,
-    futureCheckingDate,
-    closingdate,
-    calculatorId,
-  } = hubConnection || {};
+
+  const {model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate} = calculator
+
 
   const CalcItem = () => (
-    <ListItem key={calculatorId}>
-      <NavLink to={`/calculators/${calculatorId}`}>
+    <ListItem key={id + serialNumber}>
+      <NavLink to={`/calculators/${id}`}>
         <NameWrap>
-          <IconTT icon={"coldwatersupply"}/>
-          <Name>{calculatorModel || 'Вычислитель'}</Name>
-          <Serial>{` (${calculatorSerialNumber})`}</Serial>
+          <IconTT icon="device" style={{marginRight: '8px'}}/>
+          <NameAndSerialNumber>
+            <Name style={{marginRight: '8px'}}>{model}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+          </NameAndSerialNumber>
         </NameWrap>
       </NavLink>
       <State>
-        <InputTT icon="coldwatersupply" />
         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
       </State>
-      <Span>{convertDate(futureCheckingDate)}</Span>
+      <Span>{moment(lastCheckingDate).format('DD.MM.YYYY')} - {moment(futureCheckingDate).format('DD.MM.YYYY')}</Span>
     </ListItem>
   );
 
   return (
-    <div>Test</div>
-    // <ListWrap>
-    //     <Title>Соединение с вычислителем</Title>
-    //     <CalcItem />
-    // </ListWrap>
+    <ListWrap>
+        <Title>Соединение с вычислителем</Title>
+        <CalcItem />
+    </ListWrap>
   );
 };
 
-export default RelatedDevices;
+export default Connection;
 
 export const Template = styled.div``;
 
 export const NameWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 5fr 6fr;
+  grid-template-columns: auto 1fr;
   align-items: center;
 
   &:hover {
@@ -62,9 +56,14 @@ export const NameWrap = styled.div`
   }
 `;
 
+export const NameAndSerialNumber = styled.div`
+  display: inline-flex;
+  align-items: center;
+`
 export const Name = styled.h3`
   padding: 0;
   margin: 0;
+  font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 32px;
@@ -73,6 +72,10 @@ export const Name = styled.h3`
 export const Serial = styled.p`
   padding: 0;
   margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
   color: rgba(39, 47, 90, 0.6);
 `;
 
@@ -92,7 +95,7 @@ export const ListWrap = styled.div`
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 3fr;
+  grid-template-columns: 4fr 2fr 6fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);

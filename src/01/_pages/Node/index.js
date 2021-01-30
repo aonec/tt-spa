@@ -10,6 +10,7 @@ import { Events } from './components/Events';
 import { getCalculator, getCalculatorTasks } from './apiNodeProfile';
 
 import { nodeTemplate } from './template'
+import Connection from "../Node/components/Connection";
 
 export const NodeContext = createContext();
 export const Node = () => {
@@ -78,18 +79,17 @@ export const Node = () => {
 
   return (
     <NodeContext.Provider value={context}>
-      {/*<div>test</div>*/}
       <Header/>
-      {/*<Tabs/>*/}
-      {/*<Grid>*/}
-      {/*  <Route path={`${url}`} exact>*/}
-      {/*    <Information/>*/}
-      {/*  </Route>*/}
-      {/*  <Route path={`${url}/related`} exact>*/}
-      {/*    <RelatedDevices/>*/}
-      {/*  </Route>*/}
-      {/*  <Events title="Задачи с объектом" />*/}
-      {/*</Grid>*/}
+      <Tabs/>
+      <Grid>
+        <Route path={`${url}`} exact>
+          <Information/>
+        </Route>
+        <Route path={`${url}/connection`} exact>
+          <Connection/>
+        </Route>
+        {/*<Events title="Задачи с объектом" />*/}
+      </Grid>
     </NodeContext.Provider>
   );
 };

@@ -23,7 +23,6 @@ export const Header = () => {
   const { id, nodeResourceType, nodeStatus } = node;
 
   const NodeStatus = ({ nodeStatus }) => {
-    console.log('NodeStatus', NodeStatus);
     let icon;
     if (nodeStatus === 'Сдан на коммерческий учет') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }} />;
