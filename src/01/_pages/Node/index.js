@@ -32,10 +32,12 @@ export const Node = () => {
   console.log('nodeId', nodeId);
 
   useEffect(() => {
+
+    getCalculator(nodeTemplate.calculatorId).then((res) => {
+      setCalculator(res);
+      console.log('res', res)
+    })
     setNode(nodeTemplate);
-    // getCalculator(nodeTemplate.calculatorId).then((res) => {
-    //   setCalculator(res);
-    // })
     // getCalculator(nodeId).then((res) => {
 
     // });
@@ -52,7 +54,7 @@ export const Node = () => {
   //   );
   // }
 
-  if (!node) {
+  if (!node || !calculator) {
     return (
       <div>ЗАГРУЗКА</div>
     );
@@ -61,23 +63,23 @@ export const Node = () => {
   // const context = { node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible,  switched, setSwitched};
   const context = {
     node,
-    // calculator,
-    // showDisable,
-    // setShowDisable,
-    // showEnable,
-    // setShowEnable,
-    // visible,
-    // setVisible,
-    // switched,
-    // setSwitched
+    calculator,
+    showDisable,
+    setShowDisable,
+    showEnable,
+    setShowEnable,
+    visible,
+    setVisible,
+    switched,
+    setSwitched
   };
 
-  debugger
+  // debugger
 
   return (
     <NodeContext.Provider value={context}>
-      <div>test</div>
-      {/*<Header/>*/}
+      {/*<div>test</div>*/}
+      <Header/>
       {/*<Tabs/>*/}
       {/*<Grid>*/}
       {/*  <Route path={`${url}`} exact>*/}

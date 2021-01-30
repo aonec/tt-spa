@@ -77,7 +77,7 @@ export const nodeTemplate = {
   futureCheckingDate: '2020-12-14T16:19:44.373',
   id: 1,
   lastCheckingDate: '2020-12-14T16:19:44.373',
-  nodeResourceType: 'ХВС',
+  nodeResourceType: 'ColdWaterSupply',
   nodeStatus: 'Сдан на коммерческий учет',
   number: 1,
   serviceZone: 'Апартаменты',
