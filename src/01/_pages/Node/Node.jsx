@@ -58,8 +58,6 @@ export const Node = () => {
     setSwitched,
   };
 
-  // debugger
-
   return (
     <NodeContext.Provider value={context}>
       <Header />
