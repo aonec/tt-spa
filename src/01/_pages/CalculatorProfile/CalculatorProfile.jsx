@@ -17,6 +17,7 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
 import {HousingContext} from "../HousingProfile";
+import Nodes from "./components/Nodes";
 
 export const DeviceContext = React.createContext();
 
@@ -34,6 +35,7 @@ export const CalculatorProfile = () => {
   const [report, setReport] = useState(false);
   const [reportSono, setReportSono] = useState(false);
   const [check, setCheck] = useState(false);
+  const [nodes, setNodes] = useState()
 
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
@@ -64,8 +66,8 @@ export const CalculatorProfile = () => {
         setHubs(device.hubs);
         setTasks(tasks.items);
         setRelated(device.hubs);
+        setNodes(device.nodes);
         setIsLoading(false);
-        console.log("device", device)
       })
       .catch(({ resource, message }) => {
         const text = errorsTemplate[resource];
@@ -84,14 +86,14 @@ export const CalculatorProfile = () => {
 
   }, []);
 
-  if (isLoading) return <Loader show size={32} />;
+  if (!device) return <Loader show size={32} />;
 
-  console.log(device)
   const context = {
     device,
     building,
     tasks,
     related,
+    nodes,
     loadings,
     errors,
     error,
@@ -107,7 +109,6 @@ export const CalculatorProfile = () => {
     <DeviceContext.Provider
       value={context}
     >
-      {/*<Breadcrumb path='/devices'/>*/}
       <Header />
       <Tabs />
       <Grid>
@@ -119,6 +120,9 @@ export const CalculatorProfile = () => {
         </Route>
         <Route path={`${path}related`} exact>
           <RelatedDevices />
+        </Route>
+        <Route path={`${path}nodes`} exact>
+          <Nodes />
         </Route>
         <Route path={`${path}documents`} exact>
           <Documents />

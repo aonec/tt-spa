@@ -6,8 +6,8 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../CalculatorProfile';
 
-export const RelatedDevices = () => {
-  const { related, loadings } = useContext(DeviceContext);
+export const Nodes = () => {
+  const { nodes, related, loadings } = useContext(DeviceContext);
   const loading = _.get(loadings, 'related', true);
 
   const buttonHandler = () => {
@@ -57,7 +57,7 @@ export const RelatedDevices = () => {
   );
 };
 
-export default RelatedDevices;
+export default Nodes;
 
 export const Template = styled.div``;
 
