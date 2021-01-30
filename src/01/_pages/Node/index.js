@@ -7,9 +7,9 @@ import Information from './components/Information';
 import RelatedDevices from './components/RelatedDevices';
 import { Events } from './components/Events';
 
-import { getCalculator, getCalculatorTasks } from './apiNodeProfile';
+import { getCalculator, getCalculatorTasks, getNode } from './apiNodeProfile';
 
-import { nodeTemplate } from './template'
+// import { nodeTemplate } from './template'
 import Connection from "../Node/components/Connection";
 import Documents from "./components/Documents";
 
@@ -17,8 +17,11 @@ export const NodeContext = createContext();
 export const Node = () => {
   console.log('Node');
 
+
   const { url } = useRouteMatch('/nodes/(\\d+)');
   const { nodeId } = useParams();
+
+  console.log('nodeId', nodeId);
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
   // const [tasks, setTasks] = useState();
@@ -31,15 +34,19 @@ export const Node = () => {
   })
   const [switched, setSwitched] = useState(true);
 
-  console.log('nodeId', nodeId);
+
 
   useEffect(() => {
 
-    getCalculator(nodeTemplate.calculatorId).then((res) => {
-      setCalculator(res);
-      console.log('res', res)
+    getNode(nodeId).then((res) => {
+      getCalculator(res.calculatorId).then((res) => {
+        setCalculator(res);
+        console.log('res', res)
+      })
+      setNode(res);
     })
-    setNode(nodeTemplate);
+
+
     // getCalculator(nodeId).then((res) => {
 
     // });

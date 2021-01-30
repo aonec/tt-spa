@@ -11,7 +11,7 @@ export const Connection = () => {
 
 
   const { model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate } = calculator
-
+  console.log("lastCheckingDate", lastCheckingDate)
 
   const CalcItem = () => (
     <ListItem key={id + serialNumber}>
@@ -28,7 +28,7 @@ export const Connection = () => {
         {closingdate !== null ? <IconTT icon='green'/> : <IconTT icon='red'/>}
         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
       </State>
-      <Dates>{moment(lastCheckingDate).format('DD.MM.YYYY')} - {moment(futureCheckingDate).format('DD.MM.YYYY')}</Dates>
+      <Dates>{lastCheckingDate !== null ? moment(lastCheckingDate).format('DD.MM.YYYY') : 'Дата поверки не указана'} - {futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана'}</Dates>
     </ListItem>
   );
 

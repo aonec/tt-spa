@@ -57,9 +57,9 @@ export const RelatedDevices = () => {
           {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
+        <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
+        <Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>
+        <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
       </ListItem>
     );
   });
