@@ -88,6 +88,9 @@ export const Node = () => {
         <Route path={`${url}/connection`} exact>
           <Connection/>
         </Route>
+        <Route path={`${url}/related`} exact>
+          <RelatedDevices/>
+        </Route>
         {/*<Events title="Задачи с объектом" />*/}
       </Grid>
     </NodeContext.Provider>

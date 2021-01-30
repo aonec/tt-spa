@@ -103,5 +103,9 @@ export const ListItem = styled.div`
 `;
 
 export const Span = styled.span`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
   color: rgba(39, 47, 90, 0.6);
 `;

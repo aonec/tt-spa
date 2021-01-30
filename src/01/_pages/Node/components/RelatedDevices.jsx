@@ -1,47 +1,78 @@
 import React, { useContext } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Loader } from '01/components';
+import { Icon } from '01/_components/Icon';
+import DeviceIcons from '01/_components/DeviceIcons';
+import _ from 'lodash';
 import { NodeContext } from '../index';
-import { InputTT, IconTT } from "../../../tt-components";
 
 export const RelatedDevices = () => {
-  const { calculator } = useContext(NodeContext);
-  const { hubConnection } = calculator;
+  const {node} = useContext(NodeContext);
 
-  console.log(calculator,"calculator")
+  const {communicationPipes} = node;
 
-  const {
-    calculatorModel,
-    calculatorSerialNumber,
-    futureCheckingDate,
-    closingdate,
-    calculatorId,
-  } = hubConnection || {};
+  const devices = communicationPipes.map((item, index)=>{
+    console.log("item", item)
 
-  const CalcItem = () => (
-    <ListItem key={calculatorId}>
-      <NavLink to={`/calculators/${calculatorId}`}>
-        <NameWrap>
-          <IconTT icon={"coldwatersupply"}/>
-          <Name>{calculatorModel || 'Вычислитель'}</Name>
-          <Serial>{` (${calculatorSerialNumber})`}</Serial>
-        </NameWrap>
-      </NavLink>
-      <State>
-        <InputTT icon="coldwatersupply" />
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-      </State>
-      <Span>{convertDate(futureCheckingDate)}</Span>
-    </ListItem>
-  );
+
+    const res = item.devices.map((resItem) =>{
+      console.log("resItem", resItem)
+      return resItem
+    })
+
+    return res
+
+  })
+
+  console.log("devices", devices)
+  console.log("_.flatten(array1); ", _.flatten(devices))
+
+
+  const buttonHandler = () => {
+  };
+
+  // const result = related.map((value) => {
+  //   const {
+  //     model,
+  //     serialNumber,
+  //     closingdate,
+  //     hub,
+  //     resource,
+  //     id,
+  //     housingStockId,
+  //   } = value;
+  //
+  //   const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
+  //   const { icon, color } = DeviceIcons[resource];
+  //
+  //   return (
+  //     <ListItem key={id}>
+  //       <NameWrap href={`/housingMeteringDevices/${id}`}>
+  //         <Icon icon={icon} color={color} />
+  //         <Name>{model}</Name>
+  //         <Serial>{` (${serialNumber})`}</Serial>
+  //       </NameWrap>
+  //
+  //       <State>
+  //         <Icon icon="status" color="#17B45A" />
+  //         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+  //       </State>
+  //       <Span>{`Ввод: ${entryNumber}`}</Span>
+  //       <Span>{`Узел: ${hubNumber}`}</Span>
+  //       <Span>{`Труба: ${pipeNumber}`}</Span>
+  //     </ListItem>
+  //   );
+  // });
 
   return (
-    <div>Test</div>
-    // <ListWrap>
-    //     <Title>Соединение с вычислителем</Title>
-    //     <CalcItem />
-    // </ListWrap>
+    <ListWrap>
+      {/*{devices}*/}
+      {/* <button onClick={buttonHandler}>related</button> */}
+      {/*<Loader show={loading} size="32">*/}
+      {/*  <Title>Приборы</Title>*/}
+      {/*  {result}*/}
+      {/*</Loader>*/}
+    </ListWrap>
   );
 };
 
@@ -49,9 +80,9 @@ export default RelatedDevices;
 
 export const Template = styled.div``;
 
-export const NameWrap = styled.div`
+export const NameWrap = styled.a`
   display: grid;
-  grid-template-columns: 1fr 5fr 6fr;
+  grid-template-columns: 1fr 7fr 4fr;
   align-items: center;
 
   &:hover {
@@ -92,13 +123,12 @@ export const ListWrap = styled.div`
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 3fr 3fr;
+  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
-
 export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
