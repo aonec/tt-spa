@@ -11,6 +11,7 @@ import { getCalculator, getCalculatorTasks } from './apiNodeProfile';
 
 import { nodeTemplate } from './template'
 import Connection from "../Node/components/Connection";
+import Documents from "./components/Documents";
 
 export const NodeContext = createContext();
 export const Node = () => {
@@ -90,6 +91,9 @@ export const Node = () => {
         </Route>
         <Route path={`${url}/related`} exact>
           <RelatedDevices/>
+        </Route>
+        <Route path={`${url}/documents`} exact>
+          <Documents/>
         </Route>
         {/*<Events title="Задачи с объектом" />*/}
       </Grid>

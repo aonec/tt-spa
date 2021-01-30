@@ -7,34 +7,35 @@ import styled from 'styled-components'
 
 export const Connection = () => {
   const { calculator } = useContext(NodeContext);
-  console.log(calculator,"calculator")
+  console.log(calculator, "calculator")
 
 
-  const {model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate} = calculator
+  const { model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate } = calculator
 
 
   const CalcItem = () => (
     <ListItem key={id + serialNumber}>
       <NavLink to={`/calculators/${id}`}>
         <NameWrap>
-          <IconTT icon="device" style={{marginRight: '8px'}}/>
+          <IconTT icon="device" style={{ marginRight: '8px' }}/>
           <NameAndSerialNumber>
-            <Name style={{marginRight: '8px'}}>{model}</Name>
+            <Name style={{ marginRight: '8px' }}>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
           </NameAndSerialNumber>
         </NameWrap>
       </NavLink>
       <State>
+        {closingdate !== null ? <IconTT icon='green'/> : <IconTT icon='red'/>}
         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
       </State>
-      <Span>{moment(lastCheckingDate).format('DD.MM.YYYY')} - {moment(futureCheckingDate).format('DD.MM.YYYY')}</Span>
+      <Dates>{moment(lastCheckingDate).format('DD.MM.YYYY')} - {moment(futureCheckingDate).format('DD.MM.YYYY')}</Dates>
     </ListItem>
   );
 
   return (
     <ListWrap>
-        <Title>Соединение с вычислителем</Title>
-        <CalcItem />
+      <Title>Соединение с вычислителем</Title>
+      <CalcItem/>
     </ListWrap>
   );
 };
@@ -102,7 +103,9 @@ export const ListItem = styled.div`
   opacity: 0.8;
 `;
 
-export const Span = styled.span`
+export const Dates = styled.span`
+  display: flex;
+  justify-content: center;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
