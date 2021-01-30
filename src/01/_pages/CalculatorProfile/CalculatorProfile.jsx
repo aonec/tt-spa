@@ -40,17 +40,21 @@ export const CalculatorProfile = () => {
   const [error, setError] = useState();
   const [errors, setErrors] = useState();
 
+
+
   const [loadings, setLoadings] = useState({
     device: true,
     building: true,
     tasks: true,
     related: true,
+    nodes: true
   });
   const errorsTemplate = {
     device: 'Произошла ошибка запроса устройства',
     building: 'Произошла ошибка при загрузке данных по зданию',
     tasks: 'Произошла ошибка при загрузке данных по задачам',
     related: 'Произошла ошибка при загрузке данных по подключенным устройствам',
+    nodes: 'Произошла ошибка при загрузке данных по узлам'
   };
 
   useEffect(() => {
@@ -80,13 +84,17 @@ export const CalculatorProfile = () => {
           building: false,
           tasks: false,
           related: false,
+          nodes: false
         }));
         setIsLoading(false);
       });
 
   }, []);
 
-  if (!device) return <Loader show size={32} />;
+  console.log("related", related)
+  if (isLoading) return <Loader show size={32} />;
+
+  console.log("nodes", nodes)
 
   const context = {
     device,

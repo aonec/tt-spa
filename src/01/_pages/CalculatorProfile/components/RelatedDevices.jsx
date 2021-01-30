@@ -10,9 +10,6 @@ export const RelatedDevices = () => {
   const { related, loadings } = useContext(DeviceContext);
   const loading = _.get(loadings, 'related', true);
 
-  const buttonHandler = () => {
-  };
-
   const result = related.map((value) => {
     const {
       model,
@@ -24,19 +21,23 @@ export const RelatedDevices = () => {
       housingStockId,
     } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
+    const { pipeNumber, entryNumber, hubNumber } = hub === null ? {
+      number: 'X',
+      entryNumber: 'X',
+      hubNumber: 'X'
+    } : hub;
     const { icon, color } = DeviceIcons[resource];
 
     return (
       <ListItem key={id}>
         <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <Icon icon={icon} color={color} />
+          <Icon icon={icon} color={color}/>
           <Name>{model}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
         <State>
-          <Icon icon="status" color="#17B45A" />
+          <Icon icon="status" color="#17B45A"/>
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
         <Span>{`Ввод: ${entryNumber}`}</Span>

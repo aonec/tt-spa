@@ -1,47 +1,83 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Loader } from '01/components';
-import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../CalculatorProfile';
+import { IconTT } from "../../../tt-components";
+import { TitleWrap } from "../../Node/components/Header";
 
 export const Nodes = () => {
   const { nodes, related, loadings } = useContext(DeviceContext);
-  const loading = _.get(loadings, 'related', true);
+  const loading = _.get(loadings, 'nodes', true);
 
   const buttonHandler = () => {
   };
 
-  const result = related.map((value) => {
+  // "id": 313,
+  //   "number": 1,
+  //   "nodeStatus": "Сдан на коммерческий учет",
+  //   "nodeResourceType": "ColdWaterSupply",
+  //   "serviceZone": "Апартаменты",
+  //   "lastCommercialAccountingDate": "2017-02-28T00:00:00",
+  //   "futureCommercialAccountingDate": "2019-06-10T00:00:00",
+  //   "calculatorId": 2538952,
+
+  const resources = [
+    {
+      value: 'HotWaterSupply',
+      label: 'Горячая вода',
+    },
+    {
+      value: 'ColdWaterSupply',
+      label: 'Холодная вода',
+    },
+    {
+      value: 'Heat',
+      label: 'Отопление',
+    },
+  ];
+
+  const result = nodes.map((value) => {
     const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
       id,
-      housingStockId,
+      number,
+      nodeStatus,
+      serviceZone,
+      lastCheckingDate,
+      futureCheckingDate,
+      nodeResourceType
     } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
-    const { icon, color } = DeviceIcons[resource];
+
+    const NodeStatus = ({ nodeStatus }) => {
+      let icon;
+      if (nodeStatus === 'Сдан на коммерческий учет') {
+        icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }}/>;
+      }
+      return (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginLeft: '8px',
+        }}
+        >
+          {icon}
+          <Span>{nodeStatus}</Span>
+        </div>
+      );
+    };
 
     return (
       <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <Icon icon={icon} color={color} />
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
+        <NameWrap href={`/nodes/${id}`}>
+          <IconTT icon={'node'} size={24} style={{ marginRight: '8px' }}/>
+          <Name>{`Узел ${id}`}</Name>
         </NameWrap>
 
-        <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
+
+        <NodeStatus nodeStatus={nodeStatus}/>
+        <Span>{serviceZone}</Span>
+        <Span>{_.find(resources, { value: nodeResourceType }).label}</Span>
       </ListItem>
     );
   });
@@ -50,7 +86,7 @@ export const Nodes = () => {
     <ListWrap>
       {/* <button onClick={buttonHandler}>related</button> */}
       <Loader show={loading} size="32">
-        <Title>Приборы</Title>
+        <Title>Узлы</Title>
         {result}
       </Loader>
     </ListWrap>
@@ -63,7 +99,7 @@ export const Template = styled.div``;
 
 export const NameWrap = styled.a`
   display: grid;
-  grid-template-columns: 1fr 7fr 4fr;
+  grid-template-columns: 1fr 11fr;
   align-items: center;
 
   &:hover {
@@ -77,6 +113,7 @@ export const NameWrap = styled.a`
 export const Name = styled.h3`
   padding: 0;
   margin: 0;
+  font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 32px;
@@ -104,12 +141,16 @@ export const ListWrap = styled.div`
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 3fr 5fr 2fr 2fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
 export const Span = styled.span`
-  color: rgba(39, 47, 90, 0.6);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.7);
 `;

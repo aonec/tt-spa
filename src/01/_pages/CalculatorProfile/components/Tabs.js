@@ -7,8 +7,8 @@ import { tabs } from '01/r_comp';
 const tabItems = [
   ['Общая информация', ''],
   ['Настройки соединения', 'connection'],
-  ['Подключенные приборы', 'related'],
   ['Узлы', 'nodes'],
+  ['Подключенные приборы', 'related'],
   ['Документы', 'documents'],
 ];
 
