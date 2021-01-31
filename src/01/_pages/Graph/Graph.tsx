@@ -240,8 +240,8 @@ const Graph: React.FC = () => {
                 <VictoryArea
                     name="graph"
                     interpolation="natural"
-                    labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}} />}
-                    labels={ ({ datum }) => [datum.time, datum.value] }
+                    labelComponent={<CustomTooltip  flyoutPadding={{top: 8, right: 16, bottom: 38, left: 16}} flyoutStyle={{ fill: "var(--main-100)"}} style={{fill: "#fff", padding: 8}} />}
+                    labels={ ({ datum }) => [datum.time] }
                     // labels={(d) => getTooltip(d)}
                     // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
                     style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
