@@ -3,6 +3,8 @@ import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
 import { NodeContext } from "../index";
+import { nodeStatusList, serviceZoneList } from '../../../tt-components/localBases';
+import _ from 'lodash';
 
 export const Header = () => {
   const { node, calculator } = useContext(NodeContext);
@@ -15,15 +17,16 @@ export const Header = () => {
   } = calculator;
 
   const {
-    id: objectId, city, street, housingStockNumber, corpus,
+    id: objectId, city, street, housingStockNumber, corpus
   } = address;
   // console.log("calculator", calculator)
 
-  const { id, nodeResourceType, nodeStatus } = node;
+  const { id, nodeResourceType, nodeStatus, number } = node;
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
-    if (nodeStatus === 'Сдан на коммерческий учет') {
+    const getNodeStatus = _.find(nodeStatusList, {value: nodeStatus}).label;
+    if (nodeStatus === 'Registered') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }}/>;
     }
     return (
@@ -34,7 +37,7 @@ export const Header = () => {
       }}
       >
         {icon}
-        {nodeStatus}
+        {getNodeStatus}
       </div>
     );
   };
@@ -49,7 +52,7 @@ export const Header = () => {
         <div>
           <TitleWrap>
             <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
-            <Title>{`Узел ${id}`}</Title>
+            <Title>{`Узел ${number}`}</Title>
           </TitleWrap>
         </div>
 

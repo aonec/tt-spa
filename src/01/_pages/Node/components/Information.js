@@ -7,6 +7,8 @@ import { NodeContext } from '../index';
 import DisableModal from './Modals/DisableModal';
 import EnableModal from './Modals/EnableModal';
 import moment from 'moment'
+import _ from "lodash";
+import { nodeStatusList, serviceZoneList } from "../../../tt-components/localBases";
 
 const Information = () => {
   const {
@@ -47,6 +49,9 @@ const Information = () => {
 
   }
 
+  const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
+  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
+
 
   return (
     <ListWrap>
@@ -59,11 +64,11 @@ const Information = () => {
       </ListItem>
       <ListItem>
         <span>Зона</span>
-        <div>{serviceZone}</div>
+        <div>{getServiceZone}</div>
       </ListItem>
       <ListItem>
         <span>Коммерческий учет показателей приборов</span>
-        <div>{nodeStatus === 'Сдан на коммерческий учет' ? 'Приборы на коммерческом учете' : 'Приборы НЕ на коммерческом учете'}</div>
+        <div>{getNodeStatus}</div>
       </ListItem>
       <ListItem>
         <span>Дата начала действия акта-допуска</span>

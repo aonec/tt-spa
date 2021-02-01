@@ -19,7 +19,7 @@ export const Header = () => {
   } = address;
   // console.log("calculator", calculator)
 
-  const { id, nodeResourceType, nodeStatus } = node;
+  const { id, nodeResourceType, nodeStatus, number } = node;
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
@@ -49,7 +49,7 @@ export const Header = () => {
         <div>
           <TitleWrap>
             <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
-            <Title>{`Узел ${id}`}</Title>
+            <Title>{`Узел ${number}`}</Title>
           </TitleWrap>
         </div>
 

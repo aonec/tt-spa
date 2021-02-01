@@ -1,10 +1,10 @@
 import axios from '../../../axios';
 import React, { useContext } from 'react'
-import { ButtonTT,Header, StyledFooter, StyledModal, StyledModalBody } from "../../../tt-components";
+import { ButtonTT, Header, StyledFooter, StyledModal, StyledModalBody } from "../../../tt-components";
 import { EditCalculatorContext } from "../index";
 
 
-export async function getNode(id = '') {
+export async function getNode(id = ''){
   try {
     const res = await axios.get(`Nodes/${id}`);
     return res;
@@ -17,32 +17,36 @@ export async function getNode(id = '') {
   }
 }
 
-export async function putNode(nodeId = '', form = {}) {
+export async function putNode(nodeId = '', form = {}){
   alert('Cейчас будем отправлять данные!');
   try {
     const res = await axios.put(`Nodes/${nodeId}`, form);
     // console.log("putCalculator", form)
-    alert('Вычислитель успешно изменен!');
+    alert('Узел успешно изменен!');
     return res;
   } catch (error) {
-    const handleError = error.response.data.error
-    console.log(handleError)
-    if (handleError.Code === "entityAlreadyExists") {
-      const {Message} = handleError;
-      if (Message === null) {
-        const id = null
-        console.log(handleError.Message)
-        return {show: true, id: id}
-      }
-      const id = parseInt(Message.replace(/[^\d]/g, ''))
-      console.log(handleError.Message)
-      return {show: true, id: id}
-      // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
-    }
+    console.log(error);
+    throw {
+      resource: 'node',
+      message: 'Произошла ошибка запроса узла',
+    };
+    // const handleError = error.response.data.error
+    // console.log(handleError)
+    // if (handleError.Code === "entityAlreadyExists") {
+    //   const {Message} = handleError;
+    //   if (Message === null) {
+    //     const id = null
+    //     console.log(handleError.Message)
+    //     return {show: true, id: id}
+    //   }
+    //   const id = parseInt(Message.replace(/[^\d]/g, ''))
+    //   console.log(handleError.Message)
+    //   return {show: true, id: id}
   }
 }
 
-const CalculatorExistAlert = ({visible}) =>{
+
+const CalculatorExistAlert = ({ visible }) => {
   console.log("CalculatorExistAlert");
   return (
     <StyledModal
@@ -61,7 +65,7 @@ const CalculatorExistAlert = ({visible}) =>{
   )
 }
 
-export async function getCalculator(id = '') {
+export async function getCalculator(id = ''){
   try {
     const res = await axios.get(`Calculators/${id}`);
     return res;
@@ -75,8 +79,7 @@ export async function getCalculator(id = '') {
 }
 
 
-
-export async function putCalculator(deviceId = '', form = {}) {
+export async function putCalculator(deviceId = '', form = {}){
   alert('Cейчас будем отправлять данные!');
   try {
     const res = await axios.put(`Calculators/${deviceId}`, form);
@@ -87,15 +90,15 @@ export async function putCalculator(deviceId = '', form = {}) {
     const handleError = error.response.data.error
     console.log(handleError)
     if (handleError.Code === "entityAlreadyExists") {
-      const {Message} = handleError;
+      const { Message } = handleError;
       if (Message === null) {
         const id = null
         console.log(handleError.Message)
-        return {show: true, id: id}
+        return { show: true, id: id }
       }
       const id = parseInt(Message.replace(/[^\d]/g, ''))
       console.log(handleError.Message)
-      return {show: true, id: id}
+      return { show: true, id: id }
       // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
     }
   }

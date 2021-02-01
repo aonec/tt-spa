@@ -71,7 +71,7 @@ export const Nodes = () => {
       <ListItem key={id}>
         <NameWrap href={`/nodes/${id}`}>
           <IconTT icon={'node'} size={24} style={{ marginRight: '8px' }}/>
-          <Name>{`Узел ${id}`}</Name>
+          <Name>{`Узел ${number}`}</Name>
         </NameWrap>
 
 

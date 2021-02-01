@@ -10,7 +10,7 @@ import moment from 'moment';
 import {
   InputTT, SelectTT, DatePickerTT, Wrap, ButtonTT, Title,
 } from '../../../tt-components';
-import { ipv4RegExp, items, resources } from '../../../tt-components/localBases';
+import { ipv4RegExp, items, nodeStatusList, resources, serviceZoneList } from '../../../tt-components/localBases';
 import { EditNodeContext } from '../index';
 import { putCalculator, putNode } from './apiEditNode';
 import isDateNull from '../../../utils/isDateNull';
@@ -53,6 +53,7 @@ const EditNodeForm = () => {
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
     id: nodeId,
+    calculatorId,
   } = node;
 
   // const [checked, setChecked] = useState(isConnected);
@@ -94,7 +95,7 @@ const EditNodeForm = () => {
         serviceZone: values.serviceZone,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
-        // calculatorId: 0,
+        calculatorId,
       };
 
       // const form = {
@@ -209,24 +210,36 @@ const EditNodeForm = () => {
     }
   }
 
-  const nodeStatusList = [
-    {
-      value: 'Сдан на коммерческий учет',
-      label: 'Сдан на коммерческий учет',
-    },
-    {
-      value: '2',
-      label: '2',
-    },
-    {
-      value: '3',
-      label: '3',
-    },
-    {
-      value: '4',
-      label: '4',
-    },
-  ];
+
+  // public enum NodeCommercialAccountStatus
+  // {
+  //   /// <summary>
+  //   /// Не на коммерческом учете
+  //   /// </summary>
+  //   [Description("Не на коммерческом учете")]
+  //   NotRegistered,
+  //
+  //     /// <summary>
+  //     /// Сдан на коммерческий учет
+  //     /// </summary>
+  //     [Description("Сдан на коммерческий учет")]
+  //   Registered,
+  //
+  //     /// <summary>
+  //     /// На утверждении
+  //     /// </summary>
+  //     [Description("На утверждении")]
+  //   OnReview,
+  //
+  //     /// <summary>
+  //     /// Подготовлен к сдаче
+  //     /// </summary>
+  //     [Description("Подготовлен к сдаче")]
+  //   Prepared
+  // }
+
+
+
 
   return (
     <form onSubmit={handleSubmitForm} style={{ maxWidth: 480 }}>
@@ -255,16 +268,19 @@ const EditNodeForm = () => {
           <Alert name="number"/>
         </Form.Item>
 
+
         <Form.Item label="Зона">
-          <InputTT
-            name="serviceZone"
+          <SelectTT
+            placeholder="Зона"
+            options={serviceZoneList}
             value={values.serviceZone}
-            onBlur={handleBlur}
-            placeholder="Номер узла"
-            onChange={handleChange}
+            onChange={(event, target) => {
+              setFieldValue('serviceZone', event);
+            }}
           />
           <Alert name="serviceZone"/>
         </Form.Item>
+
 
         <Form.Item label="Коммерческий учет показателей приборов">
           <SelectTT
@@ -278,31 +294,36 @@ const EditNodeForm = () => {
           <Alert name="nodeStatus"/>
         </Form.Item>
 
-        <Form.Item label="Дата начала действия акта-допуска">
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            name="lastCommercialAccountingDate"
-            allowClear={false}
-            placeholder="Укажите дату..."
-            onChange={(date) => {
-              setFieldValue('lastCommercialAccountingDate', date);
-            }}
-            value={values.lastCommercialAccountingDate}
-          />
-        </Form.Item>
+        {values.nodeStatus === 'Registered' ?
+          <>
+            <Form.Item label="Дата начала действия акта-допуска">
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                name="lastCommercialAccountingDate"
+                allowClear={false}
+                placeholder="Укажите дату..."
+                onChange={(date) => {
+                  setFieldValue('lastCommercialAccountingDate', date);
+                }}
+                value={values.lastCommercialAccountingDate}
+              />
+            </Form.Item>
 
-        <Form.Item label="Дата окончания действия акта-допуска">
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            allowClear={false}
-            onChange={(date) => {
-              setFieldValue('futureCommercialAccountingDate', date);
-            }}
-            value={values.futureCommercialAccountingDate}
-            name="futureCommercialAccountingDate"
-          />
-        </Form.Item>
+            <Form.Item label="Дата окончания действия акта-допуска">
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                placeholder="Укажите дату..."
+                allowClear={false}
+                onChange={(date) => {
+                  setFieldValue('futureCommercialAccountingDate', date);
+                }}
+                value={values.futureCommercialAccountingDate}
+                name="futureCommercialAccountingDate"
+              />
+            </Form.Item>
+          </>
+          : null
+        }
 
       </div>
 
