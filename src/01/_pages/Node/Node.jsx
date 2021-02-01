@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { Route, useParams, useRouteMatch } from 'react-router-dom';
 import Header from './components/Header';
-import { Tabs } from './components/Tabs';
+// import { Tabs } from './components/Tabs';
+import {TabsTT} from './components/Tabs'
 import { Grid } from '../../_components/Grid';
 import Information from './components/Information';
 import RelatedDevices from './components/RelatedDevices';
@@ -61,7 +62,7 @@ export const Node = () => {
   return (
     <NodeContext.Provider value={context}>
       <Header />
-      <Tabs />
+      <TabsTT />
       <Grid>
         <Route path={`${url}`} exact>
           <Information />
@@ -81,3 +82,5 @@ export const Node = () => {
   );
 };
 export default Node;
+
+

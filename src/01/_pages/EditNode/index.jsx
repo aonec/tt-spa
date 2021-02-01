@@ -14,15 +14,11 @@ export const EditNode = () => {
   const [currentTabKey, setTab] = useState('1');
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
-  const [currentCalc, setCurrentCalc] = useState();
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [existCalculator, setExistCalculator] = useState(null);
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
+    console.log('value', value)
     setTab(value);
   }
-
-  console.log('currentCalc', currentCalc);
 
   useEffect(() => {
     getNode(nodeId).then((res) => {
@@ -44,21 +40,15 @@ export const EditNode = () => {
     calculator,
     currentTabKey,
     handleChangeTab,
-    setTab,
-    // setAlertVisible,
-    // alertVisible,
-    // existCalculator,
-    // currentCalc,
-    // setExistCalculator
-
+    setTab
   };
   return (
     <>
       <EditNodeContext.Provider value={context}>
-        <Breadcrumb path={`/nodes/${nodeId}`} />
-        <Header />
-        <EditNodeTabs />
-         <EditNodeForm/>
+        <Breadcrumb path={`/nodes/${nodeId}`}/>
+        <Header/>
+        <EditNodeTabs/>
+        <EditNodeForm/>
       </EditNodeContext.Provider>
     </>
   );
