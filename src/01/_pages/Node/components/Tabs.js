@@ -8,7 +8,7 @@ const tabItems = [
   ['Общая информация', ''],
   ['Настройки соединения', 'connection'],
   ['Подключенные приборы', 'related'],
-  ['Документы', 'documents'],
+  ['Документы', 'documents']
 ];
 
 export const Tabs = React.memo(() => {
@@ -29,3 +29,6 @@ export const Tabs = React.memo(() => {
     </tabs>,
   );
 });
+
+export default Tabs;
+

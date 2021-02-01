@@ -3,23 +3,18 @@ import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
 import { NodeContext } from "../index";
-import { nodeStatusList, serviceZoneList } from '../../../tt-components/localBases';
+import { nodeStatusList } from '../../../tt-components/localBases';
 import _ from 'lodash';
 
 export const Header = () => {
   const { node, calculator } = useContext(NodeContext);
-  // const {
-  //   model, serialNumber, resource, address,
-  // } = node;
-
   const {
     model, serialNumber, resource, address,
   } = calculator;
-
   const {
     id: objectId, city, street, housingStockNumber, corpus
   } = address;
-  // console.log("calculator", calculator)
+
 
   const { id, nodeResourceType, nodeStatus, number } = node;
 
