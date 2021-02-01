@@ -23,6 +23,7 @@ import { defaultValidationSchema } from './validationSchemas';
 import { NodeContext } from "../../Node";
 import styled from "styled-components";
 import RelatedDevices from "./RelatedDevices";
+import Connection from "./Connection";
 
 const EditNodeForm = () => {
   const {
@@ -187,11 +188,11 @@ const EditNodeForm = () => {
 
       </div>
 
-      <div hidden={Number(currentTabKey) !== 2}>
-        <Title size="16" color="black">Компонент в разработке</Title>
+      <div hidden={Number(currentTabKey) !== 2} style={{ maxWidth: 620 }}>
+        <Connection />
       </div>
 
-      <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 600 }}>
+      <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 620 }}>
         <RelatedDevices/>
       </div>
 

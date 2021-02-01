@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import _ from 'lodash';
-import { EditNodeContext } from '../../index';
-import { IconTT } from '../../../../tt-components/IconTT';
+import { EditNodeContext } from '../index';
+import { IconTT } from '../../../tt-components/IconTT';
 import {
   ListItem, ListWrap, Name, NameWrap, Serial, Span, State,
-} from '../EditNodeForm';
-import { ButtonTT } from "../../../../tt-components";
+} from './EditNodeForm';
+import { ButtonTT } from "../../../tt-components";
 
 export const RelatedDevices = () => {
   const { node } = useContext(EditNodeContext);
