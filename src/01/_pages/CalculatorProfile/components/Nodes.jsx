@@ -4,7 +4,7 @@ import { Loader } from '01/components';
 import _ from 'lodash';
 import { DeviceContext } from '../CalculatorProfile';
 import { IconTT } from "../../../tt-components";
-import { TitleWrap } from "../../Node/components/Header";
+import { TitleWrap } from "../../EditNode/components/Header";
 
 export const Nodes = () => {
   const { nodes, related, loadings } = useContext(DeviceContext);

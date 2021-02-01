@@ -35,7 +35,8 @@ import  {
   Registration,
   Node,
   IndividualDevice,
-  MapPage
+  MapPage,
+  EditNode
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -97,6 +98,12 @@ export function App() {
                     <Route
                       path={['/nodes/:nodeId/(connection|related|documents)?']}
                       component={Node}
+                      exact
+                    />
+
+                    <Route
+                      path={['/nodes/:nodeId/edit']}
+                      component={EditNode}
                       exact
                     />
 

@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
-import Breadcrumb from '../../../tt-components/Breadcrumb/Breadcrumb';
-import { NodeContext } from '../index';
+import { EditNodeContext } from "../index";
 
 export const Header = () => {
-  const { node, calculator } = useContext(NodeContext);
+  const { node, calculator } = useContext(EditNodeContext);
   // const {
   //   model, serialNumber, resource, address,
   // } = node;
@@ -25,7 +24,7 @@ export const Header = () => {
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
     if (nodeStatus === 'Сдан на коммерческий учет') {
-      icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }} />;
+      icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }}/>;
     }
     return (
       <div style={{
@@ -47,24 +46,23 @@ export const Header = () => {
     }}
     >
       <div>
-        <Breadcrumb path="/nodes" />
         <div>
           <TitleWrap>
-            <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }} />
+            <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
             <Title>{`Узел ${id}`}</Title>
           </TitleWrap>
         </div>
 
         <SubtitleWrap>
           <Subtitle
-            to={` / objects /${objectId}`}
+            to={`/objects/${objectId}`}
           >
             {`${city}, ${street}, ${housingStockNumber}${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
-          <NodeStatus nodeStatus={nodeStatus} />
+          <NodeStatus nodeStatus={nodeStatus}/>
         </SubtitleWrap>
       </div>
-      <div style={{ position: 'relative' }} />
+      <div style={{ position: 'relative' }}/>
     </HeaderWrap>
   );
 };
