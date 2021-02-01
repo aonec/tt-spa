@@ -13,9 +13,9 @@ import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
-import createSagaMiddleware from 'redux-saga'
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../Redux/rootReducer';
-import  {
+import {
   Tasks,
   Login,
   TaskProfile,
@@ -36,18 +36,16 @@ import  {
   Node,
   IndividualDevice,
   MapPage,
-  EditNode
+  EditNode,
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import rootSaga from "../Redux/saga";
-import {store} from "../Redux/store";
+import rootSaga from '../Redux/saga';
+import { store } from '../Redux/store';
 
 moment.locale('ru');
-
-
 
 export function App() {
   const AppProvider = useApp();
@@ -90,8 +88,8 @@ export function App() {
                     />
 
                     <Route
-                      path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
-                      component={HousingProfile}
+                      path="/calculators/:deviceId/edit"
+                      component={EditCalculator}
                       exact
                     />
 
@@ -102,8 +100,14 @@ export function App() {
                     />
 
                     <Route
-                      path={['/nodes/:nodeId/edit']}
+                      path="/nodes/:nodeId/edit"
                       component={EditNode}
+                      exact
+                    />
+
+                    <Route
+                      path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
+                      component={HousingProfile}
                       exact
                     />
 
@@ -119,11 +123,6 @@ export function App() {
                       exact
                     />
 
-                    <Route
-                      path="/calculators/:deviceId/edit"
-                      component={EditCalculator}
-                      exact
-                    />
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit_odpu/"
                       component={EditODPU}

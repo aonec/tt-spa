@@ -15,10 +15,10 @@ export const EditNode = () => {
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
   const [currentCalc, setCurrentCalc] = useState();
-  const [alertVisible, setAlertVisible] = useState(false)
+  const [alertVisible, setAlertVisible] = useState(false);
   const [existCalculator, setExistCalculator] = useState(null);
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -31,6 +31,7 @@ export const EditNode = () => {
         console.log('res', res);
       });
       setNode(res);
+      console.log('node', res);
     });
   }, []);
 
@@ -39,23 +40,25 @@ export const EditNode = () => {
   }
 
   const context = {
-    node, calculator
-    // currentCalc,
-    // currentTabKey,
-    // handleChangeTab,
-    // setTab,
+    node,
+    calculator,
+    currentTabKey,
+    handleChangeTab,
+    setTab,
     // setAlertVisible,
     // alertVisible,
     // existCalculator,
+    // currentCalc,
     // setExistCalculator
+
   };
   return (
     <>
       <EditNodeContext.Provider value={context}>
-        <Breadcrumb path={`/nodes/${nodeId}`}/>
-        <Header/>
-        <EditNodeTabs/>
-        {/*<EditNodeForm/>*/}
+        <Breadcrumb path={`/nodes/${nodeId}`} />
+        <Header />
+        <EditNodeTabs />
+         <EditNodeForm/>
       </EditNodeContext.Provider>
     </>
   );
