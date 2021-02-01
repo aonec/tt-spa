@@ -17,6 +17,31 @@ export async function getNode(id = '') {
   }
 }
 
+export async function putNode(nodeId = '', form = {}) {
+  alert('Cейчас будем отправлять данные!');
+  try {
+    const res = await axios.put(`Nodes/${nodeId}`, form);
+    // console.log("putCalculator", form)
+    alert('Вычислитель успешно изменен!');
+    return res;
+  } catch (error) {
+    const handleError = error.response.data.error
+    console.log(handleError)
+    if (handleError.Code === "entityAlreadyExists") {
+      const {Message} = handleError;
+      if (Message === null) {
+        const id = null
+        console.log(handleError.Message)
+        return {show: true, id: id}
+      }
+      const id = parseInt(Message.replace(/[^\d]/g, ''))
+      console.log(handleError.Message)
+      return {show: true, id: id}
+      // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
+    }
+  }
+}
+
 const CalculatorExistAlert = ({visible}) =>{
   console.log("CalculatorExistAlert");
   return (

@@ -12,7 +12,7 @@ import {
 } from '../../../tt-components';
 import { ipv4RegExp, items, resources } from '../../../tt-components/localBases';
 import { EditNodeContext } from '../index';
-import { putCalculator } from './apiEditNode';
+import { putCalculator, putNode } from './apiEditNode';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
@@ -22,7 +22,7 @@ import isEmptyString from '../../../utils/isEmptyString';
 
 const EditNodeForm = () => {
   const {
-    calculator, currentTabKey, setTab, setAlertVisible, setExistCalculator, node
+    calculator, currentTabKey, setTab, setAlertVisible, setExistCalculator, node,
   } = useContext(EditNodeContext);
   // console.log(currentCalc);
   // const {
@@ -52,7 +52,7 @@ const EditNodeForm = () => {
     nodeStatus,
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
-    id: nodeId
+    id: nodeId,
   } = node;
 
   // const [checked, setChecked] = useState(isConnected);
@@ -85,25 +85,38 @@ const EditNodeForm = () => {
       // // infoId: currentInfoId === null ? null : Number(currentInfoId),
       // isConnected,
     },
-    validationSchema,
+    validationSchema: defaultValidationSchema,
     onSubmit: async () => {
-      const form = {
-        serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
+      const nodeForm = {
+        number: Number(values.number),
+        nodeStatus: values.nodeStatus,
+        nodeResourceType: values.nodeResourceType,
+        serviceZone: values.serviceZone,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
-        isConnected: values.isConnected,
-        connection: {
-          ipV4: values.ipV4,
-          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
-          port: returnNullIfEmptyString(values.port),
-        },
-        housingStockId: values.housingStockId,
-        infoId: values.infoId,
+        // calculatorId: 0,
       };
-      console.log('FORM', form);
-      console.log(JSON.stringify(form));
+
+      // const form = {
+      //   serialNumber: values.serialNumber,
+      //   lastCheckingDate: values.lastCheckingDate.toISOString(),
+      //   futureCheckingDate: values.futureCheckingDate.toISOString(),
+      //   lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+      //   futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+      //   isConnected: values.isConnected,
+      //   connection: {
+      //     ipV4: values.ipV4,
+      //     deviceAddress: returnNullIfEmptyString(values.deviceAddress),
+      //     port: returnNullIfEmptyString(values.port),
+      //   },
+      //   housingStockId: values.housingStockId,
+      //   infoId: values.infoId,
+      // };
+      console.log('nodeForm', nodeForm);
+      console.log(JSON.stringify(nodeForm));
+      putNode(nodeId, nodeForm).then((res) => {
+        console.log('putNode', res);
+      });
       // putCalculator(id, form).then(({ show, id }) => {
       //   if (show === true) {
       //     setAlertVisible(true);
@@ -172,12 +185,17 @@ const EditNodeForm = () => {
   const tabErrors = [
     {
       key: '1',
-      value: ['serialNumber', 'infoId'],
+      value: ['number',
+        'nodeStatus',
+        'nodeResourceType',
+        'serviceZone',
+        'lastCommercialAccountingDate',
+        'futureCommercialAccountingDate'],
     },
-    {
-      key: '2',
-      value: ['ipV4', 'port', 'deviceAddress'],
-    },
+    // {
+    //   key: '2',
+    //   value: ['ipV4', 'port', 'deviceAddress'],
+    // },
   ];
 
   function handleSubmitForm(e){
@@ -194,26 +212,26 @@ const EditNodeForm = () => {
   const nodeStatusList = [
     {
       value: 'Сдан на коммерческий учет',
-      label: 'Сдан на коммерческий учет'
+      label: 'Сдан на коммерческий учет',
     },
     {
       value: '2',
-      label: '2'
+      label: '2',
     },
     {
       value: '3',
-      label: '3'
+      label: '3',
     },
     {
       value: '4',
-      label: '4'
+      label: '4',
     },
-  ]
+  ];
 
   return (
     <form onSubmit={handleSubmitForm} style={{ maxWidth: 480 }}>
       <div hidden={Number(currentTabKey) !== 1}>
-        <Form.Item label='Тип ресурса'>
+        <Form.Item label="Тип ресурса">
           <SelectTT
             placeholder="Выберите Тип ресурса"
             options={resources}
@@ -221,6 +239,7 @@ const EditNodeForm = () => {
             onChange={(event, target) => {
               setFieldValue('nodeResourceType', event);
             }}
+            disabled
           />
           <Alert name="nodeResourceType"/>
         </Form.Item>
@@ -247,7 +266,7 @@ const EditNodeForm = () => {
           <Alert name="serviceZone"/>
         </Form.Item>
 
-        <Form.Item label='Коммерческий учет показателей приборов'>
+        <Form.Item label="Коммерческий учет показателей приборов">
           <SelectTT
             placeholder="Коммерческий учет показателей приборов"
             options={nodeStatusList}
@@ -297,7 +316,7 @@ const EditNodeForm = () => {
         </ButtonTT>
 
         <NavLink to={`/nodes/${nodeId}`}>
-          <ButtonTT color="white" type='button'>
+          <ButtonTT color="white" type="button">
             Отмена
           </ButtonTT>
         </NavLink>
