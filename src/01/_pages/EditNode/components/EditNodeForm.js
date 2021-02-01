@@ -19,9 +19,10 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 
-import { defaultValidationSchema} from './validationSchemas';
+import { defaultValidationSchema } from './validationSchemas';
 import { NodeContext } from "../../Node";
 import styled from "styled-components";
+import RelatedDevices from "./RelatedDevices";
 
 const EditNodeForm = () => {
   const {
@@ -191,7 +192,7 @@ const EditNodeForm = () => {
       </div>
 
       <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 600 }}>
-        <RelatedDevices />
+        <RelatedDevices/>
       </div>
 
       <div hidden={Number(currentTabKey) !== 4}>
@@ -222,109 +223,47 @@ const EditNodeForm = () => {
 export default EditNodeForm;
 
 
-const RelatedDevices = () => {
-  const { node } = useContext(EditNodeContext);
 
-  const { communicationPipes } = node;
-
-  const related = _.flatten(communicationPipes.map((item, index) => {
-    console.log('item', item);
-
-    const res = item.devices.map((resItem) => {
-      console.log('resItem', resItem);
-      return resItem;
-    });
-
-    return res;
-  }));
-
-  console.log('devices', related);
-
-  const buttonHandler = () => {
-  };
-
-  const result = related.map((value) => {
-    const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      housingStockId,
-    } = value;
-
-    const { pipeNumber, entryNumber, hubNumber } = hub === null ? {
-      number: 'X',
-      entryNumber: 'X',
-      hubNumber: 'X',
-    } : hub;
-
-    return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }}/>
-          <Name style={{ marginRight: '8px' }}>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
-        <Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>
-        <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
-      </ListItem>
-    );
-  });
-
-  return (
-    <ListWrap>
-      {result}
-    </ListWrap>
-  );
-};
 
 export const Template = styled.div``;
 
 export const NameWrap = styled.a`
-            display: grid;
-            grid-template-columns: auto auto 1fr;
-            align-items: center;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
 
-            &:hover {
-            h3,
-            p {
-            color: var(--primary-100);
-          }
-          }
-            `;
+  &:hover {
+    h3,
+    p {
+      color: var(--primary-100);
+    }
+  }
+`;
 
 export const Name = styled.h3`
-            padding: 0;
-            margin: 0;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 32px;
-            `;
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+`;
 
 export const Serial = styled.p`
-            padding: 0;
-            margin: 0;
-            color: rgba(39, 47, 90, 0.6);
-            `;
+  padding: 0;
+  margin: 0;
+  color: rgba(39, 47, 90, 0.6);
+`;
 
 export const State = styled.div`
-            display: flex;
-            align-items: center;
-            color: rgba(39, 47, 90, 0.8);
-            `;
+  display: flex;
+  align-items: center;
+  color: rgba(39, 47, 90, 0.8);
+`;
 
 export const ListWrap = styled.div`
-            display: grid;
-            height: min-content;
-          }
+  display: grid;
+  height: min-content;
+}
 `;
 
 export const ListItem = styled.div`
