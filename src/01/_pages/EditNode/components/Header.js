@@ -3,6 +3,8 @@ import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
 import { EditNodeContext } from "../index";
+import _ from "lodash";
+import { nodeStatusList, serviceZoneList } from "../../../tt-components/localBases";
 
 export const Header = () => {
   const { node, calculator } = useContext(EditNodeContext);
@@ -19,11 +21,14 @@ export const Header = () => {
   } = address;
   // console.log("calculator", calculator)
 
-  const { id, nodeResourceType, nodeStatus, number } = node;
+  const { id, nodeResourceType, nodeStatus, number, serviceZone } = node;
+
+  const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
+  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
-    if (nodeStatus === 'Сдан на коммерческий учет') {
+    if (getNodeStatus === 'Сдан на коммерческий учет') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }}/>;
     }
     return (
@@ -34,7 +39,7 @@ export const Header = () => {
       }}
       >
         {icon}
-        {nodeStatus}
+        {getNodeStatus}
       </div>
     );
   };
