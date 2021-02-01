@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Route, useParams, useRouteMatch } from 'react-router-dom';
 import Header from './components/Header';
 // import { Tabs } from './components/Tabs';
-import {TabsTT} from './components/Tabs'
+import { Tabs } from './components/Tabs';
 import { Grid } from '../../_components/Grid';
 import Information from './components/Information';
 import RelatedDevices from './components/RelatedDevices';
@@ -21,9 +21,17 @@ export const Node = () => {
   console.log('nodeId', nodeId);
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
+  const [currentTab, setCurrentTab] = useState('1');
   // const [tasks, setTasks] = useState();
   const [showDisable, setShowDisable] = useState(false);
   const [showEnable, setShowEnable] = useState(false);
+
+
+
+  function handleChangeTab(value) {
+    console.log('value', value);
+    setCurrentTab(value);
+  }
 
   const [visible, setVisible] = useState({
     showDisable: false,
@@ -57,12 +65,15 @@ export const Node = () => {
     setVisible,
     switched,
     setSwitched,
+    handleChangeTab,
+    currentTab,
+    setCurrentTab,
   };
 
   return (
     <NodeContext.Provider value={context}>
       <Header />
-      <TabsTT />
+      <Tabs />
       <Grid>
         <Route path={`${url}`} exact>
           <Information />
@@ -82,5 +93,3 @@ export const Node = () => {
   );
 };
 export default Node;
-
-
