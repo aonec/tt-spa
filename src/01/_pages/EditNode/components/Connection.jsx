@@ -1,26 +1,24 @@
 import React, { useContext } from 'react';
-import moment from 'moment'
-import { NavLink } from 'react-router-dom';
+import moment from 'moment';
+import { NavLink, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { EditNodeContext } from '../index';
-import { InputTT, IconTT } from "../../../tt-components";
-import styled from 'styled-components'
+import { IconTT } from '../../../tt-components';
 
-export const Connection = () => {
+export default () => {
   const { calculator } = useContext(EditNodeContext);
-  console.log(calculator, "calculator")
+  const {
+    model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate,
+  } = calculator;
 
+  const lastCheckingDateText = lastCheckingDate !== null ? moment(lastCheckingDate).format('DD.MM.YYYY') : 'Дата поверки не указана';
+  const futureCheckingDateText = futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана';
 
-  const { model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate } = calculator
-  console.log("lastCheckingDate", lastCheckingDate)
-
-  const handleEdit = () => {
-    console.log("handleEdit")
-  }
-  const CalcItem = () => (
-    <ListItem key={id + serialNumber}>
+  return (
+    <CalcListItem key={id + serialNumber}>
       <NavLink to={`/calculators/${id}`}>
         <NameWrap>
-          <IconTT icon="device" style={{ marginRight: '8px' }}/>
+          <IconTT icon="device"/>
           <NameAndSerialNumber>
             <Name style={{ marginRight: '8px' }}>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
@@ -28,26 +26,19 @@ export const Connection = () => {
         </NameWrap>
       </NavLink>
       <State>
-        {closingdate !== null ? <IconTT icon='green'/> : <IconTT icon='red'/>}
+        {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
       </State>
-      <div style={{display: 'flex', alignItems: 'center'}}>
-        <Dates>{lastCheckingDate !== null ? moment(lastCheckingDate).format('DD.MM.YYYY') : 'Дата поверки не указана'} - {futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана'}</Dates>
-        <IconTT icon='edit' onClick={handleEdit} style={{marginLeft:8}}/>
-      </div>
-
-    </ListItem>
+      <Div>
+        <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
+        <Link to={`/calculators/${id}/edit`}><IconTT icon="edit" style={{ marginLeft: 8 }}/></Link>
+        <Link to={`/calculators/${id}/edit`}><IconTT icon="del" style={{ marginLeft: 8 }}/></Link>
+      </Div>
+    </CalcListItem>
   );
 
-  return (
-    <ListWrap>
-      <Title>Соединение с вычислителем</Title>
-      <CalcItem/>
-    </ListWrap>
-  );
 };
 
-export default Connection;
 
 export const Template = styled.div``;
 
@@ -64,10 +55,26 @@ export const NameWrap = styled.div`
   }
 `;
 
+
+export const Div = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
+
+export const CalcListItem = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 2fr 6fr;
+  grid-template-rows: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--frame);
+  opacity: 0.8;
+`;
+
 export const NameAndSerialNumber = styled.div`
   display: inline-flex;
   align-items: center;
-`
+  padding-left: 8px;
+`;
 export const Name = styled.h3`
   padding: 0;
   margin: 0;
@@ -91,23 +98,6 @@ export const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
-`;
-
-export const Title = styled.h2``;
-
-export const ListWrap = styled.div`
-  display: grid;
-  height: min-content;
-}
-`;
-
-export const ListItem = styled.div`
-  display: grid;
-  grid-template-columns: 4fr 2fr 6fr;
-  grid-template-rows: 48px;
-  align-items: center;
-  border-bottom: 1px solid var(--frame);
-  opacity: 0.8;
 `;
 
 export const Dates = styled.span`

@@ -6,6 +6,7 @@ export const app = css`
     display: grid;
     grid-template-columns: 208px 1fr;
   }
+
   main,
   menu {
     padding-top: 16px;
@@ -13,6 +14,7 @@ export const app = css`
     grid-gap: 16px;
     align-content: start;
   }
+
   menu {
     background-color: var(--bg);
   }
