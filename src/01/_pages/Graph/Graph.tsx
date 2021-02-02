@@ -4744,7 +4744,7 @@ const tickFormat = readings.map((reading) => {
 const graphDataNew = readingsByHours.ArchiveEntries.map((entry) => {
     return {
         time: entry.Timestamp,
-        value: entry.Values.InputTemperature,
+        value: entry.Values.DeltaMass,
         // label: reading.Params.InputVolume + " м³"
     }
 })
@@ -4767,11 +4767,12 @@ const formTicks = (min, max) => {
     }
     return [min, min + 1, ...multipleFives, max]
 }
-
+//
 // const formTickValues = (dateArr) => {
 //     // const days = dateArr.map((data) => +format(new Date(data.time), 'dd'))
 //     const filteredDates = dateArr.filter((date) => {
-//         +format(new Date(data.time), 'dd')
+//         const day = +format(new Date(date), 'dd')
+//         // return (dat)
 //     }
 // }
 
@@ -4923,7 +4924,7 @@ const Graph: React.FC = () => {
                                                      // style={{fill: "var(--main-100)", padding: 8}}
                     />}
 
-                    labels={ ({ datum }) => `${format(new Date(datum.time), 'dd.mm.yyyy')}\n` + `⸻\n` + `${datum.value}м³` }
+                    labels={ ({ datum }) => `${format(new Date(datum.time), 'dd.MM.yyyy')}\n` + `⸻\n` + `${datum.value}м³` }
                     // labels={(d) => getTooltip(d)}
                     // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
                     style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
