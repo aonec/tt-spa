@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Tabs } from 'antd';
-import { EditCalculatorContext } from "../index";
+import { EditNodeContext } from "../index";
 
 const { TabPane } = Tabs;
 
@@ -23,9 +23,9 @@ const tabs = [
   },
 ];
 
-const EditCalculatorTabs = () => {
+const EditNodeTabs = () => {
   console.log('EditCalculatorTabs');
-  const { currentTabKey, handleChangeTab } = useContext(EditCalculatorContext);
+  const { currentTabKey, handleChangeTab } = useContext(EditNodeContext);
   return (
     <Tabs style={{ height: 'fit-content' }} activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {
@@ -38,6 +38,4 @@ const EditCalculatorTabs = () => {
   );
 };
 
-export default EditCalculatorTabs;
-
-
+export default EditNodeTabs;
