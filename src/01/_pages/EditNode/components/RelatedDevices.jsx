@@ -6,6 +6,7 @@ import {
   ListItem, ListWrap, Name, NameWrap, Serial, Span, State,
 } from './EditNodeForm';
 import { ButtonTT } from "../../../tt-components";
+import { Link } from "react-router-dom";
 
 export const RelatedDevices = () => {
   const { node } = useContext(EditNodeContext);
@@ -52,9 +53,9 @@ export const RelatedDevices = () => {
         </State>
         <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
         <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
-        <IconTT icon='edit' onClick={handleEdit}/>
+        <Link to={`/housingMeteringDevices/${id}/edit_odpu`} title="Редактирование ОДПУ" style={{display: 'inline-flex', width: 'min-content'}}><IconTT icon='edit'/></Link>
       </ListItem>
-    );
+    )
   });
   const handleAddOdpu = () => {
     console.log("handleAddOdpu")
@@ -63,7 +64,8 @@ export const RelatedDevices = () => {
   return (
     <ListWrap>
       {result}
-      <ButtonTT color='white' small onClick={handleAddOdpu} style={{marginTop: '24px'}} type='button'>Подключить прибор<IconTT icon={'plus'}/></ButtonTT>
+      <ButtonTT color='white' small onClick={handleAddOdpu} style={{ marginTop: '24px' }} type='button'>Подключить
+        прибор<IconTT icon={'plus'}/></ButtonTT>
     </ListWrap>
   );
 };

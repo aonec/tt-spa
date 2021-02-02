@@ -31,8 +31,8 @@ export default () => {
       </State>
       <Div>
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link to={`/calculators/${id}/edit`}><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
-        <Link to={`/calculators/${id}/edit`}><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
+        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex', width: 'fit-content'}} title="Редактирование Вычислителя"><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
+        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex'}} ><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
       </Div>
     </CalcListItem>
   );
