@@ -16,6 +16,8 @@ import TabsComponent from './Tabs';
 
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
+import Complete from "./AutoComplete";
+import SearchInputAndAdd from "./AutoComplete";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -61,6 +63,7 @@ const AddNodeForm = (props) => {
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().add(1, 'years').toISOString(),
+      isConnected: true,
     },
     validationSchema,
 
@@ -100,6 +103,10 @@ const AddNodeForm = (props) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
+  const entryNumberList = [{ value: 1, label: 1 },
+    { value: 3, label: 3 },
+    { value: 5, label: 5 },]
+
   return (
     <form
       id="formikFormAddOdpu"
@@ -118,7 +125,6 @@ const AddNodeForm = (props) => {
 
         {/* First Tab */}
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-
           <Form.Item label="Тип ресурса" style={styles.w49}>
             <SelectTT
               name="resource"
@@ -206,7 +212,7 @@ const AddNodeForm = (props) => {
 
         {/* Second Tab */}
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <Form.Item label="Подключение к вычислителю" style={styles.w100}>
+          <Form.Item label="Подключение к вычислителю" style={styles.w49}>
             <SelectTT
               name="isConnected"
               onChange={(item) => {
@@ -220,27 +226,56 @@ const AddNodeForm = (props) => {
             />
           </Form.Item>
 
+          <Form.Item label="Подключение к вычислителю" style={styles.w49}>
+            <SearchInputAndAdd/>
+          </Form.Item>
+
+          <ButtonTT color={'white'} small>
+            + Создать вычислитель
+          </ButtonTT>
+
           <Form.Item
-            label="Выберите вычислитель, к которому подключен прибор"
+            label="Номер ввода"
             style={styles.w100}
           >
             <SelectTT
-              name="calculatorId"
-              type="text"
+              name="entryNumber"
               onBlur={handleBlur}
-              placeholder="Начните вводить серийный номер или IP адрес прибора"
+              placeholder="Выберите номер ввода"
               onChange={(value) => {
-                console.log(value);
-                setFieldValue('calculatorId', value);
-                getCalculator(value).then((result) => setCalculator(result));
+                setFieldValue('entryNumber', value);
               }}
-              options={calculators}
-              value={values.calculatorId}
-              disabled={disable}
+              options={entryNumberList}
+              value={values.entryNumber}
             />
-            <Alert name="calculatorId"/>
+            <Alert name="entryNumber"/>
           </Form.Item>
 
+          <hr align="center" width="100%" size="1" color="#DCDEE4" />
+
+          <Form.Item
+            label="Номер ввода"
+            style={styles.w100}
+          >
+            <SelectTT
+              name="entryNumber"
+              onBlur={handleBlur}
+              placeholder="Выберите номер ввода"
+              onChange={(value) => {
+                setFieldValue('entryNumber', value);
+              }}
+              options={entryNumberList}
+              value={values.entryNumber}
+            />
+            <Alert name="entryNumber"/>
+          </Form.Item>
+
+
+
+
+        </StyledFormPage>
+
+        <StyledFormPage hidden={Number(currentTabKey) !== 3}>
           <Form.Item label="Номер ввода" style={styles.w49}>
             <InputTT
               name="entryNumber"
@@ -282,7 +317,7 @@ const AddNodeForm = (props) => {
             <Alert name="pipeNumber"/>
           </Form.Item>
 
-          <Form.Item name="text" label="Магистраль" style={styles.w49}>
+          <Form.Item label="Магистраль" style={styles.w49}>
             <SelectTT
               placeholder="Выберите направление магистрали"
               name="magistral"
@@ -294,11 +329,6 @@ const AddNodeForm = (props) => {
             />
             <Alert name="magistral"/>
           </Form.Item>
-
-        </StyledFormPage>
-
-        <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-          <Title color="black">Компонент в разработке</Title>
         </StyledFormPage>
       </StyledModalBody>
       <StyledFooter>
@@ -308,7 +338,6 @@ const AddNodeForm = (props) => {
           onClick={handleNext}
           big
           hidden={currentTabKey === '3'}
-          disabled={coldandthermo}
           type="button"
         >
           Далее
@@ -320,7 +349,6 @@ const AddNodeForm = (props) => {
           form="formikFormAddOdpu"
           hidden={currentTabKey !== '3'}
           big
-          disabled={coldandthermo}
         >
           Добавить
         </ButtonTT>

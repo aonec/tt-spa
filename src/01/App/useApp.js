@@ -14,10 +14,10 @@ export function useApp(){
 
   React.useEffect(() => {
 
-    // if (pathname.match(/registration/gi)) {
-    //   console.log(pathname.match(/registration/gi));
-    //   return
-    // }
+    if (window.location.href.match(/registration/gi)) {
+      // console.log(pathname.match(/registration/gi));
+      return
+    }
 
     const token = localStorage.getItem('token');
     if (!token) {

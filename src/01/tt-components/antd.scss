@@ -52,6 +52,15 @@ form {
       line-height: 32px;
     }
   }
+  .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    padding: 8px 24px;
+    height: auto;
+    .ant-select-selection-search {
+      padding: 8px 12px;
+      height: auto;
+
+    }
+  }
 }
 
 
