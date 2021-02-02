@@ -184,6 +184,36 @@ export const typelList = [
   { label: 'Горячая вода', value: 'heat' },
 ];
 
+export const nodeStatusList = [
+  {
+    value: 'Registered',
+    label: 'Сдан на коммерческий учет',
+  },
+  {
+    value: 'NotRegistered',
+    label: 'Не на коммерческом учете',
+  },
+  {
+    value: 'OnReview',
+    label: 'На утверждении',
+  },
+  {
+    value: 'Подготовлен к сдаче',
+    label: 'Prepared',
+  },
+];
+
+export const serviceZoneList = [
+  {
+    value: 'Apartments',
+    label: 'Апартаменты',
+  },
+  {
+    value: 'CommercialPremises',
+    label: 'Коммерческие помещения'
+  }
+];
+
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 
 export const ipv4RegExp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;

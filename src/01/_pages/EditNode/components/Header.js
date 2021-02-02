@@ -2,26 +2,33 @@ import React, { useContext } from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
-import { NodeContext } from "../index";
-import { nodeStatusList } from '../../../tt-components/localBases';
-import _ from 'lodash';
+import { EditNodeContext } from "../index";
+import _ from "lodash";
+import { nodeStatusList, serviceZoneList } from "../../../tt-components/localBases";
 
 export const Header = () => {
-  const { node, calculator } = useContext(NodeContext);
+  const { node, calculator } = useContext(EditNodeContext);
+  // const {
+  //   model, serialNumber, resource, address,
+  // } = node;
+
   const {
     model, serialNumber, resource, address,
   } = calculator;
+
   const {
-    id: objectId, city, street, housingStockNumber, corpus
+    id: objectId, city, street, housingStockNumber, corpus,
   } = address;
+  // console.log("calculator", calculator)
 
+  const { id, nodeResourceType, nodeStatus, number, serviceZone } = node;
 
-  const { id, nodeResourceType, nodeStatus, number } = node;
+  const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
+  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
-    const getNodeStatus = _.find(nodeStatusList, {value: nodeStatus}).label;
-    if (nodeStatus === 'Registered') {
+    if (getNodeStatus === 'Сдан на коммерческий учет') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }}/>;
     }
     return (
