@@ -224,7 +224,8 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
 
 const HouseReadingsDevice = styled.div`
 display: grid;
-grid-template-columns: 32px 180px 16px 152px 120px 120px 75px minmax(0, 1.5fr);
+grid-template-columns: 32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px) minmax(120px, 160px) 75px minmax(134px, 304px);
+
 
 column-gap: 16px;
 color: var(--main-90);
