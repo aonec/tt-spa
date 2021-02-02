@@ -18,7 +18,7 @@ export default () => {
     <CalcListItem key={id + serialNumber}>
       <NavLink to={`/calculators/${id}`}>
         <NameWrap>
-          <IconTT icon="device"/>
+          <IconTT icon="device" />
           <NameAndSerialNumber>
             <Name style={{ marginRight: '8px' }}>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
@@ -26,19 +26,17 @@ export default () => {
         </NameWrap>
       </NavLink>
       <State>
-        {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
+        {closingdate !== null ? <IconTT icon="green" /> : <IconTT icon="red" />}
         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
       </State>
       <Div>
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link to={`/calculators/${id}/edit`}><IconTT icon="edit" style={{ marginLeft: 8; }}/></Link>
-        <Link to={`/calculators/${id}/edit`}><IconTT icon="del" style={{ marginLeft: 8 }}/></Link>
+        <Link to={`/calculators/${id}/edit`}><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
+        <Link to={`/calculators/${id}/edit`}><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
       </Div>
     </CalcListItem>
   );
-
 };
-
 
 export const Template = styled.div``;
 
@@ -54,7 +52,6 @@ export const NameWrap = styled.div`
     }
   }
 `;
-
 
 export const Div = styled.div`
   display: inline-flex;
