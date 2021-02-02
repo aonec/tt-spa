@@ -20,7 +20,7 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
-  const { addCalculator, setAddCalculator, addOdpu, setAddOdpu } = useContext(ObjectContext);
+  const { addCalculator, setAddCalculator, addOdpu, setAddOdpu, addNode, setAddNode } = useContext(ObjectContext);
 
   $(document).mouseup((e) => {
     const editButton = $('#edit-button');
@@ -29,6 +29,11 @@ export const Menu = (showPopupHandler) => {
       editButtonList.hide();
     }
   });
+
+  const showAddNode = () => {
+    setAddNode(true);
+    $('#edit-button__list').toggle();
+  };
 
   const showAddCalculator = () => {
     setAddCalculator(true);
@@ -46,6 +51,7 @@ export const Menu = (showPopupHandler) => {
       <List id="edit-button__list">
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
+        <ListItem onClick={showAddNode}>Добавить Узел</ListItem>
         <ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>
         <ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>
 

@@ -198,8 +198,8 @@ export const nodeStatusList = [
     label: 'На утверждении',
   },
   {
-    value: 'Подготовлен к сдаче',
-    label: 'Prepared',
+    value: 'Prepared',
+    label: 'Подготовлен к сдаче',
   },
 ];
 

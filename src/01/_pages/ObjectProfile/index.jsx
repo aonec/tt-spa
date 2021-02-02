@@ -14,7 +14,6 @@ import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
 import { getCalculators } from "./apiObjectProfile";
-import Test from './components/Devices'
 
 export const ObjectContext = React.createContext();
 
@@ -32,8 +31,7 @@ function reducer(state, action){
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
 
-  console.log("state", state)
-
+  const [addNode, setAddNode] = useState(false);
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
 

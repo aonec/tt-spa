@@ -14,6 +14,14 @@ export const StyledModal = styled(Modal)`
     padding: 0;
   }
 `
+
+export const StyledModalHeader = styled.h2`
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+`
+
 export const StyledModalBody = styled.div`
   padding: 12px 32px;
 `
