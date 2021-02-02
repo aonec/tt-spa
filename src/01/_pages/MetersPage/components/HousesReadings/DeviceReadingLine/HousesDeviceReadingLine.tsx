@@ -19,95 +19,6 @@ import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors
 import {setInputFocused, setInputUnfocused} from "01/Redux/ducks/readings/actionCreators";
 
 
-const HouseReadingsDevice = styled.div`
-display: grid;
-// grid-template-columns: 1fr 2.5fr 0.2fr 2fr 1.9fr 1.9fr 1.6fr 1.2fr;
-grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 0.3fr) minmax(0, 1.8fr) minmax(0, 1.7fr) minmax(0, 1.7fr) minmax(0, 1fr) minmax(0, 1.5fr);
-
-
-// grid-template-columns: 1fr 3fr 0.5fr 2fr 2fr 1.5fr repeat(2, 100px);
-// grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 0.5fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.5fr);
-// 1fr 3fr 0.5fr 2fr 2fr 100px 1fr 1.5fr;
-
-column-gap: 16px;
-color: var(--main-90);
-border-bottom: 1px solid var(--frame);
-padding: 16px;
-align-items: baseline;
-min-height: 95px;
-`
-
-const Column = styled.div`
-display: flex;
-flex-direction: column;
-`
-
-const OwnerName = styled.div`
-color: var(--main-100);
-font-weight: 500;
-font-size: 16px;
-`
-
-const Consumption = styled.div`
-&:not(:last-child) {
-    padding-bottom: 16px
-}
-`
-
-const Footer = styled.div`
-background-color: var(--bg);
-height: 96px;
-display: flex;
-justify-content: flex-end;
-align-items: center;
-padding-right: 32px;
-font-weight: 700;
-`
-
-const Header = styled.h1`
-  font-size: 32px;
-  line-height: 1.5;
-  font-weight: 300;
-  margin: 0;
-`
-
-const StyledModal = styled(Modal)`
-
-.ant-modal-header {
-  padding: 24px 32px;
-  border: 0;
-}
-
-.ant-modal-body {
-  padding: 0 32px 32px 32px;
-}
-
-.ant-modal-footer {
-  padding: 0;
-}
-
-.ant-modal-close-x {
-  fill: var(--main-100)
-}
-
-.ant-modal-footer button + button {
-    margin-bottom: 0;
-    margin-left: 16px;
-}
-
-`
-
-type ReadingsArray = Array<number>
-type ReadingsStateType = {
-    previousReadingsArray: ReadingsArray
-    currentReadingsArray: ReadingsArray
-    prevId: number
-    currId: number
-    resource: string
-}
-type Props = {
-    device: IndividualDeviceType
-}
 
 export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
         const [consumptionState, setConsumptionState] = useState([] as Array<number>)
@@ -212,16 +123,16 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
 
         const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
             if (e.currentTarget.contains(e.relatedTarget as Node)) return
-                const isNull = isNullInArray(readingsState.currentReadingsArray)
-                if (isNull) {
-                    setIsVisible(true);
-                } else {
-                    if (readingsState.currentReadingsArray !== initialReadings) {
-                        sendReadings(device)
-                    }
-                    dispatch(setInputUnfocused())
+            const isNull = isNullInArray(readingsState.currentReadingsArray)
+            if (isNull) {
+                setIsVisible(true);
+            } else {
+                if (readingsState.currentReadingsArray !== initialReadings) {
+                    sendReadings(device)
                 }
+                dispatch(setInputUnfocused())
             }
+        }
 
         const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
             if (e.currentTarget.contains(e.relatedTarget as Node)) return
@@ -234,7 +145,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
         }
 
 
-            const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
+        const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
             <DeviceRatesVertical key={device.id + index}
                                  index={index}
                                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
@@ -250,7 +161,7 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
         const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
             <DeviceRatesVertical key={uuid()}
                                  index={index}
-                                 // onChange={(e) => onInputChange(e, index)}
+                // onChange={(e) => onInputChange(e, index)}
                                  value={value}
                                  resource={readingsState.resource}
                                  operatorCabinet
@@ -264,49 +175,148 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
 
 
         return (
-        <HouseReadingsDevice>
-            <div>{device.apartmentNumber}</div>
-            <Column>
-                <OwnerName>{device.homeownerName}</OwnerName>
-                <div>{device.personalAccountNumber}</div>
-            </Column>
+            <HouseReadingsDevice>
+                <div><Span>{device.apartmentNumber}</Span></div>
+                <Column>
+                    <OwnerName><Span>{device.homeownerName}</Span></OwnerName>
+                    <div>{device.personalAccountNumber}</div>
+                </Column>
 
                 <div style={{position: 'relative', top: 5}}>
                     <Icon className={styles.icon} icon={icon} fill={color}/>
                 </div>
 
-            <Column>
-                <div>{device.model}</div>
-                <div>{device.serialNumber}</div>
-            </Column>
-            <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
-            <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
-            <div>{consumptionElems}</div>
-            <div>-</div>
+                <Column>
+                    <div><Span>{device.model}</Span></div>
+                    <div>{device.serialNumber}</div>
+                </Column>
+                <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
+                <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
+                <div>{consumptionElems}</div>
+                <div>-</div>
 
-            <StyledModal
-                visible={isVisible}
-                title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                afterClose={afterCloseHandler}
-                width={800}
-                footer={
-                    <Footer>
-                        <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-                            Отмена
-                        </ButtonTT>
-                        <ButtonTT color={'red'} key="submit" onClick={handleOk}>
-                            Выйти без сохранения
-                        </ButtonTT>
-                    </Footer>
-                }
-            >
-                <p style={{color: 'var(--main-100)', margin: 0}}>
-                    Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся
-                </p>
-            </StyledModal>
-        </HouseReadingsDevice>
-    )
-}
+                <StyledModal
+                    visible={isVisible}
+                    title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    afterClose={afterCloseHandler}
+                    width={800}
+                    footer={
+                        <Footer>
+                            <ButtonTT color={'white'} key="back" onClick={handleCancel}>
+                                Отмена
+                            </ButtonTT>
+                            <ButtonTT color={'red'} key="submit" onClick={handleOk}>
+                                Выйти без сохранения
+                            </ButtonTT>
+                        </Footer>
+                    }
+                >
+                    <p style={{color: 'var(--main-100)', margin: 0}}>
+                        Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся
+                    </p>
+                </StyledModal>
+            </HouseReadingsDevice>
+        )
+    }
 )
+
+const HouseReadingsDevice = styled.div`
+display: grid;
+grid-template-columns: 32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px) minmax(120px, 160px) 75px minmax(134px, 304px);
+
+
+column-gap: 16px;
+color: var(--main-90);
+border-bottom: 1px solid var(--frame);
+padding: 16px;
+align-items: baseline;
+min-height: 95px;
+`
+
+const Column = styled.div`
+display: flex;
+flex-direction: column;
+ 
+  & div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  
+`
+
+const OwnerName = styled.div`
+color: var(--main-100);
+font-weight: 500;
+font-size: 16px;
+text-overflow: ellipsis;
+`
+
+const Consumption = styled.div`
+&:not(:last-child) {
+    padding-bottom: 16px
+}
+`
+
+const Footer = styled.div`
+background-color: var(--bg);
+height: 96px;
+display: flex;
+justify-content: flex-end;
+align-items: center;
+padding-right: 32px;
+font-weight: 700;
+`
+
+const Header = styled.h1`
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+`
+
+const StyledModal = styled(Modal)`
+
+.ant-modal-header {
+  padding: 24px 32px;
+  border: 0;
+}
+
+.ant-modal-body {
+  padding: 0 32px 32px 32px;
+}
+
+.ant-modal-footer {
+  padding: 0;
+}
+
+.ant-modal-close-x {
+  fill: var(--main-100)
+}
+
+.ant-modal-footer button + button {
+    margin-bottom: 0;
+    margin-left: 16px;
+}
+
+`
+
+const Span = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+type ReadingsArray = Array<number>
+type ReadingsStateType = {
+    previousReadingsArray: ReadingsArray
+    currentReadingsArray: ReadingsArray
+    prevId: number
+    currId: number
+    resource: string
+}
+type Props = {
+    device: IndividualDeviceType
+}
