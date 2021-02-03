@@ -211,7 +211,6 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
                 if (readingsState.currentReadingsArray !== initialReadings) {
                     sendReadings(device)
                 }
-               // setDisabledState((prevState) => prevState.map((el) => ( {...el, isDisabled: false } )));
                 dispatch(setInputUnfocused())
             }
     }
@@ -222,11 +221,6 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
         setInitialReadings(readingsState.currentReadingsArray);
         const isNull = isNullInArray(readingsState.currentReadingsArray)
         if (isNull) {
-            // setDisabledState((prevState) => prevState.map((el) => {
-            //     return el.deviceId === device.id
-            //         ? {...el, isDisabled: false}
-            //         : {... el, isDisabled: true}
-            // }))
             dispatch(setInputFocused(device.id))
         }
     }
@@ -261,7 +255,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
             <DeviceReadingsContainer isDisabled={isDisabled} onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
-
+            <Modal handleOk={handleOk} handleCancel={handleCancel} />
             <StyledModal
                 visible={isVisible}
                 title={<Header>Вы действительно хотите уйти без сохранения?</Header>}

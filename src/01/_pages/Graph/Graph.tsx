@@ -11,6 +11,7 @@ import {
 } from 'victory';
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import { format, compareAsc } from 'date-fns'
+import styled from "styled-components";
 
 const readingsNew = {
     "ResourceType": "Heat",
@@ -4587,7 +4588,8 @@ const readingsNew = {
                 "DeltaVolume": 0.19000005722045898,
                 "InputMass": 6.228457927703857,
                 "OutputMass": 6.130868434906006,
-                "DeltaMass": 0.09758949279785156,
+                // "DeltaMass": 0.09758949279785156,
+                "DeltaMass": 0.09,
                 "InputPressure": 0.6000000238418579,
                 "OutputPressure": 0.5019338726997375,
                 "DeltaPressure": 0.09806615114212036,
@@ -4788,16 +4790,13 @@ const CustomTooltip = (props) => {
     const {x, y, active} = props;
 
     return (
-        <g onMouseEnter={() => setHovered(true)}
+        <g style={{pointerEvents: 'none'}} onMouseEnter={() => setHovered(true)}
            onMouseLeave={() => setHovered(false)} {...props}>
             {active ?
                 <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
                         strokeWidth={0.5}
                         strokeDasharray={5}/>
-                    <VictoryTooltip  {...props}
-
-                    />
-                    {/*<line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000' strokeWidth={0.5} />*/}
+                    <VictoryTooltip  {...props}/>
                     <circle
                         cx={x}
                         cy={y}
@@ -4815,52 +4814,36 @@ const CustomTooltip = (props) => {
     );
 }
 
-function useHover() {
-    const [value, setValue] = useState(false);
-
-    // Wrap in useCallback so we can use in dependencies below
-    const handleMouseEnter = useCallback(() => setValue(true), []);
-    const handleMouseLeave = useCallback(() => setValue(false), []);
-
-    // Keep track of the last node passed to callbackRef
-    // so we can remove its event listeners.
-    const ref = useRef();
-
-    // Use a callback ref instead of useEffect so that event listeners
-    // get changed in the case that the returned ref gets added to
-    // a different element later. With useEffect, changes to ref.current
-    // wouldn't cause a rerender and thus the effect would run again.
-    const callbackRef = useCallback(
-        (node) => {
-            if (ref.current) {
-                ref.current.removeEventListener("mouseenter", handleMouseEnter);
-                ref.current.removeEventListener("mouseleave", handleMouseLeave);
-            }
-
-            ref.current = node;
-
-            if (ref.current) {
-                ref.current.addEventListener("mouseenter", handleMouseEnter);
-                ref.current.addEventListener("mouseleave", handleMouseLeave);
-            }
-        },
-        [handleMouseEnter, handleMouseLeave]
-    );
-
-    return [callbackRef, value];
-}
 
 console.log('valuees',graphData.map((data) => +format(new Date(data.time), 'dd')))
 
+const GraphTooltip = (props) => {
+    const { datum, x, y } = props;
+    return (
+        <g style={{pointerEvents: 'none'}}>
+
+
+            <foreignObject
+                // transform={`translate(-50%, 0)`}
+                // transform={`translate(${x}, 0)`}
+                x={x} y={y}
+                width="100%" height="100%"
+                style={{overflow: 'visible'}}
+                           // style={{transform: 'translate(-50%, -22%)'}}
+            >
+
+                <TooltipBlock>
+                    <DateBlock>{ format(new Date(datum.time), 'dd.MM.yyyy') }</DateBlock>
+                    <Value>{ datum.value.toFixed(3) }м³</Value>
+                    <Pointer />
+
+                </TooltipBlock>
+            </foreignObject>
+        </g>
+    );
+}
+
 const Graph: React.FC = () => {
-
-    const tooltipRef = useRef();
-
-    useEffect(() => {
-        console.log(tooltipRef);
-        debugger;
-
-    },[tooltipRef])
 
     const getTooltip = (d) => {
         debugger;
@@ -4882,9 +4865,6 @@ const Graph: React.FC = () => {
                 </defs>
             </svg>
             <VictoryChart
-                // domain={{ x: [0, 28] }}
-
-                // domainPadding={50}
                 theme={VictoryTheme.material} style={{parent: {
                     width: '600px',
                     height: '600px',
@@ -4896,23 +4876,6 @@ const Graph: React.FC = () => {
                               />
                           }
             >
-                {/*<VictoryScatter*/}
-                {/*    // style={{ data: { fill: "red" }, labels: { fill: "red" } }}*/}
-                {/*    data={graphDataNew}*/}
-                {/*    // standalone*/}
-                {/*/>*/}
-                {/*<VictoryArea*/}
-                {/*    name="graph"*/}
-                {/*    interpolation="natural"*/}
-                {/*    labelComponent={<CustomTooltip ref={tooltipRef} flyoutPadding={{top: 8, right: 16, bottom: 38, left: 16}} flyoutStyle={{ fill: "var(--main-100)"}} style={{fill: "#fff", padding: 8}} />}*/}
-                {/*    labels={ ({ datum }) => datum.time }*/}
-                {/*    // labels={(d) => getTooltip(d)}*/}
-                {/*    // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}*/}
-                {/*    style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}*/}
-                {/*    data={graphDataNew}*/}
-                {/*    x="time"*/}
-                {/*    y="value"*/}
-                {/*/>*/}
                 <VictoryArea
                     // domain={{x: [0, 31], y: [60, 100]}}
 
@@ -4921,11 +4884,13 @@ const Graph: React.FC = () => {
                     // labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}} />}
                     labelComponent={<CustomTooltip
                         flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
+                        flyoutComponent={<GraphTooltip/>}
                                                      // style={{fill: "var(--main-100)", padding: 8}}
                     />}
 
-                    labels={ ({ datum }) => `${format(new Date(datum.time), 'dd.MM.yyyy')}\n` + `⸻\n` + `${datum.value}м³` }
+                    // labels={ ({ datum }) => `${format(new Date(datum.time), 'dd.MM.yyyy')}\n` + `⸻\n` + `${datum.value}м³` }
                     // labels={(d) => getTooltip(d)}
+                    labels={() => ''}
                     // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
                     style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
                     // backgroundPadding={[
@@ -4968,5 +4933,46 @@ const Graph: React.FC = () => {
         </div>
     )
 }
+
+const TooltipBlock = styled.div`
+display: inline-block;
+position: relative;
+background-color: var(--main-100);
+padding: 8px 16px;
+//margin: 0 auto;
+border-radius: 4px;
+border: 0;
+transform: translate(-15%, -135%);
+`
+
+const DateBlock = styled.div`
+font-size: 12px;
+line-height: 16px;
+color: #fff;
+`
+
+const Value = styled.div`
+color: #fff;
+font-weight: 500;
+font-size: 24px;
+line-height: 32px;
+`
+
+const Pointer = styled.div`
+//display: inline-block;
+position: absolute;
+left: 15%;
+top: 95%;
+margin: 0 auto;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 12px 6px 0 6px;
+border-color: var(--main-100) transparent transparent transparent;
+transform: translate(-50%, 0);
+`
+
+
+
 
 export default Graph;
