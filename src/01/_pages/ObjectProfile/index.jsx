@@ -49,8 +49,6 @@ export const ObjectProfile = () => {
   }, [state.housingStock])
 
   useFetchPage(state, dispatch);
-  const test = useParams();
-  console.log(test)
   const { 0: objid } = useParams();
   const { push } = useHistory();
   const info = useObjectInformation(state);

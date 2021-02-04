@@ -27,6 +27,7 @@ export const ListItem = styled.li`
   line-height: 32px;
   padding: 8px 24px;
   cursor: pointer;
+  color: #272F5A !important;
   border-bottom: 1px solid #dcdee4;
   &:hover {
     background: #189ee9;

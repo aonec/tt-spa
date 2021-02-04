@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { Icon } from '../../../_components/Icon';
 import { List, ListItem, EditButtonWrap } from './Styled-Components';
 import { ObjectContext } from '../index';
+import { NavLink, Link } from 'react-router-dom'
 
 export const Template = styled.div``;
 
@@ -14,7 +15,7 @@ export const EditButton = () => {
 
   return (
     <EditButtonWrap onClick={menuShowHide} id="edit-button">
-      <Icon icon="menu" />
+      <Icon icon="menu"/>
     </EditButtonWrap>
   );
 };
@@ -30,8 +31,8 @@ export const Menu = (showPopupHandler) => {
     }
   });
 
-  const showAddNode = () => {
-    setAddNode(true);
+  const routeAddNode = () => {
+
     $('#edit-button__list').toggle();
   };
 
@@ -47,11 +48,11 @@ export const Menu = (showPopupHandler) => {
 
   return (
     <>
-      <EditButton />
+      <EditButton/>
       <List id="edit-button__list">
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
-        <ListItem onClick={showAddNode}>Добавить Узел</ListItem>
+        <NavLink to="/objects/755/add_node"><ListItem>Добавить Узел</ListItem></NavLink>
         <ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>
         <ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>
 
