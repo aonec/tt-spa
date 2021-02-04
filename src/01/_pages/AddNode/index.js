@@ -22,7 +22,11 @@ export const AddNode = () => {
 
     getCalculators(housingStockId).then((res) => {
       const {items} = res;
-      setCalculators(items);
+      const calculatorsList = items.map((calculator) => {
+        const {id, serialNumber, model} = calculator
+        return {value: id, label: `${model} ${serialNumber}`}
+      })
+      setCalculators(calculatorsList);
       console.log(items);
     });
 

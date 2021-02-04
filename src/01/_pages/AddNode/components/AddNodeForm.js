@@ -24,10 +24,8 @@ const StyledHint = styled.div`
 `;
 
 const AddNodeForm = (props) => {
-  const { housingStock, addCalculator, setAddCalculator } = props;
+  const { housingStock, addCalculator, setAddCalculator, calculators } = props;
   const [currentTabKey, setTab] = useState('1');
-  const [calculator, setCalculator] = useState();
-  const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -201,7 +199,7 @@ const AddNodeForm = (props) => {
         </Form.Item>
 
         <Form.Item label="Подключение к вычислителю" style={styles.w49}>
-          <SearchInputAndAdd />
+          <SearchInputAndAdd calculators={calculators}/>
         </Form.Item>
 
         <ButtonTT
