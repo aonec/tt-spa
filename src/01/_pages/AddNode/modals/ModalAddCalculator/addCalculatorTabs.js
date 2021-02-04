@@ -5,15 +5,15 @@ const { TabPane } = Tabs;
 
 const tabs = [
   {
-    title: 'Шаг 1. Общие данные',
+    title: 'Общие данные',
     key: '1',
   },
   {
-    title: 'Шаг 2. Настройки соединения',
+    title: 'Настройки соединения',
     key: '2',
   },
   {
-    title: 'Шаг 3. Подключенные приборы',
+    title: 'Документы',
     key: '3',
   },
 ];
@@ -21,11 +21,12 @@ const tabs = [
 const TabsComponent = (props) => {
   const { currentTabKey, handleChangeTab } = props;
   return (
-    <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
+    <Tabs style={{ height: 'fit-content' }} activeKey={currentTabKey} onChange={handleChangeTab}>
       {tabs.map((currentTab) => {
         const { title, key } = currentTab;
         return (
           <TabPane tab={title} key={key} />
+
         );
       })}
     </Tabs>

@@ -116,6 +116,7 @@ export const CalculatorProfile = () => {
   return (
     <DeviceContext.Provider
       value={context}
+
     >
       <Header />
       <Tabs />

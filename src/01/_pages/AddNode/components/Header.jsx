@@ -1,12 +1,10 @@
 import React from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
-import {Breadcrumb} from '../../../tt-components';
+import { Breadcrumb } from '../../../tt-components';
 
 export const Header = (props) => {
   const { housingStock } = props;
-  const {
-    id, city, street, number, corpus,
-  } = housingStock;
+  const { id, city, street, number, corpus } = housingStock;
 
   return (
     <HeaderWrap style={{
