@@ -16,8 +16,8 @@ import TabsComponent from './Tabs';
 
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
-import Complete from "./AutoComplete";
-import SearchInputAndAdd from "./AutoComplete";
+import Complete from './AutoComplete';
+import SearchInputAndAdd from './AutoComplete';
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -95,17 +95,17 @@ const AddNodeForm = (props) => {
     return null;
   };
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
-  function handleNext(){
+  function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
 
   const entryNumberList = [{ value: 1, label: 1 },
     { value: 3, label: 3 },
-    { value: 5, label: 5 },]
+    { value: 5, label: 5 }];
 
   return (
     <form
@@ -135,7 +135,7 @@ const AddNodeForm = (props) => {
               options={resources}
               value={values.resource}
             />
-            <Alert name="resource"/>
+            <Alert name="resource" />
           </Form.Item>
 
           <Form.Item label="Номер узла" style={styles.w49}>
@@ -145,7 +145,7 @@ const AddNodeForm = (props) => {
               onChange={handleChange}
               value={values.number}
             />
-            <Alert name="number"/>
+            <Alert name="number" />
           </Form.Item>
 
           <Form.Item label="Зона" style={styles.w100}>
@@ -158,7 +158,7 @@ const AddNodeForm = (props) => {
               options={serviceZoneList}
               value={values.serviceZone}
             />
-            <Alert name="serviceZone"/>
+            <Alert name="serviceZone" />
           </Form.Item>
 
           <Form.Item label="Коммерческий учет показателей приборов" style={styles.w100}>
@@ -175,7 +175,7 @@ const AddNodeForm = (props) => {
               options={nodeStatusList}
               value={values.nodeStatus}
             />
-            <Alert name="nodeStatus"/>
+            <Alert name="nodeStatus" />
           </Form.Item>
           {values.nodeStatus !== nodeStatusList[1].value ? (
             <>
@@ -190,7 +190,7 @@ const AddNodeForm = (props) => {
                   }}
                   value={moment(values.lastCommercialAccountingDate)}
                 />
-                <Alert name="lastCommercialAccountingDate"/>
+                <Alert name="lastCommercialAccountingDate" />
               </Form.Item>
 
               <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
@@ -204,7 +204,7 @@ const AddNodeForm = (props) => {
                   }}
                   value={moment(values.futureCommercialAccountingDate)}
                 />
-                <Alert name="futureCommercialAccountingDate"/>
+                <Alert name="futureCommercialAccountingDate" />
               </Form.Item>
             </>
           ) : null}
@@ -227,10 +227,10 @@ const AddNodeForm = (props) => {
           </Form.Item>
 
           <Form.Item label="Подключение к вычислителю" style={styles.w49}>
-            <SearchInputAndAdd/>
+            <SearchInputAndAdd />
           </Form.Item>
 
-          <ButtonTT color={'white'} small>
+          <ButtonTT color="white" small>
             + Создать вычислитель
           </ButtonTT>
 
@@ -248,7 +248,7 @@ const AddNodeForm = (props) => {
               options={entryNumberList}
               value={values.entryNumber}
             />
-            <Alert name="entryNumber"/>
+            <Alert name="entryNumber" />
           </Form.Item>
 
           <hr align="center" width="100%" size="1" color="#DCDEE4" />
@@ -267,11 +267,8 @@ const AddNodeForm = (props) => {
               options={entryNumberList}
               value={values.entryNumber}
             />
-            <Alert name="entryNumber"/>
+            <Alert name="entryNumber" />
           </Form.Item>
-
-
-
 
         </StyledFormPage>
 
@@ -286,7 +283,7 @@ const AddNodeForm = (props) => {
               onChange={handleChange}
               disabled={disable}
             />
-            <Alert name="entryNumber"/>
+            <Alert name="entryNumber" />
           </Form.Item>
 
           <Form.Item label="Номер узла" style={styles.w49}>
@@ -299,7 +296,7 @@ const AddNodeForm = (props) => {
               onChange={handleChange}
               disabled={disable}
             />
-            <Alert name="hubNumber"/>
+            <Alert name="hubNumber" />
           </Form.Item>
 
           <Form.Item label="Номер трубы" style={styles.w49}>
@@ -314,7 +311,7 @@ const AddNodeForm = (props) => {
               onChange={handleChange}
               disabled={disable}
             />
-            <Alert name="pipeNumber"/>
+            <Alert name="pipeNumber" />
           </Form.Item>
 
           <Form.Item label="Магистраль" style={styles.w49}>
@@ -327,7 +324,7 @@ const AddNodeForm = (props) => {
               }}
               value={values.magistral}
             />
-            <Alert name="magistral"/>
+            <Alert name="magistral" />
           </Form.Item>
         </StyledFormPage>
       </StyledModalBody>
