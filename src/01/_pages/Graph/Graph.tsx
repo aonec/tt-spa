@@ -4601,147 +4601,6 @@ const readingsNew = {
 }
 
 const readingsByHours = JSON.parse(JSON.stringify(readingsNew))
-// const realReadings = JSON.parse(JSON.stringify())
-
-debugger;
-
-const readings = [
-    {
-        DateTime: "2021-01-11T12:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.313,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-12T13:27:42.241241+03:00",
-        Params: {
-            InputVolume: 0.317,
-            OutputVolume: 0.319
-        }
-    },
-    {
-        DateTime: "2021-01-13T14:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.323,
-            OutputMass: 0.354
-        }
-    },
-    {
-        DateTime: "2021-01-14T15:27:42.241241+03:00",
-        Params: {
-            InputVolume: 0.366,
-            OutputVolume: 0.378
-        }
-    },
-    {
-        DateTime: "2021-01-15T16:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.399,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-16T17:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.245,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-17T18:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.100,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-18T19:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.513,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-19T20:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.613,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-20T12:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.313,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-21T13:27:42.241241+03:00",
-        Params: {
-            InputVolume: 0.644,
-            OutputVolume: 0.319
-        }
-    },
-    {
-        DateTime: "2021-01-22T14:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.423,
-            OutputMass: 0.354
-        }
-    },
-    {
-        DateTime: "2021-01-23T15:27:42.241241+03:00",
-        Params: {
-            InputVolume: 0.2,
-            OutputVolume: 0.378
-        }
-    },
-    {
-        DateTime: "2021-01-24T16:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.333,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-25T17:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.245,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-26T18:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.4,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-27T19:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.5,
-            OutputMass: 0.312
-        }
-    },
-    {
-        DateTime: "2021-01-28T20:27:42.2387729+03:00",
-        Params: {
-            InputVolume: 0.9,
-            OutputMass: 0.312
-        }
-    }
-];
-
-const tickValues = readings.map((reading) => {
-    return format(new Date(reading.DateTime), 'HH:MM:SS')
-})
-
-const tickFormat = readings.map((reading) => {
-    return reading.Params.InputVolume
-})
-
 
 const graphDataNew = readingsByHours.ArchiveEntries.map((entry) => {
     return {
@@ -4750,16 +4609,6 @@ const graphDataNew = readingsByHours.ArchiveEntries.map((entry) => {
         // label: reading.Params.InputVolume + " м³"
     }
 })
-
-const graphData = readings.map((reading) => {
-    return {
-        // time: format(new Date(reading.DateTime), 'dd'),
-        time: reading.DateTime,
-        value: reading.Params.InputVolume,
-        // label: reading.Params.InputVolume + " м³"
-    }
-})
-
 
 
 const formTicks = (min, max) => {
@@ -4777,8 +4626,6 @@ const formTicks = (min, max) => {
 //         // return (dat)
 //     }
 // }
-
-console.log(formTicks(12, 26));
 
 
 
@@ -4805,7 +4652,6 @@ const CustomTooltip = (props) => {
                         strokeWidth={2}
                         fill={selected ? "var(--main-100)" : "var(--main-100)"}
                         onClick={() => setSelected(!selected)}
-
                     />
                 </>
                 : null}
@@ -4815,8 +4661,6 @@ const CustomTooltip = (props) => {
 }
 
 
-console.log('valuees',graphData.map((data) => +format(new Date(data.time), 'dd')))
-
 const GraphTooltip = (props) => {
     const { datum, x, y } = props;
     return (
@@ -4824,12 +4668,9 @@ const GraphTooltip = (props) => {
 
 
             <foreignObject
-                // transform={`translate(-50%, 0)`}
-                // transform={`translate(${x}, 0)`}
                 x={x} y={y}
                 width="100%" height="100%"
                 style={{overflow: 'visible'}}
-                           // style={{transform: 'translate(-50%, -22%)'}}
             >
 
                 <TooltipBlock>
@@ -4844,13 +4685,6 @@ const GraphTooltip = (props) => {
 }
 
 const Graph: React.FC = () => {
-
-    const getTooltip = (d) => {
-        debugger;
-        const { x, y } = d;
-        return `${new Date(x)}\n ${y}`;
-    };
-
 
     return (
         <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -4870,34 +4704,20 @@ const Graph: React.FC = () => {
                     height: '600px',
                 },
             }}
-
                           containerComponent={
                               <VictoryVoronoiContainer
                               />
                           }
             >
                 <VictoryArea
-                    // domain={{x: [0, 31], y: [60, 100]}}
-
                     name="graph"
                     interpolation="natural"
-                    // labelComponent={<CustomTooltip style={{fill: "var(--main-100)", padding: 8}} />}
                     labelComponent={<CustomTooltip
                         flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
                         flyoutComponent={<GraphTooltip/>}
-                                                     // style={{fill: "var(--main-100)", padding: 8}}
                     />}
-
-                    // labels={ ({ datum }) => `${format(new Date(datum.time), 'dd.MM.yyyy')}\n` + `⸻\n` + `${datum.value}м³` }
-                    // labels={(d) => getTooltip(d)}
                     labels={() => ''}
-                    // style={{ data: { fill: "linear-gradient(180deg, rgba(24, 158, 233, 0.33) 0%, rgba(24, 158, 233, 0) 100%)" } }}
                     style={{ data: { fill: "url(#myGradient)", stroke: "var(--cold-water)", strokeWidth: 2 } }}
-                    // backgroundPadding={[
-                    //     3,
-                    //     { left: 20, right: 20 },
-                    //     { left: 20}
-                    // ]}
                     data={graphDataNew}
                     x="time"
                     y="value"
@@ -4906,14 +4726,8 @@ const Graph: React.FC = () => {
 
 
                 <VictoryAxis
-                    // tickFormat={(time) => format(new Date(time), 'dd')}
-                    // tickValues={graphData.map((data) => new Date(data.time))}
-                    // tickValues={[11, 12, 15, 20, 25, 28]}
-                    // tickFormat={(x) => {const time = format(new Date(x), 'dd'); return (time === '11' || time === '28' || +time % 5 === 0) ? time : ''}}
                     // tickFormat={(x) => {const time = format(new Date(x), 'dd'); return time}}
                     tickFormat={(x) => 1}
-                    // tickFormat={(x) => {debugger; return (x === 11 || x === 28 || x % 5 === 0) ? x : ''}}
-                    // tickFormat={(x) => 31}
                     style={{
                         axisLabel: { padding: 40, strokeWidth: 0 },
                         grid: {stroke: 'none'},
@@ -4939,7 +4753,6 @@ display: inline-block;
 position: relative;
 background-color: var(--main-100);
 padding: 8px 16px;
-//margin: 0 auto;
 border-radius: 4px;
 border: 0;
 transform: translate(-15%, -135%);
@@ -4971,8 +4784,5 @@ border-width: 12px 6px 0 6px;
 border-color: var(--main-100) transparent transparent transparent;
 transform: translate(-50%, 0);
 `
-
-
-
 
 export default Graph;
