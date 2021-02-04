@@ -11,20 +11,15 @@ import {
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
 } from '../../../tt-components';
-import { addOdpu, getCalculator } from '../apiAddNode';
 import TabsComponent from './Tabs';
-
 import { styles, StyledFormPage } from './styledComponents';
-import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
-import Complete from './AutoComplete';
-import SearchInputAndAdd from './AutoComplete';
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
 `;
 
 const AddNodeForm = (props) => {
-  const { housingStock, addCalculator, setAddCalculator, calculators } = props;
+  const { housingStock, addCalculator, setAddCalculator, calculators, currentCalculatorId, setCurrentCalculatorId } = props;
   const [currentTabKey, setTab] = useState('1');
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -41,6 +36,7 @@ const AddNodeForm = (props) => {
       lastCommercialAccountingDate: moment().toISOString(),
       futureCommercialAccountingDate: moment().add(1, 'years').toISOString(),
       isConnected: true,
+      calculatorId: null
     },
     validationSchema,
 
@@ -52,6 +48,7 @@ const AddNodeForm = (props) => {
         nodeStatus: values.nodeStatus,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        calculatorId: values.calculatorId
       };
       console.log(form);
       console.log(JSON.stringify(form));
@@ -60,6 +57,10 @@ const AddNodeForm = (props) => {
       // });
     },
   });
+
+  useEffect(()=>{
+    setFieldValue('calculatorId', currentCalculatorId)
+  },[currentCalculatorId])
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -72,11 +73,11 @@ const AddNodeForm = (props) => {
     return null;
   };
 
-  function handleChangeTab(value) {
+  function handleChangeTab(value){
     setTab(value);
   }
 
-  function handleNext() {
+  function handleNext(){
     setTab(String(Number(currentTabKey) + 1));
   }
 
@@ -84,9 +85,12 @@ const AddNodeForm = (props) => {
     { value: 3, label: 3 },
     { value: 5, label: 5 }];
 
+  const handleModalAddCalculator = () => {
+    setAddCalculator(true);
+  }
+
   return (
     <form
-      id="formikFormAddOdpu"
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column' }}
     >
@@ -97,6 +101,7 @@ const AddNodeForm = (props) => {
 
       {/* First Tab */}
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
+        <Title color={'black'} style={styles.w100}>Общие данные</Title>
         <Form.Item label="Тип ресурса" style={styles.w49}>
           <SelectTT
             name="resource"
@@ -107,7 +112,7 @@ const AddNodeForm = (props) => {
             options={resources}
             value={values.resource}
           />
-          <Alert name="resource" />
+          <Alert name="resource"/>
         </Form.Item>
 
         <Form.Item label="Номер узла" style={styles.w49}>
@@ -117,7 +122,7 @@ const AddNodeForm = (props) => {
             onChange={handleChange}
             value={values.number}
           />
-          <Alert name="number" />
+          <Alert name="number"/>
         </Form.Item>
 
         <Form.Item label="Зона" style={styles.w100}>
@@ -130,7 +135,7 @@ const AddNodeForm = (props) => {
             options={serviceZoneList}
             value={values.serviceZone}
           />
-          <Alert name="serviceZone" />
+          <Alert name="serviceZone"/>
         </Form.Item>
 
         <Form.Item label="Коммерческий учет показателей приборов" style={styles.w100}>
@@ -147,7 +152,7 @@ const AddNodeForm = (props) => {
             options={nodeStatusList}
             value={values.nodeStatus}
           />
-          <Alert name="nodeStatus" />
+          <Alert name="nodeStatus"/>
         </Form.Item>
         {values.nodeStatus !== nodeStatusList[1].value ? (
           <>
@@ -162,7 +167,7 @@ const AddNodeForm = (props) => {
                 }}
                 value={moment(values.lastCommercialAccountingDate)}
               />
-              <Alert name="lastCommercialAccountingDate" />
+              <Alert name="lastCommercialAccountingDate"/>
             </Form.Item>
 
             <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
@@ -176,7 +181,7 @@ const AddNodeForm = (props) => {
                 }}
                 value={moment(values.futureCommercialAccountingDate)}
               />
-              <Alert name="futureCommercialAccountingDate" />
+              <Alert name="futureCommercialAccountingDate"/>
             </Form.Item>
           </>
         ) : null}
@@ -184,7 +189,8 @@ const AddNodeForm = (props) => {
 
       {/* Second Tab */}
       <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-        <Form.Item label="Подключение к вычислителю" style={styles.w49}>
+        <Title color="black" style={styles.w100}>Настройки соединения</Title>
+        <Form.Item label="Подключение к вычислителю" style={styles.w100}>
           <SelectTT
             name="isConnected"
             onChange={(item) => {
@@ -198,113 +204,62 @@ const AddNodeForm = (props) => {
           />
         </Form.Item>
 
-        <Form.Item label="Подключение к вычислителю" style={styles.w49}>
-          <SearchInputAndAdd calculators={calculators}/>
+        <Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>
+          <SelectTT
+            name="calculatorId"
+            onChange={(value) => {
+              setFieldValue('calculatorId', value);
+            }}
+            placeholder="Вычислитель, к которому подключен узел"
+            options={calculators}
+            value={values.calculatorId}
+          />
         </Form.Item>
 
+        <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
+          <ButtonTT
+            style={styles.w100}
+            color="white"
+            type="button"
+            onClick={handleModalAddCalculator}
+          >
+            + Создать вычислитель
+          </ButtonTT>
+        </Form.Item>
+
+        <Form.Item
+          label="Номер ввода"
+          style={styles.w100}
+        >
+          <SelectTT
+            name="entryNumber"
+            onBlur={handleBlur}
+            placeholder="Выберите номер ввода"
+            onChange={(value) => {
+              setFieldValue('entryNumber', value);
+            }}
+            options={entryNumberList}
+            value={values.entryNumber}
+          />
+          <Alert name="entryNumber"/>
+        </Form.Item>
+      </StyledFormPage>
+
+      <StyledFormPage hidden={Number(currentTabKey) !== 3}>
+        <Title color={'black'} style={styles.w100}>
+          Настройки соединения
+        </Title>
         <ButtonTT
           color="white"
-          small
+          type="button"
           onClick={() => {
             setAddCalculator(true);
           }}
         >
-          + Создать вычислитель
+          + Добавить прибор
         </ButtonTT>
-
-        <Form.Item
-          label="Номер ввода"
-          style={styles.w100}
-        >
-          <SelectTT
-            name="entryNumber"
-            onBlur={handleBlur}
-            placeholder="Выберите номер ввода"
-            onChange={(value) => {
-              setFieldValue('entryNumber', value);
-            }}
-            options={entryNumberList}
-            value={values.entryNumber}
-          />
-          <Alert name="entryNumber" />
-        </Form.Item>
-
-        <hr align="center" width="100%" size="1" color="#DCDEE4" />
-
-        <Form.Item
-          label="Номер ввода"
-          style={styles.w100}
-        >
-          <SelectTT
-            name="entryNumber"
-            onBlur={handleBlur}
-            placeholder="Выберите номер ввода"
-            onChange={(value) => {
-              setFieldValue('entryNumber', value);
-            }}
-            options={entryNumberList}
-            value={values.entryNumber}
-          />
-          <Alert name="entryNumber" />
-        </Form.Item>
-
       </StyledFormPage>
 
-      <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-        <Form.Item label="Номер ввода" style={styles.w49}>
-          <InputTT
-            name="entryNumber"
-            type="number"
-            onBlur={handleBlur}
-            placeholder="Номер ввода"
-            value={values.entryNumber}
-            onChange={handleChange}
-            disabled={disable}
-          />
-          <Alert name="entryNumber" />
-        </Form.Item>
-
-        <Form.Item label="Номер узла" style={styles.w49}>
-          <InputTT
-            name="hubNumber"
-            type="number"
-            placeholder="Номер узла"
-            onBlur={handleBlur}
-            value={values.hubNumber}
-            onChange={handleChange}
-            disabled={disable}
-          />
-          <Alert name="hubNumber" />
-        </Form.Item>
-
-        <Form.Item label="Номер трубы" style={styles.w49}>
-          <InputTT
-            name="pipeNumber"
-            type="number"
-            min="0"
-            step="1"
-            placeholder="Номер трубы"
-            value={values.pipeNumber}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            disabled={disable}
-          />
-          <Alert name="pipeNumber" />
-        </Form.Item>
-
-        <Form.Item label="Магистраль" style={styles.w49}>
-          <SelectTT
-            placeholder="Выберите направление магистрали"
-            name="magistral"
-            options={magistrals}
-            onChange={(value) => {
-              setFieldValue('magistral', value);
-            }}
-            value={values.magistral}
-          />
-          <Alert name="magistral" />
-        </Form.Item>
-      </StyledFormPage>
       <StyledFooter form>
 
         <ButtonTT
@@ -320,11 +275,10 @@ const AddNodeForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          form="formikFormAddOdpu"
           hidden={currentTabKey !== '3'}
           big
         >
-          Добавить
+          Создать узел
         </ButtonTT>
         {/* <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}> */}
         {/*  Отмена */}

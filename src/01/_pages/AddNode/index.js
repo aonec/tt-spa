@@ -11,6 +11,7 @@ export const AddNode = () => {
   const [housingStock, setHousingStock] = useState();
   const [calculators, setCalculators] = useState();
   const [addCalculator, setAddCalculator] = useState(false);
+  const [currentCalculatorId, setCurrentCalculatorId] = useState(null)
 
   console.log('housingStockId', housingStockId);
 
@@ -32,10 +33,25 @@ export const AddNode = () => {
 
   }, []);
 
+
+  useEffect(()=> {
+    getCalculators(housingStockId).then((res) => {
+      const {items} = res;
+      const calculatorsList = items.map((calculator) => {
+        const {id, serialNumber, model} = calculator
+        return {value: id, label: `${model} ${serialNumber}`}
+      })
+      setCalculators(calculatorsList);
+      console.log(items);
+    });
+  }, [addCalculator])
+
+
+
   if (!housingStock || !calculators) {
-    return <Loader size="64" show />;
+    return <Loader size="64" show={true} />;
   }
-  const props = { housingStock, addCalculator, setAddCalculator, calculators };
+  const props = { housingStock, addCalculator, setAddCalculator, calculators, housingStockId, currentCalculatorId, setCurrentCalculatorId };
   return (
     <div>
       <Header {...props} />

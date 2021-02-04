@@ -4,11 +4,12 @@ import $ from 'jquery';
 import { Icon } from '../../../_components/Icon';
 import { List, ListItem, EditButtonWrap } from './Styled-Components';
 import { ObjectContext } from '../index';
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useParams } from 'react-router-dom'
 
 export const Template = styled.div``;
 
 export const EditButton = () => {
+
   const menuShowHide = () => {
     $('#edit-button__list').toggle();
   };
@@ -21,6 +22,8 @@ export const EditButton = () => {
 };
 
 export const Menu = (showPopupHandler) => {
+  const { housingStockId } = useParams();
+
   const { addCalculator, setAddCalculator, addOdpu, setAddOdpu, addNode, setAddNode } = useContext(ObjectContext);
 
   $(document).mouseup((e) => {
@@ -31,10 +34,6 @@ export const Menu = (showPopupHandler) => {
     }
   });
 
-  const routeAddNode = () => {
-
-    $('#edit-button__list').toggle();
-  };
 
   const showAddCalculator = () => {
     setAddCalculator(true);
@@ -52,7 +51,7 @@ export const Menu = (showPopupHandler) => {
       <List id="edit-button__list">
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
-        <NavLink to="/objects/755/add_node"><ListItem>Добавить Узел</ListItem></NavLink>
+        <NavLink to={`/objects/${housingStockId}/add_node`}><ListItem>Добавить Узел</ListItem></NavLink>
         {/*<ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>*/}
         <ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>
 

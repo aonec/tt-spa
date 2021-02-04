@@ -18,7 +18,7 @@ import { defaultValidationSchema, emptyConnectionValidationSchema } from './vali
 import { isEmptyString } from '../../../../utils/isEmptyString';
 
 const AddCalculatorForm = (props) => {
-  const { housingStockId, handleCancel, setAddCalculator } = props;
+  const { housingStockId, handleCancel, setAddCalculator,currentCalculatorId, setCurrentCalculatorId } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const {
@@ -59,11 +59,13 @@ const AddCalculatorForm = (props) => {
       };
       console.log('form', form);
       console.log(JSON.stringify(form));
-      // addCalculator(form);
-      // addCalculator(form).then(({ show, id }) => {
-      //
-      // });
-      // setTimeout(() => { setAddCalculator(false); }, 1000);
+      addCalculator(form).then((res)=>{
+        const {id} = res;
+        setCurrentCalculatorId(id);
+      });
+      setTimeout(() => {
+        setAddCalculator(false);
+      }, 1000);
     },
   });
 
