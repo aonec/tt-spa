@@ -12,6 +12,7 @@ import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
 } from '../../../tt-components';
 import TabsComponent from './Tabs';
+import RelatedDevices from './RelatedDevices';
 import { styles, StyledFormPage } from './styledComponents';
 
 const StyledHint = styled.div`
@@ -19,7 +20,20 @@ const StyledHint = styled.div`
 `;
 
 const AddNodeForm = (props) => {
-  const { housingStock, addCalculator, setAddCalculator, calculators, currentCalculatorId, setCurrentCalculatorId } = props;
+  const {
+    housingStock,
+    addCalculator,
+    setAddCalculator,
+    calculators,
+    currentCalculatorId,
+    setCurrentCalculatorId,
+    setAddOdpu,
+    addOdpu,
+    devices,
+    setDevices,
+    calculatorsExtended,
+    setResource
+  } = props;
   const [currentTabKey, setTab] = useState('1');
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -33,10 +47,11 @@ const AddNodeForm = (props) => {
       number: null,
       serviceZone: serviceZoneList[0].value,
       nodeStatus: nodeStatusList[0].value,
-      lastCommercialAccountingDate: moment().toISOString(),
-      futureCommercialAccountingDate: moment().add(1, 'years').toISOString(),
+      lastCheckingDate: moment().toISOString(),
+      futureCheckingDate: moment().add(1, 'years').toISOString(),
       isConnected: true,
-      calculatorId: null
+      calculatorId: null,
+      communicationPipes: [null],
     },
     validationSchema,
 
@@ -48,7 +63,8 @@ const AddNodeForm = (props) => {
         nodeStatus: values.nodeStatus,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-        calculatorId: values.calculatorId
+        calculatorId: values.calculatorId,
+        communicationPipes: values.communicationPipes,
       };
       console.log(form);
       console.log(JSON.stringify(form));
@@ -58,9 +74,9 @@ const AddNodeForm = (props) => {
     },
   });
 
-  useEffect(()=>{
-    setFieldValue('calculatorId', currentCalculatorId)
-  },[currentCalculatorId])
+  useEffect(() => {
+    setFieldValue('calculatorId', currentCalculatorId);
+  }, [currentCalculatorId]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -81,13 +97,14 @@ const AddNodeForm = (props) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  const entryNumberList = [{ value: 1, label: 1 },
-    { value: 3, label: 3 },
-    { value: 5, label: 5 }];
+  const entryNumberList = [
+    { value: 1, label: 1 },
+    { value: 2, label: 2 }
+  ];
 
   const handleModalAddCalculator = () => {
     setAddCalculator(true);
-  }
+  };
 
   return (
     <form
@@ -101,12 +118,13 @@ const AddNodeForm = (props) => {
 
       {/* First Tab */}
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-        <Title color={'black'} style={styles.w100}>Общие данные</Title>
+        <Title color="black" style={styles.w100}>Общие данные</Title>
         <Form.Item label="Тип ресурса" style={styles.w49}>
           <SelectTT
             name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
+              setResource(value)
             }}
             onBlur={handleBlur}
             options={resources}
@@ -209,6 +227,7 @@ const AddNodeForm = (props) => {
             name="calculatorId"
             onChange={(value) => {
               setFieldValue('calculatorId', value);
+              setCurrentCalculatorId(value);
             }}
             placeholder="Вычислитель, к которому подключен узел"
             options={calculators}
@@ -246,14 +265,18 @@ const AddNodeForm = (props) => {
       </StyledFormPage>
 
       <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-        <Title color={'black'} style={styles.w100}>
+        <Title color="black" style={styles.w100}>
           Настройки соединения
         </Title>
+        <div style={styles.w100}>
+          <RelatedDevices {...props} />
+        </div>
         <ButtonTT
+          style={{ marginTop: '24px' }}
           color="white"
           type="button"
           onClick={() => {
-            setAddCalculator(true);
+            setAddOdpu(true);
           }}
         >
           + Добавить прибор
@@ -287,5 +310,23 @@ const AddNodeForm = (props) => {
     </form>
   );
 };
-
 export default AddNodeForm;
+
+
+// console.log('calculatorsExtended', calculatorsExtended);
+// const currentCalculator = _.find(calculatorsExtended, { id: currentCalculatorId });
+// console.log('currentCalculator', currentCalculator);
+//
+// const entryNumberListDraft = currentCalculator ? currentCalculator.nodes.map((node, index) => {
+//   const { communicationPipes } = node;
+//   const communicationPipesArr = communicationPipes.map((communicationPipe, index) => {
+//     const { entryNumber } = communicationPipe;
+//     console.log('entryNumber', entryNumber);
+//     return {value: entryNumber, label: entryNumber}
+//   });
+//   return communicationPipesArr
+// }) : [];
+//
+// const entryNumberList =_.uniqBy(_.flatten(entryNumberListDraft), function (e) {
+//   return e.value;
+// }).sort()
