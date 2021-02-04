@@ -26,6 +26,19 @@ export async function getCalculators(id = '') {
   }
 }
 
+export async function addNode(form = {}) {
+  try {
+    const res = await axios.post('Nodes', form);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'node',
+      message: 'Произошла ошибка создания Узла!',
+    };
+  }
+}
+
 const template = {
   areaOfNonResidential: null,
   city: 'Нижнекамск',

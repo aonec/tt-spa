@@ -78,11 +78,11 @@ const AddDeviceForm = (props) => {
       deviceAddress: null,
       port: null,
       housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
-      resource: resource,
+      resource,
       model: '',
       diameter: null,
       calculatorId: currentCalculatorId ?? null,
-      entryNumber: null,
+      entryNumber,
       hubNumber: null,
       pipeNumber: null,
       magistral: magistrals[0].value,
@@ -101,12 +101,12 @@ const AddDeviceForm = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        pipeId: 0,
+        pipeId: null,
         diameter: values.diameter,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber || null,
+          // hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },
@@ -275,95 +275,6 @@ const AddDeviceForm = (props) => {
               value={moment(values.futureCheckingDate)}
             />
           </Form.Item>
-
-          {/*<Form.Item label="Дата начала Акта действия допуска" style={styles.w49}>*/}
-          {/*  <DatePickerTT*/}
-          {/*    format="DD.MM.YYYY"*/}
-          {/*    name="lastCommercialAccountingDate"*/}
-          {/*    placeholder="Укажите дату..."*/}
-          {/*    allowClear={false}*/}
-          {/*    onChange={(date) => {*/}
-          {/*      setFieldValue('lastCommercialAccountingDate', date.toISOString());*/}
-          {/*    }}*/}
-          {/*    value={moment(values.lastCommercialAccountingDate)}*/}
-          {/*  />*/}
-          {/*  <StyledHint>Только для приборов коммерческого учета</StyledHint>*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>*/}
-          {/*  <DatePickerTT*/}
-          {/*    format="DD.MM.YYYY"*/}
-          {/*    name="futureCommercialAccountingDate"*/}
-          {/*    placeholder="Укажите дату..."*/}
-          {/*    allowClear={false}*/}
-          {/*    onChange={(date) => {*/}
-          {/*      setFieldValue('futureCommercialAccountingDate', date.toISOString());*/}
-          {/*    }}*/}
-          {/*    value={moment(values.futureCommercialAccountingDate)}*/}
-          {/*  />*/}
-          {/*  <StyledHint>Только для приборов коммерческого учета</StyledHint>*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Подключение к вычислителю" style={styles.w100}>*/}
-          {/*  <SelectTT*/}
-          {/*    name="isConnected"*/}
-          {/*    onChange={(item) => {*/}
-          {/*      (item === false) ? setDisable(true) : setDisable(false);*/}
-          {/*      setFieldValue('isConnected', item);*/}
-          {/*    }}*/}
-          {/*    placeholder="Подключение к вычислителю"*/}
-          {/*    options={isConnected}*/}
-          {/*    value={values.isConnected}*/}
-          {/*    disabled*/}
-          {/*  />*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item*/}
-          {/*  label="Выберите вычислитель, к которому подключен прибор"*/}
-          {/*  style={styles.w100}*/}
-          {/*>*/}
-          {/*  <SelectTT*/}
-          {/*    name="calculatorId"*/}
-          {/*    type="text"*/}
-          {/*    onBlur={handleBlur}*/}
-          {/*    placeholder="Начните вводить серийный номер или IP адрес прибора"*/}
-          {/*    onChange={(value) => {*/}
-          {/*      console.log(value);*/}
-          {/*      setFieldValue('calculatorId', value);*/}
-          {/*      getCalculator(value).then((result) => setCalculator(result));*/}
-          {/*    }}*/}
-          {/*    options={calculators}*/}
-          {/*    value={values.calculatorId}*/}
-          {/*    disabled={disable}*/}
-          {/*  />*/}
-          {/*  <Alert name="calculatorId"/>*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Номер ввода" style={styles.w49}>*/}
-          {/*  <InputTT*/}
-          {/*    name="entryNumber"*/}
-          {/*    type="number"*/}
-          {/*    onBlur={handleBlur}*/}
-          {/*    placeholder="Номер ввода"*/}
-          {/*    value={values.entryNumber}*/}
-          {/*    onChange={handleChange}*/}
-          {/*    disabled={disable}*/}
-          {/*  />*/}
-          {/*  <Alert name="entryNumber"/>*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Номер узла" style={styles.w49}>*/}
-          {/*  <InputTT*/}
-          {/*    name="hubNumber"*/}
-          {/*    type="number"*/}
-          {/*    placeholder="Номер узла"*/}
-          {/*    onBlur={handleBlur}*/}
-          {/*    value={values.hubNumber}*/}
-          {/*    onChange={handleChange}*/}
-          {/*    disabled={disable}*/}
-          {/*  />*/}
-          {/*  <Alert name="hubNumber"/>*/}
-          {/*</Form.Item>*/}
 
           <Form.Item label="Номер трубы" style={styles.w49}>
             <InputTT
