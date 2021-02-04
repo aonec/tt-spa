@@ -1,49 +1,39 @@
 import React, { useState } from 'react';
 import { AutoComplete } from 'antd';
 
-const SearchInputAndAdd = () => {
+
+const SearchInputAndAdd = ({ calculators }) => {
+
   const [value, setValue] = useState('');
-  const [options, setOptions] = useState([]);
 
-  const onSearch = (searchText) => {
-    setOptions(
-      !searchText ? [] : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)],
-    );
+  const [options, setOptions] = useState([
+    { value: 1, label: '123' },
+    { value: 2, label: '2234' },
+    { value: 3, label: '3333' },
+  ]);
+  const onChange = (searchText) => {
+    console.log("searchText", searchText)
+    setValue(searchText)
+    const resultList = options.reduce((result, item) => {
+      const { label } = item;
+      if (label.includes(searchText)) {
+        result.push(item);
+      }
+      return result;
+    }, [])
+
+    setOptions(resultList);
   };
-
   const onSelect = (data) => {
     console.log('onSelect', data);
   };
 
-  const onChange = (data) => {
-    setValue(data);
-  };
-
-
-  // const resultOptionsList = options.reduce((result, item) => {
-  //   const { value, label } = item;
-  //   if (label.includes(value)) {
-  //     result.push(item);
-  //   }
-  //   return result;
-  // }, []);
-  // setOptions(resultOptionsList);
-
-  const optionsList = [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '14' },
-  ]
-
   return (
     <AutoComplete
-      value={value}
-      options={optionsList}
+      options={options}
       onSelect={onSelect}
       onChange={onChange}
-      placeholder="Введите серийный номер или IP адрес"
+      placeholder="Серийный номер или IP адрес"
     />
   );
 };
