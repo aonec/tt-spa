@@ -12,7 +12,7 @@ import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getCalculators } from "./apiObjectProfile";
 
 export const ObjectContext = React.createContext();
@@ -49,6 +49,8 @@ export const ObjectProfile = () => {
   }, [state.housingStock])
 
   useFetchPage(state, dispatch);
+  const test = useParams();
+  console.log(test)
   const { 0: objid } = useParams();
   const { push } = useHistory();
   const info = useObjectInformation(state);
@@ -62,7 +64,7 @@ export const ObjectProfile = () => {
       <ObjectContext.Provider
         value={context}
       >
-        <Breadcrumb path="/objects/"/>
+        <Index path="/objects/"/>
         <Header {...header} />
         <Tabs/>
         <grid>

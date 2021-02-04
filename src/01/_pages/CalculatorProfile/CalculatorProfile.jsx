@@ -15,7 +15,7 @@ import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
-import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import Index from "../../tt-components/Breadcrumb";
 import {HousingContext} from "../HousingProfile";
 import Nodes from "./components/Nodes";
 

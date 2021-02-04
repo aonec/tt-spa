@@ -33,7 +33,7 @@ const ModalAddNode = () => {
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={true}
+      visible={false}
       // visible
     >
 
