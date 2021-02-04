@@ -101,12 +101,10 @@ const AddDeviceForm = (props) => {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,
-        pipeId: null,
         diameter: values.diameter,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          // hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },
@@ -115,11 +113,6 @@ const AddDeviceForm = (props) => {
       console.log(form);
       console.log(JSON.stringify(form));
 
-      // addOdpu(form).then(() => {
-      //   setTimeout(() => {
-      //     setAddOdpu(false);
-      //   }, 1000);
-      // });
     },
   });
 

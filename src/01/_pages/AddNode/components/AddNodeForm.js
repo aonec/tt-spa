@@ -14,7 +14,7 @@ import {
 import TabsComponent from './Tabs';
 import RelatedDevices from './RelatedDevices';
 import { styles, StyledFormPage } from './styledComponents';
-import { addNode } from "../apiAddNode";
+import { addNode } from '../apiAddNode';
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -34,7 +34,9 @@ const AddNodeForm = (props) => {
     setDevices,
     calculatorsExtended,
     setResource,
-    setEntryNumber
+    entryNumber,
+    setEntryNumber,
+    communicationPipes,
   } = props;
   const [currentTabKey, setTab] = useState('1');
   const [disable, setDisable] = useState(false);
@@ -46,18 +48,27 @@ const AddNodeForm = (props) => {
   } = useFormik({
     initialValues: {
       resource: resources[0].value,
-      number: null,
+      number: 1,
       serviceZone: serviceZoneList[0].value,
       nodeStatus: nodeStatusList[0].value,
       lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().add(1, 'years').toISOString(),
       isConnected: true,
       calculatorId: null,
-      communicationPipes: [null],
+      devices,
     },
     validationSchema,
 
     onSubmit: async () => {
+      const communicationPipes = [];
+      const communicationPipe = {
+        number: values.number,
+        entryNumber,
+        devices,
+      };
+
+      communicationPipes.push(communicationPipe);
+
       const form = {
         resource: values.resource,
         number: values.number,
@@ -66,13 +77,13 @@ const AddNodeForm = (props) => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         calculatorId: values.calculatorId,
-        communicationPipes: values.communicationPipes,
+        communicationPipes,
       };
       console.log(form);
       console.log(JSON.stringify(form));
       addNode(form).then((res) => {
-        console.log(res)
-      })
+        console.log(res);
+      });
       // addOdpu(form).then(() => {
       //   setTimeout(() => { setAddOdpu(false); }, 1000);
       // });
@@ -84,7 +95,7 @@ const AddNodeForm = (props) => {
   }, [currentCalculatorId]);
 
   useEffect(() => {
-    setFieldValue('communicationPipes', devices);
+    setFieldValue('devices', devices);
   }, [devices]);
 
   const Alert = ({ name }) => {
@@ -98,17 +109,17 @@ const AddNodeForm = (props) => {
     return null;
   };
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
-  function handleNext(){
+  function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
 
   const entryNumberList = [
     { value: 1, label: 1 },
-    { value: 2, label: 2 }
+    { value: 2, label: 2 },
   ];
 
   const handleModalAddCalculator = () => {
@@ -133,13 +144,13 @@ const AddNodeForm = (props) => {
             name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
-              setResource(value)
+              setResource(value);
             }}
             onBlur={handleBlur}
             options={resources}
             value={values.resource}
           />
-          <Alert name="resource"/>
+          <Alert name="resource" />
         </Form.Item>
 
         <Form.Item label="Номер узла" style={styles.w49}>
@@ -149,7 +160,7 @@ const AddNodeForm = (props) => {
             onChange={handleChange}
             value={values.number}
           />
-          <Alert name="number"/>
+          <Alert name="number" />
         </Form.Item>
 
         <Form.Item label="Зона" style={styles.w100}>
@@ -162,7 +173,7 @@ const AddNodeForm = (props) => {
             options={serviceZoneList}
             value={values.serviceZone}
           />
-          <Alert name="serviceZone"/>
+          <Alert name="serviceZone" />
         </Form.Item>
 
         <Form.Item label="Коммерческий учет показателей приборов" style={styles.w100}>
@@ -179,7 +190,7 @@ const AddNodeForm = (props) => {
             options={nodeStatusList}
             value={values.nodeStatus}
           />
-          <Alert name="nodeStatus"/>
+          <Alert name="nodeStatus" />
         </Form.Item>
         {values.nodeStatus !== nodeStatusList[1].value ? (
           <>
@@ -194,7 +205,7 @@ const AddNodeForm = (props) => {
                 }}
                 value={moment(values.lastCommercialAccountingDate)}
               />
-              <Alert name="lastCommercialAccountingDate"/>
+              <Alert name="lastCommercialAccountingDate" />
             </Form.Item>
 
             <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
@@ -208,7 +219,7 @@ const AddNodeForm = (props) => {
                 }}
                 value={moment(values.futureCommercialAccountingDate)}
               />
-              <Alert name="futureCommercialAccountingDate"/>
+              <Alert name="futureCommercialAccountingDate" />
             </Form.Item>
           </>
         ) : null}
@@ -265,12 +276,12 @@ const AddNodeForm = (props) => {
             placeholder="Выберите номер ввода"
             onChange={(value) => {
               setFieldValue('entryNumber', value);
-              setEntryNumber(value)
+              setEntryNumber(value);
             }}
             options={entryNumberList}
             value={values.entryNumber}
           />
-          <Alert name="entryNumber"/>
+          <Alert name="entryNumber" />
         </Form.Item>
       </StyledFormPage>
 
@@ -321,7 +332,6 @@ const AddNodeForm = (props) => {
   );
 };
 export default AddNodeForm;
-
 
 // console.log('calculatorsExtended', calculatorsExtended);
 // const currentCalculator = _.find(calculatorsExtended, { id: currentCalculatorId });

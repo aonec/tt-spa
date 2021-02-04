@@ -17,6 +17,7 @@ export const AddNode = () => {
   const [addOdpu, setAddOdpu] = useState(false);
   const [currentCalculatorId, setCurrentCalculatorId] = useState(null);
   const [devices, setDevices] = useState([]);
+  const [communicationPipes, setCommunicationPipes] = useState([]);
   const [entryNumber, setEntryNumber] = useState(null);
   const [resource, setResource] = useState(resources[0].value);
   // const devicesArr = [
@@ -36,7 +37,7 @@ export const AddNode = () => {
   //       entryNumber: 1,
   //       hubNumber: 2,
   //       pipeNumber: 3,
-  //       magistral: 'string',
+  //       magistral: 'Flow',
   //     },
   //     diameter: 0,
   //   },
@@ -61,7 +62,7 @@ export const AddNode = () => {
   //     diameter: 0,
   //   },
   // ];
-  // const [devices, setDevices] = useState(devicesArr);
+  //  const [devices, setDevices] = useState(devicesArr);
 
   console.log('housingStockId', housingStockId);
 
@@ -111,6 +112,8 @@ export const AddNode = () => {
     setCalculatorsExtended,
     resource,
     setResource,
+    communicationPipes,
+    setCommunicationPipes,
   };
   return (
     <div>
