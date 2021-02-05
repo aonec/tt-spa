@@ -24,8 +24,12 @@ export const AddNode = () => {
     const [communicationPipes, setCommunicationPipes] = useState([]);
     const [entryNumber, setEntryNumber] = useState(null);
     const [resource, setResource] = useState(resources[0].value);
-    const [node, setNode] = useState();
+    const [node, setNode] = useState({});
     const [currentTabKey, setTab] = useState('1');
+
+    useEffect(()=>{
+        console.log(node)
+    },[node])
 
     console.log('housingStockId', housingStockId);
 
@@ -91,7 +95,7 @@ export const AddNode = () => {
         communicationPipes,
         setCommunicationPipes,
     };
-    const context = {handleCancel, currentTabKey, setTab, handleChangeTab, handleNext};
+    const context = {handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, node};
     return (
         <AddNodeContext.Provider value={context}>
             <div>
