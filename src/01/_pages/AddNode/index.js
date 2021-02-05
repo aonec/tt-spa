@@ -47,7 +47,7 @@ export const AddNode = () => {
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
   const [currentCalculatorId, setCurrentCalculatorId] = useState(null);
-  const [communicationPipes, setCommunicationPipes] = useState(communicationPipeTemplate);
+  const [communicationPipes, setCommunicationPipes] = useState([]);
 
 
   const [entryNumber, setEntryNumber] = useState(null);

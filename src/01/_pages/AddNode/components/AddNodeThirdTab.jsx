@@ -29,6 +29,7 @@ const AddNodeThirdTab = () => {
     addOdpu,
     setAddOdpu,
     communicationPipes,
+    node,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
@@ -48,6 +49,12 @@ const AddNodeThirdTab = () => {
         communicationPipes: values.communicationPipes,
       };
       console.log(form);
+
+      const addNodeForm = { ...node, communicationPipes };
+      console.log('addNodeForm', addNodeForm);
+      addNode(addNodeForm).then((res)=>{
+          console.log("addNodeFormResponseFromServer", res)
+      })
     },
   });
 
@@ -98,7 +105,7 @@ const AddNodeThirdTab = () => {
           big
           type="submit"
         >
-          Далее
+          Создать Узел
         </ButtonTT>
         <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
           Отмена

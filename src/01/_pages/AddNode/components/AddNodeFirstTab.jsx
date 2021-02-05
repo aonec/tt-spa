@@ -45,7 +45,7 @@ const AddNodeFirstTab = (props) => {
     onSubmit: async () => {
       const form = {
         resource: values.resource,
-        number: values.number,
+        number: Number(values.number),
         serviceZone: values.serviceZone,
         nodeStatus: values.nodeStatus,
         lastCheckingDate: values.lastCheckingDate,
@@ -84,7 +84,6 @@ const AddNodeFirstTab = (props) => {
             name="resource"
             onChange={(value) => {
               setFieldValue('resource', value);
-              setResource(value);
             }}
             onBlur={handleBlur}
             options={resources}
