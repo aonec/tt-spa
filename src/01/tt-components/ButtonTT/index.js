@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-export const ButtonTT = styled.button.attrs(props => ({
+export const ButtonTT = styled.button.attrs((props) => ({
   size: props.size,
-  small: props.small
+  small: props.small,
 }))`
   position: relative;
   border-radius: 4px;
@@ -14,22 +14,10 @@ export const ButtonTT = styled.button.attrs(props => ({
   padding: 8px 24px;
   background-color: #189EE9;
   transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
-  width: ${props => props.big ? '224px' : 'fit-content'};
+  width: ${(props) => (props.big ? '224px' : 'fit-content')};
 
-  ${(props) => props.size ==='small' && css`
-    border-color: var(--error);
-    & svg {
-      color: var(--error)
-    }
-  `}
 
-  ${(props) => props.small && css`
-    border-color: var(--error);
-    & svg {
-      color: var(--error)
-    }
-  `}
-
+  
   &:before {
     display: none;
     content: "";
@@ -116,6 +104,16 @@ export const ButtonTT = styled.button.attrs(props => ({
     color: #fff;
   }
 
+  ${(props) => props.small && css`
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 16px;
+    height: auto;
+    display: flex;
+    svg {
+      margin-left: 16px;
+    }
+  `}
 
 `;
 

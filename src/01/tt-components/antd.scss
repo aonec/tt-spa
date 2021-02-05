@@ -3,15 +3,19 @@
   flex-direction: column !important;
   align-items: baseline !important;
   margin-bottom: 12px !important;
+
   .ant-form-item-control {
     width: 100%;
   }
+
   .ant-form-item-label {
     label {
       color: rgba(39, 47, 90, 0.7) !important;
+      font-style: normal;
       font-weight: 500;
       font-size: 14px;
       line-height: 16px;
+
       label {
         font-weight: 400;
         font-size: 14px;
@@ -38,3 +42,26 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+form {
+  .ant-picker {
+    padding: 8px 24px;
+
+    input {
+      font-size: 16px;
+      line-height: 32px;
+    }
+  }
+  .ant-select-show-search.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    padding: 8px 24px;
+    height: auto;
+    .ant-select-selection-search {
+      padding: 8px 12px;
+      height: auto;
+
+    }
+  }
+}
+
+
+

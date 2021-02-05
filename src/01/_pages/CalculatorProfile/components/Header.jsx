@@ -8,7 +8,6 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
-import { ButtonTT } from '../../../tt-components';
 
 export const Template = styled.div``;
 
@@ -51,10 +50,6 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  const buttonHandler = () => {
-    console.log('building', building);
-    console.log('device', device);
-  };
 
   const errorOfComponent = _.get(error, 'resource', null);
 

@@ -1,36 +1,30 @@
 import React, { useContext } from 'react';
-import { Form, Switch } from 'antd';
+import moment from 'moment';
+import _ from 'lodash';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
-import { Label } from './Styles';
 import { Subtitle } from '../../../_components/Headers';
 import { NodeContext } from '../index';
-import DisableModal from './Modals/DisableModal';
-import EnableModal from './Modals/EnableModal';
+import { nodeStatusList, serviceZoneList } from '../../../tt-components/localBases';
 
 const Information = () => {
   const {
-    node, tasks, showDisable, setShowDisable, showEnable, setShowEnable, visible, setVisible, switched, setSwitched
+    node,
+    calculator,
   } = useContext(NodeContext);
   const {
-    address, diameter,
+    serviceZone, nodeStatus, lastCheckingDate, futureCheckingDate,
   } = node;
+
+  const {
+    address,
+  } = calculator;
   const {
     city, street, housingStockNumber, corpus, id,
   } = address;
-  const handleSwitchChange = (checked) =>{
-    if (checked === true) {
-      console.log("true")
-      setVisible(prevState => ({...prevState, showEnable: true}))
-      setSwitched(true)
 
-    }
-    if (checked === false) {
-      console.log("false")
-      setVisible(prevState => ({...prevState, showDisable: true}))
-      setSwitched(false)
-    }
+  const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
+  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
 
-  }
   return (
     <ListWrap>
       <Title>Информация</Title>
@@ -42,21 +36,20 @@ const Information = () => {
       </ListItem>
       <ListItem>
         <span>Зона</span>
-        <div>Апартаменты</div>
-        </ListItem>
-      <ListItem>
-        <span>Тип узла</span>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Switch size="small" checked={switched} onChange={handleSwitchChange}/>
-          <span>Коммерческий учет показетелей прибора</span>
-        </div>
+        <div>{getServiceZone}</div>
       </ListItem>
       <ListItem>
-        <span>Статус узла</span>
-        <Label color="green">Сдан</Label>
+        <span>Коммерческий учет показателей приборов</span>
+        <div>{getNodeStatus}</div>
       </ListItem>
-      <DisableModal />
-      <EnableModal />
+      <ListItem>
+        <span>Дата начала действия акта-допуска</span>
+        <div>{moment(lastCheckingDate).format('DD.MM.YYYY')}</div>
+      </ListItem>
+      <ListItem>
+        <span>Дата окончания действия акта-допуска</span>
+        <div>{moment(futureCheckingDate).format('DD.MM.YYYY')}</div>
+      </ListItem>
     </ListWrap>
   );
 };

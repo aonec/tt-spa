@@ -18,7 +18,7 @@ import { Stages } from './components/Stages';
 import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -70,7 +70,7 @@ export const TaskProfile = () => {
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-      <Breadcrumb path="/tasks/" />
+      <Index path="/tasks/" />
       <Header {...state.header} />
       <Panel {...panel} device={device} state={state} />
       <Steps />
