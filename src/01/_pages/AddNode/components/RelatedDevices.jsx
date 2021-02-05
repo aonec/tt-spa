@@ -1,74 +1,83 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/_components/Icon';
+import {Icon} from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { IconTT } from "../../../tt-components";
-import { Div } from "../../EditNode/components/Connection";
+import {IconTT} from "../../../tt-components";
+import {Div} from "../../EditNode/components/Connection";
 import {AddNodeContext} from "../index";
+import _ from 'lodash'
 
 export const RelatedDevices = () => {
 
 
-  const {
-    handleCancel,
-    currentTabKey,
-    setTab,
-    handleChangeTab,
-    handleNext,
-    node,
-    setNode,
-    housingStockId,
-    calculators,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
-    communicationPipes,
-    setCommunicationPipes,
-    housingStock
-  } = useContext(AddNodeContext);
-
-  const result = communicationPipes.map((communicationPipe) => {
     const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      pipe,
-      housingStockId,
-    } = communicationPipe;
+        handleCancel,
+        currentTabKey,
+        setTab,
+        handleChangeTab,
+        handleNext,
+        node,
+        setNode,
+        housingStockId,
+        calculators,
+        addCalculator,
+        setAddCalculator,
+        addOdpu,
+        setAddOdpu,
+        communicationPipes,
+        setCommunicationPipes,
+        housingStock
+    } = useContext(AddNodeContext);
 
-    const { pipeNumber, entryNumber, hubNumber } = pipe
+    const devices = communicationPipes.map((communicationPipe) => {
+        const {devices} = communicationPipe
+        return devices.map((device) => {
+            return device
+        })
+    })
+    const res = _.flatten(devices)
+
+    const result = res.map((device) => {
+            const {
+                model,
+                serialNumber,
+                closingdate,
+                hub,
+                resource,
+                id,
+                pipe,
+                housingStockId,
+            } = device;
+
+            const {pipeNumber, entryNumber, hubNumber} = pipe
+
+            return (
+                <ListItem key={id}>
+                    <NameWrap href={`/housingMeteringDevices/${id}`}>
+                        <IconTT icon={resource.toLowerCase()}/>
+                        <Name>{model}</Name>
+                        <Serial>{` (${serialNumber})`}</Serial>
+                    </NameWrap>
+
+                    <State>
+                        <Icon icon="status" color="#17B45A"/>
+                        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+                    </State>
+                    <Span>{`Ввод: ${entryNumber}`}</Span>
+                    {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
+                    <Span>{`Труба: ${pipeNumber}`}</Span>
+                    <Div> <IconTT icon={'edit'} style={{marginLeft: 8}}/>
+                        <IconTT icon={'del'} style={{marginLeft: 8}}/></Div>
+                </ListItem>
+            );
+        }
+    );
 
     return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={resource.toLowerCase()}/>
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          <Icon icon="status" color="#17B45A"/>
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-        <Div> <IconTT icon={'edit'} style={{ marginLeft: 8 }}/>
-          <IconTT icon={'del'} style={{ marginLeft: 8 }}/></Div>
-      </ListItem>
+        <ListWrap>
+            {result}
+        </ListWrap>
     );
-  });
-
-  return (
-    <ListWrap>
-      {/* <button onClick={buttonHandler}>related</button> */}
-      {/*{result}*/}
-    </ListWrap>
-  );
 };
 
 export default RelatedDevices;

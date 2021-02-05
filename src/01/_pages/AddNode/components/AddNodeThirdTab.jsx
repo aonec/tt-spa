@@ -81,7 +81,7 @@ const AddNodeThirdTab = () => {
           Настройки соединения
         </Title>
         <div style={styles.w100}>
-          <RelatedDevices  />
+          <RelatedDevices />
         </div>
         <ButtonTT
           style={{ marginTop: '24px' }}

@@ -10,6 +10,35 @@ import { resources } from '../../tt-components/localBases';
 
 export const AddNodeContext = React.createContext();
 
+const communicationPipeTemplate = [{
+  number: 1,
+  entryNumber: 2,
+  magistral: 'FeedFlow',
+  devices: [
+    {
+      serialNumber: '1634033434354444',
+      lastCheckingDate: '2021-02-05T06:25:25.707Z',
+      futureCheckingDate: '2024-02-05T06:25:25.707Z',
+      lastCommercialAccountingDate: '2021-02-05T06:25:25.707Z',
+      futureCommercialAccountingDate: '2021-02-05T06:25:25.707Z',
+      documentsIds: [],
+      housingMeteringDeviceType: 'FlowMeter',
+      resource: 'HotWaterSupply',
+      model: 'THERMO 26122020',
+      diameter: 12,
+      pipe: {
+        calculatorId: 2538469,
+        entryNumber: 2,
+        pipeNumber: 2,
+        magistral: 'FeedFlow',
+      },
+    },
+  ],
+},
+];
+
+
+
 export const AddNode = () => {
   const { housingStockId, push } = useParams();
   const [housingStock, setHousingStock] = useState();
@@ -18,7 +47,9 @@ export const AddNode = () => {
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
   const [currentCalculatorId, setCurrentCalculatorId] = useState(null);
-  const [communicationPipes, setCommunicationPipes] = useState([]);
+  const [communicationPipes, setCommunicationPipes] = useState(communicationPipeTemplate);
+
+
   const [entryNumber, setEntryNumber] = useState(null);
   const [resource, setResource] = useState(resources[0].value);
   const [node, setNode] = useState({});
@@ -91,7 +122,7 @@ export const AddNode = () => {
     setAddOdpu,
     communicationPipes,
     setCommunicationPipes,
-    housingStock
+    housingStock,
   };
   return (
     <AddNodeContext.Provider value={context}>
