@@ -85,7 +85,7 @@ const AddNodeThirdTab = () => {
     >
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
-          Настройки соединения
+          Подключенные приборы
         </Title>
         <div style={styles.w100}>
           <RelatedDevices />

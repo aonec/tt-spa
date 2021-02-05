@@ -13,7 +13,7 @@ export const Header = () => {
   // } = node;
 
   const {
-    model, serialNumber, resource, address,
+    model, serialNumber, address,
   } = calculator;
 
   const {
@@ -21,7 +21,7 @@ export const Header = () => {
   } = address;
   // console.log("calculator", calculator)
 
-  const { id, nodeResourceType, nodeStatus, number, serviceZone } = node;
+  const { id, resource, nodeStatus, number, serviceZone } = node;
 
   const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
   const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
@@ -53,7 +53,7 @@ export const Header = () => {
       <div>
         <div>
           <TitleWrap>
-            <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
+            <IconTT icon={resource.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
             <Title>{`Узел ${number}`}</Title>
           </TitleWrap>
         </div>

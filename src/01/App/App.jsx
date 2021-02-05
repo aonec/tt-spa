@@ -101,7 +101,7 @@ export function App() {
                     />
 
                     <Route
-                      path="/nodes/:nodeId/edit"
+                      path="/nodes/:nodeId(\\d+)/edit"
                       component={EditNode}
                       exact
                     />
