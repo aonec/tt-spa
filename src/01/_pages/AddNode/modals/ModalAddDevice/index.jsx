@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { getObjectCalculators } from './apiAddOdpu';
+import {AddNodeContext} from "../../index";
 
 const ModalAddDevice = (props) => {
   const [calculators, setCalculators,] = useState([]);
-  const { setAddOdpu, addOdpu, housingStockId, currentCalculatorId } = props;
+  const { setAddOdpu, addOdpu, housingStockId } = useContext(AddNodeContext);
   console.log('props', props);
 
   function handleCancel(){
@@ -42,7 +43,6 @@ const ModalAddDevice = (props) => {
     >
 
       <AddDeviceForm
-        {...props}
         handleCancel={handleCancel}
       />
     </StyledModal>

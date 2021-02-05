@@ -22,7 +22,7 @@ const ModalAddCalculator = (props) => {
         footer={null}
         width={800}
       >
-        <AddCalculatorForm {...props} {...modalProps}/>
+        <AddCalculatorForm {...modalProps}/>
 
       </StyledModal>
     </>

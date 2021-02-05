@@ -22,7 +22,7 @@ const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
 `;
 
-const AddNodeThirdTab = (props) => {
+const AddNodeThirdTab = () => {
   const {
     handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, addCalculator,
     setAddCalculator,
@@ -55,6 +55,10 @@ const AddNodeThirdTab = (props) => {
     setFieldValue('communicationPipes', communicationPipes);
   }, [communicationPipes]);
 
+  function handleShowAddDevice() {
+    setAddOdpu(true);
+  }
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -77,15 +81,13 @@ const AddNodeThirdTab = (props) => {
           Настройки соединения
         </Title>
         <div style={styles.w100}>
-          <RelatedDevices {...props} />
+          <RelatedDevices  />
         </div>
         <ButtonTT
           style={{ marginTop: '24px' }}
           color="white"
           type="button"
-          onClick={() => {
-            setAddOdpu(true);
-          }}
+          onClick={handleShowAddDevice}
         >
           + Добавить прибор
         </ButtonTT>

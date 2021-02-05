@@ -28,6 +28,10 @@ export const AddNode = () => {
     console.log('node', node);
   }, [node]);
 
+  useEffect(() => {
+    console.log('communicationPipes', communicationPipes);
+  }, [communicationPipes]);
+
   console.log('housingStockId', housingStockId);
 
   function handleCancel() {

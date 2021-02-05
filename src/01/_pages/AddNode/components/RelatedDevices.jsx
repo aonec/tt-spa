@@ -4,58 +4,64 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { IconTT } from "../../../tt-components";
 import { Div } from "../../EditNode/components/Connection";
+import {AddNodeContext} from "../index";
 
-export const RelatedDevices = (props) => {
+export const RelatedDevices = () => {
 
-  console.log(props)
 
   const {
-    housingStock,
+    handleCancel,
+    currentTabKey,
+    setTab,
+    handleChangeTab,
+    handleNext,
+    node,
+    setNode,
+    housingStockId,
+    calculators,
     addCalculator,
     setAddCalculator,
-    calculators,
-    currentCalculatorId,
-    setCurrentCalculatorId,
-    setAddOdpu,
     addOdpu,
-    devices,
-    setDevices
-  } = props;
+    setAddOdpu,
+    communicationPipes,
+    setCommunicationPipes,
+    housingStock
+  } = useContext(AddNodeContext);
 
-  // const result = devices.map((value) => {
-  //   const {
-  //     model,
-  //     serialNumber,
-  //     closingdate,
-  //     hub,
-  //     resource,
-  //     id,
-  //     pipe,
-  //     housingStockId,
-  //   } = value;
-  //
-  //   const { pipeNumber, entryNumber, hubNumber } = pipe
-  //
-  //   return (
-  //     <ListItem key={id}>
-  //       <NameWrap href={`/housingMeteringDevices/${id}`}>
-  //         <IconTT icon={resource.toLowerCase()}/>
-  //         <Name>{model}</Name>
-  //         <Serial>{` (${serialNumber})`}</Serial>
-  //       </NameWrap>
-  //
-  //       <State>
-  //         <Icon icon="status" color="#17B45A"/>
-  //         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-  //       </State>
-  //       <Span>{`Ввод: ${entryNumber}`}</Span>
-  //       {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
-  //       <Span>{`Труба: ${pipeNumber}`}</Span>
-  //       <Div> <IconTT icon={'edit'} style={{ marginLeft: 8 }}/>
-  //         <IconTT icon={'del'} style={{ marginLeft: 8 }}/></Div>
-  //     </ListItem>
-  //   );
-  // });
+  const result = communicationPipes.map((communicationPipe) => {
+    const {
+      model,
+      serialNumber,
+      closingdate,
+      hub,
+      resource,
+      id,
+      pipe,
+      housingStockId,
+    } = communicationPipe;
+
+    const { pipeNumber, entryNumber, hubNumber } = pipe
+
+    return (
+      <ListItem key={id}>
+        <NameWrap href={`/housingMeteringDevices/${id}`}>
+          <IconTT icon={resource.toLowerCase()}/>
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <Icon icon="status" color="#17B45A"/>
+          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        </State>
+        <Span>{`Ввод: ${entryNumber}`}</Span>
+        {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
+        <Span>{`Труба: ${pipeNumber}`}</Span>
+        <Div> <IconTT icon={'edit'} style={{ marginLeft: 8 }}/>
+          <IconTT icon={'del'} style={{ marginLeft: 8 }}/></Div>
+      </ListItem>
+    );
+  });
 
   return (
     <ListWrap>
