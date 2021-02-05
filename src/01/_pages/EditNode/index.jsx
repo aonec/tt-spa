@@ -6,8 +6,7 @@ import EditNodeTabs from './components/EditNodeTabs';
 import Index from '../../tt-components/Breadcrumb';
 import { getCalculator, getNode } from './components/apiEditNode';
 import EditNodeForm, { ListWrap } from './components/EditNodeForm';
-import { ButtonTT } from "../../tt-components/ButtonTT";
-import { IconTT } from "../../tt-components";
+import {Breadcrumb} from "../../tt-components";
 
 export const EditNodeContext = React.createContext();
 
@@ -47,7 +46,7 @@ export const EditNode = () => {
   return (
     <>
       <EditNodeContext.Provider value={context}>
-        <Index path={`/nodes/${nodeId}`}/>
+        <Breadcrumb path={`/nodes/${nodeId}`}/>
         <Header/>
         <EditNodeTabs/>
         <EditNodeForm/>

@@ -20,7 +20,7 @@ export const defaultValidationSchema = Yup.object({
     futureCommercialAccountingDate: yupDate,
     number: Yup.number().typeError('Укажите номер').required('Укажите номер'),
     nodeStatus: Yup.string().required('Укажите статус'),
-    nodeResourceType:Yup.string().required('Укажите тип ресура'),
+    resource:Yup.string().required('Укажите тип ресура'),
     serviceZone: Yup.string().required('Укажите зону')
 });
 

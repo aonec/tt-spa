@@ -16,9 +16,11 @@ import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyStri
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
+import {AddNodeContext} from "../../index";
 
 const AddCalculatorForm = (props) => {
-  const { housingStockId, handleCancel, setAddCalculator,currentCalculatorId, setCurrentCalculatorId } = props;
+  const { housingStockId, setAddCalculator,currentCalculatorId, setCurrentCalculatorId } = useContext(AddNodeContext);
+  const {handleCancel} = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const {
