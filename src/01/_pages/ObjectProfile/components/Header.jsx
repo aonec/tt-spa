@@ -5,6 +5,8 @@ import { Menu, EditButton } from './EditButton';
 import { HeaderWrap } from '../../../_components/Headers';
 import ModalCalculator from './AddCalculator';
 import ModalAddDevice from './AddDevice';
+import ModalAddNode from './AddNode';
+
 
 const styles = css`
   h {
@@ -40,6 +42,7 @@ export const Header = React.memo(({ 0: title, 1: subtitle, corpus }) => styled(s
           <Menu />
           <ModalCalculator />
           <ModalAddDevice />
+          <ModalAddNode />
         </div>
       </Loader>
     </HeaderWrap>

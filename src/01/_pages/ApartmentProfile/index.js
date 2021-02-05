@@ -13,7 +13,7 @@ import { Tasks } from './components/ApartmentTasks/ApartmentTasks';
 
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
-import Breadcrumb from "../../tt-components/Breadcrumb/Breadcrumb";
+import Index from "../../tt-components/Breadcrumb";
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -63,7 +63,7 @@ const ApartmentProfile = () => {
 
   return styled(grid)(
     <>
-      <Breadcrumb path={`/objects/${id}/apartments`} />
+      <Index path={`/objects/${id}/apartments`} />
       <Header
         apartmentNumber={apartmentNumber}
         city={city}

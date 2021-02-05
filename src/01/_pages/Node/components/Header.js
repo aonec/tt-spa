@@ -9,14 +9,14 @@ import _ from 'lodash';
 export const Header = () => {
   const { node, calculator } = useContext(NodeContext);
   const {
-    model, serialNumber, resource, address,
+    model, serialNumber, address,
   } = calculator;
   const {
     id: objectId, city, street, housingStockNumber, corpus
   } = address;
 
 
-  const { id, nodeResourceType, nodeStatus, number } = node;
+  const { id, resource, nodeStatus, number } = node;
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
@@ -46,7 +46,7 @@ export const Header = () => {
       <div>
         <div>
           <TitleWrap>
-            <IconTT icon={nodeResourceType.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
+            <IconTT icon={resource.toLowerCase()} size={24} style={{ marginRight: '8px' }}/>
             <Title>{`Узел ${number}`}</Title>
           </TitleWrap>
         </div>

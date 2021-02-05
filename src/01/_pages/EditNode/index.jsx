@@ -3,7 +3,7 @@ import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeTabs from './components/EditNodeTabs';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getCalculator, getNode } from './components/apiEditNode';
 import EditNodeForm, { ListWrap } from './components/EditNodeForm';
 import { ButtonTT } from "../../tt-components/ButtonTT";
@@ -47,7 +47,7 @@ export const EditNode = () => {
   return (
     <>
       <EditNodeContext.Provider value={context}>
-        <Breadcrumb path={`/nodes/${nodeId}`}/>
+        <Index path={`/nodes/${nodeId}`}/>
         <Header/>
         <EditNodeTabs/>
         <EditNodeForm/>

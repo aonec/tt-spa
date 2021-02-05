@@ -3,7 +3,7 @@ import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import EditCalculatorTabs from './components/EditCalculatorTabs';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getCalculator } from './components/apiEditCalculator';
 import EditCalculatorForm from './components/EditCalculatorForm';
 import ModalCalculatorExist from './components/ModalCalculatorExist';
@@ -37,7 +37,7 @@ export const EditCalculator = () => {
   return (
     <>
       <EditCalculatorContext.Provider value={context}>
-        <Breadcrumb path={`/calculators/${deviceId}`} />
+        <Index path={`/calculators/${deviceId}`} />
         <Header>{`${currentCalc.model} (${currentCalc.serialNumber}). Редактирование`}</Header>
         <EditCalculatorTabs />
         <EditCalculatorForm />
