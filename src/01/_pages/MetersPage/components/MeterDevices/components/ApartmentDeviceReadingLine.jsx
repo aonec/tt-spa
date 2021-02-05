@@ -255,7 +255,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
             <DeviceReadingsContainer isDisabled={isDisabled} onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
             <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
-            <Modal handleOk={handleOk} handleCancel={handleCancel} />
+<!--             <Modal handleOk={handleOk} handleCancel={handleCancel} /> -->
             <StyledModal
                 visible={isVisible}
                 title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
