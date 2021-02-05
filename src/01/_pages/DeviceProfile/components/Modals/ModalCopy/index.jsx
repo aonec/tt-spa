@@ -155,10 +155,7 @@ export const ModalODPU = ({ device }) => {
       }&pipenumber=${pipeNumberRes.current}&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
         end,
       )}T00:00:00Z`;
-      axios.get(link).then(res => {
-        console.log(res);
-        debugger;
-      })
+
 
       const lastTemplate = 'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';
 
