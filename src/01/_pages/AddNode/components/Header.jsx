@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { Breadcrumb } from '../../../tt-components';
+import {AddNodeContext} from "../index";
 
-export const Header = (props) => {
-  const { housingStock } = props;
+export const Header = () => {
+  const { housingStock } = useContext(AddNodeContext);
   const { id, city, street, number, corpus } = housingStock;
 
   return (

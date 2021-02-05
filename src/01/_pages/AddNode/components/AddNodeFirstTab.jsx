@@ -1,27 +1,23 @@
 import React, {
-  useContext, useEffect, useRef, useState,
+  useContext, useState,
 } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
 import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp, serviceZoneList, nodeStatusList,
+  resources, serviceZoneList, nodeStatusList,
 } from '../../../tt-components/localBases';
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
 } from '../../../tt-components';
-import TabsComponent from './Tabs';
-import RelatedDevices from './RelatedDevices';
 import { styles, StyledFormPage } from './styledComponents';
-import { addNode } from '../apiAddNode';
 import { AddNodeContext } from '../index';
 
 const AddNodeFirstTab = (props) => {
   const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, node, setNode
+    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, node, setNode,
   } = useContext(AddNodeContext);
   const {
     setAddCalculator,
@@ -52,24 +48,17 @@ const AddNodeFirstTab = (props) => {
         number: values.number,
         serviceZone: values.serviceZone,
         nodeStatus: values.nodeStatus,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate,
+        futureCheckingDate: values.futureCheckingDate,
       };
       console.log('AddNodeFirstTab', form);
-      setNode(prevState => ({
+      setNode((prevState) => ({
         ...prevState,
-        ...form
+        ...form,
       }));
+      setTab('2');
     },
   });
-
-  useEffect(() => {
-    setFieldValue('calculatorId', currentCalculatorId);
-  }, [currentCalculatorId]);
-
-  useEffect(() => {
-    setFieldValue('devices', devices);
-  }, [devices]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);

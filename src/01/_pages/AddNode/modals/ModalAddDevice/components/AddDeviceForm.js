@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -16,16 +16,16 @@ import TabsComponent from './Main';
 import { styles, StyledFormPage } from './styledComponents';
 import styled from 'styled-components'
 import { handleTabsBeforeFormSubmit } from "../../../../../utils/handleTabsBeforeFormSubmit";
+import {AddNodeContext} from "../../../index";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
 `
 
 const AddDeviceForm = (props) => {
-  const { calculators, handleCancel, setAddOdpu, currentCalculatorId, entryNumber, setEntryNumber,resource, setDevices, devices } = props;
+  const { calculators, handleCancel, setAddOdpu, currentCalculatorId, entryNumber,resource, setDevices, communicationPipes, setCommunicationPipes } = useContext(AddNodeContext);
   console.log('AddDeviceFormProps', props)
   const [currentTabKey, setTab] = useState('1');
-  const [calculator, setCalculator] = useState();
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));

@@ -1,44 +1,41 @@
 import React, {
-    useContext, useEffect, useRef, useState,
+    useContext, useEffect, useState,
 } from 'react';
 import {Form} from 'antd';
 import moment from 'moment';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
+
 import {
-    resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp, serviceZoneList, nodeStatusList,
+    resources, isConnected, serviceZoneList, nodeStatusList,
 } from '../../../tt-components/localBases';
 import {
-    Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
+    Title, SelectTT, ButtonTT, StyledFooter,
 } from '../../../tt-components';
-import TabsComponent from './Tabs';
-import RelatedDevices from './RelatedDevices';
 import {styles, StyledFormPage} from './styledComponents';
-import {addNode} from '../apiAddNode';
 import {AddNodeContext} from '../index';
 
-const StyledHint = styled.div`
-  color: rgba(39, 47, 90, 0.7)
-`;
-
 const AddNodeSecondTab = (props) => {
-    const {handleCancel, currentTabKey, setTab, handleChangeTab, handleNext} = useContext(AddNodeContext)
     const {
-        housingStock,
+        handleCancel,
+        currentTabKey,
+        setTab,
+        handleChangeTab,
+        handleNext,
+        node,
+        setNode,
+        housingStockId,
+        calculators,
         addCalculator,
         setAddCalculator,
-        calculators,
+        addOdpu,
+        setAddOdpu,
+    } = useContext(AddNodeContext);
+    const {
         currentCalculatorId,
         setCurrentCalculatorId,
-        setAddOdpu,
-        addOdpu,
         devices,
-        setDevices,
-        calculatorsExtended,
-        setResource,
-        entryNumber,
         setEntryNumber,
         communicationPipes,
     } = props;
@@ -51,34 +48,25 @@ const AddNodeSecondTab = (props) => {
         handleBlur, setFieldValue, setValues,
     } = useFormik({
         initialValues: {
-            resource: resources[0].value,
-            number: 1,
-            serviceZone: serviceZoneList[0].value,
-            nodeStatus: nodeStatusList[0].value,
-            lastCheckingDate: moment().toISOString(),
-            futureCheckingDate: moment().add(1, 'years').toISOString(),
             isConnected: true,
             calculatorId: null,
-            devices,
+            entryNumber: null,
         },
         validationSchema,
 
         onSubmit: async () => {
             const form = {
-                resource: values.resource,
-                number: values.number,
-                serviceZone: values.serviceZone,
-                nodeStatus: values.nodeStatus,
-                lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-                futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+                isConnected: values.isConnected,
+                entryNumber: values.entryNumber,
                 calculatorId: values.calculatorId,
-                communicationPipes,
             };
             console.log(form);
-            console.log(JSON.stringify(form));
-            // addNode(form).then((res) => {
-            //   console.log(res);
-            // });
+
+            setNode((prevState) => ({
+                ...prevState,
+                ...form
+            }));
+            setTab('3')
         },
     });
 
@@ -100,7 +88,6 @@ const AddNodeSecondTab = (props) => {
         }
         return null;
     };
-
 
     const entryNumberList = [
         {value: 1, label: 1},
@@ -138,7 +125,6 @@ const AddNodeSecondTab = (props) => {
                         name="calculatorId"
                         onChange={(value) => {
                             setFieldValue('calculatorId', value);
-                            setCurrentCalculatorId(value);
                         }}
                         placeholder="Вычислитель, к которому подключен узел"
                         options={calculators}
@@ -167,7 +153,6 @@ const AddNodeSecondTab = (props) => {
                         placeholder="Выберите номер ввода"
                         onChange={(value) => {
                             setFieldValue('entryNumber', value);
-                            setEntryNumber(value);
                         }}
                         options={entryNumberList}
                         value={values.entryNumber}

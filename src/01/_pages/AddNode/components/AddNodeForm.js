@@ -1,23 +1,5 @@
-import React, {
-  useContext, useEffect, useRef, useState,
-} from 'react';
-import { Form } from 'antd';
-import moment from 'moment';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import _ from 'lodash';
-import styled from 'styled-components';
-import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp, serviceZoneList, nodeStatusList,
-} from '../../../tt-components/localBases';
-import {
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
-} from '../../../tt-components';
+import React, { useContext } from 'react';
 import TabsComponent from './Tabs';
-import RelatedDevices from './RelatedDevices';
-import { styles, StyledFormPage } from './styledComponents';
-import { addNode } from '../apiAddNode';
-
 import AddNodeFirstTab from './AddNodeFirstTab';
 import { AddNodeContext } from '../index';
 import AddNodeSecondTab from './AddNodeSecondTab';

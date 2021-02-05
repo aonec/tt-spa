@@ -24,11 +24,13 @@ const StyledHint = styled.div`
 
 const AddNodeThirdTab = (props) => {
   const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext,
+    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext,     addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
   } = useContext(AddNodeContext);
   const {
     currentCalculatorId,
-    setAddOdpu,
     devices,
     communicationPipes,
   } = props;
@@ -41,40 +43,18 @@ const AddNodeThirdTab = (props) => {
     handleBlur, setFieldValue, setValues,
   } = useFormik({
     initialValues: {
-      resource: resources[0].value,
-      number: 1,
-      serviceZone: serviceZoneList[0].value,
-      nodeStatus: nodeStatusList[0].value,
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(1, 'years').toISOString(),
-      isConnected: true,
-      calculatorId: null,
-      devices,
+      communicationPipes: [],
     },
     validationSchema,
 
     onSubmit: async () => {
       const form = {
-        resource: values.resource,
-        number: values.number,
-        serviceZone: values.serviceZone,
-        nodeStatus: values.nodeStatus,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-        calculatorId: values.calculatorId,
-        communicationPipes,
+        communicationPipes: values.communicationPipes,
       };
       console.log(form);
-      console.log(JSON.stringify(form));
-      // addNode(form).then((res) => {
-      //   console.log(res);
-      // });
     },
   });
 
-  useEffect(() => {
-    setFieldValue('calculatorId', currentCalculatorId);
-  }, [currentCalculatorId]);
 
   useEffect(() => {
     setFieldValue('devices', devices);
@@ -90,11 +70,6 @@ const AddNodeThirdTab = (props) => {
     }
     return null;
   };
-
-  const entryNumberList = [
-    { value: 1, label: 1 },
-    { value: 2, label: 2 },
-  ];
 
   return (
     <form
