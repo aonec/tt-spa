@@ -16,7 +16,7 @@ import {
 import {styles, StyledFormPage} from './styledComponents';
 import {AddNodeContext} from '../index';
 
-const AddNodeSecondTab = (props) => {
+const AddNodeSecondTab = () => {
     const {
         handleCancel,
         currentTabKey,
@@ -31,14 +31,11 @@ const AddNodeSecondTab = (props) => {
         setAddCalculator,
         addOdpu,
         setAddOdpu,
-    } = useContext(AddNodeContext);
-    const {
-        currentCalculatorId,
-        setCurrentCalculatorId,
-        devices,
-        setEntryNumber,
         communicationPipes,
-    } = props;
+        setCommunicationPipes,
+        housingStock
+    } = useContext(AddNodeContext);
+
 
     const [disable, setDisable] = useState(false);
     const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -70,13 +67,10 @@ const AddNodeSecondTab = (props) => {
         },
     });
 
-    useEffect(() => {
-        setFieldValue('calculatorId', currentCalculatorId);
-    }, [currentCalculatorId]);
 
     useEffect(() => {
-        setFieldValue('devices', devices);
-    }, [devices]);
+        setFieldValue('devices', communicationPipes);
+    }, [communicationPipes]);
 
     const Alert = ({name}) => {
         const touch = _.get(touched, `${name}`);

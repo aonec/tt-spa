@@ -24,16 +24,12 @@ const StyledHint = styled.div`
 
 const AddNodeThirdTab = (props) => {
   const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext,     addCalculator,
+    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, addCalculator,
     setAddCalculator,
     addOdpu,
     setAddOdpu,
-  } = useContext(AddNodeContext);
-  const {
-    currentCalculatorId,
-    devices,
     communicationPipes,
-  } = props;
+  } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -55,10 +51,9 @@ const AddNodeThirdTab = (props) => {
     },
   });
 
-
   useEffect(() => {
-    setFieldValue('devices', devices);
-  }, [devices]);
+    setFieldValue('communicationPipes', communicationPipes);
+  }, [communicationPipes]);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);

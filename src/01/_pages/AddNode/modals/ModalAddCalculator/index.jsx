@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import '../../../../tt-components/antd.scss';
 import AddCalculatorForm from './AddCalculatorForm';
 import { StyledModal } from '../../../../tt-components';
+import {AddNodeContext} from "../../index";
 
 const ModalAddCalculator = (props) => {
-  const { addCalculator, setAddCalculator, housingStockId } = props;
+  const { addCalculator, setAddCalculator, housingStockId } = useContext(AddNodeContext);
   const handleCancel = () => {
     setAddCalculator(false);
   };
