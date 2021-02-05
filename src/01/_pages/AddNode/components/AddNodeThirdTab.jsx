@@ -1,4 +1,6 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {
+    useContext, useEffect, useRef, useState,
+} from 'react';
 import {Form} from 'antd';
 import moment from 'moment';
 import {useFormik} from 'formik';
@@ -15,17 +17,13 @@ import TabsComponent from './Tabs';
 import RelatedDevices from './RelatedDevices';
 import {styles, StyledFormPage} from './styledComponents';
 import {addNode} from '../apiAddNode';
-
-import AddNodeFirstTab from './AddNodeFirstTab'
-import {AddNodeContext} from "../index";
-import AddNodeSecondTab from "./AddNodeSecondTab";
+import {AddNodeContext} from '../index';
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
 `;
 
-const AddNodeForm = (props) => {
-
+const AddNodeSecondTab = (props) => {
     const {handleCancel, currentTabKey, setTab, handleChangeTab, handleNext} = useContext(AddNodeContext)
     const {
         housingStock,
@@ -44,6 +42,7 @@ const AddNodeForm = (props) => {
         setEntryNumber,
         communicationPipes,
     } = props;
+
     const [disable, setDisable] = useState(false);
     const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -65,7 +64,6 @@ const AddNodeForm = (props) => {
         validationSchema,
 
         onSubmit: async () => {
-
             const form = {
                 resource: values.resource,
                 number: values.number,
@@ -115,20 +113,11 @@ const AddNodeForm = (props) => {
 
     return (
         <form
+            hidden={Number(currentTabKey) !== 3}}
             onSubmit={handleSubmit}
             style={{display: 'flex', flexDirection: 'column'}}
         >
-            <TabsComponent
-                currentTabKey={currentTabKey}
-                handleChangeTab={handleChangeTab}
-            />
-
-            {/* First Tab */}
-            <AddNodeFirstTab/>
-            {/* Second Tab */}
-            <AddNodeSecondTab />
-
-            <StyledFormPage hidden={Number(currentTabKey) !== 3}>
+            <StyledFormPage >
                 <Title color="black" style={styles.w100}>
                     Настройки соединения
                 </Title>
@@ -146,50 +135,20 @@ const AddNodeForm = (props) => {
                     + Добавить прибор
                 </ButtonTT>
             </StyledFormPage>
-
-            {/*<StyledFooter form>*/}
-
-            {/*  <ButtonTT*/}
-            {/*    color="blue"*/}
-            {/*    onClick={handleNext}*/}
-            {/*    big*/}
-            {/*    hidden={currentTabKey === '3'}*/}
-            {/*    type="button"*/}
-            {/*  >*/}
-            {/*    Далее*/}
-            {/*  </ButtonTT>*/}
-
-            {/*  <ButtonTT*/}
-            {/*    color="blue"*/}
-            {/*    type="submit"*/}
-            {/*    hidden={currentTabKey !== '3'}*/}
-            {/*    big*/}
-            {/*  >*/}
-            {/*    Создать узел*/}
-            {/*  </ButtonTT>*/}
-            {/*   <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}> */}
-            {/*    Отмена */}
-            {/*   </ButtonTT> */}
-            {/*</StyledFooter>*/}
+            <StyledFooter form>
+                <ButtonTT
+                    color="blue"
+                    big
+                    type="submit"
+                >
+                    Далее
+                </ButtonTT>
+                <ButtonTT type="button" color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
+                    Отмена
+                </ButtonTT>
+            </StyledFooter>
         </form>
     );
 };
-export default AddNodeForm;
 
-// console.log('calculatorsExtended', calculatorsExtended);
-// const currentCalculator = _.find(calculatorsExtended, { id: currentCalculatorId });
-// console.log('currentCalculator', currentCalculator);
-//
-// const entryNumberListDraft = currentCalculator ? currentCalculator.nodes.map((node, index) => {
-//   const { communicationPipes } = node;
-//   const communicationPipesArr = communicationPipes.map((communicationPipe, index) => {
-//     const { entryNumber } = communicationPipe;
-//     console.log('entryNumber', entryNumber);
-//     return {value: entryNumber, label: entryNumber}
-//   });
-//   return communicationPipesArr
-// }) : [];
-//
-// const entryNumberList =_.uniqBy(_.flatten(entryNumberListDraft), function (e) {
-//   return e.value;
-// }).sort()
+export default AddNodeSecondTab;

@@ -22,45 +22,45 @@ export const RelatedDevices = (props) => {
     setDevices
   } = props;
 
-  const result = devices.map((value) => {
-    const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      pipe,
-      housingStockId,
-    } = value;
-
-    const { pipeNumber, entryNumber, hubNumber } = pipe
-
-    return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={resource.toLowerCase()}/>
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          <Icon icon="status" color="#17B45A"/>
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-        <Div> <IconTT icon={'edit'} style={{ marginLeft: 8 }}/>
-          <IconTT icon={'del'} style={{ marginLeft: 8 }}/></Div>
-      </ListItem>
-    );
-  });
+  // const result = devices.map((value) => {
+  //   const {
+  //     model,
+  //     serialNumber,
+  //     closingdate,
+  //     hub,
+  //     resource,
+  //     id,
+  //     pipe,
+  //     housingStockId,
+  //   } = value;
+  //
+  //   const { pipeNumber, entryNumber, hubNumber } = pipe
+  //
+  //   return (
+  //     <ListItem key={id}>
+  //       <NameWrap href={`/housingMeteringDevices/${id}`}>
+  //         <IconTT icon={resource.toLowerCase()}/>
+  //         <Name>{model}</Name>
+  //         <Serial>{` (${serialNumber})`}</Serial>
+  //       </NameWrap>
+  //
+  //       <State>
+  //         <Icon icon="status" color="#17B45A"/>
+  //         {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+  //       </State>
+  //       <Span>{`Ввод: ${entryNumber}`}</Span>
+  //       {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
+  //       <Span>{`Труба: ${pipeNumber}`}</Span>
+  //       <Div> <IconTT icon={'edit'} style={{ marginLeft: 8 }}/>
+  //         <IconTT icon={'del'} style={{ marginLeft: 8 }}/></Div>
+  //     </ListItem>
+  //   );
+  // });
 
   return (
     <ListWrap>
       {/* <button onClick={buttonHandler}>related</button> */}
-      {result}
+      {/*{result}*/}
     </ListWrap>
   );
 };
