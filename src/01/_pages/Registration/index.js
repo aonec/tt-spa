@@ -3,12 +3,20 @@ import { Input, Form } from 'antd';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styles from './registration.module.scss';
+import queryString from 'query-string';
 import logo from '../../assets/svg/logo.svg';
 import login from '../../assets/svg/login.svg';
-import { ButtonTT, Title } from '../../tt-components';
+import { Button, Title } from '../../tt-components';
+import { confirmRegistration } from './apiRegistration';
+import styles from './registration.module.scss';
+import { AccessDeniedPage } from '../AccessDeniedPage';
 
 export const Registration = () => {
+  const parsedSearch = queryString.parse(window.location.search);
+  // console.log(parsedSearch);
+  const { token } = parsedSearch;
+  // console.log(token);
+
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -22,11 +30,12 @@ export const Registration = () => {
       confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Пароли не совпадают').required('Подтвердите пароль'),
     }),
     onSubmit: async () => {
+      console.log('accessToken', token);
       const form = {
+        token,
         password: values.password,
-        confirmPassword: values.confirmPassword,
       };
-      alert('Пароь успешно сохранен!');
+      confirmRegistration(form);
     },
   });
 
@@ -40,6 +49,12 @@ export const Registration = () => {
     }
     return null;
   };
+
+  if (!token) {
+    return (
+      <AccessDeniedPage />
+    );
+  }
 
   return (
     <div className={styles.registration}>
@@ -55,7 +70,7 @@ export const Registration = () => {
         <form id="registration" style={{ maxWidth: 400 }} onSubmit={handleSubmit}>
           <Title size="40" color="white">Введите пароль для входа в систему</Title>
 
-          <Form.Item label={<label style={{ color: '#ffffff' }}>Пароль</label>}>
+          <Form.Item label={<label>Пароль</label>}>
             <Input.Password
               size="large"
               value={values.password}
@@ -66,7 +81,7 @@ export const Registration = () => {
             <Alert name="password" />
           </Form.Item>
 
-          <Form.Item label={<label style={{ color: '#ffffff' }}>Повторите пароль</label>}>
+          <Form.Item label={<label>Повторите Пароль</label>}>
             <Input.Password
               value={values.confirmPassword}
               onChange={handleChange}
@@ -77,13 +92,14 @@ export const Registration = () => {
             <Alert name="confirmPassword" />
           </Form.Item>
 
-          <ButtonTT
+          <Button
+            data-big
+            data-primary
             type="submit"
-            color="blue"
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginTop: '24px' }}
           >
-            Вход в систему
-          </ButtonTT>
+            <span>Вход в систему</span>
+          </Button>
         </form>
 
       </div>
@@ -92,3 +108,18 @@ export const Registration = () => {
 };
 
 export default Registration;
+
+{ /* <ButtonTT */
+}
+{ /*  type="submit" */
+}
+{ /*  color="blue" */
+}
+{ /*  style={{ width: '100%' }} */
+}
+{ /* > */
+}
+{ /*  Вход в систему */
+}
+{ /* </ButtonTT> */
+}

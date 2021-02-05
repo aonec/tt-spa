@@ -7,15 +7,10 @@ import { ButtonTT } from '../../../../../tt-components/ButtonTT';
 import { StyledModal } from "../../../../../tt-components";
 
 export const ModalCalculatorReport = () => {
-  // console.log('ModalCalculatorReport');
-
-  // const { report, setReport, device } = useContext(DeviceContext);
-
   const { report, setReport, device } = useContext(DeviceContext);
   const handleCancel = () => {
     setReport(false);
   };
-  console.log(device);
   if (device.infoId !== 10) {
     return (
       <StyledModal

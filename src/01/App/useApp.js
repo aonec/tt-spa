@@ -1,17 +1,24 @@
 import React from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { AppContext } from '01/context';
-import axios from '01/axios';
-import { Loader } from '01/components';
+import { useHistory, useLocation } from 'react-router-dom';
 
-export function useApp() {
+import { AppContext } from '01/context';
+
+export function useApp(){
   const { replace } = useHistory();
+  // const { pathname } = useLocation()
+
   const [state, dispatch] = React.useReducer(reducer, {}, (state) => {
     const user = JSON.parse(localStorage.getItem('user'));
     return { ...state, user };
   });
 
   React.useEffect(() => {
+
+    // if (pathname.match(/registration/gi)) {
+    //   console.log(pathname.match(/registration/gi));
+    //   return
+    // }
+
     const token = localStorage.getItem('token');
     if (!token) {
       localStorage.clear();
@@ -23,7 +30,7 @@ export function useApp() {
     <AppContext.Provider
       value={{
         ...state,
-        save(data) {
+        save(data){
           dispatch({ type: 'save', payload: data });
         },
       }}
@@ -33,7 +40,7 @@ export function useApp() {
   );
 }
 
-function reducer(state, action) {
+function reducer(state, action){
   const { type = '', payload = {} } = action;
   switch (type) {
     case 'save':

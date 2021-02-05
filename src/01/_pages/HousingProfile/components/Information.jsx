@@ -5,26 +5,37 @@ import { ListWrap, ListItem, Title } from '01/_components/List';
 import _ from 'lodash';
 import { HousingContext } from '../HousingProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
-import { Subtitle } from '../../../_components/Headers';
+import { Subtitle } from '../../../_components';
+import { magistrals } from '../../../tt-components/localBases';
 
 export const Information = (loading = true) => {
   const { device, loadings, error } = useContext(HousingContext);
-
-  const loadingDevice = _.get(loadings, 'device', true);
-
-  loading = loadingDevice;
-
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
 
   const { address } = device || {};
   const {
     city, street, housingStockNumber, corpus, id,
   } = address || DEFAULT_BUILDING;
   const {
-    futureCommercialAccountingDate, lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate, diameter, housingMeteringDeviceType,
+    futureCommercialAccountingDate,
+    lastCommercialAccountingDate,
+    futureCheckingDate,
+    lastCheckingDate,
+    diameter,
+    housingMeteringDeviceType,
+    hubConnection: {
+      hub: {
+        entryNumber,
+        hubNumber,
+        pipeNumber,
+        magistral,
+      },
+    },
   } = device || DEFAULT_DEVICE;
+
+  const loadingDevice = _.get(loadings, 'device', true);
+  const direction = _.find(magistrals, { value: magistral });
+
+  loading = loadingDevice && direction;
 
   const errorOfComponent = _.get(error, 'resource', null);
 
@@ -38,15 +49,26 @@ export const Information = (loading = true) => {
     );
   }
 
+  const directionLabel = direction !== undefined ? direction.label : null;
+
   return (
     <ListWrap>
       <Loader show={loading} size="32">
         <Title>Информация</Title>
         <ListItem>
           <span>Адрес</span>
-          <Subtitle to={`/objects/${id}`} style={{padding: 8}}>
+          <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
             {`${city}, ${street}, ${housingStockNumber} ${corpus ? `, к.${corpus}` : ''}`}
           </Subtitle>
+        </ListItem>
+
+        <ListItem>
+          <span>Дата начала действия акта-допуска</span>
+          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
+        </ListItem>
+        <ListItem>
+          <span>Дата окончания действия акта-допуска</span>
+          <span>{convertDateDots(futureCommercialAccountingDate)}</span>
         </ListItem>
         {housingMeteringDeviceType === 'FlowMeter' ? (
           <ListItem>
@@ -55,12 +77,8 @@ export const Information = (loading = true) => {
           </ListItem>
         ) : null}
         <ListItem>
-          <span>Дата начала действия акта-допуска</span>
-          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
-        </ListItem>
-        <ListItem>
-          <span>Дата окончания действия акта-допуска</span>
-          <span>{convertDateDots(futureCommercialAccountingDate)}</span>
+          <span>Магистраль</span>
+          <span>{directionLabel}</span>
         </ListItem>
         <ListItem>
           <span>Дата поверки прибора</span>

@@ -30,7 +30,7 @@ display: flex;
 flex-direction: column;
 border-radius: 4px;
 border: 1px solid var(--frame);
-padding: 8px
+padding: 8px;
 `
 
 const DeviceReadingForm = ({device, readingsBlocked = false}) => {

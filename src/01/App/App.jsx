@@ -13,7 +13,7 @@ import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
-import createSagaMiddleware from 'redux-saga'
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../Redux/rootReducer';
 import {
   Tasks,
@@ -35,17 +35,17 @@ import {
   Registration,
   Node,
   IndividualDevice,
+  MapPage,
+  EditNode,
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import rootSaga from "../Redux/saga";
-import {store} from "../Redux/store";
+import rootSaga from '../Redux/saga';
+import { store } from '../Redux/store';
 
 moment.locale('ru');
-
-
 
 export function App() {
   const AppProvider = useApp();
@@ -57,11 +57,11 @@ export function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/logout" render={() => 'logout'} />
-            {/* <Route path="/error/" render={() => "404"} /> */}
             <Route path="/error/" render={() => <ErrorPage />} />
-            <Route path="/registration/" render={() => <Registration />} />
+            <Route path="/registration*" render={() => <Registration />} />
             <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
             <Route path="/form/" render={() => <DeviceSearchForm />} />
+            <Route path="/map/" render={() => <MapPage />} />
             <Route path="/">
               <layout>
                 <menu as="div">
@@ -82,20 +82,32 @@ export function App() {
                     <Route path="/devices/(\\d+)" component={Devices} exact />
 
                     <Route
-                      path={['/calculators/:deviceId/(connection|related|documents)?']}
+                      path={['/calculators/:deviceId/(connection|related|nodes|documents)?']}
                       component={CalculatorProfile}
+                      exact
+                    />
+
+                    <Route
+                      path="/calculators/:deviceId/edit"
+                      component={EditCalculator}
+                      exact
+                    />
+
+                    <Route
+                      path={['/nodes/:nodeId/(connection|related|documents)?']}
+                      component={Node}
+                      exact
+                    />
+
+                    <Route
+                      path="/nodes/:nodeId/edit"
+                      component={EditNode}
                       exact
                     />
 
                     <Route
                       path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
                       component={HousingProfile}
-                      exact
-                    />
-
-                    <Route
-                      path={['/nodes/:nodeId/(related|documents)?']}
-                      component={Node}
                       exact
                     />
 
@@ -111,11 +123,6 @@ export function App() {
                       exact
                     />
 
-                    <Route
-                      path="/calculators/:deviceId/edit"
-                      component={EditCalculator}
-                      exact
-                    />
                     <Route
                       path="/housingMeteringDevices/:deviceId/edit_odpu/"
                       component={EditODPU}

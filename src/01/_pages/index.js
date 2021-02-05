@@ -18,3 +18,5 @@ export * from './Contractor';
 export * from './Registration';
 export * from './Node';
 export * from './IndividualDevice';
+export * from './Map';
+export * from './EditNode';

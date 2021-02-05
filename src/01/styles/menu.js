@@ -14,6 +14,11 @@ export const menu = css`
     padding-left: 16px;
     position: relative;
 
+    & span:first-of-type {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     & span:only-child {
       font-size: 12px;
       margin-top: -16px;
@@ -34,6 +39,7 @@ export const menu = css`
 
   span {
     grid-column: 2;
+    
     & + span {
       opacity: 0.6;
       font-size: 12px;

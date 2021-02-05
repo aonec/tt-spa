@@ -109,37 +109,42 @@ export const timeZones = [
 
 export const UserRoles = [
   {
-    value: 1334536,
-    label: 'Собственник квартиры',
-  },
-  {
-    value: 1334537,
-    label: 'Администратор системы',
-  },
-  {
-    value: 1334533,
+    value: 760,
     label: 'Администратор УК',
   },
   {
-    value: 1334539,
+    value: 1309829,
+    label: 'Оператор УК',
+  },
+  // {
+  //   value: 756,
+  //   label: '4',
+  // },
+  {
+    value: 758,
+    label: 'Собственник квартиры',
+  },
+  {
+    value: 1310772,
+    label: 'Администратор системы',
+  },
+  {
+    value: 757,
     label: 'Сервис Scada',
   },
   {
-    value: 1334538,
+    value: 761,
     label: 'Сервис ЕРЦ',
   },
   {
-    value: 1371329,
+    value: 1503658,
     label: 'Фоновый рабочий',
   },
   {
-    value: 1334534,
+    value: 759,
     label: 'Исполнитель УК',
   },
-  {
-    value: 1334535,
-    label: 'Оператор УК',
-  },
+
 ];
 
 export const DEFAULT_BUILDING = {
@@ -177,6 +182,36 @@ export const detailList = [
 export const typelList = [
   { label: 'Холодная вода', value: 'coldwatersupply' },
   { label: 'Горячая вода', value: 'heat' },
+];
+
+export const nodeStatusList = [
+  {
+    value: 'Registered',
+    label: 'Сдан на коммерческий учет',
+  },
+  {
+    value: 'NotRegistered',
+    label: 'Не на коммерческом учете',
+  },
+  {
+    value: 'OnReview',
+    label: 'На утверждении',
+  },
+  {
+    value: 'Подготовлен к сдаче',
+    label: 'Prepared',
+  },
+];
+
+export const serviceZoneList = [
+  {
+    value: 'Apartments',
+    label: 'Апартаменты',
+  },
+  {
+    value: 'CommercialPremises',
+    label: 'Коммерческие помещения'
+  }
 ];
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;

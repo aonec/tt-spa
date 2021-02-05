@@ -6,6 +6,60 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { DeviceContext } from '../CalculatorProfile';
 
+export const RelatedDevices = () => {
+  const { related, loadings } = useContext(DeviceContext);
+  const loading = _.get(loadings, 'related', true);
+
+  const result = related.map((value) => {
+    const {
+      model,
+      serialNumber,
+      closingdate,
+      hub,
+      resource,
+      id,
+      housingStockId,
+    } = value;
+
+    const { pipeNumber, entryNumber, hubNumber } = hub === null ? {
+      number: 'X',
+      entryNumber: 'X',
+      hubNumber: 'X'
+    } : hub;
+    const { icon, color } = DeviceIcons[resource];
+
+    return (
+      <ListItem key={id}>
+        <NameWrap href={`/housingMeteringDevices/${id}`}>
+          <Icon icon={icon} color={color}/>
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <Icon icon="status" color="#17B45A"/>
+          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        </State>
+        <Span>{`Ввод: ${entryNumber}`}</Span>
+        <Span>{`Узел: ${hubNumber}`}</Span>
+        <Span>{`Труба: ${pipeNumber}`}</Span>
+      </ListItem>
+    );
+  });
+
+  return (
+    <ListWrap>
+      {/* <button onClick={buttonHandler}>related</button> */}
+      <Loader show={loading} size="32">
+        <Title>Приборы</Title>
+        {result}
+      </Loader>
+    </ListWrap>
+  );
+};
+
+export default RelatedDevices;
+
 export const Template = styled.div``;
 
 export const NameWrap = styled.a`
@@ -60,56 +114,3 @@ export const ListItem = styled.div`
 export const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
-
-export const RelatedDevices = () => {
-  const { related, loadings } = useContext(DeviceContext);
-  const loading = _.get(loadings, 'related', true);
-
-  const buttonHandler = () => {
-  };
-
-  const result = related.map((value) => {
-    const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      housingStockId,
-    } = value;
-
-    const { pipeNumber, entryNumber, hubNumber } = hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
-    const { icon, color } = DeviceIcons[resource];
-
-    return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <Icon icon={icon} color={color} />
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-      </ListItem>
-    );
-  });
-
-  return (
-    <ListWrap>
-      {/* <button onClick={buttonHandler}>related</button> */}
-      <Loader show={loading} size="32">
-        <Title>Приборы</Title>
-        {result}
-      </Loader>
-    </ListWrap>
-  );
-};
-
-export default RelatedDevices;
