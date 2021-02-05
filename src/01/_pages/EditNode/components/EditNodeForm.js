@@ -34,7 +34,7 @@ const EditNodeForm = () => {
   const [validationSchema, setValidationSchema] = useState(defaultValidationSchema);
 
   const {
-    nodeResourceType,
+    resource,
     number,
     serviceZone,
     nodeStatus,
@@ -43,13 +43,14 @@ const EditNodeForm = () => {
     id: nodeId,
     calculatorId,
   } = node;
+  console.log("resource", resource)
 
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setFieldError,
   } = useFormik({
     initialValues: {
-      nodeResourceType,
+      resource,
       number,
       serviceZone,
       nodeStatus,
@@ -61,7 +62,7 @@ const EditNodeForm = () => {
       const nodeForm = {
         number: Number(values.number),
         nodeStatus: values.nodeStatus,
-        nodeResourceType: values.nodeResourceType,
+        resource: values.resource,
         serviceZone: values.serviceZone,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
@@ -111,13 +112,13 @@ const EditNodeForm = () => {
           <SelectTT
             placeholder="Выберите Тип ресурса"
             options={resources}
-            value={values.nodeResourceType}
+            value={values.resource}
             onChange={(event) => {
-              setFieldValue('nodeResourceType', event);
+              setFieldValue('resource', event);
             }}
             disabled
           />
-          <Alert name="nodeResourceType"/>
+          <Alert name="resource"/>
         </Form.Item>
 
         <Form.Item label="Номер узла">
