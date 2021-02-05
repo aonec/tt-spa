@@ -9,6 +9,7 @@ import {objectsSearchReducer} from "../../Redux/reducers/objectsSearchReducer";
 import {formQueryString} from "../../utils/formQueryString";
 import {useDebounce} from "../../hooks/useDebounce";
 import {NotConnectedIcon} from "../../components/NotConnectedIcon/NotConnectedIcon";
+import {sortObjects} from "../../utils/sortObjects";
 
 const styles = css`
   obj_item {
@@ -80,7 +81,7 @@ export const Objects = ({isReadings = false}) => {
             { !isReadings ? <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1> : null }
             <ObjectsSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState}/>
             <Loader show={!items} size="32">
-                {items?.map(
+                {items?.sort(sortObjects).map(
                     ({
                          city, id, number, numberOfTasks, street, numberOfApartments,
                      }) => {

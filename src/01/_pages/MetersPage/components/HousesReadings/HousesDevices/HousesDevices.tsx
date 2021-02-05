@@ -1,38 +1,21 @@
-import React, {useEffect, useReducer} from "react";
-import {requestDevicesByHouse, ReadingsStateType, requestHouse, HouseType} from "../../../../../_api/houses_readings_page";
+import React, {useEffect} from "react";
+import {requestDevicesByHouse, requestHouse, HouseType} from "../../../../../_api/houses_readings_page";
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
 import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
-import {selectDevices, selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
+import {selectDevices} from "../../../../../Redux/ducks/readings/selectors";
 import { setDevices } from "01/Redux/ducks/readings/actionCreators";
-import Arrow from "01/_components/Arrow/Arrow";
 import HouseBanner from "./HouseBanner";
-
-const HouseReadingsDevice = styled.div`
-display: grid;
-grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
-column-gap: 16px;
-color: var(--main-90);
-border-bottom: 1px solid var(--frame);
-align-items: center;
-height: 72px;
-`
 
 type ParamsType = {
     id: string
 }
 
-export type DisabledStateType = {
-    deviceId: number,
-    isDisabled: boolean
-}[]
 
-
-
-const HousesDevices: React.FC = () => {
+const HousesDevices: React.FC = ({openModal}) => {
 
     let { id: housingStockId }: ParamsType = useParams();
     const dispatch = useDispatch();
@@ -62,8 +45,6 @@ const HousesDevices: React.FC = () => {
             key={device.id + 'f'}
             device={device}
         />)
-
-
 
     return (
         <>
