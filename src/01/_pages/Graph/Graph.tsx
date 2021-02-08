@@ -1,15 +1,13 @@
-import * as V from 'victory';
 import {
     VictoryChart,
     VictoryAxis,
     VictoryTheme,
     VictoryTooltip,
-    VictoryVoronoiContainer, VictoryArea
+    VictoryVoronoiContainer, VictoryArea, VictoryLabelProps, VictoryTooltipProps
 } from 'victory';
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {format, compareAsc, toDate, parseISO} from 'date-fns'
+import React from "react";
+import {format} from 'date-fns'
 import styled from "styled-components";
-import { zonedTimeToUtc } from 'date-fns-tz'
 
 const readingsOneDayByHours = {
     "resource": "Heat",
@@ -2585,40 +2583,42 @@ const readingsOneMonthByDays = {
     ]
 };
 
+
+
 const readingsByHours = JSON.parse(JSON.stringify(readingsOneMonthByDays))
 
-const formatDate = (timeStamp) => {
+const formatDate = (timeStamp: string): Date => {
     const dateObject = new Date(timeStamp);
     const date = new Date(dateObject.valueOf() + dateObject.getTimezoneOffset() * 60 * 1000);
     return date;
 }
 
-const getHourFromTimeStamp = (timeStamp) => {
+const getHourFromTimeStamp = (timeStamp: string): number => {
     const date = formatDate(timeStamp);
     return +format(date, 'HH');
 }
 
-const isHourMultiplySix = (timeStamp) => {
+const isHourMultiplySix = (timeStamp: string): boolean => {
     const hour = getHourFromTimeStamp(timeStamp)
     return hour % 6 === 0;
 }
 
-const getDayFromTimeStamp = (timeStamp) => {
+const getDayFromTimeStamp = (timeStamp: string): number => {
     const date = formatDate(timeStamp);
     return +format(date, 'dd');
 }
 
-const isDayMultiplyFive = (timeStamp) => {
+const isDayMultiplyFive = (timeStamp: string): boolean => {
     const day = getDayFromTimeStamp(timeStamp)
     return day % 5 === 0;
 }
 
-const formHourlyTicks = (archiveArr) => {
+const formHourlyTicks = (archiveArr: ArchiveInterface[]): ArchiveInterface[] => {
     if (archiveArr.length <= 24) return archiveArr;
     return [...archiveArr.filter((entry) => isHourMultiplySix(entry.timestamp)), archiveArr[archiveArr.length-1]]
 }
 
-const formDailyTicks = (archiveArr) => {
+const formDailyTicks = (archiveArr: ArchiveInterface[]): ArchiveInterface[] => {
     if (archiveArr.length <= 14) return archiveArr
 
     const length = archiveArr.length;
@@ -2640,7 +2640,7 @@ const graphDataNew = formDailyTicks(readingsByHours.archiveEntries).map((entry) 
 })
 
 
-const maxElement = readingsByHours.archiveEntries.reduce((prev, curr) => curr.values.DeltaMass > prev.values.DeltaMass ?
+const maxElement = (readingsByHours.archiveEntries as ArchiveInterface[]).reduce((prev, curr) => curr.values.DeltaMass > prev.values.DeltaMass ?
     curr : prev
 );
 
@@ -2651,9 +2651,9 @@ debugger;
 // const tickValues = formHourlyTicks(readingsByHours.archiveEntries);
 const tickValues = formDailyTicks(readingsByHours.archiveEntries);
 
-debugger;
 
-const CustomTooltip = (props) => {
+
+const CustomTooltip: React.FC<VictoryTooltipProps> = (props) => {
 
     const [selected, setSelected] = React.useState(false);
     const [hovered, setHovered] = React.useState(false);
@@ -2661,8 +2661,8 @@ const CustomTooltip = (props) => {
     const {x, y, active} = props;
 
     return (
-        <g style={{pointerEvents: 'none'}} onMouseEnter={() => setHovered(true)}
-           onMouseLeave={() => setHovered(false)} {...props}>
+        <g onMouseEnter={() => setHovered(true)}
+           onMouseLeave={() => setHovered(false)} style={{pointerEvents: 'none'}}>
             {active ?
                 <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
                         strokeWidth={0.5}
@@ -2685,7 +2685,8 @@ const CustomTooltip = (props) => {
 }
 
 
-const GraphTooltip = (props) => {
+
+const GraphTooltip: React.FC<GraphTooltipProps> = (props) => {
     const { datum, x, y } = props;
     return (
         <g style={{pointerEvents: 'none'}}>
@@ -2697,8 +2698,8 @@ const GraphTooltip = (props) => {
                 style={{overflow: 'visible'}}
             >
                 <TooltipBlock>
-                    <DateBlock>{ format(formatDate(datum.time), 'dd.MM.yyyy') }</DateBlock>
-                    <Value>{ datum.value.toFixed(3) }м³</Value>
+                    <DateBlock>{ format(formatDate(datum!.time), 'dd.MM.yyyy') }</DateBlock>
+                    <Value>{ datum!.value.toFixed(3) }м³</Value>
                     <Pointer />
                 </TooltipBlock>
             </foreignObject>
@@ -2709,7 +2710,6 @@ const GraphTooltip = (props) => {
 const Graph: React.FC = () => {
 
     return (
-        // <div style={{display: 'flex', justifyContent: 'center'}}>
         <GraphWrapper>
             <svg>
                 <defs>
@@ -2763,7 +2763,7 @@ const Graph: React.FC = () => {
                         flyoutComponent={<GraphTooltip/>}
                     />}
                     labels={() => ''}
-                    style={{ parent: {overflow: 'visible'}, data: { fill: "url(#coldWater)", stroke: "var(--cold-water)", strokeWidth: 2  } }}
+                    style={{ parent: {overflow: 'visible'}, data: { fill: "url(#electricity)", stroke: "var(--electro)", strokeWidth: 2  } }}
                     data={graphDataNew}
                     x="time"
                     y="value"
@@ -2840,5 +2840,33 @@ border-width: 12px 6px 0 6px;
 border-color: var(--main-100) transparent transparent transparent;
 transform: translate(-50%, 0);
 `
+
+interface ArchiveInterface {
+    timestamp: string,
+    values: {
+        InputTemperature: number
+        OutputTemperature: number
+        DeltaTemperature: number
+        InputVolume: number
+        OutputVolume: number
+        DeltaVolume: number
+        InputMass: number
+        OutputMass: number
+        DeltaMass: number
+        InputPressure: number
+        OutputPressure: number
+        DeltaPressure: number
+        Energy: number
+        TimeWork: number
+    }
+}
+
+interface GraphTooltipProps extends VictoryLabelProps {
+    datum?: {
+        time: string
+        value: number
+    }
+}
+
 
 export default Graph;
