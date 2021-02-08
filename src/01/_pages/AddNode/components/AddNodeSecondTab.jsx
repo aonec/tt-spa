@@ -15,6 +15,7 @@ import {
 } from '../../../tt-components';
 import {styles, StyledFormPage} from './styledComponents';
 import {AddNodeContext} from '../index';
+import Autocomplete from './Autocomplete'
 
 const AddNodeSecondTab = () => {
     const {
@@ -115,16 +116,20 @@ const AddNodeSecondTab = () => {
                 </Form.Item>
 
                 <Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>
-                    <SelectTT
-                        name="calculatorId"
-                        onChange={(value) => {
-                            setFieldValue('calculatorId', value);
-                        }}
-                        placeholder="Вычислитель, к которому подключен узел"
-                        options={calculators}
-                        value={values.calculatorId}
-                    />
+                <Autocomplete dataSource={calculators}/>
                 </Form.Item>
+
+                {/*<Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>*/}
+                {/*    <SelectTT*/}
+                {/*        name="calculatorId"*/}
+                {/*        onChange={(value) => {*/}
+                {/*            setFieldValue('calculatorId', value);*/}
+                {/*        }}*/}
+                {/*        placeholder="Вычислитель, к которому подключен узел"*/}
+                {/*        options={calculators}*/}
+                {/*        value={values.calculatorId}*/}
+                {/*    />*/}
+                {/*</Form.Item>*/}
 
                 <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
                     <ButtonTT
