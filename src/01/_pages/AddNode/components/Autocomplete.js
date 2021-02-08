@@ -1,65 +1,51 @@
 import React, { useState } from 'react';
-import { AutoComplete, Input } from 'antd';
+import { AutoComplete } from 'antd';
 
-
-
-export const Autocomplete = ({dataSource, updateData}) => {
-  const [name, setName] = useState('');
+const Autocomplete = ({ dataSource, onSelectValue }) => {
+  const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
 
-  const onSearch = (val) => {
+  const onSearch = (searchText) => {
     const filtered = dataSource.filter(
       (obj) => obj.key !== 0
-                && obj.value
-                  .toString()
-                  .toLowerCase()
-                  .includes(val),
+                && obj.value.includes(searchText),
     );
     setOptions(filtered);
   };
 
-  const onSelect = (val, option) => {
-    console.log('val', val);
-    console.log('option', option);
-    setName(option.value);
-    updateData(option.key)
+  const onSelect = (data, option) => {
+    console.log('onSelect', data);
+    console.log('onSelect', option);
+    onSelectValue(option.key)
   };
 
-  // const onSelect = (val, option) => {
-  //   setName(option.value);
-  // };
+
+
+  const onChange = (data) => {
+    setValue(data);
+  };
 
   return (
-      <AutoComplete
-        options={options}
-        onSelect={onSelect}
-        // onSelect={(val, option) => onSelect(val, option)}
-        onSearch={onSearch}
-        placeholder="Начните ввод данных"
-      />
-
+    <AutoComplete
+      value={value}
+      options={options}
+      style={{
+        width: 200,
+      }}
+      onSelect={onSelect}
+      onSearch={onSearch}
+      onChange={onChange}
+      placeholder="control mode"
+    />
   );
 };
 
 export default Autocomplete;
 
-
-// const dataSource = [
-//   { key: 1, value: 'Apple' },
-//   { key: 2, value: 'Apricot' },
-//   { key: 3, value: 'Blueberry' },
-//   { key: 4, value: 'Banana' },
-//   { key: 5, value: 'Cantaloupe' },
-//   { key: 6, value: 'Grape' },
-//   { key: 7, value: 'Guava' },
-//   { key: 8, value: 'Kiwi' },
-//   { key: 9, value: 'Lemon' },
-//   { key: 10, value: 'Lime' },
-//   { key: 11, value: 'Lychee' },
-//   { key: 12, value: 'Mango' },
-//   { key: 13, value: 'Melon' },
-//   { key: 14, value: 'Pear' },
-//   { key: 15, value: 'Pineapple' },
-//   { key: 16, value: 'Plum' },
-//   { key: 17, value: 'Orange' },
-// ];
+const someArray = [
+  { key: 2538492, value: 'ТЭМ-106 140141' },
+  { key: 2538494, value: 'ВКТ-7 153961' },
+  { key: 2538493, value: 'ВКТ-7 72372' },
+  { key: 2538495, value: 'ВКТ-7 142743' },
+  { key: 25384954, value: 'ВКТ-7 1427434' },
+];

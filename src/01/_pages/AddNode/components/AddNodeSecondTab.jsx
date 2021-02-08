@@ -116,12 +116,9 @@ const AddNodeSecondTab = () => {
                 <Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>
                     <Autocomplete
                         dataSource={calculators}
-                        updateData ={ (value) => {
-                            console.log("value", value)
-                    }}
-                        // onSelect={(someValue)=>{
-                        //     console.log("someValue", someValue)
-                        // }}
+                        onSelectValue={(value) =>{
+                            setFieldValue('calculatorId',value )
+                        }}
                     />
                 </Form.Item>
 
