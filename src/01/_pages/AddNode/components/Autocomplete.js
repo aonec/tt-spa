@@ -1,6 +1,49 @@
 import React, { useState } from 'react';
 import { AutoComplete, Input } from 'antd';
 
+
+
+export const Autocomplete = ({dataSource, updateData}) => {
+  const [name, setName] = useState('');
+  const [options, setOptions] = useState([]);
+
+  const onSearch = (val) => {
+    const filtered = dataSource.filter(
+      (obj) => obj.key !== 0
+                && obj.value
+                  .toString()
+                  .toLowerCase()
+                  .includes(val),
+    );
+    setOptions(filtered);
+  };
+
+  const onSelect = (val, option) => {
+    console.log('val', val);
+    console.log('option', option);
+    setName(option.value);
+    updateData(option.key)
+  };
+
+  // const onSelect = (val, option) => {
+  //   setName(option.value);
+  // };
+
+  return (
+      <AutoComplete
+        options={options}
+        onSelect={onSelect}
+        // onSelect={(val, option) => onSelect(val, option)}
+        onSearch={onSearch}
+        placeholder="Начните ввод данных"
+      />
+
+  );
+};
+
+export default Autocomplete;
+
+
 // const dataSource = [
 //   { key: 1, value: 'Apple' },
 //   { key: 2, value: 'Apricot' },
@@ -20,38 +63,3 @@ import { AutoComplete, Input } from 'antd';
 //   { key: 16, value: 'Plum' },
 //   { key: 17, value: 'Orange' },
 // ];
-
-export const Autocomplete = ({dataSource}) => {
-  const [name, setName] = useState('');
-  const [options, setOptions] = useState([]);
-
-  const onSearch = (val) => {
-    const filtered = dataSource.filter(
-      (obj) => obj.key !== 0
-                && obj.value
-                  .toString()
-                  .toLowerCase()
-                  .includes(val),
-    );
-    setOptions(filtered);
-  };
-  const onSelect = (val, option) => {
-    setName(option.value);
-  };
-
-  return (
-    <div className="App">
-      <h1>Your Simple Fruit Mart</h1>
-      <h4>Choose fruit you want!</h4>
-      <AutoComplete
-        options={options}
-        onSelect={(val, option) => onSelect(val, option)}
-        onSearch={onSearch}
-      >
-        {/* <Input.Search size="large" placeholder="search fruit" /> */}
-      </AutoComplete>
-    </div>
-  );
-};
-
-export default Autocomplete;

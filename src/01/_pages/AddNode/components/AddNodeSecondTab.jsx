@@ -15,7 +15,7 @@ import {
 } from '../../../tt-components';
 import {styles, StyledFormPage} from './styledComponents';
 import {AddNodeContext} from '../index';
-import Autocomplete from './Autocomplete'
+import Autocomplete from './Autocomplete';
 
 const AddNodeSecondTab = () => {
     const {
@@ -34,9 +34,8 @@ const AddNodeSecondTab = () => {
         setAddOdpu,
         communicationPipes,
         setCommunicationPipes,
-        housingStock
+        housingStock,
     } = useContext(AddNodeContext);
-
 
     const [disable, setDisable] = useState(false);
     const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -62,12 +61,11 @@ const AddNodeSecondTab = () => {
 
             setNode((prevState) => ({
                 ...prevState,
-                ...form
+                ...form,
             }));
-            setTab('3')
+            setTab('3');
         },
     });
-
 
     useEffect(() => {
         setFieldValue('devices', communicationPipes);
@@ -116,20 +114,28 @@ const AddNodeSecondTab = () => {
                 </Form.Item>
 
                 <Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>
-                <Autocomplete dataSource={calculators}/>
+                    <Autocomplete
+                        dataSource={calculators}
+                        updateData ={ (value) => {
+                            console.log("value", value)
+                    }}
+                        // onSelect={(someValue)=>{
+                        //     console.log("someValue", someValue)
+                        // }}
+                    />
                 </Form.Item>
 
-                {/*<Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}>*/}
-                {/*    <SelectTT*/}
-                {/*        name="calculatorId"*/}
-                {/*        onChange={(value) => {*/}
-                {/*            setFieldValue('calculatorId', value);*/}
-                {/*        }}*/}
-                {/*        placeholder="Вычислитель, к которому подключен узел"*/}
-                {/*        options={calculators}*/}
-                {/*        value={values.calculatorId}*/}
-                {/*    />*/}
-                {/*</Form.Item>*/}
+                {/* <Form.Item label="Вычислитель, к которому подключен узел" style={styles.w49}> */}
+                {/*    <SelectTT */}
+                {/*        name="calculatorId" */}
+                {/*        onChange={(value) => { */}
+                {/*            setFieldValue('calculatorId', value); */}
+                {/*        }} */}
+                {/*        placeholder="Вычислитель, к которому подключен узел" */}
+                {/*        options={calculators} */}
+                {/*        value={values.calculatorId} */}
+                {/*    /> */}
+                {/* </Form.Item> */}
 
                 <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
                     <ButtonTT
