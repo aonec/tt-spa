@@ -6,17 +6,17 @@ import { Loader } from '../../../components/Loader';
 import {
   getDevices,
   setCurrentPage,
-  toggleIsLoading,
 } from '../../../Redux/reducers/reducerDevicesPage';
 
 import styles from './TabsDevices.module.scss';
-import { createPages } from '../../../utils/pagesCreator.ts';
+import { createPages } from '../../../utils/pagesCreator';
 
 import DeviceBlock from './DeviceBlock/DeviceBlock';
 import DeviceSearchForm from './DeviceSearchForm/DeviceSearchForm';
 import devicesSearchReducer from '../devicesSearchReducer';
 import DevicesByAddress from './DevicesByAddress/DevicesByAddress';
 import {useDebounce} from "../../../hooks/useDebounce";
+import {DevicesByAddressInterface, groupDevicesByObjects} from "./utils/groupDevicesByObjects";
 
 const { TabPane } = Tabs;
 
@@ -29,21 +29,22 @@ const initialState = {
 
 const TabsDevices = ({ devicePage }) => {
 
+  debugger;
+
 
   const dispatch = useDispatch();
   const { pageSize } = devicePage;
   const { currentPage } = devicePage;
   const { totalPages } = devicePage;
-  // const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [deviceElems, setDeviceElems] = useState([]);
+  // затипизировать
+  const [deviceElems, setDeviceElems] = useState<DevicesByAddressInterface>([] as DevicesByAddressInterface);
 
   const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState);
   const debouncedSearchState = useDebounce(searchState, 500);
 
 
-  const pages = [];
-  createPages(pages, totalPages, currentPage);
+const pages = createPages(totalPages, currentPage);
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,37 +52,32 @@ const TabsDevices = ({ devicePage }) => {
     setIsLoading(false);
   }, [currentPage, debouncedSearchState]);
 
-  // useEffect(() => {
-  //     setIsLoading(true)
-  //     const deviceArray = deviceItems.map((device) => {
-  //             return <DeviceBlock device={device}/>
-  //         }
-  //     );
-  //     setDeviceElems(deviceArray);
-  //     setIsLoading(false)
-  // }, [deviceItems])
-
   useEffect(() => {
     setIsLoading(true);
-    const devicesByObject = [];
 
-    devicePage.items.forEach((device) => {
-      if (!device.address) {
-        devicesByObject.push({ devices: [{ ...device }] });
-        return;
-      }
-      const { address, ...rest } = device;
-      const index = devicesByObject.findIndex((el) => el.address?.id === address?.id);
-      index === -1
-        ? devicesByObject.push({ address, devices: [{ ...rest }] })
-        : devicesByObject[index].devices.push({ ...rest });
-    });
+    // const devicesByObject = [];
+    // devicePage.items.forEach((device) => {
+    //   if (!device.address) {
+    //     devicesByObject.push({ devices: [{ ...device }] });
+    //     return;
+    //   }
+    //   const { address, ...rest } = device;
+    //   const index = devicesByObject.findIndex((el) => el.address?.id === address?.id);
+    //   index === -1
+    //     ? devicesByObject.push({ address, devices: [{ ...rest }] })
+    //     : devicesByObject[index].devices.push({ ...rest });
+    // });
+
+    const devicesByObject = groupDevicesByObjects(devicePage.items);
+
     const deviceArray = devicesByObject.map((addressDevicesGroup) => <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup} />);
     setDeviceElems(deviceArray);
+    debugger;
     // if (deviceArray.length) {
       setIsLoading(false);
     // }
   }, [devicePage.items]);
+
 
   const pagination = pages.map((page, index) => (
     <span
