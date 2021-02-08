@@ -3,11 +3,10 @@ import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeTabs from './components/EditNodeTabs';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getCalculator, getNode } from './components/apiEditNode';
 import EditNodeForm, { ListWrap } from './components/EditNodeForm';
-import { ButtonTT } from "../../tt-components/ButtonTT";
-import { IconTT } from "../../tt-components";
+import {Breadcrumb} from "../../tt-components";
 
 export const EditNodeContext = React.createContext();
 

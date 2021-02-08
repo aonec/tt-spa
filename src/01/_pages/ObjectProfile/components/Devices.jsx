@@ -21,7 +21,7 @@ export const Devices = () => {
         const NodesWithDevices = () => {
           return nodes.map((node, index) => {
             const {
-              id: nodeId, serviceZone, nodeStatus, communicationPipes,
+              id: nodeId, serviceZone, nodeStatus, communicationPipes, number
             } = node;
 
             const devicesOnNode = _.flatten(communicationPipes.map((item) => {
@@ -36,7 +36,7 @@ export const Devices = () => {
                 <NavLink to={`/nodes/${nodeId}`}>
                   <Div style={{ marginLeft: 24 }}>
                     <IconTT icon="node" style={{ marginRight: '8px' }}/>
-                    <Name style={{ marginRight: '8px' }}>{`Узел ${nodeId}`}</Name>
+                    <Name style={{ marginRight: '8px' }}>{`Узел ${number}`}</Name>
                   </Div>
                 </NavLink>
                 <Div>

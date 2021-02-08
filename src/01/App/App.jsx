@@ -37,6 +37,7 @@ import {
   IndividualDevice,
   MapPage,
   EditNode,
+  AddNode
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -100,7 +101,7 @@ export function App() {
                     />
 
                     <Route
-                      path="/nodes/:nodeId/edit"
+                      path="/nodes/:nodeId(\\d+)/edit"
                       component={EditNode}
                       exact
                     />
@@ -130,8 +131,14 @@ export function App() {
                     />
 
                     <Route
-                      path="/objects/(\\d+)/(apartments|devices)?"
+                      path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
                       component={ObjectProfile}
+                      exact
+                    />
+
+                    <Route
+                      path="/objects/:housingStockId(\\d+)/add_node"
+                      component={AddNode}
                       exact
                     />
 

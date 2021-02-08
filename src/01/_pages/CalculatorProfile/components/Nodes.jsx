@@ -45,7 +45,7 @@ export const Nodes = () => {
       serviceZone,
       lastCheckingDate,
       futureCheckingDate,
-      nodeResourceType
+      resource
     } = value;
 
 
@@ -77,7 +77,7 @@ export const Nodes = () => {
 
         <NodeStatus nodeStatus={nodeStatus}/>
         <Span>{serviceZone}</Span>
-        <Span>{_.find(resources, { value: nodeResourceType }).label}</Span>
+        <Span>{_.find(resources, { value: resource }).label}</Span>
       </ListItem>
     );
   });
