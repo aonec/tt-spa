@@ -1,1 +1,1 @@
-export { Node, NodeContext } from './Node';
+export { NodeProfile, NodeContext } from './NodeProfile';

@@ -7,7 +7,6 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { DeviceContext } from '../index';
 
 export const Header = () => {
-  debugger;
   const { device, mistake } = useContext(DeviceContext);
   const loading = !device;
   const { address } = device;
@@ -22,7 +21,6 @@ export const Header = () => {
       </HeaderWrap>
     );
   }
-debugger
   const { city, street, housingStockNumber, apartmentNumber, id, apartmentId } = address || { city: null, street: null, number: null };
   const { model, serialNumber, resource } = device || { model: null, serialNumber: null, resource: null };
   const { icon, color } = DeviceIcons[resource] || {};

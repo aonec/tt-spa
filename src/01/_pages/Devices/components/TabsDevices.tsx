@@ -29,7 +29,6 @@ const initialState = {
 
 const TabsDevices = ({ devicePage }) => {
 
-  debugger;
 
 
   const dispatch = useDispatch();
@@ -38,7 +37,7 @@ const TabsDevices = ({ devicePage }) => {
   const { totalPages } = devicePage;
   const [isLoading, setIsLoading] = useState(true);
   // затипизировать
-  const [deviceElems, setDeviceElems] = useState<DevicesByAddressInterface>([] as DevicesByAddressInterface);
+  const [deviceElems, setDeviceElems] = useState<DevicesByAddressInterface[] | undefined>(undefined);
 
   const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState);
   const debouncedSearchState = useDebounce(searchState, 500);
@@ -55,24 +54,11 @@ const pages = createPages(totalPages, currentPage);
   useEffect(() => {
     setIsLoading(true);
 
-    // const devicesByObject = [];
-    // devicePage.items.forEach((device) => {
-    //   if (!device.address) {
-    //     devicesByObject.push({ devices: [{ ...device }] });
-    //     return;
-    //   }
-    //   const { address, ...rest } = device;
-    //   const index = devicesByObject.findIndex((el) => el.address?.id === address?.id);
-    //   index === -1
-    //     ? devicesByObject.push({ address, devices: [{ ...rest }] })
-    //     : devicesByObject[index].devices.push({ ...rest });
-    // });
-
     const devicesByObject = groupDevicesByObjects(devicePage.items);
+
 
     const deviceArray = devicesByObject.map((addressDevicesGroup) => <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup} />);
     setDeviceElems(deviceArray);
-    debugger;
     // if (deviceArray.length) {
       setIsLoading(false);
     // }

@@ -1,4 +1,4 @@
-export const groupDevicesByObjects = (devices: CalculatorsInterface[]): DevicesByAddressInterface[] => {
+export const groupDevicesByObjects = (devices: CalculatorsInterfaceFull[]): DevicesByAddressInterface[] => {
     const devicesByObject: DevicesByAddressInterface[] = [];
     devices.forEach((device) => {
         if (!device.address) {
@@ -19,8 +19,7 @@ export interface DevicesByAddressInterface {
     address?: AddressInterface
 }
 
-interface CalculatorsInterface {
-    address?: AddressInterface
+export interface CalculatorsInterface {
     closingDate: string | null
     connection: ConnectionInterface
     futureCheckingDate: string | null
@@ -37,6 +36,29 @@ interface CalculatorsInterface {
     serialNumber: string
     transactionType: any
 }
+
+interface CalculatorsInterfaceFull extends CalculatorsInterface {
+    address: AddressInterface
+}
+
+// interface CalculatorsInterface {
+//     address?: AddressInterface
+//     closingDate: string | null
+//     connection: ConnectionInterface
+//     futureCheckingDate: string | null
+//     futureCommercialAccountingDate: string | null
+//     hasTasks: boolean
+//     hubs: any
+//     id: boolean
+//     isConnected: boolean
+//     lastCheckingDate: string | null
+//     lastCommercialAccountingDate: string | null
+//     managementFirm : ManagementFirmInterface
+//     model: string
+//     nodes: NodeInterface[]
+//     serialNumber: string
+//     transactionType: any
+// }
 
 interface AddressInterface {
     id: number
@@ -72,7 +94,7 @@ interface NodeInterface {
     serviceZone: string
 }
 
-interface CommunicationPipeInterface {
+export interface CommunicationPipeInterface {
     devices: DeviceInterface[]
     entryNumber: number
     hubNumber: number | null
@@ -81,7 +103,7 @@ interface CommunicationPipeInterface {
     number: number
 }
 
-interface DeviceInterface {
+export interface DeviceInterface {
     closingDate: string | null
     diameter: string
     futureCheckingDate: string | null
