@@ -2,11 +2,11 @@ import React from 'react';
 import { AutoComplete } from 'antd';
 
 const styles = {
-  'padding': '8px 24px',
-  'font-style': 'normal',
-  'font-weight': 'normal',
-  'font-size': '16px',
-  'line-height': '32px',
+  padding: '8px 24px',
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  lineHeight: '32px',
 };
 export const AutoCompleteTT = ({ options, onSelect }) => (
   <AutoComplete
