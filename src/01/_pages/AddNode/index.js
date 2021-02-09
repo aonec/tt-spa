@@ -53,7 +53,7 @@ export const AddNode = () => {
   const [entryNumber, setEntryNumber] = useState(null);
   const [resource, setResource] = useState(resources[0].value);
   const [node, setNode] = useState({});
-  const [currentTabKey, setTab] = useState('1');
+  const [currentTabKey, setTab] = useState('2');
 
   useEffect(() => {
     console.log('node', node);
@@ -82,11 +82,16 @@ export const AddNode = () => {
       const { items } = res;
       const calculatorsList = items.map((calculator) => {
         const { id, serialNumber, model } = calculator;
-        return { value: id, label: `${model} ${serialNumber}` };
+        return { key: id, value: `${model} ${serialNumber}` };
       });
+
+      // const calculatorsList = items.map((calculator) => {
+      //   const { id, serialNumber, model } = calculator;
+      //   return { value: id, label: `${model} ${serialNumber}` };
+      // });
       setCalculators(calculatorsList);
       setCalculatorsExtended(items);
-      console.log(items);
+      console.log(calculatorsList);
     });
   }
 

@@ -23,3 +23,4 @@ export * from './TextArea'
 export * from './Events'
 export * from './IconTT';
 export * from './Breadcrumb'
+export * from './AutoCompleteTT'
