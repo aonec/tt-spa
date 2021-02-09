@@ -52,7 +52,15 @@ form {
       line-height: 32px;
     }
   }
-
+  .ant-select-auto-complete {
+    .ant-select-selector {
+      padding: 8px 24px !important;
+      height: auto !important;
+      span {
+        padding: 8px;
+      }
+    }
+  }
 }
 
 
