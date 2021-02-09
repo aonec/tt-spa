@@ -1,14 +1,6 @@
 import React from 'react';
 import {AutoComplete} from 'antd';
 
-const styles = {
-    padding: '8px 24px',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: '16px',
-    lineHeight: '32px',
-    boxShadow: '0px 8px 16px 0px #4E5D92 8%'
-};
 export const AutoCompleteTT = ({options, onSelect}) => (
     <AutoComplete
         className="autocomplete"
@@ -16,7 +8,6 @@ export const AutoCompleteTT = ({options, onSelect}) => (
         filterOption
         onSelect={onSelect}
         placeholder="Введите данные"
-        dropdownStyle={styles}
     />
 );
 
