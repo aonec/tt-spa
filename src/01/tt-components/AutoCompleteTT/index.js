@@ -1,9 +1,51 @@
 import React from 'react';
 import { AutoComplete } from 'antd';
-import '../antd.scss';
+import styled from 'styled-components';
+import img from './search.svg';
+
+export const StyledAutoComplete = styled(AutoComplete)`
+    padding: 0;
+    margin: 0;
+    position: relative;
+    .ant-select-selector {
+      padding: 0;
+      margin: 0;
+      height: 48px !important;
+      border: 1px solid $grey;
+      border-radius: 4px !important;
+      span {
+        padding: 8px 24px 8px 40px !important;
+        font-size: 16px;
+        line-height: 32px;
+        font-style: normal;
+        font-weight: $normal;
+        
+       .ant-select-selection-placeholder {
+        color: $placeholder;
+                }
+
+      .ant-select-selection-search {
+        left: 0;
+                 }
+      }
+
+      &: before {
+        position: absolute !important;
+        content: "";
+        display: block;
+        background-image: url(${img});
+        width: 16px;
+        height: 16px;
+        left: 16px;
+        top: calc(50% - 8px);
+      }
+    }
+  }
+  }
+`;
 
 export const AutoCompleteTT = ({ options, onSelect }) => (
-  <AutoComplete
+  <StyledAutoComplete
     options={options}
     filterOption
     onSelect={onSelect}
