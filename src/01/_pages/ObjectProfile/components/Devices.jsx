@@ -4,7 +4,7 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { ObjectContext } from '../index';
 import { IconTT } from '../../../tt-components/IconTT';
-import { Name, Serial } from '../../Node/components/Connection';
+import { Name, Serial } from '../../NodeProfile/components/Connection';
 
 export const Devices = () => {
   const { calculators } = useContext(ObjectContext);
@@ -154,7 +154,7 @@ const NodeDeviceWrap = styled.div`
   opacity: 0.8;
 `;
 
-// const Node = () =>
+// const NodeProfile = () =>
 //
 // {
 // calculatorId: 2538454

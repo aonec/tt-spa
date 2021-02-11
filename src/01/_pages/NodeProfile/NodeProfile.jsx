@@ -10,7 +10,7 @@ import Connection from './components/Connection';
 import Documents from './components/Documents';
 
 export const NodeContext = createContext();
-export const Node = () => {
+export const NodeProfile = () => {
   const { url } = useRouteMatch('/nodes/(\\d+)');
   const { nodeId } = useParams();
   console.log('nodeId', nodeId);
@@ -70,4 +70,4 @@ export const Node = () => {
     </NodeContext.Provider>
   );
 };
-export default Node;
+export default NodeProfile;
