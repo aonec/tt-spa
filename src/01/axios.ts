@@ -9,7 +9,14 @@ axios.defaults.baseURL = baseURL;
 
 let cancel;
 axios.interceptors.request.use((req) => {
-  req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+
+    if (req.baseURL === "http://84.201.132.164:8080/api") {
+        delete req.headers.Authorization
+    } else {
+        req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+    }
+
+    debugger;
   req.cancelToken = new axios.CancelToken((e) => {
     cancel = e;
   });
@@ -49,6 +56,7 @@ axios.interceptors.response.use(
     // return data
   },
   (error) => {
+      debugger;
     const status = error?.response?.status;
     if (status === 401 && !checkUrl('login', error.config.url)) {
       const { config } = error;

@@ -4,12 +4,50 @@ import {
     VictoryAxis,
     VictoryTheme,
     VictoryTooltip,
-    VictoryVoronoiContainer, VictoryArea
+    VictoryVoronoiContainer, VictoryArea, VictoryLabelProps
 } from 'victory';
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {format, compareAsc, toDate, parseISO} from 'date-fns'
 import styled from "styled-components";
 import { zonedTimeToUtc } from 'date-fns-tz'
+import {useAsync} from "../../hooks/useAsync";
+import GraphTooltip from "./components/GraphTooltip";
+import {CustomTooltip} from "./components/CustomTooltip";
+import Gradient from "./components/Gradient";
+import {getResourceColor} from "../../utils/getResourceColor";
+import {requestNodeReadings} from "../../_api/node_readings_page";
+import { AxiosPromise } from 'axios';
+import maxBy from 'lodash/maxBy';
+
+interface ArchiveEntryInterface {
+    timestamp: string
+    values: {
+        InputTemperature: number
+        OutputTemperature: number
+        DeltaTemperature: number
+        InputVolume: number
+        OutputVolume: number
+        DeltaVolume: number
+        InputMass: number
+        OutputMass: number
+        DeltaMass: number
+        InputPressure: number
+        OutputPressure: number
+        DeltaPressure: number
+        Energy: number
+        TimeWork: number
+    }
+}
+
+export type ResourceType = "Heat" | "ColdWater" | "HotWater" | "Electricity"
+
+export interface ReadingsInterface {
+    resource: ResourceType
+    systemPipeCount: number
+    archiveEntries: ArchiveEntryInterface[]
+}
+
+
 
 const readingsOneDayByHours = {
     "resource": "Heat",
@@ -2585,40 +2623,41 @@ const readingsOneMonthByDays = {
     ]
 };
 
-const readingsByHours = JSON.parse(JSON.stringify(readingsOneMonthByDays))
+const readings: ReadingsInterface = JSON.parse(JSON.stringify(readingsOneMonthByDays))
 
-const formatDate = (timeStamp) => {
+const formatDate = (timeStamp: string): Date => {
     const dateObject = new Date(timeStamp);
-    const date = new Date(dateObject.valueOf() + dateObject.getTimezoneOffset() * 60 * 1000);
+    const millisecondsInHour = 60 * 1000;
+    const date = new Date(dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour);
     return date;
 }
 
-const getHourFromTimeStamp = (timeStamp) => {
+const getHourFromTimeStamp = (timeStamp: string): number => {
     const date = formatDate(timeStamp);
     return +format(date, 'HH');
 }
 
-const isHourMultiplySix = (timeStamp) => {
+const isHourMultiplySix = (timeStamp: string): boolean => {
     const hour = getHourFromTimeStamp(timeStamp)
     return hour % 6 === 0;
 }
 
-const getDayFromTimeStamp = (timeStamp) => {
+const getDayFromTimeStamp = (timeStamp: string): number => {
     const date = formatDate(timeStamp);
     return +format(date, 'dd');
 }
 
-const isDayMultiplyFive = (timeStamp) => {
+const isDayMultiplyFive = (timeStamp: string): boolean => {
     const day = getDayFromTimeStamp(timeStamp)
     return day % 5 === 0;
 }
 
-const formHourlyTicks = (archiveArr) => {
+const formHourlyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[] => {
     if (archiveArr.length <= 24) return archiveArr;
     return [...archiveArr.filter((entry) => isHourMultiplySix(entry.timestamp)), archiveArr[archiveArr.length-1]]
 }
 
-const formDailyTicks = (archiveArr) => {
+const formDailyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[]  => {
     if (archiveArr.length <= 14) return archiveArr
 
     const length = archiveArr.length;
@@ -2631,169 +2670,147 @@ const formDailyTicks = (archiveArr) => {
     return [archiveArr[0], ...multipleFives.slice(sliceParam1, sliceParam2), archiveArr[length - 1]]
 }
 
-const graphDataNew = formDailyTicks(readingsByHours.archiveEntries).map((entry) => {
-    return {
-        time: entry.timestamp,
-        value: entry.values.DeltaMass,
-        // label: reading.Params.InputVolume + " м³"
+export type ReportType = 'hourly' | 'daily'| 'monthly'
+
+const formTicks = (archiveArr: ArchiveEntryInterface[], reportType: ReportType): ArchiveEntryInterface[] => {
+    switch (reportType) {
+        case 'hourly':
+            return formHourlyTicks(archiveArr);
+        case 'daily':
+            return formDailyTicks(archiveArr);
+        default:
+            throw new Error('Неправильный тип!')
     }
-})
+}
+
+// const graphDataNew = formHourlyTicks(readings.archiveEntries).map((entry) => {
+//     return {
+//         time: entry.timestamp,
+//         value: entry.values.DeltaMass,
+//     }
+// })
 
 
-const maxElement = readingsByHours.archiveEntries.reduce((prev, curr) => curr.values.DeltaMass > prev.values.DeltaMass ?
-    curr : prev
-);
 
-const maxValue = maxElement.values.DeltaMass;
-debugger;
 
 
 // const tickValues = formHourlyTicks(readingsByHours.archiveEntries);
-const tickValues = formDailyTicks(readingsByHours.archiveEntries);
 
-debugger;
-
-const CustomTooltip = (props) => {
-
-    const [selected, setSelected] = React.useState(false);
-    const [hovered, setHovered] = React.useState(false);
-
-    const {x, y, active} = props;
-
-    return (
-        <g style={{pointerEvents: 'none'}} onMouseEnter={() => setHovered(true)}
-           onMouseLeave={() => setHovered(false)} {...props}>
-            {active ?
-                <><line transform={`translate(${x}, 0)`} x1={0} y1={y} x2={0} y2={300} stroke='#000'
-                        strokeWidth={0.5}
-                        strokeDasharray={5}/>
-                    <VictoryTooltip  {...props}/>
-                    <circle
-                        cx={x}
-                        cy={y}
-                        r={6}
-                        stroke={hovered ? "#fff" : "#fff"}
-                        strokeWidth={2}
-                        fill={selected ? "var(--main-100)" : "var(--main-100)"}
-                        onClick={() => setSelected(!selected)}
-                    />
-                </>
-                : null}
-
-        </g>
-    );
-}
-
-
-const GraphTooltip = (props) => {
-    const { datum, x, y } = props;
-    return (
-        <g style={{pointerEvents: 'none'}}>
-
-
-            <foreignObject
-                x={x} y={y}
-                width="100%" height="100%"
-                style={{overflow: 'visible'}}
-            >
-                <TooltipBlock>
-                    <DateBlock>{ format(formatDate(datum.time), 'dd.MM.yyyy') }</DateBlock>
-                    <Value>{ datum.value.toFixed(3) }м³</Value>
-                    <Pointer />
-                </TooltipBlock>
-            </foreignObject>
-        </g>
-    );
-}
 
 const Graph: React.FC = () => {
 
+    const deviceId = 2538841;
+
+    const reportType = 'hourly';
+
+    const resource = "Heat";
+
+    const graphParam = 'DeltaMass';
+
+    const from = '2021-01-25T00:00:00Z';
+
+    const to = '2021-01-25T23:00:00Z';
+
+    const tickValues = formTicks(readings.archiveEntries, reportType);
+
+    const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType) => {
+        if (reportType === 'daily') {
+            return (x: string) => format(formatDate(x), 'dd.MM')
+        }
+        if (archiveArr.length <=24) {
+            return (x: string) => format(formatDate(x), 'HH')
+        }
+        return (x: string) => format(formatDate(x), 'HH:mm')
+    }
+
+    const getReadings = useCallback(
+        () => {
+            return requestNodeReadings(deviceId, reportType, resource, from, to);
+        },
+        [deviceId, reportType, resource, from, to],
+    );
+
+    const { execute, status, value: data, error } = useAsync<ReadingsInterface, {message: string}>(getReadings, true);
+
+    debugger;
+
+    if (status === 'pending' || !data) return <>'ЗАГРУЗКА...'</>
+
+    const graphDataNew = formHourlyTicks(data.archiveEntries).map((entry) => {
+        return {
+            time: entry.timestamp,
+            value: entry.values[graphParam],
+        }
+    })
+
+    const maxElement = maxBy(graphDataNew, (obj) => obj.value);
+
+    const maxValue = maxElement!.value;
+
+
+
+
     return (
-        // <div style={{display: 'flex', justifyContent: 'center'}}>
-        <GraphWrapper>
-            <svg>
-                <defs>
-                    <linearGradient id="coldWater"
-                                    x1="0%" y1="0%" x2="0%" y2="100%"
-                    >
-                        <stop offset="0%"   stopColor="rgba(24, 158, 233, 0.33)"/>
-                        <stop offset="100%" stopColor="rgba(24, 158, 233, 0)"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-            <svg>
-                <defs>
-                    <linearGradient id="hotWater"
-                                    x1="0%" y1="0%" x2="0%" y2="100%"
-                    >
-                        <stop offset="0%"   stopColor="rgba(255, 140, 104, 0.33)"/>
-                        <stop offset="100%" stopColor="rgba(255, 140, 104, 0)"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-            <svg>
-                <defs>
-                    <linearGradient id="electricity"
-                                    x1="0%" y1="0%" x2="0%" y2="100%"
-                    >
-                        <stop offset="0%"   stopColor="rgba(226, 177, 4, 0.33)"/>
-                        <stop offset="100%" stopColor="rgba(226, 177, 4, 0)"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-            <VictoryChart
-                domain={{ y: [0, 1.1*maxValue] }}
-                width={600}
-                theme={VictoryTheme.material} style={{parent: {
-                    width: '900px',
-                    height: '600px',
-                    overflow: 'visible'
-                },
-            }}
-                containerComponent={
-                    <VictoryVoronoiContainer
+        <>
+            {status === 'idle' && <div>Start your journey by clicking a button</div>}
+            {status === 'success' && <GraphWrapper>
+                <Gradient resource={resource}/>
+                <VictoryChart
+                    domain={{ y: [0, 1.1*maxValue] }}
+                    width={600}
+                    theme={VictoryTheme.material} style={{parent: {
+                        width: '900px',
+                        height: '600px',
+                        overflow: 'visible'
+                    },
+                }}
+                    containerComponent={
+                        <VictoryVoronoiContainer
+                        />
+                    }
+                >
+                    <VictoryArea
+                        name="graph"
+                        interpolation="natural"
+                        labelComponent={<CustomTooltip
+                            flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
+                            flyoutComponent={<GraphTooltip/>}
+                        />}
+                        labels={() => ''}
+                        style={{ parent: {overflow: 'visible'}, data: { fill: `url(#${resource})`, stroke: getResourceColor(resource), strokeWidth: 2  } }}
+                        data={graphDataNew}
+                        x="time"
+                        y="value"
                     />
-                }
-            >
-                <VictoryArea
-                    name="graph"
-                    interpolation="natural"
-                    labelComponent={<CustomTooltip
-                        flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
-                        flyoutComponent={<GraphTooltip/>}
-                    />}
-                    labels={() => ''}
-                    style={{ parent: {overflow: 'visible'}, data: { fill: "url(#coldWater)", stroke: "var(--cold-water)", strokeWidth: 2  } }}
-                    data={graphDataNew}
-                    x="time"
-                    y="value"
-                />
 
 
 
-                <VictoryAxis
-                    // tickFormat={(x) => {const time = format(new Date(x), 'dd'); return time}}
-                    // tickFormat={(x) => format(formatDate(x), 'HH')}
-                    // tickFormat={(x) => format(formatDate(x), 'HH:mm')}
-                    tickFormat={(x) => format(formatDate(x), 'dd.MM')}
-                    tickValues={tickValues}
-                    style={{
-                        axisLabel: { padding: 40, strokeWidth: 0 },
-                        grid: {stroke: 'none'},
-                    }}
-                />
-                <VictoryAxis
-                    dependentAxis
-                    style={{
-                        axisLabel: { padding: 40 },
-                        grid: {stroke: 'none'},
-                    }}
-                />
-
-
-            </VictoryChart>
-
-        </GraphWrapper>
+                    <VictoryAxis
+                        // tickFormat={(x) => {const time = format(new Date(x), 'dd'); return time}}
+                        // tickFormat={(x) => format(formatDate(x), 'HH')}
+                        // tickFormat={(x) => format(formatDate(x), 'HH:mm')}
+                        // tickFormat={(x) => format(formatDate(x), 'dd.MM')}
+                        tickFormat={getTickFormat(data.archiveEntries, reportType)}
+                        tickValues={tickValues}
+                        style={{
+                            axisLabel: { padding: 40, strokeWidth: 0 },
+                            grid: {stroke: 'none'},
+                        }}
+                    />
+                    <VictoryAxis
+                        dependentAxis
+                        style={{
+                            axisLabel: { padding: 40 },
+                            grid: {stroke: 'none'},
+                        }}
+                    />
+                </VictoryChart>
+            </GraphWrapper>}
+            {status === 'error' && <div>{error?.message}</div>}
+            {/*<button onClick={execute} disabled={status === 'pending'}>*/}
+            {/*    {status !== 'pending' ? 'Click me' : 'Loading...'}*/}
+            {/*</button>*/}
+        </>
     )
 }
 
@@ -2802,43 +2819,6 @@ const GraphWrapper = styled.div`
         overflow: visible !important;
     }
 
-`
-
-const TooltipBlock = styled.div`
-display: inline-block;
-position: relative;
-background-color: var(--main-100);
-padding: 8px 16px;
-border-radius: 4px;
-border: 0;
-transform: translate(-15%, -135%);
-`
-
-const DateBlock = styled.div`
-font-size: 12px;
-line-height: 16px;
-color: #fff;
-`
-
-const Value = styled.div`
-color: #fff;
-font-weight: 500;
-font-size: 24px;
-line-height: 32px;
-`
-
-const Pointer = styled.div`
-//display: inline-block;
-position: absolute;
-left: 15%;
-top: 95%;
-margin: 0 auto;
-width: 0;
-height: 0;
-border-style: solid;
-border-width: 12px 6px 0 6px;
-border-color: var(--main-100) transparent transparent transparent;
-transform: translate(-50%, 0);
 `
 
 export default Graph;
