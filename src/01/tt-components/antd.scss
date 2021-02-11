@@ -102,19 +102,21 @@ form {
   //}
 }
 
+//MenuButtonList
 .ant-dropdown {
-    padding: 0 !important;
-  margin: 0 !important;
-  .ant-dropdown-menu-item {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 32px;
-    padding: 8px 24px;
-
-    &:hover {
-      background: $blue;
-      color: $white;
+  .ant-dropdown-menu {
+    padding: 0;
+    margin: 0;
+    .ant-dropdown-menu-item {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 8px 24px;
+      &:hover {
+        background: $blue;
+        color: $white;
+      }
     }
   }
 }
