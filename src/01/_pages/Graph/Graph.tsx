@@ -47,6 +47,11 @@ export interface ReadingsInterface {
     archiveEntries: ArchiveEntryInterface[]
 }
 
+interface GraphDataInterface {
+    time: string
+    value: number
+}
+
 
 
 const readingsOneDayByHours = {
@@ -2683,6 +2688,16 @@ const formTicks = (archiveArr: ArchiveEntryInterface[], reportType: ReportType):
     }
 }
 
+const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType) => {
+    if (reportType === 'daily') {
+        return (x: string) => format(formatDate(x), 'dd.MM')
+    }
+    if (archiveArr.length <=24) {
+        return (x: string) => format(formatDate(x), 'HH')
+    }
+    return (x: string) => format(formatDate(x), 'HH:mm')
+}
+
 // const graphDataNew = formHourlyTicks(readings.archiveEntries).map((entry) => {
 //     return {
 //         time: entry.timestamp,
@@ -2711,17 +2726,8 @@ const Graph: React.FC = () => {
 
     const to = '2021-01-25T23:00:00Z';
 
-    const tickValues = formTicks(readings.archiveEntries, reportType);
 
-    const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType) => {
-        if (reportType === 'daily') {
-            return (x: string) => format(formatDate(x), 'dd.MM')
-        }
-        if (archiveArr.length <=24) {
-            return (x: string) => format(formatDate(x), 'HH')
-        }
-        return (x: string) => format(formatDate(x), 'HH:mm')
-    }
+
 
     const getReadings = useCallback(
         () => {
@@ -2734,21 +2740,33 @@ const Graph: React.FC = () => {
 
     debugger;
 
-    if (status === 'pending' || !data) return <>'ЗАГРУЗКА...'</>
+    if (status === 'pending' || !data?.archiveEntries.length) return <>'ЗАГРУЗКА...'</>
 
-    const graphDataNew = formHourlyTicks(data.archiveEntries).map((entry) => {
-        return {
-            time: entry.timestamp,
-            value: entry.values[graphParam],
-        }
-    })
+    const tickValues = formTicks(data!.archiveEntries, reportType);
+
+
+
+    const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
+        return ticks.map((entry) => {
+            return {
+                time: entry.timestamp,
+                value: entry.values[graphParam],
+            }
+        })
+    }
+
+    // const graphDataNew = formHourlyTicks(data!.archiveEntries).map((entry) => {
+    //     return {
+    //         time: entry.timestamp,
+    //         value: entry.values[graphParam],
+    //     }
+    // })
+
+    const graphDataNew = formGraphData(tickValues);
 
     const maxElement = maxBy(graphDataNew, (obj) => obj.value);
 
     const maxValue = maxElement!.value;
-
-
-
 
     return (
         <>
@@ -2790,7 +2808,7 @@ const Graph: React.FC = () => {
                         // tickFormat={(x) => format(formatDate(x), 'HH')}
                         // tickFormat={(x) => format(formatDate(x), 'HH:mm')}
                         // tickFormat={(x) => format(formatDate(x), 'dd.MM')}
-                        tickFormat={getTickFormat(data.archiveEntries, reportType)}
+                        tickFormat={getTickFormat(data!.archiveEntries, reportType)}
                         tickValues={tickValues}
                         style={{
                             axisLabel: { padding: 40, strokeWidth: 0 },
