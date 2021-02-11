@@ -4,7 +4,6 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { ObjectContext } from '../index';
 import { IconTT } from '../../../tt-components/IconTT';
-import { Name, Serial } from '../../NodeProfile/components/Connection';
 
 export const Devices = () => {
   const { calculators } = useContext(ObjectContext);
@@ -123,6 +122,25 @@ export const Devices = () => {
 };
 export default Devices;
 
+
+const Name = styled.h3`
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+`;
+
+const Serial = styled.p`
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: rgba(39, 47, 90, 0.6);
+`;
 
 const Calculator = styled.div`
   display: grid;

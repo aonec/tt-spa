@@ -95,7 +95,7 @@ export function App() {
                     />
 
                     <Route
-                      path={['/nodes/:nodeId/(connection|related|documents)?']}
+                      path={['/nodes/:nodeId/(stats|connection|related|documents)?']}
                       component={NodeProfile}
                       exact
                     />

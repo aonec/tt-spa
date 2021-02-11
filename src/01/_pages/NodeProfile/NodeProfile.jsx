@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import {
-  Route, useHistory, useParams, useRouteMatch,
+  Route, useParams, useRouteMatch,
 } from 'react-router-dom';
 import Header from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -10,11 +10,10 @@ import RelatedDevices from './components/RelatedDevices';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
+import {Title} from "../../tt-components";
 
 export const NodeContext = createContext();
 export const NodeProfile = () => {
-  const { push } = useHistory();
-
   const { url } = useRouteMatch('/nodes/(\\d+)');
   const { nodeId } = useParams();
   const [node, setNode] = useState();
@@ -22,7 +21,6 @@ export const NodeProfile = () => {
   const [currentTab, setCurrentTab] = useState('1');
 
   function handleChangeTab(value) {
-    console.log('value', value);
     setCurrentTab(value);
   }
 
@@ -43,7 +41,6 @@ export const NodeProfile = () => {
     );
   }
 
-
   const context = {
     node,
     calculator,
@@ -59,6 +56,9 @@ export const NodeProfile = () => {
       <Grid>
         <Route path={`${url}`} exact>
           <Information />
+        </Route>
+        <Route path={`${url}/stats`} exact>
+          <Title color={'black'}>Компонент в разработке</Title>
         </Route>
         <Route path={`${url}/connection`} exact>
           <Connection />
