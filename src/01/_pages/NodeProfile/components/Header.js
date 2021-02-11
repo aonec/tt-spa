@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
-import { IconTT } from '../../../tt-components';
+import { IconTT,MenuButtonTT } from '../../../tt-components';
 import { NodeContext } from "../index";
 import { nodeStatusList } from '../../../tt-components/localBases';
 import _ from 'lodash';
-import EditButton from './EditButton'
+
 export const Header = () => {
 
   const { node, calculator,arr } = useContext(NodeContext);
@@ -64,7 +64,7 @@ export const Header = () => {
         </SubtitleWrap>
       </div>
       <div style={{ position: 'relative' }}>
-        <EditButton arr={arr}/>
+        <MenuButtonTT arr={arr}/>
       </div>
     </HeaderWrap>
   );
