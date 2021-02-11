@@ -5,9 +5,10 @@ import { IconTT } from '../../../tt-components';
 import { NodeContext } from "../index";
 import { nodeStatusList } from '../../../tt-components/localBases';
 import _ from 'lodash';
-
+import EditButton from './EditButton'
 export const Header = () => {
-  const { node, calculator } = useContext(NodeContext);
+
+  const { node, calculator,arr } = useContext(NodeContext);
   const {
     model, serialNumber, address,
   } = calculator;
@@ -17,6 +18,8 @@ export const Header = () => {
 
 
   const { id, resource, nodeStatus, number } = node;
+
+
 
   const NodeStatus = ({ nodeStatus }) => {
     let icon;
@@ -60,7 +63,9 @@ export const Header = () => {
           <NodeStatus nodeStatus={nodeStatus}/>
         </SubtitleWrap>
       </div>
-      <div style={{ position: 'relative' }}/>
+      <div style={{ position: 'relative' }}>
+        <EditButton arr={arr}/>
+      </div>
     </HeaderWrap>
   );
 };
