@@ -43,25 +43,6 @@ export const NodeProfile = () => {
     );
   }
 
-  const arr = [{
-    title: 'Редактировать узел',
-    itemFunction: () => {
-      push(`${url}/edit`);
-    },
-  },
-  {
-    title: 'Добавить новый прибор',
-    itemFunction: () => {
-      alert('Добавить новый прибор');
-    },
-  },
-  {
-    title: 'Поставить/Снять узел на коммерческий учёт',
-    itemFunction: () => {
-      alert('Поставить/Снять узел на коммерческий учёт');
-    },
-  },
-  ];
 
   const context = {
     node,
@@ -69,7 +50,6 @@ export const NodeProfile = () => {
     handleChangeTab,
     currentTab,
     setCurrentTab,
-    arr,
   };
 
   return (
