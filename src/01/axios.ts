@@ -16,7 +16,6 @@ axios.interceptors.request.use((req) => {
         req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
     }
 
-    debugger;
   req.cancelToken = new axios.CancelToken((e) => {
     cancel = e;
   });
@@ -55,7 +54,6 @@ axios.interceptors.response.use(
     // return data
   },
   (error) => {
-      debugger;
     const status = error?.response?.status;
     if (status === 401 && !checkUrl('login', error.config.url)) {
       const { config } = error;

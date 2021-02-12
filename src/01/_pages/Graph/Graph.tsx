@@ -16,8 +16,18 @@ import {CustomTooltip} from "./components/CustomTooltip";
 import Gradient from "./components/Gradient";
 import {getResourceColor} from "../../utils/getResourceColor";
 import {requestNodeReadings} from "../../_api/node_readings_page";
-import { AxiosPromise } from 'axios';
 import maxBy from 'lodash/maxBy';
+import _ from "lodash";
+import {Formik} from "formik";
+// import {Form, Radio, DatePicker, FormikDebug} from "formik-antd"
+import {Form, Radio, FormikDebug} from "formik-antd"
+import moment from "moment";
+import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns';
+import generatePicker from 'antd/es/date-picker/generatePicker';
+import 'antd/es/date-picker/style/index';
+
+
+const DatePicker = generatePicker<Date>(dateFnsGenerateConfig);
 
 interface ArchiveEntryInterface {
     timestamp: string
@@ -2727,8 +2737,6 @@ const Graph: React.FC = () => {
     const to = '2021-01-25T23:00:00Z';
 
 
-
-
     const getReadings = useCallback(
         () => {
             return requestNodeReadings(deviceId, reportType, resource, from, to);
@@ -2738,11 +2746,14 @@ const Graph: React.FC = () => {
 
     const { execute, status, value: data, error } = useAsync<ReadingsInterface, {message: string}>(getReadings, true);
 
-    debugger;
 
-    if (status === 'pending' || !data?.archiveEntries.length) return <>'ЗАГРУЗКА...'</>
+    if (status === 'pending') return <>'ЗАГРУЗКА...'</>
 
-    const tickValues = formTicks(data!.archiveEntries, reportType);
+    const archiveEntries = _.get(data, 'archiveEntries', []);
+    // const archiveEntries = data?.archiveEntries || [];
+
+
+    const tickValues = formTicks(archiveEntries, reportType);
 
 
 
@@ -2755,26 +2766,67 @@ const Graph: React.FC = () => {
         })
     }
 
-    // const graphDataNew = formHourlyTicks(data!.archiveEntries).map((entry) => {
-    //     return {
-    //         time: entry.timestamp,
-    //         value: entry.values[graphParam],
-    //     }
-    // })
-
     const graphDataNew = formGraphData(tickValues);
 
     const maxElement = maxBy(graphDataNew, (obj) => obj.value);
 
-    const maxValue = maxElement!.value;
+    const maxValue = maxElement?.value;
+
+    const handleSubmit = () => {
+        console.log('submit');
+    }
+
+    console.log(new Date().toISOString())
+
+    debugger;
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const formInitialDates = () => {
+        // Прибавить сюда 3 часа с помощью formatDate()
+        const date = new Date();
+        return [new Date(date), new Date(date.setDate(date.getDate() + 7))]
+    }
 
     return (
         <>
+            <Formik
+                initialValues={{
+                    dateRange: formInitialDates(),
+                    reportType: "daily"
+                }}
+                onSubmit={handleSubmit}
+                // validate={values => {
+                //     if (!values.userName) {
+                //         return { userName: "required" }
+                //     }
+                //     return undefined
+                // }}
+                render={formik => (
+                    <Form>
+                        <DatePicker.RangePicker
+                            name="dateRange"
+                        />
+                        <Radio.Group
+                            name="reportType"
+                            options={[
+                                {label: "Часовой", value: "hourly"},
+                                {label: "Суточный", value: "daily"},
+                            ]}
+                        />
+                        <FormikDebug style={{ maxWidth: 400 }} />
+                    </Form>
+                )
+                }
+                />
+
+
             {status === 'idle' && <div>Start your journey by clicking a button</div>}
             {status === 'success' && <GraphWrapper>
                 <Gradient resource={resource}/>
                 <VictoryChart
-                    domain={{ y: [0, 1.1*maxValue] }}
+                    domain={{ y: [0, 1.1*maxValue!] }}
                     width={600}
                     theme={VictoryTheme.material} style={{parent: {
                         width: '900px',
