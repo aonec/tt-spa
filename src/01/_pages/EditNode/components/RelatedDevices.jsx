@@ -62,7 +62,7 @@ export const RelatedDevices = () => {
     );
   });
   const handleAddOdpu = () => {
-    console.log('handleAddOdpu');
+   alert("Подключение ОДПУ в узле в разработке")
   };
 
   return (
