@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components/IconTT';
 import { ButtonTT } from '../../../tt-components';
+import ModalAddDevice from './Modals/ModalAddDevice';
 
 export const RelatedDevices = () => {
   const { node } = useContext(EditNodeContext);
@@ -62,18 +63,21 @@ export const RelatedDevices = () => {
     );
   });
   const handleAddOdpu = () => {
-   alert("Подключение ОДПУ в узле в разработке")
+    alert('Подключение ОДПУ в узле в разработке');
   };
 
   return (
-    <ListWrap>
-      {result}
-      <ButtonTT color="white" small onClick={handleAddOdpu} style={{ marginTop: '24px' }} type="button">
-        Подключить
-        прибор
-        <IconTT icon="plus" />
-      </ButtonTT>
-    </ListWrap>
+    <>
+      <ListWrap>
+        {result}
+        <ButtonTT color="white" small onClick={handleAddOdpu} style={{ marginTop: '24px' }} type="button">
+          Подключить
+          прибор
+          <IconTT icon="plus" />
+        </ButtonTT>
+      </ListWrap>
+      <ModalAddDevice />
+    </>
   );
 };
 
