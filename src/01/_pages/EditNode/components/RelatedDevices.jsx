@@ -1,88 +1,90 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import _ from 'lodash';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import {EditNodeContext} from '../index';
-import {IconTT} from '../../../tt-components/IconTT';
-import {ButtonTT} from '../../../tt-components';
+import { EditNodeContext } from '../index';
+import { IconTT } from '../../../tt-components/IconTT';
+import { ButtonTT } from '../../../tt-components';
 import ModalAddDevice from './Modals/ModalAddDevice';
 
 export const RelatedDevices = () => {
-    const {node, calculator} = useContext(EditNodeContext);
-    const {communicationPipes} = node;
-    const [visibleModalAddDevice, setVisibleModalAddDevice] = useState(false)
+  const { node, calculator } = useContext(EditNodeContext);
+  const { communicationPipes } = node;
+  const [visibleModalAddDevice, setVisibleModalAddDevice] = useState(false);
 
-    const related = _.flatten(communicationPipes.map((item, index) => {
-        const res = item.devices.map((resItem) => resItem);
-        return res;
-    }));
+  const related = _.flatten(communicationPipes.map((item, index) => {
+    const res = item.devices.map((resItem) => resItem);
+    return res;
+  }));
 
-    const result = related.map((value) => {
-        const {
-            model,
-            serialNumber,
-            closingdate,
-            hub,
-            resource,
-            id,
-        } = value;
+  const result = related.map((value) => {
+    const {
+      model,
+      serialNumber,
+      closingdate,
+      hub,
+      resource,
+      id,
+    } = value;
 
-        const {pipeNumber, entryNumber, hubNumber} = hub === null ? {
-            number: 'X',
-            hubNumber: 'X',
-        } : hub;
+    const { pipeNumber, entryNumber, hubNumber } = hub === null ? {
+      number: 'X',
+      hubNumber: 'X',
+    } : hub;
 
-        const icon = closingdate !== null ? 'green' : 'red';
-        const status = closingdate !== null ? 'Активен' : 'Не активен';
+    const icon = closingdate !== null ? 'green' : 'red';
+    const status = closingdate !== null ? 'Активен' : 'Не активен';
 
-        return (
-            <ListItem key={id}>
-                <NameWrap href={`/housingMeteringDevices/${id}`} title="Перейти на страницу устройства">
-                    <IconTT icon={resource.toLowerCase()}/>
-                    <Name>{model}</Name>
-                    <Serial>{` (${serialNumber})`}</Serial>
-                </NameWrap>
-
-                <State>
-                    <IconTT icon={icon}/>
-                    {status}
-                </State>
-
-                <Hub>
-                    <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
-                    <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
-                </Hub>
-
-                <Link
-                    to={`/housingMeteringDevices/${id}/edit_odpu`}
-                    title="Редактирование ОДПУ"
-                    style={{display: 'inline-flex', width: 'min-content'}}
-                >
-                    <IconTT icon="edit"/>
-                </Link>
-            </ListItem>
-        );
-    });
-    function handleAddOdpu(){
-        setVisibleModalAddDevice(true)
-    }
-
-    const modalAddDeviceProps = {node, calculator}
     return (
-        <>
-            <ListWrap>
-                {result}
-                <ButtonTT type='button' color="white" small onClick={handleAddOdpu} style={{marginTop: '24px'}}>
-                    Подключить
-                    прибор
-                    <IconTT icon="plus"/>
-                </ButtonTT>
-            </ListWrap>
-            <ModalAddDevice {...modalAddDeviceProps}
-                            visible={visibleModalAddDevice}
-                            setVisible={setVisibleModalAddDevice}/>
-        </>
+      <ListItem key={id}>
+        <NameWrap href={`/housingMeteringDevices/${id}`} title="Перейти на страницу устройства">
+          <IconTT icon={resource.toLowerCase()} />
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <IconTT icon={icon} />
+          {status}
+        </State>
+
+        <Hub>
+          <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
+          <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
+        </Hub>
+
+        <Link
+          to={`/housingMeteringDevices/${id}/edit_odpu`}
+          title="Редактирование ОДПУ"
+          style={{ display: 'inline-flex', width: 'min-content' }}
+        >
+          <IconTT icon="edit" />
+        </Link>
+      </ListItem>
     );
+  });
+  function handleAddOdpu() {
+    setVisibleModalAddDevice(true);
+  }
+
+  const modalAddDeviceProps = { node, calculator };
+  return (
+    <>
+      <ListWrap>
+        {result}
+        <ButtonTT type="button" color="white" small onClick={handleAddOdpu} style={{ marginTop: '24px' }}>
+          Подключить
+          прибор
+          <IconTT icon="plus" />
+        </ButtonTT>
+      </ListWrap>
+      <ModalAddDevice
+        {...modalAddDeviceProps}
+        visible={visibleModalAddDevice}
+        setVisible={setVisibleModalAddDevice}
+      />
+    </>
+  );
 };
 
 export default RelatedDevices;
