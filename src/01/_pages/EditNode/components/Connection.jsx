@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
 
-export default () => {
+const Connection = () => {
   const { calculator } = useContext(EditNodeContext);
   const {
     model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate,
@@ -13,7 +13,8 @@ export default () => {
 
   const lastCheckingDateText = lastCheckingDate !== null ? moment(lastCheckingDate).format('DD.MM.YYYY') : 'Дата поверки не указана';
   const futureCheckingDateText = futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана';
-
+  const icon = closingdate !== null ? 'green' : 'red';
+  const status = closingdate !== null ? 'Активен' : 'Не активен';
   return (
     <CalcListItem key={id + serialNumber}>
       <NavLink to={`/calculators/${id}`}>
@@ -26,17 +27,34 @@ export default () => {
         </NameWrap>
       </NavLink>
       <State>
-        {closingdate !== null ? <IconTT icon="green" /> : <IconTT icon="red" />}
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        <IconTT icon={icon} />
+        {status}
       </State>
       <Div>
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link to={`/calculators/${id}/edit`} style={{ display: 'inline-flex', width: 'fit-content' }} title="Редактирование Вычислителя"><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
-        <Link to={`/calculators/${id}/edit`} style={{ display: 'inline-flex' }}><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
+        <Link
+          to={`/calculators/${id}/edit`}
+          style={{ display: 'inline-flex', width: 'fit-content' }}
+          title="Редактирование Вычислителя"
+        >
+          <IconTT icon="edit" style={{ marginLeft: 8 }} />
+        </Link>
+        <Link
+          to={`/calculators/${id}/edit`}
+          style={{ display: 'inline-flex' }}
+          title="Редактирование Вычислителя"
+        >
+          <IconTT
+            icon="del"
+            style={{ marginLeft: 8 }}
+          />
+        </Link>
       </Div>
     </CalcListItem>
   );
 };
+
+export default Connection;
 
 const Template = styled.div``;
 
@@ -60,7 +78,7 @@ const Div = styled.div`
 
 const CalcListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 6fr;
+  grid-template-columns: 5fr 3fr 4fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
