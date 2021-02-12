@@ -2,7 +2,7 @@ import React from 'react';
 import { StyledModal } from '../../../../../tt-components/Modal';
 import ModalAddDeviceForm from "./ModalAddDeviceForm";
 
-const ModalAddDevice = () => {
+const ModalAddDevice = (props) => {
   console.log('ModalAddDevice');
 
   return (
@@ -12,7 +12,7 @@ const ModalAddDevice = () => {
       width={800}
       footer={null}
     >
-      <ModalAddDeviceForm />
+      <ModalAddDeviceForm {...props}/>
     </StyledModal>
   );
 };

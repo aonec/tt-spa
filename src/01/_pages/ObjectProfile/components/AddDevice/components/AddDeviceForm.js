@@ -16,6 +16,7 @@ import TabsComponent from './Main';
 import { styles, StyledFormPage } from './styledComponents';
 import styled from 'styled-components'
 import { handleTabsBeforeFormSubmit } from "../../../../../utils/handleTabsBeforeFormSubmit";
+import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from "./validationSchemas";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)

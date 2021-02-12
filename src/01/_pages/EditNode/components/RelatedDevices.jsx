@@ -8,7 +8,7 @@ import { ButtonTT } from '../../../tt-components';
 import ModalAddDevice from './Modals/ModalAddDevice';
 
 export const RelatedDevices = () => {
-  const { node } = useContext(EditNodeContext);
+  const { node, calculator } = useContext(EditNodeContext);
   const { communicationPipes } = node;
 
   const related = _.flatten(communicationPipes.map((item, index) => {
@@ -66,6 +66,7 @@ export const RelatedDevices = () => {
     alert('Подключение ОДПУ в узле в разработке');
   };
 
+  const modalAddDeviceProps = {node, calculator}
   return (
     <>
       <ListWrap>
@@ -76,7 +77,7 @@ export const RelatedDevices = () => {
           <IconTT icon="plus" />
         </ButtonTT>
       </ListWrap>
-      <ModalAddDevice />
+      <ModalAddDevice {...modalAddDeviceProps}/>
     </>
   );
 };
