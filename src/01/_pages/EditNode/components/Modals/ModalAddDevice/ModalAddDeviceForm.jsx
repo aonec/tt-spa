@@ -22,7 +22,8 @@ import {
     housingMeteringDeviceTypes, isConnected, magistrals, nodeStatusList, resources,
 } from '../../../../../tt-components/localBases';
 import TabsComponent from './Tabs';
-import {validationSchemaFlowMeter} from './validationSchemas';
+import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
+import {addOdpu} from "./apiModalAddDevice";
 
 const ModalAddDeviceForm = (props) => {
     const {node, calculator} = props;
@@ -35,11 +36,26 @@ const ModalAddDeviceForm = (props) => {
     } = address;
 
     const {
-        futureCommercialAccountingDate, lastCommercialAccountingDate, nodeStatus, number, resource, serviceZone,
+        futureCommercialAccountingDate, lastCommercialAccountingDate, nodeStatus, number, resource, serviceZone, communicationPipes
     } = node;
 
     const [currentTabKey, setTab] = useState('1');
     const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+
+    const devices = communicationPipes.map((communicationPipe) => {
+        const {devices} = communicationPipe
+        return devices.map((device) => {
+            return device
+        })
+    })
+    const res = _.flatten(devices)
+    const entryNumbers = res.map((item)=>{
+        const {hub} = item;
+        const {entryNumber} = hub
+        return entryNumber
+    })
+    console.log(res)
+    console.log(entryNumbers)
 
     function handleChangeTab(value) {
         setTab(value);
@@ -65,9 +81,8 @@ const ModalAddDeviceForm = (props) => {
         handleBlur, setFieldValue, setValues,
     } = useFormik({
         initialValues: {
-
             isConnected: isConnected[0].value,
-            serialNumber: '',
+            serialNumber: '120220211643',
             lastCheckingDate: moment().toISOString(),
             futureCheckingDate: moment().add(3, 'years').toISOString(),
             lastCommercialAccountingDate: lastCommercialAccountingDate ?? moment().toISOString(),
@@ -78,7 +93,7 @@ const ModalAddDeviceForm = (props) => {
             port: null,
             housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
             resource,
-            model: '',
+            model: 'COLD 12022021',
             diameter: null,
             calculatorId: calculatorId ?? null,
             entryNumber: null,
@@ -90,11 +105,34 @@ const ModalAddDeviceForm = (props) => {
             housingStockNumber,
             corpus,
             number,
+            nodeStatus,
 
         },
         validationSchema,
 
         onSubmit: async () => {
+            const template = {
+                serialNumber: 'string',
+                lastCheckingDate: '2021-02-12T13:38:14.655Z',
+                futureCheckingDate: '2021-02-12T13:38:14.655Z',
+                lastCommercialAccountingDate: '2021-02-12T13:38:14.655Z',
+                documentsIds: [
+                    0,
+                ],
+                futureCommercialAccountingDate: '2021-02-12T13:38:14.655Z',
+                housingMeteringDeviceType: 'string',
+                resource: 'string',
+                model: 'string',
+                pipeId: 0,
+                pipe: {
+                    calculatorId: 0,
+                    entryNumber: 0,
+                    hubNumber: 0,
+                    pipeNumber: 0,
+                    magistral: 'string',
+                },
+                diameter: 0,
+            };
             const form = {
                 serialNumber: values.serialNumber,
                 lastCheckingDate: values.lastCheckingDate,
@@ -105,7 +143,7 @@ const ModalAddDeviceForm = (props) => {
                 housingMeteringDeviceType: values.housingMeteringDeviceType,
                 resource: values.resource,
                 model: values.model,
-                diameter: values.diameter,
+                diameter: Number(values.diameter),
                 pipe: {
                     calculatorId: values.calculatorId,
                     entryNumber: values.entryNumber,
@@ -115,20 +153,16 @@ const ModalAddDeviceForm = (props) => {
                 },
             };
             console.log(form);
-            // addOdpu(form).then(() => {
-            //     setTimeout(() => { setAddOdpu(false); }, 1000);
-            // });
+            addOdpu(form).then((res) => {
+                console.log("res", res)
+                // setTimeout(() => { setAddOdpu(false); }, 1000);
+            });
         },
     });
 
     useEffect(() => {
         setValidationSchema(validationSchemaFlowMeter);
     }, []);
-
-
-    // const getNodeStatus = _.find(nodeStatusList, {value: nodeStatus})?.label ?? 'Статус не определен';
-    // const getNodeIconStatus = _.find(nodeStatusList, {value: nodeStatus})?.icon ?? 'del';
-
 
     return (
         <form id="addDevice" onSubmit={handleSubmit}>
@@ -148,6 +182,7 @@ const ModalAddDeviceForm = (props) => {
                             options={resources}
                             defaultValue={resources[0].value}
                             value={values.resource}
+                            disabled
                         />
                         <Alert name="resource"/>
                     </Form.Item>
@@ -157,6 +192,13 @@ const ModalAddDeviceForm = (props) => {
                             name="housingMeteringDeviceType"
                             onChange={(value) => {
                                 setFieldValue('housingMeteringDeviceType', value);
+                                if (value === 'FlowMeter') {
+                                    setValidationSchema(validationSchemaFlowMeter);
+                                }
+                                if (value === 'TemperatureSensor') {
+                                    // console.log("TemperatureSensor")
+                                    setValidationSchema(validationSchemaTemperatureSensor);
+                                }
                             }}
                             options={housingMeteringDeviceTypes}
                             value={values.housingMeteringDeviceType}
@@ -247,12 +289,10 @@ const ModalAddDeviceForm = (props) => {
                     <Form.Item label="Номер ввода" style={styles.w100}>
                         <InputTT
                             name="entryNumber"
-                            type="number"
+                            onChange={handleChange}
                             onBlur={handleBlur}
                             placeholder="Номер ввода"
                             value={values.entryNumber}
-                            onChange={handleChange}
-                            disabled
                         />
                         <Alert name="entryNumber"/>
                     </Form.Item>
@@ -292,6 +332,7 @@ const ModalAddDeviceForm = (props) => {
                                 setFieldValue('lastCommercialAccountingDate', date.toISOString());
                             }}
                             value={moment(values.lastCommercialAccountingDate)}
+                            disabled
                         />
                     </Form.Item>
 
@@ -305,6 +346,7 @@ const ModalAddDeviceForm = (props) => {
                                 setFieldValue('futureCommercialAccountingDate', date.toISOString());
                             }}
                             value={moment(values.futureCommercialAccountingDate)}
+                            disabled
                         />
 
                     </Form.Item>
@@ -435,7 +477,6 @@ const ModalAddDeviceForm = (props) => {
                 <ButtonTT
                     color="blue"
                     type="submit"
-                    form="formikFormAddOdpu"
                     hidden={currentTabKey !== '3'}
                     style={{marginLeft: '16px'}}
                     big
