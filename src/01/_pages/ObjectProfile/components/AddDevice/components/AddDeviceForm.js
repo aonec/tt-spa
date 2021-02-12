@@ -29,7 +29,6 @@ const AddDeviceForm = (props) => {
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-      .required('Введите номер'),
 
 
   const tabErrors = [
