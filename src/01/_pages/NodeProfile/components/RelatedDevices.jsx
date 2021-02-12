@@ -1,25 +1,15 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Loader } from '01/components';
-import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { NodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
 
 export const RelatedDevices = () => {
   const { node } = useContext(NodeContext);
-
   const { communicationPipes } = node;
 
   const related = _.flatten(communicationPipes.map((item, index) => {
-    console.log('item', item);
-
-    const res = item.devices.map((resItem) => {
-      console.log('resItem', resItem);
-      return resItem;
-    });
-
+    const res = item.devices.map((resItem) => resItem);
     return res;
   }));
 
@@ -40,17 +30,20 @@ export const RelatedDevices = () => {
       hubNumber: 'X',
     } : hub;
 
+    const icon = closingdate !== null ? 'green' : 'red';
+    const status = closingdate !== null ? 'Активен' : 'Не активен'
+
     return (
       <ListItem key={id}>
         <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }}/>
+          <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }} />
           <Name style={{ marginRight: '8px' }}>{model}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
         <State>
-          {closingdate !== null ? <IconTT icon="green"/> : <IconTT icon="red"/>}
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+          <IconTT icon={icon} />
+            {status}
         </State>
         <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
         <Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>
@@ -69,9 +62,9 @@ export const RelatedDevices = () => {
 
 export default RelatedDevices;
 
-export const Template = styled.div``;
+const Template = styled.div``;
 
-export const NameWrap = styled.a`
+const NameWrap = styled.a`
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
@@ -84,7 +77,7 @@ export const NameWrap = styled.a`
   }
 `;
 
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-weight: 500;
@@ -92,27 +85,27 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Title = styled.h2``;
+const Title = styled.h2``;
 
-export const ListWrap = styled.div`
+const ListWrap = styled.div`
   display: grid;
   height: min-content;
 }
 `;
 
-export const ListItem = styled.div`
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
   grid-template-rows: 48px;
@@ -120,6 +113,6 @@ export const ListItem = styled.div`
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
-export const Span = styled.span`
+const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;

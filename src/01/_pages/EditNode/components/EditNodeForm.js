@@ -21,7 +21,7 @@ import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString'
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 
 import { defaultValidationSchema } from './validationSchemas';
-import { NodeContext } from '../../Node';
+import { NodeContext } from '../../NodeProfile';
 import RelatedDevices from './RelatedDevices';
 import Connection from './Connection';
 

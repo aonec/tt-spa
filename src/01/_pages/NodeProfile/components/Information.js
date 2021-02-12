@@ -22,8 +22,8 @@ const Information = () => {
     city, street, housingStockNumber, corpus, id,
   } = address;
 
-  const getServiceZone = _.find(serviceZoneList, { value: serviceZone }).label;
-  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus }).label;
+  const getServiceZone = _.find(serviceZoneList, { value: serviceZone })?.label ?? 'Зона не определена';
+  const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
 
   return (
     <ListWrap>
