@@ -63,9 +63,9 @@ const EditNodeForm = () => {
       };
 
       console.log('nodeForm', nodeForm);
-      // putNode(nodeId, nodeForm).then((res) => {
-      //   console.log('putNode', res);
-      // });
+      putNode(nodeId, nodeForm).then((res) => {
+        console.log('putNode', res);
+      });
     },
   });
 

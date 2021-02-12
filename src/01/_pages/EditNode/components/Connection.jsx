@@ -31,16 +31,16 @@ export default () => {
       </State>
       <Div>
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex', width: 'fit-content'}} title="Редактирование Вычислителя"><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
-        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex'}} ><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
+        <Link to={`/calculators/${id}/edit`} style={{ display: 'inline-flex', width: 'fit-content' }} title="Редактирование Вычислителя"><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
+        <Link to={`/calculators/${id}/edit`} style={{ display: 'inline-flex' }}><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
       </Div>
     </CalcListItem>
   );
 };
 
-export const Template = styled.div``;
+const Template = styled.div``;
 
-export const NameWrap = styled.div`
+const NameWrap = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -53,12 +53,12 @@ export const NameWrap = styled.div`
   }
 `;
 
-export const Div = styled.div`
+const Div = styled.div`
   display: inline-flex;
   align-items: center;
 `;
 
-export const CalcListItem = styled.div`
+const CalcListItem = styled.div`
   display: grid;
   grid-template-columns: 4fr 2fr 6fr;
   grid-template-rows: 48px;
@@ -67,12 +67,12 @@ export const CalcListItem = styled.div`
   opacity: 0.8;
 `;
 
-export const NameAndSerialNumber = styled.div`
+const NameAndSerialNumber = styled.div`
   display: inline-flex;
   align-items: center;
   padding-left: 8px;
 `;
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-style: normal;
@@ -81,7 +81,7 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   font-style: normal;
@@ -91,13 +91,13 @@ export const Serial = styled.p`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Dates = styled.span`
+const Dates = styled.span`
   display: flex;
   justify-content: center;
   font-style: normal;

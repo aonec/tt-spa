@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import {Icon} from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import {IconTT} from "../../../tt-components";
-import {Div} from "../../EditNode/components/Connection";
 import {AddNodeContext} from "../index";
 import _ from 'lodash'
+
+
+const Div = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
 
 export const RelatedDevices = () => {
 
