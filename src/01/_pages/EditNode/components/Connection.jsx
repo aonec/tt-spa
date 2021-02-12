@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
+import ModalCalculatorDeregister from "./Modals/ModalCalculatorDeregister";
 
 const Connection = () => {
   const { calculator } = useContext(EditNodeContext);
@@ -15,42 +16,44 @@ const Connection = () => {
   const futureCheckingDateText = futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана';
   const icon = closingdate !== null ? 'green' : 'red';
   const status = closingdate !== null ? 'Активен' : 'Не активен';
+  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(true);
   return (
-    <CalcListItem key={id + serialNumber}>
-      <NavLink to={`/calculators/${id}`}>
-        <NameWrap>
-          <IconTT icon="device" />
-          <NameAndSerialNumber>
-            <Name style={{ marginRight: '8px' }}>{model}</Name>
-            <Serial>{` (${serialNumber})`}</Serial>
-          </NameAndSerialNumber>
-        </NameWrap>
-      </NavLink>
-      <State>
-        <IconTT icon={icon} />
-        {status}
-      </State>
-      <Div>
-        <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link
-          to={`/calculators/${id}/edit`}
-          style={{ display: 'inline-flex', width: 'fit-content' }}
-          title="Редактирование Вычислителя"
-        >
-          <IconTT icon="edit" style={{ marginLeft: 8 }} />
-        </Link>
-        <Link
-          to={`/calculators/${id}/edit`}
-          style={{ display: 'inline-flex' }}
-          title="Редактирование Вычислителя"
-        >
+    <>
+      <CalcListItem>
+        <NavLink to={`/calculators/${id}`}>
+          <NameWrap>
+            <IconTT icon="device" />
+            <NameAndSerialNumber>
+              <Name style={{ marginRight: '8px' }}>{model}</Name>
+              <Serial>{` (${serialNumber})`}</Serial>
+            </NameAndSerialNumber>
+          </NameWrap>
+        </NavLink>
+        <State>
+          <IconTT icon={icon} />
+          {status}
+        </State>
+        <Div>
+          <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
+          <Link
+            to={`/calculators/${id}/edit`}
+            style={{ display: 'inline-flex', width: 'fit-content' }}
+            title="Редактирование Вычислителя"
+          >
+            <IconTT icon="edit" style={{ marginLeft: 8 }} />
+          </Link>
+
           <IconTT
             icon="del"
             style={{ marginLeft: 8 }}
+            onClick={() => {
+              console.log('Снять прибор');
+            }}
           />
-        </Link>
-      </Div>
-    </CalcListItem>
+        </Div>
+      </CalcListItem>
+      <ModalCalculatorDeregister visible={isDeregisterModalVisible} id={id} setVisible={setIsDeregisterModalVisible} />
+    </>
   );
 };
 

@@ -40,7 +40,7 @@ export const Header = () => {
 
         <TitleWrap>
           <IconTT icon={resource.toLowerCase()} size={24} style={{ marginRight: '8px' }} />
-          <Title>{`Узел ${number}`}</Title>
+          <Title>{`Узел ${number}. Редактирование`}</Title>
         </TitleWrap>
 
         <SubtitleWrap>

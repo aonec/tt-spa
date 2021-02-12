@@ -1,20 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Form } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-  ButtonTT, DatePickerTT, InputTT, Header,
+  ButtonTT, DatePickerTT, Header,
 } from '../../../../../tt-components';
-import { DeviceContext } from '../../../CalculatorProfile';
 import { deregisterDevice } from './apiDeregisterDevice';
 
-const ModalDeregisterForm = (props) => {
-  const { handleCancel } = props;
-
-  console.log('ModalCalculatorDeregisterForm.js');
-  const { deregister, setDeregister, device } = useContext(DeviceContext);
+const ModalCalculatorDeregisterForm = (props) => {
+  const {
+    visible, id, setVisible, handleCancel,
+  } = props;
   const { model, serialNumber } = device;
 
   const Alert = ({ name }) => {
@@ -29,18 +27,16 @@ const ModalDeregisterForm = (props) => {
   };
 
   const Buttons = () => {
-    const CancelButton = () =>
-      // console.log('CancelButton');
-      (
-        <ButtonTT
-          color="white"
-          onClick={handleCancel}
-        >
-          Отмена
-        </ButtonTT>
-      );
+    const CancelButton = () => (
+      <ButtonTT
+        color="white"
+        onClick={handleCancel}
+      >
+        Отмена
+      </ButtonTT>
+    );
     const OkButton = () =>
-      // console.log('OkButton');
+    // console.log('OkButton');
       (
         <ButtonTT
           color="red"
@@ -103,4 +99,4 @@ const ModalDeregisterForm = (props) => {
   );
 };
 
-export default ModalDeregisterForm;
+export default ModalCalculatorDeregisterForm;
