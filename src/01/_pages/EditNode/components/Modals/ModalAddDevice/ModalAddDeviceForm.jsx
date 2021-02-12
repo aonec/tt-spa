@@ -26,7 +26,7 @@ import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './va
 import {addOdpu} from "./apiModalAddDevice";
 
 const ModalAddDeviceForm = (props) => {
-    const {node, calculator} = props;
+    const {node, calculator, handleCancel} = props;
     console.log('node', node);
     console.log('calulator', calculator);
     const {address, id: calculatorId} = calculator;
@@ -483,7 +483,7 @@ const ModalAddDeviceForm = (props) => {
                 >
                     Добавить
                 </ButtonTT>
-                <ButtonTT type="button" color="white" style={{marginLeft: '16px'}}>
+                <ButtonTT type="button" color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
                     Отмена
                 </ButtonTT>
             </StyledFooter>
