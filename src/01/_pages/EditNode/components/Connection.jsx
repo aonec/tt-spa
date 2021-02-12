@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
+import ModalCalculatorDeregister from "./Modals/ModalCalculatorDeregister";
 
-export default () => {
+const Connection = () => {
   const { calculator } = useContext(EditNodeContext);
   const {
     model, id, serialNumber, lastCheckingDate, futureCheckingDate, closingdate,
@@ -13,34 +14,55 @@ export default () => {
 
   const lastCheckingDateText = lastCheckingDate !== null ? moment(lastCheckingDate).format('DD.MM.YYYY') : 'Дата поверки не указана';
   const futureCheckingDateText = futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана';
-
+  const icon = closingdate !== null ? 'green' : 'red';
+  const status = closingdate !== null ? 'Активен' : 'Не активен';
+  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(false);
   return (
-    <CalcListItem key={id + serialNumber}>
-      <NavLink to={`/calculators/${id}`}>
-        <NameWrap>
-          <IconTT icon="device" />
-          <NameAndSerialNumber>
-            <Name style={{ marginRight: '8px' }}>{model}</Name>
-            <Serial>{` (${serialNumber})`}</Serial>
-          </NameAndSerialNumber>
-        </NameWrap>
-      </NavLink>
-      <State>
-        {closingdate !== null ? <IconTT icon="green" /> : <IconTT icon="red" />}
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-      </State>
-      <Div>
-        <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex', width: 'fit-content'}} title="Редактирование Вычислителя"><IconTT icon="edit" style={{ marginLeft: 8 }} /></Link>
-        <Link to={`/calculators/${id}/edit`} style={{display: 'inline-flex'}} ><IconTT icon="del" style={{ marginLeft: 8 }} /></Link>
-      </Div>
-    </CalcListItem>
+    <>
+      <CalcListItem>
+        <NavLink to={`/calculators/${id}`}>
+          <NameWrap>
+            <IconTT icon="device" />
+            <NameAndSerialNumber>
+              <Name style={{ marginRight: '8px' }}>{model}</Name>
+              <Serial>{` (${serialNumber})`}</Serial>
+            </NameAndSerialNumber>
+          </NameWrap>
+        </NavLink>
+        <State>
+          <IconTT icon={icon} />
+          {status}
+        </State>
+        <Div>
+          <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
+          <Link
+            to={`/calculators/${id}/edit`}
+            style={{ display: 'inline-flex', width: 'fit-content' }}
+            title="Редактирование Вычислителя"
+          >
+            <IconTT icon="edit" style={{ marginLeft: 8 }} />
+          </Link>
+
+          <IconTT
+            icon="del"
+            style={{ marginLeft: 8, cursor: 'pointer' }}
+            onClick={() => {
+              setIsDeregisterModalVisible(true)
+              console.log('Снять прибор');
+            }}
+          />
+        </Div>
+      </CalcListItem>
+      <ModalCalculatorDeregister visible={isDeregisterModalVisible} id={id} setVisible={setIsDeregisterModalVisible} />
+    </>
   );
 };
 
-export const Template = styled.div``;
+export default Connection;
 
-export const NameWrap = styled.div`
+const Template = styled.div``;
+
+const NameWrap = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -53,26 +75,26 @@ export const NameWrap = styled.div`
   }
 `;
 
-export const Div = styled.div`
+const Div = styled.div`
   display: inline-flex;
   align-items: center;
 `;
 
-export const CalcListItem = styled.div`
+const CalcListItem = styled.div`
   display: grid;
-  grid-template-columns: 4fr 2fr 6fr;
+  grid-template-columns: 5fr 3fr 4fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
 
-export const NameAndSerialNumber = styled.div`
+const NameAndSerialNumber = styled.div`
   display: inline-flex;
   align-items: center;
   padding-left: 8px;
 `;
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-style: normal;
@@ -81,7 +103,7 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   font-style: normal;
@@ -91,13 +113,13 @@ export const Serial = styled.p`
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Dates = styled.span`
+const Dates = styled.span`
   display: flex;
   justify-content: center;
   font-style: normal;

@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import EditNodeTabs from './components/EditNodeTabs';
-import Index from '../../tt-components/Breadcrumb';
 import { getCalculator, getNode } from './components/apiEditNode';
-import EditNodeForm, { ListWrap } from './components/EditNodeForm';
-import {Breadcrumb} from "../../tt-components";
+import EditNodeForm from './components/EditNodeForm';
+import { Breadcrumb } from '../../tt-components';
 
 export const EditNodeContext = React.createContext();
 
@@ -16,19 +15,17 @@ export const EditNode = () => {
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
 
-  function handleChangeTab(value){
-    console.log('value', value)
+  function handleChangeTab(value) {
     setTab(value);
   }
 
   useEffect(() => {
     getNode(nodeId).then((res) => {
-      getCalculator(res.calculatorId).then((res) => {
+      const { calculatorId } = res;
+      getCalculator(calculatorId).then((res) => {
         setCalculator(res);
-        console.log('res', res);
       });
       setNode(res);
-      console.log('node', res);
     });
   }, []);
 
@@ -41,15 +38,15 @@ export const EditNode = () => {
     calculator,
     currentTabKey,
     handleChangeTab,
-    setTab
+    setTab,
   };
   return (
     <>
       <EditNodeContext.Provider value={context}>
-        <Breadcrumb path={`/nodes/${nodeId}`}/>
-        <Header/>
-        <EditNodeTabs/>
-        <EditNodeForm/>
+        <Breadcrumb path={`/nodes/${nodeId}`} />
+        <Header />
+        <EditNodeTabs />
+        <EditNodeForm />
       </EditNodeContext.Provider>
     </>
   );
