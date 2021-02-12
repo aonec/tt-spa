@@ -16,7 +16,7 @@ const Connection = () => {
   const futureCheckingDateText = futureCheckingDate !== null ? moment(futureCheckingDate).format('DD.MM.YYYY') : 'Следующая Дата поверки не указана';
   const icon = closingdate !== null ? 'green' : 'red';
   const status = closingdate !== null ? 'Активен' : 'Не активен';
-  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(true);
+  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(false);
   return (
     <>
       <CalcListItem>
@@ -45,8 +45,9 @@ const Connection = () => {
 
           <IconTT
             icon="del"
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, cursor: 'pointer' }}
             onClick={() => {
+              setIsDeregisterModalVisible(true)
               console.log('Снять прибор');
             }}
           />
