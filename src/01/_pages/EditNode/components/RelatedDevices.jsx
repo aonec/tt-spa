@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components/IconTT';
 import { ButtonTT } from '../../../tt-components';
+import ModalAddDevice from './Modals/ModalAddDevice';
 
 export const RelatedDevices = () => {
-  const { node } = useContext(EditNodeContext);
+  const { node, calculator } = useContext(EditNodeContext);
   const { communicationPipes } = node;
+  const [visibleModalAddDevice, setVisibleModalAddDevice] = useState(false);
 
   const related = _.flatten(communicationPipes.map((item, index) => {
     const res = item.devices.map((resItem) => resItem);
@@ -61,19 +63,27 @@ export const RelatedDevices = () => {
       </ListItem>
     );
   });
-  const handleAddOdpu = () => {
-   alert("Подключение ОДПУ в узле в разработке")
-  };
+  function handleAddOdpu() {
+    setVisibleModalAddDevice(true);
+  }
 
+  const modalAddDeviceProps = { node, calculator };
   return (
-    <ListWrap>
-      {result}
-      <ButtonTT color="white" small onClick={handleAddOdpu} style={{ marginTop: '24px' }} type="button">
-        Подключить
-        прибор
-        <IconTT icon="plus" />
-      </ButtonTT>
-    </ListWrap>
+    <>
+      <ListWrap>
+        {result}
+        <ButtonTT type="button" color="white" small onClick={handleAddOdpu} style={{ marginTop: '24px' }}>
+          Подключить
+          прибор
+          <IconTT icon="plus" />
+        </ButtonTT>
+      </ListWrap>
+      <ModalAddDevice
+        {...modalAddDeviceProps}
+        visible={visibleModalAddDevice}
+        setVisible={setVisibleModalAddDevice}
+      />
+    </>
   );
 };
 
