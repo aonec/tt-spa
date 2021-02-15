@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { IconTT } from '../../../tt-components/IconTT';
 import { getDeviceTasks } from '../apiObjectProfile';
 import {Name, Serial} from "../../../tt-components";
+import {nodeStatusList} from "../../../tt-components/localBases";
 
 function statusIcon(closingDate) {
   return closingDate === null ? 'green' : 'red';
@@ -38,7 +39,7 @@ export const Devices = ({ calculators }) => {
           <CalculatorMainInfo>
             <IconTT icon="device" />
             <Name>{model}</Name>
-            <Serial>{` (${serialNumber})`}</Serial>
+            <Serial>{`(${serialNumber})`}</Serial>
             <CalculatorTasksIcon />
           </CalculatorMainInfo>
         </NavLink>
@@ -56,6 +57,14 @@ export const Devices = ({ calculators }) => {
     const {
       id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
     } = node;
+    console.log("node", node)
+    
+    //Бэкендеру - перевести с русского на английский!! nodeStatus
+    const getNodeStatus = _.find(nodeStatusList, { label: nodeStatus })?.label ?? 'Статус не определен';
+    const getNodeIconStatus = _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'del';
+    // const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
+    // const getNodeIconStatus = _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
+
     return (
       <Node>
         <NavLink to={`/nodes/${nodeId}`}>
@@ -65,8 +74,8 @@ export const Devices = ({ calculators }) => {
           </Div>
         </NavLink>
         <Div>
-          <IconTT icon="ok" />
-          <span>{nodeStatus}</span>
+          <IconTT icon={getNodeIconStatus} />
+          <span>{getNodeStatus}</span>
         </Div>
       </Node>
     );
