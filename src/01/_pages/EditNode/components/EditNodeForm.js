@@ -1,18 +1,18 @@
 import React, {
   useContext, useEffect, useRef, useState,
 } from 'react';
-import { Form, Switch } from 'antd';
+import { Form } from 'antd';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import moment from 'moment';
-import styled from 'styled-components';
+import { editNodeValidationSchema } from './validationSchemas';
+import RelatedDevices from './RelatedDevices';
+import Connection from './Connection';
 import {
-  InputTT, SelectTT, DatePickerTT, Wrap, ButtonTT, Title, IconTT, StyledFooter,
+  InputTT, SelectTT, DatePickerTT, ButtonTT, Title, StyledFooter,
 } from '../../../tt-components';
 import {
-  ipv4RegExp, items, nodeStatusList, resources, serviceZoneList,
+  items, nodeStatusList, resources, serviceZoneList,
 } from '../../../tt-components/localBases';
 import { EditNodeContext } from '../index';
 import { putCalculator, putNode } from './apiEditNode';
@@ -20,17 +20,12 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 
-import { defaultValidationSchema } from './validationSchemas';
-import { NodeContext } from '../../Node';
-import RelatedDevices from './RelatedDevices';
-import Connection from './Connection';
-
 const EditNodeForm = () => {
   const {
     calculator, currentTabKey, setTab, setAlertVisible, setExistCalculator, node,
   } = useContext(EditNodeContext);
 
-  const [validationSchema, setValidationSchema] = useState(defaultValidationSchema);
+  const [validationSchema, setValidationSchema] = useState(editNodeValidationSchema);
 
   const {
     resource,
@@ -42,11 +37,10 @@ const EditNodeForm = () => {
     id: nodeId,
     calculatorId,
   } = node;
-  console.log('resource', resource);
 
   const {
     handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setFieldError,
+    handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
       resource,
@@ -75,6 +69,24 @@ const EditNodeForm = () => {
     },
   });
 
+  const tabErrors = [
+    {
+      key: '1',
+      value: ['number', 'lastCommercialAccountingDate', 'futureCommercialAccountingDate'],
+    },
+  ];
+
+  function handleSubmitForm(e) {
+    e.preventDefault();
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(tabErrors, errors);
+    console.log(errors);
+    if (hasError === true) {
+      setTab(errorTab);
+    } else {
+      handleSubmit();
+    }
+  }
+
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -86,9 +98,8 @@ const EditNodeForm = () => {
     return null;
   };
 
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitForm}>
       <div hidden={Number(currentTabKey) !== 1} style={{ maxWidth: 480 }}>
         <Form.Item label="Тип ресурса">
           <SelectTT
@@ -98,6 +109,7 @@ const EditNodeForm = () => {
             onChange={(event) => {
               setFieldValue('resource', event);
             }}
+            onBlur={handleBlur}
             disabled
           />
           <Alert name="resource" />
@@ -122,6 +134,7 @@ const EditNodeForm = () => {
             onChange={(event) => {
               setFieldValue('serviceZone', event);
             }}
+            onBlur={handleBlur}
           />
           <Alert name="serviceZone" />
         </Form.Item>
@@ -134,6 +147,7 @@ const EditNodeForm = () => {
             onChange={(event, target) => {
               setFieldValue('nodeStatus', event);
             }}
+            onBlur={handleBlur}
           />
           <Alert name="nodeStatus" />
         </Form.Item>
@@ -148,9 +162,10 @@ const EditNodeForm = () => {
                   allowClear={false}
                   placeholder="Укажите дату..."
                   onChange={(date) => {
-                      setFieldValue('lastCommercialAccountingDate', date);
-                    }}
+                    setFieldValue('lastCommercialAccountingDate', date);
+                  }}
                   value={values.lastCommercialAccountingDate}
+                  onBlur={handleBlur}
                 />
               </Form.Item>
 
@@ -160,8 +175,9 @@ const EditNodeForm = () => {
                   placeholder="Укажите дату..."
                   allowClear={false}
                   onChange={(date) => {
-                      setFieldValue('futureCommercialAccountingDate', date);
-                    }}
+                    setFieldValue('futureCommercialAccountingDate', date);
+                  }}
+                  onBlur={handleBlur}
                   value={values.futureCommercialAccountingDate}
                   name="futureCommercialAccountingDate"
                 />
@@ -206,56 +222,3 @@ const EditNodeForm = () => {
 };
 
 export default EditNodeForm;
-
-export const Template = styled.div``;
-
-export const NameWrap = styled.a`
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  align-items: center;
-
-  &:hover {
-    h3,
-    p {
-      color: var(--primary-100);
-    }
-  }
-`;
-
-export const Name = styled.h3`
-  padding: 0;
-  margin: 0;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 32px;
-`;
-
-export const Serial = styled.p`
-  padding: 0;
-  margin: 0;
-  color: rgba(39, 47, 90, 0.6);
-`;
-
-export const State = styled.div`
-  display: flex;
-  align-items: center;
-  color: rgba(39, 47, 90, 0.8);
-`;
-
-export const ListWrap = styled.div`
-  display: grid;
-  height: min-content;
-}
-`;
-
-export const ListItem = styled.div`
-  display: grid;
-  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
-  grid-template-rows: 48px;
-  align-items: center;
-  border-bottom: 1px solid var(--frame);
-  opacity: 0.8;
-`;
-export const Span = styled.span`
-  color: rgba(39, 47, 90, 0.6);
-`;

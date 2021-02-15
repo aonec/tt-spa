@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { Link } from '@material-ui/core';
 import { IconTT } from '../../../tt-components/IconTT';
-import { Name, Serial } from '../../Node/components/Connection';
 import { getDeviceTasks } from '../apiObjectProfile';
+import {Name, Serial} from "../../../tt-components";
 
 function statusIcon(closingDate) {
   return closingDate === null ? 'green' : 'red';
@@ -54,7 +53,6 @@ export const Devices = ({ calculators }) => {
 
   // Узел
   const NodeItem = ({ node }) => {
-
     const {
       id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
     } = node;
@@ -75,7 +73,7 @@ export const Devices = ({ calculators }) => {
   };
 
   // Устройство Узла
-  const NodeDevice = ({device, closingDate}) => {
+  const NodeDevice = ({ device, closingDate }) => {
     const {
       model,
       serialNumber,
@@ -110,16 +108,11 @@ export const Devices = ({ calculators }) => {
       id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
     } = node;
 
-    const devicesOnNode = _.flatten(communicationPipes.map((communicationPipe) => {
-        return communicationPipe.devices.map((resItem) => resItem);
+    const devicesOnNode = _.flatten(communicationPipes.map((communicationPipe) => communicationPipe.devices.map((resItem) => resItem)));
 
-    }));
-
-    const NodeDevices = () => devicesOnNode.map((device) => {
-      return (
-        <NodeDevice device={device} closingDate={closingDate} />
-      );
-    });
+    const NodeDevices = () => devicesOnNode.map((device) => (
+      <NodeDevice device={device} closingDate={closingDate} />
+    ));
 
     return (
       <NodeWrap>
@@ -147,7 +140,7 @@ export const Devices = ({ calculators }) => {
       });
       return res;
     }
-      return <div>Загрузка</div>;
+    return <div>Загрузка</div>;
   };
 
   return (
@@ -209,7 +202,7 @@ const NodeDeviceWrap = styled.div`
   opacity: 0.8;
 `;
 
-// const Node = () =>
+// const NodeProfile = () =>
 //
 // {
 // calculatorId: 2538454
