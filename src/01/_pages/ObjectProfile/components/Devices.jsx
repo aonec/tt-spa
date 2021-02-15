@@ -1,15 +1,124 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { ObjectContext } from '../index';
+import { Link } from '@material-ui/core';
 import { IconTT } from '../../../tt-components/IconTT';
 import { Name, Serial } from '../../Node/components/Connection';
+import { getDeviceTasks } from '../apiObjectProfile';
 
-export const Devices = () => {
-  const { calculators } = useContext(ObjectContext);
+function statusIcon(closingDate) {
+    return closingDate === null ? 'green' : 'red';
+}
 
-  const Result = () => {
+function status(closingDate) {
+    return closingDate === null ? 'Активен' : 'Не активен';
+}
+
+export const Devices = ({ calculators }) => {
+  const CalculatorItem = ({ calculator }) => {
+    const [tasks, setTasks] = useState([]);
+    const {
+      id, model, serialNumber, closingDate, nodes,
+    } = calculator;
+
+    useEffect(() => {
+      getDeviceTasks(id).then((res) => {
+        const { items } = res;
+        setTasks(items);
+      });
+    }, []);
+
+    const CalculatorTasksIcon = () => (tasks.length > 0 ? <IconTT icon="alarm" /> : null);
+
+
+    return (
+      <Calculator>
+        <Link to={`/calculators/${id}`}>
+          <CalculatorMainInfo>
+            <IconTT icon="device" />
+            <Name>{model}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+            <CalculatorTasksIcon />
+          </CalculatorMainInfo>
+        </Link>
+
+        <Div>
+          <IconTT icon={statusIcon(closingDate)} />
+          <span>{status(closingDate)}</span>
+        </Div>
+      </Calculator>
+    );
+  };
+
+  const NodesWithDevices = ({ nodes, closingDate }) => nodes.map((node, index) => {
+    const {
+      id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
+    } = node;
+
+    const devicesOnNode = _.flatten(communicationPipes.map((item) => {
+      const res = item.devices.map((resItem) => resItem);
+
+      return res;
+    }));
+
+    const NodeDevices = () => devicesOnNode.map((value) => {
+      const {
+        model,
+        serialNumber,
+        closingdate,
+        hub,
+        resource,
+        id,
+        housingStockId,
+      } = value;
+
+      return (
+        <NodeDeviceWrap key={id}>
+          <NavLink to={`/housingMeteringDevices/${id}`}>
+            <Div style={{ marginLeft: 24 }}>
+              <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }} />
+              <Name style={{ marginRight: '8px' }}>{model}</Name>
+              <Serial>{` (${serialNumber})`}</Serial>
+            </Div>
+          </NavLink>
+          <Div>
+              <IconTT icon={statusIcon(closingDate)} />
+              <span>{status(closingDate)}</span>
+          </Div>
+        </NodeDeviceWrap>
+      );
+    });
+
+    return (
+      <NodeWrap>
+        <NodeItem node={node} />
+        <NodeDevices />
+      </NodeWrap>
+    );
+  });
+
+  const NodeItem = ({ node }) => {
+    const {
+      id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
+    } = node;
+    return (
+      <Node>
+        <NavLink to={`/nodes/${nodeId}`}>
+          <Div style={{ marginLeft: 24 }}>
+            <IconTT icon="node" style={{ marginRight: '8px' }} />
+            <Name style={{ marginRight: '8px' }}>{`Узел ${number}`}</Name>
+          </Div>
+        </NavLink>
+        <Div>
+          <IconTT icon="ok" />
+          <span>{nodeStatus}</span>
+        </Div>
+      </Node>
+    );
+  };
+
+  const Result = ({ calculators }) => {
     if (calculators) {
       const calculatorsArray = calculators.items;
 
@@ -18,94 +127,10 @@ export const Devices = () => {
           id, model, serialNumber, closingDate, nodes,
         } = calculator;
 
-        const NodesWithDevices = () => {
-          return nodes.map((node, index) => {
-            const {
-              id: nodeId, serviceZone, nodeStatus, communicationPipes, number
-            } = node;
-
-            const devicesOnNode = _.flatten(communicationPipes.map((item) => {
-              const res = item.devices.map((resItem) => {
-                return resItem;
-              });
-
-              return res;
-            }));
-            const NodeItem = () => {
-              return <Node>
-                <NavLink to={`/nodes/${nodeId}`}>
-                  <Div style={{ marginLeft: 24 }}>
-                    <IconTT icon="node" style={{ marginRight: '8px' }}/>
-                    <Name style={{ marginRight: '8px' }}>{`Узел ${number}`}</Name>
-                  </Div>
-                </NavLink>
-                <Div>
-                  <IconTT icon='ok'/>
-                  <span>{nodeStatus}</span>
-                </Div>
-              </Node>
-            }
-            const NodeDevices = () => {
-
-              return devicesOnNode.map((value) => {
-                const {
-                  model,
-                  serialNumber,
-                  closingdate,
-                  hub,
-                  resource,
-                  id,
-                  housingStockId,
-                } = value;
-
-
-                return (
-                  <NodeDeviceWrap key={id}>
-                    <NavLink to={`/housingMeteringDevices/${id}`}>
-                      <Div style={{ marginLeft: 24 }}>
-                        <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }}/>
-                        <Name style={{ marginRight: '8px' }}>{model}</Name>
-                        <Serial>{` (${serialNumber})`}</Serial>
-                      </Div>
-                    </NavLink>
-                    <Div>
-                      <IconTT icon={closingDate === null ? 'green' : 'red'}/>
-                      <span>{closingDate === null ? 'Активен' : 'Не активен'}</span>
-                    </Div>
-                  </NodeDeviceWrap>
-                );
-              })
-
-            };
-
-
-            return (
-              <NodeWrap>
-                <NodeItem/>
-                <NodeDevices/>
-              </NodeWrap>
-            );
-          });
-        }
-
-
         return (
           <div>
-            <Calculator>
-              <NavLink to={`/calculators/${id}`} style={{ display: 'flex', alignItems: 'center' }}>
-                <IconTT icon="device" style={{ marginRight: '8px' }}/>
-                <Name style={{ marginRight: '8px' }}>{model}</Name>
-                <Serial>{` (${serialNumber})`}</Serial>
-              </NavLink>
-
-              <Div>
-                <IconTT icon={closingDate === null ? 'green' : 'red'}/>
-                <span>{closingDate === null ? 'Активен' : 'Не активен'}</span>
-              </Div>
-            </Calculator>
-
-            <NodesWithDevices/>
-
+            <CalculatorItem calculator={calculator} />
+            <NodesWithDevices nodes={nodes} closingDate={closingDate} />
           </div>
         );
       });
@@ -117,19 +142,27 @@ export const Devices = () => {
   return (
     <div>
       <h2>Список приборов ОДПУ</h2>
-      <Result/>
+      <Result calculators={calculators} />
     </div>
   );
 };
 export default Devices;
 
-
 const Calculator = styled.div`
   display: grid;
+  align-items: center;
   grid-template-columns: 6fr 6fr;
   grid-gap: 4px;
   grid-template-rows: 48px;
 `;
+
+const CalculatorMainInfo = styled.div`
+  display: inline-grid;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-template-columns: auto auto auto auto;
+`;
+
 const Node = styled.div`
   display: grid;
   grid-template-columns: 6fr 6fr;

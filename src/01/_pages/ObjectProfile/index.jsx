@@ -80,7 +80,7 @@ export const ObjectProfile = () => {
 
 
           <Route path="/objects/(\\d+)/devices" exact>
-          <Devices/>
+          <Devices calculators={calculators}/>
           </Route>
 
           <Events title="События с объектом" {...events} />
