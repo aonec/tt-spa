@@ -58,25 +58,25 @@ export const Devices = ({ calculators }) => {
       id: nodeId, serviceZone, nodeStatus, communicationPipes, number,
     } = node;
     console.log("node", node)
-    
+
     //Бэкендеру - перевести с русского на английский!! nodeStatus
     const getNodeStatus = _.find(nodeStatusList, { label: nodeStatus })?.label ?? 'Статус не определен';
-    const getNodeIconStatus = _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'del';
+    const getNodeIconStatus = _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
     // const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
     // const getNodeIconStatus = _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
 
     return (
       <Node>
         <NavLink to={`/nodes/${nodeId}`}>
-          <Div style={{ marginLeft: 24 }}>
-            <IconTT icon="node" style={{ marginRight: '8px' }} />
-            <Name style={{ marginRight: '8px' }}>{`Узел ${number}`}</Name>
-          </Div>
+          <NodeMainInfo >
+            <IconTT icon="node" />
+            <Name>{`Узел ${number}`}</Name>
+          </NodeMainInfo>
         </NavLink>
-        <Div>
+        <NodeStatus>
           <IconTT icon={getNodeIconStatus} />
           <span>{getNodeStatus}</span>
-        </Div>
+        </NodeStatus>
       </Node>
     );
   };
@@ -97,11 +97,11 @@ export const Devices = ({ calculators }) => {
     return (
       <NodeDeviceWrap key={id}>
         <NavLink to={`/housingMeteringDevices/${id}`}>
-          <Div style={{ marginLeft: 24 }}>
-            <IconTT icon={resource.toLowerCase()} style={{ marginRight: '8px' }} />
-            <Name style={{ marginRight: '8px' }}>{model}</Name>
+          <NodeDeviceMainInfo>
+            <IconTT icon={resource.toLowerCase()} />
+            <Name>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
-          </Div>
+          </NodeDeviceMainInfo>
         </NavLink>
         <Div>
           <IconTT icon={statusIcon(closingDate)} />
@@ -169,7 +169,8 @@ const Calculator = styled.div`
   grid-template-rows: 48px;
 `;
 
-const CalculatorMainInfo = styled.div`
+const NodeMainInfo = styled.div`
+  margin-left: 24px;
   display: inline-grid;
   align-items: center;
   grid-column-gap: 8px;
@@ -178,11 +179,39 @@ const CalculatorMainInfo = styled.div`
     h3, div, p, span {
       color: #40a9ff;
     }
-    svg {
-      path {
-        fill: #40a9ff;
-      }
-     
+  }
+`;
+
+const NodeStatus = styled.div`
+  display: inline-grid;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-template-columns: auto 1fr;
+`
+
+
+const NodeDeviceMainInfo = styled.div`
+  margin-left: 24px;
+  display: inline-grid;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-template-columns: auto auto auto auto;
+  &:hover { 
+    h3, div, p, span {
+      color: #40a9ff;
+    }
+  }
+`;
+
+
+const CalculatorMainInfo = styled.div`
+  display: inline-grid;
+  align-items: center;
+  grid-column-gap: 8px;
+  grid-template-columns: auto auto auto auto;
+  &:hover { 
+    h3, div, p, span {
+      color: #40a9ff;
     }
   }
 `;
@@ -196,6 +225,8 @@ const Node = styled.div`
 const NodeWrap = styled.div`
   grid-gap: 4px;
 `;
+
+
 
 const Div = styled.div`
   display: inline-flex;
