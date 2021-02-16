@@ -4,110 +4,68 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import axios from '01/axios';
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-import axios from '01/axios';
 
-
-// import { device } from './CalculatorTemplate';
+import { device } from './CalculatorTemplate';
+import { ipv4RegExp } from '../../../../../tt-components/localBases';
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  const { device, handleCancel } = props;
-  // const { handleCancel } = props;
-  // console.log('DEVICE = ', device);
+  // const { device, handleCancel } = props;
+  const { handleCancel } = props;
+  console.log('DEVICE = ', device);
   const {
-    id, model, serialNumber, address, hubs,
+    id, model, serialNumber, address, hubs, nodes,
   } = device;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
+  console.log('nodes', nodes);
 
-  // Все Расходомеры
-  const devicesList = hubs.reduce((result, item) => {
+  const nodesList = nodes.map((node, index) => {
     const {
-      resource, housingMeteringDeviceType, hub, serialNumber, model,
-    } = item;
-    const { entryNumber, pipeNumber } = hub;
-    if (housingMeteringDeviceType === 'FlowMeter') {
-      result.push({
-        resource,
-        entryNumber,
-        pipeNumber,
-        housingMeteringDeviceType,
-        serialNumber,
-        model,
-      });
-    }
-    return result;
-  }, []);
+      id, number, resource, communicationPipes,
+    } = node;
+
+    const devices = _.flatten(communicationPipes.map((communicationPipe) => {
+      const { devices } = communicationPipe;
+
+      return devices.reduce((result, item) => {
+        const {
+          housingMeteringDeviceType, serialNumber, model,
+        } = item;
+
+        if (housingMeteringDeviceType === 'FlowMeter') {
+          result.push({
+            serialNumber,
+            model,
+          });
+        }
+        return result;
+      }, []);
+    }));
+
+    return {
+      id, number, resource, devices,
+    };
+  });
+
+  console.log('nodesList', nodesList);
 
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
-  const filteredGroup = _.groupBy(devicesList, 'resource');
+  const filteredGroup = _.groupBy(nodesList, 'resource');
+  console.log('filteredGroup', filteredGroup);
 
   // Получаем весь список ресурсов для табов
   const resources = (model !== 'Sonosafe') ? _.keys(filteredGroup) : ['Heat'];
+  console.log('resources', resources);
 
-  // Создать объект с ключами из списка ресурсов, а значений - модифицириваннные массивы из getSelectionsFormatterByType
-  const getDevicesSelectionByType = (group) => _.keys(group).reduce((acc, item) => {
-    acc[item] = getSelectionsFormatterByType(group[item], item);
-    return acc;
-  }, {});
-
-  // Редюсер по типу ресура
-  const getSelectionsFormatterByType = (list, type) => {
-    switch (type) {
-      case 'ColdWaterSupply':
-        return list.map((item, index) => ({ ...item, value: index + 1, label: `Узел ${index + 1} ${modelCalculator}: ${item.model} (${item.serialNumber})` }));
-      case 'HotWaterSupply':
-        return reduceList(list);
-      case 'Heat':
-        return reduceList(list);
-      default:
-        return list;
-    }
-  };
-
-  // Функция для возврата измененного массива по ресурсу, сравниваем entryNumber
-  const reduceList = (list) => {
-    const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
-    return _.values(sortedByEntryNumber).map((item, index) => {
-      if (item.length > 1) {
-        const { entryNumber, pipeNumber } = item[0];
-        return {
-          entryNumber,
-          pipeNumber,
-          value: index + 1,
-          label: `Узел ${index + 1} ${modelCalculator}(${serialNumberCalculator}): ${item[0].model} (${item[0].serialNumber}), ${item[1].model} (${item[1].serialNumber})`,
-        };
-      }
-      return {
-        ...item[0],
-        value: index + 1,
-        label: `Узел ${index + 1} ${modelCalculator} (${serialNumberCalculator}): ${item[0].model} (${item[0].serialNumber})`,
-      };
-    });
-  };
-
-  const sonorSelection = {
-    Heat: [
-      {
-        entryNumber: 1,
-        pipeNumber: 5,
-        value: 1,
-        label: 'Без узла',
-      },
-    ],
-  };
-  // Итоговый объект для Select
-  // const devicesSelectionByType = getDevicesSelectionByType(filteredGroup);
-  const devicesSelectionByType = (model !== 'Sonosafe') ? getDevicesSelectionByType(filteredGroup) : sonorSelection;
-
-  console.log(JSON.stringify(getDevicesSelectionByType(filteredGroup)));
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue,
@@ -118,24 +76,16 @@ const ModalCalculatorReportForm = (props) => {
       begin: moment().subtract(1, 'month'),
       end: moment(),
       resource: resources[0],
-      currentValue: undefined,
-      entryNumber: null,
-      pipeNumber: undefined,
+      nodeId: null,
       customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
-      entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
-        .max(10, 'Скорее всего, выбран некорректный номер узла'),
+      nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      console.log('entryNumberRes', values.entryNumber);
-      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-        values.detail
-      }&resourcetype=${values.resource}&entrynumber=${
-        values.entryNumber
-      }&pipenumber=${values.pipeNumber}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
-        values.end,
-      )}T00:00:00Z`;
+      console.log('nodeId', values.nodeId);
+
+      const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z&to=${moment(values.end).format('YYYY-MM-DD')}T00:00:00Z`;
 
       console.log(link);
 
@@ -145,6 +95,22 @@ const ModalCalculatorReportForm = (props) => {
       linkToDownload.click();
     },
   });
+
+  const prevOptions = Object.values(filteredGroup[values.resource]);
+  const options = prevOptions.map((option, index) => {
+    const { id, number, devices } = option;
+
+    console.log('devices', devices);
+    let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
+    _.forEach(devices, (value) => {
+      label = `${label}, ${value.model} (${value.serialNumber})`;
+    });
+    return (
+      { value: id, label }
+    );
+  });
+
+  console.log('options', options);
 
   const Translate = {
     Heat: 'Отопление',
@@ -211,85 +177,93 @@ const ModalCalculatorReportForm = (props) => {
 
   const onTabsChangeHandler = (value) => {
     setFieldValue('resource', value);
-    setFieldValue('currentValue', undefined);
-    setFieldValue('entryNumber', null);
-    setFieldValue('pipeNumber', null);
-  };
-
-  const handleSelect = (value, object) => {
-    setFieldValue('currentValue', value);
-    setFieldValue('entryNumber', object.entryNumber);
-    setFieldValue('pipeNumber', object.pipeNumber);
+    setFieldValue('nodeId', undefined);
   };
 
   return (
     <Form id="formReport">
       <StyledModalBody>
-          <Header>
-            Выгрузка отчета о общедомовом потреблении
-          </Header>
-          <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
-            {TabsList}
-          </Tabs>
-          <Form.Item label="Название отчета">
-            <InputTT
-              value={`${street}_${housingStockNumber}.exls`}
-              readOnly
-            />
-          </Form.Item>
-          <Form.Item label="Выбор узла">
-            <SelectTT
-              options={devicesSelectionByType[values.resource]}
-              placeholder="Выберите узел"
-              onChange={handleSelect}
-              value={values.currentValue}
-              name="entryNumber"
-            />
-            <Alert name="entryNumber" />
-          </Form.Item>
-          <div id="period_and_type " style={{ display: 'flex' }}>
+        <Header>
+          Выгрузка отчета о общедомовом потреблении
+        </Header>
+        <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
+          {TabsList}
+        </Tabs>
+        <Form.Item label="Название отчета">
+          <InputTT
+            value={`${street}_${housingStockNumber}.exls`}
+            readOnly
+          />
+        </Form.Item>
 
-            <Form.Item label="Тип архива" style={{ width: '50%' }}>
-              <Radio.Group
-                defaultValue="currentMonth"
-                size="large"
-                onChange={(event) => onPeriodChange(event)}
-              >
-                <StyledRadio value="lastSevenDays">
-                  Последние 7 дней
-                </StyledRadio>
-                <StyledRadio value="currentMonth" checked>С начала месяца</StyledRadio>
-                <StyledRadio value="previousMonth">За прошлый месяц</StyledRadio>
-                <StyledRadio value="customPeriod">Произвольный период</StyledRadio>
-              </Radio.Group>
-            </Form.Item>
+        <Form.Item label="Выбор узла">
+          <SelectTT
+            options={options}
+                        // options={devicesSelectionByType[values.resource]}
+            placeholder="Выберите узел"
+            onChange={(value) => {
+              setFieldValue('nodeId', value);
+            }}
+            value={values.nodeId}
+            name="nodeId"
+          />
+          <Alert name="nodeId" />
+        </Form.Item>
 
-            <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
-              <Radio.Group
-                defaultValue="daily"
-                size="large"
-                onChange={(event) => onDetailChange(event)}
-              >
-                <StyledRadio value="daily" checked>
-                  Суточная
-                </StyledRadio>
-                <StyledRadio value="hourly">Часовая</StyledRadio>
-              </Radio.Group>
-            </Form.Item>
-          </div>
-          <Form.Item label="Период выгрузки" style={{ width: '300px' }}>
-            <RangePickerTT
-              format="DD.MM.YYYY"
-              allowClear={false}
-              size="48px"
-              value={[values.begin, values.end]}
-              placeholder={['Дата Начала', 'Дата окончания']}
-              onChange={(event) => {
-                datePickerHandler(event);
-              }}
-              disabled={values.customPeriodDisabled}
-            />
+        {/* <Form.Item label="Выбор узла"> */}
+        {/*  <SelectTT */}
+        {/*    options={options} */}
+        {/*                // options={devicesSelectionByType[values.resource]} */}
+        {/*    placeholder="Выберите узел" */}
+        {/*    onChange={handleSelect} */}
+        {/*    value={values.currentValue} */}
+        {/*    name="entryNumber" */}
+        {/*  /> */}
+        {/*  <Alert name="entryNumber" /> */}
+        {/* </Form.Item> */}
+        <div id="period_and_type " style={{ display: 'flex' }}>
+
+          <Form.Item label="Тип архива" style={{ width: '50%' }}>
+            <Radio.Group
+              defaultValue="currentMonth"
+              size="large"
+              onChange={(event) => onPeriodChange(event)}
+            >
+              <StyledRadio value="lastSevenDays">
+                Последние 7 дней
+              </StyledRadio>
+              <StyledRadio value="currentMonth" checked>С начала месяца</StyledRadio>
+              <StyledRadio value="previousMonth">За прошлый месяц</StyledRadio>
+              <StyledRadio value="customPeriod">Произвольный период</StyledRadio>
+            </Radio.Group>
           </Form.Item>
+
+          <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
+            <Radio.Group
+              defaultValue="daily"
+              size="large"
+              onChange={(event) => onDetailChange(event)}
+            >
+              <StyledRadio value="daily" checked>
+                Суточная
+              </StyledRadio>
+              <StyledRadio value="hourly">Часовая</StyledRadio>
+            </Radio.Group>
+          </Form.Item>
+        </div>
+        <Form.Item label="Период выгрузки" style={{ width: '300px' }}>
+          <RangePickerTT
+            format="DD.MM.YYYY"
+            allowClear={false}
+            size="48px"
+            value={[values.begin, values.end]}
+            placeholder={['Дата Начала', 'Дата окончания']}
+            onChange={(event) => {
+              datePickerHandler(event);
+            }}
+            disabled={values.customPeriodDisabled}
+          />
+        </Form.Item>
       </StyledModalBody>
       <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
