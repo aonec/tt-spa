@@ -11,14 +11,6 @@ import Node from "./Node/Node";
 
 const DeviceBlock = (props) => {
     const { device: calculator} = props;
-    let lastCalculatorCheckingDate = transformDate(calculator.lastCheckingDate);
-    let futureCalculatorCheckingDate = transformDate(calculator.futureCheckingDate);
-    let lastCalculatorCommercialAccountingDate = transformDate(calculator.lastCommercialAccountingDate);
-
-
-    // let lastCalculatorCheckingDate = transformDate(calculator.lastCheckingDate);
-    // let futureCalculatorCheckingDate = transformDate(calculator.futureCheckingDate);
-    // let lastCalculatorCommercialAccountingDate = transformDate(calculator.lastCommercialAccountingDate);
 
     const subdevices = calculator.hubs?.length
         ? calculator.hubs.map((odpu) => {
@@ -76,7 +68,6 @@ const DeviceBlock = (props) => {
 
             </DeviceWrapper>
             <div>
-                {/*{subdevices}*/}
                 {nodes}
             </div>
 
