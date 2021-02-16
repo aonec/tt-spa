@@ -2731,15 +2731,15 @@ const Graph: React.FC = () => {
 
     const nodeId = 1935;
 
-    const reportType = 'daily' as ReportType;
+    const reportType = 'hourly' as ReportType;
 
     const resource = "Heat";
 
     const graphParam = 'DeltaMass';
 
-    const from = '2021-01-25T00:00:00Z';
+    const from = '2021-02-01T00:00:00Z';
 
-    const to = '2021-01-25T23:00:00Z';
+    const to = '2021-02-01T23:00:00Z';
 
     const getInitialState = () => {
         return {
@@ -2751,6 +2751,7 @@ const Graph: React.FC = () => {
     }
 
     const [searchQuery, setSearchQuery] = useState(getInitialState);
+    const [graphData, setGraphData] = useState();
 
 
     const getReadings = useCallback(
@@ -2767,13 +2768,19 @@ const Graph: React.FC = () => {
         console.log(searchQuery);
     }, [searchQuery])
 
+    useEffect(() => {
+
+    })
+
     if (status === 'pending') return <>'ЗАГРУЗКА...'</>
 
     const archiveEntries = _.get(data, 'archiveEntries', []);
     // const archiveEntries = data?.archiveEntries || [];
 
+    // 1. разобраться с датой (+3 часа)
+    // 2. пофиксить баг, когда выбираешь сначала 3 дня посуточно, потом 3 дня почасовой, потом 3 дня посуточно - и крашится
+    // 3. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
 
-    const tickValues = formTicks(archiveEntries, searchQuery.reportType);
 
 
     const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
@@ -2785,6 +2792,7 @@ const Graph: React.FC = () => {
         })
     }
 
+    const tickValues = formTicks(archiveEntries, searchQuery.reportType);
     const graphDataNew = formGraphData(tickValues);
 
     const maxElement = maxBy(graphDataNew, (obj) => obj.value);
@@ -2815,9 +2823,9 @@ const Graph: React.FC = () => {
 
     return (
         <>
-            <Tooltip title="search">
-                <Button style={{display: 'flex', justifyContent: 'center'}} shape="circle" icon={<IconTT icon="searchFilter"/>} />
-            </Tooltip>
+            {/*<Tooltip title="search">*/}
+            {/*    <Button style={{display: 'flex', justifyContent: 'center'}} shape="circle" icon={<IconTT icon="searchFilter"/>} />*/}
+            {/*</Tooltip>*/}
             <Formik
                 initialValues={{
                     // dateRange: formInitialDates(),
@@ -2859,7 +2867,7 @@ const Graph: React.FC = () => {
                     width={600}
                     theme={VictoryTheme.material} style={{parent: {
                         width: '900px',
-                        height: '600px',
+                        height: '500px',
                         overflow: 'visible'
                     },
                 }}
@@ -2889,7 +2897,7 @@ const Graph: React.FC = () => {
                         // tickFormat={(x) => format(formatDate(x), 'HH')}
                         // tickFormat={(x) => format(formatDate(x), 'HH:mm')}
                         // tickFormat={(x) => format(formatDate(x), 'dd.MM')}
-                        tickFormat={getTickFormat(data!.archiveEntries, reportType)}
+                        tickFormat={getTickFormat(data!.archiveEntries, searchQuery.reportType)}
                         tickValues={tickValues}
                         style={{
                             axisLabel: { padding: 40, strokeWidth: 0 },

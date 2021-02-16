@@ -12,7 +12,7 @@ const Gradient:React.FC<Props> = ({resource}) => {
  const color = getResourceColor(resource);
 
  return (
-     <svg>
+     <svg style={{height: 1}}>
          <defs>
              <linearGradient id={resource}
                              x1="0%" y1="0%" x2="0%" y2="100%"
