@@ -33,8 +33,8 @@ import {
   UserProfile,
   Contractor,
   Registration,
-  Node,
   IndividualDevice,
+  NodeProfile,
   MapPage,
   EditNode,
   AddNode
@@ -95,8 +95,8 @@ export function App() {
                     />
 
                     <Route
-                      path={['/nodes/:nodeId/(connection|related|documents)?']}
-                      component={Node}
+                      path={['/nodes/:nodeId/(stats|connection|related|documents)?']}
+                      component={NodeProfile}
                       exact
                     />
 

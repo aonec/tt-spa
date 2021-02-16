@@ -20,7 +20,6 @@ axios.interceptors.request.use((req) => {
               refreshToken: takeFromLocStor('refreshToken'),
           };
       }
-
   return req;
 });
 
