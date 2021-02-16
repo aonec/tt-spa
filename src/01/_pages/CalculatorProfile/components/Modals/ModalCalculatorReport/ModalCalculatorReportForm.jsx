@@ -1,24 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import axios from '01/axios';
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
-import { convertDateOnly } from '../../../../../_api/utils/convertDate';
-
-import { device } from './CalculatorTemplate';
-import { ipv4RegExp } from '../../../../../tt-components/localBases';
+// import { device } from './CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  // const { device, handleCancel } = props;
-  const { handleCancel } = props;
+  const { device, handleCancel } = props;
+  // const { handleCancel } = props;
   console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs, nodes,
@@ -84,11 +80,8 @@ const ModalCalculatorReportForm = (props) => {
     }),
     onSubmit: async () => {
       console.log('nodeId', values.nodeId);
-
       const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z&to=${moment(values.end).format('YYYY-MM-DD')}T00:00:00Z`;
-
       console.log(link);
-
       const linkToDownload = document.createElement('a');
       linkToDownload.setAttribute('href', link);
       linkToDownload.setAttribute('download', 'download');
@@ -100,7 +93,7 @@ const ModalCalculatorReportForm = (props) => {
   const options = prevOptions.map((option, index) => {
     const { id, number, devices } = option;
 
-    console.log('devices', devices);
+    // console.log('devices', devices);
     let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
     _.forEach(devices, (value) => {
       label = `${label}, ${value.model} (${value.serialNumber})`;
