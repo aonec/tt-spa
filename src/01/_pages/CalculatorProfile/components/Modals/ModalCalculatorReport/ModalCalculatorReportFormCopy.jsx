@@ -4,29 +4,25 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
-  StyledRadio,
-  DatePickerTT,
-  ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledFooter, StyledModalBody,
+  ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
+import axios from '01/axios';
 
-// import { device } from './SonoSafeTemplate';
+
+// import { device } from './CalculatorTemplate';
 
 const { TabPane } = Tabs;
 
-const ModalSonoSafeReportForm = (props) => {
-  const { device, handleCancel, visible } = props;
-  // const { handleCancel, visible } = props;
+const ModalCalculatorReportForm = (props) => {
+  const { device, handleCancel } = props;
+  // const { handleCancel } = props;
+  // console.log('DEVICE = ', device);
   const {
-    id, model, serialNumber, address, hubs, nodes
+    id, model, serialNumber, address, hubs,
   } = device;
-
-  const nodeId = nodes[0].id;
-  console.log("nodeId", nodeId)
-
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -100,8 +96,10 @@ const ModalSonoSafeReportForm = (props) => {
   const sonorSelection = {
     Heat: [
       {
-        value: nodeId,
-        label: 'Sono',
+        entryNumber: 1,
+        pipeNumber: 5,
+        value: 1,
+        label: 'Без узла',
       },
     ],
   };
@@ -115,25 +113,29 @@ const ModalSonoSafeReportForm = (props) => {
     handleBlur, setFieldValue,
   } = useFormik({
     initialValues: {
-      period: 'month',
-      detail: 'monthly',
-      begin: '',
-      end: '',
-      nodeId,
+      period: 'lastSevenDays',
+      detail: 'daily',
+      begin: moment().subtract(1, 'month'),
+      end: moment(),
       resource: resources[0],
-      checked: true,
-      customdisabled: true,
+      currentValue: undefined,
+      entryNumber: null,
+      pipeNumber: undefined,
+      customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
-      nodeId: Yup.number().typeError('Выберите узел'),
+      entryNumber: Yup.number().typeError('Выберите узел').min(0, 'Скорее всего, выбран некорректный номер узла')
+        .max(10, 'Скорее всего, выбран некорректный номер узла'),
     }),
     onSubmit: async () => {
-      console.log('values', values);
-      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'));
-      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment(begin).endOf('month'))
-      console.log(values);
-
-      const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
+      console.log('entryNumberRes', values.entryNumber);
+      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
+        values.detail
+      }&resourcetype=${values.resource}&entrynumber=${
+        values.entryNumber
+      }&pipenumber=${values.pipeNumber}&from=${convertDateOnly(values.begin)}T00:00:00Z&to=${convertDateOnly(
+        values.end,
+      )}T00:00:00Z`;
 
       console.log(link);
 
@@ -141,7 +143,6 @@ const ModalSonoSafeReportForm = (props) => {
       linkToDownload.setAttribute('href', link);
       linkToDownload.setAttribute('download', 'download');
       linkToDownload.click();
-      // window.open(link);
     },
   });
 
@@ -155,21 +156,38 @@ const ModalSonoSafeReportForm = (props) => {
 
   const onPeriodChange = (event) => {
     const res = event.target.value;
-    if (res === 'custom') {
-      setFieldValue('begin',  moment().subtract(1, 'months').startOf('month'));
+    switch (res) {
+      case 'lastSevenDays':
+        setFieldValue('begin', moment().subtract(7, 'days'));
+        setFieldValue('end', moment());
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'currentMonth':
+        setFieldValue('begin', moment().startOf('month'));
+        setFieldValue('end', moment());
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'previousMonth':
+        setFieldValue('begin', moment().subtract(1, 'month').startOf('month'));
+        setFieldValue('end', moment().subtract(1, 'month').endOf('month'));
+        setFieldValue('customPeriodDisabled', true);
+        break;
+      case 'customPeriod':
+        setFieldValue('customPeriodDisabled', false);
+        break;
+      default:
+        alert('Возможно, что-то пошло не так');
     }
-    if (res === 'month') {
-      setFieldValue('begin', '');
-    }
-    setFieldValue('period', res);
-    setFieldValue('customdisabled', res === 'month');
-
-    // setFieldValue('end', moment());
   };
 
   const onDetailChange = (event) => {
     const res = event.target.value;
     setFieldValue('detail', res);
+  };
+
+  const datePickerHandler = (event) => {
+    setFieldValue('begin', event[0]);
+    setFieldValue('end', event[1]);
   };
 
   const Alert = ({ name }) => {
@@ -204,133 +222,75 @@ const ModalSonoSafeReportForm = (props) => {
     setFieldValue('pipeNumber', object.pipeNumber);
   };
 
-
-  useEffect(() => {
-    handleSelect(devicesSelectionByType[values.resource][0].value, devicesSelectionByType[values.resource][0])
-  },[])
-
   return (
     <Form id="formReport">
       <StyledModalBody>
-        <Header style={{ margin: 0, padding: 0 }}>
-          Выгрузка отчета о общедомовом потреблении SonoSafe
-        </Header>
-
-        <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
-          {TabsList}
-        </Tabs>
-        <Form.Item label="Название отчета">
-          <InputTT
-            value={`${street}_${housingStockNumber}.exls`}
-            readOnly
-          />
-        </Form.Item>
-
-        <Form.Item label="Выбор узла">
-          <SelectTT
-            options={devicesSelectionByType[values.resource]}
-            placeholder="Выберите узел"
-            onChange={handleSelect}
-            value={values.currentValue}
-            name="entryNumber"
-            disabled
-          />
-          <Alert name="entryNumber" />
-        </Form.Item>
-
-        <div id="period_and_type " style={{ display: 'flex' }}>
-
-          <Form.Item label="Период" style={{ width: '50%' }}>
-            <Radio.Group
-              defaultValue="month"
-              size="large"
-              onChange={(event) => onPeriodChange(event)}
-            >
-              <StyledRadio
-                key="month"
-                value="month"
-                checked
-              >
-                За прошлый месяц
-              </StyledRadio>
-              <StyledRadio
-                key="custom"
-                value="custom"
-              >
-                Произвольный период
-              </StyledRadio>
-            </Radio.Group>
-          </Form.Item>
-
-          <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
-            <Radio.Group
-              defaultValue="monthly"
-              size="large"
-              onChange={(event) => onDetailChange(event)}
-            >
-              <StyledRadio
-                key="monthly"
-                value="monthly"
-              >
-                Месячная
-              </StyledRadio>
-            </Radio.Group>
-          </Form.Item>
-        </div>
-
-        <div style={{ display: 'flex' }}>
-          <Form.Item label="Начало" style={{ width: 144 }}>
-            <DatePickerTT
-              format="MMMM YYYY"
-              allowClear={false}
-              size="48px"
-              picker="month"
-              value={values.begin}
-              name="begin"
-              placeholder="Выберите месяц"
-              onChange={(date) => {
-                console.log(date);
-                setFieldValue('begin', date.startOf('month'));
-              }}
-              disabled={values.customdisabled}
+          <Header>
+            Выгрузка отчета о общедомовом потреблении
+          </Header>
+          <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
+            {TabsList}
+          </Tabs>
+          <Form.Item label="Название отчета">
+            <InputTT
+              value={`${street}_${housingStockNumber}.exls`}
+              readOnly
             />
           </Form.Item>
+          <Form.Item label="Выбор узла">
+            <SelectTT
+              options={devicesSelectionByType[values.resource]}
+              placeholder="Выберите узел"
+              onChange={handleSelect}
+              value={values.currentValue}
+              name="entryNumber"
+            />
+            <Alert name="entryNumber" />
+          </Form.Item>
+          <div id="period_and_type " style={{ display: 'flex' }}>
 
-          <Form.Item label="Окончание" style={{ width: 144, marginLeft: 32 }}>
-            <DatePickerTT
-              format="MMMM YYYY"
+            <Form.Item label="Тип архива" style={{ width: '50%' }}>
+              <Radio.Group
+                defaultValue="currentMonth"
+                size="large"
+                onChange={(event) => onPeriodChange(event)}
+              >
+                <StyledRadio value="lastSevenDays">
+                  Последние 7 дней
+                </StyledRadio>
+                <StyledRadio value="currentMonth" checked>С начала месяца</StyledRadio>
+                <StyledRadio value="previousMonth">За прошлый месяц</StyledRadio>
+                <StyledRadio value="customPeriod">Произвольный период</StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
+              <Radio.Group
+                defaultValue="daily"
+                size="large"
+                onChange={(event) => onDetailChange(event)}
+              >
+                <StyledRadio value="daily" checked>
+                  Суточная
+                </StyledRadio>
+                <StyledRadio value="hourly">Часовая</StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+          </div>
+          <Form.Item label="Период выгрузки" style={{ width: '300px' }}>
+            <RangePickerTT
+              format="DD.MM.YYYY"
               allowClear={false}
               size="48px"
-              picker="month"
-              name="end"
-              value={values.end}
-              placeholder="Выберите месяц"
-              onChange={(date) => {
-                console.log(date);
-                setFieldValue('end', date.endOf('month'));
+              value={[values.begin, values.end]}
+              placeholder={['Дата Начала', 'Дата окончания']}
+              onChange={(event) => {
+                datePickerHandler(event);
               }}
-              disabled={values.checked || values.customdisabled}
+              disabled={values.customPeriodDisabled}
             />
           </Form.Item>
-        </div>
-
-        <Checkbox
-          checked={values.checked}
-          // disabled={this.state.disabled}
-          onChange={(e) => {
-            const { checked } = e.target;
-            setFieldValue('checked', checked);
-            if (checked === true) {
-              setFieldValue('end', '');
-            }
-          }}
-          disabled={values.customdisabled}
-        >
-          Отчет за 1 месяц
-        </Checkbox>
-
       </StyledModalBody>
-
       <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT
           color="white"
@@ -342,16 +302,14 @@ const ModalSonoSafeReportForm = (props) => {
           color="blue"
           type="submit"
           form="formReport"
-          big
-          style={{ marginLeft: '16px' }}
+          style={{ width: '224px', marginLeft: '16px' }}
           onClick={handleSubmit}
         >
           Выгрузить
         </ButtonTT>
       </StyledFooter>
-
     </Form>
   );
 };
 
-export default ModalSonoSafeReportForm;
+export default ModalCalculatorReportForm;

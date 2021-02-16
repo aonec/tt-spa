@@ -188,20 +188,25 @@ export const nodeStatusList = [
   {
     value: 'Registered',
     label: 'Сдан на коммерческий учет',
+    icon : 'ok'
   },
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
+    icon : 'block'
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
+    icon : 'timer'
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
+    icon : 'ok'
   },
 ];
+
 
 export const serviceZoneList = [
   {

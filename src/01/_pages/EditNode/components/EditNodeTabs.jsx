@@ -24,7 +24,6 @@ const tabs = [
 ];
 
 const EditNodeTabs = () => {
-  console.log('EditCalculatorTabs');
   const { currentTabKey, handleChangeTab } = useContext(EditNodeContext);
   return (
     <Tabs style={{ height: 'fit-content' }} activeKey={currentTabKey} onChange={handleChangeTab}>
