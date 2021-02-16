@@ -269,6 +269,230 @@ export const devicePrev = {
 };
 
 export const device = {
+    "connection": {
+      "ipV4": "192.168.201.5",
+      "port": 4001,
+      "deviceAddress": 1
+    },
+    "isConnected": true,
+    "address": {
+      "id": 1487737,
+      "city": "деревня Раздоры",
+      "street": "Липовой рощи",
+      "housingStockNumber": "1",
+      "corpus": "1"
+    },
+    "hubs": [
+      {
+        "hub": {
+          "entryNumber": 1,
+          "hubNumber": 5,
+          "pipeNumber": 0,
+          "magistral": "FeedFlow"
+        },
+        "diameter": null,
+        "resource": "Heat",
+        "housingMeteringDeviceType": "FlowMeter",
+        "id": 2550044,
+        "transactionType": null,
+        "model": "SonoSensor 30 ДУ65",
+        "serialNumber": "212207",
+        "managementFirm": {
+          "id": 1487736,
+          "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+          "phoneNumber": null,
+          "information": null,
+          "timeZoneOffset": "03:00:00"
+        },
+        "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "lastCheckingDate": "2020-11-20T07:31:36.983",
+        "futureCheckingDate": "2020-11-20T07:31:36.983",
+        "closingDate": null
+      },
+      {
+        "hub": {
+          "entryNumber": 1,
+          "hubNumber": 5,
+          "pipeNumber": 0,
+          "magistral": "FeedFlow"
+        },
+        "diameter": null,
+        "resource": "Heat",
+        "housingMeteringDeviceType": "TemperatureSensor",
+        "id": 2550047,
+        "transactionType": null,
+        "model": "ТСП-К",
+        "serialNumber": "1114",
+        "managementFirm": {
+          "id": 1487736,
+          "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+          "phoneNumber": null,
+          "information": null,
+          "timeZoneOffset": "03:00:00"
+        },
+        "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "lastCheckingDate": "2020-11-20T07:31:01.573",
+        "futureCheckingDate": "2020-11-20T07:31:01.572",
+        "closingDate": null
+      },
+      {
+        "hub": {
+          "entryNumber": 1,
+          "hubNumber": 5,
+          "pipeNumber": 1,
+          "magistral": "FeedBackFlow"
+        },
+        "diameter": null,
+        "resource": "Heat",
+        "housingMeteringDeviceType": "FlowMeter",
+        "id": 2550046,
+        "transactionType": null,
+        "model": "SonoSensor 30 ДУ65",
+        "serialNumber": "212214",
+        "managementFirm": {
+          "id": 1487736,
+          "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+          "phoneNumber": null,
+          "information": null,
+          "timeZoneOffset": "03:00:00"
+        },
+        "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+        "lastCheckingDate": "2020-11-29T08:35:54",
+        "futureCheckingDate": "2020-11-29T08:35:54",
+        "closingDate": null
+      }
+    ],
+    "infoId": 4,
+    "nodes": [
+      {
+        "id": 1933,
+        "number": 1,
+        "nodeStatus": "Сдан на коммерческий учет",
+        "resource": "Heat",
+        "serviceZone": "Апартаменты",
+        "lastCommercialAccountingDate": "2020-11-20T03:21:14.459",
+        "futureCommercialAccountingDate": "2020-11-20T03:21:14.459",
+        "calculatorId": 1487747,
+        "communicationPipes": [
+          {
+            "id": 1488419,
+            "number": 0,
+            "entryNumber": 1,
+            "hubNumber": 5,
+            "magistral": "FeedFlow",
+            "devices": [
+              {
+                "hub": {
+                  "entryNumber": 1,
+                  "hubNumber": 5,
+                  "pipeNumber": 0,
+                  "magistral": "FeedFlow"
+                },
+                "diameter": null,
+                "resource": "Heat",
+                "housingMeteringDeviceType": "FlowMeter",
+                "id": 2550044,
+                "transactionType": null,
+                "model": "SonoSensor 30 ДУ65",
+                "serialNumber": "212207",
+                "managementFirm": {
+                  "id": 1487736,
+                  "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+                  "phoneNumber": null,
+                  "information": null,
+                  "timeZoneOffset": "03:00:00"
+                },
+                "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "lastCheckingDate": "2020-11-20T07:31:36.983",
+                "futureCheckingDate": "2020-11-20T07:31:36.983",
+                "closingDate": null
+              },
+              {
+                "hub": {
+                  "entryNumber": 1,
+                  "hubNumber": 5,
+                  "pipeNumber": 0,
+                  "magistral": "FeedFlow"
+                },
+                "diameter": null,
+                "resource": "Heat",
+                "housingMeteringDeviceType": "TemperatureSensor",
+                "id": 2550047,
+                "transactionType": null,
+                "model": "ТСП-К",
+                "serialNumber": "1114",
+                "managementFirm": {
+                  "id": 1487736,
+                  "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+                  "phoneNumber": null,
+                  "information": null,
+                  "timeZoneOffset": "03:00:00"
+                },
+                "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "lastCheckingDate": "2020-11-20T07:31:01.573",
+                "futureCheckingDate": "2020-11-20T07:31:01.572",
+                "closingDate": null
+              }
+            ]
+          },
+          {
+            "id": 2550043,
+            "number": 1,
+            "entryNumber": 1,
+            "hubNumber": 5,
+            "magistral": "FeedBackFlow",
+            "devices": [
+              {
+                "hub": {
+                  "entryNumber": 1,
+                  "hubNumber": 5,
+                  "pipeNumber": 1,
+                  "magistral": "FeedBackFlow"
+                },
+                "diameter": null,
+                "resource": "Heat",
+                "housingMeteringDeviceType": "FlowMeter",
+                "id": 2550046,
+                "transactionType": null,
+                "model": "SonoSensor 30 ДУ65",
+                "serialNumber": "212214",
+                "managementFirm": {
+                  "id": 1487736,
+                  "name": "ЖК \"Спутник\" (Самолёт-Сервис)",
+                  "phoneNumber": null,
+                  "information": null,
+                  "timeZoneOffset": "03:00:00"
+                },
+                "lastCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "futureCommercialAccountingDate": "2020-11-20T06:21:14.459",
+                "lastCheckingDate": "2020-11-29T08:35:54",
+                "futureCheckingDate": "2020-11-29T08:35:54",
+                "closingDate": null
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "id": 1487747,
+    "transactionType": null,
+    "model": "ТВ-7",
+    "serialNumber": "18061084",
+    "lastCommercialAccountingDate": null,
+    "futureCommercialAccountingDate": null,
+    "lastCheckingDate": null,
+    "futureCheckingDate": null,
+    "closingDate": null
+  }
+
+
+
+export const deviceDeprecated = {
   connection: {
     ipV4: '192.168.201.7',
     port: 4001,
