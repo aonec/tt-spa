@@ -2751,6 +2751,7 @@ const Graph: React.FC = () => {
     }
 
     const [searchQuery, setSearchQuery] = useState(getInitialState);
+    const [tickValues, setTickValues] = useState();
     const [graphData, setGraphData] = useState();
 
 
@@ -2766,22 +2767,7 @@ const Graph: React.FC = () => {
 
     useEffect(() => {
         console.log(searchQuery);
-    }, [searchQuery])
-
-    useEffect(() => {
-
-    })
-
-    if (status === 'pending') return <>'ЗАГРУЗКА...'</>
-
-    const archiveEntries = _.get(data, 'archiveEntries', []);
-    // const archiveEntries = data?.archiveEntries || [];
-
-    // 1. разобраться с датой (+3 часа)
-    // 2. пофиксить баг, когда выбираешь сначала 3 дня посуточно, потом 3 дня почасовой, потом 3 дня посуточно - и крашится
-    // 3. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
-
-
+    }, [searchQuery]);
 
     const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
         return ticks.map((entry) => {
@@ -2792,10 +2778,32 @@ const Graph: React.FC = () => {
         })
     }
 
-    const tickValues = formTicks(archiveEntries, searchQuery.reportType);
-    const graphDataNew = formGraphData(tickValues);
 
-    const maxElement = maxBy(graphDataNew, (obj) => obj.value);
+
+    useEffect(() => {
+        const archiveEntries = _.get(data, 'archiveEntries', []);
+
+        const tickValues = formTicks(archiveEntries, searchQuery.reportType);
+        setTickValues(tickValues);
+        const graphDataNew = formGraphData(tickValues);
+        setGraphData(graphDataNew);
+    }, [data])
+
+    if (status === 'pending') return <>'ЗАГРУЗКА...'</>
+
+    // const archiveEntries = data?.archiveEntries || [];
+
+    // 1. разобраться с датой (+3 часа)
+    // 2. пофиксить баг, когда выбираешь сначала 3 дня посуточно, потом 3 дня почасовой, потом 3 дня посуточно - и крашится
+    // 3. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
+
+
+
+
+
+    // const tickValues = formTicks(archiveEntries, searchQuery.reportType);
+
+    const maxElement = maxBy(graphData, (obj) => obj.value);
 
     const maxValue = maxElement?.value;
 
@@ -2885,7 +2893,7 @@ const Graph: React.FC = () => {
                         />}
                         labels={() => ''}
                         style={{ parent: {overflow: 'visible'}, data: { fill: `url(#${resource})`, stroke: getResourceColor(resource), strokeWidth: 2  } }}
-                        data={graphDataNew}
+                        data={graphData}
                         x="time"
                         y="value"
                     />
