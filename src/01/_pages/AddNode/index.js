@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Steps } from 'antd';
 import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../../components';
@@ -37,8 +38,6 @@ const communicationPipeTemplate = [{
 },
 ];
 
-
-
 export const AddNode = () => {
   const { housingStockId, push } = useParams();
   const [housingStock, setHousingStock] = useState();
@@ -48,7 +47,6 @@ export const AddNode = () => {
   const [addOdpu, setAddOdpu] = useState(false);
   const [currentCalculatorId, setCurrentCalculatorId] = useState(null);
   const [communicationPipes, setCommunicationPipes] = useState([]);
-
 
   const [entryNumber, setEntryNumber] = useState(null);
   const [resource, setResource] = useState(resources[0].value);
@@ -129,11 +127,43 @@ export const AddNode = () => {
     setCommunicationPipes,
     housingStock,
   };
+
+  const { Step } = Steps;
+
+  const Stages = () => {
+    const arr = [{
+      title: 'Общие данные',
+      description: 'This is a description.',
+    },
+    {
+      title: 'Настройки соединения ',
+      description: 'This is a description.',
+    },
+    {
+      title: 'Подключенные приборы ',
+      description: 'This is a description.',
+    },
+    ];
+    const stepsList = arr.map((step, index)=>{
+        const {title, description} = step;
+        return <Step title={title} />
+    })
+    return (
+      <Steps direction="vertical" size="small" current={currentTabKey - 1}>
+          {stepsList}
+        {/*<Step title="Finished" description="This is a description." />*/}
+        {/*<Step title="In Progress" description="This is a description." />*/}
+        {/*<Step title="Waiting" description="This is a description." />*/}
+      </Steps>
+    );
+  };
+
   return (
     <AddNodeContext.Provider value={context}>
       <div>
         <Header />
         <AddNodeForm />
+        <Stages />
         <ModalAddCalculator />
         <ModalAddDevice />
       </div>
