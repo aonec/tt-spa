@@ -3,31 +3,30 @@ import React from "react";
 import styled from "styled-components";
 import {CalculatorsInterface, DeviceInterface} from "../utils/groupDevicesByObjects";
 
-export const Dates: React.FC = ({device}) => {
+export const Dates: React.FC = ({firstDate, lastDate}) => {
 
-    debugger;
 
     return (
         <>
-            <CheckingDates>
-                {transformDate(device.futureCheckingDate)}
-            </CheckingDates>
+            {/*<CheckingDates>*/}
+            {/*    {transformDate(device.futureCheckingDate)}*/}
+            {/*</CheckingDates>*/}
 
             <LastCommercialAccountingDate>
-                {transformDate(device.lastCommercialAccountingDate)}
+                {transformDate(firstDate)} - {transformDate(lastDate)}
             </LastCommercialAccountingDate>
         </>
     )
 }
 
-const LastCommercialAccountingDate = styled.div`
+const LastCommercialAccountingDate = styled.span`
 margin: 0 auto;
-color: '272F5A';
-opacity: 0.6;
+color: #272F5A;
+opacity: 0.7;
 `
 
 const CheckingDates = styled.div`
 margin: 0 auto;
-color: '272F5A';
+color: #272F5A;
 opacity: 0.8;
 `

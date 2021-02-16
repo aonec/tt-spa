@@ -71,7 +71,7 @@ const DeviceBlock = (props) => {
 
                 </div>
 
-                <Dates device={calculator} />
+                <Dates firstDate={calculator.lastCheckingDate} lastDate={calculator.futureCheckingDate} />
 
 
             </DeviceWrapper>
@@ -85,16 +85,6 @@ const DeviceBlock = (props) => {
 
     );
 };
-
-/*Element Dates doesn't have required attribute closingDate. ' +
-'Element Dates doesn't have required attribute futureCheckingDate.
-    Element Dates doesn't have required attribute futureCommercialAccountingDate. ' +
-'Element Dates doesn't have required attribute id.
-    Element Dates doesn't have required attribute lastCheckingDate. ' +
-'Element Dates doesn't have required attribute lastCommercialAccountingDate.
-    Element Dates doesn't have required attribute managementFirm. ' +
-'Element Dates doesn't have required attribute model.
-    Element Dates doesn't have required attribute serialNumber.*/
 
 export const DeviceWrapper = styled.div`
 display: grid;

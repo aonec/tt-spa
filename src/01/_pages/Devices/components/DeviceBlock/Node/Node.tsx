@@ -23,14 +23,14 @@ interface Props {
 }
 
 const Node:React.FC<Props> = ({node}) => {
-    debugger;
 
     const housingDevices = node.communicationPipes.map((pipe) => {
         const devices = pipe.devices.map((housingDevice) => {
             const { icon, color } = DeviceIcons[housingDevice.resource];
 
             return <DeviceWrapper>
-                <div style={{marginLeft: 23}}>
+                <div>
+                    <TitleWrapper>
                     <DeviceLink
                         to={`/housingMeteringDevices/${housingDevice.id}`}
                     >
@@ -40,9 +40,10 @@ const Node:React.FC<Props> = ({node}) => {
                             ({housingDevice.serialNumber})
                         </SerialNumber>
                     </DeviceLink>
+                        </TitleWrapper>
                 </div>
 
-                <Dates device={housingDevice} />
+                <Dates firstDate={housingDevice.lastCheckingDate} lastDate={housingDevice.futureCheckingDate}/>
 
                 <Diameter>
                     {housingDevice.diameter ? housingDevice.diameter + ' мм' : ''}
@@ -53,29 +54,51 @@ const Node:React.FC<Props> = ({node}) => {
         return devices;
     });
 
- return (
-     <>
-     <DeviceWrapper>
-         <div style={{marginLeft: 23}}>
-             <DeviceLink
-                 to={`/nodes/${node.id}`}
-             >
+    return (
+        <div>
+            <div style={{marginBottom: 24}}>
+            <div>
+                <TitleWrapper>
+                    <DeviceLink
+                        to={`/nodes/${node.id}`}
+                    >
+                        <NodeIcon icon="node" />
+                        <span>{`Узел ${node.number}`}</span>
+                    </DeviceLink>
+                    <ServiceZone>{node.serviceZone}</ServiceZone>
+                </TitleWrapper>
+            </div>
+            <CommercialAct>
+                Акт-допуска <Dates firstDate={node.lastCommercialAccountingDate} lastDate={node.futureCommercialAccountingDate} />
+            </CommercialAct>
+            </div>
 
-                 <NodeIcon icon="node" />
-                 {`Узел ${node.number}`}
-             </DeviceLink>
-         </div>
-
-         <Dates device={node} />
-
-     </DeviceWrapper>
-    {housingDevices}
-    </>
- );
+            {housingDevices}
+        </div>
+    );
 };
 
 const NodeIcon = styled(IconTT)`
 margin-right: 8px;
+`
+
+const TitleWrapper = styled.div`
+margin-left: 24px;
+display: flex;
+align-items: center;
+gap: 8px;
+`
+
+const ServiceZone = styled.span`
+font-size: 16px;
+line-height: 2;
+color: var(--main-70);
+`
+
+const CommercialAct = styled.div`
+font-size: 12px;
+color: var(--main-70);
+padding-left: 48px;
 `
 
 

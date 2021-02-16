@@ -33,10 +33,6 @@ import {
   UserProfile,
   Contractor,
   Registration,
-<<<<<<< HEAD
-  NodeProfile,
-=======
->>>>>>> stage
   IndividualDevice,
   NodeProfile,
   MapPage,
@@ -99,11 +95,7 @@ export function App() {
                     />
 
                     <Route
-<<<<<<< HEAD
-                      path={['/nodes/:nodeId/(connection|related|documents)?']}
-=======
                       path={['/nodes/:nodeId/(stats|connection|related|documents)?']}
->>>>>>> stage
                       component={NodeProfile}
                       exact
                     />
