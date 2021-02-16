@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { Route, useParams, useRouteMatch } from 'react-router-dom';
+import {
+  Route, useParams, useRouteMatch,
+} from 'react-router-dom';
 import Header from './components/Header';
 import { Tabs } from './components/Tabs';
 import { Grid } from '../../_components/Grid';
@@ -8,18 +10,17 @@ import RelatedDevices from './components/RelatedDevices';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
+import {Title} from "../../tt-components";
 
 export const NodeContext = createContext();
 export const NodeProfile = () => {
   const { url } = useRouteMatch('/nodes/(\\d+)');
   const { nodeId } = useParams();
-  console.log('nodeId', nodeId);
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
   const [currentTab, setCurrentTab] = useState('1');
 
-  function handleChangeTab(value){
-    console.log('value', value);
+  function handleChangeTab(value) {
     setCurrentTab(value);
   }
 
@@ -50,20 +51,23 @@ export const NodeProfile = () => {
 
   return (
     <NodeContext.Provider value={context}>
-      <Header/>
-      <Tabs/>
+      <Header />
+      <Tabs />
       <Grid>
         <Route path={`${url}`} exact>
-          <Information/>
+          <Information />
+        </Route>
+        <Route path={`${url}/stats`} exact>
+          <Title color={'black'}>Компонент в разработке</Title>
         </Route>
         <Route path={`${url}/connection`} exact>
-          <Connection/>
+          <Connection />
         </Route>
         <Route path={`${url}/related`} exact>
-          <RelatedDevices/>
+          <RelatedDevices />
         </Route>
         <Route path={`${url}/documents`} exact>
-          <Documents/>
+          <Documents />
         </Route>
         {/* <Events title="Задачи с объектом" /> */}
       </Grid>
