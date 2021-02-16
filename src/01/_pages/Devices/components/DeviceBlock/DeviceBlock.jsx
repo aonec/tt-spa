@@ -72,7 +72,7 @@ const DeviceBlock = (props) => {
               {`(${calculator.serialNumber})`}
                 </span>
               </NavLink>
-                <div hidden={calculator.connection?.isConnected ?? true}><NotConnectedIcon /></div>
+                <div hidden={calculator.connection?.ipV4}><NotConnectedIcon /></div>
 
             </div>
 

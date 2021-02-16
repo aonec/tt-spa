@@ -9,14 +9,13 @@ delete axios.defaults.headers.common["Authorization"];
 
 
 interface RequestNodeReadingsFunctionInterface {
-    deviceId: number
+    nodeId: number
     reportType: ReportType
-    resource: ResourceType
     from: string
     to: string
 }
 
-
+// http://84.201.132.164:8080/api/archivesCalculator/getArchive?nodeId=1935&reportType=daily&from=2021-01-20T00:00:00Z&to=2021-02-10T23:00:00Z
 
 // export const requestNodeReadings: RequestNodeReadingsFunctionInterface = (searchQuery) => {
 export const requestNodeReadings = (searchQuery: RequestNodeReadingsFunctionInterface): Promise<ReadingsInterface> => {
@@ -26,9 +25,9 @@ export const requestNodeReadings = (searchQuery: RequestNodeReadingsFunctionInte
         ( {
                 method: 'get',
                 baseURL: 'http://84.201.132.164:8080/api',
-                // url: `archivesCalculator/getArchives?deviceId=${deviceId}&reportType=${reportType}&resourceType=${resource}&entrynumber=1&pipenumber=5&from=${from}&to=${to}`
-                url: `archivesCalculator/getArchives`,
-                params: {deviceId: searchQuery.deviceId, from: searchQuery.from, to: searchQuery.to, reportType: searchQuery.reportType, entrynumber: 1, pipenumber: 5, resourceType: searchQuery.resource }
+                // url: `archivesCalculator/getArchive?deviceId=${deviceId}&reportType=${reportType}&resourceType=${resource}&entrynumber=1&pipenumber=5&from=${from}&to=${to}`
+                url: `archivesCalculator/getArchive`,
+                params: searchQuery
             }
         )
 

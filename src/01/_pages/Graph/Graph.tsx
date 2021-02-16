@@ -2726,9 +2726,11 @@ const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportTy
 
 const Graph: React.FC = () => {
 
-    const deviceId = 2538841;
+    // http://84.201.132.164:8080/api/archivesCalculator/getArchive?nodeId=1935&reportType=daily&from=2021-01-20T00:00:00Z&to=2021-02-10T23:00:00Z
 
-    const reportType = 'hourly';
+    const nodeId = 1935;
+
+    const reportType = 'daily' as ReportType;
 
     const resource = "Heat";
 
@@ -2740,9 +2742,8 @@ const Graph: React.FC = () => {
 
     const getInitialState = () => {
         return {
-            deviceId,
+            nodeId,
             reportType,
-            resource,
             from,
             to
         }
