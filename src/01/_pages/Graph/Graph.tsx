@@ -2881,9 +2881,9 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
                 <Gradient resource={data.resource}/>
                 <VictoryChart
                     domain={{ y: [0, 1.1*maxValue!] }}
-                    width={600}
+                    width={700}
                     theme={VictoryTheme.material} style={{parent: {
-                        width: '900px',
+                        width: '700px',
                         height: '500px',
                         overflow: 'visible'
                     },

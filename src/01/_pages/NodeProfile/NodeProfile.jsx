@@ -54,7 +54,7 @@ export const NodeProfile = () => {
     <NodeContext.Provider value={context}>
       <Header />
       <Tabs />
-      <Grid>
+      {/*<Grid>*/}
         <Route path={`${url}`} exact>
           <Information />
         </Route>
@@ -72,7 +72,7 @@ export const NodeProfile = () => {
           <Documents />
         </Route>
         {/* <Events title="Задачи с объектом" /> */}
-      </Grid>
+      {/*</Grid>*/}
     </NodeContext.Provider>
   );
 };
