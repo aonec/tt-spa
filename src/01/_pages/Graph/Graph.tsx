@@ -2675,6 +2675,7 @@ const formHourlyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInter
 }
 
 const formDailyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[]  => {
+    debugger;
     if (archiveArr.length <= 14) return archiveArr
 
     const length = archiveArr.length;
@@ -2772,7 +2773,7 @@ const Graph: React.FC = () => {
     // const archiveEntries = data?.archiveEntries || [];
 
 
-    const tickValues = formTicks(archiveEntries, reportType);
+    const tickValues = formTicks(archiveEntries, searchQuery.reportType);
 
 
     const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
