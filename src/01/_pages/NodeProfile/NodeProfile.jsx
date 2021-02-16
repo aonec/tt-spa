@@ -11,6 +11,7 @@ import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
 import {Title} from "../../tt-components";
+import Graph from "../Graph/Graph";
 
 export const NodeContext = createContext();
 export const NodeProfile = () => {
@@ -58,7 +59,8 @@ export const NodeProfile = () => {
           <Information />
         </Route>
         <Route path={`${url}/stats`} exact>
-          <Title color={'black'}>Компонент в разработке</Title>
+          {/*<Title color={'black'}>Компонент в разработке</Title>*/}
+          <Graph nodeId={nodeId} />
         </Route>
         <Route path={`${url}/connection`} exact>
           <Connection />

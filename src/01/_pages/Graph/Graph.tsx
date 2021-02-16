@@ -51,7 +51,7 @@ interface ArchiveEntryInterface {
     }
 }
 
-export type ResourceType = "Heat" | "ColdWater" | "HotWater" | "Electricity"
+export type ResourceType = "Heat" | "ColdWaterSupply" | "HotWaterSupply" | "Electricity"
 
 export interface ReadingsInterface {
     resource: ResourceType
@@ -2723,23 +2723,25 @@ const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportTy
 
 
 // const tickValues = formHourlyTicks(readingsByHours.archiveEntries);
+interface GraphProps {
+    nodeId: number
+}
 
-
-const Graph: React.FC = () => {
+const Graph: React.FC<GraphProps> = ({nodeId}) => {
 
     // http://84.201.132.164:8080/api/archivesCalculator/getArchive?nodeId=1935&reportType=daily&from=2021-01-20T00:00:00Z&to=2021-02-10T23:00:00Z
 
-    const nodeId = 1935;
+    // const nodeId = 1935;
 
-    const reportType = 'hourly' as ReportType;
+    const reportType = 'daily' as ReportType;
 
-    const resource = "Heat";
+    // const resource = "Heat";
 
-    const graphParam = 'DeltaMass';
+    const graphParam = 'InputVolume';
 
-    const from = '2021-02-01T00:00:00Z';
+    const from = moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}).toISOString();
 
-    const to = '2021-02-01T23:00:00Z';
+    const to = moment().set({hour:0,minute:0,second:0,millisecond:0}).toISOString();
 
     const getInitialState = () => {
         return {
@@ -2752,7 +2754,7 @@ const Graph: React.FC = () => {
 
     const [searchQuery, setSearchQuery] = useState(getInitialState);
     const [tickValues, setTickValues] = useState();
-    const [graphData, setGraphData] = useState();
+    // const [graphData, setGraphData] = useState();
 
 
     const getReadings = useCallback(
@@ -2785,21 +2787,20 @@ const Graph: React.FC = () => {
 
         const tickValues = formTicks(archiveEntries, searchQuery.reportType);
         setTickValues(tickValues);
-        const graphDataNew = formGraphData(tickValues);
-        setGraphData(graphDataNew);
+
+        // setGraphData(graphDataNew);
     }, [data])
 
-    if (status === 'pending') return <>'ЗАГРУЗКА...'</>
+    if (status === 'pending' || !tickValues) return <>'ЗАГРУЗКА...'</>
 
     // const archiveEntries = data?.archiveEntries || [];
 
     // 1. разобраться с датой (+3 часа)
-    // 2. пофиксить баг, когда выбираешь сначала 3 дня посуточно, потом 3 дня почасовой, потом 3 дня посуточно - и крашится
-    // 3. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
+    // 2. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
 
 
 
-
+    const graphData = formGraphData(tickValues);
 
     // const tickValues = formTicks(archiveEntries, searchQuery.reportType);
 
@@ -2811,7 +2812,7 @@ const Graph: React.FC = () => {
         setSearchQuery((prevQuery) => ({
             ...prevQuery,
             from: values.dateRange[0].toISOString(),
-            to: values.dateRange[1].toISOString(),
+            to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}).toISOString(),
             reportType: values.reportType
         }))
         actions.setSubmitting(false);
@@ -2829,6 +2830,11 @@ const Graph: React.FC = () => {
     //     return [new Date(date), new Date(date.setDate(date.getDate() + 7))]
     // }
 
+    const m = moment().utcOffset(0);
+    m.set({hour:0,minute:0,second:0,millisecond:0})
+    m.toISOString()
+    m.format()
+
     return (
         <>
             {/*<Tooltip title="search">*/}
@@ -2837,7 +2843,10 @@ const Graph: React.FC = () => {
             <Formik
                 initialValues={{
                     // dateRange: formInitialDates(),
-                    dateRange: [moment(), moment()],
+                    dateRange: [
+                      moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}),
+                      moment().set({hour:0,minute:0,second:0,millisecond:0})
+                    ],
                     reportType: "daily"
                 }}
                 onSubmit={handleSubmit}
@@ -2869,7 +2878,7 @@ const Graph: React.FC = () => {
 
             {status === 'idle' && <div>Start your journey by clicking a button</div>}
             {status === 'success' && <GraphWrapper>
-                <Gradient resource={resource}/>
+                <Gradient resource={data.resource}/>
                 <VictoryChart
                     domain={{ y: [0, 1.1*maxValue!] }}
                     width={600}
@@ -2892,7 +2901,7 @@ const Graph: React.FC = () => {
                             flyoutComponent={<GraphTooltip/>}
                         />}
                         labels={() => ''}
-                        style={{ parent: {overflow: 'visible'}, data: { fill: `url(#${resource})`, stroke: getResourceColor(resource), strokeWidth: 2  } }}
+                        style={{ parent: {overflow: 'visible'}, data: { fill: `url(#${data.resource})`, stroke: getResourceColor(data.resource), strokeWidth: 2  } }}
                         data={graphData}
                         x="time"
                         y="value"
