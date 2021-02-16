@@ -111,6 +111,7 @@ font-weight: bold;
 font-size: 16px;
 line-height: 2;
 color: #272f5A;
+margin-right: 8px;
 `
 
 export const DeviceIcon = styled(Icon)`

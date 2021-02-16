@@ -86,7 +86,6 @@ const TitleWrapper = styled.div`
 margin-left: 24px;
 display: flex;
 align-items: center;
-gap: 8px;
 `
 
 const ServiceZone = styled.span`
