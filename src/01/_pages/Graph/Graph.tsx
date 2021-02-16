@@ -19,15 +19,17 @@ import {requestNodeReadings} from "../../_api/node_readings_page";
 import maxBy from 'lodash/maxBy';
 import _ from "lodash";
 import {Formik} from "formik";
-// import {Form, Radio, DatePicker, FormikDebug} from "formik-antd"
-import {Form, Radio, FormikDebug} from "formik-antd"
+import {Form, Radio, DatePicker, FormikDebug, SubmitButton} from "formik-antd"
+// import {Form, Radio, FormikDebug} from "formik-antd"
 import moment from "moment";
-import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns';
-import generatePicker from 'antd/es/date-picker/generatePicker';
+// import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns';
+// import generatePicker from 'antd/es/date-picker/generatePicker';
 import 'antd/es/date-picker/style/index';
+import { Tooltip, Button } from 'antd';
+import IconTT from "../../tt-components/IconTT";
 
 
-const DatePicker = generatePicker<Date>(dateFnsGenerateConfig);
+// const DatePicker = generatePicker<Date>(dateFnsGenerateConfig);
 
 interface ArchiveEntryInterface {
     timestamp: string
@@ -2736,16 +2738,32 @@ const Graph: React.FC = () => {
 
     const to = '2021-01-25T23:00:00Z';
 
+    const getInitialState = () => {
+        return {
+            deviceId,
+            reportType,
+            resource,
+            from,
+            to
+        }
+    }
+
+    const [searchQuery, setSearchQuery] = useState(getInitialState);
+
 
     const getReadings = useCallback(
         () => {
-            return requestNodeReadings(deviceId, reportType, resource, from, to);
+            // return requestNodeReadings(deviceId, reportType, resource, from, to);
+            return requestNodeReadings(searchQuery);
         },
-        [deviceId, reportType, resource, from, to],
+        [searchQuery],
     );
 
     const { execute, status, value: data, error } = useAsync<ReadingsInterface, {message: string}>(getReadings, true);
 
+    useEffect(() => {
+        console.log(searchQuery);
+    }, [searchQuery])
 
     if (status === 'pending') return <>'ЗАГРУЗКА...'</>
 
@@ -2754,7 +2772,6 @@ const Graph: React.FC = () => {
 
 
     const tickValues = formTicks(archiveEntries, reportType);
-
 
 
     const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
@@ -2772,28 +2789,37 @@ const Graph: React.FC = () => {
 
     const maxValue = maxElement?.value;
 
-    const handleSubmit = () => {
-        console.log('submit');
+    const handleSubmit = (values, actions) => {
+        setSearchQuery((prevQuery) => ({
+            ...prevQuery,
+            from: values.dateRange[0].toISOString(),
+            to: values.dateRange[1].toISOString(),
+            reportType: values.reportType
+        }))
+        actions.setSubmitting(false);
     }
 
-    console.log(new Date().toISOString())
+    // console.log(new Date().toISOString())
 
-    debugger;
 
     var tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const formInitialDates = () => {
-        // Прибавить сюда 3 часа с помощью formatDate()
-        const date = new Date();
-        return [new Date(date), new Date(date.setDate(date.getDate() + 7))]
-    }
+    // const formInitialDates = () => {
+    //     // Прибавить сюда 3 часа с помощью formatDate()
+    //     const date = new Date();
+    //     return [new Date(date), new Date(date.setDate(date.getDate() + 7))]
+    // }
 
     return (
         <>
+            <Tooltip title="search">
+                <Button style={{display: 'flex', justifyContent: 'center'}} shape="circle" icon={<IconTT icon="searchFilter"/>} />
+            </Tooltip>
             <Formik
                 initialValues={{
-                    dateRange: formInitialDates(),
+                    // dateRange: formInitialDates(),
+                    dateRange: [moment(), moment()],
                     reportType: "daily"
                 }}
                 onSubmit={handleSubmit}
@@ -2815,7 +2841,8 @@ const Graph: React.FC = () => {
                                 {label: "Суточный", value: "daily"},
                             ]}
                         />
-                        <FormikDebug style={{ maxWidth: 400 }} />
+                        <SubmitButton disabled={false}>Отправить</SubmitButton>
+                        {/*<FormikDebug style={{ maxWidth: 400 }} />*/}
                     </Form>
                 )
                 }
