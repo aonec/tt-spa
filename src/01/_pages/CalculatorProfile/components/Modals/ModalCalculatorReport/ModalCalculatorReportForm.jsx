@@ -8,13 +8,10 @@ import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 
-import { device } from './CalculatorTemplate';
-
 const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
-  // const { device, handleCancel } = props;
-  const { handleCancel } = props;
+   const { device, handleCancel } = props;
   console.log('DEVICE = ', device);
   const {
     id, model, serialNumber, address, hubs, nodes,
