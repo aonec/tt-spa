@@ -69,13 +69,13 @@ axios.interceptors.response.use(
 
     }
 
-    debugger;
-      if (status === 403 ) {
-          window.location.replace('/access-denied/');
-      }
-      if (status === 404 ) {
-          window.location.replace('/error/');
-      }
+    // debugger;
+    //   if (status === 403 ) {
+    //       window.location.replace('/access-denied/');
+    //   }
+    //   if (status === 404 ) {
+    //       window.location.replace('/error/');
+    //   }
     return Promise.reject(error);
   },
 );

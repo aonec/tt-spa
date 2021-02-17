@@ -19,13 +19,13 @@ import {requestNodeReadings} from "../../_api/node_readings_page";
 import maxBy from 'lodash/maxBy';
 import _ from "lodash";
 import {Formik} from "formik";
-import {Form, Radio, DatePicker, FormikDebug, SubmitButton} from "formik-antd"
+import {Form, Radio, DatePicker, FormikDebug, SubmitButton, AutoComplete} from "formik-antd"
 // import {Form, Radio, FormikDebug} from "formik-antd"
 import moment from "moment";
 // import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns';
 // import generatePicker from 'antd/es/date-picker/generatePicker';
 import 'antd/es/date-picker/style/index';
-import { Tooltip, Button } from 'antd';
+import { Tooltip, Button, Alert } from 'antd';
 import IconTT from "../../tt-components/IconTT";
 
 
@@ -2675,7 +2675,6 @@ const formHourlyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInter
 }
 
 const formDailyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[]  => {
-    debugger;
     if (archiveArr.length <= 14) return archiveArr
 
     const length = archiveArr.length;
@@ -2729,6 +2728,8 @@ interface GraphProps {
 
 const Graph: React.FC<GraphProps> = ({nodeId}) => {
 
+    const { Option } = AutoComplete;
+
     // http://84.201.132.164:8080/api/archivesCalculator/getArchive?nodeId=1935&reportType=daily&from=2021-01-20T00:00:00Z&to=2021-02-10T23:00:00Z
 
     // const nodeId = 1935;
@@ -2737,7 +2738,7 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
 
     // const resource = "Heat";
 
-    const graphParam = 'InputVolume';
+    // const graphParam = 'InputVolume';
 
     const from = moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}).toISOString();
 
@@ -2752,6 +2753,7 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
         }
     }
 
+    const [graphParam, setGraphParam] = useState('InputVolume');
     const [searchQuery, setSearchQuery] = useState(getInitialState);
     const [tickValues, setTickValues] = useState();
     // const [graphData, setGraphData] = useState();
@@ -2767,9 +2769,7 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
 
     const { execute, status, value: data, error } = useAsync<ReadingsInterface, {message: string}>(getReadings, true);
 
-    useEffect(() => {
-        console.log(searchQuery);
-    }, [searchQuery]);
+
 
     const formGraphData = (ticks: ArchiveEntryInterface[]): GraphDataInterface[] => {
         return ticks.map((entry) => {
@@ -2780,17 +2780,33 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
         })
     }
 
+    const onSelectHandler = (value) => {
+        setGraphParam(value);
+    }
+
 
 
     useEffect(() => {
+        if (!data) return
+        const paramKeys = Object.keys(data.archiveEntries[0].values);
+        debugger;
+        setGraphParam(paramKeys[0]);
         const archiveEntries = _.get(data, 'archiveEntries', []);
 
         const tickValues = formTicks(archiveEntries, searchQuery.reportType);
+
+
         setTickValues(tickValues);
 
         // setGraphData(graphDataNew);
     }, [data])
 
+    // useEffect(() => {
+    //
+    // }, []);
+    //
+
+    // if (status === 'pending' || !tickValues || !graphParam) return <>'ЗАГРУЗКА...'</>
     if (status === 'pending' || !tickValues) return <>'ЗАГРУЗКА...'</>
 
     // const archiveEntries = data?.archiveEntries || [];
@@ -2798,6 +2814,10 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
     // 1. разобраться с датой (+3 часа)
     // 2. сделать так, чтобы у второй даты всегда было 23:00 на конце, а у первой - 00:00
 
+    const paramKeys = Object.keys(data.archiveEntries[0].values);
+
+
+    const params = paramKeys.map((key) => ({value: key}))
 
 
     const graphData = formGraphData(tickValues);
@@ -2809,6 +2829,7 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
     const maxValue = maxElement?.value;
 
     const handleSubmit = (values, actions) => {
+        debugger;
         setSearchQuery((prevQuery) => ({
             ...prevQuery,
             from: values.dateRange[0].toISOString(),
@@ -2817,18 +2838,6 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
         }))
         actions.setSubmitting(false);
     }
-
-    // console.log(new Date().toISOString())
-
-
-    var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    // const formInitialDates = () => {
-    //     // Прибавить сюда 3 часа с помощью formatDate()
-    //     const date = new Date();
-    //     return [new Date(date), new Date(date.setDate(date.getDate() + 7))]
-    // }
 
     const m = moment().utcOffset(0);
     m.set({hour:0,minute:0,second:0,millisecond:0})
@@ -2847,19 +2856,17 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
                       moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}),
                       moment().set({hour:0,minute:0,second:0,millisecond:0})
                     ],
-                    reportType: "daily"
+                    reportType: "daily",
+                    autocomplete: graphParam
                 }}
                 onSubmit={handleSubmit}
-                // validate={values => {
-                //     if (!values.userName) {
-                //         return { userName: "required" }
-                //     }
-                //     return undefined
-                // }}
-                render={formik => (
+                >
+
                     <Form>
                         <DatePicker.RangePicker
                             name="dateRange"
+                            style={{marginRight: 16}}
+
                         />
                         <Radio.Group
                             name="reportType"
@@ -2868,23 +2875,34 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
                                 {label: "Суточный", value: "daily"},
                             ]}
                         />
+
+                        <AutoComplete
+                          style={{ width: 200 }}
+                          name="autocomplete"
+                          placeholder="Autocomplete"
+                          showArrow={true}
+                          options={params}
+                          onSelect={onSelectHandler}
+                        />
                         <SubmitButton disabled={false}>Отправить</SubmitButton>
                         {/*<FormikDebug style={{ maxWidth: 400 }} />*/}
                     </Form>
-                )
-                }
-                />
+            </Formik>
+
 
 
             {status === 'idle' && <div>Start your journey by clicking a button</div>}
             {status === 'success' && <GraphWrapper>
                 <Gradient resource={data.resource}/>
                 <VictoryChart
+                  padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
                     domain={{ y: [0, 1.1*maxValue!] }}
-                    width={700}
+                    width={600}
+                    height={300}
                     theme={VictoryTheme.material} style={{parent: {
-                        width: '700px',
-                        height: '500px',
+                        width: '600px',
+                        // margin: '0 auto',
+                        height: '300px',
                         overflow: 'visible'
                     },
                 }}
@@ -2917,20 +2935,25 @@ const Graph: React.FC<GraphProps> = ({nodeId}) => {
                         tickFormat={getTickFormat(data!.archiveEntries, searchQuery.reportType)}
                         tickValues={tickValues}
                         style={{
-                            axisLabel: { padding: 40, strokeWidth: 0 },
+                            axisLabel: { strokeWidth: 0 },
                             grid: {stroke: 'none'},
                         }}
                     />
                     <VictoryAxis
                         dependentAxis
                         style={{
-                            axisLabel: { padding: 40 },
                             grid: {stroke: 'none'},
                         }}
                     />
                 </VictoryChart>
             </GraphWrapper>}
-            {status === 'error' && <div>{error?.message}</div>}
+            {status === 'error' && <Alert
+              message="Ошибка"
+              description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
+              type="error"
+              showIcon
+              closable
+            />}
             {/*<button onClick={execute} disabled={status === 'pending'}>*/}
             {/*    {status !== 'pending' ? 'Click me' : 'Loading...'}*/}
             {/*</button>*/}
