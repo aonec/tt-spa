@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useState,
+  useContext, useEffect, useRef, useState,
 } from 'react';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
@@ -14,6 +14,7 @@ import {
 import { styles, StyledFormPage } from './styledComponents';
 import { AddNodeContext } from '../index';
 import {calculatorValidationSchema} from "./validationSchemas";
+import ModalAddCalculator from "../modals/ModalAddCalculator";
 
 const AddNodeSecondTab = () => {
   const {
@@ -28,6 +29,8 @@ const AddNodeSecondTab = () => {
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(calculatorValidationSchema);
+
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -54,6 +57,10 @@ const AddNodeSecondTab = () => {
       handleNext();
     },
   });
+
+  function setCalculator(id){
+    setFieldValue('calculatorId', id)
+  }
 
 
   useEffect(() => {
@@ -105,8 +112,6 @@ const AddNodeSecondTab = () => {
           <AutoCompleteTT
             options={calculators}
             onSelect={(value, option) => {
-              console.log('value', value);
-              console.log('value', option);
               setFieldValue('calculatorId', option.key);
             }}
           />
@@ -153,6 +158,8 @@ const AddNodeSecondTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
+      <ModalAddCalculator setCalculator={setCalculator}/>
+
     </form>
   );
 };

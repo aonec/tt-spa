@@ -5,6 +5,7 @@ import { StyledModal } from '../../../../tt-components';
 import {AddNodeContext} from "../../index";
 
 const ModalAddCalculator = (props) => {
+
   const { addCalculator, setAddCalculator, housingStockId } = useContext(AddNodeContext);
   const handleCancel = () => {
     setAddCalculator(false);
@@ -22,7 +23,7 @@ const ModalAddCalculator = (props) => {
         footer={null}
         width={800}
       >
-        <AddCalculatorForm {...modalProps}/>
+        <AddCalculatorForm {...modalProps} {...props}/>
 
       </StyledModal>
     </>

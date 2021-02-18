@@ -14,6 +14,8 @@ import {
 import { styles, StyledFormPage } from './styledComponents';
 import { AddNodeContext } from '../index';
 import { addNodeValidationSchema } from './validationSchemas';
+import ModalAddCalculator from "../modals/ModalAddCalculator";
+import ModalAddDevice from "../modals/ModalAddDevice";
 
 const AddNodeFirstTab = () => {
   const {
@@ -177,6 +179,7 @@ const AddNodeFirstTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
+
     </form>
   );
 };

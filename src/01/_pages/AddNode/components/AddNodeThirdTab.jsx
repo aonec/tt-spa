@@ -17,6 +17,7 @@ import RelatedDevices from './RelatedDevices';
 import { styles, StyledFormPage } from './styledComponents';
 import { addNode } from '../apiAddNode';
 import { AddNodeContext } from '../index';
+import ModalAddDevice from "../modals/ModalAddDevice";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -111,6 +112,7 @@ const AddNodeThirdTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
+      <ModalAddDevice/>
     </form>
   );
 };

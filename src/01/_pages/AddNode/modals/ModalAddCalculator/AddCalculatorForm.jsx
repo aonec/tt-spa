@@ -16,14 +16,14 @@ import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyStri
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
-import {AddNodeContext} from "../../index";
+import { AddNodeContext } from '../../index';
 import { styles } from '../../components/styledComponents';
 
 const AddCalculatorForm = (props) => {
-  const { housingStockId, setAddCalculator,currentCalculatorId, setCurrentCalculatorId } = useContext(AddNodeContext);
-  const {handleCancel} = props;
+  const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
+  const { handleCancel, setCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema] = useState(defaultValidationSchema);
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setFieldError,
@@ -61,23 +61,24 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      addCalculator(form).then((res)=>{
-        const {id} = res;
-        setCurrentCalculatorId(id);
+      addCalculator(form).then((res) => {
+        const { id } = res;
+        setTimeout(() => {
+          setAddCalculator(false);
+        }, 1000);
       });
-      setTimeout(() => {
-        setAddCalculator(false);
-      }, 1000);
     },
   });
 
+  useEffect(() => {
+    setValidationSchema(defaultValidationSchema);
+  }, []);
 
-  function isEmptyConnection(){
+  function isEmptyConnection() {
     return isEmptyString(values.deviceAddress)
-      && isEmptyString(values.port)
-      && isEmptyString(values.ipV4);
+            && isEmptyString(values.port)
+            && isEmptyString(values.ipV4);
   }
-
 
   useEffect(() => {
     console.log('Правда, что все строки пустые:?', isEmptyConnection());
@@ -95,7 +96,7 @@ const AddCalculatorForm = (props) => {
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
 
-  function onSwitchChange(checked){
+  function onSwitchChange(checked) {
     setFieldValue('isConnected', checked);
     if (checked === true) {
       setValidationSchema(defaultValidationSchema);
@@ -111,7 +112,6 @@ const AddCalculatorForm = (props) => {
         setValidationSchema(defaultValidationSchema);
       }
     }
-
   }
 
   const tabErrors = [
@@ -125,11 +125,11 @@ const AddCalculatorForm = (props) => {
     },
   ];
 
-  function handleNext(){
+  function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handleChangeTab(value){
+  function handleChangeTab(value) {
     setTab(value);
   }
 
@@ -143,7 +143,7 @@ const AddCalculatorForm = (props) => {
     } else {
       handleSubmit();
     }
-  }
+  };
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -167,7 +167,7 @@ const AddCalculatorForm = (props) => {
           handleChangeTab={handleChangeTab}
         />
 
-        <StyledFormPage hidden={Number(currentTabKey) !== 1} >
+        <StyledFormPage hidden={Number(currentTabKey) !== 1}>
 
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
             <InputTT
@@ -176,7 +176,7 @@ const AddCalculatorForm = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            <Alert name="serialNumber"/>
+            <Alert name="serialNumber" />
           </Form.Item>
 
           <Form.Item label="Тип вычислителя" style={{ width: '100%' }}>
@@ -253,7 +253,7 @@ const AddCalculatorForm = (props) => {
             width: '100%',
           }}
           >
-            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected}/>
+            <Switch style={{ width: '48px' }} onChange={onSwitchChange} checked={values.isConnected} />
             <span style={{
               fontSize: '16px',
               lineHeight: '32px',
@@ -276,8 +276,8 @@ const AddCalculatorForm = (props) => {
                 setFieldValue('ipV4', event.target.value);
               }}
             />
-            {/*{isEmptyConnection() && !checked ? null : <Alert name="ipV4" />}*/}
-            <Alert name="ipV4"/>
+            {/* {isEmptyConnection() && !checked ? null : <Alert name="ipV4" />} */}
+            <Alert name="ipV4" />
           </Form.Item>
 
           <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
@@ -289,8 +289,8 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {/*{isEmptyConnection() && !checked ? null : <Alert name="port" />}*/}
-            <Alert name="port"/>
+            {/* {isEmptyConnection() && !checked ? null : <Alert name="port" />} */}
+            <Alert name="port" />
           </Form.Item>
 
           <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
@@ -301,10 +301,9 @@ const AddCalculatorForm = (props) => {
               value={values.deviceAddress}
               onBlur={handleBlur}
               onChange={handleChange}
-              // disabled={checked}
             />
-            {/*{isEmptyConnection() && !checked ? null : <Alert name="deviceAddress" /> }*/}
-            <Alert name="deviceAddress"/>
+            {/* {isEmptyConnection() && !checked ? null : <Alert name="deviceAddress" /> } */}
+            <Alert name="deviceAddress" />
           </Form.Item>
 
           <Wrap
@@ -319,8 +318,7 @@ const AddCalculatorForm = (props) => {
           </Wrap>
         </StyledFormPage>
 
-        <StyledFormPage hidden={Number(currentTabKey) !== 3}
-        >
+        <StyledFormPage hidden={Number(currentTabKey) !== 3}>
           <Title color="black">Компонент Документы в разработке</Title>
         </StyledFormPage>
 
