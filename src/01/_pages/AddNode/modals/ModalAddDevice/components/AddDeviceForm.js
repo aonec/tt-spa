@@ -18,8 +18,6 @@ import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBefor
 import { AddNodeContext } from '../../../index';
 import { validationSchemaFlowMeter, validationSchemaTemperatureSensor } from './validationSchemas';
 
-
-
 const AddDeviceForm = (props) => {
   const { handleCancel } = props;
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
-import AddDeviceForm from './components/AddDeviceForm';
+import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from '../../index';
 
 const ModalAddNode = (props) => {
@@ -15,7 +15,7 @@ const ModalAddNode = (props) => {
       width={800}
       visible={addNode}
     >
-      <AddDeviceForm
+      <AddNodeForm
         handleCancel={handleCancel}
       />
     </StyledModal>
