@@ -120,8 +120,6 @@ export const AddNode = () => {
       <div>
         <Header />
         <AddNodeForm />
-        <ModalAddCalculator />
-        <ModalAddDevice />
       </div>
     </AddNodeContext.Provider>
   );

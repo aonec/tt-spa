@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const tabs = [
+const tabsComponent = [
   {
     title: 'Шаг 1. Общие данные',
     key: '1',
@@ -18,7 +18,7 @@ const TabsComponent = (props) => {
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
-      {tabs.map((currentTab) => {
+      {tabsComponent.map((currentTab) => {
         const { title, key } = currentTab;
         return (
           <TabPane tab={title} key={key} />

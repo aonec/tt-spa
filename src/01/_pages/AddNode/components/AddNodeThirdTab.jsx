@@ -112,7 +112,7 @@ const AddNodeThirdTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-      <ModalAddDevice/>
+      <ModalAddDevice />
     </form>
   );
 };

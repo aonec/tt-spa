@@ -6,79 +6,39 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
 import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp,
+  magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
 } from '../../../../../tt-components';
-import { addOdpu, getCalculator } from '../apiAddOdpu';
-import TabsComponent from './Tabs';
-
+import TabsComponent from './TabsComponent';
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { AddNodeContext } from '../../../index';
-
-const StyledHint = styled.div`
-  color: rgba(39, 47, 90, 0.7)
-`;
+import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from "./validationSchemas";
 
 const AddDeviceForm = (props) => {
-  const {
+    const { handleCancel } = props;
+
+    const {
     node,
-    setNode,
-    housingStockId,
-    calculators,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
     communicationPipes,
     setCommunicationPipes,
-    housingStock,
   } = useContext(AddNodeContext);
-
-  const { handleCancel } = props;
 
   const { resource, entryNumber, calculatorId } = node;
 
-  console.log('AddDeviceFormProps', props);
   const [currentTabKey, setTab] = useState('1');
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
-  const validationSchemaFlowMeter = Yup.object({
-    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
-    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
-    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-    // entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-    //   .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-    diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
-      .required('Введите число от 1'),
-  });
-  const validationSchemaTemperatureSensor = Yup.object({
-    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
-    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
-    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-    entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-  });
 
   const tabErrors = [
     {
       key: '1',
       value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
     },
-    // {
-    //   key: '2',
-    //   value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
-    // },
   ];
 
   const {
@@ -139,7 +99,7 @@ const AddDeviceForm = (props) => {
       console.log(communicationPipe);
       setCommunicationPipes((prevState) => ([
         ...prevState,
-          communicationPipe,
+        communicationPipe,
       ]));
     },
   });
@@ -190,11 +150,16 @@ const AddDeviceForm = (props) => {
     }
   }
 
+  useEffect(()=>{
+      console.log("pipeNumber", values.pipeNumber)
+      const pipeNumbers = _.map(communicationPipes, 'pipeNumber')
+      console.log("pipeNumbers", pipeNumbers)
+  },[values.pipeNumber])
+
   return (
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledModalBody>
         <Title size="middle" color="black">
