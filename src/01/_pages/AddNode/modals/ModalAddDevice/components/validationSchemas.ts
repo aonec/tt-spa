@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 export const validationSchemaFlowMeter = Yup.object({
+    isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
     model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
     serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
     calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
