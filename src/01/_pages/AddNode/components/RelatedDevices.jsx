@@ -1,11 +1,10 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import {Icon} from '01/_components/Icon';
+import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
-import {IconTT} from "../../../tt-components";
-import {AddNodeContext} from "../index";
-import _ from 'lodash'
-
+import _ from 'lodash';
+import { IconTT } from '../../../tt-components';
+import { AddNodeContext } from '../index';
 
 const Div = styled.div`
   display: inline-flex;
@@ -13,83 +12,81 @@ const Div = styled.div`
 `;
 
 export const RelatedDevices = () => {
+  const {
+    handleCancel,
+    currentTabKey,
+    setTab,
+    handleChangeTab,
+    handleNext,
+    node,
+    setNode,
+    housingStockId,
+    calculators,
+    addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
+    communicationPipes,
+    setCommunicationPipes,
+    housingStock,
+  } = useContext(AddNodeContext);
 
+  const devices = communicationPipes.map((communicationPipe) => {
+    const { devices } = communicationPipe;
+    return devices.map((device) => device);
+  });
+  const res = _.flatten(devices);
 
+  const result = res.map((device) => {
     const {
-        handleCancel,
-        currentTabKey,
-        setTab,
-        handleChangeTab,
-        handleNext,
-        node,
-        setNode,
-        housingStockId,
-        calculators,
-        addCalculator,
-        setAddCalculator,
-        addOdpu,
-        setAddOdpu,
-        communicationPipes,
-        setCommunicationPipes,
-        housingStock
-    } = useContext(AddNodeContext);
+      model,
+      serialNumber,
+      closingdate,
+      hub,
+      resource,
+      id,
+      pipe,
+      housingStockId,
+    } = device;
 
-    const devices = communicationPipes.map((communicationPipe) => {
-        const {devices} = communicationPipe
-        return devices.map((device) => {
-            return device
-        })
-    })
-    const res = _.flatten(devices)
-
-    const result = res.map((device) => {
-            const {
-                model,
-                serialNumber,
-                closingdate,
-                hub,
-                resource,
-                id,
-                pipe,
-                housingStockId,
-            } = device;
-
-            const {pipeNumber, entryNumber, hubNumber} = pipe
-
-            return (
-                <ListItem key={id}>
-                    <NameWrap href={`/housingMeteringDevices/${id}`}>
-                        <IconTT icon={resource.toLowerCase()}/>
-                        <Name>{model}</Name>
-                        <Serial>{` (${serialNumber})`}</Serial>
-                    </NameWrap>
-
-                    <State>
-                        <Icon icon="status" color="#17B45A"/>
-                        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-                    </State>
-                    <Span>{`Ввод: ${entryNumber}`}</Span>
-                    {/*<Span>{`Узел: ${hubNumber}`}</Span>*/}
-                    <Span>{`Труба: ${pipeNumber}`}</Span>
-                    <Div> <IconTT icon={'edit'} style={{marginLeft: 8}}/>
-                        <IconTT icon={'del'} style={{marginLeft: 8}}/></Div>
-                </ListItem>
-            );
-        }
-    );
+    const { pipeNumber, entryNumber, hubNumber } = pipe;
 
     return (
-        <ListWrap>
-            {result}
-        </ListWrap>
+      <ListItem key={id}>
+        <NameWrap href={`/housingMeteringDevices/${id}`}>
+          <IconTT icon={resource.toLowerCase()} />
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <Icon icon="status" color="#17B45A" />
+          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        </State>
+        <Span>{`Ввод: ${entryNumber}`}</Span>
+        {/* <Span>{`Узел: ${hubNumber}`}</Span> */}
+        <Span>{`Труба: ${pipeNumber}`}</Span>
+        <Div>
+          {' '}
+          <IconTT icon="edit" style={{ marginLeft: 8 }} />
+          <IconTT icon="del" style={{ marginLeft: 8 }} />
+        </Div>
+      </ListItem>
     );
+  });
+
+  return (
+    <ListWrap>
+      {result}
+    </ListWrap>
+  );
 };
 
 export default RelatedDevices;
 
-export const Template = styled.div``;
+const Template = styled.div``;
 
-export const NameWrap = styled.a`
+const NameWrap = styled.a`
   display: grid;
   grid-template-columns: 1fr 7fr 4fr;
   align-items: center;
@@ -102,7 +99,7 @@ export const NameWrap = styled.a`
   }
 `;
 
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-weight: 500;
@@ -110,27 +107,27 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Title = styled.h2``;
+const Title = styled.h2``;
 
-export const ListWrap = styled.div`
+const ListWrap = styled.div`
   display: grid;
   height: min-content;
 }
 `;
 
-export const ListItem = styled.div`
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
   grid-template-rows: 48px;
@@ -138,6 +135,6 @@ export const ListItem = styled.div`
   border-bottom: 1px solid var(--frame);
   opacity: 0.8;
 `;
-export const Span = styled.span`
+const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;

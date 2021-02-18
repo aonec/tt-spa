@@ -43,7 +43,7 @@ const AddDeviceForm = (props) => {
   const tabErrors = [
     {
       key: '1',
-      value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
+      value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId', 'isAllowed'],
     },
   ];
 
@@ -98,19 +98,46 @@ const AddDeviceForm = (props) => {
         },
       };
 
-      const communicationPipe = {
-        number: values.pipeNumber,
-        entryNumber: values.entryNumber,
-        magistral: values.magistral,
-        devices: [device],
-      };
+      const pipeNumbers = _.map(communicationPipes, 'number');
+
+      if (pipeNumbers.includes(values.pipeNumber)) {
+        const newCommunicationPipes = communicationPipes.map((communicationPipe)=>{
+          const {number, devices} = communicationPipe;
+          if (number === values.pipeNumber) {
+            devices.push(device)
+          }
+          return communicationPipe
+        })
+
+        console.log("newCommunicationPipes", newCommunicationPipes)
+        setCommunicationPipes(newCommunicationPipes);
+
+      }
+
+      else {
+        const communicationPipe = {
+          number: values.pipeNumber,
+          entryNumber: values.entryNumber,
+          magistral: values.magistral,
+          devices: [device],
+        };
+
+        setCommunicationPipes((prevState) => ([
+          ...prevState,
+          communicationPipe,
+        ]));
+
+      }
+      // const communicationPipe = {
+      //   number: values.pipeNumber,
+      //   entryNumber: values.entryNumber,
+      //   magistral: values.magistral,
+      //   devices: [device],
+      // };
       // setDevices((prev) => [...prev, form]);
-      console.log(device);
-      console.log(communicationPipe);
-      setCommunicationPipes((prevState) => ([
-        ...prevState,
-        communicationPipe,
-      ]));
+      // console.log(device);
+      // console.log(communicationPipe);
+
 
       setValues((prevValues) => ({
         ...prevValues,
