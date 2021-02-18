@@ -14,7 +14,7 @@ import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
 } from '../../../../../tt-components';
 import { addOdpu, getCalculator } from '../apiAddOdpu';
-import TabsComponent from './Main';
+import TabsComponent from './Tabs';
 
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';

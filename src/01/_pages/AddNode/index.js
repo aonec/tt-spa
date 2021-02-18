@@ -4,6 +4,8 @@ import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../../components';
 import AddNodeForm from './components/AddNodeForm';
+import ModalAddCalculator from './modals/ModalAddCalculator';
+import ModalAddDevice from './modals/ModalAddDevice';
 
 export const AddNodeContext = React.createContext();
 
@@ -11,6 +13,7 @@ export const AddNode = () => {
   const { housingStockId, push } = useParams();
   const [housingStock, setHousingStock] = useState();
   const [calculators, setCalculators] = useState();
+  const [calculatorsExtended, setCalculatorsExtended] = useState();
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
   const [communicationPipes, setCommunicationPipes] = useState([]);
@@ -70,7 +73,8 @@ export const AddNode = () => {
       });
 
       setCalculators(calculatorsList);
-
+      setCalculatorsExtended(items);
+      // console.log(calculatorsList);
     });
   }
 
@@ -116,7 +120,8 @@ export const AddNode = () => {
       <div>
         <Header />
         <AddNodeForm />
-
+        <ModalAddCalculator />
+        <ModalAddDevice />
       </div>
     </AddNodeContext.Provider>
   );

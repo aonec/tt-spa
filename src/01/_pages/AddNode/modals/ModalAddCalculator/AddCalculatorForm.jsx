@@ -21,7 +21,7 @@ import { styles } from '../../components/styledComponents';
 
 const AddCalculatorForm = (props) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
-  const { handleCancel, setCalculator } = props;
+  const { handleCancel } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const {

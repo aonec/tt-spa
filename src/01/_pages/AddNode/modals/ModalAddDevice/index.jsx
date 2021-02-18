@@ -5,7 +5,7 @@ import { getObjectCalculators } from './apiAddOdpu';
 import {AddNodeContext} from "../../index";
 
 const ModalAddDevice = (props) => {
-  const [calculators, setCalculators,] = useState([]);
+  // const [calculators, setCalculators] = useState([]);
   const { setAddOdpu, addOdpu, housingStockId } = useContext(AddNodeContext);
   console.log('props', props);
 
@@ -13,24 +13,24 @@ const ModalAddDevice = (props) => {
     setAddOdpu(false);
   }
 
-  useEffect(() => {
-    async function setCalculatorsList(){
-      try {
-        const objCalculators = await getObjectCalculators(housingStockId);
-        const { items } = objCalculators;
-        const calcOnly = items.map((item) => ({
-          ...item,
-          value: item.id,
-          label: `${item.model} (${item.serialNumber})`
-        }));
-        setCalculators(calcOnly);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    setCalculatorsList();
-  }, []);
+  // useEffect(() => {
+  //   async function setCalculatorsList(){
+  //     try {
+  //       const objCalculators = await getObjectCalculators(housingStockId);
+  //       const { items } = objCalculators;
+  //       const calcOnly = items.map((item) => ({
+  //         ...item,
+  //         value: item.id,
+  //         label: `${item.model} (${item.serialNumber})`
+  //       }));
+  //       setCalculators(calcOnly);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //
+  //   setCalculatorsList();
+  // }, []);
 
 
   return (
@@ -39,7 +39,6 @@ const ModalAddDevice = (props) => {
       footer={null}
       width={800}
       visible={addOdpu}
-      // visible
     >
 
       <AddDeviceForm
