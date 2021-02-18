@@ -4,6 +4,7 @@ import AddNodeFirstTab from './AddNodeFirstTab';
 import { AddNodeContext } from '../index';
 import AddNodeSecondTab from './AddNodeSecondTab';
 import AddNodeThirdTab from './AddNodeThirdTab';
+import {Stages} from "../../../tt-components/Stages";
 
 const AddNodeForm = () => {
   const {
@@ -16,12 +17,20 @@ const AddNodeForm = () => {
         currentTabKey={currentTabKey}
         handleChangeTab={handleChangeTab}
       />
-      {/* First Tab */}
-      <AddNodeFirstTab />
-      {/* Second Tab */}
-      <AddNodeSecondTab />
-      {/* Third Tab */}
-      <AddNodeThirdTab />
+
+      <Grid>
+          <div>
+          {/* First Tab */}
+          <AddNodeFirstTab />
+          {/* Second Tab */}
+          <AddNodeSecondTab />
+          {/* Third Tab */}
+          <AddNodeThirdTab />
+          </div>
+          <Stages currentTabKey={currentTabKey} stepsArr={stepsArr}/>
+
+      </Grid>
+
 
     </div>
   );

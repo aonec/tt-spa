@@ -118,10 +118,7 @@ export const AddNode = () => {
         <AddNodeContext.Provider value={context}>
             <div>
                 <Header/>
-                <GridTT>
                     <AddNodeForm/>
-                    <Stages currentTabKey={currentTabKey} stepsArr={stepsArr}/>
-                </GridTT>
                 <ModalAddCalculator/>
                 <ModalAddDevice/>
             </div>
