@@ -4,33 +4,36 @@ import AddNodeFirstTab from './AddNodeFirstTab';
 import { AddNodeContext } from '../index';
 import AddNodeSecondTab from './AddNodeSecondTab';
 import AddNodeThirdTab from './AddNodeThirdTab';
-import {Stages} from "../../../tt-components/Stages";
+import { Stages } from '../../../tt-components/Stages';
+import { GridTT } from '../../../tt-components';
 
 const AddNodeForm = () => {
   const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext,
+    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, stepsArr,
   } = useContext(AddNodeContext);
 
   return (
     <div>
-      <TabsComponent
-        currentTabKey={currentTabKey}
-        handleChangeTab={handleChangeTab}
-      />
+      <GridTT>
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
+        />
+        <></>
+      </GridTT>
 
-      <Grid>
-          <div>
+      <GridTT>
+        <>
           {/* First Tab */}
           <AddNodeFirstTab />
           {/* Second Tab */}
           <AddNodeSecondTab />
           {/* Third Tab */}
           <AddNodeThirdTab />
-          </div>
-          <Stages currentTabKey={currentTabKey} stepsArr={stepsArr}/>
+        </>
+        <Stages />
 
-      </Grid>
-
+      </GridTT>
 
     </div>
   );

@@ -7,7 +7,7 @@ import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
-  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter,
+  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter, StyledFormPage,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
@@ -17,12 +17,13 @@ import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFo
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
 import {AddNodeContext} from "../../index";
+import { styles } from '../../components/styledComponents';
 
 const AddCalculatorForm = (props) => {
   const { housingStockId, setAddCalculator,currentCalculatorId, setCurrentCalculatorId } = useContext(AddNodeContext);
   const {handleCancel} = props;
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [validationSchema, setValidationSchema] = useState(defaultValidationSchema);
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setFieldError,
@@ -60,7 +61,6 @@ const AddCalculatorForm = (props) => {
         infoId: values.infoId,
       };
       console.log('form', form);
-      console.log(JSON.stringify(form));
       addCalculator(form).then((res)=>{
         const {id} = res;
         setCurrentCalculatorId(id);
@@ -71,9 +71,6 @@ const AddCalculatorForm = (props) => {
     },
   });
 
-  useEffect(() => {
-    setValidationSchema(defaultValidationSchema);
-  }, []);
 
   function isEmptyConnection(){
     return isEmptyString(values.deviceAddress)
@@ -83,7 +80,6 @@ const AddCalculatorForm = (props) => {
 
 
   useEffect(() => {
-    // setEmpty(isEmptyConnection());
     console.log('Правда, что все строки пустые:?', isEmptyConnection());
 
     if (values.isConnected === false) {
@@ -130,7 +126,6 @@ const AddCalculatorForm = (props) => {
   ];
 
   function handleNext(){
-    console.log("12345")
     setTab(String(Number(currentTabKey) + 1));
   }
 
@@ -167,23 +162,17 @@ const AddCalculatorForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        {/* <div>{JSON.stringify(errors)}</div> */}
-        {/* <div>{values.checked ? null : 'настройки соединения не обязатальны, однако надо ввести либо все значения, либо оставить их пустыми'}</div> */}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}
         />
 
-        <div
-          hidden={Number(currentTabKey) !== 1}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
-        >
+        <StyledFormPage hidden={Number(currentTabKey) !== 1} >
 
-          <Form.Item label="Серийный номер устройства" style={{ width: '100%' }}>
+          <Form.Item label="Серийный номер устройства" style={styles.w100}>
             <InputTT
               name="serialNumber"
               value={values.serialNumber}
-              placeholder="Серийный номер..."
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -254,12 +243,9 @@ const AddCalculatorForm = (props) => {
               value={moment(values.futureCommercialAccountingDate)}
             />
           </Form.Item>
-        </div>
+        </StyledFormPage>
 
-        <div
-          hidden={Number(currentTabKey) !== 2}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
-        >
+        <StyledFormPage hidden={Number(currentTabKey) !== 2}>
 
           <div style={{
             display: 'flex',
@@ -331,14 +317,12 @@ const AddCalculatorForm = (props) => {
           >
             Подключение к новому прибору может занять до 30 минут.
           </Wrap>
-        </div>
+        </StyledFormPage>
 
-        <div
-          hidden={Number(currentTabKey) !== 3}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}
+        <StyledFormPage hidden={Number(currentTabKey) !== 3}
         >
           <Title color="black">Компонент Документы в разработке</Title>
-        </div>
+        </StyledFormPage>
 
       </StyledModalBody>
       <StyledFooter>

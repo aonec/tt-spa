@@ -1,3 +1,5 @@
+import GridTT from "./GridTT";
+
 export * from './Title';
 export * from './Label';
 export * from './Wrap';
@@ -26,3 +28,4 @@ export * from './Breadcrumb';
 export * from './AutoCompleteTT';
 export * from './MenuButtonTT';
 export * from './Stages'
+export * from './GridTT'

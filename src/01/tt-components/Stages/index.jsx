@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Steps } from 'antd';
 import styled from 'styled-components';
+import {AddNodeContext} from "../../_pages";
 
 const { Step } = Steps;
 
 export const Stages = (props) => {
-  const { currentTabKey, stepsArr } = props;
+  const { currentTabKey, stepsArr } = useContext(AddNodeContext);
 
   const statuses = [
     'wait', 'process', 'finish', 'error',
