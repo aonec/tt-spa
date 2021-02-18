@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useRef, useState,
+  useContext, useEffect,  useState,
 } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
@@ -213,11 +213,11 @@ const AddDeviceForm = (props) => {
       onSubmit={handleSubmit}
     >
       <StyledModalBody>
-        <Alert name="isAllowed" />
+        {/*<Alert name="isAllowed" />*/}
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        {JSON.stringify(errors)}
+        {/*{JSON.stringify(errors)}*/}
         <Warning
           hidden={!coldandthermo}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."

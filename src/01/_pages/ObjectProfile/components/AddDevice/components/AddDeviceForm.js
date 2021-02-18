@@ -152,7 +152,6 @@ const AddDeviceForm = (props) => {
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledModalBody>
         <Title size="middle" color="black">

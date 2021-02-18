@@ -18,6 +18,7 @@ import { styles, StyledFormPage } from './styledComponents';
 import { addNode } from '../apiAddNode';
 import { AddNodeContext } from '../index';
 import ModalAddDevice from "../modals/ModalAddDevice";
+import ModalAddNode from "../modals/ModalAddNode";
 
 const StyledHint = styled.div`
   color: rgba(39, 47, 90, 0.7)
@@ -31,6 +32,7 @@ const AddNodeThirdTab = () => {
     setAddOdpu,
     communicationPipes,
     node,
+    setAddNode
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
@@ -46,16 +48,18 @@ const AddNodeThirdTab = () => {
     validationSchema,
 
     onSubmit: async () => {
-      const form = {
-        communicationPipes: values.communicationPipes,
-      };
-      console.log(form);
 
-      const addNodeForm = { ...node, communicationPipes };
-      console.log('addNodeForm', addNodeForm);
-      addNode(addNodeForm).then((res)=>{
-          console.log("addNodeFormResponseFromServer", res)
-      })
+      setAddNode(true)
+      // const form = {
+      //   communicationPipes: values.communicationPipes,
+      // };
+      // console.log(form);
+      //
+      // const addNodeForm = { ...node, communicationPipes };
+      // console.log('addNodeForm', addNodeForm);
+      // addNode(addNodeForm).then((res)=>{
+      //     console.log("addNodeFormResponseFromServer", res)
+      // })
     },
   });
 
@@ -78,11 +82,12 @@ const AddNodeThirdTab = () => {
     return null;
   };
 
+
+
   return (
     <form
       hidden={Number(currentTabKey) !== 3}
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
@@ -113,6 +118,7 @@ const AddNodeThirdTab = () => {
         </ButtonTT>
       </StyledFooter>
       <ModalAddDevice />
+      <ModalAddNode />
     </form>
   );
 };

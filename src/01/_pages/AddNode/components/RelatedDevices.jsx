@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
 import { AddNodeContext } from '../index';
@@ -47,9 +45,32 @@ export const RelatedDevices = () => {
       id,
       pipe,
       housingStockId,
+      housingMeteringDeviceType,
     } = device;
 
     const { pipeNumber, entryNumber, hubNumber } = pipe;
+
+    function handleEdit() {
+      console.log('handleEdit');
+    }
+
+    function handleDelete() {
+      console.log('handleDelete');
+      console.log(pipeNumber, housingMeteringDeviceType);
+
+      const newCommunicationPipes = communicationPipes.map((communicationPipe, index) => {
+        const { devices, number } = communicationPipe;
+        const getIndex = _.findIndex(devices, (o) => o.pipe.pipeNumber === pipeNumber);
+        console.log(getIndex);
+        if (getIndex > -1) {
+          const modifiedDevices = _.remove(devices, (o) => o.pipe.pipeNumber !== pipeNumber);
+
+          return { ...communicationPipe, devices: modifiedDevices };
+        } return communicationPipe;
+      });
+      console.log('newCommunicationPipes', newCommunicationPipes);
+      setCommunicationPipes(newCommunicationPipes);
+    }
 
     return (
       <ListItem key={id}>
@@ -59,17 +80,11 @@ export const RelatedDevices = () => {
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
-        <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
         <Span>{`Ввод: ${entryNumber}`}</Span>
-        {/* <Span>{`Узел: ${hubNumber}`}</Span> */}
         <Span>{`Труба: ${pipeNumber}`}</Span>
         <Div>
-          {' '}
-          <IconTT icon="edit" style={{ marginLeft: 8 }} />
-          <IconTT icon="del" style={{ marginLeft: 8 }} />
+          {/*<IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} />*/}
+          <IconTT icon="close" style={{ marginLeft: 8 }} onClick={handleDelete} />
         </Div>
       </ListItem>
     );

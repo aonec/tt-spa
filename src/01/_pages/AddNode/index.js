@@ -16,6 +16,7 @@ export const AddNode = () => {
   const [calculatorsExtended, setCalculatorsExtended] = useState();
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
+  const [addNode, setAddNode] = useState(false);
   const [communicationPipes, setCommunicationPipes] = useState([]);
   const [node, setNode] = useState({});
   const [currentTabKey, setTab] = useState('1');
@@ -112,7 +113,9 @@ export const AddNode = () => {
     setCommunicationPipes,
     housingStock,
     stepsArr,
-    isEmpty
+    isEmpty,
+    addNode,
+    setAddNode,
   };
 
   return (
