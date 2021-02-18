@@ -1,4 +1,6 @@
 import * as Yup from "yup";
+import {housingMeteringDeviceTypes, isConnected, magistrals} from "../../../../../tt-components/localBases";
+import moment from "moment";
 
 export const validationSchemaFlowMeter = Yup.object({
     isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
@@ -22,3 +24,4 @@ export const validationSchemaTemperatureSensor = Yup.object({
     pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
         .required('Введите номер'),
 });
+

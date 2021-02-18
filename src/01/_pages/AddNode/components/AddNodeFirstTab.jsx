@@ -29,7 +29,7 @@ const AddNodeFirstTab = () => {
   } = useFormik({
     initialValues: {
       resource: resources[0].value,
-      number: null,
+      number: 1,
       serviceZone: serviceZoneList[0].value,
       nodeStatus: nodeStatusList[0].value,
       lastCheckingDate: undefined,

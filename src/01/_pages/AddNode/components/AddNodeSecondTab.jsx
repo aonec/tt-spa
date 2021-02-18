@@ -39,7 +39,7 @@ const AddNodeSecondTab = () => {
     initialValues: {
       isConnected: true,
       calculatorId: null,
-      entryNumber: null,
+      entryNumber: 1,
     },
     validationSchema,
     onSubmit: async () => {
