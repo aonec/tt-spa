@@ -109,6 +109,7 @@ export const AddNode = () => {
     setAddCalculator,
     addOdpu,
     setAddOdpu,
+    calculatorsExtended,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
