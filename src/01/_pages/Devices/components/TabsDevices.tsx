@@ -37,7 +37,7 @@ const TabsDevices = ({ devicePage }) => {
   const { totalPages } = devicePage;
   const [isLoading, setIsLoading] = useState(true);
   // затипизировать
-  const [deviceElems, setDeviceElems] = useState<DevicesByAddressInterface[] | undefined>(undefined);
+  const [deviceElems, setDeviceElems] = useState<JSX.Element[]>();
 
   const [searchState, dispatchSearchState] = useReducer(devicesSearchReducer, initialState);
   const debouncedSearchState = useDebounce(searchState, 500);
@@ -59,9 +59,7 @@ const pages = createPages(totalPages, currentPage);
 
     const deviceArray = devicesByObject.map((addressDevicesGroup) => <DevicesByAddress key={addressDevicesGroup.address?.id} addressDevicesGroup={addressDevicesGroup} />);
     setDeviceElems(deviceArray);
-    // if (deviceArray.length) {
       setIsLoading(false);
-    // }
   }, [devicePage.items]);
 
 
@@ -79,7 +77,7 @@ const pages = createPages(totalPages, currentPage);
     <Tabs defaultActiveKey="1" style={{ maxWidth: 960 }}>
       <TabPane className={styles.tab} tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
         {/* <DeviceSearchForm searchTerm={searchTerm} setSearchTerm={setSearchTerm}/> */}
-        <DeviceSearchForm dispatch={dispatch} searchState={searchState} dispatchSearchState={dispatchSearchState} />
+        <DeviceSearchForm searchState={searchState} dispatchSearchState={dispatchSearchState} />
         {isLoading || devicePage.isLoading ? (
           <div>
             ЗАГРУЗКА...
@@ -93,9 +91,6 @@ const pages = createPages(totalPages, currentPage);
             </div>
           )}
       </TabPane>
-      {/* <TabPane tab="ИПУ" key="2"> */}
-      {/*    Content of Tab Pane 2 */}
-      {/* </TabPane> */}
     </Tabs>
   );
 };

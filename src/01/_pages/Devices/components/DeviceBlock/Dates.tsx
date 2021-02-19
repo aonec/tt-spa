@@ -1,32 +1,26 @@
 import transformDate from "../../../../utils/transformDate";
 import React from "react";
 import styled from "styled-components";
-import {CalculatorsInterface, DeviceInterface} from "../utils/groupDevicesByObjects";
-
-export const Dates: React.FC = ({firstDate, lastDate}) => {
 
 
+export const Dates: React.FC<DateProps> = ({firstDate, lastDate}) => {
     return (
         <>
-            {/*<CheckingDates>*/}
-            {/*    {transformDate(device.futureCheckingDate)}*/}
-            {/*</CheckingDates>*/}
-
-            <LastCommercialAccountingDate>
+            <DateWrapper>
                 {transformDate(firstDate)} - {transformDate(lastDate)}
-            </LastCommercialAccountingDate>
+            </DateWrapper>
         </>
     )
 }
 
-const LastCommercialAccountingDate = styled.span`
-margin: 0 auto;
-color: #272F5A;
-opacity: 0.7;
-`
 
-const CheckingDates = styled.div`
-margin: 0 auto;
-color: #272F5A;
-opacity: 0.8;
+interface DateProps {
+  firstDate: string | null
+  lastDate: string | null
+}
+
+const DateWrapper = styled.span`
+  margin: 0 auto;
+  color: #272F5A;
+  opacity: 0.7;
 `
