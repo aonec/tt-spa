@@ -66,11 +66,12 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
       >
         {isActive
           ?
-          <div style={{display: 'flex', marginBottom: 10, marginTop: 8}}>
+          <div style={{display: 'flex', marginBottom: 10}}>
             <Tooltip title="Настройка параметров">
-              <Button onClick={() => setIsActive(state => !state)}
-                      style={{display: 'flex', justifyContent: 'center', marginRight: 16}}
-                      icon={<IconTT icon="searchFilter"/>} />
+              <div style={{marginRight: 16}}>
+                <Button onClick={() => setIsActive(state => !state)}
+                        icon={<IconTT icon="searchFilter"/>} />
+              </div>
             </Tooltip>
             <Select
               style={{ width: '100%' }}
@@ -85,7 +86,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
             <Form>
               <Tooltip title="Настройка параметров">
                 <Button onClick={() => setIsActive(state => !state)}
-                        style={{display: 'flex', justifyContent: 'center', marginBottom: 8}}
+                        style={{marginBottom: 8}}
                         icon={<IconTT icon="searchFilter"/>} />
               </Tooltip>
               <FormItem name="dateRange" label="Произвольный период" >
@@ -125,7 +126,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
 
 const GraphFilter = styled.div`
   max-width: 600px;
-  
+  margin-top: 8px;
   form {
     .ant-picker-input {
       width: 100%;

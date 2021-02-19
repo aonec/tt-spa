@@ -34,6 +34,7 @@ const formHourlyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInter
 }
 
 const formDailyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[]  => {
+  debugger;
   if (archiveArr.length <= 14) return archiveArr
 
   const length = archiveArr.length;
@@ -59,11 +60,6 @@ export const formTicks = (archiveArr: ArchiveEntryInterface[], reportType: Repor
 }
 
 export const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType, x: string) => {
-
-
-  const newArchive = formTicks(archiveArr, reportType);
-  debugger;
-
 
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM')

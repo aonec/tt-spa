@@ -24,7 +24,7 @@ import {GraphParamsType} from "../Graph";
 
 const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => {
 
-
+debugger;
 
 
     const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
@@ -40,9 +40,9 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => 
     const archiveEntries = _.get(data, 'archiveEntries', []);
 
 
-    // const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
+    const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
 
-    const tickValues = formTicks(archiveEntries, reportType);
+    // const tickValues = formTicks(archiveEntries, reportType);
 
     const ticksData = tickValues.map((tick) => tick.timestamp);
 
@@ -59,6 +59,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => 
 
 
     const graphData = useMemo(() => formGraphData(archiveEntries, graphParam), [archiveEntries, graphParam]);
+    // const graphData = formGraphData(archiveEntries, graphParam);
 
     // const tickValues = formTicks(archiveEntries, searchQuery.reportType);
 
