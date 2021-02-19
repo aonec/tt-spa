@@ -1,44 +1,76 @@
-import {useCallback, useEffect, useState} from "react";
+import React from "react";
 
-export const useAsync = <T, E = string>(
-    asyncFunction: () => Promise<T>,
-    immediate = true
-) => {
-    const [status, setStatus] = useState<
-        'idle' | 'pending' | 'success' | 'error'
-        >('idle');
-    const [value, setValue] = useState<T | null>(null);
-    const [error, setError] = useState<E | null>(null);
+const defaultInitialState = {status: 'idle', data: null, error: null}
 
-    // The execute function wraps asyncFunction and
-    // handles setting state for pending, value, and error.
-    // useCallback ensures the below useEffect is not called
-    // on every render, but only if asyncFunction changes.
-    const execute = useCallback(() => {
-        setStatus('pending');
-        setValue(null);
-        setError(null);
+function useSafeDispatch(dispatch) {
+    const mounted = React.useRef(false)
+    React.useLayoutEffect(() => {
+        mounted.current = true
+        return () => (mounted.current = false)
+    }, [])
+    return React.useCallback(
+      (...args) => (mounted.current ? dispatch(...args) : void 0),
+      [dispatch],
+    )
+}
 
-        return asyncFunction()
-            .then((response: any) => {
-                setValue(response);
-                setStatus('success');
-            })
-            .catch((error: any) => {
-                console.dir(error);
-                setError(error);
-                setStatus('error');
-            });
-    }, [asyncFunction]);
+ export function useAsync(initialState = defaultInitialState) {
+    const initialStateRef = React.useRef({
+        ...defaultInitialState,
+        ...initialState,
+    })
+    const [{status, data, error}, setState] = React.useReducer(
+      (s, a) => ({...s, ...a}),
+      initialStateRef.current,
+    )
 
-    // Call execute if we want to fire it right away.
-    // Otherwise execute can be called later, such as
-    // in an onClick handler.
-    useEffect(() => {
-        if (immediate) {
-            execute();
-        }
-    }, [execute, immediate]);
+    const safeSetState = useSafeDispatch(setState)
 
-    return { execute, status, value, error };
-};
+    const run = React.useCallback(
+      promise => {
+          if (!promise || !promise.then) {
+              throw new Error(
+                `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`,
+              )
+          }
+          safeSetState({status: 'pending'})
+          return promise.then(
+            data => {
+                safeSetState({data, status: 'resolved'})
+                return data
+            },
+            error => {
+                safeSetState({status: 'rejected', error})
+                return error
+            },
+          )
+      },
+      [safeSetState],
+    )
+
+    const setData = React.useCallback(data => safeSetState({data}), [
+        safeSetState,
+    ])
+    const setError = React.useCallback(error => safeSetState({error}), [
+        safeSetState,
+    ])
+    const reset = React.useCallback(() => safeSetState(initialStateRef.current), [
+        safeSetState,
+    ])
+
+    return {
+        // using the same names that react-query uses for convenience
+        isIdle: status === 'idle',
+        isLoading: status === 'pending',
+        isError: status === 'rejected',
+        isSuccess: status === 'resolved',
+
+        setData,
+        setError,
+        error,
+        status,
+        data,
+        run,
+        reset,
+    }
+}

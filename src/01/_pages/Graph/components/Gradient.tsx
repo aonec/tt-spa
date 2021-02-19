@@ -1,5 +1,5 @@
 import React from 'react';
-import {ResourceType} from "../Graph";
+import {ResourceType} from "./GraphView";
 import {getResourceColor} from "../../../utils/getResourceColor";
 
 interface Props {

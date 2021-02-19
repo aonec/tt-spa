@@ -1,4 +1,4 @@
-import {ResourceType} from "../_pages/Graph/Graph";
+import {ResourceType} from "../_pages/Graph/components/GraphView";
 
 export const getResourceColor = (resource: ResourceType): string => {
     switch (resource) {

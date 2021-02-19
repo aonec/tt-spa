@@ -1,5 +1,5 @@
 import axios from "01/axios"
-import {ReadingsInterface, ReportType, ResourceType} from "../_pages/Graph/Graph";
+import {ReadingsInterface, ReportType, ResourceType} from "../_pages/Graph/components/GraphView";
 import {serialize} from "v8";
 // import axios from "axios"
 
@@ -8,7 +8,7 @@ delete axios.defaults.headers.common["Authorization"];
 
 
 
-interface RequestNodeReadingsFunctionInterface {
+export interface RequestNodeReadingsFunctionInterface {
     nodeId: number
     reportType: ReportType
     from: string
