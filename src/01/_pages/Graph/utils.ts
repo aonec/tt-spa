@@ -58,12 +58,23 @@ export const formTicks = (archiveArr: ArchiveEntryInterface[], reportType: Repor
   }
 }
 
-export const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType) => {
+export const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: ReportType, x: string) => {
+
+
+  const newArchive = formTicks(archiveArr, reportType);
+  debugger;
+
+
   if (reportType === 'daily') {
-    return (x: string) => format(formatDate(x), 'dd.MM')
+    return format(formatDate(x), 'dd.MM')
   }
-  if (archiveArr.length <=24) {
-    return (x: string) => format(formatDate(x), 'HH')
+  if (archiveArr.length <= 24) {
+    return format(formatDate(x), 'HH')
   }
-  return (x: string) => format(formatDate(x), 'HH:mm')
+
+  if (archiveArr.length >= 97) {
+    return format(formatDate(x), 'H')
+  }
+
+  return format(formatDate(x), 'HH:mm')
 }
