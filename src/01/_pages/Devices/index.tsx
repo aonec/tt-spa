@@ -1,5 +1,4 @@
 import React from 'react';
-
 import TabsDevices from './components/TabsDevices';
 import {useSelector} from "react-redux";
 

@@ -34,3 +34,4 @@ IconTT.propTypes = {
   size: t.number,
   stroke: t.string,
 };
+

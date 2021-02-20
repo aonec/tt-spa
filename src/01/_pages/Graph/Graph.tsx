@@ -30,10 +30,7 @@ export type GraphParamsType =
 
 
 const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
-  // const { nodeId } = useParams();
-  // const params = useParams();
 
-  // const params = getParams(nodeId)
 
   const { data, error, status, run, reset, setData} = useAsync();
 
@@ -42,9 +39,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
     switch (resource) {
       case "ColdWaterSupply":
         return ["InputVolume"]
-
-     // return  [pipeCount === 1 ? "InputVolume" : "DeltaVolume", "Energy"]
-
       case "HotWaterSupply":
         return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
       case "Heat":
