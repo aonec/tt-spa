@@ -1,97 +1,75 @@
 import React from 'react';
-
+import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import styles from '../TabsDevices.module.scss';
 import { Icon } from '../../../../tt-components/Icon';
-import DeviceIcons from "../../../../_components/DeviceIcons";
-import transformDate from "../../../../utils/transformDate";
-import {NotConnectedIcon} from "../../../../components/NotConnectedIcon/NotConnectedIcon";
+import {NotConnectedIcon} from '../../../../components/NotConnectedIcon/NotConnectedIcon';
+import {Dates} from './Dates';
+import Node from './Node/Node';
 
 const DeviceBlock = (props) => {
-  const { device: calculator} = props;
-  let lastCheckingDate = transformDate(calculator.lastCheckingDate);
-  let futureCheckingDate = transformDate(calculator.futureCheckingDate);
-  let lastCommercialAccountingDate = transformDate(calculator.lastCommercialAccountingDate);
+    const { device: calculator} = props;
 
-  const subdevices = calculator.hubs && calculator.hubs.length
-      ? calculator.hubs.map((odpu) => {
+    return (
+        <>
+            <DeviceWrapper>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <DeviceLink
+                        to={`/calculators/${calculator.id}`}
+                    >
+                        <DeviceIcon icon="device" fill="var(--main-100)" />
+                        {calculator.model}
+                        <SerialNumber>
+                            ({calculator.serialNumber})
+                        </SerialNumber>
+                    </DeviceLink>
 
-        const { icon, color } = DeviceIcons[odpu.resource];
+                    <div hidden={calculator.isConnected}>
+                        <NotConnectedIcon />
+                    </div>
 
-        return (
-            <div className={styles.device__wrapper}>
+                </div>
 
-              <div>
-                <NavLink
-                    className={styles.device__title + ' ' + styles.subdevice__title}
-                    to={`/housingMeteringDevices/${odpu.id}`}
-                >
-                  <Icon className={styles.icon} icon={icon} fill={color} />
-                  {`${odpu.model} `}
-                  <span className={styles.deviceId}>
-                            {` (${odpu.serialNumber})`}
-                          </span>
-                </NavLink>
-              </div>
+                <Dates firstDate={calculator.lastCheckingDate} lastDate={calculator.futureCheckingDate} />
 
-              <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.8}}>
-                {transformDate(odpu.lastCheckingDate)} — {transformDate(odpu.futureCheckingDate)}
-              </div>
-
-              <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
-                {transformDate(odpu.lastCommercialAccountingDate)}
-              </div>
-
-              <div className={styles.justify_center}>
-                {odpu.diameter ? odpu.diameter + ' мм' : ''}
-              </div>
-
-              {/*<div className={styles.justify_center}>*/}
-              {/*  1*/}
-              {/*</div>*/}
-
+            </DeviceWrapper>
+            <div>
+                {calculator.nodes.map((node) => <Node node={node} />)}
             </div>
-        )
-      })
-      : 'Подключенных приборов нет';
+        </>
 
-  // const housingStockNumber = calculator.address.housingStockNumber;
-  return (
-      <div className={styles.device}>
-        <div>
-          <div className={styles.device__wrapper}>
-
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <NavLink
-                  className={`${styles.device__main} ${styles.device__title}`}
-                  to={`/calculators/${calculator.id}`}
-              >
-                <Icon className={styles.icon} icon="device" fill="var(--main-100)" />
-                {calculator.model}
-                <span className={styles.deviceId}>
-              {`(${calculator.serialNumber})`}
-                </span>
-              </NavLink>
-                <div hidden={calculator.connection?.isConnected ?? true}><NotConnectedIcon /></div>
-
-            </div>
-
-            <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.8}}>
-              {lastCheckingDate} — {futureCheckingDate}
-            </div>
-
-            <div className={styles.justify_center} style={{color: '272F5A', opacity: 0.6}}>
-              {lastCommercialAccountingDate}
-            </div>
-
-          </div>
-          <div className={styles.subDevices}>
-            {subdevices}
-
-          </div>
-        </div>
-      </div>
-  );
+    );
 };
+
+export const DeviceWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
+    margin-bottom: 24px;
+    align-items: center;
+    justify-content: center;
+`
+
+export const SerialNumber = styled.span`
+    margin-left: 6px;
+    font-weight: normal;
+    color: rgba(39, 47, 90, 0.6);
+`
+
+export const Diameter = styled.div`
+    margin: 0 auto;
+`
+
+export const DeviceLink = styled(NavLink)`
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 2;
+    color: #272f5A;
+    margin-right: 8px;
+`
+
+export const DeviceIcon = styled(Icon)`
+    margin-right: 8px;
+`
 
 export default DeviceBlock;
