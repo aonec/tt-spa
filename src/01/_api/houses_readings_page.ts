@@ -6,13 +6,13 @@ export type ReadingsStateType = {
     hasNextPage: boolean
     hasPreviousPage: boolean
     items: Array<IndividualDeviceType>
-        nextPageNumber: number
-pageNumber: number
-pageSize: number
-previousPageNumber: number
-totalItems: number
-totalPages: number
-disabledState?: DisabledStateType
+    nextPageNumber: number
+    pageNumber: number
+    pageSize: number
+    previousPageNumber: number
+    totalItems: number
+    totalPages: number
+    disabledState?: DisabledStateType
 }
 
 export type HouseType = {

@@ -53,9 +53,12 @@ const Node:React.FC<Props> = ({node}) => {
                       <ServiceZone>{node.serviceZone}</ServiceZone>
                   </TitleWrapper>
               </div>
+
               <CommercialAct>
-                  Акт-допуска <Dates firstDate={node.lastCommercialAccountingDate} lastDate={node.futureCommercialAccountingDate} />
+                  <span>Акт-допуска </span>
+                  <Dates firstDate={node.lastCommercialAccountingDate} lastDate={node.futureCommercialAccountingDate} />
               </CommercialAct>
+
           </div>
 
           {housingDevices}

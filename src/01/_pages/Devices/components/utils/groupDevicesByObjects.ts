@@ -7,9 +7,11 @@ export const groupDevicesByObjects = (devices: CalculatorsInterfaceFull[]): Devi
         }
         const { address, ...rest } = device;
         const index = devicesByObject.findIndex((el) => el.address?.id === address?.id);
-        index === -1
-            ? devicesByObject.push({ address, devices: [{ ...rest }] })
-            : devicesByObject[index].devices.push({ ...rest });
+        if (index === -1) {
+            devicesByObject.push({ address, devices: [{ ...rest }] })
+        } else {
+            devicesByObject[index].devices.push({ ...rest });
+        }
     });
     return devicesByObject
 }

@@ -9,8 +9,6 @@ import Node from './Node/Node';
 const DeviceBlock = (props) => {
     const { device: calculator} = props;
 
-    const nodes = calculator.nodes.map((node) => <Node node={node} />)
-
     return (
         <>
             <DeviceWrapper>
@@ -35,7 +33,7 @@ const DeviceBlock = (props) => {
 
             </DeviceWrapper>
             <div>
-                {nodes}
+                {calculator.nodes.map((node) => <Node node={node} />)}
             </div>
         </>
 

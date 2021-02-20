@@ -2707,7 +2707,6 @@ const GraphTooltip = (props) => {
 const Graph: React.FC = () => {
 
     return (
-        // <div style={{display: 'flex', justifyContent: 'center'}}>
         <GraphWrapper>
             <svg>
                 <defs>
