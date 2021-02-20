@@ -414,6 +414,7 @@ const FormEditODPU = (props) => {
             <Alert name="magistral" />
           </Form.Item>
 
+          
         </div>
 
         <div hidden={Number(currentTabKey) !== 3}>
