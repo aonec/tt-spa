@@ -3,13 +3,19 @@ import axios from 'axios';
 // const baseURL = process.env.REACT_APP_URL
 
 const baseURL = 'https://transparent-staging.herokuapp.com/api';
-//const baseURL = 'https://transparent-production.herokuapp.com/api';
+// const baseURL = 'https://transparent-production.herokuapp.com/api';
 
 axios.defaults.baseURL = baseURL;
 
 let cancel;
 axios.interceptors.request.use((req) => {
-  req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+
+    if (req.baseURL === "http://84.201.132.164:8080/api") {
+        delete req.headers.Authorization
+    } else {
+        req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
+    }
+
   req.cancelToken = new axios.CancelToken((e) => {
     cancel = e;
   });
@@ -62,12 +68,14 @@ axios.interceptors.response.use(
       });
 
     }
-      if (status === 403 ) {
-          window.location.replace('/access-denied/');
-      }
-      if (status === 404 ) {
-          window.location.replace('/error/');
-      }
+
+    // debugger;
+    //   if (status === 403 ) {
+    //       window.location.replace('/access-denied/');
+    //   }
+    //   if (status === 404 ) {
+    //       window.location.replace('/error/');
+    //   }
     return Promise.reject(error);
   },
 );

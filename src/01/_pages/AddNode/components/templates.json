@@ -1,4 +1,4 @@
-const template = {
+export const template = {
   number: 0,
   nodeStatus: 'string',
   resource: 'string',
@@ -19,7 +19,7 @@ const template = {
           futureCheckingDate: '2021-02-02T08:18:45.354Z',
           lastCommercialAccountingDate: '2021-02-02T08:18:45.354Z',
           documentsIds: [
-            0,
+            0
           ],
           futureCommercialAccountingDate: '2021-02-02T08:18:45.354Z',
           housingMeteringDeviceType: 'string',
@@ -31,11 +31,39 @@ const template = {
             entryNumber: 0,
             hubNumber: 0,
             pipeNumber: 0,
-            magistral: 'string',
+            magistral: 'string'
           },
-          diameter: 0,
-        },
-      ],
-    },
-  ],
+          diameter: 0
+        }
+      ]
+    }
+  ]
 };
+
+export const communicationPipeTemplate = [
+{
+number: 1,
+entryNumber: 2,
+magistral: 'FeedFlow',
+devices: [
+{
+serialNumber: '1634033434354444',
+lastCheckingDate: '2021-02-05T06:25:25.707Z',
+futureCheckingDate: '2024-02-05T06:25:25.707Z',
+lastCommercialAccountingDate: '2021-02-05T06:25:25.707Z',
+futureCommercialAccountingDate: '2021-02-05T06:25:25.707Z',
+documentsIds: [],
+housingMeteringDeviceType: 'FlowMeter',
+resource: 'HotWaterSupply',
+model: 'THERMO 26122020',
+diameter: 12,
+pipe: {
+calculatorId: 2538469,
+entryNumber: 2,
+pipeNumber: 2,
+magistral: 'FeedFlow',
+},
+},
+],
+},
+];

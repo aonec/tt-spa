@@ -31,7 +31,6 @@ function reducer(state, action){
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
 
-  const [addNode, setAddNode] = useState(false);
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
 

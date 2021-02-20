@@ -1,34 +1,28 @@
 import React, {
-  useContext, useState,
+  useContext, useEffect, useState,
 } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import _ from 'lodash';
 import {
   resources, serviceZoneList, nodeStatusList,
 } from '../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledModalHeader,
+  Title, SelectTT, InputTT, DatePickerTT, ButtonTT, StyledFooter,
 } from '../../../tt-components';
 import { styles, StyledFormPage } from './styledComponents';
 import { AddNodeContext } from '../index';
+import { addNodeValidationSchema } from './validationSchemas';
+import ModalAddCalculator from "../modals/ModalAddCalculator";
+import ModalAddDevice from "../modals/ModalAddDevice";
 
-const AddNodeFirstTab = (props) => {
+const AddNodeFirstTab = () => {
   const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, node, setNode,
+    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, node, setNode, isEmpty,
   } = useContext(AddNodeContext);
-  const {
-    setAddCalculator,
-    currentCalculatorId,
-    devices,
-    setResource,
-    communicationPipes,
-  } = props;
-  const [disable, setDisable] = useState(false);
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
+  const [validationSchema, setValidationSchema] = useState(addNodeValidationSchema);
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setValues,
@@ -38,8 +32,8 @@ const AddNodeFirstTab = (props) => {
       number: 1,
       serviceZone: serviceZoneList[0].value,
       nodeStatus: nodeStatusList[0].value,
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(1, 'years').toISOString(),
+      lastCheckingDate: undefined,
+      futureCheckingDate: undefined,
     },
     validationSchema,
     onSubmit: async () => {
@@ -56,9 +50,17 @@ const AddNodeFirstTab = (props) => {
         ...prevState,
         ...form,
       }));
-      setTab('2');
+      handleNext();
     },
   });
+
+  useEffect(() => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      lastCheckingDate: moment().toISOString(),
+      futureCheckingDate: moment().add(1, 'years').toISOString(),
+    }));
+  }, []);
 
   const Alert = ({ name }) => {
     const touch = _.get(touched, `${name}`);
@@ -168,13 +170,16 @@ const AddNodeFirstTab = (props) => {
           color="blue"
           big
           type="submit"
+          disabled={!isEmpty(errors)}
         >
           Далее
         </ButtonTT>
+
         <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
           Отмена
         </ButtonTT>
       </StyledFooter>
+
     </form>
   );
 };

@@ -1,4 +1,6 @@
-export function createPages(pages, totalPages, currentPage) {
+export function createPages(totalPages: number, currentPage: number): number[] {
+    const pages = [];
+
     if(totalPages > 10) {
         if(currentPage > 5) {
             for (let i = currentPage-4; i <= currentPage+5; i++) {
@@ -17,4 +19,6 @@ export function createPages(pages, totalPages, currentPage) {
             pages.push(i)
         }
     }
+
+    return pages;
 }
