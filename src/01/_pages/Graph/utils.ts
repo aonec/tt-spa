@@ -1,5 +1,6 @@
 import {format} from "date-fns";
-import {ArchiveEntryInterface, ReportType} from "./components/GraphView";
+import {ArchiveEntryInterface, ReportType, ResourceType} from "./components/GraphView";
+import {GraphParamsType} from "./Graph";
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
@@ -34,7 +35,6 @@ const formHourlyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInter
 }
 
 const formDailyTicks = (archiveArr: ArchiveEntryInterface[]): ArchiveEntryInterface[]  => {
-  debugger;
   if (archiveArr.length <= 14) return archiveArr
 
   const length = archiveArr.length;
@@ -73,4 +73,29 @@ export const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: R
   }
 
   return format(formatDate(x), 'HH:mm')
+}
+
+export const getGraphParams = (resource: ResourceType, pipeCount: 1 | 2):GraphParamsType[] => {
+  switch (resource) {
+    case "ColdWaterSupply":
+      return ["InputVolume"]
+    case "HotWaterSupply":
+      return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
+    case "Heat":
+      return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
+    default:
+      console.log('Ресурс', resource, 'и количество труб ', pipeCount, 'не предусмотрено');
+      return []
+  }
+}
+
+export const translateParam = (param: GraphParamsType) => {
+  switch (param) {
+    case "InputVolume":
+      return "Входящий объем, м³"
+    case "Energy":
+      return "Энергия, ГКал"
+    case "DeltaVolume":
+      return "Расход по объему, м³"
+  }
 }

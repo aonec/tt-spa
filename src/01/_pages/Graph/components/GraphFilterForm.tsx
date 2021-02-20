@@ -7,19 +7,19 @@ import {AutoComplete as $AutoComplete, Button, Tooltip} from "antd";
 import {GraphParamsType} from "../Graph";
 import IconTT from "../../../tt-components/IconTT";
 import styled from "styled-components";
+import {translateParam} from "../utils";
 
 interface GraphFilterFormProps {
   setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
   setSearchQuery: Dispatch<SetStateAction<RequestNodeReadingsFunctionInterface>>
   paramsList: GraphParamsType[]
-  // setSearchQuery:
 }
 
-const {Option} = Select;
+const GraphFilterForm: React.FC<GraphFilterFormProps> = (
+  {setGraphParam, setSearchQuery, paramsList}
+) => {
 
-const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSearchQuery, paramsList}) => {
-
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   const onSelectHandler = (value: GraphParamsType) => {
     setGraphParam(value);
@@ -38,17 +38,6 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
     actions.setSubmitting(false);
   }
 
-  const translateParam = (param: GraphParamsType) => {
-    switch (param) {
-      case "InputVolume":
-        return "Входящий объем, м³"
-      case "Energy":
-        return "Энергия, ГКал"
-      case "DeltaVolume":
-        return "Расход по объему, м³"
-    }
-  }
-
   const options = paramsList.map((param) => ({label: translateParam(param), value: param}));
 
   return (
@@ -64,6 +53,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
         }}
         onSubmit={handleSubmit}
       >
+
         {isActive
           ?
           <div style={{display: 'flex', marginBottom: 10}}>
@@ -92,7 +82,6 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
               <FormItem name="dateRange" label="Произвольный период" >
                 <div>
                   <DatePicker.RangePicker
-                    // open
                     name="dateRange"
                     style={{marginRight: 16}}
                   />
@@ -109,13 +98,8 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
                   />
                 </div>
               </FormItem>
-              {/*<div style={{display: 'flex', justifyContent: 'flex-end'}}>*/}
-                <Button onClick={() => setIsActive(state => !state)} style={{marginRight: 16}}>Отмена</Button>
-                <SubmitButton disabled={false}>Применить настройки</SubmitButton>
-              {/*</div>*/}
-
-
-              {/*<FormikDebug style={{ maxWidth: 400 }} />*/}
+              <Button onClick={() => setIsActive(state => !state)} style={{marginRight: 16}}>Отмена</Button>
+              <SubmitButton disabled={false}>Применить настройки</SubmitButton>
             </Form>
           </div>
         }
@@ -127,6 +111,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({setGraphParam, setSear
 const GraphFilter = styled.div`
   max-width: 600px;
   margin-top: 8px;
+  
   form {
     .ant-picker-input {
       width: 100%;
@@ -136,11 +121,10 @@ const GraphFilter = styled.div`
         }
     }
     .ant-picker {
-              padding: 8px 16px;
-              width: 100%;
+          padding: 8px 16px;
+          width: 100%;
         }
-}
-
+  } 
 `
 
 

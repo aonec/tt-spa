@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import GraphView, {ReadingsInterface, ReportType, ResourceType} from "./components/GraphView";
+import React, {useEffect, useState} from 'react';
+import GraphView, { ReportType, ResourceType} from "./components/GraphView";
 import GraphFilterForm from "./components/GraphFilterForm";
-import {useParams} from "react-router-dom";
 import moment from "moment";
 import {requestNodeReadings, RequestNodeReadingsFunctionInterface} from "../../_api/node_readings_page";
 import {useAsync} from "../../hooks/useAsync";
 import {Alert} from "antd";
+import {getGraphParams} from "./utils";
 
 interface GraphProps {
   nodeId: number
@@ -32,22 +32,7 @@ export type GraphParamsType =
 const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
 
-  const { data, error, status, run, reset, setData} = useAsync();
-
-
-  const getGraphParams = (resource: ResourceType, pipeCount: 1 | 2):GraphParamsType[] => {
-    switch (resource) {
-      case "ColdWaterSupply":
-        return ["InputVolume"]
-      case "HotWaterSupply":
-        return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
-      case "Heat":
-        return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
-      default:
-        console.log('Ресурс', resource, 'и количество труб ', pipeCount, 'не предусмотрено');
-        return []
-    }
-  }
+  const { data, status, run} = useAsync();
 
   const reportType = 'daily' as ReportType;
 
@@ -70,9 +55,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
   useEffect(() => {
     run(requestNodeReadings(searchQuery))
   }, [searchQuery, run])
-
-
-
 
   return (
     <div style={{paddingBottom: 80}}>

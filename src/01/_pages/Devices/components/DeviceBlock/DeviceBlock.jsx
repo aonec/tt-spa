@@ -23,7 +23,7 @@ const DeviceBlock = (props) => {
                         </SerialNumber>
                     </DeviceLink>
 
-                    <div hidden={calculator.connection?.isConnected ?? true}>
+                    <div hidden={calculator.isConnected}>
                         <NotConnectedIcon />
                     </div>
 
