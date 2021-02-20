@@ -81,7 +81,7 @@ export const magistrals = [
 export const isConnected = [
   {
     value: true,
-    label: 'Есть',
+    label: 'Есть подключение',
   },
   {
     value: false,

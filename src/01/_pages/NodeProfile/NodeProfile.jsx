@@ -11,6 +11,8 @@ import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
 import {Title} from "../../tt-components";
+import GraphView from "../Graph/components/GraphView";
+import Graph from "../Graph/Graph";
 
 export const NodeContext = createContext();
 export const NodeProfile = () => {
@@ -19,6 +21,7 @@ export const NodeProfile = () => {
   const [node, setNode] = useState();
   const [calculator, setCalculator] = useState();
   const [currentTab, setCurrentTab] = useState('1');
+
 
   function handleChangeTab(value) {
     setCurrentTab(value);
@@ -53,12 +56,14 @@ export const NodeProfile = () => {
     <NodeContext.Provider value={context}>
       <Header />
       <Tabs />
-      <Grid>
+      {/*<Grid>*/}
         <Route path={`${url}`} exact>
           <Information />
         </Route>
         <Route path={`${url}/stats`} exact>
-          <Title color={'black'}>Компонент в разработке</Title>
+          {/*<Title color={'black'}>Компонент в разработке</Title>*/}
+          <Graph nodeId={nodeId} resource={node.resource} pipeCount={node.communicationPipes.length}/>
+          {/*<GraphView />*/}
         </Route>
         <Route path={`${url}/connection`} exact>
           <Connection />
@@ -70,7 +75,7 @@ export const NodeProfile = () => {
           <Documents />
         </Route>
         {/* <Events title="Задачи с объектом" /> */}
-      </Grid>
+      {/*</Grid>*/}
     </NodeContext.Provider>
   );
 };

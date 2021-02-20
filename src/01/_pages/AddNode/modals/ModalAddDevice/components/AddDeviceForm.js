@@ -1,111 +1,79 @@
 import React, {
-  useContext, useEffect, useRef, useState,
+  useContext, useEffect,  useState,
 } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import styled from 'styled-components';
 import {
-  resources, magistrals, housingMeteringDeviceTypes, isConnected, ipv4RegExp,
+  magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
 } from '../../../../../tt-components';
-import { addOdpu, getCalculator } from '../apiAddOdpu';
-import TabsComponent from './Main';
-
+import TabsComponent from './TabsComponent';
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { AddNodeContext } from '../../../index';
-
-const StyledHint = styled.div`
-  color: rgba(39, 47, 90, 0.7)
-`;
+import { validationSchemaFlowMeter, validationSchemaTemperatureSensor } from './validationSchemas';
 
 const AddDeviceForm = (props) => {
+  const { handleCancel } = props;
+
   const {
     node,
-    setNode,
-    housingStockId,
-    calculators,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
     communicationPipes,
     setCommunicationPipes,
-    housingStock,
   } = useContext(AddNodeContext);
 
-  const { handleCancel } = props;
+  console.log('node', node);
 
   const { resource, entryNumber, calculatorId } = node;
 
-  console.log('AddDeviceFormProps', props);
   const [currentTabKey, setTab] = useState('1');
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  const validationSchemaFlowMeter = Yup.object({
-    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
-    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
-    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-    // entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-    //   .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-    diameter: Yup.number().min(1, 'от 1').max(150, 'до 150').typeError('Нельзя оставлять пустое значение')
-      .required('Введите число от 1'),
-  });
-  const validationSchemaTemperatureSensor = Yup.object({
-    model: Yup.string().min(3, 'Модель должна быть длиннее трех символов').required('Введите модель'),
-    serialNumber: Yup.string().min(3, 'Серийный номер должен быть длиннее трех символов').required('Введите серийный номер'),
-    calculatorId: Yup.number().typeError('Вы не выбрали вычислитель').required('Выберите вычислитель'),
-    entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-    pipeNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-      .required('Введите номер'),
-  });
+  console.log('communicationPipes', communicationPipes);
 
   const tabErrors = [
     {
       key: '1',
-      value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
+      value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId', 'isAllowed'],
     },
-    // {
-    //   key: '2',
-    //   value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
-    // },
   ];
+
+  const initialValues = {
+    isConnected: isConnected[0].value,
+    isAllowed: true,
+    serialNumber: '',
+    lastCheckingDate: moment().toISOString(),
+    futureCheckingDate: moment().add(3, 'years').toISOString(),
+    lastCommercialAccountingDate: moment().toISOString(),
+    futureCommercialAccountingDate: moment().toISOString(),
+    documentsIds: [],
+    ipV4: '',
+    deviceAddress: null,
+    port: null,
+    housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
+    resource,
+    model: '',
+    diameter: null,
+    calculatorId,
+    entryNumber,
+    hubNumber: null,
+    pipeNumber: null,
+    magistral: magistrals[0].value,
+  }
+
 
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setValues,
   } = useFormik({
-    initialValues: {
-      isConnected: isConnected[0].value,
-      serialNumber: '',
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(3, 'years').toISOString(),
-      lastCommercialAccountingDate: moment().toISOString(),
-      futureCommercialAccountingDate: moment().toISOString(),
-      documentsIds: [],
-      ipV4: '',
-      deviceAddress: null,
-      port: null,
-      housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
-      resource,
-      model: '',
-      diameter: null,
-      calculatorId,
-      entryNumber,
-      hubNumber: null,
-      pipeNumber: null,
-      magistral: magistrals[0].value,
-    },
+    initialValues,
     validationSchema,
 
     onSubmit: async () => {
@@ -128,19 +96,51 @@ const AddDeviceForm = (props) => {
         },
       };
 
-      const communicationPipe = {
-        number: values.pipeNumber,
-        entryNumber: values.entryNumber,
-        magistral: values.magistral,
-        devices: [device],
-      };
-      // setDevices((prev) => [...prev, form]);
-      console.log(device);
-      console.log(communicationPipe);
-      setCommunicationPipes((prevState) => ([
-        ...prevState,
+      const pipeNumbers = _.map(communicationPipes, 'number');
+
+      if (pipeNumbers.includes(values.pipeNumber)) {
+        const newCommunicationPipes = communicationPipes.map((communicationPipe)=>{
+          const {number, devices} = communicationPipe;
+          if (number === values.pipeNumber) {
+            devices.push(device)
+          }
+          return communicationPipe
+        })
+
+        console.log("newCommunicationPipes", newCommunicationPipes)
+        setCommunicationPipes(newCommunicationPipes);
+
+      }
+
+      else {
+        const communicationPipe = {
+          number: values.pipeNumber,
+          entryNumber: values.entryNumber,
+          magistral: values.magistral,
+          devices: [device],
+        };
+
+        setCommunicationPipes((prevState) => ([
+          ...prevState,
           communicationPipe,
-      ]));
+        ]));
+
+      }
+      // const communicationPipe = {
+      //   number: values.pipeNumber,
+      //   entryNumber: values.entryNumber,
+      //   magistral: values.magistral,
+      //   devices: [device],
+      // };
+      // setDevices((prev) => [...prev, form]);
+      // console.log(device);
+      // console.log(communicationPipe);
+
+
+      setValues((prevValues) => ({
+        ...prevValues,
+        ...initialValues
+      }));
     },
   });
 
@@ -190,20 +190,39 @@ const AddDeviceForm = (props) => {
     }
   }
 
+  useEffect(() => {
+    const pipeNumbers = _.map(communicationPipes, 'number');
+
+    if (pipeNumbers.includes(values.pipeNumber)) {
+      const getDevices = _.find(communicationPipes, { number: values.pipeNumber });
+      // console.log('getDevices', getDevices);
+      const isSameType = _.find(getDevices.devices, { housingMeteringDeviceType: values.housingMeteringDeviceType });
+      console.log('isSameType', isSameType);
+      isSameType ? console.log('на трубе уже есть утстройство такого типа') : console.log('на трубе НЕТ утстройство такого типа');
+      isSameType ? setFieldValue('isAllowed', false) : setFieldValue('isAllowed', true);
+    } else {
+      setFieldValue('isAllowed', true);
+    }
+  }, [values.pipeNumber, values.housingMeteringDeviceType]);
+
   return (
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledModalBody>
+        {/*<Alert name="isAllowed" />*/}
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        {JSON.stringify(errors)}
+        {/*{JSON.stringify(errors)}*/}
         <Warning
           hidden={!coldandthermo}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
+        />
+        <Warning
+          hidden={values.isAllowed}
+          title="На данной трубе уже есть такой тип устройства"
         />
         <TabsComponent
           currentTabKey={currentTabKey}

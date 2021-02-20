@@ -11,7 +11,7 @@ import {
   Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning
 } from '../../../../../tt-components';
 import { addOdpu, getCalculator } from '../apiAddOdpu';
-import TabsComponent from './Main';
+import TabsComponent from './TabsComponent';
 
 import { styles, StyledFormPage } from './styledComponents';
 import styled from 'styled-components'
@@ -152,7 +152,6 @@ const AddDeviceForm = (props) => {
     <form
       id="formikFormAddOdpu"
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledModalBody>
         <Title size="middle" color="black">
