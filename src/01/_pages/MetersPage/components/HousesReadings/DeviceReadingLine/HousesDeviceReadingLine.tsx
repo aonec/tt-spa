@@ -301,6 +301,7 @@ const StyledModal = styled(Modal)`
     margin-left: 16px;
 }
 
+
 `
 
 const Span = styled.span`
