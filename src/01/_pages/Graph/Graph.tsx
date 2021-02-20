@@ -2585,7 +2585,7 @@ const readingsOneMonthByDays = {
     ]
 };
 
-const readingsByHours = JSON.parse(JSON.stringify(readingsOneMonthByDays))
+const readingsByHours = JSON.parse(JSON.stringify(readingsOneDayByHours))
 
 const formatDate = (timeStamp) => {
     const dateObject = new Date(timeStamp);
@@ -2631,7 +2631,7 @@ const formDailyTicks = (archiveArr) => {
     return [archiveArr[0], ...multipleFives.slice(sliceParam1, sliceParam2), archiveArr[length - 1]]
 }
 
-const graphDataNew = formDailyTicks(readingsByHours.archiveEntries).map((entry) => {
+const graphDataNew = formHourlyTicks(readingsByHours.archiveEntries).map((entry) => {
     return {
         time: entry.timestamp,
         value: entry.values.DeltaMass,
@@ -2645,13 +2645,11 @@ const maxElement = readingsByHours.archiveEntries.reduce((prev, curr) => curr.va
 );
 
 const maxValue = maxElement.values.DeltaMass;
-debugger;
 
 
 // const tickValues = formHourlyTicks(readingsByHours.archiveEntries);
 const tickValues = formDailyTicks(readingsByHours.archiveEntries);
 
-debugger;
 
 const CustomTooltip = (props) => {
 
@@ -2709,7 +2707,6 @@ const GraphTooltip = (props) => {
 const Graph: React.FC = () => {
 
     return (
-        // <div style={{display: 'flex', justifyContent: 'center'}}>
         <GraphWrapper>
             <svg>
                 <defs>
@@ -2773,9 +2770,9 @@ const Graph: React.FC = () => {
 
                 <VictoryAxis
                     // tickFormat={(x) => {const time = format(new Date(x), 'dd'); return time}}
-                    // tickFormat={(x) => format(formatDate(x), 'HH')}
+                    tickFormat={(x) => format(formatDate(x), 'HH')}
                     // tickFormat={(x) => format(formatDate(x), 'HH:mm')}
-                    tickFormat={(x) => format(formatDate(x), 'dd.MM')}
+                    // tickFormat={(x) => format(formatDate(x), 'dd.MM')}
                     tickValues={tickValues}
                     style={{
                         axisLabel: { padding: 40, strokeWidth: 0 },
