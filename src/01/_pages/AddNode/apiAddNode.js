@@ -26,12 +26,14 @@ export async function getCalculators(id = '') {
   }
 }
 
-export async function addNode(form = {}) {
+export async function addNodeFinal(form = {}) {
   try {
     const res = await axios.post('Nodes', form);
+    alert('Узел успешно создан')
     return res;
   } catch (error) {
     console.log(error);
+    alert('Произошла ошибка создания Узла!')
     throw {
       resource: 'node',
       message: 'Произошла ошибка создания Узла!',

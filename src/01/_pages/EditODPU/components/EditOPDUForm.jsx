@@ -368,7 +368,8 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.entryNumber}
-              disabled={disable}
+              // disabled={disable}
+              disabled
             />
             <Alert name="entryNumber" />
           </Form.Item>
@@ -381,7 +382,8 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.hubNumber}
-              disabled={disable}
+              disabled
+              // disabled={disable}
             />
             <Alert name="hubNumber" />
           </Form.Item>
@@ -394,7 +396,8 @@ const FormEditODPU = (props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.pipeNumber}
-              disabled={disable}
+              // disabled={disable}
+              disabled
             />
             <Alert name="pipeNumber" />
           </Form.Item>
@@ -411,6 +414,7 @@ const FormEditODPU = (props) => {
             <Alert name="magistral" />
           </Form.Item>
 
+          
         </div>
 
         <div hidden={Number(currentTabKey) !== 3}>
