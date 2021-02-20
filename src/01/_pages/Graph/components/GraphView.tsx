@@ -4,28 +4,19 @@ import {
     VictoryTheme,
     VictoryVoronoiContainer, VictoryArea,
 } from 'victory';
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import styled from "styled-components";
-import {useAsync} from "../../../hooks/useAsync";
 import GraphTooltip from "./GraphTooltip";
 import {CustomTooltip} from "./CustomTooltip";
 import Gradient from "./Gradient";
 import {getResourceColor} from "../../../utils/getResourceColor";
-import {requestNodeReadings, RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
 import maxBy from 'lodash/maxBy';
 import _ from "lodash";
 import 'antd/es/date-picker/style/index';
-import { Alert } from 'antd';
 import {formTicks, getTickFormat} from "../utils";
 import {GraphParamsType} from "../Graph";
 
-
-
-
 const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => {
-
-debugger;
-
 
     const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
         return ticks.map((entry) => {
@@ -36,32 +27,14 @@ debugger;
         })
     }
 
-
     const archiveEntries = _.get(data, 'archiveEntries', []);
 
 
     const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
 
-    // const tickValues = formTicks(archiveEntries, reportType);
-
     const ticksData = tickValues.map((tick) => tick.timestamp);
 
-    console.log(tickValues.length);
-
-    //
-    // if (status === 'rejected') return <Alert
-    //   message="Ошибка"
-    //   description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
-    //   type="error"
-    //   showIcon
-    //   closable
-    // />
-
-
     const graphData = useMemo(() => formGraphData(archiveEntries, graphParam), [archiveEntries, graphParam]);
-    // const graphData = formGraphData(archiveEntries, graphParam);
-
-    // const tickValues = formTicks(archiveEntries, searchQuery.reportType);
 
     const maxElement = maxBy(graphData, (obj) => obj.value);
 
@@ -109,8 +82,6 @@ debugger;
                   />
 
                   <VictoryAxis
-                    // tickValues={tickValues}
-                    // tickValues={ticksData}
                     tickFormat={(x) => ticksData.includes(x) ? getTickFormat(archiveEntries, reportType, x) : ''}
                     style={{
                         axisLabel: { strokeWidth: 0 },
@@ -125,7 +96,6 @@ debugger;
                   />
               </VictoryChart>
           </GraphWrapper>
-
       </>
     )
 }
