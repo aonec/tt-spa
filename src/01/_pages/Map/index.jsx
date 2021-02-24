@@ -44,7 +44,7 @@ export const MapPage = () => {
               geometry={coordinate}
               modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
               properties={{
-                hintContent: `Номер задачи ${index}`,
+                hintContent: `Номер задачи ${index + 1}`,
                 balloonContentBody: 'Это красивая метка',
               }}
               options={{

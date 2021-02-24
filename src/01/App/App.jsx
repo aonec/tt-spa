@@ -6,6 +6,7 @@ import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import moment from 'moment';
+
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 // библиотека обработки дат и локализация СНГ
