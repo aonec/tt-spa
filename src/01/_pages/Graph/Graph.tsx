@@ -6,6 +6,7 @@ import {requestNodeReadings, RequestNodeReadingsFunctionInterface} from "../../_
 import {useAsync} from "../../hooks/useAsync";
 import {Alert} from "antd";
 import {getGraphParams} from "./utils";
+import styled from "styled-components";
 
 interface GraphProps {
   nodeId: number
@@ -34,11 +35,13 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
   const { data, status, run} = useAsync();
 
+  console.log(moment().utcOffset())
+
   const reportType = 'daily' as ReportType;
 
-  const from = moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}).toISOString();
+  const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute').toISOString();
 
-  const to = moment().set({hour:0,minute:0,second:0,millisecond:0}).toISOString();
+  const to = moment().set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute').toISOString();
 
   const getInitialState = () => {
     return {
@@ -57,7 +60,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
   }, [searchQuery, run])
 
   return (
-    <div style={{paddingBottom: 80}}>
+    <GraphContainer>
       <GraphFilterForm paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
       {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
 
@@ -74,8 +77,14 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
           data={data}
           reportType={searchQuery.reportType}
       />}
-    </div>
+    </GraphContainer>
   )
 };
+
+const GraphContainer = styled.div`
+  max-width: 670px;
+  position: relative;
+  //padding-bottom: 80px;
+`
 
 export default Graph;

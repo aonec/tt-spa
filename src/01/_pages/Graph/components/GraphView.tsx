@@ -101,6 +101,8 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => 
 }
 
 const GraphWrapper = styled.div`
+  position: absolute;
+  top: 60px;
     svg {
         overflow: visible !important;
     }
