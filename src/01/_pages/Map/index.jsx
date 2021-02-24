@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { ButtonTT } from '../../tt-components';
+import img from './electro.png';
+// background-image: url(${img});
 
 export const MapPage = () => {
-  console.log('Map');
-  const [zoom, setZoom] = React.useState(9);
-  const mapState = React.useMemo(() => ({
-    center: [55.664758, 51.838521],
-    zoom: 12,
-    controls: ['zoomControl', 'fullscreenControl'],
-  }), [
+  const [zoom, setZoom] = useState(12);
+  const mapState = useMemo(() => ({ center: [55.664758, 51.838521], zoom }), [
     zoom,
   ]);
 
@@ -28,7 +26,12 @@ export const MapPage = () => {
       <div style={{ width: '100vw', height: '100vh' }}>
         My awesome application with maps!
         <Map
-          defaultState={{ center: [55.63, 51.83], zoom: 12, controls: ['zoomControl', 'fullscreenControl'] }}
+          defaultState={{
+            center: [55.664758, 51.838521],
+            zoom: 9,
+            controls: ['zoomControl', 'fullscreenControl'],
+          }}
+                    // defaultState={{ center: [55.63, 51.83], zoom: 12, controls: ['zoomControl', 'fullscreenControl'] }}
                     // style={{ width: '100vw', height: '100vh' }}
           width={600}
           height={400}
@@ -36,18 +39,27 @@ export const MapPage = () => {
           state={mapState}
         >
           {/* 48.763028%2C55.747686&z=13.89 */}
-          {coordinates.map((coordinate) => (
+          {coordinates.map((coordinate,index) => (
             <Placemark
               geometry={coordinate}
-              modules={['geoObject.addon.balloon']}
-              properties={{ balloonContentBody: 'Информация об объекте' }}
+              modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+              properties={{
+                hintContent: `Номер задачи ${index}`,
+                balloonContentBody: 'Это красивая метка',
+              }}
+              options={{
+                iconLayout: 'default#image',
+                iconImageHref: `${img}`,
+                iconImageSize: [64,88],
+                iconImageOffset: [-3, -42],
+              }}
             />
           ))}
 
         </Map>
-        <button onClick={() => setZoom((zoom) => (zoom === 9 ? 12 : 9))}>
+        <ButtonTT color="blue" onClick={() => setZoom((zoom) => (zoom === 12 ? 15 : 12))}>
           Приблизить карту
-        </button>
+        </ButtonTT>
       </div>
     </YMaps>
   );
