@@ -7,9 +7,8 @@ const ReadingLineStyled = styled.div<{houseReadings: boolean, isDisabled: boolea
 
 position: relative; 
 padding-right: ${props => props.houseReadings ? 0 : '16px'};
-padding-right: 8px;
-padding-left: 8px;
-
+//padding-right: 8px;
+//padding-left: 8px;
 
 &:not(:first-child) {
 padding-top: 8px;
@@ -50,12 +49,13 @@ const SuffixLine = styled.span`
 const StyledInput = styled(Input)`
 color: var(--main-70);
 border: 0;
-padding: 0 8px 0 0 ;
+padding: 0;
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
 }
+min-width: 72px;
 
 `;
 

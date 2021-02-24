@@ -12,9 +12,8 @@ import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getCalculators } from "./apiObjectProfile";
-import Test from './components/Devices'
 
 export const ObjectContext = React.createContext();
 
@@ -31,8 +30,6 @@ function reducer(state, action){
 
 export const ObjectProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
-
-  console.log("state", state)
 
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
@@ -64,7 +61,7 @@ export const ObjectProfile = () => {
       <ObjectContext.Provider
         value={context}
       >
-        <Breadcrumb path="/objects/"/>
+        <Index path="/objects/"/>
         <Header {...header} />
         <Tabs/>
         <grid>
@@ -82,7 +79,7 @@ export const ObjectProfile = () => {
 
 
           <Route path="/objects/(\\d+)/devices" exact>
-          <Devices/>
+          <Devices calculators={calculators}/>
           </Route>
 
           <Events title="События с объектом" {...events} />

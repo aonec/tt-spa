@@ -5,7 +5,7 @@ import { AppContext } from '01/context';
 
 export function useApp(){
   const { replace } = useHistory();
-  const { pathname } = useLocation()
+  // const { pathname } = useLocation()
 
   const [state, dispatch] = React.useReducer(reducer, {}, (state) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -13,8 +13,9 @@ export function useApp(){
   });
 
   React.useEffect(() => {
-    if (pathname.match(/registration/gi)) {
-      console.log(pathname.match(/registration/gi));
+
+    if (window.location.href.match(/registration/gi)) {
+      // console.log(pathname.match(/registration/gi));
       return
     }
 

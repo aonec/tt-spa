@@ -81,7 +81,7 @@ export const magistrals = [
 export const isConnected = [
   {
     value: true,
-    label: 'Есть',
+    label: 'Есть подключение',
   },
   {
     value: false,
@@ -182,6 +182,41 @@ export const detailList = [
 export const typelList = [
   { label: 'Холодная вода', value: 'coldwatersupply' },
   { label: 'Горячая вода', value: 'heat' },
+];
+
+export const nodeStatusList = [
+  {
+    value: 'Registered',
+    label: 'Сдан на коммерческий учет',
+    icon : 'ok'
+  },
+  {
+    value: 'NotRegistered',
+    label: 'Не на коммерческом учете',
+    icon : 'block'
+  },
+  {
+    value: 'OnReview',
+    label: 'На утверждении',
+    icon : 'timer'
+  },
+  {
+    value: 'Prepared',
+    label: 'Подготовлен к сдаче',
+    icon : 'ok'
+  },
+];
+
+
+export const serviceZoneList = [
+  {
+    value: 'Apartments',
+    label: 'Апартаменты',
+  },
+  {
+    value: 'CommercialPremises',
+    label: 'Коммерческие помещения'
+  }
 ];
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;

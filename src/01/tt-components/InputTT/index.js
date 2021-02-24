@@ -7,7 +7,7 @@ export const InputTT = styled(Input)`
       border-radius: 4px;
       width: 100%;
       height: ${(props) => props.height || '48px'};
-      padding: 8px 16px;
+      padding: 8px 24px;
       font-size: 16px;
       line-height: 32px;
 `;

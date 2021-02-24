@@ -13,19 +13,20 @@ import {
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
 
-// import { device } from './CalculatorTemplate';
+// import { device } from './SonoSafeTemplate';
 
 const { TabPane } = Tabs;
 
 const ModalSonoSafeReportForm = (props) => {
   const { device, handleCancel, visible } = props;
+  // const { handleCancel, visible } = props;
   const {
-    id, model, serialNumber, address, hubs,
+    id, model, serialNumber, address, hubs, nodes
   } = device;
-  // const {
-  //   model, serialNumber, address, hubs,
-  // } = device;
-  // const id = 2889799;
+
+  const nodeId = nodes[0].id;
+  console.log("nodeId", nodeId)
+
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -99,9 +100,7 @@ const ModalSonoSafeReportForm = (props) => {
   const sonorSelection = {
     Heat: [
       {
-        entryNumber: 1,
-        pipeNumber: 5,
-        value: 1,
+        value: nodeId,
         label: 'Sono',
       },
     ],
@@ -120,15 +119,13 @@ const ModalSonoSafeReportForm = (props) => {
       detail: 'monthly',
       begin: '',
       end: '',
+      nodeId,
       resource: resources[0],
-      currentValue: undefined,
-      entryNumber: null,
-      pipeNumber: 5,
       checked: true,
       customdisabled: true,
     },
     validationSchema: Yup.object({
-      entryNumber: Yup.number().typeError('Выберите узел'),
+      nodeId: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
       console.log('values', values);
@@ -136,11 +133,7 @@ const ModalSonoSafeReportForm = (props) => {
       const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment(begin).endOf('month'))
       console.log(values);
 
-      const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
-        values.detail
-      }&resourcetype=${values.resource}&entrynumber=${
-        values.entryNumber
-      }&pipenumber=${values.pipeNumber}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
+      const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
 
       console.log(link);
 

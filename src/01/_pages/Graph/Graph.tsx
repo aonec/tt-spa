@@ -1,134 +1,81 @@
-import * as V from 'victory';
-import {
-    VictoryChart,
-    VictoryAxis,
-    VictoryBar,
-    VictoryTheme,
-    VictoryLine,
-    VictoryLabel,
-    VictoryTooltip,
-    VictoryVoronoiContainer
-} from 'victory';
-import React from "react";
-import { format, compareAsc } from 'date-fns'
+import React, {useEffect, useState} from 'react';
+import GraphView, { ReportType, ResourceType} from "./components/GraphView";
+import GraphFilterForm from "./components/GraphFilterForm";
+import moment from "moment";
+import {requestNodeReadings, RequestNodeReadingsFunctionInterface} from "../../_api/node_readings_page";
+import {useAsync} from "../../hooks/useAsync";
+import {Alert} from "antd";
+import {getGraphParams} from "./utils";
 
-
-
-
-
-
-const Graph: React.FC = () => {
-
-    const readings = [
-        {
-            DateTime: "2021-01-25T12:27:42.2387729+03:00",
-            Params: {
-                InputVolume: 0.313,
-                OutputMass: 0.312
-            }
-        },
-        {
-            DateTime: "2021-01-25T13:27:42.241241+03:00",
-            Params: {
-                InputVolume: 0.317,
-                OutputVolume: 0.319
-            }
-        },
-        {
-            DateTime: "2021-01-25T14:27:42.2387729+03:00",
-            Params: {
-                InputVolume: 0.323,
-                OutputMass: 0.354
-            }
-        },
-        {
-            DateTime: "2021-01-25T15:27:42.241241+03:00",
-            Params: {
-                InputVolume: 0.366,
-                OutputVolume: 0.378
-            }
-        }
-    ];
-
-    const tickValues = readings.map((reading) => {
-        return format(new Date(reading.DateTime), 'HH:MM:SS')
-    })
-
-    const tickFormat = readings.map((reading) => {
-        return reading.Params.InputVolume
-    })
-
-    const graphData = {
-        tickValues,
-        tickFormat
-    }
-
-    const graphDataNew = readings.map((reading) => {
-        return {
-            time: format(new Date(reading.DateTime), 'HH:mm'),
-            value: reading.Params.InputVolume,
-            label: reading.Params.InputVolume
-        }
-    })
-
-    console.log(graphData)
-    return (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-            <VictoryChart domainPadding={50} theme={VictoryTheme.material} style={{parent: {
-                    width: '600px',
-                    height: '600px'
-                }}}
-                          containerComponent={
-                              <VictoryVoronoiContainer/>
-                          }
-            >
-                <VictoryLine
-                    labelComponent={<VictoryTooltip/>}
-                    data={graphDataNew}
-                    x="time"
-                    y="value"
-                />
-                <VictoryAxis
-                    style={{
-                        axisLabel: { padding: 40 }
-                    }}
-                    label="Время"
-                />
-                <VictoryAxis
-
-                    dependentAxis
-                    label="Масса"
-                    style={{
-                        axisLabel: { padding: 40 }
-                    }}
-                />
-            </VictoryChart>
-            <VictoryChart domainPadding={50} theme={VictoryTheme.material} style={{parent: {
-                    width: '600px',
-                    height: '600px'
-                }}}>
-                <VictoryBar
-                    labelComponent={<VictoryTooltip/>}
-                    data={graphDataNew}
-                    x="time"
-                    y="value"
-                />
-                <VictoryAxis
-                    style={{
-                        axisLabel: { padding: 40 }
-                    }}
-                    label="Время"
-                />
-                <VictoryAxis
-                    dependentAxis
-                    label="Масса"
-                    style={{
-                        axisLabel: { padding: 40 }
-                    }}
-                />
-            </VictoryChart>
-        </div>
-    )
+interface GraphProps {
+  nodeId: number
+  resource: ResourceType
+  pipeCount: 1 | 2
 }
+
+export type GraphParamsType =
+  | "InputMass"
+  | "InputPressure"
+  | "InputTemperature"
+  | "InputVolume"
+  | "OutputMass"
+  | "OutputPressure"
+  | "OutputTemperature"
+  | "OutputVolume"
+  | "DeltaMass"
+  | "DeltaPressure"
+  | "DeltaTemperature"
+  | "DeltaVolume"
+  | "Energy"
+
+
+const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
+
+
+  const { data, status, run} = useAsync();
+
+  const reportType = 'daily' as ReportType;
+
+  const from = moment().subtract(1, 'week').set({hour:23,minute:0,second:0,millisecond:0}).toISOString();
+
+  const to = moment().set({hour:0,minute:0,second:0,millisecond:0}).toISOString();
+
+  const getInitialState = () => {
+    return {
+      nodeId,
+      reportType,
+      from,
+      to
+    }
+  }
+
+  const [graphParam, setGraphParam] = useState(() => getGraphParams(resource, pipeCount)[0]);
+  const [searchQuery, setSearchQuery] = useState<RequestNodeReadingsFunctionInterface>(getInitialState);
+
+  useEffect(() => {
+    run(requestNodeReadings(searchQuery))
+  }, [searchQuery, run])
+
+  return (
+    <div style={{paddingBottom: 80}}>
+      <GraphFilterForm paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
+      {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
+
+      {status === 'rejected' && <Alert
+          message="Ошибка"
+          description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
+          type="error"
+          showIcon
+          closable
+      />}
+
+      {status === 'resolved' && <GraphView
+          graphParam={graphParam}
+          data={data}
+          reportType={searchQuery.reportType}
+      />}
+    </div>
+  )
+};
 
 export default Graph;

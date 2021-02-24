@@ -4,7 +4,7 @@ import { Loader } from '01/components';
 import _ from 'lodash';
 import { DeviceContext } from '../CalculatorProfile';
 import { IconTT } from "../../../tt-components";
-import { TitleWrap } from "../../Node/components/Header";
+import { TitleWrap } from "../../EditNode/components/Header";
 
 export const Nodes = () => {
   const { nodes, related, loadings } = useContext(DeviceContext);
@@ -45,7 +45,7 @@ export const Nodes = () => {
       serviceZone,
       lastCheckingDate,
       futureCheckingDate,
-      nodeResourceType
+      resource
     } = value;
 
 
@@ -71,13 +71,13 @@ export const Nodes = () => {
       <ListItem key={id}>
         <NameWrap href={`/nodes/${id}`}>
           <IconTT icon={'node'} size={24} style={{ marginRight: '8px' }}/>
-          <Name>{`Узел ${id}`}</Name>
+          <Name>{`Узел ${number}`}</Name>
         </NameWrap>
 
 
         <NodeStatus nodeStatus={nodeStatus}/>
         <Span>{serviceZone}</Span>
-        <Span>{_.find(resources, { value: nodeResourceType }).label}</Span>
+        <Span>{_.find(resources, { value: resource }).label}</Span>
       </ListItem>
     );
   });

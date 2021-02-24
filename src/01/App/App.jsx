@@ -14,9 +14,9 @@ import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
-import createSagaMiddleware from 'redux-saga'
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from '../Redux/rootReducer';
-import  {
+import {
   Tasks,
   Login,
   TaskProfile,
@@ -34,20 +34,20 @@ import  {
   UserProfile,
   Contractor,
   Registration,
-  Node,
   IndividualDevice,
-  MapPage
+  NodeProfile,
+  MapPage,
+  EditNode,
+  AddNode
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import rootSaga from "../Redux/saga";
-import {store} from "../Redux/store";
+import rootSaga from '../Redux/saga';
+import { store } from '../Redux/store';
 
 moment.locale('ru');
-
-
 
 export function App() {
   const AppProvider = useApp();
@@ -90,14 +90,26 @@ export function App() {
                     />
 
                     <Route
-                      path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
-                      component={HousingProfile}
+                      path="/calculators/:deviceId/edit"
+                      component={EditCalculator}
                       exact
                     />
 
                     <Route
-                      path={['/nodes/:nodeId/(connection|related|documents)?']}
-                      component={Node}
+                      path={['/nodes/:nodeId/(stats|connection|related|documents)?']}
+                      component={NodeProfile}
+                      exact
+                    />
+
+                    <Route
+                      path="/nodes/:nodeId(\\d+)/edit"
+                      component={EditNode}
+                      exact
+                    />
+
+                    <Route
+                      path={['/housingMeteringDevices/:deviceId/(related|documents)?']}
+                      component={HousingProfile}
                       exact
                     />
 
@@ -114,19 +126,20 @@ export function App() {
                     />
 
                     <Route
-                      path="/calculators/:deviceId/edit"
-                      component={EditCalculator}
-                      exact
-                    />
-                    <Route
                       path="/housingMeteringDevices/:deviceId/edit_odpu/"
                       component={EditODPU}
                       exact
                     />
 
                     <Route
-                      path="/objects/(\\d+)/(apartments|devices)?"
+                      path="/objects/:housingStockId(\\d+)/(apartments|devices)?"
                       component={ObjectProfile}
+                      exact
+                    />
+
+                    <Route
+                      path="/objects/:housingStockId(\\d+)/add_node"
+                      component={AddNode}
                       exact
                     />
 

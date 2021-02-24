@@ -13,7 +13,7 @@ import { deregisterDevice } from './apiDeregisterDevice';
 const ModalDeregisterForm = (props) => {
   const { handleCancel } = props;
 
-  console.log('ModalDeregisterForm.js');
+  console.log('ModalCalculatorDeregisterForm.js');
   const { deregister, setDeregister, device } = useContext(DeviceContext);
   const { model, serialNumber } = device;
 

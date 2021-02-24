@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import {  Header } from '../../tt-components';
 import TabsComponent from './components/Tabs';
 import FormEditODPU from './components/EditOPDUForm';
-import Breadcrumb from '../../tt-components/Breadcrumb/Breadcrumb';
+import Index from '../../tt-components/Breadcrumb';
 import { getOdpu, getCalculators } from './components/apiEditOdpu';
 
 export const EditOdpuContext = React.createContext();
@@ -43,7 +43,7 @@ const EditODPU = () => {
     return (
       <>
         <EditOdpuContext.Provider value={context}>
-          <Breadcrumb path={`/housingMeteringDevices/${deviceId}`} />
+          <Index path={`/housingMeteringDevices/${deviceId}`} />
 
           <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
           {/* <ButtonTT onClick={buttonHandler}>Button</ButtonTT> */}
