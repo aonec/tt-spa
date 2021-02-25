@@ -2,7 +2,11 @@ import React, {useEffect, useState} from 'react';
 import GraphView, { ReportType, ResourceType} from "./components/GraphView";
 import GraphFilterForm from "./components/GraphFilterForm";
 import moment from "moment";
-import {requestNodeReadings, RequestNodeReadingsFunctionInterface} from "../../_api/node_readings_page";
+import {
+  QueryInterface,
+  requestNodeReadings,
+  RequestNodeReadingsFunctionInterface
+} from "../../_api/node_readings_page";
 import {useAsync} from "../../hooks/useAsync";
 import {Alert} from "antd";
 import {getGraphParams} from "./utils";
@@ -53,11 +57,13 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
   }
 
   const [graphParam, setGraphParam] = useState(() => getGraphParams(resource, pipeCount)[0]);
-  const [searchQuery, setSearchQuery] = useState<RequestNodeReadingsFunctionInterface>(getInitialState);
+  const [searchQuery, setSearchQuery] = useState<QueryInterface>(getInitialState);
 
   useEffect(() => {
     run(requestNodeReadings(searchQuery))
   }, [searchQuery, run])
+
+
 
   return (
     <GraphContainer>
@@ -74,8 +80,8 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
       {status === 'resolved' && <GraphView
           graphParam={graphParam}
-          data={data}
-          reportType={searchQuery.reportType}
+          dataObject={data}
+          // reportType={searchQuery.reportType}
       />}
     </GraphContainer>
   )

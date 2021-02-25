@@ -15,8 +15,9 @@ import _ from "lodash";
 import 'antd/es/date-picker/style/index';
 import {formTicks, getTickFormat} from "../utils";
 import {GraphParamsType} from "../Graph";
+import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
 
-const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => {
+const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
     const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
         return ticks.map((entry) => {
@@ -27,14 +28,21 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => 
         })
     }
 
+    const {data, searchQuery} = dataObject;
+
+    const {reportType} = searchQuery;
+
+    const {resource} = data;
+
     const archiveEntries = _.get(data, 'archiveEntries', []);
 
 
-    const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
+    // const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
+    const tickValues = formTicks(archiveEntries, reportType);
 
     const ticksData = tickValues.map((tick) => tick.timestamp);
 
-    const graphData = useMemo(() => formGraphData(archiveEntries, graphParam), [archiveEntries, graphParam]);
+    const graphData = formGraphData(archiveEntries, graphParam);
 
     const maxElement = maxBy(graphData, (obj) => obj.value);
 
@@ -42,13 +50,13 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, data, reportType}) => 
 
     const tooltipStyle = {
         parent: {overflow: 'visible'},
-        data: {fill: `url(#${data.resource})`, stroke: getResourceColor(data.resource), strokeWidth: 2}
+        data: {fill: `url(#${data.resource})`, stroke: getResourceColor(resource), strokeWidth: 2}
     };
 
     return (
       <>
       <GraphWrapper>
-              <Gradient resource={data.resource}/>
+              <Gradient resource={resource}/>
               <VictoryChart
                 padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
                 domain={{ y: [0, 1.1*maxValue!] }}
@@ -145,8 +153,8 @@ export type ReportType = 'hourly' | 'daily'| 'monthly'
 
 interface GraphViewProps {
     graphParam: GraphParamsType
-    data: ReadingsInterface
-    reportType: ReportType
+    dataObject: RequestNodeReadingsFunctionInterface
+    // reportType: ReportType
 }
 
 export default GraphView;

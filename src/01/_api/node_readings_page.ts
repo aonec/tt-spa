@@ -7,16 +7,24 @@ delete axios.defaults.headers.common["Authorization"];
 
 
 
-export interface RequestNodeReadingsFunctionInterface {
+export interface QueryInterface {
     nodeId: number
     reportType: ReportType
     from: string
     to: string
 }
 
-export const requestNodeReadings = (searchQuery: RequestNodeReadingsFunctionInterface): Promise<ReadingsInterface> => {
+export interface RequestNodeReadingsFunctionInterface {
+    data: ReadingsInterface
+    searchQuery: QueryInterface
+}
 
-        const readings = axios.request<any, ReadingsInterface>
+
+
+
+export const requestNodeReadings = async (searchQuery: QueryInterface): Promise<RequestNodeReadingsFunctionInterface> => {
+
+        const readings =  await axios.request<any, ReadingsInterface>
         ( {
                 method: 'get',
                 baseURL: 'http://84.201.132.164:8080/api',
@@ -25,7 +33,7 @@ export const requestNodeReadings = (searchQuery: RequestNodeReadingsFunctionInte
             }
         )
 
-        return readings
+        return {data: readings, searchQuery}
 
 
 }

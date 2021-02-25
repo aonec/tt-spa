@@ -1,18 +1,19 @@
 import React, {Dispatch, SetStateAction, useState} from 'react';
-import moment from "moment";
+import moment, {Moment} from "moment";
 import {FormItem, FormikDebug, AutoComplete, DatePicker, Form, Radio, SubmitButton, Select} from "formik-antd";
-import {Formik} from "formik";
-import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
+import {Formik, FormikHelpers, FormikProps} from "formik";
+import {QueryInterface, RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
 import {AutoComplete as $AutoComplete, Button, Tooltip} from "antd";
 import {GraphParamsType} from "../Graph";
 import IconTT from "../../../tt-components/IconTT";
 import styled from "styled-components";
 import {translateParam} from "../utils";
 import ButtonTT from "../../../tt-components/ButtonTT";
+import {ReportType} from "./GraphView";
 
 interface GraphFilterFormProps {
     setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
-    setSearchQuery: Dispatch<SetStateAction<RequestNodeReadingsFunctionInterface>>
+    setSearchQuery: Dispatch<SetStateAction<QueryInterface>>
     paramsList: GraphParamsType[]
 }
 
@@ -29,9 +30,12 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
         setGraphParam(value);
     }
 
+    interface FormValuesInterface {
+        dateRange: Moment[]
+        reportType: ReportType
+    }
 
-
-    const handleSubmit = (values, actions) => {
+    const handleSubmit = (values: FormValuesInterface, actions: FormikHelpers<FormValuesInterface>) => {
         setSearchQuery((prevQuery) => {
                 return ({
                     ...prevQuery,
@@ -92,6 +96,20 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                                         name="dateRange"
                                         format='DD MMMM YYYY'
                                         style={{marginRight: 16}}
+                                        ranges={{
+                                            'Последние сутки': [moment(), moment().set({hour:23,minute:0,second:0,millisecond:0})],
+                                            'Последние 7 дней': [
+                                                moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0}),
+                                                moment().set({hour:23,minute:0,second:0,millisecond:0})],
+                                            'С начала месяца': [
+                                                moment().startOf('month'),
+                                                moment().set({hour:23,minute:0,second:0,millisecond:0})
+                                            ],
+                                            'За прошлый месяц': [
+                                                moment().startOf('month').subtract(1, 'months'),
+                                                moment().subtract(1, 'months').endOf('month')
+                                            ]
+                                        }}
                                     />
                                 </div>
                             </FormItem>
@@ -126,6 +144,8 @@ const GraphFilter = styled.div`
 
   //padding: 16px;
   
+
+  
   form {
     .ant-picker-input {
       width: 100%;
@@ -135,6 +155,8 @@ const GraphFilter = styled.div`
         }
     }
     .ant-picker {
+    padding: 8px 8px 8px 16px;
+    border-radius: 4px;
           width: 100%;
         }
   } 
