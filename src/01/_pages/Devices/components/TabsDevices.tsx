@@ -28,6 +28,7 @@ const initialState = {
 };
 
 const TabsDevices = ({ devicePage }) => {
+  debugger;
 
   const dispatch = useDispatch();
   const { pageSize } = devicePage;

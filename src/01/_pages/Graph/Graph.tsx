@@ -19,19 +19,19 @@ interface GraphProps {
 }
 
 export type GraphParamsType =
-  | "InputMass"
-  | "InputPressure"
-  | "InputTemperature"
-  | "InputVolume"
-  | "OutputMass"
-  | "OutputPressure"
-  | "OutputTemperature"
-  | "OutputVolume"
-  | "DeltaMass"
-  | "DeltaPressure"
-  | "DeltaTemperature"
-  | "DeltaVolume"
-  | "Energy"
+  | "inputMass"
+  | "inputPressure"
+  | "inputTemperature"
+  | "inputVolume"
+  | "outputMass"
+  | "outputPressure"
+  | "outputTemperature"
+  | "outputVolume"
+  | "deltaMass"
+  | "deltaPressure"
+  | "deltaTemperature"
+  | "deltaVolume"
+  | "energy"
 
 
 const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {

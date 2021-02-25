@@ -7,21 +7,21 @@ export const objectsSearchReducer = (state, action) => {
 
     switch (action.type) {
 
-    case SET_CITY:
-    return { ...state, City: action.city }
+        case SET_CITY:
+            return { ...state, City: action.city }
 
-    case SET_STREET:
-    return { ...state, Street: action.street }
+        case SET_STREET:
+            return { ...state, Street: action.street }
 
-    case SET_HOUSE_NUMBER:
-    return { ...state, HousingStockNumber: action.HousingStockNumber }
+        case SET_HOUSE_NUMBER:
+            return { ...state, HousingStockNumber: action.HousingStockNumber }
 
         case SET_CORPUS:
             return { ...state, Corpus: action.corpus}
 
-    default:
-        return state
-        }
+        default:
+            return state
+    }
 
 }
 

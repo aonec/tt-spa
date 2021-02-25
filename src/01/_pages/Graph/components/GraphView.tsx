@@ -11,7 +11,7 @@ import {CustomTooltip} from "./CustomTooltip";
 import Gradient from "./Gradient";
 import {getResourceColor} from "../../../utils/getResourceColor";
 import maxBy from 'lodash/maxBy';
-import _ from "lodash";
+import _, { minBy } from "lodash";
 import 'antd/es/date-picker/style/index';
 import {formTicks, getTickFormat} from "../utils";
 import {GraphParamsType} from "../Graph";
@@ -19,11 +19,13 @@ import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_
 
 const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
+    debugger;
+
     const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
         return ticks.map((entry) => {
             return {
                 time: entry.timestamp,
-                value: entry.values[graphParam],
+                value: entry[graphParam],
             }
         })
     }
@@ -44,8 +46,10 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
     const graphData = formGraphData(archiveEntries, graphParam);
 
+    const minElement = minBy(graphData, (obj) => obj.value);
     const maxElement = maxBy(graphData, (obj) => obj.value);
 
+    const minValue = minElement?.value;
     const maxValue = maxElement?.value;
 
     const tooltipStyle = {
@@ -59,12 +63,12 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
               <Gradient resource={resource}/>
               <VictoryChart
                 padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-                domain={{ y: [0, 1.1*maxValue!] }}
+                domain={{ y: [3*minValue!, 1.1*maxValue!] }}
                 width={600}
-                height={300}
+                height={400}
                 theme={VictoryTheme.material} style={{parent: {
                       width: '600px',
-                      height: '300px',
+                      height: '600px',
                       overflow: 'visible'
                   },
               }}
@@ -118,27 +122,26 @@ const GraphWrapper = styled.div`
 
 export interface ArchiveEntryInterface {
     timestamp: string
-    values: {
-        InputTemperature: number
-        OutputTemperature: number
-        DeltaTemperature: number
-        InputVolume: number
-        OutputVolume: number
-        DeltaVolume: number
-        InputMass: number
-        OutputMass: number
-        DeltaMass: number
-        InputPressure: number
-        OutputPressure: number
-        DeltaPressure: number
-        Energy: number
-        TimeWork: number
-    }
+    inputTemperature: number
+    outputTemperature: number
+    deltaTemperature: number
+    inputVolume: number
+    outputVolume: number
+    deltaVolume: number
+    inputMass: number
+    outputMass: number
+    deltaMass: number
+    inputPressure: number
+    outputPressure: number
+    deltaPressure: number
+    energy: number
+    timeWork: number
 }
 
 export type ResourceType = "Heat" | "ColdWaterSupply" | "HotWaterSupply" | "Electricity"
 
 export interface ReadingsInterface {
+    reportType: ReportType
     resource: ResourceType
     systemPipeCount: number
     archiveEntries: ArchiveEntryInterface[]

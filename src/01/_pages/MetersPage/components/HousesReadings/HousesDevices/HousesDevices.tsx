@@ -15,7 +15,7 @@ type ParamsType = {
 }
 
 
-const HousesDevices: React.FC = ({openModal}) => {
+const HousesDevices: React.FC = () => {
 
     let { id: housingStockId }: ParamsType = useParams();
     const dispatch = useDispatch();
