@@ -1,8 +1,8 @@
 import {
-    VictoryChart,
-    VictoryAxis,
-    VictoryTheme,
-    VictoryVoronoiContainer, VictoryArea,
+  VictoryChart,
+  VictoryAxis,
+  VictoryTheme,
+  VictoryVoronoiContainer, VictoryArea, LineSegment, VictoryLabel,
 } from 'victory';
 import React, {useMemo} from "react";
 import styled from "styled-components";
@@ -19,7 +19,6 @@ import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_
 
 const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
-    debugger;
 
     const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
         return ticks.map((entry) => {
@@ -30,9 +29,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
         })
     }
 
-    const {data, searchQuery} = dataObject;
-
-    const {reportType} = searchQuery;
+    const { data, searchQuery: {reportType} } = dataObject;
 
     const {resource} = data;
 
@@ -49,13 +46,20 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
     const minElement = minBy(graphData, (obj) => obj.value);
     const maxElement = maxBy(graphData, (obj) => obj.value);
 
-    const minValue = minElement?.value;
-    const maxValue = maxElement?.value;
+    const minValue = minElement!.value > 0 ? 0 : 1.5*minElement!.value;
+    const maxValue = maxElement!.value < 0 ? 0 : 1.5*maxElement!.value;
 
     const tooltipStyle = {
         parent: {overflow: 'visible'},
         data: {fill: `url(#${data.resource})`, stroke: getResourceColor(resource), strokeWidth: 2}
     };
+
+    const TickComponent = (props: any) => {
+      debugger;
+      const {y1} = props;
+      const y2 = y1 !== 300 ? y1 + 5 : y1 - 5;
+      return <LineSegment {...props} y2={y2} style={{stroke: 'var(--frame)'}}/>
+    }
 
     return (
       <>
@@ -63,12 +67,12 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
               <Gradient resource={resource}/>
               <VictoryChart
                 padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
-                domain={{ y: [3*minValue!, 1.1*maxValue!] }}
+                domain={{ y: [minValue, maxValue] }}
                 width={600}
-                height={400}
+                height={300}
                 theme={VictoryTheme.material} style={{parent: {
                       width: '600px',
-                      height: '600px',
+                      height: '300px',
                       overflow: 'visible'
                   },
               }}
@@ -77,6 +81,31 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                     />
                 }
               >
+
+                  <VictoryAxis
+                    tickComponent={<TickComponent />}
+
+                    tickFormat={(x) => ticksData.includes(x) ? getTickFormat(archiveEntries, reportType, x) : ''}
+                    style={{
+                      axis: {stroke: 'var(--frame)'},
+                      axisLabel: { strokeWidth: 0 },
+                      grid: {stroke: 'none'},
+                      tickLabels: {fill: 'var(--main-32)'},
+
+                    }}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    // gridComponent={<LineSegment type={"grid"}/>}
+                    style={{
+                      axis: {stroke: 'none'},
+                      ticks: {stroke: 'none'},
+                      tickLabels: {fill: 'var(--main-32)'},
+                      // parent: {stroke: 'none'},
+                      grid: {stroke: 'var(--frame)', strokeDasharray: '0'},
+                        // label: {stroke: 'none'}
+                    }}
+                  />
                   <VictoryArea
                     name="graph"
                     sortKey="time"
@@ -85,26 +114,14 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                     labelComponent={<CustomTooltip
                       flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
                       flyoutComponent={<GraphTooltip/>}
+                      minValue={minValue}
+                      maxValue={maxValue}
                     />}
                     labels={() => ''}
                     style={tooltipStyle}
                     data={graphData}
                     x="time"
                     y="value"
-                  />
-
-                  <VictoryAxis
-                    tickFormat={(x) => ticksData.includes(x) ? getTickFormat(archiveEntries, reportType, x) : ''}
-                    style={{
-                        axisLabel: { strokeWidth: 0 },
-                        grid: {stroke: 'none'},
-                    }}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    style={{
-                        grid: {stroke: 'none'},
-                    }}
                   />
               </VictoryChart>
           </GraphWrapper>
@@ -114,7 +131,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
 const GraphWrapper = styled.div`
   position: absolute;
-  top: 60px;
+  top: 80px;
     svg {
         overflow: visible !important;
     }

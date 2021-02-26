@@ -46,6 +46,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
             }
         )
         actions.setSubmitting(false);
+        setIsActive(state => !state)
     }
 
     const options = paramsList.map((param) => ({label: translateParam(param), value: param}));
@@ -91,8 +92,11 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                                         icon={<IconTT icon="searchFilter"/>} />
                             </Tooltip>
                             <FormItem name="dateRange" label="Произвольный период" >
-                                <div>
+                                <RangeWrapper id="div">
                                     <DatePicker.RangePicker
+                                      // getCalendarContainer={triggerNode => triggerNode.parentNode}
+                                      // @ts-ignore
+                                      getPopupContainer={() => document.getElementById("div")}
                                         name="dateRange"
                                         format='DD MMMM YYYY'
                                         style={{marginRight: 16}}
@@ -111,7 +115,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                                             ]
                                         }}
                                     />
-                                </div>
+                                </RangeWrapper>
                             </FormItem>
                             <FormItem name="reportType" label="Тип отчета" >
                                 <div>
@@ -143,6 +147,14 @@ const GraphFilter = styled.div`
           //padding: 0 16px 8px;
 
   //padding: 16px;
+  
+
+//.ant-picker-ranges .ant-picker-preset > .ant-tag-blue:active {
+//    color: #1890ff;
+//    background: #e6f7ff;
+//    border-color: #91d5ff;
+//    cursor: pointer;
+//}
   
 
   
@@ -211,6 +223,15 @@ const StyledSubmit = styled(SubmitButton)`
       transform: translate(4px, 4px);
     }
   }
+`
+
+const RangeWrapper = styled.div`
+.ant-picker-ranges .ant-picker-preset > .ant-tag-blue {
+    color: #1890ff;
+    background: transparent;
+    border-color: transparent;
+    cursor: pointer;
+}
 `
 
 

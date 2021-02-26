@@ -1,9 +1,12 @@
 import {VictoryTooltip, VictoryTooltipProps} from "victory";
 import React from "react";
 
-export const CustomTooltip: React.FC<VictoryTooltipProps> = (props) => {
+export const CustomTooltip: React.FC<VictoryTooltipProps & {minValue: number; maxValue: number}> = (props) => {
 
-    const {x, y, active} = props;
+
+    const {x, y, active, minValue, maxValue} = props;
+
+    const floor = Math.abs(maxValue)/(maxValue - minValue)*300;
 
     return (
         <g
@@ -15,7 +18,7 @@ export const CustomTooltip: React.FC<VictoryTooltipProps> = (props) => {
                         x1={0}
                         y1={y}
                         x2={0}
-                        y2={300}
+                        y2={floor}
                         stroke='#000'
                         strokeWidth={0.5}
                         strokeDasharray={5}

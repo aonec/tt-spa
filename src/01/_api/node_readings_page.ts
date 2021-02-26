@@ -24,7 +24,7 @@ export interface RequestNodeReadingsFunctionInterface {
 
 export const requestNodeReadings = async (searchQuery: QueryInterface): Promise<RequestNodeReadingsFunctionInterface> => {
 
-        const readings =  await axios.request<any, ReadingsInterface>
+        const readings = await axios.request<any, ReadingsInterface>
         ( {
                 method: 'get',
                 baseURL: 'http://84.201.132.164:8080/api',

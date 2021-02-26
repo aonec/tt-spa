@@ -15,8 +15,8 @@ export const DeviceContext = React.createContext({} as DeviceContextType);
 export const IndividualDevice = () => {
   const { 0: deviceId } = useParams<ParamTypes>();
 
-  const [device, setDevice] = useState({} as IndividualDeviceType);
-  const [tasks, setTasks] = useState();
+  const [device, setDevice] = useState<any>();
+  const [tasks, setTasks] = useState<any>();
   const [mistake, setMistake] = useState();
 
 
@@ -26,8 +26,9 @@ export const IndividualDevice = () => {
       getIndividualDeviceTasks(deviceId),
     ]).then((responses) => {
       const [device, tasks] = responses;
-      setDevice(device);
-      setTasks(tasks);
+        setDevice(device);
+        setTasks(tasks);
+
     }).catch((error) => {
       setMistake(error);
     });

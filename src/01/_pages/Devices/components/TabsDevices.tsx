@@ -27,8 +27,7 @@ const initialState = {
   searchTerm: '',
 };
 
-const TabsDevices = ({ devicePage }) => {
-  debugger;
+const TabsDevices = ({ devicePage }: any) => {
 
   const dispatch = useDispatch();
   const { pageSize } = devicePage;
