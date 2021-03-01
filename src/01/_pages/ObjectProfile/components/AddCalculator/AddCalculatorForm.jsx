@@ -40,7 +40,7 @@ const AddCalculatorForm = (props) => {
       ipV4: '',
       deviceAddress: null,
       port: null,
-      housingStockId: Number(objid),
+      housingStockId: Number(housingStockId),
       infoId: 1,
       isConnected: true,
     },
