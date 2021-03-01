@@ -17,7 +17,7 @@ import ModalAddDevice from './Modals/ModalAddDevice';
 
 export const NodeContext = createContext();
 export const NodeProfile = () => {
-  const [addOdpu, setAddOdpu] = useState(true);
+  const [addOdpu, setAddOdpu] = useState(false);
   const { url } = useRouteMatch('/nodes/(\\d+)');
   const { nodeId } = useParams();
   const [node, setNode] = useState();
