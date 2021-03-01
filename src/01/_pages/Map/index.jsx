@@ -21,6 +21,8 @@ export const MapPage = () => {
     [55.678758, 51.844521],
   ];
 
+
+
   return (
     <YMaps>
       <div style={{ width: '100vw', height: '100vh' }}>
