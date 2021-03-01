@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback, useRef, useState} from 'react';
 import moment, {Moment} from "moment";
 import {FormItem, FormikDebug, AutoComplete, DatePicker, Form, Radio, SubmitButton, Select} from "formik-antd";
 import {Formik, FormikHelpers, FormikProps} from "formik";
@@ -10,6 +10,7 @@ import styled from "styled-components";
 import {translateParam} from "../utils";
 import ButtonTT from "../../../tt-components/ButtonTT";
 import {ReportType} from "./GraphView";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 interface GraphFilterFormProps {
     setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
@@ -24,7 +25,20 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
     {setGraphParam, setSearchQuery, paramsList}
 ) => {
 
-    const [isActive, setIsActive] = useState(true);
+    const [isActive, setIsActive] = useState(false);
+
+    const formRef = useRef<any>()
+    //
+    const setShown = useCallback(() => {
+        setIsActive(false)
+    }, [isActive])
+
+    useOutsideClick(formRef, () => {
+        if (isActive) {
+            // setShown();
+            setIsActive(false)
+        }
+    })
 
     const onSelectHandler = (value: GraphParamsType) => {
         setGraphParam(value);
@@ -52,7 +66,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
     const options = paramsList.map((param) => ({label: translateParam(param), value: param}));
 
     return (
-        <GraphFilter>
+        <GraphFilter ref={formRef}>
             <Formik
                 initialValues={{
                     dateRange: [
@@ -65,7 +79,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                 onSubmit={handleSubmit}
             >
 
-                {isActive
+                {!isActive
                     ?
                     <div style={{display: 'flex', marginBottom: 10, paddingLeft: 8, paddingTop: 16}}>
                         <Tooltip title="Настройка параметров">
@@ -175,6 +189,7 @@ const GraphFilter = styled.div`
 `
 
 const OpenedFilter = styled.div`
+
   background: #fff;
   position: absolute;
   z-index: 1000;
@@ -232,6 +247,26 @@ const RangeWrapper = styled.div`
     border-color: transparent;
     cursor: pointer;
 }
+
+.ant-picker-ranges .ant-picker-preset > .ant-tag-blue {
+    &:hover {
+        background: rgba(24, 158, 233, 0.1);
+        border-color: #189EE9;
+    }
+    //color: #1890ff;
+    
+    cursor: pointer;
+}
+
+div:nth-child(2) {
+  position: static !important;
+} 
+
+.ant-picker-dropdown {
+  position: static !important;
+}
+
+
 `
 
 

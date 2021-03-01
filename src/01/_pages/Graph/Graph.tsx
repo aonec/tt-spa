@@ -11,6 +11,7 @@ import {useAsync} from "../../hooks/useAsync";
 import {Alert} from "antd";
 import {getGraphParams} from "./utils";
 import styled from "styled-components";
+import GraphLegend from "./components/GraphLegend";
 
 interface GraphProps {
   nodeId: number
@@ -81,8 +82,8 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
       {status === 'resolved' && <GraphView
           graphParam={graphParam}
           dataObject={data}
-          // reportType={searchQuery.reportType}
       />}
+      {data && <GraphLegend resource={data.data.resource}/>}
     </GraphContainer>
   )
 };
