@@ -21,7 +21,8 @@ import { EditCalculatorContext } from "../../../EditCalculator";
 import { AddCalculatorContext } from "./index";
 
 const AddCalculatorForm = (props) => {
-  const { objid, handleCancel, setAddCalculator } = props;
+  console.log("props",props)
+  const { housingStockId, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const { setAlertVisible, setExistCalculator } = useContext(AddCalculatorContext);
