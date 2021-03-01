@@ -5,9 +5,10 @@ import { DeviceContext } from '../../../CalculatorProfile';
 import {StyledModal} from '../../../../../tt-components/Modal'
 
 const CheckDevice = () => {
-  const { check, setCheck, device } = useContext(DeviceContext);
+  // const { check, setCheck, device } = useContext(DeviceContext);
+  const { check, device } = useContext(DeviceContext);
   const handleCancel = () => {
-    setCheck(false);
+    // setCheck(false);
   };
 
 

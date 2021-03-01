@@ -11,10 +11,28 @@ import {DeviceContext} from '../../../CalculatorProfile';
 import {checkDevice} from './apiCheckDevice';
 import {yupDate, yupDeviceId} from "../../../../../tt-components/yupTemplates";
 
-const ModalCheckForm = (props) => {
+const ModalCheckForm = (props: any) => {
     const {handleCancel} = props;
     const {device} = useContext(DeviceContext);
-    const {model, serialNumber, address: {id: houseId}, futureCheckingDate, lastCheckingDate} = device;
+
+
+    interface DeviceInterface {
+        address: object,
+        connection: object,
+        futureCheckingDate: string,
+        futureCommercialAccountingDate: string,
+        hubs: [],
+        id: number,
+        infoId: null,
+        isConnected: boolean,
+        lastCheckingDate: string,
+        lastCommercialAccountingDate: string,
+        model: string,
+        nodes: [],
+        serialNumber: string,
+    }
+
+    const {model, serialNumber, address: {id: houseId}, futureCheckingDate, lastCheckingDate} =device
 
     interface FormInterface {
         readonly deviceId: number,

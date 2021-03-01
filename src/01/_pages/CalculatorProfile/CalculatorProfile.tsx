@@ -17,14 +17,49 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from "./components/Nodes";
 
-export const DeviceContext = React.createContext();
+
+interface DeviceInterface {
+    address: object,
+    connection: object,
+    futureCheckingDate: string,
+    futureCommercialAccountingDate: string,
+    hubs: [],
+    id: number,
+    infoId: null,
+    isConnected: boolean,
+    lastCheckingDate: string,
+    lastCommercialAccountingDate: string,
+    model: string,
+    nodes: [],
+    serialNumber: string,
+}
+
+interface TypeDeviceContext {
+    device: DeviceInterface,
+    building: object,
+    tasks: Array<object>,
+    related: Array<object>,
+    nodes: Array<object>,
+    loadings: any,
+    errors: any,
+    error: any,
+    hubs: any,
+    deregister: boolean,
+    // setDeregister: () => void,
+    report: boolean,
+    // setReport: () => void,
+    check: boolean,
+    // setCheck: () => void,
+};
+
+export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>({});
 
 export const CalculatorProfile = () => {
     const {deviceId} = useParams();
     const path = `/calculators/${deviceId}/`;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [device, setDevice] = useState<DeviceInterface>();
+    const [device, setDevice] = useState<DeviceInterface | undefined>();
     const [building, setBuilding] = useState();
     const [tasks, setTasks] = useState();
     const [related, setRelated] = useState();
@@ -33,35 +68,28 @@ export const CalculatorProfile = () => {
     const [report, setReport] = useState(false);
     const [reportSono, setReportSono] = useState(false);
     const [check, setCheck] = useState(false);
-    const [nodes, setNodes] = useState()
+    const [nodes, setNodes] = useState();
 
     const [error, setError] = useState();
     const [errors, setErrors] = useState();
 
-    interface DeviceInterface {
-        address: object,
-        connection: object,
-        futureCheckingDate: string,
-        futureCommercialAccountingDate: string,
-        hubs: [],
-        id: number,
-        infoId: null,
-        isConnected: boolean,
-        lastCheckingDate: string,
-        lastCommercialAccountingDate: string,
-        model: string,
-        nodes: [],
-        serialNumber: string,
-    }
-
+    // const [loadings, setLoadings] = useState({
+    //     device: true,
+    //     building: true,
+    //     tasks: true,
+    //     related: true,
+    //     nodes: true
+    // });
 
     const [loadings, setLoadings] = useState({
-        device: true,
-        building: true,
-        tasks: true,
-        related: true,
-        nodes: true
+        device: false,
+        building: false,
+        tasks: false,
+        related: false,
+        nodes: false
     });
+
+
     const errorsTemplate = {
         device: 'Произошла ошибка запроса устройства',
         building: 'Произошла ошибка при загрузке данных по зданию',
@@ -76,8 +104,10 @@ export const CalculatorProfile = () => {
             getCalculator(deviceId),
             getCalculatorTasks(deviceId),
         ])
-            .then((responses) => {
-                const [{value: device}, {value: tasks}] = responses;
+            .then((responses: any) => {
+                // const [{value : device}, {value: tasks}] = responses;
+                const device = responses[0].value;
+                const tasks = responses[1].value;
                 setDevice(device);
                 setBuilding(device.address);
                 setHubs(device.hubs);
@@ -87,8 +117,8 @@ export const CalculatorProfile = () => {
                 setIsLoading(false);
             })
             .catch(({resource, message}) => {
-                const text = errorsTemplate[resource];
-                setError({resource, text});
+                // const text = errorsTemplate[resource];
+                // setError({resource, text});
             })
             .finally(() => {
                 setLoadings((prev) => ({
@@ -104,7 +134,7 @@ export const CalculatorProfile = () => {
 
     }, []);
 
-    // console.log("related", related)
+
     if (isLoading) return <Loader show size={32}/>;
 
     console.log("nodes", nodes)
@@ -134,14 +164,28 @@ export const CalculatorProfile = () => {
     };
     return (
         <DeviceContext.Provider
-            value={context}
-
+            value={{device,
+                building,
+                tasks,
+                related,
+                nodes,
+                loadings,
+                errors,
+                error,
+                hubs,
+                deregister,
+                // setDeregister,
+                report,
+                // setReport,
+                check,
+                // setCheck
+            }}
         >
             <Header/>
             <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>
-                    <Information/>
+                    {/*<Information/>*/}
                 </Route>
                 <Route path={`${path}connection`} exact>
                     <Connection/>
