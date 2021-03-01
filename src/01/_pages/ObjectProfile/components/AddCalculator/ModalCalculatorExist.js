@@ -6,7 +6,7 @@ import { AddCalculatorContext } from "./index";
 
 
 export const ModalCalculatorExist = (props) => {
-  console.log("ModalCalculatorExist")
+
   const { alertVisible, setAlertVisible, existCalculator } = useContext(AddCalculatorContext);
   function handleCancel(){
     setAlertVisible(false)
