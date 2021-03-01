@@ -24,7 +24,7 @@ export const CalculatorProfile = () => {
     const path = `/calculators/${deviceId}/`;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [device, setDevice] = useState<DeviceInterface>({});
+    const [device, setDevice] = useState<DeviceInterface>();
     const [building, setBuilding] = useState();
     const [tasks, setTasks] = useState();
     const [related, setRelated] = useState();
