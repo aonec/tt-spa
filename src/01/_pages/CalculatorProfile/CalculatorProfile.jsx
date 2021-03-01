@@ -91,7 +91,7 @@ export const CalculatorProfile = () => {
 
   }, []);
 
-  console.log("related", related)
+  // console.log("related", related)
   if (isLoading) return <Loader show size={32} />;
 
   console.log("nodes", nodes)
