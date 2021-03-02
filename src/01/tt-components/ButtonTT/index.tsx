@@ -1,9 +1,17 @@
 import styled, { css } from 'styled-components';
+import { Button } from 'antd';
 
-export const ButtonTT = styled.button.attrs((props) => ({
-  size: props.size,
-  small: props.small,
-}))`
+interface Props {
+    big: any,
+    type: any,
+    small: any,
+    color: any,
+    key: any,
+    onClick: any
+    // value: string | number | null
+}
+
+export const ButtonTT = styled(Button)<Props>`
   position: relative;
   border-radius: 4px;
   font-weight: 500;
@@ -15,8 +23,6 @@ export const ButtonTT = styled.button.attrs((props) => ({
   background-color: #189EE9;
   transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
   width: ${(props) => (props.big ? '224px' : 'fit-content')};
-
-
   
   &:before {
     display: none;

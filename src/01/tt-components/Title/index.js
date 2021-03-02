@@ -9,16 +9,11 @@ export const Title = styled.h2`
         font-size: 40px;
         line-height: 48px;
       `)
-    || (size === '32' || size === 'middle'
+    || (size === 'middle'
       && css`
         font-size: 32px;
         line-height: 48px;
       `)
-    // || (size === 'middle'
-    //   && css`
-    //     font-size: 32px;
-    //     line-height: 48px;
-    //   `)
     || (size === '24'
       && css`
         font-size: 24px;

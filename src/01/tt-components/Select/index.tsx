@@ -1,7 +1,11 @@
 import styled, { css } from 'styled-components';
 import { Select } from 'antd';
 
-export const SelectTT = styled(Select)`
+interface Props {
+    name: string
+}
+
+export const SelectTT = styled(Select)<Props>`
  height: 48px; 
  {
  .ant-select-selector {

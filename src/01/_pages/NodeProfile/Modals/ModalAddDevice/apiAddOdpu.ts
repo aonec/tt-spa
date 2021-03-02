@@ -26,7 +26,7 @@ export async function getCalculator(id = '') {
   }
 }
 
-export async function addOdpu(form) {
+export async function addOdpu(form: object) {
   try {
     const res = await axios.post('HousingMeteringDevices', form);
     alert('ОДПУ успешно создан !');

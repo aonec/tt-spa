@@ -19,7 +19,7 @@ import {NodeContext} from '../../../index';
 import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
 import {addOdpu} from "../apiAddOdpu";
 
-const AddDeviceForm = (props) => {
+const AddDeviceForm = (props: any) => {
     const {handleCancel} = props;
 
     const {
@@ -129,7 +129,7 @@ const AddDeviceForm = (props) => {
         }
     }, [values.housingMeteringDeviceType]);
 
-    const Alert = ({name}) => {
+    const Alert = ({name=''}) => {
         const touch = _.get(touched, `${name}`);
         const error = _.get(errors, `${name}`);
         if (touch && error) {
@@ -140,7 +140,7 @@ const AddDeviceForm = (props) => {
         return null;
     };
 
-    function handleChangeTab(value) {
+    function handleChangeTab(value: string) {
         setTab(value);
     }
 
@@ -178,7 +178,8 @@ const AddDeviceForm = (props) => {
             onSubmit={handleSubmit}
         >
             <StyledModalBody>
-                <Title size="middle" color="black">
+                <Title color="black">
+                {/*<Title size="middle" color="black">*/}
                     Добавление нового ОДПУ
                 </Title>
                 {/* {JSON.stringify(errors)} */}
@@ -263,7 +264,7 @@ const AddDeviceForm = (props) => {
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('lastCheckingDate', date.toISOString());
+                                setFieldValue('lastCheckingDate', date!.toISOString());
                             }}
                             value={moment(values.lastCheckingDate)}
                         />
@@ -276,7 +277,7 @@ const AddDeviceForm = (props) => {
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('futureCheckingDate', date.toISOString());
+                                setFieldValue('futureCheckingDate', date!.toISOString());
                             }}
                             value={moment(values.futureCheckingDate)}
                         />
