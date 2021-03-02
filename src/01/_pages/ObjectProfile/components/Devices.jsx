@@ -116,6 +116,35 @@ export const Devices = ({calculators}) => {
         );
     };
 
+    // Нет Устройств Узла
+    const NoNodeDevice = ({device, closingDate}) => {
+        // const {
+        //     model,
+        //     serialNumber,
+        //     closingdate,
+        //     hub,
+        //     resource,
+        //     id,
+        //     housingStockId,
+        // } = device;
+        // console.log('NodeDevice');
+
+        return (
+            <NodeDeviceWrap key={0}>
+
+                {/*<NavLink to={`/housingMeteringDevices/${id}`}>*/}
+                    <NodeDeviceMainInfo>
+                        <span>На данном узле нет устройств</span>
+                    </NodeDeviceMainInfo>
+                {/*</NavLink>*/}
+                {/*<DeviceStatus>*/}
+                {/*    <IconTT icon={statusIcon(closingDate)}/>*/}
+                {/*    <span>{status(closingDate)}</span>*/}
+                {/*</DeviceStatus>*/}
+            </NodeDeviceWrap>
+        );
+    };
+
     // Узел с его устройствами
     const NodesWithDevices = ({nodes, closingDate}) => nodes.map((node, index) => {
         const {
@@ -126,20 +155,25 @@ export const Devices = ({calculators}) => {
         // console.log("devicesOnNode", devicesOnNode)
 
 
-        if (_.isEmpty(devicesOnNode)) {
-            return <div>Нет устройств</div>
-        }
+        // if (_.isEmpty(devicesOnNode)) {
+        //     return <div>
+        //         <NodeItem node={node}/>
+        //         <span>Нет устройств</span>
+        //     </div>
+        // }
 
         const NodeDevices = () => devicesOnNode.map((device) => (
             <NodeDevice device={device} closingDate={closingDate}/>
         ));
+
+
 
         console.log('isEmpty', _.isEmpty(devicesOnNode))
 
         return (
             <NodeWrap>
                 <NodeItem node={node}/>
-                <NodeDevices/>
+                {_.isEmpty(devicesOnNode) ? <NoNodeDevice /> : <NodeDevices/>}
             </NodeWrap>
         );
     });
@@ -171,7 +205,7 @@ export const Devices = ({calculators}) => {
     };
 
     if (!calculators) {
-        return <div>Ждем данных</div>
+        return <div>Загрузка</div>
     }
 
     return (

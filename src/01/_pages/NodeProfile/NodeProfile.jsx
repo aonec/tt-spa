@@ -60,14 +60,12 @@ export const NodeProfile = () => {
     <NodeContext.Provider value={context}>
       <Header />
       <Tabs />
-      {/* <Grid> */}
+       <Grid>
       <Route path={`${url}`} exact>
         <Information />
       </Route>
       <Route path={`${url}/stats`} exact>
-        {/* <Title color={'black'}>Компонент в разработке</Title> */}
         <Graph nodeId={nodeId} resource={node.resource} pipeCount={node.communicationPipes.length} />
-        {/* <GraphView /> */}
       </Route>
       <Route path={`${url}/connection`} exact>
         <Connection />
@@ -78,8 +76,8 @@ export const NodeProfile = () => {
       <Route path={`${url}/documents`} exact>
         <Documents />
       </Route>
-      {/* <Events title="Задачи с объектом" /> */}
-      {/* </Grid> */}
+       {/*<Events title="Задачи с объектом" /> */}
+       </Grid>
       <ModalAddDevice />
     </NodeContext.Provider>
   );

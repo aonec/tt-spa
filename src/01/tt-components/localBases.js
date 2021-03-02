@@ -204,12 +204,12 @@ export const nodeStatusList = [
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon: 'block',
+    icon: 'ok',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon: 'timer',
+    icon: 'ok',
   },
   {
     value: 'Prepared',

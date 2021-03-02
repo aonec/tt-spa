@@ -63,7 +63,8 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         lastCommercialAccountingDate, nodeStatus, serviceZone,
     } = node;
 
-    const {entryNumber}: { entryNumber: number } = communicationPipes[0];
+
+    const {entryNumber}: { entryNumber: number } = communicationPipes[0] || 0;
 
     const communicationPipeIds = _.map(communicationPipes, 'id');
 
@@ -216,127 +217,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         return _.includes(disabledFields, value)
     }
 
-
-    const NodeInfo = () => {
-        return (
-            <>
-
-
-            </>
-        )
-    }
-
-    const Device = () => {
-        return (
-            <>
-                <Warning
-                    hidden={values.isAllowed}
-                    title="На данной трубе уже есть такой тип устройства"
-                />
-                <Form.Item label="Тип прибора" style={styles.w100}>
-                    <SelectTT
-                        name="housingMeteringDeviceType"
-                        onChange={(value) => {
-                            setFieldValue('housingMeteringDeviceType', value);
-                        }}
-                        options={housingMeteringDeviceTypes}
-                        value={values.housingMeteringDeviceType}
-                        disabled={isDisabled("housingMeteringDeviceType")}
-                    />
-                    <Alert name="housingMeteringDeviceType"/>
-                </Form.Item>
-
-                <Form.Item label="Модель прибора" style={styles.w49}>
-                    <InputTT
-                        name="model"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.model}
-                    />
-                    <Alert name="model"/>
-                </Form.Item>
-
-                <Form.Item label="Серийный номер" style={styles.w49}>
-                    <InputTT
-                        name="serialNumber"
-                        type="text"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.serialNumber}
-                    />
-                    <Alert name="serialNumber"/>
-                </Form.Item>
-
-                {(values.housingMeteringDeviceType === 'FlowMeter') ? (
-                    <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
-                        <InputTT
-                            name="diameter"
-                            placeholder="Укажите диаметр трубы в мм"
-                            type="number"
-                            onChange={handleChange}
-                            value={values.diameter}
-                            onBlur={handleBlur}
-                        />
-                        <Alert name="diameter"/>
-                    </Form.Item>
-                ) : null}
-
-                <Form.Item label="Дата поверки" style={styles.w49}>
-                    <DatePickerTT
-                        format="DD.MM.YYYY"
-                        name="lastCheckingDate"
-                        placeholder="Укажите дату..."
-                        allowClear={false}
-                        onChange={(date) => {
-                            setFieldValue('lastCheckingDate', date!.toISOString());
-                        }}
-                        value={moment(values.lastCheckingDate)}
-                    />
-                </Form.Item>
-
-                <Form.Item label="Дата следующей поверки" style={styles.w49}>
-                    <DatePickerTT
-                        format="DD.MM.YYYY"
-                        name="futureCheckingDate"
-                        placeholder="Укажите дату..."
-                        allowClear={false}
-                        onChange={(date) => {
-                            setFieldValue('futureCheckingDate', date!.toISOString());
-                        }}
-                        value={moment(values.futureCheckingDate)}
-                    />
-                </Form.Item>
-
-                <Form.Item label="Номер трубы" style={styles.w49}>
-                    <InputTT
-                        name="pipeNumber"
-                        type="number"
-                        min="0"
-                        step="1"
-                        placeholder="Номер трубы"
-                        value={values.pipeNumber}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        disabled={disable}
-                    />
-                    <Alert name="pipeNumber"/>
-                </Form.Item>
-
-                <Form.Item name="text" label="Магистраль" style={styles.w49}>
-                    <SelectTT
-                        placeholder="Выберите направление магистрали"
-                        name="magistral"
-                        options={magistrals}
-                        onChange={(value) => {
-                            setFieldValue('magistral', value);
-                        }}
-                        value={values.magistral}
-                    />
-                    <Alert name="magistral"/>
-                </Form.Item>
-            </>
-        )
-    }
 
     return (
         <form
