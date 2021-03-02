@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components'
 import {
-    magistrals, housingMeteringDeviceTypes, isConnectedOptions, resources
+    magistrals, housingMeteringDeviceTypes, isConnectedOptions, resources, nodeStatusList
 } from '../../../../../tt-components/localBases';
 import {
     Title,
@@ -44,23 +44,20 @@ interface InterfaceNode {
     serviceZone: string,
 }
 
+interface InterfaceAddress {
+    city: string,
+    corpus: string,
+    housingStockNumber: string,
+    id: number,
+    street: string | null
+}
+
 const AddDeviceForm: React.FC<Props> = (props) => {
     const {handleCancel} = props;
     const {node, calculator}: { node: InterfaceNode, calculator: any } = useContext(NodeContext);
-    const {address} : {address: InterfaceAddress} = calculator;
+    const {address}: { address: InterfaceAddress } = calculator;
 
-    interface InterfaceAddress {
-        city: string,
-        corpus: string,
-        housingStockNumber: string,
-        id: number,
-        street: string | null
-    }
-    console.log(address)
-    const {city, corpus, housingStockNumber, id, street} = address
-
-    const addressString = `${city}, ${street}, ${housingStockNumber}`
-
+    const {city, corpus, housingStockNumber, id, street} = address;
     const {
         resource, calculatorId, communicationPipes, number, futureCommercialAccountingDate,
         lastCommercialAccountingDate, nodeStatus, serviceZone,
@@ -77,7 +74,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
     const tabErrors = [
         {
-            key: '1',
+            key: '2',
             value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'calculatorId', 'isAllowed'],
         },
     ];
@@ -109,6 +106,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         entryNumber,
         pipeNumber: null,
         magistral: magistrals[0].value,
+        nodeStatus,
     };
 
     const {
@@ -138,9 +136,9 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                     magistral: values.magistral,
                 },
             };
-            addOdpu(device).then((res) => {
-                console.log(res);
-            });
+            // addOdpu(device).then((res) => {
+            //     console.log(res);
+            // });
             console.log('SUBMIT', device);
         },
     });
@@ -207,27 +205,138 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
         console.log('values.pipeNumber, values.housingMeteringDeviceType', values.pipeNumber, values.housingMeteringDeviceType);
     }, [values.pipeNumber, values.housingMeteringDeviceType]);
-    const StyledAddress = styled.span`
-      font-style: normal;
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 16px;
-      color: var(--main-90);
-    `
+
     const disabledFields = [
-        'resource', 'isConnected', "calculatorId", "entryNumber", "number"
+        'resource', 'isConnected', "calculatorId", "entryNumber", "number", "nodeStatus", "futureCommercialAccountingDate", "lastCommercialAccountingDate", "housingMeteringDeviceType"
     ]
+
+    const addressString = `${city}, ${street}, ${housingStockNumber}`
+
     const isDisabled = (value: string) => {
         return _.includes(disabledFields, value)
     }
 
-    const StyledFormSubHeader = styled.span`
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 32px;
-      color: var(--main-100);
-    `
+
+    const NodeInfo = () => {
+        return (
+            <>
+
+
+            </>
+        )
+    }
+
+    const Device = () => {
+        return (
+            <>
+                <Warning
+                    hidden={values.isAllowed}
+                    title="На данной трубе уже есть такой тип устройства"
+                />
+                <Form.Item label="Тип прибора" style={styles.w100}>
+                    <SelectTT
+                        name="housingMeteringDeviceType"
+                        onChange={(value) => {
+                            setFieldValue('housingMeteringDeviceType', value);
+                        }}
+                        options={housingMeteringDeviceTypes}
+                        value={values.housingMeteringDeviceType}
+                        disabled={isDisabled("housingMeteringDeviceType")}
+                    />
+                    <Alert name="housingMeteringDeviceType"/>
+                </Form.Item>
+
+                <Form.Item label="Модель прибора" style={styles.w49}>
+                    <InputTT
+                        name="model"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.model}
+                    />
+                    <Alert name="model"/>
+                </Form.Item>
+
+                <Form.Item label="Серийный номер" style={styles.w49}>
+                    <InputTT
+                        name="serialNumber"
+                        type="text"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.serialNumber}
+                    />
+                    <Alert name="serialNumber"/>
+                </Form.Item>
+
+                {(values.housingMeteringDeviceType === 'FlowMeter') ? (
+                    <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
+                        <InputTT
+                            name="diameter"
+                            placeholder="Укажите диаметр трубы в мм"
+                            type="number"
+                            onChange={handleChange}
+                            value={values.diameter}
+                            onBlur={handleBlur}
+                        />
+                        <Alert name="diameter"/>
+                    </Form.Item>
+                ) : null}
+
+                <Form.Item label="Дата поверки" style={styles.w49}>
+                    <DatePickerTT
+                        format="DD.MM.YYYY"
+                        name="lastCheckingDate"
+                        placeholder="Укажите дату..."
+                        allowClear={false}
+                        onChange={(date) => {
+                            setFieldValue('lastCheckingDate', date!.toISOString());
+                        }}
+                        value={moment(values.lastCheckingDate)}
+                    />
+                </Form.Item>
+
+                <Form.Item label="Дата следующей поверки" style={styles.w49}>
+                    <DatePickerTT
+                        format="DD.MM.YYYY"
+                        name="futureCheckingDate"
+                        placeholder="Укажите дату..."
+                        allowClear={false}
+                        onChange={(date) => {
+                            setFieldValue('futureCheckingDate', date!.toISOString());
+                        }}
+                        value={moment(values.futureCheckingDate)}
+                    />
+                </Form.Item>
+
+                <Form.Item label="Номер трубы" style={styles.w49}>
+                    <InputTT
+                        name="pipeNumber"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="Номер трубы"
+                        value={values.pipeNumber}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        disabled={disable}
+                    />
+                    <Alert name="pipeNumber"/>
+                </Form.Item>
+
+                <Form.Item name="text" label="Магистраль" style={styles.w49}>
+                    <SelectTT
+                        placeholder="Выберите направление магистрали"
+                        name="magistral"
+                        options={magistrals}
+                        onChange={(value) => {
+                            setFieldValue('magistral', value);
+                        }}
+                        value={values.magistral}
+                    />
+                    <Alert name="magistral"/>
+                </Form.Item>
+            </>
+        )
+    }
 
     return (
         <form
@@ -242,10 +351,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                 <Warning
                     hidden={!coldAndThermo}
                     title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
-                />
-                <Warning
-                    hidden={values.isAllowed}
-                    title="На данной трубе уже есть такой тип устройства"
                 />
                 <TabsComponent
                     currentTabKey={currentTabKey}
@@ -275,12 +380,15 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             }}
                             options={housingMeteringDeviceTypes}
                             value={values.housingMeteringDeviceType}
-                            disabled={isDisabled("housingMeteringDeviceType")}
+                            disabled={false}
                         />
                         <Alert name="housingMeteringDeviceType"/>
                     </Form.Item>
 
                     <Divider style={{margin: 0}}/>
+
+                    {/*<NodeInfo/>*/}
+
                     <StyledFormSubHeader style={styles.w100}>Узел</StyledFormSubHeader>
 
                     <Form.Item label="Подключение к вычислителю" style={styles.w49}>
@@ -332,8 +440,72 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                         <Alert name="number"/>
                     </Form.Item>
 
+                    <Form.Item label="Статус узла" style={styles.w49}>
+                        <SelectTT
+                            name="nodeStatus"
+                            onChange={(value) => {
+                                setFieldValue('nodeStatus', value);
+                            }}
+                            options={nodeStatusList}
+                            value={values.nodeStatus}
+                            disabled={isDisabled("nodeStatus")}
+                        />
+                        <Alert name="nodeStatus"/>
+                    </Form.Item>
 
-                    <Form.Item label="Выберите модель прибора" style={styles.w49}>
+                    <Form.Item label="Дата поверки" style={styles.w49}>
+                        <DatePickerTT
+                            format="DD.MM.YYYY"
+                            name="lastCommercialAccountingDate"
+                            allowClear={false}
+                            onChange={(date) => {
+                                setFieldValue('lastCommercialAccountingDate', date!.toISOString());
+                            }}
+                            value={moment(values.lastCommercialAccountingDate)}
+                            disabled={isDisabled("lastCommercialAccountingDate")}
+                        />
+                        <StyledDateHint>Только для приборов коммерческого учета</StyledDateHint>
+                        <Alert name="lastCommercialAccountingDate"/>
+                    </Form.Item>
+
+                    <Form.Item label="Дата следующей поверки" style={styles.w49}>
+                        <DatePickerTT
+                            format="DD.MM.YYYY"
+                            name="futureCommercialAccountingDate"
+                            allowClear={false}
+                            onChange={(date) => {
+                                setFieldValue('', date!.toISOString());
+                            }}
+                            value={moment(values.futureCommercialAccountingDate)}
+                            disabled={isDisabled("futureCommercialAccountingDate")}
+                        />
+                        <StyledDateHint>Только для приборов коммерческого учета</StyledDateHint>
+                        <Alert name="futureCommercialAccountingDate"/>
+                    </Form.Item>
+
+                </StyledFormPage>
+
+                <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+                   {/*<Device />*/}
+
+                    <Warning
+                        hidden={values.isAllowed}
+                        title="На данной трубе уже есть такой тип устройства"
+                    />
+                    <Form.Item label="Тип прибора" style={styles.w100}>
+                        <SelectTT
+                            name="housingMeteringDeviceType"
+                            onChange={(value) => {
+                                setFieldValue('housingMeteringDeviceType', value);
+                            }}
+                            options={housingMeteringDeviceTypes}
+                            value={values.housingMeteringDeviceType}
+                            disabled={isDisabled("housingMeteringDeviceType")}
+                        />
+                        <Alert name="housingMeteringDeviceType"/>
+                    </Form.Item>
+
+                    <Form.Item label="Модель прибора" style={styles.w49}>
                         <InputTT
                             name="model"
                             onChange={handleChange}
@@ -421,22 +593,26 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                         />
                         <Alert name="magistral"/>
                     </Form.Item>
+
                 </StyledFormPage>
 
-                <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+                <StyledFormPage hidden={Number(currentTabKey) !== 3}>
                     <Title color="black">Компонент в разработке</Title>
                 </StyledFormPage>
+
             </StyledModalBody>
             <StyledFooter>
-
+                <ButtonTT type="button" color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
+                    Отмена
+                </ButtonTT>
                 <ButtonTT
                     color="blue"
                     onClick={handleNext}
-                    // big
-                    hidden={currentTabKey === '2'}
+                    big
+                    hidden={currentTabKey === '3'}
                     disabled={coldAndThermo}
-                    style={{marginLeft: '16px'}}
                     type="button"
+                    style={{marginLeft: '16px'}}
                 >
                     Далее
                 </ButtonTT>
@@ -444,20 +620,41 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                 <ButtonTT
                     color="blue"
                     type="submit"
-                    hidden={currentTabKey !== '2'}
-                    style={{marginLeft: '16px'}}
-                    // big
+                    hidden={currentTabKey !== '3'}
+                    big
                     disabled={coldAndThermo}
                     onClick={handleSubmitForm}
+                    style={{marginLeft: '16px'}}
                 >
                     Добавить
                 </ButtonTT>
-                <ButtonTT type="button" color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
-                    Отмена
-                </ButtonTT>
+
             </StyledFooter>
         </form>
     );
 };
 
 export default AddDeviceForm;
+
+const StyledAddress = styled.span`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--main-90);
+`
+
+const StyledFormSubHeader = styled.span`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+  color: var(--main-100);
+`
+const StyledDateHint = styled.span`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--main-90);
+`
