@@ -109,10 +109,6 @@ export const devicesReadingsByHouseReducer = (state: ReadingsStateType = initial
         case SET_INFO:
             return {...state, ...action.payload}
 
-        case UPDATE_READINGS:
-
-
-
         default: return state
 
     }

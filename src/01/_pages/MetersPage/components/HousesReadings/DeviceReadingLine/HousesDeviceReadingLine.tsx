@@ -13,7 +13,8 @@ import moment from "moment";
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {Input, Modal} from "antd";
-import uuid from 'react-uuid'
+// @ts-ignore
+import uuid from 'react-uuid';
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import {setInputFocused, setInputUnfocused} from "01/Redux/ducks/readings/actionCreators";

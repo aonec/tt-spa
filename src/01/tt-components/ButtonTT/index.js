@@ -41,12 +41,6 @@ export const ButtonTT = styled.button.attrs((props) => ({
     }
   }
 
-  ${(props) => props.small && css`
-    background: transparent
-    color: #272F5A
-    border: 1px solid #DCDEE4
-  `}
-
 
   ${({ color }) => (color === 'red'
           && css`
@@ -89,11 +83,6 @@ export const ButtonTT = styled.button.attrs((props) => ({
                     color: #272F5A;
                     border: 1px solid #DCDEE4;
                   `)};
-
-
-  $: disabled {
-    background: rgba(39, 47, 90, 0.32);
-    color: #ffffff;)};
 
   &:active {
     background-color: #272F5A;

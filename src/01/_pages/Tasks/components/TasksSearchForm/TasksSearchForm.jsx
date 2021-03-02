@@ -3,7 +3,7 @@ import {
   Button, Form, Input, Select, Tooltip,
 } from 'antd';
 import { Icon } from '../../../../_components/Icon';
-import styles from '../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.less';
+import styles from '../../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.scss';
 
 import { setCurrentPage } from '../../../../Redux/reducers/reducerDevicesPage';
 import { setHouseNumber, setStreet } from '../../../../Redux/reducers/objectsSearchReducer';

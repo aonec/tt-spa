@@ -101,8 +101,8 @@ export type IndividualDeviceType = {
 
 export type DeviceContextType = {
   device: IndividualDeviceType,
-  tasks: Array<Task>,
-  mistake: Array<any>,
+  tasks: Array<Task> | undefined,
+  mistake: Array<any> | undefined,
 }
 
 export type Task = {

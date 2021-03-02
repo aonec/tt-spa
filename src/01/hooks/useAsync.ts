@@ -1,12 +1,20 @@
-import React from "react";
+import React, {Dispatch} from "react";
 
-const defaultInitialState = {status: 'idle', data: null, error: null}
+interface StateInterface {
+    status: 'idle' | 'pending' | 'resolved' | 'rejected'
+    data: any
+    error: any
+}
 
-function useSafeDispatch(dispatch) {
+const defaultInitialState: StateInterface = {status: 'idle', data: null, error: null}
+
+function useSafeDispatch(dispatch: any) {
     const mounted = React.useRef(false)
     React.useLayoutEffect(() => {
         mounted.current = true
-        return () => (mounted.current = false)
+        return () => {
+            mounted.current = false
+        }
     }, [])
     return React.useCallback(
       (...args) => (mounted.current ? dispatch(...args) : void 0),
@@ -20,7 +28,7 @@ function useSafeDispatch(dispatch) {
         ...initialState,
     })
     const [{status, data, error}, setState] = React.useReducer(
-      (s, a) => ({...s, ...a}),
+      (s: StateInterface, a: StateInterface) => ({...s, ...a}),
       initialStateRef.current,
     )
 
@@ -35,14 +43,14 @@ function useSafeDispatch(dispatch) {
           }
           safeSetState({status: 'pending'})
           return promise.then(
-            data => {
+              (data: any) => {
                 safeSetState({data, status: 'resolved'})
                 return data
             },
-            error => {
+              (error: any) => {
                 safeSetState({status: 'rejected', error})
                 return error
-            },
+            }
           )
       },
       [safeSetState],

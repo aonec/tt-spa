@@ -7,7 +7,7 @@ export const devicesAPI = {
             const extraQuery = (searchTerm ? `&Question=${searchTerm}` : '') +
                 ((expirationDate || expirationDate === 0) ? `&Filter.ExpiresCheckingDateAt=${expirationDate}` : '') +
                 (rule ?`&OrderBy.Destination=${destination}&OrderBy.Rule=${rule}` : '');
-            const res = await axios.get(`Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${extraQuery}`)
+            const res = await axios.get(`Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${extraQuery}`);
             return res
         } catch (error) {
         }
