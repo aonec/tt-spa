@@ -1,13 +1,14 @@
 import React, {
     useContext, useEffect, useState,
 } from 'react';
-import {Form} from 'antd';
+import {Divider, Form} from 'antd';
 import moment from 'moment';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import styled from 'styled-components'
 import {
-    magistrals, housingMeteringDeviceTypes, isConnected, resources
+    magistrals, housingMeteringDeviceTypes, isConnectedOptions, resources
 } from '../../../../../tt-components/localBases';
 import {
     Title,
@@ -32,28 +33,42 @@ interface Props {
     handleCancel: () => void
 }
 
+interface InterfaceNode {
+    resource: string,
+    calculatorId: number,
+    communicationPipes: any,
+    number: number,
+    futureCommercialAccountingDate: string,
+    lastCommercialAccountingDate: string,
+    nodeStatus: string,
+    serviceZone: string,
+}
+
 const AddDeviceForm: React.FC<Props> = (props) => {
     const {handleCancel} = props;
-    const {node, calculator} = useContext(NodeContext);
-    const {address} = calculator;
+    const {node, calculator}: { node: InterfaceNode, calculator: any } = useContext(NodeContext);
+    const {address} : {address: InterfaceAddress} = calculator;
+
+    interface InterfaceAddress {
+        city: string,
+        corpus: string,
+        housingStockNumber: string,
+        id: number,
+        street: string | null
+    }
+    console.log(address)
     const {city, corpus, housingStockNumber, id, street} = address
 
     const addressString = `${city}, ${street}, ${housingStockNumber}`
 
-    console.log('node', node);
-    console.log('calculator', calculator);
-
     const {
-        resource, calculatorId, communicationPipes,
+        resource, calculatorId, communicationPipes, number, futureCommercialAccountingDate,
+        lastCommercialAccountingDate, nodeStatus, serviceZone,
     } = node;
 
-    const {entryNumber} = communicationPipes[0];
-    console.log("entryNumber", entryNumber)
-
+    const {entryNumber}: { entryNumber: number } = communicationPipes[0];
 
     const communicationPipeIds = _.map(communicationPipes, 'id');
-
-    console.log("communicationPipeIds", communicationPipeIds)
 
     const [currentTabKey, setTab] = useState('1');
     const [coldAndThermo, setColdAndThermo] = useState(false);
@@ -67,8 +82,14 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         },
     ];
 
+    const calculatorIdOptions = [{
+        value: calculatorId,
+        label: calculatorId,
+    }]
+
     const initialValues = {
-        // isConnected: isConnected[0].value,
+        number,
+        isConnected: isConnectedOptions[0].value,
         isAllowed: true,
         serialNumber: '010320211230',
         lastCheckingDate: moment().toISOString(),
@@ -186,6 +207,27 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
         console.log('values.pipeNumber, values.housingMeteringDeviceType', values.pipeNumber, values.housingMeteringDeviceType);
     }, [values.pipeNumber, values.housingMeteringDeviceType]);
+    const StyledAddress = styled.span`
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--main-90);
+    `
+    const disabledFields = [
+        'resource', 'isConnected', "calculatorId", "entryNumber", "number"
+    ]
+    const isDisabled = (value: string) => {
+        return _.includes(disabledFields, value)
+    }
+
+    const StyledFormSubHeader = styled.span`
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 32px;
+      color: var(--main-100);
+    `
 
     return (
         <form
@@ -195,7 +237,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                 <Title size="middle" color="black">
                     Добавление нового ОДПУ
                 </Title>
-                <span>{addressString}</span>
+                <StyledAddress>{addressString}</StyledAddress>
                 {/* {JSON.stringify(errors)} */}
                 <Warning
                     hidden={!coldAndThermo}
@@ -211,7 +253,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                 />
                 <StyledFormPage hidden={Number(currentTabKey) !== 1}>
 
-                    <Form.Item label="Выберите тип ресурса" style={styles.w49}>
+                    <Form.Item label="Тип ресурса" style={styles.w49}>
                         <SelectTT
                             name="resource"
                             onChange={(value) => {
@@ -220,11 +262,12 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             options={resources}
                             defaultValue={resources[0].value}
                             value={values.resource}
+                            disabled={isDisabled("resource")}
                         />
                         <Alert name="resource"/>
                     </Form.Item>
 
-                    <Form.Item label="Выберите тип прибора" style={styles.w49}>
+                    <Form.Item label="Тип прибора" style={styles.w49}>
                         <SelectTT
                             name="housingMeteringDeviceType"
                             onChange={(value) => {
@@ -232,15 +275,67 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             }}
                             options={housingMeteringDeviceTypes}
                             value={values.housingMeteringDeviceType}
+                            disabled={isDisabled("housingMeteringDeviceType")}
                         />
                         <Alert name="housingMeteringDeviceType"/>
+                    </Form.Item>
+
+                    <Divider style={{margin: 0}}/>
+                    <StyledFormSubHeader style={styles.w100}>Узел</StyledFormSubHeader>
+
+                    <Form.Item label="Подключение к вычислителю" style={styles.w49}>
+                        <SelectTT
+                            name="isConnected"
+                            onChange={(value) => {
+                                setFieldValue('isConnected', value);
+                            }}
+                            options={isConnectedOptions}
+                            value={values.isConnected}
+                            disabled={isDisabled("isConnected")}
+                        />
+                        <Alert name="isConnected"/>
+                    </Form.Item>
+
+                    <Form.Item label="Вычислитель, к которому подключен прибор" style={styles.w49}>
+                        <SelectTT
+                            name="calculatorId"
+                            onChange={(value) => {
+                                setFieldValue('calculatorId', value);
+                            }}
+                            options={calculatorIdOptions}
+                            value={values.calculatorId}
+                            disabled={isDisabled("calculatorId")}
+                        />
+                        <Alert name="calculatorId"/>
+                    </Form.Item>
+
+
+                    <Form.Item label="Номер ввода" style={styles.w100}>
+                        <InputTT
+                            name="entryNumber"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.entryNumber}
+                            disabled={isDisabled("entryNumber")}
+                        />
+                        <Alert name="entryNumber"/>
+                    </Form.Item>
+
+                    <Form.Item label="Номер узла" style={styles.w49}>
+                        <InputTT
+                            name="number"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.number}
+                            disabled={isDisabled("number")}
+                        />
+                        <Alert name="number"/>
                     </Form.Item>
 
 
                     <Form.Item label="Выберите модель прибора" style={styles.w49}>
                         <InputTT
                             name="model"
-                            type="text"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.model}

@@ -3,7 +3,8 @@ import { Select } from 'antd';
 
 interface Props {
     name: string,
-    size? : any
+    size? : any,
+    isConnected? : any,
 }
 
 export const SelectTT = styled(Select)<Props>`
