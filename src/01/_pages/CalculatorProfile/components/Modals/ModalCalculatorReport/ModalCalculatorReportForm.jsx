@@ -90,18 +90,19 @@ const ModalCalculatorReportForm = (props) => {
       const link = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
       const apiUrl = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
-        axios.get(
-            apiUrl
-        ).then(response => {
-            const url = window.URL.createObjectURL(new Blob([response]));
-            const link = document.createElement('a');
-            link.href = url;
-            const fileName = `${+ new Date()}.csv`// whatever your file name .
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();// you need to remove that elelment which is created before.
-        })
+      axios.get(
+        apiUrl,
+      ).then((response) => {
+          console.log("response",response)
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();// you need to remove that elelment which is created before.
+      });
     },
   });
 
