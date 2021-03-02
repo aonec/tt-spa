@@ -15,6 +15,7 @@ import useOutsideClick from "../../../hooks/useOutsideClick";
 interface GraphFilterFormProps {
     setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
     setSearchQuery: Dispatch<SetStateAction<QueryInterface>>
+    searchQuery: QueryInterface
     paramsList: GraphParamsType[]
 }
 
@@ -22,7 +23,7 @@ moment.locale('ru');
 
 
 const GraphFilterForm: React.FC<GraphFilterFormProps> = (
-    {setGraphParam, setSearchQuery, paramsList}
+    {setGraphParam, setSearchQuery, paramsList, searchQuery}
 ) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -34,9 +35,10 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
     }, [isActive])
 
     useOutsideClick(formRef, () => {
+        console.log('bubbling')
         if (isActive) {
-            // setShown();
-            setIsActive(false)
+            // setIsActive(false)
+            setShown()
         }
     })
 
@@ -53,12 +55,14 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
         setSearchQuery((prevQuery) => {
                 return ({
                     ...prevQuery,
-                    from: values.dateRange[0].set({hour: 0, minute: 0, second: 0, millisecond: 0}).add(moment().utcOffset(), 'minute').toISOString(),
-                    to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute').toISOString(),
+                    // from: values.dateRange[0].set({hour: 0, minute: 0, second: 0, millisecond: 0}).add(moment().utcOffset(), 'minute'),
+                    from: values.dateRange[0].set({hour: 0, minute: 0, second: 0, millisecond: 0}),
+                    // to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute'),
+                    to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}),
                     reportType: values.reportType
                 })
             }
-        )
+        )    
         actions.setSubmitting(false);
         setIsActive(state => !state)
     }
@@ -70,7 +74,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
             <Formik
                 initialValues={{
                     dateRange: [
-                        moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0}),
+                        moment().subtract(6, 'day').set({hour:0,minute:0,second:0,millisecond:0}),
                         moment().set({hour:23,minute:0,second:0,millisecond:0}),
                     ],
                     reportType: "daily",
@@ -108,7 +112,6 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                             <FormItem name="dateRange" label="Произвольный период" >
                                 <RangeWrapper id="div">
                                     <DatePicker.RangePicker
-                                      // getCalendarContainer={triggerNode => triggerNode.parentNode}
                                       // @ts-ignore
                                       getPopupContainer={() => document.getElementById("div")}
                                         name="dateRange"
@@ -131,7 +134,8 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                                     />
                                 </RangeWrapper>
                             </FormItem>
-                            <FormItem name="reportType" label="Тип отчета" >
+
+                                <FormItem name="reportType" label="Тип отчета" >
                                 <div>
                                     <Radio.Group
                                         name="reportType"

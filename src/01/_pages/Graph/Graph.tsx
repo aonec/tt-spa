@@ -20,19 +20,19 @@ interface GraphProps {
 }
 
 export type GraphParamsType =
-  | "inputMass"
-  | "inputPressure"
-  | "inputTemperature"
-  | "inputVolume"
-  | "outputMass"
-  | "outputPressure"
-  | "outputTemperature"
-  | "outputVolume"
-  | "deltaMass"
-  | "deltaPressure"
-  | "deltaTemperature"
-  | "deltaVolume"
-  | "energy"
+    | "inputMass"
+    | "inputPressure"
+    | "inputTemperature"
+    | "inputVolume"
+    | "outputMass"
+    | "outputPressure"
+    | "outputTemperature"
+    | "outputVolume"
+    | "deltaMass"
+    | "deltaPressure"
+    | "deltaTemperature"
+    | "deltaVolume"
+    | "energy"
 
 
 const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
@@ -44,9 +44,11 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
   const reportType = 'daily' as ReportType;
 
-  const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute').toISOString();
+  // const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0});
+  const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0});
 
-  const to = moment().set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute').toISOString();
+  // const to = moment().set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute');
+  const to = moment().set({hour:23,minute:0,second:0,millisecond:0});
 
   const getInitialState = () => {
     return {
@@ -67,31 +69,38 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
 
   return (
-    <GraphContainer>
-      <GraphFilterForm paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
-      {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
+      <GraphContainer>
+        <GraphFilterForm searchQuery={searchQuery} paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
+        {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
 
-      {status === 'rejected' && <Alert
-          message="Ошибка"
-          description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
-          type="error"
-          showIcon
-          closable
-      />}
+        {status === 'rejected' && <Alert
+            message="Ошибка"
+            description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
+            type="error"
+            showIcon
+            closable
+        />}
 
-      {status === 'resolved' && <GraphView
-          graphParam={graphParam}
-          dataObject={data}
-      />}
-      {data && <GraphLegend resource={data.data.resource}/>}
-    </GraphContainer>
+        {status === 'resolved' &&
+        <GraphParent>
+          <GraphView
+              graphParam={graphParam}
+              dataObject={data}
+          />
+          <GraphLegend resource={data.data.resource}/>
+        </GraphParent>}
+      </GraphContainer>
   )
 };
+
+const GraphParent = styled.div`
+  position: absolute;
+  top: 80px;
+`
 
 const GraphContainer = styled.div`
   max-width: 670px;
   position: relative;
-  //padding-bottom: 80px;
 `
 
 export default Graph;

@@ -95,14 +95,11 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                   />
                   <VictoryAxis
                     dependentAxis
-                    // gridComponent={<LineSegment type={"grid"}/>}
                     style={{
                       axis: {stroke: 'none'},
                       ticks: {stroke: 'none'},
                       tickLabels: {fill: 'var(--main-32)'},
-                      // parent: {stroke: 'none'},
                       grid: {stroke: 'var(--frame)', strokeDasharray: '0'},
-                        // label: {stroke: 'none'}
                     }}
                   />
                   <VictoryArea
@@ -112,7 +109,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                     interpolation="natural"
                     labelComponent={<CustomTooltip
                       flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
-                      flyoutComponent={<GraphTooltip/>}
+                      flyoutComponent={<GraphTooltip graphParam={graphParam}/>}
                       minValue={minValue}
                       maxValue={maxValue}
                     />}
@@ -129,8 +126,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 }
 
 const GraphWrapper = styled.div`
-  position: absolute;
-  top: 80px;
+  
     svg {
         overflow: visible !important;
     }

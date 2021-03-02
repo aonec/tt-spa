@@ -2,6 +2,7 @@ import React from 'react';
 import {format} from "date-fns";
 import styled from "styled-components";
 import {VictoryLabelProps} from "victory";
+import {GraphParamsType} from "../Graph";
 
 const formatDate = (timeStamp: string): Date => {
     const dateObject = new Date(timeStamp);
@@ -10,12 +11,20 @@ const formatDate = (timeStamp: string): Date => {
     return date;
 }
 
-export const GraphTooltip:React.FC<GraphTooltipProps> = (props) => {
-    const { datum, x, y } = props;
+interface ExtraProps {
+    graphParam: GraphParamsType
+}
+
+const formMeteringUnit = (graphParam: GraphParamsType) => {
+    if (graphParam === "energy") return 'ГКал'
+
+    return 'м³'
+}
+
+export const GraphTooltip:React.FC<GraphTooltipProps & ExtraProps> = (props) => {
+    const { datum, x, y, graphParam } = props;
     return (
         <g style={{pointerEvents: 'none'}}>
-
-
             <foreignObject
                 x={x} y={y}
                 width="100%" height="100%"
@@ -23,7 +32,7 @@ export const GraphTooltip:React.FC<GraphTooltipProps> = (props) => {
             >
                 <TooltipBlock value={datum!.value}>
                     <DateBlock>{ format(formatDate(datum!.time), 'dd.MM.yyyy') }</DateBlock>
-                    <Value>{ datum!.value.toFixed(3) }м³</Value>
+                    <Value>{ datum!.value.toFixed(3) } {formMeteringUnit(graphParam)}</Value>
                     <Pointer value={datum!.value}/>
                 </TooltipBlock>
             </foreignObject>
