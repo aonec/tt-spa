@@ -164,28 +164,13 @@ export const CalculatorProfile = () => {
     };
     return (
         <DeviceContext.Provider
-            value={{device,
-                building,
-                tasks,
-                related,
-                nodes,
-                loadings,
-                errors,
-                error,
-                hubs,
-                deregister,
-                // setDeregister,
-                report,
-                // setReport,
-                check,
-                // setCheck
-            }}
+            value={context}
         >
             <Header/>
             <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>
-                    {/*<Information/>*/}
+                    <Information/>
                 </Route>
                 <Route path={`${path}connection`} exact>
                     <Connection/>
