@@ -1,6 +1,9 @@
 import styled, { css } from 'styled-components';
 
-export const Title = styled.h2`
+interface Props {
+    size?: string,
+}
+export const Title = styled.h2<Props>`
   font-weight: 300;
   color: #ffffff;
 
@@ -38,14 +41,15 @@ export const Title = styled.h2`
         color: red;
       `)};
 
-  ${({ someprop }) => (someprop === 'somevalue'
-      && css`
-        color: blue;
-      `)
-    || (someprop === 'red'
-      && css`
-        color: red;
-      `)};
 `;
 
 export default Title;
+
+// ${({ someprop }) => (someprop === 'somevalue'
+//     && css`
+//         color: blue;
+//       `)
+// || (someprop === 'red'
+//     && css`
+//         color: red;
+//       `)};

@@ -19,12 +19,13 @@ import {NodeContext} from '../../../index';
 import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
 import {addOdpu} from "../apiAddOdpu";
 
-const AddDeviceForm = (props: any) => {
-    const {handleCancel} = props;
+interface Props {
+    handleCancel: () => void
+}
 
-    const {
-        node,
-    } = useContext(NodeContext);
+const AddDeviceForm: React.FC<Props> = (props) => {
+    const {handleCancel} = props;
+    const {node} = useContext(NodeContext);
 
     console.log('node', node);
 
@@ -35,7 +36,7 @@ const AddDeviceForm = (props: any) => {
     const {entryNumber} = communicationPipes[0];
 
 
-    const communicationPipeIds =  _.map(communicationPipes, 'id');
+    const communicationPipeIds = _.map(communicationPipes, 'id');
 
     console.log("communicationPipeIds", communicationPipeIds)
 
@@ -129,7 +130,7 @@ const AddDeviceForm = (props: any) => {
         }
     }, [values.housingMeteringDeviceType]);
 
-    const Alert = ({name=''}) => {
+    const Alert = ({name = ''}) => {
         const touch = _.get(touched, `${name}`);
         const error = _.get(errors, `${name}`);
         if (touch && error) {
@@ -140,9 +141,12 @@ const AddDeviceForm = (props: any) => {
         return null;
     };
 
-    function handleChangeTab(value: string) {
+    const handleChangeTab = (value: string) => {
         setTab(value);
     }
+    // function handleChangeTab(value: string) : void {
+    //     setTab(value);
+    // }
 
     function handleNext() {
         setTab(String(Number(currentTabKey) + 1));
@@ -178,8 +182,7 @@ const AddDeviceForm = (props: any) => {
             onSubmit={handleSubmit}
         >
             <StyledModalBody>
-                <Title color="black">
-                {/*<Title size="middle" color="black">*/}
+                <Title size="middle" color="black">
                     Добавление нового ОДПУ
                 </Title>
                 {/* {JSON.stringify(errors)} */}

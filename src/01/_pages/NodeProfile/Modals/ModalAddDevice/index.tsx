@@ -3,9 +3,9 @@ import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { NodeContext} from '../../index';
 
-const ModalAddDevice = (props: any) => {
+const ModalAddDevice = () => {
   const { setAddOdpu, addOdpu} = useContext(NodeContext);
-  function handleCancel() {
+  const handleCancel = () => {
     setAddOdpu(false);
   }
   return (
