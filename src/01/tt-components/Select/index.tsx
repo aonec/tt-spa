@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 interface Props {
     name: string,
-    size? : string | any
+    size? : any
 }
 
 export const SelectTT = styled(Select)<Props>`
@@ -21,7 +21,7 @@ export const SelectTT = styled(Select)<Props>`
    padding: 0 28px !important;
  }
  }
-  ${({ size }) => (size == '32'
+  ${({ size }) => (size === '32'
   && css`
      height: 32px;
       {
