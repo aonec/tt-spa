@@ -77,10 +77,10 @@ export const Devices = ({calculators}) => {
                     <NodeZone>{serviceZone}</NodeZone>
                 </NavLink>
                 <Tooltip placement="topLeft" title={getNodeStatus} color={'#272F5A'}>
-                <NodeStatus>
-                    <IconTT icon={getNodeIconStatus}/>
-                    <span>{getNodeStatus}</span>
-                </NodeStatus>
+                    <NodeStatus>
+                        <IconTT icon={getNodeIconStatus}/>
+                        <span>{getNodeStatus}</span>
+                    </NodeStatus>
                 </Tooltip>
             </Node>
         );
@@ -116,6 +116,35 @@ export const Devices = ({calculators}) => {
         );
     };
 
+    // Нет Устройств Узла
+    const NoNodeDevice = ({device, closingDate}) => {
+        // const {
+        //     model,
+        //     serialNumber,
+        //     closingdate,
+        //     hub,
+        //     resource,
+        //     id,
+        //     housingStockId,
+        // } = device;
+        // console.log('NodeDevice');
+
+        return (
+            <NodeDeviceWrap key={0}>
+
+                {/*<NavLink to={`/housingMeteringDevices/${id}`}>*/}
+                    <NodeDeviceMainInfo>
+                        <span>На данном узле нет устройств</span>
+                    </NodeDeviceMainInfo>
+                {/*</NavLink>*/}
+                {/*<DeviceStatus>*/}
+                {/*    <IconTT icon={statusIcon(closingDate)}/>*/}
+                {/*    <span>{status(closingDate)}</span>*/}
+                {/*</DeviceStatus>*/}
+            </NodeDeviceWrap>
+        );
+    };
+
     // Узел с его устройствами
     const NodesWithDevices = ({nodes, closingDate}) => nodes.map((node, index) => {
         const {
@@ -123,18 +152,32 @@ export const Devices = ({calculators}) => {
         } = node;
 
         const devicesOnNode = _.flatten(communicationPipes.map((communicationPipe) => communicationPipe.devices.map((resItem) => resItem)));
+        // console.log("devicesOnNode", devicesOnNode)
+
+
+        // if (_.isEmpty(devicesOnNode)) {
+        //     return <div>
+        //         <NodeItem node={node}/>
+        //         <span>Нет устройств</span>
+        //     </div>
+        // }
 
         const NodeDevices = () => devicesOnNode.map((device) => (
             <NodeDevice device={device} closingDate={closingDate}/>
         ));
 
+
+
+        console.log('isEmpty', _.isEmpty(devicesOnNode))
+
         return (
             <NodeWrap>
                 <NodeItem node={node}/>
-                <NodeDevices/>
+                {_.isEmpty(devicesOnNode) ? <NoNodeDevice /> : <NodeDevices/>}
             </NodeWrap>
         );
     });
+
 
     const Result = ({calculators}) => {
         if (calculators) {
@@ -144,6 +187,10 @@ export const Devices = ({calculators}) => {
                 const {
                     id, model, serialNumber, closingDate, nodes,
                 } = calculator;
+
+
+                // console.log("calculator",calculator)
+
 
                 return (
                     <div>
@@ -156,6 +203,10 @@ export const Devices = ({calculators}) => {
         }
         return <div>Загрузка</div>;
     };
+
+    if (!calculators) {
+        return <div>Загрузка</div>
+    }
 
     return (
         <div>

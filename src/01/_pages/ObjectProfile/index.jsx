@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'reshadow/macro';
-
 import {
-  Route, useRouteMatch, useParams, useHistory,
+  Route, useParams, useHistory,
 } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';
@@ -13,11 +12,11 @@ import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
-import { getCalculators } from "./apiObjectProfile";
+import { getCalculators } from './apiObjectProfile';
 
 export const ObjectContext = React.createContext();
 
-function reducer(state, action){
+function reducer(state, action) {
   const { type, data } = action;
   switch (type) {
     case 'success':
@@ -29,31 +28,28 @@ function reducer(state, action){
 }
 
 export const ObjectProfile = () => {
+  const { housingStockId } = useParams();
+
   const [state, dispatch] = React.useReducer(reducer, {});
 
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
-
   const [calculators, setCalculators] = useState();
 
   useEffect(() => {
-    const { housingStock } = state;
-    if (housingStock) {
-      const { id } = housingStock;
-      getCalculators(id).then((res) => {
-        setCalculators(res);
-        console.log(res)
-      })
-    }
-  }, [state.housingStock])
+    getCalculators(housingStockId).then((res) => {
+      setCalculators(res);
+      // console.log(res);
+    });
+  }, []);
 
   useFetchPage(state, dispatch);
-  const { 0: objid } = useParams();
+
   const { push } = useHistory();
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
   const context = {
-    addCalculator, setAddCalculator, addOdpu, setAddOdpu, objid, calculators
+    addCalculator, setAddCalculator, addOdpu, setAddOdpu, housingStockId, calculators,
   };
 
   return styled(grid)(
@@ -61,9 +57,9 @@ export const ObjectProfile = () => {
       <ObjectContext.Provider
         value={context}
       >
-        <Index path="/objects/"/>
+        <Index path="/objects/" />
         <Header {...header} />
-        <Tabs/>
+        <Tabs />
         <grid>
           <Route path="/objects/(\\d+)" exact>
             <Information {...info} />
@@ -72,14 +68,13 @@ export const ObjectProfile = () => {
           <Route path="/objects/(\\d+)/apartments" exact>
             <Apartments
               path="/objects/(\\d+)/apartments"
-              onClick={(id) => push(`/objects/${objid}/apartments/${id}`)}
+              onClick={(id) => push(`/objects/${housingStockId}/apartments/${id}`)}
               {...state?.apartments}
             />
           </Route>
 
-
           <Route path="/objects/(\\d+)/devices" exact>
-          <Devices calculators={calculators}/>
+            <Devices calculators={calculators} />
           </Route>
 
           <Events title="События с объектом" {...events} />

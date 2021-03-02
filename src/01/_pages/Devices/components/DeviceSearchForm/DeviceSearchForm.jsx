@@ -1,5 +1,5 @@
-import styles from "./DeviceSearchForm.module.less";
-import "./DeviceSearchForm.module.less";
+import styles from "./DeviceSearchForm.module.scss";
+import "./DeviceSearchForm.module.scss";
 import React, {useRef, useState} from "react";
 import {getDevicesBySerialNumber, setCurrentPage} from "../../../../Redux/reducers/reducerDevicesPage";
 import {useDispatch} from "react-redux";

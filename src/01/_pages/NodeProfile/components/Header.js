@@ -8,7 +8,7 @@ import { NodeContext } from '../index';
 import { nodeStatusList } from '../../../tt-components/localBases';
 
 export const Header = () => {
-  const { node, calculator } = useContext(NodeContext);
+  const { node, calculator, setAddOdpu } = useContext(NodeContext);
   const {
     id: nodeId, resource, nodeStatus, number,
   } = node;
@@ -28,7 +28,7 @@ export const Header = () => {
   {
     title: 'Добавить новый прибор',
     itemFunction: () => {
-      alert('Добавить новый прибор');
+      setAddOdpu(true)
     },
   },
   {

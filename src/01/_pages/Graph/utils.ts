@@ -78,11 +78,11 @@ export const getTickFormat = (archiveArr: ArchiveEntryInterface[], reportType: R
 export const getGraphParams = (resource: ResourceType, pipeCount: 1 | 2):GraphParamsType[] => {
   switch (resource) {
     case "ColdWaterSupply":
-      return ["InputVolume"]
+      return ["inputVolume"]
     case "HotWaterSupply":
-      return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
+      return pipeCount === 1 ? ["inputVolume", "energy"] : ["deltaVolume", "energy"]
     case "Heat":
-      return pipeCount === 1 ? ["InputVolume", "Energy"] : ["DeltaVolume", "Energy"]
+      return pipeCount === 1 ? ["inputVolume", "energy"] : ["deltaVolume", "energy"]
     default:
       console.log('Ресурс', resource, 'и количество труб ', pipeCount, 'не предусмотрено');
       return []
@@ -91,11 +91,11 @@ export const getGraphParams = (resource: ResourceType, pipeCount: 1 | 2):GraphPa
 
 export const translateParam = (param: GraphParamsType) => {
   switch (param) {
-    case "InputVolume":
+    case "inputVolume":
       return "Входящий объем, м³"
-    case "Energy":
+    case "energy":
       return "Энергия, ГКал"
-    case "DeltaVolume":
+    case "deltaVolume":
       return "Расход по объему, м³"
   }
 }
