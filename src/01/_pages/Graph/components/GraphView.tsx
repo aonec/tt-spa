@@ -16,6 +16,9 @@ import 'antd/es/date-picker/style/index';
 import {formTicks, getTickFormat} from "../utils";
 import {GraphParamsType} from "../Graph";
 import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
+import {Alert} from "antd";
+import FallbackGraph from './FallbackGraph.svg'
+import GraphLegend from "./GraphLegend";
 
 const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
@@ -31,9 +34,25 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
     const { data, searchQuery: {reportType} } = dataObject;
 
+
     const {resource} = data;
 
     const archiveEntries = _.get(data, 'archiveEntries', []);
+
+    if (archiveEntries.length === 0) return <>
+        <Alert
+            message="Ошибка"
+            description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
+            type="error"
+            showIcon
+            closable
+            style={{marginBottom: 24}}
+        />
+        <div>
+            {/*<img src={require('./components/FallbackGraph.svg')} alt="546"/>*/}
+            <img src={FallbackGraph} alt="546"/>
+        </div>
+    </>
 
 
     // const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
@@ -121,6 +140,7 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                   />
               </VictoryChart>
           </GraphWrapper>
+          <GraphLegend resource={data.resource}/>
       </>
     )
 }
