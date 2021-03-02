@@ -10,10 +10,9 @@ import {
     magistrals, housingMeteringDeviceTypes, isConnected,
 } from '../../../../../tt-components/localBases';
 import {
-    Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
+    Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledFormPage, styles
 } from '../../../../../tt-components';
 import TabsComponent from './TabsComponent';
-import {styles, StyledFormPage} from './styledComponents';
 import {handleTabsBeforeFormSubmit} from '../../../../../utils/handleTabsBeforeFormSubmit';
 import {NodeContext} from '../../../index';
 import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
@@ -34,6 +33,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     } = node;
 
     const {entryNumber} = communicationPipes[0];
+    console.log("entryNumber",entryNumber)
 
 
     const communicationPipeIds = _.map(communicationPipes, 'id');
@@ -48,7 +48,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     const tabErrors = [
         {
             key: '1',
-            value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId', 'isAllowed'],
+            value: ['model', 'serialNumber', 'diameter', 'entryNumber', 'pipeNumber', 'calculatorId', 'isAllowed'],
         },
     ];
 
@@ -71,7 +71,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         diameter: null,
         calculatorId,
         entryNumber,
-        hubNumber: null,
         pipeNumber: null,
         magistral: magistrals[0].value,
     };
