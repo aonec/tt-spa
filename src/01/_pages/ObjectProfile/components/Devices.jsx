@@ -77,10 +77,10 @@ export const Devices = ({calculators}) => {
                     <NodeZone>{serviceZone}</NodeZone>
                 </NavLink>
                 <Tooltip placement="topLeft" title={getNodeStatus} color={'#272F5A'}>
-                <NodeStatus>
-                    <IconTT icon={getNodeIconStatus}/>
-                    <span>{getNodeStatus}</span>
-                </NodeStatus>
+                    <NodeStatus>
+                        <IconTT icon={getNodeIconStatus}/>
+                        <span>{getNodeStatus}</span>
+                    </NodeStatus>
                 </Tooltip>
             </Node>
         );
@@ -123,10 +123,18 @@ export const Devices = ({calculators}) => {
         } = node;
 
         const devicesOnNode = _.flatten(communicationPipes.map((communicationPipe) => communicationPipe.devices.map((resItem) => resItem)));
+        // console.log("devicesOnNode", devicesOnNode)
+
+
+        if (_.isEmpty(devicesOnNode)) {
+            return <div>Нет устройств</div>
+        }
 
         const NodeDevices = () => devicesOnNode.map((device) => (
             <NodeDevice device={device} closingDate={closingDate}/>
         ));
+
+        console.log('isEmpty', _.isEmpty(devicesOnNode))
 
         return (
             <NodeWrap>
@@ -136,6 +144,7 @@ export const Devices = ({calculators}) => {
         );
     });
 
+
     const Result = ({calculators}) => {
         if (calculators) {
             const calculatorsArray = calculators.items;
@@ -144,6 +153,10 @@ export const Devices = ({calculators}) => {
                 const {
                     id, model, serialNumber, closingDate, nodes,
                 } = calculator;
+
+
+                // console.log("calculator",calculator)
+
 
                 return (
                     <div>
@@ -156,6 +169,10 @@ export const Devices = ({calculators}) => {
         }
         return <div>Загрузка</div>;
     };
+
+    if (!calculators) {
+        return <div>Ждем данных</div>
+    }
 
     return (
         <div>
