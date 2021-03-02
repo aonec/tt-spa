@@ -11,7 +11,7 @@ import styles from "../../../../Devices/components/TabsDevices.module.scss";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
-import ButtonTT from "../../../../../tt-components/ButtonTT";
+import {ButtonTT} from "../../../../../tt-components";
 import {Input, Modal} from "antd";
 // @ts-ignore
 import uuid from 'react-uuid';

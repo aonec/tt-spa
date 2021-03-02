@@ -2,7 +2,8 @@ import styled, { css } from 'styled-components';
 import { Select } from 'antd';
 
 interface Props {
-    name: string
+    name: string,
+    size? : string | any
 }
 
 export const SelectTT = styled(Select)<Props>`

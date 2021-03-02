@@ -148,7 +148,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                             </FormItem>
                             </FormBody>
                             <FormFooter>
-                                <ButtonTT color="white" small onClick={() => setIsActive(state => !state)} style={{marginRight: 16}}>Отмена</ButtonTT>
+                                {/*<ButtonTT color="white" small onClick={() => setIsActive(state => !state)} style={{marginRight: 16}}>Отмена</ButtonTT>*/}
                              <StyledSubmit disabled={false}>Применить настройки</StyledSubmit>
                             </FormFooter>
                         </Form>

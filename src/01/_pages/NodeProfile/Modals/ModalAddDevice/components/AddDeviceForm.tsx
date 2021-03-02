@@ -321,7 +321,7 @@ const AddDeviceForm = (props: any) => {
                 <ButtonTT
                     color="blue"
                     onClick={handleNext}
-                    big
+                    // big
                     hidden={currentTabKey === '2'}
                     disabled={coldandthermo}
                     style={{marginLeft: '16px'}}
@@ -335,7 +335,7 @@ const AddDeviceForm = (props: any) => {
                     type="submit"
                     hidden={currentTabKey !== '2'}
                     style={{marginLeft: '16px'}}
-                    big
+                    // big
                     disabled={coldandthermo}
                     onClick={handleSubmitForm}
                 >
