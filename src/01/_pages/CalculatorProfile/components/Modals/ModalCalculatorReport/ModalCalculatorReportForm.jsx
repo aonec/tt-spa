@@ -89,6 +89,7 @@ const ModalCalculatorReportForm = (props) => {
 
       const link = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
       const apiUrl = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      console.log(apiUrl)
 
       axios.get(
         apiUrl,
