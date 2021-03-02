@@ -16,67 +16,28 @@ const ModalCheckForm = (props: any) => {
     const {device} = useContext(DeviceContext);
 
 
-    interface DeviceInterface {
-        address: object,
-        connection: object,
-        futureCheckingDate: string,
-        futureCommercialAccountingDate: string,
-        hubs: [],
-        id: number,
-        infoId: null,
-        isConnected: boolean,
-        lastCheckingDate: string,
-        lastCommercialAccountingDate: string,
-        model: string,
-        nodes: [],
-        serialNumber: string,
-    }
-
-    const {model, serialNumber, address: {id: houseId}, futureCheckingDate, lastCheckingDate} =device
-
-    interface FormInterface {
-        readonly deviceId: number,
-        currentCheckingDate: string,
-        futureCheckingDate: string,
-    }
-
-    interface InitialValuesInterface {
-        lastCheckingDate: string,
-        futureCheckingDate: string,
-        readonly deviceId: number,
-        readonly housingStock: number,
-    }
-
-    const Alert = ({name}) => {
-        const touch = _.get(touched, `${name}`);
-        const error = _.get(errors, `${name}`);
-        if (touch && error) {
-            return (
-                <div>{error}</div>
-            );
-        }
-        return null;
-    };
-
-    const initialValues: InitialValuesInterface = {
-        lastCheckingDate: lastCheckingDate,
-        futureCheckingDate: futureCheckingDate,
-        deviceId: device.id,
-        housingStock: houseId,
-    }
 
     const {
         handleSubmit, handleChange, values, touched, errors,
         handleBlur, setFieldValue,
     } = useFormik({
-        initialValues: initialValues,
+        initialValues: {
+            deviceId: device?.id,
+            lastCheckingDate: device?.lastCheckingDate,
+            futureCheckingDate: device?.futureCheckingDate
+        },
         validationSchema: Yup.object({
             deviceId: yupDeviceId,
             lastCheckingDate: yupDate,
             futureCheckingDate: yupDate
         }),
         onSubmit: async () => {
-            const form: FormInterface = {
+            // const form: FormInterface = {
+            //     deviceId: values.deviceId,
+            //     currentCheckingDate: values.lastCheckingDate,
+            //     futureCheckingDate: values.futureCheckingDate,
+            // };
+            const form = {
                 deviceId: values.deviceId,
                 currentCheckingDate: values.lastCheckingDate,
                 futureCheckingDate: values.futureCheckingDate,
@@ -90,11 +51,36 @@ const ModalCheckForm = (props: any) => {
         },
     });
 
+    if (!device) return <div>Loader</div>
+
+    // const {model, serialNumber, address: {id: houseId}, futureCheckingDate, lastCheckingDate, id} =device
+
+    interface FormInterface {
+        readonly deviceId: number,
+        currentCheckingDate: string,
+        futureCheckingDate: string,
+    }
+
+
+    const Alert = ({name = ''}) => {
+        const touch = _.get(touched, `${name}`);
+        const error = _.get(errors, `${name}`);
+        if (touch && error) {
+            return (
+                <div>{error}</div>
+            );
+        }
+        return null;
+    };
+
+
+
+
     return (
         <form onSubmit={handleSubmit}>
             <StyledModalBody>
                 <StyledFormPage>
-                    <Header>{`Поверка вычислителя ${model} (${serialNumber})`}</Header>
+                    <Header>{`Поверка вычислителя ${device.model} (${device.serialNumber})`}</Header>
                     <Form.Item label="Дата последней поверки прибора" style={styles.w49}>
                         <DatePickerTT
                             placeholder="Укажите дату"
