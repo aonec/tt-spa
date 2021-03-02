@@ -2,7 +2,7 @@ import { all } from 'redux-saga/effects';
 
 
 function* test () {
-    console.log('saga')
+    // console.log('saga')
 }
 
 export default function* rootSaga() {

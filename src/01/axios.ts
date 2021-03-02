@@ -69,7 +69,6 @@ axios.interceptors.response.use(
 
     }
 
-    // debugger;
     //   if (status === 403 ) {
     //       window.location.replace('/access-denied/');
     //   }

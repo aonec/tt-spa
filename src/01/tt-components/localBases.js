@@ -89,6 +89,17 @@ export const isConnected = [
   },
 ];
 
+export const isConnectedOptions = [
+  {
+    value: 'true',
+    label: 'Есть',
+  },
+  {
+    value: 'false',
+    label: 'Отсутствует',
+  },
+];
+
 export const isConnectedValue = [
   {
     value: true,
@@ -188,25 +199,24 @@ export const nodeStatusList = [
   {
     value: 'Registered',
     label: 'Сдан на коммерческий учет',
-    icon : 'ok'
+    icon: 'ok',
   },
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon : 'block'
+    icon: 'ok',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon : 'timer'
+    icon: 'ok',
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
-    icon : 'ok'
+    icon: 'ok',
   },
 ];
-
 
 export const serviceZoneList = [
   {
@@ -215,8 +225,8 @@ export const serviceZoneList = [
   },
   {
     value: 'CommercialPremises',
-    label: 'Коммерческие помещения'
-  }
+    label: 'Коммерческие помещения',
+  },
 ];
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;

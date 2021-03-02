@@ -1,9 +1,16 @@
-import styled, { css } from 'styled-components';
+import styled, {css} from 'styled-components';
 
-export const ButtonTT = styled.button.attrs((props) => ({
-  size: props.size,
-  small: props.small,
-}))`
+interface Props {
+    name: string,
+    size: string,
+    small: boolean,
+    big: boolean,
+    color: string,
+    key: string,
+    onClick: () => void
+}
+
+export const ButtonTT = styled.button<Partial<Props>>`
   position: relative;
   border-radius: 4px;
   font-weight: 500;
@@ -16,8 +23,6 @@ export const ButtonTT = styled.button.attrs((props) => ({
   transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
   width: ${(props) => (props.big ? '224px' : 'fit-content')};
 
-
-  
   &:before {
     display: none;
     content: "";
@@ -41,14 +46,8 @@ export const ButtonTT = styled.button.attrs((props) => ({
     }
   }
 
-  ${(props) => props.small && css`
-    background: transparent
-    color: #272F5A
-    border: 1px solid #DCDEE4
-  `}
 
-
-  ${({ color }) => (color === 'red'
+  ${({color}) => (color === 'red'
           && css`
             background: #fc525b;
             color: #ffffff;
@@ -73,7 +72,7 @@ export const ButtonTT = styled.button.attrs((props) => ({
                     border: 1px solid #DCDEE4;
                   `)};
 
-  ${({ color }) => (color === 'red'
+  ${({color}) => (color === 'red'
           && css`
             background: #fc525b;
             color: #ffffff;
@@ -90,11 +89,6 @@ export const ButtonTT = styled.button.attrs((props) => ({
                     border: 1px solid #DCDEE4;
                   `)};
 
-
-  $: disabled {
-    background: rgba(39, 47, 90, 0.32);
-    color: #ffffff;)};
-
   &:active {
     background-color: #272F5A;
   }
@@ -110,6 +104,7 @@ export const ButtonTT = styled.button.attrs((props) => ({
     line-height: 16px;
     height: auto;
     display: flex;
+
     svg {
       margin-left: 16px;
     }

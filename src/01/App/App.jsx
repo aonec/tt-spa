@@ -8,14 +8,10 @@ import { Logotip, Menu } from '01/components';
 import moment from 'moment';
 
 import { Provider } from 'react-redux';
-import { createStore, compose, applyMiddleware } from 'redux';
-// библиотека обработки дат и локализация СНГ
 import 'moment/locale/ru';
 import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
-import createSagaMiddleware from 'redux-saga';
-import rootReducer from '../Redux/rootReducer';
 import {
   Tasks,
   Login,
@@ -44,7 +40,6 @@ import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
-import rootSaga from '../Redux/saga';
 import { store } from '../Redux/store';
 
 moment.locale('ru');

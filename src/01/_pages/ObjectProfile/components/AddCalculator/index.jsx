@@ -10,7 +10,7 @@ export const AddCalculatorContext = React.createContext();
 
 
 const ModalCalculator = () => {
-  const { addCalculator, setAddCalculator, objid } = useContext(ObjectContext);
+  const { addCalculator, setAddCalculator, housingStockId } = useContext(ObjectContext);
   const handleCancel = () => {
     setAddCalculator(false);
   };
@@ -30,7 +30,7 @@ const ModalCalculator = () => {
           width={800}
         >
           <AddCalculatorForm
-            objid={objid}
+              housingStockId={housingStockId}
             addCalculator={addCalculator}
             setAddCalculator={setAddCalculator}
             handleCancel={handleCancel}

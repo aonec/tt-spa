@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 
 export const DevicesFromSearch = () => {
 
-    const devicePage = useSelector((state) => state.devicePage);
+    const devicePage = useSelector<any>((state) => state.devicePage);
     return  (
         <div>
             <h1 style={{fontWeight: 300, marginBottom: 16}}>Приборы</h1>

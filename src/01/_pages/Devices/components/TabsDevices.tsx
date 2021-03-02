@@ -27,7 +27,7 @@ const initialState = {
   searchTerm: '',
 };
 
-const TabsDevices = ({ devicePage }) => {
+const TabsDevices = ({ devicePage }: any) => {
 
   const dispatch = useDispatch();
   const { pageSize } = devicePage;

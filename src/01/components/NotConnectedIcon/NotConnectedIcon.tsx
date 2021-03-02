@@ -24,6 +24,7 @@ const NotConnectedIconContainer = styled(Container)`
 `
 
 export const NotConnectedIcon:React.FC = (props) => {
+   //@ts-ignore
     const {is} = props;
     if (is ==='calculator') {
         return (

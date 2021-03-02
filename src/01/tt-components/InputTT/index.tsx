@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import { Input } from 'antd';
 
-export const InputTT = styled(Input)`
+interface Props {
+    value: any
+
+    // value: string | number | null
+}
+
+export const InputTT = styled(Input)<Props>`
       color: rgba(39, 47, 90, 0.8);
       box-sizing: border-box;
       border-radius: 4px;

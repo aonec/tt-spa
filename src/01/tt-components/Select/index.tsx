@@ -1,7 +1,13 @@
 import styled, { css } from 'styled-components';
 import { Select } from 'antd';
 
-export const SelectTT = styled(Select)`
+interface Props {
+    name: string,
+    size? : any,
+    isConnected? : any,
+}
+
+export const SelectTT = styled(Select)<Props>`
  height: 48px; 
  {
  .ant-select-selector {
@@ -16,7 +22,7 @@ export const SelectTT = styled(Select)`
    padding: 0 28px !important;
  }
  }
-  ${({ size }) => (size == '32'
+  ${({ size }) => (size === '32'
   && css`
      height: 32px;
       {

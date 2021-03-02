@@ -1,32 +1,42 @@
 import axios from "01/axios"
-import {ReadingsInterface, ReportType, ResourceType} from "../_pages/Graph/components/GraphView";
-import {serialize} from "v8";
-// import axios from "axios"
+import {ReadingsInterface, ReportType} from "../_pages/Graph/components/GraphView";
+import moment, {Moment} from "moment";
+
 
 delete axios.defaults.headers.common["Authorization"];
 
 
 
 
-export interface RequestNodeReadingsFunctionInterface {
+export interface QueryInterface {
     nodeId: number
     reportType: ReportType
-    from: string
-    to: string
+    from: Moment
+    to: Moment
 }
 
-export const requestNodeReadings = (searchQuery: RequestNodeReadingsFunctionInterface): Promise<ReadingsInterface> => {
+export interface RequestNodeReadingsFunctionInterface {
+    data: ReadingsInterface
+    searchQuery: QueryInterface
+}
 
-        const readings = axios.request<any, ReadingsInterface>
+
+
+
+export const requestNodeReadings = async (searchQuery: QueryInterface): Promise<RequestNodeReadingsFunctionInterface> => {
+
+        const readings = await axios.request<any, ReadingsInterface>
         ( {
                 method: 'get',
                 baseURL: 'http://84.201.132.164:8080/api',
                 url: `archivesCalculator/getArchive`,
-                params: searchQuery
+                params: {...searchQuery,
+                    from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(),
+                    to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString()}
             }
         )
 
-        return readings
+        return {data: readings, searchQuery}
 
 
 }

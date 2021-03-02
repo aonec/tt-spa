@@ -8,15 +8,14 @@ import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 import {Subtitle} from "../../../_components/Headers";
 
 
-export const Information = (loading = true) => {
+export const Information = () => {
   const {
     device, building, loadings, error,
   } = useContext(DeviceContext);
 
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
-
-  loading = loadingDevice || loadingBuilding;
+  const loading = loadingDevice || loadingBuilding;
 
 
   const {
