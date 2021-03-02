@@ -7,10 +7,20 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import {
-    magistrals, housingMeteringDeviceTypes, isConnected,
+    magistrals, housingMeteringDeviceTypes, isConnected, resources
 } from '../../../../../tt-components/localBases';
 import {
-    Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning, StyledFormPage, styles
+    Title,
+    SelectTT,
+    InputTT,
+    DatePickerTT,
+    StyledModalBody,
+    ButtonTT,
+    StyledFooter,
+    Icon,
+    Warning,
+    StyledFormPage,
+    styles
 } from '../../../../../tt-components';
 import TabsComponent from './TabsComponent';
 import {handleTabsBeforeFormSubmit} from '../../../../../utils/handleTabsBeforeFormSubmit';
@@ -24,16 +34,21 @@ interface Props {
 
 const AddDeviceForm: React.FC<Props> = (props) => {
     const {handleCancel} = props;
-    const {node} = useContext(NodeContext);
+    const {node, calculator} = useContext(NodeContext);
+    const {address} = calculator;
+    const {city, corpus, housingStockNumber, id, street} = address
+
+    const addressString = `${city}, ${street}, ${housingStockNumber}`
 
     console.log('node', node);
+    console.log('calculator', calculator);
 
     const {
         resource, calculatorId, communicationPipes,
     } = node;
 
     const {entryNumber} = communicationPipes[0];
-    console.log("entryNumber",entryNumber)
+    console.log("entryNumber", entryNumber)
 
 
     const communicationPipeIds = _.map(communicationPipes, 'id');
@@ -41,7 +56,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     console.log("communicationPipeIds", communicationPipeIds)
 
     const [currentTabKey, setTab] = useState('1');
-    const [coldandthermo, setColdandthermo] = useState(false);
+    const [coldAndThermo, setColdAndThermo] = useState(false);
     const [disable, setDisable] = useState(false);
     const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -53,7 +68,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     ];
 
     const initialValues = {
-        isConnected: isConnected[0].value,
+        // isConnected: isConnected[0].value,
         isAllowed: true,
         serialNumber: '010320211230',
         lastCheckingDate: moment().toISOString(),
@@ -115,8 +130,8 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (values.resource === 'ColdWaterSupply' && values.housingMeteringDeviceType === 'TemperatureSensor') {
-            setColdandthermo(true);
-        } else setColdandthermo(false);
+            setColdAndThermo(true);
+        } else setColdAndThermo(false);
     }, [values.resource, values.housingMeteringDeviceType]);
 
     useEffect(() => {
@@ -143,9 +158,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     const handleChangeTab = (value: string) => {
         setTab(value);
     }
-    // function handleChangeTab(value: string) : void {
-    //     setTab(value);
-    // }
 
     function handleNext() {
         setTab(String(Number(currentTabKey) + 1));
@@ -177,16 +189,16 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
     return (
         <form
-            id="formikFormAddOdpu"
             onSubmit={handleSubmit}
         >
             <StyledModalBody>
                 <Title size="middle" color="black">
                     Добавление нового ОДПУ
                 </Title>
+                <span>{addressString}</span>
                 {/* {JSON.stringify(errors)} */}
                 <Warning
-                    hidden={!coldandthermo}
+                    hidden={!coldAndThermo}
                     title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
                 />
                 <Warning
@@ -198,7 +210,21 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                     handleChangeTab={handleChangeTab}
                 />
                 <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-                    <Form.Item label="Выберите тип прибора" style={styles.w100}>
+
+                    <Form.Item label="Выберите тип ресурса" style={styles.w49}>
+                        <SelectTT
+                            name="resource"
+                            onChange={(value) => {
+                                setFieldValue('resource', value);
+                            }}
+                            options={resources}
+                            defaultValue={resources[0].value}
+                            value={values.resource}
+                        />
+                        <Alert name="resource"/>
+                    </Form.Item>
+
+                    <Form.Item label="Выберите тип прибора" style={styles.w49}>
                         <SelectTT
                             name="housingMeteringDeviceType"
                             onChange={(value) => {
@@ -210,18 +236,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                         <Alert name="housingMeteringDeviceType"/>
                     </Form.Item>
 
-                    {/* <Form.Item label="Выберите тип ресурса" style={styles.w100}> */}
-                    {/*  <SelectTT */}
-                    {/*    name="resource" */}
-                    {/*    onChange={(value) => { */}
-                    {/*      setFieldValue('resource', value); */}
-                    {/*    }} */}
-                    {/*    options={resources} */}
-                    {/*    defaultValue={resources[0].value} */}
-                    {/*    value={values.resource} */}
-                    {/*  /> */}
-                    {/*  <Alert name="resource"/> */}
-                    {/* </Form.Item> */}
 
                     <Form.Item label="Выберите модель прибора" style={styles.w49}>
                         <InputTT
@@ -325,7 +339,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                     onClick={handleNext}
                     // big
                     hidden={currentTabKey === '2'}
-                    disabled={coldandthermo}
+                    disabled={coldAndThermo}
                     style={{marginLeft: '16px'}}
                     type="button"
                 >
@@ -338,7 +352,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                     hidden={currentTabKey !== '2'}
                     style={{marginLeft: '16px'}}
                     // big
-                    disabled={coldandthermo}
+                    disabled={coldAndThermo}
                     onClick={handleSubmitForm}
                 >
                     Добавить
