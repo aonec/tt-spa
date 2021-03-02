@@ -44,11 +44,11 @@ export const DeviceReadingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  border: 1px solid var(--frame);
+  border: 1px solid #79AFFF;
+  border-left-width: 4px;
   max-width: 200px;
   padding: 8px;
   pointer-events: ${props => props.isDisabled === true ? 'none' : 'auto'};
-
 `;
 
 const Footer = styled.div`

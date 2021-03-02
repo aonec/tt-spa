@@ -49,6 +49,7 @@ const SuffixLine = styled.span`
 const StyledInput = styled(Input)`
 color: var(--main-70);
 border: 0;
+border-left-width: 3px;
 padding: 0;
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
