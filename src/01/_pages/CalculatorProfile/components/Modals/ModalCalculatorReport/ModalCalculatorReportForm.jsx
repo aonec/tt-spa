@@ -92,10 +92,12 @@ const ModalCalculatorReportForm = (props) => {
       console.log(apiUrl)
 
       axios.get(
-        apiUrl,
+          apiUrl,
       ).then((response) => {
-          console.log("response",response)
-        const url = window.URL.createObjectURL(new Blob([response]));
+        console.log("response",response)
+        const url = window.URL.createObjectURL(new File([response]));
+        console.log(new Blob([response]));
+        console.log("url", url)
         const link = document.createElement('a');
         link.href = url;
         const fileName = `${+new Date()}.xlsx`;// whatever your file name .
