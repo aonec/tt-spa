@@ -12,6 +12,7 @@ import {
 } from '../../../../../tt-components';
 
 import { convertDateOnly } from '../../../../../_api/utils/convertDate';
+import axios from "../../../../../axios";
 
 // import { device } from './SonoSafeTemplate';
 
@@ -128,10 +129,12 @@ const ModalSonoSafeReportForm = (props) => {
       nodeId: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
-      console.log('values', values);
-      const begin = values.begin !== '' ? convertDateOnly(values.begin) : convertDateOnly(moment().subtract(1, 'months').startOf('month'));
-      const end = values.end !== '' ? convertDateOnly(values.end) : convertDateOnly(moment(begin).endOf('month'))
-      console.log(values);
+      const { nodeId, detail, resource } = values;
+      const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
+      const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
+
+      const beginName = moment(values.begin).format('YYYY-MM-DD');
+      const endName = moment(values.begin).format('YYYY-MM-DD');
 
       const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
 
@@ -142,6 +145,38 @@ const ModalSonoSafeReportForm = (props) => {
       linkToDownload.setAttribute('download', 'download');
       linkToDownload.click();
       // window.open(link);
+
+      const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+
+
+      async function getArchive(link = '') {
+        try {
+          const res = await axios.get(link, {
+            responseType: 'blob',
+          });
+          return res;
+        } catch (error) {
+          console.log(error);
+          throw {
+            resource: 'tasks',
+            message: 'Произошла ошибка при загрузке данных по задачам',
+          };
+        }
+      }
+
+
+      getArchive(shortLink).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        console.log(response.headers);
+        const link = document.createElement('a');
+        link.href = url;
+        const fileName = `${street}, ${housingStockNumber} - ${translate(resource)} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
+        // const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();// you need to remove that elelment which is created before.
+      });
     },
   });
 
