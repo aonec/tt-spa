@@ -4,13 +4,12 @@ import moment from 'moment';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import {saveAs} from 'file-saver';
+import fileDownload from 'js-file-download';
 import {
     ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
-
-import {saveAs} from 'file-saver';
-import fileDownload from 'js-file-download';
 
 const {TabPane} = Tabs;
 
@@ -89,37 +88,13 @@ const ModalCalculatorReportForm = (props) => {
             const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
 
             const fullLink = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
-            const shorLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
-
-            const fullGetArchivesLink = `https://transparent-staging.herokuapp.com/api/Archives/GetArchives?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
-
-
-            const shorGetArchivesLink = `Archives/GetArchives?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
-
-
-            // axios({
-            //   method:'GET',
-            //   url: shorLink,
-            //   responseType: 'blob',
-            //   headers: { 'Accept':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application.json'}
-            // }).then((response)=>{
-            //   console.log("shorLink", response)
-            //   fileDownload(response, 'filename.csv');
-            //   // download(response.data, 'shorLink.xlsx');
-            // })
-
-
+            const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
             async function getArchive(link = '') {
                 try {
                     const res = await axios.get(link, {
                         responseType: 'blob',
                     });
-                    const res2 = await axios.get(link);
-                    console.log("res", res)
-                    console.log("res2", res2)
-                    console.log("res.headers", res.headers)
-                    console.log("res2.headers", res2.headers)
                     return res;
                 } catch (error) {
                     console.log(error);
@@ -131,35 +106,22 @@ const ModalCalculatorReportForm = (props) => {
             }
 
 
-            //json
-            getArchive(shorGetArchivesLink).then(response => {
-                console.log("response", response)
-                const url = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = url;
-                const fileName = `${+new Date()}.json`// whatever your file name .
-                link.setAttribute('download', fileName);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();// you need to remove that elelment which is created before.
-            })
 
-            //xlsx
-            getArchive(shorLink).then(response => {
-                const url = window.URL.createObjectURL(new Blob([response]));
-                console.log(response.headers)
-                const link = document.createElement('a');
-                link.href = url;
-                const fileName = `${+new Date()}.xlsx`// whatever your file name .
-                link.setAttribute('download', fileName);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();// you need to remove that elelment which is created before.
-            })
-
+            // xlsx
+            getArchive(shortLink).then((response) => {
+              const url = window.URL.createObjectURL(new Blob([response]));
+              console.log(response.headers);
+              const link = document.createElement('a');
+              link.href = url;
+              const fileName = `${street}, ${housingStockNumber} - ХВС с ${begin} по ${end}, ХВС.xlsx`;
+              // const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+              link.setAttribute('download', fileName);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();// you need to remove that elelment which is created before.
+            });
         },
     });
-
 
     const prevOptions = Object.values(filteredGroup[values.resource]);
     const options = prevOptions.map((option, index) => {
