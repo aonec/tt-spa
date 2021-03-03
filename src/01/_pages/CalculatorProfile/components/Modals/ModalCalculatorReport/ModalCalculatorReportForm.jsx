@@ -8,8 +8,11 @@ import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
+import download from 'downloadjs'
 
 // import { device } from './CalculatorTemplate';
+
+
 
 const { TabPane } = Tabs;
 
@@ -91,21 +94,35 @@ const ModalCalculatorReportForm = (props) => {
       const apiUrl = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
       console.log(apiUrl)
 
-      axios.get(
-          apiUrl,
-      ).then((response) => {
-        console.log("response",response)
-        const url = window.URL.createObjectURL(new File([response]));
-        console.log(new Blob([response]));
-        console.log("url", url)
-        const link = document.createElement('a');
-        link.href = url;
-        const fileName = `${+new Date()}.xlsx`;// whatever your file name .
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();// you need to remove that elelment which is created before.
+
+      axios({
+        url: link,
+        method: 'get',
+        withCredentials: true,
+        responseType: 'blob',
+        headers: {
+          'Accept': 'application/vnd.openxmlformats-officedocument'
+              + '.spreadsheetml.sheet',
+        },
+      }).then(function(response) {
+        download(response.data, 'export-directorio.xlsx');
       });
+
+      // axios.get(
+      //     apiUrl,
+      // ).then((response) => {
+      //   console.log("response",response)
+      //   const url = window.URL.createObjectURL(new File([response]));
+      //   console.log(new Blob([response]));
+      //   console.log("url", url)
+      //   const link = document.createElement('a');
+      //   link.href = url;
+      //   const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+      //   link.setAttribute('download', fileName);
+      //   document.body.appendChild(link);
+      //   link.click();
+      //   link.remove();// you need to remove that elelment which is created before.
+      // });
     },
   });
 
