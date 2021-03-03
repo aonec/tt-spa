@@ -140,10 +140,10 @@ const ModalSonoSafeReportForm = (props) => {
 
       console.log(link);
 
-      const linkToDownload = document.createElement('a');
-      linkToDownload.setAttribute('href', link);
-      linkToDownload.setAttribute('download', 'download');
-      linkToDownload.click();
+      // const linkToDownload = document.createElement('a');
+      // linkToDownload.setAttribute('href', link);
+      // linkToDownload.setAttribute('download', 'download');
+      // linkToDownload.click();
       // window.open(link);
 
       const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
