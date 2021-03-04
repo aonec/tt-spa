@@ -23,105 +23,105 @@ export interface ApartmentCreateRequest {
 
 export interface HousingStockShortResponse {
   /** @format int32 */
-  id?: number;
-  city?: string | null;
-  street?: string | null;
-  number?: string | null;
-  corpus?: string | null;
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
 }
 
 export interface HomeownerListResponse {
-  firstName?: string | null;
-  middleName?: string | null;
-  lastName?: string | null;
-  phoneNumber?: string | null;
-  personalAccountNumber?: string | null;
+  firstName: string | null;
+  middleName: string | null;
+  lastName: string | null;
+  phoneNumber: string | null;
+  personalAccountNumber: string | null;
 }
 
 export interface ApartmentResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format double */
-  coefficient?: number | null;
-  housingStock?: HousingStockShortResponse;
-  comment?: string | null;
-  apartmentNumber?: string | null;
-  status?: string | null;
-  square?: string | null;
-  homeowners?: HomeownerListResponse[] | null;
+  coefficient: number | null;
+  housingStock: HousingStockShortResponse;
+  comment: string | null;
+  apartmentNumber: string | null;
+  status: string | null;
+  square: string | null;
+  homeowners: HomeownerListResponse[] | null;
 
   /** @format int32 */
-  numberOfLiving?: number | null;
+  numberOfLiving: number | null;
 
   /** @format int32 */
-  normativeNumberOfLiving?: number | null;
+  normativeNumberOfLiving: number | null;
 }
 
 export interface ApartmentResponseSuccessApiResponse {
-  successResponse?: ApartmentResponse;
+  successResponse: ApartmentResponse;
 }
 
 export interface ErrorResponse {
-  code?: string | null;
-  message?: string | null;
+  code: string | null;
+  message: string | null;
 
   /** @format int32 */
-  logId?: number | null;
+  logId: number | null;
 }
 
 export interface ErrorApiResponse {
-  errorResponse?: ErrorResponse;
+  errorResponse: ErrorResponse;
 }
 
 export interface ApartmentListResponse {
   /** @format int32 */
-  id?: number;
-  apartmentNumber?: string | null;
-  homeownerName?: string | null;
+  id: number;
+  apartmentNumber: string | null;
+  homeownerName: string | null;
 
   /** @format int32 */
-  homeownersCount?: number | null;
-  personalAccountNumber?: string | null;
-  status?: string | null;
-  square?: string | null;
+  homeownersCount: number | null;
+  personalAccountNumber: string | null;
+  status: string | null;
+  square: string | null;
 }
 
 export interface HousingStockAddressResponse {
   /** @format int32 */
-  id?: number;
-  city?: string | null;
-  street?: string | null;
-  housingStockNumber?: string | null;
-  corpus?: string | null;
+  id: number;
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+  corpus: string | null;
 }
 
 export interface ApartmentPagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: ApartmentListResponse[] | null;
+  pageSize: number;
+  items: ApartmentListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
-  housingStock?: HousingStockAddressResponse;
+  previousPageNumber: number;
+  housingStock: HousingStockAddressResponse;
 }
 
 export interface ApartmentPagedListSuccessApiResponse {
-  successResponse?: ApartmentPagedList;
+  successResponse: ApartmentPagedList;
 }
 
 export interface ApartmentUpdateRequest {
@@ -136,16 +136,16 @@ export interface ApartmentUpdateRequest {
 }
 
 export interface ApartmentStatusResponse {
-  name?: string | null;
-  description?: string | null;
+  name: string | null;
+  description: string | null;
 }
 
 export interface ApartmentListStatusResponse {
-  statuses?: ApartmentStatusResponse[] | null;
+  statuses: ApartmentStatusResponse[] | null;
 }
 
 export interface ApartmentListStatusResponseSuccessApiResponse {
-  successResponse?: ApartmentListStatusResponse;
+  successResponse: ApartmentListStatusResponse;
 }
 
 export interface ApartmentStatusSetRequest {
@@ -164,13 +164,13 @@ export interface LoginRequest {
 }
 
 export interface TokenResponse {
-  token?: string | null;
-  refreshToken?: string | null;
-  roles?: string[] | null;
+  token: string | null;
+  refreshToken: string | null;
+  roles: string[] | null;
 }
 
 export interface TokenResponseSuccessApiResponse {
-  successResponse?: TokenResponse;
+  successResponse: TokenResponse;
 }
 
 export interface RefreshTokenRequest {
@@ -179,12 +179,12 @@ export interface RefreshTokenRequest {
 }
 
 export interface RefreshResponse {
-  token?: string | null;
-  refreshToken?: string | null;
+  token: string | null;
+  refreshToken: string | null;
 }
 
 export interface RefreshResponseSuccessApiResponse {
-  successResponse?: RefreshResponse;
+  successResponse: RefreshResponse;
 }
 
 export interface LogoutRequest {
@@ -199,27 +199,27 @@ export interface ConfirmRequest {
 
 export interface ConfirmResponse {
   /** @format int32 */
-  id?: number;
-  email?: string | null;
-  password?: string | null;
+  id: number;
+  email: string | null;
+  password: string | null;
 }
 
 export interface ConfirmResponseSuccessApiResponse {
-  successResponse?: ConfirmResponse;
+  successResponse: ConfirmResponse;
 }
 
 export interface CalculatorInfoListResponse {
   /** @format int32 */
-  id?: number;
-  model?: string | null;
+  id: number;
+  model: string | null;
 }
 
 export interface CalculatorInfoListWrappedResponse {
-  items?: CalculatorInfoListResponse[] | null;
+  items: CalculatorInfoListResponse[] | null;
 }
 
 export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
-  successResponse?: CalculatorInfoListWrappedResponse;
+  successResponse: CalculatorInfoListWrappedResponse;
 }
 
 /**
@@ -274,11 +274,11 @@ export interface TimeSpan {
 
 export interface ManagementFirmResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  phoneNumber?: string | null;
-  information?: string | null;
-  timeZoneOffset?: TimeSpan;
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+  information: string | null;
+  timeZoneOffset: TimeSpan;
 }
 
 export interface MeteringDeviceConnection {
@@ -293,136 +293,136 @@ export interface MeteringDeviceConnection {
 
 export interface HousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
-  entryNumber?: number | null;
+  entryNumber: number | null;
 
   /** @format int32 */
-  hubNumber?: number | null;
+  hubNumber: number | null;
 
   /** @format int32 */
-  pipeNumber?: number | null;
-  magistral?: string | null;
+  pipeNumber: number | null;
+  magistral: string | null;
 }
 
 export interface HousingMeteringDeviceListResponse {
   /** @format int32 */
   id: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
-  managementFirm?: ManagementFirmResponse;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
+  managementFirm: ManagementFirmResponse;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  hub?: HousingMeteringDeviceHubConnectionResponse;
-  diameter?: string | null;
-  resource?: string | null;
-  housingMeteringDeviceType?: string | null;
+  closingDate: string | null;
+  hub: HousingMeteringDeviceHubConnectionResponse;
+  diameter: string | null;
+  resource: string | null;
+  housingMeteringDeviceType: string | null;
 }
 
 export interface CommunicationPipeResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  number?: number;
+  number: number;
 
   /** @format int32 */
-  entryNumber?: number;
+  entryNumber: number;
 
   /** @format int32 */
-  hubNumber?: number | null;
-  magistral?: string | null;
-  devices?: HousingMeteringDeviceListResponse[] | null;
+  hubNumber: number | null;
+  magistral: string | null;
+  devices: HousingMeteringDeviceListResponse[] | null;
 }
 
 export interface NodeResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  number?: number;
-  nodeStatus?: string | null;
-  resource?: string | null;
-  serviceZone?: string | null;
+  number: number;
+  nodeStatus: string | null;
+  resource: string | null;
+  serviceZone: string | null;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format int32 */
-  calculatorId?: number | null;
-  communicationPipes?: CommunicationPipeResponse[] | null;
+  calculatorId: number | null;
+  communicationPipes: CommunicationPipeResponse[] | null;
 }
 
 export interface CalculatorListResponse {
   /** @format int32 */
   id: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
-  managementFirm?: ManagementFirmResponse;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
+  managementFirm: ManagementFirmResponse;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  connection?: MeteringDeviceConnection;
-  isConnected?: boolean | null;
-  hasTasks?: boolean | null;
-  address?: HousingStockAddressResponse;
-  hubs?: HousingMeteringDeviceListResponse[] | null;
-  nodes?: NodeResponse[] | null;
+  closingDate: string | null;
+  connection: MeteringDeviceConnection;
+  isConnected: boolean | null;
+  hasTasks: boolean | null;
+  address: HousingStockAddressResponse;
+  hubs: HousingMeteringDeviceListResponse[] | null;
+  nodes: NodeResponse[] | null;
 }
 
 export interface CalculatorListResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: CalculatorListResponse[] | null;
+  pageSize: number;
+  items: CalculatorListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface CalculatorListResponsePagedListSuccessApiResponse {
-  successResponse?: CalculatorListResponsePagedList;
+  successResponse: CalculatorListResponsePagedList;
 }
 
 export interface MeteringDeviceConnectionRequest {
@@ -462,73 +462,73 @@ export interface CreateCalculatorRequest {
 
 export interface MeteringDeviceResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  housingStockId?: number | null;
-  model?: string | null;
-  serialNumber?: string | null;
-  diameter?: string | null;
-  connection?: MeteringDeviceConnection;
-  isConnected?: boolean | null;
-  type?: string | null;
-  resource?: string | null;
-  transactionType?: string | null;
+  housingStockId: number | null;
+  model: string | null;
+  serialNumber: string | null;
+  diameter: string | null;
+  connection: MeteringDeviceConnection;
+  isConnected: boolean | null;
+  type: string | null;
+  resource: string | null;
+  transactionType: string | null;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string;
+  lastCommercialAccountingDate: string;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  calculator?: MeteringDeviceResponse;
+  closingDate: string | null;
+  calculator: MeteringDeviceResponse;
 }
 
 export interface MeteringDeviceResponseSuccessApiResponse {
-  successResponse?: MeteringDeviceResponse;
+  successResponse: MeteringDeviceResponse;
 }
 
 export interface CalculatorResponse {
   /** @format int32 */
-  id?: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
+  id: number;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  connection?: MeteringDeviceConnection;
-  isConnected?: boolean | null;
-  address?: HousingStockAddressResponse;
-  hubs?: HousingMeteringDeviceListResponse[] | null;
+  closingDate: string | null;
+  connection: MeteringDeviceConnection;
+  isConnected: boolean | null;
+  address: HousingStockAddressResponse;
+  hubs: HousingMeteringDeviceListResponse[] | null;
 
   /** @format int32 */
-  infoId?: number | null;
-  nodes?: NodeResponse[] | null;
+  infoId: number | null;
+  nodes: NodeResponse[] | null;
 }
 
 export interface CalculatorResponseSuccessApiResponse {
-  successResponse?: CalculatorResponse;
+  successResponse: CalculatorResponse;
 }
 
 export interface UpdateCalculatorRequest {
@@ -583,25 +583,25 @@ export interface SwitchCalculatorRequest {
 
 export interface ContractorListResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  email?: string | null;
+  id: number;
+  name: string | null;
+  email: string | null;
 }
 
 export interface PagedContractorResponse {
   /** @format int32 */
-  totalCount?: number;
+  totalCount: number;
 
   /** @format int32 */
-  take?: number | null;
+  take: number | null;
 
   /** @format int32 */
-  skip?: number | null;
-  items?: ContractorListResponse[] | null;
+  skip: number | null;
+  items: ContractorListResponse[] | null;
 }
 
 export interface PagedContractorResponseSuccessApiResponse {
-  successResponse?: PagedContractorResponse;
+  successResponse: PagedContractorResponse;
 }
 
 export interface ContractorCreateRequest {
@@ -613,13 +613,13 @@ export interface ContractorCreateRequest {
 
 export interface ContractorResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  email?: string | null;
+  id: number;
+  name: string | null;
+  email: string | null;
 }
 
 export interface ContractorResponseSuccessApiResponse {
-  successResponse?: ContractorResponse;
+  successResponse: ContractorResponse;
 }
 
 export interface ContractorUpdateRequest {
@@ -631,69 +631,69 @@ export interface ContractorUpdateRequest {
 
 export interface DocumentResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
+  id: number;
+  name: string | null;
 
   /** @format date-time */
-  uploadingTime?: string;
-  url?: string | null;
-  author?: string | null;
-  canBeEdited?: boolean;
+  uploadingTime: string;
+  url: string | null;
+  author: string | null;
+  canBeEdited: boolean;
 }
 
 export interface DocumentResponseIEnumerableSuccessApiResponse {
-  successResponse?: DocumentResponse[] | null;
+  successResponse: DocumentResponse[] | null;
 }
 
 export interface FullAddressResponse {
   /** @format int32 */
-  id?: number;
-  city?: string | null;
-  street?: string | null;
-  housingStockNumber?: string | null;
-  corpus?: string | null;
+  id: number;
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+  corpus: string | null;
 
   /** @format int32 */
-  apartmentId?: number | null;
-  apartmentNumber?: string | null;
+  apartmentId: number | null;
+  apartmentNumber: string | null;
 }
 
 export interface HomeownersListResponse {
   /** @format int32 */
-  id?: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  address?: FullAddressResponse;
-  hasTasks?: boolean;
-  personalAccountNumber?: string | null;
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+  address: FullAddressResponse;
+  hasTasks: boolean;
+  personalAccountNumber: string | null;
 }
 
 export interface HomeownersListResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: HomeownersListResponse[] | null;
+  pageSize: number;
+  items: HomeownersListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface HomeownersListResponsePagedListSuccessApiResponse {
-  successResponse?: HomeownersListResponsePagedList;
+  successResponse: HomeownersListResponsePagedList;
 }
 
 export interface HomeownersCreateRequest {
@@ -708,37 +708,37 @@ export interface HomeownersCreateRequest {
 
 export interface HomeownersApartmentResponse {
   /** @format int32 */
-  apartmentId?: number;
-  city?: string | null;
-  street?: string | null;
-  housingStockNumber?: string | null;
-  apartmentNumber?: string | null;
-  personalAccountNumber?: string | null;
-  paymentCode?: string | null;
+  apartmentId: number;
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+  apartmentNumber: string | null;
+  personalAccountNumber: string | null;
+  paymentCode: string | null;
 
   /** @format int32 */
-  numberOfLiving?: number | null;
+  numberOfLiving: number | null;
 
   /** @format int32 */
-  normativeNumberOfLiving?: number | null;
-  comment?: string | null;
-  square?: string | null;
-  ownershipArea?: string | null;
+  normativeNumberOfLiving: number | null;
+  comment: string | null;
+  square: string | null;
+  ownershipArea: string | null;
 }
 
 export interface HomeownersResponse {
   /** @format int32 */
-  id?: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  cellphone?: string | null;
-  email?: string | null;
-  payments?: HomeownersApartmentResponse[] | null;
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+  cellphone: string | null;
+  email: string | null;
+  payments: HomeownersApartmentResponse[] | null;
 }
 
 export interface HomeownersResponseSuccessApiResponse {
-  successResponse?: HomeownersResponse;
+  successResponse: HomeownersResponse;
 }
 
 export interface HomeownersUpdateRequest {
@@ -792,45 +792,45 @@ export interface UpdateHousingMeteringDeviceRequest {
 }
 
 export interface HousingMeteringDeviceConnectionResponse {
-  hub?: HousingMeteringDeviceHubConnectionResponse;
+  hub: HousingMeteringDeviceHubConnectionResponse;
 
   /** @format int32 */
-  calculatorId?: number;
-  calculatorSerialNumber?: string | null;
-  calculatorModel?: string | null;
-  calculatorConnection?: MeteringDeviceConnection;
+  calculatorId: number;
+  calculatorSerialNumber: string | null;
+  calculatorModel: string | null;
+  calculatorConnection: MeteringDeviceConnection;
 }
 
 export interface HousingMeteringDeviceResponse {
   /** @format int32 */
-  id?: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
+  id: number;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  diameter?: string | null;
-  resource?: string | null;
-  housingMeteringDeviceType?: string | null;
-  address?: HousingStockAddressResponse;
-  hubConnection?: HousingMeteringDeviceConnectionResponse;
+  closingDate: string | null;
+  diameter: string | null;
+  resource: string | null;
+  housingMeteringDeviceType: string | null;
+  address: HousingStockAddressResponse;
+  hubConnection: HousingMeteringDeviceConnectionResponse;
 }
 
 export interface HousingMeteringDeviceResponseSuccessApiResponse {
-  successResponse?: HousingMeteringDeviceResponse;
+  successResponse: HousingMeteringDeviceResponse;
 }
 
 export interface CreateHousingMeteringDeviceRequest {
@@ -898,78 +898,78 @@ export interface HousingStockCreateRequest {
 
 export interface HousingStockResponse {
   /** @format int32 */
-  id?: number;
-  index?: string | null;
-  region?: string | null;
-  city?: string | null;
-  district?: string | null;
-  street?: string | null;
-  number?: string | null;
-  corpus?: string | null;
-  houseCategory?: string | null;
+  id: number;
+  index: string | null;
+  region: string | null;
+  city: string | null;
+  district: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+  houseCategory: string | null;
 
   /** @format int32 */
-  numberOfEntrances?: number | null;
+  numberOfEntrances: number | null;
 
   /** @format int32 */
-  numberOfFloors?: number | null;
-  isThereElevator?: boolean | null;
+  numberOfFloors: number | null;
+  isThereElevator: boolean | null;
 
   /** @format int32 */
-  numberOfApartments?: number | null;
-  totalLivingArea?: string | null;
-  areaOfNonResidential?: string | null;
-  houseArea?: string | null;
-  totalArea?: string | null;
+  numberOfApartments: number | null;
+  totalLivingArea: string | null;
+  areaOfNonResidential: string | null;
+  houseArea: string | null;
+  totalArea: string | null;
 
   /** @format date-time */
-  constructionDate?: string | null;
+  constructionDate: string | null;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
-  successResponse?: HousingStockResponse;
+  successResponse: HousingStockResponse;
 }
 
 export interface HousingStockListResponse {
   /** @format int32 */
-  id?: number;
-  city?: string | null;
-  street?: string | null;
-  number?: string | null;
-  corpus?: string | null;
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
 
   /** @format int32 */
-  numberOfTasks?: number | null;
+  numberOfTasks: number | null;
 
   /** @format int32 */
-  numberOfApartments?: number;
+  numberOfApartments: number;
 }
 
 export interface HousingStockListResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: HousingStockListResponse[] | null;
+  pageSize: number;
+  items: HousingStockListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface HousingStockListResponsePagedListSuccessApiResponse {
-  successResponse?: HousingStockListResponsePagedList;
+  successResponse: HousingStockListResponsePagedList;
 }
 
 export interface HousingStockUpdateRequest {
@@ -1004,74 +1004,74 @@ export interface HousingStockUpdateRequest {
 
 export interface MeteringDeviceListResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  housingStockId?: number | null;
-  ipV4?: string | null;
+  housingStockId: number | null;
+  ipV4: string | null;
 
   /** @format int32 */
-  port?: number | null;
+  port: number | null;
 
   /** @format int32 */
-  deviceAddress?: number | null;
-  model?: string | null;
-  serialNumber?: string | null;
-  type?: string | null;
-  resource?: string | null;
+  deviceAddress: number | null;
+  model: string | null;
+  serialNumber: string | null;
+  type: string | null;
+  resource: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
+  closingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
-  timeZoneOffset?: TimeSpan;
+  futureCheckingDate: string | null;
+  timeZoneOffset: TimeSpan;
 }
 
 export interface HousingStockDeviceListResponse {
-  housingStock?: HousingStockListResponse;
-  meteringDevice?: MeteringDeviceListResponse;
-  devices?: MeteringDeviceListResponse[] | null;
+  housingStock: HousingStockListResponse;
+  meteringDevice: MeteringDeviceListResponse;
+  devices: MeteringDeviceListResponse[] | null;
 }
 
 export interface HousingStockDeviceListResponseSuccessApiResponse {
-  successResponse?: HousingStockDeviceListResponse;
+  successResponse: HousingStockDeviceListResponse;
 }
 
 export interface HousingStockDeviceResponse {
-  housingStock?: HousingStockListResponse;
-  device?: MeteringDeviceResponse;
+  housingStock: HousingStockListResponse;
+  device: MeteringDeviceResponse;
 }
 
 export interface HousingStockDeviceResponseSuccessApiResponse {
-  successResponse?: HousingStockDeviceResponse;
+  successResponse: HousingStockDeviceResponse;
 }
 
 export interface PipesListResponse {
-  street?: string | null;
-  number?: string | null;
-  city?: string | null;
-  meteringDevice?: MeteringDeviceListResponse;
-  pipes?: CommunicationPipeResponse[] | null;
+  street: string | null;
+  number: string | null;
+  city: string | null;
+  meteringDevice: MeteringDeviceListResponse;
+  pipes: CommunicationPipeResponse[] | null;
 }
 
 export interface PipesListResponseSuccessApiResponse {
-  successResponse?: PipesListResponse;
+  successResponse: PipesListResponse;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  description?: string | null;
+  id: number;
+  name: string | null;
+  description: string | null;
 }
 
 export interface IndividualDeviceMountPlaceListWrappedResponse {
-  items?: IndividualDeviceMountPlaceListResponse[] | null;
+  items: IndividualDeviceMountPlaceListResponse[] | null;
 }
 
 export interface IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse {
-  successResponse?: IndividualDeviceMountPlaceListWrappedResponse;
+  successResponse: IndividualDeviceMountPlaceListWrappedResponse;
 }
 
 export interface IndividualDeviceReadingsCreateRequest {
@@ -1100,22 +1100,22 @@ export interface IndividualDeviceReadingsCreateRequest {
 }
 
 export interface IndividualDeviceReadingsCreateResponse {
-  status?: string | null;
-  date?: string | null;
-  resource?: string | null;
+  status: string | null;
+  date: string | null;
+  resource: string | null;
 
   /** @format int32 */
-  taskId?: number | null;
-  message?: string | null;
+  taskId: number | null;
+  message: string | null;
 }
 
 export interface IndividualDeviceReadingsCreateListResponse {
-  current?: IndividualDeviceReadingsCreateResponse;
-  modified?: IndividualDeviceReadingsCreateResponse[] | null;
+  current: IndividualDeviceReadingsCreateResponse;
+  modified: IndividualDeviceReadingsCreateResponse[] | null;
 }
 
 export interface IndividualDeviceReadingsCreateListResponseSuccessApiResponse {
-  successResponse?: IndividualDeviceReadingsCreateListResponse;
+  successResponse: IndividualDeviceReadingsCreateListResponse;
 }
 
 export interface IndividualDeviceReadingsExistingFlagModel {
@@ -1126,29 +1126,29 @@ export interface IndividualDeviceReadingsExistingFlagModel {
 
 export interface IndividualDeviceReadingsExistingFlagModelPagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: IndividualDeviceReadingsExistingFlagModel[] | null;
+  pageSize: number;
+  items: IndividualDeviceReadingsExistingFlagModel[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface IndividualDeviceReadingsExistingFlagModelPagedListSuccessApiResponse {
-  successResponse?: IndividualDeviceReadingsExistingFlagModelPagedList;
+  successResponse: IndividualDeviceReadingsExistingFlagModelPagedList;
 }
 
 export interface IndividualDeviceReadingsSetEmptyRequest {
@@ -1159,50 +1159,50 @@ export interface IndividualDeviceReadingsSetEmptyRequest {
 
 export interface IndividualDeviceReadingsResponse {
   /** @format int32 */
-  id?: number;
-  hasError?: boolean;
-  status?: string | null;
-  statusMessage?: string | null;
-  value1?: string | null;
-  value2?: string | null;
-  value3?: string | null;
-  value4?: string | null;
-  readingDate?: string | null;
+  id: number;
+  hasError: boolean;
+  status: string | null;
+  statusMessage: string | null;
+  value1: string | null;
+  value2: string | null;
+  value3: string | null;
+  value4: string | null;
+  readingDate: string | null;
 
   /** @format date-time */
-  uploadTime?: string;
+  uploadTime: string;
 }
 
 export interface IndividualDeviceResponse {
   /** @format int32 */
-  id?: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
+  id: number;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  address?: FullAddressResponse;
-  resource?: string | null;
-  mountPlace?: string | null;
-  rateType?: string | null;
-  readings?: IndividualDeviceReadingsResponse[] | null;
+  closingDate: string | null;
+  address: FullAddressResponse;
+  resource: string | null;
+  mountPlace: string | null;
+  rateType: string | null;
+  readings: IndividualDeviceReadingsResponse[] | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
-  successResponse?: IndividualDeviceResponse;
+  successResponse: IndividualDeviceResponse;
 }
 
 export interface UpdateIndividualDeviceRequest {
@@ -1233,59 +1233,59 @@ export interface UpdateIndividualDeviceRequest {
 export interface IndividualDeviceListResponse {
   /** @format int32 */
   id: number;
-  transactionType?: string | null;
-  model?: string | null;
-  serialNumber?: string | null;
-  managementFirm?: ManagementFirmResponse;
+  transactionType: string | null;
+  model: string | null;
+  serialNumber: string | null;
+  managementFirm: ManagementFirmResponse;
 
   /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  lastCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
+  futureCommercialAccountingDate: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCheckingDate: string | null;
 
   /** @format date-time */
-  closingDate?: string | null;
-  resource?: string | null;
-  mountPlace?: string | null;
-  rateType?: string | null;
-  readings?: IndividualDeviceReadingsResponse[] | null;
-  apartmentNumber?: string | null;
-  homeownerName?: string | null;
-  personalAccountNumber?: string | null;
+  closingDate: string | null;
+  resource: string | null;
+  mountPlace: string | null;
+  rateType: string | null;
+  readings: IndividualDeviceReadingsResponse[] | null;
+  apartmentNumber: string | null;
+  homeownerName: string | null;
+  personalAccountNumber: string | null;
 }
 
 export interface IndividualDeviceListResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: IndividualDeviceListResponse[] | null;
+  pageSize: number;
+  items: IndividualDeviceListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface IndividualDeviceListResponsePagedListSuccessApiResponse {
-  successResponse?: IndividualDeviceListResponsePagedList;
+  successResponse: IndividualDeviceListResponsePagedList;
 }
 
 export interface CreateIndividualDeviceRequest {
@@ -1313,33 +1313,33 @@ export interface CreateIndividualDeviceRequest {
 
 export interface ManagementFirmResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: ManagementFirmResponse[] | null;
+  pageSize: number;
+  items: ManagementFirmResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface ManagementFirmResponsePagedListSuccessApiResponse {
-  successResponse?: ManagementFirmResponsePagedList;
+  successResponse: ManagementFirmResponsePagedList;
 }
 
 export interface ManagementFirmResponseSuccessApiResponse {
-  successResponse?: ManagementFirmResponse;
+  successResponse: ManagementFirmResponse;
 }
 
 export interface ManagementFirmUpdateRequest {
@@ -1350,29 +1350,29 @@ export interface ManagementFirmUpdateRequest {
 
 export interface ManagingFirmUserListResponse {
   /** @format int32 */
-  id?: number;
-  email?: string | null;
-  name?: string | null;
-  cellphone?: string | null;
+  id: number;
+  email: string | null;
+  name: string | null;
+  cellphone: string | null;
 
   /** @format int32 */
-  executingTaskCount?: number;
+  executingTaskCount: number;
 }
 
 export interface PagedManagingFirmUserResponse {
   /** @format int32 */
-  totalCount?: number;
+  totalCount: number;
 
   /** @format int32 */
-  take?: number | null;
+  take: number | null;
 
   /** @format int32 */
-  skip?: number | null;
-  items?: ManagingFirmUserListResponse[] | null;
+  skip: number | null;
+  items: ManagingFirmUserListResponse[] | null;
 }
 
 export interface PagedManagingFirmUserResponseSuccessApiResponse {
-  successResponse?: PagedManagingFirmUserResponse;
+  successResponse: PagedManagingFirmUserResponse;
 }
 
 export interface ManagingFirmUserCreateRequest {
@@ -1389,27 +1389,27 @@ export interface ManagingFirmUserCreateRequest {
 
 export interface ManagementFirmShortResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
+  id: number;
+  name: string | null;
 }
 
 export interface ManagingFirmUserResponse {
   /** @format int32 */
-  id?: number;
-  email?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  cellphone?: string | null;
-  department?: string | null;
-  position?: string | null;
-  number?: string | null;
-  managementFirm?: ManagementFirmShortResponse;
-  userRoleIds?: number[] | null;
+  id: number;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+  cellphone: string | null;
+  department: string | null;
+  position: string | null;
+  number: string | null;
+  managementFirm: ManagementFirmShortResponse;
+  userRoleIds: number[] | null;
 }
 
 export interface ManagingFirmUserResponseSuccessApiResponse {
-  successResponse?: ManagingFirmUserResponse;
+  successResponse: ManagingFirmUserResponse;
 }
 
 export interface ManagingFirmUserUpdateRequest {
@@ -1426,54 +1426,54 @@ export interface ManagingFirmUserUpdateRequest {
 
 export interface MeteringDeviceListResponsePagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: MeteringDeviceListResponse[] | null;
+  pageSize: number;
+  items: MeteringDeviceListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 }
 
 export interface MeteringDeviceListResponsePagedListSuccessApiResponse {
-  successResponse?: MeteringDeviceListResponsePagedList;
+  successResponse: MeteringDeviceListResponsePagedList;
 }
 
 export interface MeteringDeviceSearchListResponse {
   /** @format int32 */
-  id?: number;
-  type?: string | null;
-  isConnected?: boolean;
-  model?: string | null;
-  serialNumber?: string | null;
-  ipV4?: string | null;
+  id: number;
+  type: string | null;
+  isConnected: boolean;
+  model: string | null;
+  serialNumber: string | null;
+  ipV4: string | null;
 
   /** @format int32 */
-  port?: number | null;
+  port: number | null;
 
   /** @format int32 */
-  deviceAddress?: number | null;
-  resource?: string | null;
+  deviceAddress: number | null;
+  resource: string | null;
 }
 
 export interface MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse {
-  successResponse?: MeteringDeviceSearchListResponse[] | null;
+  successResponse: MeteringDeviceSearchListResponse[] | null;
 }
 
 export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
-  successResponse?: MeteringDeviceListResponse[] | null;
+  successResponse: MeteringDeviceListResponse[] | null;
 }
 
 export interface CloseDeviceRequest {
@@ -1498,7 +1498,7 @@ export interface CheckDeviceRequest {
 }
 
 export interface NodeResponseListSuccessApiResponse {
-  successResponse?: NodeResponse[] | null;
+  successResponse: NodeResponse[] | null;
 }
 
 export interface UpdateNodeRequest {
@@ -1519,7 +1519,7 @@ export interface UpdateNodeRequest {
 }
 
 export interface NodeResponseSuccessApiResponse {
-  successResponse?: NodeResponse;
+  successResponse: NodeResponse;
 }
 
 export interface CommunicationPipeRequest {
@@ -1560,31 +1560,31 @@ export type TaskGroupingFilter = 0 | 1 | 2 | 3;
 
 export interface ManagingFirmUserShortResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  email?: string | null;
+  id: number;
+  name: string | null;
+  email: string | null;
 }
 
 export interface StageResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  number?: number;
-  name?: string | null;
-  perpetrator?: ManagingFirmUserShortResponse;
-  status?: string | null;
-  actions?: string[] | null;
-  allowedDocumentTypes?: string[] | null;
+  number: number;
+  name: string | null;
+  perpetrator: ManagingFirmUserShortResponse;
+  status: string | null;
+  actions: string[] | null;
+  allowedDocumentTypes: string[] | null;
 
   /** @format date-time */
-  closingTime?: string | null;
+  closingTime: string | null;
 
   /** @format date-time */
-  startingTime?: string | null;
+  startingTime: string | null;
 
   /** @format date-time */
-  expectedCompletionTime?: string | null;
+  expectedCompletionTime: string | null;
 }
 
 export interface TaskTriggersInformation {
@@ -1600,124 +1600,124 @@ export interface TaskTriggersInformation {
 
 export interface TaskListResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  currentStage?: StageResponse;
+  id: number;
+  name: string | null;
+  currentStage: StageResponse;
 
   /** @format date-time */
-  creationTime?: string | null;
+  creationTime: string | null;
 
   /** @format date-time */
-  expectedCompletionTime?: string | null;
+  expectedCompletionTime: string | null;
 
   /** @format date-time */
-  closingTime?: string | null;
-  address?: FullAddressResponse;
-  perpetrator?: ManagingFirmUserShortResponse;
-  isResponsible?: boolean;
+  closingTime: string | null;
+  address: FullAddressResponse;
+  perpetrator: ManagingFirmUserShortResponse;
+  isResponsible: boolean;
 
   /** @format int32 */
-  targetId?: number | null;
-  hasChanged?: boolean;
-  needsValidation?: boolean;
-  triggersInformation?: TaskTriggersInformation;
-  device?: MeteringDeviceSearchListResponse;
+  targetId: number | null;
+  hasChanged: boolean;
+  needsValidation: boolean;
+  triggersInformation: TaskTriggersInformation;
+  device: MeteringDeviceSearchListResponse;
 }
 
 export interface TasksPagedList {
   /** @format int32 */
-  totalItems?: number;
+  totalItems: number;
 
   /** @format int32 */
-  pageNumber?: number;
+  pageNumber: number;
 
   /** @format int32 */
-  pageSize?: number;
-  items?: TaskListResponse[] | null;
+  pageSize: number;
+  items: TaskListResponse[] | null;
 
   /** @format int32 */
-  totalPages?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
 
   /** @format int32 */
-  nextPageNumber?: number;
+  nextPageNumber: number;
 
   /** @format int32 */
-  previousPageNumber?: number;
+  previousPageNumber: number;
 
   /** @format int32 */
-  executingTasksCount?: number | null;
+  executingTasksCount: number | null;
 
   /** @format int32 */
-  observingTasksCount?: number | null;
+  observingTasksCount: number | null;
 }
 
 export interface TasksPagedListSuccessApiResponse {
-  successResponse?: TasksPagedList;
+  successResponse: TasksPagedList;
 }
 
 export interface TaskCommentResponse {
   /** @format int32 */
-  id?: number;
-  text?: string | null;
-  author?: string | null;
+  id: number;
+  text: string | null;
+  author: string | null;
 
   /** @format date-time */
-  createdAt?: string;
-  canBeEdited?: boolean;
+  createdAt: string;
+  canBeEdited: boolean;
 }
 
 export interface StageListResponse {
   /** @format int32 */
-  id?: number;
+  id: number;
 
   /** @format int32 */
-  number?: number;
-  name?: string | null;
-  perpetrator?: ManagingFirmUserShortResponse;
-  status?: string | null;
-  type?: string | null;
+  number: number;
+  name: string | null;
+  perpetrator: ManagingFirmUserShortResponse;
+  status: string | null;
+  type: string | null;
 
   /** @format date-time */
-  closingTime?: string | null;
+  closingTime: string | null;
 
   /** @format date-time */
-  expectedCompletionTime?: string | null;
+  expectedCompletionTime: string | null;
 }
 
 export interface TaskResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
-  type?: string | null;
-  creationReason?: string | null;
-  address?: string | null;
+  id: number;
+  name: string | null;
+  type: string | null;
+  creationReason: string | null;
+  address: string | null;
 
   /** @format int32 */
-  housingStockId?: number;
-  perpetrator?: ManagingFirmUserShortResponse;
+  housingStockId: number;
+  perpetrator: ManagingFirmUserShortResponse;
 
   /** @format date-time */
-  creationTime?: string | null;
+  creationTime: string | null;
 
   /** @format date-time */
-  expectedCompletionTime?: string | null;
+  expectedCompletionTime: string | null;
 
   /** @format date-time */
-  closingTime?: string | null;
-  isResponsible?: boolean;
-  userOperatingStatus?: string | null;
-  currentStage?: StageResponse;
-  device?: MeteringDeviceResponse;
-  apartment?: ApartmentResponse;
-  documents?: DocumentResponse[] | null;
-  comments?: TaskCommentResponse[] | null;
-  stages?: StageListResponse[] | null;
+  closingTime: string | null;
+  isResponsible: boolean;
+  userOperatingStatus: string | null;
+  currentStage: StageResponse;
+  device: MeteringDeviceResponse;
+  apartment: ApartmentResponse;
+  documents: DocumentResponse[] | null;
+  comments: TaskCommentResponse[] | null;
+  stages: StageListResponse[] | null;
 }
 
 export interface TaskResponseSuccessApiResponse {
-  successResponse?: TaskResponse;
+  successResponse: TaskResponse;
 }
 
 /**
@@ -1740,19 +1740,19 @@ export interface TaskCreateRequest {
 
 export interface TaskCreateResponse {
   /** @format int32 */
-  id?: number;
-  type?: string | null;
+  id: number;
+  type: string | null;
 
   /** @format date-time */
-  triggerTime?: string;
+  triggerTime: string;
 
   /** @format int32 */
-  triggersCount?: number;
-  isValidated?: boolean;
+  triggersCount: number;
+  isValidated: boolean;
 }
 
 export interface TaskCreateResponseSuccessApiResponse {
-  successResponse?: TaskCreateResponse;
+  successResponse: TaskCreateResponse;
 }
 
 export interface StageEmailNotifyRequest {
@@ -1785,15 +1785,15 @@ export interface StageRevertRequest {
 }
 
 export interface StageListResponseWrappedListResponse {
-  items?: StageListResponse[] | null;
+  items: StageListResponse[] | null;
 }
 
 export interface StageListResponseWrappedListResponseSuccessApiResponse {
-  successResponse?: StageListResponseWrappedListResponse;
+  successResponse: StageListResponseWrappedListResponse;
 }
 
 export interface TaskCommentResponseSuccessApiResponse {
-  successResponse?: TaskCommentResponse;
+  successResponse: TaskCommentResponse;
 }
 
 export interface TaskAssignToMultipleRequest {
@@ -1805,22 +1805,23 @@ export interface TaskAssignToMultipleRequest {
 
 export interface UserRoleListResponse {
   /** @format int32 */
-  id?: number;
-  name?: string | null;
+  id: number;
+  name: string | null;
 }
 
 export interface UserRoleListWrappedResponse {
-  items?: UserRoleListResponse[] | null;
+  items: UserRoleListResponse[] | null;
 }
 
 export interface UserRoleListWrappedResponseSuccessApiResponse {
-  successResponse?: UserRoleListWrappedResponse;
+  successResponse: UserRoleListWrappedResponse;
 }
 
-export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 
-export interface FullRequestParams extends Omit<RequestInit, "body"> {
+export type QueryParamsType = Record<string | number, any>;
+
+export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -1830,29 +1831,18 @@ export interface FullRequestParams extends Omit<RequestInit, "body"> {
   /** query params */
   query?: QueryParamsType;
   /** format of response (i.e. response.json() -> format: "json") */
-  format?: ResponseFormat;
+  format?: ResponseType;
   /** request body */
   body?: unknown;
-  /** base url */
-  baseUrl?: string;
-  /** request cancellation token */
-  cancelToken?: CancelToken;
 }
 
 export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
 
-export interface ApiConfig<SecurityDataType = unknown> {
-  baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
-  securityWorker?: (securityData: SecurityDataType | null) => Promise<RequestParams | void> | RequestParams | void;
+export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+  securityWorker?: (
+    securityData: SecurityDataType | null,
+  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
 }
-
-export interface HttpResponse<D extends unknown, E extends unknown = unknown> extends Response {
-  data: D;
-  error: E;
-}
-
-type CancelToken = Symbol | string | number;
 
 export enum ContentType {
   Json = "application/json",
@@ -1861,157 +1851,56 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "";
+  private instance: AxiosInstance;
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
-  private abortControllers = new Map<CancelToken, AbortController>();
 
-  private baseApiParams: RequestParams = {
-    credentials: "same-origin",
-    headers: {},
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  };
-
-  constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
-    Object.assign(this, apiConfig);
+  constructor({ securityWorker, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
+    this.securityWorker = securityWorker;
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
     this.securityData = data;
   };
 
-  private addQueryParam(query: QueryParamsType, key: string) {
-    const value = query[key];
-
-    return (
-      encodeURIComponent(key) +
-      "=" +
-      encodeURIComponent(Array.isArray(value) ? value.join(",") : typeof value === "number" ? value : `${value}`)
-    );
-  }
-
-  protected toQueryString(rawQuery?: QueryParamsType): string {
-    const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
-    return keys
-      .map((key) =>
-        typeof query[key] === "object" && !Array.isArray(query[key])
-          ? this.toQueryString(query[key] as QueryParamsType)
-          : this.addQueryParam(query, key),
-      )
-      .join("&");
-  }
-
-  protected addQueryParams(rawQuery?: QueryParamsType): string {
-    const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : "";
-  }
-
-  private contentFormatters: Record<ContentType, (input: any) => any> = {
-    [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === "object" || typeof input === "string") ? JSON.stringify(input) : input,
-    [ContentType.FormData]: (input: any) =>
-      Object.keys(input || {}).reduce((data, key) => {
-        data.append(key, input[key]);
-        return data;
-      }, new FormData()),
-    [ContentType.UrlEncoded]: (input: any) => this.toQueryString(input),
-  };
-
-  private mergeRequestParams(params1: RequestParams, params2?: RequestParams): RequestParams {
+  private mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
     return {
-      ...this.baseApiParams,
       ...params1,
       ...(params2 || {}),
       headers: {
-        ...(this.baseApiParams.headers || {}),
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
     };
   }
 
-  private createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
-    if (this.abortControllers.has(cancelToken)) {
-      const abortController = this.abortControllers.get(cancelToken);
-      if (abortController) {
-        return abortController.signal;
-      }
-      return void 0;
-    }
-
-    const abortController = new AbortController();
-    this.abortControllers.set(cancelToken, abortController);
-    return abortController.signal;
-  };
-
-  public abortRequest = (cancelToken: CancelToken) => {
-    const abortController = this.abortControllers.get(cancelToken);
-
-    if (abortController) {
-      abortController.abort();
-      this.abortControllers.delete(cancelToken);
-    }
-  };
-
   public request = async <T = any, E = any>({
-    body,
     secure,
     path,
     type,
     query,
     format = "json",
-    baseUrl,
-    cancelToken,
+    body,
     ...params
-  }: FullRequestParams): Promise<HttpResponse<T, E>> => {
+  }: FullRequestParams): Promise<AxiosResponse<T>> => {
     const secureParams = (secure && this.securityWorker && (await this.securityWorker(this.securityData))) || {};
     const requestParams = this.mergeRequestParams(params, secureParams);
-    const queryString = query && this.toQueryString(query);
-    const payloadFormatter = this.contentFormatters[type || ContentType.Json];
 
-    return fetch(`${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`, {
+    return this.instance.request({
       ...requestParams,
       headers: {
         ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
         ...(requestParams.headers || {}),
       },
-      signal: cancelToken ? this.createAbortSignal(cancelToken) : void 0,
-      body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
-    }).then(async (response) => {
-      const r = response as HttpResponse<T, E>;
-      r.data = (null as unknown) as T;
-      r.error = (null as unknown) as E;
-
-      const data = await response[format]()
-        .then((data) => {
-          if (r.ok) {
-            r.data = data;
-          } else {
-            r.error = data;
-          }
-          return r;
-        })
-        .catch((e) => {
-          r.error = e;
-          return r;
-        });
-
-      if (cancelToken) {
-        this.abortControllers.delete(cancelToken);
-      }
-
-      if (!response.ok) throw data;
-      return data;
+      params: query,
+      responseType: format,
+      data: body,
+      url: path,
     });
   };
 }
 
-/**
- * @title Transparent Api
- * @version v1.0.0-alpha
- */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   api = {
     /**

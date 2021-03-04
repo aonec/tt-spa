@@ -159,6 +159,71 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         }
     }
 
+    const options = (readingsElems, isCurrent) => [
+        {
+            value: () => (<DeviceReadingsContainer
+                color={isCurrent ? getInputColor(device.resource) : "var(--main-90)"}
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                resource={device.resource}
+                //@ts-ignore
+                readingsCount={readingsState.currentReadingsArray.length}
+            >
+                {readingsElems}
+            </DeviceReadingsContainer>),
+                isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
+        },
+        {
+            value: () => (<div
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                style={{display: 'flex', flexDirection: 'column'}}>
+                <DeviceReadingsContainer
+                    style={{marginBottom: 8}}
+                    color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[0]}
+                </DeviceReadingsContainer>
+                <DeviceReadingsContainer
+                    color={isCurrent ? "#957400" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[1]}
+                </DeviceReadingsContainer>
+            </div>),
+            isSuccess: readingsElems.length === 2
+        },
+        {
+            value: () => (<div onBlur={onBlurHandler}
+                               onFocus={onFocusHandler}
+                               style={{display: 'flex', flexDirection: 'column'}}>
+                <DeviceReadingsContainer
+                    style={{marginBottom: 8}}
+                    color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {[readingsElems[0], readingsElems[1]]}
+                </DeviceReadingsContainer>
+                <DeviceReadingsContainer
+                    color={isCurrent ? "#957400" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[2]}
+                </DeviceReadingsContainer>
+            </div>),
+            isSuccess: true
+        }
+    ];
+
 
     const {icon, color} = DeviceIcons[device.resource];
 
@@ -186,112 +251,10 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
+
             {/*Инпуты с показаниями*/}
-            {
-                readingsState.resource !== 'Electricity' || previousDeviceReadings.length === 1
-                    ?
-                    <DeviceReadingsContainer
-                        onBlur={onBlurHandler}
-                        onFocus={onFocusHandler}
-                        resource={device.resource}
-                        //@ts-ignore
-                        readingsCount={readingsState.currentReadingsArray.length}
-                    >
-                        {previousDeviceReadings}
-                    </DeviceReadingsContainer>
-                    : previousDeviceReadings.length === 2
-                    ? <div
-                        onBlur={onBlurHandler}
-                        onFocus={onFocusHandler}
-                        style={{display: 'flex', flexDirection: 'column'}}>
-                        <DeviceReadingsContainer
-
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {previousDeviceReadings[0]}
-                        </DeviceReadingsContainer>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {previousDeviceReadings[1]}
-                        </DeviceReadingsContainer>
-                    </div>
-                    : <div onBlur={onBlurHandler}
-                           onFocus={onFocusHandler}
-                           style={{display: 'flex', flexDirection: 'column'}}>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {[previousDeviceReadings[0], previousDeviceReadings[1]]}
-                        </DeviceReadingsContainer>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {previousDeviceReadings[2]}
-                        </DeviceReadingsContainer>
-                    </div>
-            }
-
-            {
-                readingsState.resource !== 'Electricity' || currentDeviceReadings.length === 1
-                    ?
-                    <DeviceReadingsContainer
-                        onBlur={onBlurHandler}
-                        onFocus={onFocusHandler}
-                        resource={device.resource}
-                        //@ts-ignore
-                        readingsCount={readingsState.currentReadingsArray.length}
-                    >
-                        {currentDeviceReadings}
-                    </DeviceReadingsContainer>
-                    : currentDeviceReadings.length === 2
-                    ? <div
-                        onBlur={onBlurHandler}
-                        onFocus={onFocusHandler}
-                        style={{display: 'flex', flexDirection: 'column'}}>
-                        <DeviceReadingsContainer
-
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {currentDeviceReadings[0]}
-                        </DeviceReadingsContainer>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {currentDeviceReadings[1]}
-                        </DeviceReadingsContainer>
-                    </div>
-                    : <div onBlur={onBlurHandler}
-                           onFocus={onFocusHandler}
-                           style={{display: 'flex', flexDirection: 'column'}}>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {[currentDeviceReadings[0], currentDeviceReadings[1]]}
-                        </DeviceReadingsContainer>
-                        <DeviceReadingsContainer
-                            resource={device.resource}
-                            //@ts-ignore
-                            readingsCount={readingsState.currentReadingsArray.length}
-                        >
-                            {currentDeviceReadings[2]}
-                        </DeviceReadingsContainer>
-                    </div>
-            }
+            {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
+            {options(currentDeviceReadings, true).find((el) => el.isSuccess).value()}
 
             <StyledModal
                 visible={isVisible}
@@ -334,7 +297,7 @@ const FullDeviceLine = styled.div`
 
 `;
 
-const getInputColor = (resource) => {
+export const getInputColor = (resource) => {
     switch (resource) {
         case "HotWaterSupply":
             return "#FF8C68"
@@ -351,7 +314,7 @@ export const DeviceReadingsContainer = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  border: 1px solid ${(props) => props.isDisabled ? 'var(--frame)' : getInputColor(props.resource, props.readingsCount)};
+  border: 1px solid ${(props) => props.color ? props.color : 'var(--main-90)'};
   border-left-width: 4px;
   max-width: 200px;
   padding: 8px;
