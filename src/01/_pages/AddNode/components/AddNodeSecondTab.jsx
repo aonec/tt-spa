@@ -9,9 +9,9 @@ import {
   isConnected,
 } from '../../../tt-components/localBases';
 import {
-  Title, SelectTT, ButtonTT, StyledFooter, AutoCompleteTT,
+  Title, SelectTT, ButtonTT, StyledFooter, AutoCompleteTT, styles, StyledFormPage
 } from '../../../tt-components';
-import { styles, StyledFormPage } from './styledComponents';
+
 import { AddNodeContext } from '../index';
 import {calculatorValidationSchema} from "./validationSchemas";
 import ModalAddCalculator from "../modals/ModalAddCalculator";

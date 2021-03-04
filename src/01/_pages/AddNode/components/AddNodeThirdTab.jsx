@@ -11,10 +11,9 @@ import {
   resources, serviceZoneList, nodeStatusList,
 } from '../../../tt-components/localBases';
 import {
-  Title, ButtonTT, StyledFooter,
+  Title, ButtonTT, StyledFooter,  styles, StyledFormPage
 } from '../../../tt-components';
 import RelatedDevices from './RelatedDevices';
-import { styles, StyledFormPage } from './styledComponents';
 import { addNode } from '../apiAddNode';
 import { AddNodeContext } from '../index';
 import ModalAddDevice from "../modals/ModalAddDevice";
@@ -105,7 +104,7 @@ const AddNodeThirdTab = () => {
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
-      <StyledFooter form>
+      <StyledFooter form={true}>
         <ButtonTT
           color="blue"
           big

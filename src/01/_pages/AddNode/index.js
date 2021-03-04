@@ -4,8 +4,6 @@ import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../../components';
 import AddNodeForm from './components/AddNodeForm';
-import ModalAddCalculator from './modals/ModalAddCalculator';
-import ModalAddDevice from './modals/ModalAddDevice';
 
 export const AddNodeContext = React.createContext();
 
@@ -55,15 +53,6 @@ export const AddNode = () => {
     return true;
   }
 
-  // useEffect(() => {
-  //   console.log('node', node);
-  // }, [node]);
-
-  // useEffect(() => {
-  //   console.log('communicationPipes', communicationPipes);
-  // }, [communicationPipes]);
-
-  // console.log('housingStockId', housingStockId);
 
   function getPresentCalculators() {
     getCalculators(housingStockId).then((res) => {
@@ -82,7 +71,7 @@ export const AddNode = () => {
   useEffect(() => {
     getHousingStock(housingStockId).then((res) => {
       setHousingStock(res);
-      console.log(res);
+      // console.log(res);
     });
     getPresentCalculators();
   }, []);

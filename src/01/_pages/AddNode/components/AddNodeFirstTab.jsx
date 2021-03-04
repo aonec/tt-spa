@@ -9,13 +9,11 @@ import {
   resources, serviceZoneList, nodeStatusList,
 } from '../../../tt-components/localBases';
 import {
-  Title, SelectTT, InputTT, DatePickerTT, ButtonTT, StyledFooter,
+  Title, SelectTT, InputTT, DatePickerTT, ButtonTT, StyledFooter, styles, StyledFormPage
 } from '../../../tt-components';
-import { styles, StyledFormPage } from './styledComponents';
 import { AddNodeContext } from '../index';
 import { addNodeValidationSchema } from './validationSchemas';
-import ModalAddCalculator from "../modals/ModalAddCalculator";
-import ModalAddDevice from "../modals/ModalAddDevice";
+
 
 const AddNodeFirstTab = () => {
   const {
