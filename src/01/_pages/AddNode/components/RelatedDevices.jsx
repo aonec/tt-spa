@@ -30,33 +30,15 @@ export const RelatedDevices = () => {
             const updatedCommunicationPipes = communicationPipes.map((communicationPipe, index) => {
                 const {devices} = communicationPipe;
 
-                const devicesList = devices.reduce((result, deviceInList) => {
-                    const currentDevice = _.find(devices, device);
-                    console.log("currentDevice", currentDevice)
-                    const isEqual = _.isEqual(currentDevice, device)
-                    console.log("isEqual", isEqual)
-                    if (isEqual === false) {
-                        result.push(deviceInList)
-                    }
-                    return result;
-                }, []);
-
+                const devicesList = _.filter(devices, (deviceInList) => !_.isEqual(deviceInList, device));
                 return {...communicationPipe, devices: devicesList};
             });
 
-            console.log("updatedCommunicationPipes", updatedCommunicationPipes)
+            console.log('updatedCommunicationPipes', updatedCommunicationPipes);
 
-            const newCommunicationPipes = updatedCommunicationPipes.reduce((result, communicationPipe) => {
-              const { devices, number } = communicationPipe;
-              if (devices.length > 0) {
-                result.push(communicationPipe);
-              }
-              return result;
-            }, []);
+            const newCommunicationPipes = _.filter(updatedCommunicationPipes, (communicationPipe) => communicationPipe.devices.length > 0);
 
             setCommunicationPipes(newCommunicationPipes);
-
-
         }
 
         return (
