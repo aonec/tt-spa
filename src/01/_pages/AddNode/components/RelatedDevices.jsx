@@ -1,107 +1,103 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { IconTT } from '../../../tt-components';
-import { AddNodeContext } from '../index';
-
-const Div = styled.div`
-  display: inline-flex;
-  align-items: center;
-`;
+import {IconTT} from '../../../tt-components';
+import {AddNodeContext} from '../index';
 
 export const RelatedDevices = () => {
-  const {
-    handleCancel,
-    currentTabKey,
-    setTab,
-    handleChangeTab,
-    handleNext,
-    node,
-    setNode,
-    housingStockId,
-    calculators,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
-    communicationPipes,
-    setCommunicationPipes,
-    housingStock,
-  } = useContext(AddNodeContext);
-
-  const devices = communicationPipes.map((communicationPipe) => {
-    const { devices } = communicationPipe;
-    return devices.map((device) => device);
-  });
-  const res = _.flatten(devices);
-
-  const result = res.map((device) => {
     const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      pipe,
-      housingStockId,
-      housingMeteringDeviceType,
-    } = device;
+        communicationPipes,
+        setCommunicationPipes,
+    } = useContext(AddNodeContext);
 
-    const { pipeNumber, entryNumber, hubNumber } = pipe;
+    const flattenDevices = _.flatten(communicationPipes.map((communicationPipe) => {
+        const {devices} = communicationPipe;
+        return devices.map((device) => device);
+    }));
 
-    function handleEdit() {
-      console.log('handleEdit');
-    }
+    const result = flattenDevices.map((device) => {
+        const {
+            model,
+            serialNumber,
+            resource,
+            pipe,
+            housingMeteringDeviceType,
+        } = device;
 
-    function handleDelete() {
-      console.log('handleDelete');
-      console.log(pipeNumber, housingMeteringDeviceType);
+        const {pipeNumber, entryNumber} = pipe;
 
-      const newCommunicationPipes = communicationPipes.map((communicationPipe, index) => {
-        const { devices, number } = communicationPipe;
-        const getIndex = _.findIndex(devices, (o) => o.pipe.pipeNumber === pipeNumber);
-        console.log(getIndex);
-        if (getIndex > -1) {
-          const modifiedDevices = _.remove(devices, (o) => o.pipe.pipeNumber !== pipeNumber);
+        function handleDelete() {
+            const updatedCommunicationPipes = communicationPipes.map((communicationPipe, index) => {
+                const {devices} = communicationPipe;
 
-          return { ...communicationPipe, devices: modifiedDevices };
-        } return communicationPipe;
-      });
-      console.log('newCommunicationPipes', newCommunicationPipes);
-      setCommunicationPipes(newCommunicationPipes);
-    }
+                const devicesList = devices.reduce((result, deviceInList) => {
+                    const currentDevice = _.find(devices, device);
+                    console.log("currentDevice", currentDevice)
+                    const isEqual = _.isEqual(currentDevice, device)
+                    console.log("isEqual", isEqual)
+                    if (isEqual === false) {
+                        result.push(deviceInList)
+                    }
+                    return result;
+                }, []);
+
+                return {...communicationPipe, devices: devicesList};
+            });
+
+            console.log("updatedCommunicationPipes", updatedCommunicationPipes)
+
+            const newCommunicationPipes = updatedCommunicationPipes.reduce((result, communicationPipe) => {
+              const { devices, number } = communicationPipe;
+              if (devices.length > 0) {
+                result.push(communicationPipe);
+              }
+              return result;
+            }, []);
+
+            setCommunicationPipes(newCommunicationPipes);
+
+
+        }
+
+        return (
+            <ListItem key={serialNumber}>
+                <NameWrap>
+                    <IconTT icon={resource.toLowerCase()}/>
+                    <Name>{model}</Name>
+                    <Serial>{` (${serialNumber})`}</Serial>
+                </NameWrap>
+
+                <Span>{`Ввод: ${entryNumber}`}</Span>
+                <Span>{`Труба: ${pipeNumber}`}</Span>
+                <Div>
+                    {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
+                    <IconTT
+                        icon="close"
+                        style={{marginLeft: 8}}
+                        onClick={handleDelete}
+                    />
+                </Div>
+            </ListItem>
+        );
+    });
 
     return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={resource.toLowerCase()} />
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-        <Div>
-          {/*<IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} />*/}
-          <IconTT icon="close" style={{ marginLeft: 8 }} onClick={handleDelete} />
-        </Div>
-      </ListItem>
+        <ListWrap>
+            {result}
+        </ListWrap>
     );
-  });
-
-  return (
-    <ListWrap>
-      {result}
-    </ListWrap>
-  );
 };
 
 export default RelatedDevices;
 
 const Template = styled.div``;
 
-const NameWrap = styled.a`
+const Div = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const NameWrap = styled.div`
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-gap: 8px;
@@ -155,3 +151,13 @@ const ListItem = styled.div`
 const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
+
+// const newArr = communicationPipes.reduce((result, communicationPipe) => {
+//     const {devices, number} = communicationPipe;
+//
+//     if (condition === true) {
+//         result.push({something});
+//     }
+//
+//     return result;
+// }, []);
