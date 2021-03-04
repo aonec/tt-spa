@@ -75,7 +75,6 @@ const AddNodeFirstTab = () => {
     <form
       hidden={Number(currentTabKey) !== 1}
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledFormPage>
         <Title color="black" style={styles.w100}>Общие данные</Title>
