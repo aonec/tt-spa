@@ -1,5 +1,5 @@
 import {Route, useParams, useLocation} from 'react-router-dom';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import {getCalculatorTasks, getCalculator} from './apiCalculatorProfile';
 import {Grid} from '../../_components';
 
@@ -45,12 +45,13 @@ interface TypeDeviceContext {
     error: any,
     hubs: any,
     deregister: boolean,
-    // setDeregister: () => void,
+    setDeregister: Dispatch<SetStateAction<boolean>>,
     report: boolean,
-    // setReport: () => void,
+    setReport: Dispatch<SetStateAction<boolean>>,
     check: boolean,
-    // setCheck: () => void,
+    setCheck: Dispatch<SetStateAction<boolean>>,
 };
+
 
 export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>({});
 
@@ -66,20 +67,12 @@ export const CalculatorProfile = () => {
     const [hubs, setHubs] = useState();
     const [deregister, setDeregister] = useState(false);
     const [report, setReport] = useState(false);
-    const [reportSono, setReportSono] = useState(false);
     const [check, setCheck] = useState(false);
     const [nodes, setNodes] = useState();
 
     const [error, setError] = useState();
     const [errors, setErrors] = useState();
 
-    // const [loadings, setLoadings] = useState({
-    //     device: true,
-    //     building: true,
-    //     tasks: true,
-    //     related: true,
-    //     nodes: true
-    // });
 
     const [loadings, setLoadings] = useState({
         device: false,
@@ -136,14 +129,6 @@ export const CalculatorProfile = () => {
 
 
     if (isLoading) return <Loader show size={32}/>;
-
-    console.log("nodes", nodes)
-
-    console.log("device", device)
-    // address: {id: 705, city: "Нижнекамск", street: "Менделеева", housingStockNumber: "1", corpus: null},
-    // connection: {ipV4: "192.168.101.41", port: 4001, deviceAddress: 1},
-    // nodes: [(2) [{…}, {…}]],
-
 
     const context = {
         device,

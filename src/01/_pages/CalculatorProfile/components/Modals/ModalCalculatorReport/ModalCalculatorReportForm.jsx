@@ -10,21 +10,18 @@ import {
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
 
-const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
-  // const { handleCancel } = props;
   const { TabPane } = Tabs;
 
-  console.log('DEVICE = ', device);
   const {
-    id, model, serialNumber, address, hubs, nodes,
+    id, model, serialNumber, address, nodes,
   } = device;
+
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
-  console.log('nodes', nodes);
 
   const nodesList = nodes.map((node, index) => {
     const {
@@ -53,8 +50,6 @@ const ModalCalculatorReportForm = (props) => {
       id, number, resource, devices,
     };
   });
-
-  console.log('nodesList', nodesList);
 
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(nodesList, 'resource');
@@ -207,7 +202,7 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   return (
-    <Form id="formReport">
+    <Form id="formReport" onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>
           Выгрузка отчета о общедомовом потреблении
@@ -225,8 +220,6 @@ const ModalCalculatorReportForm = (props) => {
         <Form.Item label="Выбор узла">
           <SelectTT
             options={options}
-                        // options={devicesSelectionByType[values.resource]}
-            placeholder="Выберите узел"
             onChange={(value) => {
               setFieldValue('nodeId', value);
             }}
@@ -236,17 +229,6 @@ const ModalCalculatorReportForm = (props) => {
           <Alert name="nodeId" />
         </Form.Item>
 
-        {/* <Form.Item label="Выбор узла"> */}
-        {/*  <SelectTT */}
-        {/*    options={options} */}
-        {/*                // options={devicesSelectionByType[values.resource]} */}
-        {/*    placeholder="Выберите узел" */}
-        {/*    onChange={handleSelect} */}
-        {/*    value={values.currentValue} */}
-        {/*    name="entryNumber" */}
-        {/*  /> */}
-        {/*  <Alert name="entryNumber" /> */}
-        {/* </Form.Item> */}
         <div id="period_and_type " style={{ display: 'flex' }}>
 
           <Form.Item label="Тип архива" style={{ width: '50%' }}>
@@ -301,9 +283,8 @@ const ModalCalculatorReportForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          form="formReport"
-          style={{ width: '224px', marginLeft: '16px' }}
-          onClick={handleSubmit}
+          big
+          style={{ marginLeft: '16px' }}
         >
           Выгрузить
         </ButtonTT>

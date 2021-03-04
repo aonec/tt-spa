@@ -6,9 +6,10 @@ import {StyledModal} from '../../../../../tt-components/Modal'
 
 const CheckDevice = () => {
   // const { check, setCheck, device } = useContext(DeviceContext);
-  const { check, device } = useContext(DeviceContext);
+  const { check, setCheck, device  } = useContext(DeviceContext);
   const handleCancel = () => {
-    // setCheck(false);
+    if (setCheck === undefined) return
+    setCheck(false);
   };
 
 
