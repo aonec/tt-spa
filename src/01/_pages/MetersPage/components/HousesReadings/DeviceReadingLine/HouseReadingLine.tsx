@@ -2,8 +2,7 @@ import React, {useEffect, useState} from "react"
 import styled from "styled-components";
 import {IndividualDeviceType} from "../../../../../../types/types";
 import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
-import DeviceRatesVertical from "../../MeterDevices/components/DeviceRatesVertical";
-import { DeviceReadingsContainer } from "01/components/Select/selects/AddReadings/DeviceReadingForm/DeviceReadingForm";
+import ReadingsBlock from "../../MeterDevices/components/ReadingsBlock";
 import axios from "axios";
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import {Icon} from "../../../../../_components/Icon";
@@ -18,10 +17,11 @@ import uuid from 'react-uuid';
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import {setInputFocused, setInputUnfocused} from "01/Redux/ducks/readings/actionCreators";
+import {DeviceReadingsContainer} from "../../MeterDevices/components/ApartmentReadingLine";
 
 
 
-export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => {
+export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
         const [consumptionState, setConsumptionState] = useState([] as Array<number>)
 
         const numberOfReadings: number = rateTypeToNumber(device.rateType);
@@ -147,30 +147,69 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
 
 
         const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={device.id + index}
-                                 index={index}
-                                 onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
-                                 value={value}
-                                 resource={readingsState.resource}
-                                 operatorCabinet
-                                 houseReadings
-                                 textInput={textInput}
-                                 isDisabled={isDisabled}
+            <ReadingsBlock key={device.id + index}
+                           index={index}
+                           onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
+                           value={value}
+                           resource={readingsState.resource}
+                           operatorCabinet
+                           houseReadings
+                           textInput={textInput}
+                           isDisabled={isDisabled}
             />
         ));
 
         const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-            <DeviceRatesVertical key={uuid()}
-                                 index={index}
+            <ReadingsBlock key={uuid()}
+                           index={index}
                 // onChange={(e) => onInputChange(e, index)}
-                                 value={value}
-                                 resource={readingsState.resource}
-                                 operatorCabinet
-                                 readingsBlocked
-                                 houseReadings
-                                 isDisabled
+                           value={value}
+                           resource={readingsState.resource}
+                           operatorCabinet
+                           readingsBlocked
+                           houseReadings
+                           isDisabled
             />
         ));
+
+        interface ReadingsBlockInterface {
+            readings: typeof currentDeviceReadings
+        }
+
+        const Readings: React.FC<ReadingsBlockInterface> = ({readings}) => {
+            if (readingsState.resource !== 'Electricity' || readings.length === 1) return <DeviceReadingsContainer
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                resource={device.resource}
+                //@ts-ignore
+                readingsCount={readingsState.currentReadingsArray.length}
+            >
+                {readings}
+            </DeviceReadingsContainer>;
+
+            if (readings.length === 2) return <>
+                <DeviceReadingsContainer
+                    onBlur={onBlurHandler}
+                    onFocus={onFocusHandler}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readings[0]}
+                </DeviceReadingsContainer>
+                <DeviceReadingsContainer
+                    onBlur={onBlurHandler}
+                    onFocus={onFocusHandler}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readings[1]}
+                </DeviceReadingsContainer>
+                </>
+
+            return null
+        }
 
         const { icon, color } = DeviceIcons[device.resource];
 
@@ -192,7 +231,14 @@ export const HousesDeviceReadingLine:React.FC<Props> = React.memo(({device}) => 
                     <div>{device.serialNumber}</div>
                 </Column>
                 <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
-                <DeviceReadingsContainer onBlur={onBlurHandler} onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
+                {/*<DeviceReadingsContainer*/}
+                {/*    onBlur={onBlurHandler}*/}
+                {/*    onFocus={onFocusHandler}*/}
+                {/*    resource={device.resource}*/}
+                {/*    //@ts-ignore*/}
+                {/*    readingsCount={readingsState.currentReadingsArray.length}*/}
+                {/*>{currentDeviceReadings}</DeviceReadingsContainer>*/}
+                <Readings readings={currentDeviceReadings}/>
                 <div>{consumptionElems}</div>
                 <div>-</div>
 

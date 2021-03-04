@@ -10,12 +10,12 @@ import { Apartments } from "./components/Apartments"
 import { Filter } from "./components/Filter"
 import { ApartmentInfo } from "./components/ApartmentInfo"
 import { MeterDevices } from "./components/MeterDevices"
-import {MeterDevicesNew} from "./components/MeterDevices/MeterDevicesNew";
-import HousesReadings from "./components/HousesReadings/HousesReadings";
+import {ApartmentReadings} from "./components/MeterDevices/ApartmentReadings";
+import Houses from "./components/HousesReadings/HousesReadings";
 import Arrow from "../../_components/Arrow/Arrow";
 import { Tabs } from 'antd';
 import { useHistory } from "react-router-dom";
-import HousesDevices from "./components/HousesReadings/HousesDevices/HousesDevices";
+import HouseReadings from "./components/HousesReadings/HousesDevices/HousesDevices";
 
 const { TabPane } = Tabs;
 
@@ -50,16 +50,15 @@ export const MetersPage = () => {
           </Route>
           <Route path="/*/apartments/:id">
             <ApartmentInfo {...apartInfo} />
-            {/*<MeterDevices {...meterDev} />*/}
-            <MeterDevicesNew {...meterDev} />
+            <ApartmentReadings {...meterDev} />
           </Route>
         </TabPane>
         <TabPane tab='По домам' key="houses">
           <Route path="/*/houses" exact>
-          <HousesReadings />
+          <Houses />
           </Route>
           <Route path="/*/houses/:id">
-            <HousesDevices/>
+            <HouseReadings/>
           </Route>
         </TabPane>
       </Tabs>

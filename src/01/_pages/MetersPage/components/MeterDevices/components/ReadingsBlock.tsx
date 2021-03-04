@@ -60,7 +60,7 @@ min-width: 72px;
 
 `;
 
-const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
+const ReadingsBlock : React.FC<DeviceRatesVerticalProps> = ({
                           index,
                           onChange,
                           value,
@@ -104,4 +104,4 @@ const DeviceRatesVertical : React.FC<DeviceRatesVerticalProps> = ({
     );
 };
 
-export default DeviceRatesVertical;
+export default ReadingsBlock;
