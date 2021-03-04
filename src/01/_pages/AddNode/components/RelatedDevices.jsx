@@ -103,7 +103,8 @@ const Template = styled.div``;
 
 const NameWrap = styled.a`
   display: grid;
-  grid-template-columns: 1fr 7fr 4fr;
+  grid-template-columns: auto auto 1fr;
+  grid-gap: 8px;
   align-items: center;
 
   &:hover {
@@ -125,7 +126,7 @@ const Name = styled.h3`
 const Serial = styled.p`
   padding: 0;
   margin: 0;
-  color: rgba(39, 47, 90, 0.6);
+  color: var(--main-60);
 `;
 
 const State = styled.div`
@@ -144,7 +145,8 @@ const ListWrap = styled.div`
 
 const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 7.5fr 1.5fr 1.5fr 1.5fr;
+  grid-gap: 8px;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
