@@ -3,7 +3,7 @@ import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { AddNodeContext } from '../../index';
 
-const ModalAddDevice = (props) => {
+const ModalAddDevice = () => {
   const { setAddOdpu, addOdpu} = useContext(AddNodeContext);
   function handleCancel() {
     setAddOdpu(false);
@@ -24,25 +24,4 @@ const ModalAddDevice = (props) => {
 
 export default ModalAddDevice;
 
-// import {getObjectCalculators} from './apiAddOdpu';
 
-// const [calculators, setCalculators] = useState([]);
-
-// useEffect(() => {
-//   async function setCalculatorsList(){
-//     try {
-//       const objCalculators = await getObjectCalculators(housingStockId);
-//       const { items } = objCalculators;
-//       const calcOnly = items.map((item) => ({
-//         ...item,
-//         value: item.id,
-//         label: `${item.model} (${item.serialNumber})`
-//       }));
-//       setCalculators(calcOnly);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-//
-//   setCalculatorsList();
-// }, []);

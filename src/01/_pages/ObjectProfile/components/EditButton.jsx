@@ -52,8 +52,8 @@ export const Menu = (showPopupHandler) => {
         <ListItem>Редактировать дом</ListItem>
         <ListItem>Добавить квартиру</ListItem>
         <NavLink to={`/objects/${housingStockId}/add_node`}><ListItem>Добавить Узел</ListItem></NavLink>
-        <ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>
-        <ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>
+        {/*<ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>*/}
+        {/*<ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>*/}
 
         <ListItem style={{ color: '#FC525B' }}>
           Удалить дом

@@ -37,6 +37,7 @@ const AddDeviceForm = (props) => {
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   console.log('communicationPipes', communicationPipes);
+  console.log('communicationPipes', JSON.stringify(communicationPipes));
 
   const tabErrors = [
     {
@@ -109,7 +110,6 @@ const AddDeviceForm = (props) => {
 
         console.log("newCommunicationPipes", newCommunicationPipes)
         setCommunicationPipes(newCommunicationPipes);
-
       }
 
       else {
@@ -126,21 +126,15 @@ const AddDeviceForm = (props) => {
         ]));
 
       }
-      // const communicationPipe = {
-      //   number: values.pipeNumber,
-      //   entryNumber: values.entryNumber,
-      //   magistral: values.magistral,
-      //   devices: [device],
-      // };
-      // setDevices((prev) => [...prev, form]);
-      // console.log(device);
-      // console.log(communicationPipe);
+
 
 
       setValues((prevValues) => ({
         ...prevValues,
         ...initialValues
       }));
+
+      setTab('1');
     },
   });
 

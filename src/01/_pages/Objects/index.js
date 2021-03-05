@@ -1,6 +1,6 @@
 import React, {useReducer} from 'react';
 import styled, { css } from 'reshadow/macro';
-import { Link as LinkRow } from 'react-router-dom';
+import {Link as LinkRow, Redirect} from 'react-router-dom';
 
 import axios, { cancel } from '01/axios';
 import { Loader, Icon } from '01/components';
@@ -75,6 +75,9 @@ export const Objects = ({isReadings = false}) => {
     }, [debouncedSearchState]);
 
     const { items } = state;
+
+    if (items?.length === 1 && isReadings) return <Redirect to={`/meters/houses/${items[0].id}`} />
+
     return styled(styles)(
 
         <div style={{width: 960}}>

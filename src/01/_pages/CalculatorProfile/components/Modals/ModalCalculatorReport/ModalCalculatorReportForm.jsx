@@ -9,22 +9,20 @@ import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
+import {getArchive} from "./apiCalculatorReport";
 
-const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
-  // const { handleCancel } = props;
   const { TabPane } = Tabs;
 
-  console.log('DEVICE = ', device);
   const {
-    id, model, serialNumber, address, hubs, nodes,
+    id, model, serialNumber, address, nodes,
   } = device;
+
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
-  console.log('nodes', nodes);
 
   const nodesList = nodes.map((node, index) => {
     const {
@@ -54,8 +52,6 @@ const ModalCalculatorReportForm = (props) => {
     };
   });
 
-  console.log('nodesList', nodesList);
-
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(nodesList, 'resource');
   console.log('filteredGroup', filteredGroup);
@@ -78,9 +74,10 @@ const ModalCalculatorReportForm = (props) => {
       customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
-      nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
+      // nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
+      console.log("test");
       const { nodeId, detail, resource } = values;
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
       const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
@@ -90,21 +87,9 @@ const ModalCalculatorReportForm = (props) => {
 
       const fullLink = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
       const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      console.log("shortLink",shortLink)
 
-      async function getArchive(link = '') {
-        try {
-          const res = await axios.get(link, {
-            responseType: 'blob',
-          });
-          return res;
-        } catch (error) {
-          console.log(error);
-          throw {
-            resource: 'tasks',
-            message: 'Произошла ошибка при загрузке данных по задачам',
-          };
-        }
-      }
+
 
       // xlsx
       getArchive(shortLink).then((response) => {
@@ -207,7 +192,7 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   return (
-    <Form id="formReport">
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>
           Выгрузка отчета о общедомовом потреблении
@@ -225,8 +210,6 @@ const ModalCalculatorReportForm = (props) => {
         <Form.Item label="Выбор узла">
           <SelectTT
             options={options}
-                        // options={devicesSelectionByType[values.resource]}
-            placeholder="Выберите узел"
             onChange={(value) => {
               setFieldValue('nodeId', value);
             }}
@@ -236,17 +219,6 @@ const ModalCalculatorReportForm = (props) => {
           <Alert name="nodeId" />
         </Form.Item>
 
-        {/* <Form.Item label="Выбор узла"> */}
-        {/*  <SelectTT */}
-        {/*    options={options} */}
-        {/*                // options={devicesSelectionByType[values.resource]} */}
-        {/*    placeholder="Выберите узел" */}
-        {/*    onChange={handleSelect} */}
-        {/*    value={values.currentValue} */}
-        {/*    name="entryNumber" */}
-        {/*  /> */}
-        {/*  <Alert name="entryNumber" /> */}
-        {/* </Form.Item> */}
         <div id="period_and_type " style={{ display: 'flex' }}>
 
           <Form.Item label="Тип архива" style={{ width: '50%' }}>
@@ -301,14 +273,13 @@ const ModalCalculatorReportForm = (props) => {
         <ButtonTT
           color="blue"
           type="submit"
-          form="formReport"
-          style={{ width: '224px', marginLeft: '16px' }}
-          onClick={handleSubmit}
+          big
+          style={{ marginLeft: '16px' }}
         >
           Выгрузить
         </ButtonTT>
       </StyledFooter>
-    </Form>
+    </form>
   );
 };
 

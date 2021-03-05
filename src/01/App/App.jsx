@@ -44,6 +44,7 @@ import { store } from '../Redux/store';
 
 moment.locale('ru');
 
+const fs = require('fs');
 export function App() {
   const AppProvider = useApp();
 

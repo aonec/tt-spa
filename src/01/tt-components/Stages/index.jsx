@@ -13,7 +13,7 @@ export const Stages = (props) => {
   ];
   const stepsList = stepsArr.map((step, index) => {
     const { title, description, status } = step;
-    return <Step title={title} status={status} description="" />;
+    return <Step title={title} status={status} description="" key={title} />;
   });
 
   return (

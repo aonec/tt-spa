@@ -111,20 +111,20 @@ const ModalCheckForm = (props: any) => {
                 </StyledFormPage>
             </StyledModalBody>
             <StyledFooter modal>
-                {/*<ButtonTT*/}
-                {/*    color="white"*/}
-                {/*    type='button'*/}
-                {/*    onClick={handleCancel}*/}
-                {/*>*/}
-                {/*    Отмена*/}
-                {/*</ButtonTT>*/}
-                {/*<ButtonTT*/}
-                {/*    color="blue"*/}
-                {/*    style={{marginLeft: '32px'}}*/}
-                {/*    type="submit"*/}
-                {/*>*/}
-                {/*    Сохранить изменения*/}
-                {/*</ButtonTT>*/}
+                <ButtonTT
+                    color="white"
+                    type='button'
+                    onClick={handleCancel}
+                >
+                    Отмена
+                </ButtonTT>
+                <ButtonTT
+                    color="blue"
+                    style={{marginLeft: '32px'}}
+                    type="submit"
+                >
+                    Сохранить изменения
+                </ButtonTT>
             </StyledFooter>
         </form>
     );

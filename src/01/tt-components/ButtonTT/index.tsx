@@ -54,7 +54,7 @@ export const ButtonTT = styled.button<Partial<Props>>`
           `)
           || (color === 'blue'
                   && css`
-                    background: #189ee9;
+                    background: var(--primary);
                     color: #ffffff;
                   `)
           || (color === 'blueshadow'

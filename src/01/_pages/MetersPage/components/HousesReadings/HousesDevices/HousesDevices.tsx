@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import styled from "styled-components";
-import { HousesDeviceReadingLine } from "../DeviceReadingLine/HousesDeviceReadingLine";
+import { HouseReadingLine } from "../DeviceReadingLine/HouseReadingLine";
 import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader";
 import {selectDevices} from "../../../../../Redux/ducks/readings/selectors";
 import { setDevices } from "01/Redux/ducks/readings/actionCreators";
@@ -41,7 +41,7 @@ const HousesDevices: React.FC = () => {
         .sort((device1, device2) => {
             return +device1.apartmentNumber - +device2.apartmentNumber
         })
-        .map((device, index) => <HousesDeviceReadingLine
+        .map((device, index) => <HouseReadingLine
             key={device.id + 'f'}
             device={device}
         />)

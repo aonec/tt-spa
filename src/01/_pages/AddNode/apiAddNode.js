@@ -40,24 +40,3 @@ export async function addNodeFinal(form = {}) {
     };
   }
 }
-
-const template = {
-  areaOfNonResidential: null,
-  city: 'Нижнекамск',
-  constructionDate: null,
-  corpus: null,
-  district: null,
-  houseArea: null,
-  houseCategory: null,
-  id: 755,
-  index: null,
-  isThereElevator: null,
-  number: '8',
-  numberOfApartments: null,
-  numberOfEntrances: null,
-  numberOfFloors: null,
-  region: null,
-  street: 'Ямьле',
-  totalArea: null,
-  totalLivingArea: null,
-};

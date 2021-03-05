@@ -1,6 +1,6 @@
 import axios from '../../../../axios';
 
-export async function getObjectCalculators(id : number) {
+export async function getObjectCalculators(id ) {
   try {
     const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
     return res;
@@ -13,7 +13,7 @@ export async function getObjectCalculators(id : number) {
   }
 }
 
-export async function getCalculator(id : number) {
+export async function getCalculator(id ) {
   try {
     const res = await axios.get(`Calculators/${id}`);
     return res;
@@ -26,7 +26,7 @@ export async function getCalculator(id : number) {
   }
 }
 
-export async function addOdpu(form: object) {
+export async function addOdpu(form) {
   try {
     const res = await axios.post('HousingMeteringDevices', form);
     alert('ОДПУ успешно создан !');
