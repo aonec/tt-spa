@@ -115,7 +115,7 @@ const AddDeviceForm = (props) => {
         resource,
         model: values.model,
         diameter: values.diameter,
-        pipeId: values.pipeId,
+        // pipeId: values.pipeId,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
