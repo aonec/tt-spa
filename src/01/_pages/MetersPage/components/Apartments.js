@@ -1,6 +1,6 @@
 import React from "react"
 import styled, { css } from "reshadow/macro"
-import { useHistory, useRouteMatch } from "react-router-dom"
+import {Redirect, useHistory, useRouteMatch} from "react-router-dom"
 import { Loader } from "01/components"
 
 const styles = css`
@@ -30,6 +30,9 @@ export const Apartments = ({ loading = null, items = [] }) => {
   const { push } = useHistory()
   const { url } = useRouteMatch()
   if (loading) return <Loader show={true} size="32" />
+
+  if (items.length === 1) return <Redirect to={`/meters/apartments/${items[0].id}`} />
+
   return styled(styles)(
     items.map(({ title, id, owner, number, square }) => (
       <apart key={id} onClick={() => push(`${url}/${id}`)}>

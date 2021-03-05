@@ -11,7 +11,7 @@ import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import Arrow from "../../../../../_components/Arrow/Arrow";
-import DeviceRatesVertical from "./DeviceRatesVertical";
+import ReadingsBlock from "./ReadingsBlock";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import axios from "01/axios"
@@ -24,77 +24,9 @@ import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors
 import {setInputFocused, setInputUnfocused} from "../../../../../Redux/ducks/readings/actionCreators";
 import {Link} from "react-router-dom";
 
-const {confirm} = Modal;
-
-const FullDeviceLine = styled.div`
-  display: grid;
-  grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;
-  column-gap: 16px;
-  margin-top: 8px;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  padding: 8px 8px 16px;
-  border-bottom: 1px solid #DCDEE4;
-
-`;
 
 
-export const DeviceReadingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  border: 1px solid var(--frame);
-  max-width: 200px;
-  padding: 8px;
-  pointer-events: ${props => props.isDisabled === true ? 'none' : 'auto'};
-
-`;
-
-const Footer = styled.div`
-  background-color: var(--bg);
-  height: 96px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 32px;
-  font-weight: 700;
-`
-
-const Header = styled.h1`
-  font-size: 32px;
-  line-height: 1.5;
-  font-weight: 300;
-  margin: 0;
-`
-
-const StyledModal = styled(Modal)`
-
-  .ant-modal-header {
-    padding: 24px 32px;
-    border: 0;
-  }
-
-  .ant-modal-body {
-    padding: 0 32px 32px 32px;
-  }
-
-  .ant-modal-footer {
-    padding: 0;
-  }
-
-  .ant-modal-close-x {
-    fill: var(--main-100)
-  }
-
-  .ant-modal-footer button + button {
-    margin-bottom: 0;
-    margin-left: 16px;
-  }
-
-`
-
-const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
+const ApartmentReadingLine = ({device, sliderIndex}) => {
 
     const dispatch = useDispatch();
 
@@ -176,27 +108,29 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
         setInitialReadings(readingsState.currentReadingsArray)
     }
 
-    const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-        <DeviceRatesVertical key={readingsState.currentReadingsArray.id ?? device.id + index}
-                             index={index}
-                             onChange={(e) => onInputChange(e, index)}
-                             value={value}
-                             resource={readingsState.resource}
-                             sendReadings={() => sendReadings(device)}
-                             operatorCabinet
-                             textInput={textInput}
-                             isDisabled={isDisabled}
-        />
-    ));
+    const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => {
+        return (
+            <ReadingsBlock key={readingsState.currentReadingsArray.id ?? device.id + index}
+                           index={index}
+                           onChange={(e) => onInputChange(e, index)}
+                           value={value}
+                           resource={readingsState.resource}
+                           sendReadings={() => sendReadings(device)}
+                           operatorCabinet
+                           textInput={textInput}
+                           isDisabled={isDisabled}
+            />
+        )
+    });
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-        <DeviceRatesVertical key={readingsState.previousReadingsArray.id ?? device.id + index}
-                             index={index}
-                             onChange={(e) => onInputChange(e, index)}
-                             value={value}
-                             resource={readingsState.resource}
-                             operatorCabinet
-                             readingsBlocked
+        <ReadingsBlock key={readingsState.previousReadingsArray.id + 'a'}
+                       index={index}
+                       onChange={(e) => onInputChange(e, index)}
+                       value={value}
+                       resource={readingsState.resource}
+                       operatorCabinet
+                       readingsBlocked
         />
     ));
 
@@ -215,6 +149,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
     }
 
     const onFocusHandler = (e) => {
+
         if (e.currentTarget.contains(e.relatedTarget)) return
 
         setInitialReadings(readingsState.currentReadingsArray);
@@ -223,6 +158,71 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
             dispatch(setInputFocused(device.id))
         }
     }
+
+    const options = (readingsElems, isCurrent) => [
+        {
+            value: () => (<DeviceReadingsContainer
+                color={isCurrent ? getInputColor(device.resource) : "var(--main-90)"}
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                resource={device.resource}
+                //@ts-ignore
+                readingsCount={readingsState.currentReadingsArray.length}
+            >
+                {readingsElems}
+            </DeviceReadingsContainer>),
+                isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
+        },
+        {
+            value: () => (<div
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                style={{display: 'flex', flexDirection: 'column'}}>
+                <DeviceReadingsContainer
+                    style={{marginBottom: 8}}
+                    color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[0]}
+                </DeviceReadingsContainer>
+                <DeviceReadingsContainer
+                    color={isCurrent ? "#957400" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[1]}
+                </DeviceReadingsContainer>
+            </div>),
+            isSuccess: readingsElems.length === 2
+        },
+        {
+            value: () => (<div onBlur={onBlurHandler}
+                               onFocus={onFocusHandler}
+                               style={{display: 'flex', flexDirection: 'column'}}>
+                <DeviceReadingsContainer
+                    style={{marginBottom: 8}}
+                    color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {[readingsElems[0], readingsElems[1]]}
+                </DeviceReadingsContainer>
+                <DeviceReadingsContainer
+                    color={isCurrent ? "#957400" : "var(--main-90)"}
+                    resource={device.resource}
+                    //@ts-ignore
+                    readingsCount={readingsState.currentReadingsArray.length}
+                >
+                    {readingsElems[2]}
+                </DeviceReadingsContainer>
+            </div>),
+            isSuccess: true
+        }
+    ];
 
 
     const {icon, color} = DeviceIcons[device.resource];
@@ -251,11 +251,11 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
                     }}>{translateMountPlace(device.mountPlace)}</div>
                 </div>
             </div>
-            <DeviceReadingsContainer isDisabled={isDisabled} onBlur={onBlurHandler}
-                                     onFocus={onFocusHandler}>{currentDeviceReadings}</DeviceReadingsContainer>
-            <DeviceReadingsContainer>{previousDeviceReadings}</DeviceReadingsContainer>
 
-            {/*<Modal handleOk={handleOk} handleCancel={handleCancel} /> */}
+            {/*Инпуты с показаниями*/}
+            {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
+            {options(currentDeviceReadings, true).find((el) => el.isSuccess).value()}
+
             <StyledModal
                 visible={isVisible}
                 title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
@@ -275,7 +275,7 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
                 }
             >
                 <p style={{color: 'var(--main-100)', margin: 0}}>
-                    Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами
+                    Вы внесли не все показания, если вы покинете страницу, то все изменения, которые были сделаны вами
                     на этой странице не сохранятся
                 </p>
             </StyledModal>
@@ -284,4 +284,84 @@ const ApartmentDeviceReadingLine = ({device, sliderIndex}) => {
     )
 }
 
-export default ApartmentDeviceReadingLine;
+const FullDeviceLine = styled.div`
+  display: grid;
+  grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;
+  column-gap: 16px;
+  margin-top: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  padding: 8px 8px 16px;
+  border-bottom: 1px solid #DCDEE4;
+
+`;
+
+export const getInputColor = (resource) => {
+    switch (resource) {
+        case "HotWaterSupply":
+            return "#FF8C68"
+        case "ColdWaterSupply":
+            return "#79AFFF"
+        case "Heat":
+            return "Отопление"
+        case "Electricity":
+            return "#E2B104"
+    }
+}
+
+export const DeviceReadingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  border: 1px solid ${(props) => props.color ? props.color : 'var(--main-90)'};
+  border-left-width: 4px;
+  max-width: 200px;
+  padding: 8px;
+  pointer-events: ${(props) => props.isDisabled === true ? 'none' : 'auto'};
+`;
+
+const Footer = styled.div`
+  background-color: var(--bg);
+  height: 96px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 32px;
+  font-weight: 700;
+`
+
+const Header = styled.h1`
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+`
+
+const StyledModal = styled(Modal)`
+
+  .ant-modal-header {
+    padding: 24px 32px;
+    border: 0;
+  }
+
+  .ant-modal-body {
+    padding: 0 32px 32px 32px;
+  }
+
+  .ant-modal-footer {
+    padding: 0;
+  }
+
+  .ant-modal-close-x {
+    fill: var(--main-100)
+  }
+
+  .ant-modal-footer button + button {
+    margin-bottom: 0;
+    margin-left: 16px;
+  }
+
+`
+
+export default ApartmentReadingLine;

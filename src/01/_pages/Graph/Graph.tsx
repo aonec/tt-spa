@@ -73,13 +73,20 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
         <GraphFilterForm searchQuery={searchQuery} paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
         {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
 
-        {status === 'rejected' && <Alert
+        {status === 'rejected' &&
+        <>
+        <Alert
             message="Ошибка"
-            description="Нет данных за выбранный период. Пожалуйста, измените период для формирования новой статистики."
+            description="На сервере произошла непредвиденная ошибка. В скором времени она будет устранена."
             type="error"
             showIcon
             closable
-        />}
+        />
+          <div>
+            <img src={require('./components/FallbackGraph.svg')} alt="546"/>
+          </div>
+        </>
+        }
 
         {status === 'resolved' &&
         <GraphParent>
@@ -87,7 +94,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
               graphParam={graphParam}
               dataObject={data}
           />
-          <GraphLegend resource={data.data.resource}/>
         </GraphParent>}
       </GraphContainer>
   )

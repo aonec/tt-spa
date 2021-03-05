@@ -8,12 +8,11 @@ interface Props {
 }
 
 const GraphLegend:React.FC<Props> = ({resource}) => {
-    console.log(getResourceColor(resource))
- return (
-  <CurrentPeriod resource={resource}>
-      Текущий период
-  </CurrentPeriod>
- );
+    return (
+        <CurrentPeriod resource={resource}>
+            Текущий период
+        </CurrentPeriod>
+    );
 };
 
 const CurrentPeriod = styled.div<Props>`
