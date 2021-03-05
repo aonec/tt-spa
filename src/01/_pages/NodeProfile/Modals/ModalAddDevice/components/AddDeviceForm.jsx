@@ -48,11 +48,7 @@ const AddDeviceForm = (props) => {
   const entryNumber = 1;
 
   // const communicationPipeIds = _.map(communicationPipes, ['id', 'number']);
-  const communicationPipeIds = communicationPipes.map((item) => {
-    const { number, id } = item;
-    return { value: id, label: number };
-  });
-  console.log('communicationPipeIds', communicationPipeIds);
+
 
   const [currentTabKey, setTab] = useState('1');
   const [coldAndThermo, setColdAndThermo] = useState(false);
@@ -96,6 +92,11 @@ const AddDeviceForm = (props) => {
     nodeStatus,
   };
 
+  const communicationPipeIds = communicationPipes.map((item) => {
+    const { number, id } = item;
+    return { value: number, label: number, pipeId: id };
+  });
+  console.log('communicationPipeIds', communicationPipeIds);
   const {
     handleSubmit, handleChange, values, touched, errors,
     handleBlur, setFieldValue, setValues,
@@ -114,7 +115,7 @@ const AddDeviceForm = (props) => {
         resource,
         model: values.model,
         diameter: values.diameter,
-        pipeId: null,
+        pipeId: values.pipeId,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
@@ -125,9 +126,9 @@ const AddDeviceForm = (props) => {
       console.log('SUBMIT', device);
       console.log('SUBMIT', JSON.stringify(device));
 
-      // addOdpu(device).then((res) => {
-      //     console.log(res);
-      // });
+      addOdpu(device).then((res) => {
+          console.log(res);
+      });
     },
   });
 
@@ -153,6 +154,8 @@ const AddDeviceForm = (props) => {
 
   useEffect(() => {
     const pipeNumbers = _.map(communicationPipes, 'number');
+    console.log("pipeNumbers", pipeNumbers)
+    console.log("values.pipeNumber", values.pipeNumber)
 
     if (pipeNumbers.includes(values.pipeNumber)) {
       const getDevices = _.find(communicationPipes, { number: values.pipeNumber });
@@ -166,6 +169,7 @@ const AddDeviceForm = (props) => {
 
     console.log('values.pipeNumber, values.housingMeteringDeviceType', values.pipeNumber, values.housingMeteringDeviceType);
   }, [values.pipeNumber, values.housingMeteringDeviceType]);
+
 
   const Alert = ({ name = '' }) => {
     const touch = _.get(touched, `${name}`);
@@ -428,20 +432,40 @@ const AddDeviceForm = (props) => {
             />
           </Form.Item>
 
+          {/*communicationPipeIds*/}
+
           <Form.Item label="Номер трубы" style={styles.w49}>
-            <InputTT
+            <SelectTT
               name="pipeNumber"
-              type="number"
-              min="0"
-              step="1"
-              placeholder="Номер трубы"
               value={values.pipeNumber}
+              options={communicationPipeIds}
               onBlur={handleBlur}
-              onChange={handleChange}
+              onChange={(value) => {
+                setFieldValue('pipeNumber', value);
+                const pipeId = _.find(communicationPipeIds, {value: value});
+                console.log("pipeId",pipeId)
+                setFieldValue('pipeId', pipeId.pipeId);
+
+              }}
               disabled={disable}
             />
             <Alert name="pipeNumber" />
           </Form.Item>
+
+          {/*<Form.Item label="Номер трубы" style={styles.w49}>*/}
+          {/*  <InputTT*/}
+          {/*    name="pipeNumber"*/}
+          {/*    type="number"*/}
+          {/*    min="0"*/}
+          {/*    step="1"*/}
+          {/*    placeholder="Номер трубы"*/}
+          {/*    value={values.pipeNumber}*/}
+          {/*    onBlur={handleBlur}*/}
+          {/*    onChange={handleChange}*/}
+          {/*    disabled={disable}*/}
+          {/*  />*/}
+          {/*  <Alert name="pipeNumber" />*/}
+          {/*</Form.Item>*/}
 
           <Form.Item label="Магистраль" style={styles.w49}>
             <SelectTT

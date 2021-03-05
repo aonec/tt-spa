@@ -22,7 +22,7 @@ import { addNodeFinal } from '../../../apiAddNode';
 import {Redirect, useHistory} from "react-router-dom";
 
 const AddNodeForm = (props) => {
-  const {history} = useHistory()
+  const history = useHistory()
   const { handleCancel } = props;
 
   const {
@@ -96,14 +96,16 @@ const AddNodeForm = (props) => {
       const addNodeForm = { ...node, communicationPipes };
       console.log('addNodeForm', addNodeForm);
       console.log('addNodeForm', JSON.stringify(addNodeForm));
-      history.push('/objects')
-      // addNodeFinal(addNodeForm).then((res) => {
-      //
-      //   // console.log('addNodeFormResponseFromServer', res);
-      //   // setTimeout(handleCancel, 1000);
-      //   // return <Redirect to={`/objects/${housingStockId}`} />
-      //
-      // });
+      console.log(history)
+
+      addNodeFinal(addNodeForm).then((res) => {
+
+        console.log('addNodeFormResponseFromServer', res);
+        history.push(`/objects/${housingStockId}`)
+        // setTimeout(handleCancel, 1000);
+        // return <Redirect to={`/objects/${housingStockId}`} />
+
+      });
     },
   });
 

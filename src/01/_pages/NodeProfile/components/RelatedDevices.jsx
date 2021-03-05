@@ -46,7 +46,7 @@ export const RelatedDevices = () => {
             {status}
         </State>
         <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
-        <Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>
+        {/*<Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>*/}
         <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
       </ListItem>
     );
