@@ -10,7 +10,7 @@ import styles from "../../../../Devices/components/TabsDevices.module.scss";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
-import ButtonTT from "../../../../../tt-components/ButtonTT";
+import {ButtonTT} from "../../../../../tt-components";
 import {Input, Modal} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";

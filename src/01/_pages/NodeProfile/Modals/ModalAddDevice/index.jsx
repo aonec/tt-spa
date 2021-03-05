@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
-import { AddNodeContext } from '../../index';
+import { NodeContext} from '../../index';
 
 const ModalAddDevice = () => {
-  const { setAddOdpu, addOdpu} = useContext(AddNodeContext);
-  function handleCancel() {
+  const { setAddOdpu, addOdpu} = useContext(NodeContext);
+  const handleCancel = () => {
     setAddOdpu(false);
   }
   return (
@@ -14,6 +14,7 @@ const ModalAddDevice = () => {
       footer={null}
       width={800}
       visible={addOdpu}
+      //   visible={true}
     >
       <AddDeviceForm
         handleCancel={handleCancel}
@@ -23,5 +24,4 @@ const ModalAddDevice = () => {
 };
 
 export default ModalAddDevice;
-
 

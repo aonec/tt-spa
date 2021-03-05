@@ -2,27 +2,18 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 
-import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
+
 import {
-  resources, serviceZoneList, nodeStatusList,
-} from '../../../tt-components/localBases';
-import {
-  Title, ButtonTT, StyledFooter,
+  Title, ButtonTT, StyledFooter,  styles, StyledFormPage
 } from '../../../tt-components';
 import RelatedDevices from './RelatedDevices';
-import { styles, StyledFormPage } from './styledComponents';
-import { addNode } from '../apiAddNode';
 import { AddNodeContext } from '../index';
 import ModalAddDevice from "../modals/ModalAddDevice";
 import ModalAddNode from "../modals/ModalAddNode";
-
-const StyledHint = styled.div`
-  color: rgba(39, 47, 90, 0.7)
-`;
 
 const AddNodeThirdTab = () => {
   const {
@@ -71,18 +62,6 @@ const AddNodeThirdTab = () => {
     setAddOdpu(true);
   }
 
-  const Alert = ({ name }) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return (
-        <div>{error}</div>
-      );
-    }
-    return null;
-  };
-
-
 
   return (
     <form
@@ -105,7 +84,7 @@ const AddNodeThirdTab = () => {
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
-      <StyledFooter form>
+      <StyledFooter form={true}>
         <ButtonTT
           color="blue"
           big

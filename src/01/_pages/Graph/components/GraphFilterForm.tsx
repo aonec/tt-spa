@@ -25,7 +25,6 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
     }, [isActive])
 
     useOutsideClick(formRef, () => {
-        console.log('bubbling')
         if (isActive) {
             // setIsActive(false)
             setShown()

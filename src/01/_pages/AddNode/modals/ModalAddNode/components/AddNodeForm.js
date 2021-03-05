@@ -12,15 +12,17 @@ import {
 } from '../../../../../tt-components/localBases';
 import {
   IconTT,
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,  styles, StyledFormPage
 } from '../../../../../tt-components';
-import { styles, StyledFormPage } from './styledComponents';
+
 
 import { AddNodeContext } from '../../../index';
 import { ListItem, ListWrap } from '../../../../../tt-components/List';
-import {addNodeFinal} from "../../../apiAddNode";
+import { addNodeFinal } from '../../../apiAddNode';
+import {Redirect, useHistory} from "react-router-dom";
 
 const AddNodeForm = (props) => {
+  const history = useHistory()
   const { handleCancel } = props;
 
   const {
@@ -61,24 +63,23 @@ const AddNodeForm = (props) => {
   } = node;
 
   const calculator = _.find(calculatorsExtended, { id: calculatorId });
-  console.log('calculator', calculator);
+  // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
 
   const getServiceZone = _.find(serviceZoneList, { value: serviceZone })?.label ?? 'Зона не определена';
   const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
   const getNodeResource = _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
-  const devices = communicationPipes.map((communicationPipe) => {
+  const devicesList = _.flatten(communicationPipes.map((communicationPipe) => {
     const { devices } = communicationPipe;
     return devices.map((device) => device);
-  });
-  const res = _.flatten(devices);
+  }));
 
   console.log('node', node);
 
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  const initialValues = {communicationPipes};
+  const initialValues = { communicationPipes };
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -88,17 +89,23 @@ const AddNodeForm = (props) => {
     validationSchema,
     onSubmit: async () => {
       console.log('Создаем Узел');
-        const form = {
-          communicationPipes: values.communicationPipes,
-        };
-        console.log(form);
-        const addNodeForm = { ...node, communicationPipes };
-        console.log('addNodeForm', addNodeForm);
-        addNodeFinal(addNodeForm).then((res)=>{
-            console.log("addNodeFormResponseFromServer", res)
-            setTimeout(handleCancel, 1000);
-        })
+      const form = {
+        communicationPipes: values.communicationPipes,
+      };
+      console.log(form);
+      const addNodeForm = { ...node, communicationPipes };
+      console.log('addNodeForm', addNodeForm);
+      console.log('addNodeForm', JSON.stringify(addNodeForm));
+      console.log(history)
 
+      addNodeFinal(addNodeForm).then((res) => {
+
+        console.log('addNodeFormResponseFromServer', res);
+        history.push(`/objects/${housingStockId}`)
+        // setTimeout(handleCancel, 1000);
+        // return <Redirect to={`/objects/${housingStockId}`} />
+
+      });
     },
   });
 
@@ -183,7 +190,7 @@ const AddNodeForm = (props) => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {res.map((device) => {
+        {devicesList.map((device) => {
           const {
             closingDate, model, serialNumber, pipe,
           } = device;
@@ -196,7 +203,7 @@ const AddNodeForm = (props) => {
                 {' '}
                 <DeviceSerial>
                   (
-{serialNumber}
+                  {serialNumber}
                   )
                 </DeviceSerial>
               </CalculatorInfo>
@@ -204,19 +211,19 @@ const AddNodeForm = (props) => {
                 <Description>
                   {closingDate ? (
                     <Div>
-                              <IconTT icon="red" />
-                              <span>Не активен</span>
-                            </Div>
+                      <IconTT icon="red" />
+                      <span>Не активен</span>
+                    </Div>
                   ) : (
-                            <Div>
-                                <IconTT icon="green" />
-                                <span>Активен</span>
-                              </Div>
+                    <Div>
+                      <IconTT icon="green" />
+                      <span>Активен</span>
+                    </Div>
                   )}
                 </Description>
                 <Number>
                   Труба:
-{pipeNumber}
+                  {pipeNumber}
                 </Number>
               </DeviceDescription>
             </List>

@@ -7,7 +7,7 @@ import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
-  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter, StyledFormPage,
+  DatePickerTT, InputTT, SelectTT, Wrap, StyledModalBody, StyledFooter, StyledFormPage, styles
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import TabsComponent from './addCalculatorTabs';
@@ -17,7 +17,7 @@ import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFo
 import { defaultValidationSchema, emptyConnectionValidationSchema } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../index';
-import { styles } from '../../components/styledComponents';
+
 
 const AddCalculatorForm = (props) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);

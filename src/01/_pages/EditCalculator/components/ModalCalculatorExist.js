@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 
 
 export const ModalCalculatorExist = () => {
-  console.log("ModalCalculatorExist")
   const { alertVisible, setAlertVisible, existCalculator } = useContext(EditCalculatorContext);
   function handleCancel(){
     setAlertVisible(false)

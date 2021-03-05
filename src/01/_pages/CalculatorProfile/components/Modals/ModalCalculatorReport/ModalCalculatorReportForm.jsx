@@ -4,28 +4,25 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+
 import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
+import axios from '../../../../../axios';
+import {getArchive} from "./apiCalculatorReport";
 
-
-// import { device } from './CalculatorTemplate';
-
-const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
-  // const { handleCancel } = props;
-const { TabPane } = Tabs;
+  const { TabPane } = Tabs;
 
-  console.log('DEVICE = ', device);
   const {
-    id, model, serialNumber, address, hubs, nodes,
+    id, model, serialNumber, address, nodes,
   } = device;
+
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
-  console.log('nodes', nodes);
 
   const nodesList = nodes.map((node, index) => {
     const {
@@ -55,8 +52,6 @@ const { TabPane } = Tabs;
     };
   });
 
-  console.log('nodesList', nodesList);
-
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(nodesList, 'resource');
   console.log('filteredGroup', filteredGroup);
@@ -79,16 +74,36 @@ const { TabPane } = Tabs;
       customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
-      nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
+      // nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
-      console.log('nodeId', values.nodeId);
-      const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z&to=${moment(values.end).format('YYYY-MM-DD')}T00:00:00Z`;
-      console.log(link);
-      const linkToDownload = document.createElement('a');
-      linkToDownload.setAttribute('href', link);
-      linkToDownload.setAttribute('download', 'download');
-      linkToDownload.click();
+      console.log("test");
+      const { nodeId, detail, resource } = values;
+      const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
+      const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
+
+      const beginName = moment(values.begin).format('YYYY-MM-DD');
+      const endName = moment(values.begin).format('YYYY-MM-DD');
+
+      const fullLink = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      console.log("shortLink",shortLink)
+
+
+
+      // xlsx
+      getArchive(shortLink).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response]));
+        console.log(response.headers);
+        const link = document.createElement('a');
+        link.href = url;
+        const fileName = `${street}, ${housingStockNumber} - ${translate(resource)} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
+        // const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();// you need to remove that elelment which is created before.
+      });
     },
   });
 
@@ -177,7 +192,7 @@ const { TabPane } = Tabs;
   };
 
   return (
-    <Form id="formReport">
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>
           Выгрузка отчета о общедомовом потреблении
@@ -195,8 +210,6 @@ const { TabPane } = Tabs;
         <Form.Item label="Выбор узла">
           <SelectTT
             options={options}
-                        // options={devicesSelectionByType[values.resource]}
-            placeholder="Выберите узел"
             onChange={(value) => {
               setFieldValue('nodeId', value);
             }}
@@ -206,17 +219,6 @@ const { TabPane } = Tabs;
           <Alert name="nodeId" />
         </Form.Item>
 
-        {/* <Form.Item label="Выбор узла"> */}
-        {/*  <SelectTT */}
-        {/*    options={options} */}
-        {/*                // options={devicesSelectionByType[values.resource]} */}
-        {/*    placeholder="Выберите узел" */}
-        {/*    onChange={handleSelect} */}
-        {/*    value={values.currentValue} */}
-        {/*    name="entryNumber" */}
-        {/*  /> */}
-        {/*  <Alert name="entryNumber" /> */}
-        {/* </Form.Item> */}
         <div id="period_and_type " style={{ display: 'flex' }}>
 
           <Form.Item label="Тип архива" style={{ width: '50%' }}>
@@ -271,14 +273,13 @@ const { TabPane } = Tabs;
         <ButtonTT
           color="blue"
           type="submit"
-          form="formReport"
-          style={{ width: '224px', marginLeft: '16px' }}
-          onClick={handleSubmit}
+          big
+          style={{ marginLeft: '16px' }}
         >
           Выгрузить
         </ButtonTT>
       </StyledFooter>
-    </Form>
+    </form>
   );
 };
 

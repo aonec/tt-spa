@@ -1,17 +1,16 @@
 import React, {
-  useContext, useEffect, useRef, useState,
+  useContext, useEffect, useState,
 } from 'react';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import _ from 'lodash';
 import {
   isConnected,
 } from '../../../tt-components/localBases';
 import {
-  Title, SelectTT, ButtonTT, StyledFooter, AutoCompleteTT,
+  Title, SelectTT, ButtonTT, StyledFooter, AutoCompleteTT, styles, StyledFormPage
 } from '../../../tt-components';
-import { styles, StyledFormPage } from './styledComponents';
+
 import { AddNodeContext } from '../index';
 import {calculatorValidationSchema} from "./validationSchemas";
 import ModalAddCalculator from "../modals/ModalAddCalculator";
@@ -29,8 +28,6 @@ const AddNodeSecondTab = () => {
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(calculatorValidationSchema);
-
-
 
   const {
     handleSubmit, handleChange, values, touched, errors,
@@ -91,7 +88,6 @@ const AddNodeSecondTab = () => {
     <form
       hidden={Number(currentTabKey) !== 2}
       onSubmit={handleSubmit}
-      style={{ display: 'flex', flexDirection: 'column' }}
     >
       <StyledFormPage>
         <Title color="black" style={styles.w100}>Настройки соединения</Title>
