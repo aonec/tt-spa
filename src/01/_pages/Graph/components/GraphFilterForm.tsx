@@ -1,9 +1,9 @@
 import React, {Dispatch, SetStateAction, useCallback, useRef, useState} from 'react';
 import moment, {Moment} from "moment";
-import {FormItem, FormikDebug, AutoComplete, DatePicker, Form, Radio, SubmitButton, Select} from "formik-antd";
-import {Formik, FormikHelpers, FormikProps} from "formik";
-import {QueryInterface, RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
-import {AutoComplete as $AutoComplete, Button, Tooltip} from "antd";
+import {FormItem, DatePicker, Form, Radio, SubmitButton, Select} from "formik-antd";
+import {Formik, FormikHelpers} from "formik";
+import {QueryInterface} from "../../../_api/node_readings_page";
+import {Button, Tooltip} from "antd";
 import {GraphParamsType} from "../Graph";
 import IconTT from "../../../tt-components/IconTT";
 import styled from "styled-components";
@@ -12,24 +12,14 @@ import ButtonTT from "../../../tt-components/ButtonTT";
 import {ReportType} from "./GraphView";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 
-interface GraphFilterFormProps {
-    setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
-    setSearchQuery: Dispatch<SetStateAction<QueryInterface>>
-    searchQuery: QueryInterface
-    paramsList: GraphParamsType[]
-}
-
-moment.locale('ru');
-
-
 const GraphFilterForm: React.FC<GraphFilterFormProps> = (
-    {setGraphParam, setSearchQuery, paramsList, searchQuery}
+    {setGraphParam, setSearchQuery, paramsList}
 ) => {
 
     const [isActive, setIsActive] = useState(false);
 
     const formRef = useRef<any>()
-    //
+
     const setShown = useCallback(() => {
         setIsActive(false)
     }, [isActive])
@@ -46,23 +36,16 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
         setGraphParam(value);
     }
 
-    interface FormValuesInterface {
-        dateRange: Moment[]
-        reportType: ReportType
-    }
-
     const handleSubmit = (values: FormValuesInterface, actions: FormikHelpers<FormValuesInterface>) => {
         setSearchQuery((prevQuery) => {
                 return ({
                     ...prevQuery,
-                    // from: values.dateRange[0].set({hour: 0, minute: 0, second: 0, millisecond: 0}).add(moment().utcOffset(), 'minute'),
                     from: values.dateRange[0].set({hour: 0, minute: 0, second: 0, millisecond: 0}),
-                    // to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute'),
                     to: values.dateRange[1].set({hour:23,minute:0,second:0,millisecond:0}),
                     reportType: values.reportType
                 })
             }
-        )    
+        )
         actions.setSubmitting(false);
         setIsActive(state => !state)
     }
@@ -112,8 +95,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                             <FormItem name="dateRange" label="Произвольный период" >
                                 <RangeWrapper id="div">
                                     <DatePicker.RangePicker
-                                      // @ts-ignore
-                                      getPopupContainer={() => document.getElementById("div")}
+                                      getPopupContainer={() => document.getElementById("div")!}
                                         name="dateRange"
                                         format='DD MMMM YYYY'
                                         style={{marginRight: 16}}
@@ -148,7 +130,10 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
                             </FormItem>
                             </FormBody>
                             <FormFooter>
-                                <ButtonTT color="white" small onClick={() => setIsActive(state => !state)} style={{marginRight: 16}}>Отмена</ButtonTT>
+                                <ButtonTT color="white"
+                                          small
+                                          onClick={() => setIsActive(state => !state)}
+                                          style={{marginRight: 16}}>Отмена</ButtonTT>
                              <StyledSubmit disabled={false}>Применить настройки</StyledSubmit>
                             </FormFooter>
                         </Form>
@@ -159,22 +144,21 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
     );
 };
 
+interface GraphFilterFormProps {
+    setGraphParam: Dispatch<SetStateAction<GraphParamsType>>
+    setSearchQuery: Dispatch<SetStateAction<QueryInterface>>
+    paramsList: GraphParamsType[]
+}
+
+interface FormValuesInterface {
+    dateRange: Moment[]
+    reportType: ReportType
+}
+
 const GraphFilter = styled.div`
   margin-top: 8px;
+  margin-bottom: 16px;
   max-width: 600px;
-          //padding: 0 16px 8px;
-
-  //padding: 16px;
-  
-
-//.ant-picker-ranges .ant-picker-preset > .ant-tag-blue:active {
-//    color: #1890ff;
-//    background: #e6f7ff;
-//    border-color: #91d5ff;
-//    cursor: pointer;
-//}
-  
-
   
   form {
     .ant-picker-input {
@@ -199,8 +183,6 @@ const OpenedFilter = styled.div`
   z-index: 1000;
   width: 100%;
   box-shadow: var(--shadow);
-  //padding: 16px 8px;
-
 `
 
 const FormBody = styled.div`
@@ -257,7 +239,6 @@ const RangeWrapper = styled.div`
         background: rgba(24, 158, 233, 0.1);
         border-color: #189EE9;
     }
-    //color: #1890ff;
     
     cursor: pointer;
 }
@@ -269,8 +250,6 @@ div:nth-child(2) {
 .ant-picker-dropdown {
   position: static !important;
 }
-
-
 `
 
 

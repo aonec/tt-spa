@@ -5,13 +5,11 @@ import moment from "moment";
 import {
   QueryInterface,
   requestNodeReadings,
-  RequestNodeReadingsFunctionInterface
 } from "../../_api/node_readings_page";
 import {useAsync} from "../../hooks/useAsync";
 import {Alert} from "antd";
 import {getGraphParams} from "./utils";
 import styled from "styled-components";
-import GraphLegend from "./components/GraphLegend";
 
 interface GraphProps {
   nodeId: number
@@ -44,10 +42,8 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
   const reportType = 'daily' as ReportType;
 
-  // const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0});
   const from = moment().subtract(1, 'week').set({hour:0,minute:0,second:0,millisecond:0});
 
-  // const to = moment().set({hour:23,minute:0,second:0,millisecond:0}).add(moment().utcOffset(), 'minute');
   const to = moment().set({hour:23,minute:0,second:0,millisecond:0});
 
   const getInitialState = () => {
@@ -70,7 +66,10 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
   return (
       <GraphContainer>
-        <GraphFilterForm searchQuery={searchQuery} paramsList={getGraphParams(resource, pipeCount)} setGraphParam={setGraphParam} setSearchQuery={setSearchQuery}/>
+        <GraphFilterForm paramsList={getGraphParams(resource, pipeCount)}
+                         setGraphParam={setGraphParam}
+                         setSearchQuery={setSearchQuery}/>
+
         {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
 
         {status === 'rejected' &&
@@ -81,6 +80,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
             type="error"
             showIcon
             closable
+            style={{marginBottom: 24, marginTop: 24}}
         />
           <div>
             <img src={require('./components/FallbackGraph.svg')} alt="546"/>

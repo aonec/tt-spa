@@ -1,3 +1,5 @@
+import {HousingMeteringDeviceListResponse} from "../../../../../myApi";
+
 export const groupDevicesByObjects = (devices: CalculatorsInterfaceFull[]): DevicesByAddressInterface[] => {
     const devicesByObject: DevicesByAddressInterface[] = [];
     devices.forEach((device) => {
@@ -27,7 +29,7 @@ export interface CalculatorsInterface {
     futureCheckingDate: string | null
     futureCommercialAccountingDate: string | null
     hasTasks: boolean
-    hubs: any
+    hubs: HousingMeteringDeviceListResponse[] | null
     id: boolean
     isConnected: boolean
     lastCheckingDate: string | null
@@ -36,7 +38,7 @@ export interface CalculatorsInterface {
     model: string
     nodes: NodeInterface[]
     serialNumber: string
-    transactionType: any
+    transactionType: string | null
 }
 
 interface CalculatorsInterfaceFull extends CalculatorsInterface {

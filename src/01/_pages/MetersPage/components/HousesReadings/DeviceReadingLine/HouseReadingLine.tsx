@@ -12,12 +12,11 @@ import moment from "moment";
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
 import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {Input, Modal} from "antd";
-// @ts-ignore
-import uuid from 'react-uuid';
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import {setInputFocused, setInputUnfocused} from "01/Redux/ducks/readings/actionCreators";
 import {DeviceReadingsContainer, getInputColor} from "../../MeterDevices/components/ApartmentReadingLine";
+import { v4 as uuid } from 'uuid';
 
 
 
@@ -160,7 +159,6 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
         const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
             <ReadingsBlock key={uuid()}
                            index={index}
-                // onChange={(e) => onInputChange(e, index)}
                            value={value}
                            resource={readingsState.resource}
                            operatorCabinet
@@ -170,15 +168,14 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
             />
         ));
 
-    const options = (readingsElems: JSX.Element[], isCurrent: boolean): {value: () => JSX.Element, isSuccess: boolean}[] => [
+
+    const options = (readingsElems: JSX.Element[], isCurrent: boolean): OptionsInterface[] => [
         {
             value: () => <DeviceReadingsContainer
                 color={isCurrent ? getInputColor(device.resource) : "var(--main-90)"}
                 onBlur={onBlurHandler}
                 onFocus={onFocusHandler}
                 resource={device.resource}
-                //@ts-ignore
-                readingsCount={readingsState.currentReadingsArray.length}
             >
                 {readingsElems}
             </DeviceReadingsContainer>,
@@ -193,16 +190,12 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[0]}
                 </DeviceReadingsContainer>
                  <DeviceReadingsContainer
                     color={isCurrent ? "#957400" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[1]}
                 </DeviceReadingsContainer>
@@ -217,16 +210,13 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
+                    // readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {[readingsElems[0], readingsElems[1]]}
                 </DeviceReadingsContainer>
                 <DeviceReadingsContainer
                     color={isCurrent ? "#957400" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[2]}
                 </DeviceReadingsContainer>
@@ -387,4 +377,9 @@ type ReadingsStateType = {
 }
 type Props = {
     device: IndividualDeviceType
+}
+
+interface OptionsInterface {
+    value: () => JSX.Element,
+    isSuccess: boolean
 }

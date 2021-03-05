@@ -166,8 +166,6 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                 onBlur={onBlurHandler}
                 onFocus={onFocusHandler}
                 resource={device.resource}
-                //@ts-ignore
-                readingsCount={readingsState.currentReadingsArray.length}
             >
                 {readingsElems}
             </DeviceReadingsContainer>),
@@ -182,16 +180,12 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[0]}
                 </DeviceReadingsContainer>
                 <DeviceReadingsContainer
                     color={isCurrent ? "#957400" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[1]}
                 </DeviceReadingsContainer>
@@ -206,16 +200,12 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {[readingsElems[0], readingsElems[1]]}
                 </DeviceReadingsContainer>
                 <DeviceReadingsContainer
                     color={isCurrent ? "#957400" : "var(--main-90)"}
                     resource={device.resource}
-                    //@ts-ignore
-                    readingsCount={readingsState.currentReadingsArray.length}
                 >
                     {readingsElems[2]}
                 </DeviceReadingsContainer>

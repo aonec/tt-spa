@@ -158,6 +158,12 @@ export interface ApartmentStatusSetRequest {
   toDate?: string | null;
 }
 
+export enum SampleEnum {
+  First = "First",
+  Second = "Second",
+  Third = "Third",
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -222,20 +228,21 @@ export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
   successResponse: CalculatorInfoListWrappedResponse;
 }
 
-/**
- * @format int32
- */
-export type ExpiresCheckingDateAt = 0 | 1 | 2;
+export enum ExpiresCheckingDateAt {
+  NextMonth = "NextMonth",
+  NextTwoMonth = "NextTwoMonth",
+  Past = "Past",
+}
 
-/**
- * @format int32
- */
-export type OrderByDestination = 0 | 1;
+export enum OrderByDestination {
+  Descending = "Descending",
+  Ascending = "Ascending",
+}
 
-/**
- * @format int32
- */
-export type CalculatorOrderBy = 0 | 1;
+export enum CalculatorOrderBy {
+  Street = "Street",
+  FutureCheckingDate = "FutureCheckingDate",
+}
 
 export interface TimeSpan {
   /** @format int64 */
@@ -763,6 +770,9 @@ export interface PipeConnectionRequest {
   /** @format int32 */
   pipeNumber: number;
   magistral: string;
+
+  /** @format int32 */
+  nodeId: number;
 }
 
 export interface UpdateHousingMeteringDeviceRequest {
@@ -1553,10 +1563,12 @@ export interface CreateNodeRequest {
   communicationPipes?: CommunicationPipeRequest[] | null;
 }
 
-/**
- * @format int32
- */
-export type TaskGroupingFilter = 0 | 1 | 2 | 3;
+export enum TaskGroupingFilter {
+  Executing = "Executing",
+  Observing = "Observing",
+  NotArchived = "NotArchived",
+  Archived = "Archived",
+}
 
 export interface ManagingFirmUserShortResponse {
   /** @format int32 */
@@ -1720,10 +1732,11 @@ export interface TaskResponseSuccessApiResponse {
   successResponse: TaskResponse;
 }
 
-/**
- * @format int32
- */
-export type TaskTargetObjectRequestType = 0 | 1 | 2;
+export enum TaskTargetObjectRequestType {
+  None = "None",
+  Apartment = "Apartment",
+  MeteringDevice = "MeteringDevice",
+}
 
 export interface TaskCreationTargetObjectRequest {
   type?: TaskTargetObjectRequestType;
@@ -2061,6 +2074,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<void, any>({
         path: `/api/Archives/GetReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Archives
+     * @name ArchivesTestList
+     * @request GET:/api/Archives/Test
+     * @secure
+     */
+    archivesTestList: (query?: { sampleEnum?: SampleEnum }, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Archives/Test`,
         method: "GET",
         query: query,
         secure: true,
