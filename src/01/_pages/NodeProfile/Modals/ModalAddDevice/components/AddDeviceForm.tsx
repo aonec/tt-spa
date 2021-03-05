@@ -36,7 +36,7 @@ interface Props {
 interface InterfaceNode {
     resource: string,
     calculatorId: number,
-    communicationPipes: any,
+    communicationPipes: Array<object>,
     number: number,
     futureCommercialAccountingDate: string,
     lastCommercialAccountingDate: string,
@@ -63,10 +63,20 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         lastCommercialAccountingDate, nodeStatus, serviceZone,
     } = node;
 
+    console.log("node",node)
 
-    const {entryNumber}: { entryNumber: number } = communicationPipes[0] || 0;
 
-    const communicationPipeIds = _.map(communicationPipes, 'id');
+
+
+    const entryNumber = communicationPipes[0] || 0;
+
+    // const communicationPipeIds = _.map(communicationPipes, ['id', 'number']);
+    const communicationPipeIds = communicationPipes.map((item) => {
+            const {number, id} = item;
+            return {value: id, label: number}
+        }
+    );
+    console.log("communicationPipeIds",communicationPipeIds)
 
     const [currentTabKey, setTab] = useState('1');
     const [coldAndThermo, setColdAndThermo] = useState(false);
@@ -93,7 +103,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         lastCheckingDate: moment().toISOString(),
         futureCheckingDate: moment().add(3, 'years').toISOString(),
         lastCommercialAccountingDate: moment().toISOString(),
-        futureCommercialAccountingDate: moment().toISOString(),
+        futureCommercialAccountingDate: moment().add(3, 'years').toISOString(),
         documentsIds: [],
         ipV4: '',
         deviceAddress: null,
@@ -137,10 +147,13 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                     magistral: values.magistral,
                 },
             };
+            console.log('SUBMIT', device);
+            console.log('SUBMIT', JSON.stringify(device));
+
             // addOdpu(device).then((res) => {
             //     console.log(res);
             // });
-            console.log('SUBMIT', device);
+
         },
     });
 
@@ -461,7 +474,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                         <Alert name="pipeNumber"/>
                     </Form.Item>
 
-                    <Form.Item name="text" label="Магистраль" style={styles.w49}>
+                    <Form.Item label="Магистраль" style={styles.w49}>
                         <SelectTT
                             placeholder="Выберите направление магистрали"
                             name="magistral"

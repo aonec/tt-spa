@@ -13,8 +13,8 @@ const ModalAddDevice = () => {
       onCancel={handleCancel}
       footer={null}
       width={800}
-      // visible={addOdpu}
-        visible={true}
+      visible={addOdpu}
+      //   visible={true}
     >
       <AddDeviceForm
         handleCancel={handleCancel}
