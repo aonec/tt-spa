@@ -12,15 +12,17 @@ import {
 } from '../../../../../tt-components/localBases';
 import {
   IconTT,
-  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,
+  Title, SelectTT, InputTT, DatePickerTT, StyledModalBody, ButtonTT, StyledFooter, Icon, Warning,  styles, StyledFormPage
 } from '../../../../../tt-components';
-import { styles, StyledFormPage } from './styledComponents';
+
 
 import { AddNodeContext } from '../../../index';
 import { ListItem, ListWrap } from '../../../../../tt-components/List';
 import { addNodeFinal } from '../../../apiAddNode';
+import {Redirect, useHistory} from "react-router-dom";
 
 const AddNodeForm = (props) => {
+  const {history} = useHistory()
   const { handleCancel } = props;
 
   const {
@@ -93,10 +95,15 @@ const AddNodeForm = (props) => {
       console.log(form);
       const addNodeForm = { ...node, communicationPipes };
       console.log('addNodeForm', addNodeForm);
-      addNodeFinal(addNodeForm).then((res) => {
-        console.log('addNodeFormResponseFromServer', res);
-        setTimeout(handleCancel, 1000);
-      });
+      console.log('addNodeForm', JSON.stringify(addNodeForm));
+      history.push('/objects')
+      // addNodeFinal(addNodeForm).then((res) => {
+      //
+      //   // console.log('addNodeFormResponseFromServer', res);
+      //   // setTimeout(handleCancel, 1000);
+      //   // return <Redirect to={`/objects/${housingStockId}`} />
+      //
+      // });
     },
   });
 
