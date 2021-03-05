@@ -12,45 +12,45 @@ export const ModalCalculatorReport = () => {
   };
 
 
-  return (
-      <StyledModal
-            visible={report}
-            // visible
-            width={800}
-            footer={null}
-            onCancel={handleCancel}
-          >
-            <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
-          </StyledModal>
-
-  )
-
-  // if (device.infoId !== 10) {
-  //   return (
-  //     <StyledModal
-  //       visible={report}
-  //       // visible
-  //       width={800}
-  //       footer={null}
-  //       onCancel={handleCancel}
-  //     >
-  //       <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
-  //     </StyledModal>
-  //   );
-  // }
-  //
   // return (
-  //   <StyledModal
-  //     visible={report}
-  //     // visible
-  //     width={800}
-  //     footer={null}
-  //     onCancel={handleCancel}
-  //   >
-  //     <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
-  //   </StyledModal>
+  //     <StyledModal
+  //           visible={report}
+  //           // visible
+  //           width={800}
+  //           footer={null}
+  //           onCancel={handleCancel}
+  //         >
+  //           <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
+  //         </StyledModal>
   //
-  // );
+  // )
+
+  if (device.infoId !== 10) {
+    return (
+      <StyledModal
+        visible={report}
+        // visible
+        width={800}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        <ModalCalculatorReportForm device={device} handleCancel={handleCancel} />
+      </StyledModal>
+    );
+  }
+
+  return (
+    <StyledModal
+      visible={report}
+      // visible
+      width={800}
+      footer={null}
+      onCancel={handleCancel}
+    >
+      <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
+    </StyledModal>
+
+  );
 };
 
 export default ModalCalculatorReport;

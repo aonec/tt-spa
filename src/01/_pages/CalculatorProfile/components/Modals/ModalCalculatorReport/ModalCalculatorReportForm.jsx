@@ -9,6 +9,7 @@ import {
   ButtonTT, Header, InputTT, SelectTT, RangePickerTT, StyledRadio, StyledFooter, StyledModalBody,
 } from '../../../../../tt-components';
 import axios from '../../../../../axios';
+import {getArchive} from "./apiCalculatorReport";
 
 
 const ModalCalculatorReportForm = (props) => {
@@ -73,9 +74,10 @@ const ModalCalculatorReportForm = (props) => {
       customPeriodDisabled: true,
     },
     validationSchema: Yup.object({
-      nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
+      // nodeId: Yup.number().typeError('Выберите Узел').required('Выберите Узел'),
     }),
     onSubmit: async () => {
+      console.log("test");
       const { nodeId, detail, resource } = values;
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
       const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
@@ -85,21 +87,9 @@ const ModalCalculatorReportForm = (props) => {
 
       const fullLink = `https://transparent-staging.herokuapp.com/api/Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
       const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      console.log("shortLink",shortLink)
 
-      async function getArchive(link = '') {
-        try {
-          const res = await axios.get(link, {
-            responseType: 'blob',
-          });
-          return res;
-        } catch (error) {
-          console.log(error);
-          throw {
-            resource: 'tasks',
-            message: 'Произошла ошибка при загрузке данных по задачам',
-          };
-        }
-      }
+
 
       // xlsx
       getArchive(shortLink).then((response) => {
@@ -202,7 +192,7 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   return (
-    <Form id="formReport" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>
           Выгрузка отчета о общедомовом потреблении
@@ -289,7 +279,7 @@ const ModalCalculatorReportForm = (props) => {
           Выгрузить
         </ButtonTT>
       </StyledFooter>
-    </Form>
+    </form>
   );
 };
 
