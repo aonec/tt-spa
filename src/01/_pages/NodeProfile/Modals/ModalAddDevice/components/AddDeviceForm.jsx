@@ -28,34 +28,14 @@ import {handleTabsBeforeFormSubmit} from '../../../../../utils/handleTabsBeforeF
 import {NodeContext} from '../../../index';
 import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
 import {addOdpu} from "../apiAddOdpu";
+import {CalculatorResponse, NodeResponse} from "../../../../../../myApi";
 
-interface Props {
-    handleCancel: () => void
-}
 
-interface InterfaceNode {
-    resource: string,
-    calculatorId: number,
-    communicationPipes: Array<object>,
-    number: number,
-    futureCommercialAccountingDate: string,
-    lastCommercialAccountingDate: string,
-    nodeStatus: string,
-    serviceZone: string,
-}
 
-interface InterfaceAddress {
-    city: string,
-    corpus: string,
-    housingStockNumber: string,
-    id: number,
-    street: string | null
-}
-
-const AddDeviceForm: React.FC<Props> = (props) => {
+const AddDeviceForm = (props) => {
     const {handleCancel} = props;
-    const {node, calculator}: { node: InterfaceNode, calculator: any } = useContext(NodeContext);
-    const {address}: { address: InterfaceAddress } = calculator;
+    const {node, calculator} = useContext(NodeContext);
+    const {address} = calculator;
 
     const {city, corpus, housingStockNumber, id, street} = address;
     const {
@@ -66,9 +46,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     console.log("node",node)
 
 
-
-
-    const entryNumber = communicationPipes[0] || 0;
+    const entryNumber = 1;
 
     // const communicationPipeIds = _.map(communicationPipes, ['id', 'number']);
     const communicationPipeIds = communicationPipes.map((item) => {
@@ -126,7 +104,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
     } = useFormik({
         initialValues,
         validationSchema,
-
         onSubmit: async () => {
             const device = {
                 serialNumber: values.serialNumber,
@@ -177,6 +154,22 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         }
     }, [values.housingMeteringDeviceType]);
 
+    useEffect(() => {
+        const pipeNumbers = _.map(communicationPipes, 'number');
+
+        if (pipeNumbers.includes(values.pipeNumber)) {
+            const getDevices = _.find(communicationPipes, {number: values.pipeNumber});
+            const isSameType = _.find(getDevices.devices, {housingMeteringDeviceType: values.housingMeteringDeviceType});
+            console.log('isSameType', isSameType);
+            isSameType ? console.log('на трубе уже есть утстройство такого типа') : console.log('на трубе НЕТ утстройство такого типа');
+            isSameType ? setFieldValue('isAllowed', false) : setFieldValue('isAllowed', true);
+        } else {
+            setFieldValue('isAllowed', true);
+        }
+
+        console.log('values.pipeNumber, values.housingMeteringDeviceType', values.pipeNumber, values.housingMeteringDeviceType);
+    }, [values.pipeNumber, values.housingMeteringDeviceType]);
+
     const Alert = ({name = ''}) => {
         const touch = _.get(touched, `${name}`);
         const error = _.get(errors, `${name}`);
@@ -188,7 +181,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         return null;
     };
 
-    const handleChangeTab = (value: string) => {
+    const handleChangeTab = (value) => {
         setTab(value);
     }
 
@@ -203,22 +196,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
         }
     }
 
-    useEffect(() => {
-        const pipeNumbers = _.map(communicationPipes, 'number');
 
-        if (pipeNumbers.includes(values.pipeNumber)) {
-            const getDevices = _.find(communicationPipes, {number: values.pipeNumber});
-            const isSameType = _.find(getDevices.devices, {housingMeteringDeviceType: values.housingMeteringDeviceType});
-            console.log('isSameType', isSameType);
-            isSameType ? console.log('на трубе уже есть утстройство такого типа') : console.log('на трубе НЕТ утстройство такого типа');
-            isSameType ? setFieldValue('isAllowed', false) : setFieldValue('isAllowed', true);
-        } else {
-            setFieldValue('isAllowed', true);
-        }
-
-
-        console.log('values.pipeNumber, values.housingMeteringDeviceType', values.pipeNumber, values.housingMeteringDeviceType);
-    }, [values.pipeNumber, values.housingMeteringDeviceType]);
 
     const disabledFields = [
         'resource', 'isConnected', "calculatorId", "entryNumber", "number", "nodeStatus", "futureCommercialAccountingDate", "lastCommercialAccountingDate", "housingMeteringDeviceType"
@@ -226,7 +204,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
 
     const addressString = `${city}, ${street}, ${housingStockNumber}`
 
-    const isDisabled = (value: string) => {
+    const isDisabled = (value) => {
         return _.includes(disabledFields, value)
     }
 
@@ -258,7 +236,6 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                                 setFieldValue('resource', value);
                             }}
                             options={resources}
-                            defaultValue={resources[0].value}
                             value={values.resource}
                             disabled={isDisabled("resource")}
                         />
@@ -352,7 +329,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             name="lastCommercialAccountingDate"
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('lastCommercialAccountingDate', date!.toISOString());
+                                setFieldValue('lastCommercialAccountingDate', date.toISOString());
                             }}
                             value={moment(values.lastCommercialAccountingDate)}
                             disabled={isDisabled("lastCommercialAccountingDate")}
@@ -367,7 +344,8 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             name="futureCommercialAccountingDate"
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('', date!.toISOString());
+                                setFieldValue('', date.toISOString());
+                                setFieldValue('', date.toISOString());
                             }}
                             value={moment(values.futureCommercialAccountingDate)}
                             disabled={isDisabled("futureCommercialAccountingDate")}
@@ -440,7 +418,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('lastCheckingDate', date!.toISOString());
+                                setFieldValue('lastCheckingDate', date.toISOString());
                             }}
                             value={moment(values.lastCheckingDate)}
                         />
@@ -453,7 +431,7 @@ const AddDeviceForm: React.FC<Props> = (props) => {
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('futureCheckingDate', date!.toISOString());
+                                setFieldValue('futureCheckingDate', date.toISOString());
                             }}
                             value={moment(values.futureCheckingDate)}
                         />

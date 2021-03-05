@@ -18,12 +18,12 @@ const tabsComponent = [
     },
 ];
 
-interface InterfaceTabsComponent {
-    currentTabKey: string,
-    handleChangeTab: (value: string) => void
-}
+// interface InterfaceTabsComponent {
+//     currentTabKey: string,
+//     handleChangeTab: (value: string) => void
+// }
 
-const TabsComponent = (props: InterfaceTabsComponent) => {
+const TabsComponent = (props) => {
     const {currentTabKey, handleChangeTab} = props;
     return (
         <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
