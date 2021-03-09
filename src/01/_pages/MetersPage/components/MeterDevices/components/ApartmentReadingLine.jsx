@@ -96,23 +96,44 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         const onKeyDown = (e) => {
 debugger;
             if (!e.isTrusted) return
-            if (e.key === 'Enter') {
-                document.dispatchEvent(new KeyboardEvent('keydown', {
-                    code: 9,
-                }));
-            }
+            // if (e.key === 'Enter') {
+            //     document.dispatchEvent(new KeyboardEvent('keydown', {
+            //         code: 9,
+            //     }));
+            // }
+            // if (e.code === 'Enter') {
+            //     document.dispatchEvent(new KeyboardEvent('keydown', {
+            //         code: 'Tab',
+            //         key: 'Tab',
+            //         charCode: 9,
+            //         keyCode: 9,
+            //         view: window,
+            //         bubbles: true
+            //     }));
+            //     document.dispatchEvent(new KeyboardEvent('keydown', {
+            //         key: 'tab',
+            //     }));
+            // }
+
+            const keyboardEvent = document.createEvent('KeyboardEvent');
+            const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+
+
+            keyboardEvent[initMethod](
+                'keydown', // event type : keydown, keyup, keypress
+                true, // bubbles
+                true, // cancelable
+                window, // viewArg: should be window
+                false, // ctrlKeyArg
+                false, // altKeyArg
+                false, // shiftKeyArg
+                false, // metaKeyArg
+                9, // keyCodeArg : unsigned long the virtual key code, else 0
+                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+            );
+
             if (e.code === 'Enter') {
-                document.dispatchEvent(new KeyboardEvent('keydown', {
-                    code: 'Tab',
-                    key: 'Tab',
-                    charCode: 9,
-                    keyCode: 9,
-                    view: window,
-                    bubbles: true
-                }));
-                document.dispatchEvent(new KeyboardEvent('keydown', {
-                    key: 'tab',
-                }));
+                document.dispatchEvent(keyboardEvent);
             }
         }
         document.addEventListener('keydown', onKeyDown)
@@ -161,27 +182,29 @@ debugger;
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => {
         return (
-            <ReadingsBlock key={readingsState.currentReadingsArray.id ?? device.id + index}
-                           index={index}
-                           onChange={(e) => onInputChange(e, index)}
-                           value={value}
-                           resource={readingsState.resource}
-                           sendReadings={() => sendReadings(device)}
-                           operatorCabinet
-                           textInput={textInput}
-                           isDisabled={isDisabled}
+            <ReadingsBlock
+              key={readingsState.currentReadingsArray.id ?? device.id + index}
+              index={index}
+              onChange={(e) => onInputChange(e, index)}
+              value={value}
+              resource={readingsState.resource}
+              sendReadings={() => sendReadings(device)}
+              operatorCabinet
+              textInput={textInput}
+              isDisabled={isDisabled}
             />
         )
     });
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-        <ReadingsBlock key={readingsState.previousReadingsArray.id + 'a'}
-                       index={index}
-                       onChange={(e) => onInputChange(e, index)}
-                       value={value}
-                       resource={readingsState.resource}
-                       operatorCabinet
-                       readingsBlocked
+        <ReadingsBlock
+          key={readingsState.previousReadingsArray.id + 'a'}
+          index={index}
+          onChange={(e) => onInputChange(e, index)}
+          value={value}
+          resource={readingsState.resource}
+          operatorCabinet
+          readingsBlocked
         />
     ));
 
