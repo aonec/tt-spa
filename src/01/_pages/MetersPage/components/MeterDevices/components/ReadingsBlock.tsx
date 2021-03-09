@@ -1,4 +1,4 @@
-import React, {ReactEventHandler, RefObject, useContext, useState} from 'react';
+import React, {MutableRefObject, ReactEventHandler, RefObject, useContext, useState} from 'react';
 
 import { Input } from 'antd';
 import styled from 'styled-components';
@@ -6,9 +6,7 @@ import styled from 'styled-components';
 const ReadingLineStyled = styled.div<{houseReadings: boolean, isDisabled: boolean | undefined}>`
 
 position: relative; 
-padding-right: ${props => props.houseReadings ? 0 : '16px'};
-//padding-right: 8px;
-//padding-left: 8px;
+padding-right: 16px;
 
 &:not(:first-child) {
 padding-top: 8px;
@@ -20,14 +18,18 @@ padding-bottom: 7px;
 }
 
 & .ant-input-affix-wrapper-disabled { 
-background-color: #F3F5F6;
+//background-color: #F3F5F6;
+background-color: transparent;
 }
 `;
 
 const TarifLabel = styled.span<{houseReadings: boolean}>`
-width: ${props => props.houseReadings ? '20px': '72px'};
-padding-left: ${props => props.houseReadings ? 0: '8px'};
-padding-right: ${props => props.houseReadings ? 0: '8px'};
+// width: ${props => props.houseReadings ? '20px': '72px'};
+width: 20px;
+// padding-left: ${props => props.houseReadings ? 0: '8px'};
+// padding-right: ${props => props.houseReadings ? 0: '8px'};
+//padding-left: 8px;
+margin-right: 4px;
 color: rgba(39, 47, 90, 0.32);
 `;
 
@@ -40,7 +42,7 @@ interface DeviceRatesVerticalProps {
     operatorCabinet?: boolean
     houseReadings?: boolean
     isDisabled?: boolean | undefined
-    textInput?: RefObject<Input>
+    textInput?: MutableRefObject<Input | null>
 }
 
 const SuffixLine = styled.span`
@@ -73,32 +75,36 @@ const ReadingsBlock : React.FC<DeviceRatesVerticalProps> = ({
 
                      }) => {
 
+    const onFocusHandler = (e: any) => {
+        textInput!.current = e.target
+    }
 
-    const [isFocused, setIsFocused] = useState(false);
-
-    const onFocusHandler  = (e: any) => {
-        setIsFocused(true)
+    const onBlurHandler = (e: any) => {
+        textInput!.current = null;
     }
 
     return (
         <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
             <StyledInput
-                prefix={readingsBlocked && !houseReadings ? null : (
+                prefix={
+                    (
                     <TarifLabel houseReadings={houseReadings}>
-                        {houseReadings ? 'Т' : 'Тариф'}
+                        Т
                         {index + 1}
                         {' '}
                     </TarifLabel>
-                )}
+                )
+        }
                 suffix={resource === 'Electricity' ? <SuffixLine>кВтч</SuffixLine> : <SuffixLine>м³</SuffixLine>}
                 disabled={readingsBlocked || isDisabled}
                 type="text"
                 value={value}
                 ref={operatorCabinet && !isDisabled ? textInput : undefined}
+                onFocus={onFocusHandler}
+                onBlur={onBlurHandler}
                 onChange={onChange}
-                // onBlur={operatorCabinet ? onBlurHandler : undefined}
-                onFocus={operatorCabinet ? onFocusHandler : undefined}
                 required
+                tabIndex={houseReadings ? undefined : index + 1}
             />
         </ReadingLineStyled>
     );

@@ -68,6 +68,8 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
 
         useReadings(device, setReadingsState);
 
+
+
         useEffect(() => {
             const currentReadings = readingsState?.currentReadingsArray || {}
             const previousReadings = readingsState?.previousReadingsArray || {}
@@ -80,7 +82,19 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
             setConsumptionState(consumption)
         }, [readingsState])
 
+    useEffect(() => {
+        if (!readingsState.currentReadingsArray) return
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+
+        if (!isNull) {
+            dispatch(setInputUnfocused())
+        }
+
+    }, [readingsState.currentReadingsArray])
+
         if (!readingsState.currentReadingsArray?.length) return null
+
+
 
         const consumptionElems = consumptionState.map((el, index) => {
             return <Consumption key={uuid()}>{el} кВтч</Consumption>

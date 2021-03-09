@@ -69,9 +69,56 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         }
     }
 
+    useEffect(() => {
+        if (!readingsState.currentReadingsArray) return
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+
+        if (!isNull) {
+            dispatch(setInputUnfocused())
+        }
+
+    }, [readingsState])
+
     const isActive = device.closingDate === null;
 
     useReadings(device, setReadingsState, sliderIndex);
+
+
+    var tabEvent = new Event('keydown', {
+        'keyCode' : 9,
+        'which' : 9,
+        'key' : 'Tab'
+    });
+
+
+    useEffect(() => {
+
+        const onKeyDown = (e) => {
+debugger;
+            if (!e.isTrusted) return
+            if (e.key === 'Enter') {
+                document.dispatchEvent(new KeyboardEvent('keydown', {
+                    code: 9,
+                }));
+            }
+            if (e.code === 'Enter') {
+                document.dispatchEvent(new KeyboardEvent('keydown', {
+                    code: 'Tab',
+                    key: 'Tab',
+                    charCode: 9,
+                    keyCode: 9,
+                    view: window,
+                    bubbles: true
+                }));
+                document.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: 'tab',
+                }));
+            }
+        }
+        document.addEventListener('keydown', onKeyDown)
+
+        return () => document.removeEventListener('keydown', onKeyDown)
+    },[]);
 
     if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
 
@@ -80,11 +127,15 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         setReadingsState((state) => ({
             ...state,
             currentReadingsArray: state.currentReadingsArray.map((reading, i) => {
-                    return i === index ? e.target.value : reading
+                    return i === index ? +e.target.value : reading
                 }
             )
 
         }))
+
+        if (!e.target.value) {
+            dispatch(setInputFocused(device.id))
+        }
     }
 
     const formDeviceReadingObject = (deviceItem) => {
@@ -163,8 +214,6 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         {
             value: () => (<DeviceReadingsContainer
                 color={isCurrent ? getInputColor(device.resource) : "var(--main-90)"}
-                onBlur={onBlurHandler}
-                onFocus={onFocusHandler}
                 resource={device.resource}
             >
                 {readingsElems}
@@ -172,10 +221,7 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                 isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
         },
         {
-            value: () => (<div
-                onBlur={onBlurHandler}
-                onFocus={onFocusHandler}
-                style={{display: 'flex', flexDirection: 'column'}}>
+            value: () => (<>
                 <DeviceReadingsContainer
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
@@ -189,13 +235,12 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                 >
                     {readingsElems[1]}
                 </DeviceReadingsContainer>
-            </div>),
+            </>),
             isSuccess: readingsElems.length === 2
         },
         {
-            value: () => (<div onBlur={onBlurHandler}
-                               onFocus={onFocusHandler}
-                               style={{display: 'flex', flexDirection: 'column'}}>
+            value: () => (
+                <>
                 <DeviceReadingsContainer
                     style={{marginBottom: 8}}
                     color={isCurrent ? "var(--electro)" : "var(--main-90)"}
@@ -209,7 +254,8 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                 >
                     {readingsElems[2]}
                 </DeviceReadingsContainer>
-            </div>),
+                    </>
+            ),
             isSuccess: true
         }
     ];
@@ -243,8 +289,15 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
             </div>
 
             {/*Инпуты с показаниями*/}
-            {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
+            <div>
+                {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
+            </div>
+
+            <div onBlur={onBlurHandler}
+                 onFocus={onFocusHandler}
+                 style={{display: 'flex', flexDirection: 'column'}}>
             {options(currentDeviceReadings, true).find((el) => el.isSuccess).value()}
+            </div>
 
             <StyledModal
                 visible={isVisible}
@@ -307,8 +360,16 @@ export const DeviceReadingsContainer = styled.div`
   border: 1px solid ${(props) => props.color ? props.color : 'var(--main-90)'};
   border-left-width: 4px;
   max-width: 200px;
-  padding: 8px;
+  padding: 8px 16px;
   pointer-events: ${(props) => props.isDisabled === true ? 'none' : 'auto'};
+  
+  &:focus-within {
+  box-shadow: var(--shadow);
+}
+
+.ant-input-affix-wrapper:focus, .ant-input-affix-wrapper-focused {
+      box-shadow: none;
+}
 `;
 
 const Footer = styled.div`
