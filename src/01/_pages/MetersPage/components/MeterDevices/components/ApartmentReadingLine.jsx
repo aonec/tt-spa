@@ -94,13 +94,8 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
     useEffect(() => {
 
         const onKeyDown = (e) => {
-debugger;
-            if (!e.isTrusted) return
-            // if (e.key === 'Enter') {
-            //     document.dispatchEvent(new KeyboardEvent('keydown', {
-            //         code: 9,
-            //     }));
-            // }
+            // if (!e.isTrusted) return
+            //
             // if (e.code === 'Enter') {
             //     document.dispatchEvent(new KeyboardEvent('keydown', {
             //         code: 'Tab',
@@ -110,36 +105,53 @@ debugger;
             //         view: window,
             //         bubbles: true
             //     }));
-            //     document.dispatchEvent(new KeyboardEvent('keydown', {
-            //         key: 'tab',
-            //     }));
-            // }
+            //
+            //     const keyboardEvent = document.createEvent('KeyboardEvent');
+            //     const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+            //
+            //
+            //     keyboardEvent[initMethod](
+            //         'keydown', // event type : keydown, keyup, keypress
+            //         true, // bubbles
+            //         true, // cancelable
+            //         window, // viewArg: should be window
+            //         false, // ctrlKeyArg
+            //         false, // altKeyArg
+            //         false, // shiftKeyArg
+            //         false, // metaKeyArg
+            //         9, // keyCodeArg : unsigned long the virtual key code, else 0
+            //         0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+            //     );
+            //
+            //     if (e.code === 'Enter') {
+            //         document.dispatchEvent(keyboardEvent);
+            //     }
 
-            const keyboardEvent = document.createEvent('KeyboardEvent');
-            const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+            // arr.findIndex(callback[, thisArg])
+
+            // const inputList = document.querySelectorAll('input.ant-input:not(.ant-input-disabled)');
+            const inputList = document.querySelectorAll('input.ant-input');
+            // const filteredInputList = Array.prototype.indexOf.call(inputList, activeInput);
 
 
-            keyboardEvent[initMethod](
-                'keydown', // event type : keydown, keyup, keypress
-                true, // bubbles
-                true, // cancelable
-                window, // viewArg: should be window
-                false, // ctrlKeyArg
-                false, // altKeyArg
-                false, // shiftKeyArg
-                false, // metaKeyArg
-                9, // keyCodeArg : unsigned long the virtual key code, else 0
-                0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-            );
+            // const activeInput = document.activeElement;
 
-            if (e.code === 'Enter') {
-                document.dispatchEvent(keyboardEvent);
+            if (inputList.length === 1) return
+            debugger;
+            // const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
+
+            // console.log(activeIndex)
+            // inputList[activeIndex+1].focus();
+            console.log(inputList)
             }
-        }
+
+
+
         document.addEventListener('keydown', onKeyDown)
 
         return () => document.removeEventListener('keydown', onKeyDown)
-    },[]);
+
+    }, []);
 
     if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
 

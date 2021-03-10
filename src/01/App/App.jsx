@@ -9,7 +9,6 @@ import moment from 'moment';
 
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
-import thunkMiddleWare from 'redux-thunk';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
 import {
@@ -22,7 +21,6 @@ import {
   ApartmentProfile,
   ErrorPage,
   AccessDeniedPage,
-  DevicesFromSearch,
   CalculatorProfile,
   HousingProfile,
   Settings,
@@ -41,10 +39,10 @@ import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/Devi
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
+import {DevicesFromSearch} from "../_pages/Devices";
 
 moment.locale('ru');
 
-const fs = require('fs');
 export function App() {
   const AppProvider = useApp();
 
