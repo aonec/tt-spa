@@ -1,23 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {updateReadings} from "../../../../../Redux/reducers/readingsReducer";
-import DeviceRates
-    from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ReadingsLine/DeviceRates";
 import ActiveLine from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
 import {DateLine} from "../../../../../_components/DateLine/DateLine";
 import {Icon} from "../../../../../_components/Icon";
-import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
 import styled from 'styled-components'
 import DeviceIcons from "../../../../../_components/DeviceIcons";
 import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
 import {translateMountPlace} from "../../../../../utils/translateMountPlace";
-import Arrow from "../../../../../_components/Arrow/Arrow";
 import ReadingsBlock from "./ReadingsBlock";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
 import axios from "01/axios"
 import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
-import {Modal, Button, Space} from 'antd';
-import {ExclamationCircleOutlined} from '@ant-design/icons';
+import {Modal} from 'antd';
 import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
@@ -83,77 +77,7 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
 
     useReadings(device, setReadingsState, sliderIndex);
 
-
-    var tabEvent = new Event('keydown', {
-        'keyCode' : 9,
-        'which' : 9,
-        'key' : 'Tab'
-    });
-
-
-    useEffect(() => {
-
-        const onKeyDown = (e) => {
-            // if (!e.isTrusted) return
-            //
-            // if (e.code === 'Enter') {
-            //     document.dispatchEvent(new KeyboardEvent('keydown', {
-            //         code: 'Tab',
-            //         key: 'Tab',
-            //         charCode: 9,
-            //         keyCode: 9,
-            //         view: window,
-            //         bubbles: true
-            //     }));
-            //
-            //     const keyboardEvent = document.createEvent('KeyboardEvent');
-            //     const initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
-            //
-            //
-            //     keyboardEvent[initMethod](
-            //         'keydown', // event type : keydown, keyup, keypress
-            //         true, // bubbles
-            //         true, // cancelable
-            //         window, // viewArg: should be window
-            //         false, // ctrlKeyArg
-            //         false, // altKeyArg
-            //         false, // shiftKeyArg
-            //         false, // metaKeyArg
-            //         9, // keyCodeArg : unsigned long the virtual key code, else 0
-            //         0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-            //     );
-            //
-            //     if (e.code === 'Enter') {
-            //         document.dispatchEvent(keyboardEvent);
-            //     }
-
-            // arr.findIndex(callback[, thisArg])
-
-            // const inputList = document.querySelectorAll('input.ant-input:not(.ant-input-disabled)');
-            const inputList = document.querySelectorAll('input.ant-input');
-            // const filteredInputList = Array.prototype.indexOf.call(inputList, activeInput);
-
-
-            // const activeInput = document.activeElement;
-
-            if (inputList.length === 1) return
-            debugger;
-            // const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
-
-            // console.log(activeIndex)
-            // inputList[activeIndex+1].focus();
-            console.log(inputList)
-            }
-
-
-
-        document.addEventListener('keydown', onKeyDown)
-
-        return () => document.removeEventListener('keydown', onKeyDown)
-
-    }, []);
-
-    if (!readingsState.currentReadingsArray?.length) return 'ЗАГРУЗКА...'
+    if (!readingsState.currentReadingsArray?.length) return <div>'ЗАГРУЗКА...'</div>
 
     const onInputChange = (e, index) => {
         e.preventDefault();

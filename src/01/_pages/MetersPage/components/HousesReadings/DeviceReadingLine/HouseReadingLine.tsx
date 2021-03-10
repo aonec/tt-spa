@@ -117,6 +117,8 @@ export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
                     deviceReadingObject[`value${i+1}`] = +readingsState.currentReadingsArray[i]
                 }
             }
+
+
             axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
             setInitialReadings(readingsState.currentReadingsArray)
         }

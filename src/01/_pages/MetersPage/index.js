@@ -27,6 +27,7 @@ export const MetersPage = () => {
   const aparts = useApartments(state, filter)
   const apartInfo = useApartmentInfo(state)
   const meterDev = useMeterDevices(state)
+  debugger;
 
   const history = useHistory();
   const defaultKey = history.location.pathname.split('/')[2];
