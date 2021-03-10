@@ -1,4 +1,4 @@
-import {EventHandler, RefObject, useCallback, useEffect} from "react";
+import { RefObject, useEffect} from "react";
 
 const useOutsideClick = (ref: RefObject<any>, callback: () => void) => {
 
