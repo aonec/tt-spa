@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import ActiveLine from "../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
-import {DateLine} from "../../../../../_components/DateLine/DateLine";
-import {Icon} from "../../../../../_components/Icon";
 import styled from 'styled-components'
-import DeviceIcons from "../../../../../_components/DeviceIcons";
-import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
-import {translateMountPlace} from "../../../../../utils/translateMountPlace";
 import ReadingsBlock from "./ReadingsBlock";
 import {useReadings} from "../../../../../hooks/useReadings";
 import moment from "moment";
@@ -16,7 +10,10 @@ import ButtonTT from "../../../../../tt-components/ButtonTT";
 import {useDispatch, useSelector} from "react-redux";
 import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
 import {setInputFocused, setInputUnfocused} from "../../../../../Redux/ducks/readings/actionCreators";
-import {Link} from "react-router-dom";
+import DeviceInfo from "./DeviceInfo";
+import {IndividualDeviceType} from "../../../../../../types/types";
+import {formReadingToPush} from "../../../../../utils/formReadingsToPush";
+import {sendReadings} from "../../../api";
 
 
 
@@ -73,7 +70,6 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
 
     }, [readingsState])
 
-    const isActive = device.closingDate === null;
 
     useReadings(device, setReadingsState, sliderIndex);
 
@@ -95,52 +91,32 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         }
     }
 
-    const formDeviceReadingObject = (deviceItem) => {
-        return ({
-            deviceId: deviceItem.id,
-            value1: +readingsState.currentReadingsArray[0],
-            readingDate: moment().toISOString(),
-            uploadTime: moment().toISOString(),
-            isForced: true
-        })
-    }
-
-    const sendReadings = (deviceItem) => {
-        const deviceReadingObject = formDeviceReadingObject(deviceItem)
-        for (let i = 1; i < 4; i++) {
-            if (+readingsState.currentReadingsArray[i]) {
-                deviceReadingObject[`value${i + 1}`] = +readingsState.currentReadingsArray[i]
-            }
-        }
-        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-        setInitialReadings(readingsState.currentReadingsArray)
-    }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => {
         return (
             <ReadingsBlock
-              key={readingsState.currentReadingsArray.id ?? device.id + index}
-              index={index}
-              onChange={(e) => onInputChange(e, index)}
-              value={value}
-              resource={readingsState.resource}
-              sendReadings={() => sendReadings(device)}
-              operatorCabinet
-              textInput={textInput}
-              isDisabled={isDisabled}
+                key={readingsState.currentReadingsArray.id ?? device.id + index}
+                index={index}
+                onChange={(e) => onInputChange(e, index)}
+                value={value}
+                resource={readingsState.resource}
+                sendReadings={() => sendReadings(device)}
+                operatorCabinet
+                textInput={textInput}
+                isDisabled={isDisabled}
             />
         )
     });
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
         <ReadingsBlock
-          key={readingsState.previousReadingsArray.id + 'a'}
-          index={index}
-          onChange={(e) => onInputChange(e, index)}
-          value={value}
-          resource={readingsState.resource}
-          operatorCabinet
-          readingsBlocked
+            key={readingsState.previousReadingsArray.id + 'a'}
+            index={index}
+            onChange={(e) => onInputChange(e, index)}
+            value={value}
+            resource={readingsState.resource}
+            operatorCabinet
+            readingsBlocked
         />
     ));
 
@@ -177,7 +153,7 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
             >
                 {readingsElems}
             </DeviceReadingsContainer>),
-                isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
+            isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
         },
         {
             value: () => (<>
@@ -200,63 +176,47 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
         {
             value: () => (
                 <>
-                <DeviceReadingsContainer
-                    style={{marginBottom: 8}}
-                    color={isCurrent ? "var(--electro)" : "var(--main-90)"}
-                    resource={device.resource}
-                >
-                    {[readingsElems[0], readingsElems[1]]}
-                </DeviceReadingsContainer>
-                <DeviceReadingsContainer
-                    color={isCurrent ? "#957400" : "var(--main-90)"}
-                    resource={device.resource}
-                >
-                    {readingsElems[2]}
-                </DeviceReadingsContainer>
-                    </>
+                    <DeviceReadingsContainer
+                        style={{marginBottom: 8}}
+                        color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                        resource={device.resource}
+                    >
+                        {[readingsElems[0], readingsElems[1]]}
+                    </DeviceReadingsContainer>
+                    <DeviceReadingsContainer
+                        color={isCurrent ? "#957400" : "var(--main-90)"}
+                        resource={device.resource}
+                    >
+                        {readingsElems[2]}
+                    </DeviceReadingsContainer>
+                </>
             ),
             isSuccess: true
         }
     ];
 
 
-    const {icon, color} = DeviceIcons[device.resource];
+
+
 
 
     return (
-        <FullDeviceLine>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <Link
-                    className={styles.device__title}
-                    to={`/housingMeteringDevices/${device.id}`}
-                >
-                    <Icon className={styles.icon} icon={icon} fill={color}/>
-                    {`${device.model} `}
-                    <span className={styles.deviceId}>
-                            {` (${device.serialNumber})`}
-                    </span>
-                </Link>
-                <div style={{display: 'flex'}}>
-                    <ActiveLine isActive={isActive}/>
-                    <DateLine lastCheckingDate={device.lastCheckingDate}
-                              futureCheckingDate={device.futureCheckingDate}/>
-                    <div style={{
-                        marginLeft: 16,
-                        color: 'rgba(39, 47, 90, 0.6)'
-                    }}>{translateMountPlace(device.mountPlace)}</div>
+        <>
+            <FullDeviceLine>
+
+                <DeviceInfo device={device}/>
+
+                {/*Инпуты с показаниями*/}
+                <div>
+                    {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
                 </div>
-            </div>
 
-            {/*Инпуты с показаниями*/}
-            <div>
-                {options(previousDeviceReadings, false).find((el) => el.isSuccess).value()}
-            </div>
-
-            <div onBlur={onBlurHandler}
-                 onFocus={onFocusHandler}
-                 style={{display: 'flex', flexDirection: 'column'}}>
-            {options(currentDeviceReadings, true).find((el) => el.isSuccess).value()}
-            </div>
+                <div onBlur={onBlurHandler}
+                     onFocus={onFocusHandler}
+                     style={{display: 'flex', flexDirection: 'column'}}>
+                    {options(currentDeviceReadings, true).find((el) => el.isSuccess).value()}
+                </div>
+            </FullDeviceLine>
 
             <StyledModal
                 visible={isVisible}
@@ -281,14 +241,13 @@ const ApartmentReadingLine = ({device, sliderIndex}) => {
                     на этой странице не сохранятся
                 </p>
             </StyledModal>
-
-        </FullDeviceLine>
+        </>
     )
 }
 
 const FullDeviceLine = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;
+  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 2fr;
   column-gap: 16px;
   margin-top: 8px;
   align-items: center;
@@ -296,7 +255,6 @@ const FullDeviceLine = styled.div`
   white-space: nowrap;
   padding: 8px 8px 16px;
   border-bottom: 1px solid #DCDEE4;
-
 `;
 
 export const getInputColor = (resource) => {
@@ -319,7 +277,8 @@ export const DeviceReadingsContainer = styled.div`
   border: 1px solid ${(props) => props.color ? props.color : 'var(--main-90)'};
   border-left-width: 4px;
   max-width: 200px;
-  padding: 8px 16px;
+  //padding: 8px 16px;
+  padding: 8px 8px 8px 12px;
   pointer-events: ${(props) => props.isDisabled === true ? 'none' : 'auto'};
   
   &:focus-within {

@@ -27,7 +27,6 @@ export const MetersPage = () => {
   const aparts = useApartments(state, filter)
   const apartInfo = useApartmentInfo(state)
   const meterDev = useMeterDevices(state)
-  debugger;
 
   const history = useHistory();
   const defaultKey = history.location.pathname.split('/')[2];
@@ -37,11 +36,8 @@ export const MetersPage = () => {
     history.replace(`/meters/${key}`)   // < == router router v4
   }
 
-  const onChange = () => {}
-
-
   return (
-    <div style={{maxWidth: 1200}}>
+    <div style={{maxWidth: 960}}>
       <h1>Ввод показаний</h1>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab='По квартирам' key="apartments">

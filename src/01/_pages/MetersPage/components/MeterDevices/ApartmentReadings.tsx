@@ -1,9 +1,9 @@
 
-import React, {KeyboardEventHandler, useCallback, useEffect, useLayoutEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import ApartmentReadingLine from "./components/ApartmentReadingLine";
 import {formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
-import {getMonthFromDate, getPreviousMonthFromDate} from "../../../../utils/getMonthFromDate";
+import {firstLetterToUpperCase, getMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 import s from "./MeterDevicesNew.module.scss"
 import {useDispatch, useSelector} from "react-redux";
@@ -11,113 +11,8 @@ import {selectDevices} from "../../../../Redux/ducks/readings/selectors";
 import {setDevices} from "../../../../Redux/ducks/readings/actionCreators";
 import {IndividualDeviceType} from "../../../../../types/types";
 import styled from "styled-components";
-
-const Meters = styled.div`
-  grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
-`
-
-const MetersHeader = styled.div`
-  display: grid;
-  grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;    
-  border-bottom: 1px solid var(--frame);
-  padding: 8px 16px;
-  column-gap: 16px;
-  height: 48px;
-  background: var(--bg);
-  align-items: center;
-  color: var(--main-90);
-`
-
-// const styles = css`
-//   meters {
-//       grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
-//   }
-//
-//   meter_device {
-//     padding: 8px;
-//     display: grid;
-//     grid-template-columns: 2fr repeat(2, 1fr) minmax(max-content, auto);
-//     grid-column-gap: 16px;
-//     border-bottom: 1px solid var(--frame);
-//   }
-//
-//  meter_header {
-//     display: grid;
-//     grid-template-columns: minmax(330px, 1fr) 200px 200px 1fr;
-//     border-bottom: 1px solid var(--frame);
-//     padding: 8px;
-//     column-gap: 16px;
-//     height: 48px;
-//     background: var(--bg);
-//     align-items: center;
-//     color: var(--main-90);
-//   }
-//
-//   device_info {
-//     display: grid;
-//     grid-gap: 16px;
-//     align-content: center;
-//     & h4,
-//     & row {
-//       display: inline-flex;
-//       align-items: center;
-//     }
-//     & h4 {
-//       line-height: 1;
-//     }
-//     & d_model {
-//       margin: 0 8px;
-//     }
-//     & d_number {
-//       font-weight: 400;
-//     }
-//
-//     & time {
-//       margin: 0 16px;
-//     }
-//
-//     & d_number,
-//     & time,
-//     & place {
-//       opacity: 0.6;
-//     }
-//     & d_status {
-//       opacity: 0.8;
-//       display: inline-flex;
-//       align-items: center;
-//       &::before {
-//         content: "";
-//         display: inline-flex;
-//         width: 4px;
-//         height: 4px;
-//         border-radius: 50%;
-//         margin-right: 8px;
-//         background: var(--success);
-//       }
-//     }
-//   }
-//
-//   input_meter {
-//     display: grid;
-//     place-content: center;
-//     border-radius: 4px;
-//     border: 1px solid var(--frame);
-//     padding: 8px;
-//
-//     & row {
-//       display: inline-grid;
-//       grid-template-columns: 1fr 1.5fr;
-//       padding: 8px;
-//     }
-//
-//     & row:first-child {
-//       border-bottom: 1px solid var(--frame);
-//     }
-//     & tarif {
-//       opacity: 0.6;
-//     }
-//   }
-// `
+import {useSwitchOnInputs} from "../../../../hooks/useSwitchInputsOnEnter";
+import moment from "moment";
 
 
 interface ApartmentReadingsProps {
@@ -130,54 +25,13 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
     const dispatch = useDispatch();
 
+    useSwitchOnInputs();
+
     useEffect(() => {
         dispatch(setDevices(items))
     }, [items])
 
     const devices = useSelector(selectDevices);
-
-    const sendReadings = (device: IndividualDeviceType) => {
-        try {
-            axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
-        }
-        catch(e) {
-            throw new Error();
-        }
-    }
-
-
-    const onKeyDown = (e: KeyboardEvent) => {
-        const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll('input:not(:disabled)');
-        debugger;
-
-        if (e.code === 'Enter') {
-
-            const activeInput: Element | null = document.activeElement;
-            const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
-
-            if (activeIndex === inputList.length - 1 && activeInput instanceof HTMLInputElement) {
-                activeInput.blur();
-            }
-
-            if (activeIndex === -1) {
-                inputList[0].focus();
-                inputList[0].select();
-            }
-
-            const nextInput = inputList[activeIndex + 1];
-            if (!nextInput) return;
-            nextInput.focus();
-            nextInput.select();
-        }
-    };
-
-    useEffect(() => {
-
-        document.addEventListener('keydown', onKeyDown)
-
-        return () => document.removeEventListener('keydown', onKeyDown)
-
-    }, [onKeyDown]);
 
     if (!devices.length) return null
 
@@ -188,7 +42,6 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
     />);
 
     const currentMonth = getMonthFromDate()
-    const previousMonth = getPreviousMonthFromDate();
 
     const readingsLength = devices[0].readings?.length;
     const isReadingsCurrent = currentMonth === getMonthFromDate(devices[0].readings[0].readingDate);
@@ -197,10 +50,10 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
     const onClickIncrease = () => {
         setSliderIndex((index) => {
-            return isRightArrowDisabled
-                ? index
-                : index + 1
-        }
+                return isRightArrowDisabled
+                    ? index
+                    : index + 1
+            }
         )
     }
 
@@ -208,11 +61,17 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
     const onClickDecrease = () => {
         setSliderIndex((index) => {
-            return isLeftArrowDisabled
-                ? index
-                : index - 1
-        }
+                return isLeftArrowDisabled
+                    ? index
+                    : index - 1
+            }
         )
+    }
+
+    const getPreviousReadingsMonth = (sliderIndex: number) => {
+        const month = moment().subtract(sliderIndex + 1, 'months').format('MMMM');
+
+        return firstLetterToUpperCase(month)
     }
 
     return (
@@ -220,25 +79,60 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
             <MetersHeader>
                 <span>Информация o приборe</span>
 
-                <div style={{display: 'flex', justifyContent: 'space-around', alignContent: 'center'}}>
-                    <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-                         onClick={onClickDecrease}
-                         className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
+                <CenterContainer>
+                    <ArrowContainer
+                        onClick={onClickDecrease}
+                        className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}>
                         <Arrow isDisabled={isLeftArrowDisabled} />
-                    </div>
-                    <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>{previousMonth}</div>
-                    <div style={{width: 32, height: 32, display: 'flex', justifyContent: 'center', alignItems: 'center'}}
-                         className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled}
-                         onClick={onClickIncrease}>
+                    </ArrowContainer>
+                    <CenterContainer>
+                        {getPreviousReadingsMonth(sliderIndex)}
+                    </CenterContainer>
+                    <ArrowContainer
+                        className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled}
+                        onClick={onClickIncrease}>
                         <Arrow isRight isDisabled={isRightArrowDisabled} />
-                    </div>
-                </div>
-                <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+                    </ArrowContainer>
+                </CenterContainer>
+
+                <CenterContainer>
                     {currentMonth}
-                </div>
+                </CenterContainer>
 
             </MetersHeader>
             {readings}
         </Meters>
     )
 }
+
+const Meters = styled.div`
+  grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
+`
+
+const MetersHeader = styled.div`
+  display: grid;
+  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 2fr;
+  border-bottom: 1px solid var(--frame);
+  padding: 8px 16px;
+  column-gap: 16px;
+  height: 48px;
+  background: var(--bg);
+  align-items: center;
+  color: var(--main-90);
+`
+
+const ArrowContainer = styled.div`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const CenterContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`
+
+

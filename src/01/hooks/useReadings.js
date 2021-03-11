@@ -11,8 +11,6 @@ export const useReadings = (device, setReadingsState, sliderIndex = 0) => {
     const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
     const isReadingsCurrent = currentMonth === getMonthFromDate(device.readings[0].readingDate);
 
-    // const isReadingsCurrent = false;
-
     useEffect(() => {
         const previousReadingsArray = [];
         const currentReadingsArray = [];

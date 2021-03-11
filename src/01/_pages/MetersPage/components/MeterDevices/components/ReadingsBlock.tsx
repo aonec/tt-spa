@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const ReadingLineStyled = styled.div<{houseReadings: boolean, isDisabled: boolean | undefined}>`
 
 position: relative; 
-padding-right: 16px;
 
 &:not(:first-child) {
 padding-top: 8px;
@@ -18,9 +17,15 @@ padding-bottom: 7px;
 }
 
 & .ant-input-affix-wrapper-disabled { 
-//background-color: #F3F5F6;
 background-color: transparent;
+
+  input {
+  color: var(--main-70) !important;
+  }
 }
+
+
+
 `;
 
 const TarifLabel = styled.span<{houseReadings: boolean}>`
@@ -60,20 +65,24 @@ input[type=number]::-webkit-outer-spin-button {
 }
 min-width: 72px;
 
+.ant-input .ant-input-disabled {
+color: var(--main-70) !important;
+}
+
 `;
 
 const ReadingsBlock : React.FC<DeviceRatesVerticalProps> = ({
-                          index,
-                          onChange,
-                          value,
-                          readingsBlocked = false,
-                          resource,
-                          operatorCabinet = false,
-                          houseReadings = false,
-                          textInput,
-                          isDisabled
+                                                                index,
+                                                                onChange,
+                                                                value,
+                                                                readingsBlocked = false,
+                                                                resource,
+                                                                operatorCabinet = false,
+                                                                houseReadings = false,
+                                                                textInput,
+                                                                isDisabled
 
-                     }) => {
+                                                            }) => {
 
     const onFocusHandler = (e: any) => {
         textInput!.current = e.target
@@ -88,13 +97,13 @@ const ReadingsBlock : React.FC<DeviceRatesVerticalProps> = ({
             <StyledInput
                 prefix={
                     (
-                    <TarifLabel houseReadings={houseReadings}>
-                        Т
-                        {index + 1}
-                        {' '}
-                    </TarifLabel>
-                )
-        }
+                        <TarifLabel houseReadings={houseReadings}>
+                            Т
+                            {index + 1}
+                            {' '}
+                        </TarifLabel>
+                    )
+                }
                 suffix={resource === 'Electricity' ? <SuffixLine>кВтч</SuffixLine> : <SuffixLine>м³</SuffixLine>}
                 disabled={readingsBlocked || isDisabled}
                 type="text"

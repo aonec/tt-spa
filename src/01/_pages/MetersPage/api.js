@@ -1,5 +1,7 @@
 import axios from "01/axios"
 import { createDevice } from "01/_api/utils"
+import {IndividualDeviceType} from "../../../types/types";
+import {formReadingToPush} from "../../utils/formReadingsToPush";
 
 export async function getApartmetns(params) {
   try {
@@ -12,8 +14,7 @@ export async function getApartmentInfo(id) {
   try {
     const res = await Promise.allSettled([
       axios.get(`apartments/${id}`),
-      // axios.get("IndividualDevices", { params: { ApartmentId: 863449 } }),
-      axios.get("IndividualDevices", { params: { ApartmentId: id } }),
+      axios.get('IndividualDevices', { params: { ApartmentId: id } }),
     ])
 
     const [{value: apartInfo}, {value: meterDevices}] = res;
@@ -25,4 +26,12 @@ export async function getApartmentInfo(id) {
       },
     }
   } catch (error) {}
+}
+
+export const sendReadings = (device) => {
+  try {
+    axios.post('/IndividualDeviceReadings/create', formReadingToPush(device));
+  } catch (e) {
+    throw new Error();
+  }
 }
