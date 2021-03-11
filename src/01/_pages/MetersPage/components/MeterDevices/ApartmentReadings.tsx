@@ -1,7 +1,5 @@
 
 import React, {KeyboardEventHandler, useCallback, useEffect, useLayoutEffect, useState} from "react"
-import { css } from "reshadow/macro"
-import * as style from "01/r_comp"
 import ApartmentReadingLine from "./components/ApartmentReadingLine";
 import {formReadingToPush} from "../../../../utils/formReadingsToPush";
 import axios from "axios";
@@ -11,7 +9,6 @@ import s from "./MeterDevicesNew.module.scss"
 import {useDispatch, useSelector} from "react-redux";
 import {selectDevices} from "../../../../Redux/ducks/readings/selectors";
 import {setDevices} from "../../../../Redux/ducks/readings/actionCreators";
-import {ApartmentListResponse} from "../../../../../myApi";
 import {IndividualDeviceType} from "../../../../../types/types";
 import styled from "styled-components";
 
@@ -150,25 +147,15 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
 
     const onKeyDown = (e: KeyboardEvent) => {
-        const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll('input.ant-input:not(.ant-input-disabled)');
-
+        const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll('input:not(:disabled)');
         debugger;
-        // if (!e.isTrusted) return
-        //
+
         if (e.code === 'Enter') {
-            // const inputList = document.querySelectorAll('input.ant-input:not(.ant-input-disabled)');
+
             const activeInput: Element | null = document.activeElement;
-            // if (activeInput.tagName !== 'INPUT') return
-            // const filteredInputList = Array.prototype.indexOf.call(inputList, activeInput);
-
-
-            // if (inputList.length === 1) return
-            debugger;
             const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
 
-            debugger;
-
-            if (activeIndex === inputList.length - 1 && activeInput instanceof HTMLElement) {
+            if (activeIndex === inputList.length - 1 && activeInput instanceof HTMLInputElement) {
                 activeInput.blur();
             }
 
@@ -177,13 +164,10 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
                 inputList[0].select();
             }
 
-            // console.log(activeIndex)
-
             const nextInput = inputList[activeIndex + 1];
             if (!nextInput) return;
             nextInput.focus();
             nextInput.select();
-            console.log(inputList)
         }
     };
 
