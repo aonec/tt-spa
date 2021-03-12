@@ -1,1 +1,1 @@
-export { HousingProfile, HousingContext } from './HousingProfile';
+export { HousingProfile, HousingContext } from './HousingProfile'

@@ -1,22 +1,22 @@
 export type ReadingType = {
-    id: number,
-    hasError: boolean,
-    status: string,
-    statusMessage: string | null,
-    value1: string | null,
-    value2: string | null,
-    value3: string | null,
-    value4: string | null,
-    readingDate: string,
+    id: number
+    hasError: boolean
+    status: string
+    statusMessage: string | null
+    value1: string | null
+    value2: string | null
+    value3: string | null
+    value4: string | null
+    readingDate: string
     uploadTime: string
 }
 
 export type ManagementFirmType = {
-        id: number,
-        name: string,
-        phoneNumber: string | null,
-        information: string | null,
-        timeZoneOffset: string | null
+    id: number
+    name: string
+    phoneNumber: string | null
+    information: string | null
+    timeZoneOffset: string | null
 }
 
 export type IndividualDeviceType = {

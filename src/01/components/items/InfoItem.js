@@ -1,11 +1,11 @@
-import React from "react"
-import styled from "reshadow/macro"
-import t from "prop-types"
+import React from 'react'
+import styled from 'reshadow/macro'
+import t from 'prop-types'
 
-import { LinkWrap } from "01/components/LinkWrap"
+import { LinkWrap } from '01/components/LinkWrap'
 
 export const InfoItem = React.memo(({ title, text, url }) =>
-  styled`
+    styled`
     info_item {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -27,17 +27,17 @@ export const InfoItem = React.memo(({ title, text, url }) =>
       color: var(--main-60);
     }
   `(
-    <info_item>
-      <LinkWrap to={url}>
-        <span>{title}</span>
-        <span>{text}</span>
-      </LinkWrap>
-    </info_item>
-  )
+        <info_item>
+            <LinkWrap to={url}>
+                <span>{title}</span>
+                <span>{text}</span>
+            </LinkWrap>
+        </info_item>
+    )
 )
 
 InfoItem.propTypes = {
-  title: t.string.isRequired,
-  text: t.oneOfType([t.string, t.number]).isRequired,
-  url: t.string,
+    title: t.string.isRequired,
+    text: t.oneOfType([t.string, t.number]).isRequired,
+    url: t.string,
 }

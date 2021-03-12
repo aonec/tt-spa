@@ -1,358 +1,416 @@
-import React, {useEffect, useState} from "react"
-import styled from "styled-components";
-import {IndividualDeviceType} from "../../../../../../types/types";
-import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
-import ReadingsBlock from "../../MeterDevices/components/ReadingsBlock";
-import DeviceIcons from "../../../../../_components/DeviceIcons";
-import {Icon} from "../../../../../_components/Icon";
-import styles from "../../../../Devices/components/TabsDevices.module.scss";
-import {useReadings} from "../../../../../hooks/useReadings";
-import {isNullInArray} from "../../../../../utils/checkArrayForNulls";
-import {ButtonTT} from "../../../../../tt-components";
-import {Input, Modal} from "antd";
-import {useDispatch, useSelector} from "react-redux";
-import {selectDisabledState} from "../../../../../Redux/ducks/readings/selectors";
-import {setInputFocused, setInputUnfocused} from "01/Redux/ducks/readings/actionCreators";
-import {DeviceReadingsContainer, getInputColor} from "../../MeterDevices/components/ApartmentReadingLine";
-import { v4 as uuid } from 'uuid';
-import { sendReadings } from "01/_pages/MetersPage/api";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { IndividualDeviceType } from '../../../../../../types/types'
+import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber'
+import ReadingsBlock from '../../MeterDevices/components/ReadingsBlock'
+import DeviceIcons from '../../../../../_components/DeviceIcons'
+import { Icon } from '../../../../../_components/Icon'
+import styles from '../../../../Devices/components/TabsDevices.module.scss'
+import { useReadings } from '../../../../../hooks/useReadings'
+import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
+import { ButtonTT } from '../../../../../tt-components'
+import { Input, Modal } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
+import {
+    setInputFocused,
+    setInputUnfocused,
+} from '01/Redux/ducks/readings/actionCreators'
+import {
+    DeviceReadingsContainer,
+    getInputColor,
+} from '../../MeterDevices/components/ApartmentReadingLine'
+import { v4 as uuid } from 'uuid'
+import { sendReadings } from '01/_pages/MetersPage/api'
 
+export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
+    const [consumptionState, setConsumptionState] = useState<number[]>([])
 
-export const HouseReadingLine:React.FC<Props> = React.memo(({device}) => {
+    const numberOfReadings: number = rateTypeToNumber(device.rateType)
 
-        const [consumptionState, setConsumptionState] = useState<number[]>([])
+    const dispatch = useDispatch()
 
-        const numberOfReadings: number = rateTypeToNumber(device.rateType);
+    const disabledState = useSelector(selectDisabledState)
 
-        const dispatch = useDispatch();
+    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
+        ?.isDisabled
 
-        const disabledState = useSelector(selectDisabledState);
+    const [isVisible, setIsVisible] = useState(false)
 
-        const isDisabled = disabledState?.find((el) => el.deviceId === device.id)?.isDisabled
+    const [readingsState, setReadingsState] = useState<ReadingsStateType>(
+        {} as ReadingsStateType
+    )
 
-        const [isVisible, setIsVisible] = useState(false);
+    const [isCancel, setIsCancel] = useState(false)
 
-        const [readingsState, setReadingsState] = useState<ReadingsStateType>({} as ReadingsStateType);
+    const [initialReadings, setInitialReadings] = useState<ReadingsArray>([])
 
-        const [isCancel, setIsCancel] = useState(false)
+    const textInput = React.createRef<Input>()
 
-        const [initialReadings, setInitialReadings] = useState<ReadingsArray>([]);
+    useReadings(device, setReadingsState)
 
-        const textInput = React.createRef<Input>();
+    const handleOk = () => {
+        setReadingsState((state) => ({
+            ...state,
+            currentReadingsArray: initialReadings,
+        }))
+        dispatch(setInputUnfocused())
+        setIsVisible(false)
+    }
 
-        useReadings(device, setReadingsState);
+    const handleCancel = () => {
+        setReadingsState((state) => ({
+            ...state,
+            currentReadingsArray: initialReadings,
+        }))
+        setIsCancel(true)
+        setIsVisible(false)
+    }
 
-        const handleOk = () => {
-            setReadingsState((state) => ({
-                ...state,
-                currentReadingsArray: initialReadings
-            }));
-            dispatch(setInputUnfocused())
-            setIsVisible(false)
+    const afterCloseHandler = () => {
+        if (isCancel) {
+            setIsCancel(false)
+            textInput.current!.focus()
         }
+    }
 
-        const handleCancel = () => {
-            setReadingsState((state) => ({
-                ...state,
-                currentReadingsArray: initialReadings
-            }));
-            setIsCancel(true);
-            setIsVisible(false)
-        }
-
-        const afterCloseHandler = () => {
-            if (isCancel) {
-                setIsCancel(false)
-                textInput.current!.focus()
-            }
-        }
-
-        useEffect(() => {
-            const currentReadings = readingsState?.currentReadingsArray || {}
-            const previousReadings = readingsState?.previousReadingsArray || {}
-            let consumptionArray = Array.from({length: numberOfReadings}, (v, i) => i)
-            const consumption = consumptionArray.map((value, index) => {
-                return +currentReadings[index] - +previousReadings[index] > 0 ?
-                    +currentReadings[index] - +previousReadings[index] : 0
-            })
-
-            setConsumptionState(consumption)
-        }, [readingsState])
-
-        useEffect(() => {
-            if (!readingsState.currentReadingsArray) return
-            const isNull = isNullInArray(readingsState.currentReadingsArray)
-
-            if (!isNull) {
-                dispatch(setInputUnfocused())
-            }
-
-        }, [readingsState.currentReadingsArray])
-
-        if (!readingsState.currentReadingsArray?.length) return null
-
-        const consumptionElems = consumptionState.map((el, index) => {
-            return <Consumption key={uuid()}>{el} кВтч</Consumption>
+    useEffect(() => {
+        const currentReadings = readingsState?.currentReadingsArray || {}
+        const previousReadings = readingsState?.previousReadingsArray || {}
+        let consumptionArray = Array.from(
+            { length: numberOfReadings },
+            (v, i) => i
+        )
+        const consumption = consumptionArray.map((value, index) => {
+            return +currentReadings[index] - +previousReadings[index] > 0
+                ? +currentReadings[index] - +previousReadings[index]
+                : 0
         })
 
-        const onInputChange = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
-            e.preventDefault();
-            setReadingsState((state) => ({
-                ...state,
-                currentReadingsArray: state.currentReadingsArray.map((reading, i): number => {
-                        return i === index ? +e.target.value : reading
-                    }
-                )
+        setConsumptionState(consumption)
+    }, [readingsState])
 
-            }))
+    useEffect(() => {
+        if (!readingsState.currentReadingsArray) return
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+
+        if (!isNull) {
+            dispatch(setInputUnfocused())
         }
+    }, [readingsState.currentReadingsArray])
 
-        const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-            if (e.currentTarget.contains(e.relatedTarget as Node)) return
-            const isNull = isNullInArray(readingsState.currentReadingsArray)
-            if (isNull) {
-                setIsVisible(true);
-            } else {
-                if (readingsState.currentReadingsArray !== initialReadings) {
-                    sendReadings(device)
+    if (!readingsState.currentReadingsArray?.length) return null
+
+    const consumptionElems = consumptionState.map((el, index) => {
+        return <Consumption key={uuid()}>{el} кВтч</Consumption>
+    })
+
+    const onInputChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        index: number
+    ) => {
+        e.preventDefault()
+        setReadingsState((state) => ({
+            ...state,
+            currentReadingsArray: state.currentReadingsArray.map(
+                (reading, i): number => {
+                    return i === index ? +e.target.value : reading
                 }
-                dispatch(setInputUnfocused())
+            ),
+        }))
+    }
+
+    const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+        if (isNull) {
+            setIsVisible(true)
+        } else {
+            if (readingsState.currentReadingsArray !== initialReadings) {
+                sendReadings(device)
             }
+            dispatch(setInputUnfocused())
         }
+    }
 
-        const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-            if (e.currentTarget.contains(e.relatedTarget as Node)) return
+    const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return
 
-            setInitialReadings(readingsState.currentReadingsArray);
-            const isNull = isNullInArray(readingsState.currentReadingsArray)
-            if (isNull) {
-                dispatch(setInputFocused(device.id))
-            }
+        setInitialReadings(readingsState.currentReadingsArray)
+        const isNull = isNullInArray(readingsState.currentReadingsArray)
+        if (isNull) {
+            dispatch(setInputFocused(device.id))
         }
+    }
 
-        const currentDeviceReadings = readingsState.currentReadingsArray.map((value, index) => (
-            <ReadingsBlock key={device.id + index}
-                           index={index}
-                           onChange={(e:React.ChangeEvent<HTMLInputElement>) => onInputChange(e, index)}
-                           value={value}
-                           resource={readingsState.resource}
-                           operatorCabinet
-                           houseReadings
-                           textInput={textInput}
-                           isDisabled={isDisabled}
+    const currentDeviceReadings = readingsState.currentReadingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={device.id + index}
+                index={index}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onInputChange(e, index)
+                }
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                houseReadings
+                textInput={textInput}
+                isDisabled={isDisabled}
             />
-        ));
+        )
+    )
 
-        const previousDeviceReadings = readingsState.previousReadingsArray.map((value, index) => (
-            <ReadingsBlock key={uuid()}
-                           index={index}
-                           value={value}
-                           resource={readingsState.resource}
-                           operatorCabinet
-                           readingsBlocked
-                           houseReadings
-                           isDisabled
+    const previousDeviceReadings = readingsState.previousReadingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={uuid()}
+                index={index}
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                readingsBlocked
+                houseReadings
+                isDisabled
             />
-        ));
+        )
+    )
 
-
-        const options = (readingsElems: JSX.Element[], isCurrent: boolean): OptionsInterface[] => [
-            {
-                value: () => <DeviceReadingsContainer
-                    color={isCurrent ? getInputColor(device.resource) : "var(--main-90)"}
+    const options = (
+        readingsElems: JSX.Element[],
+        isCurrent: boolean
+    ): OptionsInterface[] => [
+        {
+            value: () => (
+                <DeviceReadingsContainer
+                    color={
+                        isCurrent
+                            ? getInputColor(device.resource)
+                            : 'var(--main-90)'
+                    }
                     onBlur={onBlurHandler}
                     onFocus={onFocusHandler}
                     resource={device.resource}
                 >
                     {readingsElems}
-                </DeviceReadingsContainer>,
-                isSuccess: readingsState.resource !== 'Electricity' || readingsElems.length === 1
-            },
-            {
-                value: () => <div
+                </DeviceReadingsContainer>
+            ),
+            isSuccess:
+                readingsState.resource !== 'Electricity' ||
+                readingsElems.length === 1,
+        },
+        {
+            value: () => (
+                <div
                     onBlur={onBlurHandler}
                     onFocus={onFocusHandler}
-                    style={{display: 'flex', flexDirection: 'column'}}>
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                >
                     <DeviceReadingsContainer
-                        style={{marginBottom: 8}}
-                        color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                        style={{ marginBottom: 8 }}
+                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
                         resource={device.resource}
                     >
                         {readingsElems[0]}
                     </DeviceReadingsContainer>
                     <DeviceReadingsContainer
-                        color={isCurrent ? "#957400" : "var(--main-90)"}
+                        color={isCurrent ? '#957400' : 'var(--main-90)'}
                         resource={device.resource}
                     >
                         {readingsElems[1]}
                     </DeviceReadingsContainer>
-                </div>,
-                isSuccess: readingsElems.length === 2
-            },
-            {
-                value: () => <div onBlur={onBlurHandler}
-                                  onFocus={onFocusHandler}
-                                  style={{display: 'flex', flexDirection: 'column'}}>
+                </div>
+            ),
+            isSuccess: readingsElems.length === 2,
+        },
+        {
+            value: () => (
+                <div
+                    onBlur={onBlurHandler}
+                    onFocus={onFocusHandler}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                >
                     <DeviceReadingsContainer
-                        style={{marginBottom: 8}}
-                        color={isCurrent ? "var(--electro)" : "var(--main-90)"}
+                        style={{ marginBottom: 8 }}
+                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
                         resource={device.resource}
                         // readingsCount={readingsState.currentReadingsArray.length}
                     >
                         {[readingsElems[0], readingsElems[1]]}
                     </DeviceReadingsContainer>
                     <DeviceReadingsContainer
-                        color={isCurrent ? "#957400" : "var(--main-90)"}
+                        color={isCurrent ? '#957400' : 'var(--main-90)'}
                         resource={device.resource}
                     >
                         {readingsElems[2]}
                     </DeviceReadingsContainer>
-                </div>,
-                isSuccess: true
-            }
-        ];
+                </div>
+            ),
+            isSuccess: true,
+        },
+    ]
 
-        const { icon, color } = DeviceIcons[device.resource];
+    const { icon, color } = DeviceIcons[device.resource]
 
-        return (
-            <HouseReadingsDevice>
-                <div><Span>{device.apartmentNumber}</Span></div>
-                <Column>
-                    <OwnerName><Span>{device.homeownerName}</Span></OwnerName>
-                    <div>{device.personalAccountNumber}</div>
-                </Column>
+    return (
+        <HouseReadingsDevice>
+            <div>
+                <Span>{device.apartmentNumber}</Span>
+            </div>
+            <Column>
+                <OwnerName>
+                    <Span>{device.homeownerName}</Span>
+                </OwnerName>
+                <div>{device.personalAccountNumber}</div>
+            </Column>
 
-                <IconContainer>
-                    <Icon className={styles.icon} icon={icon} fill={color}/>
-                </IconContainer>
+            <IconContainer>
+                <Icon className={styles.icon} icon={icon} fill={color} />
+            </IconContainer>
 
-                <Column>
-                    <div><Span>{device.model}</Span></div>
-                    <div>{device.serialNumber}</div>
-                </Column>
-                {options(previousDeviceReadings, false).find((el) => el.isSuccess)!.value()}
-                {options(currentDeviceReadings, true).find((el) => el.isSuccess)!.value()}
-                <div>{consumptionElems}</div>
-                <div>-</div>
+            <Column>
+                <div>
+                    <Span>{device.model}</Span>
+                </div>
+                <div>{device.serialNumber}</div>
+            </Column>
+            {options(previousDeviceReadings, false)
+                .find((el) => el.isSuccess)!
+                .value()}
+            {options(currentDeviceReadings, true)
+                .find((el) => el.isSuccess)!
+                .value()}
+            <div>{consumptionElems}</div>
+            <div>-</div>
 
-                <StyledModal
-                    visible={isVisible}
-                    title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
-                    onOk={handleOk}
-                    onCancel={handleCancel}
-                    afterClose={afterCloseHandler}
-                    width={800}
-                    footer={
-                        <Footer>
-                            <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-                                Отмена
-                            </ButtonTT>
-                            <ButtonTT color={'red'} key="submit" onClick={handleOk}>
-                                Выйти без сохранения
-                            </ButtonTT>
-                        </Footer>
-                    }
-                >
-                    <ModalText>
-                        Вы внесли не все показания, если вы покинете старницу, то все изменения, которые были сделаны вами на этой странице не сохранятся
-                    </ModalText>
-                </StyledModal>
-
-            </HouseReadingsDevice>
-        )
-    }
-)
+            <StyledModal
+                visible={isVisible}
+                title={
+                    <Header>
+                        Вы действительно хотите уйти без сохранения?
+                    </Header>
+                }
+                onOk={handleOk}
+                onCancel={handleCancel}
+                afterClose={afterCloseHandler}
+                width={800}
+                footer={
+                    <Footer>
+                        <ButtonTT
+                            color={'white'}
+                            key="back"
+                            onClick={handleCancel}
+                        >
+                            Отмена
+                        </ButtonTT>
+                        <ButtonTT color={'red'} key="submit" onClick={handleOk}>
+                            Выйти без сохранения
+                        </ButtonTT>
+                    </Footer>
+                }
+            >
+                <ModalText>
+                    Вы внесли не все показания, если вы покинете старницу, то
+                    все изменения, которые были сделаны вами на этой странице не
+                    сохранятся
+                </ModalText>
+            </StyledModal>
+        </HouseReadingsDevice>
+    )
+})
 
 const HouseReadingsDevice = styled.div`
-  display: grid;
-  grid-template-columns: 32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px) minmax(120px, 160px) 75px minmax(134px, 304px);
-  column-gap: 16px;
-  color: var(--main-90);
-  border-bottom: 1px solid var(--frame);
-  padding: 16px;
-  align-items: baseline;
-  min-height: 95px;
+    display: grid;
+    grid-template-columns: 32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(
+            120px,
+            160px
+        ) minmax(120px, 160px) 75px minmax(134px, 304px);
+    column-gap: 16px;
+    color: var(--main-90);
+    border-bottom: 1px solid var(--frame);
+    padding: 16px;
+    align-items: baseline;
+    min-height: 95px;
 `
 
 const Column = styled.div`
-  display: flex;
-  flex-direction: column;
- 
-  & div {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
+    display: flex;
+    flex-direction: column;
+
+    & div {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 `
 
 const IconContainer = styled.div`
- position: relative;
- top: 5px;
+    position: relative;
+    top: 5px;
 `
 
 const OwnerName = styled.div`
-  color: var(--main-100);
-  font-weight: 500;
-  font-size: 16px;
-  text-overflow: ellipsis;
+    color: var(--main-100);
+    font-weight: 500;
+    font-size: 16px;
+    text-overflow: ellipsis;
 `
 
 const Consumption = styled.div`
-  &:not(:last-child) {
-    padding-bottom: 16px
-}
+    &:not(:last-child) {
+        padding-bottom: 16px;
+    }
 `
 const ModalText = styled.p`
- color: var(--main-100);
- margin: 0;
+    color: var(--main-100);
+    margin: 0;
 `
 
 const Footer = styled.div`
-  background-color: var(--bg);
-  height: 96px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 32px;
-  font-weight: 700;
+    background-color: var(--bg);
+    height: 96px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 32px;
+    font-weight: 700;
 `
 
 const Header = styled.h1`
-  font-size: 32px;
-  line-height: 1.5;
-  font-weight: 300;
-  margin: 0;
+    font-size: 32px;
+    line-height: 1.5;
+    font-weight: 300;
+    margin: 0;
 `
 
 const StyledModal = styled(Modal)`
+    .ant-modal-header {
+        padding: 24px 32px;
+        border: 0;
+    }
 
-.ant-modal-header {
-  padding: 24px 32px;
-  border: 0;
-}
+    .ant-modal-body {
+        padding: 0 32px 32px 32px;
+    }
 
-.ant-modal-body {
-  padding: 0 32px 32px 32px;
-}
+    .ant-modal-footer {
+        padding: 0;
+    }
 
-.ant-modal-footer {
-  padding: 0;
-}
+    .ant-modal-close-x {
+        fill: var(--main-100);
+    }
 
-.ant-modal-close-x {
-  fill: var(--main-100)
-}
-
-.ant-modal-footer button + button {
-    margin-bottom: 0;
-    margin-left: 16px;
-}
+    .ant-modal-footer button + button {
+        margin-bottom: 0;
+        margin-left: 16px;
+    }
 `
 
 const Span = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `
 
 type ReadingsArray = Array<number>
@@ -369,6 +427,6 @@ type Props = {
 }
 
 interface OptionsInterface {
-    value: () => JSX.Element,
+    value: () => JSX.Element
     isSuccess: boolean
 }

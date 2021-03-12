@@ -1,1 +1,1 @@
-export const LogoutPage = () => "logoout"
+export const LogoutPage = () => 'logoout'

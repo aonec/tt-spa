@@ -1,2 +1,2 @@
-export { Panel } from "./Panel"
-export { usePanel } from "./usePanel"
+export { Panel } from './Panel'
+export { usePanel } from './usePanel'

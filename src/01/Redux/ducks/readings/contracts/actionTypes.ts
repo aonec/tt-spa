@@ -1,4 +1,4 @@
-import { DevicesType } from "01/Redux/reducers/readingsReducer"
+import { DevicesType } from '01/Redux/reducers/readingsReducer'
 
 export enum ReadingsActionsType {
     SET_DEVICES = 'readings/SET_DEVICES',
@@ -21,7 +21,7 @@ export type UpdateReadingsActionType = {
 
 export type SetInputFocusedActionType = {
     type: ReadingsActionsType.SET_INPUT_FOCUSED
-    deviceId: number,
+    deviceId: number
 }
 
 export type SetInputUnfocusedActionType = {

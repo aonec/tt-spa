@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Form, Divider} from 'antd';
-import _ from 'lodash';
-import moment from 'moment';
-import {useFormik} from 'formik';
-import * as Yup from 'yup';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react'
+import { Form, Divider } from 'antd'
+import _ from 'lodash'
+import moment from 'moment'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import styled from 'styled-components'
 import {
     ButtonTT,
     DatePickerTT,
@@ -17,76 +17,93 @@ import {
     StyledFormPage,
     styles,
     IconTT,
-} from '../../../../../tt-components';
+} from '../../../../../tt-components'
 import {
-    housingMeteringDeviceTypes, isConnected, magistrals, nodeStatusList, resources,
-} from '../../../../../tt-components/localBases';
-import TabsComponent from './Tabs';
-import {validationSchemaFlowMeter, validationSchemaTemperatureSensor} from './validationSchemas';
-import {addOdpu} from "./apiModalAddDevice";
+    housingMeteringDeviceTypes,
+    isConnected,
+    magistrals,
+    nodeStatusList,
+    resources,
+} from '../../../../../tt-components/localBases'
+import TabsComponent from './Tabs'
+import {
+    validationSchemaFlowMeter,
+    validationSchemaTemperatureSensor,
+} from './validationSchemas'
+import { addOdpu } from './apiModalAddDevice'
 
 const ModalAddDeviceForm = (props) => {
-    const {node, calculator, handleCancel} = props;
-    console.log('node', node);
-    console.log('calulator', calculator);
-    const {address, id: calculatorId} = calculator;
+    const { node, calculator, handleCancel } = props
+    console.log('node', node)
+    console.log('calulator', calculator)
+    const { address, id: calculatorId } = calculator
+
+    const { city, street, housingStockNumber, corpus } = address
 
     const {
-        city, street, housingStockNumber, corpus,
-    } = address;
+        futureCommercialAccountingDate,
+        lastCommercialAccountingDate,
+        nodeStatus,
+        number,
+        resource,
+        serviceZone,
+        communicationPipes,
+    } = node
 
-    const {
-        futureCommercialAccountingDate, lastCommercialAccountingDate, nodeStatus, number, resource, serviceZone, communicationPipes
-    } = node;
-
-    const [currentTabKey, setTab] = useState('1');
-    const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+    const [currentTabKey, setTab] = useState('1')
+    const [validationSchema, setValidationSchema] = useState(Yup.object({}))
 
     const devices = communicationPipes.map((communicationPipe) => {
-        const {devices} = communicationPipe
+        const { devices } = communicationPipe
         return devices.map((device) => {
             return device
         })
     })
     const res = _.flatten(devices)
-    const entryNumbers = res.map((item)=>{
-        const {hub} = item;
-        const {entryNumber} = hub
+    const entryNumbers = res.map((item) => {
+        const { hub } = item
+        const { entryNumber } = hub
         return entryNumber
     })
     console.log(res)
     console.log(entryNumbers)
 
     function handleChangeTab(value) {
-        setTab(value);
+        setTab(value)
     }
 
     function handleNext() {
-        setTab(String(Number(currentTabKey) + 1));
+        setTab(String(Number(currentTabKey) + 1))
     }
 
-    const Alert = ({name}) => {
-        const touch = _.get(touched, `${name}`);
-        const error = _.get(errors, `${name}`);
+    const Alert = ({ name }) => {
+        const touch = _.get(touched, `${name}`)
+        const error = _.get(errors, `${name}`)
         if (touch && error) {
-            return (
-                <div>{error}</div>
-            );
+            return <div>{error}</div>
         }
-        return null;
-    };
+        return null
+    }
 
     const {
-        handleSubmit, handleChange, values, touched, errors,
-        handleBlur, setFieldValue, setValues,
+        handleSubmit,
+        handleChange,
+        values,
+        touched,
+        errors,
+        handleBlur,
+        setFieldValue,
+        setValues,
     } = useFormik({
         initialValues: {
             isConnected: isConnected[0].value,
             serialNumber: '120220211643',
             lastCheckingDate: moment().toISOString(),
             futureCheckingDate: moment().add(3, 'years').toISOString(),
-            lastCommercialAccountingDate: lastCommercialAccountingDate ?? moment().toISOString(),
-            futureCommercialAccountingDate: futureCommercialAccountingDate ?? moment().toISOString(),
+            lastCommercialAccountingDate:
+                lastCommercialAccountingDate ?? moment().toISOString(),
+            futureCommercialAccountingDate:
+                futureCommercialAccountingDate ?? moment().toISOString(),
             documentsIds: [],
             ipV4: '',
             deviceAddress: null,
@@ -106,7 +123,6 @@ const ModalAddDeviceForm = (props) => {
             corpus,
             number,
             nodeStatus,
-
         },
         validationSchema,
 
@@ -116,9 +132,7 @@ const ModalAddDeviceForm = (props) => {
                 lastCheckingDate: '2021-02-12T13:38:14.655Z',
                 futureCheckingDate: '2021-02-12T13:38:14.655Z',
                 lastCommercialAccountingDate: '2021-02-12T13:38:14.655Z',
-                documentsIds: [
-                    0,
-                ],
+                documentsIds: [0],
                 futureCommercialAccountingDate: '2021-02-12T13:38:14.655Z',
                 housingMeteringDeviceType: 'string',
                 resource: 'string',
@@ -132,13 +146,15 @@ const ModalAddDeviceForm = (props) => {
                     magistral: 'string',
                 },
                 diameter: 0,
-            };
+            }
             const form = {
                 serialNumber: values.serialNumber,
                 lastCheckingDate: values.lastCheckingDate,
                 futureCheckingDate: values.futureCheckingDate,
-                lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-                futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+                lastCommercialAccountingDate:
+                    values.lastCommercialAccountingDate,
+                futureCommercialAccountingDate:
+                    values.futureCommercialAccountingDate,
                 documentsIds: [],
                 housingMeteringDeviceType: values.housingMeteringDeviceType,
                 resource: values.resource,
@@ -151,18 +167,18 @@ const ModalAddDeviceForm = (props) => {
                     pipeNumber: values.pipeNumber,
                     magistral: values.magistral,
                 },
-            };
-            console.log(form);
+            }
+            console.log(form)
             addOdpu(form).then((res) => {
-                console.log("res", res)
+                console.log('res', res)
                 // setTimeout(() => { setAddOdpu(false); }, 1000);
-            });
+            })
         },
-    });
+    })
 
     useEffect(() => {
-        setValidationSchema(validationSchemaFlowMeter);
-    }, []);
+        setValidationSchema(validationSchemaFlowMeter)
+    }, [])
 
     return (
         <form id="addDevice" onSubmit={handleSubmit}>
@@ -177,36 +193,43 @@ const ModalAddDeviceForm = (props) => {
                         <SelectTT
                             name="resource"
                             onChange={(value) => {
-                                setFieldValue('resource', value);
+                                setFieldValue('resource', value)
                             }}
                             options={resources}
                             defaultValue={resources[0].value}
                             value={values.resource}
                             disabled
                         />
-                        <Alert name="resource"/>
+                        <Alert name="resource" />
                     </Form.Item>
 
                     <Form.Item label="Выберите тип прибора" style={styles.w49}>
                         <SelectTT
                             name="housingMeteringDeviceType"
                             onChange={(value) => {
-                                setFieldValue('housingMeteringDeviceType', value);
+                                setFieldValue(
+                                    'housingMeteringDeviceType',
+                                    value
+                                )
                                 if (value === 'FlowMeter') {
-                                    setValidationSchema(validationSchemaFlowMeter);
+                                    setValidationSchema(
+                                        validationSchemaFlowMeter
+                                    )
                                 }
                                 if (value === 'TemperatureSensor') {
                                     // console.log("TemperatureSensor")
-                                    setValidationSchema(validationSchemaTemperatureSensor);
+                                    setValidationSchema(
+                                        validationSchemaTemperatureSensor
+                                    )
                                 }
                             }}
                             options={housingMeteringDeviceTypes}
                             value={values.housingMeteringDeviceType}
                         />
-                        <Alert name="housingMeteringDeviceType"/>
+                        <Alert name="housingMeteringDeviceType" />
                     </Form.Item>
 
-                    <Divider style={{margin: 0}}/>
+                    <Divider style={{ margin: 0 }} />
 
                     <SubHeader>Адрес установки</SubHeader>
 
@@ -219,7 +242,7 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="Нижнекамск"
                             disabled
                         />
-                        <Alert name="city"/>
+                        <Alert name="city" />
                     </Form.Item>
 
                     <Form.Item label="Улица" style={styles.w49}>
@@ -231,7 +254,7 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="Пр Мира"
                             disabled
                         />
-                        <Alert name="street"/>
+                        <Alert name="street" />
                     </Form.Item>
 
                     <Form.Item label="Дом" style={styles.w49}>
@@ -243,7 +266,7 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="6"
                             disabled
                         />
-                        <Alert name="housingStockNumber"/>
+                        <Alert name="housingStockNumber" />
                     </Form.Item>
 
                     <Form.Item label="Корпус" style={styles.w49}>
@@ -255,27 +278,33 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="А"
                             disabled
                         />
-                        <Alert name="corpus"/>
+                        <Alert name="corpus" />
                     </Form.Item>
 
-                    <Divider style={{margin: 0}}/>
+                    <Divider style={{ margin: 0 }} />
 
                     <SubHeader>Узел</SubHeader>
 
-                    <Form.Item label="Подключение к вычислителю" style={styles.w49}>
+                    <Form.Item
+                        label="Подключение к вычислителю"
+                        style={styles.w49}
+                    >
                         <SelectTT
                             name="isConnected"
                             onChange={(value) => {
-                                setFieldValue('isConnected', value);
+                                setFieldValue('isConnected', value)
                             }}
                             options={isConnected}
                             value={values.isConnected}
                             disabled
                         />
-                        <Alert name="isConnected"/>
+                        <Alert name="isConnected" />
                     </Form.Item>
 
-                    <Form.Item label="Вычислитель, к которому подключен прибор" style={styles.w49}>
+                    <Form.Item
+                        label="Вычислитель, к которому подключен прибор"
+                        style={styles.w49}
+                    >
                         <InputTT
                             name="calculatorId"
                             onChange={handleChange}
@@ -283,7 +312,7 @@ const ModalAddDeviceForm = (props) => {
                             value={values.calculatorId}
                             disabled
                         />
-                        <Alert name="calculatorId"/>
+                        <Alert name="calculatorId" />
                     </Form.Item>
 
                     <Form.Item label="Номер ввода" style={styles.w100}>
@@ -294,7 +323,7 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="Номер ввода"
                             value={values.entryNumber}
                         />
-                        <Alert name="entryNumber"/>
+                        <Alert name="entryNumber" />
                     </Form.Item>
 
                     <Form.Item label="Номер узла" style={styles.w49}>
@@ -306,77 +335,94 @@ const ModalAddDeviceForm = (props) => {
                             onChange={handleChange}
                             disabled
                         />
-                        <Alert name="entryNumber"/>
+                        <Alert name="entryNumber" />
                     </Form.Item>
 
                     <Form.Item label="Статус узла" style={styles.w49}>
                         <SelectTT
                             name="nodeStatus"
                             onChange={(value) => {
-                                setFieldValue('nodeStatus', value);
+                                setFieldValue('nodeStatus', value)
                             }}
                             options={nodeStatusList}
                             value={values.nodeStatus}
                             disabled
                         />
-                        <Alert name="nodeStatus"/>
+                        <Alert name="nodeStatus" />
                     </Form.Item>
 
-                    <Form.Item label="Дата начала Акта действия допуска" style={styles.w49}>
+                    <Form.Item
+                        label="Дата начала Акта действия допуска"
+                        style={styles.w49}
+                    >
                         <DatePickerTT
                             format="DD.MM.YYYY"
                             name="lastCommercialAccountingDate"
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('lastCommercialAccountingDate', date.toISOString());
+                                setFieldValue(
+                                    'lastCommercialAccountingDate',
+                                    date.toISOString()
+                                )
                             }}
                             value={moment(values.lastCommercialAccountingDate)}
                             disabled
                         />
                     </Form.Item>
 
-                    <Form.Item label="Дата окончания Акта действия допуска" style={styles.w49}>
+                    <Form.Item
+                        label="Дата окончания Акта действия допуска"
+                        style={styles.w49}
+                    >
                         <DatePickerTT
                             format="DD.MM.YYYY"
                             name="futureCommercialAccountingDate"
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('futureCommercialAccountingDate', date.toISOString());
+                                setFieldValue(
+                                    'futureCommercialAccountingDate',
+                                    date.toISOString()
+                                )
                             }}
-                            value={moment(values.futureCommercialAccountingDate)}
+                            value={moment(
+                                values.futureCommercialAccountingDate
+                            )}
                             disabled
                         />
-
                     </Form.Item>
-
                 </StyledFormPage>
 
                 {/* Second Tabs */}
                 <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-
                     <Form.Item label="Выберите тип прибора" style={styles.w100}>
                         <SelectTT
                             name="housingMeteringDeviceType"
                             onChange={(value) => {
-                                setFieldValue('housingMeteringDeviceType', value);
+                                setFieldValue(
+                                    'housingMeteringDeviceType',
+                                    value
+                                )
                             }}
                             options={housingMeteringDeviceTypes}
                             value={values.housingMeteringDeviceType}
                             disabled
                         />
-                        <Alert name="housingMeteringDeviceType"/>
+                        <Alert name="housingMeteringDeviceType" />
                     </Form.Item>
 
-                    <Form.Item label="Выберите модель прибора" style={styles.w49}>
+                    <Form.Item
+                        label="Выберите модель прибора"
+                        style={styles.w49}
+                    >
                         <InputTT
                             name="model"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.model}
                         />
-                        <Alert name="model"/>
+                        <Alert name="model" />
                     </Form.Item>
 
                     <Form.Item label="Серийный номер" style={styles.w49}>
@@ -386,11 +432,14 @@ const ModalAddDeviceForm = (props) => {
                             onChange={handleChange}
                             value={values.serialNumber}
                         />
-                        <Alert name="serialNumber"/>
+                        <Alert name="serialNumber" />
                     </Form.Item>
 
-                    {(values.housingMeteringDeviceType === 'FlowMeter') ? (
-                        <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
+                    {values.housingMeteringDeviceType === 'FlowMeter' ? (
+                        <Form.Item
+                            label="Диаметр трубы (мм)"
+                            style={styles.w100}
+                        >
                             <InputTT
                                 name="diameter"
                                 placeholder="Укажите диаметр трубы в мм"
@@ -398,7 +447,7 @@ const ModalAddDeviceForm = (props) => {
                                 value={values.diameter}
                                 onBlur={handleBlur}
                             />
-                            <Alert name="diameter"/>
+                            <Alert name="diameter" />
                         </Form.Item>
                     ) : null}
 
@@ -409,20 +458,29 @@ const ModalAddDeviceForm = (props) => {
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('lastCheckingDate', date.toISOString());
+                                setFieldValue(
+                                    'lastCheckingDate',
+                                    date.toISOString()
+                                )
                             }}
                             value={moment(values.lastCheckingDate)}
                         />
                     </Form.Item>
 
-                    <Form.Item label="Дата следующей поверки" style={styles.w49}>
+                    <Form.Item
+                        label="Дата следующей поверки"
+                        style={styles.w49}
+                    >
                         <DatePickerTT
                             format="DD.MM.YYYY"
                             name="futureCheckingDate"
                             placeholder="Укажите дату..."
                             allowClear={false}
                             onChange={(date) => {
-                                setFieldValue('futureCheckingDate', date.toISOString());
+                                setFieldValue(
+                                    'futureCheckingDate',
+                                    date.toISOString()
+                                )
                             }}
                             value={moment(values.futureCheckingDate)}
                         />
@@ -439,7 +497,7 @@ const ModalAddDeviceForm = (props) => {
                             onBlur={handleBlur}
                             onChange={handleChange}
                         />
-                        <Alert name="pipeNumber"/>
+                        <Alert name="pipeNumber" />
                     </Form.Item>
 
                     <Form.Item label="Магистраль" style={styles.w49}>
@@ -448,13 +506,12 @@ const ModalAddDeviceForm = (props) => {
                             name="magistral"
                             options={magistrals}
                             onChange={(value) => {
-                                setFieldValue('magistral', value);
+                                setFieldValue('magistral', value)
                             }}
                             value={values.magistral}
                         />
-                        <Alert name="magistral"/>
+                        <Alert name="magistral" />
                     </Form.Item>
-
                 </StyledFormPage>
 
                 <StyledFormPage hidden={Number(currentTabKey) !== 3}>
@@ -462,13 +519,12 @@ const ModalAddDeviceForm = (props) => {
                 </StyledFormPage>
             </StyledModalBody>
             <StyledFooter>
-
                 <ButtonTT
                     color="blue"
                     onClick={handleNext}
                     big
                     hidden={currentTabKey === '3'}
-                    style={{marginLeft: '16px'}}
+                    style={{ marginLeft: '16px' }}
                     type="button"
                 >
                     Далее
@@ -478,27 +534,32 @@ const ModalAddDeviceForm = (props) => {
                     color="blue"
                     type="submit"
                     hidden={currentTabKey !== '3'}
-                    style={{marginLeft: '16px'}}
+                    style={{ marginLeft: '16px' }}
                     big
                 >
                     Добавить
                 </ButtonTT>
-                <ButtonTT type="button" color="white" onClick={handleCancel} style={{marginLeft: '16px'}}>
+                <ButtonTT
+                    type="button"
+                    color="white"
+                    onClick={handleCancel}
+                    style={{ marginLeft: '16px' }}
+                >
                     Отмена
                 </ButtonTT>
             </StyledFooter>
         </form>
-    );
-};
+    )
+}
 
-export default ModalAddDeviceForm;
+export default ModalAddDeviceForm
 
 const SubHeader = styled.h3`
-margin: 0;
-padding: 0;
-  width: 100%;
- font-style: normal;
-font-weight: 500;
-font-size: 16px;
-line-height: 32px;
-`;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 32px;
+`

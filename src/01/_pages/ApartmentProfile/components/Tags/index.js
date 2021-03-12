@@ -1,2 +1,2 @@
-import {Tags} from './Tags'
-export {Tags}
+import { Tags } from './Tags'
+export { Tags }
