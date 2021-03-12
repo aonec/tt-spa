@@ -55,6 +55,7 @@
     "svg-sprite-loader": "^5.0.0",
     "swagger-typescript-api": "^6.1.1",
     "typescript": "^3.9.7",
+    "uuid": "^8.3.2",
     "victory": "^35.4.6",
     "yup": "^0.29.3"
   },

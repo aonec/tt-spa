@@ -4,7 +4,7 @@ import { Loader } from '../../../components';
 import { ListWrap, ListItem, Title } from '../../../_components/List';
 import { DeviceContext } from '../CalculatorProfile';
 import styles from '../calculator.module.css';
-import { NotConnectedIcon } from '../../../components/NotConnectedIcon/NotConnectedIcon';
+import { IconWithTooltip } from '../../../components/NotConnectedIcon/IconWithTooltip';
 
 export const Connection = () => {
   const { device, loadings } = useContext(DeviceContext);
@@ -22,7 +22,7 @@ export const Connection = () => {
     console.log('NoConnection');
     return (
       <div className={styles.warning}>
-        <NotConnectedIcon is={"calculator"} />
+        <IconWithTooltip is={"calculator"} />
         <span>Вычислитель не опрашивается</span>
       </div>
     );

@@ -9,6 +9,7 @@ import { HouseReadingsHeader } from "../HouseReadingsHeader/HouseReadingsHeader"
 import {selectDevices} from "../../../../../Redux/ducks/readings/selectors";
 import { setDevices } from "01/Redux/ducks/readings/actionCreators";
 import HouseBanner from "./HouseBanner";
+import {useSwitchOnInputs} from "../../../../../hooks/useSwitchInputsOnEnter";
 
 type ParamsType = {
     id: string
@@ -22,6 +23,8 @@ const HousesDevices: React.FC = () => {
     const devices = useSelector(selectDevices);
     const [house, setHouse] = useState<HouseType>();
     const [isLoading, setIsLoading] = useState(true);
+    useSwitchOnInputs();
+
 
     useEffect(() => {
         const setInfoAsync = async () => {

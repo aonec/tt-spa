@@ -1,5 +1,5 @@
 import {format} from "date-fns";
-import {ArchiveEntryInterface, ReportType, ResourceType} from "./components/GraphView";
+import {ArchiveEntryInterface, GraphDataInterface, ReportType, ResourceType} from "./components/GraphView";
 import {GraphParamsType} from "./Graph";
 
 export const formatDate = (timeStamp: string): Date => {
@@ -98,4 +98,13 @@ export const translateParam = (param: GraphParamsType) => {
     case "deltaVolume":
       return "Расход по объему, м³"
   }
+}
+
+export const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
+  return ticks.map((entry) => {
+    return {
+      time: entry.timestamp,
+      value: entry[graphParam],
+    }
+  })
 }

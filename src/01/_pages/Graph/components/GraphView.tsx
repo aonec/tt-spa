@@ -2,42 +2,31 @@ import {
   VictoryChart,
   VictoryAxis,
   VictoryTheme,
-  VictoryVoronoiContainer, VictoryArea, LineSegment, VictoryLabel,
+  VictoryVoronoiContainer, VictoryArea
 } from 'victory';
-import React, {useMemo} from "react";
+import React from "react";
 import styled from "styled-components";
 import GraphTooltip from "./GraphTooltip";
 import {CustomTooltip} from "./CustomTooltip";
 import Gradient from "./Gradient";
 import {getResourceColor} from "../../../utils/getResourceColor";
-import maxBy from 'lodash/maxBy';
-import _, { minBy } from "lodash";
+import { minBy, maxBy, get } from "lodash";
 import 'antd/es/date-picker/style/index';
-import {formTicks, getTickFormat} from "../utils";
+import {formGraphData, formTicks, getTickFormat} from "../utils";
 import {GraphParamsType} from "../Graph";
 import {RequestNodeReadingsFunctionInterface} from "../../../_api/node_readings_page";
 import {Alert} from "antd";
 import FallbackGraph from './FallbackGraph.svg'
 import GraphLegend from "./GraphLegend";
+import {TickComponent} from "./TickComponent";
 
 const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
 
-
-    const formGraphData = (ticks: ArchiveEntryInterface[], graphParam: GraphParamsType): GraphDataInterface[] => {
-        return ticks.map((entry) => {
-            return {
-                time: entry.timestamp,
-                value: entry[graphParam],
-            }
-        })
-    }
-
     const { data, searchQuery: {reportType} } = dataObject;
-
 
     const {resource} = data;
 
-    const archiveEntries = _.get(data, 'archiveEntries', []);
+    const archiveEntries = get(data, 'archiveEntries', []);
 
     if (archiveEntries.length === 0) return <>
         <Alert
@@ -49,13 +38,11 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
             style={{marginBottom: 24}}
         />
         <div>
-            {/*<img src={require('./components/FallbackGraph.svg')} alt="546"/>*/}
-            <img src={FallbackGraph} alt="546"/>
+            <img src={FallbackGraph} alt="546" />
         </div>
     </>
 
 
-    // const tickValues = useMemo(() => formTicks(archiveEntries, reportType), [archiveEntries]);
     const tickValues = formTicks(archiveEntries, reportType);
 
     const ticksData = tickValues.map((tick) => tick.timestamp);
@@ -73,10 +60,18 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
         data: {fill: `url(#${data.resource})`, stroke: getResourceColor(resource), strokeWidth: 2}
     };
 
-    const TickComponent = (props: any) => {
-      const {y1} = props;
-      const y2 = y1 !== 300 ? y1 + 5 : y1 - 5;
-      return <LineSegment {...props} y2={y2} style={{stroke: 'var(--frame)'}}/>
+    const horizontalAxisStyle = {
+        axis: {stroke: 'var(--frame)'},
+        axisLabel: { strokeWidth: 0 },
+        grid: {stroke: 'none'},
+        tickLabels: {fill: 'var(--main-32)'},
+    }
+
+    const verticalAxisStyle = {
+        axis: {stroke: 'none'},
+        ticks: {stroke: 'none'},
+        tickLabels: {fill: 'var(--main-32)'},
+        grid: {stroke: 'var(--frame)', strokeDasharray: '0'},
     }
 
     return (
@@ -99,35 +94,23 @@ const GraphView: React.FC<GraphViewProps> = ({graphParam, dataObject}) => {
                     />
                 }
               >
-
                   <VictoryAxis
                     tickComponent={<TickComponent />}
-
                     tickFormat={(x) => ticksData.includes(x) ? getTickFormat(archiveEntries, reportType, x) : ''}
-                    style={{
-                      axis: {stroke: 'var(--frame)'},
-                      axisLabel: { strokeWidth: 0 },
-                      grid: {stroke: 'none'},
-                      tickLabels: {fill: 'var(--main-32)'},
-
-                    }}
+                    style={horizontalAxisStyle}
                   />
                   <VictoryAxis
                     dependentAxis
-                    style={{
-                      axis: {stroke: 'none'},
-                      ticks: {stroke: 'none'},
-                      tickLabels: {fill: 'var(--main-32)'},
-                      grid: {stroke: 'var(--frame)', strokeDasharray: '0'},
-                    }}
+                    style={verticalAxisStyle}
                   />
                   <VictoryArea
                     name="graph"
                     sortKey="time"
-
                     interpolation="natural"
                     labelComponent={<CustomTooltip
-                      flyoutStyle={{ fill: "var(--main-100)"}} style={{ fill: "#fff" }} flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
+                      flyoutStyle={{ fill: "var(--main-100)"}}
+                      style={{ fill: "#fff" }}
+                      flyoutPadding={{top: 8, right: 16, bottom: 8, left: 16}}
                       flyoutComponent={<GraphTooltip graphParam={graphParam}/>}
                       minValue={minValue}
                       maxValue={maxValue}
@@ -189,7 +172,6 @@ export type ReportType = 'hourly' | 'daily'| 'monthly'
 interface GraphViewProps {
     graphParam: GraphParamsType
     dataObject: RequestNodeReadingsFunctionInterface
-    // reportType: ReportType
 }
 
 export default GraphView;

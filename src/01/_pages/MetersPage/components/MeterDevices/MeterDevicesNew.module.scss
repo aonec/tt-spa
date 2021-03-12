@@ -4,19 +4,11 @@
   }
   &:hover svg {
     fill: var(--primary-100)
-
   }
-
-  //&:active svg {
-  //  fill: var(--primary-16)
-  //}
 }
 
 .arrowDisabled {
   svg {
     fill: var(--main-32);
   }
-  //&:hover svg {
-  //  fill: blue
-  //}
 }

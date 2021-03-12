@@ -8,7 +8,7 @@ import ObjectsSearchForm from "./ObjectsSearchForm/ObjectsSearchForm";
 import {objectsSearchReducer} from "../../Redux/reducers/objectsSearchReducer";
 import {formQueryString} from "../../utils/formQueryString";
 import {useDebounce} from "../../hooks/useDebounce";
-import {NotConnectedIcon} from "../../components/NotConnectedIcon/NotConnectedIcon";
+import {IconWithTooltip} from "../../components/NotConnectedIcon/IconWithTooltip";
 import {sortObjects} from "../../utils/sortObjects";
 
 const styles = css`
