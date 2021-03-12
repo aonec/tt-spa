@@ -26,7 +26,6 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = (
 
     useOutsideClick(formRef, () => {
         if (isActive) {
-            // setIsActive(false)
             setShown()
         }
     })
@@ -227,10 +226,10 @@ const StyledSubmit = styled(SubmitButton)`
 
 const RangeWrapper = styled.div`
 .ant-picker-ranges .ant-picker-preset > .ant-tag-blue {
-    color: #1890ff;
-    background: transparent;
-    border-color: transparent;
-    cursor: pointer;
+  color: #1890ff;
+  background: transparent;
+  border-color: transparent;
+  cursor: pointer;
 }
 
 .ant-picker-ranges .ant-picker-preset > .ant-tag-blue {

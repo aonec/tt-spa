@@ -1,8 +1,5 @@
-
 import React, {useEffect, useState} from "react"
 import ApartmentReadingLine from "./components/ApartmentReadingLine";
-import {formReadingToPush} from "../../../../utils/formReadingsToPush";
-import axios from "axios";
 import {firstLetterToUpperCase, getMonthFromDate} from "../../../../utils/getMonthFromDate";
 import Arrow from "../../../../_components/Arrow/Arrow";
 import s from "./MeterDevicesNew.module.scss"
@@ -13,7 +10,6 @@ import {IndividualDeviceType} from "../../../../../types/types";
 import styled from "styled-components";
 import {useSwitchOnInputs} from "../../../../hooks/useSwitchInputsOnEnter";
 import moment from "moment";
-
 
 interface ApartmentReadingsProps {
     items: IndividualDeviceType[]

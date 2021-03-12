@@ -167,10 +167,3 @@ export function App() {
 }
 
 export default App;
-
-{ /* <Route */ }
-{ /*  path={["/objects/:objid/devices/(\\d+)/(connection|related|documents)?", */ }
-{ /*    "/housingMeteringDevices/:deviceId/(related|documents)?"]} */ }
-{ /*  component={DeviceProfile} */ }
-{ /*  exact */ }
-{ /* /> */ }

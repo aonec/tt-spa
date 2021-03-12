@@ -62,13 +62,14 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
     run(requestNodeReadings(searchQuery))
   }, [searchQuery, run])
 
-
-
   return (
       <GraphContainer>
-        <GraphFilterForm paramsList={getGraphParams(resource, pipeCount)}
-                         setGraphParam={setGraphParam}
-                         setSearchQuery={setSearchQuery}/>
+
+        <GraphFilterForm
+            paramsList={getGraphParams(resource, pipeCount)}
+            setGraphParam={setGraphParam}
+            setSearchQuery={setSearchQuery}
+        />
 
         {status === 'pending' || status === 'idle' && <div>ЗАГРУЗКА...</div>}
 

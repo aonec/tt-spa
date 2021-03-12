@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '../../../../tt-components/Icon';
-import {NotConnectedIcon} from '../../../../components/NotConnectedIcon/NotConnectedIcon';
+import {IconWithTooltip} from '../../../../components/NotConnectedIcon/IconWithTooltip';
 import {Dates} from './Dates';
 import Node from './Node/Node';
+import IconTT from "../../../../tt-components/IconTT";
 
 const DeviceBlock = (props) => {
     const { device: calculator} = props;
@@ -24,7 +25,15 @@ const DeviceBlock = (props) => {
                     </DeviceLink>
 
                     <div hidden={calculator.isConnected}>
-                        <NotConnectedIcon />
+                        <IconWithTooltip title={'Узел учета без оборудования связи'}>
+                            <Icon icon={'notConnected'} color={'var(--main-100)'}/>
+                        </IconWithTooltip>
+                    </div>
+
+                    <div hidden={!calculator.isConnected || (calculator.connection.deviceAddress && calculator.connection.ipV4)}>
+                        <IconWithTooltip title={'Проверьте настройки соединения'}>
+                            <Icon icon={'checkConnection'} color={'var(--error)'}/>
+                        </IconWithTooltip>
                     </div>
 
                 </div>
