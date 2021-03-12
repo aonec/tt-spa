@@ -2,12 +2,12 @@
 /* Font PT Root UI: Copyright ? ParaType, 2018. All rights reserved.*/
 
 @font-face {
-  font-family: "PTWeb";
-  src: url("PT%20Root%20UI_Medium.eot");
-  src: url("PT%20Root%20UI_Medium.eot?#iefix") format("embedded-opentype"),
-    url("PT%20Root%20UI_Medium.woff2") format("woff2"),
-    url("PT%20Root%20UI_Medium.woff") format("woff"),
-    url("PT%20Root%20UI_Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
+    font-family: 'PTWeb';
+    src: url('PT%20Root%20UI_Medium.eot');
+    src: url('PT%20Root%20UI_Medium.eot?#iefix') format('embedded-opentype'),
+        url('PT%20Root%20UI_Medium.woff2') format('woff2'),
+        url('PT%20Root%20UI_Medium.woff') format('woff'),
+        url('PT%20Root%20UI_Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
 }

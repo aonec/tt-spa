@@ -1,9 +1,8 @@
-import transformDate from "../../../../utils/transformDate";
-import React from "react";
-import styled from "styled-components";
+import transformDate from '../../../../utils/transformDate'
+import React from 'react'
+import styled from 'styled-components'
 
-
-export const Dates: React.FC<DateProps> = ({firstDate, lastDate}) => {
+export const Dates: React.FC<DateProps> = ({ firstDate, lastDate }) => {
     return (
         <>
             <DateWrapper>
@@ -13,14 +12,13 @@ export const Dates: React.FC<DateProps> = ({firstDate, lastDate}) => {
     )
 }
 
-
 interface DateProps {
-  firstDate: string | null
-  lastDate: string | null
+    firstDate: string | null
+    lastDate: string | null
 }
 
 const DateWrapper = styled.span`
-  margin: 0 auto;
-  color: #272F5A;
-  opacity: 0.7;
+    margin: 0 auto;
+    color: #272f5a;
+    opacity: 0.7;
 `

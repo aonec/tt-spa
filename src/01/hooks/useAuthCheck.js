@@ -1,7 +1,4 @@
-import React from "react"
+import React from 'react'
 export const useAuthCheck = ({ isAuth }) => {
-
-  React.useEffect(() => {
-
-  }, [isAuth])
+    React.useEffect(() => {}, [isAuth])
 }

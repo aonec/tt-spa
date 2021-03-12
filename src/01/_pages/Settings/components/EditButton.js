@@ -1,25 +1,25 @@
-import React from 'react';
-import { Menu, Dropdown } from 'antd';
-import { Icon } from '../../../_components/Icon';
-import { EditButtonWrap } from '../../../tt-components';
+import React from 'react'
+import { Menu, Dropdown } from 'antd'
+import { Icon } from '../../../_components/Icon'
+import { EditButtonWrap } from '../../../tt-components'
 
 const EditButton = () => {
-  console.log('EditButton');
+    console.log('EditButton')
 
-  const handleEditButtonWrap = (e) => {
-    // e.preventDefault();
-  };
+    const handleEditButtonWrap = (e) => {
+        // e.preventDefault();
+    }
 
-  return (
-    <EditButtonWrap size="32" >
-      <Icon icon="menu" />
-    </EditButtonWrap>
-  );
-};
+    return (
+        <EditButtonWrap size="32">
+            <Icon icon="menu" />
+        </EditButtonWrap>
+    )
+}
 
 // onClick={handleEditButtonWrap}
 
-export default EditButton;
+export default EditButton
 
 // import React from 'react';
 // import { Menu, Dropdown } from 'antd';

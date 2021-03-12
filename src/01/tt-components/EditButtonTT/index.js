@@ -1,39 +1,40 @@
-import React, { useContext } from 'react';
-import {
-    Menu, Dropdown, Button,
-} from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
-import styled, {css} from 'styled-components';
-
+import React, { useContext } from 'react'
+import { Menu, Dropdown, Button } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
+import styled, { css } from 'styled-components'
 
 const StyledEditButton = styled(Button).attrs((props) => ({
     form: props.form,
     modal: props.modal,
 }))`
-display: flex;
-align-items: center;
-justify-content: center;
-width: 48px;
-height: 48px;
-${(props) => props.size == '48' && css`
-width: 48px;
-height: 48px;
-  `}
-  
-${(props) => props.size == '24' && css`
-width: 24px;
-height: 24px;
-  `}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    ${(props) =>
+        props.size == '48' &&
+        css`
+            width: 48px;
+            height: 48px;
+        `}
+
+    ${(props) =>
+        props.size == '24' &&
+        css`
+            width: 24px;
+            height: 24px;
+        `}
   
   li {
-  font-size: 16px !important;
-line-height: 32px !important;
-  }
-`;
+        font-size: 16px !important;
+        line-height: 32px !important;
+    }
+`
 
 export const EditButtonTT = (props) => {
-    console.log("props", props)
-    const {arr, size} = props;
+    console.log('props', props)
+    const { arr, size } = props
     // const arr = [{
     //   title: 'Редактировать узел',
     //   itemFunction: () => {
@@ -54,23 +55,23 @@ export const EditButtonTT = (props) => {
     // },
     // ];
 
-
-
     const StyledMenu = styled(Menu)`
-    .ant-dropdown-menu-item {
-        font-size: 32px !important;
-    }
+        .ant-dropdown-menu-item {
+            font-size: 32px !important;
+        }
     `
     const menu = (
         <StyledMenu>
             {arr.map((item, index) => {
-                const { title, itemFunction } = item;
+                const { title, itemFunction } = item
                 return (
-                    <Menu.Item key={index} onClick={itemFunction}>{title}</Menu.Item>
-                );
-            }) }
+                    <Menu.Item key={index} onClick={itemFunction}>
+                        {title}
+                    </Menu.Item>
+                )
+            })}
         </StyledMenu>
-    );
+    )
 
     // const menu = (
     //   <Menu>
@@ -92,11 +93,10 @@ export const EditButtonTT = (props) => {
                 <MoreOutlined />
             </StyledEditButton>
         </Dropdown>
-    );
-};
+    )
+}
 
-export default EditButtonTT;
-
+export default EditButtonTT
 
 // import styled, { css } from 'styled-components';
 // import {Button} from "antd";

@@ -1,18 +1,16 @@
-import { ReadingsStateType } from "01/_api/houses_readings_page";
-import {IndividualDeviceType} from "../../../types/types";
-import {ActionTypes} from "../ducks/readings/actionCreators";
-import {ReadingsActionsType} from "../ducks/readings/contracts/actionTypes";
+import { ReadingsStateType } from '01/_api/houses_readings_page'
+import { IndividualDeviceType } from '../../../types/types'
+import { ActionTypes } from '../ducks/readings/actionCreators'
+import { ReadingsActionsType } from '../ducks/readings/contracts/actionTypes'
 
 // const SET_DEVICES = 'SET_DEVICES';
 // const UPDATE_READINGS = 'UPDATE_READINGS';
 // const SET_IS_DISABLED = 'SET_IS_DISABLED';
 
 export type DisabledStateType = {
-    deviceId: number,
+    deviceId: number
     isDisabled: boolean
 }[]
-
-
 
 const ReadingsState = {
     hasNextPage: false,
@@ -24,69 +22,69 @@ const ReadingsState = {
     totalItems: 10,
     totalPages: 0,
     items: [] as IndividualDeviceType[],
-    disabledState: [] as DisabledStateType
+    disabledState: [] as DisabledStateType,
 }
-
 
 export type DevicesType = typeof ReadingsState.items
 
-const readingsReducer = (state:ReadingsStateType = ReadingsState, action: ActionTypes): ReadingsStateType => {
+const readingsReducer = (
+    state: ReadingsStateType = ReadingsState,
+    action: ActionTypes
+): ReadingsStateType => {
     switch (action.type) {
-
         case ReadingsActionsType.SET_DEVICES:
-            return {...state, items: [...action.devices],
-                disabledState: action.devices.map((device) => ({deviceId: device.id, isDisabled: false})
-                )}
-
-        case ReadingsActionsType.UPDATE_READINGS:
-
             return {
                 ...state,
-                items: state.items.map(
-                    (device) => device.id === action.deviceId ?
-                        {
-                            ...device,
-                            readings: device.readings.map(
-                                (reading, index) => {
-                                    return index === 0 ?
-                                        {
-                                            ...reading,
-                                            [`value${action.readingNumber}`]: action.readingValue
-                                        } :
-                                        reading
-                                }
-                            )
+                items: [...action.devices],
+                disabledState: action.devices.map((device) => ({
+                    deviceId: device.id,
+                    isDisabled: false,
+                })),
+            }
 
-                        } : device
-                )
+        case ReadingsActionsType.UPDATE_READINGS:
+            return {
+                ...state,
+                items: state.items.map((device) =>
+                    device.id === action.deviceId
+                        ? {
+                              ...device,
+                              readings: device.readings.map(
+                                  (reading, index) => {
+                                      return index === 0
+                                          ? {
+                                                ...reading,
+                                                [`value${action.readingNumber}`]: action.readingValue,
+                                            }
+                                          : reading
+                                  }
+                              ),
+                          }
+                        : device
+                ),
             }
 
         case ReadingsActionsType.SET_INPUT_FOCUSED:
-            return { ...state,
+            return {
+                ...state,
                 disabledState: state.disabledState?.map((disabledObj) => {
-                  return action.deviceId === disabledObj.deviceId
-                      ? { ...disabledObj, isDisabled: false }
-                      : { ...disabledObj, isDisabled: true }
-                })
-                }
-
-        case ReadingsActionsType.SET_INPUT_UNFOCUSED:
-            return { ...state,
-            disabledState: state.disabledState?.map((disabledObj) => {
-                return { ...disabledObj, isDisabled: false }
-            })
+                    return action.deviceId === disabledObj.deviceId
+                        ? { ...disabledObj, isDisabled: false }
+                        : { ...disabledObj, isDisabled: true }
+                }),
             }
 
-        default: return state
+        case ReadingsActionsType.SET_INPUT_UNFOCUSED:
+            return {
+                ...state,
+                disabledState: state.disabledState?.map((disabledObj) => {
+                    return { ...disabledObj, isDisabled: false }
+                }),
+            }
+
+        default:
+            return state
     }
 }
 
-
-
-
-
-
-
-
-
-export default readingsReducer;
+export default readingsReducer

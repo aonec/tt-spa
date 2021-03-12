@@ -1,105 +1,114 @@
-import React, {
-  useContext, useEffect, useState,
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import _ from 'lodash';
-import styled from 'styled-components';
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import _ from 'lodash'
+import styled from 'styled-components'
 
 import {
-  Title, ButtonTT, StyledFooter,  styles, StyledFormPage
-} from '../../../tt-components';
-import RelatedDevices from './RelatedDevices';
-import { AddNodeContext } from '../index';
-import ModalAddDevice from "../modals/ModalAddDevice";
-import ModalAddNode from "../modals/ModalAddNode";
+    Title,
+    ButtonTT,
+    StyledFooter,
+    styles,
+    StyledFormPage,
+} from '../../../tt-components'
+import RelatedDevices from './RelatedDevices'
+import { AddNodeContext } from '../index'
+import ModalAddDevice from '../modals/ModalAddDevice'
+import ModalAddNode from '../modals/ModalAddNode'
 
 const AddNodeThirdTab = () => {
-  const {
-    handleCancel, currentTabKey, setTab, handleChangeTab, handleNext, addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
-    communicationPipes,
-    node,
-    setAddNode
-  } = useContext(AddNodeContext);
+    const {
+        handleCancel,
+        currentTabKey,
+        setTab,
+        handleChangeTab,
+        handleNext,
+        addCalculator,
+        setAddCalculator,
+        addOdpu,
+        setAddOdpu,
+        communicationPipes,
+        node,
+        setAddNode,
+    } = useContext(AddNodeContext)
 
-  const [disable, setDisable] = useState(false);
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+    const [disable, setDisable] = useState(false)
+    const [validationSchema, setValidationSchema] = useState(Yup.object({}))
 
-  const {
-    handleSubmit, handleChange, values, touched, errors,
-    handleBlur, setFieldValue, setValues,
-  } = useFormik({
-    initialValues: {
-      communicationPipes: [],
-    },
-    validationSchema,
+    const {
+        handleSubmit,
+        handleChange,
+        values,
+        touched,
+        errors,
+        handleBlur,
+        setFieldValue,
+        setValues,
+    } = useFormik({
+        initialValues: {
+            communicationPipes: [],
+        },
+        validationSchema,
 
-    onSubmit: async () => {
+        onSubmit: async () => {
+            setAddNode(true)
+            // const form = {
+            //   communicationPipes: values.communicationPipes,
+            // };
+            // console.log(form);
+            //
+            // const addNodeForm = { ...node, communicationPipes };
+            // console.log('addNodeForm', addNodeForm);
+            // addNode(addNodeForm).then((res)=>{
+            //     console.log("addNodeFormResponseFromServer", res)
+            // })
+        },
+    })
 
-      setAddNode(true)
-      // const form = {
-      //   communicationPipes: values.communicationPipes,
-      // };
-      // console.log(form);
-      //
-      // const addNodeForm = { ...node, communicationPipes };
-      // console.log('addNodeForm', addNodeForm);
-      // addNode(addNodeForm).then((res)=>{
-      //     console.log("addNodeFormResponseFromServer", res)
-      // })
-    },
-  });
+    useEffect(() => {
+        setFieldValue('communicationPipes', communicationPipes)
+    }, [communicationPipes])
 
-  useEffect(() => {
-    setFieldValue('communicationPipes', communicationPipes);
-  }, [communicationPipes]);
+    function handleShowAddDevice() {
+        setAddOdpu(true)
+    }
 
-  function handleShowAddDevice() {
-    setAddOdpu(true);
-  }
+    return (
+        <form hidden={Number(currentTabKey) !== 3} onSubmit={handleSubmit}>
+            <StyledFormPage>
+                <Title color="black" style={styles.w100}>
+                    Подключенные приборы
+                </Title>
+                <div style={styles.w100}>
+                    <RelatedDevices />
+                </div>
+                <ButtonTT
+                    style={{ marginTop: '24px' }}
+                    color="white"
+                    type="button"
+                    onClick={handleShowAddDevice}
+                >
+                    + Добавить прибор
+                </ButtonTT>
+            </StyledFormPage>
+            <StyledFooter form={true}>
+                <ButtonTT color="blue" big type="submit">
+                    Создать Узел
+                </ButtonTT>
+                <ButtonTT
+                    type="button"
+                    color="white"
+                    onClick={handleCancel}
+                    style={{ marginLeft: '16px' }}
+                >
+                    Отмена
+                </ButtonTT>
+            </StyledFooter>
+            <ModalAddDevice />
+            <ModalAddNode />
+        </form>
+    )
+}
 
-
-  return (
-    <form
-      hidden={Number(currentTabKey) !== 3}
-      onSubmit={handleSubmit}
-    >
-      <StyledFormPage>
-        <Title color="black" style={styles.w100}>
-          Подключенные приборы
-        </Title>
-        <div style={styles.w100}>
-          <RelatedDevices />
-        </div>
-        <ButtonTT
-          style={{ marginTop: '24px' }}
-          color="white"
-          type="button"
-          onClick={handleShowAddDevice}
-        >
-          + Добавить прибор
-        </ButtonTT>
-      </StyledFormPage>
-      <StyledFooter form={true}>
-        <ButtonTT
-          color="blue"
-          big
-          type="submit"
-        >
-          Создать Узел
-        </ButtonTT>
-        <ButtonTT type="button" color="white" onClick={handleCancel} style={{ marginLeft: '16px' }}>
-          Отмена
-        </ButtonTT>
-      </StyledFooter>
-      <ModalAddDevice />
-      <ModalAddNode />
-    </form>
-  );
-};
-
-export default AddNodeThirdTab;
+export default AddNodeThirdTab

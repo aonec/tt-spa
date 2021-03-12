@@ -1,12 +1,11 @@
-import axios from "01/axios"
-import {ReadingsInterface, ReportType} from "../_pages/Graph/components/GraphView";
-import moment, {Moment} from "moment";
+import axios from '01/axios'
+import {
+    ReadingsInterface,
+    ReportType,
+} from '../_pages/Graph/components/GraphView'
+import moment, { Moment } from 'moment'
 
-
-delete axios.defaults.headers.common["Authorization"];
-
-
-
+delete axios.defaults.headers.common['Authorization']
 
 export interface QueryInterface {
     nodeId: number
@@ -20,30 +19,32 @@ export interface RequestNodeReadingsFunctionInterface {
     searchQuery: QueryInterface
 }
 
+export const requestNodeReadings = async (
+    searchQuery: QueryInterface
+): Promise<RequestNodeReadingsFunctionInterface> => {
+    // const readings = await axios.request<any, ReadingsInterface>
+    // ( {
+    //         method: 'get',
+    //         baseURL: 'http://84.201.132.164:8080/api',
+    //         url: `archivesCalculator/getArchive`,
+    //         params: {...searchQuery,
+    //             from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(),
+    //             to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString()}
+    //     }
+    // )
 
-
-
-export const requestNodeReadings = async (searchQuery: QueryInterface): Promise<RequestNodeReadingsFunctionInterface> => {
-
-        // const readings = await axios.request<any, ReadingsInterface>
-        // ( {
-        //         method: 'get',
-        //         baseURL: 'http://84.201.132.164:8080/api',
-        //         url: `archivesCalculator/getArchive`,
-        //         params: {...searchQuery,
-        //             from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(),
-        //             to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString()}
-        //     }
-        // )
-
-    const params = {...searchQuery,
-        from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(),
-        to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString()
+    const params = {
+        ...searchQuery,
+        from: searchQuery.from
+            .add(moment().utcOffset(), 'minute')
+            .toISOString(),
+        to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString(),
     }
 
-    const readings = await axios.get<any, ReadingsInterface>('Archives/GetArchives', {params})
+    const readings = await axios.get<any, ReadingsInterface>(
+        'Archives/GetArchives',
+        { params }
+    )
 
-        return {data: readings, searchQuery}
-
-
+    return { data: readings, searchQuery }
 }

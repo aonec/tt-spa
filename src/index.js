@@ -1,16 +1,16 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import React from 'react'
+import ReactDOM from 'react-dom'
 // import "styles/css/index.css"
 // import { App } from "components"
-import { App } from "01/App"
-import * as serviceWorker from "./serviceWorker"
-import { BrowserRouter } from "react-router-dom"
+import { App } from '01/App'
+import * as serviceWorker from './serviceWorker'
+import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.render(
     <BrowserRouter>
-      <App />
+        <App />
     </BrowserRouter>,
-  document.getElementById('root')
+    document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

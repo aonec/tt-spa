@@ -1,18 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react';
-import rateTypeToNumber from "../../../../../_api/utils/rateTypeToNumber";
+import React, { useEffect, useState, useRef } from 'react'
+import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber'
 import styled from 'styled-components'
-import DeviceRates from "./ReadingsLine/DeviceRates";
-import DeviceIcons from "../../../../../_components/DeviceIcons";
-import styles from "../../../../../_pages/Devices/components/TabsDevices.module.scss";
-import {Icon} from "../../../../../tt-components/Icon";
+import DeviceRates from './ReadingsLine/DeviceRates'
+import DeviceIcons from '../../../../../_components/DeviceIcons'
+import styles from '../../../../../_pages/Devices/components/TabsDevices.module.scss'
+import { Icon } from '../../../../../tt-components/Icon'
 // import {setDevices, updateReadings} from "../../../../../Redux/reducers/readingsReducer";
-import ActiveLine from "./ActiveLine/ActiveLine";
-import {DateLine} from "../../../../../_components/DateLine/DateLine";
-import ReadingsBlock
-    from "../../../../../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock";
-import {updateReadings} from "../../../../../Redux/ducks/readings/actionCreators";
-import {useDispatch} from "react-redux";
-import {DeviceReadingsContainer} from "../../../../../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine";
+import ActiveLine from './ActiveLine/ActiveLine'
+import { DateLine } from '../../../../../_components/DateLine/DateLine'
+import ReadingsBlock from '../../../../../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock'
+import { updateReadings } from '../../../../../Redux/ducks/readings/actionCreators'
+import { useDispatch } from 'react-redux'
+import { DeviceReadingsContainer } from '../../../../../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine'
 
 const FullDeviceLine = styled.div`
     display: grid;
@@ -23,76 +22,83 @@ const FullDeviceLine = styled.div`
     justify-content: center;
     white-space: nowrap;
     padding-bottom: 7px;
-    border-bottom: 1px solid #DCDEE4;
-    `
+    border-bottom: 1px solid #dcdee4;
+`
 
+const DeviceReadingForm = ({ device, readingsBlocked = false }) => {
+    const dispatch = useDispatch()
 
-const DeviceReadingForm = ({device, readingsBlocked = false}) => {
-
-    const dispatch = useDispatch();
-
-    const [readingsState, setReadingsState] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const isActive = device.closingDate === null;
-    const ref = useRef();
-    const numberOfReadings = rateTypeToNumber(device.rateType);
+    const [readingsState, setReadingsState] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
+    const isActive = device.closingDate === null
+    const ref = useRef()
+    const numberOfReadings = rateTypeToNumber(device.rateType)
     // const readingsArray = [];
     // setReadingsState({readingsArray: [45, 66, 1243], id: 100});
 
     useEffect(() => {
         setIsLoading(true)
-        const readingsArray = [];
-        const readings = device.readings[0];
+        const readingsArray = []
+        const readings = device.readings[0]
 
-        for (let i=1; i <= numberOfReadings; i++) {
+        for (let i = 1; i <= numberOfReadings; i++) {
             readingsArray.push(readings[`value${i}`])
         }
 
-
-        setReadingsState({ readingsArray, id: readings.id, resource: device.resource })
-        setIsLoading(false);
+        setReadingsState({
+            readingsArray,
+            id: readings.id,
+            resource: device.resource,
+        })
+        setIsLoading(false)
     }, [device.readings, numberOfReadings, readingsBlocked])
 
     const onInputChange = (e, index) => {
-        e.preventDefault();
-        dispatch(updateReadings(device.id, index+1, e.target.value));
+        e.preventDefault()
+        dispatch(updateReadings(device.id, index + 1, e.target.value))
     }
 
     if (isLoading) return 'ЗАГРУЗКА...'
 
-    const deviceReadingsLine = readingsState.readingsArray.map((value, index) => (
-        <ReadingsBlock key={readingsState.id + index}
-                       index={index}
-                       readingsBlocked={readingsBlocked || !isActive}
-                       onChange={(e) => onInputChange(e, index)}
-                       value={value}
-                       resource={readingsState.resource}
-        />
-    ));
+    const deviceReadingsLine = readingsState.readingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={readingsState.id + index}
+                index={index}
+                readingsBlocked={readingsBlocked || !isActive}
+                onChange={(e) => onInputChange(e, index)}
+                value={value}
+                resource={readingsState.resource}
+            />
+        )
+    )
 
-
-    const { icon, color } = DeviceIcons[device.resource];
-
+    const { icon, color } = DeviceIcons[device.resource]
 
     return (
         <FullDeviceLine>
-                <div
-                    className={styles.device__title + ' ' + styles.subdevice__title}
-                    to={`/housingMeteringDevices/${device.id}`}
-                >
-                    <Icon className={styles.icon} icon={icon} fill={color} />
-                    {`${device.model} `}
-                    <span className={styles.deviceId}>
-                            {` (${device.serialNumber})`}
-                    </span>
-                </div>
-            <DeviceReadingsContainer>{deviceReadingsLine}</DeviceReadingsContainer>
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <ActiveLine isActive={isActive}/>
-                <DateLine lastCheckingDate={device.lastCheckingDate} futureCheckingDate={device.futureCheckingDate}/>
+            <div
+                className={styles.device__title + ' ' + styles.subdevice__title}
+                to={`/housingMeteringDevices/${device.id}`}
+            >
+                <Icon className={styles.icon} icon={icon} fill={color} />
+                {`${device.model} `}
+                <span className={styles.deviceId}>
+                    {` (${device.serialNumber})`}
+                </span>
+            </div>
+            <DeviceReadingsContainer>
+                {deviceReadingsLine}
+            </DeviceReadingsContainer>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <ActiveLine isActive={isActive} />
+                <DateLine
+                    lastCheckingDate={device.lastCheckingDate}
+                    futureCheckingDate={device.futureCheckingDate}
+                />
             </div>
         </FullDeviceLine>
     )
 }
 
-export default DeviceReadingForm;
+export default DeviceReadingForm

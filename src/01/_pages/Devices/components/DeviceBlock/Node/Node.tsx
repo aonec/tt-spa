@@ -1,70 +1,80 @@
-import React from 'react';
-import {CommunicationPipeInterface} from "../../utils/groupDevicesByObjects";
-import {Dates} from "../Dates";
-import {DeviceIcon, DeviceLink, DeviceWrapper, Diameter, SerialNumber} from "../DeviceBlock";
-import IconTT from "../../../../../tt-components/IconTT";
-import styled from "styled-components";
-import DeviceIcons from "../../../../../_components/DeviceIcons";
+import React from 'react'
+import { CommunicationPipeInterface } from '../../utils/groupDevicesByObjects'
+import { Dates } from '../Dates'
+import {
+    DeviceIcon,
+    DeviceLink,
+    DeviceWrapper,
+    Diameter,
+    SerialNumber,
+} from '../DeviceBlock'
+import IconTT from '../../../../../tt-components/IconTT'
+import styled from 'styled-components'
+import DeviceIcons from '../../../../../_components/DeviceIcons'
 
-
-const Node:React.FC<Props> = ({node}) => {
-
+const Node: React.FC<Props> = ({ node }) => {
     const housingDevices = node.communicationPipes.map((pipe) => {
         const devices = pipe.devices.map((housingDevice) => {
-            const { icon, color } = DeviceIcons[housingDevice.resource];
+            const { icon, color } = DeviceIcons[housingDevice.resource]
 
-            return <DeviceWrapper>
+            return (
+                <DeviceWrapper>
+                    <div>
+                        <TitleWrapper>
+                            <DeviceLink
+                                to={`/housingMeteringDevices/${housingDevice.id}`}
+                            >
+                                <DeviceIcon icon={icon} fill={color} />
+                                {`${housingDevice.model} `}
+                                <SerialNumber>
+                                    ({housingDevice.serialNumber})
+                                </SerialNumber>
+                            </DeviceLink>
+                        </TitleWrapper>
+                    </div>
+
+                    <Dates
+                        firstDate={housingDevice.lastCheckingDate}
+                        lastDate={housingDevice.futureCheckingDate}
+                    />
+
+                    <Diameter>
+                        {housingDevice.diameter
+                            ? housingDevice.diameter + ' мм'
+                            : ''}
+                    </Diameter>
+                </DeviceWrapper>
+            )
+        })
+        return devices
+    })
+
+    return (
+        <div>
+            <div style={{ marginBottom: 24 }}>
                 <div>
                     <TitleWrapper>
-                        <DeviceLink
-                          to={`/housingMeteringDevices/${housingDevice.id}`}
-                        >
-                            <DeviceIcon icon={icon} fill={color} />
-                            {`${housingDevice.model} `}
-                            <SerialNumber>
-                                ({housingDevice.serialNumber})
-                            </SerialNumber>
+                        <DeviceLink to={`/nodes/${node.id}`}>
+                            <NodeIcon icon="node" />
+                            <span>{`Узел ${node.number}`}</span>
                         </DeviceLink>
+                        <ServiceZone>{node.serviceZone}</ServiceZone>
                     </TitleWrapper>
                 </div>
 
-                <Dates firstDate={housingDevice.lastCheckingDate} lastDate={housingDevice.futureCheckingDate}/>
+                <CommercialAct>
+                    <span>Акт-допуска </span>
+                    <Dates
+                        firstDate={node.lastCommercialAccountingDate}
+                        lastDate={node.futureCommercialAccountingDate}
+                    />
+                </CommercialAct>
+            </div>
 
-                <Diameter>
-                    {housingDevice.diameter ? housingDevice.diameter + ' мм' : ''}
-                </Diameter>
-
-            </DeviceWrapper>
-        });
-        return devices;
-    });
-
-    return (
-      <div>
-          <div style={{marginBottom: 24}}>
-              <div>
-                  <TitleWrapper>
-                      <DeviceLink
-                        to={`/nodes/${node.id}`}
-                      >
-                          <NodeIcon icon="node" />
-                          <span>{`Узел ${node.number}`}</span>
-                      </DeviceLink>
-                      <ServiceZone>{node.serviceZone}</ServiceZone>
-                  </TitleWrapper>
-              </div>
-
-              <CommercialAct>
-                  <span>Акт-допуска </span>
-                  <Dates firstDate={node.lastCommercialAccountingDate} lastDate={node.futureCommercialAccountingDate} />
-              </CommercialAct>
-
-          </div>
-
-          {housingDevices}
-      </div>
-    );
-};
+            {housingDevices}
+        </div>
+    )
+}
 
 const NodeIcon = styled(IconTT)`
     margin-right: 8px;
@@ -103,5 +113,4 @@ interface Props {
     node: NodeInterface
 }
 
-
-export default Node;
+export default Node

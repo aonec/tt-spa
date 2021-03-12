@@ -1,7 +1,7 @@
-import React from 'react';
-import { AutoComplete } from 'antd';
-import styled from 'styled-components';
-import img from './search.svg';
+import React from 'react'
+import { AutoComplete } from 'antd'
+import styled from 'styled-components'
+import img from './search.svg'
 
 export const StyledAutoComplete = styled(AutoComplete)`
     padding: 0;
@@ -42,18 +42,18 @@ export const StyledAutoComplete = styled(AutoComplete)`
     }
   }
   }
-`;
+`
 
 export const AutoCompleteTT = ({ options, onSelect }) => (
-  <StyledAutoComplete
-    options={options}
-    filterOption
-    onSelect={onSelect}
-    placeholder="Введите данные"
-  />
-);
+    <StyledAutoComplete
+        options={options}
+        filterOption
+        onSelect={onSelect}
+        placeholder="Введите данные"
+    />
+)
 
-export default AutoCompleteTT;
+export default AutoCompleteTT
 
 // const someArray = [
 //     { key: 2538492, value: 'ТЭМ-106 140141' },

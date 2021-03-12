@@ -5,12 +5,13 @@ interface ReadingObjectInterface {
     value4: string
 }
 
-
-export const formEmptyReadingsObject = (numberOfReadings:number): Partial<ReadingObjectInterface> => {
-    const emptyObject:Partial<ReadingObjectInterface> = {}
-    for (let i=1; i <= numberOfReadings; i++) {
-        const index = `value${i}` as keyof ReadingObjectInterface;
-        emptyObject[index] = "0";
+export const formEmptyReadingsObject = (
+    numberOfReadings: number
+): Partial<ReadingObjectInterface> => {
+    const emptyObject: Partial<ReadingObjectInterface> = {}
+    for (let i = 1; i <= numberOfReadings; i++) {
+        const index = `value${i}` as keyof ReadingObjectInterface
+        emptyObject[index] = '0'
     }
     return emptyObject
 }

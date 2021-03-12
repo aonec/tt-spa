@@ -1,6 +1,6 @@
-import { useContext } from "react"
-import { GlobalStoreContext } from "./context"
+import { useContext } from 'react'
+import { GlobalStoreContext } from './context'
 
 export const useGlobalStore = () => {
-  return useContext(GlobalStoreContext)
+    return useContext(GlobalStoreContext)
 }

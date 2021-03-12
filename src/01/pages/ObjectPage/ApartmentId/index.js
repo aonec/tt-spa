@@ -1,1 +1,1 @@
-export { ApartmentId } from "./ApartmentId"
+export { ApartmentId } from './ApartmentId'

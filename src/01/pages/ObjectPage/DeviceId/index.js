@@ -1,1 +1,1 @@
-export { DeviceId } from "./DeviceId"
+export { DeviceId } from './DeviceId'

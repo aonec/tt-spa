@@ -1,3 +1,3 @@
-import { ApartmentDevicesContext, ApartmentDevices } from './ApartmentDevices';
+import { ApartmentDevicesContext, ApartmentDevices } from './ApartmentDevices'
 
-export default { ApartmentDevicesContext, ApartmentDevices };
+export default { ApartmentDevicesContext, ApartmentDevices }

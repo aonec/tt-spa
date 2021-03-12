@@ -1,14 +1,14 @@
-import React from "react"
-import styled from "styled-components";
-import { Tooltip } from 'antd';
+import React from 'react'
+import styled from 'styled-components'
+import { Tooltip } from 'antd'
 
 const OpacityContainer = styled.span`
     svg {
-    opacity: 0.7;
-    &:hover {
-    opacity: 1
+        opacity: 0.7;
+        &:hover {
+            opacity: 1;
+        }
     }
-    }    
 
     display: flex;
     align-items: flex-start;
@@ -19,14 +19,13 @@ interface IconWithTooltipProps {
     title: string
 }
 
-export const IconWithTooltip:React.FC<IconWithTooltipProps> = ({title, children}) => {
+export const IconWithTooltip: React.FC<IconWithTooltipProps> = ({
+    title,
+    children,
+}) => {
     return (
-        <Tooltip
-            title={title}
-            color="var(--main-100)">
-            <OpacityContainer>
-                {children}
-            </OpacityContainer>
+        <Tooltip title={title} color="var(--main-100)">
+            <OpacityContainer>{children}</OpacityContainer>
         </Tooltip>
     )
 }

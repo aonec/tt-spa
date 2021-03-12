@@ -1,1 +1,1 @@
-export { TasksIdPage } from "./TasksIdPage"
+export { TasksIdPage } from './TasksIdPage'

@@ -1,1 +1,1 @@
-export { TabsBlock } from "./TabsBlock"
+export { TabsBlock } from './TabsBlock'
