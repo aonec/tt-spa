@@ -1,26 +1,23 @@
-import {EventHandler, RefObject, useCallback, useEffect} from "react";
+import { EventHandler, RefObject, useCallback, useEffect } from 'react'
 
 const useOutsideClick = (ref: RefObject<any>, callback: () => void) => {
-    debugger;
-
     const handleClick = (e: any) => {
         // e.preventDefault();
-        e.stopImmediatePropagation();
+        e.stopImmediatePropagation()
 
-        debugger;
         if (!ref.current || ref.current.contains(e.target)) {
-            return;
+            return
         }
-                callback();
-    };
+        callback()
+    }
 
     useEffect(() => {
-        document.addEventListener("mousedown", handleClick);
+        document.addEventListener('mousedown', handleClick)
 
         return () => {
-            document.removeEventListener("mousedown", handleClick);
-        };
-    });
-};
+            document.removeEventListener('mousedown', handleClick)
+        }
+    })
+}
 
-export default useOutsideClick;
+export default useOutsideClick

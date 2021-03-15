@@ -1,8 +1,8 @@
 @keyframes spin {
-  from {
-    fill: red;
-  }
-  to {
-    fill: blue;
-  }
+    from {
+        fill: red;
+    }
+    to {
+        fill: blue;
+    }
 }

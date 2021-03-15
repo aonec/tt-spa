@@ -1,9 +1,13 @@
-import {ipv4RegExp} from "../../../tt-components/localBases";
-import * as Yup from 'yup';
+import { ipv4RegExp } from '../../../tt-components/localBases'
+import * as Yup from 'yup'
 
-const yupDate = Yup.date().typeError('Поле обязательное').required('Поле обязательное');
-const yupSerialNumber = Yup.string().required('Введите серийный номер');
-const yupInfoId = Yup.number().typeError('Выберите модель').required('Выберите модель');
+const yupDate = Yup.date()
+    .typeError('Поле обязательное')
+    .required('Поле обязательное')
+const yupSerialNumber = Yup.string().required('Введите серийный номер')
+const yupInfoId = Yup.number()
+    .typeError('Выберите модель')
+    .required('Выберите модель')
 
 export const defaultValidationSchema = Yup.object({
     lastCheckingDate: yupDate,
@@ -11,11 +15,15 @@ export const defaultValidationSchema = Yup.object({
     lastCommercialAccountingDate: yupDate,
     futureCommercialAccountingDate: yupDate,
     serialNumber: yupSerialNumber,
-    ipV4: Yup.string().matches(ipv4RegExp, 'Укажите в формате X.X.X.X').required('Введите IP-адрес устройства'),
-    deviceAddress: Yup.number().nullable().required('Введите сетевой адрес устройства'),
+    ipV4: Yup.string()
+        .matches(ipv4RegExp, 'Укажите в формате X.X.X.X')
+        .required('Введите IP-адрес устройства'),
+    deviceAddress: Yup.number()
+        .nullable()
+        .required('Введите сетевой адрес устройства'),
     port: Yup.number().nullable().required('Введите порт устройства'),
     infoId: yupInfoId,
-});
+})
 
 export const emptyConnectionValidationSchema = Yup.object({
     lastCheckingDate: yupDate,
@@ -24,8 +32,7 @@ export const emptyConnectionValidationSchema = Yup.object({
     futureCommercialAccountingDate: yupDate,
     serialNumber: yupSerialNumber,
     infoId: yupInfoId,
-});
-
+})
 
 // const defaultValidationSchema = Yup.object({
 //     lastCheckingDate: Yup.date().typeError('Поле обязательное').required('Поле обязательное'),

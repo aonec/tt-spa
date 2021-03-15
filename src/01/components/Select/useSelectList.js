@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 export const useSelectList = () => {
-  const [focus, setFocus] = React.useState(-1)
+    const [focus, setFocus] = React.useState(-1)
 
-  return { focus, setFocus }
+    return { focus, setFocus }
 }

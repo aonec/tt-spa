@@ -1,2 +1,2 @@
-export * from "./useGETPerpetrators"
-export * from "./useGETPerpetratorAndContractors"
+export * from './useGETPerpetrators'
+export * from './useGETPerpetratorAndContractors'

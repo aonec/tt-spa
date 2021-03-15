@@ -1,6 +1,6 @@
-import axios from "01/axios"
-import {IndividualDeviceType} from "types/types"
-import { DisabledStateType } from "01/Redux/reducers/readingsReducer"
+import axios from '01/axios'
+import { IndividualDeviceType } from 'types/types'
+import { DisabledStateType } from '01/Redux/reducers/readingsReducer'
 
 export type ReadingsStateType = {
     hasNextPage: boolean
@@ -34,11 +34,14 @@ export type HouseType = {
     street: string | null
     totalArea: null
     totalLivingArea: null
-};
+}
 
-
-export const requestDevicesByHouse = async (HousingStockId: string): Promise<ReadingsStateType> => {
-    const res = await axios.get<any, ReadingsStateType>(`IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`)
+export const requestDevicesByHouse = async (
+    HousingStockId: string
+): Promise<ReadingsStateType> => {
+    const res = await axios.get<any, ReadingsStateType>(
+        `IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`
+    )
     return res
 }
 

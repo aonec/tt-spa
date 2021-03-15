@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 const columns = [
     {
         title: 'Месяц',
@@ -26,7 +26,7 @@ const columns = [
         dataIndex: 'dateandtime',
         key: 'dateandtime',
     },
-];
+]
 
 const data = [
     {
@@ -34,23 +34,23 @@ const data = [
         data: 'Тариф 1',
         use: '0 м',
         operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
+        dateandtime: '24 марта 2020 14:34',
     },
     {
         month: 'Февраль 2020',
         data: 'Тариф 1',
         use: '123 КВт/ч',
         operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
+        dateandtime: '24 марта 2020 14:34',
     },
     {
         month: 'Февраль 2020',
         data: 'Тариф 1',
         use: '123 КВт/ч',
         operator: 'Константинопольский К.К.',
-        dateandtime: "24 марта 2020 14:34",
+        dateandtime: '24 марта 2020 14:34',
     },
-];
+]
 
 export const Documents = () => {
     const [state, setState] = useState()
@@ -61,12 +61,3 @@ export const Documents = () => {
         </>
     )
 }
-
-
-
-
-
-
-
-
-

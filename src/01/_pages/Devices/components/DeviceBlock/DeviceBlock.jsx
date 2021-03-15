@@ -1,44 +1,67 @@
-import React from 'react';
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
-import { Icon } from '../../../../tt-components/Icon';
-import {NotConnectedIcon} from '../../../../components/NotConnectedIcon/NotConnectedIcon';
-import {Dates} from './Dates';
-import Node from './Node/Node';
+import React from 'react'
+import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
+import { Icon } from '../../../../tt-components/Icon'
+import { IconWithTooltip } from '../../../../components/NotConnectedIcon/IconWithTooltip'
+import { Dates } from './Dates'
+import Node from './Node/Node'
+import IconTT from '../../../../tt-components/IconTT'
 
 const DeviceBlock = (props) => {
-    const { device: calculator} = props;
+    const { device: calculator } = props
 
     return (
         <>
             <DeviceWrapper>
-                <div style={{display: 'flex', alignItems: 'center'}}>
-                    <DeviceLink
-                        to={`/calculators/${calculator.id}`}
-                    >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <DeviceLink to={`/calculators/${calculator.id}`}>
                         <DeviceIcon icon="device" fill="var(--main-100)" />
                         {calculator.model}
-                        <SerialNumber>
-                            ({calculator.serialNumber})
-                        </SerialNumber>
+                        <SerialNumber>({calculator.serialNumber})</SerialNumber>
                     </DeviceLink>
 
                     <div hidden={calculator.isConnected}>
-                        <NotConnectedIcon />
+                        <IconWithTooltip
+                            title={'Узел учета без оборудования связи'}
+                        >
+                            <Icon
+                                icon={'notConnected'}
+                                color={'var(--main-100)'}
+                            />
+                        </IconWithTooltip>
                     </div>
 
+                    <div
+                        hidden={
+                            !calculator.isConnected ||
+                            (calculator.connection.deviceAddress &&
+                                calculator.connection.ipV4)
+                        }
+                    >
+                        <IconWithTooltip
+                            title={'Проверьте настройки соединения'}
+                        >
+                            <Icon
+                                icon={'checkConnection'}
+                                color={'var(--error)'}
+                            />
+                        </IconWithTooltip>
+                    </div>
                 </div>
 
-                <Dates firstDate={calculator.lastCheckingDate} lastDate={calculator.futureCheckingDate} />
-
+                <Dates
+                    firstDate={calculator.lastCheckingDate}
+                    lastDate={calculator.futureCheckingDate}
+                />
             </DeviceWrapper>
             <div>
-                {calculator.nodes.map((node) => <Node node={node} />)}
+                {calculator.nodes.map((node) => (
+                    <Node node={node} />
+                ))}
             </div>
         </>
-
-    );
-};
+    )
+}
 
 export const DeviceWrapper = styled.div`
     display: grid;
@@ -64,7 +87,7 @@ export const DeviceLink = styled(NavLink)`
     font-weight: bold;
     font-size: 16px;
     line-height: 2;
-    color: #272f5A;
+    color: #272f5a;
     margin-right: 8px;
 `
 
@@ -72,4 +95,4 @@ export const DeviceIcon = styled(Icon)`
     margin-right: 8px;
 `
 
-export default DeviceBlock;
+export default DeviceBlock

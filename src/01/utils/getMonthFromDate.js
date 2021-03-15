@@ -1,16 +1,16 @@
-import moment from 'moment';
+import moment from 'moment'
 
-const firstLetterToUpperCase = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+export const firstLetterToUpperCase = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1)
 
 export const getMonthFromDate = (dateString) => {
-   const month = moment(dateString).format('MMMM');
+    const month = moment(dateString).format('MMMM')
 
-   return firstLetterToUpperCase(month)
+    return firstLetterToUpperCase(month)
 }
 
 export const getPreviousMonthFromDate = (dateString) => {
-   const month = moment(dateString).subtract(1, 'months').format('MMMM');
+    const month = moment(dateString).subtract(1, 'months').format('MMMM')
 
-   return firstLetterToUpperCase(month)
+    return firstLetterToUpperCase(month)
 }
-

@@ -1,48 +1,48 @@
-import React, { useContext } from 'react';
-import {
-    Menu, Dropdown, Button,
-} from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
-import styled, {css} from 'styled-components';
-
+import React, { useContext } from 'react'
+import { Menu, Dropdown, Button } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
+import styled, { css } from 'styled-components'
 
 const StyledMenuButton = styled(Button).attrs((props) => ({
     form: props.form,
     modal: props.modal,
 }))`
-display: flex;
-align-items: center;
-justify-content: center;
-width: 48px;
-height: 48px;
-${(props) => props.size == '48' && css`
-width: 48px;
-height: 48px;
-  `}
-  
-${(props) => props.size == '24' && css`
-width: 24px;
-height: 24px;
-  `}
-`;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    ${(props) =>
+        props.size == '48' &&
+        css`
+            width: 48px;
+            height: 48px;
+        `}
+
+    ${(props) =>
+        props.size == '24' &&
+        css`
+            width: 24px;
+            height: 24px;
+        `}
+`
 
 export const MenuButtonTT = (props) => {
-    console.log("props", props)
-    const {arr, size} = props;
-
+    console.log('props', props)
+    const { arr, size } = props
 
     const menu = (
         <Menu>
             {arr.map((item, index) => {
-                const { title, itemFunction } = item;
+                const { title, itemFunction } = item
                 return (
-                    <Menu.Item key={index} onClick={itemFunction}>{title}</Menu.Item>
-                );
-            }) }
+                    <Menu.Item key={index} onClick={itemFunction}>
+                        {title}
+                    </Menu.Item>
+                )
+            })}
         </Menu>
-    );
-
-
+    )
 
     return (
         <Dropdown overlay={menu} trigger={['click']}>
@@ -50,11 +50,10 @@ export const MenuButtonTT = (props) => {
                 <MoreOutlined />
             </StyledMenuButton>
         </Dropdown>
-    );
-};
+    )
+}
 
-export default MenuButtonTT;
-
+export default MenuButtonTT
 
 // const arr = [{
 //   title: 'Редактировать узел',

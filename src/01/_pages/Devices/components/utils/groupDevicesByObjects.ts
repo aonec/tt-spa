@@ -1,18 +1,24 @@
-export const groupDevicesByObjects = (devices: CalculatorsInterfaceFull[]): DevicesByAddressInterface[] => {
-    const devicesByObject: DevicesByAddressInterface[] = [];
+import { HousingMeteringDeviceListResponse } from '../../../../../myApi'
+
+export const groupDevicesByObjects = (
+    devices: CalculatorsInterfaceFull[]
+): DevicesByAddressInterface[] => {
+    const devicesByObject: DevicesByAddressInterface[] = []
     devices.forEach((device) => {
         if (!device.address) {
-            devicesByObject.push({ devices: [{ ...device }] });
-            return;
+            devicesByObject.push({ devices: [{ ...device }] })
+            return
         }
-        const { address, ...rest } = device;
-        const index = devicesByObject.findIndex((el) => el.address?.id === address?.id);
+        const { address, ...rest } = device
+        const index = devicesByObject.findIndex(
+            (el) => el.address?.id === address?.id
+        )
         if (index === -1) {
             devicesByObject.push({ address, devices: [{ ...rest }] })
         } else {
-            devicesByObject[index].devices.push({ ...rest });
+            devicesByObject[index].devices.push({ ...rest })
         }
-    });
+    })
     return devicesByObject
 }
 
@@ -27,16 +33,16 @@ export interface CalculatorsInterface {
     futureCheckingDate: string | null
     futureCommercialAccountingDate: string | null
     hasTasks: boolean
-    hubs: any
+    hubs: HousingMeteringDeviceListResponse[] | null
     id: boolean
     isConnected: boolean
     lastCheckingDate: string | null
     lastCommercialAccountingDate: string | null
-    managementFirm : ManagementFirmInterface
+    managementFirm: ManagementFirmInterface
     model: string
     nodes: NodeInterface[]
     serialNumber: string
-    transactionType: any
+    transactionType: string | null
 }
 
 interface CalculatorsInterfaceFull extends CalculatorsInterface {
@@ -127,5 +133,3 @@ interface HubInterface {
     pipeNumber: number
     magistral: string
 }
-
-

@@ -3,7 +3,7 @@ $height: 32px;
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active  {
+input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset;
 }
 
@@ -13,7 +13,7 @@ input:-webkit-autofill:active  {
 }
 
 .ant-tabsComponent-nav {
-    margin-bottom: 24px
+    margin-bottom: 24px;
 }
 
 .form {
@@ -30,7 +30,7 @@ input:-webkit-autofill:active  {
 }
 
 .input__form {
-    border: 1px solid #DCDEE4;
+    border: 1px solid #dcdee4;
     box-sizing: border-box;
     border-radius: 4px;
     padding-left: 10px;
@@ -38,7 +38,7 @@ input:-webkit-autofill:active  {
 }
 
 .input__form:focus {
-    border: 2px solid #DCDEE4;
+    border: 2px solid #dcdee4;
 }
 
 .input__form:hover {
@@ -54,8 +54,9 @@ input:-webkit-autofill:active  {
     margin-left: 20px;
 
     border: 1px solid #dcdee4;
-    background-color: #189EE9;
-    transition: background-color 150ms linear 0s, transform 150ms linear 0s, border-color 150ms linear 0s;
+    background-color: #189ee9;
+    transition: background-color 150ms linear 0s, transform 150ms linear 0s,
+        border-color 150ms linear 0s;
 }
 
 .btn:hover {

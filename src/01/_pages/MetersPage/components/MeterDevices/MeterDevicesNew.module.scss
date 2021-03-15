@@ -1,22 +1,14 @@
 .arrowEnabled {
-  svg {
-    fill: var(--main-100);
-  }
-  &:hover svg {
-    fill: var(--primary-100)
-
-  }
-
-  //&:active svg {
-  //  fill: var(--primary-16)
-  //}
+    svg {
+        fill: var(--main-100);
+    }
+    &:hover svg {
+        fill: var(--primary-100);
+    }
 }
 
 .arrowDisabled {
-  svg {
-    fill: var(--main-32);
-  }
-  //&:hover svg {
-  //  fill: blue
-  //}
+    svg {
+        fill: var(--main-32);
+    }
 }

@@ -1,2 +1,2 @@
-const url = "housingstocks"
-export const getObj = { url, method: "get" }
+const url = 'housingstocks'
+export const getObj = { url, method: 'get' }
