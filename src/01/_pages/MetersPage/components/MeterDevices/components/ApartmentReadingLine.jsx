@@ -2,20 +2,16 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReadingsBlock from './ReadingsBlock'
 import { useReadings } from '../../../../../hooks/useReadings'
-import moment from 'moment'
-import axios from '01/axios'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
 import { Modal } from 'antd'
 import ButtonTT from '../../../../../tt-components/ButtonTT'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
 import {
-    setInputFocused,
     setInputUnfocused,
 } from '../../../../../Redux/ducks/readings/actionCreators'
 import DeviceInfo from './DeviceInfo'
-import { IndividualDeviceType } from '../../../../../../types/types'
-import { formReadingToPush } from '../../../../../utils/formReadingsToPush'
+
 
 const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
@@ -26,33 +22,26 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
     const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
         ?.isDisabled;
 
-    const [isVisible, setIsVisible] = useState(false)
+    // const [isVisible, setIsVisible] = useState(false)
 
-    const [readingsState, setReadingsState] = useReadings(device)
+    const {
+        readingsState,
+        setReadingsState,
+        isVisible,
+        setIsVisible,
+        initialReadings,
+        setInitialReadings,
+        onBlurHandler,
+        onFocusHandler,
+        onInputChange,
+        isCancel,
+        setIsCancel,
+        handleOk,
+        handleCancel
+    } = useReadings(device, sliderIndex)
 
-    const [isCancel, setIsCancel] = useState(false)
-
-    const [initialReadings, setInitialReadings] = useState()
 
     const textInput = React.createRef()
-
-    const handleOk = () => {
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        dispatch(setInputUnfocused())
-        setIsVisible(false)
-    }
-
-    const handleCancel = () => {
-        setIsCancel(true)
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        setIsVisible(false)
-    }
 
     const afterCloseHandler = () => {
         if (isCancel) {
@@ -74,72 +63,6 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
     if (!readingsState) return null
 
-
-    const onInputChange = (e, index, setReadingsState) => {
-        e.preventDefault()
-        setReadingsState((state) => {
-            debugger;
-            return {
-                ...state,
-                currentReadingsArray: state.currentReadingsArray.map(
-                    (reading, i) => {
-                        debugger;
-                        return i === index ? +e.target.value : reading
-                    }
-                ),
-            }
-        })
-
-        debugger;
-        if (!e.target.value) {
-                dispatch(setInputFocused(device.id))
-        }
-    }
-
-    const formDeviceReadingObject = (deviceItem) => {
-        return ({
-            deviceId: deviceItem.id,
-            value1: +readingsState.currentReadingsArray[0],
-            readingDate: moment().toISOString(),
-            uploadTime: moment().toISOString(),
-            isForced: true
-        })
-    }
-
-    const sendReadings = (deviceItem) => {
-        const deviceReadingObject = formDeviceReadingObject(deviceItem)
-        for (let i = 1; i < 4; i++) {
-            if (+readingsState.currentReadingsArray[i]) {
-                deviceReadingObject[`value${i + 1}`] = +readingsState.currentReadingsArray[i]
-            }
-        }
-        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-        setInitialReadings(readingsState.currentReadingsArray)
-    }
-
-    const onBlurHandler = (e, setReadingsState) => {
-        if (e.currentTarget.contains(e.relatedTarget)) return
-
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
-        if (isNull) {
-            setIsVisible(true)
-        } else {
-            if (readingsState.currentReadingsArray !== initialReadings) {
-                sendReadings(device)
-            }
-            dispatch(setInputUnfocused())
-        }
-    }
-
-    const onFocusHandler = (e, setReadingsState) => {
-        if (e.currentTarget.contains(e.relatedTarget)) return
-
-        setInitialReadings(readingsState.currentReadingsArray)
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
-        if (isNull) {
-            dispatch(setInputFocused(device.id))
-        }
-    }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map(
         (value, index) => {

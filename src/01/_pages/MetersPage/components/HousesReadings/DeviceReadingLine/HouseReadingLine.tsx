@@ -34,13 +34,21 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
     const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
         ?.isDisabled
 
-    const [isVisible, setIsVisible] = useState(false)
-
-    const [readingsState, setReadingsState] = useReadings(device)
-
-    const [isCancel, setIsCancel] = useState(false)
-
-    const [initialReadings, setInitialReadings] = useState<number[]>([])
+    const {
+        readingsState,
+        setReadingsState,
+        isVisible,
+        setIsVisible,
+        initialReadings,
+        setInitialReadings,
+        onBlurHandler,
+        onFocusHandler,
+        onInputChange,
+        isCancel,
+        setIsCancel,
+        handleOk,
+        handleCancel
+    } = useReadings(device)
 
     const textInput = React.createRef<Input>()
 
@@ -48,24 +56,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType)
 
-
-    const handleOk = () => {
-        setReadingsState((state: any) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        dispatch(setInputUnfocused())
-        setIsVisible(false)
-    }
-
-    const handleCancel = () => {
-        setReadingsState((state: any) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        setIsCancel(true)
-        setIsVisible(false)
-    }
 
     const afterCloseHandler = () => {
         if (isCancel) {
@@ -109,76 +99,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         return <Consumption key={uuid()}>{el} кВтч</Consumption>
     })
 
-    const onInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
-        e.preventDefault()
-        setReadingsState((state: any) => ({
-            ...state,
-            currentReadingsArray: state.currentReadingsArray.map(
-                (reading: any, i: any): number => {
-                    return i === index ? +e.target.value : reading
-                }
-            ),
-        }))
-    }
 
-    type ReadingType = {
-        deviceId: number
-        value1: number
-        value2?: number
-        value3?: number
-        value4?: number
-        readingDate: string
-        uploadTime: string
-        isForced: boolean
-    }
-
-
-    const formDeviceReadingObject = (deviceItem: IndividualDeviceType): ReadingType => {
-        return ({
-            deviceId: deviceItem.id,
-            value1: +readingsState.currentReadingsArray[0],
-            readingDate: moment().toISOString(),
-            uploadTime: moment().toISOString(),
-            isForced: true
-        })
-    }
-
-    const sendReadings = (deviceItem: IndividualDeviceType) => {
-        const deviceReadingObject: Record<string, any> = formDeviceReadingObject(deviceItem)
-        for (let i = 1; i < 4; i++) {
-            if (+readingsState.currentReadingsArray[i]) {
-                deviceReadingObject[`value${i + 1}`] = +readingsState.currentReadingsArray[i]
-            }
-        }
-        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-        setInitialReadings(readingsState.currentReadingsArray)
-    }
-
-    const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-        if (e.currentTarget.contains(e.relatedTarget as Node)) return
-        const isNull = isNullInArray(readingsState?.currentReadingsArray)
-        if (isNull) {
-            setIsVisible(true)
-        } else {
-            if (readingsState.currentReadingsArray !== initialReadings) {
-                sendReadings(device)
-            }
-            dispatch(setInputUnfocused())
-        }
-    }
-
-    const onFocusHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-        if (e.currentTarget.contains(e.relatedTarget as Node)) return
-
-        setInitialReadings(readingsState.currentReadingsArray)
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
-        if (isNull) {
-            dispatch(setInputFocused(device.id))
-        }
-    }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map(
         (value, index) => (
