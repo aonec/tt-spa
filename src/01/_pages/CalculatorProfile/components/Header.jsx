@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import _ from 'lodash'
-import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components'
-import DeviceIcons from '01/_components/DeviceIcons'
-import { Menu, EditButton } from './EditButton'
-import { DeviceContext } from '../CalculatorProfile'
-import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates'
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+import _ from 'lodash';
+import {
+  Icon, Loader, HeaderWrap, Title, Subtitle,
+} from '01/_components';
+import DeviceIcons from '01/_components/DeviceIcons';
+import { Menu, EditButton } from './EditButton';
+import { DeviceContext } from '../CalculatorProfile';
+import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
+import {MenuButtonTT} from "../../../tt-components";
 
-export const Template = styled.div``
+export const Template = styled.div``;
 
 export const List = styled.ul`
     border: 1px solid #dcdee4;
@@ -17,7 +20,7 @@ export const List = styled.ul`
     z-index: 50;
     background: white;
     display: none;
-`
+`;
 
 export const ListItem = styled.li`
     font-size: 16px;
@@ -29,70 +32,98 @@ export const ListItem = styled.li`
         background: #189ee9;
         color: #ffffff !important;
     }
-`
+`;
+
+const arr = [
+  {
+    title: 'Редактировать вычислитель',
+    itemFunction: () => {
+      // push(`${url}/edit`);
+    },
+  },
+  {
+    title: 'Выгрузить отчет о общедомовом потреблении',
+    itemFunction: () => {
+      // setAddOdpu(true);
+    },
+  },
+  {
+    title: 'Добавить Узел',
+    itemFunction: () => {
+      // alert('Поставить/Снять узел на коммерческий учёт');
+    },
+  },
+  {
+    title: 'Закрыть вычислитель',
+    itemFunction: () => {
+      // alert('Поставить/Снять узел на коммерческий учёт');
+    },
+  },
+];
 
 export const Header = () => {
-    const {
-        device,
-        building,
-        loadings,
-        errors,
-        error,
-        typeODPU,
-        calcModel,
-    } = useContext(DeviceContext)
-    const loadingDevice = _.get(loadings, 'device', true)
-    const loadingBuilding = _.get(loadings, 'building', true)
+  const {
+    device,
+    building,
+    loadings,
+    errors,
+    error,
+    typeODPU,
+    calcModel,
+  } = useContext(DeviceContext);
+  const loadingDevice = _.get(loadings, 'device', true);
+  const loadingBuilding = _.get(loadings, 'building', true);
 
-    const loading = loadingDevice || loadingBuilding
+  const loading = loadingDevice || loadingBuilding;
 
-    const { city, street, housingStockNumber, corpus, id } =
-        building || DEFAULT_BUILDING
-    const { model, serialNumber, resource } = device || DEFAULT_DEVICE
-    const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON
+  const {
+    city, street, housingStockNumber, corpus, id,
+  } = building || DEFAULT_BUILDING;
+  const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
+  const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-    const errorOfComponent = _.get(error, 'resource', null)
+  const errorOfComponent = _.get(error, 'resource', null);
 
-    if (errorOfComponent) {
-        return (
-            <HeaderWrap>
-                <Title>{error.text}</Title>
-                <Subtitle>Обратитесь в тех.поддержку</Subtitle>
-            </HeaderWrap>
-        )
-    }
-
+  if (errorOfComponent) {
     return (
-        <HeaderWrap
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
-            <Loader show={loading} size="32">
-                <div>
-                    <Title>
-                        <Icon
-                            icon={icon}
-                            color={color}
-                            size="24"
-                            style={{ marginRight: '8px' }}
-                        />
-                        {`${model || 'Вычислитель'} (${serialNumber})`}
-                    </Title>
-                    {/*<ButtonTT onClick={buttonHandler}>TEST</ButtonTT>*/}
-                    <Subtitle
-                        to={`/objects/${id}`}
-                    >{`${city}, ${street}, ${housingStockNumber}${
-                        corpus ? `, к.${corpus}` : ''
-                    }`}</Subtitle>
-                </div>
-                <div style={{ position: 'relative' }}>
-                    <Menu />
-                </div>
-            </Loader>
-        </HeaderWrap>
-    )
-}
+      <HeaderWrap>
+        <Title>{error.text}</Title>
+        <Subtitle>Обратитесь в тех.поддержку</Subtitle>
+      </HeaderWrap>
+    );
+  }
 
-export default Header
+  return (
+    <HeaderWrap
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Loader show={loading} size="32">
+        <div>
+          <Title>
+            <Icon
+              icon={icon}
+              color={color}
+              size="24"
+              style={{ marginRight: '8px' }}
+            />
+            {`${model || 'Вычислитель'} (${serialNumber})`}
+          </Title>
+          {/* <ButtonTT onClick={buttonHandler}>TEST</ButtonTT> */}
+          <Subtitle to={`/objects/${id}`}>
+            {`${city}, ${street}, ${housingStockNumber}${
+              corpus ? `, к.${corpus}` : ''
+            }`}
+          </Subtitle>
+        </div>
+        <div style={{ position: 'relative' }}>
+          <MenuButtonTT arr={arr} />
+        </div>
+      </Loader>
+    </HeaderWrap>
+  );
+};
+
+export default Header;
