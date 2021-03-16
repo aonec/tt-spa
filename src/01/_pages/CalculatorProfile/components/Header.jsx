@@ -53,6 +53,8 @@ export const Header = () => {
   const loadingBuilding = _.get(loadings, 'building', true);
   const { push } = useHistory()
 
+  // console.log(device)
+
   const menuButtonArr = [
     {
       title: 'Редактировать вычислитель',
@@ -70,7 +72,7 @@ export const Header = () => {
     {
       title: 'Добавить Узел',
       itemFunction: () => {
-        push(`/calculators/${device.id}/add_node`);
+        push(`/objects/${device.address.id}/add_node`);
         // alert('Поставить/Снять узел на коммерческий учёт');
       },
     },
