@@ -82,3 +82,24 @@ export const Menu = (showPopupHandler) => {
         </>
     )
 }
+
+const arr = [
+    {
+        title: 'Редактировать вычислитель',
+        itemFunction: () => {
+            // push(`${url}/edit`);
+        },
+    },
+    {
+        title: 'Выгрузить отчет о общедомовом потреблении',
+        itemFunction: () => {
+            // setAddOdpu(true);
+        },
+    },
+    {
+        title: 'Добавить Узел',
+        itemFunction: () => {
+            // alert('Поставить/Снять узел на коммерческий учёт');
+        },
+    },
+]

@@ -84,14 +84,12 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
             <Formik
                 initialValues={{
                     dateRange: [
-                        moment()
-                            .subtract(6, 'day')
-                            .set({
-                                hour: 0,
-                                minute: 0,
-                                second: 0,
-                                millisecond: 0,
-                            }),
+                        moment().subtract(6, 'day').set({
+                            hour: 0,
+                            minute: 0,
+                            second: 0,
+                            millisecond: 0,
+                        }),
                         moment().set({
                             hour: 23,
                             minute: 0,
