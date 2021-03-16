@@ -16,7 +16,6 @@ import {
 import DeviceInfo from './DeviceInfo'
 import { IndividualDeviceType } from '../../../../../../types/types'
 import { formReadingToPush } from '../../../../../utils/formReadingsToPush'
-import { sendReadings } from '../../../api'
 
 const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
@@ -95,6 +94,27 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         if (!e.target.value) {
                 dispatch(setInputFocused(device.id))
         }
+    }
+
+    const formDeviceReadingObject = (deviceItem) => {
+        return ({
+            deviceId: deviceItem.id,
+            value1: +readingsState.currentReadingsArray[0],
+            readingDate: moment().toISOString(),
+            uploadTime: moment().toISOString(),
+            isForced: true
+        })
+    }
+
+    const sendReadings = (deviceItem) => {
+        const deviceReadingObject = formDeviceReadingObject(deviceItem)
+        for (let i = 1; i < 4; i++) {
+            if (+readingsState.currentReadingsArray[i]) {
+                deviceReadingObject[`value${i + 1}`] = +readingsState.currentReadingsArray[i]
+            }
+        }
+        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+        setInitialReadings(readingsState.currentReadingsArray)
     }
 
     const onBlurHandler = (e, setReadingsState) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { IndividualDeviceType } from '../../../../../../types/types'
+import {IndividualDeviceType} from '../../../../../../types/types'
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber'
 import ReadingsBlock from '../../MeterDevices/components/ReadingsBlock'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
@@ -22,6 +22,8 @@ import {
 } from '../../MeterDevices/components/ApartmentReadingLine'
 import { v4 as uuid } from 'uuid'
 import { sendReadings } from '01/_pages/MetersPage/api'
+import moment from "moment";
+import axios from '01/axios'
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
@@ -120,6 +122,39 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
                 }
             ),
         }))
+    }
+
+    type ReadingType = {
+        deviceId: number
+        value1: number
+        value2?: number
+        value3?: number
+        value4?: number
+        readingDate: string
+        uploadTime: string
+        isForced: boolean
+    }
+
+
+    const formDeviceReadingObject = (deviceItem: IndividualDeviceType): ReadingType => {
+        return ({
+            deviceId: deviceItem.id,
+            value1: +readingsState.currentReadingsArray[0],
+            readingDate: moment().toISOString(),
+            uploadTime: moment().toISOString(),
+            isForced: true
+        })
+    }
+
+    const sendReadings = (deviceItem: IndividualDeviceType) => {
+        const deviceReadingObject: Record<string, any> = formDeviceReadingObject(deviceItem)
+        for (let i = 1; i < 4; i++) {
+            if (+readingsState.currentReadingsArray[i]) {
+                deviceReadingObject[`value${i + 1}`] = +readingsState.currentReadingsArray[i]
+            }
+        }
+        axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+        setInitialReadings(readingsState.currentReadingsArray)
     }
 
     const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
