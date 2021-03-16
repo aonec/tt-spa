@@ -1,6 +1,6 @@
 import { Route, useParams, useLocation } from 'react-router-dom'
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
-import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile'
+import {getCalculatorTasks, getCalculator, getUser} from './apiCalculatorProfile'
 import { Grid } from '../../_components'
 
 import { Header } from './components/Header'
@@ -16,6 +16,7 @@ import DeregisterDevice from './components/Modals/ModalDeregister'
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 import CheckDevice from './components/Modals/ModalCheck'
 import Nodes from './components/Nodes'
+
 
 interface DeviceInterface {
     address: object
@@ -67,6 +68,7 @@ export const CalculatorProfile = () => {
     const [report, setReport] = useState(false)
     const [check, setCheck] = useState(false)
     const [nodes, setNodes] = useState()
+    const [user, setUser] = useState();
 
     const [error, setError] = useState()
     const [errors, setErrors] = useState()
@@ -93,11 +95,13 @@ export const CalculatorProfile = () => {
         Promise.allSettled([
             getCalculator(deviceId),
             getCalculatorTasks(deviceId),
+            getUser()
         ])
             .then((responses: any) => {
                 // const [{value : device}, {value: tasks}] = responses;
                 const device = responses[0].value
                 const tasks = responses[1].value
+                const user = responses[2].value
                 setDevice(device)
                 setBuilding(device.address)
                 setHubs(device.hubs)
@@ -105,6 +109,7 @@ export const CalculatorProfile = () => {
                 setRelated(device.hubs)
                 setNodes(device.nodes)
                 setIsLoading(false)
+                setUser(user)
             })
             .catch(({ resource, message }) => {
                 // const text = errorsTemplate[resource];
@@ -124,6 +129,7 @@ export const CalculatorProfile = () => {
     }, [])
 
     if (isLoading) return <Loader show size={32} />
+    console.log(user)
 
     const context = {
         device,
@@ -141,6 +147,7 @@ export const CalculatorProfile = () => {
         setReport,
         check,
         setCheck,
+        user
     }
     return (
         <DeviceContext.Provider value={context}>

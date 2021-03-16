@@ -24,19 +24,19 @@ export const Header = () => {
     const menuButtonArr = [
         {
             title: 'Редактировать узел',
-            itemFunction: () => {
+            cb: () => {
                 push(`/calculators/${deviceId}/edit`)
             },
         },
         {
             title: 'Добавить новый прибор',
-            itemFunction: () => {
+            cb: () => {
                 setAddOdpu(true)
             },
         },
         {
             title: 'Поставить/Снять узел на коммерческий учёт',
-            itemFunction: () => {
+            cb: () => {
                 alert('Поставить/Снять узел на коммерческий учёт')
             },
         },
