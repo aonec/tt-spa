@@ -46,10 +46,9 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType)
 
-    if (!readingsState) return null
 
     const handleOk = () => {
-        setReadingsState((state) => ({
+        setReadingsState((state: any) => ({
             ...state,
             currentReadingsArray: initialReadings,
         }))
@@ -58,7 +57,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
     }
 
     const handleCancel = () => {
-        setReadingsState((state) => ({
+        setReadingsState((state: any) => ({
             ...state,
             currentReadingsArray: initialReadings,
         }))
@@ -75,6 +74,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     //useConsumption
     useEffect(() => {
+        if (!readingsState) return
         const currentReadings = readingsState?.currentReadingsArray || {}
         const previousReadings = readingsState?.previousReadingsArray || {}
         let consumptionArray = Array.from(
@@ -92,16 +92,16 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     //useInputsUnfocused
     useEffect(() => {
-        if (!readingsState.currentReadingsArray) return
+        if (!readingsState) return
         const isNull = isNullInArray(readingsState.currentReadingsArray)
 
         if (!isNull) {
             dispatch(setInputUnfocused())
         }
-    }, [readingsState.currentReadingsArray])
+    }, [readingsState])
 
 
-    if (!readingsState.currentReadingsArray?.length) return null
+    if (!readingsState) return null
 
     const consumptionElems = consumptionState.map((el) => {
         return <Consumption key={uuid()}>{el} кВтч</Consumption>
@@ -112,10 +112,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         index: number
     ) => {
         e.preventDefault()
-        setReadingsState((state) => ({
+        setReadingsState((state: any) => ({
             ...state,
             currentReadingsArray: state.currentReadingsArray.map(
-                (reading, i): number => {
+                (reading: any, i: any): number => {
                     return i === index ? +e.target.value : reading
                 }
             ),

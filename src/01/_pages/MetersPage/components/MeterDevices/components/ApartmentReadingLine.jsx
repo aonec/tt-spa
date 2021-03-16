@@ -64,7 +64,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
     //useInputsUnfocused
     useEffect(() => {
-        if (!readingsState.currentReadingsArray) return
+        if (!readingsState?.currentReadingsArray) return
         const isNull = isNullInArray(readingsState.currentReadingsArray)
 
         if (!isNull) {
@@ -73,26 +73,31 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
     }, [readingsState])
 
 
-    if (!readingsState.currentReadingsArray?.length) return null
+    if (!readingsState) return null
 
 
-    const onInputChange = (e, index) => {
+    const onInputChange = (e, index, setReadingsState) => {
         e.preventDefault()
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: state.currentReadingsArray.map(
-                (reading, i) => {
-                    return i === index ? +e.target.value : reading
-                }
-            ),
-        }))
+        setReadingsState((state) => {
+            debugger;
+            return {
+                ...state,
+                currentReadingsArray: state.currentReadingsArray.map(
+                    (reading, i) => {
+                        debugger;
+                        return i === index ? +e.target.value : reading
+                    }
+                ),
+            }
+        })
 
+        debugger;
         if (!e.target.value) {
-            dispatch(setInputFocused(device.id))
+                dispatch(setInputFocused(device.id))
         }
     }
 
-    const onBlurHandler = (e) => {
+    const onBlurHandler = (e, setReadingsState) => {
         if (e.currentTarget.contains(e.relatedTarget)) return
 
         const isNull = isNullInArray(readingsState.currentReadingsArray)
@@ -106,7 +111,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }
 
-    const onFocusHandler = (e) => {
+    const onFocusHandler = (e, setReadingsState) => {
         if (e.currentTarget.contains(e.relatedTarget)) return
 
         setInitialReadings(readingsState.currentReadingsArray)
@@ -125,7 +130,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                         device.id + index
                     }
                     index={index}
-                    onChange={(e) => onInputChange(e, index)}
+                    onChange={(e) => onInputChange(e, index, setReadingsState)}
                     value={value}
                     resource={readingsState.resource}
                     operatorCabinet
