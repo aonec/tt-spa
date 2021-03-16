@@ -11,8 +11,8 @@ const DeviceBlock = (props) => {
     const { device: calculator } = props
 
     const {isConnected} = calculator;
-    const isConnectionError = !calculator.isConnected || (calculator.connection.deviceAddress && calculator.connection.ipV4);
-
+    const isConnectionError = !(calculator.connection.port && calculator.connection.ipV4);
+debugger;
     return (
         <>
             <DeviceWrapper>
@@ -23,7 +23,7 @@ const DeviceBlock = (props) => {
                         <SerialNumber>({calculator.serialNumber})</SerialNumber>
                     </DeviceLink>
 
-                    {isConnected && <IconWithTooltip
+                    {!isConnected && <IconWithTooltip
                             title={'Узел учета без оборудования связи'}
                         >
                             <Icon

@@ -96,7 +96,6 @@ export const useReadings = (device: IndividualDeviceType, sliderIndex = 0) => {
         e: React.ChangeEvent<HTMLInputElement>,
         index: number,
     ) => {
-        debugger;
         e.preventDefault()
         if (isNaN(+e.target.value)) return
         setReadingsState((state: any) => ({
