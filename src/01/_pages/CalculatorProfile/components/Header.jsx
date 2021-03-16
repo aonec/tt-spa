@@ -21,8 +21,11 @@ export const Header = () => {
   } = useContext(DeviceContext);
 
   if (!user) {
-      return <Loader size="64" show />
+    return <Loader size="64" show />;
   }
+
+  const { userRoleIds } = user;
+  // console.log('userRoleIds', userRoleIds);
 
   const {
     city, street, housingStockNumber, corpus, id,
@@ -30,13 +33,15 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
+  const watcher = 3308027;
+  const isWatcher = userRoleIds.includes(watcher);
+  // console.log('isWatcher', isWatcher);
   const menuButtonArr = [
     {
       title: 'Редактировать вычислитель',
-      cb: () => {
-        push(`/calculators/${device.id}/edit`);
-      },
-      color: 'default',
+      cb: () => isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
+      color: isWatcher ? 'disabled' : 'default',
+      clickable: !isWatcher
     },
     {
       title: 'Выгрузить отчет о общедомовом потреблении',

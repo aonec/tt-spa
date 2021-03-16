@@ -34,6 +34,7 @@ export const MenuButtonTT = (props) => {
   function getCurrentColor(color) {
     switch (color) {
       case 'default': return 'rgba(39, 47, 90, 0.9)';
+      case 'disabled': return 'rgba(39, 47, 90, 0.32)';
       case 'black': return 'rgba(39, 47, 90, 0.9)';
       case 'red': return '#FC525B';
       default: return 'rgba(39, 47, 90, 0.9)';
@@ -43,12 +44,13 @@ export const MenuButtonTT = (props) => {
   const menu = (
     <Menu>
       {arr.map((item, index) => {
-        const { title, cb, color } = item;
+        const { title, cb, color, clickable } = item;
 
         const currentColor = getCurrentColor(color);
+        // console.log("clickable", clickable)
 
         return (
-          <MenuItem key={title + color} onClick={cb} color={currentColor}>
+          <MenuItem key={title + color} onClick={cb} color={currentColor} style={{pointerEvents: clickable === false ? 'none': 'default'}}>
             {title}
           </MenuItem>
         );
