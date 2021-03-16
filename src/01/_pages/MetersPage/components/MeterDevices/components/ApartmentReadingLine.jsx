@@ -26,11 +26,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
     const {
         readingsState,
-        setReadingsState,
         isVisible,
-        setIsVisible,
-        initialReadings,
-        setInitialReadings,
         onBlurHandler,
         onFocusHandler,
         onInputChange,
@@ -73,7 +69,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                         device.id + index
                     }
                     index={index}
-                    onChange={(e) => onInputChange(e, index, setReadingsState)}
+                    onChange={(e) => onInputChange(e, index)}
                     value={value}
                     resource={readingsState.resource}
                     operatorCabinet

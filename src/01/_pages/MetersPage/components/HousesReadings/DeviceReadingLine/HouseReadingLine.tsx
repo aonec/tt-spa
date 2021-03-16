@@ -21,9 +21,6 @@ import {
     getInputColor,
 } from '../../MeterDevices/components/ApartmentReadingLine'
 import { v4 as uuid } from 'uuid'
-import { sendReadings } from '01/_pages/MetersPage/api'
-import moment from "moment";
-import axios from '01/axios'
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
@@ -36,11 +33,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     const {
         readingsState,
-        setReadingsState,
         isVisible,
-        setIsVisible,
-        initialReadings,
-        setInitialReadings,
         onBlurHandler,
         onFocusHandler,
         onInputChange,
