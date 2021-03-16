@@ -50,7 +50,7 @@ export const MenuButtonTT = (props) => {
         // console.log("clickable", clickable)
 
         return (
-          <MenuItem key={title + color} onClick={cb} color={currentColor} style={{pointerEvents: clickable === false ? 'none': 'default'}}>
+          <MenuItem key={title + color} onClick={cb} color={currentColor} style={{pointerEvents: clickable === false ? 'none': 'default', display: clickable === false ? 'none': 'default'}}>
             {title}
           </MenuItem>
         );
