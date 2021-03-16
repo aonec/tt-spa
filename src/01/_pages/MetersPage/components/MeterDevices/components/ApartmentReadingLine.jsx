@@ -19,15 +19,17 @@ import { formReadingToPush } from '../../../../../utils/formReadingsToPush'
 import { sendReadings } from '../../../api'
 
 const ApartmentReadingLine = ({ device, sliderIndex }) => {
+
     const dispatch = useDispatch()
 
     const disabledState = useSelector(selectDisabledState)
 
-    const { isDisabled } = disabledState.find((el) => el.deviceId === device.id)
+    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
+        ?.isDisabled;
 
     const [isVisible, setIsVisible] = useState(false)
 
-    const [readingsState, setReadingsState] = useState({})
+    const [readingsState, setReadingsState] = useReadings(device)
 
     const [isCancel, setIsCancel] = useState(false)
 
@@ -60,6 +62,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }
 
+    //useInputsUnfocused
     useEffect(() => {
         if (!readingsState.currentReadingsArray) return
         const isNull = isNullInArray(readingsState.currentReadingsArray)
@@ -69,10 +72,9 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }, [readingsState])
 
-    useReadings(device, setReadingsState, sliderIndex)
 
-    if (!readingsState.currentReadingsArray?.length)
-        return <div>'ЗАГРУЗКА...'</div>
+    if (!readingsState.currentReadingsArray?.length) return null
+
 
     const onInputChange = (e, index) => {
         e.preventDefault()
@@ -89,41 +91,6 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
             dispatch(setInputFocused(device.id))
         }
     }
-
-    const currentDeviceReadings = readingsState.currentReadingsArray.map(
-        (value, index) => {
-            return (
-                <ReadingsBlock
-                    key={
-                        readingsState.currentReadingsArray.id ??
-                        device.id + index
-                    }
-                    index={index}
-                    onChange={(e) => onInputChange(e, index)}
-                    value={value}
-                    resource={readingsState.resource}
-                    sendReadings={() => sendReadings(device)}
-                    operatorCabinet
-                    textInput={textInput}
-                    isDisabled={isDisabled}
-                />
-            )
-        }
-    )
-
-    const previousDeviceReadings = readingsState.previousReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={readingsState.previousReadingsArray.id + 'a'}
-                index={index}
-                onChange={(e) => onInputChange(e, index)}
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                readingsBlocked
-            />
-        )
-    )
 
     const onBlurHandler = (e) => {
         if (e.currentTarget.contains(e.relatedTarget)) return
@@ -148,6 +115,41 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
             dispatch(setInputFocused(device.id))
         }
     }
+
+    const currentDeviceReadings = readingsState.currentReadingsArray.map(
+        (value, index) => {
+            return (
+                <ReadingsBlock
+                    key={
+                        readingsState.currentReadingsArray.id ??
+                        device.id + index
+                    }
+                    index={index}
+                    onChange={(e) => onInputChange(e, index)}
+                    value={value}
+                    resource={readingsState.resource}
+                    operatorCabinet
+                    textInput={textInput}
+                    isDisabled={isDisabled}
+                />
+            )
+        }
+    )
+
+    const previousDeviceReadings = readingsState.previousReadingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={readingsState.previousReadingsArray.id + 'a'}
+                index={index}
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                readingsBlocked
+            />
+        )
+    )
+
+
 
     const options = (readingsElems, isCurrent) => [
         {

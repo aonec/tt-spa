@@ -24,11 +24,8 @@ import { v4 as uuid } from 'uuid'
 import { sendReadings } from '01/_pages/MetersPage/api'
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
-    const [consumptionState, setConsumptionState] = useState<number[]>([])
 
-    const numberOfReadings: number = rateTypeToNumber(device.rateType)
-
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const disabledState = useSelector(selectDisabledState)
 
@@ -37,17 +34,19 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     const [isVisible, setIsVisible] = useState(false)
 
-    const [readingsState, setReadingsState] = useState<ReadingsStateType>(
-        {} as ReadingsStateType
-    )
+    const [readingsState, setReadingsState] = useReadings(device)
 
     const [isCancel, setIsCancel] = useState(false)
 
-    const [initialReadings, setInitialReadings] = useState<ReadingsArray>([])
+    const [initialReadings, setInitialReadings] = useState<number[]>([])
 
     const textInput = React.createRef<Input>()
 
-    useReadings(device, setReadingsState)
+    const [consumptionState, setConsumptionState] = useState<number[]>([])
+
+    const numberOfReadings: number = rateTypeToNumber(device.rateType)
+
+    if (!readingsState) return null
 
     const handleOk = () => {
         setReadingsState((state) => ({
@@ -74,6 +73,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         }
     }
 
+    //useConsumption
     useEffect(() => {
         const currentReadings = readingsState?.currentReadingsArray || {}
         const previousReadings = readingsState?.previousReadingsArray || {}
@@ -90,6 +90,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         setConsumptionState(consumption)
     }, [readingsState])
 
+    //useInputsUnfocused
     useEffect(() => {
         if (!readingsState.currentReadingsArray) return
         const isNull = isNullInArray(readingsState.currentReadingsArray)
@@ -99,9 +100,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         }
     }, [readingsState.currentReadingsArray])
 
+
     if (!readingsState.currentReadingsArray?.length) return null
 
-    const consumptionElems = consumptionState.map((el, index) => {
+    const consumptionElems = consumptionState.map((el) => {
         return <Consumption key={uuid()}>{el} кВтч</Consumption>
     })
 
@@ -122,7 +124,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
     const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
         if (e.currentTarget.contains(e.relatedTarget as Node)) return
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
+        const isNull = isNullInArray(readingsState?.currentReadingsArray)
         if (isNull) {
             setIsVisible(true)
         } else {
@@ -314,6 +316,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
                     все изменения, которые были сделаны вами на этой странице не
                     сохранятся
                 </ModalText>
+
             </StyledModal>
         </HouseReadingsDevice>
     )
@@ -413,15 +416,7 @@ const Span = styled.span`
     text-overflow: ellipsis;
 `
 
-type ReadingsArray = Array<number>
 
-type ReadingsStateType = {
-    previousReadingsArray: ReadingsArray
-    currentReadingsArray: ReadingsArray
-    prevId: number
-    currId: number
-    resource: string
-}
 type Props = {
     device: IndividualDeviceType
 }

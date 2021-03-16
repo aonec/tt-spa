@@ -10,6 +10,9 @@ import IconTT from '../../../../tt-components/IconTT'
 const DeviceBlock = (props) => {
     const { device: calculator } = props
 
+    const {isConnected} = calculator;
+    const isConnectionError = !calculator.isConnected || (calculator.connection.deviceAddress && calculator.connection.ipV4);
+
     return (
         <>
             <DeviceWrapper>
@@ -20,33 +23,27 @@ const DeviceBlock = (props) => {
                         <SerialNumber>({calculator.serialNumber})</SerialNumber>
                     </DeviceLink>
 
-                    <div hidden={calculator.isConnected}>
-                        <IconWithTooltip
+                    {isConnected && <IconWithTooltip
                             title={'Узел учета без оборудования связи'}
                         >
                             <Icon
                                 icon={'notConnected'}
                                 color={'var(--main-100)'}
                             />
-                        </IconWithTooltip>
-                    </div>
+                        </IconWithTooltip>}
 
-                    <div
-                        hidden={
-                            !calculator.isConnected ||
-                            (calculator.connection.deviceAddress &&
-                                calculator.connection.ipV4)
-                        }
+
+                    {
+                        isConnectionError && <IconWithTooltip
+                        title={'Проверьте настройки соединения'}
                     >
-                        <IconWithTooltip
-                            title={'Проверьте настройки соединения'}
-                        >
-                            <Icon
-                                icon={'checkConnection'}
-                                color={'var(--error)'}
-                            />
-                        </IconWithTooltip>
-                    </div>
+                        <Icon
+                            icon={'checkConnection'}
+                            color={'var(--error)'}
+                        />
+                    </IconWithTooltip>
+                    }
+
                 </div>
 
                 <Dates
