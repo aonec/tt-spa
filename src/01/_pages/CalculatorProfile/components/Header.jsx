@@ -5,7 +5,6 @@ import {
   Icon, Loader, HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 import {MenuButtonTT} from "../../../tt-components";
@@ -47,6 +46,8 @@ export const Header = () => {
     error,
     typeODPU,
     calcModel,
+    setReport,
+    setDeregister
   } = useContext(DeviceContext);
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
@@ -57,24 +58,26 @@ export const Header = () => {
       title: 'Редактировать вычислитель',
       itemFunction: () => {
         // push(`${url}/edit`);
-        push(`${url}/edit`);
+        push(`/calculators/${device.id}/edit`);
       },
     },
     {
       title: 'Выгрузить отчет о общедомовом потреблении',
       itemFunction: () => {
-        // setAddOdpu(true);
+        setReport(true);
       },
     },
     {
       title: 'Добавить Узел',
       itemFunction: () => {
+        push(`/calculators/${device.id}/add_node`);
         // alert('Поставить/Снять узел на коммерческий учёт');
       },
     },
     {
       title: 'Закрыть вычислитель',
       itemFunction: () => {
+        setDeregister(true);
         // alert('Поставить/Снять узел на коммерческий учёт');
       },
     },
