@@ -9,6 +9,8 @@ import { Menu, EditButton } from './EditButton';
 import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 import {MenuButtonTT} from "../../../tt-components";
+import {useHistory} from "react-router-dom";
+
 
 export const Template = styled.div``;
 
@@ -34,32 +36,7 @@ export const ListItem = styled.li`
     }
 `;
 
-const arr = [
-  {
-    title: 'Редактировать вычислитель',
-    itemFunction: () => {
-      // push(`${url}/edit`);
-    },
-  },
-  {
-    title: 'Выгрузить отчет о общедомовом потреблении',
-    itemFunction: () => {
-      // setAddOdpu(true);
-    },
-  },
-  {
-    title: 'Добавить Узел',
-    itemFunction: () => {
-      // alert('Поставить/Снять узел на коммерческий учёт');
-    },
-  },
-  {
-    title: 'Закрыть вычислитель',
-    itemFunction: () => {
-      // alert('Поставить/Снять узел на коммерческий учёт');
-    },
-  },
-];
+
 
 export const Header = () => {
   const {
@@ -73,6 +50,35 @@ export const Header = () => {
   } = useContext(DeviceContext);
   const loadingDevice = _.get(loadings, 'device', true);
   const loadingBuilding = _.get(loadings, 'building', true);
+  const { push } = useHistory()
+
+  const menuButtonArr = [
+    {
+      title: 'Редактировать вычислитель',
+      itemFunction: () => {
+        // push(`${url}/edit`);
+        push(`${url}/edit`);
+      },
+    },
+    {
+      title: 'Выгрузить отчет о общедомовом потреблении',
+      itemFunction: () => {
+        // setAddOdpu(true);
+      },
+    },
+    {
+      title: 'Добавить Узел',
+      itemFunction: () => {
+        // alert('Поставить/Снять узел на коммерческий учёт');
+      },
+    },
+    {
+      title: 'Закрыть вычислитель',
+      itemFunction: () => {
+        // alert('Поставить/Снять узел на коммерческий учёт');
+      },
+    },
+  ];
 
   const loading = loadingDevice || loadingBuilding;
 
@@ -119,7 +125,7 @@ export const Header = () => {
           </Subtitle>
         </div>
         <div style={{ position: 'relative' }}>
-          <MenuButtonTT arr={arr} />
+          <MenuButtonTT menuButtonArr={menuButtonArr} />
         </div>
       </Loader>
     </HeaderWrap>

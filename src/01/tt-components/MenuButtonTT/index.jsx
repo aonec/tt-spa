@@ -29,7 +29,7 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
 
 export const MenuButtonTT = (props) => {
     console.log('props', props)
-    const { arr, size } = props
+    const { menuButtonArr: arr, size } = props
 
     const menu = (
         <Menu>

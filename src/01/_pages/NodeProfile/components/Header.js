@@ -8,7 +8,7 @@ import { NodeContext } from '../index'
 import { nodeStatusList } from '../../../tt-components/localBases'
 
 export const Header = () => {
-    const { node, calculator, setAddOdpu } = useContext(NodeContext)
+    const { node, calculator, setAddOdpu, deviceId } = useContext(NodeContext)
     const { id: nodeId, resource, nodeStatus, number } = node
     const {
         id: objectId,
@@ -19,13 +19,13 @@ export const Header = () => {
     } = calculator.address
 
     const { push } = useHistory()
-    const { url } = useRouteMatch('/nodes/(\\d+)')
+    // const { url } = useRouteMatch('/nodes/(\\d+)')
 
-    const arr = [
+    const menuButtonArr = [
         {
             title: 'Редактировать узел',
             itemFunction: () => {
-                push(`${url}/edit`)
+                push(`/calculators/${deviceId}/edit`)
             },
         },
         {
@@ -91,7 +91,7 @@ export const Header = () => {
                     <NodeStatus />
                 </SubtitleWrap>
             </div>
-            <MenuButtonTT arr={arr} />
+            <MenuButtonTT menuButtonArr={menuButtonArr} />
         </HeaderWrap>
     )
 }
