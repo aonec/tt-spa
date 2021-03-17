@@ -34,8 +34,6 @@ import { addOdpu } from './apiModalAddDevice'
 
 const ModalAddDeviceForm = (props) => {
     const { node, calculator, handleCancel } = props
-    console.log('node', node)
-    console.log('calulator', calculator)
     const { address, id: calculatorId } = calculator
 
     const { city, street, housingStockNumber, corpus } = address
@@ -65,8 +63,6 @@ const ModalAddDeviceForm = (props) => {
         const { entryNumber } = hub
         return entryNumber
     })
-    console.log(res)
-    console.log(entryNumbers)
 
     function handleChangeTab(value) {
         setTab(value)
@@ -168,9 +164,7 @@ const ModalAddDeviceForm = (props) => {
                     magistral: values.magistral,
                 },
             }
-            console.log(form)
             addOdpu(form).then((res) => {
-                console.log('res', res)
                 // setTimeout(() => { setAddOdpu(false); }, 1000);
             })
         },
@@ -217,7 +211,6 @@ const ModalAddDeviceForm = (props) => {
                                     )
                                 }
                                 if (value === 'TemperatureSensor') {
-                                    // console.log("TemperatureSensor")
                                     setValidationSchema(
                                         validationSchemaTemperatureSensor
                                     )

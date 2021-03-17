@@ -37,7 +37,6 @@ export const ObjectProfile = () => {
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
             setCalculators(res)
-            // console.log(res);
         })
     }, [])
 

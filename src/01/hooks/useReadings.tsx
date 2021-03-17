@@ -1,4 +1,4 @@
-import React, {MutableRefObject, Ref, RefObject, useCallback, useEffect, useState} from 'react'
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react'
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber'
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject'
 import { getMonthFromDate } from '../utils/getMonthFromDate'
@@ -25,7 +25,6 @@ export const useReadings = (device: IndividualDeviceType,
     const [readingsState, setReadingsState] = useState<ReadingsStateType>()
     const [isVisible, setIsVisible] = useState(false)
     const [initialReadings, setInitialReadings] = useState<number[]>([])
-    const [isCancel, setIsCancel] = useState(false)
 
     const dispatch = useDispatch();
 

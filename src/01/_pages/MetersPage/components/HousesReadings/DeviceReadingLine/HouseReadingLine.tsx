@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {IndividualDeviceType} from '../../../../../../types/types'
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber'
-import ReadingsBlock from '../../MeterDevices/components/ReadingsBlock'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
 import { Icon } from '../../../../../_components/Icon'
 import styles from '../../../../Devices/components/TabsDevices.module.scss'
@@ -10,16 +9,10 @@ import { useReadings } from '../../../../../hooks/useReadings'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
 import { ButtonTT } from '../../../../../tt-components'
 import { Input, Modal } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
+import { useDispatch } from 'react-redux'
 import {
-    setInputFocused,
     setInputUnfocused,
 } from '01/Redux/ducks/readings/actionCreators'
-import {
-    DeviceReadingsContainer,
-    getInputColor,
-} from '../../MeterDevices/components/ApartmentReadingLine'
 import { v4 as uuid } from 'uuid'
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {

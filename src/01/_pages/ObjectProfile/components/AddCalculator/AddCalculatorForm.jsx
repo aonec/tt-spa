@@ -171,7 +171,6 @@ const AddCalculatorForm = (props) => {
             errors
         )
 
-        // console.log(errors);
         if (hasError === true) {
             setTab(errorTab)
         } else {

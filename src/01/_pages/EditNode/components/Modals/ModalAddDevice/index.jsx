@@ -3,7 +3,6 @@ import { StyledModal } from '../../../../../tt-components/Modal'
 import ModalAddDeviceForm from './ModalAddDeviceForm'
 
 const ModalAddDevice = (props) => {
-    console.log('ModalAddDevice')
     const { visible, setVisible } = props
     function handleCancel() {
         setVisible(false)
