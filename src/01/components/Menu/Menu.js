@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import styledC from 'styled-components'
 import styled from 'reshadow/macro'
 
 import { menu as style } from '01/styles/menu'
@@ -18,6 +19,20 @@ export const Menu = () => {
                     {company && <span>{company}</span>}
                 </NavLink>
             ))}
+            <ExitLink key={'10'} to={/login/} activeClassName={style.active}>
+                <ExitIcon icon={'notConnected'} />
+                <span>Выход из системы</span>
+            </ExitLink>
         </nav>
     )
 }
+
+const ExitLink = styledC(NavLink)`
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+`
+
+const ExitIcon = styledC(Icon)`
+    margin-right: 8px;
+`

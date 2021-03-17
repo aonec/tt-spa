@@ -10,7 +10,6 @@ export function useMenu() {
             icon: 'username2',
             perm: ['all'],
         },
-        { name: 'Выход из системы', to: '/login/', perm: ['all'] },
         {
             name: 'Задачи',
             to: '/tasks/',
