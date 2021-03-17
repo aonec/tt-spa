@@ -121,7 +121,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
                 onBlur={onBlurHandler}
                 onChange={onChange}
                 required
-                tabIndex={houseReadings ? undefined : index + 1}
+                tabIndex={index + 1}
             />
         </ReadingLineStyled>
     )

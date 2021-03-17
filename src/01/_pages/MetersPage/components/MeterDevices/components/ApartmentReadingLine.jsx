@@ -1,50 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import ReadingsBlock from './ReadingsBlock'
 import { useReadings } from '../../../../../hooks/useReadings'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
 import { Modal } from 'antd'
 import ButtonTT from '../../../../../tt-components/ButtonTT'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
+import { useDispatch } from 'react-redux'
 import {
     setInputUnfocused,
 } from '../../../../../Redux/ducks/readings/actionCreators'
 import DeviceInfo from './DeviceInfo'
 
-
 const ApartmentReadingLine = ({ device, sliderIndex }) => {
 
     const dispatch = useDispatch()
 
-    const disabledState = useSelector(selectDisabledState)
-
-    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
-        ?.isDisabled;
-
-    // const [isVisible, setIsVisible] = useState(false)
+    const textInput = React.createRef()
 
     const {
         readingsState,
         isVisible,
-        onBlurHandler,
-        onFocusHandler,
-        onInputChange,
-        isCancel,
-        setIsCancel,
         handleOk,
-        handleCancel
-    } = useReadings(device, sliderIndex)
+        handleCancel,
+        previousReadings,
+        currentReadings
+    } = useReadings(device, textInput, sliderIndex)
 
-
-    const textInput = React.createRef()
-
-    const afterCloseHandler = () => {
-        if (isCancel) {
-            setIsCancel(false)
-            textInput.current.focus()
-        }
-    }
 
     //useInputsUnfocused
     useEffect(() => {
@@ -56,104 +36,8 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }, [readingsState])
 
-
     if (!readingsState) return null
 
-
-    const currentDeviceReadings = readingsState.currentReadingsArray.map(
-        (value, index) => {
-            return (
-                <ReadingsBlock
-                    key={
-                        readingsState.currentReadingsArray.id ??
-                        device.id + index
-                    }
-                    index={index}
-                    onChange={(e) => onInputChange(e, index)}
-                    value={value}
-                    resource={readingsState.resource}
-                    operatorCabinet
-                    textInput={textInput}
-                    isDisabled={isDisabled}
-                />
-            )
-        }
-    )
-
-    const previousDeviceReadings = readingsState.previousReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={readingsState.previousReadingsArray.id + 'a'}
-                index={index}
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                readingsBlocked
-            />
-        )
-    )
-
-
-
-    const options = (readingsElems, isCurrent) => [
-        {
-            value: () => (
-                <DeviceReadingsContainer
-                    color={
-                        isCurrent
-                            ? getInputColor(device.resource)
-                            : 'var(--main-90)'
-                    }
-                    resource={device.resource}
-                >
-                    {readingsElems}
-                </DeviceReadingsContainer>
-            ),
-            isSuccess:
-                readingsState.resource !== 'Electricity' ||
-                readingsElems.length === 1,
-        },
-        {
-            value: () => (
-                <>
-                    <DeviceReadingsContainer
-                        style={{ marginBottom: 8 }}
-                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[0]}
-                    </DeviceReadingsContainer>
-                    <DeviceReadingsContainer
-                        color={isCurrent ? '#957400' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[1]}
-                    </DeviceReadingsContainer>
-                </>
-            ),
-            isSuccess: readingsElems.length === 2,
-        },
-        {
-            value: () => (
-                <>
-                    <DeviceReadingsContainer
-                        style={{ marginBottom: 8 }}
-                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {[readingsElems[0], readingsElems[1]]}
-                    </DeviceReadingsContainer>
-                    <DeviceReadingsContainer
-                        color={isCurrent ? '#957400' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[2]}
-                    </DeviceReadingsContainer>
-                </>
-            ),
-            isSuccess: true,
-        },
-    ]
 
     return (
         <>
@@ -161,21 +45,10 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                 <DeviceInfo device={device} />
 
                 {/*Инпуты с показаниями*/}
-                <div>
-                    {options(previousDeviceReadings, false)
-                        .find((el) => el.isSuccess)
-                        .value()}
-                </div>
 
-                <div
-                    onBlur={onBlurHandler}
-                    onFocus={onFocusHandler}
-                    style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                    {options(currentDeviceReadings, true)
-                        .find((el) => el.isSuccess)
-                        .value()}
-                </div>
+                {previousReadings}
+                {currentReadings}
+
             </FullDeviceLine>
 
             <StyledModal
@@ -187,7 +60,6 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                 }
                 onOk={handleOk}
                 onCancel={handleCancel}
-                afterClose={afterCloseHandler}
                 width={800}
                 footer={
                     <Footer>
@@ -198,7 +70,9 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                         >
                             Отмена
                         </ButtonTT>
-                        <ButtonTT color={'red'} key="submit" onClick={handleOk}>
+                        <ButtonTT color={'red'}
+                                  key="submit"
+                                  onClick={handleOk}>
                             Выйти без сохранения
                         </ButtonTT>
                     </Footer>
