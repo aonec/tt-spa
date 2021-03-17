@@ -11,11 +11,11 @@ import {
 import IconTT from '../../../../../tt-components/IconTT'
 import styled from 'styled-components'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
+import Icon from "../../../../../tt-components/Icon";
 
 const Node: React.FC<Props> = ({ node }) => {
     const housingDevices = node.communicationPipes.map((pipe) => {
         const devices = pipe.devices.map((housingDevice) => {
-            const { icon, color } = DeviceIcons[housingDevice.resource]
 
             return (
                 <DeviceWrapper>
@@ -24,7 +24,6 @@ const Node: React.FC<Props> = ({ node }) => {
                             <DeviceLink
                                 to={`/housingMeteringDevices/${housingDevice.id}`}
                             >
-                                <DeviceIcon icon={icon} fill={color} />
                                 {`${housingDevice.model} `}
                                 <SerialNumber>
                                     ({housingDevice.serialNumber})
@@ -49,13 +48,16 @@ const Node: React.FC<Props> = ({ node }) => {
         return devices
     })
 
+
+    const { icon, color } = DeviceIcons[node.resource]
+
     return (
         <div>
             <div style={{ marginBottom: 24 }}>
                 <div>
                     <TitleWrapper>
                         <DeviceLink to={`/nodes/${node.id}`}>
-                            <NodeIcon icon="node" />
+                            <NodeIcon icon={icon} color={color}/>
                             <span>{`Узел ${node.number}`}</span>
                         </DeviceLink>
                         <ServiceZone>{node.serviceZone}</ServiceZone>
@@ -76,7 +78,7 @@ const Node: React.FC<Props> = ({ node }) => {
     )
 }
 
-const NodeIcon = styled(IconTT)`
+const NodeIcon = styled(Icon)`
     margin-right: 8px;
 `
 
