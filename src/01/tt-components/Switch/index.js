@@ -1,6 +1,5 @@
 import { Form, Switch } from 'antd'
 import React from 'react'
-
 ;<Form.Item
     style={{
         display: 'flex',

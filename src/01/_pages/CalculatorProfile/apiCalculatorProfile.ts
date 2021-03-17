@@ -26,6 +26,19 @@ export async function getCalculatorTasks(id = '') {
     }
 }
 
+export async function getUser() {
+    try {
+        const res = await axios.get(`ManagingFirmUsers/current`)
+        return res
+    } catch (error) {
+        console.log(error)
+        throw {
+            resource: 'roles',
+            message: 'Произошла ошибка при загрузке данных пользователя',
+        }
+    }
+}
+
 //0 - Executing
 //1 - Observing
 //2 - Not Archived

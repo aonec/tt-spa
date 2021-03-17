@@ -16,14 +16,12 @@ export const useUpload = ({ big } = {}) => {
 
     useEffect(() => {
         if (formData) {
-            axios
-                .post('Documents/upload', formData)
-                .then((data) =>
-                    dispatch({
-                        type: 'success_upload',
-                        payload: Object.values(data),
-                    })
-                )
+            axios.post('Documents/upload', formData).then((data) =>
+                dispatch({
+                    type: 'success_upload',
+                    payload: Object.values(data),
+                })
+            )
         }
         if (deleteId) {
             axios
