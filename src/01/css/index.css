@@ -11,10 +11,12 @@
     --main-32: rgba(var(--main), 0.32);
     --main-4: rgba(var(--main), 0.04);
 
+    /*синий*/
     --primary: 24, 158, 233;
     --primary-100: rgb(var(--primary));
     --primary-16: rgba(var(--primary), 0.16);
 
+    /*красный*/
     --error: #fc525b;
     --warning: #ff8a1f;
     --success: #17b45a;
