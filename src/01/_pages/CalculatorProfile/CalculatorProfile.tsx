@@ -58,9 +58,8 @@ interface TypeDeviceContext {
 export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>({})
 
 export const CalculatorProfile = () => {
-    const userRedux = useSelector<ManagingFirmUserResponse>((state) => state.user)
-
-    console.log("user",userRedux)
+    const user = useSelector<any>((state) => state.user)
+    console.log("user",user)
 
     const {deviceId} = useParams()
     const path = `/calculators/${deviceId}/`
@@ -75,8 +74,6 @@ export const CalculatorProfile = () => {
     const [report, setReport] = useState(false)
     const [check, setCheck] = useState(false)
     const [nodes, setNodes] = useState()
-    const [user, setUser] = useState();
-
     const [error, setError] = useState()
     const [errors, setErrors] = useState()
 
@@ -102,13 +99,11 @@ export const CalculatorProfile = () => {
         Promise.allSettled([
             getCalculator(deviceId),
             getCalculatorTasks(deviceId),
-            getUser()
         ])
             .then((responses: any) => {
                 // const [{value : device}, {value: tasks}] = responses;
                 const device = responses[0].value
                 const tasks = responses[1].value
-                const user = responses[2].value
                 setDevice(device)
                 setBuilding(device.address)
                 setHubs(device.hubs)
@@ -116,7 +111,6 @@ export const CalculatorProfile = () => {
                 setRelated(device.hubs)
                 setNodes(device.nodes)
                 setIsLoading(false)
-                setUser(user)
             })
             .catch(({resource, message}) => {
                 // const text = errorsTemplate[resource];

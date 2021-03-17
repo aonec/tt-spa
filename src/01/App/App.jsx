@@ -48,12 +48,7 @@ moment.locale('ru')
 
 
 const Internal = () => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        getUser().then((res) => {
-            dispatch(setUser(res));
-        })
-    }, [])
+
     return styled(app)(
         <Switch>
             <Route path="/login" component={Login}/>
