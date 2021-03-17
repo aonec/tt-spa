@@ -1,21 +1,23 @@
-import { Route, useParams, useLocation } from 'react-router-dom'
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import {Route, useParams, useLocation} from 'react-router-dom'
+import React, {useState, useEffect, Dispatch, SetStateAction} from 'react'
 import {getCalculatorTasks, getCalculator, getUser} from './apiCalculatorProfile'
-import { Grid } from '../../_components'
+import {Grid} from '../../_components'
 
-import { Header } from './components/Header'
-import { Tabs } from './components/Tabs'
-import { Information } from './components/Information'
-import { Events } from './components/Events'
-import { Connection } from './components/Connection'
-import { RelatedDevices } from './components/RelatedDevices'
+import {Header} from './components/Header'
+import {Tabs} from './components/Tabs'
+import {Information} from './components/Information'
+import {Events} from './components/Events'
+import {Connection} from './components/Connection'
+import {RelatedDevices} from './components/RelatedDevices'
 
-import { Loader } from '../../components/Loader'
+import {Loader} from '../../components/Loader'
 import Documents from './components/Documents'
 import DeregisterDevice from './components/Modals/ModalDeregister'
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 import CheckDevice from './components/Modals/ModalCheck'
 import Nodes from './components/Nodes'
+import {useSelector} from "react-redux";
+import _ from "lodash";
 
 
 interface DeviceInterface {
@@ -55,7 +57,11 @@ interface TypeDeviceContext {
 export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>({})
 
 export const CalculatorProfile = () => {
-    const { deviceId } = useParams()
+    const userRedux = useSelector<any>((state) => state.user)
+
+    console.log("user",userRedux)
+
+    const {deviceId} = useParams()
     const path = `/calculators/${deviceId}/`
 
     const [isLoading, setIsLoading] = useState(true)
@@ -111,7 +117,7 @@ export const CalculatorProfile = () => {
                 setIsLoading(false)
                 setUser(user)
             })
-            .catch(({ resource, message }) => {
+            .catch(({resource, message}) => {
                 // const text = errorsTemplate[resource];
                 // setError({resource, text});
             })
@@ -128,8 +134,8 @@ export const CalculatorProfile = () => {
             })
     }, [])
 
-    if (isLoading) return <Loader show size={32} />
-    console.log(user)
+    if (isLoading) return <Loader show size={32}/>
+    // console.log(user)
 
     const context = {
         device,
@@ -151,30 +157,30 @@ export const CalculatorProfile = () => {
     }
     return (
         <DeviceContext.Provider value={context}>
-            <Header />
-            <Tabs />
+            <Header/>
+            <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>
-                    <Information />
+                    <Information/>
                 </Route>
                 <Route path={`${path}connection`} exact>
-                    <Connection />
+                    <Connection/>
                 </Route>
                 <Route path={`${path}related`} exact>
-                    <RelatedDevices />
+                    <RelatedDevices/>
                 </Route>
                 <Route path={`${path}nodes`} exact>
-                    <Nodes />
+                    <Nodes/>
                 </Route>
                 <Route path={`${path}documents`} exact>
-                    <Documents />
+                    <Documents/>
                 </Route>
 
-                <Events title="Задачи с объектом" />
+                <Events title="Задачи с объектом"/>
             </Grid>
-            <DeregisterDevice />
-            <ModalCalculatorReport />
-            <CheckDevice />
+            <DeregisterDevice/>
+            <ModalCalculatorReport/>
+            <CheckDevice/>
         </DeviceContext.Provider>
     )
 }
