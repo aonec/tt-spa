@@ -18,6 +18,7 @@ import CheckDevice from './components/Modals/ModalCheck'
 import Nodes from './components/Nodes'
 import {useSelector} from "react-redux";
 import _ from "lodash";
+import {ManagingFirmUserResponse} from "../../../myApi";
 
 
 interface DeviceInterface {
@@ -57,7 +58,7 @@ interface TypeDeviceContext {
 export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>({})
 
 export const CalculatorProfile = () => {
-    const userRedux = useSelector<any>((state) => state.user)
+    const userRedux = useSelector<ManagingFirmUserResponse>((state) => state.user)
 
     console.log("user",userRedux)
 
