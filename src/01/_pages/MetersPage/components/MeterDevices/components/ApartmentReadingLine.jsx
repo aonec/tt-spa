@@ -2,56 +2,42 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ReadingsBlock from './ReadingsBlock'
 import { useReadings } from '../../../../../hooks/useReadings'
-import moment from 'moment'
-import axios from '01/axios'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
 import { Modal } from 'antd'
 import ButtonTT from '../../../../../tt-components/ButtonTT'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
 import {
-    setInputFocused,
     setInputUnfocused,
 } from '../../../../../Redux/ducks/readings/actionCreators'
 import DeviceInfo from './DeviceInfo'
-import { IndividualDeviceType } from '../../../../../../types/types'
-import { formReadingToPush } from '../../../../../utils/formReadingsToPush'
-import { sendReadings } from '../../../api'
+
 
 const ApartmentReadingLine = ({ device, sliderIndex }) => {
+
     const dispatch = useDispatch()
 
     const disabledState = useSelector(selectDisabledState)
 
-    const { isDisabled } = disabledState.find((el) => el.deviceId === device.id)
+    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
+        ?.isDisabled;
 
-    const [isVisible, setIsVisible] = useState(false)
+    // const [isVisible, setIsVisible] = useState(false)
 
-    const [readingsState, setReadingsState] = useState({})
+    const {
+        readingsState,
+        isVisible,
+        onBlurHandler,
+        onFocusHandler,
+        onInputChange,
+        isCancel,
+        setIsCancel,
+        handleOk,
+        handleCancel
+    } = useReadings(device, sliderIndex)
 
-    const [isCancel, setIsCancel] = useState(false)
-
-    const [initialReadings, setInitialReadings] = useState()
 
     const textInput = React.createRef()
-
-    const handleOk = () => {
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        dispatch(setInputUnfocused())
-        setIsVisible(false)
-    }
-
-    const handleCancel = () => {
-        setIsCancel(true)
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: initialReadings,
-        }))
-        setIsVisible(false)
-    }
 
     const afterCloseHandler = () => {
         if (isCancel) {
@@ -60,8 +46,9 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }
 
+    //useInputsUnfocused
     useEffect(() => {
-        if (!readingsState.currentReadingsArray) return
+        if (!readingsState?.currentReadingsArray) return
         const isNull = isNullInArray(readingsState.currentReadingsArray)
 
         if (!isNull) {
@@ -69,26 +56,9 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         }
     }, [readingsState])
 
-    useReadings(device, setReadingsState, sliderIndex)
 
-    if (!readingsState.currentReadingsArray?.length)
-        return <div>'ЗАГРУЗКА...'</div>
+    if (!readingsState) return null
 
-    const onInputChange = (e, index) => {
-        e.preventDefault()
-        setReadingsState((state) => ({
-            ...state,
-            currentReadingsArray: state.currentReadingsArray.map(
-                (reading, i) => {
-                    return i === index ? +e.target.value : reading
-                }
-            ),
-        }))
-
-        if (!e.target.value) {
-            dispatch(setInputFocused(device.id))
-        }
-    }
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map(
         (value, index) => {
@@ -102,7 +72,6 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
                     onChange={(e) => onInputChange(e, index)}
                     value={value}
                     resource={readingsState.resource}
-                    sendReadings={() => sendReadings(device)}
                     operatorCabinet
                     textInput={textInput}
                     isDisabled={isDisabled}
@@ -116,7 +85,6 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
             <ReadingsBlock
                 key={readingsState.previousReadingsArray.id + 'a'}
                 index={index}
-                onChange={(e) => onInputChange(e, index)}
                 value={value}
                 resource={readingsState.resource}
                 operatorCabinet
@@ -125,29 +93,7 @@ const ApartmentReadingLine = ({ device, sliderIndex }) => {
         )
     )
 
-    const onBlurHandler = (e) => {
-        if (e.currentTarget.contains(e.relatedTarget)) return
 
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
-        if (isNull) {
-            setIsVisible(true)
-        } else {
-            if (readingsState.currentReadingsArray !== initialReadings) {
-                sendReadings(device)
-            }
-            dispatch(setInputUnfocused())
-        }
-    }
-
-    const onFocusHandler = (e) => {
-        if (e.currentTarget.contains(e.relatedTarget)) return
-
-        setInitialReadings(readingsState.currentReadingsArray)
-        const isNull = isNullInArray(readingsState.currentReadingsArray)
-        if (isNull) {
-            dispatch(setInputFocused(device.id))
-        }
-    }
 
     const options = (readingsElems, isCurrent) => [
         {

@@ -73,8 +73,8 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
                 setSearchQuery={setSearchQuery}
             />
 
-            {status === 'pending' ||
-                (status === 'idle' && <div>ЗАГРУЗКА...</div>)}
+            {(status === 'pending' ||
+                status === 'idle') && <div>ЗАГРУЗКА...</div>}
 
             {status === 'rejected' && (
                 <>
