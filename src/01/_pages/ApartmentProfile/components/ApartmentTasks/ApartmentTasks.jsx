@@ -72,6 +72,9 @@ export const Tasks = (props) => {
         let status
         let icon
         let color
+        if (!currentStage) {
+            return null
+        }
 
         if (currentStage.status === 'InProgress') {
             status = 'В работе'

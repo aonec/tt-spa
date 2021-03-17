@@ -1,1 +1,0 @@
-export { ApartmentId } from './ApartmentId'

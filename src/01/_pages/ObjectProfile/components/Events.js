@@ -51,7 +51,11 @@ export const Events = ({ title = '', loading = true, items = [] }) => {
             <e_list>
                 <Loader show={loading} />
                 {items.map(
-                    ({ id, currentStage, name, perpetrator, timer = {} }) => (
+                    ({ id, currentStage, name, perpetrator, timer = {} }) => {
+                        if (!currentStage) {
+                            return null
+                        }
+                        return (
                         <e_item key={id} onClick={() => push('/tasks/' + id)}>
                             <e_title as="h4">{currentStage.name}</e_title>
                             <e_name>{name}</e_name>
@@ -66,7 +70,7 @@ export const Events = ({ title = '', loading = true, items = [] }) => {
                                 <user_name>{perpetrator.name}</user_name>
                             </perp>
                         </e_item>
-                    )
+                    )}
                 )}
             </e_list>
         </section>
