@@ -62,11 +62,30 @@ export const Menu = (showPopupHandler) => {
                 <NavLink to={`/objects/${housingStockId}/add_node`}>
                     <ListItem>Добавить Узел</ListItem>
                 </NavLink>
-                {/*<ListItem onClick={showAddCalculator}>Добавить вычислитель</ListItem>*/}
-                {/*<ListItem onClick={showAddDevice}>Добавить прибор учета</ListItem>*/}
 
                 <ListItem style={{ color: '#FC525B' }}>Удалить дом</ListItem>
             </List>
         </>
     )
 }
+
+const arr = [
+    {
+        title: 'Редактировать дом',
+        itemFunction: () => {
+            // push(`${url}/edit`);
+        },
+    },
+    {
+        title: 'Добавить квартиру',
+        itemFunction: () => {
+            // setAddOdpu(true);
+        },
+    },
+    {
+        title: 'Добавить Узел',
+        itemFunction: () => {
+            // alert('Поставить/Снять узел на коммерческий учёт');
+        },
+    },
+]

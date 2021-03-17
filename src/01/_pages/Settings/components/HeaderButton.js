@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { SettingsContext } from '../index'
-import { EditButtonTT } from '../../../tt-components/EditButtonTT'
+import EditButtonTT from '../../../tt-components/EditButtonTT'
 import { Icon } from '../../../_components/Icon'
 
 const HeaderButton = () => {

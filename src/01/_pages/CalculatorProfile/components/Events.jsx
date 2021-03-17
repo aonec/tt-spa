@@ -24,6 +24,9 @@ export const Events = ({ title = '' }) => {
 
     const Tasks = (tasks || []).map((task, index) => {
         const { currentStage, perpetrator, id } = task
+        if (!currentStage) {
+            return null
+        }
         return (
             <Task key={id} href={`/tasks/${id}`}>
                 <StageName>{currentStage.name}</StageName>
