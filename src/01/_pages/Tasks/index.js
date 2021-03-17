@@ -53,16 +53,27 @@ export const Tasks = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        getUser().then((res) => {
-            dispatch(setUser(res));
-        });
+        // const roles = localStorage.getItem('roles')
+        // dispatch(setUser(JSON.parse(roles)));
+        // console.log("roles",test)
+        // test.forEach(item =>console.log(item))
+        // console.log(typeof JSON.parse(roles));
+        // dispatch(setUser(roles));
+        // getUser().then((res) => {
+        //     dispatch(setUser(res));
+        // });
+
     },[])
 
-    const user = useSelector(state => state.user)
-    console.log("user", user)
-    const {userRoleIds} = user;
-    const watcher = 3308027;
-    const isWatcher = userRoleIds.includes(watcher);
+    const user = useSelector((state) => state.user)
+    console.log("user",user)
+
+    // const user = useSelector(state => state.user)
+    // console.log("user", user)
+    // const {userRoleIds} = user;
+    // const watcher = 3308027;
+    // const isWatcher = userRoleIds.includes(watcher);
+    const isWatcher = true;
 
 
     const debouncedSearchState = useDebounce(searchState, 500)
