@@ -19,7 +19,7 @@ export const Menu = () => {
                     {company && <span>{company}</span>}
                 </NavLink>
             ))}
-            <ExitLink key={'10'} to={/login/} activeClassName={style.active}>
+            <ExitLink key={'10'} to={'/login/'} activeClassName={style.active}>
                 <ExitIcon icon={'notConnected'} />
                 <span>Выход из системы</span>
             </ExitLink>
