@@ -51,19 +51,9 @@ export const Tasks = () => {
         {}
     )
 
-    const dispatch = useDispatch();
-    useEffect(() => {
-        getUser().then((res) => {
-            dispatch(setUser(res));
-        });
-    },[])
-
-    const user = useSelector(state => state.user)
-    console.log("user", user)
-    const {userRoleIds} = user;
-    const watcher = 3308027;
-    const isWatcher = userRoleIds.includes(watcher);
-
+    const roles = useSelector((state) => state.user.roles)
+    const watcher = 'ManagingFirmSpectator';
+    const isWatcher = roles.includes(watcher);
 
     const debouncedSearchState = useDebounce(searchState, 500)
 

@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 import { MenuButtonTT } from '../../../tt-components';
+import {useSelector} from "react-redux";
 
 export const Header = () => {
   const { push } = useHistory();
@@ -17,15 +18,13 @@ export const Header = () => {
     calcModel,
     setReport,
     setDeregister,
-    user,
   } = useContext(DeviceContext);
 
-  if (!user) {
-    return <Loader size="64" show />;
-  }
 
-  const { userRoleIds } = user;
-  // console.log('userRoleIds', userRoleIds);
+
+  const roles = useSelector((state) => state.user.roles)
+  const watcher = 'ManagingFirmSpectator';
+  const isWatcher = roles.includes(watcher);
 
   const {
     city, street, housingStockNumber, corpus, id,
@@ -33,9 +32,7 @@ export const Header = () => {
   const { model, serialNumber, resource } = device || DEFAULT_DEVICE;
   const { icon, color } = DeviceIcons[resource] || DEFAULT_ICON;
 
-  const watcher = 3308027;
-  const isWatcher = userRoleIds.includes(watcher);
-  // console.log('isWatcher', isWatcher);
+
   const menuButtonArr = [
     {
       title: 'Редактировать вычислитель',
