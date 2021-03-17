@@ -2,6 +2,8 @@ import React from 'react'
 import styled, { css } from 'reshadow/macro'
 import { Redirect, useHistory, useRouteMatch } from 'react-router-dom'
 import { Loader } from '01/components'
+import OperatorPlaceholder from './OperatorPlaceholder.svg'
+import styledC from 'styled-components'
 
 const styles = css`
     apart {
@@ -31,6 +33,10 @@ export const Apartments = ({ loading = null, items = [] }) => {
     const { url } = useRouteMatch()
     if (loading) return <Loader show={true} size="32" />
 
+    if (items.length === 0) return <ImageContainer>
+        <img src={OperatorPlaceholder} alt="OperatorPlaceholder" />
+    </ImageContainer>
+
     if (items.length === 1)
         return <Redirect to={`/meters/apartments/${items[0].id}`} />
 
@@ -47,4 +53,10 @@ export const Apartments = ({ loading = null, items = [] }) => {
         ))
     )
 }
+
+const ImageContainer = styledC.div`
+    position: absolute;
+    top: 40%;
+    left: 550px;
+`
 // homeownerName,personalAccountNumber,square
