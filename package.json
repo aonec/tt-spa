@@ -54,6 +54,7 @@
         "styled-components": "^5.2.0",
         "svg-sprite-loader": "^5.0.0",
         "swagger-typescript-api": "^6.1.1",
+        "tsc-watch": "^4.2.9",
         "typescript": "^3.9.7",
         "uuid": "^8.3.2",
         "victory": "^35.4.6",

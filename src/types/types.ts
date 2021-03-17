@@ -3,10 +3,10 @@ export type ReadingType = {
     hasError: boolean
     status: string
     statusMessage: string | null
-    value1: string | null
-    value2: string | null
-    value3: string | null
-    value4: string | null
+    value1: string | null | number
+    value2: string | null | number
+    value3: string | null | number
+    value4: string | null | number
     readingDate: string
     uploadTime: string
 }
