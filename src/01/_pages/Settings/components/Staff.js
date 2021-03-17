@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import classes from '../Settings.module.scss'
-import EditButton from './EditButton'
 import { SettingsContext } from '../index'
+import EditButtonTT from "../../../tt-components/EditButtonTT";
 
 const Staff = (props) => {
     const { users } = useContext(SettingsContext)
@@ -26,7 +26,7 @@ const Staff = (props) => {
                 <div className={classes.status}>Работает</div>
                 <div className={classes.button}>
                     <Link to={`/user/staff/${id}`}>
-                        <EditButton />
+                        {/*<EditButtonTT />*/}
                     </Link>
                 </div>
             </li>

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { Title } from '../../../tt-components'
+import {EditButtonTT, Title } from '../../../tt-components'
 import { SettingsContext } from '../index'
 import classes from '../Settings.module.scss'
-import EditButton from './EditButton'
 import { Link } from 'react-router-dom'
+
 
 const Contractors = () => {
     const { contractors } = useContext(SettingsContext)
@@ -21,7 +21,7 @@ const Contractors = () => {
                 <div className={classes.email}>{email}</div>
                 <div className={classes.button}>
                     <Link to={`/user/contractor/${contractor.id}`}>
-                        <EditButton />
+                        {/*<EditButtonTT />*/}
                     </Link>
                 </div>
             </li>
