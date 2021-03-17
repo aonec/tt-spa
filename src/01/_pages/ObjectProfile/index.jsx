@@ -30,9 +30,11 @@ export const ObjectProfile = () => {
 
     const [state, dispatch] = React.useReducer(reducer, {})
 
-    const [addCalculator, setAddCalculator] = useState(false)
-    const [addOdpu, setAddOdpu] = useState(false)
-    const [calculators, setCalculators] = useState()
+    const [addCalculator, setAddCalculator] = useState(false);
+    const [addOdpu, setAddOdpu] = useState(false);
+    const [commonReport, setCommonReport] = useState(false);
+    const [calculators, setCalculators] = useState();
+
 
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
@@ -53,13 +55,15 @@ export const ObjectProfile = () => {
         setAddOdpu,
         housingStockId,
         calculators,
+        commonReport,
+        setCommonReport
     }
 
     return styled(grid)(
         <>
             <ObjectContext.Provider value={context}>
                 <Index path="/objects/" />
-                <Header {...header} />
+                <Header {...header} setCommonReport={setCommonReport} commonReport={commonReport} />
                 <Tabs />
                 <grid>
                     <Route path="/objects/(\\d+)" exact>
