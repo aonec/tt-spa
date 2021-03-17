@@ -115,12 +115,28 @@ export const getGraphParams = (
             return ['inputVolume']
         case 'HotWaterSupply':
             return pipeCount === 1
-                ? ['inputVolume', 'energy']
-                : ['deltaVolume', 'energy']
+                ? ['energy', 'inputVolume', 'inputMass']
+                : [
+                    'energy',
+                    'inputMass',
+                    'outputMass',
+                    'deltaMass',
+                    'inputVolume',
+                    'outputVolume',
+                    'deltaVolume',
+                ]
         case 'Heat':
             return pipeCount === 1
-                ? ['inputVolume', 'energy']
-                : ['deltaVolume', 'energy']
+                ? ['energy', 'inputVolume', 'inputMass']
+                : [
+                    'energy',
+                    'inputMass',
+                    'outputMass',
+                    'deltaMass',
+                    'inputVolume',
+                    'outputVolume',
+                    'deltaVolume',
+                ]
         default:
             console.log(
                 'Ресурс',
@@ -137,10 +153,18 @@ export const translateParam = (param: GraphParamsType) => {
     switch (param) {
         case 'inputVolume':
             return 'Входящий объем, м³'
-        case 'energy':
-            return 'Энергия, ГКал'
+        case 'outputVolume':
+            return 'Выходящий объем, м³'
         case 'deltaVolume':
             return 'Расход по объему, м³'
+        case 'inputMass':
+            return 'Входящая масса, Т'
+        case 'outputMass':
+            return 'Выходящая масса, Т'
+        case 'deltaMass':
+            return 'Расход по массе, Т'
+        case 'energy':
+            return 'Энергия, ГКал'
     }
 }
 

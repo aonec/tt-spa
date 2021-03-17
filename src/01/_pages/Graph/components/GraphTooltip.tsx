@@ -9,7 +9,7 @@ const formatDate = (timeStamp: string): Date => {
     const millisecondsInHour = 60 * 1000
     const date = new Date(
         dateObject.valueOf() +
-            dateObject.getTimezoneOffset() * millisecondsInHour
+        dateObject.getTimezoneOffset() * millisecondsInHour
     )
     return date
 }
@@ -19,9 +19,18 @@ interface ExtraProps {
 }
 
 const formMeteringUnit = (graphParam: GraphParamsType) => {
-    if (graphParam === 'energy') return 'ГКал'
-
-    return 'м³'
+    switch (graphParam) {
+        case 'energy':
+            return 'ГКал'
+        case 'inputMass':
+        case 'outputMass':
+        case 'deltaMass':
+            return 'Т'
+        case 'inputVolume':
+        case 'outputVolume':
+        case 'deltaVolume':
+            return 'м³';
+    }
 }
 
 export const GraphTooltip: React.FC<GraphTooltipProps & ExtraProps> = (
@@ -59,7 +68,7 @@ const TooltipBlock = styled.div<{ value: number }>`
     border-radius: 4px;
     border: 0;
     transform: ${({ value }) =>
-        value >= 0 ? 'translate(-15%, -135%)' : 'translate(-15%, 35%)'};
+    value >= 0 ? 'translate(-15%, -135%)' : 'translate(-15%, 35%)'};
 `
 
 const DateBlock = styled.div`
