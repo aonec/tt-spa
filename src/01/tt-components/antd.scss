@@ -6,139 +6,101 @@ $white: #ffffff;
 $blue: #189ee9;
 
 .ant-form-item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: baseline !important;
-    margin-bottom: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: baseline !important;
+  margin-bottom: 12px !important;
 
-    .ant-form-item-control {
-        width: 100%;
+  .ant-form-item-control {
+    width: 100%;
+  }
+
+  .ant-form-item-label {
+    label {
+      color: rgba(39, 47, 90, 0.7) !important;
+      font-style: normal;
+      font-weight: $bold;
+      font-size: 14px;
+      line-height: 16px;
+
+      label {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        color: $white !important;
+      }
     }
-
-    .ant-form-item-label {
-        label {
-            color: rgba(39, 47, 90, 0.7) !important;
-            font-style: normal;
-            font-weight: $bold;
-            font-size: 14px;
-            line-height: 16px;
-
-            label {
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 16px;
-                color: $white !important;
-            }
-        }
-    }
+  }
 }
 
 .ant-input-number-handler-wrap {
-    display: none;
+  display: none;
 }
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
 input[type='number'] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 form {
-    .ant-picker {
-        padding: 8px 24px;
+  .ant-picker {
+    padding: 8px 24px;
 
-        input {
-            font-size: 14px;
-            line-height: 32px;
-        }
+    input {
+      font-size: 14px;
+      line-height: 32px;
     }
+  }
 
-    //.ant-select-auto-complete.autocomplete {
-    //  padding: 0;
-    //  margin: 0;
-    //  position: relative;
-    //
-    //  .ant-select-selector {
-    //    padding: 0;
-    //    margin: 0;
-    //    height: 48px;
-    //    border: 1px solid $grey;
-    //    border-radius: 4px;
-    //
-    //    span {
-    //      padding: 8px 24px 8px 40px;
-    //      font-size: 16px;
-    //      line-height: 32px;
-    //      font-style: normal;
-    //      font-weight: $normal;
-    //    }
-    //
-    //    .ant-select-selection-placeholder {
-    //      color: $placeholder;
-    //    }
-    //
-    //    .ant-select-selection-search {
-    //      left: 0;
-    //    }
-    //
-    //    &:before {
-    //      position: absolute;
-    //      content: "";
-    //      display: block;
-    //      background: url('IconTT/svg/search.svg') no-repeat;
-    //      width: 16px;
-    //      height: 16px;
-    //      left: 16px;
-    //      top: calc(50% - 8px);
-    //    }
-    //  }
-    //}
 }
 
 //MenuButtonList
 .ant-dropdown {
-    .ant-dropdown-menu {
-        padding: 0;
-        margin: 0;
-        .ant-dropdown-menu-item {
-            font-style: normal;
-            font-weight: normal;
-            font-size: 16px;
-            line-height: 32px;
-            padding: 8px 24px;
-            &:hover {
-                background: $blue;
-                color: $white;
-            }
-        }
+  .ant-dropdown-menu {
+    padding: 0;
+    margin: 0;
+
+    .ant-dropdown-menu-item {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 8px 24px;
+
+      &:hover {
+        background: $blue;
+        color: $white;
+      }
     }
+  }
 }
 
 //Select Dropdown
-.ant-select-item {
-    margin: 0 !important;
-    //border: 1px solid black;
-    padding: 0 !important;
-
-    &:hover {
-        background: #189ee9 !important;
-        color: $white;
-    }
-
-    .ant-select-item-option-content {
-        background: white;
-        padding: 8px 24px !important;
-        margin: 0 !important;
-
-        &:hover {
-            background: #189ee9 !important;
-            color: $white;
-        }
-    }
-}
+//.ant-select-item {
+//  margin: 0 !important;
+//  //border: 1px solid black;
+//  padding: 0 !important;
+//
+//  &:hover {
+//    background: #189ee9 !important;
+//    color: $white;
+//  }
+//
+//  .ant-select-item-option-content {
+//    background: white;
+//    padding: 8px 24px !important;
+//    margin: 0 !important;
+//
+//    &:hover {
+//      background: #189ee9 !important;
+//      color: $white;
+//    }
+//  }
+//}
