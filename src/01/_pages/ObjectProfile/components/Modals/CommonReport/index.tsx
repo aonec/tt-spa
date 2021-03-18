@@ -12,17 +12,34 @@ import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
 import {ObjectContext} from "../../../index";
+import {CalculatorListResponse, HousingStockResponse} from "../../../../../../myApi";
+import _ from "lodash"
 
 interface ModalPropsInterface {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
 }
 
+interface ObjectContextInterface {
+    object: HousingStockResponse
+    calculators: CalculatorListResponse[] | null
+}
+
 const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
-    const {object} = useContext(ObjectContext)
+    const {object, calculators}: ObjectContextInterface = useContext(ObjectContext)
     const handleCancel = () => {
         setVisible(false)
     }
+    console.log(calculators)
+    // var arr = [ 1, 2 , 3 ]
+    // arr.join('+')  // "1+2+3"
+
+    // const test = _.reduce([1, 2], function(sum, n) {
+    //     return sum + n;
+    // }, 0);
+    //
+    // console.log("test")
+
 
     const {city, street, number, corpus} = object;
     const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
@@ -35,7 +52,15 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const onFinish = (values: any) => {
             console.log('Success:', values);
             console.log("getFieldsValue", getFieldsValue(true))
-            alert('Форма успешно заполнена')
+            // alert('Форма успешно заполнена')
+            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
+            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=${getFieldValue('dates')}T00:00:00Z&to=2021-03-20T23:00:00Z`
+            const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
+            const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+            const calculators = `calculatorsId[0]=2538841&calculatorsId[1]=2538371`
+            console.log("begin", begin)
+            console.log("begin", end)
+
         };
 
         const onFinishFailed = (errorInfo: any) => {
