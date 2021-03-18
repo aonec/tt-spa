@@ -22,9 +22,10 @@ export const Header = () => {
 
 
 
-  const roles = useSelector((state) => state.user.roles)
+  const roles = localStorage.getItem('roles');
   const watcher = 'ManagingFirmSpectator';
   const isWatcher = roles.includes(watcher);
+
 
   const {
     city, street, housingStockNumber, corpus, id,
