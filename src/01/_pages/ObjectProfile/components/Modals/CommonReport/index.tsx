@@ -1,17 +1,17 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
 import {
     StyledFooter,
     StyledModal,
     ButtonTT,
     StyledModalBody,
     StyledFormPage,
-    InputTT, Title, styles, RangePickerTT, SelectTT, MultiSelectTT,
+    InputTT, Title, styles, RangePickerTT,
 } from '../../../../../tt-components'
 
 import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
-import {serviceZoneList} from "../../../../../tt-components/localBases";
 import moment from "moment";
+import {ObjectContext} from "../../../index";
 
 interface ModalPropsInterface {
     visible: boolean
@@ -19,16 +19,20 @@ interface ModalPropsInterface {
 }
 
 const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
+    const {object} = useContext(ObjectContext)
     const handleCancel = () => {
         setVisible(false)
     }
+
+    const {city, street, number, corpus} = object;
+    const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
+    const addressString = `${city}, ${street}, ${number}`
 
     const RegistrationForm = () => {
         const [form] = Form.useForm();
         const [isDisabled, setIsDisabled] = useState(true);
         const onFinish = (values: any) => {
             console.log('Success:', values);
-            console.log(form.getFieldValue(['periodDisabled']))
         };
 
         const onFinishFailed = (errorInfo: any) => {
@@ -37,38 +41,31 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
 
         const onPeriodChange = (event: any) => {
             const period = event.target.value;
-            console.log('onPeriodChange', period);
             switch (period) {
                 case 'currentMonth':
-                    console.log('currentMonth');
                     form.setFieldsValue({dates: [moment().startOf('month'), moment()]})
                     setIsDisabled(true)
                     break;
                 case 'previousMonth':
-                    console.log('previousMonth');
                     form.setFieldsValue({dates: [moment().subtract(1, 'months').startOf('month'), moment().startOf('month')]})
                     setIsDisabled(true)
                     break;
                 case 'customPeriod':
-                    console.log('customPeriod');
                     setIsDisabled(false)
                     break;
-
                 default:
-                    alert("Нет таких значений");
+                    alert("Не выбран период!");
             }
         }
+
         return (
             <Form
                 initialValues={{
-                    test: 'test',
-                    name: 'Сводный_отчёт_Мира_6.xlsx',
-                    address: 'Нижнекамск, пр. Мира, 6',
+                    name: reportName,
+                    address: addressString,
                     period: 'currentMonth',
                     dates: [moment().startOf('month'), moment()],
                     detailing: 'daily',
-                    periodDisabled: true
-
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -85,7 +82,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                             label="Название отчёта" style={styles.w100}
                         >
                             <InputTT
-                                disabled
+                                readOnly
                             />
                         </Form.Item>
 
@@ -130,14 +127,11 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                             <RangePickerTT
                                 format="DD.MM.YYYY"
                                 allowClear={false}
-                                // size={"48px"}
-                                // value={[values.begin, values.end]}
                                 placeholder={['Дата Начала', 'Дата окончания']}
                                 disabled={isDisabled}
-                                onChange={(event) => {
-                                    // datePickerHandler(event)
+                                disabledDate={current => {
+                                    return current && current > moment();
                                 }}
-                                // disabled={values.customPeriodDisabled}
                             />
                         </Form.Item>
 
@@ -167,16 +161,14 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         )
     }
 
-
     return (
         <StyledModal
-            visible={true}
+            visible={visible}
             width={800}
             footer={null}
             onCancel={handleCancel}
         >
             <RegistrationForm/>
-
         </StyledModal>
     )
 }
