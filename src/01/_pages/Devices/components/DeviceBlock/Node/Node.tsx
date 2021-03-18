@@ -18,7 +18,7 @@ const Node: React.FC<Props> = ({ node }) => {
         const devices = pipe.devices.map((housingDevice) => {
 
             return (
-                <DeviceWrapper>
+                <MeteringDeviceWrapper>
                     <div>
                         <TitleWrapper>
                             <DeviceLink
@@ -42,7 +42,7 @@ const Node: React.FC<Props> = ({ node }) => {
                             ? housingDevice.diameter + ' мм'
                             : ''}
                     </Diameter>
-                </DeviceWrapper>
+                </MeteringDeviceWrapper>
             )
         })
         return devices
@@ -77,6 +77,15 @@ const Node: React.FC<Props> = ({ node }) => {
         </div>
     )
 }
+
+export const MeteringDeviceWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
+    margin-bottom: 24px;
+    margin-left: 24px;
+    align-items: center;
+    justify-content: center;
+`
 
 const NodeIcon = styled(Icon)`
     margin-right: 8px;
