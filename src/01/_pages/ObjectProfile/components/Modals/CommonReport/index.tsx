@@ -13,7 +13,6 @@ import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
 import {ObjectContext} from "../../../index";
 import {CalculatorListResponse, HousingStockResponse} from "../../../../../../myApi";
-import _ from "lodash"
 
 interface ModalPropsInterface {
     visible: boolean
@@ -30,18 +29,12 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
     const handleCancel = () => {
         setVisible(false)
     }
-    console.log(calculators)
+    // console.log(calculators)
     const ids = calculators?.map((calculator, index)=>{
         const {id} = calculator;
         return `calculatorsId[${index}]=${id}`
     })
-    const list = ids?.join('&');
-
-    console.log("list",list)
-
-
-
-
+    const calculatorsString = ids?.join('&');
 
     const {city, street, number, corpus} = object;
     const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
@@ -56,9 +49,8 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
             console.log("getFieldsValue", getFieldsValue(true))
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            const calculators = list;
             // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
-            const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculators}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
+            const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculatorsString}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
             console.log(link)
             window.open(link)
         };
@@ -66,8 +58,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const onFinishFailed = (errorInfo: any) => {
             console.log('Failed:', errorInfo);
         };
-
-
+        
         const onPeriodChange = (event: any) => {
             const period = event.target.value;
             switch (period) {
