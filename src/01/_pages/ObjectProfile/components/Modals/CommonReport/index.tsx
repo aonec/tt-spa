@@ -5,11 +5,12 @@ import {
     ButtonTT,
     StyledModalBody,
     StyledFormPage,
-    InputTT, Title, styles, RangePickerTT,
+    InputTT, Title, styles, RangePickerTT, SelectTT,
 } from '../../../../../tt-components'
 
 import {Form, Radio} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
+import {serviceZoneList} from "../../../../../tt-components/localBases";
 
 interface ModalPropsInterface {
     visible: boolean
@@ -20,43 +21,62 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
     const handleCancel = () => {
         setVisible(false)
     }
+    const onFinish = (values: any) => {
+        console.log('Success:', values);
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
+
     return (
         <StyledModal
-            visible={visible}
+            visible={true}
             width={800}
             footer={null}
             onCancel={handleCancel}
         >
-            <StyledModalBody>
-                <Title size="middle" color="black">
-                    Выгрузка сводного отчёта
-                </Title>
-                <StyledFormPage>
-                    <Form.Item label="Название отчёта" style={styles.w100}>
-                        <InputTT
-                            value="Сводный_отчёт.xlsx"
-                        />
-                    </Form.Item>
+            <Form
+                initialValues={{
+                    test: 'test',
+                    name: 'Сводный_отчёт_Мира_6.xlsx',
+                    address: 'Нижнекамск, пр. Мира, 6',
 
-                    <Form.Item label="Город" style={styles.w49}>
-                        <InputTT
-                            value="Нижнекамск"
-                        />
-                    </Form.Item>
+                }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+            >
+                <StyledModalBody>
+                    <Title size="middle" color="black">
+                        Выгрузка сводного отчёта
+                    </Title>
+                    <StyledFormPage>
 
-                    <Form.Item label="Адрес" style={styles.w49}>
-                        <InputTT
-                            value="Адрес"
-                        />
-                    </Form.Item>
+                        <Form.Item
+                            name="name"
+                            label="Название отчёта" style={styles.w100}
+                        >
+                            <InputTT
+                                disabled
+                            />
+                        </Form.Item>
 
-                    <Form.Item label="Зоны" style={styles.w100}>
-                        <InputTT
-                            value="Зоны"
-                        />
-                    </Form.Item>
-                    <div id="period_and_type " style={{ display: 'flex', width: '100%' }}>
-                        <Form.Item label="Тип архива" style={{ width: '50%' }}>
+
+                        <Form.Item label="Адрес" name='address' style={styles.w100}>
+                            <InputTT
+                                disabled
+                            />
+                        </Form.Item>
+
+                        <Form.Item label="Зоны" style={styles.w100}>
+
+                            <SelectTT
+                                options={serviceZoneList}
+                                placeholder={'Выберите одну или несколько зон'}
+                            />
+                        </Form.Item>
+
+                        <Form.Item label="Тип архива" style={styles.w49}>
                             <Radio.Group
                                 defaultValue="currentMonth"
                                 size="large"
@@ -77,7 +97,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
 
                         <Form.Item
                             label="Детализация отчета"
-                            style={{ width: '50%' }}
+                            style={styles.w49}
                         >
                             <Radio.Group
                                 defaultValue="daily"
@@ -91,45 +111,45 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
 
                             </Radio.Group>
                         </Form.Item>
-                    </div>
+                        
 
-                    <Form.Item label="Период выгрузки" style={{ width: '300px' }}>
-                        <RangePickerTT
-                            format="DD.MM.YYYY"
-                            allowClear={false}
-                            // size={"48px"}
-                            // value={[values.begin, values.end]}
-                            placeholder={['Дата Начала', 'Дата окончания']}
-                            onChange={(event) => {
-                                // datePickerHandler(event)
-                            }}
-                            // disabled={values.customPeriodDisabled}
-                        />
-                    </Form.Item>
+                        <Form.Item label="Период выгрузки" style={{width: '300px'}}>
+                            <RangePickerTT
+                                format="DD.MM.YYYY"
+                                allowClear={false}
+                                // size={"48px"}
+                                // value={[values.begin, values.end]}
+                                placeholder={['Дата Начала', 'Дата окончания']}
+                                onChange={(event) => {
+                                    // datePickerHandler(event)
+                                }}
+                                // disabled={values.customPeriodDisabled}
+                            />
+                        </Form.Item>
 
-                </StyledFormPage>
-            </StyledModalBody>
-            <StyledFooter modal>
-                <ButtonTT
-                    type="button"
-                    color="white"
-                    onClick={handleCancel}
-                    style={{marginLeft: '16px'}}
-                >
-                    Отмена
-                </ButtonTT>
-                <ButtonTT
-                    color="blue"
-                    type="submit"
-                    style={{marginLeft: '16px'}}
-                    big
-                >
-                    Выгрузить отчет
-                </ButtonTT>
+                    </StyledFormPage>
+                </StyledModalBody>
+                <StyledFooter modal>
+                    <ButtonTT
+                        type="button"
+                        color="white"
+                        onClick={handleCancel}
+                        style={{marginLeft: '16px'}}
+                    >
+                        Отмена
+                    </ButtonTT>
+                    <ButtonTT
+                        color="blue"
+                        type="submit"
+                        style={{marginLeft: '16px'}}
+                        big
+                    >
+                        Выгрузить отчет
+                    </ButtonTT>
 
 
-            </StyledFooter>
-
+                </StyledFooter>
+            </Form>
 
         </StyledModal>
     )
