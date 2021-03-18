@@ -26,6 +26,7 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
 `;
 
 const MenuItem = styled(Menu.Item)`
+  min-width: 408px;
   color: ${(props) => props.color || 'var(--primary)'};
 `;
 export const MenuButtonTT = (props) => {
