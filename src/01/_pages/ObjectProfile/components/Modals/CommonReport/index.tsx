@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useContext, useState} from 'react';
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
 import {
     StyledFooter,
     StyledModal,
@@ -30,24 +30,28 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
 
     const RegistrationForm = () => {
         const [form] = Form.useForm();
+        const {setFieldsValue, getFieldsValue, getFieldValue} = form;
         const [isDisabled, setIsDisabled] = useState(true);
         const onFinish = (values: any) => {
             console.log('Success:', values);
+            console.log("getFieldsValue", getFieldsValue(true))
+            alert('Форма успешно заполнена')
         };
 
         const onFinishFailed = (errorInfo: any) => {
             console.log('Failed:', errorInfo);
         };
 
+
         const onPeriodChange = (event: any) => {
             const period = event.target.value;
             switch (period) {
                 case 'currentMonth':
-                    form.setFieldsValue({dates: [moment().startOf('month'), moment()]})
+                    setFieldsValue({dates: [moment().startOf('month'), moment()]})
                     setIsDisabled(true)
                     break;
                 case 'previousMonth':
-                    form.setFieldsValue({dates: [moment().subtract(1, 'months').startOf('month'), moment().startOf('month')]})
+                    setFieldsValue({dates: [moment().subtract(1, 'months').startOf('month'), moment().startOf('month')]})
                     setIsDisabled(true)
                     break;
                 case 'customPeriod':
@@ -57,19 +61,20 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                     alert("Не выбран период!");
             }
         }
-
+        const initialValues = {
+            name: reportName,
+            address: addressString,
+            period: 'currentMonth',
+            dates: [moment().startOf('month'), moment()],
+            detailing: 'daily',
+        }
         return (
             <Form
-                initialValues={{
-                    name: reportName,
-                    address: addressString,
-                    period: 'currentMonth',
-                    dates: [moment().startOf('month'), moment()],
-                    detailing: 'daily',
-                }}
+                initialValues={initialValues}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 form={form}
+                requiredMark={false}
             >
                 <StyledModalBody>
                     <Title size="middle" color="black">
@@ -114,6 +119,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                             label="Детализация отчета"
                             style={styles.w49}
                             name='detailing'
+                            rules={[{required: true, message: 'Укажите детализацию отчета'}]}
                         >
                             <Radio.Group>
                                 <StyledRadio value="hourly">Часовая</StyledRadio>

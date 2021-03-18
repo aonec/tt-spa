@@ -81,6 +81,13 @@ form {
     }
   }
 }
+//Form.Item error Message
+form {
+  .ant-form-item-explain.ant-form-item-explain-error {
+    color: black;
+  }
+}
+
 
 //Select Dropdown
 //.ant-select-item {
