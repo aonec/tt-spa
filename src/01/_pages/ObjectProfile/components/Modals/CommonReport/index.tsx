@@ -31,14 +31,16 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         setVisible(false)
     }
     console.log(calculators)
-    // var arr = [ 1, 2 , 3 ]
-    // arr.join('+')  // "1+2+3"
+    const ids = calculators?.map((calculator, index)=>{
+        const {id} = calculator;
+        return `calculatorsId[${index}]=${id}`
+    })
+    const list = ids?.join('&');
 
-    // const test = _.reduce([1, 2], function(sum, n) {
-    //     return sum + n;
-    // }, 0);
-    //
-    // console.log("test")
+    console.log("list",list)
+
+
+
 
 
     const {city, street, number, corpus} = object;
@@ -52,15 +54,13 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const onFinish = (values: any) => {
             console.log('Success:', values);
             console.log("getFieldsValue", getFieldsValue(true))
-            // alert('Форма успешно заполнена')
-            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
-            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=${getFieldValue('dates')}T00:00:00Z&to=2021-03-20T23:00:00Z`
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            const calculators = `calculatorsId[0]=2538841&calculatorsId[1]=2538371`
-            console.log("begin", begin)
-            console.log("begin", end)
-
+            const calculators = list;
+            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
+            const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculators}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
+            console.log(link)
+            window.open(link)
         };
 
         const onFinishFailed = (errorInfo: any) => {
