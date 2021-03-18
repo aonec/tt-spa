@@ -20,7 +20,7 @@ export const Menu = () => {
                 </NavLink>
             ))}
             <ExitLink key={'10'} to={'/login/'} activeClassName={style.active}>
-                <ExitIcon icon={'notConnected'} />
+                <ExitIcon icon={'exitIcon'} />
                 <span>Выход из системы</span>
             </ExitLink>
         </nav>
