@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useParams } from 'react-router-dom'
 import { Header } from './components/Header'
 import { ApartmentDevicesList } from './components/ApartmentDevicesList'
@@ -9,6 +9,7 @@ export const ApartmentDevicesContext = React.createContext()
 export const ApartmentDevices = (props) => {
     const params = useParams()
     const { devices } = props
+    const [sliderIndex, setSliderIndex] = useState(0)
 
     const { items } = devices || {}
     if (!items) {
@@ -21,8 +22,8 @@ export const ApartmentDevices = (props) => {
     return (
         <>
             <ApartmentDevicesContext.Provider value={Object.values(items)}>
-                <Header />
-                <ApartmentDevicesList />
+                <Header sliderIndex={sliderIndex} setSliderIndex={setSliderIndex}/>
+                <ApartmentDevicesList sliderIndex={sliderIndex}/>
                 <ShowHidden />
             </ApartmentDevicesContext.Provider>
         </>

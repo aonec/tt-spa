@@ -144,7 +144,7 @@ export const useReadings = (device: IndividualDeviceType, sliderIndex = 0) => {
     }
 }
 
-type ReadingsStateType = {
+export type ReadingsStateType = {
     previousReadingsArray: number[]
     currentReadingsArray: number[]
     prevId: number
