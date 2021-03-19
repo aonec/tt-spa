@@ -25,7 +25,7 @@ const Title = styled.h5`
 export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, readingsLength }) {
 
 
-
+// ДОБАВИТЬ ДИЗЕЙБЛД И ЗАТИПИЗИРОВАТЬ
     const isRightArrowDisabled =
         sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1
 
