@@ -49,10 +49,10 @@ export const ObjectProfile = () => {
         getObject(housingStockId).then((res) => {
             setObject(res);
         })
-        getServiceZones().then((res) => {
-            setZones(res)
-            // console.log('zones', res)
-        })
+//         getServiceZones().then((res) => {
+//             setZones(res)
+//             // console.log('zones', res)
+//         })
 
     }, [])
 
@@ -75,7 +75,7 @@ export const ObjectProfile = () => {
         commonReport,
         setCommonReport,
         object,
-        zones
+//         zones
     }
 
 
