@@ -10,6 +10,8 @@ import rateTypeToNumber from "../../../../_api/utils/rateTypeToNumber";
 import {formEmptyReadingsObject} from "../../../../utils/formEmptyReadingsObject";
 import {IndividualDeviceType} from "../../../../../types/types";
 import { ReadingsStateType } from '01/hooks/useReadings'
+import ReadingsBlock from "../../../MetersPage/components/MeterDevices/components/ReadingsBlock";
+import {DeviceReadingsContainer} from "../../../MetersPage/components/MeterDevices/components/ApartmentReadingLine";
 
 const DeviceIitem = styled.div`
     display: grid;
@@ -47,7 +49,18 @@ export function ApartmentDeviceItem({ device, sliderIndex }: { device: Individua
         })
     }, [device.readings, sliderIndex])
 
-
+    const deviceReadings = readingsState?.readingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={device.id + index}
+                index={index}
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                isDisabled={true}
+            />
+        )
+    )
 
     return (
         <DeviceIitem>
@@ -59,9 +72,16 @@ export function ApartmentDeviceItem({ device, sliderIndex }: { device: Individua
                 futureCheckingDate={convertDate(futureCheckingDate)}
                 id={id}
             />
-            <ApartmentInput />
-            <ApartmentInput />
-            <ApartmentDevicesHistory />
+            {/*<ApartmentInput />*/}
+            {/*<ApartmentInput />*/}
+            {/*<ApartmentDevicesHistory />*/}
+            <DeviceReadingsContainer
+                style={{ marginBottom: 8 }}
+                color={'var(--frame)'}
+                resource={device.resource}
+            >
+                {deviceReadings}
+            </DeviceReadingsContainer>
         </DeviceIitem>
     )
 }

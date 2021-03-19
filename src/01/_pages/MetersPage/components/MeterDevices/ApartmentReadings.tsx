@@ -110,11 +110,11 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
     )
 }
 
-const Meters = styled.div`
+export const Meters = styled.div`
     grid-template-columns: minmax(250px, 350px) auto minmax(300px, 350px);
 `
 
-const MetersHeader = styled.div`
+export const MetersHeader = styled.div`
     display: grid;
     grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 2fr;
     border-bottom: 1px solid var(--frame);
@@ -126,7 +126,7 @@ const MetersHeader = styled.div`
     color: var(--main-90);
 `
 
-const ArrowContainer = styled.div`
+export const ArrowContainer = styled.div`
     width: 32px;
     height: 32px;
     display: flex;
@@ -134,7 +134,7 @@ const ArrowContainer = styled.div`
     align-items: center;
 `
 
-const CenterContainer = styled.div`
+export const CenterContainer = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
