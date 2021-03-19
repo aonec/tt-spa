@@ -3,10 +3,12 @@ import {Map, Placemark, ZoomControl, FullscreenControl} from 'react-yandex-maps'
 import objectIcon from './object.svg';
 import styled from 'styled-components'
 import {IconTT } from '../../../../tt-components';
-import { ObjectContext } from '../../index';
+import { ObjectContext } from '../../tsx';
+
+
 
 export const MapObject = () => {
-  const { object } = useContext(ObjectContext);
+  const { object} = useContext(ObjectContext);
   const { coordinates } = object;
   const { latitude, longitude } = coordinates;
   // coordinates: {latitude: 55.810405, longitude: 49.191192}

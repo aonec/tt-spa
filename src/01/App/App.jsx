@@ -30,7 +30,6 @@ import {
     Registration,
     IndividualDevice,
     NodeProfile,
-    MapPage,
     EditNode,
     AddNode,
 } from '../_pages';
@@ -63,7 +62,6 @@ const Internal = () => {
                 path="/form/"
                 render={() => <DeviceSearchForm/>}
             />
-            <Route path="/map/" render={() => <MapPage/>}/>
             <Route path="/">
                 <layout>
                     <menu as="div">

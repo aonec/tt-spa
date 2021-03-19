@@ -11,7 +11,7 @@ import {
 import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
-import {ObjectContext} from "../../../index";
+import {ObjectContext} from "../../../tsx";
 
 interface ModalPropsInterface {
     visible: boolean
