@@ -12,7 +12,6 @@ const DeviceBlock = (props) => {
 
     const {isConnected} = calculator;
     const isConnectionError = !(calculator.connection.port && calculator.connection.ipV4);
-debugger;
     return (
         <>
             <DeviceWrapper>

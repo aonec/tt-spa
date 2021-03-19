@@ -14,7 +14,6 @@ export function useApp() {
 
     React.useEffect(() => {
         if (window.location.href.match(/registration/gi)) {
-            // console.log(pathname.match(/registration/gi));
             return
         }
 

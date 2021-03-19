@@ -49,8 +49,6 @@ export async function getTasks(url = '') {
         const newURL = `${TasksURL}?ApartmentId=${url}`
         const res = await axios.get(newURL)
         const allTasks = await axios.get(`${TasksURL}`)
-        //console.log("newURL",newURL)
-        //console.log("allTasks",allTasks)
         return {
             ...res,
         }

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {MutableRefObject, useCallback, useEffect, useState} from 'react'
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber'
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject'
 import { getMonthFromDate } from '../utils/getMonthFromDate'
@@ -7,17 +7,31 @@ import moment from "moment";
 import axios from "../axios";
 import {isNullInArray} from "../utils/checkArrayForNulls";
 import {setInputFocused, setInputUnfocused} from "../Redux/ducks/readings/actionCreators";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    DeviceReadingsContainer,
+    getInputColor
+} from "../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine";
+import ReadingsBlock from "../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock";
+import {v4 as uuid} from "uuid";
+import {selectDisabledState} from "../Redux/ducks/readings/selectors";
+import {Input} from "antd";
 
 
-export const useReadings = (device: IndividualDeviceType, sliderIndex = 0) => {
+export const useReadings = (device: IndividualDeviceType,
+                            textInput: MutableRefObject<Input | null>,
+                            sliderIndex = 0) => {
 
     const [readingsState, setReadingsState] = useState<ReadingsStateType>()
     const [isVisible, setIsVisible] = useState(false)
     const [initialReadings, setInitialReadings] = useState<number[]>([])
-    const [isCancel, setIsCancel] = useState(false)
 
     const dispatch = useDispatch();
+
+    const disabledState = useSelector(selectDisabledState)
+
+    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
+        ?.isDisabled
 
     const currentMonth = getMonthFromDate()
     const numberOfReadings = rateTypeToNumber(device.rateType)
@@ -45,12 +59,12 @@ export const useReadings = (device: IndividualDeviceType, sliderIndex = 0) => {
             currId: currentReadings.id,
             resource: device.resource,
         })
-    }, [device.readings, numberOfReadings, sliderIndex])
+    }, [device.readings, sliderIndex])
 
     const formDeviceReadingObject = (deviceItem: IndividualDeviceType, readingsState: ReadingsStateType): ReadingType => {
         return ({
             deviceId: deviceItem.id,
-            value1: +readingsState.currentReadingsArray[0],
+            value1: Number(readingsState.currentReadingsArray[0]),
             readingDate: moment().toISOString(),
             uploadTime: moment().toISOString(),
             isForced: true
@@ -118,29 +132,138 @@ export const useReadings = (device: IndividualDeviceType, sliderIndex = 0) => {
     }
 
     const handleCancel = () => {
+        if (!textInput.current) return
         setReadingsState((state: any) => ({
             ...state,
             currentReadingsArray: initialReadings,
         }))
-        setIsCancel(true)
+        textInput.current.focus()
         setIsVisible(false)
     }
 
+    if (!readingsState) return {}
+
+    const currentDeviceReadings = readingsState.currentReadingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={device.id + index}
+                index={index}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onInputChange(e, index)
+                }
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                textInput={textInput}
+                isDisabled={isDisabled}
+            />
+        )
+    )
+
+    const previousDeviceReadings = readingsState.previousReadingsArray.map(
+        (value, index) => (
+            <ReadingsBlock
+                key={uuid()}
+                index={index}
+                value={value}
+                resource={readingsState.resource}
+                operatorCabinet
+                readingsBlocked
+                houseReadings
+                isDisabled
+            />
+        )
+    )
+
+    const options = (
+        readingsElems: JSX.Element[],
+        isCurrent: boolean
+    ): OptionsInterface[] => [
+        {
+            value: () => (
+                <DeviceReadingsContainer
+                    color={
+                    isCurrent
+                    ? getInputColor(device.resource)
+                    : 'var(--main-90)'
+        }
+        onBlur={onBlurHandler}
+        onFocus={onFocusHandler}
+        resource={device.resource}
+            >
+            {readingsElems}
+            </DeviceReadingsContainer>
+),
+    isSuccess:
+        readingsState?.resource !== 'Electricity' ||
+        readingsElems.length === 1,
+},
+    {
+        value: () => (
+            <div
+                onBlur={onBlurHandler}
+        onFocus={onFocusHandler}
+        style={{ display: 'flex', flexDirection: 'column' }}
+    >
+        <DeviceReadingsContainer
+            style={{ marginBottom: 8 }}
+        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+        resource={device.resource}
+            >
+            {readingsElems[0]}
+            </DeviceReadingsContainer>
+            <DeviceReadingsContainer
+        color={isCurrent ? '#957400' : 'var(--main-90)'}
+        resource={device.resource}
+            >
+            {readingsElems[1]}
+            </DeviceReadingsContainer>
+            </div>
+    ),
+        isSuccess: readingsElems.length === 2,
+    },
+    {
+        value: () => (
+            <div
+                onBlur={onBlurHandler}
+        onFocus={onFocusHandler}
+        style={{ display: 'flex', flexDirection: 'column' }}
+    >
+        <DeviceReadingsContainer
+            style={{ marginBottom: 8 }}
+        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+        resource={device.resource}
+            >
+            {[readingsElems[0], readingsElems[1]]}
+        </DeviceReadingsContainer>
+        <DeviceReadingsContainer
+        color={isCurrent ? '#957400' : 'var(--main-90)'}
+        resource={device.resource}
+            >
+            {readingsElems[2]}
+            </DeviceReadingsContainer>
+            </div>
+    ),
+        isSuccess: true,
+    },
+]
+
+    const previousReadings = options(previousDeviceReadings, false)
+        .find((el) => el.isSuccess)!
+        .value()
+
+    const currentReadings = options(currentDeviceReadings, true)
+        .find((el) => el.isSuccess)!
+        .value();
 
     return {
         readingsState,
-        setReadingsState,
         isVisible,
-        setIsVisible,
-        initialReadings,
-        setInitialReadings,
-        onBlurHandler,
-        onFocusHandler,
         onInputChange,
-        isCancel,
-        setIsCancel,
         handleOk,
-        handleCancel
+        handleCancel,
+        previousReadings,
+        currentReadings
     }
 }
 
@@ -163,6 +286,11 @@ type ReadingType = {
     readingDate: string
     uploadTime: string
     isForced: boolean
+}
+
+interface OptionsInterface {
+    value: () => JSX.Element
+    isSuccess: boolean
 }
 
 
