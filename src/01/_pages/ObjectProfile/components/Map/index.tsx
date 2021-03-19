@@ -1,10 +1,9 @@
 import React, { useContext, useMemo, useState } from 'react';
-import {YMaps, Map, Placemark, ZoomControl, FullscreenControl} from 'react-yandex-maps';
+import {Map, Placemark, ZoomControl, FullscreenControl} from 'react-yandex-maps';
 import objectIcon from './object.svg';
 import styled from 'styled-components'
-import {IconTT, ButtonTT } from '../../../../tt-components';
+import {IconTT } from '../../../../tt-components';
 import { ObjectContext } from '../../index';
-// background-image: url(${img});
 
 export const MapObject = () => {
   const { object } = useContext(ObjectContext);
@@ -12,7 +11,7 @@ export const MapObject = () => {
   const { latitude, longitude } = coordinates;
   // coordinates: {latitude: 55.810405, longitude: 49.191192}
   const objectCoordinates = [latitude, longitude];
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(15);
   const mapState = useMemo(() => ({
     center: objectCoordinates,
     // controls: ['zoomControl', 'fullscreenControl'],
@@ -27,7 +26,7 @@ export const MapObject = () => {
   ];
 
   const [show, setShow] = useState(false);
-  console.log('show', show);
+  // console.log('show', show);
   return (
     <div>
       <ShowHide><IconTT icon={show ? 'off' : 'on'}/>&nbsp;<button onClick={() => setShow((show) => !show)}>{show ? 'Скрыть карту' : 'Показать карту'}</button></ShowHide>
@@ -78,39 +77,3 @@ const ShowHide = styled.div`
   display: flex;
   align-items: center;
 `
-
-{ /* <ButtonTT */ }
-{ /*  color="blue" */ }
-{ /*  onClick={() => setZoom((zoom) => (zoom === 12 ? 15 : 12))} */ }
-{ /* > */ }
-{ /*  Приблизить карту */ }
-{ /* </ButtonTT> */ }
-{ /* </YMaps> */ }
-
-// defaultState={{
-//   center: objectCoordinates,
-//   zoom: 15,
-//   controls: ['zoomControl', 'fullscreenControl'],
-// }}
-
-{
-  /* <Placemark */
-}
-{
-  /*  defaultGeometry={[55.63, 51.83]} */
-}
-{
-  /*  modules={['geoObject.addon.balloon']} */
-}
-{
-  /*  properties={{ */
-}
-{
-  /*    balloonContentBody: 'Информация об объекте', */
-}
-{
-  /*  }} */
-}
-{
-  /* /> */
-}
