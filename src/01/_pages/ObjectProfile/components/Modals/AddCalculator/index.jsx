@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import '../../../../../tt-components/antd.scss'
-import { ObjectContext } from '../../../tsx'
+import { ObjectContext } from '../../../index'
 import AddCalculatorForm from './AddCalculatorForm'
 import { StyledModal } from '../../../../../tt-components'
 import ModalCalculatorExist from './ModalCalculatorExist'

@@ -3,7 +3,7 @@ import {Map, Placemark, ZoomControl, FullscreenControl} from 'react-yandex-maps'
 import objectIcon from './object.svg';
 import styled from 'styled-components'
 import {IconTT } from '../../../../tt-components';
-import { ObjectContext } from '../../tsx';
+import { ObjectContext } from '../../index';
 
 
 
