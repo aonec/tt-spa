@@ -6,6 +6,7 @@ import ModalCalculator from './Modals/AddCalculator'
 import ModalAddDevice from './Modals/AddDevice'
 import ModalCommonReport from "./Modals/CommonReport";
 import {MenuButtonTT} from "../../../tt-components";
+import isWatcher from "../../../_api/utils/isWatcher";
 
 const styles = css`
   h {
@@ -33,8 +34,8 @@ export const Header = React.memo(({0: title, 1: subtitle, corpus, setCommonRepor
                 cb: () => {
                     setCommonReport(true)
                 },
+                show: true,
                 color: 'default',
-                clickable: true
             }
         ];
         return (

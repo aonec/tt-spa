@@ -41,7 +41,8 @@ export const ObjectProfile = () => {
 
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
-            setCalculators(res)
+            const {items} = res;
+            setCalculators(items)
             // console.log(res);
         })
         getObject(housingStockId).then((res) => {
@@ -49,7 +50,7 @@ export const ObjectProfile = () => {
         })
         getServiceZones().then((res) => {
             setZones(res)
-            console.log('zones', res)
+            // console.log('zones', res)
         })
 
     }, [])
@@ -60,7 +61,7 @@ export const ObjectProfile = () => {
     const info = useObjectInformation(state)
     const {header = [], events = [], aparts = []} = state
 
-    if (!object || !zones) {
+    if (!object || !zones || !calculators) {
         return <Loader show={true} size={64}/>
     }
     const context = {

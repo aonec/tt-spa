@@ -12,17 +12,29 @@ import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
 import {ObjectContext} from "../../../index";
+import {CalculatorListResponse, HousingStockResponse} from "../../../../../../myApi";
 
 interface ModalPropsInterface {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
 }
 
+interface ObjectContextInterface {
+    object: HousingStockResponse
+    calculators: CalculatorListResponse[] | null
+}
+
 const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
-    const {object} = useContext(ObjectContext)
+    const {object, calculators}: ObjectContextInterface = useContext(ObjectContext)
     const handleCancel = () => {
         setVisible(false)
     }
+    // console.log(calculators)
+    const ids = calculators?.map((calculator, index)=>{
+        const {id} = calculator;
+        return `calculatorsId[${index}]=${id}`
+    })
+
 
     const {city, street, number, corpus} = object;
     const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
@@ -35,13 +47,18 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const onFinish = (values: any) => {
             console.log('Success:', values);
             console.log("getFieldsValue", getFieldsValue(true))
-            alert('Форма успешно заполнена')
+            const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
+            const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+            const calculatorsString = ids?.join('&');
+            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
+            const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculatorsString}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
+            console.log(link)
+            window.open(link)
         };
 
         const onFinishFailed = (errorInfo: any) => {
             console.log('Failed:', errorInfo);
         };
-
 
         const onPeriodChange = (event: any) => {
             const period = event.target.value;
