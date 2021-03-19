@@ -1,4 +1,4 @@
-import {ResourceType} from "../01/_pages/Graph/components/GraphView";
+import {ResourceType} from "../myApi";
 
 export type ReadingType = {
     id: number

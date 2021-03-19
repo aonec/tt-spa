@@ -10,7 +10,7 @@ import {
 } from '../../../../../Redux/ducks/readings/actionCreators'
 import DeviceInfo from './DeviceInfo'
 import {IndividualDeviceType} from "../../../../../../types/types";
-import {ResourceType} from "../../../../Graph/components/GraphView";
+import {ResourceType} from "../../../../../../myApi";
 
 interface ApartmentReadingLineProps {
     device: IndividualDeviceType
