@@ -30,11 +30,11 @@ const tabItemsWatcher = [
 
 const Tabs = React.memo(({total = []}) => {
 
-        const Tabs = isWatcher ? tabItemsWatcher : tabItems
+//         const Tabs = isWatcher ? tabItemsWatcher : tabItems
         return (
             styled(tabs)(
                 <tabs>
-                    {Tabs.map(({0: name, 1: to}, i) => (
+                    {tabItems.map(({0: name, 1: to}, i) => (
                         <NavLink key={to} to={to} activeClassName={tabs.active} replace>
                             {name} {!!total[i] && `(${total[i]})`}
                         </NavLink>
