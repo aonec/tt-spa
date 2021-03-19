@@ -34,7 +34,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const {id} = calculator;
         return `calculatorsId[${index}]=${id}`
     })
-    const calculatorsString = ids?.join('&');
+
 
     const {city, street, number, corpus} = object;
     const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
@@ -49,6 +49,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
             console.log("getFieldsValue", getFieldsValue(true))
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+            const calculatorsString = ids?.join('&');
             // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
             const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculatorsString}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
             console.log(link)
