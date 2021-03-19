@@ -227,7 +227,16 @@ export const serviceZoneList = [
         value: 'CommercialPremises',
         label: 'Коммерческие помещения',
     },
+    {
+        value: 'TechnicalPremises',
+        label: 'Технические помещения',
+    },
+    {
+        value: 'CommonUsageAreas',
+        label: 'Места общего пользования',
+    },
 ]
+
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/
 

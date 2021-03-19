@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import { ipv4RegExp } from '../../../../tt-components/localBases'
+import { ipv4RegExp } from '../../../../../tt-components/localBases'
 
 export const defaultValidationSchema = Yup.object({
     serialNumber: Yup.string().required('Введите серийный номер'),
