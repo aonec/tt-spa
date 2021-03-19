@@ -2,19 +2,26 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useReadings } from '../../../../../hooks/useReadings'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
-import { Modal } from 'antd'
+import {Input, Modal} from 'antd'
 import ButtonTT from '../../../../../tt-components/ButtonTT'
 import { useDispatch } from 'react-redux'
 import {
     setInputUnfocused,
 } from '../../../../../Redux/ducks/readings/actionCreators'
 import DeviceInfo from './DeviceInfo'
+import {IndividualDeviceType} from "../../../../../../types/types";
+import {ResourceType} from "../../../../Graph/components/GraphView";
 
-const ApartmentReadingLine = ({ device, sliderIndex }) => {
+interface ApartmentReadingLineProps {
+    device: IndividualDeviceType
+    sliderIndex: number
+}
+
+const ApartmentReadingLine = ({ device, sliderIndex }: ApartmentReadingLineProps) => {
 
     const dispatch = useDispatch()
 
-    const textInput = React.createRef()
+    const textInput = React.createRef<Input>()
 
     const {
         readingsState,
@@ -100,7 +107,7 @@ const FullDeviceLine = styled.div`
     border-bottom: 1px solid #dcdee4;
 `
 
-export const getInputColor = (resource) => {
+export const getInputColor = (resource: ResourceType) => {
     switch (resource) {
         case 'HotWaterSupply':
             return '#FF8C68'
@@ -123,7 +130,6 @@ export const DeviceReadingsContainer = styled.div`
     max-width: 200px;
     //padding: 8px 16px;
     padding: 8px 8px 8px 12px;
-    pointer-events: ${(props) => (props.isDisabled === true ? 'none' : 'auto')};
 
     &:focus-within {
         box-shadow: var(--shadow);
