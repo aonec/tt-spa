@@ -10,9 +10,8 @@ export const ApartmentDevicesContext = React.createContext<IndividualDeviceListR
 
 export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListResponsePagedList }) => {
 
-
-    // const params = useParams()
-    // const { devices } = props
+    //TODO
+    //Check with/without current readings
     const [sliderIndex, setSliderIndex] = useState(0)
     if (!devices) return null
 
