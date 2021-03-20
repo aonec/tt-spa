@@ -8,9 +8,10 @@ import {ArrowContainer, CenterContainer} from "../../../MetersPage/components/Me
 
 const HeaderWrap = styled.div`
     display: grid;
-    grid-template-columns: 5fr 2fr 2fr 3fr;
+    grid-template-columns: minmax(330px, 5fr) 2fr 2fr 3fr;
     background: rgba(39, 47, 90, 0.04);
     padding: 16px;
+    align-items: center;
 `
 
 const Title = styled.h5`

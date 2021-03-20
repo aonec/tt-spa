@@ -1,30 +1,25 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React,{ useEffect, useState} from 'react'
 import styled from 'styled-components'
-import ApartmentDevice from './ApartmentDevice'
-import { ApartmentInput } from './ApartmentInput'
-import { ApartmentDevicesHistory } from './ApartmentDevicesHistory'
-import { convertDate } from '../../../../_api/utils/convertDate'
-import {useDispatch} from "react-redux";
 import {getMonthFromDate} from "../../../../utils/getMonthFromDate";
 import rateTypeToNumber from "../../../../_api/utils/rateTypeToNumber";
 import {formEmptyReadingsObject} from "../../../../utils/formEmptyReadingsObject";
 import {IndividualDeviceType} from "../../../../../types/types";
-import { ReadingsStateType } from '01/hooks/useReadings'
 import ReadingsBlock from "../../../MetersPage/components/MeterDevices/components/ReadingsBlock";
-import {DeviceReadingsContainer} from "../../../MetersPage/components/MeterDevices/components/ApartmentReadingLine";
+import DeviceInfo from "../../../MetersPage/components/MeterDevices/components/DeviceInfo";
 
-const DeviceIitem = styled.div`
+const DeviceItem = styled.div`
     display: grid;
     grid-template-columns: 5fr 2fr 2fr 3fr;
     padding: 0 16px 16px;
     border-bottom: 1px solid #dcdee4;
+    align-items: center;
 `
 
 
 
 export function ApartmentDeviceItem({ device, sliderIndex }: { device: IndividualDeviceType, sliderIndex: number}) {
 
-    const { id, model, serialNumber, resource, futureCheckingDate } = device
+    // const { id, model, serialNumber, resource, futureCheckingDate } = device
     const [readingsState, setReadingsState] = useState<{ readingsArray: number[], resource: string }>()
 
     const currentMonth = getMonthFromDate()
@@ -63,25 +58,44 @@ export function ApartmentDeviceItem({ device, sliderIndex }: { device: Individua
     )
 
     return (
-        <DeviceIitem>
-            <ApartmentDevice
-                model={model}
-                serialNumber={serialNumber}
-                resource={resource}
-                creationDate="запрос данных"
-                futureCheckingDate={convertDate(futureCheckingDate)}
-                id={id}
-            />
+        <DeviceItem>
+            {/*<ApartmentDevice*/}
+            {/*    model={model}*/}
+            {/*    serialNumber={serialNumber}*/}
+            {/*    resource={resource}*/}
+            {/*    creationDate="запрос данных"*/}
+            {/*    futureCheckingDate={convertDate(futureCheckingDate)}*/}
+            {/*    id={id}*/}
+            {/*/>*/}
+          <DeviceInfo device={device} />
             {/*<ApartmentInput />*/}
             {/*<ApartmentInput />*/}
             {/*<ApartmentDevicesHistory />*/}
             <DeviceReadingsContainer
-                style={{ marginBottom: 8 }}
                 color={'var(--frame)'}
                 resource={device.resource}
             >
                 {deviceReadings}
             </DeviceReadingsContainer>
-        </DeviceIitem>
+        </DeviceItem>
     )
 }
+
+const DeviceReadingsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    border: 1px solid
+        ${(props) => (props.color ? props.color : 'var(--main-90)')};
+    max-width: 200px;
+    padding: 8px 8px 8px 12px;
+
+    &:focus-within {
+        box-shadow: var(--shadow);
+    }
+
+    .ant-input-affix-wrapper:focus,
+    .ant-input-affix-wrapper-focused {
+        box-shadow: none;
+    }
+`
