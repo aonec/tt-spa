@@ -48,7 +48,6 @@ const ModalAddStaffForm = () => {
                 .required('Строка не должна быть пустой'),
         }),
         onSubmit: async () => {
-            console.log('1334534')
             const template = {
                 email: 'string',
                 firstName: 'string',
@@ -74,8 +73,6 @@ const ModalAddStaffForm = () => {
                 department: values.department,
             }
 
-            console.log(form)
-            console.log(JSON.stringify(form))
             postStaff(form)
         },
     })
@@ -89,7 +86,6 @@ const ModalAddStaffForm = () => {
     }
 
     // const handleButton = () => {
-    //   console.log('errors', errors);
     // };
 
     return (
@@ -185,7 +181,6 @@ const ModalAddStaffForm = () => {
                         name="role"
                         placeholder="Роль в системе"
                         onChange={(value) => {
-                            console.log(value)
                             setFieldValue('userRolesIds', value)
                         }}
                         options={UserRoles}
