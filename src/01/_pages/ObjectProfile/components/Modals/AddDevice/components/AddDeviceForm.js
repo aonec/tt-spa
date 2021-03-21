@@ -10,7 +10,7 @@ import {
     housingMeteringDeviceTypes,
     isConnected,
     ipv4RegExp,
-} from '../../../../../tt-components/localBases'
+} from '../../../../../../tt-components/localBases'
 import {
     Title,
     SelectTT,
@@ -21,13 +21,13 @@ import {
     StyledFooter,
     Icon,
     Warning,
-} from '../../../../../tt-components'
+} from '../../../../../../tt-components'
 import { addOdpu, getCalculator } from '../apiAddOdpu'
 import TabsComponent from './TabsComponent'
 
 import { styles, StyledFormPage } from './styledComponents'
 import styled from 'styled-components'
-import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit'
+import { handleTabsBeforeFormSubmit } from '../../../../../../utils/handleTabsBeforeFormSubmit'
 import {
     validationSchemaFlowMeter,
     validationSchemaTemperatureSensor,

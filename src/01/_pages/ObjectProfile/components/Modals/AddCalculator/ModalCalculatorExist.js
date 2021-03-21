@@ -5,7 +5,7 @@ import {
     StyledModal,
     StyledModalBody,
     Title,
-} from '../../../../tt-components'
+} from '../../../../../tt-components'
 import React, { useContext } from 'react'
 // import { EditCalculatorContext } from "../index";
 import { Link } from 'react-router-dom'
