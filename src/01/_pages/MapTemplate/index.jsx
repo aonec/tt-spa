@@ -4,7 +4,7 @@ import { ButtonTT } from '../../tt-components'
 import img from './electro.png'
 // background-image: url(${img});
 
-export const MapPage = () => {
+const MapObject = () => {
     const [zoom, setZoom] = useState(12)
     const mapState = useMemo(() => ({ center: [55.664758, 51.838521], zoom }), [
         zoom,
@@ -73,7 +73,7 @@ export const MapPage = () => {
     )
 }
 
-export default MapPage
+export default MapObject
 
 {
     /* <Placemark */

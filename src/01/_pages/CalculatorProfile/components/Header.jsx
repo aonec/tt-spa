@@ -34,9 +34,9 @@ export const Header = () => {
   const menuButtonArr = [
     {
       title: 'Редактировать вычислитель',
-      cb: () => isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
+      cb: () => !isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
       show: !isWatcher,
-      color: isWatcher ? 'disabled' : 'default',
+      color: !isWatcher ? 'disabled' : 'default',
       clickable: !isWatcher
     },
     {
