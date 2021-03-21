@@ -73,13 +73,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
         axis: { stroke: 'var(--frame)' },
         axisLabel: { strokeWidth: 0 },
         grid: { stroke: 'none' },
-        tickLabels: { fill: 'var(--main-32)' },
+        tickLabels: { fill: 'var(--main-70)' },
     }
 
     const verticalAxisStyle = {
         axis: { stroke: 'none' },
         ticks: { stroke: 'none' },
-        tickLabels: { fill: 'var(--main-32)' },
+        tickLabels: { fill: 'var(--main-70)' },
         grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
     }
 
