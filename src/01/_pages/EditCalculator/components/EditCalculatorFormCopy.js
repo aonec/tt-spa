@@ -153,7 +153,6 @@ const EditCalculatorForm = () => {
 
     useEffect(() => {
         setEmpty(isEmptyConnection())
-        console.log('Правда, что все строки пустые:?', empty)
 
         if (checked === false) {
             if (isEmptyConnection() === true) {
@@ -190,7 +189,6 @@ const EditCalculatorForm = () => {
             tabErrors,
             errors
         )
-        console.log(errors)
         if (hasError === true) {
             setTab(errorTab)
         } else {

@@ -13,7 +13,6 @@ import {
 } from '../../../tt-components/Events'
 
 const buttonHandler = () => {
-    console.log('buttonHandler')
 }
 
 export const Events = ({ title = '' }) => {

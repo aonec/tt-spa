@@ -13,19 +13,19 @@ import {
     Wrap,
     StyledModalBody,
     StyledFooter,
-} from '../../../../tt-components'
-import { items } from '../../../../tt-components/localBases'
+} from '../../../../../tt-components'
+import { items } from '../../../../../tt-components/localBases'
 import TabsComponent from './addCalculatorTabs'
 import { addCalculator } from './apiAddCalculator'
-import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString'
-import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit'
+import { returnNullIfEmptyString } from '../../../../../utils/returnNullIfEmptyString'
+import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit'
 import {
     defaultValidationSchema,
     emptyConnectionValidationSchema,
 } from './validationSchemas'
-import { isEmptyString } from '../../../../utils/isEmptyString'
-import { putCalculator } from '../../../EditCalculator/components/apiEditCalculator'
-import { EditCalculatorContext } from '../../../EditCalculator'
+import { isEmptyString } from '../../../../../utils/isEmptyString'
+import { putCalculator } from '../../../../EditCalculator/components/apiEditCalculator'
+import { EditCalculatorContext } from '../../../../EditCalculator'
 import { AddCalculatorContext } from './index'
 
 const AddCalculatorForm = (props) => {
@@ -171,7 +171,6 @@ const AddCalculatorForm = (props) => {
             errors
         )
 
-        // console.log(errors);
         if (hasError === true) {
             setTab(errorTab)
         } else {
