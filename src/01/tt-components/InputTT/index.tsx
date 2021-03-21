@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import { Input } from 'antd'
 
 interface Props {
-    value: any
+    value?: any
+    disabled? : boolean
+    readonly? : boolean
 
     // value: string | number | null
 }

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { Form, Radio, Tabs } from 'antd'
+import React, {useEffect} from 'react'
+import {Form, Radio, Tabs} from 'antd'
 import moment from 'moment'
-import { useFormik } from 'formik'
+import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import _ from 'lodash'
 import Checkbox from 'antd/es/checkbox/Checkbox'
@@ -17,22 +17,21 @@ import {
     StyledModalBody,
 } from '../../../../../tt-components'
 
-import { convertDateOnly } from '../../../../../_api/utils/convertDate'
 import axios from '../../../../../axios'
 
 // import { device } from './SonoSafeTemplate';
 
-const { TabPane } = Tabs
+const {TabPane} = Tabs
 
 const ModalSonoSafeReportForm = (props) => {
-    const { device, handleCancel, visible } = props
+    const {device, handleCancel, visible} = props
     // const { handleCancel, visible } = props;
-    const { id, model, serialNumber, address, hubs, nodes } = device
+    const {id, model, serialNumber, address, hubs, nodes} = device
 
     const nodeId = nodes[0].id
     console.log('nodeId', nodeId)
 
-    const { housingStockNumber, street } = address
+    const {housingStockNumber, street} = address
     const serialNumberCalculator = serialNumber
     const modelCalculator = model
 
@@ -45,7 +44,7 @@ const ModalSonoSafeReportForm = (props) => {
             serialNumber,
             model,
         } = item
-        const { entryNumber, pipeNumber } = hub
+        const {entryNumber, pipeNumber} = hub
         if (housingMeteringDeviceType === 'FlowMeter') {
             result.push({
                 resource,
@@ -97,7 +96,7 @@ const ModalSonoSafeReportForm = (props) => {
         const sortedByEntryNumber = _.groupBy(list, 'entryNumber')
         return _.values(sortedByEntryNumber).map((item, index) => {
             if (item.length > 1) {
-                const { entryNumber, pipeNumber } = item[0]
+                const {entryNumber, pipeNumber} = item[0]
                 return {
                     entryNumber,
                     pipeNumber,
@@ -162,15 +161,12 @@ const ModalSonoSafeReportForm = (props) => {
             nodeId: Yup.number().typeError('Выберите узел'),
         }),
         onSubmit: async () => {
-            const { nodeId, detail, resource } = values
-            const begin = `${moment(values.begin).format(
-                'YYYY-MM-DD'
-            )}T00:00:00Z`
-            const end = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`
+            const {nodeId, detail, resource} = values;
+            const begin = `${values.begin.format('YYYY-MM-DD')}T00:00:00Z`;
+            const end = `${values.end.format('YYYY-MM-DD')}T00:00:00Z`;
 
             const beginName = moment(values.begin).format('YYYY-MM-DD')
-            const endName = moment(values.begin).format('YYYY-MM-DD')
-
+            const endName = moment(values.end).format('YYYY-MM-DD')
             const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`
 
             console.log(link)
@@ -246,7 +242,7 @@ const ModalSonoSafeReportForm = (props) => {
         setFieldValue('detail', res)
     }
 
-    const Alert = ({ name }) => {
+    const Alert = ({name}) => {
         const touch = _.get(touched, `${name}`)
         const error = _.get(errors, `${name}`)
         if (touch && error) {
@@ -258,7 +254,7 @@ const ModalSonoSafeReportForm = (props) => {
     // Список Вкладок/Ресурсов
     const TabsList = resources.map((value, index) => {
         const res = translate(value)
-        return <TabPane tab={res} key={value} />
+        return <TabPane tab={res} key={value}/>
     })
 
     const defaultRes = translate(TabsList[0])
@@ -286,7 +282,7 @@ const ModalSonoSafeReportForm = (props) => {
     return (
         <Form id="formReport">
             <StyledModalBody>
-                <Header style={{ margin: 0, padding: 0 }}>
+                <Header style={{margin: 0, padding: 0}}>
                     Выгрузка отчета о общедомовом потреблении SonoSafe
                 </Header>
 
@@ -312,11 +308,11 @@ const ModalSonoSafeReportForm = (props) => {
                         name="entryNumber"
                         disabled
                     />
-                    <Alert name="entryNumber" />
+                    <Alert name="entryNumber"/>
                 </Form.Item>
 
-                <div id="period_and_type " style={{ display: 'flex' }}>
-                    <Form.Item label="Период" style={{ width: '50%' }}>
+                <div id="period_and_type " style={{display: 'flex'}}>
+                    <Form.Item label="Период" style={{width: '50%'}}>
                         <Radio.Group
                             defaultValue="month"
                             size="large"
@@ -333,7 +329,7 @@ const ModalSonoSafeReportForm = (props) => {
 
                     <Form.Item
                         label="Детализация отчета"
-                        style={{ width: '50%' }}
+                        style={{width: '50%'}}
                     >
                         <Radio.Group
                             defaultValue="monthly"
@@ -347,8 +343,8 @@ const ModalSonoSafeReportForm = (props) => {
                     </Form.Item>
                 </div>
 
-                <div style={{ display: 'flex' }}>
-                    <Form.Item label="Начало" style={{ width: 144 }}>
+                <div style={{display: 'flex'}}>
+                    <Form.Item label="Начало" style={{width: 144}}>
                         <DatePickerTT
                             format="MMMM YYYY"
                             allowClear={false}
@@ -367,7 +363,7 @@ const ModalSonoSafeReportForm = (props) => {
 
                     <Form.Item
                         label="Окончание"
-                        style={{ width: 144, marginLeft: 32 }}
+                        style={{width: 144, marginLeft: 32}}
                     >
                         <DatePickerTT
                             format="MMMM YYYY"
@@ -390,7 +386,7 @@ const ModalSonoSafeReportForm = (props) => {
                     checked={values.checked}
                     // disabled={this.state.disabled}
                     onChange={(e) => {
-                        const { checked } = e.target
+                        const {checked} = e.target
                         setFieldValue('checked', checked)
                         if (checked === true) {
                             setFieldValue('end', '')
@@ -403,7 +399,7 @@ const ModalSonoSafeReportForm = (props) => {
             </StyledModalBody>
 
             <StyledFooter
-                style={{ display: 'flex', justifyContent: 'flex-end' }}
+                style={{display: 'flex', justifyContent: 'flex-end'}}
             >
                 <ButtonTT color="white" onClick={handleCancel}>
                     Отмена
@@ -413,7 +409,7 @@ const ModalSonoSafeReportForm = (props) => {
                     type="submit"
                     form="formReport"
                     big
-                    style={{ marginLeft: '16px' }}
+                    style={{marginLeft: '16px'}}
                     onClick={handleSubmit}
                 >
                     Выгрузить
