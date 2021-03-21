@@ -69,6 +69,7 @@ export const DeviceWrapper = styled.div`
     display: grid;
     grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
     margin-bottom: 24px;
+    //margin-left: 24px;
     align-items: center;
     justify-content: center;
 `
