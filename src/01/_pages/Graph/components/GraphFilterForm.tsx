@@ -20,7 +20,7 @@ import { Button, Tooltip } from 'antd'
 import { GraphParamsType } from '../Graph'
 import IconTT from '../../../tt-components/IconTT'
 import styled from 'styled-components'
-import { translateParam } from '../utils'
+import {paramsTranslation, translateParam} from '../utils'
 import ButtonTT from '../../../tt-components/ButtonTT'
 import { ReportType } from './GraphView'
 import useOutsideClick from '../../../hooks/useOutsideClick'
@@ -75,7 +75,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
     }
 
     const options = paramsList.map((param) => ({
-        label: translateParam(param),
+        label: paramsTranslation[param],
         value: param,
     }))
 
