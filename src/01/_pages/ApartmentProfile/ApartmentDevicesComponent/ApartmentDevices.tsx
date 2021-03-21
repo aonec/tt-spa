@@ -13,7 +13,6 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
     //TODO
     //Check with/without current readings
     const [sliderIndex, setSliderIndex] = useState(0)
-    if (!devices) return null
 
     const { items } = devices || {}
     if (!items?.length) {
@@ -28,6 +27,8 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
     const isReadingsCurrent =
         currentMonth === getMonthFromDate(items[0].readings![0].readingDate)
     const readingsLength = items[0]?.readings?.length
+
+    if (!readingsLength) return null
 
     return (
         <>

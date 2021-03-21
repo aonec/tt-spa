@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Dispatch, SetStateAction} from 'react'
 import styled from 'styled-components'
 import s from "../../../MetersPage/components/MeterDevices/MeterDevicesNew.module.scss";
 import Arrow from "../../../../_components/Arrow/Arrow";
@@ -6,24 +6,14 @@ import moment from "moment";
 import {firstLetterToUpperCase, getMonthFromDate} from "../../../../utils/getMonthFromDate";
 import {ArrowContainer, CenterContainer} from "../../../MetersPage/components/MeterDevices/ApartmentReadings";
 
-const HeaderWrap = styled.div`
-    display: grid;
-    grid-template-columns: minmax(330px, 5fr) 2fr 2fr 3fr;
-    background: rgba(39, 47, 90, 0.04);
-    padding: 16px;
-    align-items: center;
-`
+interface HeaderInterface {
+    sliderIndex: number
+    setSliderIndex: Dispatch<SetStateAction<number>>
+    isReadingsCurrent: boolean
+    readingsLength: number
+}
 
-const Title = styled.h5`
-    padding: 0;
-    margin: 0;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    color: rgba(39, 47, 90, 0.6);
-`
-
-export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, readingsLength }) {
+export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, readingsLength }: HeaderInterface) {
 
 
 // ДОБАВИТЬ ДИЗЕЙБЛД И ЗАТИПИЗИРОВАТЬ
@@ -44,7 +34,7 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
         })
     }
 
-    const getPreviousReadingsMonth = (sliderIndex) => {
+    const getPreviousReadingsMonth = (sliderIndex: number) => {
         const month = moment()
             .subtract(sliderIndex + 1, 'months')
             .format('MMMM')
@@ -84,5 +74,22 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
         </HeaderWrap>
     )
 }
+
+const HeaderWrap = styled.div`
+    display: grid;
+    grid-template-columns: minmax(330px, 5fr) 2fr 2fr 3fr;
+    background: rgba(39, 47, 90, 0.04);
+    padding: 16px;
+    align-items: center;
+`
+
+const Title = styled.h5`
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: rgba(39, 47, 90, 0.6);
+`
 
 export default Header
