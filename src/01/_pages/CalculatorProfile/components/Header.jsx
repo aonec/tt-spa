@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { DeviceContext } from '../CalculatorProfile';
 import { DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON } from './Templates';
 import { MenuButtonTT } from '../../../tt-components';
-import {useSelector} from "react-redux";
+import isWatcher from "../../../_api/utils/isWatcher";
 
 export const Header = () => {
   const { push } = useHistory();
@@ -22,9 +22,7 @@ export const Header = () => {
 
 
 
-  const roles = useSelector((state) => state.user.roles)
-  const watcher = 'ManagingFirmSpectator';
-  const isWatcher = roles.includes(watcher);
+
 
   const {
     city, street, housingStockNumber, corpus, id,
@@ -36,8 +34,9 @@ export const Header = () => {
   const menuButtonArr = [
     {
       title: 'Редактировать вычислитель',
-      cb: () => isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
-      color: isWatcher ? 'disabled' : 'default',
+      cb: () => !isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
+      show: !isWatcher,
+      color: !isWatcher ? 'disabled' : 'default',
       clickable: !isWatcher
     },
     {
@@ -45,6 +44,7 @@ export const Header = () => {
       cb: () => {
         setReport(true);
       },
+      show: true,
       color: 'default',
     },
     {
@@ -52,6 +52,7 @@ export const Header = () => {
       cb: () => {
         push(`/objects/${device.address.id}/add_node`);
       },
+      show: !isWatcher,
       color: 'default',
     },
     {
@@ -59,6 +60,7 @@ export const Header = () => {
       cb: () => {
         setDeregister(true);
       },
+      show: !isWatcher,
       color: 'red',
     },
   ];

@@ -12,6 +12,7 @@ import {useDebounce} from '../../hooks/useDebounce'
 import {useDispatch, useSelector} from "react-redux";
 import {getUser, setUser} from "../../Redux/reducers/userReducer";
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from "../CalculatorProfile/components/Templates";
+import isWatcher from "../../_api/utils/isWatcher";
 
 const tabItems = [
     ['К исполнению', 'executing'],
@@ -22,13 +23,12 @@ const tabItems = [
 const tabItemsWatcher = [
     // ['К исполнению', 'executing'],
     ['Наблюдаемые', 'observing'],
-    // ['Архив', 'archived'],
+    ['Архив', 'archived'],
 ]
 
 
 
-const Tabs = React.memo(({total = [], isWatcher}) => {
-        console.log("isWatcher", isWatcher);
+const Tabs = React.memo(({total = []}) => {
 
         const Tabs = isWatcher ? tabItemsWatcher : tabItems
         return (
@@ -50,10 +50,6 @@ export const Tasks = () => {
         tasksSearchReducer,
         {}
     )
-
-    const roles = useSelector((state) => state.user.roles)
-    const watcher = 'ManagingFirmSpectator';
-    const isWatcher = roles.includes(watcher);
 
     const debouncedSearchState = useDebounce(searchState, 500)
 

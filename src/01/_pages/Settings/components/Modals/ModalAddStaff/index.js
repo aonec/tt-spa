@@ -6,7 +6,6 @@ import { StyledModal } from '../../../../../tt-components'
 export const ModalAddStaff = () => {
     const { staff, setStaff, hideStaff } = useContext(SettingsContext)
 
-    console.log('ModalAddStaff')
     return (
         <StyledModal
             visible={staff}

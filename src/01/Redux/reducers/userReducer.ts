@@ -1,30 +1,16 @@
 import axios from "../../axios";
 import {ManagingFirmUserResponse} from "../../../myApi";
 
-const roles = localStorage.getItem('roles');
 
-const initialState = { roles : JSON.parse(roles!)}
+const initialState = {}
 
-
-export async function getUser() {
-    try {
-        const res = await axios.get(`ManagingFirmUsers/current`)
-        return res
-    } catch (error) {
-        console.log(error)
-        throw {
-            resource: 'roles',
-            message: 'Произошла ошибка при загрузке данных пользователя',
-        }
-    }
-}
 
 interface SetUserInterface {
     type: 'SET_USER'
     payload: ManagingFirmUserResponse
 }
 
-export const setUser = (value: ManagingFirmUserResponse): SetUserInterface => ({
+export const setUser = (value: any): SetUserInterface => ({
     type: 'SET_USER',
     payload: value,
 })

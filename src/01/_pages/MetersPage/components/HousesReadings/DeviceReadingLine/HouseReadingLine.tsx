@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {IndividualDeviceType} from '../../../../../../types/types'
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber'
-import ReadingsBlock from '../../MeterDevices/components/ReadingsBlock'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
 import { Icon } from '../../../../../_components/Icon'
 import styles from '../../../../Devices/components/TabsDevices.module.scss'
@@ -10,52 +9,30 @@ import { useReadings } from '../../../../../hooks/useReadings'
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls'
 import { ButtonTT } from '../../../../../tt-components'
 import { Input, Modal } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectDisabledState } from '../../../../../Redux/ducks/readings/selectors'
+import { useDispatch } from 'react-redux'
 import {
-    setInputFocused,
     setInputUnfocused,
 } from '01/Redux/ducks/readings/actionCreators'
-import {
-    DeviceReadingsContainer,
-    getInputColor,
-} from '../../MeterDevices/components/ApartmentReadingLine'
 import { v4 as uuid } from 'uuid'
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
-
-    const dispatch = useDispatch();
-
-    const disabledState = useSelector(selectDisabledState)
-
-    const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
-        ?.isDisabled
+    const textInput = React.createRef<Input>()
 
     const {
         readingsState,
         isVisible,
-        onBlurHandler,
-        onFocusHandler,
-        onInputChange,
-        isCancel,
-        setIsCancel,
         handleOk,
-        handleCancel
-    } = useReadings(device)
+        handleCancel,
+        previousReadings,
+        currentReadings
+    } = useReadings(device, textInput)
 
-    const textInput = React.createRef<Input>()
+    const dispatch = useDispatch();
 
     const [consumptionState, setConsumptionState] = useState<number[]>([])
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType)
 
-
-    const afterCloseHandler = () => {
-        if (isCancel) {
-            setIsCancel(false)
-            textInput.current!.focus()
-        }
-    }
 
     //useConsumption
     useEffect(() => {
@@ -86,120 +63,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
     }, [readingsState])
 
 
-    if (!readingsState) return null
 
     const consumptionElems = consumptionState.map((el) => {
         return <Consumption key={uuid()}>{el} кВтч</Consumption>
     })
-
-
-
-    const currentDeviceReadings = readingsState.currentReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={device.id + index}
-                index={index}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onInputChange(e, index)
-                }
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                houseReadings
-                textInput={textInput}
-                isDisabled={isDisabled}
-            />
-        )
-    )
-
-    const previousDeviceReadings = readingsState.previousReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={uuid()}
-                index={index}
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                readingsBlocked
-                houseReadings
-                isDisabled
-            />
-        )
-    )
-
-    const options = (
-        readingsElems: JSX.Element[],
-        isCurrent: boolean
-    ): OptionsInterface[] => [
-        {
-            value: () => (
-                <DeviceReadingsContainer
-                    color={
-                        isCurrent
-                            ? getInputColor(device.resource)
-                            : 'var(--main-90)'
-                    }
-                    onBlur={onBlurHandler}
-                    onFocus={onFocusHandler}
-                    resource={device.resource}
-                >
-                    {readingsElems}
-                </DeviceReadingsContainer>
-            ),
-            isSuccess:
-                readingsState.resource !== 'Electricity' ||
-                readingsElems.length === 1,
-        },
-        {
-            value: () => (
-                <div
-                    onBlur={onBlurHandler}
-                    onFocus={onFocusHandler}
-                    style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                    <DeviceReadingsContainer
-                        style={{ marginBottom: 8 }}
-                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[0]}
-                    </DeviceReadingsContainer>
-                    <DeviceReadingsContainer
-                        color={isCurrent ? '#957400' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[1]}
-                    </DeviceReadingsContainer>
-                </div>
-            ),
-            isSuccess: readingsElems.length === 2,
-        },
-        {
-            value: () => (
-                <div
-                    onBlur={onBlurHandler}
-                    onFocus={onFocusHandler}
-                    style={{ display: 'flex', flexDirection: 'column' }}
-                >
-                    <DeviceReadingsContainer
-                        style={{ marginBottom: 8 }}
-                        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-                        resource={device.resource}
-                        // readingsCount={readingsState.currentReadingsArray.length}
-                    >
-                        {[readingsElems[0], readingsElems[1]]}
-                    </DeviceReadingsContainer>
-                    <DeviceReadingsContainer
-                        color={isCurrent ? '#957400' : 'var(--main-90)'}
-                        resource={device.resource}
-                    >
-                        {readingsElems[2]}
-                    </DeviceReadingsContainer>
-                </div>
-            ),
-            isSuccess: true,
-        },
-    ]
 
     const { icon, color } = DeviceIcons[device.resource]
 
@@ -225,12 +92,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
                 </div>
                 <div>{device.serialNumber}</div>
             </Column>
-            {options(previousDeviceReadings, false)
-                .find((el) => el.isSuccess)!
-                .value()}
-            {options(currentDeviceReadings, true)
-                .find((el) => el.isSuccess)!
-                .value()}
+
+            {previousReadings}
+            {currentReadings}
+
             <div>{consumptionElems}</div>
             <div>-</div>
 
@@ -243,7 +108,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
                 }
                 onOk={handleOk}
                 onCancel={handleCancel}
-                afterClose={afterCloseHandler}
+                // afterClose={afterCloseHandler}
                 width={800}
                 footer={
                     <Footer>

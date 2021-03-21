@@ -7,6 +7,7 @@ import {HousingContext} from '../HousingProfile'
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates'
 import {useHistory} from "react-router-dom";
 import {MenuButtonTT} from "../../../tt-components";
+import isWatcher from "../../../_api/utils/isWatcher";
 
 export const Header = () => {
     const { push } = useHistory();
@@ -32,6 +33,7 @@ export const Header = () => {
         {
             title: 'Редактировать ОДПУ',
             cb: () => {push(`/housingMeteringDevices/${device.id}/edit`)},
+            show: !isWatcher,
             color: 'default',
             clickable: true
         }
