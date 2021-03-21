@@ -136,7 +136,6 @@ export const Devices = ({calculators}) => {
         //     id,
         //     housingStockId,
         // } = device;
-        // console.log('NodeDevice');
 
         return (
             <NodeDeviceWrap key={0}>
@@ -169,7 +168,6 @@ export const Devices = ({calculators}) => {
                     communicationPipe.devices.map((resItem) => resItem)
                 )
             )
-            // console.log("devicesOnNode", devicesOnNode)
 
             // if (_.isEmpty(devicesOnNode)) {
             //     return <div>
@@ -208,7 +206,6 @@ export const Devices = ({calculators}) => {
                     nodes,
                 } = calculator
 
-                // console.log("calculator",calculator)
 
                 return (
                     <div>

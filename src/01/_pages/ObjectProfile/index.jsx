@@ -44,14 +44,12 @@ export const ObjectProfile = () => {
         getCalculators(housingStockId).then((res) => {
             const {items} = res;
             setCalculators(items)
-            // console.log(res);
         })
         getObject(housingStockId).then((res) => {
             setObject(res);
         })
         getServiceZones().then((res) => {
             setZones(res)
-            // console.log('zones', res)
         })
 
     }, [])
