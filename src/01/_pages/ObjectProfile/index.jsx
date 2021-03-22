@@ -75,7 +75,7 @@ export const ObjectProfile = () => {
         <>
             <ObjectContext.Provider value={context}>
                 <Index path="/objects/"/>
-                <Header {...header} setCommonReport={setCommonReport} commonReport={commonReport}/>
+                <Header {...header} setCommonReport={setCommonReport} commonReport={commonReport} object={object}/>
                 <Tabs/>
                 <grid>
                     <Route path="/objects/(\\d+)" exact>
