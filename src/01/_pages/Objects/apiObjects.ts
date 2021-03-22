@@ -1,8 +1,9 @@
 import axios from "../../axios";
+import {GroupReportFormResponse} from "../../../myApi";
 
-export async function getReports(id = '') {
+export async function getReports() {
     try {
-        const res = await axios.get(`Reports`)
+        const res = await axios.get<any, GroupReportFormResponse>(`Reports`)
         console.log("Reports", res)
         return res
     } catch (error) {

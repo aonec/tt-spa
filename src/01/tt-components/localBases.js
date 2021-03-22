@@ -68,6 +68,26 @@ export const resources = [
     },
 ]
 
+export const allResources = [
+    {
+        value: 'HotWaterSupply',
+        label: 'ГВС',
+    },
+    {
+        value: 'ColdWaterSupply',
+        label: 'ХВС',
+    },
+    {
+        value: 'Heat',
+        label: 'Тепло',
+    },
+    {
+        value: 'Electricity',
+        label: 'Электроэнергия',
+    },
+
+]
+
 export const magistrals = [
     {
         value: 'FeedFlow',

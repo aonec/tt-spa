@@ -66,7 +66,6 @@ const initialState = {
 
 export const Objects = ({isReadings = false}) => {
     const [state, setState] = useState({items: null})
-    const [groupReport, setGroupReport] = useState(true);
     const [searchState, dispatchSearchState] = useReducer(
         objectsSearchReducer,
         initialState
@@ -90,7 +89,6 @@ export const Objects = ({isReadings = false}) => {
 
     return styled(styles)(
         <div>
-            <ModalGroupReport visible={groupReport} setVisible={setGroupReport} />
             <Header />
             <div style={{width: 960}}>
                 <ObjectsSearchForm
