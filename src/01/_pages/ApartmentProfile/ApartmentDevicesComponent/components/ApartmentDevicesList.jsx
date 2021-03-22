@@ -5,7 +5,6 @@ import { ApartmentDevicesContext } from '../ApartmentDevices'
 export function ApartmentDevicesList({ sliderIndex }) {
     const ApartmentDevicesListContext = useContext(ApartmentDevicesContext)
 
-
     const DevicesList = ApartmentDevicesListContext.map((device) => (
         // const {
         //   id, model, serialNumber, resource, futureCheckingDate,

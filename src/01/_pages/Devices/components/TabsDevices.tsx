@@ -49,20 +49,15 @@ const TabsDevices = ({ devicePage }: any) => {
         setIsLoading(false)
     }, [currentPage, debouncedSearchState])
 
-    useEffect(() => {
-        setIsLoading(true)
 
-        const devicesByObject = groupDevicesByObjects(devicePage.items)
+    const devicesByObject = groupDevicesByObjects(devicePage.items)
 
-        const deviceArray = devicesByObject.map((addressDevicesGroup) => (
-            <DevicesByAddress
-                key={addressDevicesGroup.address?.id}
-                addressDevicesGroup={addressDevicesGroup}
-            />
-        ))
-        setDeviceElems(deviceArray)
-        setIsLoading(false)
-    }, [devicePage.items])
+    const deviceArray = devicesByObject.map((addressDevicesGroup) => (
+        <DevicesByAddress
+            key={addressDevicesGroup.address?.id}
+            addressDevicesGroup={addressDevicesGroup}
+        />
+    ))
 
     const pagination = pages.map((page, index) => (
         <span
@@ -88,7 +83,7 @@ const TabsDevices = ({ devicePage }: any) => {
                     </div>
                 ) : (
                     <div>
-                        <div>{deviceElems}</div>
+                        <div>{deviceArray}</div>
                         <Pagination>{pagination}</Pagination>
                     </div>
                 )}

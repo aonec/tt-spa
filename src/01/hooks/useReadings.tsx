@@ -31,20 +31,20 @@ export const useReadings = (device: IndividualDeviceType,
     const disabledState = useSelector(selectDisabledState)
 
     const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
-        ?.isDisabled
+      ?.isDisabled
 
     const currentMonth = getMonthFromDate()
     const numberOfReadings = rateTypeToNumber(device.rateType)
     const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings)
     const isReadingsCurrent =
-        currentMonth === getMonthFromDate(device.readings[0].readingDate)
+      currentMonth === getMonthFromDate(device.readings[0].readingDate)
 
     useEffect(() => {
         const previousReadingsArray: number[] = []
         const currentReadingsArray: number[] = []
         const prevReadingsIndex = sliderIndex + +isReadingsCurrent
         const currentReadings: Record<string, any> =
-            (isReadingsCurrent ? device.readings[0] : emptyReadingsObject) || {}
+          (isReadingsCurrent ? device.readings[0] : emptyReadingsObject) || {}
         const prevReadings: Record<string, any> = device.readings[prevReadingsIndex] || {}
 
         for (let i = 1; i <= numberOfReadings; i++) {
@@ -107,17 +107,17 @@ export const useReadings = (device: IndividualDeviceType,
     }, [readingsState])
 
     const onInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        index: number,
+      e: React.ChangeEvent<HTMLInputElement>,
+      index: number,
     ) => {
         e.preventDefault()
         if (isNaN(+e.target.value)) return
         setReadingsState((state: any) => ({
             ...state,
             currentReadingsArray: state.currentReadingsArray.map(
-                (reading: any, i: any): number => {
-                    return i === index ? +e.target.value : reading
-                }
+              (reading: any, i: any): number => {
+                  return i === index ? +e.target.value : reading
+              }
             ),
         }))
     }
@@ -144,117 +144,117 @@ export const useReadings = (device: IndividualDeviceType,
     if (!readingsState) return {}
 
     const currentDeviceReadings = readingsState.currentReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={device.id + index}
-                index={index}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onInputChange(e, index)
-                }
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                textInput={textInput}
-                isDisabled={isDisabled}
-            />
-        )
+      (value, index) => (
+        <ReadingsBlock
+          key={device.id + index}
+          index={index}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onInputChange(e, index)
+          }
+          value={value}
+          resource={readingsState.resource}
+          operatorCabinet
+          textInput={textInput}
+          isDisabled={isDisabled}
+        />
+      )
     )
 
     const previousDeviceReadings = readingsState.previousReadingsArray.map(
-        (value, index) => (
-            <ReadingsBlock
-                key={uuid()}
-                index={index}
-                value={value}
-                resource={readingsState.resource}
-                operatorCabinet
-                readingsBlocked
-                houseReadings
-                isDisabled
-            />
-        )
+      (value, index) => (
+        <ReadingsBlock
+          key={uuid()}
+          index={index}
+          value={value}
+          resource={readingsState.resource}
+          operatorCabinet
+          readingsBlocked
+          houseReadings
+          isDisabled
+        />
+      )
     )
 
     const options = (
-        readingsElems: JSX.Element[],
-        isCurrent: boolean
+      readingsElems: JSX.Element[],
+      isCurrent: boolean
     ): OptionsInterface[] => [
         {
             value: () => (
-                <DeviceReadingsContainer
-                    color={
+              <DeviceReadingsContainer
+                color={
                     isCurrent
-                    ? getInputColor(device.resource)
-                    : 'var(--main-90)'
-        }
-        onBlur={onBlurHandler}
-        onFocus={onFocusHandler}
-        resource={device.resource}
-            >
-            {readingsElems}
-            </DeviceReadingsContainer>
-),
-    isSuccess:
-        readingsState?.resource !== 'Electricity' ||
-        readingsElems.length === 1,
-},
-    {
-        value: () => (
-            <div
+                      ? getInputColor(device.resource)
+                      : 'var(--main-90)'
+                }
                 onBlur={onBlurHandler}
-        onFocus={onFocusHandler}
-        style={{ display: 'flex', flexDirection: 'column' }}
-    >
-        <DeviceReadingsContainer
-            style={{ marginBottom: 8 }}
-        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-        resource={device.resource}
-            >
-            {readingsElems[0]}
-            </DeviceReadingsContainer>
-            <DeviceReadingsContainer
-        color={isCurrent ? '#957400' : 'var(--main-90)'}
-        resource={device.resource}
-            >
-            {readingsElems[1]}
-            </DeviceReadingsContainer>
-            </div>
-    ),
-        isSuccess: readingsElems.length === 2,
-    },
-    {
-        value: () => (
-            <div
+                onFocus={onFocusHandler}
+                resource={device.resource}
+              >
+                  {readingsElems}
+              </DeviceReadingsContainer>
+            ),
+            isSuccess:
+              readingsState?.resource !== 'Electricity' ||
+              readingsElems.length === 1,
+        },
+        {
+            value: () => (
+              <div
                 onBlur={onBlurHandler}
-        onFocus={onFocusHandler}
-        style={{ display: 'flex', flexDirection: 'column' }}
-    >
-        <DeviceReadingsContainer
-            style={{ marginBottom: 8 }}
-        color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-        resource={device.resource}
-            >
-            {[readingsElems[0], readingsElems[1]]}
-        </DeviceReadingsContainer>
-        <DeviceReadingsContainer
-        color={isCurrent ? '#957400' : 'var(--main-90)'}
-        resource={device.resource}
-            >
-            {readingsElems[2]}
-            </DeviceReadingsContainer>
-            </div>
-    ),
-        isSuccess: true,
-    },
-]
+                onFocus={onFocusHandler}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                  <DeviceReadingsContainer
+                    style={{ marginBottom: 8 }}
+                    color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+                    resource={device.resource}
+                  >
+                      {readingsElems[0]}
+                  </DeviceReadingsContainer>
+                  <DeviceReadingsContainer
+                    color={isCurrent ? '#957400' : 'var(--main-90)'}
+                    resource={device.resource}
+                  >
+                      {readingsElems[1]}
+                  </DeviceReadingsContainer>
+              </div>
+            ),
+            isSuccess: readingsElems.length === 2,
+        },
+        {
+            value: () => (
+              <div
+                onBlur={onBlurHandler}
+                onFocus={onFocusHandler}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                  <DeviceReadingsContainer
+                    style={{ marginBottom: 8 }}
+                    color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+                    resource={device.resource}
+                  >
+                      {[readingsElems[0], readingsElems[1]]}
+                  </DeviceReadingsContainer>
+                  <DeviceReadingsContainer
+                    color={isCurrent ? '#957400' : 'var(--main-90)'}
+                    resource={device.resource}
+                  >
+                      {readingsElems[2]}
+                  </DeviceReadingsContainer>
+              </div>
+            ),
+            isSuccess: true,
+        },
+    ]
 
     const previousReadings = options(previousDeviceReadings, false)
-        .find((el) => el.isSuccess)!
-        .value()
+      .find((el) => el.isSuccess)!
+      .value()
 
     const currentReadings = options(currentDeviceReadings, true)
-        .find((el) => el.isSuccess)!
-        .value();
+      .find((el) => el.isSuccess)!
+      .value();
 
     return {
         readingsState,

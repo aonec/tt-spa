@@ -11,20 +11,19 @@ import {
 import IconTT from '../../../../../tt-components/IconTT'
 import styled from 'styled-components'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
+import Icon from "../../../../../tt-components/Icon";
 
 const Node: React.FC<Props> = ({ node }) => {
     const housingDevices = node.communicationPipes.map((pipe) => {
         const devices = pipe.devices.map((housingDevice) => {
-            const { icon, color } = DeviceIcons[housingDevice.resource]
 
             return (
-                <DeviceWrapper>
+                <MeteringDeviceWrapper>
                     <div>
                         <TitleWrapper>
                             <DeviceLink
                                 to={`/housingMeteringDevices/${housingDevice.id}`}
                             >
-                                <DeviceIcon icon={icon} fill={color} />
                                 {`${housingDevice.model} `}
                                 <SerialNumber>
                                     ({housingDevice.serialNumber})
@@ -43,11 +42,14 @@ const Node: React.FC<Props> = ({ node }) => {
                             ? housingDevice.diameter + ' мм'
                             : ''}
                     </Diameter>
-                </DeviceWrapper>
+                </MeteringDeviceWrapper>
             )
         })
         return devices
     })
+
+
+    const { icon, color } = DeviceIcons[node.resource]
 
     return (
         <div>
@@ -55,7 +57,7 @@ const Node: React.FC<Props> = ({ node }) => {
                 <div>
                     <TitleWrapper>
                         <DeviceLink to={`/nodes/${node.id}`}>
-                            <NodeIcon icon="node" />
+                            <NodeIcon icon={icon} color={color}/>
                             <span>{`Узел ${node.number}`}</span>
                         </DeviceLink>
                         <ServiceZone>{node.serviceZone}</ServiceZone>
@@ -76,7 +78,16 @@ const Node: React.FC<Props> = ({ node }) => {
     )
 }
 
-const NodeIcon = styled(IconTT)`
+export const MeteringDeviceWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 4.5fr 3fr 1.5fr 2fr 1fr;
+    margin-bottom: 24px;
+    margin-left: 24px;
+    align-items: center;
+    justify-content: center;
+`
+
+const NodeIcon = styled(Icon)`
     margin-right: 8px;
 `
 

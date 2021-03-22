@@ -37,8 +37,6 @@ export const ObjectProfile = () => {
     const [commonReport, setCommonReport] = useState(false);
     const [calculators, setCalculators] = useState();
     const [object, setObject] = useState();
-    const [zones, setZones] = useState()
-
 
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
@@ -47,9 +45,6 @@ export const ObjectProfile = () => {
         })
         getObject(housingStockId).then((res) => {
             setObject(res);
-        })
-        getServiceZones().then((res) => {
-            setZones(res)
         })
 
     }, [])
@@ -60,7 +55,7 @@ export const ObjectProfile = () => {
     const info = useObjectInformation(state)
     const {header = [], events = [], aparts = []} = state
 
-    if (!object || !zones || !calculators) {
+    if (!object || !calculators) {
         return <Loader show={true} size={64}/>
     }
     const context = {
@@ -73,7 +68,6 @@ export const ObjectProfile = () => {
         commonReport,
         setCommonReport,
         object,
-        zones
     }
 
 
@@ -85,10 +79,8 @@ export const ObjectProfile = () => {
                 <Tabs/>
                 <grid>
                     <Route path="/objects/(\\d+)" exact>
-                        <div>
-                        <Information {...info} />
-                        <MapObject />
-                        </div>
+                                               <Information {...info} />                   
+                   
                     </Route>
 
                     <Route path="/objects/(\\d+)/apartments" exact>
