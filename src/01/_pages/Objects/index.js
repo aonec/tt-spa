@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react'
+import React, {useReducer, useState} from 'react'
 import styled, {css} from 'reshadow/macro'
 import {Link as LinkRow, Redirect} from 'react-router-dom'
 
@@ -11,6 +11,7 @@ import {useDebounce} from '../../hooks/useDebounce'
 import {IconWithTooltip} from '../../components/NotConnectedIcon/IconWithTooltip'
 import {sortObjects} from '../../utils/sortObjects'
 import Header from "./ObjectsSearchForm/components/Header";
+import ModalGroupReport from "./components/Modals/GroupReport";
 
 const styles = css`
   obj_item {
@@ -70,6 +71,8 @@ export const Objects = ({isReadings = false}) => {
         initialState
     )
 
+    const [groupReport, setGroupReport] = useState(true)
+
     const debouncedSearchState = useDebounce(searchState, 500)
 
     React.useEffect(() => {
@@ -96,6 +99,7 @@ export const Objects = ({isReadings = false}) => {
                     searchState={searchState}
                     dispatchSearchState={dispatchSearchState}
                 />
+                <ModalGroupReport visible={true} setVisible={setGroupReport}/>
                 <Loader show={!items} size="32">
                     {items
                         ?.sort(sortObjects)

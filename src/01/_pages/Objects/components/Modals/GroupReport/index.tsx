@@ -5,40 +5,37 @@ import {
     ButtonTT,
     StyledModalBody,
     StyledFormPage,
-    InputTT, Title, styles, RangePickerTT,
+    InputTT, Title, styles, RangePickerTT, SelectTT,
 } from '../../../../../tt-components'
 
 import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
-import {ObjectContext} from "../../../index";
-import {CalculatorListResponse, HousingStockResponse} from "../../../../../../myApi";
+import {getReports} from "../../../apiObjects";
+import {useAsync} from "../../../../../hooks/useAsync";
 
 interface ModalPropsInterface {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
 }
 
-interface ObjectContextInterface {
-    object: HousingStockResponse
-    calculators: CalculatorListResponse[] | null
-}
 
-const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
-    const {object, calculators}: ObjectContextInterface = useContext(ObjectContext)
+const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
+    // const { reports: data, run, status, isSuccess } = useAsync()
+    //
+    // const [reports, setReports] = useState();
     const handleCancel = () => {
         setVisible(false)
     }
-    // console.log(calculators)
-    const ids = calculators?.map((calculator, index)=>{
-        const {id} = calculator;
-        return `calculatorsId[${index}]=${id}`
-    })
+
+    // useEffect(() => {
+    //     getReports().then(report =>{
+    //         console.log(report)
+    //     })
+    // },[])
 
 
-    const {city, street, number, corpus} = object;
-    const reportName = `Сводный_отчёт_${street}_${number}.xlsx`
-    const addressString = `${city}, ${street}, ${number}`
+    const reportName = `Выгрузка группового отчёта`
 
     const RegistrationForm = () => {
         const [form] = Form.useForm();
@@ -46,14 +43,11 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         const [isDisabled, setIsDisabled] = useState(true);
         const onFinish = (values: any) => {
             console.log('Success:', values);
-            console.log("getFieldsValue", getFieldsValue(true))
-            const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-            const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            const calculatorsString = ids?.join('&');
-            // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
-            const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?${calculatorsString}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`
-            console.log(link)
-            window.open(link)
+            // console.log("getFieldsValue", getFieldsValue(true))
+            // const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
+            // const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+            // console.log(link)
+            // window.open(link)
         };
 
         const onFinishFailed = (errorInfo: any) => {
@@ -80,7 +74,7 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
         }
         const initialValues = {
             name: reportName,
-            address: addressString,
+            address: 'addressString',
             period: 'currentMonth',
             dates: [moment().startOf('month'), moment()],
             detailing: 'daily',
@@ -100,6 +94,15 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                     <StyledFormPage>
 
                         <Form.Item
+                            name="group"
+                            label="Группа" style={styles.w100}
+                        >
+                            <SelectTT
+
+                            />
+                        </Form.Item>
+
+                        <Form.Item
                             name="name"
                             label="Название отчёта" style={styles.w100}
                         >
@@ -108,12 +111,24 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                             />
                         </Form.Item>
 
+                        <Form.Item
+                            name="resource"
+                            label="Группа" style={styles.w49}
+                        >
+                            <SelectTT
 
-                        <Form.Item label="Адрес" name='address' style={styles.w100}>
-                            <InputTT
-                                disabled
                             />
                         </Form.Item>
+
+                        <Form.Item
+                            name="group"
+                            label="Группа" style={styles.w49}
+                        >
+                            <SelectTT
+
+                            />
+                        </Form.Item>
+
 
                         <Form.Item label="Тип архива" name='period' style={styles.w49}>
                             <Radio.Group
@@ -196,4 +211,4 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
     )
 }
 
-export default ModalCommonReport;
+export default ModalGroupReport;
