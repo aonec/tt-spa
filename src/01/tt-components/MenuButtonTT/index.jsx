@@ -45,10 +45,13 @@ export const MenuButtonTT = (props) => {
   const menu = (
     <Menu>
       {arr.map((item, index) => {
-        const { title, cb, color, clickable, show } = item;
+        const { title, cb, color, clickable, show = false } = item;
 
         const currentColor = getCurrentColor(color);
         // console.log("clickable", clickable)
+        if (show === false) {
+          return null
+        }
 
         return (
           <MenuItem key={title + color} onClick={cb} color={currentColor} >

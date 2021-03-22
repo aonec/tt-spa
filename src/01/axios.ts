@@ -29,22 +29,22 @@ axios.interceptors.request.use((req) => {
 })
 
 axios.interceptors.response.use(
-    ({ data, config }) => {
-        const { url } = config
+    ({data, config}) => {
+        const {url} = config
 
         // const url = config?.url;
         if (url && checkUrl('(login|refresh)', url)) {
-            const { token } = data.successResponse
-            const { refreshToken } = data.successResponse
-            const { roles } = data.successResponse
+            const {token, refreshToken, roles, permissions} = data.successResponse
             saveToLocStor('token', token)
             saveToLocStor('refreshToken', refreshToken)
+            saveToLocStor('permissions', permissions)
             checkUrl('login', url) && saveToLocStor('roles', roles)
         }
 
         if (url && checkUrl('(users/current)', url)) {
             const user = data.successResponse
             saveToLocStor('user', user)
+
         }
         const res = data.successResponse ?? data ?? {}
         // return { ...res, url };
@@ -55,7 +55,7 @@ axios.interceptors.response.use(
     (error) => {
         const status = error?.response?.status
         if (status === 401 && !checkUrl('login', error.config.url)) {
-            const { config } = error
+            const {config} = error
             return new Promise((resolve, reject) => {
                 axios.post('/auth/refreshToken').then(
                     () => resolve(axios(config)),
@@ -92,5 +92,5 @@ function checkUrl(str: string, url: string) {
     return new RegExp(str, 'gi').test(url)
 }
 
-export { cancel }
+export {cancel}
 export default axios
