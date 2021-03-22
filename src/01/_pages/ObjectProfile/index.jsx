@@ -48,9 +48,6 @@ export const ObjectProfile = () => {
         getObject(housingStockId).then((res) => {
             setObject(res);
         })
-        // getServiceZones().then((res) => {
-        //     setZones(res)
-        // })
 
     }, [])
 
