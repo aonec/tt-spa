@@ -37,7 +37,7 @@ export const Header = () => {
             title: 'Редактировать вычислитель',
             cb: () => !isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
             show: show('CalculatorUpdate'),
-            color: !isWatcher ? 'disabled' : 'default',
+            color: 'default',
             clickable: false
         },
         {

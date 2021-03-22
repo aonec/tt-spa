@@ -7,10 +7,13 @@ import { IconTT, MenuButtonTT } from '../../../tt-components'
 import { NodeContext } from '../index'
 import { nodeStatusList } from '../../../tt-components/localBases'
 import isWatcher from "../../../_api/utils/isWatcher";
+import useAccessesList from "../../../_api/utils/useAccessesList";
 
 export const Header = () => {
     const { node, calculator, setAddOdpu, deviceId } = useContext(NodeContext)
     const { id: nodeId, resource, nodeStatus, number } = node
+    const access = useAccessesList();
+    const {show} = access;
     const {
         id: objectId,
         city,
@@ -25,21 +28,21 @@ export const Header = () => {
     const menuButtonArr = [
         {
             title: 'Редактировать узел',
-            show: !isWatcher,
+            show: show('CalculatorUpdate'),
             cb: () => {
                 push(`/calculators/${deviceId}/edit`)
             },
         },
         {
             title: 'Добавить новый прибор',
-            show: !isWatcher,
+            show: show('CalculatorUpdate'),
             cb: () => {
                 setAddOdpu(true)
             },
         },
         {
             title: 'Поставить/Снять узел на коммерческий учёт',
-            show: !isWatcher,
+            show: show('CalculatorUpdate'),
             cb: () => {
                 alert('Поставить/Снять узел на коммерческий учёт')
             },
