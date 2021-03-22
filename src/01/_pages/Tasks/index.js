@@ -55,7 +55,7 @@ export const Tasks = () => {
 
     const debouncedSearchState = useDebounce(searchState, 500)
 
-    const {items, executingTasksCount, observingTasksCount, archivedTasksCount} = useTasks(
+    const {items, executingTasksCount, observingTasksCount} = useTasks(
         debouncedSearchState
     )
     console.log(useTasks(
@@ -64,7 +64,7 @@ export const Tasks = () => {
     return (
         <div style={{maxWidth: 960}}>
             <h1 style={{fontWeight: 300, marginBottom: 16}}>Задачи</h1>
-            <Tabs total={[executingTasksCount, observingTasksCount, archivedTasksCount]}/>
+            <Tabs total={[executingTasksCount, observingTasksCount]}/>
             <TasksSearchForm
                 searchState={searchState}
                 dispatchSearchState={dispatchSearchState}
