@@ -65,13 +65,12 @@ const initialState = {
 }
 
 export const Objects = ({isReadings = false}) => {
-    const [state, setState] = React.useState({items: null})
+    const [state, setState] = useState({items: null})
+    const [groupReport, setGroupReport] = useState(true);
     const [searchState, dispatchSearchState] = useReducer(
         objectsSearchReducer,
         initialState
     )
-
-    const [groupReport, setGroupReport] = useState(true)
 
     const debouncedSearchState = useDebounce(searchState, 500)
 
@@ -91,15 +90,13 @@ export const Objects = ({isReadings = false}) => {
 
     return styled(styles)(
         <div>
-            {!isReadings ? (
-                <Header />
-            ) : null}
+            <ModalGroupReport visible={groupReport} setVisible={setGroupReport} />
+            <Header />
             <div style={{width: 960}}>
                 <ObjectsSearchForm
                     searchState={searchState}
                     dispatchSearchState={dispatchSearchState}
                 />
-                <ModalGroupReport visible={true} setVisible={setGroupReport}/>
                 <Loader show={!items} size="32">
                     {items
                         ?.sort(sortObjects)

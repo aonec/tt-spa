@@ -12,27 +12,43 @@ import {Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
 import {getReports} from "../../../apiObjects";
-import {useAsync} from "../../../../../hooks/useAsync";
+import _ from 'lodash'
+import {LoaderTT} from "../../../../../tt-components/LoaderTT";
+import {GroupReportFormResponse} from "../../../../../../myApi";
 
 interface ModalPropsInterface {
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
 }
 
-
+// GroupReportFormResponse
 const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
-    // const { reports: data, run, status, isSuccess } = useAsync()
-    //
-    // const [reports, setReports] = useState();
+
+    const [reports, setReports] = useState();
     const handleCancel = () => {
         setVisible(false)
     }
 
-    // useEffect(() => {
-    //     getReports().then(report =>{
-    //         console.log(report)
-    //     })
-    // },[])
+    useEffect(() => {
+        getReports().then((res:any)=>{
+            setReports(res);
+            console.log(res);
+        })
+    }, [])
+
+    if (!reports) {
+        return <LoaderTT/>
+    }
+
+    console.log("reports", reports)
+
+    // const {groupReports} = reports;
+
+
+    // const groupReportsOptions = groupReports.map((item)=>{
+    //     const {id, title} = item
+    //     return { value: id, label : title}
+    // })
 
 
     const reportName = `Выгрузка группового отчёта`
