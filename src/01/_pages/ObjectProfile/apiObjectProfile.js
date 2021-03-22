@@ -16,7 +16,6 @@ export async function getCalculators(id = '') {
 export async function getDeviceTasks(id = '') {
     try {
         const res = await axios.get(`Tasks?DeviceId=${id}`)
-        // console.log("res", res)
         return res
     } catch (error) {
         console.log(error)
@@ -30,7 +29,6 @@ export async function getDeviceTasks(id = '') {
 export async function getObject(id = '') {
     try {
         const res = await axios.get(`HousingStocks/${id}`)
-        // console.log("res", res)
         return res
     } catch (error) {
         console.log(error)

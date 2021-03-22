@@ -21,7 +21,6 @@ export const EditCalculator = () => {
         setTab(value)
     }
 
-    console.log('currentCalc', currentCalc)
 
     useEffect(() => {
         getCalculator(deviceId).then((result) => setCurrentCalc(result))

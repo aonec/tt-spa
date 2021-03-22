@@ -37,22 +37,15 @@ export const ObjectProfile = () => {
     const [commonReport, setCommonReport] = useState(false);
     const [calculators, setCalculators] = useState();
     const [object, setObject] = useState();
-//     const [zones, setZones] = useState()
-
 
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
             const {items} = res;
             setCalculators(items)
-            // console.log(res);
         })
         getObject(housingStockId).then((res) => {
             setObject(res);
         })
-//         getServiceZones().then((res) => {
-//             setZones(res)
-//             // console.log('zones', res)
-//         })
 
     }, [])
 
@@ -75,7 +68,6 @@ export const ObjectProfile = () => {
         commonReport,
         setCommonReport,
         object,
-//         zones
     }
 
 
