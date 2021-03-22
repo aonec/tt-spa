@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-const useAccessesList = (accessName: string) => {
+const useAccessesList = () => {
     const permissions = localStorage.getItem('permissions');
     const initialState = JSON.parse(permissions || '')
     const [state, setState] = useState(initialState);
