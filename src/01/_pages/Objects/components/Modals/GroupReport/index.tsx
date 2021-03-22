@@ -74,7 +74,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
         async function getArchive(link = '') {
             try {
-                const res = await axios.get(link, {
+                const res = await axios.get<any, any>(link, {
                     responseType: 'blob',
                 })
                 return res
@@ -98,7 +98,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
             const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
             console.log("link",link)
-            const name = 'Reports'
+            const name = 'Reports.zip'
             getArchive(link).then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response]));
                 const link = document.createElement('a');
