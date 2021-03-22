@@ -37,8 +37,6 @@ export const ObjectProfile = () => {
     const [commonReport, setCommonReport] = useState(false);
     const [calculators, setCalculators] = useState();
     const [object, setObject] = useState();
-    // const [zones, setZones] = useState()
-
 
     useEffect(() => {
         getCalculators(housingStockId).then((res) => {
@@ -70,7 +68,6 @@ export const ObjectProfile = () => {
         commonReport,
         setCommonReport,
         object,
-        // zones
     }
 
 
@@ -82,10 +79,8 @@ export const ObjectProfile = () => {
                 <Tabs/>
                 <grid>
                     <Route path="/objects/(\\d+)" exact>
-                        <div>
-                        <Information {...info} />
-                        <MapObject />
-                        </div>
+                                               <Information {...info} />                   
+                   
                     </Route>
 
                     <Route path="/objects/(\\d+)/apartments" exact>

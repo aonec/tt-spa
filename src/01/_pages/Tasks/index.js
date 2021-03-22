@@ -24,8 +24,7 @@ const tabItems = [
 // ]
 
 const Tabs = React.memo(({total = []}) => {
-        // const TabsRes = isWatcher() ? tabItemsWatcher : tabItems
-    console.log("total", total)
+           console.log("total", total)
         return (
             styled(tabs)(
                 <tabs>
@@ -41,6 +40,7 @@ const Tabs = React.memo(({total = []}) => {
                     }
 
                     )}
+
                 </tabs>
             )
         )
