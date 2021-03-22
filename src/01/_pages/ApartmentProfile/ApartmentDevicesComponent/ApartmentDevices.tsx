@@ -31,7 +31,6 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
     if (!readingsLength) return null
 
     return (
-        <>
             <ApartmentDevicesContext.Provider value={items}>
                 <Header sliderIndex={sliderIndex}
                         setSliderIndex={setSliderIndex}
@@ -40,6 +39,5 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
                 <ApartmentDevicesList sliderIndex={sliderIndex}/>
                 <ShowHidden />
             </ApartmentDevicesContext.Provider>
-        </>
     )
 }

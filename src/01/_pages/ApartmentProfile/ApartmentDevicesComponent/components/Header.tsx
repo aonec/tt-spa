@@ -45,6 +45,7 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
     return (
         <HeaderWrap>
             <Title>Информация о приборе</Title>
+            <div>Статус</div>
             <CenterContainer>
                 <ArrowContainer
                     onClick={onClickDecrease}
@@ -70,7 +71,6 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
                     <Arrow isRight isDisabled={isRightArrowDisabled} />
                 </ArrowContainer>
             </CenterContainer>
-            <div />
         </HeaderWrap>
     )
 }
@@ -86,10 +86,10 @@ const HeaderWrap = styled.div`
 const Title = styled.h5`
     padding: 0;
     margin: 0;
-    font-weight: 500;
     font-size: 14px;
+    font-weight: 400;
     line-height: 16px;
-    color: rgba(39, 47, 90, 0.6);
+    color: rgba(0, 0, 0, 0.85);
 `
 
 export default Header
