@@ -27,7 +27,13 @@ const styles = css`
 `
 
 
-export const Header = React.memo(({0: title, 1: subtitle, corpus, setCommonReport, commonReport}) => {
+export const Header = React.memo(({
+                                      0: title,
+                                      1: subtitle,
+                                      corpus,
+                                      setCommonReport,
+                                      commonReport
+                                  }) => {
         const menuButtonArr = [
             {
                 title: 'Выгрузка сводного отчёта',

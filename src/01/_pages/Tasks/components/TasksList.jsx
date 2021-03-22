@@ -83,10 +83,6 @@ const styles = css`
     }
 `
 
-// task_title  {
-//     было
-//     width: 70%;
-// }
 
 const TaskItem = styledComp(Link)`
 display: flex;
