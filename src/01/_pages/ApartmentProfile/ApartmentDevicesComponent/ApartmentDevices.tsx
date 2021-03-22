@@ -32,12 +32,14 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
 
     return (
             <ApartmentDevicesContext.Provider value={items}>
+                {/*<div style={{maxWidth: 1200}}>*/}
                 <Header sliderIndex={sliderIndex}
                         setSliderIndex={setSliderIndex}
                         isReadingsCurrent={isReadingsCurrent}
                         readingsLength={readingsLength}/>
                 <ApartmentDevicesList sliderIndex={sliderIndex}/>
                 <ShowHidden />
+                {/*</div>*/}
             </ApartmentDevicesContext.Provider>
     )
 }

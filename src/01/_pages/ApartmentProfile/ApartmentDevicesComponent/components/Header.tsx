@@ -77,7 +77,7 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
 
 const HeaderWrap = styled.div`
     display: grid;
-    grid-template-columns: minmax(330px, 5fr) 2fr 2fr 3fr;
+    grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
     background: rgba(39, 47, 90, 0.04);
     padding: 16px;
     align-items: center;

@@ -5,14 +5,12 @@ import rateTypeToNumber from "../../../../_api/utils/rateTypeToNumber";
 import {formEmptyReadingsObject} from "../../../../utils/formEmptyReadingsObject";
 import {IndividualDeviceType} from "../../../../../types/types";
 import ReadingsBlock from "../../../MetersPage/components/MeterDevices/components/ReadingsBlock";
-import DeviceInfo from "../../../MetersPage/components/MeterDevices/components/DeviceInfo";
 import ApartmentDevice from "./ApartmentDevice";
-import {DateLine} from "../../../../_components/DateLine/DateLine";
 import ActiveLine from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
 
 const DeviceItem = styled.div`
     display: inline-grid;
-    grid-template-columns: minmax(330px, 5fr) 2fr 2fr 3fr;
+    grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
     padding: 0 16px 16px;
     border-bottom: 1px solid #dcdee4;
     align-items: center;

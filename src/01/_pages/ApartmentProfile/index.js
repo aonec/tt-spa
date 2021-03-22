@@ -32,11 +32,11 @@ const ApartmentProfile = () => {
     useEffect(() => {
         async function getTasksAndApartments() {
             await getApartment(apartmentId).then((response) =>
-                setapartment(response)
+              setapartment(response)
             )
             await getTasks(apartmentId).then((response) => setTasks(response))
             await getApartmentDevices(apartmentId).then((response) =>
-                setDevices(response)
+              setDevices(response)
             )
             setLoading(false)
         }
@@ -69,45 +69,45 @@ const ApartmentProfile = () => {
     const { city, street, number, id } = housingStock
 
     return styled(grid)(
-        <>
-            <Index path={`/objects/${id}/apartments`} />
-            <Header
-                apartmentNumber={apartmentNumber}
-                city={city}
-                street={street}
-                number={number}
-            />
+      <>
+          <Index path={`/objects/${id}/apartments`} />
+          <Header
+            apartmentNumber={apartmentNumber}
+            city={city}
+            street={street}
+            number={number}
+          />
 
-            <Tabs />
+          <Tabs />
 
-            <Route path="/*/(\\d+)" exact>
-                <Wrapper>
-                    <div>
-                        <Comments />
-                        <Tags />
-                        <Information
-                            style={{ paddingTop: '32px' }}
-                            square={square || 'Данные обновляются'}
-                            numberOfLiving={
-                                numberOfLiving || 'Данные обновляются'
-                            }
-                            normativeNumberOfLiving={
-                                normativeNumberOfLiving || 'Данные обновляются'
-                            }
-                        />
-                        <Owners homeowners={homeowners} />
-                    </div>
+          <Route path="/*/(\\d+)" exact>
+              <Wrapper>
+                  <div>
+                      <Comments />
+                      <Tags />
+                      <Information
+                        style={{ paddingTop: '32px' }}
+                        square={square || 'Данные обновляются'}
+                        numberOfLiving={
+                            numberOfLiving || 'Данные обновляются'
+                        }
+                        normativeNumberOfLiving={
+                            normativeNumberOfLiving || 'Данные обновляются'
+                        }
+                      />
+                      <Owners homeowners={homeowners} />
+                  </div>
 
-                    <div>
-                        <Tasks tasksList={tasksList} />
-                    </div>
-                </Wrapper>
-            </Route>
+                  <div>
+                      <Tasks tasksList={tasksList} />
+                  </div>
+              </Wrapper>
+          </Route>
 
-            <Route path="/*/(\\d+)/testimony" exact>
-                <ApartmentDevices devices={devices} />
-            </Route>
-        </>
+          <Route path="/*/(\\d+)/testimony" exact>
+                  <ApartmentDevices devices={devices} />
+          </Route>
+      </>
     )
 }
 
