@@ -49,6 +49,9 @@ export const MenuButtonTT = (props) => {
 
         const currentColor = getCurrentColor(color);
         // console.log("clickable", clickable)
+        if (show === false) {
+          return null
+        }
 
         return (
           <MenuItem key={title + color} onClick={cb} color={currentColor} >
