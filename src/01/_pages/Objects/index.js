@@ -74,7 +74,7 @@ export const Objects = ({isReadings = false}) => {
     const debouncedSearchState = useDebounce(searchState, 500)
 
     React.useEffect(() => {
-        ;(async () => {
+        (async () => {
             const queryString = formQueryString(debouncedSearchState)
             const res = await axios.get('HousingStocks' + queryString)
             setState(res)
@@ -89,7 +89,9 @@ export const Objects = ({isReadings = false}) => {
 
     return styled(styles)(
         <div>
-            <Header />
+            {!isReadings ? (
+              <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1>
+            ) : null}
             <div style={{width: 960}}>
                 <ObjectsSearchForm
                     searchState={searchState}
