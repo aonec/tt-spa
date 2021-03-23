@@ -7,12 +7,12 @@ import {HousingContext} from '../HousingProfile'
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates'
 import {useHistory} from "react-router-dom";
 import {MenuButtonTT} from "../../../tt-components";
-import useAccessesList from "../../../_api/utils/useAccessesList";
+import getAccessesList from "../../../_api/utils/getAccessesList";
 
 export const Header = () => {
     const { push } = useHistory();
     const {device, loadings, errors, error} = useContext(HousingContext)
-    const access = useAccessesList();
+    const access = getAccessesList();
     const {show} = access;
     const loadingDevice = _.get(loadings, 'device', true)
     const loading = loadingDevice

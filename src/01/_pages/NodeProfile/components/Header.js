@@ -7,12 +7,12 @@ import { IconTT, MenuButtonTT } from '../../../tt-components'
 import { NodeContext } from '../index'
 import { nodeStatusList } from '../../../tt-components/localBases'
 import isWatcher from "../../../_api/utils/isWatcher";
-import useAccessesList from "../../../_api/utils/useAccessesList";
+import getAccessesList from "../../../_api/utils/getAccessesList";
 
 export const Header = () => {
     const { node, calculator, setAddOdpu, deviceId } = useContext(NodeContext)
     const { id: nodeId, resource, nodeStatus, number } = node
-    const access = useAccessesList();
+    const access = getAccessesList();
     const {show} = access;
     const {
         id: objectId,

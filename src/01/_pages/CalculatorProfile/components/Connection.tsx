@@ -2,7 +2,9 @@ import React from 'react'
 import { ListWrap, ListItem, Title } from '../../../_components/List'
 import styles from '../calculator.module.css'
 import { IconWithTooltip } from '../../../components/NotConnectedIcon/IconWithTooltip'
+import Icon from "../../../tt-components/Icon";
 import {CalculatorResponse} from "../../../../myApi";
+
 
 interface ConnectionInterface {
     device: CalculatorResponse | undefined
@@ -19,7 +21,14 @@ export const Connection = ({device} : ConnectionInterface) => {
     const NoConnection = () => {
         return (
             <div className={styles.warning}>
-                <IconWithTooltip title={'Вычислитель не опрашивается'}/>
+                <IconWithTooltip
+                  title="Вычислитель не опрашивается"
+                >
+                    <Icon
+                      icon="notConnected"
+                      color="var(--main-100)"
+                    />
+                </IconWithTooltip>
                 <span>Вычислитель не опрашивается</span>
             </div>
         )

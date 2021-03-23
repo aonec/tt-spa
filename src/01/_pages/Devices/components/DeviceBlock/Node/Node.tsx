@@ -2,20 +2,18 @@ import React from 'react'
 import { CommunicationPipeInterface } from '../../utils/groupDevicesByObjects'
 import { Dates } from '../Dates'
 import {
-    DeviceIcon,
     DeviceLink,
-    DeviceWrapper,
     Diameter,
     SerialNumber,
 } from '../DeviceBlock'
-import IconTT from '../../../../../tt-components/IconTT'
 import styled from 'styled-components'
 import DeviceIcons from '../../../../../_components/DeviceIcons'
 import Icon from "../../../../../tt-components/Icon";
+import {NodeResponse} from "../../../../../../myApi";
 
 const Node: React.FC<Props> = ({ node }) => {
-    const housingDevices = node.communicationPipes.map((pipe) => {
-        const devices = pipe.devices.map((housingDevice) => {
+    const housingDevices = node.communicationPipes?.map((pipe) => {
+        const devices = pipe.devices?.map((housingDevice) => {
 
             return (
                 <MeteringDeviceWrapper>
@@ -49,7 +47,7 @@ const Node: React.FC<Props> = ({ node }) => {
     })
 
 
-    const { icon, color } = DeviceIcons[node.resource]
+    const { icon, color } = DeviceIcons[node.resource!]
 
     return (
         <div>
@@ -109,7 +107,7 @@ const CommercialAct = styled.div`
     padding-left: 48px;
 `
 interface NodeInterface {
-    calculatorId: number
+    calculatorId: number | null
     communicationPipes: CommunicationPipeInterface[]
     futureCommercialAccountingDate: string
     id: number
@@ -121,7 +119,7 @@ interface NodeInterface {
 }
 
 interface Props {
-    node: NodeInterface
+    node: NodeResponse
 }
 
 export default Node

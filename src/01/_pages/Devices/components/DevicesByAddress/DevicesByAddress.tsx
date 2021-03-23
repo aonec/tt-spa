@@ -1,16 +1,17 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React from 'react'
 import { Subtitle } from '../../../../_components/Headers'
 import DeviceBlock from '../DeviceBlock/DeviceBlock'
+import {DevicesByAddressInterface} from "../utils/groupDevicesByObjects";
 
-const DevicesByAddress = ({ addressDevicesGroup }) => {
+const DevicesByAddress = ({ addressDevicesGroup }: DevicesByAddressPropsInterface) => {
     const {
         city = '',
         street = '',
         housingStockNumber = null,
         corpus = null,
         id = null,
-    } = addressDevicesGroup?.address || {}
-    const deviceElems = addressDevicesGroup.devices.map((device) => (
+    } = addressDevicesGroup.address || {}
+    const deviceElems = addressDevicesGroup.devices?.map((device) => (
         <DeviceBlock device={device} />
     ))
 
@@ -36,6 +37,10 @@ const DevicesByAddress = ({ addressDevicesGroup }) => {
             </div>
         </>
     )
+}
+
+interface DevicesByAddressPropsInterface {
+  addressDevicesGroup: DevicesByAddressInterface
 }
 
 export default DevicesByAddress
