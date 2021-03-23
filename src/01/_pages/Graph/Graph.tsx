@@ -76,7 +76,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
             {(status === 'pending' ||
                 status === 'idle') && <div>ЗАГРУЗКА...</div>}
 
-            {status === 'rejected' && (
+            {status === 'error' && (
                 <>
                     <Alert
                         message="Ошибка"

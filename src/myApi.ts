@@ -163,10 +163,64 @@ export interface LoginRequest {
   password: string;
 }
 
+export enum UserPermission {
+  Default = "Default",
+  ApartmentsRead = "ApartmentsRead",
+  ApartmentsStatusPatch = "ApartmentsStatusPatch",
+  ContractorsRead = "ContractorsRead",
+  ContractorsCreate = "ContractorsCreate",
+  ContractorsUpdate = "ContractorsUpdate",
+  DocumentsCreate = "DocumentsCreate",
+  DocumentsDelete = "DocumentsDelete",
+  HousingStocksRead = "HousingStocksRead",
+  MeteringDevicesRead = "MeteringDevicesRead",
+  IndividualDeviceReadingsCreate = "IndividualDeviceReadingsCreate",
+  ManagingFirmsRead = "ManagingFirmsRead",
+  ManagingFirmsUpdate = "ManagingFirmsUpdate",
+  ManagingFirmUsersRead = "ManagingFirmUsersRead",
+  ManagingFirmUsersCreate = "ManagingFirmUsersCreate",
+  ManagingFirmUsersUpdate = "ManagingFirmUsersUpdate",
+  TasksRead = "TasksRead",
+  TasksExecute = "TasksExecute",
+  TaskAssign = "TaskAssign",
+  TaskCommentsCreate = "TaskCommentsCreate",
+  TaskCommentsUpdate = "TaskCommentsUpdate",
+  TaskCommentsDelete = "TaskCommentsDelete",
+  TaskDocumentsDelete = "TaskDocumentsDelete",
+  UserRolesRead = "UserRolesRead",
+  TaskCreate = "TaskCreate",
+  MeteringDevicesClose = "MeteringDevicesClose",
+  MeteringDevicesCheck = "MeteringDevicesCheck",
+  CalculatorCreate = "CalculatorCreate",
+  HousingStocksCreate = "HousingStocksCreate",
+  HousingStocksUpdate = "HousingStocksUpdate",
+  ApartmentCreate = "ApartmentCreate",
+  CalculatorUpdate = "CalculatorUpdate",
+  IndividualDeviceCreate = "IndividualDeviceCreate",
+  IndividualDeviceUpdate = "IndividualDeviceUpdate",
+  HousingMeteringDeviceUpdate = "HousingMeteringDeviceUpdate",
+  HousingMeteringDeviceCreate = "HousingMeteringDeviceCreate",
+  ApartmentUpdate = "ApartmentUpdate",
+  CalculatorSwitch = "CalculatorSwitch",
+  CalculatorInfoRead = "CalculatorInfoRead",
+  HousingMeteringDeviceSwitch = "HousingMeteringDeviceSwitch",
+  IndividualDeviceMountPlaceRead = "IndividualDeviceMountPlaceRead",
+  HomeownersRead = "HomeownersRead",
+  HomeownersCreate = "HomeownersCreate",
+  HomeownersUpdate = "HomeownersUpdate",
+  IndividualDeviceReadingsRead = "IndividualDeviceReadingsRead",
+  IndividualDeviceReadingsUpdate = "IndividualDeviceReadingsUpdate",
+  ManagingFirmsReadAll = "ManagingFirmsReadAll",
+  TaskDelete = "TaskDelete",
+  ReportRead = "ReportRead",
+  ReportAdd = "ReportAdd",
+}
+
 export interface TokenResponse {
   token: string | null;
   refreshToken: string | null;
   roles: string[] | null;
+  permissions: UserPermission[] | null;
 }
 
 export interface TokenResponseSuccessApiResponse {
@@ -646,45 +700,6 @@ export interface DocumentResponseIEnumerableSuccessApiResponse {
   successResponse: DocumentResponse[] | null;
 }
 
-export interface GroupReportResponse {
-  /** @format uuid */
-  id: string | null;
-
-  /** @format uuid */
-  houseManagementId: string | null;
-  title: string | null;
-}
-
-export interface GroupReportResponseListSuccessApiResponse {
-  successResponse: GroupReportResponse[] | null;
-}
-
-export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
-}
-
-export enum NodeCommercialAccountStatus {
-  NotRegistered = "NotRegistered",
-  Registered = "Registered",
-  OnReview = "OnReview",
-  Prepared = "Prepared",
-}
-
-export interface CreateGroupReportRequest {
-  title?: string | null;
-  nodeResourceType?: ResourceType;
-  nodeStatus?: NodeCommercialAccountStatus;
-  housingStockIds?: number[] | null;
-}
-
-export interface GroupReportResponseSuccessApiResponse {
-  successResponse: GroupReportResponse;
-}
-
 export interface FullAddressResponse {
   /** @format int32 */
   id: number;
@@ -926,11 +941,20 @@ export interface SwitchHousingMeteringDeviceRequest {
   futureCommercialAccountingDate?: string | null;
 }
 
+export interface Point {
+  /** @format double */
+  latitude?: number;
+
+  /** @format double */
+  longitude?: number;
+}
+
 export interface HousingStockAddressRequest {
   city: string;
   street: string;
   number: string;
   corpus?: string | null;
+  coordinates?: Point;
   index?: string | null;
   district?: string | null;
 }
@@ -949,6 +973,7 @@ export interface HousingStockResponse {
   street: string | null;
   number: string | null;
   corpus: string | null;
+  coordinates: Point;
   houseCategory: string | null;
 
   /** @format int32 */
@@ -1198,6 +1223,14 @@ export interface IndividualDeviceReadingsSetEmptyRequest {
   /** @format date-time */
   date: string;
   devicesIds: number[];
+}
+
+export enum ResourceType {
+  None = "None",
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
 }
 
 export enum IndividualDeviceRateType {
@@ -1622,6 +1655,51 @@ export interface NodeServiceZonesResponse {
 
 export interface NodeServiceZonesResponseListSuccessApiResponse {
   successResponse: NodeServiceZonesResponse[] | null;
+}
+
+export interface GroupReportResponse {
+  /** @format uuid */
+  id: string | null;
+
+  /** @format uuid */
+  houseManagementId: string | null;
+  title: string | null;
+}
+
+export interface ResourceTypeStringKeyValuePair {
+  key?: ResourceType;
+  value?: string | null;
+}
+
+export enum NodeCommercialAccountStatus {
+  NotRegistered = "NotRegistered",
+  Registered = "Registered",
+  OnReview = "OnReview",
+  Prepared = "Prepared",
+}
+
+export interface NodeCommercialAccountStatusStringKeyValuePair {
+  key?: NodeCommercialAccountStatus;
+  value?: string | null;
+}
+
+export interface GroupReportFormResponse {
+  groupReports: GroupReportResponse[] | null;
+  nodeResourceTypes: ResourceTypeStringKeyValuePair[] | null;
+  nodeStatuses: NodeCommercialAccountStatusStringKeyValuePair[] | null;
+}
+
+export interface GroupReportFormResponseSuccessApiResponse {
+  successResponse: GroupReportFormResponse;
+}
+
+export interface CreateGroupReportRequest {
+  title?: string | null;
+  housingStockIds?: number[] | null;
+}
+
+export interface GroupReportResponseSuccessApiResponse {
+  successResponse: GroupReportResponse;
 }
 
 export enum TaskGroupingFilter {
@@ -2165,26 +2243,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Archives
-     * @name ArchivesGetGroupReportList
-     * @request GET:/api/Archives/GetGroupReport
-     * @secure
-     */
-    archivesGetGroupReportList: (
-      query?: { groupReportId?: number; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetGroupReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
      * @name ArchivesSampleList
      * @request GET:/api/Archives/Sample
      * @secure
@@ -2506,42 +2564,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Documents/${documentId}`,
         method: "DELETE",
         secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags GroupReports
-     * @name GroupReportsList
-     * @request GET:/api/GroupReports
-     * @secure
-     */
-    groupReportsList: (params: RequestParams = {}) =>
-      this.request<GroupReportResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/GroupReports`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags GroupReports
-     * @name GroupReportsCreate
-     * @request POST:/api/GroupReports
-     * @secure
-     */
-    groupReportsCreate: (data: CreateGroupReportRequest, params: RequestParams = {}) =>
-      this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/GroupReports`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -3368,6 +3390,133 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         secure: true,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsList
+     * @request GET:/api/Reports
+     * @secure
+     */
+    reportsList: (params: RequestParams = {}) =>
+      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsCreate
+     * @request POST:/api/Reports
+     * @secure
+     */
+    reportsCreate: (data: CreateGroupReportRequest, params: RequestParams = {}) =>
+      this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsGetArchivesList
+     * @request GET:/api/Reports/GetArchives
+     * @secure
+     */
+    reportsGetArchivesList: (
+      query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Reports/GetArchives`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsGetReportList
+     * @request GET:/api/Reports/GetReport
+     * @secure
+     */
+    reportsGetReportList: (
+      query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Reports/GetReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsGetConsolidatedReportList
+     * @request GET:/api/Reports/GetConsolidatedReport
+     * @secure
+     */
+    reportsGetConsolidatedReportList: (
+      query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Reports/GetConsolidatedReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsGetGroupReportList
+     * @request GET:/api/Reports/GetGroupReport
+     * @secure
+     */
+    reportsGetGroupReportList: (
+      query?: {
+        GroupReportId?: string | null;
+        HouseManagementId?: string | null;
+        NodeResourceType?: ResourceType;
+        NodeStatus?: NodeCommercialAccountStatus;
+        "Subscription.Email"?: string | null;
+        "Subscription.ContractorIds"?: number[] | null;
+        "Subscription.NextTriggerTime"?: string;
+        ReportType?: string | null;
+        From?: string | null;
+        To?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Reports/GetGroupReport`,
+        method: "GET",
+        query: query,
+        secure: true,
         ...params,
       }),
 
