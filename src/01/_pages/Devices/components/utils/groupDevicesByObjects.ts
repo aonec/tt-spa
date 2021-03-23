@@ -1,9 +1,13 @@
-import { HousingMeteringDeviceListResponse } from '../../../../../myApi'
+import {
+    CalculatorListResponse,
+    HousingStockAddressResponse
+} from '../../../../../myApi'
 
 export const groupDevicesByObjects = (
-    devices: CalculatorsInterfaceFull[]
+    devices: CalculatorListResponse[] | null
 ): DevicesByAddressInterface[] => {
     const devicesByObject: DevicesByAddressInterface[] = []
+    if (!devices) return []
     devices.forEach((device) => {
         if (!device.address) {
             devicesByObject.push({ devices: [{ ...device }] })
@@ -16,70 +20,15 @@ export const groupDevicesByObjects = (
         if (index === -1) {
             devicesByObject.push({ address, devices: [{ ...rest }] })
         } else {
-            devicesByObject[index].devices.push({ ...rest })
+            devicesByObject[index].devices?.push({ ...rest })
         }
     })
     return devicesByObject
 }
 
 export interface DevicesByAddressInterface {
-    devices: CalculatorsInterface[]
-    address?: AddressInterface
-}
-
-export interface CalculatorsInterface {
-    closingDate: string | null
-    connection: ConnectionInterface
-    futureCheckingDate: string | null
-    futureCommercialAccountingDate: string | null
-    hasTasks: boolean
-    hubs: HousingMeteringDeviceListResponse[] | null
-    id: boolean
-    isConnected: boolean
-    lastCheckingDate: string | null
-    lastCommercialAccountingDate: string | null
-    managementFirm: ManagementFirmInterface
-    model: string
-    nodes: NodeInterface[]
-    serialNumber: string
-    transactionType: string | null
-}
-
-interface CalculatorsInterfaceFull extends CalculatorsInterface {
-    address: AddressInterface
-}
-
-// interface CalculatorsInterface {
-//     address?: AddressInterface
-//     closingDate: string | null
-//     connection: ConnectionInterface
-//     futureCheckingDate: string | null
-//     futureCommercialAccountingDate: string | null
-//     hasTasks: boolean
-//     hubs: any
-//     id: boolean
-//     isConnected: boolean
-//     lastCheckingDate: string | null
-//     lastCommercialAccountingDate: string | null
-//     managementFirm : ManagementFirmInterface
-//     model: string
-//     nodes: NodeInterface[]
-//     serialNumber: string
-//     transactionType: any
-// }
-
-interface AddressInterface {
-    id: number
-    city: string
-    street: string
-    housingStockNumber: string
-    corpus: null | string
-}
-
-interface ConnectionInterface {
-    ipV4: string
-    port: null | number
-    deviceAddress: string
+    devices: Omit<CalculatorListResponse, "address">[] | null
+    address?: HousingStockAddressResponse
 }
 
 interface ManagementFirmInterface {
@@ -88,18 +37,6 @@ interface ManagementFirmInterface {
     phoneNumber: string | null
     information: string | null
     timeZoneOffset: string
-}
-
-interface NodeInterface {
-    calculatorId: number
-    communicationPipes: CommunicationPipeInterface[]
-    futureCommercialAccountingDate: string
-    id: number
-    lastCommercialAccountingDate: string
-    nodeStatus: string
-    number: number
-    resource: string
-    serviceZone: string
 }
 
 export interface CommunicationPipeInterface {

@@ -31,7 +31,6 @@ interface ApartmentsProps {
 }
 
 export const Apartments = ({ loading = null, items = [] }: ApartmentsProps) => {
-  debugger;
   const { push } = useHistory()
   const { url } = useRouteMatch()
   if (loading) return <Loader show={true} size="32" />

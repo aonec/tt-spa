@@ -1,6 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react'
 
 
+
 type StatusType = 'idle' | 'pending' | 'resolved' | 'error'
 
 interface StateInterface {

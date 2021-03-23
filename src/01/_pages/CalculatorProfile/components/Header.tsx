@@ -3,9 +3,9 @@ import {
     HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import {useHistory} from 'react-router-dom';
-import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
+import {DEFAULT_BUILDING, DEFAULT_DEVICE} from './Templates';
+import getAccessesList from "../../../_api/utils/getAccessesList";
 import {IconTT, MenuButtonTT} from '../../../tt-components';
-import useAccessesList from "../../../_api/utils/useAccessesList";
 import {CalculatorResponse} from "../../../../myApi";
 
 interface HeaderInterface {
@@ -20,14 +20,15 @@ export const Header = ({
                            setDeregister,setCheck
                        }: HeaderInterface) => {
     const {push} = useHistory();
-    const access = useAccessesList();
-    const {show} = access
+
 
     const {address} = device || {address: DEFAULT_BUILDING};
     const {
         city, street, housingStockNumber, corpus, id,
     } = address || DEFAULT_BUILDING;
 
+    const access = getAccessesList();
+    const {show} = access
     const {model, serialNumber} = device || DEFAULT_DEVICE;
 
     const menuButtonArr = device ? [
