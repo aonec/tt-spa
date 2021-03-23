@@ -267,7 +267,7 @@ export const useReadings = (device: IndividualDeviceType,
     }
 }
 
-type ReadingsStateType = {
+export type ReadingsStateType = {
     previousReadingsArray: number[]
     currentReadingsArray: number[]
     prevId: number
