@@ -26,6 +26,7 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
 `;
 
 const MenuItem = styled(Menu.Item)`
+  min-width: 408px;
   color: ${(props) => props.color || 'var(--primary)'};
 `;
 export const MenuButtonTT = (props) => {
@@ -44,13 +45,16 @@ export const MenuButtonTT = (props) => {
   const menu = (
     <Menu>
       {arr.map((item, index) => {
-        const { title, cb, color, clickable } = item;
+        const { title, cb, color, clickable, show = false } = item;
 
         const currentColor = getCurrentColor(color);
         // console.log("clickable", clickable)
+        if (show === false) {
+          return null
+        }
 
         return (
-          <MenuItem key={title + color} onClick={cb} color={currentColor} style={{pointerEvents: clickable === false ? 'none': 'default', display: clickable === false ? 'none': 'default'}}>
+          <MenuItem key={title + color} onClick={cb} color={currentColor} >
             {title}
           </MenuItem>
         );
@@ -60,7 +64,7 @@ export const MenuButtonTT = (props) => {
 
   return (
     <Dropdown overlay={menu} trigger={['click']}>
-      <StyledMenuButton size={props.size}>
+      <StyledMenuButton size={props.size} >
         <MoreOutlined />
       </StyledMenuButton>
     </Dropdown>

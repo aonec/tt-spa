@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react'
-
 import { Tabs } from 'antd'
 import { useDispatch } from 'react-redux'
 import { Loader } from '../../../components/Loader'
@@ -7,33 +6,33 @@ import {
     getDevices,
     setCurrentPage,
 } from '../../../Redux/reducers/reducerDevicesPage'
-
 import styles from './TabsDevices.module.scss'
 import { createPages } from '../../../utils/pagesCreator'
-
 import DeviceSearchForm from './DeviceSearchForm/DeviceSearchForm'
 import devicesSearchReducer from '../devicesSearchReducer'
 import DevicesByAddress from './DevicesByAddress/DevicesByAddress'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects'
 import styled from 'styled-components'
+import {CalculatorListResponsePagedList} from "../../../../myApi";
 
 const { TabPane } = Tabs
 
 const initialState = {
     expirationDate: '',
-    lowerDiameterRange: null,
-    upperDiameterRange: null,
+    lowerDiameterRange: '',
+    upperDiameterRange: '',
     searchTerm: '',
 }
 
-const TabsDevices = ({ devicePage }: any) => {
+
+
+const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
     const dispatch = useDispatch()
     const { pageSize } = devicePage
     const { currentPage } = devicePage
     const { totalPages } = devicePage
     const [isLoading, setIsLoading] = useState(true)
-    const [deviceElems, setDeviceElems] = useState<JSX.Element[]>()
 
     const [searchState, dispatchSearchState] = useReducer(
         devicesSearchReducer,
@@ -49,20 +48,15 @@ const TabsDevices = ({ devicePage }: any) => {
         setIsLoading(false)
     }, [currentPage, debouncedSearchState])
 
-    useEffect(() => {
-        setIsLoading(true)
 
-        const devicesByObject = groupDevicesByObjects(devicePage.items)
+    const devicesByObject = groupDevicesByObjects(devicePage.items)
 
-        const deviceArray = devicesByObject.map((addressDevicesGroup) => (
-            <DevicesByAddress
-                key={addressDevicesGroup.address?.id}
-                addressDevicesGroup={addressDevicesGroup}
-            />
-        ))
-        setDeviceElems(deviceArray)
-        setIsLoading(false)
-    }, [devicePage.items])
+    const deviceArray = devicesByObject.map((addressDevicesGroup) => (
+        <DevicesByAddress
+            key={addressDevicesGroup.address?.id}
+            addressDevicesGroup={addressDevicesGroup}
+        />
+    ))
 
     const pagination = pages.map((page, index) => (
         <span
@@ -88,13 +82,17 @@ const TabsDevices = ({ devicePage }: any) => {
                     </div>
                 ) : (
                     <div>
-                        <div>{deviceElems}</div>
+                        <div>{deviceArray}</div>
                         <Pagination>{pagination}</Pagination>
                     </div>
                 )}
             </Tab>
         </Tabs>
     )
+}
+
+interface TabsDevicesInterface {
+    devicePage: CalculatorListResponsePagedList & { isLoading: boolean; currentPage: number}
 }
 
 const Pagination = styled.div`

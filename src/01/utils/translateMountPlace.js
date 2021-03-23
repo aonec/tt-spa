@@ -10,5 +10,7 @@ export const translateMountPlace = (mountPlace) => {
             return 'Коридор'
         case 'Kitchen':
             return 'Кухня'
+        default:
+            return 'Место не указано'
     }
 }

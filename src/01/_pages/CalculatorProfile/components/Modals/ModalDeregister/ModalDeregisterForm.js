@@ -76,7 +76,7 @@ const ModalDeregisterForm = (props) => {
             const form = {
                 deviceId: values.deviceId,
                 documentsIds: values.documentsIds,
-                closingDateTime: values.closingDateTime,
+                closingDate: values.closingDateTime,
             }
             console.log(form)
             deregisterDevice(form)

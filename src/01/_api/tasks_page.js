@@ -5,6 +5,8 @@ export async function getTasks(grouptype = null, searchState = {}) {
     try {
         const params = { grouptype }
 
+        console.log("params",params)
+
         let query = 'tasks'
         // if (searchState.searchTerm) {
         //   query += `/${searchState.searchTerm}`;

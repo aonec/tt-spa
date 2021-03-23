@@ -16,7 +16,6 @@ export async function getCalculators(id = '') {
 export async function getDeviceTasks(id = '') {
     try {
         const res = await axios.get(`Tasks?DeviceId=${id}`)
-        // console.log("res", res)
         return res
     } catch (error) {
         console.log(error)
@@ -27,4 +26,30 @@ export async function getDeviceTasks(id = '') {
     }
 }
 
-// /Calculators?Filter.HousingStockId=45
+export async function getObject(id = '') {
+    try {
+        const res = await axios.get(`HousingStocks/${id}`)
+        return res
+    } catch (error) {
+        console.log(error)
+        throw {
+            resource: 'object',
+            message: 'Произошла ошибка запроса по дому',
+        }
+    }
+}
+
+export async function getServiceZones(id = '') {
+    try {
+        const res = await axios.get(`Nodes/GetServiceZones`)
+        // console.log("res", res)
+        return res
+    } catch (error) {
+        console.log(error)
+        throw {
+            resource: 'object',
+            message: 'Произошла ошибка запроса по зонам',
+        }
+    }
+}
+

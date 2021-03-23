@@ -62,25 +62,25 @@ export const Information = () => {
                     <span>{translateMountPlace(mountPlace)}</span>
                 </ListItem>
 
-                {/*<ListItem>*/}
+                {/*<StyledListItem>*/}
                 {/*  <span>Тип пломбы</span>*/}
                 {/*  <span></span>*/}
-                {/*</ListItem>*/}
+                {/*</StyledListItem>*/}
 
-                {/*<ListItem>*/}
+                {/*<StyledListItem>*/}
                 {/*  <span>Магнитная пломба</span>*/}
                 {/*  <span></span>*/}
-                {/*</ListItem>*/}
+                {/*</StyledListItem>*/}
 
-                {/*<ListItem>*/}
+                {/*<StyledListItem>*/}
                 {/*  <span>Организация</span>*/}
                 {/*  <span></span>*/}
-                {/*</ListItem>*/}
+                {/*</StyledListItem>*/}
 
-                {/*<ListItem>*/}
+                {/*<StyledListItem>*/}
                 {/*  <span>Монтажная организация</span>*/}
                 {/*  <span></span>*/}
-                {/*</ListItem>*/}
+                {/*</StyledListItem>*/}
             </Loader>
         </ListWrap>
     )

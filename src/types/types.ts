@@ -1,3 +1,5 @@
+import {ResourceType} from "../myApi";
+
 export type ReadingType = {
     id: number
     hasError: boolean
@@ -35,7 +37,7 @@ export type IndividualDeviceType = {
     personalAccountNumber: string | null
     rateType: string
     readings: Array<ReadingType>
-    resource: string
+    resource: ResourceType
     serialNumber: string | null
     transactionType: string | null
 }

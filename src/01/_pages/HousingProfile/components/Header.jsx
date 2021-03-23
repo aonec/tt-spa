@@ -7,10 +7,13 @@ import {HousingContext} from '../HousingProfile'
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates'
 import {useHistory} from "react-router-dom";
 import {MenuButtonTT} from "../../../tt-components";
+import getAccessesList from "../../../_api/utils/getAccessesList";
 
 export const Header = () => {
     const { push } = useHistory();
     const {device, loadings, errors, error} = useContext(HousingContext)
+    const access = getAccessesList();
+    const {show} = access;
     const loadingDevice = _.get(loadings, 'device', true)
     const loading = loadingDevice
     const {address, model, serialNumber, resource} = device || DEFAULT_DEVICE
@@ -32,6 +35,7 @@ export const Header = () => {
         {
             title: 'Редактировать ОДПУ',
             cb: () => {push(`/housingMeteringDevices/${device.id}/edit`)},
+            show: show('HousingMeteringDeviceUpdate'),
             color: 'default',
             clickable: true
         }
@@ -63,7 +67,7 @@ export const Header = () => {
                     }`}</Subtitle>
                 </div>
                 <div style={{position: 'relative'}}>
-                    <MenuButtonTT menuButtonArr={menuButtonArr} />
+                    <MenuButtonTT menuButtonArr={menuButtonArr}/>
                 </div>
             </Loader>
         </HeaderWrap>

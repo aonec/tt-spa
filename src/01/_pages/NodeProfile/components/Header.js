@@ -6,10 +6,14 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { IconTT, MenuButtonTT } from '../../../tt-components'
 import { NodeContext } from '../index'
 import { nodeStatusList } from '../../../tt-components/localBases'
+import isWatcher from "../../../_api/utils/isWatcher";
+import getAccessesList from "../../../_api/utils/getAccessesList";
 
 export const Header = () => {
     const { node, calculator, setAddOdpu, deviceId } = useContext(NodeContext)
     const { id: nodeId, resource, nodeStatus, number } = node
+    const access = getAccessesList();
+    const {show} = access;
     const {
         id: objectId,
         city,
@@ -24,18 +28,21 @@ export const Header = () => {
     const menuButtonArr = [
         {
             title: 'Редактировать узел',
+            show: show('CalculatorUpdate'),
             cb: () => {
                 push(`/calculators/${deviceId}/edit`)
             },
         },
         {
             title: 'Добавить новый прибор',
+            show: show('CalculatorUpdate'),
             cb: () => {
                 setAddOdpu(true)
             },
         },
         {
             title: 'Поставить/Снять узел на коммерческий учёт',
+            show: show('CalculatorUpdate'),
             cb: () => {
                 alert('Поставить/Снять узел на коммерческий учёт')
             },
@@ -91,7 +98,7 @@ export const Header = () => {
                     <NodeStatus />
                 </SubtitleWrap>
             </div>
-            <MenuButtonTT menuButtonArr={menuButtonArr} />
+            <MenuButtonTT menuButtonArr={menuButtonArr}/>
         </HeaderWrap>
     )
 }

@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react'
-import styled from 'reshadow/macro'
-import {Route, Switch, Redirect} from 'react-router-dom'
-import '01/css/index.css'
-import '01/css/styles.css'
-import {app} from '01/styles/app'
-import {Logotip, Menu} from '01/components'
-import moment from 'moment'
+import React, {useEffect} from 'react';
+import styled from 'reshadow/macro';
+import {Route, Switch, Redirect} from 'react-router-dom';
+import '01/css/index.css';
+import '01/css/styles.css';
+import {app} from '01/styles/app';
+import {Logotip, Menu} from '01/components';
+import moment from 'moment';
 
-import {Provider} from 'react-redux'
-import 'moment/locale/ru'
-import {ConfigProvider} from 'antd'
-import ruRu from 'antd/es/locale/ru_RU'
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import 'moment/locale/ru';
+import {ConfigProvider} from 'antd';
+import ruRu from 'antd/es/locale/ru_RU';
 import {
     Tasks,
     Login,
@@ -30,22 +30,18 @@ import {
     Registration,
     IndividualDevice,
     NodeProfile,
-    MapPage,
     EditNode,
     AddNode,
-} from '../_pages'
-import {useApp} from './useApp'
-import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm'
-import EditODPU from '../_pages/EditODPU'
-import {Devices} from '../_pages/ObjectProfile/components/Devices'
-import {store} from '../Redux/store'
-import {DevicesFromSearch} from '../_pages/Devices'
-import {useDispatch, useSelector} from 'react-redux'
-import {getUser} from "../_api/get_user_roles";
-import {setUser} from "../Redux/reducers/userReducer";
+} from '../_pages';
+import {useApp} from './useApp';
+import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
+import EditODPU from '../_pages/EditODPU';
+import {Devices} from '../_pages/ObjectProfile/components/Devices';
+import {store} from '../Redux/store';
+import {DevicesFromSearch} from '../_pages/Devices';
+import {YMaps} from "react-yandex-maps";
 
-moment.locale('ru')
-
+moment.locale('ru');
 
 const Internal = () => {
 
@@ -66,7 +62,6 @@ const Internal = () => {
                 path="/form/"
                 render={() => <DeviceSearchForm/>}
             />
-            <Route path="/map/" render={() => <MapPage/>}/>
             <Route path="/">
                 <layout>
                     <menu as="div">
@@ -205,21 +200,23 @@ const Internal = () => {
                     </main>
                 </layout>
             </Route>
-        </Switch>
-    )
-}
+        </Switch>,
+    );
+};
 
 export function App() {
-    const AppProvider = useApp()
+    const AppProvider = useApp();
     return styled(app)(
         <Provider store={store}>
             <AppProvider>
                 <ConfigProvider locale={ruRu}>
-                    <Internal/>
+                    <YMaps>
+                        <Internal/>
+                    </YMaps>
                 </ConfigProvider>
             </AppProvider>
-        </Provider>
-    )
+        </Provider>,
+    );
 }
 
-export default App
+export default App;
