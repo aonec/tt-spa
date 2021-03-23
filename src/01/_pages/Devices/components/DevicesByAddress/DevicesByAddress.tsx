@@ -3,10 +3,6 @@ import { Subtitle } from '../../../../_components/Headers'
 import DeviceBlock from '../DeviceBlock/DeviceBlock'
 import {DevicesByAddressInterface} from "../utils/groupDevicesByObjects";
 
-interface DevicesByAddressPropsInterface {
-  addressDevicesGroup: DevicesByAddressInterface
-}
-
 const DevicesByAddress = ({ addressDevicesGroup }: DevicesByAddressPropsInterface) => {
     const {
         city = '',
@@ -41,6 +37,10 @@ const DevicesByAddress = ({ addressDevicesGroup }: DevicesByAddressPropsInterfac
             </div>
         </>
     )
+}
+
+interface DevicesByAddressPropsInterface {
+  addressDevicesGroup: DevicesByAddressInterface
 }
 
 export default DevicesByAddress

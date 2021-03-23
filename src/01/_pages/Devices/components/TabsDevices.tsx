@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from 'react'
-
 import { Tabs } from 'antd'
 import { useDispatch } from 'react-redux'
 import { Loader } from '../../../components/Loader'
@@ -7,10 +6,8 @@ import {
     getDevices,
     setCurrentPage,
 } from '../../../Redux/reducers/reducerDevicesPage'
-
 import styles from './TabsDevices.module.scss'
 import { createPages } from '../../../utils/pagesCreator'
-
 import DeviceSearchForm from './DeviceSearchForm/DeviceSearchForm'
 import devicesSearchReducer from '../devicesSearchReducer'
 import DevicesByAddress from './DevicesByAddress/DevicesByAddress'
@@ -28,9 +25,7 @@ const initialState = {
     searchTerm: '',
 }
 
-interface TabsDevicesInterface {
-    devicePage: CalculatorListResponsePagedList & { isLoading: boolean; currentPage: number}
-}
+
 
 const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
     const dispatch = useDispatch()
@@ -94,6 +89,10 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
             </Tab>
         </Tabs>
     )
+}
+
+interface TabsDevicesInterface {
+    devicePage: CalculatorListResponsePagedList & { isLoading: boolean; currentPage: number}
 }
 
 const Pagination = styled.div`

@@ -7,17 +7,11 @@ import { Dates } from './Dates';
 import Node from './Node/Node';
 import {CalculatorListResponse} from "../../../../../myApi";
 
-
-interface DeviceBlockPropsInterface {
-  device: Omit<CalculatorListResponse, "address">
-}
-
 const DeviceBlock = ({device: calculator}: DeviceBlockPropsInterface) => {
-  debugger;
-  // const { device: calculator } = props;
 
   const { isConnected } = calculator;
   const isConnectionError = !(calculator.connection?.port && calculator.connection?.ipV4);
+  
   return (
     <>
       <DeviceWrapper>
@@ -70,6 +64,10 @@ const DeviceBlock = ({device: calculator}: DeviceBlockPropsInterface) => {
       </div>
     </>
   )
+}
+
+interface DeviceBlockPropsInterface {
+  device: Omit<CalculatorListResponse, "address">
 }
 
 export const DeviceWrapper = styled.div`
