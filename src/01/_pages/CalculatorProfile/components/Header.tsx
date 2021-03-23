@@ -12,11 +12,12 @@ interface HeaderInterface {
     device: CalculatorResponse | undefined
     setReport: Dispatch<SetStateAction<boolean>>
     setDeregister: Dispatch<SetStateAction<boolean>>
+    setCheck: Dispatch<SetStateAction<boolean>>
 }
 
 export const Header = ({
                            device, setReport,
-                           setDeregister
+                           setDeregister,setCheck
                        }: HeaderInterface) => {
     const {push} = useHistory();
     const access = useAccessesList();
@@ -51,6 +52,14 @@ export const Header = ({
             },
             show: show('CalculatorUpdate'),
             color: 'default',
+        },
+        {
+            title: 'Поверить вычислитель',
+            cb: () => {
+                setCheck(true);
+            },
+            show: show('CalculatorUpdate'),
+            color: 'red',
         },
         {
             title: 'Закрыть вычислитель',

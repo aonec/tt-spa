@@ -75,7 +75,6 @@ export const CalculatorProfile = () => {
 
     if (!device && !tasks) return <Loader show size={32}/>
 
-
     const context = {
         device,
         loadings,
@@ -90,7 +89,7 @@ export const CalculatorProfile = () => {
     }
     return (
         <DeviceContext.Provider value={context}>
-            <Header device={device} setReport={setReport} setDeregister={setDeregister}/>
+            <Header device={device} setReport={setReport} setDeregister={setDeregister} setCheck={setCheck}/>
             <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>
