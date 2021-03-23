@@ -16,6 +16,7 @@ import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../my
 import {useAsync} from "../../../../../hooks/useAsync";
 import {allResources} from "../../../../../tt-components/localBases";
 import axios from "../../../../../axios";
+import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
 
 
 interface ModalPropsInterface {
@@ -47,7 +48,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
         const reportName = `Выгрузка группового отчёта`
         const {groupReports, nodeResourceTypes, nodeStatuses} = data;
         // console.log("groupReports", groupReports)
-        // console.log("nodeResourceTypes", nodeResourceTypes)
+        console.log("nodeResourceTypes", nodeResourceTypes)
         // console.log("nodeStatuses", nodeStatuses)
 
         const groupReportsOptions = groupReports.map((group: any) => {
@@ -68,21 +69,6 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
         console.log("groupReportsOptions", groupReportsOptions)
 
-        async function getArchive(link = '') {
-            try {
-                const res = await axios.get<string, object>(link, {
-                    responseType: 'blob',
-                })
-                return res
-            } catch (error) {
-                console.log(error)
-                throw {
-                    resource: 'tasks',
-                    message: 'Произошла ошибка при загрузке данных по задачам',
-                }
-            }
-        }
-
 
         const [form] = Form.useForm();
         const {setFieldsValue, getFieldsValue, getFieldValue} = form;
@@ -95,6 +81,17 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
             console.log("link",link)
             const name = 'Reports.zip'
+
+            getArchive(link).then((response: any) => {
+                const url = window.URL.createObjectURL(new Blob([response]));
+                const link = document.createElement('a');
+                link.href = url;
+                const fileName = `name`;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            });
 
         };
 

@@ -7,38 +7,32 @@ import {useHistory} from 'react-router-dom';
 import {DeviceContext} from '../CalculatorProfile';
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
 import {MenuButtonTT} from '../../../tt-components';
-import isWatcher from "../../../_api/utils/isWatcher";
-import userAccessesList from "../../../_api/utils/useAccessesList";
 import useAccessesList from "../../../_api/utils/useAccessesList";
 
 export const Header = () => {
     const {push} = useHistory();
+    const access = useAccessesList();
+    const {show} = access
 
     const {
         device,
-        building,
-        calcModel,
         setReport,
         setDeregister,
     } = useContext(DeviceContext);
-
-
+    // console.log(device)
+    const {address} = device;
     const {
         city, street, housingStockNumber, corpus, id,
-    } = building || DEFAULT_BUILDING;
+    } = address || DEFAULT_BUILDING;
     const {model, serialNumber, resource} = device || DEFAULT_DEVICE;
     const {icon, color} = DeviceIcons[resource] || DEFAULT_ICON;
-
-    const access = useAccessesList();
-    const {show} = access
 
     const menuButtonArr = [
         {
             title: 'Редактировать вычислитель',
-            cb: () => !isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
+            cb: () => push(`/calculators/${device.id}/edit`),
             show: show('CalculatorUpdate'),
             color: 'default',
-            clickable: false
         },
         {
             title: 'Выгрузить отчет о общедомовом потреблении',
@@ -81,9 +75,8 @@ export const Header = () => {
                         size="24"
                         style={{marginRight: '8px'}}
                     />
-                    {`${model || 'Вычислитель'} (${serialNumber})`}
+                    {`${model} (${serialNumber})`}
                 </Title>
-                {/* <ButtonTT onClick={buttonHandler}>TEST</ButtonTT> */}
                 <Subtitle to={`/objects/${id}`}>
                     {`${city}, ${street}, ${housingStockNumber}${
                         corpus ? `, к.${corpus}` : ''
