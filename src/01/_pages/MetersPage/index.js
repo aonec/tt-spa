@@ -16,6 +16,7 @@ import Arrow from '../../_components/Arrow/Arrow'
 import { Tabs } from 'antd'
 import { useHistory } from 'react-router-dom'
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices'
+import {Title} from "../../_components/Headers";
 
 const { TabPane } = Tabs
 
@@ -36,7 +37,7 @@ export const MetersPage = () => {
 
     return (
         <div style={{ maxWidth: 960 }}>
-            <h1>Ввод показаний</h1>
+            <Title style={{marginBottom: 16}}>Ввод показаний</Title>
             <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
                 <TabPane tab="По квартирам" key="apartments">
                     <Route path="/*/apartments" exact>
