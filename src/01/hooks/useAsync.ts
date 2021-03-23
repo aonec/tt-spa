@@ -1,7 +1,10 @@
-import React, { Dispatch } from 'react'
+import React, {Dispatch, SetStateAction} from 'react'
+
+
+type StatusType = 'idle' | 'pending' | 'resolved' | 'rejected'
 
 interface StateInterface {
-    status: 'idle' | 'pending' | 'resolved' | 'rejected'
+    status: StatusType
     data: any
     error: any
 }
@@ -26,7 +29,21 @@ function useSafeDispatch(dispatch: any) {
     )
 }
 
-export function useAsync(initialState = defaultInitialState) {
+interface UseAsyncInterface<T> {
+    isIdle: boolean
+    isLoading: boolean
+    isError: boolean
+    isSuccess: boolean
+    data: T | null
+    setData: Dispatch<SetStateAction<T>>
+    error: any
+    setError: Dispatch<SetStateAction<any>>
+    reset: any
+    run: any
+    status: StatusType
+}
+
+export function useAsync<T = any>(initialState = defaultInitialState): UseAsyncInterface<T> {
     const initialStateRef = React.useRef({
         ...defaultInitialState,
         ...initialState,

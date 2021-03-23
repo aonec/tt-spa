@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Route, useParams } from 'react-router-dom'
 import styled from 'reshadow/macro'
 import styledComponents from 'styled-components'
@@ -11,50 +11,40 @@ import {
 } from './apiApartmentProfile'
 import { Tabs } from './components/Tabs'
 import Owners from './components/Owners'
-import { Comments, Header, Tags, Information, DropdownTT } from './components'
+import { Comments, Header, Tags, Information } from './components'
 
 import { Tasks } from './components/ApartmentTasks/ApartmentTasks'
 
 // Получаем типовые функции по запросам к серверу
 import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices'
 import Index from '../../tt-components/Breadcrumb'
+import {useAsync} from "../../hooks/useAsync";
 
 const ApartmentProfile = () => {
     const params = useParams()
     const apartmentId = params[1]
 
-    const [apartment, setapartment] = useState()
-    const [tasks, setTasks] = useState()
-    const [devices, setDevices] = useState()
-
-    const [loading, setLoading] = useState(true)
+    const { data, status, run } = useAsync();
 
     useEffect(() => {
-        async function getTasksAndApartments() {
-            await getApartment(apartmentId).then((response) =>
-                setapartment(response)
-            )
-            await getTasks(apartmentId).then((response) => setTasks(response))
-            await getApartmentDevices(apartmentId).then((response) =>
-                setDevices(response)
-            )
-            setLoading(false)
-        }
-        getTasksAndApartments()
-    }, [])
+        const request = () => Promise.all([getApartment(apartmentId), getTasks(apartmentId), getApartmentDevices(apartmentId)]);
+        run(request());
+    }, []);
+
+    if (!data) return null
+    const [apartment, tasks, devices] = data;
+
+    if (status === 'error') return 'ОШИБКА ЗАГРУЗКИ'
+    if (status === 'loading') return <Loader show size="32" />
+
 
     const Wrapper = styledComponents.div`
   display: grid;
   grid-template-columns: 8fr 4fr;
   padding-bottom: 40px;
 `
-
-    if (!apartment || !tasks) {
-        return <Loader show={loading} size="32" />
-    }
-
     // Получили список задач
-    const tasksList = tasks.items
+    const tasksList = tasks.items;
 
     // Информация по квартире: номер, площадь, кол-во проживающих, кол-во по нормативу
     const {
@@ -64,50 +54,50 @@ const ApartmentProfile = () => {
         normativeNumberOfLiving,
         housingStock,
         homeowners,
-    } = apartment
+    } = apartment;
 
-    const { city, street, number, id } = housingStock
+    const { city, street, number, id } = housingStock;
 
     return styled(grid)(
-        <>
-            <Index path={`/objects/${id}/apartments`} />
-            <Header
-                apartmentNumber={apartmentNumber}
-                city={city}
-                street={street}
-                number={number}
-            />
+      <>
+          <Index path={`/objects/${id}/apartments`} />
+          <Header
+            apartmentNumber={apartmentNumber}
+            city={city}
+            street={street}
+            number={number}
+          />
 
-            <Tabs />
+          <Tabs />
 
-            <Route path="/*/(\\d+)" exact>
-                <Wrapper>
-                    <div>
-                        <Comments />
-                        <Tags />
-                        <Information
-                            style={{ paddingTop: '32px' }}
-                            square={square || 'Данные обновляются'}
-                            numberOfLiving={
-                                numberOfLiving || 'Данные обновляются'
-                            }
-                            normativeNumberOfLiving={
-                                normativeNumberOfLiving || 'Данные обновляются'
-                            }
-                        />
-                        <Owners homeowners={homeowners} />
-                    </div>
+          <Route path="/*/(\\d+)" exact>
+              <Wrapper>
+                  <div>
+                      <Comments />
+                      <Tags />
+                      <Information
+                        style={{ paddingTop: '32px' }}
+                        square={square || 'Данные обновляются'}
+                        numberOfLiving={
+                            numberOfLiving || 'Данные обновляются'
+                        }
+                        normativeNumberOfLiving={
+                            normativeNumberOfLiving || 'Данные обновляются'
+                        }
+                      />
+                      <Owners homeowners={homeowners} />
+                  </div>
 
-                    <div>
-                        <Tasks tasksList={tasksList} />
-                    </div>
-                </Wrapper>
-            </Route>
+                  <div>
+                      <Tasks tasksList={tasksList} />
+                  </div>
+              </Wrapper>
+          </Route>
 
-            <Route path="/*/(\\d+)/testimony" exact>
-                <ApartmentDevices devices={devices} />
-            </Route>
-        </>
+          <Route path="/*/(\\d+)/testimony" exact>
+              <ApartmentDevices devices={devices} />
+          </Route>
+      </>
     )
 }
 

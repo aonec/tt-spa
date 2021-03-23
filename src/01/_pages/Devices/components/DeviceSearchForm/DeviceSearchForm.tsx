@@ -1,58 +1,44 @@
-import styles from './DeviceSearchForm.module.scss'
-import './DeviceSearchForm.module.scss'
-import React, { useRef, useState } from 'react'
+import styles from './DeviceSearchForm.module.scss';
+import './DeviceSearchForm.module.scss';
+import React, {Dispatch} from 'react';
 import {
-    getDevicesBySerialNumber,
     setCurrentPage,
-} from '../../../../Redux/reducers/reducerDevicesPage'
-import { useDispatch } from 'react-redux'
-import { Form, Input, Button, Checkbox, Tooltip, Select } from 'antd'
-import { UserOutlined, LockOutlined, SearchOutlined } from '@ant-design/icons'
-import { Icon } from '../../../../_components/Icon'
-import { EditButtonWrap } from '../../../DeviceProfile/components/EditButton'
+} from '../../../../Redux/reducers/reducerDevicesPage';
+import { useDispatch } from 'react-redux';
+import { Form, Input, Button, Tooltip, Select } from 'antd';
+import { Icon } from '../../../../_components/Icon';
 import {
     setSearchTerm,
     setExpirationDate,
     setLowerDiameterRange,
     setUpperDiameterRange,
-    setDevicesFilter,
-} from '../../devicesSearchReducer'
+    setDevicesFilter, DeviceSearchReducerStateType, FilterParameterType, DeviceSearchActionTypes,
+} from '../../devicesSearchReducer';
 
-const { Option } = Select
+const { Option } = Select;
 
-const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
+interface DeviceSearchFormPropsInterface {
+    searchState: Partial<DeviceSearchReducerStateType>
+    dispatchSearchState: Dispatch<DeviceSearchActionTypes>
+}
+
+const DeviceSearchForm = ({ searchState, dispatchSearchState }: DeviceSearchFormPropsInterface) => {
     const dispatch = useDispatch()
 
-    const onValuesChangeHandler = (e) => {
-        // let previousValue = e.target.defaultValue;
-        let targetValue = e.target.value
-        // if (previousValue.length < 4 && targetValue.length < 4) {
-        //     return
-        // } else if (targetValue.length >= 4) {
-        //     dispatchSearchState(setSearchTerm(targetValue));
-        // } else {
-        //     dispatchSearchState(setSearchTerm(''));
-        // }
+    const onValuesChangeHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
+        const targetValue = e.target.value
         dispatchSearchState(setSearchTerm(targetValue))
         dispatch(setCurrentPage(1))
     }
 
-    const handleOnExpirationChange = (value) => {
+    const handleOnExpirationChange = (value: string) => {
         dispatchSearchState(setExpirationDate(value))
         dispatch(setCurrentPage(1))
     }
 
-    const handleOnSortChange = (value) => {
+    const handleOnSortChange = (value: FilterParameterType) => {
         dispatchSearchState(setDevicesFilter(value))
         dispatch(setCurrentPage(1))
-    }
-
-    const onMinChange = (e) => {
-        dispatchSearchState(setLowerDiameterRange(e.target.value))
-    }
-
-    const onMaxChange = (e) => {
-        dispatchSearchState(setUpperDiameterRange(e.target.value))
     }
 
     return (
@@ -73,8 +59,6 @@ const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
                 <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
                     <Tooltip title="Расширенный поиск">
                         <Button
-                            type="secondary"
-                            shape="square"
                             icon={<Icon icon="filter" />}
                             disabled
                         />
@@ -140,9 +124,7 @@ const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
                         <Select
                             id="expirationDate"
                             style={{ width: '55%', marginRight: 16 }}
-                            onSelect={(value, event) =>
-                                handleOnExpirationChange(value, event)
-                            }
+                            onSelect={handleOnExpirationChange}
                         >
                             <Option value={0}>Ближайший месяц</Option>
                             <Option value={1}>В следующие два месяца</Option>
@@ -163,14 +145,6 @@ const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
                             <Select
                                 showSearch
                                 placeholder="Select a person"
-                                // optionFilterProp="children"
-                                onChange={onMinChange}
-                                // onFocus={onFocus}
-                                // onBlur={onBlur}
-                                // onSearch={onSearch}
-                                // filterOption={(input, option) =>
-                                //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
-
                                 id="minValue"
                                 defaultValue="0"
                                 style={{ width: '50%', marginRight: 8 }}
@@ -183,13 +157,6 @@ const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
                                 showSearch
                                 placeholder="Select a person"
                                 optionFilterProp="children"
-                                onChange={onMaxChange}
-                                // onFocus={onFocus}
-                                // onBlur={onBlur}
-                                // onSearch={onSearch}
-                                // filterOption={(input, option) =>
-                                //     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
-
                                 id="maxValue"
                                 defaultValue="255"
                                 style={{ width: '50%' }}
@@ -200,12 +167,6 @@ const DeviceSearchForm = ({ searchState, dispatchSearchState }) => {
                         </div>
                     </div>
                 </Form.Item>
-
-                {/*<Form.Item style={{width: '20%'}}>*/}
-                {/*    <Button type="primary" htmlType="submit" style={{width: '100%'}}>*/}
-                {/*        Поиск*/}
-                {/*    </Button>*/}
-                {/*</Form.Item>*/}
             </div>
         </Form>
     )

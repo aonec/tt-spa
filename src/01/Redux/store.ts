@@ -1,9 +1,10 @@
 import createSagaMiddleware from 'redux-saga'
 import { applyMiddleware, compose, createStore } from 'redux'
-import rootReducer from './rootReducer'
+import rootReducer, {DevicePageType} from './rootReducer'
 import thunkMiddleWare from 'redux-thunk'
 import rootSaga from './saga'
 import { ReadingsStateType } from '../_api/houses_readings_page'
+import {CalculatorListResponsePagedList} from "../../myApi";
 
 declare global {
     interface Window {
@@ -23,6 +24,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export interface RootState {
     readings: ReadingsStateType
+    devicePage: DevicePageType
 }
 
 export const store = createStore(
@@ -31,5 +33,7 @@ export const store = createStore(
         applyMiddleware(loggerMiddleware, thunkMiddleWare, sagaMiddleware)
     )
 )
+
+export type AppDispatch = typeof store.dispatch
 
 sagaMiddleware.run(rootSaga)

@@ -4,7 +4,7 @@ import GraphFilterForm from './components/GraphFilterForm'
 import moment from 'moment'
 import {
     QueryInterface,
-    requestNodeReadings,
+    requestNodeReadings, RequestNodeReadingsFunctionInterface,
 } from '../../_api/node_readings_page'
 import { useAsync } from '../../hooks/useAsync'
 import { Alert } from 'antd'
@@ -33,7 +33,7 @@ export type GraphParamsType =
     | 'energy'
 
 const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
-    const { data, status, run } = useAsync()
+    const { data, status, run } = useAsync<RequestNodeReadingsFunctionInterface>()
 
     console.log(moment().utcOffset())
 
@@ -95,7 +95,7 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
                 </>
             )}
 
-            {status === 'resolved' && (
+            {status === 'resolved' && data && (
                 <GraphParent>
                     <GraphView graphParam={graphParam} dataObject={data} />
                 </GraphParent>

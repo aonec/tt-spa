@@ -5,9 +5,16 @@ import { Icon } from '../../../../tt-components/Icon';
 import { IconWithTooltip } from '../../../../components/NotConnectedIcon/IconWithTooltip';
 import { Dates } from './Dates';
 import Node from './Node/Node';
+import {CalculatorListResponse} from "../../../../../myApi";
 
-const DeviceBlock = (props) => {
-  const { device: calculator } = props;
+
+interface DeviceBlockPropsInterface {
+  device: Omit<CalculatorListResponse, "address">
+}
+
+const DeviceBlock = ({device: calculator}: DeviceBlockPropsInterface) => {
+  debugger;
+  // const { device: calculator } = props;
 
   const { isConnected } = calculator;
   const isConnectionError = !(calculator.connection?.port && calculator.connection?.ipV4);
@@ -57,7 +64,7 @@ const DeviceBlock = (props) => {
         />
       </DeviceWrapper>
       <div>
-        {calculator.nodes.map((node) => (
+        {calculator.nodes?.map((node) => (
           <Node node={node} />
         ))}
       </div>

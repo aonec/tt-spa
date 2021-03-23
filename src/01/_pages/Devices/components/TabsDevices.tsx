@@ -17,23 +17,27 @@ import DevicesByAddress from './DevicesByAddress/DevicesByAddress'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects'
 import styled from 'styled-components'
+import {CalculatorListResponsePagedList} from "../../../../myApi";
 
 const { TabPane } = Tabs
 
 const initialState = {
     expirationDate: '',
-    lowerDiameterRange: null,
-    upperDiameterRange: null,
+    lowerDiameterRange: '',
+    upperDiameterRange: '',
     searchTerm: '',
 }
 
-const TabsDevices = ({ devicePage }: any) => {
+interface TabsDevicesInterface {
+    devicePage: CalculatorListResponsePagedList & { isLoading: boolean; currentPage: number}
+}
+
+const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
     const dispatch = useDispatch()
     const { pageSize } = devicePage
     const { currentPage } = devicePage
     const { totalPages } = devicePage
     const [isLoading, setIsLoading] = useState(true)
-    const [deviceElems, setDeviceElems] = useState<JSX.Element[]>()
 
     const [searchState, dispatchSearchState] = useReducer(
         devicesSearchReducer,
