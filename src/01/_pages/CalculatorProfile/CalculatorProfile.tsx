@@ -73,7 +73,7 @@ export const CalculatorProfile = () => {
             })
     }, [])
 
-    if (isLoading) return <Loader show size={32}/>
+    if (!device && !tasks) return <Loader show size={32}/>
 
 
     const context = {
