@@ -13,6 +13,15 @@ export const DEFAULT_DEVICE = {
     commercialAccountingDate: '',
     futureCheckingDate: '',
     lastCheckingDate: '',
+    futureCommercialAccountingDate: '',
+    lastCommercialAccountingDate: '',
+    isConnected: false,
+    connection: {
+        ipV4: '',
+        port: null,
+        deviceAddress: null,
+    }
+
 }
 
 export const DEFAULT_ICON = {

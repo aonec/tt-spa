@@ -99,10 +99,10 @@ export const CalculatorProfile = () => {
             <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>
-                    <Information/>
+                    <Information device={device}/>
                 </Route>
                 <Route path={`${path}connection`} exact>
-                    <Connection/>
+                    <Connection device={device}/>
                 </Route>
                 <Route path={`${path}related`} exact>
                     <RelatedDevices/>

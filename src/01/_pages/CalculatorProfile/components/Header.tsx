@@ -8,7 +8,7 @@ import {IconTT, MenuButtonTT} from '../../../tt-components';
 import useAccessesList from "../../../_api/utils/useAccessesList";
 import {CalculatorResponse} from "../../../../myApi";
 
-interface HeaderInteface {
+interface HeaderInterface {
     device: CalculatorResponse | undefined
     setReport: Dispatch<SetStateAction<boolean>>
     setDeregister: Dispatch<SetStateAction<boolean>>
@@ -17,7 +17,7 @@ interface HeaderInteface {
 export const Header = ({
                            device, setReport,
                            setDeregister
-                       }: HeaderInteface) => {
+                       }: HeaderInterface) => {
     const {push} = useHistory();
     const access = useAccessesList();
     const {show} = access

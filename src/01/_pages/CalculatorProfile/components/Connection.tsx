@@ -5,22 +5,24 @@ import { ListWrap, ListItem, Title } from '../../../_components/List'
 import { DeviceContext } from '../CalculatorProfile'
 import styles from '../calculator.module.css'
 import { IconWithTooltip } from '../../../components/NotConnectedIcon/IconWithTooltip'
+import {CalculatorResponse} from "../../../../myApi";
+import {DEFAULT_DEVICE} from "./Templates";
 
-export const Connection = () => {
-    const { device, loadings } = useContext(DeviceContext)
-    const { connection, isConnected } = device
-    const { ipV4, port, deviceAddress } = connection || {
-        ipV4: '',
-        port: null,
-        deviceAddress: null,
-    }
-    const loading = _.get(loadings, 'device', true)
+interface ConnectionInterface {
+    device: CalculatorResponse | undefined
+}
+
+export const Connection = ({device} : ConnectionInterface) => {
+
+    const { connection, isConnected } = device || DEFAULT_DEVICE;
+    const { ipV4, port, deviceAddress } = connection;
+
 
     const NoConnection = () => {
         console.log('NoConnection')
         return (
             <div className={styles.warning}>
-                <IconWithTooltip is={'calculator'} />
+                <IconWithTooltip title={'Вычислитель не опрашивается'}/>
                 <span>Вычислитель не опрашивается</span>
             </div>
         )
@@ -29,8 +31,7 @@ export const Connection = () => {
     return (
         <div>
             {!isConnected ? <NoConnection /> : null}
-            <ListWrap style={{ opacity: !isConnected ? '0.5' : null }}>
-                <Loader show={loading} size="32">
+            <ListWrap style={{ opacity: !isConnected ? '0.5' : '0' }}>
                     <Title>Настройки</Title>
                     <ListItem>
                         <span>IP адрес вычислителя</span>
@@ -44,7 +45,6 @@ export const Connection = () => {
                         <span>Адрес прибора</span>
                         <span>{deviceAddress}</span>
                     </ListItem>
-                </Loader>
             </ListWrap>
         </div>
     )
