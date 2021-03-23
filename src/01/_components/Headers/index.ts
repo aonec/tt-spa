@@ -16,7 +16,7 @@ export const Title = styled.h2`
     line-height: 48px;
 `
 
-export const Subtitle = styled(Link)<{fontWeight: number}>`
+export const Subtitle = styled(Link)<{fontWeight?: number}>`
     color: #272f5a;
     font-weight: ${(props) => props.fontWeight};
     padding: 0;

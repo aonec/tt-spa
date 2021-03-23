@@ -3,7 +3,7 @@ import {
     HeaderWrap, Title, Subtitle,
 } from '01/_components';
 import {useHistory} from 'react-router-dom';
-import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
+import {DEFAULT_BUILDING, DEFAULT_DEVICE} from './Templates';
 import getAccessesList from "../../../_api/utils/getAccessesList";
 import {IconTT, MenuButtonTT} from '../../../tt-components';
 import {CalculatorResponse} from "../../../../myApi";
