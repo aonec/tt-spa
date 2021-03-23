@@ -8,8 +8,8 @@ import {DeviceContext} from '../CalculatorProfile';
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
 import {MenuButtonTT} from '../../../tt-components';
 import isWatcher from "../../../_api/utils/isWatcher";
-import userAccessesList from "../../../_api/utils/useAccessesList";
-import useAccessesList from "../../../_api/utils/useAccessesList";
+import userAccessesList from "../../../_api/utils/getAccessesList";
+import getAccessesList from "../../../_api/utils/getAccessesList";
 
 export const Header = () => {
     const {push} = useHistory();
@@ -29,7 +29,7 @@ export const Header = () => {
     const {model, serialNumber, resource} = device || DEFAULT_DEVICE;
     const {icon, color} = DeviceIcons[resource] || DEFAULT_ICON;
 
-    const access = useAccessesList();
+    const access = getAccessesList();
     const {show} = access
 
     const menuButtonArr = [

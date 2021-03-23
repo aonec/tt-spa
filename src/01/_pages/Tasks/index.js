@@ -9,7 +9,7 @@ import {TasksList} from './components/TasksList'
 import TasksSearchForm from './components/TasksSearchForm/TasksSearchForm'
 import tasksSearchReducer from './components/TasksSearchForm/tasksSearchReducer'
 import {useDebounce} from '../../hooks/useDebounce'
-import useAccessesList from "../../_api/utils/useAccessesList";
+import getAccessesList from "../../_api/utils/getAccessesList";
 
 const tabItems = [
     ['К исполнению', 'executing'],
@@ -25,7 +25,7 @@ const tabItemsWatcher = [
 
 
 export const Tasks = () => {
-    const access = useAccessesList();
+    const access = getAccessesList();
     const {show} = access;
     const Tabs = React.memo(({total = [],}) => {
             return (

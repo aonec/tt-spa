@@ -5,6 +5,8 @@ import { ListWrap, ListItem, Title } from '../../../_components/List'
 import { DeviceContext } from '../CalculatorProfile'
 import styles from '../calculator.module.css'
 import { IconWithTooltip } from '../../../components/NotConnectedIcon/IconWithTooltip'
+import Icon from "../../../tt-components/Icon";
+
 
 export const Connection = () => {
     const { device, loadings } = useContext(DeviceContext)
@@ -20,7 +22,14 @@ export const Connection = () => {
         console.log('NoConnection')
         return (
             <div className={styles.warning}>
-                <IconWithTooltip is={'calculator'} />
+                <IconWithTooltip
+                  title="Узел учета без оборудования связи"
+                >
+                    <Icon
+                      icon="notConnected"
+                      color="var(--main-100)"
+                    />
+                </IconWithTooltip>
                 <span>Вычислитель не опрашивается</span>
             </div>
         )
