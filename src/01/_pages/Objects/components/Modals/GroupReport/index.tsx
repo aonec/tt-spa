@@ -54,6 +54,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             const {houseManagementId, title, id} = group
             return {value: id === null ? houseManagementId : id , label: title}
         })
+        console.log(groupReportsOptions);
 
         const nodeResourceTypesOptions = nodeResourceTypes.map((nodeResourceType: any) => {
             const {Key, Value} = nodeResourceType
@@ -64,7 +65,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             const {Key, Value} = nodeStatus
             return {value: Key, label: Value}
         })
-        
+
         console.log("groupReportsOptions", groupReportsOptions)
 
         async function getArchive(link = '') {
