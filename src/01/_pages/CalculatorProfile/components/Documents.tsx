@@ -1,5 +1,5 @@
 import React from 'react'
-import { Title, Header } from '../../../tt-components'
+import { Title } from '../../../tt-components'
 
 const Documents = () => (
     <>
