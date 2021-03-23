@@ -4,31 +4,8 @@ interface ModalInterface {
     visible: boolean
 }
 
-const CalculatorExistAlert = (props: ModalInterface) => {
-    const {visible} = props
-    console.log('CalculatorExistAlert')
-    return null
 
-}
 
-//   <StyledModal width="800" visible={visible}>
-//     <StyledModalBody>
-//         <Header>
-//             В системе уже есть устройство с совпадающими настройками
-//             соединения
-//         </Header>
-//         <p>
-//             Пожалуйста, измените настройки соединения для данного
-//             устройства
-//         </p>
-//     </StyledModalBody>
-//     <StyledFooter>
-//         <ButtonTT color={'white'}>Отмена</ButtonTT>
-//         <ButtonTT color={'red'} big>
-//             Изменить настройки соединения
-//         </ButtonTT>
-//     </StyledFooter>
-// </StyledModal>
 
 
 
@@ -46,7 +23,6 @@ export async function getCalculator(id = '') {
 }
 
 export async function putCalculator(deviceId = '', form = {}) {
-    alert('Cейчас будем отправлять данные!')
     try {
         const res = await axios.put(`Calculators/${deviceId}`, form)
         // console.log("putCalculator", form)
@@ -69,3 +45,23 @@ export async function putCalculator(deviceId = '', form = {}) {
         }
     }
 }
+
+//   <StyledModal width="800" visible={visible}>
+//     <StyledModalBody>
+//         <Header>
+//             В системе уже есть устройство с совпадающими настройками
+//             соединения
+//         </Header>
+//         <p>
+//             Пожалуйста, измените настройки соединения для данного
+//             устройства
+//         </p>
+//     </StyledModalBody>
+//     <StyledFooter>
+//         <ButtonTT color={'white'}>Отмена</ButtonTT>
+//         <ButtonTT color={'red'} big>
+//             Изменить настройки соединения
+//         </ButtonTT>
+//     </StyledFooter>
+// </StyledModal>
+
