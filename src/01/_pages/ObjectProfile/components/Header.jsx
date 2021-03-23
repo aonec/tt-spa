@@ -6,7 +6,7 @@ import ModalCalculator from './Modals/AddCalculator'
 import ModalAddDevice from './Modals/AddDevice'
 import ModalCommonReport from "./Modals/CommonReport";
 import {MenuButtonTT} from "../../../tt-components";
-import isWatcher from "../../../_api/utils/isWatcher";
+import {useHistory} from "react-router-dom";
 
 const styles = css`
   h {
@@ -32,9 +32,20 @@ export const Header = React.memo(({
                                       1: subtitle,
                                       corpus,
                                       setCommonReport,
-                                      commonReport
+                                      commonReport,
+                                      object
                                   }) => {
+    const {push} = useHistory();
+
         const menuButtonArr = [
+            {
+                title: 'Добавить узел',
+                cb: () => {
+                    push(`/objects/${object.id}/add_node`)
+                },
+                show: true,
+                color: 'default',
+            },
             {
                 title: 'Выгрузка сводного отчёта',
                 cb: () => {

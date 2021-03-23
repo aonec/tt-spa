@@ -1,7 +1,8 @@
 import React, {Dispatch, SetStateAction} from 'react'
 
 
-type StatusType = 'idle' | 'pending' | 'resolved' | 'rejected'
+
+type StatusType = 'idle' | 'pending' | 'resolved' | 'error'
 
 interface StateInterface {
     status: StatusType
@@ -69,7 +70,7 @@ export function useAsync<T = any>(initialState = defaultInitialState): UseAsyncI
                     return data
                 },
                 (error: any) => {
-                    safeSetState({ status: 'rejected', error })
+                    safeSetState({ status: 'error', error })
                     return error
                 }
             )
@@ -92,7 +93,7 @@ export function useAsync<T = any>(initialState = defaultInitialState): UseAsyncI
         // using the same names that react-query uses for convenience
         isIdle: status === 'idle',
         isLoading: status === 'pending',
-        isError: status === 'rejected',
+        isError: status === 'error',
         isSuccess: status === 'resolved',
 
         setData,
