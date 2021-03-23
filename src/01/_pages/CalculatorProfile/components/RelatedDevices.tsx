@@ -1,25 +1,29 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import {Loader} from '01/components'
 import {Icon} from '01/_components/Icon'
-import DeviceIcons from '01/_components/DeviceIcons'
-import _ from 'lodash'
-import {DeviceContext} from '../CalculatorProfile'
 import {IconTT} from "../../../tt-components";
+import {CalculatorResponse} from "../../../../myApi";
 
-export const RelatedDevices = () => {
-    const {device, loadings} = useContext(DeviceContext)
-    const loading = _.get(loadings, 'related', true)
-    const {hubs: related} = device
-    const result = related.map((value) => {
+interface RelatedDevicesInterface {
+    device: CalculatorResponse | undefined
+}
+
+export const RelatedDevices = ({device}: RelatedDevicesInterface) => {
+    if (!device) {
+        return null
+    }
+    const {hubs} = device
+    if (!hubs) {
+        return null
+    }
+    const result = hubs.map((value) => {
         const {
             model,
             serialNumber,
-            closingdate,
+            closingDate,
             hub,
             resource,
             id,
-            housingStockId,
         } = value
 
         const {pipeNumber, entryNumber, hubNumber} =
@@ -32,14 +36,14 @@ export const RelatedDevices = () => {
         return (
             <ListItem key={id}>
                 <NameWrap href={`/housingMeteringDevices/${id}`}>
-                    <IconTT icon={resource.toLowerCase()} />
+                    <IconTT icon={(resource || 'device').toLowerCase()} />
                     <Name>{model}</Name>
                     <Serial>{` (${serialNumber})`}</Serial>
                 </NameWrap>
 
                 <State>
                     <Icon icon="status" color="#17B45A"/>
-                    {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+                    {`${closingDate !== null ? 'Активен' : 'Не активен'}`}
                 </State>
                 <Span>{`Ввод: ${entryNumber}`}</Span>
                 <Span>{`Узел: ${hubNumber}`}</Span>
@@ -50,20 +54,17 @@ export const RelatedDevices = () => {
 
     return (
         <ListWrap>
-            {/* <button onClick={buttonHandler}>related</button> */}
-            <Loader show={loading} size="32">
                 <Title>Приборы</Title>
                 {result}
-            </Loader>
         </ListWrap>
     )
 }
 
 export default RelatedDevices
 
-export const Template = styled.div``
+const Template = styled.div``
 
-export const NameWrap = styled.a`
+const NameWrap = styled.a`
   display: grid;
   grid-template-columns: 1fr 7fr 4fr;
   align-items: center;

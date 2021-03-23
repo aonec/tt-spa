@@ -20,9 +20,18 @@ export const DEFAULT_DEVICE = {
         ipV4: '',
         port: null,
         deviceAddress: null,
-    }
-
+    },
+    nodes: []
 }
+
+export const DEFAULT_CONNECTION = {
+    ipV4: '',
+    port: null,
+    deviceAddress: null,
+}
+
+
+export const DEFAULT_NODES = [];
 
 export const DEFAULT_ICON = {
     icon: 'device',
@@ -30,6 +39,6 @@ export const DEFAULT_ICON = {
 }
 
 export const typelList = [
-    { label: 'Холодная вода', value: 'coldwatersupply' },
-    { label: 'Горячая вода', value: 'heat' },
+    {label: 'Холодная вода', value: 'coldwatersupply'},
+    {label: 'Горячая вода', value: 'heat'},
 ]

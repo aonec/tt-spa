@@ -14,14 +14,10 @@ import DeregisterDevice from './components/Modals/ModalDeregister'
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 import CheckDevice from './components/Modals/ModalCheck'
 import Nodes from './components/Nodes'
-import {CalculatorResponse} from "../../../myApi";
+import {CalculatorResponse, TaskListResponse} from "../../../myApi";
 
 interface TypeDeviceContext {
     device: CalculatorResponse
-    tasks: Array<object>
-    loadings: any
-    errors: any
-    error: any
     deregister: boolean
     setDeregister: Dispatch<SetStateAction<boolean>>
     report: boolean
@@ -38,7 +34,7 @@ export const CalculatorProfile = () => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [device, setDevice] = useState<CalculatorResponse>()
-    const [tasks, setTasks] = useState()
+    const [tasks, setTasks] = useState<any>()
     const [deregister, setDeregister] = useState(false)
     const [report, setReport] = useState(false)
     const [check, setCheck] = useState(false)
@@ -82,7 +78,6 @@ export const CalculatorProfile = () => {
 
     const context = {
         device,
-        tasks,
         loadings,
         errors,
         error,
@@ -105,16 +100,15 @@ export const CalculatorProfile = () => {
                     <Connection device={device}/>
                 </Route>
                 <Route path={`${path}related`} exact>
-                    <RelatedDevices/>
+                    <RelatedDevices device={device}/>
                 </Route>
                 <Route path={`${path}nodes`} exact>
-                    <Nodes/>
+                    <Nodes device={device}/>
                 </Route>
                 <Route path={`${path}documents`} exact>
                     <Documents/>
                 </Route>
-
-                <Events title="Задачи с объектом"/>
+                <Events title="Задачи с объектом" tasks={tasks}/>
             </Grid>
             <DeregisterDevice/>
             <ModalCalculatorReport/>
