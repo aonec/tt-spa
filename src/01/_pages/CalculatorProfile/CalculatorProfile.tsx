@@ -14,33 +14,14 @@ import DeregisterDevice from './components/Modals/ModalDeregister'
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport'
 import CheckDevice from './components/Modals/ModalCheck'
 import Nodes from './components/Nodes'
-
-interface DeviceInterface {
-    address: object
-    connection: object
-    futureCheckingDate: string
-    futureCommercialAccountingDate: string
-    hubs: []
-    id: number
-    infoId: null
-    isConnected: boolean
-    lastCheckingDate: string
-    lastCommercialAccountingDate: string
-    model: string
-    nodes: []
-    serialNumber: string
-}
+import {CalculatorResponse} from "../../../myApi";
 
 interface TypeDeviceContext {
-    device: DeviceInterface
-    building: object
+    device: CalculatorResponse
     tasks: Array<object>
-    related: Array<object>
-    nodes: Array<object>
     loadings: any
     errors: any
     error: any
-    hubs: any
     deregister: boolean
     setDeregister: Dispatch<SetStateAction<boolean>>
     report: boolean
@@ -56,26 +37,18 @@ export const CalculatorProfile = () => {
     const path = `/calculators/${deviceId}/`
 
     const [isLoading, setIsLoading] = useState(true)
-    const [device, setDevice] = useState<DeviceInterface | undefined>()
-    const [building, setBuilding] = useState()
+    const [device, setDevice] = useState<CalculatorResponse>()
     const [tasks, setTasks] = useState()
-    const [related, setRelated] = useState()
-    const [hubs, setHubs] = useState()
     const [deregister, setDeregister] = useState(false)
     const [report, setReport] = useState(false)
     const [check, setCheck] = useState(false)
-    const [nodes, setNodes] = useState()
     const [error, setError] = useState()
     const [errors, setErrors] = useState()
 
     const [loadings, setLoadings] = useState({
         device: false,
-        building: false,
         tasks: false,
-        related: false,
-        nodes: false,
     })
-
 
     useEffect(() => {
         setIsLoading(true)
@@ -122,7 +95,7 @@ export const CalculatorProfile = () => {
     }
     return (
         <DeviceContext.Provider value={context}>
-            <Header/>
+            <Header device={device} setReport={setReport} setDeregister={setDeregister}/>
             <Tabs/>
             <Grid>
                 <Route path={`${path}`} exact>

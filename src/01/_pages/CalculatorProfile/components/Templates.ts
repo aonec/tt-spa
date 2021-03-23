@@ -1,16 +1,18 @@
 export const DEFAULT_BUILDING = {
-    city: null,
-    street: null,
-    housingStockNumber: null,
+    city: '',
+    street: '',
+    housingStockNumber: '',
+    corpus: '',
+    id: null
 }
 
 export const DEFAULT_DEVICE = {
-    model: null,
-    serialNumber: null,
-    resource: null,
-    commercialAccountingDate: null,
-    futureCheckingDate: null,
-    lastCheckingDate: null,
+    model: '',
+    serialNumber: '',
+    resource: '',
+    commercialAccountingDate: '',
+    futureCheckingDate: '',
+    lastCheckingDate: '',
 }
 
 export const DEFAULT_ICON = {

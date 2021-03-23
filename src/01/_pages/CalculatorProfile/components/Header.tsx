@@ -1,33 +1,35 @@
-import React, {useContext, useState} from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {
-    Icon, Loader, HeaderWrap, Title, Subtitle,
+    HeaderWrap, Title, Subtitle,
 } from '01/_components';
-import DeviceIcons from '01/_components/DeviceIcons';
 import {useHistory} from 'react-router-dom';
-import {DeviceContext} from '../CalculatorProfile';
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
-import {MenuButtonTT} from '../../../tt-components';
+import {IconTT, MenuButtonTT} from '../../../tt-components';
 import useAccessesList from "../../../_api/utils/useAccessesList";
+import {CalculatorResponse} from "../../../../myApi";
 
-export const Header = () => {
+interface HeaderInteface {
+    device: CalculatorResponse | undefined
+    setReport: Dispatch<SetStateAction<boolean>>
+    setDeregister: Dispatch<SetStateAction<boolean>>
+}
+
+export const Header = ({
+                           device, setReport,
+                           setDeregister
+                       }: HeaderInteface) => {
     const {push} = useHistory();
     const access = useAccessesList();
     const {show} = access
 
-    const {
-        device,
-        setReport,
-        setDeregister,
-    } = useContext(DeviceContext);
-    // console.log(device)
-    const {address} = device;
+    const {address} = device || {address: DEFAULT_BUILDING};
     const {
         city, street, housingStockNumber, corpus, id,
     } = address || DEFAULT_BUILDING;
-    const {model, serialNumber, resource} = device || DEFAULT_DEVICE;
-    const {icon, color} = DeviceIcons[resource] || DEFAULT_ICON;
 
-    const menuButtonArr = [
+    const {model, serialNumber} = device || DEFAULT_DEVICE;
+
+    const menuButtonArr = device ? [
         {
             title: 'Редактировать вычислитель',
             cb: () => push(`/calculators/${device.id}/edit`),
@@ -58,7 +60,7 @@ export const Header = () => {
             show: show('MeteringDevicesClose'),
             color: 'red',
         },
-    ];
+    ] : null
 
     return (
         <HeaderWrap
@@ -69,10 +71,9 @@ export const Header = () => {
         >
             <div>
                 <Title>
-                    <Icon
-                        icon={icon}
-                        color={color}
-                        size="24"
+                    <IconTT
+                        icon={'device'}
+                        size={24}
                         style={{marginRight: '8px'}}
                     />
                     {`${model} (${serialNumber})`}
