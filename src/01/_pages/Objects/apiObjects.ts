@@ -14,3 +14,18 @@ export async function getReports() {
         }
     }
 }
+
+export async function getArchive(link = '') {
+    try {
+        const res = await axios.get<string, object>(link, {
+            responseType: 'blob',
+        })
+        return res
+    } catch (error) {
+        console.log(error)
+        throw {
+            resource: 'groupReports',
+            message: 'Произошла ошибка при загрузке групповых отчетов',
+        }
+    }
+}

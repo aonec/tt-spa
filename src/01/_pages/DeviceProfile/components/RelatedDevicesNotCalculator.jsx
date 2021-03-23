@@ -161,7 +161,7 @@ export default RelatedDevicesNotCalculator
 // }
 // `;
 
-// export const ListItem = styled.div`
+// export const StyledListItem = styled.div`
 //   display: grid;
 //   grid-template-columns: 4fr 2fr 2fr 2fr 2fr;
 //   grid-template-rows: 48px;
@@ -204,7 +204,7 @@ export default RelatedDevicesNotCalculator
 //     // номер ввода - это pipe.entryNumber
 
 //     return (
-//       <ListItem>
+//       <StyledListItem>
 //         <NameWrap href={`/objects/${housingStockId}/devices/${id}`}>
 //           <Icon icon={icon} color={color} />
 //           <Name>{model}</Name>
@@ -218,7 +218,7 @@ export default RelatedDevicesNotCalculator
 //         <Span>{`Ввод: ${entryNumber}`}</Span>
 //         <Span>{`Узел: ${'-'}`}</Span>
 //         <Span>{`Труба: ${number}`}</Span>
-//       </ListItem>
+//       </StyledListItem>
 //     );
 //   });
 

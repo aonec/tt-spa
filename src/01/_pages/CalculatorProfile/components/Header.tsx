@@ -1,44 +1,42 @@
-import React, {useContext, useState} from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {
-    Icon, Loader, HeaderWrap, Title, Subtitle,
+    HeaderWrap, Title, Subtitle,
 } from '01/_components';
-import DeviceIcons from '01/_components/DeviceIcons';
 import {useHistory} from 'react-router-dom';
-import {DeviceContext} from '../CalculatorProfile';
 import {DEFAULT_BUILDING, DEFAULT_DEVICE, DEFAULT_ICON} from './Templates';
-import {MenuButtonTT} from '../../../tt-components';
-import isWatcher from "../../../_api/utils/isWatcher";
-import userAccessesList from "../../../_api/utils/getAccessesList";
 import getAccessesList from "../../../_api/utils/getAccessesList";
+import {IconTT, MenuButtonTT} from '../../../tt-components';
+import {CalculatorResponse} from "../../../../myApi";
 
-export const Header = () => {
+interface HeaderInterface {
+    device: CalculatorResponse | undefined
+    setReport: Dispatch<SetStateAction<boolean>>
+    setDeregister: Dispatch<SetStateAction<boolean>>
+    setCheck: Dispatch<SetStateAction<boolean>>
+}
+
+export const Header = ({
+                           device, setReport,
+                           setDeregister,setCheck
+                       }: HeaderInterface) => {
     const {push} = useHistory();
 
-    const {
-        device,
-        building,
-        calcModel,
-        setReport,
-        setDeregister,
-    } = useContext(DeviceContext);
 
-
+    const {address} = device || {address: DEFAULT_BUILDING};
     const {
         city, street, housingStockNumber, corpus, id,
-    } = building || DEFAULT_BUILDING;
-    const {model, serialNumber, resource} = device || DEFAULT_DEVICE;
-    const {icon, color} = DeviceIcons[resource] || DEFAULT_ICON;
+    } = address || DEFAULT_BUILDING;
 
     const access = getAccessesList();
     const {show} = access
+    const {model, serialNumber} = device || DEFAULT_DEVICE;
 
-    const menuButtonArr = [
+    const menuButtonArr = device ? [
         {
             title: 'Редактировать вычислитель',
-            cb: () => !isWatcher ? alert('Вы не имеете права редактирования!') : push(`/calculators/${device.id}/edit`),
+            cb: () => push(`/calculators/${device.id}/edit`),
             show: show('CalculatorUpdate'),
             color: 'default',
-            clickable: false
         },
         {
             title: 'Выгрузить отчет о общедомовом потреблении',
@@ -57,6 +55,14 @@ export const Header = () => {
             color: 'default',
         },
         {
+            title: 'Поверить вычислитель',
+            cb: () => {
+                setCheck(true);
+            },
+            show: show('CalculatorUpdate'),
+            color: 'red',
+        },
+        {
             title: 'Закрыть вычислитель',
             cb: () => {
                 setDeregister(true);
@@ -64,7 +70,7 @@ export const Header = () => {
             show: show('MeteringDevicesClose'),
             color: 'red',
         },
-    ];
+    ] : null
 
     return (
         <HeaderWrap
@@ -75,15 +81,13 @@ export const Header = () => {
         >
             <div>
                 <Title>
-                    <Icon
-                        icon={icon}
-                        color={color}
-                        size="24"
+                    <IconTT
+                        icon={'device'}
+                        size={24}
                         style={{marginRight: '8px'}}
                     />
-                    {`${model || 'Вычислитель'} (${serialNumber})`}
+                    {`${model} (${serialNumber})`}
                 </Title>
-                {/* <ButtonTT onClick={buttonHandler}>TEST</ButtonTT> */}
                 <Subtitle to={`/objects/${id}`}>
                     {`${city}, ${street}, ${housingStockNumber}${
                         corpus ? `, к.${corpus}` : ''
