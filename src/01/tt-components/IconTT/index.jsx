@@ -1,11 +1,9 @@
 import React from 'react'
-import t from 'prop-types'
-import styled from 'styled-components'
 
 import icons from './icons.json'
 
 export const IconTT = (props) => {
-    const { icon = 'device', size = 16, stroke, hover } = props
+    const { icon = 'device', size = 16, stroke, hover, style } = props
 
     return (
         <svg
@@ -27,14 +25,3 @@ export const IconTT = (props) => {
     )
 }
 export default IconTT
-
-const Path = styled.path`
-    margin: 0 auto;
-`
-
-IconTT.propTypes = {
-    icon: t.oneOf([...Object.keys(icons).sort((a, b) => a.localeCompare(b))])
-        .isRequired,
-    size: t.number,
-    stroke: t.string,
-}

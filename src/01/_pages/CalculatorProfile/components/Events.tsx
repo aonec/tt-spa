@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import _ from 'lodash'
+import React from 'react'
 import { Loader, Icon } from '01/components'
 import { convertDate } from '01/_api/utils/convertDate'
 import { Button } from '01/_components/Button'
-import { DeviceContext } from '../CalculatorProfile'
 import {
     StageName,
     Task,
@@ -13,14 +10,18 @@ import {
     TasksTitle,
     TasksWrap,
 } from '../../../tt-components'
+import {TaskListResponse} from "../../../../myApi";
 
-const buttonHandler = () => {
-    console.log('buttonHandler')
+interface EventsInterface {
+    title: string
+    tasks: TaskListResponse[]
 }
-export const Events = ({ title = '' }) => {
-    const { tasks, loadings } = useContext(DeviceContext)
-    // const loadingTasks = _.get(loadings, 'device', true);
-    const loading = _.get(loadings, 'device', true)
+
+export const Events = ({ title = '' , tasks} : EventsInterface) => {
+
+    const buttonHandler = () =>{
+        console.log("buttonHandler")
+    }
 
     const Tasks = (tasks || []).map((task, index) => {
         const { currentStage, perpetrator, id } = task
@@ -47,26 +48,22 @@ export const Events = ({ title = '' }) => {
     if (Tasks.length > 0) {
         return (
             <TasksWrap>
-                <Loader show={loading} size="32">
                     <TasksTitle>{title}</TasksTitle>
                     {Tasks}
                     <Button onClick={buttonHandler}>
                         Все задачи с объектом
                     </Button>
-                </Loader>
             </TasksWrap>
         )
     }
 
     return (
         <TasksWrap>
-            <Loader show={loading} size="32">
                 <TasksTitle>{title}</TasksTitle>
                 <Task>
                     <StageName>Нет задач</StageName>
                     <TaskName>задачи Вычислителя завершены</TaskName>
                 </Task>
-            </Loader>
         </TasksWrap>
     )
 }

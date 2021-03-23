@@ -1,21 +1,19 @@
-import React, { useContext } from 'react'
-import { convertDateDots } from '01/_api/utils/convertDate'
-import { Loader } from '01/components'
+import React, {Dispatch, SetStateAction, useContext} from 'react'
 import { ListWrap, ListItem, Title } from '01/_components/List'
-import _ from 'lodash'
-import { DeviceContext } from '../CalculatorProfile'
 import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates'
 import { Subtitle } from '../../../_components/Headers'
+import moment from 'moment'
+import {CalculatorResponse} from "../../../../myApi";
 
-export const Information = () => {
-    const { device, building, loadings, error } = useContext(DeviceContext)
+interface InformationInterface {
+    device: CalculatorResponse | undefined
+}
 
-    const loadingDevice = _.get(loadings, 'device', true)
-    const loadingBuilding = _.get(loadings, 'building', true)
-    const loading = loadingDevice || loadingBuilding
+export const Information = ({device} : InformationInterface) => {
 
+    const {address} = device || {address: DEFAULT_BUILDING};
     const { city, street, housingStockNumber, corpus, id } =
-        building || DEFAULT_BUILDING
+    address || DEFAULT_BUILDING
     const {
         futureCommercialAccountingDate,
         lastCommercialAccountingDate,
@@ -23,20 +21,9 @@ export const Information = () => {
         lastCheckingDate,
     } = device || DEFAULT_DEVICE
 
-    const errorOfComponent = _.get(error, 'resource', null)
-
-    if (errorOfComponent) {
-        return (
-            <ListWrap>
-                <Title>{error.message}</Title>
-                {/* <button onClick={buttonHandler}>button</button> */}
-            </ListWrap>
-        )
-    }
 
     return (
         <ListWrap>
-            <Loader show={loading} size="32">
                 <Title>Информация</Title>
                 <ListItem>
                     <span>Адрес</span>
@@ -48,25 +35,26 @@ export const Information = () => {
                 </ListItem>
                 <ListItem>
                     <span>Дата начала действия акта-допуска</span>
-                    <span>{convertDateDots(lastCommercialAccountingDate)}</span>
+                    <span>{moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}</span>
                 </ListItem>
                 <ListItem>
                     <span>Дата окончания действия акта-допуска</span>
-                    <span>
-                        {convertDateDots(futureCommercialAccountingDate)}
-                    </span>
+                    <span>{moment(futureCommercialAccountingDate).format('DD.MM.YYYY')}</span>
                 </ListItem>
                 <ListItem>
                     <span>Дата поверки прибора</span>
-                    <span>{convertDateDots(lastCheckingDate)}</span>
+                    <span>
+                        {moment(lastCheckingDate).format('DD.MM.YYYY')}
+                    </span>
                 </ListItem>
                 <ListItem>
                     <span>Дата следующей поверки прибора</span>
-                    <span>{convertDateDots(futureCheckingDate)}</span>
+                    <span>
+                         {moment(futureCheckingDate).format('DD.MM.YYYY')}</span>
                 </ListItem>
-            </Loader>
         </ListWrap>
     )
 }
 
 export default Information
+

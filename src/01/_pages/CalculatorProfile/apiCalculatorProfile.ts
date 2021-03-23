@@ -1,6 +1,6 @@
 import axios from '../../axios'
 
-export async function getCalculator(id = '') {
+export async function getCalculator(id: number) {
     try {
         const res = await axios.get(`Calculators/${id}`)
         return res
@@ -13,10 +13,11 @@ export async function getCalculator(id = '') {
     }
 }
 
-export async function getCalculatorTasks(id = '') {
+export async function getCalculatorTasks(id: number) {
     try {
         const res = await axios.get(`Tasks?GroupType=2&DeviceId=${id}`)
-        return res
+        const {items} : any = res ;
+        return items
     } catch (error) {
         console.log(error)
         throw {
@@ -38,8 +39,3 @@ export async function getUser() {
         }
     }
 }
-
-//0 - Executing
-//1 - Observing
-//2 - Not Archived
-//3 - Archived

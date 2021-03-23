@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { Modal } from 'antd'
 import ModalCheckForm from './ModalCheckForm'
 import { DeviceContext } from '../../../CalculatorProfile'
 import { StyledModal } from '../../../../../tt-components/Modal'
