@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import useAccessesList from "../../../../_api/utils/useAccessesList";
 import {MenuButtonTT} from "../../../../tt-components";
 import styled from "styled-components";
+import ModalGroupReport from "../../components/Modals/GroupReport";
 
 
 export const Header = () => {
@@ -13,11 +14,15 @@ export const Header = () => {
     const access = useAccessesList();
     const {show} = access
 
+    const [groupReport, setGroupReport] = useState(false);
+
+
+
     const menuButtonArr = [
         {
             title: 'Выгрузка группового отчёта',
             // cb: () => push(`/calculators/edit`),
-            cb: () => alert('Выгрузка группового отчёта'),
+            cb: () => setGroupReport(true),
             show: show('ReportRead'),
             color: 'default',
             clickable: false
@@ -26,6 +31,7 @@ export const Header = () => {
 
     return (
         <ObjectHeader>
+            <ModalGroupReport visible={groupReport} setVisible={setGroupReport} />
             <Title>Объекты</Title>
             <div style={{position: 'relative'}}>
                 <MenuButtonTT menuButtonArr={menuButtonArr}/>
