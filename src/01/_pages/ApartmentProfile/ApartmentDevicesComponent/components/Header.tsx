@@ -1,10 +1,10 @@
 import React, {Dispatch, SetStateAction} from 'react'
 import styled from 'styled-components'
-import s from "../../../MetersPage/components/MeterDevices/MeterDevicesNew.module.scss";
+import styles from "../../../MetersPage/components/MeterDevices/MeterDevicesNew.module.scss";
 import Arrow from "../../../../_components/Arrow/Arrow";
 import moment from "moment";
-import {firstLetterToUpperCase, getMonthFromDate} from "../../../../utils/getMonthFromDate";
-import {ArrowContainer, CenterContainer} from "../../../MetersPage/components/MeterDevices/ApartmentReadings";
+import { firstLetterToUpperCase } from "../../../../utils/getMonthFromDate";
+import { ArrowContainer, CenterContainer } from "../../../MetersPage/components/MeterDevices/ApartmentReadings";
 
 interface HeaderInterface {
     sliderIndex: number
@@ -15,8 +15,6 @@ interface HeaderInterface {
 
 export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, readingsLength }: HeaderInterface) {
 
-
-// ДОБАВИТЬ ДИЗЕЙБЛД И ЗАТИПИЗИРОВАТЬ
     const isRightArrowDisabled =
         sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1
 
@@ -51,8 +49,8 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
                     onClick={onClickDecrease}
                     className={
                         isLeftArrowDisabled
-                            ? s.arrowDisabled
-                            : s.arrowEnabled
+                            ? styles.arrowDisabled
+                            : styles.arrowEnabled
                     }
                 >
                     <Arrow isDisabled={isLeftArrowDisabled} />
@@ -63,8 +61,8 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
                 <ArrowContainer
                     className={
                         isRightArrowDisabled
-                            ? s.arrowDisabled
-                            : s.arrowEnabled
+                            ? styles.arrowDisabled
+                            : styles.arrowEnabled
                     }
                     onClick={onClickIncrease}
                 >

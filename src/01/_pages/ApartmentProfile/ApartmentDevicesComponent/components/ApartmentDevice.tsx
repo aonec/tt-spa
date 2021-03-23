@@ -14,21 +14,21 @@ interface DeviceInfoProps {
 
 const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     const { icon, color } = DeviceIcons[device.resource]
-
+    const { id, model, serialNumber, mountPlace, lastCheckingDate, futureCheckingDate} = device;
     return (
       <DeviceColumn>
-          <DeviceLink to={`/housingMeteringDevices/${device.id}`}>
+          <DeviceLink to={`/housingMeteringDevices/${id}`}>
               <DeviceIcon icon={icon} fill={color} />
-              {`${device.model} `}
-              <SerialNumber>{` (${device.serialNumber})`}</SerialNumber>
+              {`${model} `}
+              <SerialNumber>{` (${serialNumber})`}</SerialNumber>
           </DeviceLink>
           <ApartmentInfo>
             <MountPlace>
-              {translateMountPlace(device.mountPlace)}
+              {translateMountPlace(mountPlace)}
             </MountPlace>
               <DateLine
-                lastCheckingDate={device.lastCheckingDate}
-                futureCheckingDate={device.futureCheckingDate}
+                lastCheckingDate={lastCheckingDate}
+                futureCheckingDate={futureCheckingDate}
               />
           </ApartmentInfo>
       </DeviceColumn>

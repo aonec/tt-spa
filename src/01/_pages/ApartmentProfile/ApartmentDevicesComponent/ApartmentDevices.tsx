@@ -18,7 +18,7 @@ export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListRes
     if (!items?.length) {
         return (
             <div>
-                Что-то пошло не так. Попробуйте выйти из сессии и зайти заново.
+                Ошибка загрузки
             </div>
         )
     }

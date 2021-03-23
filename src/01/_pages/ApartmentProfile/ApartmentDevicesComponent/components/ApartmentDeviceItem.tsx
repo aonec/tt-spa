@@ -8,19 +8,9 @@ import ReadingsBlock from "../../../MetersPage/components/MeterDevices/component
 import ApartmentDevice from "./ApartmentDevice";
 import ActiveLine from "../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine";
 
-const DeviceItem = styled.div`
-    display: inline-grid;
-    grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
-    padding: 0 16px 16px;
-    border-bottom: 1px solid #dcdee4;
-    align-items: center;
-`
-
-
 
 export function ApartmentDeviceItem({ device, sliderIndex }: { device: IndividualDeviceType, sliderIndex: number}) {
 
-  // const { id, model, serialNumber, resource, futureCheckingDate } = device
   const [readingsState, setReadingsState] = useState<{ readingsArray: number[], resource: string }>()
 
   const currentMonth = getMonthFromDate();
@@ -90,4 +80,12 @@ const DeviceReadingsContainer = styled.div`
     .ant-input-affix-wrapper-focused {
         box-shadow: none;
     }
+`
+
+const DeviceItem = styled.div`
+    display: inline-grid;
+    grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
+    padding: 0 16px 16px;
+    border-bottom: 1px solid #dcdee4;
+    align-items: center;
 `
