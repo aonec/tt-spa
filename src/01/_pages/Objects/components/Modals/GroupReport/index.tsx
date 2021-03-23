@@ -15,7 +15,6 @@ import {getReports} from "../../../apiObjects";
 import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../myApi";
 import {useAsync} from "../../../../../hooks/useAsync";
 import {allResources} from "../../../../../tt-components/localBases";
-import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
 import axios from "../../../../../axios";
 
 
@@ -32,9 +31,8 @@ interface ReportsInterface {
 // GroupReportFormResponse
 const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
-    // const [reports, setReports] = useState<ReportsInterface>();
-    const {data, status = 'error', run} = useAsync()
-    console.log("data", data)
+    const {data, status, run} = useAsync()
+    // console.log("data", data)
     const handleCancel = () => {
         setVisible(false)
     }
@@ -44,14 +42,13 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
     }, [])
 
 
-    const reportName = `Выгрузка группового отчёта`
-
     const GroupForm = () => {
         console.log("data", data)
+        const reportName = `Выгрузка группового отчёта`
         const {groupReports, nodeResourceTypes, nodeStatuses} = data;
-        console.log("groupReports", groupReports)
-        console.log("nodeResourceTypes", nodeResourceTypes)
-        console.log("nodeStatuses", nodeStatuses)
+        // console.log("groupReports", groupReports)
+        // console.log("nodeResourceTypes", nodeResourceTypes)
+        // console.log("nodeStatuses", nodeStatuses)
 
         const groupReportsOptions = groupReports.map((group: any) => {
             const {houseManagementId, title, id} = group
@@ -67,14 +64,12 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             const {Key, Value} = nodeStatus
             return {value: Key, label: Value}
         })
-
-
+        
         console.log("groupReportsOptions", groupReportsOptions)
-
 
         async function getArchive(link = '') {
             try {
-                const res = await axios.get<any, any>(link, {
+                const res = await axios.get<string, object>(link, {
                     responseType: 'blob',
                 })
                 return res
@@ -99,18 +94,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
             console.log("link",link)
             const name = 'Reports.zip'
-            getArchive(link).then((response) => {
-                const url = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = url;
-                // const fileName = `${street}, ${housingStockNumber} - ${translate(
-                //     resource,
-                // )} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
-                link.setAttribute('download', name);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            });
+
         };
 
         const onFinishFailed = (errorInfo: any) => {
