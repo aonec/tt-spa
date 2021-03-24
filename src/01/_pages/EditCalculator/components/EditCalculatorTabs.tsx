@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import { Tabs } from 'antd'
+import React, {Dispatch, SetStateAction, useContext} from 'react'
+import {Tabs} from 'antd'
 
-const { TabPane } = Tabs
+const {TabPane} = Tabs
 
 const tabs = [
     {
@@ -22,22 +22,25 @@ const tabs = [
     },
 ]
 
-const EditCalculatorTabs = () => {
-    console.log('EditCalculatorTabs')
-    return null
-    // const { currentTabKey, handleChangeTab } = useContext(EditCalculatorContext)
-    // return (
-    //     <Tabs
-    //         style={{ height: 'fit-content' }}
-    //         activeKey={currentTabKey}
-    //         onChange={handleChangeTab}
-    //     >
-    //         {tabs.map((currentTab) => {
-    //             const { title, key } = currentTab
-    //             return <TabPane tab={title} key={key} />
-    //         })}
-    //     </Tabs>
-    // )
+interface EditCalculatorTabsInterface {
+    tab: string
+    setTab: Dispatch<SetStateAction<string>>
+}
+
+const EditCalculatorTabs = ({tab, setTab}: EditCalculatorTabsInterface) => {
+
+    return (
+        <Tabs
+            style={{height: 'fit-content'}}
+            activeKey={tab}
+            onChange={(tab: string)=>setTab(tab)}
+        >
+            {tabs.map((currentTab) => {
+                const {title, key} = currentTab
+                return <TabPane tab={title} key={key}/>
+            })}
+        </Tabs>
+    )
 }
 
 export default EditCalculatorTabs
