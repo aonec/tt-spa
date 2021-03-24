@@ -5,6 +5,7 @@ interface Props {
     name?: string
     size?: any
     isConnected?: any
+    value?: any
 }
 
 
@@ -32,6 +33,7 @@ export const SelectTT = styled(Select)<Props>`
       }
     }
   }
+
   .ant-select-selector {
     height: 100% !important;
     padding: 8px 24px !important;

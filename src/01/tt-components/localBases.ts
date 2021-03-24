@@ -1,4 +1,11 @@
-export const items = [
+
+export interface ItemInterface {
+    id: number
+    value: number
+    model: string
+    label: string
+}
+export const items : Array<ItemInterface> = [
     {
         id: 1,
         value: 1,

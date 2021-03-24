@@ -1,16 +1,15 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import '../../tt-components/antd.scss'
 import {useParams} from 'react-router-dom'
 import {Header} from '../../tt-components'
 import EditCalculatorTabs from './components/EditCalculatorTabs'
 import {Breadcrumb} from '../../tt-components'
 import {getCalculator} from './components/apiEditCalculator'
-import {CalculatorResponse, CalculatorResponseSuccessApiResponse} from "../../../myApi";
+import {CalculatorResponse} from "../../../myApi";
 import {useAsync} from "../../hooks/useAsync";
-import {RequestNodeReadingsFunctionInterface} from "../../_api/node_readings_page";
 import {DEFAULT_CALCULATOR} from "../../tt-components/localBases";
-// import EditCalculatorForm from './components/EditCalculatorForm'
-// import ModalCalculatorExist from './components/ModalCalculatorExist'
+import EditCalculatorForm from './components/EditCalculatorForm'
+import ModalCalculatorExist from './components/ModalCalculatorExist'
 
 export const EditCalculator = () => {
     const {deviceId} = useParams()
@@ -25,6 +24,10 @@ export const EditCalculator = () => {
 
     const {model, serialNumber} = calculator || DEFAULT_CALCULATOR
 
+    if (!calculator) {
+        return null
+    }
+
     return (
         <>
             {status === 'error' && (
@@ -38,8 +41,8 @@ export const EditCalculator = () => {
 
             <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
             <EditCalculatorTabs tab={tab} setTab={setTab}/>
-            {/*<EditCalculatorForm />*/}
-            {/*<ModalCalculatorExist />*/}
+            <EditCalculatorForm calculator={calculator} tab={tab} setTab={setTab} setAlertVisible={setAlertVisible}/>
+            <ModalCalculatorExist />
         </>
     )
 }
