@@ -343,22 +343,3 @@ const DeviceStatus = styled.div`
     grid-column-gap: 4px;
     grid-template-columns: auto 1fr;
 `
-
-const Div = styled.div`
-    display: inline-flex;
-    align-items: center;
-`
-
-// const NodeProfile = () =>
-//
-// {
-// calculatorId: 2538454
-// communicationPipes: [{…}]
-// futureCommercialAccountingDate: "2023-03-20T00:00:00"
-// id: 1387
-// lastCommercialAccountingDate: "2019-11-19T00:00:00"
-// nodeResourceType: "ColdWaterSupply"
-// nodeStatus: "Сдан на коммерческий учет"
-// number: 1
-// serviceZone: "Апартаменты"
-// }
