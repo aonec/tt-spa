@@ -24,7 +24,7 @@ export const Header = (props, state) => {
             <div className="apartment-header__wrap">
                 <Title size="32">Кв. №{apartmentNumber}</Title>
                 <Text>
-                    {city},{street},{number}
+                    {city}, {street}, {number}
                 </Text>
             </div>
 

@@ -58,7 +58,11 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     const maxElement = maxBy(graphData, (obj) => obj.value)
 
     const minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value
-    const maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value
+    let maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value
+
+    const smallDelta = 0.01
+
+    if (maxValue === minValue && minValue === 0) maxValue += smallDelta
 
     const tooltipStyle = {
         parent: { overflow: 'visible' },

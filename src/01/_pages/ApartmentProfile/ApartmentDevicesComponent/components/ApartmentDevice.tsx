@@ -5,8 +5,7 @@ import { translateMountPlace } from '01/utils/translateMountPlace'
 import styled from 'styled-components'
 import { IndividualDeviceType } from 'types/types'
 import { Link } from 'react-router-dom'
-import { Icon } from "../../../../_components/Icon";
-
+import { Icon } from '../../../../_components/Icon'
 
 interface DeviceInfoProps {
     device: IndividualDeviceType
@@ -14,24 +13,31 @@ interface DeviceInfoProps {
 
 const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     const { icon, color } = DeviceIcons[device.resource]
-    const { id, model, serialNumber, mountPlace, lastCheckingDate, futureCheckingDate} = device;
+    const {
+        id,
+        model,
+        serialNumber,
+        mountPlace,
+        lastCheckingDate,
+        futureCheckingDate,
+    } = device
     return (
-      <DeviceColumn>
-          <DeviceLink to={`/housingMeteringDevices/${id}`}>
-              <DeviceIcon icon={icon} fill={color} />
-              {`${model} `}
-              <SerialNumber>{` (${serialNumber})`}</SerialNumber>
-          </DeviceLink>
-          <ApartmentInfo>
-            <MountPlace>
-              {translateMountPlace(mountPlace)}
-            </MountPlace>
-              <DateLine
-                lastCheckingDate={lastCheckingDate}
-                futureCheckingDate={futureCheckingDate}
-              />
-          </ApartmentInfo>
-      </DeviceColumn>
+        <DeviceColumn>
+            <DeviceLink to={`/housingMeteringDevices/${id}`}>
+                <div>
+                    <DeviceIcon icon={icon} fill={color} />
+                </div>
+                {`${model} `}
+                <SerialNumber>{` (${serialNumber})`}</SerialNumber>
+            </DeviceLink>
+            <ApartmentInfo>
+                <MountPlace>{translateMountPlace(mountPlace)}</MountPlace>
+                <DateLine
+                    lastCheckingDate={lastCheckingDate}
+                    futureCheckingDate={futureCheckingDate}
+                />
+            </ApartmentInfo>
+        </DeviceColumn>
     )
 }
 
@@ -39,6 +45,7 @@ const DeviceColumn = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 120px;
+    white-space: nowrap;
 `
 
 const DeviceLink = styled(Link)`
