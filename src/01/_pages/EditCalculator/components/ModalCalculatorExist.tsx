@@ -11,12 +11,11 @@ import React, {Dispatch, SetStateAction, useContext} from 'react'
 import {Link} from 'react-router-dom'
 
 interface ModalCalculatorExistInstance {
-    existCalculator: boolean
-    setExistCalculator?: Dispatch<SetStateAction<boolean>>
+    existCalculator: number | undefined | null
+    setExistCalculator: Dispatch<SetStateAction<number | undefined | null>>
     visible: boolean
     setVisible: Dispatch<SetStateAction<boolean>>
 }
-
 
 export const ModalCalculatorExist = ({
                                          existCalculator,
@@ -24,7 +23,6 @@ export const ModalCalculatorExist = ({
                                          visible,
                                          setVisible
                                      }: ModalCalculatorExistInstance) => {
-
 
     function handleCancel() {
         setVisible(false)

@@ -7,7 +7,6 @@ import {Breadcrumb} from '../../tt-components'
 import {getCalculator} from './components/apiEditCalculator'
 import {CalculatorResponse} from "../../../myApi";
 import {useAsync} from "../../hooks/useAsync";
-import {DEFAULT_CALCULATOR} from "../../tt-components/localBases";
 import EditCalculatorForm from './components/EditCalculatorForm'
 import ModalCalculatorExist from './components/ModalCalculatorExist'
 
@@ -15,7 +14,7 @@ export const EditCalculator = () => {
     const {deviceId} = useParams()
     const [tab, setTab] = useState<string>('1')
     const [alert, setAlert] = useState<boolean>(false)
-    const [existCalculator, setExistCalculator] = useState<boolean>(false);
+    const [existCalculator, setExistCalculator] = useState<number | null | undefined>();
 
     const {data: calculator, status, run} = useAsync<CalculatorResponse>()
 
@@ -23,11 +22,11 @@ export const EditCalculator = () => {
         run(getCalculator(deviceId))
     }, [deviceId])
 
-    const {model, serialNumber} = calculator || DEFAULT_CALCULATOR
-
     if (!calculator) {
         return null
     }
+
+    const {model, serialNumber} = calculator
 
     return (
         <>
@@ -38,11 +37,13 @@ export const EditCalculator = () => {
             (status === 'idle' && <div>ЗАГРУЗКА...</div>)}
             {status === 'resolved' && (
                 <>
-                <Breadcrumb path={`/calculators/${deviceId}`}/>
-                <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-                <EditCalculatorTabs tab={tab} setTab={setTab}/>
-                <EditCalculatorForm calculator={calculator} tab={tab} setTab={setTab} setAlert={setAlert}/>
-                <ModalCalculatorExist existCalculator={existCalculator} setExistCalculator={setExistCalculator} setVisible={setAlert} visible={alert}/>
+                    <Breadcrumb path={`/calculators/${deviceId}`}/>
+                    <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
+                    <EditCalculatorTabs tab={tab} setTab={setTab}/>
+                    <EditCalculatorForm calculator={calculator} tab={tab} setTab={setTab} setAlert={setAlert}
+                                        setExistCalculator={setExistCalculator}/>
+                    <ModalCalculatorExist existCalculator={existCalculator} setExistCalculator={setExistCalculator}
+                                          setVisible={setAlert} visible={alert}/>
                 </>
             )}
 

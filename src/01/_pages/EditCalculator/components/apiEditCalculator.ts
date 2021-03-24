@@ -17,7 +17,6 @@ export async function getCalculator(id: number) {
 export async function putCalculator(deviceId : number, form: UpdateCalculatorRequest) {
     try {
         const res = await axios.put(`Calculators/${deviceId}`, form)
-        // console.log("putCalculator", form)
         alert('Вычислитель успешно изменен!')
         return {res, show: false, id: undefined}
     } catch (error) {
@@ -35,7 +34,7 @@ export async function putCalculator(deviceId : number, form: UpdateCalculatorReq
             return {show: true, id: id}
             // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
         }
-        return {show: true, id: undefined}
+        return {show: false, id: undefined}
     }
 }
 

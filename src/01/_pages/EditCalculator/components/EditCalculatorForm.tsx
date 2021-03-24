@@ -11,7 +11,7 @@ import {
     DatePickerTT,
     Wrap,
     ButtonTT,
-    Title,
+    Title, StyledFooter, StyledFormPage, styles,
 } from '../../../tt-components'
 // import {ipv4RegExp, items} from '../../../tt-components/localBases'
 import {putCalculator} from './apiEditCalculator'
@@ -33,7 +33,7 @@ interface EditCalculatorFormInterface {
     tab: string
     setTab: Dispatch<SetStateAction<string>>
     setAlert: Dispatch<SetStateAction<boolean>>
-    setExistCalculator?: Dispatch<SetStateAction<boolean>>
+    setExistCalculator: Dispatch<SetStateAction<number | undefined | null>>
 }
 
 
@@ -121,7 +121,7 @@ const EditCalculatorForm = ({
                 console.log("id", id)
                 if (show) {
                     setAlert(true)
-                    // setExistCalculator(id)
+                    setExistCalculator(id)
                 }
             })
         },
@@ -141,10 +141,10 @@ const EditCalculatorForm = ({
 
     function onSwitchChange(checked: boolean) {
         setFieldValue('isConnected', checked)
-        if (checked === true) {
+        if (checked) {
             setValidationSchema(defaultValidationSchema)
         }
-        if (checked === false) {
+        if (!checked) {
             if (isEmptyConnection() === true) {
                 setFieldError('ipV4', undefined)
                 setFieldError('port', undefined)
@@ -187,7 +187,7 @@ const EditCalculatorForm = ({
         return null
     }
 
-    const tabErrors = [
+    const tabErrors: Array<{ key: string, value: string[] }> = [
         {
             key: '1',
             value: ['serialNumber', 'infoId'],
@@ -205,7 +205,7 @@ const EditCalculatorForm = ({
             errors
         )
         console.log(errors)
-        if (hasError === true) {
+        if (hasError) {
             setTab(errorTab)
         } else {
             handleSubmit()
@@ -214,8 +214,8 @@ const EditCalculatorForm = ({
 
     return (
         <form onSubmit={handleSubmitForm} style={{maxWidth: 800}}>
-            <div hidden={Number(tab) !== 1}>
-                <Form.Item label="Серийный номер устройства">
+            <StyledFormPage hidden={Number(tab) !== 1}>
+                <Form.Item label="Серийный номер устройства" style={styles.w100}>
                     <InputTT
                         name="serialNumber"
                         value={values.serialNumber}
@@ -226,19 +226,19 @@ const EditCalculatorForm = ({
                     <Alert name="serialNumber"/>
                 </Form.Item>
 
-                <Form.Item label="Тип вычислителя">
+                <Form.Item label="Тип вычислителя" style={styles.w100}>
                     <SelectTT
                         placeholder="Выберите тип устройства"
                         options={items}
                         value={values.infoId}
                         onChange={(event, target) => {
-                            // setFieldValue('infoId', Number(target.value))
+                            setFieldValue('infoId', event)
                         }}
                     />
                     <Alert name="infoId"/>
                 </Form.Item>
 
-                <Form.Item label="Дата Поверки">
+                <Form.Item label="Дата Поверки" style={styles.w100}>
                     <DatePickerTT
                         format="DD.MM.YYYY"
                         name="lastCheckingDate"
@@ -256,7 +256,7 @@ const EditCalculatorForm = ({
                     <Alert name="lastCheckingDate"/>
                 </Form.Item>
 
-                <Form.Item label="Дата Следующей поверки">
+                <Form.Item label="Дата Следующей поверки" style={styles.w100}>
                     <DatePickerTT
                         format="DD.MM.YYYY"
                         placeholder="Укажите дату..."
@@ -270,7 +270,7 @@ const EditCalculatorForm = ({
                     <Alert name="futureCheckingDate"/>
                 </Form.Item>
 
-                <Form.Item label="Дата начала действия акта-допуска">
+                <Form.Item label="Дата начала действия акта-допуска" style={styles.w100}>
                     <DatePickerTT
                         format="DD.MM.YYYY"
                         name="lastCommercialAccountingDate"
@@ -283,7 +283,7 @@ const EditCalculatorForm = ({
                     />
                 </Form.Item>
 
-                <Form.Item label="Дата окончания действия акта-допуска">
+                <Form.Item label="Дата окончания действия акта-допуска" style={styles.w100}>
                     <DatePickerTT
                         format="DD.MM.YYYY"
                         placeholder="Укажите дату..."
@@ -298,15 +298,9 @@ const EditCalculatorForm = ({
                         name="futureCommercialAccountingDate"
                     />
                 </Form.Item>
-            </div>
-            <div hidden={Number(tab) !== 2}>
-                <Form.Item
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        width: '100%',
-                    }}
-                >
+            </StyledFormPage>
+            <StyledFormPage hidden={Number(tab) !== 2}>
+                <Form.Item style={styles.w100}>
                     <Switch
                         style={{width: '48px'}}
                         onChange={onSwitchChange}
@@ -324,7 +318,7 @@ const EditCalculatorForm = ({
                     </span>
                 </Form.Item>
 
-                <Form.Item label="IP адрес вычислителя">
+                <Form.Item label="IP адрес вычислителя" style={styles.w100}>
                     <InputTT
                         type="text"
                         value={values.ipV4}
@@ -338,7 +332,7 @@ const EditCalculatorForm = ({
                     {/* {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />} */}
                 </Form.Item>
 
-                <Form.Item label="Порт">
+                <Form.Item label="Порт" style={styles.w100}>
                     <InputTT
                         type="number"
                         placeholder="Укажите порт устройства (например, 1234)"
@@ -346,13 +340,12 @@ const EditCalculatorForm = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         name="port"
-                        // disabled={!checked}
                     />
                     <Alert name="port"/>
                     {/* {(isEmpty() && !values.checked) ? null : <Alert name="port" /> } */}
                 </Form.Item>
 
-                <Form.Item label="Адрес устройства">
+                <Form.Item label="Адрес устройства" style={styles.w100}>
                     <InputTT
                         type="number"
                         placeholder="Укажите адреса устройства"
@@ -375,15 +368,14 @@ const EditCalculatorForm = ({
                 >
                     Подключение к новому прибору может занять до 30 минут.
                 </Wrap>
-            </div>
-            <div hidden={Number(tab) !== 3}>
+            </StyledFormPage>
+            <StyledFormPage hidden={Number(tab) !== 3}>
                 <Title color="black">Компонент в разработке </Title>
-            </div>
-            <div hidden={Number(tab) !== 4}>
+            </StyledFormPage>
+            <StyledFormPage hidden={Number(tab) !== 4}>
                 <Title color="black">Компонент в разработке </Title>
-            </div>
-
-            <div style={{padding: '32px 0'}}>
+            </StyledFormPage>
+            <StyledFooter form>
                 <ButtonTT
                     color="blue"
                     style={{marginRight: '16px'}}
@@ -397,7 +389,8 @@ const EditCalculatorForm = ({
                         Отмена
                     </ButtonTT>
                 </NavLink>
-            </div>
+            </StyledFooter>
+
         </form>
     )
 }

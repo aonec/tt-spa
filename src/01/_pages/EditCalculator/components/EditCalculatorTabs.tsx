@@ -1,9 +1,9 @@
-import React, {Dispatch, SetStateAction, useContext} from 'react'
+import React, {Dispatch, SetStateAction} from 'react'
 import {Tabs} from 'antd'
 
 const {TabPane} = Tabs
 
-const tabs = [
+const tabs : Array<{title: string, key: string}> = [
     {
         title: 'Общие данные',
         key: '1',
