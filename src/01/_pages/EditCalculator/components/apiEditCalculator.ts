@@ -1,15 +1,6 @@
 import axios from '../../../axios'
 
-interface ModalInterface {
-    visible: boolean
-}
-
-
-
-
-
-
-export async function getCalculator(id = '') {
+export async function getCalculator(id: number) {
     try {
         const res = await axios.get(`Calculators/${id}`)
         return res

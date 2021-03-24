@@ -8,7 +8,7 @@ export async function getCalculator(id: number) {
         console.log(error)
         throw {
             resource: 'device',
-            message: 'Произошла ошибка запроса устройства',
+            message: 'Произошла ошибка запроса Вычислителя',
         }
     }
 }
