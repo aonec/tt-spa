@@ -87,7 +87,7 @@ const EditCalculatorForm = ({
             deviceAddress: deviceAddress,
             housingStockId: houseId,
             infoId: getCurrentInfoId ? getCurrentInfoId.value : undefined,
-            isConnected,
+            isConnected : isConnected || false,
         },
         validationSchema,
         onSubmit: async () => {
@@ -98,6 +98,7 @@ const EditCalculatorForm = ({
                 futureCheckingDate: values.futureCheckingDate?.toISOString(),
                 lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
                 futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
+                isConnected: values.isConnected,
                 connection: {
                     ipV4: values.ipV4,
                     deviceAddress: returnNullIfEmptyString(

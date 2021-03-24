@@ -9,6 +9,7 @@ import {CalculatorResponse} from "../../../myApi";
 import {useAsync} from "../../hooks/useAsync";
 import EditCalculatorForm from './components/EditCalculatorForm'
 import ModalCalculatorExist from './components/ModalCalculatorExist'
+import {Loader} from "../../components";
 
 export const EditCalculator = () => {
     const {deviceId} = useParams()
@@ -31,10 +32,10 @@ export const EditCalculator = () => {
     return (
         <>
             {status === 'error' && (
-                <div style={{background: 'red'}}>ОШИБКА</div>
+                <div style={{background: 'red'}}>Что пошло не так. Попробуйте Перезагрузить страницу</div>
             )}
             {status === 'pending' ||
-            (status === 'idle' && <div>ЗАГРУЗКА...</div>)}
+            (status === 'idle' && <Loader show={true} size={64}/>)}
             {status === 'resolved' && (
                 <>
                     <Breadcrumb path={`/calculators/${deviceId}`}/>
