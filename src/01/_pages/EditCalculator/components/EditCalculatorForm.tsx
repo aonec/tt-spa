@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useContext, useEffect, useRef, useState
 import {Form, Switch} from 'antd'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import _ from 'lodash'
+
 import {NavLink} from 'react-router-dom'
 import moment from 'moment'
 import {
@@ -25,6 +25,8 @@ import {
 } from './validationSchemas'
 import isEmptyString from '../../../utils/isEmptyString'
 import {CalculatorResponse} from "../../../../myApi";
+import {ItemInterface, items} from "../../../tt-components/localBases";
+import _ from "lodash";
 
 interface EditCalculatorFormInterface {
     calculator: CalculatorResponse
@@ -56,62 +58,10 @@ const EditCalculatorForm = ({
         isConnected,
     } = calculator
 
-    interface ItemInterface {
-        id: number
-        value: number
-        model: string
-        label: string
-    }
-
-    const items: Array<ItemInterface> = [
-        {
-            id: 1,
-            value: 1,
-            model: 'ТЭМ-106',
-            label: 'ТЭМ-106',
-        },
-        {
-            id: 2,
-            value: 2,
-            model: 'ТЭМ-104',
-            label: 'ТЭМ-104',
-        },
-        {
-            id: 3,
-            value: 3,
-            model: 'ВКТ-7',
-            label: 'ВКТ-7',
-        },
-        {
-            id: 4,
-            value: 4,
-            model: 'ТВ-7',
-            label: 'ТВ-7',
-        },
-        {
-            id: 5,
-            value: 5,
-            model: 'ВИСТ',
-            label: 'ВИСТ',
-        },
-        {
-            id: 10,
-            value: 10,
-            model: 'Sonosafe',
-            label: 'Sonosafe',
-        },
-    ]
-
     const [validationSchema, setValidationSchema] = useState(Yup.object({}))
 
-    console.log("_.find(items, {label: model})", _.find(items, {label: model}))
-
-    const getCurrentInfoId = _.find(items, {label: model});
-    const getCurrentInfoId2 = items.find(item => item.label = model});
-    debugger;
-    console.log("getCurrentInfoId",getCurrentInfoId['value'])
-    // console.log("getCurrentInfoId",getCurrentInfoId!.value)
-    const value = getCurrentInfoId ? getCurrentInfoId.value : undefined
+    // const getCurrentInfoId = items.find(item => item.label == model);
+    const getCurrentInfoId = _.find<ItemInterface>(items, {label: model});
 
     const {
         handleSubmit,
@@ -137,7 +87,7 @@ const EditCalculatorForm = ({
             port: port ?? null,
             deviceAddress: deviceAddress ?? null,
             housingStockId: houseId,
-            infoId: undefined,
+            infoId: currentInfoId === null ? null : Number(currentInfoId),
             // infoId: currentInfoId === null ? null : Number(currentInfoId),
             isConnected,
         },
