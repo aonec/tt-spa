@@ -1,4 +1,5 @@
 import axios from '../../../axios'
+import {UpdateCalculatorRequest} from "../../../../myApi";
 
 export async function getCalculator(id: number) {
     try {
@@ -13,12 +14,12 @@ export async function getCalculator(id: number) {
     }
 }
 
-export async function putCalculator(deviceId = '', form = {}) {
+export async function putCalculator(deviceId : number, form: UpdateCalculatorRequest) {
     try {
         const res = await axios.put(`Calculators/${deviceId}`, form)
         // console.log("putCalculator", form)
         alert('Вычислитель успешно изменен!')
-        return res
+        return {res, show: false, id: undefined}
     } catch (error) {
         const handleError = error.response.data.error
         console.log(handleError)
@@ -34,6 +35,7 @@ export async function putCalculator(deviceId = '', form = {}) {
             return {show: true, id: id}
             // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
         }
+        return {show: true, id: undefined}
     }
 }
 

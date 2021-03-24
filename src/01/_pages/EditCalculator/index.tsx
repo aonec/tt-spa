@@ -14,7 +14,8 @@ import ModalCalculatorExist from './components/ModalCalculatorExist'
 export const EditCalculator = () => {
     const {deviceId} = useParams()
     const [tab, setTab] = useState<string>('1')
-    const [alertVisible, setAlertVisible] = useState<boolean>(false)
+    const [alert, setAlert] = useState<boolean>(false)
+    const [existCalculator, setExistCalculator] = useState<boolean>(false);
 
     const {data: calculator, status, run} = useAsync<CalculatorResponse>()
 
@@ -36,13 +37,15 @@ export const EditCalculator = () => {
             {status === 'pending' ||
             (status === 'idle' && <div>ЗАГРУЗКА...</div>)}
             {status === 'resolved' && (
+                <>
                 <Breadcrumb path={`/calculators/${deviceId}`}/>
+                <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
+                <EditCalculatorTabs tab={tab} setTab={setTab}/>
+                <EditCalculatorForm calculator={calculator} tab={tab} setTab={setTab} setAlert={setAlert}/>
+                <ModalCalculatorExist existCalculator={existCalculator} setExistCalculator={setExistCalculator} setVisible={setAlert} visible={alert}/>
+                </>
             )}
 
-            <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-            <EditCalculatorTabs tab={tab} setTab={setTab}/>
-            <EditCalculatorForm calculator={calculator} tab={tab} setTab={setTab} setAlertVisible={setAlertVisible}/>
-            <ModalCalculatorExist />
         </>
     )
 }

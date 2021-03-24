@@ -194,19 +194,19 @@ export const DEFAULT_BUILDING = {
 export const DEFAULT_CALCULATOR = {
     model: '',
     serialNumber: '',
-    // resource: '',
-    // commercialAccountingDate: '',
-    // futureCheckingDate: '',
-    // lastCheckingDate: '',
-    // futureCommercialAccountingDate: '',
-    // lastCommercialAccountingDate: '',
-    // isConnected: false,
-    // connection: {
-    //     ipV4: '',
-    //     port: null,
-    //     deviceAddress: null,
-    // },
-    // nodes: []
+    resource: '',
+    commercialAccountingDate: '',
+    futureCheckingDate: '',
+    lastCheckingDate: '',
+    futureCommercialAccountingDate: '',
+    lastCommercialAccountingDate: '',
+    isConnected: false,
+    connection: {
+        ipV4: '',
+        port: null,
+        deviceAddress: null,
+    },
+    nodes: []
 }
 
 

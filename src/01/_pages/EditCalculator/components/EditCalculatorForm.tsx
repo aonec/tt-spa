@@ -24,15 +24,15 @@ import {
     emptyConnectionValidationSchema,
 } from './validationSchemas'
 import isEmptyString from '../../../utils/isEmptyString'
-import {CalculatorResponse} from "../../../../myApi";
-import {ItemInterface, items} from "../../../tt-components/localBases";
+import {CalculatorResponse, UpdateCalculatorRequest} from "../../../../myApi";
+import {DEFAULT_CALCULATOR, ItemInterface, items} from "../../../tt-components/localBases";
 import _ from "lodash";
 
 interface EditCalculatorFormInterface {
     calculator: CalculatorResponse
     tab: string
     setTab: Dispatch<SetStateAction<string>>
-    setAlertVisible: Dispatch<SetStateAction<boolean>>
+    setAlert: Dispatch<SetStateAction<boolean>>
     setExistCalculator?: Dispatch<SetStateAction<boolean>>
 }
 
@@ -41,7 +41,7 @@ const EditCalculatorForm = ({
                                 calculator,
                                 tab,
                                 setTab,
-                                setAlertVisible,
+                                setAlert,
                                 setExistCalculator
                             }: EditCalculatorFormInterface) => {
 
@@ -53,15 +53,14 @@ const EditCalculatorForm = ({
         id,
         model,
         serialNumber,
-        connection: {ipV4 = '', port = null, deviceAddress = null},
+        connection: {ipV4, port, deviceAddress},
         address: {id: houseId},
         isConnected,
-    } = calculator
+    } = calculator || DEFAULT_CALCULATOR
 
     const [validationSchema, setValidationSchema] = useState(Yup.object({}))
 
-    // const getCurrentInfoId = items.find(item => item.label == model);
-    const getCurrentInfoId = _.find<ItemInterface>(items, {label: model});
+    const getCurrentInfoId = model ? _.find<ItemInterface>(items, {label: model}) : undefined;
 
     const {
         handleSubmit,
@@ -83,23 +82,22 @@ const EditCalculatorForm = ({
             futureCommercialAccountingDate: isDateNull(
                 futureCommercialAccountingDate
             ),
-            ipV4: ipV4 ?? '',
-            port: port ?? null,
-            deviceAddress: deviceAddress ?? null,
+            ipV4: ipV4,
+            port: port,
+            deviceAddress: deviceAddress,
             housingStockId: houseId,
-            infoId: currentInfoId === null ? null : Number(currentInfoId),
-            // infoId: currentInfoId === null ? null : Number(currentInfoId),
+            infoId: getCurrentInfoId ? getCurrentInfoId.value : undefined,
             isConnected,
         },
         validationSchema,
         onSubmit: async () => {
-            const form = {
+
+            const form: UpdateCalculatorRequest = {
                 serialNumber: values.serialNumber,
                 lastCheckingDate: values.lastCheckingDate?.toISOString(),
                 futureCheckingDate: values.futureCheckingDate?.toISOString(),
                 lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
                 futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
-                isConnected: values.isConnected,
                 connection: {
                     ipV4: values.ipV4,
                     deviceAddress: returnNullIfEmptyString(
@@ -112,12 +110,20 @@ const EditCalculatorForm = ({
             }
             console.log('FORM', form)
             console.log(JSON.stringify(form))
-            // putCalculator(id, form).then(({show, id}) => {
-            //     if (show === true) {
-            //         setAlertVisible(true)
-            //         setExistCalculator(id)
-            //     }
-            // })
+
+            interface ThenInterface {
+                show: boolean | undefined
+                id: number | null | undefined
+            }
+
+            putCalculator(id, form).then(({show, id}: ThenInterface) => {
+                console.log("show", show)
+                console.log("id", id)
+                if (show) {
+                    setAlert(true)
+                    // setExistCalculator(id)
+                }
+            })
         },
     })
 
