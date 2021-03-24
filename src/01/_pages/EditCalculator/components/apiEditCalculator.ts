@@ -38,22 +38,4 @@ export async function putCalculator(deviceId : number, form: UpdateCalculatorReq
     }
 }
 
-//   <StyledModal width="800" visible={visible}>
-//     <StyledModalBody>
-//         <Header>
-//             В системе уже есть устройство с совпадающими настройками
-//             соединения
-//         </Header>
-//         <p>
-//             Пожалуйста, измените настройки соединения для данного
-//             устройства
-//         </p>
-//     </StyledModalBody>
-//     <StyledFooter>
-//         <ButtonTT color={'white'}>Отмена</ButtonTT>
-//         <ButtonTT color={'red'} big>
-//             Изменить настройки соединения
-//         </ButtonTT>
-//     </StyledFooter>
-// </StyledModal>
 
