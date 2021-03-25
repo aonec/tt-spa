@@ -42,7 +42,7 @@ export const requestNodeReadings = async (
     }
 
     const readings = await axios.get<any, ReadingsInterface>(
-        'Archives/GetArchives',
+        'Reports/GetArchives',
         { params }
     )
 

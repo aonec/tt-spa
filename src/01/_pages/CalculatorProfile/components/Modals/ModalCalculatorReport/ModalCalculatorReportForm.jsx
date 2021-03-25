@@ -98,7 +98,7 @@ const ModalCalculatorReportForm = (props) => {
 
       const beginName = moment(values.begin).format('YYYY-MM-DD');
       const endName = moment(values.end).format('YYYY-MM-DD');
-      const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       // xlsx
       getArchive(shortLink).then((response) => {

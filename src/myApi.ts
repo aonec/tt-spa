@@ -214,6 +214,7 @@ export enum UserPermission {
   TaskDelete = "TaskDelete",
   ReportRead = "ReportRead",
   ReportAdd = "ReportAdd",
+  IndividualDeviceClose = "IndividualDeviceClose",
 }
 
 export interface TokenResponse {
@@ -235,6 +236,7 @@ export interface RefreshTokenRequest {
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
+  permissions: UserPermission[] | null;
 }
 
 export interface RefreshResponseSuccessApiResponse {
@@ -1282,6 +1284,10 @@ export interface IndividualDeviceResponse {
   mountPlace: string | null;
   rateType: IndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
+  hasMagneticSeal: boolean;
+
+  /** @format date-time */
+  magneticSealInstallationDate: string | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -1313,7 +1319,7 @@ export interface UpdateIndividualDeviceRequest {
   rateType?: string | null;
 }
 
-export interface IndividualDeviceListResponse {
+export interface IndividualDeviceListItemResponse {
   /** @format int32 */
   id: number;
   transactionType: string | null;
@@ -1342,9 +1348,13 @@ export interface IndividualDeviceListResponse {
   apartmentNumber: string | null;
   homeownerName: string | null;
   personalAccountNumber: string | null;
+  hasMagneticSeal: boolean;
+
+  /** @format date-time */
+  magneticSealInstallationDate: string | null;
 }
 
-export interface IndividualDeviceListResponsePagedList {
+export interface IndividualDeviceListItemResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -1353,7 +1363,7 @@ export interface IndividualDeviceListResponsePagedList {
 
   /** @format int32 */
   pageSize: number;
-  items: IndividualDeviceListResponse[] | null;
+  items: IndividualDeviceListItemResponse[] | null;
 
   /** @format int32 */
   totalPages: number;
@@ -1367,8 +1377,8 @@ export interface IndividualDeviceListResponsePagedList {
   previousPageNumber: number;
 }
 
-export interface IndividualDeviceListResponsePagedListSuccessApiResponse {
-  successResponse: IndividualDeviceListResponsePagedList;
+export interface IndividualDeviceListItemResponsePagedListSuccessApiResponse {
+  successResponse: IndividualDeviceListItemResponsePagedList;
 }
 
 export interface CreateIndividualDeviceRequest {
@@ -1392,6 +1402,15 @@ export interface CreateIndividualDeviceRequest {
   /** @format int32 */
   mountPlaceId?: number | null;
   rateType: string;
+}
+
+export interface CloseDeviceRequest {
+  /** @format int32 */
+  deviceId: number;
+  documentsIds?: number[] | null;
+
+  /** @format date-time */
+  closingDate: string;
 }
 
 export interface ManagementFirmResponsePagedList {
@@ -1559,15 +1578,6 @@ export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
   successResponse: MeteringDeviceListResponse[] | null;
 }
 
-export interface CloseDeviceRequest {
-  /** @format int32 */
-  deviceId: number;
-  documentsIds?: number[] | null;
-
-  /** @format date-time */
-  closingDate: string;
-}
-
 export interface CheckDeviceRequest {
   /** @format int32 */
   deviceId: number;
@@ -1683,10 +1693,24 @@ export interface NodeCommercialAccountStatusStringKeyValuePair {
   value?: string | null;
 }
 
+export interface GroupReportHousingStock {
+  /** @format int32 */
+  id?: number;
+  number?: string | null;
+  corpus?: string | null;
+  categoryText?: string | null;
+}
+
+export interface GroupReportHousingStockGroup {
+  street?: string | null;
+  housingStocks?: GroupReportHousingStock[] | null;
+}
+
 export interface GroupReportFormResponse {
   groupReports: GroupReportResponse[] | null;
   nodeResourceTypes: ResourceTypeStringKeyValuePair[] | null;
   nodeStatuses: NodeCommercialAccountStatusStringKeyValuePair[] | null;
+  housingStockGroups: GroupReportHousingStockGroup[] | null;
 }
 
 export interface GroupReportFormResponseSuccessApiResponse {
@@ -1700,6 +1724,13 @@ export interface CreateGroupReportRequest {
 
 export interface GroupReportResponseSuccessApiResponse {
   successResponse: GroupReportResponse;
+}
+
+export enum EmailSubscriptionType {
+  Once = "Once",
+  OncePerTwoWeeks = "OncePerTwoWeeks",
+  OncePerMonth = "OncePerMonth",
+  OncePerQuarter = "OncePerQuarter",
 }
 
 export enum TaskGroupingFilter {
@@ -2176,66 +2207,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetArchivesList
-     * @request GET:/api/Archives/GetArchives
-     * @secure
-     */
-    archivesGetArchivesList: (
-      query?: { nodeId?: number | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetArchives`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetReportList
-     * @request GET:/api/Archives/GetReport
-     * @secure
-     */
-    archivesGetReportList: (
-      query?: { nodeId?: number | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetConsolidatedReportList
-     * @request GET:/api/Archives/GetConsolidatedReport
-     * @secure
-     */
-    archivesGetConsolidatedReportList: (
-      query?: { calculatorIds?: number[] | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetConsolidatedReport`,
-        method: "GET",
-        query: query,
-        secure: true,
         ...params,
       }),
 
@@ -3009,7 +2980,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<IndividualDeviceListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<IndividualDeviceListItemResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
         method: "GET",
         query: query,
@@ -3034,6 +3005,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCloseCreate
+     * @request POST:/api/IndividualDevices/close
+     * @secure
+     */
+    individualDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/IndividualDevices/close`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesSwitchMagneticSealCreate
+     * @request POST:/api/IndividualDevices/{deviceId}/SwitchMagneticSeal
+     * @secure
+     */
+    individualDevicesSwitchMagneticSealCreate: (
+      deviceId: number,
+      query?: { magneticSealInstallationDate?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
+        method: "POST",
+        query: query,
+        secure: true,
         ...params,
       }),
 
@@ -3501,11 +3511,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         GroupReportId?: string | null;
         HouseManagementId?: string | null;
-        NodeResourceType?: ResourceType;
+        NodeResourceTypes?: ResourceType[] | null;
         NodeStatus?: NodeCommercialAccountStatus;
         "Subscription.Email"?: string | null;
         "Subscription.ContractorIds"?: number[] | null;
-        "Subscription.NextTriggerTime"?: string;
+        "Subscription.TriggerAt"?: string;
+        "Subscription.Type"?: EmailSubscriptionType;
         ReportType?: string | null;
         From?: string | null;
         To?: string | null;

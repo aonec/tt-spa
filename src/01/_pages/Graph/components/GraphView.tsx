@@ -31,6 +31,9 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
 
     const archiveEntries = get(data, 'archiveEntries', [])
 
+    const width = 750;
+    const height = 350;
+
     if (archiveEntries.length === 0)
         return (
             <>
@@ -94,13 +97,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
                 <VictoryChart
                     padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
                     domain={{ y: [minValue, maxValue] }}
-                    width={750}
-                    height={350}
+                    width={width}
+                    height={height}
                     theme={VictoryTheme.material}
                     style={{
                         parent: {
-                            width: '750px',
-                            height: '350px',
+                            width: width,
+                            height: height,
                             overflow: 'visible',
                         },
                     }}
@@ -130,6 +133,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
                                     bottom: 8,
                                     left: 16,
                                 }}
+                                height={height}
                                 flyoutComponent={
                                     <GraphTooltip graphParam={graphParam} />
                                 }
