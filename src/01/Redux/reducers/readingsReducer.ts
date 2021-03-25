@@ -3,10 +3,6 @@ import { IndividualDeviceType } from '../../../types/types'
 import { ActionTypes } from '../ducks/readings/actionCreators'
 import { ReadingsActionsType } from '../ducks/readings/contracts/actionTypes'
 
-// const SET_DEVICES = 'SET_DEVICES';
-// const UPDATE_READINGS = 'UPDATE_READINGS';
-// const SET_IS_DISABLED = 'SET_IS_DISABLED';
-
 export type DisabledStateType = {
     deviceId: number
     isDisabled: boolean

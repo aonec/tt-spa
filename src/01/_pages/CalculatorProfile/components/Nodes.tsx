@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import {IconTT} from '../../../tt-components'
 import {CalculatorResponse} from "../../../../myApi";
+import DeviceIcons from "../../../_components/DeviceIcons";
+import Icon from "../../../tt-components/Icon";
 
 interface NodesInterface {
     device: CalculatorResponse | undefined
@@ -55,21 +57,23 @@ export const Nodes = ({device}: NodesInterface) => {
         )
     }
 
-    const result = nodes.map((value) => {
+    const result = nodes.map((node) => {
         const {
             id,
             number,
             nodeStatus,
             serviceZone,
             resource,
-        } = value
+        } = node
+
+        const { icon, color } = DeviceIcons[resource!]
 
         return (
             <ListItem key={id}>
                 <NameWrap href={`/nodes/${id}`}>
-                    <IconTT
-                        icon={'node'}
-                        size={24}
+                    <Icon
+                        icon={icon}
+                        color={color}
                         style={{marginRight: '8px'}}
                     />
                     <Name>{`Узел ${number}`}</Name>
@@ -77,7 +81,6 @@ export const Nodes = ({device}: NodesInterface) => {
 
                 <NodeStatus nodeStatus={nodeStatus}/>
                 <Span>{serviceZone}</Span>
-                {/*<Span>{_.find(resources, {value: resource}).label}</Span>*/}
             </ListItem>
         )
     })

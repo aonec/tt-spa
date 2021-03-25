@@ -58,7 +58,11 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     const maxElement = maxBy(graphData, (obj) => obj.value)
 
     const minValue = minElement!.value > 0 ? 0 : 1.5 * minElement!.value
-    const maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value
+    let maxValue = maxElement!.value < 0 ? 0 : 1.5 * maxElement!.value
+
+    const minDelta = 0.01
+
+    if (maxValue === minValue && minValue === 0) maxValue += minDelta
 
     const tooltipStyle = {
         parent: { overflow: 'visible' },
@@ -90,13 +94,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
                 <VictoryChart
                     padding={{ top: 0, bottom: 0, left: 26, right: 0 }}
                     domain={{ y: [minValue, maxValue] }}
-                    width={600}
-                    height={300}
+                    width={750}
+                    height={350}
                     theme={VictoryTheme.material}
                     style={{
                         parent: {
-                            width: '600px',
-                            height: '300px',
+                            width: '750px',
+                            height: '350px',
                             overflow: 'visible',
                         },
                     }}
