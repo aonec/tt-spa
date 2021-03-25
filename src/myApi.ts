@@ -68,6 +68,7 @@ export interface ErrorResponse {
 
   /** @format int32 */
   logId: number | null;
+  data: Record<string, any>;
 }
 
 export interface ErrorApiResponse {
@@ -1284,6 +1285,10 @@ export interface IndividualDeviceResponse {
   mountPlace: string | null;
   rateType: IndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
+  hasMagneticSeal: boolean;
+
+  /** @format date-time */
+  magneticSealInstallationDate: string | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -1315,7 +1320,7 @@ export interface UpdateIndividualDeviceRequest {
   rateType?: string | null;
 }
 
-export interface IndividualDeviceListResponse {
+export interface IndividualDeviceListItemResponse {
   /** @format int32 */
   id: number;
   transactionType: string | null;
@@ -1344,9 +1349,13 @@ export interface IndividualDeviceListResponse {
   apartmentNumber: string | null;
   homeownerName: string | null;
   personalAccountNumber: string | null;
+  hasMagneticSeal: boolean;
+
+  /** @format date-time */
+  magneticSealInstallationDate: string | null;
 }
 
-export interface IndividualDeviceListResponsePagedList {
+export interface IndividualDeviceListItemResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -1355,7 +1364,7 @@ export interface IndividualDeviceListResponsePagedList {
 
   /** @format int32 */
   pageSize: number;
-  items: IndividualDeviceListResponse[] | null;
+  items: IndividualDeviceListItemResponse[] | null;
 
   /** @format int32 */
   totalPages: number;
@@ -1369,8 +1378,8 @@ export interface IndividualDeviceListResponsePagedList {
   previousPageNumber: number;
 }
 
-export interface IndividualDeviceListResponsePagedListSuccessApiResponse {
-  successResponse: IndividualDeviceListResponsePagedList;
+export interface IndividualDeviceListItemResponsePagedListSuccessApiResponse {
+  successResponse: IndividualDeviceListItemResponsePagedList;
 }
 
 export interface CreateIndividualDeviceRequest {
@@ -1669,8 +1678,8 @@ export interface GroupReportResponse {
 }
 
 export interface ResourceTypeStringKeyValuePair {
-  key?: ResourceType;
-  value?: string | null;
+  Key?: ResourceType;
+  Value?: string | null;
 }
 
 export enum NodeCommercialAccountStatus {
@@ -1681,8 +1690,8 @@ export enum NodeCommercialAccountStatus {
 }
 
 export interface NodeCommercialAccountStatusStringKeyValuePair {
-  key?: NodeCommercialAccountStatus;
-  value?: string | null;
+  Key?: NodeCommercialAccountStatus;
+  Value?: string | null;
 }
 
 export interface GroupReportHousingStock {
@@ -2979,7 +2988,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<IndividualDeviceListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<IndividualDeviceListItemResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
         method: "GET",
         query: query,
@@ -3022,6 +3031,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesSwitchMagneticSealCreate
+     * @request POST:/api/IndividualDevices/{deviceId}/SwitchMagneticSeal
+     * @secure
+     */
+    individualDevicesSwitchMagneticSealCreate: (
+      deviceId: number,
+      query?: { magneticSealInstallationDate?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
+        method: "POST",
+        query: query,
+        secure: true,
         ...params,
       }),
 

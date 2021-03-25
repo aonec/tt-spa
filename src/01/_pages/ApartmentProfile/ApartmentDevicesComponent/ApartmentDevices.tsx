@@ -3,10 +3,10 @@ import { Header } from './components/Header'
 import { ApartmentDevicesList } from './components/ApartmentDevicesList'
 import { ShowHidden } from './components/ShowHidden'
 import {getMonthFromDate} from "../../../utils/getMonthFromDate";
-import {IndividualDeviceListResponse, IndividualDeviceListResponsePagedList} from "../../../../myApi";
-export const ApartmentDevicesContext = React.createContext<IndividualDeviceListResponse[] | null>(null)
+import {IndividualDeviceListItemResponse, IndividualDeviceListItemResponsePagedList} from "../../../../myApi";
+export const ApartmentDevicesContext = React.createContext<IndividualDeviceListItemResponse[] | null>(null)
 
-export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListResponsePagedList }) => {
+export const ApartmentDevices = ({ devices }: { devices: IndividualDeviceListItemResponsePagedList }) => {
 
     //TODO
     //Check with/without current readings

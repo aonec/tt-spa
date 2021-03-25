@@ -6,6 +6,7 @@ interface Props {
     size?: any
     isConnected?: any
     value?: any
+    options: any
 }
 
 

@@ -6,7 +6,7 @@ import {
     StyledModalBody,
     StyledFormPage,
     InputTT, Title, styles, RangePickerTT, SelectTT,
-    StyledRadio, SwitchTT, DatePickerTT,
+    StyledRadio, SwitchTT, DatePickerTT, MultiSelectTT,
 } from '../../../../../tt-components'
 
 import {Divider, Form, Radio} from 'antd'
@@ -37,39 +37,39 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
     }, [])
 
     if (!data) {
-        return null
+        return (
+            <div>Данные не пришли</div>
+        )
     }
+
+
 
     const GroupForm = () => {
         console.log("data", data)
         const [subscription, setSubscription] = useState(false);
         const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
         const reportName = `Выгрузка группового отчёта`
-        const {groupReports, nodeResourceTypes, nodeStatuses} = data;
+        const {groupReports, nodeResourceTypes, nodeStatuses, contractors} = data;
 
-        const groupReportsOptions = groupReports?.map((group) => {
+        const groupReportsOptions = groupReports ? groupReports.map((group) => {
             const {houseManagementId, title, id} = group
             return {value: id === null ? houseManagementId : id, label: title}
-        });
-        // console.log(groupReportsOptions);
+        }) : [];
 
-        const nodeResourceTypesOptions = nodeResourceTypes?.map((nodeResourceType) => {
-            const {key, value} = nodeResourceType
-            return {value: key, label: value}
-        });
+        const nodeResourceTypesOptions = nodeResourceTypes ? nodeResourceTypes.map((nodeResourceType) => {
+            const {Key, Value} = nodeResourceType
+            return {value: Key, label: Value}
+        }) : [];
 
-        const nodeStatusesOptions = nodeStatuses?.map((nodeStatus) => {
-            const {key, value} = nodeStatus
-            return {value: key, label: value}
-        })
+        const nodeStatusesOptions = nodeStatuses ? nodeStatuses.map((nodeStatus) => {
+            const {Key, Value} = nodeStatus
+            return {value: Key, label: Value}
+        }) : [];
 
-        if (!groupReportsOptions || !nodeResourceTypesOptions || !nodeStatusesOptions) {
-            return (
-                <div>
-                    Что-то пошло не так!
-                </div>
-            )
-        }
+        const contractorsOptions = contractors ? contractors.map((contractor) => {
+            const {id, title} = contractor
+            return {value: id, label: title}
+        }) : [];
 
 
         const [form] = Form.useForm();
@@ -205,7 +205,8 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                             rules={[{required: true, message: 'Выберите Ресурс'}]}
 
                         >
-                            <SelectTT
+                            <MultiSelectTT
+                                mode="multiple"
                                 options={nodeResourceTypesOptions}
                             />
                         </Form.Item>
@@ -296,7 +297,9 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                         </Form.Item>
 
                         <Form.Item label='Подрядчики' style={styles.w49}>
-                            <SelectTT/>
+                            <SelectTT
+                                options={contractorsOptions}
+                            />
                         </Form.Item>
 
                         <Form.Item
