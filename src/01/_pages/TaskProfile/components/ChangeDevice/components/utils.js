@@ -1,5 +1,5 @@
-import moment from 'moment'
+import moment from 'moment';
 
 export function isDateEmpty(value) {
-    return value === null ? null : moment(value)
+  return value === null ? null : moment(value);
 }

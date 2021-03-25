@@ -1,17 +1,17 @@
-import React from 'react'
-import styled from 'reshadow/macro'
+import React from 'react';
+import styled from 'reshadow/macro';
 
 // import { Icon } from "01/components/Icon"
 // import { button } from "01/r_comp"
-import styles from './styles'
+import styles from './styles';
 
 export const CommentsBlock = ({ url, comments, hidden, canBeCreate }) => {
-    return styled(styles)(
-        <comment_block>
-            <h2>Комментарии</h2>
-        </comment_block>
-    )
-}
+  return styled(styles)(
+    <comment_block>
+      <h2>Комментарии</h2>
+    </comment_block>
+  );
+};
 
 // export const CommentsBlock = ({
 //   showBlock = true,

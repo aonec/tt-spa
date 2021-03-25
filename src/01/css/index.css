@@ -1,69 +1,69 @@
 @import '../../styles/fonts/fonts.css';
 
 :root {
-    --main: 39, 47, 90;
-    --main-100: rgb(var(--main));
-    --main-90: rgb(var(--main), 0.9);
-    --main-80: rgba(var(--main), 0.8);
-    --main-70: rgba(var(--main), 0.7);
-    --main-60: rgba(var(--main), 0.6);
-    --main-45: rgba(var(--main), 0.45);
-    --main-32: rgba(var(--main), 0.32);
-    --main-4: rgba(var(--main), 0.04);
+  --main: 39, 47, 90;
+  --main-100: rgb(var(--main));
+  --main-90: rgb(var(--main), 0.9);
+  --main-80: rgba(var(--main), 0.8);
+  --main-70: rgba(var(--main), 0.7);
+  --main-60: rgba(var(--main), 0.6);
+  --main-45: rgba(var(--main), 0.45);
+  --main-32: rgba(var(--main), 0.32);
+  --main-4: rgba(var(--main), 0.04);
 
-    /*синий*/
-    --primary: 24, 158, 233;
-    --primary-100: rgb(var(--primary));
-    --primary-16: rgba(var(--primary), 0.16);
+  /*синий*/
+  --primary: 24, 158, 233;
+  --primary-100: rgb(var(--primary));
+  --primary-16: rgba(var(--primary), 0.16);
 
-    /*красный*/
-    --error: #fc525b;
-    --warning: #ff8a1f;
-    --success: #17b45a;
+  /*красный*/
+  --error: #fc525b;
+  --warning: #ff8a1f;
+  --success: #17b45a;
 
-    --frame: #dcdee4;
-    --bg: #f3f5f6;
-    --border-radius: 4px;
-    --login-bg: #12193d;
+  --frame: #dcdee4;
+  --bg: #f3f5f6;
+  --border-radius: 4px;
+  --login-bg: #12193d;
 
-    --hot-water: rgb(255, 140, 104);
-    --cold-water: rgb(121, 175, 255);
-    --electro: rgb(226, 177, 4);
-    --heat: rgb(146, 84, 222);
+  --hot-water: rgb(255, 140, 104);
+  --cold-water: rgb(121, 175, 255);
+  --electro: rgb(226, 177, 4);
+  --heat: rgb(146, 84, 222);
 
-    --step: 4;
+  --step: 4;
 
-    --h-norm: calc(var(--step) * 8px);
-    --h-big: calc(var(--step) * 12px);
+  --h-norm: calc(var(--step) * 8px);
+  --h-big: calc(var(--step) * 12px);
 
-    --shadow: 0px 8px 16px rgba(78, 93, 146, 0.08),
-        0px 4px 4px rgba(78, 93, 146, 0.16);
+  --shadow: 0px 8px 16px rgba(78, 93, 146, 0.08),
+    0px 4px 4px rgba(78, 93, 146, 0.16);
 }
 
 body {
-    margin: 0;
-    font-family: 'PTRootUIWeb', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: var(--main-100);
-    font-size: 14px;
-    line-height: 16px;
+  margin: 0;
+  font-family: 'PTRootUIWeb', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--main-100);
+  font-size: 14px;
+  line-height: 16px;
 }
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 ::-webkit-scrollbar {
-    width: 4px;
-    border-radius: 4px;
-    background-color: rgba(var(--primary), 0.1);
+  width: 4px;
+  border-radius: 4px;
+  background-color: rgba(var(--primary), 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(var(--primary), 0.6);
+  border-radius: 4px;
+  background-color: rgba(var(--primary), 0.6);
 }
 /* reset styles */
 /* margin */
@@ -77,7 +77,7 @@ p,
 ul,
 li,
 menu {
-    margin: 0;
+  margin: 0;
 }
 
 /* padding */
@@ -85,97 +85,97 @@ ul,
 input,
 button,
 menu {
-    padding: 0;
+  padding: 0;
 }
 
 /* background */
 input,
 button {
-    background: none;
+  background: none;
 }
 
 /* outline */
 input,
 button {
-    outline: 0;
+  outline: 0;
 }
 
 /* inherit */
 input,
 button,
 a {
-    font: inherit;
-    color: inherit;
+  font: inherit;
+  color: inherit;
 }
 
 /* border */
 input,
 button {
-    border: none;
+  border: none;
 }
 
 input {
-    width: 100%;
+  width: 100%;
 }
 
 /* =============== default styles ===================== */
 
 h1 {
-    font-weight: 300;
-    font-size: 32px;
-    line-height: 48px;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
 }
 
 h2 {
-    font-weight: normal;
-    font-size: 24px;
-    line-height: 32px;
-    margin-bottom: 16px;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 16px;
 }
 
 h4 {
-    font-size: 16px;
-    line-height: 32px;
+  font-size: 16px;
+  line-height: 32px;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 a {
-    text-decoration: none;
-    cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* disabled */
 button:disabled,
 input:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 /* button*/
 button {
-    cursor: pointer;
-    display: inline-grid;
-    align-items: center;
-    border-radius: 4px;
+  cursor: pointer;
+  display: inline-grid;
+  align-items: center;
+  border-radius: 4px;
 }
 
 /* input */
 input::placeholder {
-    color: var(--main-32);
+  color: var(--main-32);
 }
 
 input[type='file'] {
-    outline: none;
-    opacity: 0;
-    pointer-events: none;
-    user-select: none;
-    width: 0;
-    height: 0;
-    position: absolute;
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  width: 0;
+  height: 0;
+  position: absolute;
 }
 
 sup {
-    font-size: 8px;
+  font-size: 8px;
 }

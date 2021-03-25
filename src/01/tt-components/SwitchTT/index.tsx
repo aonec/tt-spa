@@ -1,13 +1,11 @@
 import React from 'react';
-import styled from "styled-components";
-import {Switch} from "antd";
+import styled from 'styled-components';
+import { Switch } from 'antd';
 
 interface SwitchTTInterface {
-    name? : string
+  name?: string;
 }
 
-export const SwitchTT = styled(Switch)<SwitchTTInterface>`
-  
-`
+export const SwitchTT = styled(Switch)<SwitchTTInterface>``;
 
 export default SwitchTT;

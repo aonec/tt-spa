@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 const ModalTemplate = () => {
-    console.log('ModalTemplate')
-    return <div>ModalTemplate</div>
-}
+  console.log('ModalTemplate');
+  return <div>ModalTemplate</div>;
+};
 
-export default ModalTemplate
+export default ModalTemplate;

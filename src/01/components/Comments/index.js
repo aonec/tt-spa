@@ -1,2 +1,2 @@
-export { CommentsBlock } from './CommentsBlock'
-export { CommentCreator } from './CommentCreator'
+export { CommentsBlock } from './CommentsBlock';
+export { CommentCreator } from './CommentCreator';

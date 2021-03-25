@@ -1,11 +1,11 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import styled from 'reshadow/macro'
+import styled from 'reshadow/macro';
 
 export const LinkWrap = ({ children, to, ...props }) =>
-    to ? (
-        styled`
+  to ? (
+    styled`
       Link {
         display: contents;
         &:hover {
@@ -13,10 +13,10 @@ export const LinkWrap = ({ children, to, ...props }) =>
         }
       }
     `(
-            <Link to={to} {...props}>
-                {children}
-            </Link>
-        )
-    ) : (
-        <>{children}</>
+      <Link to={to} {...props}>
+        {children}
+      </Link>
     )
+  ) : (
+    <>{children}</>
+  );

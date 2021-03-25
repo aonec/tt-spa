@@ -1,14 +1,14 @@
 .arrowEnabled {
-    svg {
-        fill: var(--main-100);
-    }
-    &:hover svg {
-        fill: var(--primary-100);
-    }
+  svg {
+    fill: var(--main-100);
+  }
+  &:hover svg {
+    fill: var(--primary-100);
+  }
 }
 
 .arrowDisabled {
-    svg {
-        fill: var(--main-32);
-    }
+  svg {
+    fill: var(--main-32);
+  }
 }

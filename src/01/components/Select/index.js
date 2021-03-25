@@ -1,2 +1,2 @@
-export { Select } from './Select'
-export * from './selects'
+export { Select } from './Select';
+export * from './selects';

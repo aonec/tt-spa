@@ -1,52 +1,52 @@
 .tab {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .justify_center {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .button {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .device__title {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 2;
-    color: #272f5a;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 2;
+  color: #272f5a;
 }
 
 .device {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .deviceId {
-    margin-left: 6px;
-    font-weight: normal;
-    color: rgba(39, 47, 90, 0.6);
+  margin-left: 6px;
+  font-weight: normal;
+  color: rgba(39, 47, 90, 0.6);
 }
 
 .icon {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .page,
 .currentPage {
-    border: 1px solid lightgray;
-    border-radius: 50%;
-    padding: 5px 10px;
-    margin: 0 10px;
-    cursor: pointer;
+  border: 1px solid lightgray;
+  border-radius: 50%;
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
 }
 
 .currentPage {
-    border: 2px solid gray;
-    font-weight: 700;
+  border: 2px solid gray;
+  font-weight: 700;
 }

@@ -1,17 +1,17 @@
 const objectChanges = [
-    ['Дата и время', 'dateandtime'],
-    ['Действие', 'action'],
-    ['Исполнитель', 'executor'],
-    // ["Дата следующей поверки", "numberOfEntrances"],
-    // ["Тип ресурса", "numberOfFloors"],
-    // ["Место установки", "isThereElevator"],
-    // ["Тип пломбы", "numberOfApartments"],
-    // ["Магнитная пломба", "totalLivingArea"],
-    // ["Организация", "areaOfNonResidential"],
-    // ["Монтажная организация", "houseArea"],
-    // ["Общая площадь", "totalArea"],
-    // ["Год постройки", "constructionDate"],
-]
+  ['Дата и время', 'dateandtime'],
+  ['Действие', 'action'],
+  ['Исполнитель', 'executor'],
+  // ["Дата следующей поверки", "numberOfEntrances"],
+  // ["Тип ресурса", "numberOfFloors"],
+  // ["Место установки", "isThereElevator"],
+  // ["Тип пломбы", "numberOfApartments"],
+  // ["Магнитная пломба", "totalLivingArea"],
+  // ["Организация", "areaOfNonResidential"],
+  // ["Монтажная организация", "houseArea"],
+  // ["Общая площадь", "totalArea"],
+  // ["Год постройки", "constructionDate"],
+];
 
 // const objectInfo = [
 //   ["Город", "city"],
@@ -29,11 +29,11 @@ const objectChanges = [
 // ]
 
 export const useDeviceChanges = (props) => {
-    return {
-        loading: !props.index,
-        list: objectChanges.reduce((list, item) => {
-            list.push({ title: item[0], value: props[item[1]] })
-            return list
-        }, []),
-    }
-}
+  return {
+    loading: !props.index,
+    list: objectChanges.reduce((list, item) => {
+      list.push({ title: item[0], value: props[item[1]] });
+      return list;
+    }, []),
+  };
+};

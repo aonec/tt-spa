@@ -12,17 +12,19 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
   justify-content: center;
   width: 48px;
   height: 48px;
-  ${(props) => props.size == '48'
-          && css`
-            width: 48px;
-            height: 48px;
-          `}
+  ${(props) =>
+    props.size == '48' &&
+    css`
+      width: 48px;
+      height: 48px;
+    `}
 
-  ${(props) => props.size == '24'
-          && css`
-            width: 24px;
-            height: 24px;
-          `}
+  ${(props) =>
+    props.size == '24' &&
+    css`
+      width: 24px;
+      height: 24px;
+    `}
 `;
 
 const MenuItem = styled(Menu.Item)`
@@ -34,11 +36,16 @@ export const MenuButtonTT = (props) => {
   const { menuButtonArr: arr, size } = props;
   function getCurrentColor(color) {
     switch (color) {
-      case 'default': return 'rgba(39, 47, 90, 0.9)';
-      case 'disabled': return 'rgba(39, 47, 90, 0.32)';
-      case 'black': return 'rgba(39, 47, 90, 0.9)';
-      case 'red': return '#FC525B';
-      default: return 'rgba(39, 47, 90, 0.9)';
+      case 'default':
+        return 'rgba(39, 47, 90, 0.9)';
+      case 'disabled':
+        return 'rgba(39, 47, 90, 0.32)';
+      case 'black':
+        return 'rgba(39, 47, 90, 0.9)';
+      case 'red':
+        return '#FC525B';
+      default:
+        return 'rgba(39, 47, 90, 0.9)';
     }
   }
 
@@ -50,11 +57,11 @@ export const MenuButtonTT = (props) => {
         const currentColor = getCurrentColor(color);
         // console.log("clickable", clickable)
         if (show === false) {
-          return null
+          return null;
         }
 
         return (
-          <MenuItem key={title + color} onClick={cb} color={currentColor} >
+          <MenuItem key={title + color} onClick={cb} color={currentColor}>
             {title}
           </MenuItem>
         );
@@ -64,7 +71,7 @@ export const MenuButtonTT = (props) => {
 
   return (
     <Dropdown overlay={menu} trigger={['click']}>
-      <StyledMenuButton size={props.size} >
+      <StyledMenuButton size={props.size}>
         <MoreOutlined />
       </StyledMenuButton>
     </Dropdown>

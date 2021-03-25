@@ -1,10 +1,10 @@
-import { all } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects';
 
 function* test() {
-    // console.log('saga')
+  // console.log('saga')
 }
 
 export default function* rootSaga() {
-    // yield all([tweetsSaga(), tagsSaga(), tweetSaga(), userSaga(), usersSaga()]);
-    yield all([test()])
+  // yield all([tweetsSaga(), tagsSaga(), tweetSaga(), userSaga(), usersSaga()]);
+  yield all([test()]);
 }

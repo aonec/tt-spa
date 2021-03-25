@@ -1,73 +1,73 @@
 @font-face {
-    font-family: 'icomoon';
-    src: url('fonts/icomoon.eot?lobbcn');
-    src: url('fonts/icomoon.eot?lobbcn#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?lobbcn') format('truetype'),
-        url('fonts/icomoon.woff?lobbcn') format('woff'),
-        url('fonts/icomoon.svg?lobbcn#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+  font-family: 'icomoon';
+  src: url('fonts/icomoon.eot?lobbcn');
+  src: url('fonts/icomoon.eot?lobbcn#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?lobbcn') format('truetype'),
+    url('fonts/icomoon.woff?lobbcn') format('woff'),
+    url('fonts/icomoon.svg?lobbcn#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 [class^='icon-'],
 [class*=' icon-'] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-calendar:before {
-    content: '\e900';
-    color: #272f5a;
+  content: '\e900';
+  color: #272f5a;
 }
 .icon-drop:before {
-    content: '\e901';
-    color: #79afff;
+  content: '\e901';
+  color: #79afff;
 }
 .icon-HotWaterSupply:before {
-    content: '\e902';
-    color: #ff8c68;
+  content: '\e902';
+  color: #ff8c68;
 }
 .icon-edit:before {
-    content: '\e903';
-    color: #272f5a;
+  content: '\e903';
+  color: #272f5a;
 }
 .icon-electricity:before {
-    content: '\e904';
-    color: #e2b104;
+  content: '\e904';
+  color: #e2b104;
 }
 .icon-green:before {
-    content: '\e905';
-    color: #17b45a;
+  content: '\e905';
+  color: #17b45a;
 }
 .icon-ok:before {
-    content: '\e906';
-    color: #17b45a;
+  content: '\e906';
+  color: #17b45a;
 }
 .icon-personal .path1:before {
-    content: '\e907';
-    color: rgb(243, 245, 246);
+  content: '\e907';
+  color: rgb(243, 245, 246);
 }
 .icon-personal .path2:before {
-    content: '\e908';
-    margin-left: -1em;
-    color: rgb(39, 47, 90);
+  content: '\e908';
+  margin-left: -1em;
+  color: rgb(39, 47, 90);
 }
 .icon-menu:before {
-    content: '\e909';
-    color: #272f5a;
+  content: '\e909';
+  color: #272f5a;
 }
 .icon-list:before {
-    content: '\e90a';
-    color: #272f5a;
+  content: '\e90a';
+  color: #272f5a;
 }

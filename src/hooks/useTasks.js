@@ -1,1 +1,1 @@
-export const useTasks = (state, dispatch) => {}
+export const useTasks = (state, dispatch) => {};

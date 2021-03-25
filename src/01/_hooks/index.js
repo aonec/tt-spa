@@ -1,1 +1,1 @@
-export * from './useCancelFetch'
+export * from './useCancelFetch';

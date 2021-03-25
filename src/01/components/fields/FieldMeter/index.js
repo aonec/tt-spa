@@ -1,1 +1,1 @@
-export { FieldMeter } from './FieldMeter'
+export { FieldMeter } from './FieldMeter';

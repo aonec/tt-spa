@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import { DatePicker } from 'antd'
+import styled from 'styled-components';
+import { DatePicker } from 'antd';
 
-const { RangePicker } = DatePicker
+const { RangePicker } = DatePicker;
 
 export const RangePickerTT = styled(RangePicker)`
  height: 48px;
@@ -16,6 +16,6 @@ export const RangePickerTT = styled(RangePicker)`
      line-height: 32px;
    }
  }     
-`
+`;
 
-export default RangePicker
+export default RangePicker;

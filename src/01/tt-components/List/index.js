@@ -1,16 +1,16 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Title = styled.h2`
-    font-weight: 400;
-    font-size: 24px;
-    margin-bottom: 16px;
-`
+  font-weight: 400;
+  font-size: 24px;
+  margin-bottom: 16px;
+`;
 
 export const ListWrap = styled.div`
   display: grid;
   height: min-content;
 }
-`
+`;
 
 export const ListItem = styled.div`
 display: grid;
@@ -35,4 +35,4 @@ border-bottom: 1px solid var(--frame);
   }
 }
 }
-`
+`;
