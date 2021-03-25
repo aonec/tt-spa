@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components';
@@ -11,12 +11,17 @@ import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
+import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
 
 interface HousingMeteringDeviceInterface {
   device: HousingMeteringDeviceResponse;
+  setDeregister: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ device }: HousingMeteringDeviceInterface) => {
+export const Header = ({
+  device,
+  setDeregister,
+}: HousingMeteringDeviceInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
@@ -37,6 +42,15 @@ export const Header = ({ device }: HousingMeteringDeviceInterface) => {
       },
       show: show('HousingMeteringDeviceUpdate'),
       color: 'default',
+      clickable: true,
+    },
+    {
+      title: 'Закрыть ОДПУ',
+      cb: () => {
+        setDeregister(true);
+      },
+      show: show('HousingMeteringDeviceUpdate'),
+      color: 'red',
       clickable: true,
     },
   ];

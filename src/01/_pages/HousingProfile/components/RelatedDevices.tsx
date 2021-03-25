@@ -19,7 +19,6 @@ export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
     return null;
   }
 
-  console.log(device);
   const { hubConnection } = device;
 
   const {
@@ -73,7 +72,7 @@ export const NameWrap = styled.div`
   }
 `;
 
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-weight: 500;
@@ -81,27 +80,27 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Title = styled.h2``;
+const Title = styled.h2``;
 
-export const ListWrap = styled.div`
+const ListWrap = styled.div`
   display: grid;
   height: min-content;
 }
 `;
 
-export const ListItem = styled.div`
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: 4fr 2fr 3fr 3fr;
   grid-template-rows: 48px;
@@ -110,6 +109,6 @@ export const ListItem = styled.div`
   opacity: 0.8;
 `;
 
-export const Span = styled.span`
+const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
