@@ -11,12 +11,18 @@ import {
 
 import {Divider, Form, Radio} from 'antd'
 
-import moment from "moment";
+import moment, {Moment} from "moment";
 import {getReports} from "../../../apiObjects";
-import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../myApi";
+import {
+    GroupReportFormResponse,
+    GroupReportResponse,
+    NodeCommercialAccountStatus,
+    ResourceType
+} from "../../../../../../myApi";
 import {useAsync} from "../../../../../hooks/useAsync";
 import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
 import styled from "styled-components";
+import {string} from "yup";
 
 
 interface ModalPropsInterface {
@@ -43,7 +49,6 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
     }
 
 
-
     const GroupForm = () => {
         console.log("data", data)
         const [subscription, setSubscription] = useState(false);
@@ -57,13 +62,13 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
         }) : [];
 
         const nodeResourceTypesOptions = nodeResourceTypes ? nodeResourceTypes.map((nodeResourceType) => {
-            const {Key, Value} = nodeResourceType
-            return {value: Key, label: Value}
+            const {key, value} = nodeResourceType
+            return {value: key, label: value}
         }) : [];
 
         const nodeStatusesOptions = nodeStatuses ? nodeStatuses.map((nodeStatus) => {
-            const {Key, Value} = nodeStatus
-            return {value: Key, label: Value}
+            const {key, value} = nodeStatus
+            return {value: key, label: value}
         }) : [];
 
         const contractorsOptions = contractors ? contractors.map((contractor) => {
@@ -71,14 +76,37 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             return {value: id, label: title}
         }) : [];
 
+        interface GroupReportValuesInterface {
+            group: string
+            name: string
+            resource: Array<ResourceType>
+            category: NodeCommercialAccountStatus
+            dates: [Moment, Moment]
+            detailing: "daily"
+            email?: string
+            contractors?: Array<Number>
+            nextDate: undefined
+            period: "currentMonth" | 'previousMonth' | 'customPeriod'
+            subscribe: boolean
+            subscribePeriod?: "OncePerTwoWeeks" | "OncePerMonth" | "OncePerQuarter"
+        }
 
-        const [form] = Form.useForm();
+        const [form]  = Form.useForm<GroupReportValuesInterface>();
+
         const {setFieldsValue, getFieldsValue, getFieldValue, validateFields, getFieldsError} = form;
 
 
-        const onFinish = (values: any) => {
+        const onFinish = (values: GroupReportValuesInterface) => {
+            console.log("values", values)
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+
+            const resources = getFieldValue('resource').map((item, index) => {
+                return `NodeResourceType=${item}`
+            })
+            const resResources = resources.join('&')
+            console.log("resources", resources)
+            console.log("getFieldValue('resource')", getFieldValue('resource'))
 
             function res(link: string) {
                 getArchive(link).then((response: any) => {
@@ -95,13 +123,14 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
             if (subscription) {
                 console.log("C подпиской")
-                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`
                 console.log(link)
                 res(link)
             }
             if (!subscription) {
                 console.log("Без подписки");
-                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+                console.log(link)
                 res(link)
             }
 
