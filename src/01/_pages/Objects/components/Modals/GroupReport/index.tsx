@@ -6,17 +6,18 @@ import {
     StyledModalBody,
     StyledFormPage,
     InputTT, Title, styles, RangePickerTT, SelectTT,
+    StyledRadio, SwitchTT, DatePickerTT,
 } from '../../../../../tt-components'
 
-import {Form, Radio, Select} from 'antd'
-import {StyledRadio} from "../../../../../tt-components/Radio";
+import {Divider, Form, Radio} from 'antd'
+
 import moment from "moment";
 import {getReports} from "../../../apiObjects";
-import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../myApi";
+import {GroupReportFormResponse} from "../../../../../../myApi";
 import {useAsync} from "../../../../../hooks/useAsync";
 import {allResources} from "../../../../../tt-components/localBases";
-import axios from "../../../../../axios";
 import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
+import styled from "styled-components";
 
 
 interface ModalPropsInterface {
@@ -53,7 +54,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
         const groupReportsOptions = groupReports.map((group: any) => {
             const {houseManagementId, title, id} = group
-            return {value: id === null ? houseManagementId : id , label: title}
+            return {value: id === null ? houseManagementId : id, label: title}
         })
         console.log(groupReportsOptions);
 
@@ -71,15 +72,16 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
 
         const [form] = Form.useForm();
-        const {setFieldsValue, getFieldsValue, getFieldValue} = form;
+        const {setFieldsValue, getFieldsValue, getFieldValue, validateFields} = form;
         const [isDisabled, setIsDisabled] = useState(true);
+        const [subscription, setSubscription] = useState(true);
         const onFinish = (values: any) => {
             console.log('Success:', values);
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
             // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
             const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
-            console.log("link",link)
+            console.log("link", link)
             const name = 'Reports.zip'
 
             getArchive(link).then((response: any) => {
@@ -123,8 +125,16 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             period: 'currentMonth',
             dates: [moment().startOf('month'), moment()],
             detailing: 'daily',
+            subscribe: false,
+            hidden: true,
+            subscribePeriod: 'twoWeeks',
+            email: 'maratismodest@gmail.com',
         }
 
+        const handleSwitch = (event: boolean) => {
+            console.log(event)
+            setSubscription(!event);
+        }
 
         return (
             <Form
@@ -143,9 +153,11 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                         <Form.Item
                             name="group"
                             label="Группа" style={styles.w100}
+                            rules={[{required: true, message: 'Выберите Группу'}]}
                         >
                             <SelectTT
                                 options={groupReportsOptions}
+
                             />
                         </Form.Item>
 
@@ -220,7 +232,52 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                             />
                         </Form.Item>
 
+                        <Divider/>
+                        <div style={{display: 'flex', alignItems: 'baseline', width: '100%'}}>
+
+                            <Form.Item name='subscribe'>
+                                <SwitchTT onChange={handleSwitch}/>
+                            </Form.Item>
+                            <div style={{paddingLeft: 16}}>
+                                <SwitchHeader>
+                                    Регулярная выгрузка отчёта
+                                </SwitchHeader>
+                                <SwitchSubheader>
+                                    Групповой отчёт будет приходить вам и подрядчикам на почту в выбранную дату
+                                </SwitchSubheader>
+                            </div>
+                        </div>
+
+
                     </StyledFormPage>
+
+                <StyledFormPage hidden={subscription}>
+                    <Form.Item label='Email' style={styles.w49} name='email'>
+                        <InputTT/>
+                    </Form.Item>
+
+                    <Form.Item label='Подрядчики' style={styles.w49}>
+                        <SelectTT/>
+                    </Form.Item>
+                    <Form.Item label='Дата следующей выгрузки отчёта' style={styles.w49}>
+                        <DatePickerTT format='DD.MM.YYYY'/>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Период"
+                        style={styles.w100}
+                        name='subscribePeriod'
+                        rules={[{required: true, message: 'Укажите Период'}]}
+                    >
+                        <Radio.Group>
+                            <StyledRadio value="twoWeeks">1 раз в 2 недели</StyledRadio>
+                            <StyledRadio value="month">1 раз в месяц</StyledRadio>
+                            <StyledRadio value="quarter">1 раз в квартал</StyledRadio>
+                        </Radio.Group>
+                    </Form.Item>
+
+                </StyledFormPage>
+
                 </StyledModalBody>
                 <StyledFooter modal>
                     <ButtonTT
@@ -249,7 +306,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
     return (
         <StyledModal
-            visible={visible}
+            visible={true}
             width={800}
             footer={null}
             onCancel={handleCancel}
@@ -262,5 +319,23 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
 
 }
+
+const SwitchHeader = styled.h4`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+  color: var(--color-primary-90);
+  padding: 0;
+  margin: 0;
+`
+const SwitchSubheader = styled.span`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-primary-90);
+`
+
 
 export default ModalGroupReport;
