@@ -59,6 +59,17 @@ export const housingMeteringDeviceTypes = [
   },
 ];
 
+export const DEFAULT_DEVICE = {
+  model: '',
+  serialNumber: '',
+  resource: '',
+  commercialAccountingDate: '',
+  futureCheckingDate: '',
+  lastCheckingDate: '',
+  futureCommercialAccountingDate: '',
+  lastCommercialAccountingDate: '',
+  magistral: '',
+};
 export const resources = [
   {
     value: 'HotWaterSupply',

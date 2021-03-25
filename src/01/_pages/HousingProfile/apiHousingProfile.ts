@@ -1,6 +1,6 @@
 import axios from '../../axios';
 
-export async function getHousing(id = '') {
+export async function getHousingMeteringDevice(id: number) {
   try {
     const res = await axios.get(`HousingMeteringDevices/${id}`);
     return res;
@@ -13,7 +13,7 @@ export async function getHousing(id = '') {
   }
 }
 
-export async function getHousingTasks(url = '') {
+export async function getHousingTasks(url: string) {
   try {
     const newURL = `Tasks?DeviceId=${url}`;
     const res = await axios.get(newURL);

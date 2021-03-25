@@ -6,47 +6,51 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import { HousingContext } from '../HousingProfile';
+import { HousingMeteringDeviceResponse, TaskResponse } from '../../../../myApi';
+import { IconTT } from '../../../tt-components';
+import moment from 'moment';
 
-export const RelatedDevices = () => {
-  const { device, loadings, errors, error } = useContext(HousingContext);
+interface RelatedDevicesInterface {
+  device: any;
+}
 
-  const isLoading = _.get(loadings, 'device', true);
+export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
+  if (!device) {
+    return null;
+  }
+
+  console.log(device);
   const { hubConnection } = device;
 
   const {
     calculatorModel,
     calculatorSerialNumber,
     futureCheckingDate,
-    closingdate,
+    closingDate,
     calculatorId,
   } = hubConnection || {};
-
-  const { icon, color } = DeviceIcons.null || {};
 
   const CalcItem = () => (
     <ListItem key={calculatorId}>
       <NavLink to={`/calculators/${calculatorId}`}>
         <NameWrap>
-          <Icon icon={icon} color={color} />
+          <IconTT icon={'device'} />
           <Name>{calculatorModel || 'Вычислитель'}</Name>
           <Serial>{` (${calculatorSerialNumber})`}</Serial>
         </NameWrap>
       </NavLink>
       <State>
         <Icon icon="status" color="#17B45A" />
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        {`${closingDate ? 'Не активен' : 'Активен'}`}
       </State>
-      <Span>{convertDate(futureCheckingDate)}</Span>
+      <Span>{moment(futureCheckingDate).format('DD.MM.YYYY')}</Span>
     </ListItem>
   );
 
   return (
     <ListWrap>
-      <Loader show={isLoading} size="32">
-        <Title>Соединение с вычислителем</Title>
-        <CalcItem />
-      </Loader>
+      <Title>Соединение с вычислителем</Title>
+      <CalcItem />
     </ListWrap>
   );
 };
@@ -57,8 +61,9 @@ export const Template = styled.div``;
 
 export const NameWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 5fr 6fr;
+  grid-template-columns: auto auto 1fr;
   align-items: center;
+  grid-column-gap: 8px;
 
   &:hover {
     h3,
