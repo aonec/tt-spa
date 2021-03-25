@@ -21,29 +21,21 @@ const ModalCalculatorReportForm = (props) => {
   const { device, handleCancel } = props;
   const { TabPane } = Tabs;
 
-  const {
-    id, model, serialNumber, address, nodes,
-  } = device;
+  const { id, model, serialNumber, address, nodes } = device;
 
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
   const nodesList = nodes.map((node, index) => {
-    const {
-      id, number, resource, communicationPipes,
-    } = node;
+    const { id, number, resource, communicationPipes } = node;
 
     const devices = _.flatten(
       communicationPipes.map((communicationPipe) => {
         const { devices } = communicationPipe;
 
         return devices.reduce((result, item) => {
-          const {
-            housingMeteringDeviceType,
-            serialNumber,
-            model,
-          } = item;
+          const { housingMeteringDeviceType, serialNumber, model } = item;
 
           if (housingMeteringDeviceType === 'FlowMeter') {
             result.push({
@@ -53,7 +45,7 @@ const ModalCalculatorReportForm = (props) => {
           }
           return result;
         }, []);
-      }),
+      })
     );
 
     return {
@@ -98,7 +90,7 @@ const ModalCalculatorReportForm = (props) => {
 
       const beginName = moment(values.begin).format('YYYY-MM-DD');
       const endName = moment(values.end).format('YYYY-MM-DD');
-      const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       // xlsx
       getArchive(shortLink).then((response) => {
@@ -106,7 +98,7 @@ const ModalCalculatorReportForm = (props) => {
         const link = document.createElement('a');
         link.href = url;
         const fileName = `${street}, ${housingStockNumber} - ${translate(
-          resource,
+          resource
         )} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
@@ -150,14 +142,8 @@ const ModalCalculatorReportForm = (props) => {
         setFieldValue('customPeriodDisabled', true);
         break;
       case 'previousMonth':
-        setFieldValue(
-          'begin',
-          moment().subtract(1, 'month').startOf('month'),
-        );
-        setFieldValue(
-          'end',
-          moment().subtract(1, 'month').endOf('month'),
-        );
+        setFieldValue('begin', moment().subtract(1, 'month').startOf('month'));
+        setFieldValue('end', moment().subtract(1, 'month').endOf('month'));
         setFieldValue('customPeriodDisabled', true);
         break;
       case 'customPeriod':
@@ -205,17 +191,11 @@ const ModalCalculatorReportForm = (props) => {
     <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>Выгрузка отчета о общедомовом потреблении</Header>
-        <Tabs
-          defaultActiveKey={defaultRes}
-          onChange={onTabsChangeHandler}
-        >
+        <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
           {TabsList}
         </Tabs>
         <Form.Item label="Название отчета">
-          <InputTT
-            value={`${street}_${housingStockNumber}.exls`}
-            readOnly
-          />
+          <InputTT value={`${street}_${housingStockNumber}.exls`} readOnly />
         </Form.Item>
 
         <Form.Item label="Выбор узла">
@@ -237,25 +217,18 @@ const ModalCalculatorReportForm = (props) => {
               size="large"
               onChange={(event) => onPeriodChange(event)}
             >
-              <StyledRadio value="lastSevenDays">
-                Последние 7 дней
-              </StyledRadio>
+              <StyledRadio value="lastSevenDays">Последние 7 дней</StyledRadio>
               <StyledRadio value="currentMonth" checked>
                 С начала месяца
               </StyledRadio>
-              <StyledRadio value="previousMonth">
-                За прошлый месяц
-              </StyledRadio>
+              <StyledRadio value="previousMonth">За прошлый месяц</StyledRadio>
               <StyledRadio value="customPeriod">
                 Произвольный период
               </StyledRadio>
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item
-            label="Детализация отчета"
-            style={{ width: '50%' }}
-          >
+          <Form.Item label="Детализация отчета" style={{ width: '50%' }}>
             <Radio.Group
               defaultValue="daily"
               size="large"
@@ -282,18 +255,11 @@ const ModalCalculatorReportForm = (props) => {
           />
         </Form.Item>
       </StyledModalBody>
-      <StyledFooter
-        style={{ display: 'flex', justifyContent: 'flex-end' }}
-      >
+      <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <ButtonTT color="white" onClick={handleCancel}>
           Отмена
         </ButtonTT>
-        <ButtonTT
-          color="blue"
-          type="submit"
-          big
-          style={{ marginLeft: '16px' }}
-        >
+        <ButtonTT color="blue" type="submit" big style={{ marginLeft: '16px' }}>
           Выгрузить
         </ButtonTT>
       </StyledFooter>

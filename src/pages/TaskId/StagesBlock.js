@@ -1,176 +1,166 @@
-import React, { useContext } from 'react'
-import styled, { css, use } from 'reshadow/macro'
+import React, { useContext } from 'react';
+import styled, { css, use } from 'reshadow/macro';
 
-import { title_section } from 'styles/helper'
-import { Button as Btn, Icon } from 'components'
-import { TaskIdContext } from './contex'
+import { title_section } from 'styles/helper';
+import { Button as Btn, Icon } from 'components';
+import { TaskIdContext } from './contex';
 
 export const StagesBlock = ({ styles }) => {
-    const [state, dispatch] = useContext(TaskIdContext)
-    const { stages, userOperatingStatus, loading } = state
-    return styled(
-        styles,
-        title_section
-    )(
-        <stages>
-            <title_section>Этапы выполнения</title_section>
-            <ul>
-                {stages?.map(
-                    (
-                        {
-                            id,
-                            name,
-                            number,
-                            status,
-                            type,
-                            closingTime,
-                            perpetrator,
-                        },
-                        i,
-                        arr
-                    ) => (
-                        <stage key={id} {...use({ status })}>
-                            <icon as="span">
-                                {status === 'Done' ? (
-                                    <Icon icon="ok" />
-                                ) : type === 'Switch' ? (
-                                    <Icon icon="choice" />
-                                ) : type === 'Final' ? (
-                                    <Icon icon="finish" />
-                                ) : (
-                                    number
-                                )}
-                            </icon>
-                            <title as="span">{name}</title>
-                            {closingTime && (
-                                <>
-                                    <span>{perpetrator.name}</span>
-                                    <span>
-                                        {new Date(closingTime).toLocaleString()}
-                                    </span>
-                                </>
-                            )}
-                            {arr[i + 1]?.status === 'InProgress' &&
-                                userOperatingStatus === 'Executor' && (
-                                    <Btn
-                                        onClick={() =>
-                                            dispatch({
-                                                type: 'revert_stage',
-                                                payload: { comment: '' },
-                                            })
-                                        }
-                                        loading={loading.revertStage}
-                                    >
-                                        вернуть этап
-                                    </Btn>
-                                )}
-                        </stage>
-                    )
+  const [state, dispatch] = useContext(TaskIdContext);
+  const { stages, userOperatingStatus, loading } = state;
+  return styled(
+    styles,
+    title_section
+  )(
+    <stages>
+      <title_section>Этапы выполнения</title_section>
+      <ul>
+        {stages?.map(
+          (
+            { id, name, number, status, type, closingTime, perpetrator },
+            i,
+            arr
+          ) => (
+            <stage key={id} {...use({ status })}>
+              <icon as="span">
+                {status === 'Done' ? (
+                  <Icon icon="ok" />
+                ) : type === 'Switch' ? (
+                  <Icon icon="choice" />
+                ) : type === 'Final' ? (
+                  <Icon icon="finish" />
+                ) : (
+                  number
                 )}
-            </ul>
-        </stages>
-    )
-}
+              </icon>
+              <title as="span">{name}</title>
+              {closingTime && (
+                <>
+                  <span>{perpetrator.name}</span>
+                  <span>{new Date(closingTime).toLocaleString()}</span>
+                </>
+              )}
+              {arr[i + 1]?.status === 'InProgress' &&
+                userOperatingStatus === 'Executor' && (
+                  <Btn
+                    onClick={() =>
+                      dispatch({
+                        type: 'revert_stage',
+                        payload: { comment: '' },
+                      })
+                    }
+                    loading={loading.revertStage}
+                  >
+                    вернуть этап
+                  </Btn>
+                )}
+            </stage>
+          )
+        )}
+      </ul>
+    </stages>
+  );
+};
 
 StagesBlock.defaultProps = {
-    styles: css`
-        stages,
-        stage {
-            display: grid;
-        }
-        stages {
-            align-content: start;
-            grid-gap: 16px;
-            font-size: 14px;
-        }
+  styles: css`
+    stages,
+    stage {
+      display: grid;
+    }
+    stages {
+      align-content: start;
+      grid-gap: 16px;
+      font-size: 14px;
+    }
 
-        stage {
-            --active: rgba(var(--primary));
-            grid-template-columns: repeat(4, auto);
-            place-content: start;
-            grid-column-gap: 16px;
-            grid-row-gap: 8px;
-            padding-bottom: 20px;
-            position: relative;
+    stage {
+      --active: rgba(var(--primary));
+      grid-template-columns: repeat(4, auto);
+      place-content: start;
+      grid-column-gap: 16px;
+      grid-row-gap: 8px;
+      padding-bottom: 20px;
+      position: relative;
 
-            &:not(:last-child) icon::before {
-                content: '';
-                border: inherit;
-                position: absolute;
-                left: 15px;
-                top: 36px;
-                bottom: 4px;
-            }
+      &:not(:last-child) icon::before {
+        content: '';
+        border: inherit;
+        position: absolute;
+        left: 15px;
+        top: 36px;
+        bottom: 4px;
+      }
 
-            &[|status='InProgress'] {
-                & icon {
-                    background-color: var(--active);
-                    border-color: var(--active);
-                    color: #fff;
-                }
-
-                & title {
-                    font-weight: 500;
-                }
-            }
-            &[|status='Waiting'] {
-                & icon {
-                    background-color: rgb(var(--bg));
-                    border-color: rgb(var(--bg));
-                }
-                & title {
-                    opacity: 0.6;
-                }
-            }
-
-            &[|status='Done'] {
-                & title {
-                    opacity: 0.6;
-                }
-                & icon {
-                    border-color: var(--active);
-                    color: var(--active);
-                }
-            }
-        }
-        icon {
-            display: inline-grid;
-            place-content: center;
-            width: 32px;
-            height: 32px;
-            border: 1px solid;
-            border-radius: 50%;
-            grid-row: 1 / 3;
-            grid-column: 1 / 2;
+      &[|status='InProgress'] {
+        & icon {
+          background-color: var(--active);
+          border-color: var(--active);
+          color: #fff;
         }
 
-        title {
-            grid-column: 2 / -1;
-            grid-row: 1;
+        & title {
+          font-weight: 500;
         }
+      }
+      &[|status='Waiting'] {
+        & icon {
+          background-color: rgb(var(--bg));
+          border-color: rgb(var(--bg));
+        }
+        & title {
+          opacity: 0.6;
+        }
+      }
 
-        time,
-        username {
-            grid-row: 2;
+      &[|status='Done'] {
+        & title {
+          opacity: 0.6;
         }
+        & icon {
+          border-color: var(--active);
+          color: var(--active);
+        }
+      }
+    }
+    icon {
+      display: inline-grid;
+      place-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid;
+      border-radius: 50%;
+      grid-row: 1 / 3;
+      grid-column: 1 / 2;
+    }
 
-        time {
-            grid-column: 3 / span 1;
-        }
+    title {
+      grid-column: 2 / -1;
+      grid-row: 1;
+    }
 
-        username {
-            grid-column: 2 / span 1;
-        }
+    time,
+    username {
+      grid-row: 2;
+    }
 
-        Btn {
-            grid-column: 2 / -1;
-            grid-row: 3;
-            justify-self: start;
-        }
+    time {
+      grid-column: 3 / span 1;
+    }
 
-        span {
-            opacity: 0.32;
-            font-size: 12px;
-        }
-    `,
-}
+    username {
+      grid-column: 2 / span 1;
+    }
+
+    Btn {
+      grid-column: 2 / -1;
+      grid-row: 3;
+      justify-self: start;
+    }
+
+    span {
+      opacity: 0.32;
+      font-size: 12px;
+    }
+  `,
+};

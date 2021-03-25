@@ -1,3 +1,3 @@
-import React from 'react'
+import React from 'react';
 
-export const TasksProfileContext = React.createContext()
+export const TasksProfileContext = React.createContext();

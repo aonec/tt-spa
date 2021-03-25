@@ -1,8 +1,8 @@
-import React from 'react'
-import { Title } from '../../../tt-components'
+import React from 'react';
+import { Title } from '../../../tt-components';
 
 const Documents = () => (
-    <Title color={'black'}>Компонент Документы в процессе разработки</Title>
-)
+  <Title color={'black'}>Компонент Документы в процессе разработки</Title>
+);
 
-export default Documents
+export default Documents;

@@ -1,20 +1,20 @@
 .title-40 {
-    font-weight: 300;
-    font-size: 40px;
-    line-height: 48px;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 48px;
 }
 
 .bg-blue {
-    background: #12193d;
+  background: #12193d;
 }
 
 /* colors */
 .white {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 /* font-sizes */
 .ft-14 {
-    font-size: 14px;
-    line-height: 16px;
+  font-size: 14px;
+  line-height: 16px;
 }

@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export function useCancel(cancel) {
-    return {
-        cancelToken: new axios.CancelToken((e) => {
-            cancel = e
-        }, cancel),
-        cancel,
-    }
+  return {
+    cancelToken: new axios.CancelToken((e) => {
+      cancel = e;
+    }, cancel),
+    cancel,
+  };
 }

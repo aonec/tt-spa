@@ -1,6 +1,6 @@
-import moment from 'moment'
+import moment from 'moment';
 
 const isDateNull = (date) => {
-    return date === null ? null : moment(date)
-}
-export default isDateNull
+  return date === null ? null : moment(date);
+};
+export default isDateNull;

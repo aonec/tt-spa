@@ -1,10 +1,12 @@
-import styled, {css} from 'styled-components'
-import {Select} from 'antd'
+import styled, { css } from 'styled-components';
+import { Select } from 'antd';
 
 interface Props {
-    name?: string
-    size?: any
-    isConnected?: any
+  name?: string;
+  size?: any;
+  isConnected?: any;
+  options: any;
+  mode: any;
 }
 
 export const MultiSelectTT = styled(Select)<Props>`
@@ -18,5 +20,5 @@ export const MultiSelectTT = styled(Select)<Props>`
     right: 0;
     padding: 8px 24px;
   }
-`
-export default MultiSelectTT
+`;
+export default MultiSelectTT;

@@ -15,7 +15,7 @@ export const ModalCalculatorReport = () => {
     return (
       <StyledModal
         visible={report}
-                // visible
+        // visible
         width={800}
         footer={null}
         onCancel={handleCancel}
@@ -31,15 +31,12 @@ export const ModalCalculatorReport = () => {
   return (
     <StyledModal
       visible={report}
-            // visible
+      // visible
       width={800}
       footer={null}
       onCancel={handleCancel}
     >
-      <ModalSonoSafeReportForm
-        device={device}
-        handleCancel={handleCancel}
-      />
+      <ModalSonoSafeReportForm device={device} handleCancel={handleCancel} />
     </StyledModal>
   );
 };

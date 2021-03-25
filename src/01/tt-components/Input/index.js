@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Input = styled.div`
     --active: var(--primary-100);
@@ -85,6 +85,6 @@ export const Input = styled.div`
     &:hover {
       color: var(--primary-100);
     }
-`
+`;
 
-export default Input
+export default Input;

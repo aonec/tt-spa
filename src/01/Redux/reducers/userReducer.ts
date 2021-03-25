@@ -1,24 +1,24 @@
-import axios from "../../axios";
-import {ManagingFirmUserResponse} from "../../../myApi";
+import axios from '../../axios';
+import { ManagingFirmUserResponse } from '../../../myApi';
 
-
-const initialState = {}
-
+const initialState = {};
 
 interface SetUserInterface {
-    type: 'SET_USER'
-    payload: ManagingFirmUserResponse
+  type: 'SET_USER';
+  payload: ManagingFirmUserResponse;
 }
 
 export const setUser = (value: any): SetUserInterface => ({
-    type: 'SET_USER',
-    payload: value,
-})
+  type: 'SET_USER',
+  payload: value,
+});
 
-export default function userReducer(state: any = initialState, action: SetUserInterface): ManagingFirmUserResponse {
-    return {...state, ...action.payload}
+export default function userReducer(
+  state: any = initialState,
+  action: SetUserInterface
+): ManagingFirmUserResponse {
+  return { ...state, ...action.payload };
 }
-
 
 // import axios from "../../axios";
 // import {ManagingFirmUserResponse} from "../../../myApi";

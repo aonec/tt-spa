@@ -1,2 +1,2 @@
-import { Information } from './Information'
-export { Information }
+import { Information } from './Information';
+export { Information };

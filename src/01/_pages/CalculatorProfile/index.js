@@ -1,1 +1,1 @@
-export { CalculatorProfile, DeviceContext } from './CalculatorProfile'
+export { CalculatorProfile, DeviceContext } from './CalculatorProfile';

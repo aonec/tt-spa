@@ -1,16 +1,16 @@
 {
-    "tasks": [
-        { "name": "К исполнению", "to": "executing" },
-        ["Наблюдаемые", "observing"],
-        ["Архив", "archived"]
-    ],
-    "objectId": [
-        { "name": "Общие данные" },
-        { "name": "Квартиры", "to": "apartments" },
-        { "name": "ОДПУ", "to": "devices" }
-    ],
-    "deviceId": [
-        { "name": "Общие данные", "to": "", "exact": true },
-        { "name": "Приборы учета", "to": "/devices" }
-    ]
+  "tasks": [
+    { "name": "К исполнению", "to": "executing" },
+    ["Наблюдаемые", "observing"],
+    ["Архив", "archived"]
+  ],
+  "objectId": [
+    { "name": "Общие данные" },
+    { "name": "Квартиры", "to": "apartments" },
+    { "name": "ОДПУ", "to": "devices" }
+  ],
+  "deviceId": [
+    { "name": "Общие данные", "to": "", "exact": true },
+    { "name": "Приборы учета", "to": "/devices" }
+  ]
 }

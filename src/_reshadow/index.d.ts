@@ -1,1 +1,1 @@
-declare module 'reshadow/macro'
+declare module 'reshadow/macro';

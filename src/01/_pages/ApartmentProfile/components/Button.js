@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 export const Button = styled.button`
   border: 1px solid #DCDEE4;
@@ -19,11 +19,11 @@ export const Button = styled.button`
     }
   }
   ${(props) =>
-      props.primary &&
-      css`
-          background: palevioletred;
-          color: white;
-      `};
-`
+    props.primary &&
+    css`
+      background: palevioletred;
+      color: white;
+    `};
+`;
 
-export default Button
+export default Button;

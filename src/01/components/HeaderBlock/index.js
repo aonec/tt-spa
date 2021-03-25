@@ -1,1 +1,1 @@
-export { HeaderBlock } from './HeaderBlock'
+export { HeaderBlock } from './HeaderBlock';

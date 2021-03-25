@@ -1,5 +1,5 @@
 export function isEmptyString(item) {
-    return item === null || item === ''
+  return item === null || item === '';
 }
 
-export default isEmptyString
+export default isEmptyString;
