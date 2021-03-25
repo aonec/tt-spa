@@ -86,7 +86,7 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
                                 : s.arrowEnabled
                         }
                     >
-                        <Arrow isDisabled={isLeftArrowDisabled} />
+                        <Arrow />
                     </ArrowContainer>
                     <CenterContainer>
                         {getPreviousReadingsMonth(sliderIndex)}
@@ -98,8 +98,9 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
                                 : s.arrowEnabled
                         }
                         onClick={onClickIncrease}
+                        style={{transform: 'rotate(180deg)'}}
                     >
-                        <Arrow isRight isDisabled={isRightArrowDisabled} />
+                        <Arrow />
                     </ArrowContainer>
                 </CenterContainer>
 
@@ -132,6 +133,25 @@ export const ArrowContainer = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+      svg {
+        opacity: 0.7;
+        &:hover {
+            opacity: 1;
+        }
+    }
+`
+
+const OpacityContainer = styled.span`
+    svg {
+        opacity: 0.7;
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    display: flex;
+    align-items: flex-start;
+    margin-left: 8px;
 `
 
 export const CenterContainer = styled.div`
