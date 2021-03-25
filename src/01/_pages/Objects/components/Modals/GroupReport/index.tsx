@@ -126,7 +126,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
       );
       const resResources = resources.join('&');
 
-      function res(link: string) {
+      function getGroupReport(link: string) {
         getArchive(link).then((response: any) => {
           const url = window.URL.createObjectURL(new Blob([response]));
           const link = document.createElement('a');
@@ -143,13 +143,13 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
         console.log('C подпиской');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        res(link);
+        // getGroupReport(link);
       }
       if (!subscription) {
         console.log('Без подписки');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        res(link);
+        // getGroupReport(link);
       }
     };
 
