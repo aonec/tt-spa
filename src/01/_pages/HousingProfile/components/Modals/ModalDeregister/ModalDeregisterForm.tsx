@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -20,13 +20,19 @@ interface ModalDeregisterDeviceInterface {
   handleCancel: any;
 }
 
+export interface FormInterface {
+  deviceId: number;
+  documentsIds: Array<number>;
+  closingDate: string;
+}
+
 const ModalDeregisterForm = ({
   deregister,
   setDeregister,
   device,
   handleCancel,
 }: ModalDeregisterDeviceInterface) => {
-  const { model, serialNumber } = device;
+  const { model, serialNumber, id } = device;
 
   const {
     handleSubmit,
@@ -38,9 +44,9 @@ const ModalDeregisterForm = ({
     setFieldValue,
   } = useFormik({
     initialValues: {
-      closingDateTime: moment().toISOString(),
+      closingDate: moment().toISOString(),
       documentsIds: [],
-      deviceId: device.id,
+      deviceId: id,
     },
     validationSchema: Yup.object({
       deviceId: Yup.number().required('Не передан ИД устройства'),
@@ -49,7 +55,7 @@ const ModalDeregisterForm = ({
       const form: FormInterface = {
         deviceId: values.deviceId,
         documentsIds: values.documentsIds,
-        closingDateTime: values.closingDateTime,
+        closingDate: values.closingDate,
       };
       console.log(form);
       deregisterDevice(form).then((res) => {
@@ -59,7 +65,7 @@ const ModalDeregisterForm = ({
   });
 
   return (
-    <Form id="deregisterDevice">
+    <form id="deregisterDevice" onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>{`Вы действительно хотите снять ${model} (${serialNumber}) с учета?`}</Header>
         <Form.Item label="Дата снятия прибора с учета">
@@ -70,31 +76,26 @@ const ModalDeregisterForm = ({
             onChange={(date) => {
               setFieldValue('closingDateTime', date?.toISOString());
             }}
-            value={moment(values.closingDateTime)}
-            name="closingDateTime"
+            value={moment(values.closingDate)}
+            name="closingDate"
           />
         </Form.Item>
       </StyledModalBody>
       <StyledFooter modal>
-        <ButtonTT color="white" onClick={handleCancel}>
+        <ButtonTT color="white" onClick={handleCancel} type={'button'}>
           Отмена
         </ButtonTT>
         <ButtonTT
           color="red"
-          style={{ marginLeft: '32px' }}
-          type="submit"
+          style={{ marginLeft: 32 }}
+          type={'submit'}
           form="deregisterDevice"
         >
           Снять прибор с учета
         </ButtonTT>
       </StyledFooter>
-    </Form>
+    </form>
   );
 };
-export interface FormInterface {
-  deviceId: number;
-  documentsIds: Array<number>;
-  closingDateTime: string;
-}
 
 export default ModalDeregisterForm;
