@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Loader, Icon } from '01/components';
 import { convertDate } from '01/_api/utils/convertDate';
 import { Button } from '01/_components/Button';
-import { HousingContext } from '../HousingProfile';
 import {
   StageName,
   Task,
@@ -12,19 +11,23 @@ import {
   TasksTitle,
   TasksWrap,
 } from '../../../tt-components';
+import { TaskListResponse, TasksPagedList } from '../../../../myApi';
 
-const buttonHandler = () => {
-  console.log('buttonHandler');
-};
-export const Events = ({ title = '' }) => {
-  const { tasks, loadings } = useContext(HousingContext);
-  const loading = _.get(loadings, 'device', true);
+interface EventsInterface {
+  title: string;
+  tasks: TaskListResponse[] | null;
+}
 
+export const Events = ({ title = '', tasks }: EventsInterface) => {
+  if (!tasks) {
+    return null;
+  }
   const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;
     if (!currentStage) {
       return null;
     }
+
     return (
       <Task key={id} href={`/tasks/${id}`}>
         <StageName>{currentStage.name}</StageName>
@@ -43,27 +46,23 @@ export const Events = ({ title = '' }) => {
     );
   });
 
-  if (Tasks.length > 0) {
+  if (tasks.length > 0) {
     return (
       <TasksWrap>
-        <Loader show={loading} size="32">
-          <TasksTitle>{title}</TasksTitle>
-          {Tasks}
-          <Button onClick={buttonHandler}>Все задачи с объектом</Button>
-        </Loader>
+        <TasksTitle>{title}</TasksTitle>
+        {Tasks}
+        {/*<Button>Все задачи с объектом</Button>*/}
       </TasksWrap>
     );
   }
 
   return (
     <TasksWrap>
-      <Loader show={loading} size="32">
-        <TasksTitle>{title}</TasksTitle>
-        <Task>
-          <StageName>Нет задач </StageName>
-          <TaskName>задачи ОДПУ завершены</TaskName>
-        </Task>
-      </Loader>
+      <TasksTitle>{title}</TasksTitle>
+      <Task>
+        <StageName>Нет задач </StageName>
+        <TaskName>задачи ОДПУ завершены</TaskName>
+      </Task>
     </TasksWrap>
   );
 };

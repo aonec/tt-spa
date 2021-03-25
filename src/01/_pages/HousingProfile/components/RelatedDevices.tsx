@@ -6,47 +6,50 @@ import { Icon } from '01/_components/Icon';
 import DeviceIcons from '01/_components/DeviceIcons';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
-import { HousingContext } from '../HousingProfile';
+import { HousingMeteringDeviceResponse, TaskResponse } from '../../../../myApi';
+import { IconTT } from '../../../tt-components';
+import moment from 'moment';
 
-export const RelatedDevices = () => {
-  const { device, loadings, errors, error } = useContext(HousingContext);
+interface RelatedDevicesInterface {
+  device: any;
+}
 
-  const isLoading = _.get(loadings, 'device', true);
+export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
+  if (!device) {
+    return null;
+  }
+
   const { hubConnection } = device;
 
   const {
     calculatorModel,
     calculatorSerialNumber,
     futureCheckingDate,
-    closingdate,
+    closingDate,
     calculatorId,
   } = hubConnection || {};
-
-  const { icon, color } = DeviceIcons.null || {};
 
   const CalcItem = () => (
     <ListItem key={calculatorId}>
       <NavLink to={`/calculators/${calculatorId}`}>
         <NameWrap>
-          <Icon icon={icon} color={color} />
+          <IconTT icon={'device'} />
           <Name>{calculatorModel || 'Вычислитель'}</Name>
           <Serial>{` (${calculatorSerialNumber})`}</Serial>
         </NameWrap>
       </NavLink>
       <State>
         <Icon icon="status" color="#17B45A" />
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        {`${closingDate ? 'Не активен' : 'Активен'}`}
       </State>
-      <Span>{convertDate(futureCheckingDate)}</Span>
+      <Span>{moment(futureCheckingDate).format('DD.MM.YYYY')}</Span>
     </ListItem>
   );
 
   return (
     <ListWrap>
-      <Loader show={isLoading} size="32">
-        <Title>Соединение с вычислителем</Title>
-        <CalcItem />
-      </Loader>
+      <Title>Соединение с вычислителем</Title>
+      <CalcItem />
     </ListWrap>
   );
 };
@@ -57,8 +60,9 @@ export const Template = styled.div``;
 
 export const NameWrap = styled.div`
   display: grid;
-  grid-template-columns: 1fr 5fr 6fr;
+  grid-template-columns: auto auto 1fr;
   align-items: center;
+  grid-column-gap: 8px;
 
   &:hover {
     h3,
@@ -68,7 +72,7 @@ export const NameWrap = styled.div`
   }
 `;
 
-export const Name = styled.h3`
+const Name = styled.h3`
   padding: 0;
   margin: 0;
   font-weight: 500;
@@ -76,27 +80,27 @@ export const Name = styled.h3`
   line-height: 32px;
 `;
 
-export const Serial = styled.p`
+const Serial = styled.p`
   padding: 0;
   margin: 0;
   color: rgba(39, 47, 90, 0.6);
 `;
 
-export const State = styled.div`
+const State = styled.div`
   display: flex;
   align-items: center;
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Title = styled.h2``;
+const Title = styled.h2``;
 
-export const ListWrap = styled.div`
+const ListWrap = styled.div`
   display: grid;
   height: min-content;
 }
 `;
 
-export const ListItem = styled.div`
+const ListItem = styled.div`
   display: grid;
   grid-template-columns: 4fr 2fr 3fr 3fr;
   grid-template-rows: 48px;
@@ -105,6 +109,6 @@ export const ListItem = styled.div`
   opacity: 0.8;
 `;
 
-export const Span = styled.span`
+const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
