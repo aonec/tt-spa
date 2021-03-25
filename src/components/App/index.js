@@ -37,14 +37,14 @@ export const App = () => {
               <Route
                 path="/housingstocks/"
                 render={({ match: { path } }) => (
-                  <Switch>
+                  <SwitchTT>
                     <Route
                       path={path + ":obj_id/devices/:device_id/"}
                       component={DeviceId}
                     />
                     <Route path={path + ":obj_id/"} component={ObjectId} />
                     <Route path={path} component={Objects} />
-                  </Switch>
+                  </SwitchTT>
                 )}
               />
               <Route path="/settings/" render={() => "settings"} />

@@ -90,7 +90,7 @@ export const Objects = ({isReadings = false}) => {
     return styled(styles)(
         <div>
             {!isReadings ? (
-              <h1 style={{ fontWeight: 300, marginBottom: 24 }}>Объекты</h1>
+              <Header />
             ) : null}
             <div style={{width: 960}}>
                 <ObjectsSearchForm

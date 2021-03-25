@@ -1,15 +1,7 @@
 import axios from '../../../axios'
+import {UpdateCalculatorRequest} from "../../../../myApi";
 
-interface ModalInterface {
-    visible: boolean
-}
-
-
-
-
-
-
-export async function getCalculator(id = '') {
+export async function getCalculator(id: number) {
     try {
         const res = await axios.get(`Calculators/${id}`)
         return res
@@ -22,12 +14,11 @@ export async function getCalculator(id = '') {
     }
 }
 
-export async function putCalculator(deviceId = '', form = {}) {
+export async function putCalculator(deviceId : number, form: UpdateCalculatorRequest) {
     try {
         const res = await axios.put(`Calculators/${deviceId}`, form)
-        // console.log("putCalculator", form)
         alert('Вычислитель успешно изменен!')
-        return res
+        return {res, show: false, id: undefined}
     } catch (error) {
         const handleError = error.response.data.error
         console.log(handleError)
@@ -43,25 +34,8 @@ export async function putCalculator(deviceId = '', form = {}) {
             return {show: true, id: id}
             // alert(`В системе уже есть устройство с совпадающими настройками соединения ${id}`)
         }
+        return {show: false, id: undefined}
     }
 }
 
-//   <StyledModal width="800" visible={visible}>
-//     <StyledModalBody>
-//         <Header>
-//             В системе уже есть устройство с совпадающими настройками
-//             соединения
-//         </Header>
-//         <p>
-//             Пожалуйста, измените настройки соединения для данного
-//             устройства
-//         </p>
-//     </StyledModalBody>
-//     <StyledFooter>
-//         <ButtonTT color={'white'}>Отмена</ButtonTT>
-//         <ButtonTT color={'red'} big>
-//             Изменить настройки соединения
-//         </ButtonTT>
-//     </StyledFooter>
-// </StyledModal>
 

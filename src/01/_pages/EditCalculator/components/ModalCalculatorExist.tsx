@@ -6,21 +6,32 @@ import {
     StyledModalBody,
     Title,
 } from '../../../tt-components'
-import React, { useContext } from 'react'
-import { EditCalculatorContext } from '../index'
-import { Link } from 'react-router-dom'
+import React, {Dispatch, SetStateAction, useContext} from 'react'
 
-export const ModalCalculatorExist = () => {
-    const { alertVisible, setAlertVisible, existCalculator } = useContext(
-        EditCalculatorContext
-    )
+import {Link} from 'react-router-dom'
+
+interface ModalCalculatorExistInstance {
+    existCalculator: number | undefined | null
+    setExistCalculator: Dispatch<SetStateAction<number | undefined | null>>
+    visible: boolean
+    setVisible: Dispatch<SetStateAction<boolean>>
+}
+
+export const ModalCalculatorExist = ({
+                                         existCalculator,
+                                         setExistCalculator,
+                                         visible,
+                                         setVisible
+                                     }: ModalCalculatorExistInstance) => {
+
     function handleCancel() {
-        setAlertVisible(false)
+        setVisible(false)
     }
+
     return (
         <StyledModal
             width={800}
-            visible={alertVisible}
+            visible={visible}
             footer={null}
             onCancel={handleCancel}
             onOk={handleCancel}
@@ -43,7 +54,7 @@ export const ModalCalculatorExist = () => {
                 <ButtonTT
                     color={'red'}
                     type="button"
-                    style={{ marginLeft: 16 }}
+                    style={{marginLeft: 16}}
                     onClick={handleCancel}
                 >
                     Изменить настройки соединения

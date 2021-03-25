@@ -68,6 +68,7 @@ export interface ErrorResponse {
 
   /** @format int32 */
   logId: number | null;
+  data: Record<string, any>;
 }
 
 export interface ErrorApiResponse {
@@ -1654,13 +1655,13 @@ export enum ServiceZone {
   IntroductoryNode = "IntroductoryNode",
 }
 
-export interface ServiceZoneStringKeyValuePair {
+export interface ServiceZoneStringDictionaryItem {
   key?: ServiceZone;
   value?: string | null;
 }
 
 export interface NodeServiceZonesResponse {
-  serviceZones: ServiceZoneStringKeyValuePair[] | null;
+  serviceZones: ServiceZoneStringDictionaryItem[] | null;
 }
 
 export interface NodeServiceZonesResponseListSuccessApiResponse {
@@ -1676,7 +1677,7 @@ export interface GroupReportResponse {
   title: string | null;
 }
 
-export interface ResourceTypeStringKeyValuePair {
+export interface ResourceTypeStringDictionaryItem {
   key?: ResourceType;
   value?: string | null;
 }
@@ -1688,7 +1689,7 @@ export enum NodeCommercialAccountStatus {
   Prepared = "Prepared",
 }
 
-export interface NodeCommercialAccountStatusStringKeyValuePair {
+export interface NodeCommercialAccountStatusStringDictionaryItem {
   key?: NodeCommercialAccountStatus;
   value?: string | null;
 }
@@ -1706,11 +1707,18 @@ export interface GroupReportHousingStockGroup {
   housingStocks?: GroupReportHousingStock[] | null;
 }
 
+export interface GroupReportContractor {
+  /** @format int32 */
+  id?: number;
+  title?: string | null;
+}
+
 export interface GroupReportFormResponse {
   groupReports: GroupReportResponse[] | null;
-  nodeResourceTypes: ResourceTypeStringKeyValuePair[] | null;
-  nodeStatuses: NodeCommercialAccountStatusStringKeyValuePair[] | null;
+  nodeResourceTypes: ResourceTypeStringDictionaryItem[] | null;
+  nodeStatuses: NodeCommercialAccountStatusStringDictionaryItem[] | null;
   housingStockGroups: GroupReportHousingStockGroup[] | null;
+  contractors: GroupReportContractor[] | null;
 }
 
 export interface GroupReportFormResponseSuccessApiResponse {

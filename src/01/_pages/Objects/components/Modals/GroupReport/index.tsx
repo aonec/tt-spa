@@ -1,266 +1,444 @@
-import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
-    StyledFooter,
-    StyledModal,
-    ButtonTT,
-    StyledModalBody,
-    StyledFormPage,
-    InputTT, Title, styles, RangePickerTT, SelectTT,
-} from '../../../../../tt-components'
+  StyledFooter,
+  StyledModal,
+  ButtonTT,
+  StyledModalBody,
+  StyledFormPage,
+  InputTT,
+  Title,
+  styles,
+  RangePickerTT,
+  SelectTT,
+  StyledRadio,
+  SwitchTT,
+  DatePickerTT,
+  MultiSelectTT,
+} from '../../../../../tt-components';
 
-import {Form, Radio, Select} from 'antd'
-import {StyledRadio} from "../../../../../tt-components/Radio";
-import moment from "moment";
-import {getReports} from "../../../apiObjects";
-import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../myApi";
-import {useAsync} from "../../../../../hooks/useAsync";
-import {allResources} from "../../../../../tt-components/localBases";
-import axios from "../../../../../axios";
-import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
+import { Divider, Form, Radio } from 'antd';
 
+import moment, { Moment } from 'moment';
+import { getReports } from '../../../apiObjects';
+import {
+  GroupReportFormResponse,
+  NodeCommercialAccountStatus,
+  ResourceType,
+} from '../../../../../../myApi';
+import { useAsync } from '../../../../../hooks/useAsync';
+import { getArchive } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
+import styled from 'styled-components';
 
 interface ModalPropsInterface {
-    visible: boolean
-    setVisible: Dispatch<SetStateAction<boolean>>
+  visible: boolean;
+  setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-interface ReportsInterface {
-    reports: GroupReportFormResponse;
-    setReports: Dispatch<SetStateAction<GroupReportFormResponse>>
+interface GroupReportValuesInterface {
+  group: string;
+  name: string;
+  resource: Array<ResourceType>;
+  category: NodeCommercialAccountStatus;
+  dates: [Moment, Moment];
+  detailing: 'daily';
+  email?: string;
+  contractors?: Array<Number>;
+  nextDate: undefined;
+  period: 'currentMonth' | 'previousMonth' | 'customPeriod';
+  subscribe: boolean;
+  subscribePeriod?: 'OncePerTwoWeeks' | 'OncePerMonth' | 'OncePerQuarter';
 }
 
-// GroupReportFormResponse
-const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
+const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
+  const { data, status, run } = useAsync<GroupReportFormResponse>();
 
-    const {data, status, run} = useAsync()
-    // console.log("data", data)
-    const handleCancel = () => {
-        setVisible(false)
-    }
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
-    useEffect(() => {
-        run(getReports())
-    }, [])
+  useEffect(() => {
+    run(getReports());
+  }, []);
 
+  if (!data) {
+    return null;
+  }
 
-    const GroupForm = () => {
-        console.log("data", data)
-        const reportName = `Выгрузка группового отчёта`
-        const {groupReports, nodeResourceTypes, nodeStatuses} = data;
-        // console.log("groupReports", groupReports)
-        console.log("nodeResourceTypes", nodeResourceTypes)
-        // console.log("nodeStatuses", nodeStatuses)
+  const GroupForm = () => {
+    console.log('data', data);
+    const [subscription, setSubscription] = useState(false);
+    const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
+    const reportName = `Выгрузка группового отчёта`;
+    const { groupReports, nodeResourceTypes, nodeStatuses, contractors } = data;
 
-        const groupReportsOptions = groupReports.map((group: any) => {
-            const {houseManagementId, title, id} = group
-            return {value: id === null ? houseManagementId : id , label: title}
+    const groupReportsOptions = groupReports
+      ? groupReports.map((group) => {
+          const { houseManagementId, title, id } = group;
+          return { value: id === null ? houseManagementId : id, label: title };
         })
-        console.log(groupReportsOptions);
+      : [];
 
-        const nodeResourceTypesOptions = nodeResourceTypes.map((nodeResourceType: any) => {
-            const {Key, Value} = nodeResourceType
-            return {value: Key, label: Value}
+    const nodeResourceTypesOptions = nodeResourceTypes
+      ? nodeResourceTypes.map((nodeResourceType) => {
+          const { key, value } = nodeResourceType;
+          return { value: key, label: value };
         })
+      : [];
 
-        const nodeStatusesOptions = nodeStatuses.map((nodeStatus: any) => {
-            const {Key, Value} = nodeStatus
-            return {value: Key, label: Value}
+    const nodeStatusesOptions = nodeStatuses
+      ? nodeStatuses.map((nodeStatus) => {
+          const { key, value } = nodeStatus;
+          return { value: key, label: value };
         })
+      : [];
 
-        console.log("groupReportsOptions", groupReportsOptions)
+    const contractorsOptions = contractors
+      ? contractors.map((contractor) => {
+          const { id, title } = contractor;
+          return { value: id, label: title };
+        })
+      : [];
 
+    const [form] = Form.useForm<GroupReportValuesInterface>();
+    const {
+      setFieldsValue,
+      getFieldsValue,
+      getFieldValue,
+      validateFields,
+      getFieldsError,
+    } = form;
 
-        const [form] = Form.useForm();
-        const {setFieldsValue, getFieldsValue, getFieldValue} = form;
-        const [isDisabled, setIsDisabled] = useState(true);
-        const onFinish = (values: any) => {
-            console.log('Success:', values);
-            const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-            const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
-            const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
-            console.log("link",link)
-            const name = 'Reports.zip'
+    const onFinish = (values: GroupReportValuesInterface) => {
+      console.log('values', values);
+      const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
+      const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
 
-            getArchive(link).then((response: any) => {
-                const url = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = url;
-                const fileName = `name`;
-                link.setAttribute('download', fileName);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            });
-
-        };
-
-        const onFinishFailed = (errorInfo: any) => {
-            console.log('Failed:', errorInfo);
-        };
-
-        const onPeriodChange = (event: any) => {
-            const period = event.target.value;
-            switch (period) {
-                case 'currentMonth':
-                    setFieldsValue({dates: [moment().startOf('month'), moment()]})
-                    setIsDisabled(true)
-                    break;
-                case 'previousMonth':
-                    setFieldsValue({dates: [moment().subtract(1, 'months').startOf('month'), moment().startOf('month')]})
-                    setIsDisabled(true)
-                    break;
-                case 'customPeriod':
-                    setIsDisabled(false)
-                    break;
-                default:
-                    alert("Не выбран период!");
-            }
+      const resources = getFieldValue('resource').map(
+        (item: string, index: number) => {
+          return `NodeResourceType=${item}`;
         }
-        const initialValues = {
-            name: reportName,
-            address: 'addressString',
-            period: 'currentMonth',
-            dates: [moment().startOf('month'), moment()],
-            detailing: 'daily',
-        }
+      );
+      const resResources = resources.join('&');
 
+      function res(link: string) {
+        getArchive(link).then((response: any) => {
+          const url = window.URL.createObjectURL(new Blob([response]));
+          const link = document.createElement('a');
+          link.href = url;
+          const fileName = `Report.zip`;
+          link.setAttribute('download', fileName);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+      }
 
-        return (
-            <Form
-                initialValues={initialValues}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                form={form}
-                requiredMark={false}
-            >
-                <StyledModalBody>
-                    <Title size="middle" color="black">
-                        Выгрузка группового отчёта
-                    </Title>
-                    <StyledFormPage>
+      if (subscription) {
+        console.log('C подпиской');
+        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        console.log(link);
+        res(link);
+      }
+      if (!subscription) {
+        console.log('Без подписки');
+        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        console.log(link);
+        res(link);
+      }
+    };
 
-                        <Form.Item
-                            name="group"
-                            label="Группа" style={styles.w100}
-                        >
-                            <SelectTT
-                                options={groupReportsOptions}
-                            />
-                        </Form.Item>
+    const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo);
+    };
 
-                        <Form.Item
-                            name="name"
-                            label="Название отчёта" style={styles.w100}
-                        >
-                            <InputTT
-                                readOnly
-                            />
-                        </Form.Item>
+    const onPeriodChange = (event: any) => {
+      const period = event.target.value;
+      switch (period) {
+        case 'currentMonth':
+          setFieldsValue({ dates: [moment().startOf('month'), moment()] });
+          setIsPeriodDisabled(true);
+          break;
+        case 'previousMonth':
+          setFieldsValue({
+            dates: [
+              moment().subtract(1, 'months').startOf('month'),
+              moment().startOf('month'),
+            ],
+          });
+          setIsPeriodDisabled(true);
+          break;
+        case 'customPeriod':
+          setIsPeriodDisabled(false);
+          break;
+        default:
+          setIsPeriodDisabled(true);
+      }
+    };
+    const initialValues = {
+      name: reportName,
+      address: 'addressString',
+      period: 'currentMonth',
+      dates: [moment().startOf('month'), moment()],
+      detailing: 'daily',
+      hidden: true,
+      subscribePeriod: 'OncePerMonth',
+      nextDate: undefined,
+      email: undefined,
+      subscribe: false,
+    };
 
-                        <Form.Item
-                            name="resource"
-                            label="Ресурс" style={styles.w49}
-                        >
-                            <SelectTT
-                                options={allResources}
-                            />
-                        </Form.Item>
+    const handleSwitch = (event: boolean) => {
+      setSubscription((prevState) => !prevState);
+    };
 
-                        <Form.Item
-                            name="category"
-                            label="Категория узлов" style={styles.w49}
-                        >
-                            <SelectTT
-                                options={nodeStatusesOptions}
-                            />
-                        </Form.Item>
+    const onChange = (allFields: any) => {
+      console.log('allFields', allFields);
+    };
 
+    const onFormLayoutChange = (currentField: any, allFields: any) => {
+      formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
+      // console.log("onFormLayoutChange", currentField, allFields)
+      // console.log("formHasErrors", formHasErrors())
+      // console.log("getFieldsError()", getFieldsError())
+    };
 
-                        <Form.Item label="Тип архива" name='period' style={styles.w49}>
-                            <Radio.Group
-                                onChange={(event: any) => onPeriodChange(event)}
-                            >
-                                <StyledRadio value="currentMonth">
-                                    С начала месяца
-                                </StyledRadio>
-                                <StyledRadio value="previousMonth">
-                                    За прошлый месяц
-                                </StyledRadio>
-                                <StyledRadio value="customPeriod">
-                                    Произвольный период
-                                </StyledRadio>
-
-                            </Radio.Group>
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Детализация отчета"
-                            style={styles.w49}
-                            name='detailing'
-                            rules={[{required: true, message: 'Укажите детализацию отчета'}]}
-                        >
-                            <Radio.Group>
-                                <StyledRadio value="hourly">Часовая</StyledRadio>
-                                <StyledRadio value="daily">Суточная</StyledRadio>
-
-                            </Radio.Group>
-                        </Form.Item>
-
-
-                        <Form.Item label="Период выгрузки" name='dates' style={{width: '300px'}}>
-                            <RangePickerTT
-                                format="DD.MM.YYYY"
-                                allowClear={false}
-                                placeholder={['Дата Начала', 'Дата окончания']}
-                                disabled={isDisabled}
-                                disabledDate={current => {
-                                    return current && current > moment();
-                                }}
-                            />
-                        </Form.Item>
-
-                    </StyledFormPage>
-                </StyledModalBody>
-                <StyledFooter modal>
-                    <ButtonTT
-                        type="button"
-                        color="white"
-                        onClick={handleCancel}
-                        style={{marginLeft: '16px'}}
-                    >
-                        Отмена
-                    </ButtonTT>
-                    <ButtonTT
-                        color="blue"
-                        type="submit"
-                        style={{marginLeft: '16px'}}
-                        big
-                    >
-                        Выгрузить отчет
-                    </ButtonTT>
-
-
-                </StyledFooter>
-            </Form>
-        )
-    }
-
+    const formHasErrors = () =>
+      getFieldsError().some((item) => item.errors.length > 0);
 
     return (
-        <StyledModal
-            visible={visible}
-            width={800}
-            footer={null}
-            onCancel={handleCancel}
-        >
-            {status === 'error' ? <div style={{background: 'red'}}>ОШИБКА</div> : null}
-            {status === 'pending' || status === 'idle' ? <div>ЗАГРУЗКА...</div> : null}
-            {status === 'resolved' ? <GroupForm/> : null}
-        </StyledModal>
-    )
+      <Form
+        initialValues={initialValues}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        form={form}
+        requiredMark={false}
+        onFieldsChange={(_, allFields) => {
+          onChange(allFields);
+        }}
+        onValuesChange={onFormLayoutChange}
+        scrollToFirstError
+      >
+        <StyledModalBody>
+          <Title size="middle" color="black">
+            Выгрузка группового отчёта
+          </Title>
+          <StyledFormPage>
+            <Form.Item
+              name="group"
+              label="Группа"
+              style={styles.w100}
+              rules={[{ required: true, message: 'Выберите Группу' }]}
+            >
+              <SelectTT options={groupReportsOptions} />
+            </Form.Item>
 
+            <Form.Item name="name" label="Название отчёта" style={styles.w100}>
+              <InputTT readOnly />
+            </Form.Item>
 
-}
+            <Form.Item
+              name="resource"
+              label="Ресурс"
+              style={styles.w49}
+              rules={[{ required: true, message: 'Выберите Ресурс' }]}
+            >
+              <MultiSelectTT
+                mode="multiple"
+                options={nodeResourceTypesOptions}
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="category"
+              label="Категория узлов"
+              style={styles.w49}
+              rules={[{ required: true, message: 'Категория узлов' }]}
+            >
+              <SelectTT options={nodeStatusesOptions} />
+            </Form.Item>
+
+            <Form.Item label="Тип архива" name="period" style={styles.w49}>
+              <Radio.Group onChange={(event: any) => onPeriodChange(event)}>
+                <StyledRadio value="currentMonth">С начала месяца</StyledRadio>
+                <StyledRadio value="previousMonth">
+                  За прошлый месяц
+                </StyledRadio>
+                <StyledRadio value="customPeriod">
+                  Произвольный период
+                </StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Детализация отчета"
+              style={styles.w49}
+              name="detailing"
+              rules={[
+                { required: true, message: 'Укажите детализацию отчета' },
+              ]}
+            >
+              <Radio.Group>
+                <StyledRadio value="hourly">Часовая</StyledRadio>
+                <StyledRadio value="daily">Суточная</StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+              label="Период выгрузки"
+              name="dates"
+              style={{ width: '300px' }}
+            >
+              <RangePickerTT
+                format="DD.MM.YYYY"
+                allowClear={false}
+                placeholder={['Дата Начала', 'Дата окончания']}
+                disabled={isPeriodDisabled}
+                disabledDate={(current) => {
+                  return current && current > moment();
+                }}
+              />
+            </Form.Item>
+
+            <Divider />
+            <div
+              style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}
+            >
+              <Form.Item name="subscribe">
+                <SwitchTT onChange={handleSwitch} />
+              </Form.Item>
+              <div style={{ paddingLeft: 16 }}>
+                <SwitchHeader>Регулярная выгрузка отчёта</SwitchHeader>
+                <SwitchSubheader>
+                  Групповой отчёт будет приходить вам и подрядчикам на почту в
+                  выбранную дату
+                </SwitchSubheader>
+              </div>
+            </div>
+          </StyledFormPage>
+
+          <StyledFormPage hidden={!subscription}>
+            <Form.Item
+              label="Email"
+              style={styles.w49}
+              name="email"
+              rules={
+                subscription
+                  ? [
+                      {
+                        required: true,
+                        type: 'email',
+                        message: 'введите email в формате: name@domain.ru',
+                      },
+                    ]
+                  : [{}]
+              }
+            >
+              <InputTT readOnly={!subscription} />
+            </Form.Item>
+
+            <Form.Item label="Подрядчики" style={styles.w49}>
+              <SelectTT options={contractorsOptions} />
+            </Form.Item>
+
+            <Form.Item
+              name="nextDate"
+              label="Дата следующей выгрузки отчёта"
+              style={styles.w49}
+              required
+              rules={
+                subscription
+                  ? [
+                      {
+                        required: true,
+                        message: 'Дата следующей выгрузки отчёта!',
+                      },
+                    ]
+                  : [{}]
+              }
+            >
+              <DatePickerTT format="DD.MM.YYYY" />
+            </Form.Item>
+
+            <Form.Item
+              label="Период"
+              style={styles.w100}
+              name="subscribePeriod"
+              rules={[{ required: true, message: 'Укажите Период' }]}
+            >
+              <Radio.Group>
+                <StyledRadio value="OncePerTwoWeeks">
+                  1 раз в 2 недели
+                </StyledRadio>
+                <StyledRadio value="OncePerMonth">1 раз в месяц</StyledRadio>
+                <StyledRadio value="OncePerQuarter">
+                  1 раз в квартал
+                </StyledRadio>
+              </Radio.Group>
+            </Form.Item>
+          </StyledFormPage>
+        </StyledModalBody>
+        <StyledFooter modal>
+          <ButtonTT
+            type="button"
+            color="white"
+            onClick={handleCancel}
+            style={{ marginLeft: '16px' }}
+          >
+            Отмена
+          </ButtonTT>
+
+          <ButtonTT
+            color="blue"
+            htmlType="submit"
+            style={{ marginLeft: '16px' }}
+            big
+          >
+            Выгрузить отчет
+          </ButtonTT>
+        </StyledFooter>
+      </Form>
+    );
+  };
+
+  return (
+    <StyledModal
+      visible={visible}
+      width={800}
+      footer={null}
+      onCancel={handleCancel}
+    >
+      {status === 'error' ? (
+        <div style={{ background: 'red' }}>ОШИБКА</div>
+      ) : null}
+      {status === 'pending' || status === 'idle' ? (
+        <div>ЗАГРУЗКА...</div>
+      ) : null}
+      {status === 'resolved' ? <GroupForm /> : null}
+    </StyledModal>
+  );
+};
+
+const SwitchHeader = styled.h4`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+  color: var(--color-primary-90);
+  padding: 0;
+  margin: 0;
+`;
+const SwitchSubheader = styled.span`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-primary-90);
+`;
 
 export default ModalGroupReport;

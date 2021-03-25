@@ -8,7 +8,7 @@ import {
     InputTT, Title, styles, RangePickerTT,
 } from '../../../../../tt-components'
 
-import {Form, Radio, Select} from 'antd'
+import {Divider, Form, Radio, Select} from 'antd'
 import {StyledRadio} from "../../../../../tt-components/Radio";
 import moment from "moment";
 import {ObjectContext} from "../../../index";
@@ -141,9 +141,11 @@ const ModalCommonReport = ({visible, setVisible}: ModalPropsInterface) => {
                             <Radio.Group>
                                 <StyledRadio value="hourly">Часовая</StyledRadio>
                                 <StyledRadio value="daily">Суточная</StyledRadio>
-
                             </Radio.Group>
                         </Form.Item>
+
+                        <Divider />
+
 
 
                         <Form.Item label="Период выгрузки" name='dates' style={{width: '300px'}}>

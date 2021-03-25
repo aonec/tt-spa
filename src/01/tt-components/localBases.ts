@@ -1,4 +1,11 @@
-export const items = [
+
+export interface ItemInterface {
+    id: number
+    value: number
+    model: string
+    label: string
+}
+export const items : Array<ItemInterface> = [
     {
         id: 1,
         value: 1,
@@ -184,20 +191,24 @@ export const DEFAULT_BUILDING = {
     housingStockNumber: null,
 }
 
-export const DEFAULT_DEVICE = {
-    model: null,
-    diameter: null,
-    serialNumber: null,
-    resource: null,
-    commercialAccountingDate: null,
-    futureCheckingDate: null,
-    lastCheckingDate: null,
+export const DEFAULT_CALCULATOR = {
+    model: '',
+    serialNumber: '',
+    resource: '',
+    commercialAccountingDate: '',
+    futureCheckingDate: '',
+    lastCheckingDate: '',
+    futureCommercialAccountingDate: '',
+    lastCommercialAccountingDate: '',
+    isConnected: false,
+    connection: {
+        ipV4: '',
+        port: null,
+        deviceAddress: null,
+    },
+    nodes: []
 }
 
-export const DEFAULT_ICON = {
-    icon: 'device',
-    color: 'initial',
-}
 
 export const periodList = [
     { label: 'Месячный', value: 'month' },

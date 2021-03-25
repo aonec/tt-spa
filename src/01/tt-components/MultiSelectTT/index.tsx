@@ -5,6 +5,8 @@ interface Props {
     name?: string
     size?: any
     isConnected?: any
+    options: any
+    mode: any
 }
 
 export const MultiSelectTT = styled(Select)<Props>`
