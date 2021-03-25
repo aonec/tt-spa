@@ -53,7 +53,7 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
                             : styles.arrowEnabled
                     }
                 >
-                    <Arrow isDisabled={isLeftArrowDisabled} />
+                    <Arrow />
                 </ArrowContainer>
                 <CenterContainer>
                     {getPreviousReadingsMonth(sliderIndex)}
@@ -65,8 +65,9 @@ export function Header({ sliderIndex, setSliderIndex, isReadingsCurrent, reading
                             : styles.arrowEnabled
                     }
                     onClick={onClickIncrease}
+                    style={{transform: 'rotate(180deg)'}}
                 >
-                    <Arrow isRight isDisabled={isRightArrowDisabled} />
+                    <Arrow />
                 </ArrowContainer>
             </CenterContainer>
         </HeaderWrap>

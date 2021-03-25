@@ -14,7 +14,7 @@ import DevicesByAddress from './DevicesByAddress/DevicesByAddress'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects'
 import styled from 'styled-components'
-import {CalculatorListResponsePagedList} from "../../../../myApi";
+import { CalculatorListResponsePagedList } from "../../../../myApi";
 
 const { TabPane } = Tabs
 
@@ -35,8 +35,8 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
     const [isLoading, setIsLoading] = useState(true)
 
     const [searchState, dispatchSearchState] = useReducer(
-        devicesSearchReducer,
-        initialState
+      devicesSearchReducer,
+      initialState
     )
     const debouncedSearchState = useDebounce(searchState, 500)
 
@@ -52,42 +52,42 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
     const devicesByObject = groupDevicesByObjects(devicePage.items)
 
     const deviceArray = devicesByObject.map((addressDevicesGroup) => (
-        <DevicesByAddress
-            key={addressDevicesGroup.address?.id}
-            addressDevicesGroup={addressDevicesGroup}
-        />
+      <DevicesByAddress
+        key={addressDevicesGroup.address?.id}
+        addressDevicesGroup={addressDevicesGroup}
+      />
     ))
 
     const pagination = pages.map((page, index) => (
-        <span
-            key={index}
-            className={currentPage === page ? styles.currentPage : styles.page}
-            onClick={() => dispatch(setCurrentPage(page))}
-        >
+      <span
+        key={index}
+        className={currentPage === page ? styles.currentPage : styles.page}
+        onClick={() => dispatch(setCurrentPage(page))}
+      >
             {page}
         </span>
     ))
 
     return (
-        <Tabs defaultActiveKey="1" style={{ maxWidth: 960 }}>
-            <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
-                <DeviceSearchForm
-                    searchState={searchState}
-                    dispatchSearchState={dispatchSearchState}
-                />
-                {isLoading || devicePage.isLoading ? (
-                    <div>
-                        ЗАГРУЗКА...
-                        <Loader show />
-                    </div>
-                ) : (
-                    <div>
-                        <div>{deviceArray}</div>
-                        <Pagination>{pagination}</Pagination>
-                    </div>
-                )}
-            </Tab>
-        </Tabs>
+      <Tabs defaultActiveKey="1" style={{ maxWidth: 960 }}>
+          <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
+              <DeviceSearchForm
+                searchState={searchState}
+                dispatchSearchState={dispatchSearchState}
+              />
+              {isLoading || devicePage.isLoading ? (
+                <div>
+                    ЗАГРУЗКА...
+                    <Loader show />
+                </div>
+              ) : (
+                <div>
+                    <div>{deviceArray}</div>
+                    <Pagination>{pagination}</Pagination>
+                </div>
+              )}
+          </Tab>
+      </Tabs>
     )
 }
 

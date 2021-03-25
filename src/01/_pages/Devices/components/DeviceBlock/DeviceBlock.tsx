@@ -26,7 +26,7 @@ const DeviceBlock = ({device: calculator}: DeviceBlockPropsInterface) => {
             </SerialNumber>
           </DeviceLink>
 
-          {!isConnected && (
+          {!isConnected && !isConnectionError && (
             <IconWithTooltip
               title="Узел учета без оборудования связи"
             >
