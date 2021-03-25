@@ -143,13 +143,13 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
         console.log('C подпиской');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        // getGroupReport(link);
+        getGroupReport(link);
       }
       if (!subscription) {
         console.log('Без подписки');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        // getGroupReport(link);
+        getGroupReport(link);
       }
     };
 
