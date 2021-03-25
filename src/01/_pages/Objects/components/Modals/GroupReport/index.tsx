@@ -13,9 +13,8 @@ import {Divider, Form, Radio} from 'antd'
 
 import moment from "moment";
 import {getReports} from "../../../apiObjects";
-import {GroupReportFormResponse} from "../../../../../../myApi";
+import {GroupReportFormResponse, GroupReportResponse} from "../../../../../../myApi";
 import {useAsync} from "../../../../../hooks/useAsync";
-import {allResources, resources} from "../../../../../tt-components/localBases";
 import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
 import styled from "styled-components";
 
@@ -25,16 +24,10 @@ interface ModalPropsInterface {
     setVisible: Dispatch<SetStateAction<boolean>>
 }
 
-interface ReportsInterface {
-    reports: GroupReportFormResponse;
-    setReports: Dispatch<SetStateAction<GroupReportFormResponse>>
-}
-
-// GroupReportFormResponse
 const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
-    const {data, status, run} = useAsync()
-    // console.log("data", data)
+    const {data, status, run} = useAsync<GroupReportFormResponse>()
+
     const handleCancel = () => {
         setVisible(false)
     }
@@ -43,48 +36,51 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
         run(getReports())
     }, [])
 
+    if (!data) {
+        return null
+    }
 
     const GroupForm = () => {
         console.log("data", data)
+        const [subscription, setSubscription] = useState(false);
+        const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
         const reportName = `Выгрузка группового отчёта`
         const {groupReports, nodeResourceTypes, nodeStatuses} = data;
-        // console.log("groupReports", groupReports)
-        console.log("nodeResourceTypes", nodeResourceTypes)
-        // console.log("nodeStatuses", nodeStatuses)
 
-        const groupReportsOptions = groupReports.map((group: any) => {
+        const groupReportsOptions = groupReports?.map((group) => {
             const {houseManagementId, title, id} = group
             return {value: id === null ? houseManagementId : id, label: title}
-        })
-        console.log(groupReportsOptions);
+        });
+        // console.log(groupReportsOptions);
 
-        const nodeResourceTypesOptions = nodeResourceTypes.map((nodeResourceType: any) => {
-            const {Key, Value} = nodeResourceType
-            return {value: Key, label: Value}
+        const nodeResourceTypesOptions = nodeResourceTypes?.map((nodeResourceType) => {
+            const {key, value} = nodeResourceType
+            return {value: key, label: value}
+        });
+
+        const nodeStatusesOptions = nodeStatuses?.map((nodeStatus) => {
+            const {key, value} = nodeStatus
+            return {value: key, label: value}
         })
 
-        const nodeStatusesOptions = nodeStatuses.map((nodeStatus: any) => {
-            const {Key, Value} = nodeStatus
-            return {value: Key, label: Value}
-        })
-
-        console.log("groupReportsOptions", groupReportsOptions)
+        if (!groupReportsOptions || !nodeResourceTypesOptions || !nodeStatusesOptions) {
+            return (
+                <div>
+                    Что-то пошло не так!
+                </div>
+            )
+        }
 
 
         const [form] = Form.useForm();
         const {setFieldsValue, getFieldsValue, getFieldValue, validateFields, getFieldsError} = form;
-        const [isDisabled, setIsDisabled] = useState(true);
 
-        const [subscription, setSubscription] = useState(false);
 
         const onFinish = (values: any) => {
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            if (subscription) {
-                console.log("C подпиской")
-                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`
 
-                console.log(link)
+            function res(link: string) {
                 getArchive(link).then((response: any) => {
                     const url = window.URL.createObjectURL(new Blob([response]));
                     const link = document.createElement('a');
@@ -95,37 +91,19 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                     link.click();
                     link.remove();
                 });
+            }
 
+            if (subscription) {
+                console.log("C подпиской")
+                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+                console.log(link)
+                res(link)
             }
             if (!subscription) {
                 console.log("Без подписки");
                 const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
-
-                getArchive(link).then((response: any) => {
-                    const url = window.URL.createObjectURL(new Blob([response]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    const fileName = `Report.zip`;
-                    link.setAttribute('download', fileName);
-                    document.body.appendChild(link);
-                    link.click();
-                    link.remove();
-                });
+                res(link)
             }
-
-
-            // console.log('Success:', values);
-
-            // // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
-            //
-            // const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
-            // // const test = `Reports/GetGroupReport?NodeResourceTypes=Heat&NodeStatus=Registered&Subscription.Email=name%40email.ru&Subscription.Type=OncePerTwoWeeks&ReportType=daily&From=1&To=2"`
-            // const test = `Reports/GetGroupReport?NodeResourceTypes=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=OncePerTwoWeeks&ReportType=daily&From=1&To=2"`
-            //
-            // console.log("link", link)
-            // const name = 'Reports.zip'
-            //
-
 
         };
 
@@ -138,17 +116,17 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             switch (period) {
                 case 'currentMonth':
                     setFieldsValue({dates: [moment().startOf('month'), moment()]})
-                    setIsDisabled(true)
+                    setIsPeriodDisabled(true)
                     break;
                 case 'previousMonth':
                     setFieldsValue({dates: [moment().subtract(1, 'months').startOf('month'), moment().startOf('month')]})
-                    setIsDisabled(true)
+                    setIsPeriodDisabled(true)
                     break;
                 case 'customPeriod':
-                    setIsDisabled(false)
+                    setIsPeriodDisabled(false)
                     break;
                 default:
-                    alert("Не выбран период!");
+                    setIsPeriodDisabled(true)
             }
         }
         const initialValues = {
@@ -160,12 +138,11 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             hidden: true,
             subscribePeriod: 'OncePerMonth',
             nextDate: undefined,
-            // email: 'maratismodest@gmail.com',
-            buttonEnabled: false
+            email: undefined,
+            subscribe: false,
         }
 
         const handleSwitch = (event: boolean) => {
-            console.log(event)
             setSubscription(prevState => !prevState);
         }
 
@@ -174,9 +151,10 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
         }
 
         const onFormLayoutChange = (currentField: any, allFields: any) => {
-            console.log("onFormLayoutChange", currentField, allFields)
-            console.log("formHasErrors", formHasErrors())
-            console.log("getFieldsError()", getFieldsError())
+            formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false)
+            // console.log("onFormLayoutChange", currentField, allFields)
+            // console.log("formHasErrors", formHasErrors())
+            // console.log("getFieldsError()", getFieldsError())
 
         }
 
@@ -279,7 +257,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                                 format="DD.MM.YYYY"
                                 allowClear={false}
                                 placeholder={['Дата Начала', 'Дата окончания']}
-                                disabled={isDisabled}
+                                disabled={isPeriodDisabled}
                                 disabledDate={current => {
                                     return current && current > moment();
                                 }}
@@ -305,7 +283,7 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
                     </StyledFormPage>
 
-                    <StyledFormPage hidden={false}>
+                    <StyledFormPage hidden={!subscription}>
                         <Form.Item label='Email' style={styles.w49} name='email'
                                    rules={subscription ? [{
                                        required: true,

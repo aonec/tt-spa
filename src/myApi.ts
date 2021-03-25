@@ -214,6 +214,7 @@ export enum UserPermission {
   TaskDelete = "TaskDelete",
   ReportRead = "ReportRead",
   ReportAdd = "ReportAdd",
+  IndividualDeviceClose = "IndividualDeviceClose",
 }
 
 export interface TokenResponse {
@@ -235,6 +236,7 @@ export interface RefreshTokenRequest {
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
+  permissions: UserPermission[] | null;
 }
 
 export interface RefreshResponseSuccessApiResponse {
@@ -1394,6 +1396,15 @@ export interface CreateIndividualDeviceRequest {
   rateType: string;
 }
 
+export interface CloseDeviceRequest {
+  /** @format int32 */
+  deviceId: number;
+  documentsIds?: number[] | null;
+
+  /** @format date-time */
+  closingDate: string;
+}
+
 export interface ManagementFirmResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -1559,15 +1570,6 @@ export interface MeteringDeviceListResponseIEnumerableSuccessApiResponse {
   successResponse: MeteringDeviceListResponse[] | null;
 }
 
-export interface CloseDeviceRequest {
-  /** @format int32 */
-  deviceId: number;
-  documentsIds?: number[] | null;
-
-  /** @format date-time */
-  closingDate: string;
-}
-
 export interface CheckDeviceRequest {
   /** @format int32 */
   deviceId: number;
@@ -1683,10 +1685,31 @@ export interface NodeCommercialAccountStatusStringKeyValuePair {
   value?: string | null;
 }
 
+export interface GroupReportHousingStock {
+  /** @format int32 */
+  id?: number;
+  number?: string | null;
+  corpus?: string | null;
+  categoryText?: string | null;
+}
+
+export interface GroupReportHousingStockGroup {
+  street?: string | null;
+  housingStocks?: GroupReportHousingStock[] | null;
+}
+
+export interface GroupReportContractor {
+  /** @format int32 */
+  id?: number;
+  title?: string | null;
+}
+
 export interface GroupReportFormResponse {
   groupReports: GroupReportResponse[] | null;
   nodeResourceTypes: ResourceTypeStringKeyValuePair[] | null;
   nodeStatuses: NodeCommercialAccountStatusStringKeyValuePair[] | null;
+  housingStockGroups: GroupReportHousingStockGroup[] | null;
+  contractors: GroupReportContractor[] | null;
 }
 
 export interface GroupReportFormResponseSuccessApiResponse {
@@ -1700,6 +1723,13 @@ export interface CreateGroupReportRequest {
 
 export interface GroupReportResponseSuccessApiResponse {
   successResponse: GroupReportResponse;
+}
+
+export enum EmailSubscriptionType {
+  Once = "Once",
+  OncePerTwoWeeks = "OncePerTwoWeeks",
+  OncePerMonth = "OncePerMonth",
+  OncePerQuarter = "OncePerQuarter",
 }
 
 export enum TaskGroupingFilter {
@@ -2176,66 +2206,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetArchivesList
-     * @request GET:/api/Archives/GetArchives
-     * @secure
-     */
-    archivesGetArchivesList: (
-      query?: { nodeId?: number | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetArchives`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetReportList
-     * @request GET:/api/Archives/GetReport
-     * @secure
-     */
-    archivesGetReportList: (
-      query?: { nodeId?: number | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesGetConsolidatedReportList
-     * @request GET:/api/Archives/GetConsolidatedReport
-     * @secure
-     */
-    archivesGetConsolidatedReportList: (
-      query?: { calculatorIds?: number[] | null; reportType?: string | null; from?: string | null; to?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/Archives/GetConsolidatedReport`,
-        method: "GET",
-        query: query,
-        secure: true,
         ...params,
       }),
 
@@ -3040,6 +3010,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCloseCreate
+     * @request POST:/api/IndividualDevices/close
+     * @secure
+     */
+    individualDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/IndividualDevices/close`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ManagingFirms
      * @name ManagingFirmsList
      * @request GET:/api/ManagingFirms
@@ -3501,11 +3489,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         GroupReportId?: string | null;
         HouseManagementId?: string | null;
-        NodeResourceType?: ResourceType;
+        NodeResourceTypes?: ResourceType[] | null;
         NodeStatus?: NodeCommercialAccountStatus;
         "Subscription.Email"?: string | null;
         "Subscription.ContractorIds"?: number[] | null;
-        "Subscription.NextTriggerTime"?: string;
+        "Subscription.TriggerAt"?: string;
+        "Subscription.Type"?: EmailSubscriptionType;
         ReportType?: string | null;
         From?: string | null;
         To?: string | null;
