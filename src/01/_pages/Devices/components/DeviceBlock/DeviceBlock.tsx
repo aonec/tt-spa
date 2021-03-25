@@ -23,13 +23,13 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
             <SerialNumber>({calculator.serialNumber})</SerialNumber>
           </DeviceLink>
 
-          {!isConnected && !isConnectionError && (
-            <IconWithTooltip title="Узел учета без оборудования связи">
+          {!isConnected && (
+            <IconWithTooltip title="Вычислитель не опрашивается">
               <Icon icon="notConnected" color="var(--main-100)" />
             </IconWithTooltip>
           )}
 
-          {isConnectionError && (
+          {isConnected && isConnectionError && (
             <IconWithTooltip title="Проверьте настройки соединения">
               <Icon icon="checkConnection" color="var(--error)" />
             </IconWithTooltip>
