@@ -177,7 +177,7 @@ const ModalSonoSafeReportForm = (props) => {
             // linkToDownload.click();
             // window.open(link);
 
-            const shortLink = `Archives/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`
+            const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`
 
             async function getArchive(link = '') {
                 try {
