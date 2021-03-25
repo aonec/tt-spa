@@ -8,6 +8,8 @@ interface Props {
     color: string
     key: string
     onClick: () => void
+    htmlType?: string
+    disabled?: boolean
 }
 
 export const ButtonTT = styled.button<Partial<Props>>`

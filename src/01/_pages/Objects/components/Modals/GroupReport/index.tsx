@@ -15,7 +15,7 @@ import moment from "moment";
 import {getReports} from "../../../apiObjects";
 import {GroupReportFormResponse} from "../../../../../../myApi";
 import {useAsync} from "../../../../../hooks/useAsync";
-import {allResources} from "../../../../../tt-components/localBases";
+import {allResources, resources} from "../../../../../tt-components/localBases";
 import {getArchive} from "../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport";
 import styled from "styled-components";
 
@@ -72,28 +72,60 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
 
         const [form] = Form.useForm();
-        const {setFieldsValue, getFieldsValue, getFieldValue, validateFields} = form;
+        const {setFieldsValue, getFieldsValue, getFieldValue, validateFields, getFieldsError} = form;
         const [isDisabled, setIsDisabled] = useState(true);
-        const [subscription, setSubscription] = useState(true);
+
+        const [subscription, setSubscription] = useState(false);
+
         const onFinish = (values: any) => {
-            console.log('Success:', values);
             const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
             const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-            // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
-            const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
-            console.log("link", link)
-            const name = 'Reports.zip'
+            if (subscription) {
+                console.log("C подпиской")
+                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`
 
-            getArchive(link).then((response: any) => {
-                const url = window.URL.createObjectURL(new Blob([response]));
-                const link = document.createElement('a');
-                link.href = url;
-                const fileName = `name`;
-                link.setAttribute('download', fileName);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-            });
+                console.log(link)
+                getArchive(link).then((response: any) => {
+                    const url = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    const fileName = `Report.zip`;
+                    link.setAttribute('download', fileName);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                });
+
+            }
+            if (!subscription) {
+                console.log("Без подписки");
+                const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+
+                getArchive(link).then((response: any) => {
+                    const url = window.URL.createObjectURL(new Blob([response]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    const fileName = `Report.zip`;
+                    link.setAttribute('download', fileName);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                });
+            }
+
+
+            // console.log('Success:', values);
+
+            // // const template = 'http://transparent-staging.herokuapp.com/api/Reports/GetGroupReport?GroupReportId=5689e08a-800f-4839-a159-59c4f8fc971a&NodeResourceType=ColdWaterSupply&NodeStatus=Registered&ReportType=daily&From=2021-03-10&To=2021-03-19'
+            //
+            // const link = `Reports/GetGroupReport?GroupReportId=${values.group}&NodeResourceType=${values.resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`
+            // // const test = `Reports/GetGroupReport?NodeResourceTypes=Heat&NodeStatus=Registered&Subscription.Email=name%40email.ru&Subscription.Type=OncePerTwoWeeks&ReportType=daily&From=1&To=2"`
+            // const test = `Reports/GetGroupReport?NodeResourceTypes=${values.resource}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=OncePerTwoWeeks&ReportType=daily&From=1&To=2"`
+            //
+            // console.log("link", link)
+            // const name = 'Reports.zip'
+            //
+
 
         };
 
@@ -125,16 +157,30 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
             period: 'currentMonth',
             dates: [moment().startOf('month'), moment()],
             detailing: 'daily',
-            subscribe: false,
             hidden: true,
-            subscribePeriod: 'twoWeeks',
-            email: 'maratismodest@gmail.com',
+            subscribePeriod: 'OncePerMonth',
+            nextDate: undefined,
+            // email: 'maratismodest@gmail.com',
+            buttonEnabled: false
         }
 
         const handleSwitch = (event: boolean) => {
             console.log(event)
-            setSubscription(!event);
+            setSubscription(prevState => !prevState);
         }
+
+        const onChange = (allFields: any) => {
+            console.log("allFields", allFields)
+        }
+
+        const onFormLayoutChange = (currentField: any, allFields: any) => {
+            console.log("onFormLayoutChange", currentField, allFields)
+            console.log("formHasErrors", formHasErrors())
+            console.log("getFieldsError()", getFieldsError())
+
+        }
+
+        const formHasErrors = () => getFieldsError().some((item) => item.errors.length > 0)
 
         return (
             <Form
@@ -143,6 +189,11 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                 onFinishFailed={onFinishFailed}
                 form={form}
                 requiredMark={false}
+                onFieldsChange={(_, allFields) => {
+                    onChange(allFields);
+                }}
+                onValuesChange={onFormLayoutChange}
+                scrollToFirstError
             >
                 <StyledModalBody>
                     <Title size="middle" color="black">
@@ -173,15 +224,18 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                         <Form.Item
                             name="resource"
                             label="Ресурс" style={styles.w49}
+                            rules={[{required: true, message: 'Выберите Ресурс'}]}
+
                         >
                             <SelectTT
-                                options={allResources}
+                                options={nodeResourceTypesOptions}
                             />
                         </Form.Item>
 
                         <Form.Item
                             name="category"
                             label="Категория узлов" style={styles.w49}
+                            rules={[{required: true, message: 'Категория узлов'}]}
                         >
                             <SelectTT
                                 options={nodeStatusesOptions}
@@ -251,32 +305,47 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
 
                     </StyledFormPage>
 
-                <StyledFormPage hidden={subscription}>
-                    <Form.Item label='Email' style={styles.w49} name='email'>
-                        <InputTT/>
-                    </Form.Item>
+                    <StyledFormPage hidden={false}>
+                        <Form.Item label='Email' style={styles.w49} name='email'
+                                   rules={subscription ? [{
+                                       required: true,
+                                       type: 'email',
+                                       message: 'введите email в формате: name@domain.ru'
+                                   }] : [{}]}
 
-                    <Form.Item label='Подрядчики' style={styles.w49}>
-                        <SelectTT/>
-                    </Form.Item>
-                    <Form.Item label='Дата следующей выгрузки отчёта' style={styles.w49}>
-                        <DatePickerTT format='DD.MM.YYYY'/>
-                    </Form.Item>
+                        >
+                            < InputTT readOnly={!subscription}/>
+                        </Form.Item>
 
-                    <Form.Item
-                        label="Период"
-                        style={styles.w100}
-                        name='subscribePeriod'
-                        rules={[{required: true, message: 'Укажите Период'}]}
-                    >
-                        <Radio.Group>
-                            <StyledRadio value="twoWeeks">1 раз в 2 недели</StyledRadio>
-                            <StyledRadio value="month">1 раз в месяц</StyledRadio>
-                            <StyledRadio value="quarter">1 раз в квартал</StyledRadio>
-                        </Radio.Group>
-                    </Form.Item>
+                        <Form.Item label='Подрядчики' style={styles.w49}>
+                            <SelectTT/>
+                        </Form.Item>
 
-                </StyledFormPage>
+                        <Form.Item
+                            name='nextDate'
+                            label='Дата следующей выгрузки отчёта'
+                            style={styles.w49}
+                            required
+                            rules={subscription ? [{required: true, message: 'Дата следующей выгрузки отчёта!'}] : [{}]}
+                        >
+                            <DatePickerTT format='DD.MM.YYYY'
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Период"
+                            style={styles.w100}
+                            name='subscribePeriod'
+                            rules={[{required: true, message: 'Укажите Период'}]}
+                        >
+                            <Radio.Group>
+                                <StyledRadio value="OncePerTwoWeeks">1 раз в 2 недели</StyledRadio>
+                                <StyledRadio value="OncePerMonth">1 раз в месяц</StyledRadio>
+                                <StyledRadio value="OncePerQuarter">1 раз в квартал</StyledRadio>
+                            </Radio.Group>
+                        </Form.Item>
+
+                    </StyledFormPage>
 
                 </StyledModalBody>
                 <StyledFooter modal>
@@ -288,9 +357,10 @@ const ModalGroupReport = ({visible, setVisible}: ModalPropsInterface) => {
                     >
                         Отмена
                     </ButtonTT>
+
                     <ButtonTT
                         color="blue"
-                        type="submit"
+                        htmlType="submit"
                         style={{marginLeft: '16px'}}
                         big
                     >
