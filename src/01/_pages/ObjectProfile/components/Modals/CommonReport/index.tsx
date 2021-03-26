@@ -25,6 +25,7 @@ import {
   CalculatorListResponse,
   HousingStockResponse,
 } from '../../../../../../myApi';
+import { downloadReport } from './apiCommonReport';
 
 interface ModalPropsInterface {
   visible: boolean;
@@ -63,8 +64,18 @@ const ModalCommonReport = ({ visible, setVisible }: ModalPropsInterface) => {
       const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
       const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
       const calculatorsString = ids?.join('&');
+
       // const link = `http://84.201.132.164:8080/api/reports/getConsolidatedReport?calculatorsId[0]=2538841&calculatorsId[1]=2538371&reportType=daily&from=2021-03-15T00:00:00Z&to=2021-03-20T23:00:00Z`
-      const link = `/api/Reports/GetConsolidatedReport?${calculatorsString}&reportType=daily&from=${begin}T00:00:00Z&to=${end}T23:00:00Z`;
+      const link = `Reports/GetConsolidatedReport?${calculatorsString}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+
+      console.log(link);
+
+      const beginName = moment(getFieldValue('dates')[0]).format('DD.MM.YYYY');
+      const endName = moment(getFieldValue('dates')[1]).format('DD.MM.YYYY');
+
+      // const fileName = `Сводное потребление в системах объектов учета с 15.03.2021 по 20.03.2021.xlsx`
+      const fileName = `Сводное потребление в системах объектов учета с ${beginName} по ${endName}.xlsx`;
+      downloadReport(link, fileName);
     };
 
     const onFinishFailed = (errorInfo: any) => {
