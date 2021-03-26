@@ -126,7 +126,10 @@ const EditCalculatorForm = ({
         id: number | null | undefined;
       }
 
-      putCalculator(id, form).then(({ show, id }: ThenInterface) => {
+      // console.log('id', id);
+
+      console.log('form', form);
+      putCalculator(id, form).then(({ show, id }: any) => {
         console.log('show', show);
         console.log('id', id);
         if (show) {
@@ -232,6 +235,7 @@ const EditCalculatorForm = ({
             onBlur={handleBlur}
             placeholder="Серийный номер"
             onChange={handleChange}
+            autoFocus={true}
           />
           <Alert name="serialNumber" />
         </Form.Item>

@@ -34,6 +34,7 @@ import {
 import { useAsync } from '../../../../../hooks/useAsync';
 import { getArchive } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 import styled from 'styled-components';
+import { downloadReport } from './apiGroupReport';
 
 interface ModalPropsInterface {
   visible: boolean;
@@ -126,30 +127,19 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
       );
       const resResources = resources.join('&');
 
-      function getGroupReport(link: string) {
-        getArchive(link).then((response: any) => {
-          const url = window.URL.createObjectURL(new Blob([response]));
-          const link = document.createElement('a');
-          link.href = url;
-          const fileName = `Report.zip`;
-          link.setAttribute('download', fileName);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-        });
-      }
-
       if (subscription) {
         console.log('C подпиской');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        getGroupReport(link);
+        const fileName = 'Report.zip';
+        downloadReport(link, fileName);
       }
       if (!subscription) {
         console.log('Без подписки');
         const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
-        getGroupReport(link);
+        const fileName = 'Report.zip';
+        downloadReport(link, fileName);
       }
     };
 
