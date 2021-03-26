@@ -32,51 +32,56 @@ export const MapObject = () => {
 
   const [show, setShow] = useState(false);
   // console.log('show', show);
-  return (
-    <div>
-      <ShowHide>
-        <IconTT icon={show ? 'off' : 'on'} />
-        &nbsp;
-        <button onClick={() => setShow((show) => !show)}>
-          {show ? 'Скрыть карту' : 'Показать карту'}
-        </button>
-      </ShowHide>
-      <div hidden={!show}>
-        <Map
-          modules={['control.ZoomControl', 'control.FullscreenControl']}
-          width="100%"
-          height={360}
-          state={mapState}
-        >
-          {coordinatesList.map((coordinate, index) => (
-            <Placemark
-              geometry={coordinate}
-              modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
-              properties={
-                {
-                  // hintContent: 'Информация об объекте',
-                  // balloonContentBody: 'Это красивая метка',
+
+  if (object.id === 226) {
+    return (
+      <div>
+        <ShowHide>
+          <IconTT icon={show ? 'off' : 'on'} />
+          &nbsp;
+          <button onClick={() => setShow((show) => !show)}>
+            {show ? 'Скрыть карту' : 'Показать карту'}
+          </button>
+        </ShowHide>
+        <div hidden={!show}>
+          <Map
+            modules={['control.ZoomControl', 'control.FullscreenControl']}
+            width="100%"
+            height={360}
+            state={mapState}
+          >
+            {coordinatesList.map((coordinate, index) => (
+              <Placemark
+                geometry={coordinate}
+                modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
+                properties={
+                  {
+                    // hintContent: 'Информация об объекте',
+                    // balloonContentBody: 'Это красивая метка',
+                  }
                 }
-              }
-              options={{
-                iconLayout: 'default#image',
-                iconImageHref: `${objectIcon}`,
-                iconImageSize: [64, 88],
-                iconImageOffset: [-3, -42],
-              }}
+                options={{
+                  iconLayout: 'default#image',
+                  iconImageHref: `${objectIcon}`,
+                  iconImageSize: [64, 88],
+                  iconImageOffset: [-3, -42],
+                }}
+              />
+            ))}
+            <FullscreenControl
+              options={{ position: { right: 16, top: 16 } }}
+              style={{ color: 'red' }}
             />
-          ))}
-          <FullscreenControl
-            options={{ position: { right: 16, top: 16 } }}
-            style={{ color: 'red' }}
-          />
-          <ZoomControl
-            options={{ size: 'small', position: { right: 16, bottom: 32 } }}
-          />
-        </Map>
+            <ZoomControl
+              options={{ size: 'small', position: { right: 16, bottom: 32 } }}
+            />
+          </Map>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
 
 export default MapObject;
