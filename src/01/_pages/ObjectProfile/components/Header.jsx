@@ -7,6 +7,7 @@ import ModalAddDevice from './Modals/AddDevice';
 import ModalCommonReport from './Modals/CommonReport';
 import { MenuButtonTT } from '../../../tt-components';
 import { useHistory } from 'react-router-dom';
+import getAccessesList from '../../../_api/utils/getAccessesList';
 
 const styles = css`
   h {
@@ -35,6 +36,8 @@ export const Header = React.memo(
     commonReport,
     object,
   }) => {
+    const access = getAccessesList();
+    const { show } = access;
     const { push } = useHistory();
 
     const menuButtonArr = [
@@ -43,7 +46,7 @@ export const Header = React.memo(
         cb: () => {
           push(`/objects/${object.id}/add_node`);
         },
-        show: true,
+        show: show('CalculatorUpdate'),
         color: 'default',
       },
       {
@@ -55,6 +58,7 @@ export const Header = React.memo(
         color: 'default',
       },
     ];
+
     return styled(styles)(
       <h>
         <HeaderWrap
