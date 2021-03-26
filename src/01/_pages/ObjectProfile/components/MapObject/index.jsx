@@ -10,30 +10,28 @@ import styled from 'styled-components';
 import { IconTT } from '../../../../tt-components';
 import { ObjectContext } from '../../index';
 
-interface MapObjectInterface {
-  object: any;
-}
-
-export const MapObject = ({ object }: MapObjectInterface) => {
-  const [show, setShow] = useState(false);
+export const MapObject = () => {
+  const { object } = useContext(ObjectContext);
+  // const { coordinates } = object;
+  // const { latitude, longitude } = coordinates;
+  // coordinates: {latitude: 55.810405, longitude: 49.191192}
+  const objectCoordinates = [55.6459770130149, 51.810977083216244];
   const [zoom, setZoom] = useState(15);
-  const { coordinates } = object;
-  console.log('object', object);
   const mapState = useMemo(
     () => ({
-      center: coordinates,
+      center: objectCoordinates,
       // controls: ['zoomControl', 'fullscreenControl'],
       zoom,
     }),
     [zoom]
   );
+  const coordinatesList = [
+    objectCoordinates,
+    // [55.664758, 51.838521],
+  ];
 
-  if (!coordinates) {
-    return null;
-  }
-
-  const coordinatesList = [coordinates];
-
+  const [show, setShow] = useState(false);
+  // console.log('show', show);
   return (
     <div>
       <ShowHide>
