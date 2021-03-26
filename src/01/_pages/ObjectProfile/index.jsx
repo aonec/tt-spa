@@ -82,8 +82,10 @@ export const ObjectProfile = () => {
         <Tabs />
         <grid>
           <Route path="/objects/(\\d+)" exact>
-            <Information {...info} />
-            <MapObject />
+            <div>
+              <Information {...info} />
+              <MapObject object={object} />
+            </div>
           </Route>
 
           <Route path="/objects/(\\d+)/apartments" exact>
