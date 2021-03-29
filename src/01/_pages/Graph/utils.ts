@@ -3,9 +3,9 @@ import {
   ArchiveEntryInterface,
   GraphDataInterface,
   ReportType,
-  ResourceType,
 } from './components/GraphView';
 import { GraphParamsType } from './Graph';
+import { ResourceType } from '../../../myApi';
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
@@ -107,7 +107,7 @@ export const getTickFormat = (
 
 export const getGraphParams = (
   resource: ResourceType,
-  pipeCount: 1 | 2
+  pipeCount: number
 ): GraphParamsType[] => {
   switch (resource) {
     case 'ColdWaterSupply':

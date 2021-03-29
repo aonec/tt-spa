@@ -91,7 +91,7 @@ export const NodeProfile = () => {
           <Information calculator={calculator} node={node} />
         </Route>
         <Route path={`${path}/stats`} exact>
-          {resource && communicationPipes?.length ? (
+          {resource && communicationPipes && communicationPipes.length > 0 ? (
             <Graph
               nodeId={nodeId}
               resource={resource}
@@ -107,12 +107,6 @@ export const NodeProfile = () => {
                 closable
                 style={{ marginBottom: 24, marginTop: 24 }}
               />
-              <div>
-                <img
-                  src={require('./components/FallbackGraph.svg')}
-                  alt="546"
-                />
-              </div>
             </>
           )}
         </Route>

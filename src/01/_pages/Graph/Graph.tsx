@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import GraphView, { ReportType, ResourceType } from './components/GraphView';
+import GraphView, { ReportType } from './components/GraphView';
 import GraphFilterForm from './components/GraphFilterForm';
 import moment from 'moment';
 import {
@@ -11,11 +11,12 @@ import { useAsync } from '../../hooks/useAsync';
 import { Alert } from 'antd';
 import { getGraphParams } from './utils';
 import styled from 'styled-components';
+import { ResourceType } from '../../../myApi';
 
 interface GraphProps {
   nodeId: number;
-  resource: ResourceType | null;
-  pipeCount: 1 | 2 | null;
+  resource: ResourceType;
+  pipeCount: number;
 }
 
 export type GraphParamsType =
