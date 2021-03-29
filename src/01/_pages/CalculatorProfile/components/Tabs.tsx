@@ -15,7 +15,7 @@ const tabItems: Array<Array<string>> = [
 export const TabsCalculator = React.memo(() => {
   const { push } = useHistory();
   const matchParams = useRouteMatch<string>(
-    '/calculators/(\\d+)/(readings|documents|changes)?'
+    '/calculators/(\\d+)/(connection|nodes|related|documents)?'
   );
   if (!matchParams) {
     return null;
