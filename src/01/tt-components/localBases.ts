@@ -4,6 +4,7 @@ export interface ItemInterface {
   model: string;
   label: string;
 }
+
 export const items: Array<ItemInterface> = [
   {
     id: 1,
@@ -281,3 +282,10 @@ export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}
 export const ipv4RegExp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 export const numberRegExp = /^[0-9][A-Za-z0-9 -]*$/;
+
+export const DEFAULT_INDIVIDUAL_DEVICE = {
+  model: '',
+  serialNumber: '',
+  resource: '',
+  address: { city: '', street: '', number: '' },
+};

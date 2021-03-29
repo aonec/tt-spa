@@ -1,6 +1,6 @@
 import axios from '../../axios';
 
-export async function getIndividualDevice(id = '') {
+export async function getIndividualDevice(id: number) {
   try {
     const res = await axios.get(`IndividualDevices/${id}`);
     console.log('res', res);
@@ -14,7 +14,7 @@ export async function getIndividualDevice(id = '') {
   }
 }
 
-export async function getIndividualDeviceTasks(id = '') {
+export async function getIndividualDeviceTasks(id: number) {
   try {
     const res = axios.get(`Tasks?DeviceId=${id}`);
     return res;
