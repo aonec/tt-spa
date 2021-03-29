@@ -14,8 +14,8 @@ import styled from 'styled-components';
 
 interface GraphProps {
   nodeId: number;
-  resource: ResourceType;
-  pipeCount: 1 | 2;
+  resource: ResourceType | null;
+  pipeCount: 1 | 2 | null;
 }
 
 export type GraphParamsType =

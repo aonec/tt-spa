@@ -13,6 +13,9 @@ import Graph from '../Graph/Graph';
 import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import Events from './components/Events';
+import { Loader } from '../../components';
+import { Alert } from 'antd';
 
 export interface MatchParams {
   nodeId: string;
@@ -56,9 +59,8 @@ export const NodeProfile = () => {
       : console.log('wait');
   }, [node]);
 
-  //
   if (!node || !calculator) {
-    return <div>Загрузка</div>;
+    return null;
   }
 
   console.log('node', node);
@@ -66,6 +68,15 @@ export const NodeProfile = () => {
   const path = `/nodes/${nodeId}`;
   console.log('path', path);
 
+  // const { resource } = node;
+
+  if (status === 'error')
+    return <div style={{ background: 'red' }}>ОШИБКА</div>;
+
+  if (status === 'pending' || status === 'idle')
+    return <Loader size={'32'} show />;
+
+  const { resource, communicationPipes } = node;
   return (
     <>
       <Header
@@ -80,11 +91,30 @@ export const NodeProfile = () => {
           <Information calculator={calculator} node={node} />
         </Route>
         <Route path={`${path}/stats`} exact>
-          {/*<Graph*/}
-          {/*  nodeId={nodeId}*/}
-          {/*  resource={resource}*/}
-          {/*  pipeCount={communicationPipes.length}*/}
-          {/*/>*/}
+          {resource && communicationPipes?.length ? (
+            <Graph
+              nodeId={nodeId}
+              resource={resource}
+              pipeCount={communicationPipes.length}
+            />
+          ) : (
+            <>
+              <Alert
+                message="Ошибка"
+                description="На сервере произошла непредвиденная ошибка. В скором времени она будет устранена."
+                type="error"
+                showIcon
+                closable
+                style={{ marginBottom: 24, marginTop: 24 }}
+              />
+              <div>
+                <img
+                  src={require('./components/FallbackGraph.svg')}
+                  alt="546"
+                />
+              </div>
+            </>
+          )}
         </Route>
         <Route path={`${path}/connection`} exact>
           <Connection calculator={calculator} />
@@ -92,13 +122,23 @@ export const NodeProfile = () => {
         <Route path={`${path}/related`} exact>
           <RelatedDevices node={node} />
         </Route>
-        {/*  <Route path={`${url}/documents`} exact>*/}
-        {/*    <Documents />*/}
-        {/*  </Route>*/}
-        {/*  /!*<Events title="Задачи с объектом" /> *!/*/}
+        <Route path={`${path}/documents`} exact>
+          <Documents />
+        </Route>
+        {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
       </Grid>
-      {/*<ModalAddDevice />*/}
+      <ModalAddDevice
+        addOdpu={addOdpu}
+        calculator={calculator}
+        node={node}
+        setAddOdpu={setAddOdpu}
+      />
     </>
   );
 };
 export default NodeProfile;
+
+// <>
+
+// ) : null}
+// </>

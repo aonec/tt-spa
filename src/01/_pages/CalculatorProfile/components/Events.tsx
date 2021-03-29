@@ -18,8 +18,15 @@ interface EventsInterface {
 }
 
 export const Events = ({ title = '', tasks }: EventsInterface) => {
-  const Tasks = tasks.map((task, index) => {
+  const buttonHandler = () => {
+    console.log('buttonHandler');
+  };
+
+  const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;
+    if (!currentStage) {
+      return null;
+    }
     return (
       <Task key={id} href={`/tasks/${id}`}>
         <StageName>{currentStage.name}</StageName>
@@ -42,7 +49,7 @@ export const Events = ({ title = '', tasks }: EventsInterface) => {
       <TasksWrap>
         <TasksTitle>{title}</TasksTitle>
         {Tasks}
-        <Button>Все задачи с объектом</Button>
+        <Button onClick={buttonHandler}>Все задачи с объектом</Button>
       </TasksWrap>
     );
   }

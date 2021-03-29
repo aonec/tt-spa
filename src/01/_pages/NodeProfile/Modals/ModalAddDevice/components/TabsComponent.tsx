@@ -23,7 +23,7 @@ const tabsComponent = [
 //     handleChangeTab: (value: string) => void
 // }
 
-const TabsComponent = (props) => {
+const TabsComponent = (props: any) => {
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs activeKey={currentTabKey} onChange={handleChangeTab}>
