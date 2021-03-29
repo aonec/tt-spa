@@ -26,13 +26,12 @@ const tabItemsWatcher = [
 export const Tasks = () => {
   const access = getAccessesList();
   const { show } = access;
+  const resultTabs = show('CalculatorUpdate') ? tabItems : tabItemsWatcher;
+
   const Tabs = React.memo(({ total = [] }) => {
     return styled(tabs)(
       <tabs>
-        {tabItems.map(({ 0: name, 1: to }, i) => {
-          if (!show('CalculatorUpdate') && i === 0) {
-            return null;
-          }
+        {resultTabs.map(({ 0: name, 1: to }, i) => {
           return (
             <NavLink key={to} to={to} activeClassName={tabs.active} replace>
               {name} {!!total[i] && `(${total[i]})`}
@@ -42,7 +41,7 @@ export const Tasks = () => {
       </tabs>
     );
   });
-  // const {show} = access;
+
   const [searchState, dispatchSearchState] = useReducer(tasksSearchReducer, {});
 
   const debouncedSearchState = useDebounce(searchState, 500);

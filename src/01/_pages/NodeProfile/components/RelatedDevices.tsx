@@ -1,48 +1,56 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { NodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
-export const RelatedDevices = () => {
-  const { node } = useContext(NodeContext);
+interface NodesInterface {
+  node: NodeResponse;
+  calculator?: CalculatorResponse | null;
+  nodeId?: number;
+  setAddOdpu?: Dispatch<SetStateAction<boolean>>;
+}
+
+export const RelatedDevices = ({ node }: NodesInterface) => {
+  if (!node) {
+    return null;
+  }
   const { communicationPipes } = node;
+  console.log('node', node);
 
   const related = _.flatten(
-    communicationPipes.map((item, index) => {
-      const res = item.devices.map((resItem) => resItem);
+    communicationPipes?.map((item, index) => {
+      const { devices } = item;
+      const res = devices || [].map((resItem) => resItem);
       return res;
     })
   );
 
-  const result = related.map((value) => {
+  const result = related.map((value: any) => {
     const {
       model,
       serialNumber,
-      closingdate,
+      closingDate,
       hub,
       resource,
       id,
       housingStockId,
     } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } =
-      hub === null
-        ? {
-            number: 'X',
-            entryNumber: 'X',
-            hubNumber: 'X',
-          }
-        : hub;
+    const { pipeNumber = '', entryNumber = '', hubNumber = '' } = hub || {
+      pipeNumber: '',
+      entryNumber: '',
+      hubNumber: '',
+    };
 
-    const icon = closingdate !== null ? 'green' : 'red';
-    const status = closingdate !== null ? 'Активен' : 'Не активен';
+    const icon = closingDate !== null ? 'green' : 'red';
+    const status = closingDate !== null ? 'Активен' : 'Не активен';
 
     return (
       <ListItem key={id}>
         <NameWrap href={`/housingMeteringDevices/${id}`}>
           <IconTT
-            icon={resource.toLowerCase()}
+            icon={(resource || 'next').toLowerCase()}
             style={{ marginRight: '8px' }}
           />
           <Name style={{ marginRight: '8px' }}>{model}</Name>

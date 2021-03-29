@@ -60,7 +60,7 @@ export const CalculatorProfile = () => {
         const device = responses[0].value;
         const tasks = responses[1].value;
         setDevice(device);
-        setTasks(tasks.items);
+        setTasks(tasks);
         setIsLoading(false);
       })
       .catch(({ resource, message }) => {})
@@ -74,7 +74,7 @@ export const CalculatorProfile = () => {
       });
   }, []);
 
-  if (!device && !tasks) return <Loader show size={32} />;
+  if (!device || !tasks) return <Loader show size={32} />;
 
   const context = {
     device,

@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Divider, Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -11,6 +17,7 @@ import {
   isConnectedOptions,
   resources,
   nodeStatusList,
+  DEFAULT_BUILDING,
 } from '../../../../../tt-components/localBases';
 import {
   Title,
@@ -20,14 +27,13 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
   Warning,
   StyledFormPage,
   styles,
 } from '../../../../../tt-components';
 import TabsComponent from './TabsComponent';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
-import { NodeContext } from '../../../index';
+
 import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
@@ -35,10 +41,20 @@ import {
 import { addOdpu } from '../apiAddOdpu';
 import { CalculatorResponse, NodeResponse } from '../../../../../../myApi';
 
-const AddDeviceForm = (props) => {
-  const { handleCancel } = props;
-  const { node, calculator } = useContext(NodeContext);
-  const { address } = calculator;
+interface AddDeviceFormInterface {
+  node: NodeResponse;
+  calculator: CalculatorResponse | null;
+  nodeId?: number;
+  setAddOdpu?: Dispatch<SetStateAction<boolean>>;
+  handleCancel: any;
+}
+
+const AddDeviceForm = ({
+  node,
+  calculator,
+  handleCancel,
+}: AddDeviceFormInterface) => {
+  const { address } = calculator || { address: DEFAULT_BUILDING };
 
   const { city, corpus, housingStockNumber, id, street } = address;
   const {
@@ -46,18 +62,12 @@ const AddDeviceForm = (props) => {
     calculatorId,
     communicationPipes,
     number,
-    futureCommercialAccountingDate,
-    lastCommercialAccountingDate,
     nodeStatus,
-    serviceZone,
   } = node;
 
   console.log('node', node);
 
   const entryNumber = 1;
-
-  // const communicationPipeIds = _.map(communicationPipes, ['id', 'number']);
-
   const [currentTabKey, setTab] = useState('1');
   const [coldAndThermo, setColdAndThermo] = useState(false);
   const [disable, setDisable] = useState(false);
@@ -110,7 +120,7 @@ const AddDeviceForm = (props) => {
     nodeStatus,
   };
 
-  const communicationPipeIds = communicationPipes.map((item) => {
+  const communicationPipeIds = communicationPipes?.map((item) => {
     const { number, id } = item;
     return { value: number, label: number, pipeId: id };
   });
@@ -181,16 +191,15 @@ const AddDeviceForm = (props) => {
 
   useEffect(() => {
     const pipeNumbers = _.map(communicationPipes, 'number');
-    console.log('pipeNumbers', pipeNumbers);
-    console.log('values.pipeNumber', values.pipeNumber);
+    // console.log('pipeNumbers', pipeNumbers);
+    // console.log('values.pipeNumber', values.pipeNumber);
 
-    if (pipeNumbers.includes(values.pipeNumber)) {
-      const getDevices = _.find(communicationPipes, {
-        number: values.pipeNumber,
-      });
-      const isSameType = _.find(getDevices.devices, {
-        housingMeteringDeviceType: values.housingMeteringDeviceType,
-      });
+    if (pipeNumbers.includes(values.pipeNumber ?? 0)) {
+      const getDevices = (communicationPipes || []).find(
+        (communicationPipesItem) =>
+          communicationPipesItem.number == values.pipeNumber
+      );
+      const isSameType = getDevices || [];
       console.log('isSameType', isSameType);
       isSameType
         ? console.log('на трубе уже есть утстройство такого типа')
@@ -218,7 +227,7 @@ const AddDeviceForm = (props) => {
     return null;
   };
 
-  const handleChangeTab = (value) => {
+  const handleChangeTab = (value: string) => {
     setTab(value);
   };
 
@@ -231,7 +240,7 @@ const AddDeviceForm = (props) => {
       tabErrors,
       errors
     );
-    if (hasError === true) {
+    if (hasError) {
       setTab(errorTab);
     }
   }
@@ -250,7 +259,7 @@ const AddDeviceForm = (props) => {
 
   const addressString = `${city}, ${street}, ${housingStockNumber}`;
 
-  const isDisabled = (value) => _.includes(disabledFields, value);
+  const isDisabled = (value: string) => _.includes(disabledFields, value);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -373,7 +382,7 @@ const AddDeviceForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'lastCommercialAccountingDate',
-                  date.toISOString()
+                  date?.toISOString()
                 );
               }}
               value={moment(values.lastCommercialAccountingDate)}
@@ -391,8 +400,8 @@ const AddDeviceForm = (props) => {
               name="futureCommercialAccountingDate"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('', date.toISOString());
-                setFieldValue('', date.toISOString());
+                setFieldValue('', date?.toISOString());
+                setFieldValue('', date?.toISOString());
               }}
               value={moment(values.futureCommercialAccountingDate)}
               disabled={isDisabled('futureCommercialAccountingDate')}
@@ -466,7 +475,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date?.toISOString());
               }}
               value={moment(values.lastCheckingDate)}
             />
@@ -479,7 +488,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date?.toISOString());
               }}
               value={moment(values.futureCheckingDate)}
             />
@@ -499,7 +508,7 @@ const AddDeviceForm = (props) => {
                   value: value,
                 });
                 console.log('pipeId', pipeId);
-                setFieldValue('pipeId', pipeId.pipeId);
+                setFieldValue('pipeId', values.pipeId);
               }}
               disabled={disable}
             />
@@ -575,7 +584,6 @@ const AddDeviceForm = (props) => {
     </form>
   );
 };
-
 export default AddDeviceForm;
 
 const StyledAddress = styled.span`

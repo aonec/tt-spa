@@ -196,9 +196,11 @@ export const UserRoles = [
 ];
 
 export const DEFAULT_BUILDING = {
-  city: null,
-  street: null,
+  city: '',
+  street: '',
   housingStockNumber: null,
+  corpus: '',
+  id: null,
 };
 
 export const DEFAULT_CALCULATOR = {

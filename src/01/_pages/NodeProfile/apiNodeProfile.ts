@@ -1,6 +1,6 @@
 import axios from '../../axios';
 
-export async function getNode(id = '') {
+export async function getNode(id: number) {
   try {
     const res = await axios.get(`Nodes/${id}`);
     return res;
@@ -13,10 +13,9 @@ export async function getNode(id = '') {
   }
 }
 
-export async function getCalculator(id = '') {
+export async function getCalculator(id: number) {
   try {
     const res = await axios.get(`Calculators/${id}`);
-    // const res = await axios.get(`Calculators/2210858`);
     return res;
   } catch (error) {
     console.log(error);
