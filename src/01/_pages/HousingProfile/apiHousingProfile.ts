@@ -1,13 +1,11 @@
 import axios from '../../axios';
-import {
-  TaskListResponse,
-  TasksPagedList,
-  TasksPagedListSuccessApiResponse,
-} from '../../../myApi';
+import { HousingMeteringDeviceResponse, TasksPagedList } from '../../../myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    const res = await axios.get(`HousingMeteringDevices/${id}`);
+    const res = await axios.get<any, HousingMeteringDeviceResponse>(
+      `HousingMeteringDevices/${id}`
+    );
     return res;
   } catch (error) {
     console.log(error);
