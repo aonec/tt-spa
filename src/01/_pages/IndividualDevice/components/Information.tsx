@@ -1,29 +1,24 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { convertDateDots } from '01/_api/utils/convertDate';
 import { ListWrap, ListItem, Title, Loader } from '01/_components';
-import { DeviceContext } from '../index';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
 import { translateResource } from '../../../utils/translateResource';
+import { IndividualDeviceResponse } from '../../../../myApi';
 
-export const Information = () => {
-  const { device, mistake } = useContext(DeviceContext);
+interface InformationInterface {
+  device: IndividualDeviceResponse;
+}
+
+export const Information = ({ device }: InformationInterface) => {
   const loading = !device;
   const {
-    commercialAccountingDate,
+    lastCommercialAccountingDate,
     futureCheckingDate,
     lastCheckingDate,
     closingDate,
     mountPlace,
     resource,
   } = device;
-
-  if (mistake) {
-    return (
-      <ListWrap>
-        <Title style={{ color: 'red' }}>Данные не получены</Title>
-      </ListWrap>
-    );
-  }
 
   return (
     <ListWrap>
@@ -32,12 +27,12 @@ export const Information = () => {
 
         <ListItem>
           <span>Статус прибора</span>
-          <span>{closingDate === null ? 'Активен' : 'Не активен'}</span>
+          <span>{closingDate ? 'Активен' : 'Не активен'}</span>
         </ListItem>
 
         <ListItem>
           <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDateDots(commercialAccountingDate)}</span>
+          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
         </ListItem>
 
         <ListItem>
