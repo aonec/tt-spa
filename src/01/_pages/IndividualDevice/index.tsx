@@ -30,10 +30,7 @@ export const IndividualDevice = () => {
   if (!device || !tasks) {
     return null;
   }
-
   const path = `/individualDevices/${deviceId}/`;
-
-  console.log('tasks', tasks);
 
   return (
     <>

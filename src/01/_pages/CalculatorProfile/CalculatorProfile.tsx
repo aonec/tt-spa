@@ -7,7 +7,6 @@ import {
 } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 import { Header } from './components/Header';
-import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
@@ -19,6 +18,8 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
 import { CalculatorResponse } from '../../../myApi';
+import Tabs from './components/Tabs';
+import TabsCalculator from './components/Tabs';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -95,7 +96,7 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-      <Tabs />
+      <TabsCalculator />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
