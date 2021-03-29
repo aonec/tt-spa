@@ -1,19 +1,28 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { NodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
-export const Connection = () => {
-  const { calculator } = useContext(NodeContext);
+interface ConnectionInterface {
+  node?: NodeResponse;
+  calculator: CalculatorResponse | null;
+  nodeId?: number;
+  setAddOdpu?: Dispatch<SetStateAction<boolean>>;
+}
+
+export const Connection = ({ calculator }: ConnectionInterface) => {
+  if (!calculator) {
+    return null;
+  }
   const {
     model,
     id,
     serialNumber,
     lastCheckingDate,
     futureCheckingDate,
-    closingdate,
+    closingDate,
   } = calculator;
 
   const resLastCheckingDate =
@@ -24,7 +33,7 @@ export const Connection = () => {
     futureCheckingDate !== null
       ? moment(futureCheckingDate).format('DD.MM.YYYY')
       : 'Следующая Дата поверки не указана';
-  const icon = closingdate !== null ? 'green' : 'red';
+  const icon = closingDate !== null ? 'green' : 'red';
 
   const CalcItem = () => (
     <ListItem>
@@ -39,7 +48,7 @@ export const Connection = () => {
       </NavLink>
       <State>
         <IconTT icon={icon} />
-        {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
+        {`${closingDate !== null ? 'Активен' : 'Не активен'}`}
       </State>
       <Dates>{`${resLastCheckingDate} - ${resFutureCheckingDate}`}</Dates>
     </ListItem>

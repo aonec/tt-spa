@@ -19,7 +19,9 @@ export interface MatchParams {
 }
 
 export const NodeProfile = () => {
-  const url = useRouteMatch<MatchParams>('/nodes/:nodeId');
+  const matchParams = useRouteMatch<MatchParams>(
+    '/nodes/:nodeId/(stats|connection|related|documents)?'
+  );
   const { nodeId } = useParams();
 
   const tabItems: string[][] = [
@@ -30,6 +32,7 @@ export const NodeProfile = () => {
     ['Документы', 'documents'],
   ];
   const [currentTab, setCurrentTab] = useState<string>('1');
+
   function handleChangeTab(value: string) {
     setCurrentTab(value);
   }
@@ -60,6 +63,8 @@ export const NodeProfile = () => {
 
   console.log('node', node);
   console.log('calculator', calculator);
+  const path = `/nodes/${nodeId}`;
+  console.log('path', path);
 
   return (
     <>
@@ -71,22 +76,22 @@ export const NodeProfile = () => {
       />
       <Tabs tabItems={tabItems} path={'/nodes/(\\d+)'} />
       <Grid>
-        <Route path={`${url}`} exact>
+        <Route path={path} exact>
           <Information calculator={calculator} node={node} />
         </Route>
-        {/*  <Route path={`${url}/stats`} exact>*/}
-        {/*    <Graph*/}
-        {/*      nodeId={nodeId}*/}
-        {/*      resource={node.resource}*/}
-        {/*      pipeCount={node.communicationPipes.length}*/}
-        {/*    />*/}
-        {/*  </Route>*/}
-        {/*  <Route path={`${url}/connection`} exact>*/}
-        {/*    <Connection />*/}
-        {/*  </Route>*/}
-        {/*  <Route path={`${url}/related`} exact>*/}
-        {/*    <RelatedDevices />*/}
-        {/*  </Route>*/}
+        <Route path={`${path}/stats`} exact>
+          {/*<Graph*/}
+          {/*  nodeId={nodeId}*/}
+          {/*  resource={resource}*/}
+          {/*  pipeCount={communicationPipes.length}*/}
+          {/*/>*/}
+        </Route>
+        <Route path={`${path}/connection`} exact>
+          <Connection calculator={calculator} />
+        </Route>
+        <Route path={`${path}/related`} exact>
+          <RelatedDevices node={node} />
+        </Route>
         {/*  <Route path={`${url}/documents`} exact>*/}
         {/*    <Documents />*/}
         {/*  </Route>*/}
