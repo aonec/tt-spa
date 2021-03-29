@@ -28,7 +28,7 @@ export const TabsIndividualDevice = React.memo(() => {
     <Tabs
       onChange={handleChange}
       style={{ height: 'fit-content' }}
-      defaultActiveKey={params[1]}
+      // defaultActiveKey={params[1]}
     >
       {tabItems.map((t, index) => {
         return <TabPane tab={t[0]} key={t[1]} />;

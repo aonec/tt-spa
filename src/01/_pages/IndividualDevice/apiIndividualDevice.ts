@@ -1,4 +1,5 @@
 import axios from '../../axios';
+import { TasksPagedList } from '../../../myApi';
 
 export async function getIndividualDevice(id: number) {
   try {
@@ -16,8 +17,10 @@ export async function getIndividualDevice(id: number) {
 
 export async function getIndividualDeviceTasks(id: number) {
   try {
-    const res = axios.get(`Tasks?DeviceId=${id}`);
-    return res;
+    const res: TasksPagedList = await axios.get(`Tasks?DeviceId=${id}`);
+    const { items } = res;
+    // console.log(items);
+    return items;
   } catch (error) {
     console.log(error);
     throw {
