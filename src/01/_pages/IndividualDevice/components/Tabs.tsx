@@ -19,16 +19,16 @@ export const TabsIndividualDevice = React.memo(() => {
   if (!matchParams) {
     return null;
   }
-  const { url, params } = matchParams;
+  const { params } = matchParams;
 
   const handleChange = (key: string) => {
-    push(key !== '' ? `${url}/${key}` : url);
+    push(`/individualDevices/${params[0]}/${key}`);
   };
   return (
     <Tabs
       onChange={handleChange}
       style={{ height: 'fit-content' }}
-      // defaultActiveKey={params[1]}
+      defaultActiveKey={params[1]}
     >
       {tabItems.map((t, index) => {
         return <TabPane tab={t[0]} key={t[1]} />;
