@@ -1,32 +1,40 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import moment from 'moment';
-import _ from 'lodash';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
-import { NodeContext } from '../index';
 import {
   nodeStatusList,
   serviceZoneList,
 } from '../../../tt-components/localBases';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
-const Information = () => {
-  const { node, calculator } = useContext(NodeContext);
+interface HeaderInterface {
+  node: NodeResponse;
+  calculator: CalculatorResponse | null;
+}
+
+const Information = ({ node, calculator }: HeaderInterface) => {
+  if (!calculator) {
+    return null;
+  }
+
   const {
     serviceZone,
     nodeStatus,
-    lastCheckingDate,
-    futureCheckingDate,
+    lastCommercialAccountingDate,
+    futureCommercialAccountingDate,
   } = node;
 
   const { address } = calculator;
   const { city, street, housingStockNumber, corpus, id } = address;
 
   const getServiceZone =
-    _.find(serviceZoneList, { value: serviceZone })?.label ??
-    'Зона не определена';
+    serviceZoneList.find(
+      (serviceZoneItem) => serviceZoneItem.value === serviceZone
+    )?.label ?? 'Зона не определена';
   const getNodeStatus =
-    _.find(nodeStatusList, { value: nodeStatus })?.label ??
-    'Статус не определен';
+    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
+      ?.label ?? 'Статус не определен';
 
   return (
     <ListWrap>
@@ -49,11 +57,11 @@ const Information = () => {
       </ListItem>
       <ListItem>
         <span>Дата начала действия акта-допуска</span>
-        <div>{moment(lastCheckingDate).format('DD.MM.YYYY')}</div>
+        <div>{moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}</div>
       </ListItem>
       <ListItem>
         <span>Дата окончания действия акта-допуска</span>
-        <div>{moment(futureCheckingDate).format('DD.MM.YYYY')}</div>
+        <div>{moment(futureCommercialAccountingDate).format('DD.MM.YYYY')}</div>
       </ListItem>
     </ListWrap>
   );

@@ -1,19 +1,34 @@
-import React, { useContext } from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
+import React, { Dispatch, SetStateAction } from 'react';
+import { HeaderWrap, Title } from '01/_components';
 import styled from 'styled-components';
-import _ from 'lodash';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
-import { NodeContext } from '../index';
 import { nodeStatusList } from '../../../tt-components/localBases';
-import isWatcher from '../../../_api/utils/isWatcher';
 import getAccessesList from '../../../_api/utils/getAccessesList';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
-export const Header = () => {
-  const { node, calculator, setAddOdpu, deviceId } = useContext(NodeContext);
-  const { id: nodeId, resource, nodeStatus, number } = node;
+interface HeaderInterface {
+  node: NodeResponse;
+  calculator: CalculatorResponse | null;
+  nodeId: number;
+  setAddOdpu: Dispatch<SetStateAction<boolean>>;
+}
+
+export const Header = ({
+  node,
+  calculator,
+  setAddOdpu,
+  nodeId,
+}: HeaderInterface) => {
+  const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
+
+  if (!node || !calculator) {
+    return null;
+  }
+
+  const { resource, nodeStatus, number } = node;
   const {
     id: objectId,
     city,
@@ -22,15 +37,18 @@ export const Header = () => {
     corpus,
   } = calculator.address;
 
-  const { push } = useHistory();
-  // const { url } = useRouteMatch('/nodes/(\\d+)')
+  interface MenuButtonInterface {
+    title: string;
+    show: () => void;
+    cb: () => void;
+  }
 
-  const menuButtonArr = [
+  const menuButtonArr: Array<MenuButtonInterface> = [
     {
       title: 'Редактировать узел',
       show: show('CalculatorUpdate'),
       cb: () => {
-        push(`/calculators/${deviceId}/edit`);
+        push(`/nodes/${nodeId}/edit`);
       },
     },
     {
@@ -50,17 +68,18 @@ export const Header = () => {
   ];
 
   const getNodeStatus =
-    _.find(nodeStatusList, { value: nodeStatus })?.label ??
-    'Статус не определен';
+    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
+      ?.label ?? 'Статус не определен';
   const getNodeIconStatus =
-    _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
+    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
+      ?.icon ?? 'del';
 
   const NodeStatus = () => (
     <div
       style={{
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '8px',
+        marginLeft: 8,
       }}
     >
       <IconTT
@@ -82,7 +101,7 @@ export const Header = () => {
       <div>
         <TitleWrap>
           <IconTT
-            icon={resource.toLowerCase()}
+            icon={(resource || 'node').toLowerCase()}
             size={24}
             style={{ marginRight: '8px' }}
           />
@@ -90,11 +109,11 @@ export const Header = () => {
         </TitleWrap>
 
         <SubtitleWrap>
-          <Subtitle to={`/objects/${objectId}`}>
-            {`${city}, ${street}, ${housingStockNumber}${
-              corpus ? `, к.${corpus}` : ''
-            }`}
-          </Subtitle>
+          {/*<Subtitle to={`/objects/${objectId}`}>*/}
+          {/*  {`${city}, ${street}, ${housingStockNumber}${*/}
+          {/*    corpus ? `, к.${corpus}` : ''*/}
+          {/*  }`}*/}
+          {/*</Subtitle>*/}
           <NodeStatus />
         </SubtitleWrap>
       </div>
