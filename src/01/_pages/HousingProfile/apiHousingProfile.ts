@@ -1,5 +1,6 @@
 import axios from '../../axios';
 import {
+  HousingMeteringDeviceResponse,
   TaskListResponse,
   TasksPagedList,
   TasksPagedListSuccessApiResponse,
@@ -7,7 +8,9 @@ import {
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    const res = await axios.get(`HousingMeteringDevices/${id}`);
+    const res = await axios.get<any, HousingMeteringDeviceResponse>(
+      `HousingMeteringDevices/${id}`
+    );
     return res;
   } catch (error) {
     console.log(error);

@@ -43,6 +43,7 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
   useEffect(() => {
     setIsLoading(true);
     dispatch(getDevices(currentPage, pageSize, debouncedSearchState));
+    // setTimeout(() => setIsLoading(false), 10000);
     setIsLoading(false);
   }, [currentPage, debouncedSearchState]);
 
@@ -73,7 +74,7 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
           dispatchSearchState={dispatchSearchState}
         />
         {isLoading || devicePage.isLoading ? (
-          <div>
+          <div aria-label="loading">
             ЗАГРУЗКА...
             <Loader show />
           </div>
