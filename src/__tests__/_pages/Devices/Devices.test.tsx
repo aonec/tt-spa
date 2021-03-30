@@ -22,6 +22,7 @@ import { useApp } from '../../../01/App/useApp';
 import { store } from '../../../01/Redux/store';
 import { getRoles } from '@testing-library/dom';
 import { devicesAPI } from '../../../01/_api/devices_page';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -335,9 +336,14 @@ test('loads and displays greeting', async () => {
 
   console.log(getRoles(document.body));
 
-  await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'));
+  await wait(5000);
+
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 });
+
+//   await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'));
+//   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+// });
 
 // await waitFor(
 //   () => {
