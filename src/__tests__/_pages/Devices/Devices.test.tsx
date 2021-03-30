@@ -306,14 +306,9 @@ function render(
 //     return res(ctx.json(calculatorsResponse.successResponse));
 //   })
 // );
-//
-// beforeAll(() => server.listen());
-// afterEach(() => server.resetHandlers());
-// afterAll(() => server.close());
 
 test('loads and displays greeting', async () => {
   render(<DevicesFromSearch />);
-  // await waitForElementToBeRemoved(() => screen.getByText(/загрузка/i));
 
   expect(
     screen.getByRole('heading', {
@@ -323,55 +318,16 @@ test('loads and displays greeting', async () => {
 
   expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
 
-  await waitForElementToBeRemoved(screen.getByLabelText(/loading/i), {
+  await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'), {
     timeout: 5000,
   });
 
+  // await waitFor(
+  //   () => {
+  //     expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+  //   },
+  //   { timeout: 5000 }
+  // );
+
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 });
-
-// setTimeout(() => {
-//   expect(screen.queryByText('ЗАГРУЗКА...')).toBeInTheDocument();
-//   screen.debug(null, 20000);
-// }, 6000);
-
-// await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
-// await waitForElementToBeRemoved(
-//   document.querySelector('.loading')
-// {
-// timeout: 15000,
-// }
-// );
-
-// expect(screen.getByText(/нижнекамск/i)).toBeInTheDocument();
-
-// await waitFor(() => {
-//   expect(screen.queryByText(/загрузка/i)).not.toBeInTheDocument();
-// });
-
-// await waitForElementToBeRemoved(screen.queryByText(/загрузка.../i));
-
-// expect(screen.queryByText(/загрузка/i)).not.toBeInTheDocument();
-
-// fireEvent.click(screen.getByText('Load Greeting'));
-// screen.debug();
-// await waitFor(screen.getByLabelText(/загрузка/i));
-// await waitFor(() => screen.getByRole('heading'));
-
-// expect(screen.getByRole('heading')).toHaveTextContent('hello there');
-// expect(screen.getByRole('button')).toHaveAttribute('disabled');
-
-// test('handles server error', async () => {
-//   server.use(
-//     rest.get('/greeting', (req, res, ctx) => {
-//       return res(ctx.status(500));
-//     })
-//   );
-//
-//   fireEvent.click(screen.getByText('Load Greeting'));
-//
-//   await waitFor(() => screen.getByRole('alert'));
-//
-//   expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!');
-//   expect(screen.getByRole('button')).not.toHaveAttribute('disabled');
-// });

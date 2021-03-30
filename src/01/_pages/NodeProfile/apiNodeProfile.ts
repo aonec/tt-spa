@@ -4,7 +4,6 @@ import { CalculatorResponse, NodeResponse } from '../../../myApi';
 export async function getNode(id: number) {
   try {
     const res = await axios.get<any, any>(`Nodes/${id}`);
-    debugger;
     return res;
   } catch (error) {
     console.log(error);
