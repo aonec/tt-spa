@@ -1,16 +1,14 @@
 import { Route, useParams } from 'react-router-dom';
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { TabsHousingMeteringDevice } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
-import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import DeregisterDevice from './components/Modals/ModalDeregister';
-import { Loader } from '../../../components';
 import {
   HousingMeteringDeviceResponse,
   TaskListResponse,
