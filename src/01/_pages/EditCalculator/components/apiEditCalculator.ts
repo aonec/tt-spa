@@ -21,7 +21,7 @@ export async function putCalculator(
   try {
     const res = await axios.put(`Calculators/${deviceId}`, form);
     alert('Вычислитель успешно изменен!');
-    return { res, show: false, id: undefined };
+    return res;
   } catch (error) {
     const handleError = error.response.data.error;
     console.log(handleError);

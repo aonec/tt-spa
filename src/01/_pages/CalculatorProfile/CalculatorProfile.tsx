@@ -7,7 +7,6 @@ import {
 } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 import { Header } from './components/Header';
-import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
@@ -19,6 +18,7 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
 import { CalculatorResponse } from '../../../myApi';
+import { Tabs } from '../../tt-components';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -59,7 +59,7 @@ export const CalculatorProfile = () => {
         const device = responses[0].value;
         const tasks = responses[1].value;
         setDevice(device);
-        setTasks(tasks.items);
+        setTasks(tasks);
         setIsLoading(false);
       })
       .catch(({ resource, message }) => {})
@@ -73,7 +73,15 @@ export const CalculatorProfile = () => {
       });
   }, []);
 
-  if (!device && !tasks) return <Loader show size={32} />;
+  if (!device || !tasks) return <Loader show size={32} />;
+
+  const tabItems: Array<Array<string>> = [
+    ['Общая информация', ''],
+    ['Настройки соединения', 'connection'],
+    ['Узлы', 'nodes'],
+    ['Подключенные приборы', 'related'],
+    ['Документы', 'documents'],
+  ];
 
   const context = {
     device,
@@ -95,7 +103,7 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-      <Tabs />
+      <Tabs tabItems={tabItems} path={path} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />

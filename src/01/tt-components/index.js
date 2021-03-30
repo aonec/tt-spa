@@ -29,3 +29,5 @@ export * from './GridTT';
 export * from './EditButtonTT';
 export * from './MultiSelectTT';
 export * from './SwitchTT';
+export * from './Tabs';
+export * from './Loader';
