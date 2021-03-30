@@ -18,8 +18,7 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
 import { CalculatorResponse } from '../../../myApi';
-import Tabs from './components/Tabs';
-import TabsCalculator from './components/Tabs';
+import { Tabs } from '../../tt-components';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -76,6 +75,14 @@ export const CalculatorProfile = () => {
 
   if (!device || !tasks) return <Loader show size={32} />;
 
+  const tabItems: Array<Array<string>> = [
+    ['Общая информация', ''],
+    ['Настройки соединения', 'connection'],
+    ['Узлы', 'nodes'],
+    ['Подключенные приборы', 'related'],
+    ['Документы', 'documents'],
+  ];
+
   const context = {
     device,
     loadings,
@@ -96,7 +103,7 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-      <TabsCalculator />
+      <Tabs tabItems={tabItems} path={path} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />

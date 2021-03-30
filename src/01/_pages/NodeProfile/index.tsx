@@ -22,18 +22,7 @@ export interface MatchParams {
 }
 
 export const NodeProfile = () => {
-  const matchParams = useRouteMatch<MatchParams>(
-    '/nodes/:nodeId/(stats|connection|related|documents)?'
-  );
   const { nodeId } = useParams();
-
-  const tabItems: string[][] = [
-    ['Общая информация', ''],
-    ['Статистика', 'stats'],
-    ['Настройки соединения', 'connection'],
-    ['Подключенные приборы', 'related'],
-    ['Документы', 'documents'],
-  ];
   const [currentTab, setCurrentTab] = useState<string>('1');
 
   function handleChangeTab(value: string) {
@@ -63,10 +52,7 @@ export const NodeProfile = () => {
     return null;
   }
 
-  console.log('node', node);
-  console.log('calculator', calculator);
   const path = `/nodes/${nodeId}`;
-  console.log('path', path);
 
   // const { resource } = node;
 
@@ -77,6 +63,14 @@ export const NodeProfile = () => {
     return <Loader size={'32'} show />;
 
   const { resource, communicationPipes } = node;
+  const tabItems: Array<Array<string>> = [
+    ['Общая информация', ''],
+    ['Статистика', 'stats'],
+    ['Настройки соединения', 'connection'],
+    ['Подключенные приборы', 'related'],
+    ['Документы', 'documents'],
+  ];
+
   return (
     <>
       <Header
@@ -85,7 +79,7 @@ export const NodeProfile = () => {
         setAddOdpu={setAddOdpu}
         nodeId={nodeId}
       />
-      <Tabs tabItems={tabItems} path={'/nodes/(\\d+)'} />
+      <Tabs tabItems={tabItems} path={path} />
       <Grid>
         <Route path={path} exact>
           <Information calculator={calculator} node={node} />
