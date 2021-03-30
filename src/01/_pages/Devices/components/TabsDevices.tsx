@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import { Tabs } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../../../components/Loader';
 import {
   getDevices,
@@ -15,22 +15,24 @@ import { useDebounce } from '../../../hooks/useDebounce';
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects';
 import styled from 'styled-components';
 import { CalculatorListResponsePagedList } from '../../../../myApi';
+import { RootState } from '../../../Redux/store';
+import { DevicePageType } from '../../../Redux/rootReducer';
 
 const { TabPane } = Tabs;
 
 const initialState = {
   expirationDate: '',
-  lowerDiameterRange: '',
-  upperDiameterRange: '',
+  destination: '',
+  rule: '',
   searchTerm: '',
 };
 
-const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
+const TabsDevices = () => {
+  const devicePage = useSelector<RootState, DevicePageType>(
+    (state) => state.devicePage
+  );
   const dispatch = useDispatch();
-  const { pageSize } = devicePage;
-  const { currentPage } = devicePage;
-  const { totalPages } = devicePage;
-  const [isLoading, setIsLoading] = useState(true);
+  const { pageSize, currentPage, totalPages } = devicePage;
 
   const [searchState, dispatchSearchState] = useReducer(
     devicesSearchReducer,
@@ -41,10 +43,7 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
   const pages = createPages(totalPages, currentPage);
 
   useEffect(() => {
-    setIsLoading(true);
     dispatch(getDevices(currentPage, pageSize, debouncedSearchState));
-    // setTimeout(() => setIsLoading(false), 10000);
-    setIsLoading(false);
   }, [currentPage, debouncedSearchState]);
 
   const devicesByObject = groupDevicesByObjects(devicePage.items);
@@ -73,7 +72,7 @@ const TabsDevices = ({ devicePage }: TabsDevicesInterface) => {
           searchState={searchState}
           dispatchSearchState={dispatchSearchState}
         />
-        {isLoading || devicePage.isLoading ? (
+        {devicePage.isLoading ? (
           <div aria-label="loading">
             ЗАГРУЗКА...
             <Loader show />

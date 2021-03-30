@@ -20,6 +20,8 @@ import sinon from 'sinon';
 import rootReducer from '../../../01/Redux/rootReducer';
 import { useApp } from '../../../01/App/useApp';
 import { store } from '../../../01/Redux/store';
+import { getRoles } from '@testing-library/dom';
+import { devicesAPI } from '../../../01/_api/devices_page';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -52,6 +54,8 @@ Object.defineProperty(window, 'matchMedia', {
 // Make sure you import sinon
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+jest.mock('../../../01/_api/devices_page');
 
 function render(
   ui,
@@ -316,18 +320,28 @@ test('loads and displays greeting', async () => {
     })
   ).toBeInTheDocument();
 
+  // await waitFor(() =>
   expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
 
-  await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'), {
-    timeout: 5000,
+  expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
+  expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
+    searchTerm: '',
+    expirationDate: '',
+    destination: '',
+    rule: '',
   });
 
-  // await waitFor(
-  //   () => {
-  //     expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-  //   },
-  //   { timeout: 5000 }
   // );
 
+  console.log(getRoles(document.body));
+
+  await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 });
+
+// await waitFor(
+//   () => {
+//     expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+//   },
+//   { timeout: 5000 }
+// );
