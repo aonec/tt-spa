@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
-import { TabsHousingMeteringDevice } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import Documents from './components/Documents';
@@ -14,6 +13,7 @@ import {
   TaskListResponse,
 } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
+import { Tabs } from '../../tt-components';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
@@ -42,12 +42,18 @@ export const HousingProfile = () => {
     return null;
   }
 
-  console.log(deregister);
+  // console.log(deregister);
+
+  const tabItems: Array<Array<string>> = [
+    ['Общая информация', ''],
+    ['Подключенные приборы', 'related'],
+    ['Документы', 'documents'],
+  ];
 
   return (
     <>
       <Header device={device} setDeregister={setDeregister} />
-      <TabsHousingMeteringDevice />
+      <Tabs tabItems={tabItems} path={path} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
