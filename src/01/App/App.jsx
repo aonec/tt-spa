@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'reshadow/macro';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import '01/css/index.css';
@@ -7,10 +7,11 @@ import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import moment from 'moment';
 
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
+import { YMaps } from 'react-yandex-maps';
 import {
   Tasks,
   Login,
@@ -34,12 +35,10 @@ import {
   AddNode,
 } from '../_pages';
 import { useApp } from './useApp';
-import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditODPU';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
-import { YMaps } from 'react-yandex-maps';
 
 moment.locale('ru');
 
@@ -51,7 +50,6 @@ const Internal = () => {
       <Route path="/error/" render={() => <ErrorPage />} />
       <Route path="/registration*" render={() => <Registration />} />
       <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
-      <Route path="/form/" render={() => <DeviceSearchForm />} />
       <Route path="/">
         <layout>
           <menu as="div">
