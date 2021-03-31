@@ -1,7 +1,18 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
-import { CalculatorResponse, NodeResponse } from '../../../../../myApi';
+import {
+  CalculatorListResponse,
+  CalculatorListResponsePagedList,
+  CalculatorResponse,
+  NodeResponse,
+} from '../../../../../myApi';
 import { getObjectCalculators } from './apiAddOdpu';
 
 interface ModalAddDeviceInterface {
@@ -22,12 +33,14 @@ const ModalAddDevice = ({
   const handleCancel = () => {
     setAddDevice(false);
   };
+  const [calculators, setCalculators] = useState<
+    CalculatorListResponse[] | null
+  >([]);
 
-  console.log('node', node);
   useEffect(() => {
     if (calculator) {
       getObjectCalculators(calculator.address.id).then((res) => {
-        console.log(res);
+        setCalculators(res);
       });
     }
   }, [calculator]);
