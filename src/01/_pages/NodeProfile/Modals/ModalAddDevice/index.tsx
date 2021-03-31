@@ -7,26 +7,26 @@ interface ModalAddDeviceInterface {
   node: NodeResponse;
   calculator: CalculatorResponse | null;
   nodeId?: number;
-  setAddOdpu: Dispatch<SetStateAction<boolean>>;
-  addOdpu: boolean;
+  setAddDevice: Dispatch<SetStateAction<boolean>>;
+  addDevice: boolean;
   handleCancel?: any;
 }
 
 const ModalAddDevice = ({
-  setAddOdpu,
-  addOdpu,
+  setAddDevice,
+  addDevice,
   calculator,
   node,
 }: ModalAddDeviceInterface) => {
   const handleCancel = () => {
-    setAddOdpu(false);
+    setAddDevice(false);
   };
   return (
     <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={addOdpu}
+      visible={addDevice}
     >
       <AddDeviceForm
         handleCancel={handleCancel}
