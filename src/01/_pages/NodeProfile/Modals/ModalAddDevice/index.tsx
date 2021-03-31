@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import { CalculatorResponse, NodeResponse } from '../../../../../myApi';
+import { getObjectCalculators } from './apiAddOdpu';
 
 interface ModalAddDeviceInterface {
   node: NodeResponse;
@@ -21,6 +22,15 @@ const ModalAddDevice = ({
   const handleCancel = () => {
     setAddDevice(false);
   };
+
+  console.log('node', node);
+  useEffect(() => {
+    if (calculator) {
+      getObjectCalculators(calculator.address.id).then((res) => {
+        console.log(res);
+      });
+    }
+  }, [calculator]);
   return (
     <StyledModal
       onCancel={handleCancel}

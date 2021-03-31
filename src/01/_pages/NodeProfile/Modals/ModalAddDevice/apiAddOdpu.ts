@@ -1,8 +1,12 @@
 import axios from '../../../../axios';
+import { CalculatorListResponsePagedList } from '../../../../../myApi';
 
 export async function getObjectCalculators(id: number) {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
+    const res = await axios.get<CalculatorListResponsePagedList>(
+      `Calculators?Filter.HousingStockId=${id}`
+    );
+    console.log('res', res);
     return res;
   } catch (error) {
     console.log(error);

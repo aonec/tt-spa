@@ -334,7 +334,7 @@ const AddDeviceForm = ({
               }}
               options={calculatorIdOptions}
               value={values.calculatorId}
-              disabled={isDisabled('calculatorId')}
+              // disabled={isDisabled('calculatorId')}
             />
             <Alert name="calculatorId" />
           </Form.Item>
