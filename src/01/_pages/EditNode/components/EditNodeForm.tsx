@@ -1,10 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { editNodeValidationSchema } from './validationSchemas';
-import RelatedDevices from './RelatedDevices';
+// import RelatedDevices from './RelatedDevices';
 import Connection from './Connection';
 import {
   InputTT,
@@ -20,22 +27,29 @@ import {
   resources,
   serviceZoneList,
 } from '../../../tt-components/localBases';
-import { EditNodeContext } from '../index';
 import { putCalculator, putNode } from './apiEditNode';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
-const EditNodeForm = () => {
-  const {
-    calculator,
-    currentTabKey,
-    setTab,
-    setAlertVisible,
-    setExistCalculator,
-    node,
-  } = useContext(EditNodeContext);
+interface EditNodeFormInterface {
+  calculator: CalculatorResponse;
+  currentTabKey: string;
+  setTab: any;
+  setAlertVisible: Dispatch<SetStateAction<boolean>>;
+  setExistCalculator: Dispatch<SetStateAction<boolean>>;
+  node: NodeResponse;
+}
 
+const EditNodeForm = ({
+  calculator,
+  currentTabKey,
+  setTab,
+  setAlertVisible,
+  setExistCalculator,
+  node,
+}: EditNodeFormInterface) => {
   const [validationSchema, setValidationSchema] = useState(
     editNodeValidationSchema
   );
@@ -77,15 +91,15 @@ const EditNodeForm = () => {
         nodeStatus: values.nodeStatus,
         resource: values.resource,
         serviceZone: values.serviceZone,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
         calculatorId,
       };
 
       console.log('nodeForm', nodeForm);
-      putNode(nodeId, nodeForm).then((res) => {
-        console.log('putNode', res);
-      });
+      // putNode(nodeId, nodeForm).then((res) => {
+      //   console.log('putNode', res);
+      // });
     },
   });
 
@@ -100,7 +114,7 @@ const EditNodeForm = () => {
     },
   ];
 
-  function handleSubmitForm(e) {
+  function handleSubmitForm(e: any) {
     e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
@@ -113,8 +127,10 @@ const EditNodeForm = () => {
       handleSubmit();
     }
   }
-
-  const Alert = ({ name }) => {
+  interface AlertInterface {
+    name: string;
+  }
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -211,11 +227,11 @@ const EditNodeForm = () => {
       </div>
 
       <div hidden={Number(currentTabKey) !== 2} style={{ maxWidth: 620 }}>
-        <Connection />
+        <Connection calculator={calculator} />
       </div>
 
       <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 620 }}>
-        <RelatedDevices />
+        {/*<RelatedDevices calculator={calculator} node={node} />*/}
       </div>
 
       <div hidden={Number(currentTabKey) !== 4}>

@@ -7,20 +7,6 @@ import {
   StyledModal,
   StyledModalBody,
 } from '../../../tt-components';
-import { EditCalculatorContext } from '../index';
-
-export async function getNode(id = '') {
-  try {
-    const res = await axios.get(`Nodes/${id}`);
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'node',
-      message: 'Произошла ошибка запроса узла',
-    };
-  }
-}
 
 export async function putNode(nodeId = '', form = {}) {
   alert('Cейчас будем отправлять данные!');
@@ -49,28 +35,43 @@ export async function putNode(nodeId = '', form = {}) {
     //   return {show: true, id: id}
   }
 }
+interface CalculatorExistAlert {
+  visible: boolean;
+}
 
-const CalculatorExistAlert = ({ visible }) => {
+const CalculatorExistAlert = ({ visible }: CalculatorExistAlert) => {
   console.log('CalculatorExistAlert');
-  return (
-    <StyledModal width="800" visible={visible}>
-      <StyledModalBody>
-        <Header>
-          В системе уже есть устройство с совпадающими настройками соединения
-        </Header>
-        <p>Пожалуйста, измените настройки соединения для данного устройства</p>
-      </StyledModalBody>
-      <StyledFooter>
-        <ButtonTT color={'white'}>Отмена</ButtonTT>
-        <ButtonTT color={'red'} big>
-          Изменить настройки соединения
-        </ButtonTT>
-      </StyledFooter>
-    </StyledModal>
-  );
+  return null;
+  // <StyledModal width="800" visible={visible}>
+  //   <StyledModalBody>
+  //     <Header>
+  //       В системе уже есть устройство с совпадающими настройками соединения
+  //     </Header>
+  //     <p>Пожалуйста, измените настройки соединения для данного устройства</p>
+  //   </StyledModalBody>
+  //   <StyledFooter>
+  //     <ButtonTT color={'white'}>Отмена</ButtonTT>
+  //     <ButtonTT color={'red'} big>
+  //       Изменить настройки соединения
+  //     </ButtonTT>
+  //   </StyledFooter>
+  // </StyledModal>
 };
 
-export async function getCalculator(id = '') {
+export async function getNode(id: number) {
+  try {
+    const res = await axios.get(`Nodes/${id}`);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'node',
+      message: 'Произошла ошибка запроса узла',
+    };
+  }
+}
+
+export async function getCalculator(id: number) {
   try {
     const res = await axios.get(`Calculators/${id}`);
     return res;
@@ -78,7 +79,7 @@ export async function getCalculator(id = '') {
     console.log(error);
     throw {
       resource: 'device',
-      message: 'Произошла ошибка запроса Вычислителя',
+      message: 'Произошла ошибка запроса устройства',
     };
   }
 }

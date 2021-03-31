@@ -2,19 +2,21 @@ import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { EditNodeContext } from '../index';
 import { IconTT } from '../../../tt-components';
 import ModalCalculatorDeregister from './Modals/ModalCalculatorDeregister';
+import { CalculatorResponse } from '../../../../myApi';
 
-const Connection = () => {
-  const { calculator } = useContext(EditNodeContext);
+interface ConnectionInterface {
+  calculator: CalculatorResponse;
+}
+const Connection = ({ calculator }: ConnectionInterface) => {
   const {
     model,
     id,
     serialNumber,
     lastCheckingDate,
     futureCheckingDate,
-    closingdate,
+    closingDate,
   } = calculator;
 
   const lastCheckingDateText =
@@ -25,8 +27,8 @@ const Connection = () => {
     futureCheckingDate !== null
       ? moment(futureCheckingDate).format('DD.MM.YYYY')
       : 'Следующая Дата поверки не указана';
-  const icon = closingdate !== null ? 'green' : 'red';
-  const status = closingdate !== null ? 'Активен' : 'Не активен';
+  const icon = closingDate !== null ? 'green' : 'red';
+  const status = closingDate !== null ? 'Активен' : 'Не активен';
   const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(
     false
   );
