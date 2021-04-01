@@ -12,18 +12,23 @@ import {
   StyledFooter,
   IconTT,
   styles,
+  StyledFormPage,
 } from '../../../tt-components';
 import {
   nodeStatusList,
   resources,
   serviceZoneList,
 } from '../../../tt-components/localBases';
-import isDateNull from '../../../utils/isDateNull';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import {
+  CalculatorResponse,
+  NodeResponse,
+  UpdateNodeRequest,
+} from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
+import { putNode } from './apiEditNode';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -50,6 +55,7 @@ const EditNodeForm = ({
     return null;
   }
 
+  console.log('node', node);
   const {
     resource,
     number,
@@ -60,18 +66,6 @@ const EditNodeForm = ({
     id: nodeId,
     calculatorId,
   } = node;
-
-  console.log(resource);
-
-  // const {
-  //   handleSubmit,
-  //   handleChange,
-  //   values,
-  //   touched,
-  //   errors,
-  //   handleBlur,
-  //   setFieldValue,
-  // } = useFormik({
 
   // const tabErrors = [
   //   {
@@ -98,15 +92,6 @@ const EditNodeForm = ({
   //   }
   // }
 
-  // const Alert = ({ name }: AlertInterface) => {
-  //   const touch = _.get(touched, `${name}`);
-  //   const error = _.get(errors, `${name}`);
-  //   if (touch && error) {
-  //     return <div>{error}</div>;
-  //   }
-  //   return null;
-  // };
-
   const [form] = Form.useForm();
   const {
     setFieldsValue,
@@ -118,6 +103,25 @@ const EditNodeForm = ({
 
   const onFinish = () => {
     console.log('onFinish');
+
+    const nodeForm: UpdateNodeRequest = {
+      number: Number(getFieldValue('number')),
+      nodeStatus: getFieldValue('nodeStatus'),
+      resource: getFieldValue('resource'),
+      serviceZone: getFieldValue('serviceZone'),
+      lastCommercialAccountingDate: getFieldValue(
+        'lastCommercialAccountingDate'
+      )?.toISOString(),
+      futureCommercialAccountingDate: getFieldValue(
+        'futureCommercialAccountingDate'
+      )?.toISOString(),
+      calculatorId,
+    };
+    // console.log('nodeForm', nodeForm);
+
+    putNode(nodeId, nodeForm).then((res) => {
+      console.log('putNode', res);
+    });
   };
   const onFinishFailed = () => {
     console.log('onFinishFailed');
@@ -149,7 +153,10 @@ const EditNodeForm = ({
       // onValuesChange={onFormLayoutChange}
       scrollToFirstError
     >
-      <div hidden={Number(currentTabKey) !== 1} style={{ maxWidth: 960 }}>
+      <StyledFormPage
+        hidden={Number(currentTabKey) !== 1}
+        style={{ maxWidth: 960 }}
+      >
         <Form.Item
           style={styles.w100}
           label="Тип ресурса"
@@ -193,53 +200,62 @@ const EditNodeForm = ({
           />
         </Form.Item>
 
-        {(getFieldValue('nodeStatus') === 'Registered' ? (
-          <>
-            <Form.Item
-              style={styles.w100}
-              label="Дата начала действия акта-допуска"
-              name="lastCommercialAccountingDate"
-              rules={[
-                {
-                  required: true,
-                  message: 'Выберите Дата начала действия акта-допуска',
-                },
-              ]}
-            >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                placeholder="Укажите дату..."
-                allowClear={false}
-              />
-            </Form.Item>
+        {/*{getFieldValue('nodeStatus') === 'Registered' ? (*/}
+        <>
+          <Form.Item
+            style={styles.w100}
+            label="Дата начала действия акта-допуска"
+            name="lastCommercialAccountingDate"
+            rules={[
+              {
+                required: true,
+                message: 'Выберите Дата начала действия акта-допуска',
+              },
+            ]}
+          >
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              allowClear={false}
+            />
+          </Form.Item>
 
-            <Form.Item
-              style={styles.w100}
-              label="Дата окончания действия акта-допуска"
-              name="futureCommercialAccountingDate"
-              rules={[
-                {
-                  required: true,
-                  message: 'Выберите Дата окончания действия акта-допуска',
-                },
-              ]}
-            >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                placeholder="Укажите дату..."
-                allowClear={false}
-              />
-            </Form.Item>
-          </>
-        ) : null}
-      </div>
+          <Form.Item
+            style={styles.w100}
+            label="Дата окончания действия акта-допуска"
+            name="futureCommercialAccountingDate"
+            rules={[
+              {
+                required: true,
+                message: 'Выберите Дата окончания действия акта-допуска',
+              },
+            ]}
+          >
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              allowClear={false}
+            />
+          </Form.Item>
+        </>
+        {/*) : null}*/}
+      </StyledFormPage>
 
-      <div hidden={Number(currentTabKey) !== 2} style={{ maxWidth: 620 }}>
+      <StyledFormPage
+        hidden={Number(currentTabKey) !== 2}
+        style={{ maxWidth: 620 }}
+      >
         <NodeConnection calculator={calculator} edit={true} />
-      </div>
+      </StyledFormPage>
 
-      <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 620 }}>
-        <NodeRelatedDevices node={node} edit={true} />
+      <StyledFormPage
+        hidden={Number(currentTabKey) !== 3}
+        style={{ maxWidth: 620 }}
+      >
+        <div style={styles.w100}>
+          <NodeRelatedDevices node={node} edit={true} />
+        </div>
+
         <ButtonTT
           type="button"
           color="white"
@@ -253,13 +269,13 @@ const EditNodeForm = ({
           Подключить прибор
           <IconTT icon="plus" />
         </ButtonTT>
-      </div>
+      </StyledFormPage>
 
-      <div hidden={Number(currentTabKey) !== 4}>
+      <StyledFormPage hidden={Number(currentTabKey) !== 4}>
         <Title size="16" color="black">
           Компонент в разработке
         </Title>
-      </div>
+      </StyledFormPage>
 
       <StyledFooter form>
         <ButtonTT color="blue" style={{ marginRight: '16px' }} type="submit">

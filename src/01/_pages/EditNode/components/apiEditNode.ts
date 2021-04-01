@@ -1,11 +1,14 @@
 import axios from '../../../axios';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import {
+  CalculatorResponse,
+  NodeResponse,
+  UpdateNodeRequest,
+} from '../../../../myApi';
 
-export async function putNode(nodeId = '', form = {}) {
-  alert('Cейчас будем отправлять данные!');
+export async function putNode(nodeId: number, form: UpdateNodeRequest) {
+  // alert('Cейчас будем отправлять данные!');
   try {
     const res = await axios.put(`Nodes/${nodeId}`, form);
-    // console.log("putCalculator", form)
     alert('Узел успешно изменен!');
     return res;
   } catch (error) {
