@@ -28,9 +28,7 @@ export const Header = (props, state) => {
         </Text>
       </div>
 
-      <div style={{ position: 'relative' }}>
-        <DropdownTT />
-      </div>
+      <div style={{ position: 'relative' }}></div>
     </HeaderWrap>
   );
 };

@@ -7,7 +7,6 @@ import { Information } from './components/Information';
 import { Events } from './components/Events';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
-import DeregisterDevice from './components/Modals/ModalDeregister';
 import {
   HousingMeteringDeviceResponse,
   TaskListResponse,
@@ -15,6 +14,7 @@ import {
 import { useAsync } from '../../hooks/useAsync';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
+import ModalDeregister from '../../tt-components/ModalDeregister';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
@@ -84,10 +84,10 @@ export const HousingProfile = () => {
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>
-      <DeregisterDevice
-        deregister={deregister}
+      <ModalDeregister
+        visible={deregister}
+        setVisible={setDeregister}
         device={device}
-        setDeregister={setDeregister}
       />
     </>
   );
