@@ -1,32 +1,55 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
-import { CalculatorResponse, NodeResponse } from '../../../../../myApi';
+import {
+  CalculatorListResponse,
+  CalculatorListResponsePagedList,
+  CalculatorResponse,
+  NodeResponse,
+} from '../../../../../myApi';
+import { getObjectCalculators } from './apiAddOdpu';
 
 interface ModalAddDeviceInterface {
   node: NodeResponse;
   calculator: CalculatorResponse | null;
   nodeId?: number;
-  setAddOdpu: Dispatch<SetStateAction<boolean>>;
-  addOdpu: boolean;
+  setAddDevice: Dispatch<SetStateAction<boolean>>;
+  addDevice: boolean;
   handleCancel?: any;
 }
 
 const ModalAddDevice = ({
-  setAddOdpu,
-  addOdpu,
+  setAddDevice,
+  addDevice,
   calculator,
   node,
 }: ModalAddDeviceInterface) => {
   const handleCancel = () => {
-    setAddOdpu(false);
+    setAddDevice(false);
   };
+  const [calculators, setCalculators] = useState<
+    CalculatorListResponse[] | null
+  >([]);
+
+  useEffect(() => {
+    if (calculator) {
+      getObjectCalculators(calculator.address.id).then((res) => {
+        setCalculators(res);
+      });
+    }
+  }, [calculator]);
   return (
     <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={addOdpu}
+      visible={addDevice}
     >
       <AddDeviceForm
         handleCancel={handleCancel}

@@ -25,15 +25,14 @@ export const Connection = ({ calculator }: ConnectionInterface) => {
     closingDate,
   } = calculator;
 
-  const resLastCheckingDate =
-    lastCheckingDate !== null
-      ? moment(lastCheckingDate).format('DD.MM.YYYY')
-      : 'Дата поверки не указана';
-  const resFutureCheckingDate =
-    futureCheckingDate !== null
-      ? moment(futureCheckingDate).format('DD.MM.YYYY')
-      : 'Следующая Дата поверки не указана';
-  const icon = closingDate !== null ? 'green' : 'red';
+  const resLastCheckingDate = lastCheckingDate
+    ? moment(lastCheckingDate).format('DD.MM.YYYY')
+    : 'Дата поверки не указана';
+  const resFutureCheckingDate = futureCheckingDate
+    ? moment(futureCheckingDate).format('DD.MM.YYYY')
+    : 'Следующая Дата поверки не указана';
+  const icon = !closingDate ? 'green' : 'red';
+  const state = !closingDate ? 'Активен' : 'Не активен';
 
   const CalcItem = () => (
     <ListItem>
@@ -48,7 +47,7 @@ export const Connection = ({ calculator }: ConnectionInterface) => {
       </NavLink>
       <State>
         <IconTT icon={icon} />
-        {`${closingDate !== null ? 'Активен' : 'Не активен'}`}
+        {state}
       </State>
       <Dates>{`${resLastCheckingDate} - ${resFutureCheckingDate}`}</Dates>
     </ListItem>
@@ -63,8 +62,6 @@ export const Connection = ({ calculator }: ConnectionInterface) => {
 };
 
 export default Connection;
-
-const Template = styled.div``;
 
 const NameWrap = styled.div`
   display: grid;

@@ -1,5 +1,5 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { Route, useParams, useRouteMatch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import Information from './components/Information';
@@ -7,36 +7,25 @@ import RelatedDevices from './components/RelatedDevices';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
-import { Tabs, Title } from '../../tt-components';
-import GraphView from '../Graph/components/GraphView';
+import { Tabs } from '../../tt-components';
 import Graph from '../Graph/Graph';
 import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
-import Events from './components/Events';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 
-export interface MatchParams {
-  nodeId: string;
-}
-
 export const NodeProfile = () => {
   const { nodeId } = useParams();
-  const [currentTab, setCurrentTab] = useState<string>('1');
+  const path = `/nodes/${nodeId}`;
+  const [addDevice, setAddDevice] = useState(false);
 
-  function handleChangeTab(value: string) {
-    setCurrentTab(value);
-  }
-
-  const [addOdpu, setAddOdpu] = useState(false);
-
+  const { data: node, status, run } = useAsync<NodeResponse>();
   const {
     data: calculator,
     status: statusCalculator,
     run: runCalculator,
   } = useAsync<CalculatorResponse>();
-  const { data: node, status, run } = useAsync<NodeResponse>();
 
   useEffect(() => {
     run(getNode(nodeId));
@@ -49,15 +38,20 @@ export const NodeProfile = () => {
   }, [node]);
 
   if (!node || !calculator) {
-    return null;
+    return <Loader size={'32'} show />;
   }
 
-  const path = `/nodes/${nodeId}`;
-
-  // const { resource } = node;
-
   if (status === 'error')
-    return <div style={{ background: 'red' }}>ОШИБКА</div>;
+    return (
+      <Alert
+        message="Ошибка"
+        description="На сервере произошла непредвиденная ошибка. Попробуйте перезагрузить страницу"
+        type="error"
+        showIcon
+        closable
+        style={{ marginBottom: 24, marginTop: 24 }}
+      />
+    );
 
   if (status === 'pending' || status === 'idle')
     return <Loader size={'32'} show />;
@@ -76,7 +70,7 @@ export const NodeProfile = () => {
       <Header
         node={node}
         calculator={calculator}
-        setAddOdpu={setAddOdpu}
+        setAddDevice={setAddDevice}
         nodeId={nodeId}
       />
       <Tabs tabItems={tabItems} path={path} />
@@ -116,17 +110,12 @@ export const NodeProfile = () => {
         {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
       </Grid>
       <ModalAddDevice
-        addOdpu={addOdpu}
+        addDevice={addDevice}
         calculator={calculator}
         node={node}
-        setAddOdpu={setAddOdpu}
+        setAddDevice={setAddDevice}
       />
     </>
   );
 };
 export default NodeProfile;
-
-// <>
-
-// ) : null}
-// </>

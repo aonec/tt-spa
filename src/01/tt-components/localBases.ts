@@ -246,17 +246,17 @@ export const nodeStatusList = [
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon: 'ok',
+    icon: 'block',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon: 'ok',
+    icon: 'timer',
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
-    icon: 'ok',
+    icon: 'next',
   },
 ];
 

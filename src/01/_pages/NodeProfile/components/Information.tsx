@@ -14,7 +14,7 @@ interface HeaderInterface {
 }
 
 const Information = ({ node, calculator }: HeaderInterface) => {
-  if (!calculator) {
+  if (!node || !calculator) {
     return null;
   }
 
