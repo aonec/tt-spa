@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Form } from 'antd';
 import { NavLink } from 'react-router-dom';
 import { editNodeValidationSchema } from './validationSchemas';
@@ -28,6 +28,7 @@ import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { putNode } from './apiEditNode';
+import { EditNodeContext } from '../Context';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -53,6 +54,8 @@ const EditNodeForm = ({
   const [validationSchema, setValidationSchema] = useState(
     editNodeValidationSchema
   );
+
+  const { visibleAddDevice, setVisibleAddDevice } = useContext(EditNodeContext);
 
   if (!node) {
     return null;
@@ -269,8 +272,9 @@ const EditNodeForm = ({
           color="white"
           small
           onClick={() => {
-            alert('Add DEVICE!');
-            // handleAddOdpu
+            if (setVisibleAddDevice) {
+              setVisibleAddDevice(true);
+            }
           }}
           style={{ marginTop: 24 }}
         >
