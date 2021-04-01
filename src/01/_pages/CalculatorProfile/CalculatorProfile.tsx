@@ -83,14 +83,6 @@ export const CalculatorProfile = () => {
 
   if (!device || !tasks) return <Loader show size={32} />;
 
-  // const tabItems: Array<Array<string>> = [
-  //   ['Общая информация', ''],
-  //   ['Настройки соединения', 'connection'],
-  //   ['Узлы', 'nodes'],
-  //   ['Подключенные приборы', 'related'],
-  //   ['Документы', 'documents'],
-  // ];
-
   const tabItems: Array<TabsItemInterface> = [
     {
       title: 'Общая информация',
@@ -184,7 +176,6 @@ export const CalculatorProfile = () => {
         </Route>
         <Route path={`${path}/related`} exact>
           <RelatedDevices calculator={device} />
-          {/*<NodeRelatedDevices node={nodes[0]} edit={false} />*/}
         </Route>
         <Route path={`${path}/nodes`} exact>
           <Nodes device={device} />
