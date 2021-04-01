@@ -14,6 +14,7 @@ import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
 import NodeConnection from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
+import { TabsItemInterface } from '../../tt-components/interfaces';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -58,12 +59,6 @@ export const NodeProfile = () => {
     return <Loader size={'32'} show />;
 
   const { resource, communicationPipes } = node;
-
-  interface TabsItemInterface {
-    title: string;
-    key: string;
-    cb: any;
-  }
 
   const tabItems: Array<TabsItemInterface> = [
     {

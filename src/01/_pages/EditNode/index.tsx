@@ -7,6 +7,8 @@ import EditNodeForm from './components/EditNodeForm';
 import { Breadcrumb } from '../../tt-components';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import { TabsItemInterface } from '../../tt-components/interfaces';
+import Tabs from '../../tt-components/Tabs';
 
 export const EditNode = () => {
   const { nodeId } = useParams();
@@ -39,26 +41,26 @@ export const EditNode = () => {
     return <div>ЗАГРУЗКА</div>;
   }
 
-  const tabs = [
+  const tabItems: Array<TabsItemInterface> = [
     {
       title: 'Общие данные',
       key: '1',
-      cb: () => console.log('Общие данные'),
+      cb: () => handleChangeTab('1'),
     },
     {
       title: 'Настройки соединения',
       key: '2',
-      cb: () => console.log('Настройки соединения'),
+      cb: () => handleChangeTab('2'),
     },
     {
       title: 'Подключенные приборы',
       key: '3',
-      cb: () => console.log('Подключенные приборы'),
+      cb: () => handleChangeTab('3'),
     },
     {
       title: 'Документы',
       key: '4',
-      cb: () => console.log('Документы'),
+      cb: () => handleChangeTab('4'),
     },
   ];
 
@@ -66,6 +68,7 @@ export const EditNode = () => {
     <>
       <Breadcrumb path={`/nodes/${nodeId}`} />
       <Header calculator={calculator} node={node} nodeId={nodeId} />
+      <Tabs tabItems={tabItems} />
       <EditNodeForm
         calculator={calculator}
         currentTabKey={currentTabKey}

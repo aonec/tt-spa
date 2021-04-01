@@ -10,3 +10,9 @@ export interface EventsInterface {
   title: string;
   tasks: TaskListResponse[];
 }
+
+export interface TabsItemInterface {
+  title: string;
+  key: string;
+  cb: any;
+}
