@@ -9,8 +9,7 @@ export async function getObjectCalculators(id: number) {
     const res: CalculatorListResponsePagedList = await axios.get(
       `Calculators?Filter.HousingStockId=${id}`
     );
-    const { items } = res;
-    return items;
+    return res.items;
   } catch (error) {
     console.log(error);
     throw {
