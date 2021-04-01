@@ -1,31 +1,21 @@
-import { Route, useParams, useLocation, useHistory } from 'react-router-dom';
+import { Route, useParams, useHistory } from 'react-router-dom';
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import {
-  getCalculatorTasks,
-  getCalculator,
-  getUser,
-} from './apiCalculatorProfile';
+import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
-// import { RelatedDevices } from './components/RelatedDevices';
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
-import DeregisterDevice from './components/Modals/ModalDeregister';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
-import {
-  CalculatorResponse,
-  CommunicationPipeResponse,
-  ResourceType,
-} from '../../../myApi';
-import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
+import { CalculatorResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import RelatedDevices from './components/RelatedDevices';
+import ModalDeregister from '../../tt-components/ModalDeregister';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -185,7 +175,11 @@ export const CalculatorProfile = () => {
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>
-      <DeregisterDevice />
+      <ModalDeregister
+        visible={deregister}
+        setVisible={setDeregister}
+        device={device}
+      />
       <ModalCalculatorReport />
       <CheckDevice />
     </DeviceContext.Provider>
