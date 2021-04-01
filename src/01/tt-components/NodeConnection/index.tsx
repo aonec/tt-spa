@@ -21,19 +21,18 @@ const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
     closingDate,
   } = calculator;
 
-  const lastCheckingDateText =
-    lastCheckingDate !== null
-      ? moment(lastCheckingDate).format('DD.MM.YYYY')
-      : 'Дата поверки не указана';
-  const futureCheckingDateText =
-    futureCheckingDate !== null
-      ? moment(futureCheckingDate).format('DD.MM.YYYY')
-      : 'Следующая Дата поверки не указана';
-  const icon = closingDate !== null ? 'green' : 'red';
-  const status = closingDate !== null ? 'Активен' : 'Не активен';
-  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(
-    false
-  );
+  const lastCheckingDateText = lastCheckingDate
+    ? moment(lastCheckingDate).format('DD.MM.YYYY')
+    : 'Дата поверки не указана';
+  const futureCheckingDateText = futureCheckingDate
+    ? moment(futureCheckingDate).format('DD.MM.YYYY')
+    : 'Следующая Дата поверки не указана';
+  const icon = closingDate ? 'red' : 'green';
+  const status = closingDate ? 'Не активен' : 'Активен';
+  const [
+    isDeregisterModalVisible,
+    setIsDeregisterModalVisible,
+  ] = useState<boolean>(false);
   return (
     <>
       <CalcListItem>
@@ -41,7 +40,7 @@ const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
           <NameWrap>
             <IconTT icon="device" />
             <NameAndSerialNumber>
-              <Name style={{ marginRight: '8px' }}>{model}</Name>
+              <Name style={{ marginRight: 8 }}>{model}</Name>
               <Serial>{` (${serialNumber})`}</Serial>
             </NameAndSerialNumber>
           </NameWrap>
@@ -68,7 +67,6 @@ const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
                 style={{ marginLeft: 8, cursor: 'pointer' }}
                 onClick={() => {
                   setIsDeregisterModalVisible(true);
-                  console.log('Снять прибор');
                 }}
               />
             </>

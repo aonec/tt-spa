@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Route, useParams } from 'react-router-dom';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Documents from './components/Documents';
-import { Tabs } from '../../tt-components';
 import Graph from '../Graph/Graph';
 import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
@@ -14,9 +13,11 @@ import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
 import NodeConnection from '../../tt-components/NodeConnection';
+import Tabs from '../../tt-components/Tabs';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
+  const { push } = useHistory();
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
 
@@ -57,12 +58,54 @@ export const NodeProfile = () => {
     return <Loader size={'32'} show />;
 
   const { resource, communicationPipes } = node;
-  const tabItems: Array<Array<string>> = [
-    ['Общая информация', ''],
-    ['Статистика', 'stats'],
-    ['Настройки соединения', 'connection'],
-    ['Подключенные приборы', 'related'],
-    ['Документы', 'documents'],
+
+  interface TabsItemInterface {
+    title: string;
+    key: string;
+    cb: any;
+  }
+
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        console.log('');
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Статистика',
+      key: 'stats',
+      cb: () => {
+        console.log('stats');
+        push(`${path}/stats`);
+      },
+    },
+    {
+      title: 'Настройки соединения',
+      key: 'connection',
+      cb: () => {
+        console.log('connection');
+        push(`${path}/connection`);
+      },
+    },
+    {
+      title: 'Подключенные приборы',
+      key: 'related',
+      cb: () => {
+        console.log('related');
+        push(`${path}/related`);
+      },
+    },
+    {
+      title: 'Документы приборы',
+      key: 'documents',
+      cb: () => {
+        console.log('documents');
+        push(`${path}/documents`);
+      },
+    },
   ];
 
   return (
@@ -73,7 +116,7 @@ export const NodeProfile = () => {
         setAddDevice={setAddDevice}
         nodeId={nodeId}
       />
-      <Tabs tabItems={tabItems} path={path} />
+      <Tabs tabItems={tabItems} />
       <Grid>
         <Route path={path} exact>
           <Information calculator={calculator} node={node} />

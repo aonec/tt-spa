@@ -7,7 +7,6 @@ import EditNodeForm from './components/EditNodeForm';
 import { Breadcrumb } from '../../tt-components';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
-import FormTabs from '../../tt-components/FormTabs';
 
 export const EditNode = () => {
   const { nodeId } = useParams();
@@ -44,18 +43,22 @@ export const EditNode = () => {
     {
       title: 'Общие данные',
       key: '1',
+      cb: () => console.log('Общие данные'),
     },
     {
       title: 'Настройки соединения',
       key: '2',
+      cb: () => console.log('Настройки соединения'),
     },
     {
       title: 'Подключенные приборы',
       key: '3',
+      cb: () => console.log('Подключенные приборы'),
     },
     {
       title: 'Документы',
       key: '4',
+      cb: () => console.log('Документы'),
     },
   ];
 
@@ -63,7 +66,6 @@ export const EditNode = () => {
     <>
       <Breadcrumb path={`/nodes/${nodeId}`} />
       <Header calculator={calculator} node={node} nodeId={nodeId} />
-      <FormTabs tabs={tabs} setTab={handleChangeTab} />
       <EditNodeForm
         calculator={calculator}
         currentTabKey={currentTabKey}

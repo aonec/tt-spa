@@ -13,7 +13,6 @@ import {
   TaskListResponse,
 } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
-import { Tabs } from '../../tt-components';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
@@ -53,7 +52,6 @@ export const HousingProfile = () => {
   return (
     <>
       <Header device={device} setDeregister={setDeregister} />
-      <Tabs tabItems={tabItems} path={path} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
