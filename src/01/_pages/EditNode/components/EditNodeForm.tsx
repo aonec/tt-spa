@@ -1,13 +1,5 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Form } from 'antd';
-import { useFormik } from 'formik';
 import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { editNodeValidationSchema } from './validationSchemas';
@@ -19,21 +11,19 @@ import {
   Title,
   StyledFooter,
   IconTT,
+  styles,
 } from '../../../tt-components';
 import {
-  items,
   nodeStatusList,
   resources,
   serviceZoneList,
 } from '../../../tt-components/localBases';
-import { putCalculator, putNode } from './apiEditNode';
 import isDateNull from '../../../utils/isDateNull';
-import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
-import Node from '../../Devices/components/DeviceBlock/Node/Node';
 import NodeConnection from '../../../tt-components/NodeConnection';
+import moment from 'moment';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -56,6 +46,10 @@ const EditNodeForm = ({
     editNodeValidationSchema
   );
 
+  if (!node) {
+    return null;
+  }
+
   const {
     resource,
     number,
@@ -67,163 +61,173 @@ const EditNodeForm = ({
     calculatorId,
   } = node;
 
+  console.log(resource);
+
+  // const {
+  //   handleSubmit,
+  //   handleChange,
+  //   values,
+  //   touched,
+  //   errors,
+  //   handleBlur,
+  //   setFieldValue,
+  // } = useFormik({
+
+  // const tabErrors = [
+  //   {
+  //     key: '1',
+  //     value: [
+  //       'number',
+  //       'lastCommercialAccountingDate',
+  //       'futureCommercialAccountingDate',
+  //     ],
+  //   },
+  // ];
+
+  // function handleSubmitForm(e: any) {
+  //   e.preventDefault();
+  //   const { hasError, errorTab } = handleTabsBeforeFormSubmit(
+  //     tabErrors,
+  //     errors
+  //   );
+  //   console.log(errors);
+  //   if (hasError) {
+  //     setTab(errorTab);
+  //   } else {
+  //     handleSubmit();
+  //   }
+  // }
+
+  // const Alert = ({ name }: AlertInterface) => {
+  //   const touch = _.get(touched, `${name}`);
+  //   const error = _.get(errors, `${name}`);
+  //   if (touch && error) {
+  //     return <div>{error}</div>;
+  //   }
+  //   return null;
+  // };
+
+  const [form] = Form.useForm();
   const {
-    handleSubmit,
-    handleChange,
-    values,
-    touched,
-    errors,
-    handleBlur,
-    setFieldValue,
-  } = useFormik({
-    initialValues: {
-      resource,
-      number,
-      serviceZone,
-      nodeStatus,
-      lastCommercialAccountingDate: isDateNull(lastCommercialAccountingDate),
-      futureCommercialAccountingDate: isDateNull(
-        futureCommercialAccountingDate
-      ),
-    },
-    validationSchema,
-    onSubmit: async () => {
-      const nodeForm = {
-        number: Number(values.number),
-        nodeStatus: values.nodeStatus,
-        resource: values.resource,
-        serviceZone: values.serviceZone,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
-        calculatorId,
-      };
+    setFieldsValue,
+    getFieldsValue,
+    getFieldValue,
+    validateFields,
+    getFieldsError,
+  } = form;
 
-      console.log('nodeForm', nodeForm);
-      // putNode(nodeId, nodeForm).then((res) => {
-      //   console.log('putNode', res);
-      // });
-    },
-  });
+  const onFinish = () => {
+    console.log('onFinish');
+  };
+  const onFinishFailed = () => {
+    console.log('onFinishFailed');
+  };
 
-  const tabErrors = [
-    {
-      key: '1',
-      value: [
-        'number',
-        'lastCommercialAccountingDate',
-        'futureCommercialAccountingDate',
-      ],
-    },
-  ];
-
-  function handleSubmitForm(e: any) {
-    e.preventDefault();
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-    console.log(errors);
-    if (hasError) {
-      setTab(errorTab);
-    } else {
-      handleSubmit();
-    }
-  }
-
-  interface AlertInterface {
-    name: string;
-  }
-
-  const Alert = ({ name }: AlertInterface) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return <div>{error}</div>;
-    }
-    return null;
+  const initialValues = {
+    resource: resource,
+    number: number,
+    serviceZone: serviceZone,
+    nodeStatus: nodeStatus,
+    lastCommercialAccountingDate: lastCommercialAccountingDate
+      ? moment(lastCommercialAccountingDate)
+      : null,
+    futureCommercialAccountingDate: futureCommercialAccountingDate
+      ? moment(futureCommercialAccountingDate)
+      : null,
   };
 
   return (
-    <form onSubmit={handleSubmitForm}>
+    <Form
+      initialValues={initialValues}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      form={form}
+      requiredMark={false}
+      onFieldsChange={(_, allFields) => {
+        // onChange(allFields);
+      }}
+      // onValuesChange={onFormLayoutChange}
+      scrollToFirstError
+    >
       <div hidden={Number(currentTabKey) !== 1} style={{ maxWidth: 960 }}>
-        <Form.Item label="Тип ресурса">
+        <Form.Item
+          style={styles.w100}
+          label="Тип ресурса"
+          name={'resource'}
+          rules={[{ required: true, message: 'Выберите Тип ресурса' }]}
+        >
           <SelectTT
             placeholder="Выберите Тип ресурса"
             options={resources}
-            value={values.resource}
-            onChange={(event) => {
-              setFieldValue('resource', event);
-            }}
-            onBlur={handleBlur}
             disabled
           />
-          <Alert name="resource" />
         </Form.Item>
 
-        <Form.Item label="Номер узла">
-          <InputTT
-            name="number"
-            value={values.number}
-            onBlur={handleBlur}
-            placeholder="Номер узла"
-            onChange={handleChange}
-          />
-          <Alert name="number" />
+        <Form.Item
+          style={styles.w100}
+          label="Номер узла"
+          name="number"
+          rules={[{ required: true, message: 'Выберите Номер узла' }]}
+        >
+          <InputTT placeholder="Номер узла" />
         </Form.Item>
 
-        <Form.Item label="Зона">
-          <SelectTT
-            placeholder="Зона"
-            options={serviceZoneList}
-            value={values.serviceZone}
-            onChange={(event) => {
-              setFieldValue('serviceZone', event);
-            }}
-            onBlur={handleBlur}
-          />
-          <Alert name="serviceZone" />
+        <Form.Item
+          style={styles.w100}
+          label="Зона"
+          name="serviceZone"
+          rules={[{ required: true, message: 'Выберите Зона' }]}
+        >
+          <SelectTT placeholder="Зона" options={serviceZoneList} />
         </Form.Item>
 
-        <Form.Item label="Коммерческий учет показателей приборов">
+        <Form.Item
+          style={styles.w100}
+          label="Коммерческий учет показателей приборов"
+          name="nodeStatus"
+          rules={[{ required: true, message: 'Выберите Коммерческий учет' }]}
+        >
           <SelectTT
             placeholder="Коммерческий учет показателей приборов"
             options={nodeStatusList}
-            value={values.nodeStatus}
-            onChange={(event, target) => {
-              setFieldValue('nodeStatus', event);
-            }}
-            onBlur={handleBlur}
           />
-          <Alert name="nodeStatus" />
         </Form.Item>
 
-        {values.nodeStatus === 'Registered' ? (
+        {(getFieldValue('nodeStatus') === 'Registered' ? (
           <>
-            <Form.Item label="Дата начала действия акта-допуска">
+            <Form.Item
+              style={styles.w100}
+              label="Дата начала действия акта-допуска"
+              name="lastCommercialAccountingDate"
+              rules={[
+                {
+                  required: true,
+                  message: 'Выберите Дата начала действия акта-допуска',
+                },
+              ]}
+            >
               <DatePickerTT
                 format="DD.MM.YYYY"
-                name="lastCommercialAccountingDate"
-                allowClear={false}
                 placeholder="Укажите дату..."
-                onChange={(date) => {
-                  setFieldValue('lastCommercialAccountingDate', date);
-                }}
-                value={values.lastCommercialAccountingDate}
-                onBlur={handleBlur}
+                allowClear={false}
               />
             </Form.Item>
 
-            <Form.Item label="Дата окончания действия акта-допуска">
+            <Form.Item
+              style={styles.w100}
+              label="Дата окончания действия акта-допуска"
+              name="futureCommercialAccountingDate"
+              rules={[
+                {
+                  required: true,
+                  message: 'Выберите Дата окончания действия акта-допуска',
+                },
+              ]}
+            >
               <DatePickerTT
                 format="DD.MM.YYYY"
                 placeholder="Укажите дату..."
                 allowClear={false}
-                onChange={(date) => {
-                  setFieldValue('futureCommercialAccountingDate', date);
-                }}
-                onBlur={handleBlur}
-                value={values.futureCommercialAccountingDate}
-                name="futureCommercialAccountingDate"
               />
             </Form.Item>
           </>
@@ -268,7 +272,7 @@ const EditNodeForm = ({
           </ButtonTT>
         </NavLink>
       </StyledFooter>
-    </form>
+    </Form>
   );
 };
 

@@ -1,12 +1,5 @@
 import axios from '../../../axios';
-import React, { useContext } from 'react';
-import {
-  ButtonTT,
-  Header,
-  StyledFooter,
-  StyledModal,
-  StyledModalBody,
-} from '../../../tt-components';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
 export async function putNode(nodeId = '', form = {}) {
   alert('Cейчас будем отправлять данные!');
@@ -60,7 +53,7 @@ const CalculatorExistAlert = ({ visible }: CalculatorExistAlert) => {
 
 export async function getNode(id: number) {
   try {
-    const res = await axios.get(`Nodes/${id}`);
+    const res = await axios.get<NodeResponse>(`Nodes/${id}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -73,7 +66,7 @@ export async function getNode(id: number) {
 
 export async function getCalculator(id: number) {
   try {
-    const res = await axios.get(`Calculators/${id}`);
+    const res = await axios.get<CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
     console.log(error);
