@@ -2,34 +2,37 @@ import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { EditNodeContext } from '../index';
-import { IconTT } from '../../../tt-components';
-import ModalCalculatorDeregister from './Modals/ModalCalculatorDeregister';
+import { CalculatorResponse } from '../../../myApi';
+import ModalCalculatorDeregister from '../../_pages/EditNode/components/Modals/ModalCalculatorDeregister';
+import IconTT from '../IconTT';
 
-const Connection = () => {
-  const { calculator } = useContext(EditNodeContext);
+interface ConnectionInterface {
+  calculator: CalculatorResponse;
+  edit: boolean;
+}
+
+const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
   const {
     model,
     id,
     serialNumber,
     lastCheckingDate,
     futureCheckingDate,
-    closingdate,
+    closingDate,
   } = calculator;
 
-  const lastCheckingDateText =
-    lastCheckingDate !== null
-      ? moment(lastCheckingDate).format('DD.MM.YYYY')
-      : 'Дата поверки не указана';
-  const futureCheckingDateText =
-    futureCheckingDate !== null
-      ? moment(futureCheckingDate).format('DD.MM.YYYY')
-      : 'Следующая Дата поверки не указана';
-  const icon = closingdate !== null ? 'green' : 'red';
-  const status = closingdate !== null ? 'Активен' : 'Не активен';
-  const [isDeregisterModalVisible, setIsDeregisterModalVisible] = useState(
-    false
-  );
+  const lastCheckingDateText = lastCheckingDate
+    ? moment(lastCheckingDate).format('DD.MM.YYYY')
+    : 'Дата поверки не указана';
+  const futureCheckingDateText = futureCheckingDate
+    ? moment(futureCheckingDate).format('DD.MM.YYYY')
+    : 'Следующая Дата поверки не указана';
+  const icon = closingDate ? 'red' : 'green';
+  const status = closingDate ? 'Не активен' : 'Активен';
+  const [
+    isDeregisterModalVisible,
+    setIsDeregisterModalVisible,
+  ] = useState<boolean>(false);
   return (
     <>
       <CalcListItem>
@@ -37,7 +40,7 @@ const Connection = () => {
           <NameWrap>
             <IconTT icon="device" />
             <NameAndSerialNumber>
-              <Name style={{ marginRight: '8px' }}>{model}</Name>
+              <Name style={{ marginRight: 8 }}>{model}</Name>
               <Serial>{` (${serialNumber})`}</Serial>
             </NameAndSerialNumber>
           </NameWrap>
@@ -46,24 +49,28 @@ const Connection = () => {
           <IconTT icon={icon} />
           {status}
         </State>
+
         <Div>
           <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-          <Link
-            to={`/calculators/${id}/edit`}
-            style={{ display: 'inline-flex', width: 'fit-content' }}
-            title="Редактирование Вычислителя"
-          >
-            <IconTT icon="edit" style={{ marginLeft: 8 }} />
-          </Link>
+          {edit ? (
+            <>
+              <Link
+                to={`/calculators/${id}/edit`}
+                style={{ display: 'inline-flex', width: 'fit-content' }}
+                title="Редактирование Вычислителя"
+              >
+                <IconTT icon="edit" style={{ marginLeft: 8 }} />
+              </Link>
 
-          <IconTT
-            icon="del"
-            style={{ marginLeft: 8, cursor: 'pointer' }}
-            onClick={() => {
-              setIsDeregisterModalVisible(true);
-              console.log('Снять прибор');
-            }}
-          />
+              <IconTT
+                icon="del"
+                style={{ marginLeft: 8, cursor: 'pointer' }}
+                onClick={() => {
+                  setIsDeregisterModalVisible(true);
+                }}
+              />
+            </>
+          ) : null}
         </Div>
       </CalcListItem>
       <ModalCalculatorDeregister
@@ -75,7 +82,7 @@ const Connection = () => {
   );
 };
 
-export default Connection;
+export default NodeConnection;
 
 const Template = styled.div``;
 

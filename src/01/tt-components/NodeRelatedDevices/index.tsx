@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { IconTT } from '../../../tt-components';
-import { NodeResponse } from '../../../../myApi';
+import { NodeResponse } from '../../../myApi';
+import IconTT from '../IconTT';
+import { Link } from 'react-router-dom';
 
 interface NodesInterface {
   node: NodeResponse;
+  edit: boolean;
 }
 
-export const RelatedDevices = ({ node }: NodesInterface) => {
+export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
   if (!node) {
     return null;
   }
@@ -57,6 +59,15 @@ export const RelatedDevices = ({ node }: NodesInterface) => {
         </State>
         <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
         <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
+        {edit ? (
+          <Link
+            to={`/housingMeteringDevices/${id}/edit_odpu`}
+            title="Редактирование ОДПУ"
+            style={{ display: 'inline-flex', width: 'min-content' }}
+          >
+            <IconTT icon="edit" />
+          </Link>
+        ) : null}
       </ListItem>
     );
   });
@@ -69,7 +80,7 @@ export const RelatedDevices = ({ node }: NodesInterface) => {
   );
 };
 
-export default RelatedDevices;
+export default NodeRelatedDevices;
 
 const NameWrap = styled.a`
   display: grid;
@@ -104,7 +115,15 @@ const State = styled.div`
   color: rgba(39, 47, 90, 0.8);
 `;
 
-const Title = styled.h2``;
+const Title = styled.h2`
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--color-primary);
+`;
 
 const ListWrap = styled.div`
   display: grid;

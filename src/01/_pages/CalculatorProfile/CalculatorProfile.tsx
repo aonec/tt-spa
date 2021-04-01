@@ -18,7 +18,6 @@ import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
 import { CalculatorResponse } from '../../../myApi';
-import { Tabs } from '../../tt-components';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -103,7 +102,7 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-      <Tabs tabItems={tabItems} path={path} />
+
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
