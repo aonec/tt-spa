@@ -102,7 +102,7 @@ export const NodeProfile = () => {
           <Connection calculator={calculator} />
         </Route>
         <Route path={`${path}/related`} exact>
-          <NodeRelatedDevices node={node} />
+          <NodeRelatedDevices node={node} edit={false} />
         </Route>
         <Route path={`${path}/documents`} exact>
           <Documents />

@@ -20,6 +20,7 @@ import {
   ButtonTT,
   Title,
   StyledFooter,
+  IconTT,
 } from '../../../tt-components';
 import {
   items,
@@ -32,7 +33,7 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
-import RelatedDevices from './RelatedDevices';
+import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -232,7 +233,20 @@ const EditNodeForm = ({
       </div>
 
       <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 620 }}>
-        <RelatedDevices node={node} />
+        <NodeRelatedDevices node={node} edit={true} />
+        <ButtonTT
+          type="button"
+          color="white"
+          small
+          onClick={() => {
+            alert('Add DEVICE!');
+            // handleAddOdpu
+          }}
+          style={{ marginTop: 24 }}
+        >
+          Подключить прибор
+          <IconTT icon="plus" />
+        </ButtonTT>
       </div>
 
       <div hidden={Number(currentTabKey) !== 4}>

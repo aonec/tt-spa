@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
+import { Link } from 'react-router-dom';
 
 interface NodesInterface {
   node: NodeResponse;
+  edit: boolean;
 }
 
-export const NodeRelatedDevices = ({ node }: NodesInterface) => {
+export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
   if (!node) {
     return null;
   }
@@ -57,6 +59,15 @@ export const NodeRelatedDevices = ({ node }: NodesInterface) => {
         </State>
         <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
         <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
+        {edit ? (
+          <Link
+            to={`/housingMeteringDevices/${id}/edit_odpu`}
+            title="Редактирование ОДПУ"
+            style={{ display: 'inline-flex', width: 'min-content' }}
+          >
+            <IconTT icon="edit" />
+          </Link>
+        ) : null}
       </ListItem>
     );
   });
