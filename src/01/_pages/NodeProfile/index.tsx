@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Route, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
-import Information from './components/Information';
-import RelatedDevices from './components/RelatedDevices';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Connection from './components/Connection';
 import Documents from './components/Documents';
@@ -14,6 +12,8 @@ import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
+import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
+import Information from './components/Information';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -102,7 +102,7 @@ export const NodeProfile = () => {
           <Connection calculator={calculator} />
         </Route>
         <Route path={`${path}/related`} exact>
-          <RelatedDevices node={node} />
+          <NodeRelatedDevices node={node} />
         </Route>
         <Route path={`${path}/documents`} exact>
           <Documents />
