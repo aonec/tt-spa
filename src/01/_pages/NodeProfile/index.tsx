@@ -3,7 +3,6 @@ import { Route, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
 import { getCalculator, getNode } from './apiNodeProfile';
-import Connection from './components/Connection';
 import Documents from './components/Documents';
 import { Tabs } from '../../tt-components';
 import Graph from '../Graph/Graph';
@@ -14,6 +13,7 @@ import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
+import NodeConnection from '../../tt-components/NodeConnection';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -99,7 +99,7 @@ export const NodeProfile = () => {
           )}
         </Route>
         <Route path={`${path}/connection`} exact>
-          <Connection calculator={calculator} />
+          <NodeConnection calculator={calculator} edit={false} />
         </Route>
         <Route path={`${path}/related`} exact>
           <NodeRelatedDevices node={node} edit={false} />

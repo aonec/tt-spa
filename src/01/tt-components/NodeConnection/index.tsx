@@ -2,14 +2,16 @@ import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { IconTT } from '../../../tt-components';
-import ModalCalculatorDeregister from './Modals/ModalCalculatorDeregister';
-import { CalculatorResponse } from '../../../../myApi';
+import { CalculatorResponse } from '../../../myApi';
+import ModalCalculatorDeregister from '../../_pages/EditNode/components/Modals/ModalCalculatorDeregister';
+import IconTT from '../IconTT';
 
 interface ConnectionInterface {
   calculator: CalculatorResponse;
+  edit: boolean;
 }
-const Connection = ({ calculator }: ConnectionInterface) => {
+
+const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
   const {
     model,
     id,
@@ -48,24 +50,29 @@ const Connection = ({ calculator }: ConnectionInterface) => {
           <IconTT icon={icon} />
           {status}
         </State>
+
         <Div>
           <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-          <Link
-            to={`/calculators/${id}/edit`}
-            style={{ display: 'inline-flex', width: 'fit-content' }}
-            title="Редактирование Вычислителя"
-          >
-            <IconTT icon="edit" style={{ marginLeft: 8 }} />
-          </Link>
+          {edit ? (
+            <>
+              <Link
+                to={`/calculators/${id}/edit`}
+                style={{ display: 'inline-flex', width: 'fit-content' }}
+                title="Редактирование Вычислителя"
+              >
+                <IconTT icon="edit" style={{ marginLeft: 8 }} />
+              </Link>
 
-          <IconTT
-            icon="del"
-            style={{ marginLeft: 8, cursor: 'pointer' }}
-            onClick={() => {
-              setIsDeregisterModalVisible(true);
-              console.log('Снять прибор');
-            }}
-          />
+              <IconTT
+                icon="del"
+                style={{ marginLeft: 8, cursor: 'pointer' }}
+                onClick={() => {
+                  setIsDeregisterModalVisible(true);
+                  console.log('Снять прибор');
+                }}
+              />
+            </>
+          ) : null}
         </Div>
       </CalcListItem>
       <ModalCalculatorDeregister
@@ -77,7 +84,7 @@ const Connection = ({ calculator }: ConnectionInterface) => {
   );
 };
 
-export default Connection;
+export default NodeConnection;
 
 const Template = styled.div``;
 
