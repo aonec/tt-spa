@@ -1,14 +1,11 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { NodeResponse } from '../../../../myApi';
 
 interface NodesInterface {
   node: NodeResponse;
-  calculator?: CalculatorResponse | null;
-  nodeId?: number;
-  setAddOdpu?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const RelatedDevices = ({ node }: NodesInterface) => {
@@ -16,13 +13,11 @@ export const RelatedDevices = ({ node }: NodesInterface) => {
     return null;
   }
   const { communicationPipes } = node;
-  console.log('node', node);
 
   const related = _.flatten(
     communicationPipes?.map((item, index) => {
       const { devices } = item;
-      const res = devices || [].map((resItem) => resItem);
-      return res;
+      return devices;
     })
   );
 
@@ -40,30 +35,28 @@ export const RelatedDevices = ({ node }: NodesInterface) => {
     const { pipeNumber = '', entryNumber = '', hubNumber = '' } = hub || {
       pipeNumber: '',
       entryNumber: '',
-      hubNumber: '',
     };
 
-    const icon = closingDate !== null ? 'green' : 'red';
-    const status = closingDate !== null ? 'Активен' : 'Не активен';
+    const icon = !closingDate ? 'green' : 'red';
+    const state = !closingDate ? 'Активен' : 'Не активен';
 
     return (
       <ListItem key={id}>
         <NameWrap href={`/housingMeteringDevices/${id}`}>
           <IconTT
             icon={(resource || 'next').toLowerCase()}
-            style={{ marginRight: '8px' }}
+            style={{ marginRight: 8 }}
           />
-          <Name style={{ marginRight: '8px' }}>{model}</Name>
+          <Name style={{ marginRight: 8 }}>{model}</Name>
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
         <State>
           <IconTT icon={icon} />
-          {status}
+          {state}
         </State>
-        <Span>{`Ввод: ${entryNumber ?? 'Х'}`}</Span>
-        {/*<Span>{`Узел: ${hubNumber ?? 'Х'}`}</Span>*/}
-        <Span>{`Труба: ${pipeNumber ?? 'Х'}`}</Span>
+        <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
+        <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
       </ListItem>
     );
   });
@@ -77,8 +70,6 @@ export const RelatedDevices = ({ node }: NodesInterface) => {
 };
 
 export default RelatedDevices;
-
-const Template = styled.div``;
 
 const NameWrap = styled.a`
   display: grid;
