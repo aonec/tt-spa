@@ -1,8 +1,152 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
+import styled from 'styled-components';
+import _ from 'lodash';
+import { ButtonTT, IconTT } from '../../../tt-components';
+import { NodeResponse } from '../../../../myApi';
+import { Link } from 'react-router-dom';
 
-export default () => {
-  return <div>1</div>;
+interface NodesInterface {
+  node: NodeResponse;
+}
+
+export const RelatedDevices = ({ node }: NodesInterface) => {
+  if (!node) {
+    return null;
+  }
+  const { communicationPipes } = node;
+
+  const related = _.flatten(
+    communicationPipes?.map((item, index) => {
+      const { devices } = item;
+      return devices;
+    })
+  );
+
+  const result = related.map((value: any) => {
+    const {
+      model,
+      serialNumber,
+      closingDate,
+      hub,
+      resource,
+      id,
+      housingStockId,
+    } = value;
+
+    const { pipeNumber = '', entryNumber = '', hubNumber = '' } = hub || {
+      pipeNumber: '',
+      entryNumber: '',
+    };
+
+    const icon = !closingDate ? 'green' : 'red';
+    const state = !closingDate ? 'Активен' : 'Не активен';
+
+    return (
+      <ListItem key={id}>
+        <NameWrap
+          href={`/housingMeteringDevices/${id}`}
+          title="Перейти на страницу устройства"
+        >
+          <IconTT
+            icon={(resource || 'next').toLowerCase()}
+            style={{ marginRight: 8 }}
+          />
+          <Name style={{ marginRight: 8 }}>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <State>
+          <IconTT icon={icon} />
+          {state}
+        </State>
+        <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
+        <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
+        <Link
+          to={`/housingMeteringDevices/${id}/edit_odpu`}
+          title="Редактирование ОДПУ"
+          style={{ display: 'inline-flex', width: 'min-content' }}
+        >
+          <IconTT icon="edit" />
+        </Link>
+      </ListItem>
+    );
+  });
+
+  return (
+    <ListWrap>
+      <Title>Приборы</Title>
+      {result}
+      <ButtonTT
+        type="button"
+        color="white"
+        small
+        onClick={() => {
+          alert('Add DEVICE!');
+          // handleAddOdpu
+        }}
+        style={{ marginTop: 24 }}
+      >
+        Подключить прибор
+        <IconTT icon="plus" />
+      </ButtonTT>
+    </ListWrap>
+  );
 };
+
+export default RelatedDevices;
+
+const NameWrap = styled.a`
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+
+  &:hover {
+    h3,
+    p {
+      color: var(--primary-100);
+    }
+  }
+`;
+
+const Name = styled.h3`
+  padding: 0;
+  margin: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+`;
+
+const Serial = styled.p`
+  padding: 0;
+  margin: 0;
+  color: rgba(39, 47, 90, 0.6);
+`;
+
+const State = styled.div`
+  display: flex;
+  align-items: center;
+  color: rgba(39, 47, 90, 0.8);
+`;
+
+const Title = styled.h2``;
+
+const ListWrap = styled.div`
+  display: grid;
+  height: min-content;
+}
+`;
+
+const ListItem = styled.div`
+  display: grid;
+  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-rows: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--frame);
+  opacity: 0.8;
+`;
+const Span = styled.span`
+  color: rgba(39, 47, 90, 0.6);
+`;
 
 // import React, { useContext, useState } from 'react';
 // import _ from 'lodash';

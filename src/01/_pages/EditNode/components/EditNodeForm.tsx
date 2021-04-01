@@ -32,6 +32,7 @@ import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import RelatedDevices from './RelatedDevices';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -231,7 +232,7 @@ const EditNodeForm = ({
       </div>
 
       <div hidden={Number(currentTabKey) !== 3} style={{ maxWidth: 620 }}>
-        {/*<RelatedDevices calculator={calculator} node={node} />*/}
+        <RelatedDevices node={node} />
       </div>
 
       <div hidden={Number(currentTabKey) !== 4}>
