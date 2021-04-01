@@ -34,7 +34,7 @@ const HousingChangeForm = () => {
     resource,
     housingMeteringDeviceType,
     hubConnection: {
-      hub: { entryNumber, hubNumber, pipeNumber },
+      hub: { entryNumber, pipeNumber },
       calculatorModel,
       calculatorSerialNumber,
     },
@@ -81,7 +81,6 @@ const HousingChangeForm = () => {
           ? null
           : moment(futureCommercialAccountingDate),
       entryNumber,
-      hubNumber,
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       isConnected: isConnectedValue[0].value,
     },
@@ -441,19 +440,6 @@ const HousingChangeForm = () => {
             disabled={isDisabled('entryNumber')}
           />
           <Alert name="entryNumber" />
-        </Form.Item>
-
-        <Form.Item label="Номер узла" style={{ width: '49%' }}>
-          <InputTT
-            name="hubNumber"
-            type="number"
-            placeholder="Номер узла"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.hubNumber}
-            disabled={isDisabled('hubNumber')}
-          />
-          <Alert name="hubNumber" />
         </Form.Item>
 
         <Form.Item label="Номер трубы" style={{ width: '49%' }}>

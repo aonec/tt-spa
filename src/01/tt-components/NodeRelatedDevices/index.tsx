@@ -34,7 +34,7 @@ export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
       housingStockId,
     } = value;
 
-    const { pipeNumber = '', entryNumber = '', hubNumber = '' } = hub || {
+    const { pipeNumber = '', entryNumber = '' } = hub || {
       pipeNumber: '',
       entryNumber: '',
     };

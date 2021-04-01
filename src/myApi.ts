@@ -216,6 +216,7 @@ export enum UserPermission {
   ReportRead = "ReportRead",
   ReportAdd = "ReportAdd",
   IndividualDeviceClose = "IndividualDeviceClose",
+  DataMigration = "DataMigration",
 }
 
 export interface TokenResponse {
@@ -349,16 +350,29 @@ export interface MeteringDeviceConnection {
   deviceAddress?: number | null;
 }
 
+export enum ResourceType {
+  None = "None",
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
+}
+
 export interface HousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
   entryNumber: number | null;
 
   /** @format int32 */
-  hubNumber: number | null;
-
-  /** @format int32 */
   pipeNumber: number | null;
   magistral: string | null;
+}
+
+export enum HousingMeteringDeviceType {
+  None = "None",
+  FlowMeter = "FlowMeter",
+  TemperatureSensor = "TemperatureSensor",
+  WeatherController = "WeatherController",
+  PressureMeter = "PressureMeter",
 }
 
 export interface HousingMeteringDeviceListResponse {
@@ -385,16 +399,8 @@ export interface HousingMeteringDeviceListResponse {
   closingDate: string | null;
   hub: HousingMeteringDeviceHubConnectionResponse;
   diameter: string | null;
-  resource: string | null;
-  housingMeteringDeviceType: string | null;
-}
-
-export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
+  resource: ResourceType;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
 }
 
 export interface CommunicationPipeResponse {
@@ -406,9 +412,6 @@ export interface CommunicationPipeResponse {
 
   /** @format int32 */
   entryNumber: number;
-
-  /** @format int32 */
-  hubNumber: number | null;
   magistral: string | null;
   devices: HousingMeteringDeviceListResponse[] | null;
 }
@@ -431,6 +434,9 @@ export interface NodeResponse {
 
   /** @format int32 */
   calculatorId: number | null;
+
+  /** @format int32 */
+  housingStockId: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
 }
 
@@ -460,7 +466,6 @@ export interface CalculatorListResponse {
   isConnected: boolean | null;
   hasTasks: boolean | null;
   address: HousingStockAddressResponse;
-  hubs: HousingMeteringDeviceListResponse[] | null;
   nodes: NodeResponse[] | null;
 }
 
@@ -586,7 +591,6 @@ export interface CalculatorResponse {
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   address: HousingStockAddressResponse;
-  hubs: HousingMeteringDeviceListResponse[] | null;
 
   /** @format int32 */
   infoId: number | null;
@@ -816,6 +820,12 @@ export interface HomeownersUpdateRequest {
   apartmentsToRemove?: number[] | null;
 }
 
+export enum MagistralType {
+  None = "None",
+  FeedFlow = "FeedFlow",
+  FeedBackFlow = "FeedBackFlow",
+}
+
 export interface PipeConnectionRequest {
   /** @format int32 */
   calculatorId: number;
@@ -824,11 +834,8 @@ export interface PipeConnectionRequest {
   entryNumber: number;
 
   /** @format int32 */
-  hubNumber?: number | null;
-
-  /** @format int32 */
   pipeNumber: number;
-  magistral: string;
+  magistral: MagistralType;
 
   /** @format int32 */
   nodeId: number;
@@ -848,8 +855,8 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
-  housingMeteringDeviceType?: string | null;
-  resource?: string | null;
+  housingMeteringDeviceType?: HousingMeteringDeviceType;
+  resource?: ResourceType;
   model?: string | null;
 
   /** @format int32 */
@@ -892,8 +899,8 @@ export interface HousingMeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   diameter: string | null;
-  resource: string | null;
-  housingMeteringDeviceType: string | null;
+  resource: ResourceType;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
   address: HousingStockAddressResponse;
   hubConnection: HousingMeteringDeviceConnectionResponse;
 }
@@ -917,8 +924,8 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate: string;
-  housingMeteringDeviceType: string;
-  resource: string;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
+  resource: ResourceType;
   model: string;
 
   /** @format int32 */
@@ -1313,7 +1320,7 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format int32 */
   mountPlaceId?: number | null;
-  resource?: string | null;
+  resource?: ResourceType;
 
   /** @format int32 */
   apartmentId?: number | null;
@@ -1398,7 +1405,7 @@ export interface CreateIndividualDeviceRequest {
 
   /** @format int32 */
   apartmentId: number;
-  resource: string;
+  resource: ResourceType;
 
   /** @format int32 */
   mountPlaceId?: number | null;
@@ -1622,9 +1629,6 @@ export interface CommunicationPipeRequest {
 
   /** @format int32 */
   entryNumber?: number;
-
-  /** @format int32 */
-  hubNumber?: number | null;
   magistral?: string | null;
   devices?: CreateHousingMeteringDeviceRequest[] | null;
 }
@@ -2229,38 +2233,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     archivesGenerateHouseManagementsList: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/Archives/GenerateHouseManagements`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesTest2List
-     * @request GET:/api/Archives/Test2
-     * @secure
-     */
-    archivesTest2List: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/Test2`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesTestList
-     * @request GET:/api/Archives/Test
-     * @secure
-     */
-    archivesTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/Test`,
         method: "GET",
         secure: true,
         ...params,
@@ -2889,6 +2861,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingStocks
+     * @name HousingStocksFixNumberAndCorpusCreate
+     * @request POST:/api/HousingStocks/FixNumberAndCorpus
+     * @secure
+     */
+    housingStocksFixNumberAndCorpusCreate: (params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HousingStocks/FixNumberAndCorpus`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesList
      * @request GET:/api/IndividualDeviceMountPlaces
@@ -3356,6 +3344,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags MeteringDevices
+     * @name MeteringDevicesTryFixIsConnectionList
+     * @request GET:/api/MeteringDevices/tryFixIsConnection
+     * @secure
+     */
+    meteringDevicesTryFixIsConnectionList: (params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/MeteringDevices/tryFixIsConnection`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags MeteringDevices
+     * @name MeteringDevicesFixIsConnectionCreate
+     * @request POST:/api/MeteringDevices/fixIsConnection
+     * @secure
+     */
+    meteringDevicesFixIsConnectionCreate: (params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/MeteringDevices/fixIsConnection`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Nodes
      * @name NodesDetail
      * @request GET:/api/Nodes/{nodeId}
@@ -3590,6 +3610,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ApartmentId?: number | null;
         HousingStockAddress?: string | null;
         HasChanged?: boolean | null;
+        NodeId?: number | null;
         PageNumber?: number;
         PageSize?: number;
       },

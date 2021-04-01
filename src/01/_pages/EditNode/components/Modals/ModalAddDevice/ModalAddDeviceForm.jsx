@@ -110,7 +110,6 @@ const ModalAddDeviceForm = (props) => {
       diameter: null,
       calculatorId: calculatorId ?? null,
       entryNumber: null,
-      hubNumber: null,
       pipeNumber: null,
       magistral: magistrals[0].value,
       city,
@@ -137,7 +136,6 @@ const ModalAddDeviceForm = (props) => {
         pipe: {
           calculatorId: 0,
           entryNumber: 0,
-          hubNumber: 0,
           pipeNumber: 0,
           magistral: 'string',
         },
@@ -157,7 +155,6 @@ const ModalAddDeviceForm = (props) => {
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },

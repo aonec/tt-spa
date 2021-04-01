@@ -1,64 +1,95 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '01/_components/Icon';
+import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
-import { CalculatorResponse } from '../../../../myApi';
+import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
 interface RelatedDevicesInterface {
-  device: CalculatorResponse | undefined;
+  calculator: CalculatorResponse;
 }
 
-export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
-  if (!device) {
+export const NodeRelatedDevices = ({ calculator }: RelatedDevicesInterface) => {
+  if (!calculator) {
     return null;
   }
-  const { hubs } = device;
-  if (!hubs) {
+  const { nodes } = calculator;
+  if (!nodes) {
     return null;
   }
-  const result = hubs.map((value) => {
-    const { model, serialNumber, closingDate, hub, resource, id } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } = hub ?? {
-      number: 'X',
-      entryNumber: 'X',
-      hubNumber: 'X',
-    };
+  const resultDevices = nodes.map((node) => {
+    const { communicationPipes } = node;
 
-    return (
-      <ListItem key={id}>
-        <NameWrap href={`/housingMeteringDevices/${id}`}>
-          <IconTT icon={(resource || 'device').toLowerCase()} />
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <State>
-          <Icon icon="status" color="#17B45A" />
-          {`${closingDate !== null ? 'Активен' : 'Не активен'}`}
-        </State>
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-      </ListItem>
+    const related = _.flatten(
+      communicationPipes?.map((item, index) => {
+        const { devices } = item;
+        return devices;
+      })
     );
+    const result = related.map((value: any) => {
+      const {
+        model,
+        serialNumber,
+        closingDate,
+        hub,
+        resource,
+        id,
+        housingStockId,
+      } = value;
+
+      const { pipeNumber = '', entryNumber = '' } = hub || {
+        pipeNumber: '',
+        entryNumber: '',
+      };
+
+      const icon = !closingDate ? 'green' : 'red';
+      const state = !closingDate ? 'Активен' : 'Не активен';
+
+      return (
+        <ListItem key={id}>
+          <NameWrap href={`/housingMeteringDevices/${id}`}>
+            <IconTT
+              icon={(resource || 'next').toLowerCase()}
+              style={{ marginRight: 8 }}
+            />
+            <Name style={{ marginRight: 8 }}>{model}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+          </NameWrap>
+
+          <State>
+            <IconTT icon={icon} />
+            {state}
+          </State>
+          <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
+          <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
+          {/*{edit ? (*/}
+          {/*  <Link*/}
+          {/*    to={`/housingMeteringDevices/${id}/edit_odpu`}*/}
+          {/*    title="Редактирование ОДПУ"*/}
+          {/*    style={{ display: 'inline-flex', width: 'min-content' }}*/}
+          {/*  >*/}
+          {/*    <IconTT icon="edit" />*/}
+          {/*  </Link>*/}
+          {/*) : null}*/}
+        </ListItem>
+      );
+    });
+    return result;
   });
 
   return (
     <ListWrap>
       <Title>Приборы</Title>
-      {result}
+      {resultDevices}
     </ListWrap>
   );
 };
 
-export default RelatedDevices;
-
-const Template = styled.div``;
+export default NodeRelatedDevices;
 
 const NameWrap = styled.a`
   display: grid;
-  grid-template-columns: 1fr 7fr 4fr;
+  grid-template-columns: auto auto 1fr;
   align-items: center;
 
   &:hover {
@@ -89,7 +120,15 @@ const State = styled.div`
   color: rgba(39, 47, 90, 0.8);
 `;
 
-const Title = styled.h2``;
+const Title = styled.h2`
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--color-primary);
+`;
 
 const ListWrap = styled.div`
   display: grid;

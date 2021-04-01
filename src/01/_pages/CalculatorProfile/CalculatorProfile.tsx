@@ -1,4 +1,4 @@
-import { Route, useParams, useLocation } from 'react-router-dom';
+import { Route, useParams, useLocation, useHistory } from 'react-router-dom';
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import {
   getCalculatorTasks,
@@ -10,14 +10,22 @@ import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
-import { RelatedDevices } from './components/RelatedDevices';
+// import { RelatedDevices } from './components/RelatedDevices';
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
 import DeregisterDevice from './components/Modals/ModalDeregister';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
-import { CalculatorResponse } from '../../../myApi';
+import {
+  CalculatorResponse,
+  CommunicationPipeResponse,
+  ResourceType,
+} from '../../../myApi';
+import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
+import { TabsItemInterface } from '../../tt-components/interfaces';
+import Tabs from '../../tt-components/Tabs';
+import RelatedDevices from './components/RelatedDevices';
 
 interface TypeDeviceContext {
   device: CalculatorResponse;
@@ -35,7 +43,8 @@ export const DeviceContext = React.createContext<Partial<TypeDeviceContext>>(
 
 export const CalculatorProfile = () => {
   const { deviceId } = useParams();
-  const path = `/calculators/${deviceId}/`;
+  const { push } = useHistory();
+  const path = `/calculators/${deviceId}`;
   const [isLoading, setIsLoading] = useState(true);
   const [device, setDevice] = useState<CalculatorResponse>();
   const [tasks, setTasks] = useState<any>();
@@ -74,13 +83,53 @@ export const CalculatorProfile = () => {
 
   if (!device || !tasks) return <Loader show size={32} />;
 
-  const tabItems: Array<Array<string>> = [
-    ['Общая информация', ''],
-    ['Настройки соединения', 'connection'],
-    ['Узлы', 'nodes'],
-    ['Подключенные приборы', 'related'],
-    ['Документы', 'documents'],
+  // const tabItems: Array<Array<string>> = [
+  //   ['Общая информация', ''],
+  //   ['Настройки соединения', 'connection'],
+  //   ['Узлы', 'nodes'],
+  //   ['Подключенные приборы', 'related'],
+  //   ['Документы', 'documents'],
+  // ];
+
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Настройки соединения',
+      key: 'connection',
+      cb: () => {
+        push(`${path}/connection`);
+      },
+    },
+    {
+      title: 'Узлы',
+      key: 'nodes',
+      cb: () => {
+        push(`${path}/nodes`);
+      },
+    },
+    {
+      title: 'Подключенные приборы',
+      key: 'related',
+      cb: () => {
+        push(`${path}/related`);
+      },
+    },
+    {
+      title: 'Документы',
+      key: 'documents',
+      cb: () => {
+        push(`${path}/documents`);
+      },
+    },
   ];
+
+  console.log('device', device);
 
   const context = {
     device,
@@ -94,6 +143,29 @@ export const CalculatorProfile = () => {
     check,
     setCheck,
   };
+  const { nodes } = device;
+
+  if (!nodes) {
+    return null;
+  }
+
+  if (nodes.length < 1) {
+    return null;
+  }
+
+  const nodeTemplate = {
+    id: 0,
+    number: 0,
+    nodeStatus: '',
+    resource: 'ColdWaterSupply',
+    serviceZone: '',
+    lastCommercialAccountingDate: '',
+    futureCommercialAccountingDate: '',
+    calculatorId: 0,
+    housingStockId: 0,
+    communicationPipes: null,
+  };
+
   return (
     <DeviceContext.Provider value={context}>
       <Header
@@ -102,21 +174,22 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-
+      <Tabs tabItems={tabItems} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
         </Route>
-        <Route path={`${path}connection`} exact>
+        <Route path={`${path}/connection`} exact>
           <Connection device={device} />
         </Route>
-        <Route path={`${path}related`} exact>
-          <RelatedDevices device={device} />
+        <Route path={`${path}/related`} exact>
+          <RelatedDevices calculator={device} />
+          {/*<NodeRelatedDevices node={nodes[0]} edit={false} />*/}
         </Route>
-        <Route path={`${path}nodes`} exact>
+        <Route path={`${path}/nodes`} exact>
           <Nodes device={device} />
         </Route>
-        <Route path={`${path}documents`} exact>
+        <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
