@@ -9,7 +9,7 @@ import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
-import ModalDeregister from './components/Modals/ModalDeregister';
+import ModalDeregister from '../../tt-components/ModalDeregister';
 
 export const EditNode = () => {
   const { nodeId } = useParams();

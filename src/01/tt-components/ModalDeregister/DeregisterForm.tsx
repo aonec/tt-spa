@@ -1,39 +1,78 @@
 import React from 'react';
 import { Form } from 'antd';
-import _ from 'lodash';
 import moment from 'moment';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import {
-  ButtonTT,
-  DatePickerTT,
-  Header,
-  StyledFooter,
-  StyledModalBody,
-} from '../../../../../tt-components';
 import { deregisterDevice } from './apiDeregisterDevice';
+import { StyledFooter, StyledModalBody } from '../Modal';
+import { DatePickerTT } from '../DatePicker';
+import Header from '../Header';
+import ButtonTT from '../ButtonTT';
 
-const ModalCalculatorDeregisterForm = ({ handleCancel, device }: any) => {
-  const { model, serialNumber } = device;
+const ModalCalculatorDeregisterForm = ({
+  handleCancel,
+  device,
+  setVisible,
+}: any) => {
+  if (!device) {
+    return null;
+  }
+  const { model, serialNumber, id } = device;
 
-  //     closingDateTime: moment().toISOString(),
-  //     documentsIds: [],
-  //     deviceId: device.id,
+  const [form] = Form.useForm();
+  const {
+    setFieldsValue,
+    getFieldsValue,
+    getFieldValue,
+    validateFields,
+    getFieldsError,
+  } = form;
+
+  const initialValues = {
+    closingDateTime: moment(),
+    documentsIds: [],
+    deviceId: device.id,
+  };
 
   const onFinish = () => {
     console.log('onFinish');
+    const form = {
+      closingDateTime: getFieldValue('closingDateTime').toISOString(),
+      documentsIds: [],
+      deviceId: id,
+    };
+
+    deregisterDevice(form).then((res) => {
+      setTimeout(() => {
+        setVisible(false);
+      }, 1000);
+    });
+  };
+
+  const onFinishFailed = () => {
+    console.log('onFinishFailed');
   };
 
   return (
-    <Form onFinish={onFinish}>
+    <Form
+      initialValues={initialValues}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      form={form}
+      requiredMark={false}
+      scrollToFirstError
+    >
       <StyledModalBody>
         <Header>{`Вы действительно хотите снять ${model} (${serialNumber}) с учета?`}</Header>
-        <Form.Item label="Дата снятия прибора с учета">
+        <Form.Item
+          label="Дата снятия прибора с учета"
+          name="closingDateTime"
+          rules={[
+            { required: true, message: 'Выберите Дата снятия прибора с учета' },
+          ]}
+        >
           <DatePickerTT
             placeholder="Укажите дату"
             format="DD.MM.YYYY"
             allowClear={false}
-            name="closingDateTime"
           />
         </Form.Item>
       </StyledModalBody>
@@ -42,13 +81,7 @@ const ModalCalculatorDeregisterForm = ({ handleCancel, device }: any) => {
           Отмена
         </ButtonTT>
 
-        <ButtonTT
-          color="red"
-          style={{ marginLeft: '32px' }}
-          type="submit"
-          big
-          form="deregisterDevice"
-        >
+        <ButtonTT color="red" style={{ marginLeft: 32 }} type="submit" big>
           Снять прибор с учета
         </ButtonTT>
       </StyledFooter>

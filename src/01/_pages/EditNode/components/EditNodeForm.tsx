@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Form } from 'antd';
-import _ from 'lodash';
 import { NavLink } from 'react-router-dom';
 import { editNodeValidationSchema } from './validationSchemas';
 import {
@@ -29,7 +28,6 @@ import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { putNode } from './apiEditNode';
-import ModalDeregister from './Modals/ModalDeregister';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;

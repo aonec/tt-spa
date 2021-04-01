@@ -16,7 +16,7 @@ import { deregisterDevice } from './apiDeregisterDevice';
 const ModalDeregisterForm = (props) => {
   const { handleCancel } = props;
 
-  console.log('ModalDeregisterForm.tsx');
+  console.log('DeregisterForm.tsx');
   const { deregister, setDeregister, device } = useContext(DeviceContext);
   const { model, serialNumber } = device;
 

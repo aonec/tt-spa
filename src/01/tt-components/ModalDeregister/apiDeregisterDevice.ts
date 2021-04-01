@@ -1,8 +1,8 @@
-import axios from '../../../../../axios';
+import axios from 'axios';
 
-export async function deregisterDevice(form = {}) {
+export async function deregisterDevice(form: any) {
   try {
-    alert('Отправляется запрос на снятие прибора с учета !');
+    // alert('Отправляется запрос на снятие прибора с учета !');
     const res = await axios.post('MeteringDevices/close', form);
     alert('Вычислитель успешно снят с учета !');
     return res;
