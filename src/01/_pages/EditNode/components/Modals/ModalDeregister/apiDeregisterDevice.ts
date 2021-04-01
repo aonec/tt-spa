@@ -12,14 +12,15 @@ export async function deregisterDevice(form = {}) {
   }
 }
 
-export async function getCalculator(id = null) {
+export async function getCalculator(id: number) {
   try {
-    console.log('Отправляется запрос на устройство !');
     const res = await axios.get(`Calculators/${id}`);
-    console.log('Вычислитель успешно получен !');
     return res;
   } catch (error) {
-    console.log('Что-то пошло не так: попробуйте еще раз');
-    throw new Error(error);
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса Вычислителя',
+    };
   }
 }

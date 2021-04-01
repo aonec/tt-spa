@@ -9,12 +9,15 @@ import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
+import ModalDeregister from './components/Modals/ModalDeregister';
 
 export const EditNode = () => {
   const { nodeId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [alertVisible, setAlertVisible] = useState(false);
   const [existCalculator, setExistCalculator] = useState(false);
+  const [deregisterDevice, setDeregisterDevice] = useState(false);
+  const [deregisterDeviceValue, setDeregisterDeviceValue] = useState();
 
   const {
     data: calculator,
@@ -76,6 +79,13 @@ export const EditNode = () => {
         setAlertVisible={setAlertVisible}
         setExistCalculator={setExistCalculator}
         setTab={setTab}
+        setDeregisterDeviceValue={setDeregisterDeviceValue}
+        setDeregisterDevice={setDeregisterDevice}
+      />
+      <ModalDeregister
+        visible={deregisterDevice}
+        setVisible={setDeregisterDevice}
+        device={deregisterDeviceValue}
       />
     </>
   );

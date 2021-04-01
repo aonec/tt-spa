@@ -1,17 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CalculatorResponse } from '../../../myApi';
-import ModalCalculatorDeregister from '../../_pages/EditNode/components/Modals/ModalCalculatorDeregister';
 import IconTT from '../IconTT';
+import EditNodeForm from '../../_pages/EditNode/components/EditNodeForm';
+import { getCalculator } from './apiNodeConnection';
 
 interface ConnectionInterface {
   calculator: CalculatorResponse;
   edit: boolean;
+  setDeregisterDeviceValue?: any;
+  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
-const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
+const NodeConnection = ({
+  calculator,
+  edit = false,
+  setDeregisterDeviceValue,
+  setDeregisterDevice,
+}: ConnectionInterface) => {
   const {
     model,
     id,
@@ -29,56 +37,52 @@ const NodeConnection = ({ calculator, edit = false }: ConnectionInterface) => {
     : 'Следующая Дата поверки не указана';
   const icon = closingDate ? 'red' : 'green';
   const status = closingDate ? 'Не активен' : 'Активен';
-  const [
-    isDeregisterModalVisible,
-    setIsDeregisterModalVisible,
-  ] = useState<boolean>(false);
   return (
-    <>
-      <CalcListItem>
-        <NavLink to={`/calculators/${id}`}>
-          <NameWrap>
-            <IconTT icon="device" />
-            <NameAndSerialNumber>
-              <Name style={{ marginRight: 8 }}>{model}</Name>
-              <Serial>{` (${serialNumber})`}</Serial>
-            </NameAndSerialNumber>
-          </NameWrap>
-        </NavLink>
-        <State>
-          <IconTT icon={icon} />
-          {status}
-        </State>
+    <CalcListItem>
+      <NavLink to={`/calculators/${id}`}>
+        <NameWrap>
+          <IconTT icon="device" />
+          <NameAndSerialNumber>
+            <Name style={{ marginRight: 8 }}>{model}</Name>
+            <Serial>{` (${serialNumber})`}</Serial>
+          </NameAndSerialNumber>
+        </NameWrap>
+      </NavLink>
+      <State>
+        <IconTT icon={icon} />
+        {status}
+      </State>
 
-        <Div>
-          <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
-          {edit ? (
-            <>
-              <Link
-                to={`/calculators/${id}/edit`}
-                style={{ display: 'inline-flex', width: 'fit-content' }}
-                title="Редактирование Вычислителя"
-              >
-                <IconTT icon="edit" style={{ marginLeft: 8 }} />
-              </Link>
+      <Div>
+        <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
+        {edit ? (
+          <>
+            <Link
+              to={`/calculators/${id}/edit`}
+              style={{ display: 'inline-flex', width: 'fit-content' }}
+              title="Редактирование Вычислителя"
+            >
+              <IconTT icon="edit" style={{ marginLeft: 8 }} />
+            </Link>
 
-              <IconTT
-                icon="del"
-                style={{ marginLeft: 8, cursor: 'pointer' }}
-                onClick={() => {
-                  setIsDeregisterModalVisible(true);
-                }}
-              />
-            </>
-          ) : null}
-        </Div>
-      </CalcListItem>
-      <ModalCalculatorDeregister
-        visible={isDeregisterModalVisible}
-        id={id}
-        setVisible={setIsDeregisterModalVisible}
-      />
-    </>
+            <IconTT
+              icon="del"
+              style={{ marginLeft: 8, cursor: 'pointer' }}
+              onClick={() => {
+                if (setDeregisterDeviceValue) {
+                  getCalculator(id).then((res) => {
+                    setDeregisterDeviceValue(res);
+                  });
+                }
+                if (setDeregisterDevice) {
+                  setDeregisterDevice(true);
+                }
+              }}
+            />
+          </>
+        ) : null}
+      </Div>
+    </CalcListItem>
   );
 };
 

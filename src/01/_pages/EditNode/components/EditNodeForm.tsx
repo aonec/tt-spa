@@ -29,6 +29,7 @@ import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { putNode } from './apiEditNode';
+import ModalDeregister from './Modals/ModalDeregister';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -37,6 +38,8 @@ interface EditNodeFormInterface {
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   setExistCalculator: Dispatch<SetStateAction<boolean>>;
   node: NodeResponse;
+  setDeregisterDeviceValue: any;
+  setDeregisterDevice: Dispatch<SetStateAction<boolean>>;
 }
 
 const EditNodeForm = ({
@@ -46,6 +49,8 @@ const EditNodeForm = ({
   setAlertVisible,
   setExistCalculator,
   node,
+  setDeregisterDevice,
+  setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
   const [validationSchema, setValidationSchema] = useState(
     editNodeValidationSchema
@@ -245,7 +250,12 @@ const EditNodeForm = ({
         hidden={Number(currentTabKey) !== 2}
         style={{ maxWidth: 620 }}
       >
-        <NodeConnection calculator={calculator} edit={true} />
+        <NodeConnection
+          calculator={calculator}
+          edit={true}
+          setDeregisterDeviceValue={setDeregisterDeviceValue}
+          setDeregisterDevice={setDeregisterDevice}
+        />
       </StyledFormPage>
 
       <StyledFormPage
