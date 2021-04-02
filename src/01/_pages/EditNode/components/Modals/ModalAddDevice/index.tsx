@@ -32,6 +32,7 @@ const ModalAddDevice = ({
         handleCancel={handleCancel}
         calculator={calculator}
         node={node}
+        setVisible={setVisible}
       />
     </StyledModal>
   );

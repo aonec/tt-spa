@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Divider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -33,10 +33,13 @@ import {
 } from './validationSchemas';
 import {
   CalculatorResponse,
+  CreateHousingMeteringDeviceRequest,
   NodeResponse,
-  UpdateHousingMeteringDeviceRequest,
 } from '../../../../../../myApi';
-import { TabsItemInterface } from '../../../../../tt-components/interfaces';
+import {
+  TabErrorsInterface,
+  TabsItemInterface,
+} from '../../../../../tt-components/interfaces';
 import { Formik } from 'formik';
 import { Form } from 'formik-antd';
 import {
@@ -46,19 +49,25 @@ import {
   SelectFormik,
 } from './template';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
+import { addHousingMeteringDevice } from './apiModalAddDevice';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: NodeResponse;
   calculator: CalculatorResponse;
+  setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalAddDeviceForm = ({
   node,
   calculator,
   handleCancel,
+  setVisible,
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
+  const [validationSchema, setValidationSchema] = useState<any>(
+    validationSchemaFlowMeter
+  );
 
   const tabItems: Array<TabsItemInterface> = [
     {
@@ -94,29 +103,9 @@ const ModalAddDeviceForm = ({
     ? communicationPipes[0].entryNumber
     : null;
 
-  const devices =
-    communicationPipes ||
-    [].map((communicationPipe) => {
-      const { devices } = communicationPipe;
-      return (
-        devices ||
-        [].map((device) => {
-          return device;
-        })
-      );
-    });
-  const res = _.flatten(devices);
-  const entryNumbers =
-    res ||
-    [].map((item) => {
-      const { hub } = item;
-      const { entryNumber } = hub;
-      return entryNumber;
-    });
-
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
-    serialNumber: '020120211601',
+    serialNumber: undefined,
     lastCheckingDate: moment(),
     futureCheckingDate: moment().add(3, 'years'),
     lastCommercialAccountingDate: lastCommercialAccountingDate
@@ -125,12 +114,9 @@ const ModalAddDeviceForm = ({
     futureCommercialAccountingDate: futureCommercialAccountingDate
       ? moment(futureCommercialAccountingDate)
       : moment(),
-    ipV4: '',
-    deviceAddress: null,
-    port: null,
     housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
     resource,
-    model: 'COLD 12022021',
+    model: undefined,
     diameter: null,
     diameterVisible: true,
     calculatorId: calculatorId,
@@ -147,7 +133,7 @@ const ModalAddDeviceForm = ({
 
   const handleSubmit = (values: any) => {
     console.log('handleSubmit', values);
-    const form: UpdateHousingMeteringDeviceRequest = {
+    const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
       futureCheckingDate: values.futureCheckingDate,
@@ -166,20 +152,26 @@ const ModalAddDeviceForm = ({
       },
     };
     console.log('form', form);
-    console.log('node', node);
-    // addOdpu(form).then((res) => {
-    //   // setTimeout(() => { setAddOdpu(false); }, 1000);
+    // addHousingMeteringDevice(form).then((res) => {
+    //   console.log(res);
+    //   setTimeout(() => {
+    //     setVisible(false);
+    //   }, 1000);
     // });
   };
 
-  const tabErrors = [
+  const tabErrors: Array<TabErrorsInterface> = [
     {
       key: '1',
-      value: [],
+      value: [''],
     },
     {
       key: '2',
       value: ['diameter', 'pipeNumber', 'serial', 'model'],
+    },
+    {
+      key: '3',
+      value: [''],
     },
   ];
 
@@ -189,6 +181,7 @@ const ModalAddDeviceForm = ({
       errors
     );
     if (hasError) {
+      console.log(errors);
       setTab(errorTab);
     }
   }
@@ -196,9 +189,9 @@ const ModalAddDeviceForm = ({
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchemaFlowMeter}
+      validationSchema={validationSchema}
       onSubmit={(values) => handleSubmit(values)}
-      render={({ values, errors }) => (
+      render={({ values, errors, setFieldValue }) => (
         <Form>
           <StyledModalBody>
             <Header>Добавление нового ОДПУ</Header>
@@ -226,6 +219,15 @@ const ModalAddDeviceForm = ({
                 <SelectFormik
                   options={housingMeteringDeviceTypes}
                   name="housingMeteringDeviceType"
+                  onChange={(value) => {
+                    // console.log(value);
+                    value === 'FlowMeter'
+                      ? setValidationSchema(validationSchemaFlowMeter)
+                      : setValidationSchema(validationSchemaTemperatureSensor);
+                    value !== 'FlowMeter'
+                      ? setFieldValue('diameter', null)
+                      : console.log(values.diameter);
+                  }}
                 />
               </Form.Item>
 
@@ -439,6 +441,26 @@ const SubHeader = styled.h3`
   font-size: 16px;
   line-height: 32px;
 `;
+
+// const devices =
+//   communicationPipes ||
+//   [].map((communicationPipe) => {
+//     const { devices } = communicationPipe;
+//     return (
+//       devices ||
+//       [].map((device) => {
+//         return device;
+//       })
+//     );
+//   });
+// const res = _.flatten(devices);
+// const entryNumbers =
+//   res ||
+//   [].map((item) => {
+//     const { hub } = item;
+//     const { entryNumber } = hub;
+//     return entryNumber;
+//   });
 
 {
   /*<SubHeader>Адрес установки</SubHeader>*/

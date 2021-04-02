@@ -1,8 +1,5 @@
 import * as Yup from 'yup';
 
-const yupDate = Yup.date()
-  .typeError('Поле обязательное')
-  .required('Поле обязательное');
 const yupSerialNumber = Yup.string()
   .min(3, 'Серийный номер должен быть длиннее трех символов')
   .required('Введите серийный номер');

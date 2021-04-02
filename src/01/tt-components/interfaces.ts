@@ -16,3 +16,8 @@ export interface TabsItemInterface {
   key: string;
   cb: any;
 }
+
+export interface TabErrorsInterface {
+  key: string;
+  value: Array<string>;
+}
