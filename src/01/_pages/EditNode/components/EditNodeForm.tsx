@@ -264,7 +264,13 @@ const EditNodeForm = ({
         style={{ maxWidth: 620 }}
       >
         <div style={styles.w100}>
-          <NodeRelatedDevices node={node} edit={true} />
+          <NodeRelatedDevices
+            node={node}
+            edit={true}
+            close={false}
+            setDeregisterDeviceValue={setDeregisterDeviceValue}
+            setDeregisterDevice={setDeregisterDevice}
+          />
         </div>
 
         <ButtonTT

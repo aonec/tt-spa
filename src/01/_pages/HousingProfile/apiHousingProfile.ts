@@ -1,14 +1,11 @@
 import axios from '../../axios';
-import {
-  TaskListResponse,
-  TasksPagedList,
-  TasksPagedListSuccessApiResponse,
-} from '../../../myApi';
+import { HousingMeteringDeviceResponse, TasksPagedList } from '../../../myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    const res = await axios.get(`HousingMeteringDevices/${id}`);
-    return res;
+    return await axios.get<HousingMeteringDeviceResponse>(
+      `HousingMeteringDevices/${id}`
+    );
   } catch (error) {
     console.log(error);
     throw {
@@ -23,7 +20,6 @@ export async function getHousingTasks(url: string) {
     const newURL = `Tasks?DeviceId=${url}`;
     const res: TasksPagedList = await axios.get(newURL);
     const { items } = res;
-    console.log(items);
 
     return items;
   } catch (error) {

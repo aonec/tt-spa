@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { Link } from 'react-router-dom';
+import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 
 interface NodesInterface {
   node: NodeResponse;
-  edit: boolean;
+  edit?: boolean;
+  close?: boolean;
+  setDeregisterDeviceValue?: any;
+  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
+export const NodeRelatedDevices = ({
+  node,
+  edit = false,
+  close = false,
+  setDeregisterDeviceValue,
+  setDeregisterDevice,
+}: NodesInterface) => {
   if (!node) {
     return null;
   }
@@ -59,15 +69,34 @@ export const NodeRelatedDevices = ({ node, edit = false }: NodesInterface) => {
         </State>
         <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
         <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
-        {edit ? (
-          <Link
-            to={`/housingMeteringDevices/${id}/edit_odpu`}
-            title="Редактирование ОДПУ"
-            style={{ display: 'inline-flex', width: 'min-content' }}
-          >
-            <IconTT icon="edit" />
-          </Link>
-        ) : null}
+        <div>
+          {edit ? (
+            <Link
+              to={`/housingMeteringDevices/${id}/edit_odpu`}
+              title="Редактирование ОДПУ"
+              style={{ display: 'inline-flex', width: 'min-content' }}
+            >
+              <IconTT icon="edit" />
+            </Link>
+          ) : null}
+          {close ? (
+            <IconTT
+              icon="del"
+              style={{ marginLeft: 8, cursor: 'pointer' }}
+              onClick={() => {
+                console.log('del');
+                if (setDeregisterDeviceValue) {
+                  getHousingMeteringDevice(id).then((res) => {
+                    setDeregisterDeviceValue(res);
+                  });
+                }
+                if (setDeregisterDevice) {
+                  setDeregisterDevice(true);
+                }
+              }}
+            />
+          ) : null}
+        </div>
       </ListItem>
     );
   });

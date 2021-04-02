@@ -223,26 +223,6 @@ const ModalAddDeviceForm = ({
 
           <Divider style={{ margin: 0 }} />
 
-          {/*<SubHeader>Адрес установки</SubHeader>*/}
-
-          {/*<Form.Item name="city" label="Город" style={styles.w49}>*/}
-          {/*  <InputTT placeholder="Нижнекамск" />*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Улица" name="street" style={styles.w49}>*/}
-          {/*  <InputTT placeholder="Пр Мира" />*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item label="Дом" name="housingStockNumber" style={styles.w49}>*/}
-          {/*  <InputTT />*/}
-          {/*</Form.Item>*/}
-
-          {/*<Form.Item name="corpus" label="Корпус" style={styles.w49}>*/}
-          {/*  <InputTT />*/}
-          {/*</Form.Item>*/}
-
-          {/*<Divider style={{ margin: 0 }} />*/}
-
           <SubHeader>Узел</SubHeader>
 
           <Form.Item
@@ -421,3 +401,51 @@ const SubHeader = styled.h3`
   font-size: 16px;
   line-height: 32px;
 `;
+
+{
+  /*<SubHeader>Адрес установки</SubHeader>*/
+}
+
+{
+  /*<Form.Item name="city" label="Город" style={styles.w49}>*/
+}
+{
+  /*  <InputTT placeholder="Нижнекамск" />*/
+}
+{
+  /*</Form.Item>*/
+}
+
+{
+  /*<Form.Item label="Улица" name="street" style={styles.w49}>*/
+}
+{
+  /*  <InputTT placeholder="Пр Мира" />*/
+}
+{
+  /*</Form.Item>*/
+}
+
+{
+  /*<Form.Item label="Дом" name="housingStockNumber" style={styles.w49}>*/
+}
+{
+  /*  <InputTT />*/
+}
+{
+  /*</Form.Item>*/
+}
+
+{
+  /*<Form.Item name="corpus" label="Корпус" style={styles.w49}>*/
+}
+{
+  /*  <InputTT />*/
+}
+{
+  /*</Form.Item>*/
+}
+
+{
+  /*<Divider style={{ margin: 0 }} />*/
+}
