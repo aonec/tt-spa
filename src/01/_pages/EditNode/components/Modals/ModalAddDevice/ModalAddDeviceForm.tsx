@@ -203,7 +203,6 @@ const ModalAddDeviceForm = ({
   };
   return (
     <>
-      <Tabs tabItems={tabItems} tabsType={'tabs'} />
       <Form
         initialValues={initialValues}
         onFinish={onFinish}
@@ -218,6 +217,12 @@ const ModalAddDeviceForm = ({
       >
         <StyledModalBody>
           <Header>Добавление нового ОДПУ</Header>
+          <Tabs
+            tabItems={tabItems}
+            tabsType={'tabs'}
+            activeKey={currentTabKey}
+          />
+
           {/*First Tabs*/}
           <StyledFormPage hidden={Number(currentTabKey) !== 1}>
             <Form.Item
@@ -397,7 +402,7 @@ const ModalAddDeviceForm = ({
             color="blue"
             onClick={() => {
               console.log(currentTabKey);
-              setTab('2');
+              setTab((prevState) => String(Number(prevState) + 1));
             }}
             big
             hidden={currentTabKey === '3'}
