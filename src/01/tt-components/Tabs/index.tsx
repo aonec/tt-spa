@@ -13,9 +13,10 @@ interface TabsItemInterface {
 
 interface TabsInterface {
   tabItems: Array<TabsItemInterface>;
+  tabsType: 'route' | 'tabs';
 }
 
-export default ({ tabItems }: TabsInterface) => {
+export default ({ tabItems, tabsType }: TabsInterface) => {
   const params = useParams<Array<string>>();
 
   function callback(key: string) {
@@ -24,7 +25,10 @@ export default ({ tabItems }: TabsInterface) => {
   }
 
   return (
-    <Tabs defaultActiveKey={params[0] || ''} onChange={callback}>
+    <Tabs
+      // defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
+      onChange={callback}
+    >
       {tabItems.map((tab) => {
         const { title, key, cb } = tab;
         return <TabPane tab={title} key={key} />;

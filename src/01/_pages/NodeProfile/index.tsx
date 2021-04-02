@@ -111,7 +111,7 @@ export const NodeProfile = () => {
         setAddDevice={setAddDevice}
         nodeId={nodeId}
       />
-      <Tabs tabItems={tabItems} />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={path} exact>
           <Information calculator={calculator} node={node} />

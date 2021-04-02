@@ -156,7 +156,7 @@ export const CalculatorProfile = () => {
         setDeregister={setDeregister}
         setCheck={setCheck}
       />
-      <Tabs tabItems={tabItems} />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />

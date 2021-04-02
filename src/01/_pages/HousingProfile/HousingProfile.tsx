@@ -71,7 +71,7 @@ export const HousingProfile = () => {
   return (
     <>
       <Header device={device} setDeregister={setDeregister} />
-      <Tabs tabItems={tabItems} />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />

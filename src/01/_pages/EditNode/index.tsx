@@ -80,7 +80,7 @@ export const EditNode = () => {
     <EditNodeContext.Provider value={context}>
       <Breadcrumb path={`/nodes/${nodeId}`} />
       <Header calculator={calculator} node={node} nodeId={nodeId} />
-      <Tabs tabItems={tabItems} />
+      <Tabs tabItems={tabItems} tabsType={'tabs'} />
       <EditNodeForm
         calculator={calculator}
         currentTabKey={currentTabKey}
