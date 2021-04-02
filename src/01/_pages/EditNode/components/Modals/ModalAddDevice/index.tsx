@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { StyledModal } from '../../../../../tt-components/Modal';
 import ModalAddDeviceForm from './ModalAddDeviceForm';
 import { CalculatorResponse, NodeResponse } from '../../../../../../myApi';
+import Example from './ModalAddDeviceForm';
 
 interface ModalAddDeviceInterface {
   visible: boolean;
@@ -22,7 +23,7 @@ const ModalAddDevice = ({
 
   return (
     <StyledModal
-      visible={visible}
+      visible={true}
       width={800}
       footer={null}
       onCancel={handleCancel}
