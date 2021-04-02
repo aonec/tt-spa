@@ -197,11 +197,6 @@ const ModalAddDeviceForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchemaFlowMeter}
-      // onSubmit={(values, actions) => {
-      //   console.log(values);
-      //   // handleSubmit(values);
-      // }}
-
       onSubmit={(values) => handleSubmit(values)}
       render={({ values, errors }) => (
         <Form>

@@ -5,7 +5,6 @@ import { Grid } from '../../_components/Grid';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
-import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
 import { Loader } from '../../components';
@@ -147,12 +146,6 @@ export const NodeProfile = () => {
         </Route>
         {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
       </Grid>
-      <ModalAddDevice
-        addDevice={addDevice}
-        calculator={calculator}
-        node={node}
-        setAddDevice={setAddDevice}
-      />
     </>
   );
 };
