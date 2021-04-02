@@ -88,6 +88,21 @@ const ModalAddDeviceForm = ({
     },
   ];
 
+  const tabErrors: Array<TabErrorsInterface> = [
+    {
+      key: '1',
+      value: ['housingMeteringDeviceType'],
+    },
+    {
+      key: '2',
+      value: ['diameter', 'pipeNumber', 'serial', 'model'],
+    },
+    {
+      key: '3',
+      value: [''],
+    },
+  ];
+
   const { address, id: calculatorId } = calculator || DEFAULT_CALCULATOR;
   const { city, street, housingStockNumber, corpus } = address;
   const {
@@ -113,7 +128,7 @@ const ModalAddDeviceForm = ({
     })
   );
 
-  console.log('allDevices', allDevices);
+  // console.log('allDevices', allDevices);
 
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
@@ -135,17 +150,13 @@ const ModalAddDeviceForm = ({
     entryNumber,
     pipeNumber: null,
     magistral: magistrals[0].value,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
     number,
     nodeStatus,
     coldWaterWarningHidden: true,
   };
 
   const handleSubmit = (values: any) => {
-    console.log('handleSubmit', values);
+    // console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate.toISOString(),
@@ -169,27 +180,12 @@ const ModalAddDeviceForm = ({
     };
     console.log('form', form);
     addHousingMeteringDevice(form).then((res) => {
-      console.log(res);
-      // setTimeout(() => {
-      //   setVisible(false);
-      // }, 1000);
+      // console.log(res);
+      setTimeout(() => {
+        setVisible(false);
+      }, 1000);
     });
   };
-
-  const tabErrors: Array<TabErrorsInterface> = [
-    {
-      key: '1',
-      value: ['housingMeteringDeviceType'],
-    },
-    {
-      key: '2',
-      value: ['diameter', 'pipeNumber', 'serial', 'model'],
-    },
-    {
-      key: '3',
-      value: [''],
-    },
-  ];
 
   function handleBeforeSubmit(errors: any) {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
@@ -210,21 +206,16 @@ const ModalAddDeviceForm = ({
       validationSchema={validationSchema}
       onSubmit={(values) => handleSubmit(values)}
       render={({ values, errors, setFieldValue }) => {
-        const coldWaterValidation = (
-          housingMeteringDeviceTypeString: string
-        ) => {
-          const getHousingMeteringDeviceTypeString = _.find(allDevices, {
+        const coldWaterValidation = (housingMeteringDeviceType: string) => {
+          const hasNodeFlowMeters = _.find(allDevices, {
             housingMeteringDeviceType: 'FlowMeter',
           });
-          if (
-            resource === 'ColdWaterSupply' &&
-            getHousingMeteringDeviceTypeString &&
-            housingMeteringDeviceTypeString === 'FlowMeter'
-          ) {
-            setFieldValue('coldWaterWarningHidden', false);
-          } else {
-            setFieldValue('coldWaterWarningHidden', true);
-          }
+
+          resource === 'ColdWaterSupply' &&
+          hasNodeFlowMeters &&
+          housingMeteringDeviceType === 'FlowMeter'
+            ? setFieldValue('coldWaterWarningHidden', false)
+            : setFieldValue('coldWaterWarningHidden', true);
         };
 
         return (
