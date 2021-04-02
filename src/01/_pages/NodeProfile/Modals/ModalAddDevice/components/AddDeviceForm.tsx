@@ -149,7 +149,6 @@ const AddDeviceForm = ({
         resource,
         model: values.model,
         diameter: values.diameter,
-        // pipeId: values.pipeId,
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,

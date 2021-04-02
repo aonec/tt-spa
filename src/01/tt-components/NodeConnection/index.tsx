@@ -4,7 +4,6 @@ import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { CalculatorResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import EditNodeForm from '../../_pages/EditNode/components/EditNodeForm';
 import { getCalculator } from './apiNodeConnection';
 
 interface ConnectionInterface {
@@ -109,6 +108,7 @@ const Div = styled.div`
 `;
 
 const CalcListItem = styled.div`
+  max-width: 100%;
   display: grid;
   grid-template-columns: 5fr 3fr 4fr;
   grid-template-rows: 48px;

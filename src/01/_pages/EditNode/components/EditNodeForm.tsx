@@ -247,10 +247,7 @@ const EditNodeForm = ({
         {/*) : null}*/}
       </StyledFormPage>
 
-      <StyledFormPage
-        hidden={Number(currentTabKey) !== 2}
-        style={{ maxWidth: 620 }}
-      >
+      <StyledFormPage hidden={Number(currentTabKey) !== 2}>
         <NodeConnection
           calculator={calculator}
           edit={true}
@@ -259,10 +256,7 @@ const EditNodeForm = ({
         />
       </StyledFormPage>
 
-      <StyledFormPage
-        hidden={Number(currentTabKey) !== 3}
-        style={{ maxWidth: 620 }}
-      >
+      <StyledFormPage hidden={Number(currentTabKey) !== 3}>
         <div style={styles.w100}>
           <NodeRelatedDevices
             node={node}

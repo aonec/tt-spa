@@ -1,15 +1,8 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
 import {
   CalculatorListResponse,
-  CalculatorListResponsePagedList,
   CalculatorResponse,
   NodeResponse,
 } from '../../../../../myApi';
