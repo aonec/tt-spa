@@ -16,6 +16,7 @@ import {
   Title,
   StyledFormPage,
   styles,
+  Warning,
 } from '../../../../../tt-components';
 import {
   DEFAULT_CALCULATOR,
@@ -103,6 +104,17 @@ const ModalAddDeviceForm = ({
     ? communicationPipes[0].entryNumber
     : null;
 
+  // console.log(node);
+
+  const allDevices = _.flatten(
+    communicationPipes?.map((communicationPipe) => {
+      const { devices } = communicationPipe;
+      return devices;
+    })
+  );
+
+  console.log('allDevices', allDevices);
+
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
@@ -114,7 +126,7 @@ const ModalAddDeviceForm = ({
     futureCommercialAccountingDate: futureCommercialAccountingDate
       ? moment(futureCommercialAccountingDate)
       : moment(),
-    housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
+    housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
     diameter: null,
@@ -129,20 +141,24 @@ const ModalAddDeviceForm = ({
     corpus,
     number,
     nodeStatus,
+    coldWaterWarningHidden: true,
   };
 
   const handleSubmit = (values: any) => {
     console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      lastCheckingDate: values.lastCheckingDate.toISOString(),
+      futureCheckingDate: values.futureCheckingDate.toISOString(),
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+      futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       resource: values.resource,
       model: values.model,
-      diameter: values.diameter,
+      diameter:
+        values.housingMeteringDeviceType === 'FlowMeter'
+          ? values.diameter
+          : null,
       pipe: {
         calculatorId: calculatorId,
         entryNumber: values.entryNumber,
@@ -152,18 +168,18 @@ const ModalAddDeviceForm = ({
       },
     };
     console.log('form', form);
-    // addHousingMeteringDevice(form).then((res) => {
-    //   console.log(res);
-    //   setTimeout(() => {
-    //     setVisible(false);
-    //   }, 1000);
-    // });
+    addHousingMeteringDevice(form).then((res) => {
+      console.log(res);
+      // setTimeout(() => {
+      //   setVisible(false);
+      // }, 1000);
+    });
   };
 
   const tabErrors: Array<TabErrorsInterface> = [
     {
       key: '1',
-      value: [''],
+      value: ['housingMeteringDeviceType'],
     },
     {
       key: '2',
@@ -186,246 +202,282 @@ const ModalAddDeviceForm = ({
     }
   }
 
+  useEffect(() => {}, []);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => handleSubmit(values)}
-      render={({ values, errors, setFieldValue }) => (
-        <Form>
-          <StyledModalBody>
-            <Header>Добавление нового ОДПУ</Header>
-            <Tabs
-              tabItems={tabItems}
-              tabsType={'tabs'}
-              activeKey={currentTabKey}
-            />
+      render={({ values, errors, setFieldValue }) => {
+        const coldWaterValidation = (
+          housingMeteringDeviceTypeString: string
+        ) => {
+          const getHousingMeteringDeviceTypeString = _.find(allDevices, {
+            housingMeteringDeviceType: 'FlowMeter',
+          });
+          if (
+            resource === 'ColdWaterSupply' &&
+            getHousingMeteringDeviceTypeString &&
+            housingMeteringDeviceTypeString === 'FlowMeter'
+          ) {
+            setFieldValue('coldWaterWarningHidden', false);
+          } else {
+            setFieldValue('coldWaterWarningHidden', true);
+          }
+        };
 
-            {/*First Tabs*/}
-            <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-              <Form.Item
-                name="resource"
-                label="Выберите тип ресурса"
-                style={styles.w49}
-              >
-                <SelectFormik options={resources} name="resource" disabled />
-              </Form.Item>
+        return (
+          <Form>
+            <StyledModalBody>
+              <Header>Добавление нового ОДПУ</Header>
+              <Tabs
+                tabItems={tabItems}
+                tabsType={'tabs'}
+                activeKey={currentTabKey}
+              />
 
-              <Form.Item
-                name="housingMeteringDeviceType"
-                label="Выберите тип прибора"
-                style={styles.w49}
-              >
-                <SelectFormik
-                  options={housingMeteringDeviceTypes}
-                  name="housingMeteringDeviceType"
-                  onChange={(value) => {
-                    // console.log(value);
-                    value === 'FlowMeter'
-                      ? setValidationSchema(validationSchemaFlowMeter)
-                      : setValidationSchema(validationSchemaTemperatureSensor);
-                    value !== 'FlowMeter'
-                      ? setFieldValue('diameter', null)
-                      : console.log(values.diameter);
-                  }}
+              {/*First Tabs*/}
+              <StyledFormPage hidden={Number(currentTabKey) !== 1}>
+                <Warning
+                  style={styles.w100}
+                  title={
+                    'Нельзя добавить еще один расходомер холодной воды в узле'
+                  }
+                  hidden={values.coldWaterWarningHidden}
                 />
-              </Form.Item>
-
-              <Divider style={{ margin: 0 }} />
-
-              <SubHeader>Узел</SubHeader>
-
-              <Form.Item
-                name="isConnected"
-                label="Подключение к вычислителю"
-                style={styles.w49}
-              >
-                <SelectFormik
-                  options={isConnectedOptions}
-                  name="isConnected"
-                  disabled
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="calculatorId"
-                label="Вычислитель, к которому подключен прибор"
-                style={styles.w49}
-              >
-                <InputFormik name="calculatorId" disabled />
-              </Form.Item>
-
-              <Form.Item
-                name="entryNumber"
-                label="Номер ввода"
-                style={styles.w100}
-              >
-                <InputFormik name="entryNumber" disabled />
-              </Form.Item>
-
-              <Form.Item name="number" label="Номер узла" style={styles.w49}>
-                <InputFormik name="number" disabled />
-              </Form.Item>
-
-              <Form.Item
-                name="nodeStatus"
-                label="Статус узла"
-                style={styles.w49}
-              >
-                <SelectFormik
-                  name="nodeStatus"
-                  options={nodeStatusList}
-                  disabled
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="lastCommercialAccountingDate"
-                label="Дата начала Акта действия допуска"
-                style={styles.w49}
-              >
-                <DatePickerFormik
-                  name="lastCommercialAccountingDate"
-                  format="DD.MM.YYYY"
-                  allowClear={false}
-                  disabled
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="futureCommercialAccountingDate"
-                label="Дата окончания Акта действия допуска"
-                style={styles.w49}
-              >
-                <DatePickerFormik
-                  name="futureCommercialAccountingDate"
-                  format="DD.MM.YYYY"
-                  allowClear={false}
-                  disabled
-                />
-              </Form.Item>
-            </StyledFormPage>
-
-            {/* Second Tabs */}
-            <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-              <Form.Item
-                name="housingMeteringDeviceType"
-                label="Выберите тип прибора"
-                style={styles.w100}
-              >
-                <SelectFormik
-                  name="housingMeteringDeviceType"
-                  options={housingMeteringDeviceTypes}
-                  disabled
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="model"
-                label="Выберите модель прибора"
-                style={styles.w49}
-              >
-                <InputFormik name="model" />
-              </Form.Item>
-
-              <Form.Item
-                name="serialNumber"
-                label="Серийный номер"
-                style={styles.w49}
-              >
-                <InputFormik name="serialNumber" />
-              </Form.Item>
-
-              {values.housingMeteringDeviceType === 'FlowMeter' ? (
                 <Form.Item
-                  name="diameter"
-                  label="Диаметр трубы (мм)"
+                  name="resource"
+                  label="Выберите тип ресурса"
+                  style={styles.w49}
+                >
+                  <SelectFormik options={resources} name="resource" disabled />
+                </Form.Item>
+
+                <Form.Item
+                  name="housingMeteringDeviceType"
+                  label="Выберите тип прибора"
+                  style={styles.w49}
+                >
+                  <SelectFormik
+                    options={housingMeteringDeviceTypes}
+                    name="housingMeteringDeviceType"
+                    onChange={(value) => {
+                      value === 'FlowMeter'
+                        ? setValidationSchema(validationSchemaFlowMeter)
+                        : setValidationSchema(
+                            validationSchemaTemperatureSensor
+                          );
+                      value !== 'FlowMeter'
+                        ? setFieldValue('diameter', null)
+                        : console.log(values.diameter);
+                      coldWaterValidation(value);
+                    }}
+                  />
+                </Form.Item>
+
+                <Divider style={{ margin: 0 }} />
+
+                <SubHeader>Узел</SubHeader>
+
+                <Form.Item
+                  name="isConnected"
+                  label="Подключение к вычислителю"
+                  style={styles.w49}
+                >
+                  <SelectFormik
+                    options={isConnectedOptions}
+                    name="isConnected"
+                    disabled
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="calculatorId"
+                  label="Вычислитель, к которому подключен прибор"
+                  style={styles.w49}
+                >
+                  <InputFormik name="calculatorId" disabled />
+                </Form.Item>
+
+                <Form.Item
+                  name="entryNumber"
+                  label="Номер ввода"
                   style={styles.w100}
                 >
-                  <InputNumberFormik name="diameter" min={0} step={1} />
+                  <InputFormik name="entryNumber" disabled />
                 </Form.Item>
-              ) : null}
 
-              <Form.Item
-                name="lastCheckingDate"
-                label="Дата поверки"
-                style={styles.w49}
-              >
-                <DatePickerFormik
+                <Form.Item name="number" label="Номер узла" style={styles.w49}>
+                  <InputFormik name="number" disabled />
+                </Form.Item>
+
+                <Form.Item
+                  name="nodeStatus"
+                  label="Статус узла"
+                  style={styles.w49}
+                >
+                  <SelectFormik
+                    name="nodeStatus"
+                    options={nodeStatusList}
+                    disabled
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="lastCommercialAccountingDate"
+                  label="Дата начала Акта действия допуска"
+                  style={styles.w49}
+                >
+                  <DatePickerFormik
+                    name="lastCommercialAccountingDate"
+                    format="DD.MM.YYYY"
+                    allowClear={false}
+                    disabled
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="futureCommercialAccountingDate"
+                  label="Дата окончания Акта действия допуска"
+                  style={styles.w49}
+                >
+                  <DatePickerFormik
+                    name="futureCommercialAccountingDate"
+                    format="DD.MM.YYYY"
+                    allowClear={false}
+                    disabled
+                  />
+                </Form.Item>
+              </StyledFormPage>
+
+              {/* Second Tabs */}
+              <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+                <Form.Item
+                  name="housingMeteringDeviceType"
+                  label="Выберите тип прибора"
+                  style={styles.w100}
+                >
+                  <SelectFormik
+                    name="housingMeteringDeviceType"
+                    options={housingMeteringDeviceTypes}
+                    disabled
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  name="model"
+                  label="Выберите модель прибора"
+                  style={styles.w49}
+                >
+                  <InputFormik name="model" />
+                </Form.Item>
+
+                <Form.Item
+                  name="serialNumber"
+                  label="Серийный номер"
+                  style={styles.w49}
+                >
+                  <InputFormik name="serialNumber" />
+                </Form.Item>
+
+                {values.housingMeteringDeviceType === 'FlowMeter' ? (
+                  <Form.Item
+                    name="diameter"
+                    label="Диаметр трубы (мм)"
+                    style={styles.w100}
+                  >
+                    <InputNumberFormik name="diameter" min={0} step={1} />
+                  </Form.Item>
+                ) : null}
+
+                <Form.Item
                   name="lastCheckingDate"
-                  format="DD.MM.YYYY"
-                  allowClear={false}
-                />
-              </Form.Item>
+                  label="Дата поверки"
+                  style={styles.w49}
+                >
+                  <DatePickerFormik
+                    name="lastCheckingDate"
+                    format="DD.MM.YYYY"
+                    allowClear={false}
+                  />
+                </Form.Item>
 
-              <Form.Item
-                name="futureCheckingDate"
-                label="Дата следующей поверки"
-                style={styles.w49}
-              >
-                <DatePickerFormik
+                <Form.Item
                   name="futureCheckingDate"
-                  format="DD.MM.YYYY"
-                  allowClear={false}
-                />
-              </Form.Item>
+                  label="Дата следующей поверки"
+                  style={styles.w49}
+                >
+                  <DatePickerFormik
+                    name="futureCheckingDate"
+                    format="DD.MM.YYYY"
+                    allowClear={false}
+                  />
+                </Form.Item>
 
-              <Form.Item
-                name="pipeNumber"
-                label="Номер трубы"
-                style={styles.w49}
+                <Form.Item
+                  name="pipeNumber"
+                  label="Номер трубы"
+                  style={styles.w49}
+                >
+                  <InputNumberFormik name="pipeNumber" />
+                </Form.Item>
+
+                <Form.Item
+                  name="magistral"
+                  label="Магистраль"
+                  style={styles.w49}
+                >
+                  <SelectFormik name="magistral" options={magistrals} />
+                </Form.Item>
+              </StyledFormPage>
+
+              {/* Third Tabs */}
+              <StyledFormPage hidden={Number(currentTabKey) !== 3}>
+                <Title color="black">Компонент в разработке</Title>
+              </StyledFormPage>
+            </StyledModalBody>
+            <StyledFooter>
+              <ButtonTT
+                color="blue"
+                onClick={() => {
+                  console.log(currentTabKey);
+                  setTab((prevState) => String(Number(prevState) + 1));
+                  console.log(values);
+                }}
+                big
+                hidden={currentTabKey === '3'}
+                style={{ marginLeft: 16 }}
+                type="button"
               >
-                <InputNumberFormik name="pipeNumber" />
-              </Form.Item>
+                Далее
+              </ButtonTT>
 
-              <Form.Item name="magistral" label="Магистраль" style={styles.w49}>
-                <SelectFormik name="magistral" options={magistrals} />
-              </Form.Item>
-            </StyledFormPage>
-
-            {/* Third Tabs */}
-            <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-              <Title color="black">Компонент в разработке</Title>
-            </StyledFormPage>
-          </StyledModalBody>
-          <StyledFooter>
-            <ButtonTT
-              color="blue"
-              onClick={() => {
-                console.log(currentTabKey);
-                setTab((prevState) => String(Number(prevState) + 1));
-              }}
-              big
-              hidden={currentTabKey === '3'}
-              style={{ marginLeft: 16 }}
-              type="button"
-            >
-              Далее
-            </ButtonTT>
-
-            <ButtonTT
-              color="blue"
-              type="submit"
-              onClick={() => {
-                handleBeforeSubmit(errors);
-              }}
-              hidden={currentTabKey !== '3'}
-              style={{ marginLeft: 16 }}
-              big
-            >
-              Добавить
-            </ButtonTT>
-            <ButtonTT
-              type="button"
-              color="white"
-              onClick={handleCancel}
-              style={{ marginLeft: 16 }}
-            >
-              Отмена
-            </ButtonTT>
-          </StyledFooter>
-        </Form>
-      )}
+              <ButtonTT
+                color="blue"
+                type="submit"
+                onClick={() => {
+                  handleBeforeSubmit(errors);
+                }}
+                hidden={currentTabKey !== '3'}
+                style={{ marginLeft: 16 }}
+                big
+                disabled={!values.coldWaterWarningHidden}
+              >
+                Добавить
+              </ButtonTT>
+              <ButtonTT
+                type="button"
+                color="white"
+                onClick={handleCancel}
+                style={{ marginLeft: 16 }}
+              >
+                Отмена
+              </ButtonTT>
+            </StyledFooter>
+          </Form>
+        );
+      }}
     />
   );
 };
