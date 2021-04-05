@@ -72,6 +72,8 @@ export const Devices = ({ calculators }) => {
       'Статус не определен';
     const getNodeIconStatus =
       _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
+
+    console.log('getNodeIconStatus', getNodeIconStatus);
     // const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
     // const getNodeIconStatus = _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
     const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
