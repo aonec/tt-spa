@@ -108,8 +108,9 @@ const Div = styled.div`
 `;
 
 const CalcListItem = styled.div`
-  max-width: 100%;
+  width: 100%;
   display: grid;
+  height: fit-content;
   grid-template-columns: 5fr 3fr 4fr;
   grid-template-rows: 48px;
   align-items: center;

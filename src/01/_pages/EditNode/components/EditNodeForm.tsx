@@ -159,10 +159,7 @@ const EditNodeForm = ({
       // onValuesChange={onFormLayoutChange}
       scrollToFirstError
     >
-      <StyledFormPage
-        hidden={Number(currentTabKey) !== 1}
-        style={{ maxWidth: 960 }}
-      >
+      <StyledFormPage hidden={Number(currentTabKey) !== 1}>
         <Form.Item
           style={styles.w100}
           label="Тип ресурса"
