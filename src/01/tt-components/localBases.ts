@@ -203,7 +203,18 @@ export const DEFAULT_BUILDING = {
   id: null,
 };
 
+export const DEFAULT_NODE = {
+  futureCommercialAccountingDate: '',
+  lastCommercialAccountingDate: '',
+  nodeStatus: '',
+  number: null,
+  resource: '',
+  serviceZone: '',
+  communicationPipes: [],
+};
+
 export const DEFAULT_CALCULATOR = {
+  id: null,
   model: '',
   serialNumber: '',
   resource: '',
@@ -219,6 +230,13 @@ export const DEFAULT_CALCULATOR = {
     deviceAddress: null,
   },
   nodes: [],
+  address: {
+    city: '',
+    street: '',
+    corpus: '',
+    number: '',
+    housingStockNumber: null,
+  },
 };
 
 export const periodList = [

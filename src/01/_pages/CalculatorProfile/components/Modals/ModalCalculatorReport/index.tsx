@@ -1,11 +1,23 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import ModalCalculatorReportForm from './ModalCalculatorReportForm';
-import { DeviceContext } from '../../../CalculatorProfile';
 import ModalSonoSafeReportForm from './ModalSonoSafeReportForm';
 import { StyledModal } from '../../../../../tt-components';
+import { CalculatorResponse } from '../../../../../../myApi';
 
-export const ModalCalculatorReport = () => {
-  const { report, setReport, device } = useContext(DeviceContext);
+interface ModalCalculatorReportInterface {
+  report: boolean;
+  setReport: Dispatch<SetStateAction<boolean>>;
+  device: CalculatorResponse;
+}
+
+export const ModalCalculatorReport = ({
+  report,
+  setReport,
+  device,
+}: ModalCalculatorReportInterface) => {
+  if (!report || !setReport || !device) {
+    return null;
+  }
 
   const handleCancel = () => {
     setReport(false);
@@ -15,7 +27,6 @@ export const ModalCalculatorReport = () => {
     return (
       <StyledModal
         visible={report}
-        // visible
         width={800}
         footer={null}
         onCancel={handleCancel}
@@ -31,7 +42,6 @@ export const ModalCalculatorReport = () => {
   return (
     <StyledModal
       visible={report}
-      // visible
       width={800}
       footer={null}
       onCancel={handleCancel}

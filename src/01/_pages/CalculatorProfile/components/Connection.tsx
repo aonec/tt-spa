@@ -6,7 +6,7 @@ import Icon from '../../../tt-components/Icon';
 import { CalculatorResponse } from '../../../../myApi';
 
 interface ConnectionInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
 }
 
 export const Connection = ({ device }: ConnectionInterface) => {

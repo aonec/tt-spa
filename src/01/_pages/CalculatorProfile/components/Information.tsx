@@ -6,7 +6,7 @@ import moment from 'moment';
 import { CalculatorResponse } from '../../../../myApi';
 
 interface InformationInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
 }
 
 export const Information = ({ device }: InformationInterface) => {

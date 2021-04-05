@@ -46,13 +46,13 @@ export const Header = ({
         push(`/nodes/${nodeId}/edit`);
       },
     },
-    {
-      title: 'Добавить новый прибор',
-      show: show('CalculatorUpdate'),
-      cb: () => {
-        setAddDevice(true);
-      },
-    },
+    // {
+    //   title: 'Добавить новый прибор',
+    //   show: show('CalculatorUpdate'),
+    //   cb: () => {
+    //     setAddDevice(true);
+    //   },
+    // },
     {
       title: 'Поставить/Снять узел на коммерческий учёт',
       show: show('CalculatorUpdate'),

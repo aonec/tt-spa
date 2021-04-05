@@ -5,7 +5,6 @@ import { Grid } from '../../_components/Grid';
 import { getCalculator, getNode } from './apiNodeProfile';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
-import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorResponse, NodeResponse } from '../../../myApi';
 import { Loader } from '../../components';
@@ -111,7 +110,7 @@ export const NodeProfile = () => {
         setAddDevice={setAddDevice}
         nodeId={nodeId}
       />
-      <Tabs tabItems={tabItems} />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={path} exact>
           <Information calculator={calculator} node={node} />
@@ -140,19 +139,13 @@ export const NodeProfile = () => {
           <NodeConnection calculator={calculator} edit={false} />
         </Route>
         <Route path={`${path}/related`} exact>
-          <NodeRelatedDevices node={node} edit={false} />
+          <NodeRelatedDevices node={node} />
         </Route>
         <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
         {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
       </Grid>
-      <ModalAddDevice
-        addDevice={addDevice}
-        calculator={calculator}
-        node={node}
-        setAddDevice={setAddDevice}
-      />
     </>
   );
 };
