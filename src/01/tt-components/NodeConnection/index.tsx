@@ -37,7 +37,7 @@ const NodeConnection = ({
   const icon = closingDate ? 'red' : 'green';
   const status = closingDate ? 'Не активен' : 'Активен';
   return (
-    <CalcListItem>
+    <ListItem>
       <NavLink to={`/calculators/${id}`}>
         <NameWrap>
           <IconTT icon="device" />
@@ -47,6 +47,7 @@ const NodeConnection = ({
           </NameAndSerialNumber>
         </NameWrap>
       </NavLink>
+
       <State>
         <IconTT icon={icon} />
         {status}
@@ -54,6 +55,9 @@ const NodeConnection = ({
 
       <Div>
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
+      </Div>
+
+      <div>
         {edit ? (
           <>
             <Link
@@ -80,14 +84,12 @@ const NodeConnection = ({
             />
           </>
         ) : null}
-      </Div>
-    </CalcListItem>
+      </div>
+    </ListItem>
   );
 };
 
 export default NodeConnection;
-
-const Template = styled.div``;
 
 const NameWrap = styled.div`
   display: grid;
@@ -105,13 +107,15 @@ const NameWrap = styled.div`
 const Div = styled.div`
   display: inline-flex;
   align-items: center;
+  justify-self: flex-end;
 `;
 
-const CalcListItem = styled.div`
+const ListItem = styled.div`
   width: 100%;
   display: grid;
   height: fit-content;
-  grid-template-columns: 5fr 3fr 4fr;
+  grid-template-columns: 5fr 2fr 3fr 2fr;
+  grid-gap: 8px;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
