@@ -141,11 +141,13 @@ export const CalculatorProfile = () => {
             setVisible={setDeregister}
             device={device}
           />
+
           <ModalCalculatorReport
             report={report}
             setReport={setReport}
             device={device}
           />
+
           <CheckDevice device={device} check={check} setCheck={setCheck} />
         </>
       )}
