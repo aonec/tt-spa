@@ -115,6 +115,7 @@ const ListItem = styled.div`
   display: grid;
   height: fit-content;
   grid-template-columns: 5fr 2fr 3fr 2fr;
+  grid-gap: 8px;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);

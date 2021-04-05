@@ -146,7 +146,11 @@ const ConnectionProps = styled.div`
   grid-template-columns: auto 1fr;
   justify-self: flex-end;
 `;
-const EditOptions = styled.div``;
+const EditOptions = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-self: center;
+`;
 
 const ListWrap = styled.div`
   display: grid;
@@ -156,6 +160,7 @@ const ListWrap = styled.div`
 const ListItem = styled.div`
   display: grid;
   grid-template-columns: 5fr 2fr 3fr 2fr;
+  grid-gap: 8px;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);

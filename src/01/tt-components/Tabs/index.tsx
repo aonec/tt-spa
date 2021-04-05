@@ -45,8 +45,4 @@ export default ({ tabItems, tabsType, activeKey }: TabsInterface) => {
 const StyledTabs = styled.div`
   margin: 0;
   padding: 0;
-
-  .ant-tabs-nav {
-    margin: 0;
-  }
 `;
