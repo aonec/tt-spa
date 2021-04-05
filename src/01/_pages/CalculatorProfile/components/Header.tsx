@@ -64,7 +64,7 @@ export const Header = ({
             setCheck(true);
           },
           show: show('CalculatorUpdate'),
-          color: 'red',
+          color: 'default',
         },
         {
           title: 'Закрыть вычислитель',

@@ -1,8 +1,8 @@
 import axios from '../../../../../axios';
 
-export async function getArchive(link = '') {
+export async function getReport(link = '') {
   try {
-    const res = await axios.get(link, {
+    const res: any = await axios.get(link, {
       responseType: 'blob',
     });
     return res;
