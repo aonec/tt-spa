@@ -39,15 +39,7 @@ export const NodeRelatedDevices = ({
   const flattenRelated = _.flatten(related.filter((item) => item !== null));
 
   const result = flattenRelated.map((value: any) => {
-    const {
-      model,
-      serialNumber,
-      closingDate,
-      hub,
-      resource,
-      id,
-      housingStockId,
-    } = value;
+    const { model, serialNumber, closingDate, hub, resource, id } = value;
 
     const { pipeNumber = '', entryNumber = '' } = hub || {
       pipeNumber: '',
@@ -72,9 +64,13 @@ export const NodeRelatedDevices = ({
           <IconTT icon={icon} />
           {state}
         </State>
-        <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
-        <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
-        <div>
+
+        <ConnectionProps>
+          <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
+          <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
+        </ConnectionProps>
+
+        <EditOptions>
           {edit ? (
             <Link
               to={`/housingMeteringDevices/${id}/edit_odpu`}
@@ -101,17 +97,12 @@ export const NodeRelatedDevices = ({
               }}
             />
           ) : null}
-        </div>
+        </EditOptions>
       </ListItem>
     );
   });
 
-  return (
-    <ListWrap>
-      <Title>Приборы</Title>
-      {result}
-    </ListWrap>
-  );
+  return <ListWrap>{result}</ListWrap>;
 };
 
 export default NodeRelatedDevices;
@@ -149,25 +140,22 @@ const State = styled.div`
   color: rgba(39, 47, 90, 0.8);
 `;
 
-const Title = styled.h2`
-  padding: 0;
-  margin: 0;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 32px;
-  color: var(--color-primary);
+const ConnectionProps = styled.div`
+  display: grid;
+  grid-column-gap: 16px;
+  grid-template-columns: auto 1fr;
+  justify-self: flex-end;
 `;
+const EditOptions = styled.div``;
 
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 5.5fr 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 5fr 2fr 3fr 2fr;
   grid-template-rows: 48px;
   align-items: center;
   border-bottom: 1px solid var(--frame);
