@@ -1,5 +1,9 @@
 import axios from '../../axios';
-import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import {
+  CalculatorResponse,
+  NodeResponse,
+  TasksPagedList,
+} from '../../../myApi';
 
 export async function getNode(id: number) {
   try {
@@ -23,6 +27,22 @@ export async function getCalculator(id: number) {
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса вычислителя',
+    };
+  }
+}
+
+export async function getNodeTasks(id: number) {
+  try {
+    const res = await axios.get<any, TasksPagedList>(
+      `Tasks?GroupType=2&NodeId=${id}`
+    );
+    const { items } = res;
+    return items;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'tasks',
+      message: 'Произошла ошибка при загрузке данных по задачам',
     };
   }
 }
