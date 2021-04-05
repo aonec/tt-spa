@@ -46,17 +46,12 @@ const ModalCalculatorReportForm = ({
         communicationPipes ||
           [].map((communicationPipe) => {
             const { devices } = communicationPipe;
-
             return (
               devices ||
               [].reduce((result: any, item: any) => {
-                const { housingMeteringDeviceType, serialNumber, model } = item;
-
+                const { housingMeteringDeviceType } = item;
                 if (housingMeteringDeviceType === 'FlowMeter') {
-                  result.push({
-                    serialNumber,
-                    model,
-                  });
+                  result.push(item);
                 }
                 return result;
               }, [])
@@ -71,6 +66,8 @@ const ModalCalculatorReportForm = ({
         devices,
       };
     });
+
+  console.log('nodesList', nodesList);
 
   const filteredGroup = _.groupBy(nodesList, 'resource');
 
@@ -120,7 +117,7 @@ const ModalCalculatorReportForm = ({
     },
   });
 
-  const prevOptions = Object.values(filteredGroup[values.resource || '']);
+  const prevOptions = Object.values(filteredGroup[values.resource]);
   const options = prevOptions.map((option: any, index) => {
     const { id, number, devices } = option;
 
@@ -165,15 +162,13 @@ const ModalCalculatorReportForm = ({
     }
   };
 
-  const onDetailChange = (event: any) => {
-    const res = event.target.value;
-    setFieldValue('detail', res);
-  };
+  // Список Вкладок/Ресурсов
+  const TabsList = resources.map((value, index) => {
+    const res = translate(value);
+    return <TabPane tab={res} key={value} />;
+  });
 
-  const datePickerHandler = (event: any) => {
-    setFieldValue('begin', event[0]);
-    setFieldValue('end', event[1]);
-  };
+  const defaultRes = translate(TabsList[0]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -184,24 +179,17 @@ const ModalCalculatorReportForm = ({
     return null;
   };
 
-  // Список Вкладок/Ресурсов
-  const TabsList = resources.map((value, index) => {
-    const res = translate(value);
-    return <TabPane tab={res} key={value} />;
-  });
-
-  const defaultRes = translate(TabsList[0]);
-
-  const onTabsChangeHandler = (value: string) => {
-    setFieldValue('resource', value);
-    setFieldValue('nodeId', null);
-  };
-
   return (
     <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header>Выгрузка отчета об общедомовом потреблении</Header>
-        <Tabs defaultActiveKey={defaultRes} onChange={onTabsChangeHandler}>
+        <Tabs
+          defaultActiveKey={defaultRes}
+          onChange={(event) => {
+            setFieldValue('resource', event);
+            setFieldValue('nodeId', null);
+          }}
+        >
           {TabsList}
         </Tabs>
         <Form.Item label="Название отчета">
@@ -242,7 +230,9 @@ const ModalCalculatorReportForm = ({
             <Radio.Group
               defaultValue="daily"
               size="large"
-              onChange={(event) => onDetailChange(event)}
+              onChange={(event) => {
+                setFieldValue('detail', event.target.value);
+              }}
             >
               <StyledRadio value="daily" checked>
                 Суточная
@@ -257,8 +247,9 @@ const ModalCalculatorReportForm = ({
             allowClear={false}
             value={[values.begin, values.end]}
             placeholder={['Дата Начала', 'Дата окончания']}
-            onChange={(event) => {
-              datePickerHandler(event);
+            onChange={(event: any) => {
+              setFieldValue('begin', event[0]);
+              setFieldValue('end', event[1]);
             }}
             disabled={values.customPeriodDisabled}
           />

@@ -24,8 +24,6 @@ const { TabPane } = Tabs;
 const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
   const { id, model, serialNumber, address, hubs, nodes } = device;
   const nodeId = nodes[0].id;
-  console.log('nodeId', nodeId);
-
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -59,7 +57,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
   const filteredGroup = _.groupBy(devicesList, 'resource');
 
   // Получаем весь список ресурсов для табов
-  const resources = model !== 'Sonosafe' ? _.keys(filteredGroup) : ['Heat'];
+  const resources = ['Heat'];
 
   // Создать объект с ключами из списка ресурсов, а значений - модифицириваннные массивы из getSelectionsFormatterByType
   const getDevicesSelectionByType = (group: any) =>
@@ -144,12 +142,12 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
     initialValues: {
       period: 'month',
       detail: 'monthly',
-      begin: moment(),
-      end: moment(),
+      begin: moment().startOf('month').subtract(1, 'months'),
+      end: moment().endOf('month').subtract(1, 'months'),
       nodeId,
       resource: resources[0],
       checked: true,
-      customdisabled: true,
+      customDisabled: true,
       currentValue: undefined,
     },
     validationSchema: Yup.object({
@@ -162,6 +160,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
 
       const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
+      console.log('shortLink', shortLink);
       getReport(shortLink).then((response: any) => {
         const url = window.URL.createObjectURL(new Blob([response]));
         const link = document.createElement('a');
@@ -191,10 +190,10 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       setFieldValue('begin', moment().subtract(1, 'months').startOf('month'));
     }
     if (res === 'month') {
-      setFieldValue('begin', '');
+      setFieldValue('begin', moment().startOf('month').subtract(1, 'months'));
     }
     setFieldValue('period', res);
-    setFieldValue('customdisabled', res === 'month');
+    setFieldValue('customDisabled', res === 'month');
 
     // setFieldValue('end', moment());
   };
@@ -310,13 +309,13 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
               onChange={(date: any) => {
                 setFieldValue('begin', date.startOf('month'));
               }}
-              disabled={values.customdisabled}
+              disabled={values.customDisabled}
             />
           </Form.Item>
 
           <Form.Item label="Окончание" style={{ width: 144, marginLeft: 32 }}>
             <DatePickerTT
-              format="MMMM YYYY"
+              format="DD.MM.YYYY"
               allowClear={false}
               picker="month"
               name="end"
@@ -325,7 +324,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
               onChange={(date) => {
                 setFieldValue('end', date?.endOf('month'));
               }}
-              disabled={values.checked || values.customdisabled}
+              disabled={values.checked || values.customDisabled}
             />
           </Form.Item>
         </div>
@@ -340,7 +339,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
               setFieldValue('end', '');
             }
           }}
-          disabled={values.customdisabled}
+          disabled={values.customDisabled}
         >
           Отчет за 1 месяц
         </Checkbox>
