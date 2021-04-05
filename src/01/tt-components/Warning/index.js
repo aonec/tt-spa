@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { cyan } from '@material-ui/core/colors';
 
 export const StyledWarning = styled.div`
   background: rgba(255, 140, 104, 0.16);
@@ -20,10 +21,10 @@ export const StyledWarning = styled.div`
   }
 `;
 
-export const Warning = ({ hidden, title }) => {
+export const Warning = ({ hidden, title, style }) => {
   // console.log('Warning');
   return (
-    <StyledWarning hidden={hidden} title={title}>
+    <StyledWarning hidden={hidden} title={title} style={style}>
       <p>{title}</p>
     </StyledWarning>
   );

@@ -3,10 +3,6 @@ import * as Yup from 'yup';
 const yupDate = Yup.date()
   .typeError('Поле обязательное')
   .required('Поле обязательное');
-const yupSerialNumber = Yup.string().required('Введите серийный номер');
-const yupInfoId = Yup.number()
-  .typeError('Выберите модель')
-  .required('Выберите модель');
 
 export const editNodeValidationSchema = Yup.object({
   resource: Yup.string().required('Укажите тип ресура'),

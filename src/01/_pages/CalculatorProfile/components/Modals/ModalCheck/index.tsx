@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import ModalCheckForm from './ModalCheckForm';
-import { DeviceContext } from '../../../CalculatorProfile';
 import { StyledModal } from '../../../../../tt-components/Modal';
+import { CalculatorResponse } from '../../../../../../myApi';
 
-const CheckDevice = () => {
-  // const { check, setCheck, device } = useContext(DeviceContext);
-  const { check, setCheck, device } = useContext(DeviceContext);
+interface ModalCheckFormInterface {
+  check: boolean;
+  setCheck: Dispatch<SetStateAction<boolean>>;
+  device: CalculatorResponse;
+}
+
+const CheckDevice = ({ check, setCheck, device }: ModalCheckFormInterface) => {
   const handleCancel = () => {
     if (setCheck === undefined) return;
     setCheck(false);

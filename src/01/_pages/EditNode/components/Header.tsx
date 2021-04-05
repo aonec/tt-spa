@@ -1,12 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { IconTT, MenuButtonTT } from '../../../tt-components';
+import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
-import { MenuButtonInterface } from '../../../tt-components/interfaces';
+import { EditNodeContext } from '../Context';
 
 interface HeaderInterface {
   node: NodeResponse;

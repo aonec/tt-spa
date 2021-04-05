@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -16,45 +16,63 @@ import {
   StyledModalBody,
 } from '../../../../../tt-components';
 import { getArchive } from './apiCalculatorReport';
+import { CalculatorResponse, TaskListResponse } from '../../../../../../myApi';
+import { Loader } from '../../../../../components';
+import { DEFAULT_CALCULATOR } from '../../../../../tt-components/localBases';
 
-const ModalCalculatorReportForm = (props) => {
+export interface ModalCalculatorReportFormInterface {
+  device: CalculatorResponse | null;
+  handleCancel: any;
+}
+
+const ModalCalculatorReportForm = (
+  props: ModalCalculatorReportFormInterface
+) => {
   const { device, handleCancel } = props;
+
   const { TabPane } = Tabs;
 
-  const { id, model, serialNumber, address, nodes } = device;
+  const { id, model, serialNumber, address, nodes } =
+    device || DEFAULT_CALCULATOR;
 
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
-  const nodesList = nodes.map((node, index) => {
-    const { id, number, resource, communicationPipes } = node;
+  const nodesList =
+    nodes ||
+    [].map((node, index) => {
+      const { id, number, resource, communicationPipes } = node;
 
-    const devices = _.flatten(
-      communicationPipes.map((communicationPipe) => {
-        const { devices } = communicationPipe;
+      const devices = _.flatten(
+        communicationPipes ||
+          [].map((communicationPipe) => {
+            const { devices } = communicationPipe;
 
-        return devices.reduce((result, item) => {
-          const { housingMeteringDeviceType, serialNumber, model } = item;
+            return (
+              devices ||
+              [].reduce((result: any, item: any) => {
+                const { housingMeteringDeviceType, serialNumber, model } = item;
 
-          if (housingMeteringDeviceType === 'FlowMeter') {
-            result.push({
-              serialNumber,
-              model,
-            });
-          }
-          return result;
-        }, []);
-      })
-    );
+                if (housingMeteringDeviceType === 'FlowMeter') {
+                  result.push({
+                    serialNumber,
+                    model,
+                  });
+                }
+                return result;
+              }, [])
+            );
+          })
+      );
 
-    return {
-      id,
-      number,
-      resource,
-      devices,
-    };
-  });
+      return {
+        id,
+        number,
+        resource,
+        devices,
+      };
+    });
 
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(nodesList, 'resource');
@@ -93,7 +111,7 @@ const ModalCalculatorReportForm = (props) => {
       const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       // xlsx
-      getArchive(shortLink).then((response) => {
+      getArchive(shortLink).then((response: any) => {
         const url = window.URL.createObjectURL(new Blob([response]));
         const link = document.createElement('a');
         link.href = url;
@@ -109,26 +127,28 @@ const ModalCalculatorReportForm = (props) => {
   });
 
   const prevOptions = Object.values(filteredGroup[values.resource]);
-  const options = prevOptions.map((option, index) => {
-    const { id, number, devices } = option;
+  const options =
+    prevOptions ||
+    [].map((option, index) => {
+      const { id, number, devices } = option;
 
-    // console.log('devices', devices);
-    let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
-    _.forEach(devices, (value) => {
-      label = `${label}, ${value.model} (${value.serialNumber})`;
+      // console.log('devices', devices);
+      let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
+      _.forEach(devices, (value: any) => {
+        label = `${label}, ${value.model} (${value.serialNumber})`;
+      });
+      return { value: id, label };
     });
-    return { value: id, label };
-  });
 
-  const Translate = {
+  const Translate: any = {
     Heat: 'Отопление',
     ColdWaterSupply: 'Холодная вода',
     HotWaterSupply: 'Горячая вода',
   };
 
-  const translate = (resource) => Translate[resource];
+  const translate = (resource: string) => Translate[resource];
 
-  const onPeriodChange = (event) => {
+  const onPeriodChange = (event: any) => {
     const res = event.target.value;
     switch (res) {
       case 'lastSevenDays':
@@ -154,18 +174,22 @@ const ModalCalculatorReportForm = (props) => {
     }
   };
 
-  const onDetailChange = (event) => {
+  const onDetailChange = (event: any) => {
     const res = event.target.value;
     setFieldValue('detail', res);
   };
 
-  const datePickerHandler = (event) => {
+  const datePickerHandler = (event: any) => {
     console.log(event);
     setFieldValue('begin', event[0]);
     setFieldValue('end', event[1]);
   };
 
-  const Alert = ({ name }) => {
+  interface AlertInterface {
+    name: string;
+  }
+
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -175,14 +199,16 @@ const ModalCalculatorReportForm = (props) => {
   };
 
   // Список Вкладок/Ресурсов
-  const TabsList = resources.map((value, index) => {
-    const res = translate(value);
-    return <TabPane tab={res} key={value} />;
-  });
+  const TabsList =
+    resources ||
+    [].map((value, index) => {
+      const res = translate(value);
+      return <TabPane tab={res} key={value} />;
+    });
 
   const defaultRes = translate(TabsList[0]);
 
-  const onTabsChangeHandler = (value) => {
+  const onTabsChangeHandler = (value: string) => {
     setFieldValue('resource', value);
     setFieldValue('nodeId', null);
   };
@@ -245,7 +271,6 @@ const ModalCalculatorReportForm = (props) => {
           <RangePickerTT
             format="DD.MM.YYYY"
             allowClear={false}
-            size="48px"
             value={[values.begin, values.end]}
             placeholder={['Дата Начала', 'Дата окончания']}
             onChange={(event) => {

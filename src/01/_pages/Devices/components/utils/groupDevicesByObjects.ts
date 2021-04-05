@@ -44,7 +44,6 @@ interface ManagementFirmInterface {
 export interface CommunicationPipeInterface {
   devices: DeviceInterface[];
   entryNumber: number;
-  hubNumber: number | null;
   id: number;
   magistral: string;
   number: number;
@@ -68,7 +67,6 @@ export interface DeviceInterface {
 
 interface HubInterface {
   entryNumber: number;
-  hubNumber: number | null;
   pipeNumber: number;
   magistral: string;
 }

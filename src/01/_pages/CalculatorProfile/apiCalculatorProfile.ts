@@ -1,12 +1,9 @@
 import axios from '../../axios';
-import {
-  TasksPagedList,
-  TasksPagedListSuccessApiResponse,
-} from '../../../myApi';
+import { CalculatorResponse, TasksPagedList } from '../../../myApi';
 
 export async function getCalculator(id: number) {
   try {
-    const res = await axios.get(`Calculators/${id}`);
+    const res = await axios.get<CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -29,19 +26,6 @@ export async function getCalculatorTasks(id: number) {
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
-    };
-  }
-}
-
-export async function getUser() {
-  try {
-    const res = await axios.get(`ManagingFirmUsers/current`);
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'roles',
-      message: 'Произошла ошибка при загрузке данных пользователя',
     };
   }
 }

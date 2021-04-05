@@ -30,7 +30,7 @@ const FormEditODPU = (props) => {
   const {
     address: { city, street, housingStockNumber, corpus },
     hubConnection: {
-      hub: { entryNumber, hubNumber, pipeNumber, magistral },
+      hub: { entryNumber, pipeNumber, magistral },
       calculatorId,
       calculatorSerialNumber,
       calculatorModel,
@@ -85,7 +85,6 @@ const FormEditODPU = (props) => {
           : moment(futureCommercialAccountingDate),
       calculatorId: calculatorId || 'Вычислитель не выбран',
       entryNumber,
-      hubNumber,
       diameter: parseInt(diameter),
       pipeNumber: pipeNumber == null ? 0 : pipeNumber,
       port: port || 0,
@@ -147,7 +146,6 @@ const FormEditODPU = (props) => {
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral || 'Направление не выбрано',
         },
@@ -176,7 +174,7 @@ const FormEditODPU = (props) => {
     },
     {
       key: '2',
-      value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
+      value: ['entryNumber', 'pipeNumber', 'calculatorId'],
     },
   ];
 
@@ -410,20 +408,6 @@ const FormEditODPU = (props) => {
               disabled
             />
             <Alert name="entryNumber" />
-          </Form.Item>
-
-          <Form.Item label="Номер узла">
-            <InputTT
-              name="hubNumber"
-              type="number"
-              placeholder="Номер узла"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.hubNumber}
-              disabled
-              // disabled={disable}
-            />
-            <Alert name="hubNumber" />
           </Form.Item>
 
           <Form.Item label="Номер трубы">
