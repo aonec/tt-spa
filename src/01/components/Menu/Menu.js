@@ -29,7 +29,9 @@ export const Menu = () => {
 
 const ExitLink = styledC(NavLink)`
     position: absolute;
-    bottom: 16px;
+    display: flex;
+    align-items: center;
+    bottom: 24px;
     left: 16px;
 `;
 
