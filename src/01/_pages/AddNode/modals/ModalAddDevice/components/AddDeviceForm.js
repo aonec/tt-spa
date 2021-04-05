@@ -57,7 +57,6 @@ const AddDeviceForm = (props) => {
         'diameter',
         'entryNumber',
         'pipeNumber',
-        'hubNumber',
         'calculatorId',
         'isAllowed',
       ],
@@ -82,7 +81,6 @@ const AddDeviceForm = (props) => {
     diameter: null,
     calculatorId,
     entryNumber,
-    hubNumber: null,
     pipeNumber: null,
     magistral: magistrals[0].value,
   };
@@ -407,23 +405,3 @@ const AddDeviceForm = (props) => {
 };
 
 export default AddDeviceForm;
-
-// const form = {
-//   serialNumber: values.serialNumber,
-//   lastCheckingDate: values.lastCheckingDate,
-//   futureCheckingDate: values.futureCheckingDate,
-//   lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-//   futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-//   documentsIds: [],
-//   housingMeteringDeviceType: values.housingMeteringDeviceType,
-//   resource: values.resource,
-//   model: values.model,
-//   diameter: values.diameter,
-//   pipe: {
-//     calculatorId: values.calculatorId,
-//     entryNumber: values.entryNumber,
-//     hubNumber: values.hubNumber || null,
-//     pipeNumber: values.pipeNumber,
-//     magistral: values.magistral,
-//   },
-// };

@@ -65,7 +65,7 @@ export function useAsync<T = any>(
       }
       safeSetState({ status: 'pending' });
       return promise.then(
-        (data: any) => {
+        (data: T) => {
           safeSetState({ data, status: 'resolved' });
           return data;
         },

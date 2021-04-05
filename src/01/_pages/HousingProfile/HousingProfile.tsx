@@ -1,25 +1,25 @@
-import { Route, useParams } from 'react-router-dom';
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { Route, useHistory, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
-import { TabsHousingMeteringDevice } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
-import { Connection } from './components/Connection';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
-import DeregisterDevice from './components/Modals/ModalDeregister';
-import { Loader } from '../../../components';
 import {
   HousingMeteringDeviceResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
+import { TabsItemInterface } from '../../tt-components/interfaces';
+import Tabs from '../../tt-components/Tabs';
+import ModalDeregister from '../../tt-components/ModalDeregister';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
-  const path = `/housingMeteringDevices/${deviceId}/`;
+  const { push } = useHistory();
+  const path = `/housingMeteringDevices/${deviceId}`;
 
   const {
     data: device,
@@ -44,28 +44,50 @@ export const HousingProfile = () => {
     return null;
   }
 
-  console.log(deregister);
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Подключенные приборы',
+      key: 'related',
+      cb: () => {
+        push(`${path}/related`);
+      },
+    },
+    {
+      title: 'Документы',
+      key: 'documents',
+      cb: () => {
+        push(`${path}/documents`);
+      },
+    },
+  ];
 
   return (
     <>
       <Header device={device} setDeregister={setDeregister} />
-      <TabsHousingMeteringDevice />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={`${path}`} exact>
           <Information device={device} />
         </Route>
-        <Route path={`${path}related`} exact>
+        <Route path={`${path}/related`} exact>
           <RelatedDevices device={device} />
         </Route>
-        <Route path={`${path}documents`} exact>
+        <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>
-      <DeregisterDevice
-        deregister={deregister}
+      <ModalDeregister
+        visible={deregister}
+        setVisible={setDeregister}
         device={device}
-        setDeregister={setDeregister}
       />
     </>
   );

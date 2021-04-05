@@ -11,8 +11,8 @@ import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
 import { getCalculators, getObject, getServiceZones } from './apiObjectProfile';
-import { Loader } from '../../../components';
 import MapObject from './components/MapObject';
+import { Loader } from '../../tt-components';
 
 export const ObjectContext = React.createContext();
 

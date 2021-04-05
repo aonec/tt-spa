@@ -4,6 +4,7 @@ export interface ItemInterface {
   model: string;
   label: string;
 }
+
 export const items: Array<ItemInterface> = [
   {
     id: 1,
@@ -195,12 +196,25 @@ export const UserRoles = [
 ];
 
 export const DEFAULT_BUILDING = {
-  city: null,
-  street: null,
+  city: '',
+  street: '',
   housingStockNumber: null,
+  corpus: '',
+  id: null,
+};
+
+export const DEFAULT_NODE = {
+  futureCommercialAccountingDate: '',
+  lastCommercialAccountingDate: '',
+  nodeStatus: '',
+  number: null,
+  resource: '',
+  serviceZone: '',
+  communicationPipes: [],
 };
 
 export const DEFAULT_CALCULATOR = {
+  id: null,
   model: '',
   serialNumber: '',
   resource: '',
@@ -216,6 +230,13 @@ export const DEFAULT_CALCULATOR = {
     deviceAddress: null,
   },
   nodes: [],
+  address: {
+    city: '',
+    street: '',
+    corpus: '',
+    number: '',
+    housingStockNumber: null,
+  },
 };
 
 export const periodList = [
@@ -243,17 +264,17 @@ export const nodeStatusList = [
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon: 'ok',
+    icon: 'block',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon: 'ok',
+    icon: 'timer',
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
-    icon: 'ok',
+    icon: 'next',
   },
 ];
 
@@ -281,3 +302,10 @@ export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}
 export const ipv4RegExp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 export const numberRegExp = /^[0-9][A-Za-z0-9 -]*$/;
+
+export const DEFAULT_INDIVIDUAL_DEVICE = {
+  model: '',
+  serialNumber: '',
+  resource: '',
+  address: { city: '', street: '', number: '' },
+};
