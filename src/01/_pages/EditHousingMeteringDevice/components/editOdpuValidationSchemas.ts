@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { string } from 'yup';
 
 export const validationSchemaFlowMeter = Yup.object({
   lastCheckingDate: Yup.date()
@@ -31,6 +32,7 @@ export const validationSchemaFlowMeter = Yup.object({
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите данные'),
   calculatorId: Yup.string().required('Выберите вычислитель'),
+  magistral: string().required('Укажите направление магистрали'),
 });
 
 export const validationSchemaThermoSensor = Yup.object({

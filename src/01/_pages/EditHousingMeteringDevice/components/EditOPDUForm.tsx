@@ -2,39 +2,35 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import _ from 'lodash';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
   housingMeteringDeviceTypes,
-  resources,
-  isConnectedValue,
   magistrals,
+  resources,
 } from '../../../tt-components/localBases';
 import {
-  Header,
-  SelectTT,
-  InputTT,
   ButtonTT,
   DatePickerTT,
-  InputNumberTT,
+  Header,
+  InputTT,
+  SelectTT,
   StyledFooter,
   StyledFormPage,
   styles,
 } from '../../../tt-components';
-import { putOdpu } from './apiEditOdpu';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import {
   HousingMeteringDeviceResponse,
+  MagistralType,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 import {
   validationSchemaFlowMeter,
   validationSchemaThermoSensor,
 } from './editOdpuValidationSchemas';
-import Tabs from '../../../tt-components/Tabs';
-import { EditOdpuContext } from '../index';
-import { TabsItemInterface } from '../../../tt-components/interfaces';
+import { AlertInterface } from '../../../tt-components/interfaces';
+import { putOdpu } from './apiEditOdpu';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -55,9 +51,7 @@ const FormEditODPU = ({
     hubConnection: {
       hub: { entryNumber, pipeNumber, magistral },
       calculatorId,
-      calculatorSerialNumber,
-      calculatorModel,
-      calculatorConnection,
+      nodeId,
     },
     id,
     model,
@@ -93,7 +87,7 @@ const FormEditODPU = ({
     housingStockNumber,
     corpus,
     magistral,
-    isConnected: isConnectedValue[0].value,
+    nodeId,
   };
 
   const {
@@ -108,7 +102,11 @@ const FormEditODPU = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      const form = {
+      // console.log(values);
+
+      const magistralEnum: MagistralType = values.magistral as MagistralType;
+
+      const form: UpdateHousingMeteringDeviceRequest = {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(),
         futureCheckingDate: values.futureCheckingDate?.toISOString(),
@@ -122,10 +120,13 @@ const FormEditODPU = ({
           calculatorId: values.calculatorId,
           entryNumber: Number(values.entryNumber),
           pipeNumber: Number(values.pipeNumber),
-          magistral: values.magistral,
+          magistral: magistralEnum,
+          nodeId: Number(values.nodeId),
         },
       };
-      putOdpu(id, form);
+      putOdpu(id, form).then((res) => {
+        console.log(res);
+      });
       console.log('PUT_EDIT_FORM', form);
       console.log('PUT_EDIT_FORM', JSON.stringify(form));
     },
@@ -136,10 +137,6 @@ const FormEditODPU = ({
       ? setValidationSchema(validationSchemaFlowMeter)
       : setValidationSchema(validationSchemaThermoSensor);
   }, []);
-
-  interface AlertInterface {
-    name: string;
-  }
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

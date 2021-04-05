@@ -887,6 +887,9 @@ export interface HousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   calculatorId: number;
+
+  /** @format int32 */
+  nodeId: number | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection;
@@ -2512,6 +2515,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
+     * @name DataMigrationsTestList
+     * @request GET:/api/DataMigrations/Test
+     * @secure
+     */
+    dataMigrationsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Test`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
      * @name DataMigrationsMigrateList
      * @request GET:/api/DataMigrations/Migrate
      * @secure
@@ -2520,7 +2539,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { method?: DataMigrationMethod; saveChanges?: boolean },
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, any>({
         path: `/api/DataMigrations/Migrate`,
         method: "GET",
         query: query,
@@ -2532,14 +2551,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsCreateAdminList
-     * @request GET:/api/DataMigrations/CreateAdmin
+     * @name DataMigrationsCreateAdminCreate
+     * @request POST:/api/DataMigrations/CreateAdmin
      * @secure
      */
-    dataMigrationsCreateAdminList: (params: RequestParams = {}) =>
+    dataMigrationsCreateAdminCreate: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/DataMigrations/CreateAdmin`,
-        method: "GET",
+        method: "POST",
         secure: true,
         ...params,
       }),
