@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
-import { getCalculator, getNode } from './apiNodeProfile';
+import { getCalculator, getNode, getNodeTasks } from './apiNodeProfile';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
 import { useAsync } from '../../hooks/useAsync';
-import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import {
+  CalculatorResponse,
+  NodeResponse,
+  TaskListResponse,
+} from '../../../myApi';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
@@ -14,12 +18,14 @@ import Information from './components/Information';
 import NodeConnection from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
+import { Events } from '../../tt-components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
   const { push } = useHistory();
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
+  const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
   const { data: node, status, run } = useAsync<NodeResponse>();
   const {
@@ -38,7 +44,13 @@ export const NodeProfile = () => {
       : console.log('wait');
   }, [node]);
 
-  if (!node || !calculator) {
+  useEffect(() => {
+    getNodeTasks(nodeId).then((res) => {
+      setTasks(res);
+    });
+  }, []);
+
+  if (!node || !calculator || !tasks) {
     return <Loader size={'32'} show />;
   }
 
@@ -144,7 +156,7 @@ export const NodeProfile = () => {
         <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
-        {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
+        <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>
     </>
   );

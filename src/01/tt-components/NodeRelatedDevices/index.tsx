@@ -5,6 +5,7 @@ import { NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { Link } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
+import { Loader } from '../../components';
 
 interface NodesInterface {
   node: NodeResponse;
@@ -22,18 +23,22 @@ export const NodeRelatedDevices = ({
   setDeregisterDevice,
 }: NodesInterface) => {
   if (!node) {
-    return null;
+    return <Loader show={true} size={32} />;
   }
   const { communicationPipes } = node;
 
-  const related = _.flatten(
-    communicationPipes?.map((item, index) => {
-      const { devices } = item;
-      return devices;
-    })
-  );
+  if (!communicationPipes || communicationPipes.length < 1) {
+    return <div>Нет устройств на узле</div>;
+  }
 
-  const result = related.map((value: any) => {
+  const related = communicationPipes.map((item, index) => {
+    const { devices } = item;
+    return devices;
+  });
+
+  const flattenRelated = _.flatten(related.filter((item) => item !== null));
+
+  const result = flattenRelated.map((value: any) => {
     const {
       model,
       serialNumber,
