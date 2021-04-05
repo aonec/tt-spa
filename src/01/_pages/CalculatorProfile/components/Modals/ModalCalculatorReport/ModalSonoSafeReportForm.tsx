@@ -11,21 +11,19 @@ import {
   Header,
   InputTT,
   SelectTT,
-  RangePickerTT,
   StyledFooter,
   StyledModalBody,
   DatePickerTT,
 } from '../../../../../tt-components';
 
 import axios from '../../../../../axios';
+import { getArchive } from './apiCalculatorReport';
+import { AlertInterface } from '../../../../../tt-components/interfaces';
 
 const { TabPane } = Tabs;
 
-const ModalSonoSafeReportForm = (props: any) => {
-  const { device, handleCancel, visible } = props;
-  // const { handleCancel, visible } = props;
+const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
   const { id, model, serialNumber, address, hubs, nodes } = device;
-
   const nodeId = nodes[0].id;
   console.log('nodeId', nodeId);
 
@@ -159,48 +157,23 @@ const ModalSonoSafeReportForm = (props: any) => {
       nodeId: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
+      console.log('done');
       const { nodeId, detail, resource } = values;
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
-      const end = `${moment(values.end).format('YYYY-MM-DD')}T00:00:00Z`;
+      const end = `${values.end.format('YYYY-MM-DD')}T00:00:00Z`;
 
       const beginName = moment(values.begin).format('YYYY-MM-DD');
       const endName = moment(values.end).format('YYYY-MM-DD');
-      const link = `http://84.201.132.164:8080/api/reports/getReport?nodeId=${values.nodeId}&reportType=${values.detail}&from=${begin}T00:00:00Z&to=${end}T23:59:59Z`;
-
-      console.log(link);
-
-      // const linkToDownload = document.createElement('a');
-      // linkToDownload.setAttribute('href', link);
-      // linkToDownload.setAttribute('download', 'download');
-      // linkToDownload.click();
-      // window.open(link);
-
       const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
-      async function getArchive(link = '') {
-        try {
-          const res = await axios.get(link, {
-            responseType: 'blob',
-          });
-          return res;
-        } catch (error) {
-          console.log(error);
-          throw {
-            resource: 'tasks',
-            message: 'Произошла ошибка при загрузке данных по задачам',
-          };
-        }
-      }
-
+      // xlsx
       getArchive(shortLink).then((response: any) => {
         const url = window.URL.createObjectURL(new Blob([response]));
-        console.log(response.headers);
         const link = document.createElement('a');
         link.href = url;
         const fileName = `${street}, ${housingStockNumber} - ${translate(
-          resource
-        )} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
-        // const fileName = `${+new Date()}.xlsx`;// whatever your file name .
+          resource || ''
+        )} с ${beginName} по ${endName}, ${translate(resource || '')}.xlsx`;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
@@ -235,10 +208,6 @@ const ModalSonoSafeReportForm = (props: any) => {
     const res = event.target.value;
     setFieldValue('detail', res);
   };
-
-  interface AlertInterface {
-    name: string;
-  }
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -280,7 +249,7 @@ const ModalSonoSafeReportForm = (props: any) => {
   }, []);
 
   return (
-    <Form id="formReport">
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Header style={{ margin: 0, padding: 0 }}>
           Выгрузка отчета о общедомовом потреблении SonoSafe
@@ -382,21 +351,15 @@ const ModalSonoSafeReportForm = (props: any) => {
         </Checkbox>
       </StyledModalBody>
 
-      <StyledFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <StyledFooter modal>
         <ButtonTT color="white" onClick={handleCancel}>
           Отмена
         </ButtonTT>
-        <ButtonTT
-          color="blue"
-          type="submit"
-          form="formReport"
-          big
-          style={{ marginLeft: 16 }}
-        >
+        <ButtonTT color="blue" type="submit" big style={{ marginLeft: 16 }}>
           Выгрузить
         </ButtonTT>
       </StyledFooter>
-    </Form>
+    </form>
   );
 };
 
