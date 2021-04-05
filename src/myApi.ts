@@ -358,6 +358,14 @@ export enum ResourceType {
   Electricity = "Electricity",
 }
 
+export enum ServiceZone {
+  Apartments = "Apartments",
+  CommercialPremises = "CommercialPremises",
+  TechnicalPremises = "TechnicalPremises",
+  CommonUsageAreas = "CommonUsageAreas",
+  IntroductoryNode = "IntroductoryNode",
+}
+
 export interface HousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
   entryNumber: number | null;
@@ -424,7 +432,7 @@ export interface NodeResponse {
   number: number;
   nodeStatus: string | null;
   resource: ResourceType;
-  serviceZone: string | null;
+  serviceZone: ServiceZone;
 
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
@@ -699,6 +707,13 @@ export interface ContractorUpdateRequest {
   email?: string | null;
 }
 
+export enum DataMigrationMethod {
+  HousingStockNumberAndCorpus = "HousingStockNumberAndCorpus",
+  MeteringDeviceIsConnected = "MeteringDeviceIsConnected",
+  CommunicationPipeNumbers = "CommunicationPipeNumbers",
+  OldTasks = "OldTasks",
+}
+
 export interface DocumentResponse {
   /** @format int32 */
   id: number;
@@ -872,6 +887,9 @@ export interface HousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   calculatorId: number;
+
+  /** @format int32 */
+  nodeId: number | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection;
@@ -1607,7 +1625,7 @@ export interface UpdateNodeRequest {
   number?: number;
   nodeStatus?: string | null;
   resource?: ResourceType;
-  serviceZone?: string | null;
+  serviceZone?: ServiceZone;
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
@@ -1638,7 +1656,7 @@ export interface CreateNodeRequest {
   number?: number;
   nodeStatus?: string | null;
   resource?: ResourceType;
-  serviceZone?: string | null;
+  serviceZone?: ServiceZone;
 
   /** @format date-time */
   lastCheckingDate?: string | null;
@@ -1649,14 +1667,6 @@ export interface CreateNodeRequest {
   /** @format int32 */
   calculatorId?: number | null;
   communicationPipes?: CommunicationPipeRequest[] | null;
-}
-
-export enum ServiceZone {
-  Apartments = "Apartments",
-  CommercialPremises = "CommercialPremises",
-  TechnicalPremises = "TechnicalPremises",
-  CommonUsageAreas = "CommonUsageAreas",
-  IntroductoryNode = "IntroductoryNode",
 }
 
 export interface ServiceZoneStringDictionaryItem {
@@ -2225,22 +2235,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Archives
-     * @name ArchivesGenerateHouseManagementsList
-     * @request GET:/api/Archives/GenerateHouseManagements
-     * @secure
-     */
-    archivesGenerateHouseManagementsList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/GenerateHouseManagements`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Auth
      * @name AuthLoginCreate
      * @request POST:/api/Auth/login
@@ -2514,6 +2508,58 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsTestList
+     * @request GET:/api/DataMigrations/Test
+     * @secure
+     */
+    dataMigrationsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Test`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsMigrateList
+     * @request GET:/api/DataMigrations/Migrate
+     * @secure
+     */
+    dataMigrationsMigrateList: (
+      query?: { method?: DataMigrationMethod; saveChanges?: boolean },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Migrate`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsCreateAdminCreate
+     * @request POST:/api/DataMigrations/CreateAdmin
+     * @secure
+     */
+    dataMigrationsCreateAdminCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/CreateAdmin`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -2855,22 +2901,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         secure: true,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags HousingStocks
-     * @name HousingStocksFixNumberAndCorpusCreate
-     * @request POST:/api/HousingStocks/FixNumberAndCorpus
-     * @secure
-     */
-    housingStocksFixNumberAndCorpusCreate: (params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/HousingStocks/FixNumberAndCorpus`,
-        method: "POST",
-        secure: true,
         ...params,
       }),
 
@@ -3338,38 +3368,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags MeteringDevices
-     * @name MeteringDevicesTryFixIsConnectionList
-     * @request GET:/api/MeteringDevices/tryFixIsConnection
-     * @secure
-     */
-    meteringDevicesTryFixIsConnectionList: (params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/MeteringDevices/tryFixIsConnection`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags MeteringDevices
-     * @name MeteringDevicesFixIsConnectionCreate
-     * @request POST:/api/MeteringDevices/fixIsConnection
-     * @secure
-     */
-    meteringDevicesFixIsConnectionCreate: (params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/MeteringDevices/fixIsConnection`,
-        method: "POST",
-        secure: true,
         ...params,
       }),
 

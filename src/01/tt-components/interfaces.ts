@@ -21,3 +21,7 @@ export interface TabErrorsInterface {
   key: string;
   value: Array<string>;
 }
+
+export interface AlertInterface {
+  name: string;
+}

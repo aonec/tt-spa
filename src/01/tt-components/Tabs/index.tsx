@@ -26,15 +26,17 @@ export default ({ tabItems, tabsType, activeKey }: TabsInterface) => {
   }
 
   return (
-    <Tabs
-      defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
-      onChange={callback}
-      activeKey={activeKey}
-    >
-      {tabItems.map((tab) => {
-        const { title, key, cb } = tab;
-        return <TabPane tab={title} key={key} />;
-      })}
-    </Tabs>
+    <div style={{ margin: 0, padding: 0 }}>
+      <Tabs
+        defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
+        onChange={callback}
+        activeKey={activeKey}
+      >
+        {tabItems.map((tab) => {
+          const { title, key, cb } = tab;
+          return <TabPane tab={title} key={key} />;
+        })}
+      </Tabs>
+    </div>
   );
 };
