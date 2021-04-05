@@ -1,10 +1,6 @@
 import { Route, useParams, useHistory } from 'react-router-dom';
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import {
-  getCalculatorTasks,
-  getCalculator,
-  getCalculatorNodes,
-} from './apiCalculatorProfile';
+import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
@@ -145,11 +141,13 @@ export const CalculatorProfile = () => {
             setVisible={setDeregister}
             device={device}
           />
+
           <ModalCalculatorReport
             report={report}
             setReport={setReport}
             device={device}
           />
+
           <CheckDevice device={device} check={check} setCheck={setCheck} />
         </>
       )}

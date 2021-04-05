@@ -19,8 +19,6 @@ import {
 
 import axios from '../../../../../axios';
 
-// import { device } from './SonoSafeTemplate';
-
 const { TabPane } = Tabs;
 
 const ModalSonoSafeReportForm = (props: any) => {

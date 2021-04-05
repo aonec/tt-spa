@@ -17,24 +17,22 @@ import {
 } from '../../../../../tt-components';
 import { getArchive } from './apiCalculatorReport';
 import { CalculatorResponse } from '../../../../../../myApi';
-import { DEFAULT_CALCULATOR } from '../../../../../tt-components/localBases';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 
 export interface ModalCalculatorReportFormInterface {
-  device: CalculatorResponse | null;
+  device: CalculatorResponse;
   handleCancel: any;
 }
+
+const { TabPane } = Tabs;
 
 const ModalCalculatorReportForm = ({
   device,
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
-  console.log(device);
-  const { TabPane } = Tabs;
+  console.log('device', device);
 
-  const { id, model, serialNumber, address, nodes } =
-    device || DEFAULT_CALCULATOR;
-
+  const { id, model, serialNumber, address, nodes } = device;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
@@ -74,11 +72,16 @@ const ModalCalculatorReportForm = ({
       };
     });
 
-  // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
+  console.log('nodesList', nodesList);
+
   const filteredGroup = _.groupBy(nodesList, 'resource');
 
+  console.log('filteredGroup', filteredGroup);
+
   // Получаем весь список ресурсов для табов
-  const resources = model !== 'Sonosafe' ? _.keys(filteredGroup) : ['Heat'];
+  const resources = _.keys(filteredGroup);
+
+  console.log('resources', resources);
 
   const {
     handleSubmit,
@@ -116,8 +119,8 @@ const ModalCalculatorReportForm = ({
         const link = document.createElement('a');
         link.href = url;
         const fileName = `${street}, ${housingStockNumber} - ${translate(
-          resource
-        )} с ${beginName} по ${endName}, ${translate(resource)}.xlsx`;
+          resource || ''
+        )} с ${beginName} по ${endName}, ${translate(resource || '')}.xlsx`;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
@@ -126,19 +129,17 @@ const ModalCalculatorReportForm = ({
     },
   });
 
-  const prevOptions = Object.values(filteredGroup[values.resource]);
-  const options =
-    prevOptions ||
-    [].map((option, index) => {
-      const { id, number, devices } = option;
+  const prevOptions = Object.values(filteredGroup[values.resource || '']);
+  const options = prevOptions.map((option: any, index) => {
+    const { id, number, devices } = option;
 
-      // console.log('devices', devices);
-      let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
-      _.forEach(devices, (value: any) => {
-        label = `${label}, ${value.model} (${value.serialNumber})`;
-      });
-      return { value: id, label };
+    // console.log('devices', devices);
+    let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
+    _.forEach(devices, (value: any) => {
+      label = `${label}, ${value.model} (${value.serialNumber})`;
     });
+    return { value: id, label };
+  });
 
   const Translate: any = {
     Heat: 'Отопление',
@@ -146,7 +147,7 @@ const ModalCalculatorReportForm = ({
     HotWaterSupply: 'Горячая вода',
   };
 
-  const translate = (resource: string) => Translate[resource];
+  const translate = (resource: any) => Translate[resource];
 
   const onPeriodChange = (event: any) => {
     const res = event.target.value;
@@ -180,7 +181,6 @@ const ModalCalculatorReportForm = ({
   };
 
   const datePickerHandler = (event: any) => {
-    console.log(event);
     setFieldValue('begin', event[0]);
     setFieldValue('end', event[1]);
   };
@@ -195,12 +195,10 @@ const ModalCalculatorReportForm = ({
   };
 
   // Список Вкладок/Ресурсов
-  const TabsList =
-    resources ||
-    [].map((value, index) => {
-      const res = translate(value);
-      return <TabPane tab={res} key={value} />;
-    });
+  const TabsList = resources.map((value, index) => {
+    const res = translate(value);
+    return <TabPane tab={res} key={value} />;
+  });
 
   const defaultRes = translate(TabsList[0]);
 
@@ -208,6 +206,8 @@ const ModalCalculatorReportForm = ({
     setFieldValue('resource', value);
     setFieldValue('nodeId', null);
   };
+
+  console.log('options', options);
 
   return (
     <form onSubmit={handleSubmit}>

@@ -12,11 +12,11 @@ import {
 import { Tooltip } from 'antd';
 
 function statusIcon(closingDate) {
-  return closingDate === null ? 'green' : 'red';
+  return !closingDate ? 'green' : 'red';
 }
 
 function status(closingDate) {
-  return closingDate === null ? 'Активен' : 'Не активен';
+  return !closingDate ? 'Активен' : 'Не активен';
 }
 
 export const Devices = ({ calculators }) => {
