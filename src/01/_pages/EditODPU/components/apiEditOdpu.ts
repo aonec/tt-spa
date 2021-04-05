@@ -1,6 +1,10 @@
 import axios from '../../../axios';
+import {
+  HousingMeteringDeviceResponse,
+  UpdateHousingMeteringDeviceRequest,
+} from '../../../../myApi';
 
-export async function getOdpu(id = '') {
+export async function getOdpu(id: number) {
   try {
     const res = await axios.get(`HousingMeteringDevices/${id}`);
     return res;
@@ -13,7 +17,7 @@ export async function getOdpu(id = '') {
   }
 }
 
-export async function getCalculators(objid = 0) {
+export async function getCalculators(objid: number) {
   try {
     const res = await axios.get(`Calculators?Filter.HousingStockId=${objid}`);
     console.log('Calculators', res);
@@ -27,27 +31,12 @@ export async function getCalculators(objid = 0) {
   }
 }
 
-export async function putOdpu(deviceId = '', form = {}) {
-  alert('Cейчас будем отправлять данные!');
+export async function putOdpu(deviceId: number, form: any) {
+  // alert('Cейчас будем отправлять данные!');
   try {
     const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
     // console.log("putCalculator", form)
     alert('ОДПУ успешно изменен!');
-    return res;
-  } catch (error) {
-    console.log(error);
-    alert('Что-то пошло не так: попробуйте проверить все данные');
-    throw new Error(error);
-  }
-}
-
-export async function postOdpu(form = {}) {
-  alert('Cейчас будем отправлять данные!');
-  try {
-    const res = await axios.post(`HousingMeteringDevices`, form);
-    // console.log("putCalculator", form)
-    alert('ОДПУ успешно создан!');
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
