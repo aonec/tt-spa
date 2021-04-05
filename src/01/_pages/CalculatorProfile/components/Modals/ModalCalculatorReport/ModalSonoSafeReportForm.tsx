@@ -16,8 +16,7 @@ import {
   DatePickerTT,
 } from '../../../../../tt-components';
 
-import axios from '../../../../../axios';
-import { getArchive } from './apiCalculatorReport';
+import { getReport } from './apiCalculatorReport';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 
 const { TabPane } = Tabs;
@@ -157,23 +156,19 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       nodeId: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
-      console.log('done');
       const { nodeId, detail, resource } = values;
-      const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
-      const end = `${values.end.format('YYYY-MM-DD')}T00:00:00Z`;
+      const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
+      const end = `${values.end.format('YYYY-MM-DD')}`;
 
-      const beginName = moment(values.begin).format('YYYY-MM-DD');
-      const endName = moment(values.end).format('YYYY-MM-DD');
       const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
-      // xlsx
-      getArchive(shortLink).then((response: any) => {
+      getReport(shortLink).then((response: any) => {
         const url = window.URL.createObjectURL(new Blob([response]));
         const link = document.createElement('a');
         link.href = url;
         const fileName = `${street}, ${housingStockNumber} - ${translate(
           resource || ''
-        )} с ${beginName} по ${endName}, ${translate(resource || '')}.xlsx`;
+        )} с ${begin} по ${end}, ${translate(resource || '')}.xlsx`;
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();

@@ -18,7 +18,6 @@ import {
   yupDate,
   yupDeviceId,
 } from '../../../../../tt-components/yupTemplates';
-import { CalculatorProfileContext } from '../../../CalculatorProfileContext';
 import { CalculatorResponse } from '../../../../../../myApi';
 
 interface ModalCheckFormInterface {
@@ -47,11 +46,6 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
       futureCheckingDate: yupDate,
     }),
     onSubmit: async () => {
-      // const form: FormInterface = {
-      //     deviceId: values.deviceId,
-      //     currentCheckingDate: values.lastCheckingDate,
-      //     futureCheckingDate: values.futureCheckingDate,
-      // };
       const form = {
         deviceId: values.deviceId,
         currentCheckingDate: values.lastCheckingDate,

@@ -26,7 +26,7 @@ export const ModalCalculatorReport = ({
   if (device.infoId !== 10) {
     return (
       <StyledModal
-        visible={true}
+        visible={report}
         width={800}
         footer={null}
         onCancel={handleCancel}

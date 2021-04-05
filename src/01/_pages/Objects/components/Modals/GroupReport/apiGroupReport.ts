@@ -1,7 +1,7 @@
-import { getArchive } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
+import { getReport } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 
 export function downloadReport(link: string, fileName: string) {
-  getArchive(link).then((response: any) => {
+  getReport(link).then((response: any) => {
     const url = window.URL.createObjectURL(new Blob([response]));
     const link = document.createElement('a');
     link.href = url;
