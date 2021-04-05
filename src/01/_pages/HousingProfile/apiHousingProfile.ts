@@ -15,9 +15,9 @@ export async function getHousingMeteringDevice(id: number) {
   }
 }
 
-export async function getHousingTasks(url: string) {
+export async function getHousingTasks(id: number) {
   try {
-    const newURL = `Tasks?DeviceId=${url}`;
+    const newURL = `Tasks?DeviceId=${id}`;
     const res: TasksPagedList = await axios.get(newURL);
     const { items } = res;
 

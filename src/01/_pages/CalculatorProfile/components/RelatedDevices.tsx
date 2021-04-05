@@ -5,14 +5,14 @@ import { IconTT } from '../../../tt-components';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 
 interface RelatedDevicesInterface {
-  calculator: CalculatorResponse;
+  device: CalculatorResponse | null;
 }
 
-export const NodeRelatedDevices = ({ calculator }: RelatedDevicesInterface) => {
-  if (!calculator) {
+export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
+  if (!device) {
     return null;
   }
-  const { nodes } = calculator;
+  const { nodes } = device;
   if (!nodes) {
     return null;
   }

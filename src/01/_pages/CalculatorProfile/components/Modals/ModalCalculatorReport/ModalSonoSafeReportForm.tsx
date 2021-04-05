@@ -7,7 +7,6 @@ import _ from 'lodash';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import {
   StyledRadio,
-  DatePickerTT,
   ButtonTT,
   Header,
   InputTT,
@@ -15,6 +14,7 @@ import {
   RangePickerTT,
   StyledFooter,
   StyledModalBody,
+  DatePickerTT,
 } from '../../../../../tt-components';
 
 import axios from '../../../../../axios';
@@ -23,7 +23,7 @@ import axios from '../../../../../axios';
 
 const { TabPane } = Tabs;
 
-const ModalSonoSafeReportForm = (props) => {
+const ModalSonoSafeReportForm = (props: any) => {
   const { device, handleCancel, visible } = props;
   // const { handleCancel, visible } = props;
   const { id, model, serialNumber, address, hubs, nodes } = device;
@@ -36,27 +36,29 @@ const ModalSonoSafeReportForm = (props) => {
   const modelCalculator = model;
 
   // Все Расходомеры
-  const devicesList = hubs.reduce((result, item) => {
-    const {
-      resource,
-      housingMeteringDeviceType,
-      hub,
-      serialNumber,
-      model,
-    } = item;
-    const { entryNumber, pipeNumber } = hub;
-    if (housingMeteringDeviceType === 'FlowMeter') {
-      result.push({
+  const devicesList =
+    hubs ||
+    [].reduce((result: Array<any>, item: any) => {
+      const {
         resource,
-        entryNumber,
-        pipeNumber,
         housingMeteringDeviceType,
+        hub,
         serialNumber,
         model,
-      });
-    }
-    return result;
-  }, []);
+      } = item;
+      const { entryNumber, pipeNumber } = hub;
+      if (housingMeteringDeviceType === 'FlowMeter') {
+        result.push({
+          resource,
+          entryNumber,
+          pipeNumber,
+          housingMeteringDeviceType,
+          serialNumber,
+          model,
+        });
+      }
+      return result;
+    }, []);
 
   // Группировка по типу ресурса - на выходе - {Heat: [item1, item2], ...}
   const filteredGroup = _.groupBy(devicesList, 'resource');
@@ -65,14 +67,14 @@ const ModalSonoSafeReportForm = (props) => {
   const resources = model !== 'Sonosafe' ? _.keys(filteredGroup) : ['Heat'];
 
   // Создать объект с ключами из списка ресурсов, а значений - модифицириваннные массивы из getSelectionsFormatterByType
-  const getDevicesSelectionByType = (group) =>
-    _.keys(group).reduce((acc, item) => {
+  const getDevicesSelectionByType = (group: any) =>
+    _.keys(group).reduce((acc: any, item: string) => {
       acc[item] = getSelectionsFormatterByType(group[item], item);
       return acc;
     }, {});
 
   // Редюсер по типу ресура
-  const getSelectionsFormatterByType = (list, type) => {
+  const getSelectionsFormatterByType = (list: Array<any>, type: string) => {
     switch (type) {
       case 'ColdWaterSupply':
         return list.map((item, index) => ({
@@ -92,7 +94,7 @@ const ModalSonoSafeReportForm = (props) => {
   };
 
   // Функция для возврата измененного массива по ресурсу, сравниваем entryNumber
-  const reduceList = (list) => {
+  const reduceList = (list: Array<any>) => {
     const sortedByEntryNumber = _.groupBy(list, 'entryNumber');
     return _.values(sortedByEntryNumber).map((item, index) => {
       if (item.length > 1) {
@@ -135,7 +137,6 @@ const ModalSonoSafeReportForm = (props) => {
       ? getDevicesSelectionByType(filteredGroup)
       : sonorSelection;
 
-  console.log(JSON.stringify(getDevicesSelectionByType(filteredGroup)));
   const {
     handleSubmit,
     handleChange,
@@ -148,20 +149,21 @@ const ModalSonoSafeReportForm = (props) => {
     initialValues: {
       period: 'month',
       detail: 'monthly',
-      begin: '',
-      end: '',
+      begin: moment(),
+      end: moment(),
       nodeId,
       resource: resources[0],
       checked: true,
       customdisabled: true,
+      currentValue: undefined,
     },
     validationSchema: Yup.object({
       nodeId: Yup.number().typeError('Выберите узел'),
     }),
     onSubmit: async () => {
       const { nodeId, detail, resource } = values;
-      const begin = `${values.begin.format('YYYY-MM-DD')}T00:00:00Z`;
-      const end = `${values.end.format('YYYY-MM-DD')}T00:00:00Z`;
+      const begin = `${moment(values.begin).format('YYYY-MM-DD')}T00:00:00Z`;
+      const end = `${moment(values.end).format('YYYY-MM-DD')}T00:00:00Z`;
 
       const beginName = moment(values.begin).format('YYYY-MM-DD');
       const endName = moment(values.end).format('YYYY-MM-DD');
@@ -192,7 +194,7 @@ const ModalSonoSafeReportForm = (props) => {
         }
       }
 
-      getArchive(shortLink).then((response) => {
+      getArchive(shortLink).then((response: any) => {
         const url = window.URL.createObjectURL(new Blob([response]));
         console.log(response.headers);
         const link = document.createElement('a');
@@ -204,20 +206,20 @@ const ModalSonoSafeReportForm = (props) => {
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
-        link.remove(); // you need to remove that elelment which is created before.
+        link.remove();
       });
     },
   });
 
-  const Translate = {
+  const Translate: any = {
     Heat: 'Отопление',
     ColdWaterSupply: 'Холодная вода',
     HotWaterSupply: 'Горячая вода',
   };
 
-  const translate = (resource) => Translate[resource];
+  const translate = (resource: string) => Translate[resource];
 
-  const onPeriodChange = (event) => {
+  const onPeriodChange = (event: any) => {
     const res = event.target.value;
     if (res === 'custom') {
       setFieldValue('begin', moment().subtract(1, 'months').startOf('month'));
@@ -231,12 +233,16 @@ const ModalSonoSafeReportForm = (props) => {
     // setFieldValue('end', moment());
   };
 
-  const onDetailChange = (event) => {
+  const onDetailChange = (event: any) => {
     const res = event.target.value;
     setFieldValue('detail', res);
   };
 
-  const Alert = ({ name }) => {
+  interface AlertInterface {
+    name: string;
+  }
+
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -246,21 +252,23 @@ const ModalSonoSafeReportForm = (props) => {
   };
 
   // Список Вкладок/Ресурсов
-  const TabsList = resources.map((value, index) => {
-    const res = translate(value);
-    return <TabPane tab={res} key={value} />;
-  });
+  const TabsList =
+    resources ||
+    [].map((value, index) => {
+      const res = translate(value);
+      return <TabPane tab={res} key={value} />;
+    });
 
   const defaultRes = translate(TabsList[0]);
 
-  const onTabsChangeHandler = (value) => {
+  const onTabsChangeHandler = (value: string) => {
     setFieldValue('resource', value);
     setFieldValue('currentValue', undefined);
     setFieldValue('entryNumber', null);
     setFieldValue('pipeNumber', null);
   };
 
-  const handleSelect = (value, object) => {
+  const handleSelect = (value: any, object: any) => {
     setFieldValue('currentValue', value);
     setFieldValue('entryNumber', object.entryNumber);
     setFieldValue('pipeNumber', object.pipeNumber);
@@ -331,15 +339,13 @@ const ModalSonoSafeReportForm = (props) => {
         <div style={{ display: 'flex' }}>
           <Form.Item label="Начало" style={{ width: 144 }}>
             <DatePickerTT
-              format="MMMM YYYY"
+              format="DD.MM.YYYY"
               allowClear={false}
-              size="48px"
               picker="month"
               value={values.begin}
               name="begin"
               placeholder="Выберите месяц"
-              onChange={(date) => {
-                console.log(date);
+              onChange={(date: any) => {
                 setFieldValue('begin', date.startOf('month'));
               }}
               disabled={values.customdisabled}
@@ -350,14 +356,12 @@ const ModalSonoSafeReportForm = (props) => {
             <DatePickerTT
               format="MMMM YYYY"
               allowClear={false}
-              size="48px"
               picker="month"
               name="end"
               value={values.end}
               placeholder="Выберите месяц"
               onChange={(date) => {
-                console.log(date);
-                setFieldValue('end', date.endOf('month'));
+                setFieldValue('end', date?.endOf('month'));
               }}
               disabled={values.checked || values.customdisabled}
             />
@@ -370,7 +374,7 @@ const ModalSonoSafeReportForm = (props) => {
           onChange={(e) => {
             const { checked } = e.target;
             setFieldValue('checked', checked);
-            if (checked === true) {
+            if (checked) {
               setFieldValue('end', '');
             }
           }}
@@ -389,8 +393,7 @@ const ModalSonoSafeReportForm = (props) => {
           type="submit"
           form="formReport"
           big
-          style={{ marginLeft: '16px' }}
-          onClick={handleSubmit}
+          style={{ marginLeft: 16 }}
         >
           Выгрузить
         </ButtonTT>

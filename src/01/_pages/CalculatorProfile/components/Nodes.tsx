@@ -6,7 +6,7 @@ import DeviceIcons from '../../../_components/DeviceIcons';
 import Icon from '../../../tt-components/Icon';
 
 interface NodesInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
 }
 
 interface NodeInterface {
