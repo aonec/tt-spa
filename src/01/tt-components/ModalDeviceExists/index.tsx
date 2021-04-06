@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import { StyledFooter, StyledModal, StyledModalBody } from '../Modal';
 import ButtonTT from '../ButtonTT';
+import styled from 'styled-components';
 
 interface ModalCalculatorExistInstance {
   existDevice: number | undefined | null;
@@ -28,19 +29,18 @@ export const ModalDeviceExists = ({
       onOk={handleCancel}
     >
       <StyledModalBody>
-        <h2>
-          В системе уже есть устройство с совпадающими настройками соединения
-        </h2>
+        <Header>В системе уже есть устройство с совпадающими данными</Header>
         {existDevice ? (
-          <Link
-            to={`/calculators/${existDevice}`}
-          >{`Вычислитель с id: ${existDevice}`}</Link>
+          <Link to={`/calculators/${existDevice}`}>
+            <DeviceLink>{`Устройство с id: ${existDevice}`}</DeviceLink>
+          </Link>
         ) : null}
+        <span>
+          Пожалуйста, удалите существующее устройство, либо создайте новое
+          устройство с другими настройками соединения
+        </span>
       </StyledModalBody>
       <StyledFooter>
-        <ButtonTT color={'white'} type="button" onClick={handleCancel}>
-          Отмена
-        </ButtonTT>
         <ButtonTT
           color={'red'}
           type="button"
@@ -55,3 +55,17 @@ export const ModalDeviceExists = ({
 };
 
 export default ModalDeviceExists;
+
+const Header = styled.h2`
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 48px;
+`;
+
+const DeviceLink = styled.p`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+`;
