@@ -26,17 +26,13 @@ const MonthSlider = ({
     <CenterContainer>
       <ArrowContainer
         onClick={onClickIncrease}
-        className={
-          isPreviousArrowDisabled ? styles.arrowDisabled : styles.arrowEnabled
-        }
+        isDisabled={isPreviousArrowDisabled}
       >
         <Arrow />
       </ArrowContainer>
       <CenterContainer>{getPreviousReadingsMonth(sliderIndex)}</CenterContainer>
       <ArrowContainer
-        className={
-          isNextArrowDisabled ? styles.arrowDisabled : styles.arrowEnabled
-        }
+        isDisabled={isNextArrowDisabled}
         onClick={onClickDecrease}
         style={{ transform: 'rotate(180deg)' }}
       >

@@ -8,7 +8,7 @@ export const useMonthSlider = (
 ) => {
   const [sliderIndex, setSliderIndex] = useState(0);
 
-  if (!items || !items?.length || !items[0]?.readings?.length) return {};
+  if (!items || !items.length || !items[0].readings?.length) return {};
   const currentMonth = getMonthFromDate();
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(items[0].readings![0].readingDate);

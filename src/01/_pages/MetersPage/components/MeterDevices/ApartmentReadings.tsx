@@ -68,7 +68,7 @@ export const MetersHeader = styled.div`
   color: var(--main-90);
 `;
 
-export const ArrowContainer = styled.div`
+export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
   width: 32px;
   height: 32px;
   display: flex;
@@ -76,8 +76,12 @@ export const ArrowContainer = styled.div`
   align-items: center;
   svg {
     opacity: 0.7;
+    fill: ${({ isDisabled }) =>
+      isDisabled ? 'var(--main-32)' : 'var(--main-100)'};
     &:hover {
-      opacity: 1;
+      opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
+      fill: ${({ isDisabled }) =>
+        isDisabled ? 'var(--main-32)' : 'var(--primary-100)'};
     }
   }
 `;
