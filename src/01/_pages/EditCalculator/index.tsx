@@ -55,6 +55,7 @@ export const EditCalculator = () => {
             existDevice={existDevice}
             setVisible={setAlert}
             visible={alert}
+            type={'calculator'}
           />
         </>
       )}
