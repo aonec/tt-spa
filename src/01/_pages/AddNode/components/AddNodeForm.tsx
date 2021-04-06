@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import TabsComponent from './Tabs';
-import AddNodeFirstTab from './AddNodeFirstTab';
-import { AddNodeContext } from '../index';
-import AddNodeSecondTab from './AddNodeSecondTab';
-import AddNodeThirdTab from './AddNodeThirdTab';
+import Tabs from '../../../tt-components/Tabs';
 import { Stages } from '../../../tt-components/Stages';
 import { GridTT } from '../../../tt-components';
+import { AddNodeContext } from '../AddNodeContext';
+import AddNodeFirstTab from './AddNodeFirstTab';
+import AddNodeSecondTab from './AddNodeSecondTab';
+import AddNodeThirdTab from './AddNodeThirdTab';
 
 const AddNodeForm = () => {
   const {
@@ -17,14 +17,27 @@ const AddNodeForm = () => {
     stepsArr,
   } = useContext(AddNodeContext);
 
+  if (
+    !handleCancel ||
+    !currentTabKey ||
+    !setTab ||
+    !handleChangeTab ||
+    !handleNext ||
+    !stepsArr
+  ) {
+    return null;
+  }
+
   return (
     <div>
       <GridTT>
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
         <></>
+        <Tabs
+          tabItems={stepsArr}
+          tabsType={'tabs'}
+          activeKey={currentTabKey}
+          visible={false}
+        />
       </GridTT>
 
       <GridTT>

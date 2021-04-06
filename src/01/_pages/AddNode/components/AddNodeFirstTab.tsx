@@ -13,11 +13,12 @@ import {
   StyledFormPage,
 } from '../../../tt-components';
 
-import { AddNodeContext } from '../index';
 import { calculatorValidationSchema } from './validationSchemas';
 import ModalAddCalculator from '../modals/ModalAddCalculator';
+import { AddNodeContext } from '../AddNodeContext';
+import { AlertInterface } from '../../../tt-components/interfaces';
 
-const AddNodeSecondTab = () => {
+const AddNodeFirstTab = () => {
   const {
     handleCancel,
     currentTabKey,
@@ -32,6 +33,8 @@ const AddNodeSecondTab = () => {
   const [validationSchema, setValidationSchema] = useState(
     calculatorValidationSchema
   );
+
+  console.log('calculators', calculators);
 
   const {
     handleSubmit,
@@ -57,7 +60,7 @@ const AddNodeSecondTab = () => {
       };
       console.log(form);
 
-      setNode((prevState) => ({
+      setNode((prevState: any) => ({
         ...prevState,
         ...form,
       }));
@@ -65,7 +68,7 @@ const AddNodeSecondTab = () => {
     },
   });
 
-  function setCalculator(id) {
+  function setCalculator(id: number) {
     setFieldValue('calculatorId', id);
   }
 
@@ -73,7 +76,7 @@ const AddNodeSecondTab = () => {
     setFieldValue('devices', communicationPipes);
   }, [communicationPipes]);
 
-  const Alert = ({ name }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -92,7 +95,7 @@ const AddNodeSecondTab = () => {
   };
 
   return (
-    <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
+    <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Настройки соединения
@@ -114,10 +117,10 @@ const AddNodeSecondTab = () => {
           label="Вычислитель, к которому подключен узел"
           style={styles.w49}
         >
-          <AutoCompleteTT
+          <SelectTT
             options={calculators}
-            onSelect={(value, option) => {
-              setFieldValue('calculatorId', option.key);
+            onChange={(value) => {
+              setFieldValue('calculatorId', value);
             }}
           />
         </Form.Item>
@@ -155,7 +158,7 @@ const AddNodeSecondTab = () => {
           type="button"
           color="white"
           onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
@@ -165,4 +168,4 @@ const AddNodeSecondTab = () => {
   );
 };
 
-export default AddNodeSecondTab;
+export default AddNodeFirstTab;

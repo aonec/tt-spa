@@ -23,11 +23,11 @@ import {
 import TabsComponent from './TabsComponent';
 import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
-import { AddNodeContext } from '../../../index';
 import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
+import { AddNodeContext } from '../../../AddNodeContext';
 
 const AddDeviceForm = (props) => {
   const { handleCancel } = props;

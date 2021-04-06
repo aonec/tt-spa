@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import { AutoComplete } from 'antd';
 
-const Autocomplete = ({ dataSource, onSelectValue }) => {
+interface AutocompleteInterface {
+  dataSource: any;
+  onSelectValue: any;
+}
+const Autocomplete = ({ dataSource, onSelectValue }: AutocompleteInterface) => {
   const [value, setValue] = useState('');
   const [options, setOptions] = useState([]);
 
-  const onSearch = (searchText) => {
+  const onSearch = (searchText: string) => {
     const filtered = dataSource.filter(
-      (obj) => obj.key !== 0 && obj.value.includes(searchText)
+      (obj: any) => obj.key !== 0 && obj.value.includes(searchText)
     );
     setOptions(filtered);
   };
 
-  const onSelect = (data, option) => {
+  const onSelect = (data: any, option: any) => {
     console.log('onSelect', data);
     console.log('onSelect', option);
     onSelectValue(option.key);
   };
 
-  const onChange = (data) => {
+  const onChange = (data: string) => {
     setValue(data);
   };
 

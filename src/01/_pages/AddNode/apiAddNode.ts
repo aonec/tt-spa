@@ -1,8 +1,17 @@
 import axios from '../../axios';
+import {
+  CalculatorListResponsePagedList,
+  CalculatorListResponsePagedListSuccessApiResponse,
+  CalculatorResponse,
+  CalculatorResponseSuccessApiResponse,
+  HousingStockResponse,
+} from '../../../myApi';
 
-export async function getHousingStock(housingStockId = '') {
+export async function getHousingStock(housingStockId: number) {
   try {
-    const res = await axios.get(`HousingStocks/${housingStockId}`);
+    const res: HousingStockResponse = await axios.get(
+      `HousingStocks/${housingStockId}`
+    );
     return res;
   } catch (error) {
     console.log(error);
@@ -13,10 +22,13 @@ export async function getHousingStock(housingStockId = '') {
   }
 }
 
-export async function getCalculators(id = '') {
+export async function getCalculators(id: number) {
   try {
-    const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
-    return res;
+    const res: CalculatorListResponsePagedList = await axios.get(
+      `Calculators?Filter.HousingStockId=${id}`
+    );
+    const { items } = res;
+    return items;
   } catch (error) {
     console.log(error);
     throw {
