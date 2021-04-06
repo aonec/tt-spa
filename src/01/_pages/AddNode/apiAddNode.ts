@@ -4,7 +4,6 @@ import {
   CalculatorListResponsePagedListSuccessApiResponse,
   CalculatorResponse,
   CalculatorResponseSuccessApiResponse,
-  CreateNodeRequest,
   HousingStockResponse,
 } from '../../../myApi';
 
@@ -39,7 +38,7 @@ export async function getCalculators(id: number) {
   }
 }
 
-export async function addNodeFinal(form: CreateNodeRequest) {
+export async function addNodeFinal(form = {}) {
   try {
     const res = await axios.post('Nodes', form);
     alert('Узел успешно создан');

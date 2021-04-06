@@ -101,6 +101,7 @@ const AddNodeSecondTab = () => {
 
         <Form.Item label="Номер узла" style={styles.w49}>
           <InputTT
+            name="number"
             onBlur={handleBlur}
             onChange={handleChange}
             value={values.number}

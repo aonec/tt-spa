@@ -1,10 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
+  magistrals,
+  housingMeteringDeviceTypes,
+  isConnected,
   serviceZoneList,
   nodeStatusList,
   resources,
@@ -12,25 +16,48 @@ import {
 import {
   IconTT,
   Title,
+  SelectTT,
+  InputTT,
+  DatePickerTT,
   StyledModalBody,
   ButtonTT,
   StyledFooter,
+  Icon,
+  Warning,
+  styles,
+  StyledFormPage,
 } from '../../../../../tt-components';
 
+import { ListItem, ListWrap } from '../../../../../tt-components/List';
 import { addNodeFinal } from '../../../apiAddNode';
 import { Redirect, useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../../AddNodeContext';
-import { CreateNodeRequest } from '../../../../../../myApi';
 
-const AddNodeForm = (props: any) => {
+const AddNodeForm = (props) => {
   const history = useHistory();
   const { handleCancel } = props;
 
   const {
+    currentTabKey,
+    setTab,
+    handleChangeTab,
+    handleNext,
     node,
+    setNode,
     housingStockId,
+    calculators,
     calculatorsExtended,
+    addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
     communicationPipes,
+    setCommunicationPipes,
+    housingStock,
+    stepsArr,
+    isEmpty,
+    addNode,
+    setAddNode,
   } = useContext(AddNodeContext);
 
   console.log('node', node);
@@ -48,6 +75,7 @@ const AddNodeForm = (props: any) => {
   } = node;
 
   const calculator = _.find(calculatorsExtended, { id: calculatorId });
+  // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
 
@@ -60,11 +88,10 @@ const AddNodeForm = (props: any) => {
   const getNodeResource =
     _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
   const devicesList = _.flatten(
-    communicationPipes ||
-      [].map((communicationPipe) => {
-        const { devices } = communicationPipe;
-        return devices || [].map((device) => device);
-      })
+    communicationPipes.map((communicationPipe) => {
+      const { devices } = communicationPipe;
+      return devices.map((device) => device);
+    })
   );
 
   console.log('node', node);
@@ -73,7 +100,16 @@ const AddNodeForm = (props: any) => {
 
   const initialValues = { communicationPipes };
 
-  const { handleSubmit, values } = useFormik({
+  const {
+    handleSubmit,
+    handleChange,
+    values,
+    touched,
+    errors,
+    handleBlur,
+    setFieldValue,
+    setValues,
+  } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async () => {
@@ -82,7 +118,7 @@ const AddNodeForm = (props: any) => {
         communicationPipes: values.communicationPipes,
       };
       console.log(form);
-      const addNodeForm: CreateNodeRequest = { ...node, communicationPipes };
+      const addNodeForm = { ...node, communicationPipes };
       console.log('addNodeForm', addNodeForm);
       console.log('addNodeForm', JSON.stringify(addNodeForm));
       console.log(history);
@@ -90,6 +126,8 @@ const AddNodeForm = (props: any) => {
       addNodeFinal(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
         history.push(`/objects/${housingStockId}`);
+        // setTimeout(handleCancel, 1000);
+        // return <Redirect to={`/objects/${housingStockId}`} />
       });
     },
   });
@@ -167,7 +205,7 @@ const AddNodeForm = (props: any) => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {devicesList.map((device: any) => {
+        {devicesList.map((device) => {
           const { closingDate, model, serialNumber, pipe } = device;
           const { pipeNumber } = pipe;
           return (

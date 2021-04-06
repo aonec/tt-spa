@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-
-export const AddNodeContext = React.createContext<any>({});
+import { CalculatorResponse, TaskListResponse } from '../../../myApi';
 
 export interface AddNodeContextInterface {
   handleCancel?: any;
@@ -25,3 +24,13 @@ export interface AddNodeContextInterface {
   addNode?: any;
   setAddNode?: any;
 }
+
+export const AddNodeContext = React.createContext<AddNodeContextInterface>({});
+
+// deregister?: boolean;
+// setDeregister?: Dispatch<SetStateAction<boolean>>;
+// report?: boolean;
+// setReport?: Dispatch<SetStateAction<boolean>>;
+// check?: boolean;
+// setCheck?: Dispatch<SetStateAction<boolean>>;
+// tasks?: TaskListResponse[] | null;

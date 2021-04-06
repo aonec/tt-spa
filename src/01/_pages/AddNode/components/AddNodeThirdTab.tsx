@@ -30,6 +30,7 @@ const AddNodeThirdTab = () => {
     communicationPipes,
     node,
     setAddNode,
+    setNode,
     addNode,
   } = useContext(AddNodeContext);
 
@@ -55,7 +56,9 @@ const AddNodeThirdTab = () => {
       const form = {
         communicationPipes: values.communicationPipes,
       };
-
+      const nodeForm = { ...node, ...form };
+      console.log('nodeForm', nodeForm);
+      setNode(nodeForm);
       setAddNode(true);
     },
   });
