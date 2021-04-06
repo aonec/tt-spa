@@ -41,6 +41,7 @@ import {
   items,
 } from '../../../tt-components/localBases';
 import _ from 'lodash';
+import { AlertInterface } from '../../../tt-components/interfaces';
 
 interface EditCalculatorFormInterface {
   calculator: CalculatorResponse;
@@ -126,8 +127,6 @@ const EditCalculatorForm = ({
         id: number | null | undefined;
       }
 
-      // console.log('id', id);
-
       console.log('form', form);
       putCalculator(id, form).then(({ show, id }: any) => {
         console.log('show', show);
@@ -186,10 +185,6 @@ const EditCalculatorForm = ({
       }
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
-
-  interface AlertInterface {
-    name: string;
-  }
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

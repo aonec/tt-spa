@@ -1,25 +1,17 @@
-import {
-  ButtonTT,
-  Header,
-  StyledFooter,
-  StyledModal,
-  StyledModalBody,
-  Title,
-} from '../../../tt-components';
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Link } from 'react-router-dom';
+import { StyledFooter, StyledModal, StyledModalBody } from '../Modal';
+import ButtonTT from '../ButtonTT';
 
 interface ModalCalculatorExistInstance {
-  existCalculator: number | undefined | null;
-  setExistCalculator: Dispatch<SetStateAction<number | undefined | null>>;
+  existDevice: number | undefined | null;
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ModalCalculatorExist = ({
-  existCalculator,
-  setExistCalculator,
+export const ModalDeviceExists = ({
+  existDevice,
   visible,
   setVisible,
 }: ModalCalculatorExistInstance) => {
@@ -36,14 +28,14 @@ export const ModalCalculatorExist = ({
       onOk={handleCancel}
     >
       <StyledModalBody>
-        <Header>
+        <h2>
           В системе уже есть устройство с совпадающими настройками соединения
-        </Header>
-        {existCalculator === null ? null : (
+        </h2>
+        {existDevice ? (
           <Link
-            to={`/calculators/${existCalculator}`}
-          >{`Вычислитель с id: ${existCalculator}`}</Link>
-        )}
+            to={`/calculators/${existDevice}`}
+          >{`Вычислитель с id: ${existDevice}`}</Link>
+        ) : null}
       </StyledModalBody>
       <StyledFooter>
         <ButtonTT color={'white'} type="button" onClick={handleCancel}>
@@ -62,4 +54,4 @@ export const ModalCalculatorExist = ({
   );
 };
 
-export default ModalCalculatorExist;
+export default ModalDeviceExists;

@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 interface Props {
   name: string;
-  size: string;
+  size?: string;
   small?: boolean;
   big?: boolean;
   color: string;

@@ -19,7 +19,12 @@ interface TabsInterface {
   visible?: boolean;
 }
 
-export default ({ tabItems, tabsType, activeKey, visible }: TabsInterface) => {
+export default ({
+  tabItems,
+  tabsType,
+  activeKey,
+  visible = true,
+}: TabsInterface) => {
   const params = useParams<Array<string>>();
 
   function callback(key: string) {

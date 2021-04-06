@@ -24,15 +24,14 @@ export async function putOdpu(
   form: UpdateHousingMeteringDeviceRequest
 ) {
   try {
-    const res = await axios.put<MeteringDeviceResponseSuccessApiResponse>(
-      `HousingMeteringDevices/${deviceId}`,
-      form
-    );
+    const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
     alert('ОДПУ успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
-    alert('Что-то пошло не так: попробуйте проверить все данные');
-    throw new Error(error);
+    const handleError = error.response.data.error;
+    const { Data } = handleError;
+    const { id } = Data;
+    console.log('id = ', id);
+    return { show: true, id: id };
   }
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
 import EditCalculatorTabs from './components/EditCalculatorTabs';
@@ -8,14 +7,14 @@ import { getCalculator } from './components/apiEditCalculator';
 import { CalculatorResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
-import ModalCalculatorExist from './components/ModalCalculatorExist';
 import { Loader } from '../../components';
+import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 
 export const EditCalculator = () => {
   const { deviceId } = useParams();
   const [tab, setTab] = useState<string>('1');
   const [alert, setAlert] = useState<boolean>(false);
-  const [existCalculator, setExistCalculator] = useState<
+  const [existDevice, setExistCalculator] = useState<
     number | null | undefined
   >();
 
@@ -52,9 +51,8 @@ export const EditCalculator = () => {
             setAlert={setAlert}
             setExistCalculator={setExistCalculator}
           />
-          <ModalCalculatorExist
-            existCalculator={existCalculator}
-            setExistCalculator={setExistCalculator}
+          <ModalDeviceExists
+            existDevice={existDevice}
             setVisible={setAlert}
             visible={alert}
           />

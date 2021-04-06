@@ -10,10 +10,13 @@ import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import Header from './components/Header';
 import EditOdpuContext from './components/EditOdpuContext';
+import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 
 const EditODPU = () => {
   const { deviceId } = useParams();
   const [currentTabKey, setTab] = useState('1');
+  const [existDevice, setExistDevice] = useState();
+  const [alert, setAlert] = useState(false);
   const {
     data: device,
     status,
@@ -55,6 +58,13 @@ const EditODPU = () => {
         currentTabKey={currentTabKey}
         device={device}
         setTab={setTab}
+        setAlert={setAlert}
+        setExistDevice={setExistDevice}
+      />
+      <ModalDeviceExists
+        existDevice={existDevice}
+        setVisible={setAlert}
+        visible={alert}
       />
     </EditOdpuContext.Provider>
   );
