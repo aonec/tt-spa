@@ -38,25 +38,11 @@ interface CalculatorExistAlert {
 const CalculatorExistAlert = ({ visible }: CalculatorExistAlert) => {
   console.log('CalculatorExistAlert');
   return null;
-  // <StyledModal width="800" visible={visible}>
-  //   <StyledModalBody>
-  //     <Header>
-  //       В системе уже есть устройство с совпадающими настройками соединения
-  //     </Header>
-  //     <p>Пожалуйста, измените настройки соединения для данного устройства</p>
-  //   </StyledModalBody>
-  //   <StyledFooter>
-  //     <ButtonTT color={'white'}>Отмена</ButtonTT>
-  //     <ButtonTT color={'red'} big>
-  //       Изменить настройки соединения
-  //     </ButtonTT>
-  //   </StyledFooter>
-  // </StyledModal>
 };
 
 export async function getNode(id: number) {
   try {
-    const res = await axios.get<NodeResponse>(`Nodes/${id}`);
+    const res = await axios.get<any, NodeResponse>(`Nodes/${id}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -69,7 +55,7 @@ export async function getNode(id: number) {
 
 export async function getCalculator(id: number) {
   try {
-    const res = await axios.get<CalculatorResponse>(`Calculators/${id}`);
+    const res = await axios.get<any, CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
     console.log(error);

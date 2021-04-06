@@ -1,6 +1,7 @@
 import axios from '../../../../axios';
+import { CreateCalculatorRequest } from '../../../../../myApi';
 
-export async function addCalculator(form) {
+export async function addCalculator(form: CreateCalculatorRequest) {
   try {
     const res = await axios.post('Calculators', form);
     alert('Вычислитель успешно создан !');
@@ -8,7 +9,7 @@ export async function addCalculator(form) {
   } catch (error) {
     throw {
       resource: 'tasks',
-      message: 'Произошла ошибка при загрузке данных по задачам',
+      message: 'Произошла ошибка при создании вычислителя',
     };
   }
 }

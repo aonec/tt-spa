@@ -1,16 +1,11 @@
 import React from 'react';
 import { Switch } from 'antd';
 
-function onChange(checked) {
-  console.log(`switch to ${checked}`);
-}
-
 const styles = {
-  width: '48px',
+  width: 48,
 };
 
 const SwitchTT = () => {
-  console.log('SwitchTT');
   return (
     <div
       style={{
@@ -18,7 +13,7 @@ const SwitchTT = () => {
         alignItems: 'center',
       }}
     >
-      <Switch style={styles} defaultChecked onChange={onChange} />
+      <Switch style={styles} defaultChecked />
       <span
         style={{
           fontSize: '16px',

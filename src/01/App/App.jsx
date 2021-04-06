@@ -6,7 +6,7 @@ import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import moment from 'moment';
-
+import { YMInitializer } from 'react-yandex-metrika';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';
@@ -169,6 +169,7 @@ export function App() {
     <Provider store={store}>
       <AppProvider>
         <ConfigProvider locale={ruRu}>
+          <YMInitializer accounts={[75258859]} />
           <YMaps>
             <Internal />
           </YMaps>

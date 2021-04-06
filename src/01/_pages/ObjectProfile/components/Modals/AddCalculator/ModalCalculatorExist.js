@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { AddCalculatorContext } from './index';
 
 export const ModalCalculatorExist = (props) => {
-  const { alertVisible, setAlertVisible, existCalculator } = useContext(
+  const { alertVisible, setAlertVisible, existDevice } = useContext(
     AddCalculatorContext
   );
   function handleCancel() {
@@ -30,10 +30,10 @@ export const ModalCalculatorExist = (props) => {
         <Header>
           В системе уже есть устройство с совпадающими настройками соединения
         </Header>
-        {existCalculator === null ? null : (
+        {existDevice === null ? null : (
           <Link
-            to={`/calculators/${existCalculator}`}
-          >{`Вычислитель с id: ${existCalculator}`}</Link>
+            to={`/calculators/${existDevice}`}
+          >{`Вычислитель с id: ${existDevice}`}</Link>
         )}
       </StyledModalBody>
       <StyledFooter>

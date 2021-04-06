@@ -1616,8 +1616,8 @@ export interface CheckDeviceRequest {
   futureCheckingDate: string;
 }
 
-export interface NodeResponseListSuccessApiResponse {
-  successResponse: NodeResponse[] | null;
+export interface NodeResponseSuccessApiResponse {
+  successResponse: NodeResponse;
 }
 
 export interface UpdateNodeRequest {
@@ -1637,8 +1637,8 @@ export interface UpdateNodeRequest {
   calculatorId?: number | null;
 }
 
-export interface NodeResponseSuccessApiResponse {
-  successResponse: NodeResponse;
+export interface NodeResponseListSuccessApiResponse {
+  successResponse: NodeResponse[] | null;
 }
 
 export interface CommunicationPipeRequest {
@@ -2515,28 +2515,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsTestList
-     * @request GET:/api/DataMigrations/Test
-     * @secure
-     */
-    dataMigrationsTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/Test`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
      * @name DataMigrationsMigrateList
      * @request GET:/api/DataMigrations/Migrate
      * @secure
      */
     dataMigrationsMigrateList: (
-      query?: { method?: DataMigrationMethod; saveChanges?: boolean },
+      query?: { method?: DataMigrationMethod; args?: string | null; saveChanges?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
@@ -3380,7 +3364,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     nodesDetail: (nodeId: number, params: RequestParams = {}) =>
-      this.request<NodeResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}`,
         method: "GET",
         secure: true,

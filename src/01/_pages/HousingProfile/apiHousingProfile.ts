@@ -3,9 +3,10 @@ import { HousingMeteringDeviceResponse, TasksPagedList } from '../../../myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    return await axios.get<HousingMeteringDeviceResponse>(
+    const res = await axios.get<any, HousingMeteringDeviceResponse>(
       `HousingMeteringDevices/${id}`
     );
+    return res;
   } catch (error) {
     console.log(error);
     throw {
