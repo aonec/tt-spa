@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
@@ -13,9 +12,9 @@ import {
   StyledFormPage,
 } from '../../../tt-components';
 import RelatedDevices from './RelatedDevices';
-import { AddNodeContext } from '../index';
 import ModalAddDevice from '../modals/ModalAddDevice';
 import ModalAddNode from '../modals/ModalAddNode';
+import { AddNodeContext } from '../AddNodeContext';
 
 const AddNodeThirdTab = () => {
   const {

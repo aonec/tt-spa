@@ -28,10 +28,10 @@ import {
   StyledFormPage,
 } from '../../../../../tt-components';
 
-import { AddNodeContext } from '../../../index';
 import { ListItem, ListWrap } from '../../../../../tt-components/List';
 import { addNodeFinal } from '../../../apiAddNode';
 import { Redirect, useHistory } from 'react-router-dom';
+import { AddNodeContext } from '../../../AddNodeContext';
 
 const AddNodeForm = (props) => {
   const history = useHistory();

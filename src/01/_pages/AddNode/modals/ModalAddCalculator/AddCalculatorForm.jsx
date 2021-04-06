@@ -26,7 +26,7 @@ import {
   emptyConnectionValidationSchema,
 } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
-import { AddNodeContext } from '../../index';
+import { AddNodeContext } from '../../AddNodeContext';
 
 const AddCalculatorForm = (props) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);

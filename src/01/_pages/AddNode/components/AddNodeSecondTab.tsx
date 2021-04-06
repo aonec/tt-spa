@@ -18,17 +18,15 @@ import {
   styles,
   StyledFormPage,
 } from '../../../tt-components';
-import { AddNodeContext } from '../index';
 import { addNodeValidationSchema } from './validationSchemas';
+import { AddNodeContext } from '../AddNodeContext';
+import { AlertInterface } from '../../../tt-components/interfaces';
 
-const AddNodeFirstTab = () => {
+const AddNodeSecondTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    setTab,
-    handleChangeTab,
     handleNext,
-    node,
     setNode,
     isEmpty,
   } = useContext(AddNodeContext);
@@ -53,6 +51,8 @@ const AddNodeFirstTab = () => {
       nodeStatus: nodeStatusList[0].value,
       lastCheckingDate: undefined,
       futureCheckingDate: undefined,
+      lastCommercialAccountingDate: undefined,
+      futureCommercialAccountingDate: undefined,
     },
     validationSchema,
     onSubmit: async () => {
@@ -65,7 +65,7 @@ const AddNodeFirstTab = () => {
         futureCheckingDate: values.futureCheckingDate,
       };
       console.log('AddNodeFirstTab', form);
-      setNode((prevState) => ({
+      setNode((prevState: any) => ({
         ...prevState,
         ...form,
       }));
@@ -74,14 +74,14 @@ const AddNodeFirstTab = () => {
   });
 
   useEffect(() => {
-    setValues((prevValues) => ({
+    setValues((prevValues: any) => ({
       ...prevValues,
       lastCheckingDate: moment().toISOString(),
       futureCheckingDate: moment().add(1, 'years').toISOString(),
     }));
   }, []);
 
-  const Alert = ({ name }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -91,7 +91,7 @@ const AddNodeFirstTab = () => {
   };
 
   return (
-    <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
+    <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Общие данные
@@ -165,7 +165,7 @@ const AddNodeFirstTab = () => {
                 onChange={(date) => {
                   setFieldValue(
                     'lastCommercialAccountingDate',
-                    date.toISOString()
+                    date?.toISOString()
                   );
                 }}
                 value={moment(values.lastCommercialAccountingDate)}
@@ -185,7 +185,7 @@ const AddNodeFirstTab = () => {
                 onChange={(date) => {
                   setFieldValue(
                     'futureCommercialAccountingDate',
-                    date.toISOString()
+                    date?.toISOString()
                   );
                 }}
                 value={moment(values.futureCommercialAccountingDate)}
@@ -204,7 +204,7 @@ const AddNodeFirstTab = () => {
           type="button"
           color="white"
           onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
@@ -213,4 +213,4 @@ const AddNodeFirstTab = () => {
   );
 };
 
-export default AddNodeFirstTab;
+export default AddNodeSecondTab;

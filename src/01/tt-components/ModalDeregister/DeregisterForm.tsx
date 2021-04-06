@@ -6,6 +6,7 @@ import { StyledFooter, StyledModalBody } from '../Modal';
 import { DatePickerTT } from '../DatePicker';
 import Header from '../Header';
 import ButtonTT from '../ButtonTT';
+import { CloseDeviceRequest } from '../../../myApi';
 
 const ModalCalculatorDeregisterForm = ({
   handleCancel,
@@ -27,15 +28,15 @@ const ModalCalculatorDeregisterForm = ({
   } = form;
 
   const initialValues = {
-    closingDateTime: moment(),
+    closingDate: moment(),
     documentsIds: [],
     deviceId: device.id,
   };
 
   const onFinish = () => {
     console.log('onFinish');
-    const form = {
-      closingDateTime: getFieldValue('closingDateTime').toISOString(),
+    const form: CloseDeviceRequest = {
+      closingDate: getFieldValue('closingDate').toISOString(),
       documentsIds: [],
       deviceId: id,
     };
@@ -64,7 +65,7 @@ const ModalCalculatorDeregisterForm = ({
         <Header>{`Вы действительно хотите снять ${model} (${serialNumber}) с учета?`}</Header>
         <Form.Item
           label="Дата снятия прибора с учета"
-          name="closingDateTime"
+          name="closingDate"
           rules={[
             { required: true, message: 'Выберите Дата снятия прибора с учета' },
           ]}
