@@ -24,7 +24,7 @@ export async function putOdpu(
   form: UpdateHousingMeteringDeviceRequest
 ) {
   try {
-    const res = await axios.put<MeteringDeviceResponseSuccessApiResponse>(
+    const res: MeteringDeviceResponseSuccessApiResponse = await axios.put(
       `HousingMeteringDevices/${deviceId}`,
       form
     );

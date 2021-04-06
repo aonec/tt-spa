@@ -124,6 +124,7 @@ const FormEditODPU = ({
           nodeId: Number(values.nodeId),
         },
       };
+
       putOdpu(id, form).then((res) => {
         console.log(res);
       });
