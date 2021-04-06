@@ -1,6 +1,6 @@
 import axios from '../../../../axios';
 
-export async function getObjectCalculators(id = '') {
+export async function getObjectCalculators(id: number) {
   try {
     const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
     return res;
@@ -13,7 +13,7 @@ export async function getObjectCalculators(id = '') {
   }
 }
 
-export async function getCalculator(id = '') {
+export async function getCalculator(id: number) {
   try {
     const res = await axios.get(`Calculators/${id}`);
     return res;
@@ -22,20 +22,6 @@ export async function getCalculator(id = '') {
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
-    };
-  }
-}
-
-export async function addOdpu(form) {
-  try {
-    const res = await axios.post('HousingMeteringDevices', form);
-    alert('ОДПУ успешно создан !');
-    return res;
-  } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка добавления ОДПУ',
     };
   }
 }

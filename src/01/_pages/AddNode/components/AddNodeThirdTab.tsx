@@ -30,6 +30,7 @@ const AddNodeThirdTab = () => {
     communicationPipes,
     node,
     setAddNode,
+    addNode,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
@@ -51,17 +52,11 @@ const AddNodeThirdTab = () => {
     validationSchema,
 
     onSubmit: async () => {
+      const form = {
+        communicationPipes: values.communicationPipes,
+      };
+
       setAddNode(true);
-      // const form = {
-      //   communicationPipes: values.communicationPipes,
-      // };
-      // console.log(form);
-      //
-      // const addNodeForm = { ...node, communicationPipes };
-      // console.log('addNodeForm', addNodeForm);
-      // addNode(addNodeForm).then((res)=>{
-      //     console.log("addNodeFormResponseFromServer", res)
-      // })
     },
   });
 
@@ -99,7 +94,7 @@ const AddNodeThirdTab = () => {
           type="button"
           color="white"
           onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
