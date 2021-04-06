@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Steps } from 'antd';
 import styled from 'styled-components';
-import { AddNodeContext } from '../../_pages';
+import { AddNodeContext } from '../../_pages/AddNode/AddNodeContext';
 
 const { Step } = Steps;
 
