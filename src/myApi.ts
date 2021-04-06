@@ -2515,28 +2515,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsTestList
-     * @request GET:/api/DataMigrations/Test
-     * @secure
-     */
-    dataMigrationsTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/Test`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
      * @name DataMigrationsMigrateList
      * @request GET:/api/DataMigrations/Migrate
      * @secure
      */
     dataMigrationsMigrateList: (
-      query?: { method?: DataMigrationMethod; saveChanges?: boolean },
+      query?: { method?: DataMigrationMethod; args?: string | null; saveChanges?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
