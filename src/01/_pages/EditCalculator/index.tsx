@@ -8,7 +8,7 @@ import { getCalculator } from './components/apiEditCalculator';
 import { CalculatorResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
-import ModalCalculatorExist from './components/ModalCalculatorExist';
+import ModalDeviceExist from './components/ModalDeviceExist';
 import { Loader } from '../../components';
 
 export const EditCalculator = () => {
@@ -52,7 +52,7 @@ export const EditCalculator = () => {
             setAlert={setAlert}
             setExistCalculator={setExistCalculator}
           />
-          <ModalCalculatorExist
+          <ModalDeviceExist
             existCalculator={existCalculator}
             setExistCalculator={setExistCalculator}
             setVisible={setAlert}
