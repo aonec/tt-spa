@@ -16,9 +16,10 @@ interface TabsInterface {
   tabItems: Array<TabsItemInterface>;
   tabsType: 'route' | 'tabs';
   activeKey?: string;
+  visible?: boolean;
 }
 
-export default ({ tabItems, tabsType, activeKey }: TabsInterface) => {
+export default ({ tabItems, tabsType, activeKey, visible }: TabsInterface) => {
   const params = useParams<Array<string>>();
 
   function callback(key: string) {
@@ -27,7 +28,7 @@ export default ({ tabItems, tabsType, activeKey }: TabsInterface) => {
   }
 
   return (
-    <StyledTabs>
+    <StyledTabs hidden={!visible}>
       <Tabs
         defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
         onChange={callback}

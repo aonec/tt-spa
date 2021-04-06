@@ -11,20 +11,12 @@ import Documents from './components/Documents';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
 import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
-import {
-  CalculatorResponse,
-  TaskListResponse,
-  TasksPagedListSuccessApiResponse,
-} from '../../../myApi';
+import { CalculatorResponse, TaskListResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import RelatedDevices from './components/RelatedDevices';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import { useAsync } from '../../hooks/useAsync';
-import {
-  getHousingMeteringDevice,
-  getHousingTasks,
-} from '../HousingProfile/apiHousingProfile';
 import { CalculatorProfileContext } from './CalculatorProfileContext';
 
 export const CalculatorProfile = () => {

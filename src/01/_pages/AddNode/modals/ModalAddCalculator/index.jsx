@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import '../../../../tt-components/antd.scss';
 import AddCalculatorForm from './AddCalculatorForm';
 import { StyledModal } from '../../../../tt-components';
-import { AddNodeContext } from '../../index';
+import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddCalculator = (props) => {
   const { addCalculator, setAddCalculator, housingStockId } = useContext(

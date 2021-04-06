@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
-import { AddNodeContext } from '../index';
+import { AddNodeContext } from '../AddNodeContext';
 
 export const RelatedDevices = () => {
   const { communicationPipes, setCommunicationPipes } = useContext(
