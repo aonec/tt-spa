@@ -27,7 +27,7 @@ export const NodeProfile = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
-  const { data: node, status, run } = useAsync<NodeResponse>();
+  const { data: node, status, run } = useAsync<NodeResponse | null>();
   const {
     data: calculator,
     status: statusCalculator,
@@ -39,6 +39,7 @@ export const NodeProfile = () => {
   }, [nodeId]);
 
   useEffect(() => {
+    debugger;
     node && node.calculatorId
       ? runCalculator(getCalculator(node.calculatorId))
       : console.log('wait');

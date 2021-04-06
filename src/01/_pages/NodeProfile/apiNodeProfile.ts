@@ -7,7 +7,7 @@ import {
 
 export async function getNode(id: number) {
   try {
-    const res = await axios.get<NodeResponse[] | null>(`Nodes/${id}`);
+    const res = await axios.get<any, NodeResponse | null>(`Nodes/${id}`);
     return res;
   } catch (error) {
     console.log(error);
@@ -20,7 +20,7 @@ export async function getNode(id: number) {
 
 export async function getCalculator(id: number) {
   try {
-    const res = await axios.get<CalculatorResponse>(`Calculators/${id}`);
+    const res = await axios.get<any, CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
     console.log(error);

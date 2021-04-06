@@ -1,9 +1,11 @@
 import axios from '../../axios';
-import { TasksPagedList } from '../../../myApi';
+import { IndividualDeviceResponse, TasksPagedList } from '../../../myApi';
 
 export async function getIndividualDevice(id: number) {
   try {
-    const res = await axios.get(`IndividualDevices/${id}`);
+    const res = await axios.get<any, IndividualDeviceResponse>(
+      `IndividualDevices/${id}`
+    );
     // console.log(`IndividualDevices/${id}`, res);
     return res;
   } catch (error) {
