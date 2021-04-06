@@ -128,12 +128,12 @@ const EditCalculatorForm = ({
       }
 
       console.log('form', form);
-      putCalculator(id, form).then(({ show, id }: any) => {
+      putCalculator(id, form).then(({ show, id : existDeviceId }: any) => {
         console.log('show', show);
-        console.log('id', id);
+        console.log('id', existDeviceId) ;
         if (show) {
           setAlert(true);
-          setExistCalculator(id);
+          setExistCalculator(existDeviceId);
         }
       });
     },

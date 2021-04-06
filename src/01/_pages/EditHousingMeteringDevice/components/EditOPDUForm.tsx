@@ -129,12 +129,12 @@ const FormEditODPU = ({
           nodeId: Number(values.nodeId),
         },
       };
-      putOdpu(id, form).then(({ show, id }: any) => {
+      putOdpu(id, form).then(({ show, id :existDeviceId }: any) => {
         console.log('show', show);
-        console.log('id', id);
+        console.log('id', existDeviceId) ;
         if (show) {
           setAlert(true);
-          setExistDevice(id);
+          setExistDevice(existDeviceId);
         }
       });
 
