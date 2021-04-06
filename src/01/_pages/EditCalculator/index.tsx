@@ -8,8 +8,8 @@ import { getCalculator } from './components/apiEditCalculator';
 import { CalculatorResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
-import ModalDeviceExist from './components/ModalDeviceExist';
 import { Loader } from '../../components';
+import ModalDeviceExist from '../../tt-components/ModalDeviceExist';
 
 export const EditCalculator = () => {
   const { deviceId } = useParams();

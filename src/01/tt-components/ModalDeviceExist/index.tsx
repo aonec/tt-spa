@@ -33,11 +33,11 @@ export const ModalDeviceExist = ({
         <h2>
           В системе уже есть устройство с совпадающими настройками соединения
         </h2>
-        {existCalculator === null ? null : (
+        {existCalculator ? (
           <Link
             to={`/calculators/${existCalculator}`}
           >{`Вычислитель с id: ${existCalculator}`}</Link>
-        )}
+        ) : null}
       </StyledModalBody>
       <StyledFooter>
         <ButtonTT color={'white'} type="button" onClick={handleCancel}>
