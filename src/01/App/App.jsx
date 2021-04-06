@@ -35,7 +35,7 @@ import {
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
-import EditODPU from '../_pages/EditODPU';
+import EditODPU from '../_pages/EditHousingMeteringDevice';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';

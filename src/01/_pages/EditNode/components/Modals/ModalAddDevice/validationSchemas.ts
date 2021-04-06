@@ -1,8 +1,6 @@
 import * as Yup from 'yup';
+import { string } from 'yup';
 
-const yupDate = Yup.date()
-  .typeError('Поле обязательное')
-  .required('Поле обязательное');
 const yupSerialNumber = Yup.string()
   .min(3, 'Серийный номер должен быть длиннее трех символов')
   .required('Введите серийный номер');
@@ -31,7 +29,12 @@ const yupModel = Yup.string()
   .min(3, 'Модель должна быть длиннее трех символов')
   .required('Введите модель');
 
+const yupHousingMeteringDeviceType = Yup.string().required(
+  'Выберите тип устройства'
+);
+
 export const validationSchemaFlowMeter = Yup.object({
+  housingMeteringDeviceType: yupHousingMeteringDeviceType,
   model: yupModel,
   serialNumber: yupSerialNumber,
   calculatorId: yupCalculatorId,
@@ -40,6 +43,7 @@ export const validationSchemaFlowMeter = Yup.object({
   diameter: yupDiameter,
 });
 export const validationSchemaTemperatureSensor = Yup.object({
+  housingMeteringDeviceType: yupHousingMeteringDeviceType,
   model: yupModel,
   serialNumber: yupSerialNumber,
   calculatorId: yupCalculatorId,

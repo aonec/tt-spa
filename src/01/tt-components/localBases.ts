@@ -203,7 +203,18 @@ export const DEFAULT_BUILDING = {
   id: null,
 };
 
+export const DEFAULT_NODE = {
+  futureCommercialAccountingDate: '',
+  lastCommercialAccountingDate: '',
+  nodeStatus: '',
+  number: null,
+  resource: '',
+  serviceZone: '',
+  communicationPipes: [],
+};
+
 export const DEFAULT_CALCULATOR = {
+  id: null,
   model: '',
   serialNumber: '',
   resource: '',
@@ -219,6 +230,13 @@ export const DEFAULT_CALCULATOR = {
     deviceAddress: null,
   },
   nodes: [],
+  address: {
+    city: '',
+    street: '',
+    corpus: '',
+    number: '',
+    housingStockNumber: null,
+  },
 };
 
 export const periodList = [
@@ -246,17 +264,17 @@ export const nodeStatusList = [
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon: 'ok',
+    icon: 'block',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon: 'ok',
+    icon: 'timer',
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
-    icon: 'ok',
+    icon: 'next',
   },
 ];
 

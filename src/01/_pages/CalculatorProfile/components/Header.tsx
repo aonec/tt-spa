@@ -5,9 +5,10 @@ import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { CalculatorResponse } from '../../../../myApi';
+import { Loader } from '../../../components';
 
 interface HeaderInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
   setReport: Dispatch<SetStateAction<boolean>>;
   setDeregister: Dispatch<SetStateAction<boolean>>;
   setCheck: Dispatch<SetStateAction<boolean>>;
@@ -20,6 +21,10 @@ export const Header = ({
   setCheck,
 }: HeaderInterface) => {
   const { push } = useHistory();
+
+  if (!device) {
+    return <Loader size={'32'} show />;
+  }
 
   const { address } = device || { address: DEFAULT_BUILDING };
   const { city, street, housingStockNumber, corpus, id } =
@@ -59,7 +64,7 @@ export const Header = ({
             setCheck(true);
           },
           show: show('CalculatorUpdate'),
-          color: 'red',
+          color: 'default',
         },
         {
           title: 'Закрыть вычислитель',

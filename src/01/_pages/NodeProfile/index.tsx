@@ -1,42 +1,38 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { Route, useParams, useRouteMatch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
-import Information from './components/Information';
-import RelatedDevices from './components/RelatedDevices';
-import { getCalculator, getNode } from './apiNodeProfile';
-import Connection from './components/Connection';
+import { getCalculator, getNode, getNodeTasks } from './apiNodeProfile';
 import Documents from './components/Documents';
-import { Tabs, Title } from '../../tt-components';
-import GraphView from '../Graph/components/GraphView';
 import Graph from '../Graph/Graph';
-import ModalAddDevice from './Modals/ModalAddDevice';
 import { useAsync } from '../../hooks/useAsync';
-import { CalculatorResponse, NodeResponse } from '../../../myApi';
-import Events from './components/Events';
+import {
+  CalculatorResponse,
+  NodeResponse,
+  TaskListResponse,
+} from '../../../myApi';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
-
-export interface MatchParams {
-  nodeId: string;
-}
+import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
+import Information from './components/Information';
+import NodeConnection from '../../tt-components/NodeConnection';
+import Tabs from '../../tt-components/Tabs';
+import { TabsItemInterface } from '../../tt-components/interfaces';
+import { Events } from '../../tt-components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
-  const [currentTab, setCurrentTab] = useState<string>('1');
+  const { push } = useHistory();
+  const path = `/nodes/${nodeId}`;
+  const [addDevice, setAddDevice] = useState(false);
+  const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
-  function handleChangeTab(value: string) {
-    setCurrentTab(value);
-  }
-
-  const [addOdpu, setAddOdpu] = useState(false);
-
+  const { data: node, status, run } = useAsync<NodeResponse>();
   const {
     data: calculator,
     status: statusCalculator,
     run: runCalculator,
   } = useAsync<CalculatorResponse>();
-  const { data: node, status, run } = useAsync<NodeResponse>();
 
   useEffect(() => {
     run(getNode(nodeId));
@@ -48,27 +44,74 @@ export const NodeProfile = () => {
       : console.log('wait');
   }, [node]);
 
-  if (!node || !calculator) {
-    return null;
+  useEffect(() => {
+    getNodeTasks(nodeId).then((res) => {
+      setTasks(res);
+    });
+  }, []);
+
+  if (!node || !calculator || !tasks) {
+    return <Loader size={'32'} show />;
   }
 
-  const path = `/nodes/${nodeId}`;
-
-  // const { resource } = node;
-
   if (status === 'error')
-    return <div style={{ background: 'red' }}>ОШИБКА</div>;
+    return (
+      <Alert
+        message="Ошибка"
+        description="На сервере произошла непредвиденная ошибка. Попробуйте перезагрузить страницу"
+        type="error"
+        showIcon
+        closable
+        style={{ marginBottom: 24, marginTop: 24 }}
+      />
+    );
 
   if (status === 'pending' || status === 'idle')
     return <Loader size={'32'} show />;
 
   const { resource, communicationPipes } = node;
-  const tabItems: Array<Array<string>> = [
-    ['Общая информация', ''],
-    ['Статистика', 'stats'],
-    ['Настройки соединения', 'connection'],
-    ['Подключенные приборы', 'related'],
-    ['Документы', 'documents'],
+
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        console.log('');
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Статистика',
+      key: 'stats',
+      cb: () => {
+        console.log('stats');
+        push(`${path}/stats`);
+      },
+    },
+    {
+      title: 'Настройки соединения',
+      key: 'connection',
+      cb: () => {
+        console.log('connection');
+        push(`${path}/connection`);
+      },
+    },
+    {
+      title: 'Подключенные приборы',
+      key: 'related',
+      cb: () => {
+        console.log('related');
+        push(`${path}/related`);
+      },
+    },
+    {
+      title: 'Документы приборы',
+      key: 'documents',
+      cb: () => {
+        console.log('documents');
+        push(`${path}/documents`);
+      },
+    },
   ];
 
   return (
@@ -76,10 +119,10 @@ export const NodeProfile = () => {
       <Header
         node={node}
         calculator={calculator}
-        setAddOdpu={setAddOdpu}
+        setAddDevice={setAddDevice}
         nodeId={nodeId}
       />
-      <Tabs tabItems={tabItems} path={path} />
+      <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={path} exact>
           <Information calculator={calculator} node={node} />
@@ -105,28 +148,17 @@ export const NodeProfile = () => {
           )}
         </Route>
         <Route path={`${path}/connection`} exact>
-          <Connection calculator={calculator} />
+          <NodeConnection calculator={calculator} edit={false} />
         </Route>
         <Route path={`${path}/related`} exact>
-          <RelatedDevices node={node} />
+          <NodeRelatedDevices node={node} />
         </Route>
         <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
-        {/*<Events title="Задачи с объектом" tasks={tasks} />*/}
+        <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>
-      <ModalAddDevice
-        addOdpu={addOdpu}
-        calculator={calculator}
-        node={node}
-        setAddOdpu={setAddOdpu}
-      />
     </>
   );
 };
 export default NodeProfile;
-
-// <>
-
-// ) : null}
-// </>

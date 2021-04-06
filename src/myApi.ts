@@ -216,6 +216,7 @@ export enum UserPermission {
   ReportRead = "ReportRead",
   ReportAdd = "ReportAdd",
   IndividualDeviceClose = "IndividualDeviceClose",
+  DataMigration = "DataMigration",
 }
 
 export interface TokenResponse {
@@ -349,16 +350,37 @@ export interface MeteringDeviceConnection {
   deviceAddress?: number | null;
 }
 
+export enum ResourceType {
+  None = "None",
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
+}
+
+export enum ServiceZone {
+  Apartments = "Apartments",
+  CommercialPremises = "CommercialPremises",
+  TechnicalPremises = "TechnicalPremises",
+  CommonUsageAreas = "CommonUsageAreas",
+  IntroductoryNode = "IntroductoryNode",
+}
+
 export interface HousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
   entryNumber: number | null;
 
   /** @format int32 */
-  hubNumber: number | null;
-
-  /** @format int32 */
   pipeNumber: number | null;
   magistral: string | null;
+}
+
+export enum HousingMeteringDeviceType {
+  None = "None",
+  FlowMeter = "FlowMeter",
+  TemperatureSensor = "TemperatureSensor",
+  WeatherController = "WeatherController",
+  PressureMeter = "PressureMeter",
 }
 
 export interface HousingMeteringDeviceListResponse {
@@ -385,16 +407,8 @@ export interface HousingMeteringDeviceListResponse {
   closingDate: string | null;
   hub: HousingMeteringDeviceHubConnectionResponse;
   diameter: string | null;
-  resource: string | null;
-  housingMeteringDeviceType: string | null;
-}
-
-export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
+  resource: ResourceType;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
 }
 
 export interface CommunicationPipeResponse {
@@ -406,9 +420,6 @@ export interface CommunicationPipeResponse {
 
   /** @format int32 */
   entryNumber: number;
-
-  /** @format int32 */
-  hubNumber: number | null;
   magistral: string | null;
   devices: HousingMeteringDeviceListResponse[] | null;
 }
@@ -421,7 +432,7 @@ export interface NodeResponse {
   number: number;
   nodeStatus: string | null;
   resource: ResourceType;
-  serviceZone: string | null;
+  serviceZone: ServiceZone;
 
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
@@ -431,6 +442,9 @@ export interface NodeResponse {
 
   /** @format int32 */
   calculatorId: number | null;
+
+  /** @format int32 */
+  housingStockId: number | null;
   communicationPipes: CommunicationPipeResponse[] | null;
 }
 
@@ -460,7 +474,6 @@ export interface CalculatorListResponse {
   isConnected: boolean | null;
   hasTasks: boolean | null;
   address: HousingStockAddressResponse;
-  hubs: HousingMeteringDeviceListResponse[] | null;
   nodes: NodeResponse[] | null;
 }
 
@@ -586,7 +599,6 @@ export interface CalculatorResponse {
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   address: HousingStockAddressResponse;
-  hubs: HousingMeteringDeviceListResponse[] | null;
 
   /** @format int32 */
   infoId: number | null;
@@ -693,6 +705,13 @@ export interface ContractorUpdateRequest {
   id?: number;
   name?: string | null;
   email?: string | null;
+}
+
+export enum DataMigrationMethod {
+  HousingStockNumberAndCorpus = "HousingStockNumberAndCorpus",
+  MeteringDeviceIsConnected = "MeteringDeviceIsConnected",
+  CommunicationPipeNumbers = "CommunicationPipeNumbers",
+  OldTasks = "OldTasks",
 }
 
 export interface DocumentResponse {
@@ -816,6 +835,12 @@ export interface HomeownersUpdateRequest {
   apartmentsToRemove?: number[] | null;
 }
 
+export enum MagistralType {
+  None = "None",
+  FeedFlow = "FeedFlow",
+  FeedBackFlow = "FeedBackFlow",
+}
+
 export interface PipeConnectionRequest {
   /** @format int32 */
   calculatorId: number;
@@ -824,11 +849,8 @@ export interface PipeConnectionRequest {
   entryNumber: number;
 
   /** @format int32 */
-  hubNumber?: number | null;
-
-  /** @format int32 */
   pipeNumber: number;
-  magistral: string;
+  magistral: MagistralType;
 
   /** @format int32 */
   nodeId: number;
@@ -848,8 +870,8 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
-  housingMeteringDeviceType?: string | null;
-  resource?: string | null;
+  housingMeteringDeviceType?: HousingMeteringDeviceType;
+  resource?: ResourceType;
   model?: string | null;
 
   /** @format int32 */
@@ -865,6 +887,9 @@ export interface HousingMeteringDeviceConnectionResponse {
 
   /** @format int32 */
   calculatorId: number;
+
+  /** @format int32 */
+  nodeId: number | null;
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection;
@@ -892,8 +917,8 @@ export interface HousingMeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   diameter: string | null;
-  resource: string | null;
-  housingMeteringDeviceType: string | null;
+  resource: ResourceType;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
   address: HousingStockAddressResponse;
   hubConnection: HousingMeteringDeviceConnectionResponse;
 }
@@ -917,8 +942,8 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate: string;
-  housingMeteringDeviceType: string;
-  resource: string;
+  housingMeteringDeviceType: HousingMeteringDeviceType;
+  resource: ResourceType;
   model: string;
 
   /** @format int32 */
@@ -1313,7 +1338,7 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format int32 */
   mountPlaceId?: number | null;
-  resource?: string | null;
+  resource?: ResourceType;
 
   /** @format int32 */
   apartmentId?: number | null;
@@ -1398,7 +1423,7 @@ export interface CreateIndividualDeviceRequest {
 
   /** @format int32 */
   apartmentId: number;
-  resource: string;
+  resource: ResourceType;
 
   /** @format int32 */
   mountPlaceId?: number | null;
@@ -1600,7 +1625,7 @@ export interface UpdateNodeRequest {
   number?: number;
   nodeStatus?: string | null;
   resource?: ResourceType;
-  serviceZone?: string | null;
+  serviceZone?: ServiceZone;
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
@@ -1622,9 +1647,6 @@ export interface CommunicationPipeRequest {
 
   /** @format int32 */
   entryNumber?: number;
-
-  /** @format int32 */
-  hubNumber?: number | null;
   magistral?: string | null;
   devices?: CreateHousingMeteringDeviceRequest[] | null;
 }
@@ -1634,7 +1656,7 @@ export interface CreateNodeRequest {
   number?: number;
   nodeStatus?: string | null;
   resource?: ResourceType;
-  serviceZone?: string | null;
+  serviceZone?: ServiceZone;
 
   /** @format date-time */
   lastCheckingDate?: string | null;
@@ -1645,14 +1667,6 @@ export interface CreateNodeRequest {
   /** @format int32 */
   calculatorId?: number | null;
   communicationPipes?: CommunicationPipeRequest[] | null;
-}
-
-export enum ServiceZone {
-  Apartments = "Apartments",
-  CommercialPremises = "CommercialPremises",
-  TechnicalPremises = "TechnicalPremises",
-  CommonUsageAreas = "CommonUsageAreas",
-  IntroductoryNode = "IntroductoryNode",
 }
 
 export interface ServiceZoneStringDictionaryItem {
@@ -2221,54 +2235,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Archives
-     * @name ArchivesGenerateHouseManagementsList
-     * @request GET:/api/Archives/GenerateHouseManagements
-     * @secure
-     */
-    archivesGenerateHouseManagementsList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/GenerateHouseManagements`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesTest2List
-     * @request GET:/api/Archives/Test2
-     * @secure
-     */
-    archivesTest2List: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/Test2`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Archives
-     * @name ArchivesTestList
-     * @request GET:/api/Archives/Test
-     * @secure
-     */
-    archivesTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Archives/Test`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Auth
      * @name AuthLoginCreate
      * @request POST:/api/Auth/login
@@ -2542,6 +2508,58 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsTestList
+     * @request GET:/api/DataMigrations/Test
+     * @secure
+     */
+    dataMigrationsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Test`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsMigrateList
+     * @request GET:/api/DataMigrations/Migrate
+     * @secure
+     */
+    dataMigrationsMigrateList: (
+      query?: { method?: DataMigrationMethod; saveChanges?: boolean },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Migrate`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsCreateAdminCreate
+     * @request POST:/api/DataMigrations/CreateAdmin
+     * @secure
+     */
+    dataMigrationsCreateAdminCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/CreateAdmin`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -3590,6 +3608,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ApartmentId?: number | null;
         HousingStockAddress?: string | null;
         HasChanged?: boolean | null;
+        NodeId?: number | null;
         PageNumber?: number;
         PageSize?: number;
       },

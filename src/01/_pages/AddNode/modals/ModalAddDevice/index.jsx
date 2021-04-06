@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddDeviceForm from './components/AddDeviceForm';
-import { AddNodeContext } from '../../index';
+import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddDevice = () => {
   const { setAddOdpu, addOdpu } = useContext(AddNodeContext);

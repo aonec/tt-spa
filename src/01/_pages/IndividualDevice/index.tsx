@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, useParams } from 'react-router-dom';
 import { Grid } from '01/_components';
 import {
@@ -14,10 +14,12 @@ import { useAsync } from '../../hooks/useAsync';
 import { IndividualDeviceResponse, TaskListResponse } from '../../../myApi';
 import { TabsIndividualDevice } from './components/Tabs';
 import Events from './components/Events';
+import ModalDeregister from '../../tt-components/ModalDeregister';
 
 export const IndividualDevice = () => {
   const { 0: deviceId } = useParams<ParamTypes>();
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
+  const [deregister, setDeregister] = useState(false);
   const { data: tasks, status: tasksStatus, run: tasksRun } = useAsync<
     TaskListResponse[] | null
   >();
@@ -63,6 +65,11 @@ export const IndividualDevice = () => {
             </Route>
             <Events title="Задачи с объектом" tasks={tasks} />
           </Grid>
+          <ModalDeregister
+            visible={deregister}
+            setVisible={setDeregister}
+            device={device}
+          />
         </>
       ) : null}
     </>

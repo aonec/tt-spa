@@ -5,16 +5,18 @@ import styled from 'styled-components';
 import { IconTT } from '../../../tt-components/IconTT';
 import { getDeviceTasks } from '../apiObjectProfile';
 import { Name, Serial } from '../../../tt-components';
-import { nodeStatusList } from '../../../tt-components/localBases';
-import { Button, Form, Tooltip } from 'antd';
-import { Icon } from '../../../_components/Icon/Icon';
+import {
+  nodeStatusList,
+  serviceZoneList,
+} from '../../../tt-components/localBases';
+import { Tooltip } from 'antd';
 
 function statusIcon(closingDate) {
-  return closingDate === null ? 'green' : 'red';
+  return !closingDate ? 'green' : 'red';
 }
 
 function status(closingDate) {
-  return closingDate === null ? 'Активен' : 'Не активен';
+  return !closingDate ? 'Активен' : 'Не активен';
 }
 
 export const Devices = ({ calculators }) => {
@@ -70,9 +72,12 @@ export const Devices = ({ calculators }) => {
       'Статус не определен';
     const getNodeIconStatus =
       _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
+
+    console.log('getNodeIconStatus', getNodeIconStatus);
     // const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
     // const getNodeIconStatus = _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
-
+    const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
+      .label;
     return (
       <Node>
         <NavLink to={`/nodes/${nodeId}`}>
@@ -80,7 +85,7 @@ export const Devices = ({ calculators }) => {
             <IconTT icon={resource.toLowerCase()} />
             <Name>{`Узел ${number}`}</Name>
           </NodeMainInfo>
-          <NodeZone>{serviceZone}</NodeZone>
+          <NodeZone>{serviceZoneText}</NodeZone>
         </NavLink>
         <Tooltip placement="topLeft" title={getNodeStatus} color={'#272F5A'}>
           <NodeStatus>

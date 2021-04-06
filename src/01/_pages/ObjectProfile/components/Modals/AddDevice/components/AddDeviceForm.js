@@ -52,7 +52,7 @@ const AddDeviceForm = (props) => {
     },
     {
       key: '2',
-      value: ['entryNumber', 'pipeNumber', 'hubNumber', 'calculatorId'],
+      value: ['entryNumber', 'pipeNumber', 'calculatorId'],
     },
   ];
 
@@ -83,7 +83,6 @@ const AddDeviceForm = (props) => {
       diameter: null,
       calculatorId: null,
       entryNumber: null,
-      hubNumber: null,
       pipeNumber: null,
       magistral: magistrals[0].value,
     },
@@ -104,7 +103,6 @@ const AddDeviceForm = (props) => {
         pipe: {
           calculatorId: values.calculatorId,
           entryNumber: values.entryNumber,
-          hubNumber: values.hubNumber || null,
           pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },
@@ -360,19 +358,6 @@ const AddDeviceForm = (props) => {
               disabled={disable}
             />
             <Alert name="entryNumber" />
-          </Form.Item>
-
-          <Form.Item label="Номер узла" style={styles.w49}>
-            <InputTT
-              name="hubNumber"
-              type="number"
-              placeholder="Номер узла"
-              onBlur={handleBlur}
-              value={values.hubNumber}
-              onChange={handleChange}
-              disabled={disable}
-            />
-            <Alert name="hubNumber" />
           </Form.Item>
 
           <Form.Item label="Номер трубы" style={styles.w49}>

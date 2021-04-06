@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { Form } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
@@ -13,17 +13,19 @@ import {
   StyledFormPage,
   styles,
 } from '../../../../../tt-components';
-import { DeviceContext } from '../../../CalculatorProfile';
 import { checkDevice } from './apiCheckDevice';
 import {
   yupDate,
   yupDeviceId,
 } from '../../../../../tt-components/yupTemplates';
+import { CalculatorResponse } from '../../../../../../myApi';
 
-const ModalCheckForm = (props: any) => {
-  const { handleCancel } = props;
-  const { device } = useContext(DeviceContext);
+interface ModalCheckFormInterface {
+  handleCancel: any;
+  device: CalculatorResponse;
+}
 
+const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
   const {
     handleSubmit,
     handleChange,
@@ -44,11 +46,6 @@ const ModalCheckForm = (props: any) => {
       futureCheckingDate: yupDate,
     }),
     onSubmit: async () => {
-      // const form: FormInterface = {
-      //     deviceId: values.deviceId,
-      //     currentCheckingDate: values.lastCheckingDate,
-      //     futureCheckingDate: values.futureCheckingDate,
-      // };
       const form = {
         deviceId: values.deviceId,
         currentCheckingDate: values.lastCheckingDate,

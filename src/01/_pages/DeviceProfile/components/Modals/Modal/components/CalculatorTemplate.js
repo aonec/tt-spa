@@ -22,7 +22,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 1,
-        hubNumber: null,
         pipeNumber: 0,
         magistral: 'FeedFlow',
       },
@@ -49,7 +48,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 1,
-        hubNumber: null,
         pipeNumber: 0,
         magistral: 'FeedFlow',
       },
@@ -76,7 +74,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 1,
-        hubNumber: null,
         pipeNumber: 1,
         magistral: 'FeedBackFlow',
       },
@@ -103,7 +100,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 2,
-        hubNumber: null,
         pipeNumber: 3,
         magistral: 'FeedFlow',
       },
@@ -130,7 +126,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 2,
-        hubNumber: null,
         pipeNumber: 3,
         magistral: 'FeedFlow',
       },
@@ -157,7 +152,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 2,
-        hubNumber: null,
         pipeNumber: 4,
         magistral: 'FeedBackFlow',
       },
@@ -184,7 +178,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 2,
-        hubNumber: null,
         pipeNumber: 5,
         magistral: 'FeedFlow',
       },
@@ -211,7 +204,6 @@ export const CalculatorTemplate = {
     {
       hub: {
         entryNumber: 2,
-        hubNumber: null,
         pipeNumber: 6,
         magistral: 'FeedFlow',
       },
