@@ -15,12 +15,12 @@ const ModalCalculator = () => {
     setAddCalculator(false);
   };
   const [alertVisible, setAlertVisible] = useState(false);
-  const [existCalculator, setExistCalculator] = useState(null);
+  const [existDevice, setExistCalculator] = useState(null);
 
   const context = {
     alertVisible,
     setAlertVisible,
-    existCalculator,
+    existDevice,
     setExistCalculator,
   };
 

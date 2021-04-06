@@ -17,7 +17,7 @@ import {
   styles,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
-import TabsComponent from './addCalculatorTabs';
+import Tabs from '../../../../tt-components/Tabs';
 import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
@@ -27,12 +27,19 @@ import {
 } from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../AddNodeContext';
+import {
+  AlertInterface,
+  TabsItemInterface,
+} from '../../../../tt-components/interfaces';
+import { CreateCalculatorRequest } from '../../../../../myApi';
 
-const AddCalculatorForm = (props) => {
+const AddCalculatorForm = (props: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
   const { handleCancel } = props;
   const [currentTabKey, setTab] = useState('1');
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [validationSchema, setValidationSchema] = useState<any>(
+    defaultValidationSchema
+  );
   const {
     handleSubmit,
     handleChange,
@@ -45,26 +52,26 @@ const AddCalculatorForm = (props) => {
   } = useFormik({
     initialValues: {
       serialNumber: '',
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(4, 'years').toISOString(),
-      lastCommercialAccountingDate: moment().toISOString(),
-      futureCommercialAccountingDate: moment().toISOString(),
+      lastCheckingDate: moment(),
+      futureCheckingDate: moment().add(4, 'years'),
+      lastCommercialAccountingDate: moment(),
+      futureCommercialAccountingDate: moment(),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,
       port: null,
-      housingStockId: Number(housingStockId),
+      housingStockId,
       infoId: 1,
       isConnected: true,
     },
     validationSchema,
     onSubmit: async () => {
-      const form = {
+      const form: CreateCalculatorRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate.toISOString(),
+        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {
@@ -72,22 +79,18 @@ const AddCalculatorForm = (props) => {
           deviceAddress: returnNullIfEmptyString(values.deviceAddress),
           port: returnNullIfEmptyString(values.port),
         },
-        housingStockId: values.housingStockId,
-        infoId: values.infoId,
+        housingStockId: Number(values.housingStockId),
+        infoId: Number(values.infoId),
       };
       console.log('form', form);
-      addCalculator(form).then((res) => {
-        const { id } = res;
+      console.log('form', JSON.stringify(form));
+      addCalculator(form).then((res: any) => {
         setTimeout(() => {
           setAddCalculator(false);
         }, 1000);
       });
     },
   });
-
-  useEffect(() => {
-    setValidationSchema(defaultValidationSchema);
-  }, []);
 
   function isEmptyConnection() {
     return (
@@ -98,34 +101,32 @@ const AddCalculatorForm = (props) => {
   }
 
   useEffect(() => {
-    console.log('Правда, что все строки пустые:?', isEmptyConnection());
-
-    if (values.isConnected === false) {
-      if (isEmptyConnection() === true) {
-        setFieldError('ipV4');
-        setFieldError('port');
-        setFieldError('deviceAddress');
+    if (!values.isConnected) {
+      if (isEmptyConnection()) {
+        setFieldError('ipV4', undefined);
+        setFieldError('port', undefined);
+        setFieldError('deviceAddress', undefined);
         setValidationSchema(emptyConnectionValidationSchema);
       }
-      if (isEmptyConnection() === false) {
+      if (!isEmptyConnection()) {
         setValidationSchema(defaultValidationSchema);
       }
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
 
-  function onSwitchChange(checked) {
+  function onSwitchChange(checked: boolean) {
     setFieldValue('isConnected', checked);
-    if (checked === true) {
+    if (checked) {
       setValidationSchema(defaultValidationSchema);
     }
-    if (checked === false) {
+    if (!checked) {
       if (isEmptyConnection() === true) {
         setValidationSchema(emptyConnectionValidationSchema);
-        setFieldError('ipV4');
-        setFieldError('port');
-        setFieldError('deviceAddress');
+        setFieldError('ipV4', undefined);
+        setFieldError('port', undefined);
+        setFieldError('deviceAddress', undefined);
       }
-      if (isEmptyConnection() === false) {
+      if (!isEmptyConnection()) {
         setValidationSchema(defaultValidationSchema);
       }
     }
@@ -146,26 +147,21 @@ const AddCalculatorForm = (props) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handleChangeTab(value) {
-    setTab(value);
-  }
-
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = (e: any) => {
     e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors
     );
 
-    // console.log(errors);
-    if (hasError === true) {
+    if (hasError) {
       setTab(errorTab);
     } else {
       handleSubmit();
     }
   };
 
-  const Alert = ({ name }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -174,16 +170,32 @@ const AddCalculatorForm = (props) => {
     return null;
   };
 
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общие данные',
+      key: '1',
+      cb: () => setTab('1'),
+    },
+    {
+      title: 'Настройки соединения',
+      key: '2',
+      cb: () => setTab('2'),
+    },
+    {
+      title: 'Документы',
+      key: '3',
+      cb: () => setTab('3'),
+    },
+  ];
+
   return (
     <form onSubmit={handleSubmitForm}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
+
+        <Tabs tabItems={tabItems} tabsType={'tabs'} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -196,83 +208,73 @@ const AddCalculatorForm = (props) => {
             <Alert name="serialNumber" />
           </Form.Item>
 
-          <Form.Item label="Тип вычислителя" style={{ width: '100%' }}>
+          <Form.Item label="Тип вычислителя" style={styles.w100}>
             <SelectTT
               name="infoId"
               placeholder="Выберите тип устройства"
               options={items}
               value={values.infoId}
               onChange={(event) => {
-                setFieldValue('infoId', Number(event));
+                setFieldValue('infoId', event);
               }}
             />
           </Form.Item>
 
-          <Form.Item label="Дата поверки" style={{ width: '49%' }}>
+          <Form.Item label="Дата поверки" style={styles.w49}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
-              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date);
                 setFieldValue(
                   'futureCheckingDate',
                   moment(date).add(3, 'years')
                 );
               }}
-              value={moment(values.lastCheckingDate)}
+              value={values.lastCheckingDate}
             />
           </Form.Item>
 
-          <Form.Item label="Дата следующей поверки" style={{ width: '49%' }}>
+          <Form.Item label="Дата следующей поверки" style={styles.w49}>
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCheckingDate"
-              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
-              value={moment(values.futureCheckingDate)}
+              value={values.futureCheckingDate}
             />
           </Form.Item>
 
           <Form.Item
             label="Дата начала Акта действия допуска"
-            style={{ width: '49%' }}
+            style={styles.w49}
           >
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCommercialAccountingDate"
-              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue(
-                  'lastCommercialAccountingDate',
-                  date.toISOString()
-                );
+                setFieldValue('lastCommercialAccountingDate', date);
               }}
-              value={moment(values.lastCommercialAccountingDate)}
+              value={values.lastCommercialAccountingDate}
             />
           </Form.Item>
 
           <Form.Item
             label="Дата окончания Акта действия допуска"
-            style={{ width: '49%' }}
+            style={styles.w49}
           >
             <DatePickerTT
               format="DD.MM.YYYY"
               name="futureCommercialAccountingDate"
-              placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue(
-                  'futureCommercialAccountingDate',
-                  date.toISOString()
-                );
+                setFieldValue('futureCommercialAccountingDate', date);
               }}
-              value={moment(values.futureCommercialAccountingDate)}
+              value={values.futureCommercialAccountingDate}
             />
           </Form.Item>
         </StyledFormPage>
@@ -285,11 +287,7 @@ const AddCalculatorForm = (props) => {
               width: '100%',
             }}
           >
-            <Switch
-              style={{ width: '48px' }}
-              onChange={onSwitchChange}
-              checked={values.isConnected}
-            />
+            <Switch onChange={onSwitchChange} checked={values.isConnected} />
             <span
               style={{
                 fontSize: '16px',
@@ -302,22 +300,19 @@ const AddCalculatorForm = (props) => {
             </span>
           </div>
 
-          <Form.Item label="IP адрес вычислителя" style={{ width: '49%' }}>
+          <Form.Item label="IP адрес вычислителя" style={styles.w49}>
             <InputTT
               name="ipV4"
               type="text"
               value={values.ipV4}
               onBlur={handleBlur}
               placeholder="Введите IP адрес вычислителя"
-              onChange={(event) => {
-                setFieldValue('ipV4', event.target.value);
-              }}
+              onChange={handleChange}
             />
-            {/* {isEmptyConnection() && !checked ? null : <Alert name="ipV4" />} */}
             <Alert name="ipV4" />
           </Form.Item>
 
-          <Form.Item label="Порт вычислителя" style={{ width: '49%' }}>
+          <Form.Item label="Порт вычислителя" style={styles.w49}>
             <InputTT
               name="port"
               type="number"
@@ -326,11 +321,10 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {/* {isEmptyConnection() && !checked ? null : <Alert name="port" />} */}
             <Alert name="port" />
           </Form.Item>
 
-          <Form.Item label="Адрес вычислителя" style={{ width: '100%' }}>
+          <Form.Item label="Адрес вычислителя" style={styles.w100}>
             <InputTT
               name="deviceAddress"
               type="number"
@@ -339,7 +333,6 @@ const AddCalculatorForm = (props) => {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            {/* {isEmptyConnection() && !checked ? null : <Alert name="deviceAddress" /> } */}
             <Alert name="deviceAddress" />
           </Form.Item>
 
@@ -377,11 +370,10 @@ const AddCalculatorForm = (props) => {
           color="white"
           type="button"
           onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
-        {/* <ButtonTT type="button" onClick={findErrors}>findErrors</ButtonTT> */}
       </StyledFooter>
     </form>
   );

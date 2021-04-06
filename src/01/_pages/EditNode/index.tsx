@@ -17,7 +17,7 @@ export const EditNode = () => {
   const { nodeId } = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [alertVisible, setAlertVisible] = useState(false);
-  const [existCalculator, setExistCalculator] = useState(false);
+  const [existDevice, setExistCalculator] = useState(false);
   const [deregisterDevice, setDeregisterDevice] = useState(false);
   const [deregisterDeviceValue, setDeregisterDeviceValue] = useState();
   const [visibleAddDevice, setVisibleAddDevice] = useState(false);
