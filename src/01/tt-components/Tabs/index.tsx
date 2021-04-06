@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const { TabPane } = Tabs;
 
@@ -26,15 +27,22 @@ export default ({ tabItems, tabsType, activeKey }: TabsInterface) => {
   }
 
   return (
-    <Tabs
-      defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
-      onChange={callback}
-      activeKey={activeKey}
-    >
-      {tabItems.map((tab) => {
-        const { title, key, cb } = tab;
-        return <TabPane tab={title} key={key} />;
-      })}
-    </Tabs>
+    <StyledTabs>
+      <Tabs
+        defaultActiveKey={tabsType === 'route' ? params[0] || '' : '1'}
+        onChange={callback}
+        activeKey={activeKey}
+      >
+        {tabItems.map((tab) => {
+          const { title, key, cb } = tab;
+          return <TabPane tab={title} key={key} />;
+        })}
+      </Tabs>
+    </StyledTabs>
   );
 };
+
+const StyledTabs = styled.div`
+  margin: 0;
+  padding: 0;
+`;

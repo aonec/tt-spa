@@ -80,17 +80,19 @@ export const EditNode = () => {
     <EditNodeContext.Provider value={context}>
       <Breadcrumb path={`/nodes/${nodeId}`} />
       <Header calculator={calculator} node={node} nodeId={nodeId} />
-      <Tabs tabItems={tabItems} tabsType={'tabs'} />
-      <EditNodeForm
-        calculator={calculator}
-        currentTabKey={currentTabKey}
-        node={node}
-        setAlertVisible={setAlertVisible}
-        setExistCalculator={setExistCalculator}
-        setTab={setTab}
-        setDeregisterDeviceValue={setDeregisterDeviceValue}
-        setDeregisterDevice={setDeregisterDevice}
-      />
+      <div style={{ width: '66%' }}>
+        <Tabs tabItems={tabItems} tabsType={'tabs'} />
+        <EditNodeForm
+          calculator={calculator}
+          currentTabKey={currentTabKey}
+          node={node}
+          setAlertVisible={setAlertVisible}
+          setExistCalculator={setExistCalculator}
+          setTab={setTab}
+          setDeregisterDeviceValue={setDeregisterDeviceValue}
+          setDeregisterDevice={setDeregisterDevice}
+        />
+      </div>
       <ModalDeregister
         visible={deregisterDevice}
         setVisible={setDeregisterDevice}

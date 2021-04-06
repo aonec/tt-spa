@@ -38,7 +38,6 @@ const Information = ({ node, calculator }: HeaderInterface) => {
 
   return (
     <ListWrap>
-      <Title>Информация</Title>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`}>

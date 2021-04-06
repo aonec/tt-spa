@@ -6,7 +6,6 @@ import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
-import { EditNodeContext } from '../Context';
 
 interface HeaderInterface {
   node: NodeResponse;
