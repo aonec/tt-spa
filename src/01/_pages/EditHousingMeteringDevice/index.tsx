@@ -65,7 +65,7 @@ const EditODPU = () => {
         existDevice={existDevice}
         setVisible={setAlert}
         visible={alert}
-        type={'housing'}
+        type={'housingMeteringDevice'}
       />
     </EditOdpuContext.Provider>
   );
