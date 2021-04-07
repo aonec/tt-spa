@@ -12,6 +12,7 @@ import { Alert } from 'antd';
 import { getGraphParams } from './utils';
 import styled from 'styled-components';
 import { ResourceType } from '../../../myApi';
+import { NoConnection } from '../CalculatorProfile/components/Connection';
 
 interface GraphProps {
   nodeId: number;
@@ -73,6 +74,13 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
   return (
     <GraphContainer>
+      {status === 'error' ? (
+        <NoConnection
+          text={
+            'Вычислитель не опрашивается, невозможно получить данные с узла'
+          }
+        />
+      ) : null}
       <GraphFilterForm
         paramsList={getGraphParams(resource, pipeCount)}
         setGraphParam={setGraphParam}
@@ -81,21 +89,22 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
       {(status === 'pending' || status === 'idle') && <div>ЗАГРУЗКА...</div>}
 
-      {status === 'error' && (
+      {status === 'error' ? (
         <>
-          <Alert
-            message="Ошибка"
-            description="На сервере произошла непредвиденная ошибка. В скором времени она будет устранена."
-            type="error"
-            showIcon
-            closable
-            style={{ marginBottom: 24, marginTop: 24 }}
-          />
+          {/*<Alert*/}
+          {/*  message="Ошибка"*/}
+          {/*  description="На сервере произошла непредвиденная ошибка. В скором времени она будет устранена."*/}
+          {/*  type="error"*/}
+          {/*  showIcon*/}
+          {/*  closable*/}
+          {/*  style={{ marginBottom: 24, marginTop: 24 }}*/}
+          {/*/>*/}
+
           <div>
             <img src={require('./components/FallbackGraph.svg')} alt="546" />
           </div>
         </>
-      )}
+      ) : null}
 
       {status === 'resolved' && data && (
         <GraphParent>
