@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
-import {
-  firstLetterToUpperCase,
-  getMonthFromDate,
-} from '../../../../utils/getMonthFromDate';
-import Arrow from '../../../../_components/Arrow/Arrow';
-import s from './MeterDevicesNew.module.scss';
+import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDevices } from '../../../../Redux/ducks/readings/selectors';
 import { setDevices } from '../../../../Redux/ducks/readings/actionCreators';
 import { IndividualDeviceType } from '../../../../../types/types';
 import styled from 'styled-components';
 import { useSwitchOnInputs } from '../../../../hooks/useSwitchInputsOnEnter';
-import moment from 'moment';
+import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
+import MonthSlider from '../../../../shared/ui/readings/MonthSlider';
 
 interface ApartmentReadingsProps {
   items: IndividualDeviceType[];
 }
 
 export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
-  const [sliderIndex, setSliderIndex] = useState(0);
-
   const dispatch = useDispatch();
 
   useSwitchOnInputs();
@@ -30,8 +24,9 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   }, [items]);
 
   const devices = useSelector(selectDevices);
+  const { sliderIndex, sliderProps } = useMonthSlider(items);
 
-  if (!devices.length) return null;
+  if (!devices.length || sliderIndex === undefined) return null;
 
   const readings = devices.map((device) => (
     <ApartmentReadingLine
@@ -43,59 +38,13 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
   const currentMonth = getMonthFromDate();
 
-  const readingsLength = devices[0].readings?.length;
-  const isReadingsCurrent =
-    currentMonth === getMonthFromDate(devices[0].readings[0].readingDate);
-
-  const isRightArrowDisabled =
-    sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1;
-
-  const onClickIncrease = () => {
-    setSliderIndex((index) => {
-      return isRightArrowDisabled ? index : index + 1;
-    });
-  };
-
-  const isLeftArrowDisabled = sliderIndex - 1 < 0;
-
-  const onClickDecrease = () => {
-    setSliderIndex((index) => {
-      return isLeftArrowDisabled ? index : index - 1;
-    });
-  };
-
-  const getPreviousReadingsMonth = (sliderIndex: number) => {
-    const month = moment()
-      .subtract(sliderIndex + 1, 'months')
-      .format('MMMM');
-
-    return firstLetterToUpperCase(month);
-  };
-
   return (
     <Meters>
       <MetersHeader>
         <span>Информация o приборe</span>
-
-        <CenterContainer>
-          <ArrowContainer
-            onClick={onClickDecrease}
-            className={isLeftArrowDisabled ? s.arrowDisabled : s.arrowEnabled}
-          >
-            <Arrow />
-          </ArrowContainer>
-          <CenterContainer>
-            {getPreviousReadingsMonth(sliderIndex)}
-          </CenterContainer>
-          <ArrowContainer
-            className={isRightArrowDisabled ? s.arrowDisabled : s.arrowEnabled}
-            onClick={onClickIncrease}
-            style={{ transform: 'rotate(180deg)' }}
-          >
-            <Arrow />
-          </ArrowContainer>
-        </CenterContainer>
-
+        {sliderProps ? (
+          <MonthSlider sliderIndex={sliderIndex} {...sliderProps} />
+        ) : null}
         <CenterContainer>{currentMonth}</CenterContainer>
       </MetersHeader>
       {readings}
@@ -119,7 +68,7 @@ export const MetersHeader = styled.div`
   color: var(--main-90);
 `;
 
-export const ArrowContainer = styled.div`
+export const ArrowContainer = styled.div<{ isDisabled: boolean }>`
   width: 32px;
   height: 32px;
   display: flex;
@@ -127,23 +76,14 @@ export const ArrowContainer = styled.div`
   align-items: center;
   svg {
     opacity: 0.7;
+    fill: ${({ isDisabled }) =>
+      isDisabled ? 'var(--main-32)' : 'var(--main-100)'};
     &:hover {
-      opacity: 1;
+      opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
+      fill: ${({ isDisabled }) =>
+        isDisabled ? 'var(--main-32)' : 'var(--primary-100)'};
     }
   }
-`;
-
-const OpacityContainer = styled.span`
-  svg {
-    opacity: 0.7;
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  display: flex;
-  align-items: flex-start;
-  margin-left: 8px;
 `;
 
 export const CenterContainer = styled.div`
