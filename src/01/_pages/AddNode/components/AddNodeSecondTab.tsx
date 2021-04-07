@@ -49,10 +49,8 @@ const AddNodeSecondTab = () => {
       number: 1,
       serviceZone: serviceZoneList[0].value,
       nodeStatus: nodeStatusList[0].value,
-      lastCheckingDate: undefined,
-      futureCheckingDate: undefined,
-      lastCommercialAccountingDate: undefined,
-      futureCommercialAccountingDate: undefined,
+      lastCommercialAccountingDate: moment(),
+      futureCommercialAccountingDate: moment().add(1, 'years'),
     },
     validationSchema,
     onSubmit: async () => {
@@ -61,8 +59,8 @@ const AddNodeSecondTab = () => {
         number: Number(values.number),
         serviceZone: values.serviceZone,
         nodeStatus: values.nodeStatus,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
       console.log('AddNodeFirstTab', form);
       setNode((prevState: any) => ({
@@ -72,14 +70,6 @@ const AddNodeSecondTab = () => {
       handleNext();
     },
   });
-
-  useEffect(() => {
-    setValues((prevValues: any) => ({
-      ...prevValues,
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(1, 'years').toISOString(),
-    }));
-  }, []);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -151,6 +141,7 @@ const AddNodeSecondTab = () => {
           />
           <Alert name="nodeStatus" />
         </Form.Item>
+
         {values.nodeStatus !== nodeStatusList[1].value ? (
           <>
             <Form.Item
@@ -160,17 +151,13 @@ const AddNodeSecondTab = () => {
               <DatePickerTT
                 format="DD.MM.YYYY"
                 name="lastCommercialAccountingDate"
-                placeholder="Укажите дату..."
                 allowClear={false}
                 onChange={(date) => {
-                  setFieldValue(
-                    'lastCommercialAccountingDate',
-                    date?.toISOString()
-                  );
+                  setFieldValue('lastCommercialAccountingDate', date);
                 }}
-                value={moment(values.lastCommercialAccountingDate)}
+                value={values.lastCommercialAccountingDate}
               />
-              <Alert name="lastCommercialAccountingDate" />
+              <Alert name="lastCheckingDate" />
             </Form.Item>
 
             <Form.Item
@@ -180,15 +167,11 @@ const AddNodeSecondTab = () => {
               <DatePickerTT
                 format="DD.MM.YYYY"
                 name="futureCommercialAccountingDate"
-                placeholder="Укажите дату..."
                 allowClear={false}
                 onChange={(date) => {
-                  setFieldValue(
-                    'futureCommercialAccountingDate',
-                    date?.toISOString()
-                  );
+                  setFieldValue('futureCommercialAccountingDate', date);
                 }}
-                value={moment(values.futureCommercialAccountingDate)}
+                value={values.futureCommercialAccountingDate}
               />
               <Alert name="futureCommercialAccountingDate" />
             </Form.Item>

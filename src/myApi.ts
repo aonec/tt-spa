@@ -1616,8 +1616,8 @@ export interface CheckDeviceRequest {
   futureCheckingDate: string;
 }
 
-export interface NodeResponseListSuccessApiResponse {
-  successResponse: NodeResponse[] | null;
+export interface NodeResponseSuccessApiResponse {
+  successResponse: NodeResponse;
 }
 
 export interface UpdateNodeRequest {
@@ -1637,8 +1637,8 @@ export interface UpdateNodeRequest {
   calculatorId?: number | null;
 }
 
-export interface NodeResponseSuccessApiResponse {
-  successResponse: NodeResponse;
+export interface NodeResponseListSuccessApiResponse {
+  successResponse: NodeResponse[] | null;
 }
 
 export interface CommunicationPipeRequest {
@@ -3364,7 +3364,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     nodesDetail: (nodeId: number, params: RequestParams = {}) =>
-      this.request<NodeResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}`,
         method: "GET",
         secure: true,

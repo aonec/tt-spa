@@ -34,8 +34,6 @@ const AddNodeFirstTab = () => {
     calculatorValidationSchema
   );
 
-  console.log('calculators', calculators);
-
   const {
     handleSubmit,
     handleChange,

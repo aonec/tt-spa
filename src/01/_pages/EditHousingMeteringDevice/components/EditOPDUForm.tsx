@@ -31,17 +31,22 @@ import {
 } from './editOdpuValidationSchemas';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import { putOdpu } from './apiEditOdpu';
+import { putCalculator } from '../../EditCalculator/components/apiEditCalculator';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
   device: HousingMeteringDeviceResponse;
   setTab: Dispatch<SetStateAction<string>>;
+  setAlert: Dispatch<SetStateAction<boolean>>;
+  setExistDevice: Dispatch<SetStateAction<any>>;
 }
 
 const FormEditODPU = ({
   currentTabKey,
   device,
   setTab,
+  setAlert,
+  setExistDevice,
 }: FormEditODPUInterface) => {
   const { deviceId } = useParams();
   const [validationSchema, setValidationSchema] = useState<any>();
@@ -124,9 +129,15 @@ const FormEditODPU = ({
           nodeId: Number(values.nodeId),
         },
       };
-      putOdpu(id, form).then((res) => {
-        console.log(res);
+      putOdpu(id, form).then(({ show, id :existDeviceId }: any) => {
+        console.log('show', show);
+        console.log('id', existDeviceId) ;
+        if (show) {
+          setAlert(true);
+          setExistDevice(existDeviceId);
+        }
       });
+
       console.log('PUT_EDIT_FORM', form);
       console.log('PUT_EDIT_FORM', JSON.stringify(form));
     },
