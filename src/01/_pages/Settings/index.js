@@ -14,6 +14,7 @@ import ModalAddStaff from './components/Modals/ModalAddStaff';
 import ModalAddContractor from './components/Modals/ModalAddContractor';
 import HeaderButton from './components/HeaderButton';
 import { Loader } from '../../_components/Loader';
+import CompanyInfo from './components/CompanyInfo';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
@@ -130,7 +131,8 @@ export const Settings = () => {
           handleChangeTab={handleChangeTab}
         />
         <Route path="/settings" exact>
-          <Common />
+          {/*<Common />*/}
+          <CompanyInfo />
         </Route>
         <Route path="/settings/staff" exact>
           <Staff />
