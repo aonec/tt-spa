@@ -8,13 +8,13 @@ import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
 import { StyledTextArea } from '../../../../tt-components';
-import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
   panel {
     display: grid;
     grid-gap: 16px;
-    padding: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
     box-shadow: var(--shadow);
     &[|styleSwitch] {
       grid-template-columns: 1fr auto;
@@ -131,7 +131,6 @@ export const Panel = (
   },
   ...props
 ) => {
-  debugger;
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
   const [message, setMessage] = useState();
   if (hiddenPanel) return null;

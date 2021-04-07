@@ -19,7 +19,7 @@ import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import Index from '../../tt-components/Breadcrumb';
-import TaskComments from './components/TaskComments';
+import TaskComments from './components/Comments/TaskComments';
 
 function reducer(state, action) {
   const { type, data } = action;
