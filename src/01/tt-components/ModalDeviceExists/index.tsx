@@ -9,7 +9,7 @@ interface ModalCalculatorExistInstance {
     existDevice: number | undefined | null;
     visible: boolean;
     setVisible: Dispatch<SetStateAction<boolean>>;
-    type: 'calculator' | 'housing'
+    type: 'calculator' | 'housingMeteringDevice'
 }
 
 export const ModalDeviceExists = ({

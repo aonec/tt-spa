@@ -141,7 +141,7 @@ export const Panel = (
   const currentUser = JSON.parse(localStorage.getItem('user'));
   // console.log('currentUser', currentUser);
   // console.log('taskPerpetrator', taskPerpetrator);
-  const isPerpetrator = currentUser.id === taskPerpetrator.id;
+  const isPerpetrator = currentUser.id === taskPerpetrator?.id;
   // console.log('isPerpetrator', isPerpetrator);
 
   // const [deadline, setDeadline] = useState();
