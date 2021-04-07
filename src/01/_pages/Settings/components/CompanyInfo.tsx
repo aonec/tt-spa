@@ -13,7 +13,7 @@ const CompanyInfo = () => {
   debugger;
   return (
     <div style={{ width: '66%' }}>
-      <Title>Информация</Title>
+      <Title>Информация о компании</Title>
       <CompanyItem>
         <span>Название</span>
         <div style={{ fontWeight: 500 }}>{name}</div>
