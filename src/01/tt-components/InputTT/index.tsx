@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { Input } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
   value?: any;
   disabled?: boolean;
   readonly?: boolean;
+  onChange?: Dispatch<SetStateAction<string>>;
 
   // value: string | number | null
 }

@@ -55,6 +55,18 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
+    &[|styleAddPerpetratorAndAddDocumentsAndAddEmailNotify] {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        'p p c c'
+        'ta ta ta ta'
+        'ub ub ub ub'
+        'ul ul . push';
+
+      //display: flex;
+      //flex-direction: column;
+      //align-items: flex-end;
+    }
   }
 
   Perpetrator {
@@ -83,11 +95,11 @@ const styles = css`
   }
 `;
 
-//&[|styleSwitchDevicesAndChangeDevice] {
+// &[|styleSwitchDevicesAndChangeDevice] {
 //  display: flex;
 //  flex-direction:column;
 //  justify-content: space-between;
-//}
+// }
 
 const PushButton = ({ loading = false, ...props }) =>
   styled(s.button)`
@@ -119,6 +131,7 @@ export const Panel = (
   },
   ...props
 ) => {
+  debugger;
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
   const [message, setMessage] = useState();
   if (hiddenPanel) return null;
@@ -139,9 +152,9 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
+  const isPerpetrator = currentUser.id === taskPerpetrator.id;
   // console.log('currentUser', currentUser);
   // console.log('taskPerpetrator', taskPerpetrator);
-  const isPerpetrator = currentUser.id === taskPerpetrator.id;
   // console.log('isPerpetrator', isPerpetrator);
 
   // const [deadline, setDeadline] = useState();
@@ -175,6 +188,8 @@ export const Panel = (
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
         styleReadings: UploadReadings || addReadingsDone,
+        styleAddPerpetratorAndAddDocumentsAndAddEmailNotify:
+          AddDocuments && AddPerpetrator && EmailNotify,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline:
@@ -182,7 +197,7 @@ export const Panel = (
         // styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
+      {/* {(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />} */}
 
       {AddPerpetrator && (
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
@@ -220,7 +235,7 @@ export const Panel = (
         </>
       )}
 
-      {AddDocuments && (
+      {AddDocuments && !EmailNotify && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
