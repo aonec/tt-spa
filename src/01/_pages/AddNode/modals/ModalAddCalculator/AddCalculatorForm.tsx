@@ -16,11 +16,9 @@ import {
   styles,
   SwitchTT,
 } from '../../../../tt-components';
-import { items } from '../../../../tt-components/localBases';
+import { ipv4RegExp, items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
-import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
-import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../AddNodeContext';
 import {
   AlertInterface,
@@ -57,10 +55,10 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(3, 'years'),
       documentsIds: [],
-      ipV4: '',
+      ipV4: null,
       deviceAddress: null,
       port: null,
-      housingStockId,
+      housingStockId: Number(housingStockId),
       infoId: 1,
       isConnected: true,
     },
@@ -76,14 +74,12 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
-          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
-          port: returnNullIfEmptyString(values.port),
+          deviceAddress: values.deviceAddress,
+          port: values.port,
         },
-        housingStockId: Number(values.housingStockId),
+        housingStockId: values.housingStockId,
         infoId: Number(values.infoId),
       };
-      console.log('form', form);
-      console.log('form', JSON.stringify(form));
       addCalculator(form).then((res: any) => {
         setTimeout(() => {
           setVisible(false);
@@ -92,45 +88,32 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     },
   });
 
-  function isEmptyConnection() {
-    return (
-      isEmptyString(values.deviceAddress) &&
-      isEmptyString(values.port) &&
-      isEmptyString(values.ipV4)
-    );
-  }
-
   useEffect(() => {
-    if (!values.isConnected) {
+    const isEmptyConnection = () => {
+      const { ipV4 = '', port, deviceAddress } = values;
+      if (!ipV4 && !port && !deviceAddress) {
+        console.log('Все пустые');
+        return true;
+      }
+      console.log('Не все пустые');
+      return false;
+    };
+
+    isEmptyConnection();
+
+    if (values.isConnected) {
+      setValidationSchema(calculatorValidationSchema);
+    } else {
       if (isEmptyConnection()) {
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
         setValidationSchema(calculatorNoConnectionValidationSchema);
-      }
-      if (!isEmptyConnection()) {
+      } else {
         setValidationSchema(calculatorValidationSchema);
       }
     }
-  }, [values.deviceAddress, values.ipV4, values.port]);
-
-  function onSwitchChange(checked: boolean) {
-    setFieldValue('isConnected', checked);
-    if (checked) {
-      setValidationSchema(calculatorValidationSchema);
-    }
-    if (!checked) {
-      if (isEmptyConnection() === true) {
-        setValidationSchema(calculatorNoConnectionValidationSchema);
-        setFieldError('ipV4', undefined);
-        setFieldError('port', undefined);
-        setFieldError('deviceAddress', undefined);
-      }
-      if (!isEmptyConnection()) {
-        setValidationSchema(calculatorValidationSchema);
-      }
-    }
-  }
+  }, [values.deviceAddress, values.ipV4, values.port, values.isConnected]);
 
   const tabErrors = [
     {
@@ -195,7 +178,7 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
           Добавление нового вычислителя
         </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} />
+        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -288,7 +271,9 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
             }}
           >
             <SwitchTT
-              onChange={onSwitchChange}
+              onChange={(value: boolean) => {
+                setFieldValue('isConnected', value);
+              }}
               checked={values.isConnected}
               title={'Опрашивать вычислитель'}
             />
@@ -297,11 +282,10 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
           <Form.Item label="IP адрес вычислителя" style={styles.w49}>
             <InputTT
               name="ipV4"
-              type="text"
               value={values.ipV4}
+              onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Введите IP адрес вычислителя"
-              onChange={handleChange}
             />
             <Alert name="ipV4" />
           </Form.Item>
@@ -372,5 +356,4 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     </form>
   );
 };
-
 export default AddCalculatorForm;

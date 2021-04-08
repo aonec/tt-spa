@@ -2,9 +2,12 @@ import * as Yup from 'yup';
 import { ipv4RegExp } from './localBases';
 
 export const calculatorValidationSchema = Yup.object({
-  serialNumber: Yup.string().required('Введите серийный номер'),
+  serialNumber: Yup.string()
+    .typeError('Введите серийный номер')
+    .required('Введите серийный номер'),
   ipV4: Yup.string()
     .matches(ipv4RegExp, 'Укажите в формате X.X.X.X')
+    .typeError('Введите IP-адрес устройства')
     .required('Введите IP-адрес устройства'),
   deviceAddress: Yup.number()
     .nullable()
