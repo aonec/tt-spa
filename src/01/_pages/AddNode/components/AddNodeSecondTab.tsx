@@ -26,9 +26,12 @@ const AddNodeSecondTab = () => {
   const {
     handleCancel,
     currentTabKey,
+    handlePrevious,
     handleNext,
     setNode,
     isEmpty,
+    secondTab,
+    setSecondTab,
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(
@@ -63,10 +66,7 @@ const AddNodeSecondTab = () => {
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
       console.log('AddNodeFirstTab', form);
-      setNode((prevState: any) => ({
-        ...prevState,
-        ...form,
-      }));
+      setSecondTab(form);
       handleNext();
     },
   });
@@ -178,7 +178,18 @@ const AddNodeSecondTab = () => {
           </>
         ) : null}
       </StyledFormPage>
-      <StyledFooter form>
+      <StyledFooter form right>
+        <ButtonTT
+          type="button"
+          color="white"
+          onClick={handlePrevious}
+          style={{
+            position: 'absolute',
+            left: 0,
+          }}
+        >
+          Назад
+        </ButtonTT>
         <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
           Далее
         </ButtonTT>

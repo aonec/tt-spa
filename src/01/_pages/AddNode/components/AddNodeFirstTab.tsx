@@ -11,25 +11,25 @@ import {
   AutoCompleteTT,
   styles,
   StyledFormPage,
-  StyledAutoComplete,
+  AutoCompleteInterface,
 } from '../../../tt-components';
 
 import { calculatorValidationSchema } from './validationSchemas';
 import ModalAddCalculator from '../modals/ModalAddCalculator';
 import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
-import { CalculatorResponse } from '../../../../myApi';
 
 const AddNodeFirstTab = () => {
   const {
     handleCancel,
     currentTabKey,
     handleNext,
-    setNode,
     calculators,
+    addCalculator,
     setAddCalculator,
     communicationPipes,
     isEmpty,
+    setFirstTab,
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(
@@ -53,16 +53,11 @@ const AddNodeFirstTab = () => {
     validationSchema,
     onSubmit: async () => {
       const form = {
-        isConnected: values.isConnected,
         entryNumber: values.entryNumber,
         calculatorId: values.calculatorId,
       };
       console.log(form);
-
-      setNode((prevState: any) => ({
-        ...prevState,
-        ...form,
-      }));
+      setFirstTab(form);
       handleNext();
     },
   });
@@ -93,6 +88,10 @@ const AddNodeFirstTab = () => {
     setAddCalculator(true);
   };
 
+  useEffect(() => {
+    console.log('values', values);
+  }, [values]);
+
   return (
     <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
       <StyledFormPage>
@@ -119,8 +118,8 @@ const AddNodeFirstTab = () => {
           <AutoCompleteTT
             options={calculators}
             filterOption
-            onSelect={(value: any) => {
-              setFieldValue('calculatorId', value);
+            onSelect={(value: string, option: AutoCompleteInterface) => {
+              setFieldValue('calculatorId', option.key);
             }}
           />
         </Form.Item>
@@ -150,7 +149,7 @@ const AddNodeFirstTab = () => {
           <Alert name="entryNumber" />
         </Form.Item>
       </StyledFormPage>
-      <StyledFooter form>
+      <StyledFooter form right>
         <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
           Далее
         </ButtonTT>
@@ -163,7 +162,10 @@ const AddNodeFirstTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-      <ModalAddCalculator setCalculator={setCalculator} />
+      <ModalAddCalculator
+        setVisible={setAddCalculator}
+        visible={addCalculator}
+      />
     </form>
   );
 };

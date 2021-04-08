@@ -22,6 +22,7 @@ const AddNodeThirdTab = () => {
     currentTabKey,
     setTab,
     handleChangeTab,
+    handlePrevious,
     handleNext,
     addCalculator,
     setAddCalculator,
@@ -32,6 +33,7 @@ const AddNodeThirdTab = () => {
     setAddNode,
     setNode,
     addNode,
+    setThirdTab,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
@@ -53,12 +55,8 @@ const AddNodeThirdTab = () => {
     validationSchema,
 
     onSubmit: async () => {
-      const form = {
-        communicationPipes: values.communicationPipes,
-      };
-      const nodeForm = { ...node, ...form };
-      console.log('nodeForm', nodeForm);
-      setNode(nodeForm);
+      const form = values.communicationPipes;
+      setThirdTab(form);
       setAddNode(true);
     },
   });
@@ -89,7 +87,18 @@ const AddNodeThirdTab = () => {
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
-      <StyledFooter form={true}>
+      <StyledFooter form right>
+        <ButtonTT
+          type="button"
+          color="white"
+          onClick={handlePrevious}
+          style={{
+            position: 'absolute',
+            left: 0,
+          }}
+        >
+          Назад
+        </ButtonTT>
         <ButtonTT color="blue" big type="submit">
           Создать Узел
         </ButtonTT>

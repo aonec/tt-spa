@@ -5,7 +5,10 @@ import { Modal } from 'antd';
 export const StyledFooter = styled.div.attrs((props) => ({
   form: props.form,
   modal: props.modal,
+  left: props.left,
+  right: props.right,
 }))`
+  position: relative;
   background: #f3f5f6;
   padding: 24px 32px;
   display: flex;
@@ -22,6 +25,20 @@ export const StyledFooter = styled.div.attrs((props) => ({
     css`
       background: #f3f5f6;
       padding: 24px 32px;
+      justify-content: flex-end;
+    `}
+  ${(props) =>
+    props.left &&
+    css`
+      background: none;
+      padding: 24px 0;
+      justify-content: flex-start;
+    `}
+  ${(props) =>
+    props.right &&
+    css`
+      background: none;
+      padding: 24px 0;
       justify-content: flex-end;
     `}
 `;

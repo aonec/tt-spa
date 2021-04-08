@@ -18,27 +18,27 @@ import {
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
-import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
-import {
-  defaultValidationSchema,
-  emptyConnectionValidationSchema,
-} from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../AddNodeContext';
 import {
   AlertInterface,
+  ModalInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import { CreateCalculatorRequest } from '../../../../../myApi';
+import {
+  calculatorNoConnectionValidationSchema,
+  calculatorValidationSchema,
+} from '../../../../tt-components/validationSchemas';
+import { addCalculator } from '../../../../_api/apiRequests';
 
-const AddCalculatorForm = (props: any) => {
-  const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
-  const { handleCancel } = props;
+const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
+  const { housingStockId } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    defaultValidationSchema
+    calculatorValidationSchema
   );
   const {
     handleSubmit,
@@ -86,7 +86,7 @@ const AddCalculatorForm = (props: any) => {
       console.log('form', JSON.stringify(form));
       addCalculator(form).then((res: any) => {
         setTimeout(() => {
-          setAddCalculator(false);
+          setVisible(false);
         }, 1000);
       });
     },
@@ -106,10 +106,10 @@ const AddCalculatorForm = (props: any) => {
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
       }
       if (!isEmptyConnection()) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorValidationSchema);
       }
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
@@ -117,17 +117,17 @@ const AddCalculatorForm = (props: any) => {
   function onSwitchChange(checked: boolean) {
     setFieldValue('isConnected', checked);
     if (checked) {
-      setValidationSchema(defaultValidationSchema);
+      setValidationSchema(calculatorValidationSchema);
     }
     if (!checked) {
       if (isEmptyConnection() === true) {
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
       }
       if (!isEmptyConnection()) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorValidationSchema);
       }
     }
   }
@@ -363,7 +363,7 @@ const AddCalculatorForm = (props: any) => {
         <ButtonTT
           color="white"
           type="button"
-          onClick={handleCancel}
+          onClick={() => setVisible(false)}
           style={{ marginLeft: 16 }}
         >
           Отмена

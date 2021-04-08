@@ -1,4 +1,5 @@
 import { TaskListResponse } from '../../myApi';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface MenuButtonInterface {
   title: string;
@@ -25,4 +26,9 @@ export interface TabErrorsInterface {
 
 export interface AlertInterface {
   name: string;
+}
+
+export interface ModalInterface {
+  visible: boolean;
+  setVisible: Dispatch<SetStateAction<boolean>>;
 }

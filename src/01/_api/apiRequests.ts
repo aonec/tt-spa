@@ -1,6 +1,7 @@
-import axios from '../../../../axios';
-import { CreateCalculatorRequest } from '../../../../../myApi';
+import { CreateCalculatorRequest } from '../../myApi';
+import axios from '../axios';
 
+//Создание вычислителя
 export async function addCalculator(form: CreateCalculatorRequest) {
   try {
     const res = await axios.post('Calculators', form);

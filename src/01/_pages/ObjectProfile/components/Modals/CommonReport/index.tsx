@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   StyledFooter,
   StyledModal,
@@ -17,7 +11,7 @@ import {
   RangePickerTT,
 } from '../../../../../tt-components';
 
-import { Divider, Form, Radio, Select } from 'antd';
+import { Divider, Form, Radio } from 'antd';
 import { StyledRadio } from '../../../../../tt-components/Radio';
 import moment from 'moment';
 import { ObjectContext } from '../../../index';
@@ -26,18 +20,14 @@ import {
   HousingStockResponse,
 } from '../../../../../../myApi';
 import { downloadReport } from './apiCommonReport';
-
-interface ModalPropsInterface {
-  visible: boolean;
-  setVisible: Dispatch<SetStateAction<boolean>>;
-}
+import { ModalInterface } from '../../../../../tt-components/interfaces';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;
   calculators: CalculatorListResponse[] | null;
 }
 
-const ModalCommonReport = ({ visible, setVisible }: ModalPropsInterface) => {
+const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
   const { object, calculators }: ObjectContextInterface = useContext(
     ObjectContext
   );

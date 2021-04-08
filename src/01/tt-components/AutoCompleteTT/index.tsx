@@ -47,13 +47,15 @@ export const StyledAutoComplete = styled(AutoComplete)`
 }
 `;
 
-interface OptionsInterface {
+export interface AutoCompleteInterface {
   key: number;
   value: string;
+  label?: string;
 }
+
 interface AutoCompleteTTInterface {
-  options: Array<OptionsInterface>;
-  onSelect: () => void;
+  options: Array<AutoCompleteInterface>;
+  onSelect: any;
   filterOption?: any;
 }
 

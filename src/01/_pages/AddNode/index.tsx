@@ -15,7 +15,6 @@ export const AddNode = () => {
     setHousingStock,
   ] = useState<HousingStockResponse | null>();
   const [calculators, setCalculators] = useState<any>();
-  const [calculatorsExtended, setCalculatorsExtended] = useState<any>();
   const [addCalculator, setAddCalculator] = useState(false);
   const [
     addHousingMeteringDeviceVisible,
@@ -23,6 +22,9 @@ export const AddNode = () => {
   ] = useState(false);
   const [addNode, setAddNode] = useState(false);
   const [communicationPipes, setCommunicationPipes] = useState([]);
+  const [firstTab, setFirstTab] = useState();
+  const [secondTab, setSecondTab] = useState();
+  const [thirdTab, setThirdTab] = useState();
   const [node, setNode] = useState({});
   const [currentTabKey, setTab] = useState('1');
 
@@ -59,9 +61,12 @@ export const AddNode = () => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function isEmpty(obj: any) {
+  function handlePrevious() {
+    setTab(String(Number(currentTabKey) - 1));
+  }
+
+  function isEmpty(obj: object) {
     for (const key in obj) {
-      // если тело цикла начнет выполняться - значит в объекте есть свойства
       return false;
     }
     return true;
@@ -72,11 +77,10 @@ export const AddNode = () => {
       console.log(res);
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
-        return { id: id, key: id, value: `${model} ${serialNumber}` };
+        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
       });
 
       setCalculators(calculatorsList);
-      setCalculatorsExtended(res);
     });
   }
 
@@ -84,7 +88,15 @@ export const AddNode = () => {
     getHousingStock(housingStockId).then((res) => {
       setHousingStock(res);
     });
-    getPresentCalculators();
+    getCalculators(housingStockId).then((res) => {
+      console.log(res);
+      const calculatorsList = res?.map((calculator) => {
+        const { id, serialNumber, model } = calculator;
+        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
+      });
+
+      setCalculators(calculatorsList);
+    });
   }, []);
 
   useEffect(() => {
@@ -101,6 +113,13 @@ export const AddNode = () => {
     setTab,
     handleChangeTab,
     handleNext,
+    handlePrevious,
+    firstTab,
+    setFirstTab,
+    secondTab,
+    setSecondTab,
+    thirdTab,
+    setThirdTab,
     node,
     setNode,
     housingStockId,
@@ -109,7 +128,6 @@ export const AddNode = () => {
     setAddCalculator,
     addHousingMeteringDeviceVisible,
     setAddHousingMeteringDeviceVisible,
-    calculatorsExtended,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
