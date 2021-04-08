@@ -12,6 +12,7 @@ import { Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
+import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
   const textInput = React.createRef<Input>();
@@ -215,10 +216,5 @@ const Span = styled.span`
 `;
 
 type Props = {
-  device: IndividualDeviceType;
+  device: IndividualDeviceListItemResponse;
 };
-
-interface OptionsInterface {
-  value: () => JSX.Element;
-  isSuccess: boolean;
-}

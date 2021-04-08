@@ -3,12 +3,12 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { DateLine } from '01/_components/DateLine/DateLine';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import styled from 'styled-components';
-import { IndividualDeviceType } from 'types/types';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
+import { IndividualDeviceListItemResponse } from '../../../../../myApi';
 
 interface DeviceInfoProps {
-  device: IndividualDeviceType;
+  device: IndividualDeviceListItemResponse;
 }
 
 const ApartmentDevice = ({ device }: DeviceInfoProps) => {
