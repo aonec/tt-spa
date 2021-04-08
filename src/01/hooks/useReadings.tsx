@@ -24,9 +24,10 @@ import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/componen
 import { v4 as uuid } from 'uuid';
 import { selectDisabledState } from '../Redux/ducks/readings/selectors';
 import { Input } from 'antd';
+import { IndividualDeviceListItemResponse } from '../../myApi';
 
 export const useReadings = (
-  device: IndividualDeviceType,
+  device: IndividualDeviceListItemResponse,
   textInput: MutableRefObject<Input | null>,
   sliderIndex = 0
 ) => {
@@ -45,16 +46,16 @@ export const useReadings = (
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device.readings[0].readingDate);
+    currentMonth === getMonthFromDate(device.readings![0].readingDate);
 
   useEffect(() => {
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
     const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
     const currentReadings: Record<string, any> =
-      (isReadingsCurrent ? device.readings[0] : emptyReadingsObject) || {};
+      (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
     const prevReadings: Record<string, any> =
-      device.readings[prevReadingsIndex] || {};
+      device.readings![prevReadingsIndex] || {};
 
     for (let i = 1; i <= numberOfReadings; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
@@ -71,7 +72,7 @@ export const useReadings = (
   }, [device.readings, sliderIndex]);
 
   const formDeviceReadingObject = (
-    deviceItem: IndividualDeviceType,
+    deviceItem: IndividualDeviceListItemResponse,
     readingsState: ReadingsStateType
   ): ReadingType => {
     return {

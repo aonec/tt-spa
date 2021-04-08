@@ -7,7 +7,7 @@ import {
   IndividualDeviceListItemResponsePagedList,
 } from '../../../../myApi';
 import { useMonthSlider } from '../../../shared/lib/readings/useMonthSlider';
-import MonthSlider from '../../../shared/ui/readings/MonthSlider';
+import MonthSlider from '../../../shared/ui/devices/MonthSlider';
 export const ApartmentDevicesContext = React.createContext<
   IndividualDeviceListItemResponse[] | null
 >(null);
@@ -18,7 +18,7 @@ export const ApartmentDevices = ({
   devices: IndividualDeviceListItemResponsePagedList;
 }) => {
   //TODO
-  //Check with/without current readings
+  //Check with/without current devices
 
   const { sliderIndex, sliderProps } = useMonthSlider(devices.items);
 
@@ -37,8 +37,6 @@ export const ApartmentDevices = ({
           <ApartmentDevicesList sliderIndex={sliderIndex} />
         </>
       ) : null}
-
-      <ShowHidden />
     </ApartmentDevicesContext.Provider>
   );
 };

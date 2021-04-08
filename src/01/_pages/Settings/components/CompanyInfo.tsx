@@ -10,7 +10,6 @@ const CompanyInfo = () => {
   const { id, name, phoneNumber, timeZoneOffset } = firm || {};
 
   const timeOffset = Number(timeZoneOffset.split(':')[0]);
-  debugger;
   return (
     <div style={{ width: '66%' }}>
       <Title>Информация о компании</Title>

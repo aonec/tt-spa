@@ -8,10 +8,13 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCreators';
 import DeviceInfo from './DeviceInfo';
 import { IndividualDeviceType } from '../../../../../../types/types';
-import { ResourceType } from '../../../../../../myApi';
+import {
+  IndividualDeviceListItemResponse,
+  ResourceType,
+} from '../../../../../../myApi';
 
 interface ApartmentReadingLineProps {
-  device: IndividualDeviceType;
+  device: IndividualDeviceListItemResponse;
   sliderIndex: number;
 }
 
