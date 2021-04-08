@@ -14,6 +14,7 @@ import ModalAddStaff from './components/Modals/ModalAddStaff';
 import ModalAddContractor from './components/Modals/ModalAddContractor';
 import HeaderButton from './components/HeaderButton';
 import { Loader } from '../../_components/Loader';
+import CompanyInfo from './components/CompanyInfo';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
@@ -122,7 +123,7 @@ export const Settings = () => {
     <SettingsContext.Provider value={context}>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Header>Настройки</Header>
+          <Header>Профиль компании</Header>
           <HeaderButton />
         </div>
         <SettingsTabs
@@ -130,7 +131,7 @@ export const Settings = () => {
           handleChangeTab={handleChangeTab}
         />
         <Route path="/settings" exact>
-          <Common />
+          <CompanyInfo />
         </Route>
         <Route path="/settings/staff" exact>
           <Staff />
