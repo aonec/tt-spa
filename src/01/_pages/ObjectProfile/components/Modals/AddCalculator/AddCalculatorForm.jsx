@@ -5,12 +5,12 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, Switch } from 'antd';
 import {
+  ConnectionTakesTime,
   Title,
   ButtonTT,
   DatePickerTT,
   InputTT,
   SelectTT,
-  Wrap,
   StyledModalBody,
   StyledFooter,
 } from '../../../../../tt-components';
@@ -373,16 +373,7 @@ const AddCalculatorForm = (props) => {
             <Alert name="deviceAddress" />
           </Form.Item>
 
-          <Wrap
-            style={{
-              background: ' rgba(255, 140, 104, 0.16)',
-              marginTop: '24px',
-              padding: '24px',
-              width: '100%',
-            }}
-          >
-            Подключение к новому прибору может занять до 30 минут.
-          </Wrap>
+          <ConnectionTakesTime />
         </div>
 
         <div

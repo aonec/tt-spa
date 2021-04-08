@@ -9,7 +9,6 @@ import {
   DatePickerTT,
   InputTT,
   SelectTT,
-  Wrap,
   StyledModalBody,
   StyledFooter,
   StyledFormPage,
@@ -102,17 +101,17 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     isEmptyConnection();
 
     if (values.isConnected) {
-      setValidationSchema(calculatorValidationSchema);
-    } else {
-      if (isEmptyConnection()) {
-        setFieldError('ipV4', undefined);
-        setFieldError('port', undefined);
-        setFieldError('deviceAddress', undefined);
-        setValidationSchema(calculatorNoConnectionValidationSchema);
-      } else {
-        setValidationSchema(calculatorValidationSchema);
-      }
+      return setValidationSchema(calculatorValidationSchema);
     }
+
+    if (isEmptyConnection()) {
+      setFieldError('ipV4', undefined);
+      setFieldError('port', undefined);
+      setFieldError('deviceAddress', undefined);
+      setValidationSchema(calculatorNoConnectionValidationSchema);
+      return;
+    }
+    setValidationSchema(calculatorValidationSchema);
   }, [values.deviceAddress, values.ipV4, values.port, values.isConnected]);
 
   const tabErrors = [
@@ -138,17 +137,16 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     );
 
     if (hasError) {
-      setTab(errorTab);
-    } else {
-      handleSubmit();
+      return setTab(errorTab);
     }
+    handleSubmit();
   };
 
-  const Alert = ({ name }: AlertInterface) => {
+  const Alert = ({ name, styles = { color: 'red' } }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={styles}>{error}</div>;
     }
     return null;
   };
@@ -313,17 +311,6 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
             />
             <Alert name="deviceAddress" />
           </Form.Item>
-
-          <Wrap
-            style={{
-              background: ' rgba(255, 140, 104, 0.16)',
-              marginTop: '24px',
-              padding: '24px',
-              width: '100%',
-            }}
-          >
-            Подключение к новому прибору может занять до 30 минут.
-          </Wrap>
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>

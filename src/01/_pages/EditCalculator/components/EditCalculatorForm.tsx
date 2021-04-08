@@ -16,12 +16,12 @@ import {
   InputTT,
   SelectTT,
   DatePickerTT,
-  Wrap,
   ButtonTT,
   Title,
   StyledFooter,
   StyledFormPage,
   styles,
+  ConnectionTakesTime,
 } from '../../../tt-components';
 // import {ipv4RegExp, items} from '../../../tt-components/localBases'
 import { putCalculator } from './apiEditCalculator';
@@ -128,9 +128,9 @@ const EditCalculatorForm = ({
       }
 
       console.log('form', form);
-      putCalculator(id, form).then(({ show, id : existDeviceId }: any) => {
+      putCalculator(id, form).then(({ show, id: existDeviceId }: any) => {
         console.log('show', show);
-        console.log('id', existDeviceId) ;
+        console.log('id', existDeviceId);
         if (show) {
           setAlert(true);
           setExistCalculator(existDeviceId);
@@ -368,15 +368,7 @@ const EditCalculatorForm = ({
           {/* {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />} */}
         </Form.Item>
 
-        <Wrap
-          style={{
-            background: ' rgba(255, 140, 104, 0.16)',
-            marginTop: '24px',
-            padding: '24px',
-          }}
-        >
-          Подключение к новому прибору может занять до 30 минут.
-        </Wrap>
+        <ConnectionTakesTime />
       </StyledFormPage>
       <StyledFormPage hidden={Number(tab) !== 3}>
         <Title color="black">Компонент в разработке </Title>

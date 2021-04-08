@@ -1,6 +1,6 @@
 export * from './Title';
 export * from './Label';
-export * from './Wrap';
+export * from './ConnectionTakesTime';
 export * from './Button';
 export * from './Input';
 export * from './Icon';
