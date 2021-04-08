@@ -41,14 +41,9 @@ import {
 const AddDeviceForm = () => {
   const {
     calculatorForm,
-    setCalculatorForm,
     nodeForm,
-    setNodeForm,
-    devicesForm,
-    setDevicesForm,
     communicationPipes,
     setCommunicationPipes,
-    addHousingVisible,
     setAddHousingVisible,
   } = useContext(AddNodeContext);
 
@@ -168,39 +163,40 @@ const AddDeviceForm = () => {
       };
 
       console.log('device', device);
-      const pipeNumbers = _.map(communicationPipes, 'number');
 
-      if (pipeNumbers.includes(values.pipeNumber)) {
-        const newCommunicationPipes = communicationPipes.map(
-          (communicationPipe: any) => {
-            const { number, devices = [] } = communicationPipe;
-            if (devices && number === values.pipeNumber) {
-              devices.push(device);
-            }
-            return communicationPipe;
-          }
-        );
-
-        setCommunicationPipes(newCommunicationPipes);
-      } else {
-        const communicationPipe = {
-          number: values.pipeNumber,
-          entryNumber: values.entryNumber,
-          magistral: values.magistral,
-          devices: [device],
-        };
-
-        console.log('communicationPipe', communicationPipe);
-        const newCommunivationPipes = [
-          ...communicationPipes,
-          communicationPipe,
-        ];
-        // setCommunicationPipes(communicationPipe);
-        console.log('newCommunivationPipes', newCommunivationPipes);
-      }
-
-      setValues(initialValues);
-      setTab('1');
+      // const pipeNumbers = _.map(communicationPipes, 'number');
+      //
+      // if (pipeNumbers.includes(values.pipeNumber)) {
+      //   const newCommunicationPipes = communicationPipes.map(
+      //     (communicationPipe: any) => {
+      //       const { number, devices = [] } = communicationPipe;
+      //       if (devices && number === values.pipeNumber) {
+      //         devices.push(device);
+      //       }
+      //       return communicationPipe;
+      //     }
+      //   );
+      //
+      //   setCommunicationPipes(newCommunicationPipes);
+      // } else {
+      //   const communicationPipe = {
+      //     number: values.pipeNumber,
+      //     entryNumber: values.entryNumber,
+      //     magistral: values.magistral,
+      //     devices: [device],
+      //   };
+      //
+      //   console.log('communicationPipe', communicationPipe);
+      //   const newCommunivationPipes = [
+      //     ...communicationPipes,
+      //     communicationPipe,
+      //   ];
+      //   // setCommunicationPipes(communicationPipe);
+      //   console.log('newCommunivationPipes', newCommunivationPipes);
+      // }
+      //
+      // setValues(initialValues);
+      // setTab('1');
     },
   });
 
@@ -238,7 +234,7 @@ const AddDeviceForm = () => {
   }, [values.resource, values.housingMeteringDeviceType]);
 
   return (
-    <form onSubmit={handleAddDeviceSubmitForm}>
+    <form onSubmit={handleAddDeviceSubmitForm} id={'addHousingMeteringDevice'}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового ОДПУ
@@ -374,6 +370,7 @@ const AddDeviceForm = () => {
         <ButtonTT
           color="blue"
           type="submit"
+          form={'addHousingMeteringDevice'}
           hidden={currentTabKey !== '2'}
           style={{ marginLeft: 16 }}
           big

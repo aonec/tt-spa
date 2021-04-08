@@ -21,7 +21,6 @@ import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFo
 import { AddNodeContext } from '../../AddNodeContext';
 import {
   AlertInterface,
-  ModalInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import { CreateCalculatorRequest } from '../../../../../myApi';
@@ -31,8 +30,12 @@ import {
 } from '../../../../tt-components/validationSchemas';
 import { addCalculator } from '../../../../_api/apiRequests';
 
-const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
-  const { housingStockId } = useContext(AddNodeContext);
+const AddCalculatorForm = () => {
+  const {
+    addCalculatorVisible,
+    setAddCalculatorVisible,
+    housingStockId,
+  } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
     calculatorValidationSchema
@@ -79,9 +82,10 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
         housingStockId: values.housingStockId,
         infoId: Number(values.infoId),
       };
+      console.log('form', form);
       addCalculator(form).then((res: any) => {
         setTimeout(() => {
-          setVisible(false);
+          setAddCalculatorVisible(false);
         }, 1000);
       });
     },
@@ -165,7 +169,7 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
   ];
 
   return (
-    <form onSubmit={handleSubmitForm}>
+    <form onSubmit={handleSubmitForm} id={'addCalculator'}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
@@ -323,13 +327,19 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
           Далее
         </ButtonTT>
 
-        <ButtonTT color="blue" type="submit" hidden={currentTabKey !== '3'} big>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form="addCalculator"
+          hidden={currentTabKey !== '3'}
+          big
+        >
           Добавить
         </ButtonTT>
         <ButtonTT
           color="white"
           type="button"
-          onClick={() => setVisible(false)}
+          onClick={() => setAddCalculatorVisible(false)}
           style={{ marginLeft: 16 }}
         >
           Отмена

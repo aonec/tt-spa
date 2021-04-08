@@ -63,7 +63,11 @@ const AddNodeThirdTab = () => {
   }, [communicationPipes]);
 
   return (
-    <form hidden={Number(currentTabKey) !== 3} onSubmit={handleSubmit}>
+    <form
+      hidden={Number(currentTabKey) !== 3}
+      onSubmit={handleSubmit}
+      id={'devicesForm'}
+    >
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Подключенные приборы
@@ -95,7 +99,7 @@ const AddNodeThirdTab = () => {
           >
             Назад
           </ButtonTT>
-          <ButtonTT color="blue" big type="submit">
+          <ButtonTT color="blue" big type="submit" form={'devicesForm'}>
             Создать Узел
           </ButtonTT>
           <ButtonTT

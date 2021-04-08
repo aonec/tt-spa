@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../../../../tt-components/antd.scss';
 import AddCalculatorForm from './AddCalculatorForm';
 import { StyledModal } from '../../../../tt-components';
-import { ModalInterface } from '../../../../tt-components/interfaces';
+import { AddNodeContext } from '../../AddNodeContext';
 
-const ModalAddCalculator = ({ visible, setVisible }: ModalInterface) => {
+const ModalAddCalculator = () => {
+  const { addCalculatorVisible, setAddCalculatorVisible } = useContext(
+    AddNodeContext
+  );
   return (
     <>
       <StyledModal
-        visible={visible}
+        visible={addCalculatorVisible}
         onCancel={() => {
-          setVisible(false);
+          setAddCalculatorVisible(false);
         }}
         footer={null}
         width={800}
       >
-        <AddCalculatorForm visible={visible} setVisible={setVisible} />
+        <AddCalculatorForm />
       </StyledModal>
     </>
   );

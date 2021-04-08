@@ -313,6 +313,11 @@ export const serviceZoneList: { value: ServiceZone; label: string }[] = [
   },
 ];
 
+export const entryNumberList = [
+  { value: 1, label: 1 },
+  { value: 2, label: 2 },
+];
+
 export const serviceZoneListEnum = {
   [ServiceZone.Apartments]: 'Апартаменты',
   [ServiceZone.CommercialPremises]: 'Коммерческие помещения',

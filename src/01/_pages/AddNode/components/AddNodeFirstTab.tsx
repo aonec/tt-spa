@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AutoComplete, Form } from 'antd';
+import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { isConnected } from '../../../tt-components/localBases';
+import {
+  entryNumberList,
+  ipv4RegExp,
+  isConnected,
+} from '../../../tt-components/localBases';
 import {
   Title,
   SelectTT,
@@ -14,10 +18,12 @@ import {
   AutoCompleteInterface,
 } from '../../../tt-components';
 
-import { calculatorValidationSchema } from './validationSchemas';
 import ModalAddCalculator from '../modals/ModalAddCalculator';
 import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
+import * as Yup from 'yup';
+import { boolean, number } from 'yup';
+import { isEmpty } from '../../../_api/utils/isEmptyErrors';
 
 const AddNodeFirstTab = () => {
   const {
@@ -25,21 +31,16 @@ const AddNodeFirstTab = () => {
     currentTabKey,
     handleNext,
     calculators,
-    addCalculator,
-    setAddCalculator,
-    communicationPipes,
-    isEmpty,
-    calculatorForm,
+    addCalculatorVisible,
+    setAddCalculatorVisible,
     setCalculatorForm,
-    nodeForm,
-    setNodeForm,
-    devicesForm,
-    setDevicesForm,
   } = useContext(AddNodeContext);
 
-  const [validationSchema, setValidationSchema] = useState(
-    calculatorValidationSchema
-  );
+  const calculatorValidationSchema = Yup.object({
+    isConnected: boolean().required(),
+    calculatorId: number().required(),
+    entryNumber: number().required(),
+  });
 
   const {
     handleSubmit,
@@ -54,8 +55,9 @@ const AddNodeFirstTab = () => {
       isConnected: true,
       calculatorId: null,
       entryNumber: 1,
+      hasErrors: true,
     },
-    validationSchema,
+    validationSchema: calculatorValidationSchema,
     onSubmit: async () => {
       const form = {
         entryNumber: values.entryNumber,
@@ -67,14 +69,6 @@ const AddNodeFirstTab = () => {
     },
   });
 
-  function setCalculator(id: number) {
-    setFieldValue('calculatorId', id);
-  }
-
-  useEffect(() => {
-    setFieldValue('devices', communicationPipes);
-  }, [communicationPipes]);
-
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -84,17 +78,8 @@ const AddNodeFirstTab = () => {
     return null;
   };
 
-  const entryNumberList = [
-    { value: 1, label: 1 },
-    { value: 2, label: 2 },
-  ];
-
-  const handleModalAddCalculator = () => {
-    setAddCalculator(true);
-  };
-
   useEffect(() => {
-    console.log('values', values);
+    setFieldValue('hasErrors', isEmpty(errors));
   }, [values]);
 
   return (
@@ -134,7 +119,9 @@ const AddNodeFirstTab = () => {
             style={styles.w100}
             color="white"
             type="button"
-            onClick={handleModalAddCalculator}
+            onClick={() => {
+              setAddCalculatorVisible(true);
+            }}
           >
             + Создать вычислитель
           </ButtonTT>
@@ -155,7 +142,7 @@ const AddNodeFirstTab = () => {
         </Form.Item>
       </StyledFormPage>
       <StyledFooter form right>
-        <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
+        <ButtonTT color="blue" big type="submit" disabled={values.hasErrors}>
           Далее
         </ButtonTT>
         <ButtonTT
@@ -167,10 +154,7 @@ const AddNodeFirstTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-      <ModalAddCalculator
-        setVisible={setAddCalculator}
-        visible={addCalculator}
-      />
+      <ModalAddCalculator />
     </form>
   );
 };

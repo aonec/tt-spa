@@ -238,7 +238,7 @@ const ModalAddNodeForm = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} id={'createNode'}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового узла
@@ -250,7 +250,13 @@ const ModalAddNodeForm = () => {
         <ThirdBlock />
       </StyledModalBody>
       <StyledFooter>
-        <ButtonTT color="blue" type="submit" style={{ marginLeft: '16px' }} big>
+        <ButtonTT
+          color="blue"
+          type="submit"
+          form={'createNode'}
+          style={{ marginLeft: 16 }}
+          big
+        >
           Создать Узел
         </ButtonTT>
         <ButtonTT

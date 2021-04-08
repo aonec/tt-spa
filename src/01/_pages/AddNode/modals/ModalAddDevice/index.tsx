@@ -4,19 +4,18 @@ import AddDeviceForm from './components/AddDeviceForm';
 import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddDevice = () => {
-  const {
-    addHousingVisible: visible,
-    setAddHousingVisible: setVisible,
-  } = useContext(AddNodeContext);
+  const { addHousingVisible, setAddHousingVisible } = useContext(
+    AddNodeContext
+  );
 
   return (
     <StyledModal
       onCancel={() => {
-        setVisible(false);
+        setAddHousingVisible(false);
       }}
       footer={null}
       width={800}
-      visible={visible}
+      visible={addHousingVisible}
     >
       <AddDeviceForm />
     </StyledModal>

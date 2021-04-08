@@ -34,7 +34,6 @@ const AddNodeSecondTab = () => {
     setNodeForm,
     devicesForm,
     setDevicesForm,
-    isEmpty,
     setSecondTab,
   } = useContext(AddNodeContext);
 
@@ -58,6 +57,7 @@ const AddNodeSecondTab = () => {
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(1, 'years'),
+      hasErrors: false,
     },
     validationSchema,
     onSubmit: async () => {
@@ -194,7 +194,7 @@ const AddNodeSecondTab = () => {
         >
           Назад
         </ButtonTT>
-        <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
+        <ButtonTT color="blue" big type="submit" disabled={values.hasErrors}>
           Далее
         </ButtonTT>
 

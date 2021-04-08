@@ -14,15 +14,22 @@ export const AddNode = () => {
     housingStock,
     setHousingStock,
   ] = useState<HousingStockResponse | null>();
+
   const [calculators, setCalculators] = useState<any>();
-  const [addCalculator, setAddCalculator] = useState(false);
+
+  //Модальные окна
+  const [addCalculatorVisible, setAddCalculatorVisible] = useState(false);
   const [addHousingVisible, setAddHousingVisible] = useState(false);
+  const [nodeModalVisible, setNodeModalVisible] = useState(false);
+
+  //Модальное окно итоговое
   const [addNode, setAddNode] = useState(false);
-  const [communicationPipes, setCommunicationPipes] = useState([]);
+
   const [calculatorForm, setCalculatorForm] = useState();
   const [nodeForm, setNodeForm] = useState();
-  const [nodeModalVisible, setNodeModalVisible] = useState(false);
   const [devicesForm, setDevicesForm] = useState();
+  const [communicationPipes, setCommunicationPipes] = useState();
+
   const [currentTabKey, setTab] = useState('1');
 
   const stepsArr: Array<TabsItemInterface> = [
@@ -50,7 +57,7 @@ export const AddNode = () => {
     push(`objects/${housingStockId}`);
   }
 
-  function handleChangeTab(value: string) {
+  function handleCurrent(value: string) {
     setTab(value);
   }
 
@@ -62,31 +69,11 @@ export const AddNode = () => {
     setTab(String(Number(currentTabKey) - 1));
   }
 
-  function isEmpty(obj: object) {
-    for (const key in obj) {
-      return false;
-    }
-    return true;
-  }
-
-  function getPresentCalculators() {
-    getCalculators(housingStockId).then((res) => {
-      console.log(res);
-      const calculatorsList = res?.map((calculator) => {
-        const { id, serialNumber, model } = calculator;
-        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
-      });
-
-      setCalculators(calculatorsList);
-    });
-  }
-
   useEffect(() => {
     getHousingStock(housingStockId).then((res) => {
       setHousingStock(res);
     });
     getCalculators(housingStockId).then((res) => {
-      console.log(res);
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
         return { ...calculator, key: id, value: `${model} ${serialNumber}` };
@@ -96,11 +83,7 @@ export const AddNode = () => {
     });
   }, []);
 
-  useEffect(() => {
-    getPresentCalculators();
-  }, [addCalculator]);
-
-  if (!housingStock || !calculators || !communicationPipes) {
+  if (!housingStock || !calculators) {
     return <Loader size={32} show={true} />;
   }
 
@@ -108,7 +91,7 @@ export const AddNode = () => {
     handleCancel,
     currentTabKey,
     setTab,
-    handleChangeTab,
+    handleCurrent,
     handleNext,
     handlePrevious,
     calculatorForm,
@@ -119,8 +102,8 @@ export const AddNode = () => {
     setDevicesForm,
     housingStockId,
     calculators,
-    addCalculator,
-    setAddCalculator,
+    addCalculatorVisible,
+    setAddCalculatorVisible,
     addHousingVisible,
     setAddHousingVisible,
     communicationPipes,
@@ -129,7 +112,6 @@ export const AddNode = () => {
     stepsArr,
     nodeModalVisible,
     setNodeModalVisible,
-    isEmpty,
     addNode,
     setAddNode,
   };
