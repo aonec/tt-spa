@@ -29,7 +29,12 @@ const AddNodeFirstTab = () => {
     setAddCalculator,
     communicationPipes,
     isEmpty,
-    setFirstTab,
+    calculatorForm,
+    setCalculatorForm,
+    nodeForm,
+    setNodeForm,
+    devicesForm,
+    setDevicesForm,
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(
@@ -57,7 +62,7 @@ const AddNodeFirstTab = () => {
         calculatorId: values.calculatorId,
       };
       console.log(form);
-      setFirstTab(form);
+      setCalculatorForm(form);
       handleNext();
     },
   });

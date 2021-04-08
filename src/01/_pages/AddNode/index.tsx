@@ -16,16 +16,13 @@ export const AddNode = () => {
   ] = useState<HousingStockResponse | null>();
   const [calculators, setCalculators] = useState<any>();
   const [addCalculator, setAddCalculator] = useState(false);
-  const [
-    addHousingMeteringDeviceVisible,
-    setAddHousingMeteringDeviceVisible,
-  ] = useState(false);
+  const [addHousingVisible, setAddHousingVisible] = useState(false);
   const [addNode, setAddNode] = useState(false);
   const [communicationPipes, setCommunicationPipes] = useState([]);
-  const [firstTab, setFirstTab] = useState();
-  const [secondTab, setSecondTab] = useState();
-  const [thirdTab, setThirdTab] = useState();
-  const [node, setNode] = useState({});
+  const [calculatorForm, setCalculatorForm] = useState();
+  const [nodeForm, setNodeForm] = useState();
+  const [nodeModalVisible, setNodeModalVisible] = useState(false);
+  const [devicesForm, setDevicesForm] = useState();
   const [currentTabKey, setTab] = useState('1');
 
   const stepsArr: Array<TabsItemInterface> = [
@@ -114,24 +111,24 @@ export const AddNode = () => {
     handleChangeTab,
     handleNext,
     handlePrevious,
-    firstTab,
-    setFirstTab,
-    secondTab,
-    setSecondTab,
-    thirdTab,
-    setThirdTab,
-    node,
-    setNode,
+    calculatorForm,
+    setCalculatorForm,
+    nodeForm,
+    setNodeForm,
+    devicesForm,
+    setDevicesForm,
     housingStockId,
     calculators,
     addCalculator,
     setAddCalculator,
-    addHousingMeteringDeviceVisible,
-    setAddHousingMeteringDeviceVisible,
+    addHousingVisible,
+    setAddHousingVisible,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
     stepsArr,
+    nodeModalVisible,
+    setNodeModalVisible,
     isEmpty,
     addNode,
     setAddNode,

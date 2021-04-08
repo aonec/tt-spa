@@ -7,6 +7,7 @@ export const StyledFooter = styled.div.attrs((props) => ({
   modal: props.modal,
   left: props.left,
   right: props.right,
+  styles: props.styles,
 }))`
   position: relative;
   background: #f3f5f6;

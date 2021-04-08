@@ -1,21 +1,21 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
-import AddNodeForm from './components/AddNodeForm';
+import ModalAddNodeForm from './components/ModalAddNodeForm';
 import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddNode = () => {
-  const { addNode, setAddNode } = useContext(AddNodeContext);
-  function handleCancel() {
-    setAddNode(false);
-  }
+  const { nodeModalVisible, setNodeModalVisible } = useContext(AddNodeContext);
+
   return (
     <StyledModal
-      onCancel={handleCancel}
+      onCancel={() => {
+        setNodeModalVisible(false);
+      }}
       footer={null}
       width={800}
-      visible={addNode}
+      visible={nodeModalVisible}
     >
-      <AddNodeForm handleCancel={handleCancel} />
+      <ModalAddNodeForm />
     </StyledModal>
   );
 };

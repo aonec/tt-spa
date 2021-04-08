@@ -20,20 +20,17 @@ const AddNodeThirdTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    setTab,
-    handleChangeTab,
+    calculatorForm,
+    setCalculatorForm,
+    nodeForm,
+    setNodeForm,
+    devicesForm,
+    setDevicesForm,
     handlePrevious,
-    handleNext,
-    addCalculator,
-    setAddCalculator,
-    addHousingMeteringDeviceVisible,
-    setAddHousingMeteringDeviceVisible,
+    addHousingVisible,
+    setAddHousingVisible,
     communicationPipes,
-    node,
-    setAddNode,
-    setNode,
-    addNode,
-    setThirdTab,
+    setNodeModalVisible,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
@@ -53,21 +50,17 @@ const AddNodeThirdTab = () => {
       communicationPipes: [],
     },
     validationSchema,
-
     onSubmit: async () => {
       const form = values.communicationPipes;
-      setThirdTab(form);
-      setAddNode(true);
+      setDevicesForm(form);
+      console.log('communicationPipes');
+      setNodeModalVisible(true);
     },
   });
 
   useEffect(() => {
     setFieldValue('communicationPipes', communicationPipes);
   }, [communicationPipes]);
-
-  function handleShowAddDevice() {
-    setAddHousingMeteringDeviceVisible(true);
-  }
 
   return (
     <form hidden={Number(currentTabKey) !== 3} onSubmit={handleSubmit}>
@@ -79,37 +72,41 @@ const AddNodeThirdTab = () => {
           <RelatedDevices />
         </div>
         <ButtonTT
-          style={{ marginTop: '24px' }}
+          style={{ marginTop: 24 }}
           color="white"
           type="button"
-          onClick={handleShowAddDevice}
+          onClick={() => {
+            setAddHousingVisible(true);
+          }}
         >
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
       <StyledFooter form right>
-        <ButtonTT
-          type="button"
-          color="white"
-          onClick={handlePrevious}
-          style={{
-            position: 'absolute',
-            left: 0,
-          }}
-        >
-          Назад
-        </ButtonTT>
-        <ButtonTT color="blue" big type="submit">
-          Создать Узел
-        </ButtonTT>
-        <ButtonTT
-          type="button"
-          color="white"
-          onClick={handleCancel}
-          style={{ marginLeft: 16 }}
-        >
-          Отмена
-        </ButtonTT>
+        <div style={{ marginTop: 36 }}>
+          <ButtonTT
+            type="button"
+            color="white"
+            onClick={handlePrevious}
+            style={{
+              position: 'absolute',
+              left: 0,
+            }}
+          >
+            Назад
+          </ButtonTT>
+          <ButtonTT color="blue" big type="submit">
+            Создать Узел
+          </ButtonTT>
+          <ButtonTT
+            type="button"
+            color="white"
+            onClick={handleCancel}
+            style={{ marginLeft: 16 }}
+          >
+            Отмена
+          </ButtonTT>
+        </div>
       </StyledFooter>
       <ModalAddDevice />
       <ModalAddNode />

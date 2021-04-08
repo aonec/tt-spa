@@ -91,26 +91,22 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     const isEmptyConnection = () => {
       const { ipV4 = '', port, deviceAddress } = values;
       if (!ipV4 && !port && !deviceAddress) {
-        // console.log('Все пустые');
+        console.log('Все пустые');
         return true;
       }
-      // console.log('Не все пустые');
+      console.log('Не все пустые');
       return false;
     };
 
-    isEmptyConnection();
     if (values.isConnected) {
-      return setValidationSchema(calculatorValidationSchema);
+      setValidationSchema(calculatorValidationSchema);
     }
-
-    if (isEmptyConnection()) {
+    if (!values.isConnected && isEmptyConnection()) {
+      setValidationSchema(calculatorNoConnectionValidationSchema);
       setFieldError('ipV4', undefined);
       setFieldError('port', undefined);
       setFieldError('deviceAddress', undefined);
-      setValidationSchema(calculatorNoConnectionValidationSchema);
-      return;
     }
-    setValidationSchema(calculatorValidationSchema);
   }, [values.deviceAddress, values.ipV4, values.port, values.isConnected]);
 
   const tabErrors = [

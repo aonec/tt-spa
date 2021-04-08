@@ -5,8 +5,8 @@ import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddDevice = () => {
   const {
-    addHousingMeteringDeviceVisible: visible,
-    setAddHousingMeteringDeviceVisible: setVisible,
+    addHousingVisible: visible,
+    setAddHousingVisible: setVisible,
   } = useContext(AddNodeContext);
 
   return (
@@ -18,7 +18,7 @@ const ModalAddDevice = () => {
       width={800}
       visible={visible}
     >
-      <AddDeviceForm setVisible={setVisible} />
+      <AddDeviceForm />
     </StyledModal>
   );
 };

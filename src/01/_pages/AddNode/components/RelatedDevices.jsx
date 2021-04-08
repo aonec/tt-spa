@@ -8,76 +8,71 @@ export const RelatedDevices = () => {
   const { communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
+  if (!communicationPipes) {
+    return <div>Нет труб</div>;
+  }
+  return <div>Трубы есть</div>;
+  // const flattenDevices = _.flatten(
+  //   communicationPipes
+  //     ? communicationPipes.map((communicationPipe) => {
+  //         const { devices } = communicationPipe;
+  //         return devices.map((device) => device);
+  //       })
+  //     : []
+  // );
 
-  const flattenDevices = _.flatten(
-    communicationPipes.map((communicationPipe) => {
-      const { devices } = communicationPipe;
-      return devices.map((device) => device);
-    })
-  );
+  // const result = flattenDevices.map((device) => {
+  //   const { model, serialNumber, resource, pipe } = device;
+  //
+  //   const { pipeNumber, entryNumber } = pipe;
+  //
+  //   function handleDelete() {
+  //     const updatedCommunicationPipes = communicationPipes.map(
+  //       (communicationPipe) => {
+  //         const { devices } = communicationPipe;
+  //
+  //         const devicesList = _.filter(
+  //           devices,
+  //           (deviceInList) => !_.isEqual(deviceInList, device)
+  //         );
+  //         return { ...communicationPipe, devices: devicesList };
+  //       }
+  //     );
+  //
+  //     const newCommunicationPipes = _.filter(
+  //       updatedCommunicationPipes,
+  //       (communicationPipe) => communicationPipe.devices.length > 0
+  //     );
+  //
+  //     setCommunicationPipes(newCommunicationPipes);
+  //   }
+  //
+  //   return (
+  //     <ListItem key={serialNumber}>
+  //       <NameWrap>
+  //         <IconTT icon={resource.toLowerCase()} />
+  //         <Name>{model}</Name>
+  //         <Serial>{` (${serialNumber})`}</Serial>
+  //       </NameWrap>
+  //
+  //       <Span>{`Ввод: ${entryNumber}`}</Span>
+  //       <Span>{`Труба: ${pipeNumber}`}</Span>
+  //       <Div>
+  //         {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
+  //         <IconTT
+  //           icon="close"
+  //           style={{ marginLeft: 8 }}
+  //           onClick={handleDelete}
+  //         />
+  //       </Div>
+  //     </ListItem>
+  //   );
+  // });
 
-  const result = flattenDevices.map((device) => {
-    const {
-      model,
-      serialNumber,
-      resource,
-      pipe,
-      housingMeteringDeviceType,
-    } = device;
-
-    const { pipeNumber, entryNumber } = pipe;
-
-    function handleDelete() {
-      const updatedCommunicationPipes = communicationPipes.map(
-        (communicationPipe, index) => {
-          const { devices } = communicationPipe;
-
-          const devicesList = _.filter(
-            devices,
-            (deviceInList) => !_.isEqual(deviceInList, device)
-          );
-          return { ...communicationPipe, devices: devicesList };
-        }
-      );
-
-      console.log('updatedCommunicationPipes', updatedCommunicationPipes);
-
-      const newCommunicationPipes = _.filter(
-        updatedCommunicationPipes,
-        (communicationPipe) => communicationPipe.devices.length > 0
-      );
-
-      setCommunicationPipes(newCommunicationPipes);
-    }
-
-    return (
-      <ListItem key={serialNumber}>
-        <NameWrap>
-          <IconTT icon={resource.toLowerCase()} />
-          <Name>{model}</Name>
-          <Serial>{` (${serialNumber})`}</Serial>
-        </NameWrap>
-
-        <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Труба: ${pipeNumber}`}</Span>
-        <Div>
-          {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
-          <IconTT
-            icon="close"
-            style={{ marginLeft: 8 }}
-            onClick={handleDelete}
-          />
-        </Div>
-      </ListItem>
-    );
-  });
-
-  return <ListWrap>{result}</ListWrap>;
+  // return <ListWrap>test</ListWrap>;
 };
 
 export default RelatedDevices;
-
-const Template = styled.div``;
 
 const Div = styled.div`
   display: inline-flex;
@@ -112,14 +107,6 @@ const Serial = styled.p`
   color: var(--main-60);
 `;
 
-const State = styled.div`
-  display: flex;
-  align-items: center;
-  color: rgba(39, 47, 90, 0.8);
-`;
-
-const Title = styled.h2``;
-
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
@@ -138,13 +125,3 @@ const ListItem = styled.div`
 const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
-
-// const newArr = communicationPipes.reduce((result, communicationPipe) => {
-//     const {devices, number} = communicationPipe;
-//
-//     if (condition === true) {
-//         result.push({something});
-//     }
-//
-//     return result;
-// }, []);

@@ -28,9 +28,13 @@ const AddNodeSecondTab = () => {
     currentTabKey,
     handlePrevious,
     handleNext,
-    setNode,
+    calculatorForm,
+    setCalculatorForm,
+    nodeForm,
+    setNodeForm,
+    devicesForm,
+    setDevicesForm,
     isEmpty,
-    secondTab,
     setSecondTab,
   } = useContext(AddNodeContext);
 
@@ -66,7 +70,7 @@ const AddNodeSecondTab = () => {
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
       console.log('AddNodeFirstTab', form);
-      setSecondTab(form);
+      setNodeForm(form);
       handleNext();
     },
   });
@@ -75,7 +79,7 @@ const AddNodeSecondTab = () => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };

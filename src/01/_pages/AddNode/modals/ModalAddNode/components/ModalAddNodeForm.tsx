@@ -32,9 +32,10 @@ import { addNodeFinal } from '../../../apiAddNode';
 import { Redirect, useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../../AddNodeContext';
 
-const AddNodeForm = (props: any) => {
+const ModalAddNodeForm = () => {
+  const { nodeModalVisible, setNodeModalVisible } = useContext(AddNodeContext);
+
   const history = useHistory();
-  const { handleCancel } = props;
 
   const {
     currentTabKey,
@@ -42,26 +43,23 @@ const AddNodeForm = (props: any) => {
     handleChangeTab,
     handleNext,
     node,
+    secondTab,
     setNode,
     housingStockId,
     calculators,
-    calculatorsExtended,
-    addCalculator,
-    setAddCalculator,
+    calculatorForm,
+    setCalculatorForm,
+    nodeForm,
+    setNodeForm,
+    devicesForm,
+    setDevicesForm,
     communicationPipes,
-    setCommunicationPipes,
-    housingStock,
-    stepsArr,
-    isEmpty,
-    addNode,
-    setAddNode,
   } = useContext(AddNodeContext);
 
   console.log('node', node);
 
+  const { calculatorId, entryNumber } = calculatorForm;
   const {
-    calculatorId,
-    entryNumber,
     futureCheckingDate,
     isConnected,
     lastCheckingDate,
@@ -69,9 +67,9 @@ const AddNodeForm = (props: any) => {
     number,
     resource,
     serviceZone,
-  } = node;
+  } = nodeForm;
 
-  const calculator = _.find(calculatorsExtended, { id: calculatorId });
+  const calculator = _.find(calculators, { id: calculatorId });
   // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
@@ -85,13 +83,13 @@ const AddNodeForm = (props: any) => {
   const getNodeResource =
     _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
   const devicesList = _.flatten(
-    communicationPipes.map((communicationPipe: any) => {
-      const { devices } = communicationPipe;
-      return devices.map((device: any) => device);
-    })
+    communicationPipes
+      ? communicationPipes.map((communicationPipe: any) => {
+          const { devices } = communicationPipe;
+          return devices.map((device: any) => device);
+        })
+      : []
   );
-
-  console.log('node', node);
 
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -258,8 +256,10 @@ const AddNodeForm = (props: any) => {
         <ButtonTT
           type="button"
           color="white"
-          onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          onClick={() => {
+            setNodeModalVisible(false);
+          }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
@@ -268,7 +268,7 @@ const AddNodeForm = (props: any) => {
   );
 };
 
-export default AddNodeForm;
+export default ModalAddNodeForm;
 
 const List = styled.li`
   padding: 16px 4px;
@@ -341,23 +341,3 @@ const DeviceDescription = styled.div`
   align-items: center;
   grid-column-gap: 8px;
 `;
-
-// const form = {
-//   serialNumber: values.serialNumber,
-//   lastCheckingDate: values.lastCheckingDate,
-//   futureCheckingDate: values.futureCheckingDate,
-//   lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-//   futureCommercialAccountingDate: values.futureCommercialAccountingDate,
-//   documentsIds: [],
-//   housingMeteringDeviceType: values.housingMeteringDeviceType,
-//   resource: values.resource,
-//   model: values.model,
-//   diameter: values.diameter,
-//   pipe: {
-//     calculatorId: values.calculatorId,
-//     entryNumber: values.entryNumber,
-//     hubNumber: values.hubNumber || null,
-//     pipeNumber: values.pipeNumber,
-//     magistral: values.magistral,
-//   },
-// };
