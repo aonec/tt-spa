@@ -15,7 +15,7 @@ import {
   styles,
   SwitchTT,
 } from '../../../../tt-components';
-import { ipv4RegExp, items } from '../../../../tt-components/localBases';
+import { items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { AddNodeContext } from '../../AddNodeContext';
@@ -91,15 +91,14 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     const isEmptyConnection = () => {
       const { ipV4 = '', port, deviceAddress } = values;
       if (!ipV4 && !port && !deviceAddress) {
-        console.log('Все пустые');
+        // console.log('Все пустые');
         return true;
       }
-      console.log('Не все пустые');
+      // console.log('Не все пустые');
       return false;
     };
 
     isEmptyConnection();
-
     if (values.isConnected) {
       return setValidationSchema(calculatorValidationSchema);
     }
@@ -142,11 +141,11 @@ const AddCalculatorForm = ({ visible, setVisible }: ModalInterface) => {
     handleSubmit();
   };
 
-  const Alert = ({ name, styles = { color: 'red' } }: AlertInterface) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div style={styles}>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };

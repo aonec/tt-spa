@@ -9,13 +9,11 @@ const ModalAddDevice = () => {
     setAddHousingMeteringDeviceVisible: setVisible,
   } = useContext(AddNodeContext);
 
-  function handleCancel() {
-    setVisible(false);
-  }
-
   return (
     <StyledModal
-      onCancel={handleCancel}
+      onCancel={() => {
+        setVisible(false);
+      }}
       footer={null}
       width={800}
       visible={visible}

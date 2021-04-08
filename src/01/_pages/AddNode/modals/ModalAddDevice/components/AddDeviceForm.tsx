@@ -39,17 +39,17 @@ import {
   TabsItemInterface,
 } from '../../../../../tt-components/interfaces';
 import Warning from '../../../../../tt-components/Warning';
-import { CreateHousingMeteringDeviceRequest } from '../../../../../../myApi';
 
 interface AddDeviceFormInterface {
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
-  const { node, communicationPipes, setCommunicationPipes } = useContext(
+  const { firstTab, communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
 
+  const [currentTabKey, setTab] = useState('1');
   const tabItems: Array<TabsItemInterface> = [
     {
       title: 'Шаг 1. Общие данные',
@@ -63,14 +63,15 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     },
   ];
 
-  const { resource, entryNumber, calculatorId } = node;
+  const { resource, entryNumber, calculatorId } = firstTab;
 
-  const [currentTabKey, setTab] = useState('1');
   const [temperatureSensorAllowed, setTemperatureSensorAllowed] = useState(
     false
   );
   const [disable, setDisable] = useState(false);
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [validationSchema, setValidationSchema] = useState<any>(
+    validationSchemaFlowMeter
+  );
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -85,15 +86,18 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handleSubmitForm() {
+  const handleSubmitForm = (e: any) => {
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors
     );
+
     if (hasError) {
-      setTab(errorTab);
+      return setTab(errorTab);
     }
-  }
+    handleSubmit();
+  };
 
   const tabErrors = [
     {
@@ -197,10 +201,6 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   });
 
   useEffect(() => {
-    setValidationSchema(validationSchemaFlowMeter);
-  }, []);
-
-  useEffect(() => {
     const pipeNumbers = _.map(communicationPipes, 'number');
 
     if (pipeNumbers.includes(values.pipeNumber)) {
@@ -234,7 +234,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   }, [values.housingMeteringDeviceType]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitForm}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового ОДПУ
@@ -374,7 +374,6 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           style={{ marginLeft: 16 }}
           big
           disabled={temperatureSensorAllowed}
-          onClick={handleSubmitForm}
         >
           Добавить
         </ButtonTT>
