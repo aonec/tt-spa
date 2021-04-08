@@ -63,9 +63,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   ];
 
   const { resource, entryNumber, calculatorId } = node;
-
   const [currentTabKey, setTab] = useState('1');
-  const [coldAndThermo, setcoldAndThermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -127,6 +125,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     entryNumber,
     pipeNumber: null,
     magistral: magistrals[0].value,
+    coldAndThermo: false,
   };
 
   const {
@@ -218,7 +217,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     const isTrue =
       values.resource === 'ColdWaterSupply' &&
       values.housingMeteringDeviceType === 'TemperatureSensor';
-    setcoldAndThermo(!isTrue);
+    setFieldValue('coldAndThermo', !isTrue);
   }, [values.resource, values.housingMeteringDeviceType]);
 
   useEffect(() => {
@@ -239,7 +238,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
         </Title>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
         <Warning
-          hidden={!coldAndThermo}
+          hidden={values.coldAndThermo}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
         />
         <Warning
@@ -358,7 +357,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           onClick={handleNext}
           big
           hidden={currentTabKey === '2'}
-          disabled={coldAndThermo}
+          disabled={values.coldAndThermo}
           style={{ marginLeft: '16px' }}
           type="button"
         >
@@ -371,7 +370,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           hidden={currentTabKey !== '2'}
           style={{ marginLeft: 16 }}
           big
-          disabled={coldAndThermo}
+          disabled={values.coldAndThermo}
           onClick={handleSubmitForm}
         >
           Добавить
@@ -382,7 +381,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           onClick={() => {
             setVisible(false);
           }}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>
