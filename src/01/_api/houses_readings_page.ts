@@ -1,11 +1,12 @@
 import axios from '01/axios';
 import { IndividualDeviceType } from 'types/types';
 import { DisabledStateType } from '01/Redux/reducers/readingsReducer';
+import { IndividualDeviceListItemResponse } from '../../myApi';
 
 export type ReadingsStateType = {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-  items: Array<IndividualDeviceType>;
+  items: Array<IndividualDeviceListItemResponse>;
   nextPageNumber: number;
   pageNumber: number;
   pageSize: number;

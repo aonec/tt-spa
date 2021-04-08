@@ -1047,6 +1047,11 @@ export interface HousingStockResponseSuccessApiResponse {
   successResponse: HousingStockResponse;
 }
 
+export enum HouseCategory {
+  Living = "Living",
+  NonResidential = "NonResidential",
+}
+
 export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
@@ -2783,6 +2788,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Street?: string | null;
         HousingStockNumber?: string | null;
         Corpus?: string | null;
+        HouseCategory?: HouseCategory;
+        HouseManagementId?: string | null;
         PageNumber?: number;
         PageSize?: number;
       },

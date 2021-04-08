@@ -39,7 +39,6 @@ export const NodeProfile = () => {
   }, [nodeId]);
 
   useEffect(() => {
-    debugger;
     node && node.calculatorId
       ? runCalculator(getCalculator(node.calculatorId))
       : console.log('wait');

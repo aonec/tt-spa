@@ -8,7 +8,6 @@ import {
   RequestNodeReadingsFunctionInterface,
 } from '../../_api/node_readings_page';
 import { useAsync } from '../../hooks/useAsync';
-import { Alert } from 'antd';
 import { getGraphParams } from './utils';
 import styled from 'styled-components';
 import { ResourceType } from '../../../myApi';
@@ -91,15 +90,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
 
       {status === 'error' ? (
         <>
-          {/*<Alert*/}
-          {/*  message="Ошибка"*/}
-          {/*  description="На сервере произошла непредвиденная ошибка. В скором времени она будет устранена."*/}
-          {/*  type="error"*/}
-          {/*  showIcon*/}
-          {/*  closable*/}
-          {/*  style={{ marginBottom: 24, marginTop: 24 }}*/}
-          {/*/>*/}
-
           <div>
             <img src={require('./components/FallbackGraph.svg')} alt="546" />
           </div>
