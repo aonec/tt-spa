@@ -1,7 +1,5 @@
 import React from 'react';
-
 import styled from 'reshadow/macro';
-
 import * as s from '01/r_comp';
 import { TasksProfileContext } from './context';
 import { usePageFetch } from './hooks/usePageFetch';
@@ -65,8 +63,6 @@ export const TaskProfile = () => {
 
   const { device } = state;
   const { type, id } = device || {};
-
-  // console.log("TaskProfile", state)
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 

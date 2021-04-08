@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
 
 const ADD_READINGS = 'ADD_READINGS';
 const UPDATE_READINGS = 'UPDATE_READINGS';
@@ -8,8 +7,6 @@ export const usePanel = (
   { panel = {}, panelLoading = false, apartment, stages },
   pageDispatch
 ) => {
-  const { replace } = useHistory();
-  const { url } = useRouteMatch();
   const [state, dispatch] = React.useReducer(dataReducer, {});
   const isObserver = panel.userOperatingStatus === 'Observer';
 
@@ -18,10 +15,6 @@ export const usePanel = (
   }, [panelLoading]);
 
   window.state = state;
-
-  // React.useEffect(() => {
-  //   panel.actions?.SwitchDevices && replace(url + "/step1")
-  // }, [panel.actions?.SwitchDevices])
 
   const pushProps = {
     onClick() {

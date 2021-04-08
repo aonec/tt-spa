@@ -14,7 +14,7 @@ const tabItems: Array<Array<string>> = [
 export const TabsIndividualDevice = React.memo(() => {
   const { push } = useHistory();
   const matchParams = useRouteMatch<string>(
-    '/individualDevices/(\\d+)/(readings|documents|changes)?'
+    '/individualDevices/(\\d+)/(devices|documents|changes)?'
   );
   if (!matchParams) {
     return null;
