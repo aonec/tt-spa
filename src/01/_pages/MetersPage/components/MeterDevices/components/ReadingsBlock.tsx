@@ -1,10 +1,4 @@
-import React, {
-  MutableRefObject,
-  ReactEventHandler,
-  RefObject,
-  useContext,
-  useState,
-} from 'react';
+import React, { MutableRefObject } from 'react';
 
 import { Input } from 'antd';
 import styled from 'styled-components';
@@ -34,11 +28,7 @@ const ReadingLineStyled = styled.div<{
 `;
 
 const TarifLabel = styled.span<{ houseReadings: boolean }>`
-  // width: ${(props) => (props.houseReadings ? '20px' : '72px')};
   width: 20px;
-  // padding-left: ${(props) => (props.houseReadings ? 0 : '8px')};
-  // padding-right: ${(props) => (props.houseReadings ? 0 : '8px')};
-  //padding-left: 8px;
   margin-right: 4px;
   color: rgba(39, 47, 90, 0.32);
 `;

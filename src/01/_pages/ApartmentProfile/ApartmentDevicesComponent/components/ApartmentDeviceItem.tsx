@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
 import rateTypeToNumber from '../../../../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../../../../utils/formEmptyReadingsObject';
-import { IndividualDeviceType } from '../../../../../types/types';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
 import ActiveLine from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';

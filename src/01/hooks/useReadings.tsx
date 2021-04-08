@@ -7,7 +7,6 @@ import React, {
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
-import { IndividualDeviceType } from '../../types/types';
 import moment from 'moment';
 import axios from '../axios';
 import { isNullInArray } from '../utils/checkArrayForNulls';
@@ -277,13 +276,12 @@ export const useReadings = (
     .value();
 
   return {
-    readingsState,
-    isVisible,
-    onInputChange,
-    handleOk,
-    handleCancel,
-    previousReadings,
-    currentReadings,
+    readingsState, // стейт с показаниями
+    isVisible, // состояние для модалки
+    handleOk, // хендлер для модалки
+    handleCancel, // хендлер для модалки
+    previousReadings, // массив компонентов с показаниями за пред. месяцы
+    currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
 };
 

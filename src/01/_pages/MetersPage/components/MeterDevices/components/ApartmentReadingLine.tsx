@@ -7,7 +7,6 @@ import ButtonTT from '../../../../../tt-components/ButtonTT';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCreators';
 import DeviceInfo from './DeviceInfo';
-import { IndividualDeviceType } from '../../../../../../types/types';
 import {
   IndividualDeviceListItemResponse,
   ResourceType,
@@ -116,7 +115,6 @@ export const DeviceReadingsContainer = styled.div`
   border: 1px solid ${(props) => (props.color ? props.color : 'var(--main-90)')};
   border-left-width: 4px;
   max-width: 200px;
-  //padding: 8px 16px;
   padding: 8px 8px 8px 12px;
 
   &:focus-within {
