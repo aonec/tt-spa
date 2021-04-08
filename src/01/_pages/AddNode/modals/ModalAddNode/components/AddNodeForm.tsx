@@ -23,7 +23,6 @@ import {
   ButtonTT,
   StyledFooter,
   Icon,
-  Warning,
   styles,
   StyledFormPage,
 } from '../../../../../tt-components';
@@ -33,7 +32,7 @@ import { addNodeFinal } from '../../../apiAddNode';
 import { Redirect, useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../../AddNodeContext';
 
-const AddNodeForm = (props) => {
+const AddNodeForm = (props: any) => {
   const history = useHistory();
   const { handleCancel } = props;
 
@@ -49,8 +48,6 @@ const AddNodeForm = (props) => {
     calculatorsExtended,
     addCalculator,
     setAddCalculator,
-    addOdpu,
-    setAddOdpu,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
@@ -88,9 +85,9 @@ const AddNodeForm = (props) => {
   const getNodeResource =
     _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
   const devicesList = _.flatten(
-    communicationPipes.map((communicationPipe) => {
+    communicationPipes.map((communicationPipe: any) => {
       const { devices } = communicationPipe;
-      return devices.map((device) => device);
+      return devices.map((device: any) => device);
     })
   );
 
@@ -205,38 +202,39 @@ const AddNodeForm = (props) => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {devicesList.map((device) => {
-          const { closingDate, model, serialNumber, pipe } = device;
-          const { pipeNumber } = pipe;
-          return (
-            <List style={{ alignItems: 'center' }}>
-              <CalculatorInfo>
-                <IconTT icon={resource.toLowerCase()} />
-                <DeviceModel>{model}</DeviceModel>{' '}
-                <DeviceSerial>({serialNumber})</DeviceSerial>
-              </CalculatorInfo>
-              <DeviceDescription>
-                <Description>
-                  {closingDate ? (
-                    <Div>
-                      <IconTT icon="red" />
-                      <span>Не активен</span>
-                    </Div>
-                  ) : (
-                    <Div>
-                      <IconTT icon="green" />
-                      <span>Активен</span>
-                    </Div>
-                  )}
-                </Description>
-                <Number>
-                  Труба:
-                  {pipeNumber}
-                </Number>
-              </DeviceDescription>
-            </List>
-          );
-        })}
+        {devicesList ||
+          [].map((device) => {
+            const { closingDate, model, serialNumber, pipe } = device;
+            const { pipeNumber } = pipe;
+            return (
+              <List style={{ alignItems: 'center' }}>
+                <CalculatorInfo>
+                  <IconTT icon={resource.toLowerCase()} />
+                  <DeviceModel>{model}</DeviceModel>{' '}
+                  <DeviceSerial>({serialNumber})</DeviceSerial>
+                </CalculatorInfo>
+                <DeviceDescription>
+                  <Description>
+                    {closingDate ? (
+                      <Div>
+                        <IconTT icon="red" />
+                        <span>Не активен</span>
+                      </Div>
+                    ) : (
+                      <Div>
+                        <IconTT icon="green" />
+                        <span>Активен</span>
+                      </Div>
+                    )}
+                  </Description>
+                  <Number>
+                    Труба:
+                    {pipeNumber}
+                  </Number>
+                </DeviceDescription>
+              </List>
+            );
+          })}
       </ul>
     </Block>
   );

@@ -3,7 +3,7 @@ import { StyledModal } from '../../../../tt-components/Modal';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from '../../AddNodeContext';
 
-const ModalAddNode = (props) => {
+const ModalAddNode = () => {
   const { addNode, setAddNode } = useContext(AddNodeContext);
   function handleCancel() {
     setAddNode(false);

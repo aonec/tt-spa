@@ -331,6 +331,13 @@ export interface TimeSpan {
   totalSeconds?: number;
 }
 
+export interface ManagementFirmAddress {
+  city?: string | null;
+  street?: string | null;
+  houseNumber?: string | null;
+  corpus?: string | null;
+}
+
 export interface ManagementFirmResponse {
   /** @format int32 */
   id: number;
@@ -338,6 +345,8 @@ export interface ManagementFirmResponse {
   phoneNumber: string | null;
   information: string | null;
   timeZoneOffset: TimeSpan;
+  email: string | null;
+  address: ManagementFirmAddress;
 }
 
 export interface MeteringDeviceConnection {
@@ -405,6 +414,7 @@ export interface HousingMeteringDeviceListResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   hub: HousingMeteringDeviceHubConnectionResponse;
   diameter: string | null;
   resource: ResourceType;
@@ -470,6 +480,7 @@ export interface CalculatorListResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   hasTasks: boolean | null;
@@ -596,6 +607,7 @@ export interface CalculatorResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   address: HousingStockAddressResponse;
@@ -916,6 +928,7 @@ export interface HousingMeteringDeviceResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   diameter: string | null;
   resource: ResourceType;
   housingMeteringDeviceType: HousingMeteringDeviceType;
@@ -1305,6 +1318,7 @@ export interface IndividualDeviceResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   address: FullAddressResponse;
   resource: ResourceType;
   mountPlace: string | null;
@@ -1367,6 +1381,7 @@ export interface IndividualDeviceListItemResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   resource: ResourceType;
   mountPlace: string | null;
   rateType: IndividualDeviceRateType;
@@ -1659,10 +1674,10 @@ export interface CreateNodeRequest {
   serviceZone?: ServiceZone;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCommercialAccountingDate?: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCommercialAccountingDate?: string | null;
 
   /** @format int32 */
   calculatorId?: number | null;
@@ -1995,6 +2010,10 @@ export interface StageListResponseWrappedListResponse {
 
 export interface StageListResponseWrappedListResponseSuccessApiResponse {
   successResponse: StageListResponseWrappedListResponse;
+}
+
+export interface TaskCommentRequest {
+  comment?: string | null;
 }
 
 export interface TaskCommentResponseSuccessApiResponse {
@@ -3583,6 +3602,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     tasksList: (
       query?: {
+        SearchingFilter?: string | null;
         TargetType?: string | null;
         TaskId?: number | null;
         TaskType?: string | null;
@@ -3722,7 +3742,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/{taskId}/Comments
      * @secure
      */
-    tasksCommentsCreate: (taskId: number, data: string | null, params: RequestParams = {}) =>
+    tasksCommentsCreate: (taskId: number, data: TaskCommentRequest, params: RequestParams = {}) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments`,
         method: "POST",
@@ -3741,7 +3761,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Tasks/{taskId}/Comments/{commentId}
      * @secure
      */
-    tasksCommentsUpdate: (taskId: number, commentId: number, data: string | null, params: RequestParams = {}) =>
+    tasksCommentsUpdate: (taskId: number, commentId: number, data: TaskCommentRequest, params: RequestParams = {}) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
         method: "PUT",

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form, Switch } from 'antd';
+import { Form } from 'antd';
 import {
   Title,
   ButtonTT,
@@ -15,6 +14,7 @@ import {
   StyledFooter,
   StyledFormPage,
   styles,
+  SwitchTT,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
@@ -287,17 +287,11 @@ const AddCalculatorForm = (props: any) => {
               width: '100%',
             }}
           >
-            <Switch onChange={onSwitchChange} checked={values.isConnected} />
-            <span
-              style={{
-                fontSize: '16px',
-                lineHeight: '32px',
-                marginLeft: '16px',
-                color: 'rgba(39, 47, 90, 0.9)',
-              }}
-            >
-              Опрашивать вычислитель
-            </span>
+            <SwitchTT
+              onChange={onSwitchChange}
+              checked={values.isConnected}
+              title={'Опрашивать вычислитель'}
+            />
           </div>
 
           <Form.Item label="IP адрес вычислителя" style={styles.w49}>

@@ -39,6 +39,7 @@ import {
   TabsItemInterface,
 } from '../../../../../tt-components/interfaces';
 import Warning from '../../../../../tt-components/Warning';
+import { CreateHousingMeteringDeviceRequest } from '../../../../../../myApi';
 
 interface AddDeviceFormInterface {
   setVisible: Dispatch<SetStateAction<boolean>>;
@@ -63,7 +64,11 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   ];
 
   const { resource, entryNumber, calculatorId } = node;
+
   const [currentTabKey, setTab] = useState('1');
+  const [temperatureSensorAllowed, setTemperatureSensorAllowed] = useState(
+    false
+  );
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -125,7 +130,6 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     entryNumber,
     pipeNumber: null,
     magistral: magistrals[0].value,
-    coldAndThermo: false,
   };
 
   const {
@@ -140,7 +144,6 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   } = useFormik({
     initialValues,
     validationSchema,
-
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
@@ -189,7 +192,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
       ]);
 
       setValues(initialValues);
-      setTab('1');
+      setVisible(false);
     },
   });
 
@@ -217,7 +220,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     const isTrue =
       values.resource === 'ColdWaterSupply' &&
       values.housingMeteringDeviceType === 'TemperatureSensor';
-    setFieldValue('coldAndThermo', !isTrue);
+    setTemperatureSensorAllowed(isTrue);
   }, [values.resource, values.housingMeteringDeviceType]);
 
   useEffect(() => {
@@ -238,7 +241,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
         </Title>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
         <Warning
-          hidden={values.coldAndThermo}
+          hidden={!temperatureSensorAllowed}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
         />
         <Warning
@@ -357,7 +360,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           onClick={handleNext}
           big
           hidden={currentTabKey === '2'}
-          disabled={values.coldAndThermo}
+          disabled={temperatureSensorAllowed}
           style={{ marginLeft: '16px' }}
           type="button"
         >
@@ -370,7 +373,7 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           hidden={currentTabKey !== '2'}
           style={{ marginLeft: 16 }}
           big
-          disabled={values.coldAndThermo}
+          disabled={temperatureSensorAllowed}
           onClick={handleSubmitForm}
         >
           Добавить

@@ -42,7 +42,6 @@ const AddNodeFirstTab = () => {
     errors,
     handleBlur,
     setFieldValue,
-    setValues,
   } = useFormik({
     initialValues: {
       isConnected: true,
