@@ -17,8 +17,6 @@ export const validationSchemaFlowMeter = Yup.object({
   calculatorId: Yup.number()
     .typeError('Вы не выбрали вычислитель')
     .required('Выберите вычислитель'),
-  // entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-  //   .required('Введите номер'),
   pipeNumber: Yup.number()
     .min(0)
     .max(10, 'Укажите число до 10')

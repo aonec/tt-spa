@@ -15,6 +15,8 @@ import {
   housingMeteringDeviceTypes,
   isConnected,
 } from '../../../../../tt-components/localBases';
+
+import Tabs from '../../../../../tt-components/Tabs';
 import {
   Title,
   SelectTT,
@@ -32,7 +34,11 @@ import {
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import { AddNodeContext } from '../../../AddNodeContext';
-import { AlertInterface } from '../../../../../tt-components/interfaces';
+import {
+  AlertInterface,
+  TabsItemInterface,
+} from '../../../../../tt-components/interfaces';
+import Warning from '../../../../../tt-components/Warning';
 
 interface AddDeviceFormInterface {
   setVisible: Dispatch<SetStateAction<boolean>>;
@@ -43,6 +49,19 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     AddNodeContext
   );
 
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Шаг 1. Общие данные',
+      key: '1',
+      cb: () => setTab('1'),
+    },
+    {
+      title: 'Шаг 2. Документы',
+      key: '2',
+      cb: () => setTab('2'),
+    },
+  ];
+
   const { resource, entryNumber, calculatorId } = node;
 
   const [currentTabKey, setTab] = useState('1');
@@ -50,16 +69,28 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  const tabsComponent = [
-    {
-      title: 'Шаг 1. Общие данные',
-      key: '1',
-    },
-    {
-      title: 'Шаг 2. Документы',
-      key: '2',
-    },
-  ];
+  const Alert = ({ name }: AlertInterface) => {
+    const touch = _.get(touched, `${name}`);
+    const error = _.get(errors, `${name}`);
+    if (touch && error) {
+      return <div>{error}</div>;
+    }
+    return null;
+  };
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
+      tabErrors,
+      errors
+    );
+    if (hasError) {
+      setTab(errorTab);
+    }
+  }
 
   const tabErrors = [
     {
@@ -80,10 +111,10 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     isConnected: isConnected[0].value,
     isAllowed: true,
     serialNumber: '',
-    lastCheckingDate: moment().toISOString(),
-    futureCheckingDate: moment().add(3, 'years').toISOString(),
-    lastCommercialAccountingDate: moment().toISOString(),
-    futureCommercialAccountingDate: moment().toISOString(),
+    lastCheckingDate: moment(),
+    futureCheckingDate: moment().add(3, 'years'),
+    lastCommercialAccountingDate: moment(),
+    futureCommercialAccountingDate: moment(),
     documentsIds: [],
     ipV4: '',
     deviceAddress: null,
@@ -114,19 +145,19 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate.toISOString(),
+        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
         model: values.model,
         diameter: values.diameter,
         pipe: {
-          calculatorId: values.calculatorId,
-          entryNumber: values.entryNumber,
-          pipeNumber: values.pipeNumber,
+          calculatorId: Number(values.calculatorId),
+          entryNumber: Number(values.entryNumber),
+          pipeNumber: Number(values.pipeNumber),
           magistral: values.magistral,
         },
       };
@@ -144,27 +175,21 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
           }
         );
 
-        console.log('newCommunicationPipes', newCommunicationPipes);
-        setCommunicationPipes(newCommunicationPipes);
-      } else {
-        const communicationPipe = {
-          number: values.pipeNumber,
-          entryNumber: values.entryNumber,
-          magistral: values.magistral,
-          devices: [device],
-        };
-
-        setCommunicationPipes((prevState: any) => [
-          ...prevState,
-          communicationPipe,
-        ]);
+        return setCommunicationPipes(newCommunicationPipes);
       }
+      const communicationPipe = {
+        number: values.pipeNumber,
+        entryNumber: values.entryNumber,
+        magistral: values.magistral,
+        devices: [device],
+      };
 
-      setValues((prevValues) => ({
-        ...prevValues,
-        ...initialValues,
-      }));
+      setCommunicationPipes((prevState: any) => [
+        ...prevState,
+        communicationPipe,
+      ]);
 
+      setValues(initialValues);
       setTab('1');
     },
   });
@@ -174,12 +199,26 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   }, []);
 
   useEffect(() => {
-    if (
+    const pipeNumbers = _.map(communicationPipes, 'number');
+
+    if (pipeNumbers.includes(values.pipeNumber)) {
+      const getDevices = _.find(communicationPipes, {
+        number: values.pipeNumber,
+      });
+      const isSameType = _.find(getDevices.devices, {
+        housingMeteringDeviceType: values.housingMeteringDeviceType,
+      });
+      setFieldValue('isAllowed', !isSameType);
+      return;
+    }
+    setFieldValue('isAllowed', true);
+  }, [values.pipeNumber, values.housingMeteringDeviceType]);
+
+  useEffect(() => {
+    const isTrue =
       values.resource === 'ColdWaterSupply' &&
-      values.housingMeteringDeviceType === 'TemperatureSensor'
-    ) {
-      setcoldAndThermo(true);
-    } else setcoldAndThermo(false);
+      values.housingMeteringDeviceType === 'TemperatureSensor';
+    setcoldAndThermo(!isTrue);
   }, [values.resource, values.housingMeteringDeviceType]);
 
   useEffect(() => {
@@ -192,63 +231,21 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
     }
   }, [values.housingMeteringDeviceType]);
 
-  const Alert = ({ name }: AlertInterface) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return <div>{error}</div>;
-    }
-    return null;
-  };
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
-
-  function handleSubmitForm() {
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-    if (hasError) {
-      setTab(errorTab);
-    }
-  }
-
-  useEffect(() => {
-    const pipeNumbers = _.map(communicationPipes, 'number');
-
-    if (pipeNumbers.includes(values.pipeNumber)) {
-      const getDevices = _.find(communicationPipes, {
-        number: values.pipeNumber,
-      });
-      // console.log('getDevices', getDevices);
-      const isSameType = _.find(getDevices.devices, {
-        housingMeteringDeviceType: values.housingMeteringDeviceType,
-      });
-
-      isSameType
-        ? setFieldValue('isAllowed', false)
-        : setFieldValue('isAllowed', true);
-    } else {
-      setFieldValue('isAllowed', true);
-    }
-  }, [values.pipeNumber, values.housingMeteringDeviceType]);
-
   return (
     <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        {/*<Warning*/}
-        {/*  hidden={!coldAndThermo}*/}
-        {/*  title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."*/}
-        {/*/>*/}
-        {/*<Warning*/}
-        {/*  hidden={values.isAllowed}*/}
-        {/*  title="На данной трубе уже есть такой тип устройства"*/}
-        {/*/>*/}
+        <Tabs tabItems={tabItems} tabsType={'tabs'} />
+        <Warning
+          hidden={!coldAndThermo}
+          title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
+        />
+        <Warning
+          hidden={values.isAllowed}
+          title="На данной трубе уже есть такой тип устройства"
+        />
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Выберите тип прибора" style={styles.w100}>
             <SelectTT
@@ -261,19 +258,6 @@ const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
             />
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
-
-          {/* <Form.Item label="Выберите тип ресурса" style={styles.w100}> */}
-          {/*  <SelectTT */}
-          {/*    name="resource" */}
-          {/*    onChange={(value) => { */}
-          {/*      setFieldValue('resource', value); */}
-          {/*    }} */}
-          {/*    options={resources} */}
-          {/*    defaultValue={resources[0].value} */}
-          {/*    value={values.resource} */}
-          {/*  /> */}
-          {/*  <Alert name="resource"/> */}
-          {/* </Form.Item> */}
 
           <Form.Item label="Выберите модель прибора" style={styles.w49}>
             <InputTT
