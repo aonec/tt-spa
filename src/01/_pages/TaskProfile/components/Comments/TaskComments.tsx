@@ -34,9 +34,7 @@ const TaskComments = ({
     return axios.post<any, TaskCommentResponse>(`tasks/${taskId}/Comments`, {
       comment,
     });
-    // return Promise.reject();
   };
-  useEffect(() => {});
 
   const onClick = async () => {
     setPostStatus('loading');
@@ -84,7 +82,10 @@ const TaskComments = ({
         </div>
       ) : null}
       {postStatus === 'error' ? (
-        <Alert message="Не удалось добавить комментарий" />
+        <Alert
+          message="Не удалось добавить комментарий"
+          style={{ marginBottom: 16 }}
+        />
       ) : null}
       <ButtonContainer>
         <ButtonTT
