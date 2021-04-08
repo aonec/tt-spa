@@ -17,6 +17,7 @@ import { Documents } from './components/Documents';
 import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import Index from '../../tt-components/Breadcrumb';
+import TaskComments from './components/Comments/TaskComments';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -55,6 +56,7 @@ export const TaskProfile = () => {
   // ?
   const docs = useDocuments(state, dispatch);
   // прикрепленные файлы
+
   const info = useInformation(state);
   // ?
   const infoDevice = useInformationDevice(state);
@@ -73,6 +75,9 @@ export const TaskProfile = () => {
       <Documents {...docs} />
       <grid>
         <div>
+          {state.comments !== undefined ? (
+            <TaskComments comments={state.comments} />
+          ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
         </div>

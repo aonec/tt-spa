@@ -8,13 +8,13 @@ import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
 import { StyledTextArea } from '../../../../tt-components';
-import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
   panel {
     display: grid;
     grid-gap: 16px;
-    padding: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
     box-shadow: var(--shadow);
     &[|styleSwitch] {
       grid-template-columns: 1fr auto;
@@ -54,6 +54,14 @@ const styles = css`
       grid-template-areas: 'p ad push';
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
+    }
+    &[|styleAddPerpetratorAndAddDocumentsAndAddEmailNotify] {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        'p p c c'
+        'ta ta ta ta'
+        'ub ub ub ub'
+        'ul ul . push';
     }
   }
 
@@ -162,6 +170,8 @@ export const Panel = (
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
         styleReadings: UploadReadings || addReadingsDone,
+        styleAddPerpetratorAndAddDocumentsAndAddEmailNotify:
+          AddDocuments && AddPerpetrator && EmailNotify,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline:
@@ -204,7 +214,7 @@ export const Panel = (
         </>
       )}
 
-      {AddDocuments && (
+      {AddDocuments && !EmailNotify && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
