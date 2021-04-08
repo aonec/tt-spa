@@ -25,10 +25,9 @@ export const AddNode = () => {
   //Модальное окно итоговое
   const [addNode, setAddNode] = useState(false);
 
-  const [calculatorForm, setCalculatorForm] = useState();
-  const [nodeForm, setNodeForm] = useState();
-  const [devicesForm, setDevicesForm] = useState();
-  const [communicationPipes, setCommunicationPipes] = useState();
+  const [calculatorForm, setCalculatorForm] = useState({});
+  const [nodeForm, setNodeForm] = useState({});
+  const [communicationPipes, setCommunicationPipes] = useState([]);
 
   const [currentTabKey, setTab] = useState('1');
 
@@ -98,8 +97,6 @@ export const AddNode = () => {
     setCalculatorForm,
     nodeForm,
     setNodeForm,
-    devicesForm,
-    setDevicesForm,
     housingStockId,
     calculators,
     addCalculatorVisible,

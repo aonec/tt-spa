@@ -8,68 +8,67 @@ export const RelatedDevices = () => {
   const { communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
-  if (!communicationPipes) {
-    return <div>Нет труб</div>;
-  }
-  return <div>Трубы есть</div>;
-  // const flattenDevices = _.flatten(
-  //   communicationPipes
-  //     ? communicationPipes.map((communicationPipe) => {
-  //         const { devices } = communicationPipe;
-  //         return devices.map((device) => device);
-  //       })
-  //     : []
-  // );
 
-  // const result = flattenDevices.map((device) => {
-  //   const { model, serialNumber, resource, pipe } = device;
-  //
-  //   const { pipeNumber, entryNumber } = pipe;
-  //
-  //   function handleDelete() {
-  //     const updatedCommunicationPipes = communicationPipes.map(
-  //       (communicationPipe) => {
-  //         const { devices } = communicationPipe;
-  //
-  //         const devicesList = _.filter(
-  //           devices,
-  //           (deviceInList) => !_.isEqual(deviceInList, device)
-  //         );
-  //         return { ...communicationPipe, devices: devicesList };
-  //       }
-  //     );
-  //
-  //     const newCommunicationPipes = _.filter(
-  //       updatedCommunicationPipes,
-  //       (communicationPipe) => communicationPipe.devices.length > 0
-  //     );
-  //
-  //     setCommunicationPipes(newCommunicationPipes);
-  //   }
-  //
-  //   return (
-  //     <ListItem key={serialNumber}>
-  //       <NameWrap>
-  //         <IconTT icon={resource.toLowerCase()} />
-  //         <Name>{model}</Name>
-  //         <Serial>{` (${serialNumber})`}</Serial>
-  //       </NameWrap>
-  //
-  //       <Span>{`Ввод: ${entryNumber}`}</Span>
-  //       <Span>{`Труба: ${pipeNumber}`}</Span>
-  //       <Div>
-  //         {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
-  //         <IconTT
-  //           icon="close"
-  //           style={{ marginLeft: 8 }}
-  //           onClick={handleDelete}
-  //         />
-  //       </Div>
-  //     </ListItem>
-  //   );
-  // });
+  console.log('communicationPipes', communicationPipes);
 
-  // return <ListWrap>test</ListWrap>;
+  const flattenDevices = _.flatten(
+    communicationPipes?.map((communicationPipe: any) => {
+      const { devices } = communicationPipe;
+      return devices.map((device: any) => device);
+    })
+  );
+
+  console.log('flattenDevices', flattenDevices);
+
+  const result = flattenDevices.map((device: any) => {
+    const { model, serialNumber, resource, pipe } = device;
+
+    const { pipeNumber, entryNumber } = pipe;
+
+    function handleDelete() {
+      const updatedCommunicationPipes = communicationPipes.map(
+        (communicationPipe: any) => {
+          const { devices } = communicationPipe;
+
+          const devicesList = _.filter(
+            devices,
+            (deviceInList) => !_.isEqual(deviceInList, device)
+          );
+          return { ...communicationPipe, devices: devicesList };
+        }
+      );
+
+      const newCommunicationPipes = _.filter(
+        updatedCommunicationPipes,
+        (communicationPipe) => communicationPipe.devices.length > 0
+      );
+
+      setCommunicationPipes(newCommunicationPipes);
+    }
+
+    return (
+      <ListItem key={serialNumber}>
+        <NameWrap>
+          <IconTT icon={resource.toLowerCase()} />
+          <Name>{model}</Name>
+          <Serial>{` (${serialNumber})`}</Serial>
+        </NameWrap>
+
+        <Span>{`Ввод: ${entryNumber}`}</Span>
+        <Span>{`Труба: ${pipeNumber}`}</Span>
+        <Div>
+          {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
+          <IconTT
+            icon="close"
+            style={{ marginLeft: 8 }}
+            onClick={handleDelete}
+          />
+        </Div>
+      </ListItem>
+    );
+  });
+
+  return <ListWrap>{result}</ListWrap>;
 };
 
 export default RelatedDevices;

@@ -28,13 +28,7 @@ const AddNodeSecondTab = () => {
     currentTabKey,
     handlePrevious,
     handleNext,
-    calculatorForm,
-    setCalculatorForm,
-    nodeForm,
     setNodeForm,
-    devicesForm,
-    setDevicesForm,
-    setSecondTab,
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(

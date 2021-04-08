@@ -20,22 +20,19 @@ const AddNodeThirdTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    calculatorForm,
-    setCalculatorForm,
-    nodeForm,
-    setNodeForm,
-    devicesForm,
-    setDevicesForm,
     handlePrevious,
-    addHousingVisible,
     setAddHousingVisible,
     communicationPipes,
+    setCommunicationPipes,
     setNodeModalVisible,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
+  useEffect(() => {
+    console.log('communicationPipes', communicationPipes);
+  }, [communicationPipes]);
   const {
     handleSubmit,
     handleChange,
@@ -47,20 +44,15 @@ const AddNodeThirdTab = () => {
     setValues,
   } = useFormik({
     initialValues: {
-      communicationPipes: [],
+      communicationPipes: communicationPipes,
     },
     validationSchema,
     onSubmit: async () => {
       const form = values.communicationPipes;
-      setDevicesForm(form);
-      console.log('communicationPipes');
+      console.log(form);
       setNodeModalVisible(true);
     },
   });
-
-  useEffect(() => {
-    setFieldValue('communicationPipes', communicationPipes);
-  }, [communicationPipes]);
 
   return (
     <form

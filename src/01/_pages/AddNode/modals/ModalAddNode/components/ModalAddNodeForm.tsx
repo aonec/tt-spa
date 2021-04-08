@@ -38,30 +38,17 @@ const ModalAddNodeForm = () => {
   const history = useHistory();
 
   const {
-    currentTabKey,
-    setTab,
-    handleChangeTab,
-    handleNext,
-    node,
-    secondTab,
-    setNode,
     housingStockId,
     calculators,
     calculatorForm,
-    setCalculatorForm,
     nodeForm,
-    setNodeForm,
-    devicesForm,
-    setDevicesForm,
     communicationPipes,
+    setCommunicationPipes,
   } = useContext(AddNodeContext);
-
-  console.log('node', node);
 
   const { calculatorId, entryNumber } = calculatorForm;
   const {
     futureCheckingDate,
-    isConnected,
     lastCheckingDate,
     nodeStatus,
     number,
@@ -69,8 +56,9 @@ const ModalAddNodeForm = () => {
     serviceZone,
   } = nodeForm;
 
+  console.log('communicationPipes', communicationPipes);
+
   const calculator = _.find(calculators, { id: calculatorId });
-  // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
 
@@ -113,7 +101,11 @@ const ModalAddNodeForm = () => {
         communicationPipes: values.communicationPipes,
       };
       console.log(form);
-      const addNodeForm = { ...node, communicationPipes };
+      const addNodeForm = {
+        ...calculatorForm,
+        ...nodeForm,
+        communicationPipes,
+      };
       console.log('addNodeForm', addNodeForm);
       console.log('addNodeForm', JSON.stringify(addNodeForm));
       console.log(history);

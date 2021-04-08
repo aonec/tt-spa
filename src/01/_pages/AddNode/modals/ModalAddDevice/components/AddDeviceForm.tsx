@@ -164,39 +164,32 @@ const AddDeviceForm = () => {
 
       console.log('device', device);
 
-      // const pipeNumbers = _.map(communicationPipes, 'number');
-      //
-      // if (pipeNumbers.includes(values.pipeNumber)) {
-      //   const newCommunicationPipes = communicationPipes.map(
-      //     (communicationPipe: any) => {
-      //       const { number, devices = [] } = communicationPipe;
-      //       if (devices && number === values.pipeNumber) {
-      //         devices.push(device);
-      //       }
-      //       return communicationPipe;
-      //     }
-      //   );
-      //
-      //   setCommunicationPipes(newCommunicationPipes);
-      // } else {
-      //   const communicationPipe = {
-      //     number: values.pipeNumber,
-      //     entryNumber: values.entryNumber,
-      //     magistral: values.magistral,
-      //     devices: [device],
-      //   };
-      //
-      //   console.log('communicationPipe', communicationPipe);
-      //   const newCommunivationPipes = [
-      //     ...communicationPipes,
-      //     communicationPipe,
-      //   ];
-      //   // setCommunicationPipes(communicationPipe);
-      //   console.log('newCommunivationPipes', newCommunivationPipes);
-      // }
-      //
-      // setValues(initialValues);
-      // setTab('1');
+      const pipeNumbers = _.map(communicationPipes, 'number');
+
+      if (pipeNumbers.includes(values.pipeNumber)) {
+        const newCommunicationPipes = communicationPipes.map(
+          (communicationPipe: any) => {
+            const { number, devices = [] } = communicationPipe;
+            if (devices && number === values.pipeNumber) {
+              devices.push(device);
+            }
+            return communicationPipe;
+          }
+        );
+        setCommunicationPipes(newCommunicationPipes);
+      } else {
+        const newCommunicationPipe = {
+          number: values.pipeNumber,
+          entryNumber: values.entryNumber,
+          magistral: values.magistral,
+          devices: [device],
+        };
+
+        setCommunicationPipes([...communicationPipes, newCommunicationPipe]);
+      }
+
+      setValues(initialValues);
+      setTab('1');
     },
   });
 
@@ -369,8 +362,9 @@ const AddDeviceForm = () => {
 
         <ButtonTT
           color="blue"
-          type="submit"
+          type="button"
           form={'addHousingMeteringDevice'}
+          onClick={(e: any) => handleAddDeviceSubmitForm(e)}
           hidden={currentTabKey !== '2'}
           style={{ marginLeft: 16 }}
           big

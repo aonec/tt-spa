@@ -6,10 +6,6 @@ import { AddNodeContext } from '../../AddNodeContext';
 const ModalAddNode = () => {
   const { nodeModalVisible, setNodeModalVisible } = useContext(AddNodeContext);
 
-  if (!nodeModalVisible) {
-    return null;
-  }
-
   return (
     <StyledModal
       onCancel={() => {

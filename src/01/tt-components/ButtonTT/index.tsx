@@ -7,7 +7,7 @@ interface Props {
   big?: boolean;
   color: string;
   key: string;
-  onClick: () => void;
+  onClick: any;
   htmlType?: string;
   disabled?: boolean;
 }
