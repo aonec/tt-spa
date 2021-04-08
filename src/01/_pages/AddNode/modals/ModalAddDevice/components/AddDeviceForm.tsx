@@ -162,30 +162,32 @@ const AddDeviceForm = () => {
         },
       };
 
-      console.log('device', device);
-
       const pipeNumbers = _.map(communicationPipes, 'number');
 
       if (pipeNumbers.includes(values.pipeNumber)) {
         const newCommunicationPipes = communicationPipes.map(
           (communicationPipe: any) => {
-            const { number, devices = [] } = communicationPipe;
-            if (devices && number === values.pipeNumber) {
+            const { number, devices } = communicationPipe;
+            if (number === values.pipeNumber) {
               devices.push(device);
             }
             return communicationPipe;
           }
         );
+
+        console.log('newCommunicationPipes', newCommunicationPipes);
         setCommunicationPipes(newCommunicationPipes);
       } else {
-        const newCommunicationPipe = {
+        const communicationPipe = {
           number: values.pipeNumber,
           entryNumber: values.entryNumber,
           magistral: values.magistral,
           devices: [device],
         };
 
-        setCommunicationPipes([...communicationPipes, newCommunicationPipe]);
+        const res = [...communicationPipes, communicationPipe];
+        console.log('res', res);
+        setCommunicationPipes(res);
       }
 
       setValues(initialValues);

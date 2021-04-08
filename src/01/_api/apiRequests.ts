@@ -1,6 +1,9 @@
 import {
+  CalculatorListResponsePagedList,
   CreateCalculatorRequest,
   CreateHousingMeteringDeviceRequest,
+  CreateNodeRequest,
+  HousingStockResponse,
 } from '../../myApi';
 import axios from '../axios';
 
@@ -56,6 +59,52 @@ export async function addHousingMeteringDevice(
     throw {
       resource: 'device',
       message: 'Произошла ошибка добавления ОДПУ',
+    };
+  }
+}
+
+export async function getHousingStock(housingStockId: number) {
+  try {
+    const res: HousingStockResponse = await axios.get(
+      `HousingStocks/${housingStockId}`
+    );
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'housingStock',
+      message: 'Произошла ошибка запроса дома',
+    };
+  }
+}
+
+export async function getHousingStockCalculators(id: number) {
+  try {
+    const res: CalculatorListResponsePagedList = await axios.get(
+      `Calculators?Filter.HousingStockId=${id}`
+    );
+    const { items } = res;
+    return items;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'calculators',
+      message: 'Произошла ошибка запроса вычислителей',
+    };
+  }
+}
+
+export async function addNode(form: CreateNodeRequest) {
+  try {
+    const res = await axios.post('Nodes', form);
+    alert('Узел успешно создан');
+    return res;
+  } catch (error) {
+    console.log(error);
+    alert('Произошла ошибка создания Узла!');
+    throw {
+      resource: 'node',
+      message: 'Произошла ошибка создания Узла!',
     };
   }
 }

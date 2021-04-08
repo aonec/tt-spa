@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from './AddNodeContext';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { HousingStockResponse } from '../../../myApi';
+import {
+  getHousingStock,
+  getHousingStockCalculators,
+} from '../../_api/apiRequests';
 
 export const AddNode = () => {
   const { housingStockId, push } = useParams();
@@ -72,7 +75,7 @@ export const AddNode = () => {
     getHousingStock(housingStockId).then((res) => {
       setHousingStock(res);
     });
-    getCalculators(housingStockId).then((res) => {
+    getHousingStockCalculators(housingStockId).then((res) => {
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
         return { ...calculator, key: id, value: `${model} ${serialNumber}` };

@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Form } from 'antd';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
-  magistrals,
-  housingMeteringDeviceTypes,
-  isConnected,
   serviceZoneList,
   nodeStatusList,
   resources,
@@ -16,33 +12,26 @@ import {
 import {
   IconTT,
   Title,
-  SelectTT,
-  InputTT,
-  DatePickerTT,
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
-  styles,
-  StyledFormPage,
 } from '../../../../../tt-components';
 
-import { ListItem, ListWrap } from '../../../../../tt-components/List';
-import { addNodeFinal } from '../../../apiAddNode';
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../../AddNodeContext';
+import { addNode } from '../../../../../_api/apiRequests';
 
 const ModalAddNodeForm = () => {
-  const { nodeModalVisible, setNodeModalVisible } = useContext(AddNodeContext);
-
   const history = useHistory();
 
   const {
+    nodeModalVisible,
+    setNodeModalVisible,
     housingStockId,
     calculators,
-    calculatorForm,
-    nodeForm,
-    communicationPipes,
+    calculatorForm = { calculatorId: 0, entryNumber: 0 },
+    nodeForm = {},
+    communicationPipes = [],
     setCommunicationPipes,
   } = useContext(AddNodeContext);
 
@@ -97,22 +86,18 @@ const ModalAddNodeForm = () => {
     validationSchema,
     onSubmit: async () => {
       console.log('Создаем Узел');
-      const form = {
-        communicationPipes: values.communicationPipes,
-      };
-      console.log(form);
+
       const addNodeForm = {
         ...calculatorForm,
         ...nodeForm,
         communicationPipes,
       };
-      console.log('addNodeForm', addNodeForm);
-      console.log('addNodeForm', JSON.stringify(addNodeForm));
-      console.log(history);
 
-      addNodeFinal(addNodeForm).then((res) => {
-        console.log('addNodeFormResponseFromServer', res);
-        history.push(`/objects/${housingStockId}`);
+      console.log('addNodeForm', addNodeForm);
+
+      addNode(addNodeForm).then((res) => {
+        // console.log('addNodeFormResponseFromServer', res);
+        // history.push(`/objects/${housingStockId}`);
         // setTimeout(handleCancel, 1000);
         // return <Redirect to={`/objects/${housingStockId}`} />
       });
