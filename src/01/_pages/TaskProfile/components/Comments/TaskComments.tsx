@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { TaskCommentResponse } from '../../../../../myApi';
-import { useAsync } from '../../../../hooks/useAsync';
 import InputTT from '../../../../tt-components/InputTT';
 import { ButtonTT } from '../../../../tt-components/ButtonTT';
-import { AxiosResponse } from 'axios';
 import { useParams } from 'react-router-dom';
 import axios from '01/axios';
-import { Title } from '../../../../tt-components/List/index';
 import { Alert } from 'antd';
 import { TasksProfileContext } from '../../context';
 import SingleComment from './SingleComment';
@@ -43,17 +40,11 @@ const TaskComments = ({
 
   const onClick = async () => {
     setPostStatus('loading');
-    // const dataArray = data || [];
     try {
       const comment = await postComment(id, currentComment);
       setPostStatus('success');
       setCurrentComment('');
-      // if (data) {
-      //   setData([...data, comment]);
-      //   return;
-      // }
-      // setData([comment]);
-      setData([...data, comment]);
+      setData([comment, ...data]);
     } catch (error) {
       setPostStatus('error');
       setPostError(error);
@@ -84,12 +75,7 @@ const TaskComments = ({
         <IconContainer>
           <Icon icon="avatar" color="var(--main-100)" />
         </IconContainer>
-        <InputTT
-          value={currentComment}
-          onChange={handleChange}
-          height="32px"
-          // style={{ marginBottom: 16 }}
-        />
+        <InputTT value={currentComment} onChange={handleChange} height="32px" />
       </div>
 
       {postStatus === 'loading' ? (
@@ -98,7 +84,6 @@ const TaskComments = ({
         </div>
       ) : null}
       {postStatus === 'error' ? (
-        // <div>Не удалось добавить комментарий</div>
         <Alert message="Не удалось добавить комментарий" />
       ) : null}
       <ButtonContainer>
@@ -137,7 +122,6 @@ const IconContainer = styled.div`
   width: 32px;
   height: 32px;
   margin-right: 16px;
-  //margin-bottom: 8px;
 `;
 
 export default TaskComments;
