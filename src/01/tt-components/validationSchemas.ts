@@ -19,6 +19,10 @@ export const calculatorNoConnectionValidationSchema = Yup.object({
   serialNumber: Yup.string().required('Введите серийный номер'),
 });
 
+export const nodeValidationSchema = Yup.object({
+  number: Yup.number().required('Введите номер'),
+});
+
 export const validationSchemaFlowMeter = Yup.object({
   isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
   model: Yup.string()
