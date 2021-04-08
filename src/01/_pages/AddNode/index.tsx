@@ -72,7 +72,7 @@ export const AddNode = () => {
       console.log(res);
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
-        return { value: id, label: `${model} ${serialNumber}` };
+        return { id: id, key: id, value: `${model} ${serialNumber}` };
       });
 
       setCalculators(calculatorsList);

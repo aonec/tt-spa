@@ -44,10 +44,10 @@ export const StyledAutoComplete = styled(AutoComplete)`
   }
 `;
 
-export const AutoCompleteTT = ({ options, onSelect }) => (
+export const AutoCompleteTT = ({ options, onSelect, filterOption }) => (
   <StyledAutoComplete
     options={options}
-    filterOption
+    filterOption={filterOption}
     onSelect={onSelect}
     placeholder="Введите данные"
   />

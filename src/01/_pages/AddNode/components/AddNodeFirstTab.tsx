@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Form } from 'antd';
+import { AutoComplete, Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
 import { isConnected } from '../../../tt-components/localBases';
@@ -11,12 +11,14 @@ import {
   AutoCompleteTT,
   styles,
   StyledFormPage,
+  StyledAutoComplete,
 } from '../../../tt-components';
 
 import { calculatorValidationSchema } from './validationSchemas';
 import ModalAddCalculator from '../modals/ModalAddCalculator';
 import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
+import { CalculatorResponse } from '../../../../myApi';
 
 const AddNodeFirstTab = () => {
   const {
@@ -116,7 +118,8 @@ const AddNodeFirstTab = () => {
         >
           <AutoCompleteTT
             options={calculators}
-            onSelect={(value: string) => {
+            filterOption
+            onSelect={(value: any) => {
               setFieldValue('calculatorId', value);
             }}
           />
