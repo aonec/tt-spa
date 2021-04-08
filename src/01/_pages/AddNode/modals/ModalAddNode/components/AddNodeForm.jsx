@@ -1,10 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
+  magistrals,
+  housingMeteringDeviceTypes,
+  isConnected,
   serviceZoneList,
   nodeStatusList,
   resources,
@@ -12,42 +16,66 @@ import {
 import {
   IconTT,
   Title,
+  SelectTT,
+  InputTT,
+  DatePickerTT,
   StyledModalBody,
   ButtonTT,
   StyledFooter,
+  Icon,
+  Warning,
+  styles,
+  StyledFormPage,
 } from '../../../../../tt-components';
 
-import { useHistory } from 'react-router-dom';
+import { ListItem, ListWrap } from '../../../../../tt-components/List';
+import { addNodeFinal } from '../../../apiAddNode';
+import { Redirect, useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../../AddNodeContext';
-import { addNode } from '../../../../../_api/apiRequests';
 
-const ModalAddNodeForm = () => {
+const AddNodeForm = (props) => {
   const history = useHistory();
+  const { handleCancel } = props;
 
   const {
-    nodeModalVisible,
-    setNodeModalVisible,
+    currentTabKey,
+    setTab,
+    handleChangeTab,
+    handleNext,
+    node,
+    setNode,
     housingStockId,
     calculators,
-    calculatorForm = { calculatorId: 0, entryNumber: 0 },
-    nodeForm = {},
-    communicationPipes = [],
+    calculatorsExtended,
+    addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
+    communicationPipes,
     setCommunicationPipes,
+    housingStock,
+    stepsArr,
+    isEmpty,
+    addNode,
+    setAddNode,
   } = useContext(AddNodeContext);
 
-  const { calculatorId, entryNumber } = calculatorForm;
+  console.log('node', node);
+
   const {
+    calculatorId,
+    entryNumber,
     futureCheckingDate,
+    isConnected,
     lastCheckingDate,
     nodeStatus,
     number,
     resource,
     serviceZone,
-  } = nodeForm;
+  } = node;
 
-  console.log('communicationPipes', communicationPipes);
-
-  const calculator = _.find(calculators, { id: calculatorId });
+  const calculator = _.find(calculatorsExtended, { id: calculatorId });
+  // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
 
@@ -60,13 +88,13 @@ const ModalAddNodeForm = () => {
   const getNodeResource =
     _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
   const devicesList = _.flatten(
-    communicationPipes
-      ? communicationPipes.map((communicationPipe: any) => {
-          const { devices } = communicationPipe;
-          return devices.map((device: any) => device);
-        })
-      : []
+    communicationPipes.map((communicationPipe) => {
+      const { devices } = communicationPipe;
+      return devices.map((device) => device);
+    })
   );
+
+  console.log('node', node);
 
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
@@ -86,18 +114,18 @@ const ModalAddNodeForm = () => {
     validationSchema,
     onSubmit: async () => {
       console.log('Создаем Узел');
-
-      const addNodeForm = {
-        ...calculatorForm,
-        ...nodeForm,
-        communicationPipes,
+      const form = {
+        communicationPipes: values.communicationPipes,
       };
-
+      console.log(form);
+      const addNodeForm = { ...node, communicationPipes };
       console.log('addNodeForm', addNodeForm);
+      console.log('addNodeForm', JSON.stringify(addNodeForm));
+      console.log(history);
 
-      addNode(addNodeForm).then((res) => {
-        // console.log('addNodeFormResponseFromServer', res);
-        // history.push(`/objects/${housingStockId}`);
+      addNodeFinal(addNodeForm).then((res) => {
+        console.log('addNodeFormResponseFromServer', res);
+        history.push(`/objects/${housingStockId}`);
         // setTimeout(handleCancel, 1000);
         // return <Redirect to={`/objects/${housingStockId}`} />
       });
@@ -177,45 +205,44 @@ const ModalAddNodeForm = () => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {devicesList ||
-          [].map((device) => {
-            const { closingDate, model, serialNumber, pipe } = device;
-            const { pipeNumber } = pipe;
-            return (
-              <List style={{ alignItems: 'center' }}>
-                <CalculatorInfo>
-                  <IconTT icon={resource.toLowerCase()} />
-                  <DeviceModel>{model}</DeviceModel>{' '}
-                  <DeviceSerial>({serialNumber})</DeviceSerial>
-                </CalculatorInfo>
-                <DeviceDescription>
-                  <Description>
-                    {closingDate ? (
-                      <Div>
-                        <IconTT icon="red" />
-                        <span>Не активен</span>
-                      </Div>
-                    ) : (
-                      <Div>
-                        <IconTT icon="green" />
-                        <span>Активен</span>
-                      </Div>
-                    )}
-                  </Description>
-                  <Number>
-                    Труба:
-                    {pipeNumber}
-                  </Number>
-                </DeviceDescription>
-              </List>
-            );
-          })}
+        {devicesList.map((device) => {
+          const { closingDate, model, serialNumber, pipe } = device;
+          const { pipeNumber } = pipe;
+          return (
+            <List style={{ alignItems: 'center' }}>
+              <CalculatorInfo>
+                <IconTT icon={resource.toLowerCase()} />
+                <DeviceModel>{model}</DeviceModel>{' '}
+                <DeviceSerial>({serialNumber})</DeviceSerial>
+              </CalculatorInfo>
+              <DeviceDescription>
+                <Description>
+                  {closingDate ? (
+                    <Div>
+                      <IconTT icon="red" />
+                      <span>Не активен</span>
+                    </Div>
+                  ) : (
+                    <Div>
+                      <IconTT icon="green" />
+                      <span>Активен</span>
+                    </Div>
+                  )}
+                </Description>
+                <Number>
+                  Труба:
+                  {pipeNumber}
+                </Number>
+              </DeviceDescription>
+            </List>
+          );
+        })}
       </ul>
     </Block>
   );
 
   return (
-    <form onSubmit={handleSubmit} id={'createNode'}>
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового узла
@@ -227,22 +254,14 @@ const ModalAddNodeForm = () => {
         <ThirdBlock />
       </StyledModalBody>
       <StyledFooter>
-        <ButtonTT
-          color="blue"
-          type="submit"
-          form={'createNode'}
-          style={{ marginLeft: 16 }}
-          big
-        >
+        <ButtonTT color="blue" type="submit" style={{ marginLeft: '16px' }} big>
           Создать Узел
         </ButtonTT>
         <ButtonTT
           type="button"
           color="white"
-          onClick={() => {
-            setNodeModalVisible(false);
-          }}
-          style={{ marginLeft: 16 }}
+          onClick={handleCancel}
+          style={{ marginLeft: '16px' }}
         >
           Отмена
         </ButtonTT>
@@ -251,7 +270,7 @@ const ModalAddNodeForm = () => {
   );
 };
 
-export default ModalAddNodeForm;
+export default AddNodeForm;
 
 const List = styled.li`
   padding: 16px 4px;
@@ -324,3 +343,23 @@ const DeviceDescription = styled.div`
   align-items: center;
   grid-column-gap: 8px;
 `;
+
+// const form = {
+//   serialNumber: values.serialNumber,
+//   lastCheckingDate: values.lastCheckingDate,
+//   futureCheckingDate: values.futureCheckingDate,
+//   lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+//   futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+//   documentsIds: [],
+//   housingMeteringDeviceType: values.housingMeteringDeviceType,
+//   resource: values.resource,
+//   model: values.model,
+//   diameter: values.diameter,
+//   pipe: {
+//     calculatorId: values.calculatorId,
+//     entryNumber: values.entryNumber,
+//     hubNumber: values.hubNumber || null,
+//     pipeNumber: values.pipeNumber,
+//     magistral: values.magistral,
+//   },
+// };

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from './AddNodeContext';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { HousingStockResponse } from '../../../myApi';
-import {
-  getHousingStock,
-  getHousingStockCalculators,
-} from '../../_api/apiRequests';
 
 export const AddNode = () => {
   const { housingStockId, push } = useParams();
@@ -17,21 +14,13 @@ export const AddNode = () => {
     housingStock,
     setHousingStock,
   ] = useState<HousingStockResponse | null>();
-
   const [calculators, setCalculators] = useState<any>();
-
-  //Модальные окна
-  const [addCalculatorVisible, setAddCalculatorVisible] = useState(false);
-  const [addHousingVisible, setAddHousingVisible] = useState(false);
-  const [nodeModalVisible, setNodeModalVisible] = useState(false);
-
-  //Модальное окно итоговое
+  const [calculatorsExtended, setCalculatorsExtended] = useState<any>();
+  const [addCalculator, setAddCalculator] = useState(false);
+  const [addOdpu, setAddOdpu] = useState(false);
   const [addNode, setAddNode] = useState(false);
-
-  const [calculatorForm, setCalculatorForm] = useState({});
-  const [nodeForm, setNodeForm] = useState({});
   const [communicationPipes, setCommunicationPipes] = useState([]);
-
+  const [node, setNode] = useState({});
   const [currentTabKey, setTab] = useState('1');
 
   const stepsArr: Array<TabsItemInterface> = [
@@ -59,7 +48,7 @@ export const AddNode = () => {
     push(`objects/${housingStockId}`);
   }
 
-  function handleCurrent(value: string) {
+  function handleChangeTab(value: string) {
     setTab(value);
   }
 
@@ -67,25 +56,39 @@ export const AddNode = () => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handlePrevious() {
-    setTab(String(Number(currentTabKey) - 1));
+  function isEmpty(obj: any) {
+    for (const key in obj) {
+      // если тело цикла начнет выполняться - значит в объекте есть свойства
+      return false;
+    }
+    return true;
+  }
+
+  function getPresentCalculators() {
+    getCalculators(housingStockId).then((res) => {
+      console.log(res);
+      const calculatorsList = res?.map((calculator) => {
+        const { id, serialNumber, model } = calculator;
+        return { value: id, label: `${model} ${serialNumber}` };
+      });
+
+      setCalculators(calculatorsList);
+      setCalculatorsExtended(res);
+    });
   }
 
   useEffect(() => {
     getHousingStock(housingStockId).then((res) => {
       setHousingStock(res);
     });
-    getHousingStockCalculators(housingStockId).then((res) => {
-      const calculatorsList = res?.map((calculator) => {
-        const { id, serialNumber, model } = calculator;
-        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
-      });
-
-      setCalculators(calculatorsList);
-    });
+    getPresentCalculators();
   }, []);
 
-  if (!housingStock || !calculators) {
+  useEffect(() => {
+    getPresentCalculators();
+  }, [addCalculator]);
+
+  if (!housingStock || !calculators || !communicationPipes) {
     return <Loader size={32} show={true} />;
   }
 
@@ -93,25 +96,22 @@ export const AddNode = () => {
     handleCancel,
     currentTabKey,
     setTab,
-    handleCurrent,
+    handleChangeTab,
     handleNext,
-    handlePrevious,
-    calculatorForm,
-    setCalculatorForm,
-    nodeForm,
-    setNodeForm,
+    node,
+    setNode,
     housingStockId,
     calculators,
-    addCalculatorVisible,
-    setAddCalculatorVisible,
-    addHousingVisible,
-    setAddHousingVisible,
+    addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
+    calculatorsExtended,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
     stepsArr,
-    nodeModalVisible,
-    setNodeModalVisible,
+    isEmpty,
     addNode,
     setAddNode,
   };

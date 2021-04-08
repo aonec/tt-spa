@@ -8,9 +8,23 @@ import AddNodeSecondTab from './AddNodeSecondTab';
 import AddNodeThirdTab from './AddNodeThirdTab';
 
 const AddNodeForm = () => {
-  const { currentTabKey, handleNext, stepsArr } = useContext(AddNodeContext);
+  const {
+    handleCancel,
+    currentTabKey,
+    setTab,
+    handleChangeTab,
+    handleNext,
+    stepsArr,
+  } = useContext(AddNodeContext);
 
-  if (!currentTabKey || !handleNext || !stepsArr) {
+  if (
+    !handleCancel ||
+    !currentTabKey ||
+    !setTab ||
+    !handleChangeTab ||
+    !handleNext ||
+    !stepsArr
+  ) {
     return null;
   }
 
@@ -27,13 +41,14 @@ const AddNodeForm = () => {
       </GridTT>
 
       <GridTT>
-        {/* First Tab */}
-        <AddNodeFirstTab />
-        {/* Second Tab */}
-        <AddNodeSecondTab />
-        {/* Third Tab */}
-        <AddNodeThirdTab />
-
+        <>
+          {/* First Tab */}
+          <AddNodeFirstTab />
+          {/* Second Tab */}
+          <AddNodeSecondTab />
+          {/* Third Tab */}
+          <AddNodeThirdTab />
+        </>
         <Stages />
       </GridTT>
     </div>

@@ -1,44 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import _ from 'lodash';
-import { Form } from 'antd';
+import { Form, Switch } from 'antd';
 import {
   Title,
   ButtonTT,
   DatePickerTT,
   InputTT,
   SelectTT,
+  Wrap,
   StyledModalBody,
   StyledFooter,
   StyledFormPage,
   styles,
-  SwitchTT,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
+import { addCalculator } from './apiAddCalculator';
+import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
+import {
+  defaultValidationSchema,
+  emptyConnectionValidationSchema,
+} from './validationSchemas';
+import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../AddNodeContext';
 import {
   AlertInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import { CreateCalculatorRequest } from '../../../../../myApi';
-import {
-  calculatorNoConnectionValidationSchema,
-  calculatorValidationSchema,
-} from '../../../../tt-components/validationSchemas';
-import { addCalculator } from '../../../../_api/apiRequests';
 
-const AddCalculatorForm = () => {
-  const {
-    addCalculatorVisible,
-    setAddCalculatorVisible,
-    housingStockId,
-  } = useContext(AddNodeContext);
+const AddCalculatorForm = (props: any) => {
+  const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
+  const { handleCancel } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    calculatorValidationSchema
+    defaultValidationSchema
   );
   const {
     handleSubmit,
@@ -53,14 +53,14 @@ const AddCalculatorForm = () => {
     initialValues: {
       serialNumber: '',
       lastCheckingDate: moment(),
-      futureCheckingDate: moment().add(3, 'years'),
+      futureCheckingDate: moment().add(4, 'years'),
       lastCommercialAccountingDate: moment(),
-      futureCommercialAccountingDate: moment().add(3, 'years'),
+      futureCommercialAccountingDate: moment(),
       documentsIds: [],
-      ipV4: null,
+      ipV4: '',
       deviceAddress: null,
       port: null,
-      housingStockId: Number(housingStockId),
+      housingStockId,
       infoId: 1,
       isConnected: true,
     },
@@ -76,42 +76,61 @@ const AddCalculatorForm = () => {
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
-          deviceAddress: values.deviceAddress,
-          port: values.port,
+          deviceAddress: returnNullIfEmptyString(values.deviceAddress),
+          port: returnNullIfEmptyString(values.port),
         },
-        housingStockId: values.housingStockId,
+        housingStockId: Number(values.housingStockId),
         infoId: Number(values.infoId),
       };
       console.log('form', form);
+      console.log('form', JSON.stringify(form));
       addCalculator(form).then((res: any) => {
         setTimeout(() => {
-          setAddCalculatorVisible(false);
+          setAddCalculator(false);
         }, 1000);
       });
     },
   });
 
-  useEffect(() => {
-    const isEmptyConnection = () => {
-      const { ipV4 = '', port, deviceAddress } = values;
-      if (!ipV4 && !port && !deviceAddress) {
-        console.log('Все пустые');
-        return true;
-      }
-      console.log('Не все пустые');
-      return false;
-    };
+  function isEmptyConnection() {
+    return (
+      isEmptyString(values.deviceAddress) &&
+      isEmptyString(values.port) &&
+      isEmptyString(values.ipV4)
+    );
+  }
 
-    if (values.isConnected) {
-      setValidationSchema(calculatorValidationSchema);
+  useEffect(() => {
+    if (!values.isConnected) {
+      if (isEmptyConnection()) {
+        setFieldError('ipV4', undefined);
+        setFieldError('port', undefined);
+        setFieldError('deviceAddress', undefined);
+        setValidationSchema(emptyConnectionValidationSchema);
+      }
+      if (!isEmptyConnection()) {
+        setValidationSchema(defaultValidationSchema);
+      }
     }
-    if (!values.isConnected && isEmptyConnection()) {
-      setValidationSchema(calculatorNoConnectionValidationSchema);
-      setFieldError('ipV4', undefined);
-      setFieldError('port', undefined);
-      setFieldError('deviceAddress', undefined);
+  }, [values.deviceAddress, values.ipV4, values.port]);
+
+  function onSwitchChange(checked: boolean) {
+    setFieldValue('isConnected', checked);
+    if (checked) {
+      setValidationSchema(defaultValidationSchema);
     }
-  }, [values.deviceAddress, values.ipV4, values.port, values.isConnected]);
+    if (!checked) {
+      if (isEmptyConnection() === true) {
+        setValidationSchema(emptyConnectionValidationSchema);
+        setFieldError('ipV4', undefined);
+        setFieldError('port', undefined);
+        setFieldError('deviceAddress', undefined);
+      }
+      if (!isEmptyConnection()) {
+        setValidationSchema(defaultValidationSchema);
+      }
+    }
+  }
 
   const tabErrors = [
     {
@@ -136,16 +155,17 @@ const AddCalculatorForm = () => {
     );
 
     if (hasError) {
-      return setTab(errorTab);
+      setTab(errorTab);
+    } else {
+      handleSubmit();
     }
-    handleSubmit();
   };
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div style={{ color: 'red' }}>{error}</div>;
+      return <div>{error}</div>;
     }
     return null;
   };
@@ -169,13 +189,13 @@ const AddCalculatorForm = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmitForm} id={'addCalculator'}>
+    <form onSubmit={handleSubmitForm}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового вычислителя
         </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
+        <Tabs tabItems={tabItems} tabsType={'tabs'} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -267,22 +287,27 @@ const AddCalculatorForm = () => {
               width: '100%',
             }}
           >
-            <SwitchTT
-              onChange={(value: boolean) => {
-                setFieldValue('isConnected', value);
+            <Switch onChange={onSwitchChange} checked={values.isConnected} />
+            <span
+              style={{
+                fontSize: '16px',
+                lineHeight: '32px',
+                marginLeft: '16px',
+                color: 'rgba(39, 47, 90, 0.9)',
               }}
-              checked={values.isConnected}
-              title={'Опрашивать вычислитель'}
-            />
+            >
+              Опрашивать вычислитель
+            </span>
           </div>
 
           <Form.Item label="IP адрес вычислителя" style={styles.w49}>
             <InputTT
               name="ipV4"
+              type="text"
               value={values.ipV4}
-              onChange={handleChange}
               onBlur={handleBlur}
               placeholder="Введите IP адрес вычислителя"
+              onChange={handleChange}
             />
             <Alert name="ipV4" />
           </Form.Item>
@@ -310,6 +335,17 @@ const AddCalculatorForm = () => {
             />
             <Alert name="deviceAddress" />
           </Form.Item>
+
+          <Wrap
+            style={{
+              background: ' rgba(255, 140, 104, 0.16)',
+              marginTop: '24px',
+              padding: '24px',
+              width: '100%',
+            }}
+          >
+            Подключение к новому прибору может занять до 30 минут.
+          </Wrap>
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
@@ -327,19 +363,13 @@ const AddCalculatorForm = () => {
           Далее
         </ButtonTT>
 
-        <ButtonTT
-          color="blue"
-          type="submit"
-          form="addCalculator"
-          hidden={currentTabKey !== '3'}
-          big
-        >
+        <ButtonTT color="blue" type="submit" hidden={currentTabKey !== '3'} big>
           Добавить
         </ButtonTT>
         <ButtonTT
           color="white"
           type="button"
-          onClick={() => setAddCalculatorVisible(false)}
+          onClick={handleCancel}
           style={{ marginLeft: 16 }}
         >
           Отмена
@@ -348,4 +378,5 @@ const AddCalculatorForm = () => {
     </form>
   );
 };
+
 export default AddCalculatorForm;

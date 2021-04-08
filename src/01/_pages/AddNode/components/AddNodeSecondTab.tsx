@@ -26,9 +26,9 @@ const AddNodeSecondTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    handlePrevious,
     handleNext,
-    setNodeForm,
+    setNode,
+    isEmpty,
   } = useContext(AddNodeContext);
 
   const [validationSchema, setValidationSchema] = useState(
@@ -51,7 +51,6 @@ const AddNodeSecondTab = () => {
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(1, 'years'),
-      hasErrors: false,
     },
     validationSchema,
     onSubmit: async () => {
@@ -64,7 +63,10 @@ const AddNodeSecondTab = () => {
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
       console.log('AddNodeFirstTab', form);
-      setNodeForm(form);
+      setNode((prevState: any) => ({
+        ...prevState,
+        ...form,
+      }));
       handleNext();
     },
   });
@@ -73,7 +75,7 @@ const AddNodeSecondTab = () => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div style={{ color: 'red' }}>{error}</div>;
+      return <div>{error}</div>;
     }
     return null;
   };
@@ -176,19 +178,8 @@ const AddNodeSecondTab = () => {
           </>
         ) : null}
       </StyledFormPage>
-      <StyledFooter form right>
-        <ButtonTT
-          type="button"
-          color="white"
-          onClick={handlePrevious}
-          style={{
-            position: 'absolute',
-            left: 0,
-          }}
-        >
-          Назад
-        </ButtonTT>
-        <ButtonTT color="blue" big type="submit" disabled={values.hasErrors}>
+      <StyledFooter form>
+        <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
           Далее
         </ButtonTT>
 

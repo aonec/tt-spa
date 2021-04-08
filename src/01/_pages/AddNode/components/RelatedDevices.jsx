@@ -9,25 +9,27 @@ export const RelatedDevices = () => {
     AddNodeContext
   );
 
-  console.log('communicationPipes', communicationPipes);
-
   const flattenDevices = _.flatten(
-    communicationPipes?.map((communicationPipe: any) => {
+    communicationPipes.map((communicationPipe) => {
       const { devices } = communicationPipe;
-      return devices.map((device: any) => device);
+      return devices.map((device) => device);
     })
   );
 
-  console.log('flattenDevices', flattenDevices);
-
-  const result = flattenDevices.map((device: any) => {
-    const { model, serialNumber, resource, pipe } = device;
+  const result = flattenDevices.map((device) => {
+    const {
+      model,
+      serialNumber,
+      resource,
+      pipe,
+      housingMeteringDeviceType,
+    } = device;
 
     const { pipeNumber, entryNumber } = pipe;
 
     function handleDelete() {
       const updatedCommunicationPipes = communicationPipes.map(
-        (communicationPipe: any) => {
+        (communicationPipe, index) => {
           const { devices } = communicationPipe;
 
           const devicesList = _.filter(
@@ -37,6 +39,8 @@ export const RelatedDevices = () => {
           return { ...communicationPipe, devices: devicesList };
         }
       );
+
+      console.log('updatedCommunicationPipes', updatedCommunicationPipes);
 
       const newCommunicationPipes = _.filter(
         updatedCommunicationPipes,
@@ -73,6 +77,8 @@ export const RelatedDevices = () => {
 
 export default RelatedDevices;
 
+const Template = styled.div``;
+
 const Div = styled.div`
   display: inline-flex;
   align-items: center;
@@ -106,6 +112,14 @@ const Serial = styled.p`
   color: var(--main-60);
 `;
 
+const State = styled.div`
+  display: flex;
+  align-items: center;
+  color: rgba(39, 47, 90, 0.8);
+`;
+
+const Title = styled.h2``;
+
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
@@ -124,3 +138,13 @@ const ListItem = styled.div`
 const Span = styled.span`
   color: rgba(39, 47, 90, 0.6);
 `;
+
+// const newArr = communicationPipes.reduce((result, communicationPipe) => {
+//     const {devices, number} = communicationPipe;
+//
+//     if (condition === true) {
+//         result.push({something});
+//     }
+//
+//     return result;
+// }, []);

@@ -1,20 +1,14 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import _ from 'lodash';
 import {
   magistrals,
   housingMeteringDeviceTypes,
+  isConnected,
 } from '../../../../../tt-components/localBases';
-
-import Tabs from '../../../../../tt-components/Tabs';
 import {
   Title,
   SelectTT,
@@ -23,79 +17,36 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  StyledFormPage,
-  styles,
+  Icon,
+  Warning,
 } from '../../../../../tt-components';
+import TabsComponent from './TabsComponent';
+import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
-import { AddNodeContext } from '../../../AddNodeContext';
-import {
-  AlertInterface,
-  TabsItemInterface,
-} from '../../../../../tt-components/interfaces';
-import Warning from '../../../../../tt-components/Warning';
 import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
-} from '../../../../../tt-components/validationSchemas';
+} from './validationSchemas';
+import { AddNodeContext } from '../../../AddNodeContext';
 
-const AddDeviceForm = () => {
-  const {
-    calculatorForm,
-    nodeForm,
-    communicationPipes,
-    setCommunicationPipes,
-    setAddHousingVisible,
-  } = useContext(AddNodeContext);
+const AddDeviceForm = (props) => {
+  const { handleCancel } = props;
+
+  const { node, communicationPipes, setCommunicationPipes } = useContext(
+    AddNodeContext
+  );
+
+  console.log('node', node);
+
+  const { resource, entryNumber, calculatorId } = node;
 
   const [currentTabKey, setTab] = useState('1');
-  const tabItems: Array<TabsItemInterface> = [
-    {
-      title: 'Шаг 1. Общие данные',
-      key: '1',
-      cb: () => setTab('1'),
-    },
-    {
-      title: 'Шаг 2. Документы',
-      key: '2',
-      cb: () => setTab('2'),
-    },
-  ];
-
-  const { entryNumber, calculatorId } = calculatorForm;
-  const { resource } = nodeForm;
-  const [temperatureSensorAllowed, setTemperatureSensorAllowed] = useState(
-    false
-  );
+  const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [validationSchema, setValidationSchema] = useState<any>(
-    validationSchemaFlowMeter
-  );
+  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  const Alert = ({ name }: AlertInterface) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return <div style={{ color: 'red' }}>{error}</div>;
-    }
-    return null;
-  };
-
-  function handleNext() {
-    setTab(String(Number(currentTabKey) + 1));
-  }
-
-  const handleAddDeviceSubmitForm = (e: any) => {
-    e.preventDefault();
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-
-    if (hasError) {
-      return setTab(errorTab);
-    }
-    handleSubmit();
-  };
+  console.log('communicationPipes', communicationPipes);
+  console.log('communicationPipes', JSON.stringify(communicationPipes));
 
   const tabErrors = [
     {
@@ -113,20 +64,24 @@ const AddDeviceForm = () => {
   ];
 
   const initialValues = {
+    isConnected: isConnected[0].value,
     isAllowed: true,
-    serialNumber: 'serialNumber',
-    lastCheckingDate: moment(),
-    futureCheckingDate: moment().add(3, 'years'),
-    lastCommercialAccountingDate: moment(),
-    futureCommercialAccountingDate: moment().add(3, 'years'),
+    serialNumber: '',
+    lastCheckingDate: moment().toISOString(),
+    futureCheckingDate: moment().add(3, 'years').toISOString(),
+    lastCommercialAccountingDate: moment().toISOString(),
+    futureCommercialAccountingDate: moment().toISOString(),
     documentsIds: [],
+    ipV4: '',
+    deviceAddress: null,
+    port: null,
     housingMeteringDeviceType: housingMeteringDeviceTypes[0].value,
     resource,
-    model: 'model',
-    diameter: 1,
+    model: '',
+    diameter: null,
     calculatorId,
     entryNumber,
-    pipeNumber: 1,
+    pipeNumber: null,
     magistral: magistrals[0].value,
   };
 
@@ -142,22 +97,23 @@ const AddDeviceForm = () => {
   } = useFormik({
     initialValues,
     validationSchema,
+
     onSubmit: async () => {
-      const device: any = {
+      const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCheckingDate: values.lastCheckingDate,
+        futureCheckingDate: values.futureCheckingDate,
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
         model: values.model,
         diameter: values.diameter,
         pipe: {
-          calculatorId: Number(values.calculatorId),
-          entryNumber: Number(values.entryNumber),
-          pipeNumber: Number(values.pipeNumber),
+          calculatorId: values.calculatorId,
+          entryNumber: values.entryNumber,
+          pipeNumber: values.pipeNumber,
           magistral: values.magistral,
         },
       };
@@ -166,7 +122,7 @@ const AddDeviceForm = () => {
 
       if (pipeNumbers.includes(values.pipeNumber)) {
         const newCommunicationPipes = communicationPipes.map(
-          (communicationPipe: any) => {
+          (communicationPipe) => {
             const { number, devices } = communicationPipe;
             if (number === values.pipeNumber) {
               devices.push(device);
@@ -185,15 +141,67 @@ const AddDeviceForm = () => {
           devices: [device],
         };
 
-        const res = [...communicationPipes, communicationPipe];
-        console.log('res', res);
-        setCommunicationPipes(res);
+        setCommunicationPipes((prevState) => [...prevState, communicationPipe]);
       }
 
-      setValues(initialValues);
+      setValues((prevValues) => ({
+        ...prevValues,
+        ...initialValues,
+      }));
+
       setTab('1');
     },
   });
+
+  useEffect(() => {
+    setValidationSchema(validationSchemaFlowMeter);
+  }, []);
+
+  useEffect(() => {
+    if (
+      values.resource === 'ColdWaterSupply' &&
+      values.housingMeteringDeviceType === 'TemperatureSensor'
+    ) {
+      setColdandthermo(true);
+    } else setColdandthermo(false);
+  }, [values.resource, values.housingMeteringDeviceType]);
+
+  useEffect(() => {
+    if (values.housingMeteringDeviceType === 'FlowMeter') {
+      setValidationSchema(validationSchemaFlowMeter);
+    }
+    if (values.housingMeteringDeviceType === 'TemperatureSensor') {
+      setValidationSchema(validationSchemaTemperatureSensor);
+      setFieldValue('diameter', null);
+    }
+  }, [values.housingMeteringDeviceType]);
+
+  const Alert = ({ name }) => {
+    const touch = _.get(touched, `${name}`);
+    const error = _.get(errors, `${name}`);
+    if (touch && error) {
+      return <div>{error}</div>;
+    }
+    return null;
+  };
+
+  function handleChangeTab(value) {
+    setTab(value);
+  }
+
+  function handleNext() {
+    setTab(String(Number(currentTabKey) + 1));
+  }
+
+  function handleSubmitForm() {
+    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
+      tabErrors,
+      errors
+    );
+    if (hasError === true) {
+      setTab(errorTab);
+    }
+  }
 
   useEffect(() => {
     const pipeNumbers = _.map(communicationPipes, 'number');
@@ -202,46 +210,41 @@ const AddDeviceForm = () => {
       const getDevices = _.find(communicationPipes, {
         number: values.pipeNumber,
       });
+      // console.log('getDevices', getDevices);
       const isSameType = _.find(getDevices.devices, {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
       });
-      setFieldValue('isAllowed', !isSameType);
-      return;
+      console.log('isSameType', isSameType);
+      isSameType
+        ? console.log('на трубе уже есть утстройство такого типа')
+        : console.log('на трубе НЕТ утстройство такого типа');
+      isSameType
+        ? setFieldValue('isAllowed', false)
+        : setFieldValue('isAllowed', true);
+    } else {
+      setFieldValue('isAllowed', true);
     }
-    setFieldValue('isAllowed', true);
   }, [values.pipeNumber, values.housingMeteringDeviceType]);
 
-  useEffect(() => {
-    const isTrue =
-      values.resource === 'ColdWaterSupply' &&
-      values.housingMeteringDeviceType === 'TemperatureSensor';
-    setTemperatureSensorAllowed(isTrue);
-
-    if (values.housingMeteringDeviceType === 'FlowMeter') {
-      setValidationSchema(validationSchemaFlowMeter);
-      return;
-    }
-    if (values.housingMeteringDeviceType === 'TemperatureSensor') {
-      setValidationSchema(validationSchemaTemperatureSensor);
-      setFieldValue('diameter', null);
-      return;
-    }
-  }, [values.resource, values.housingMeteringDeviceType]);
-
   return (
-    <form onSubmit={handleAddDeviceSubmitForm} id={'addHousingMeteringDevice'}>
+    <form id="formikFormAddOdpu" onSubmit={handleSubmit}>
       <StyledModalBody>
+        {/*<Alert name="isAllowed" />*/}
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
+        {/*{JSON.stringify(errors)}*/}
         <Warning
-          hidden={!temperatureSensorAllowed}
+          hidden={!coldandthermo}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
         />
         <Warning
           hidden={values.isAllowed}
           title="На данной трубе уже есть такой тип устройства"
+        />
+        <TabsComponent
+          currentTabKey={currentTabKey}
+          handleChangeTab={handleChangeTab}
         />
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Выберите тип прибора" style={styles.w100}>
@@ -256,9 +259,23 @@ const AddDeviceForm = () => {
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
 
+          {/* <Form.Item label="Выберите тип ресурса" style={styles.w100}> */}
+          {/*  <SelectTT */}
+          {/*    name="resource" */}
+          {/*    onChange={(value) => { */}
+          {/*      setFieldValue('resource', value); */}
+          {/*    }} */}
+          {/*    options={resources} */}
+          {/*    defaultValue={resources[0].value} */}
+          {/*    value={values.resource} */}
+          {/*  /> */}
+          {/*  <Alert name="resource"/> */}
+          {/* </Form.Item> */}
+
           <Form.Item label="Выберите модель прибора" style={styles.w49}>
             <InputTT
               name="model"
+              type="text"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.model}
@@ -269,6 +286,7 @@ const AddDeviceForm = () => {
           <Form.Item label="Серийный номер" style={styles.w49}>
             <InputTT
               name="serialNumber"
+              type="text"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.serialNumber}
@@ -297,7 +315,7 @@ const AddDeviceForm = () => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date);
+                setFieldValue('lastCheckingDate', date.toISOString());
               }}
               value={moment(values.lastCheckingDate)}
             />
@@ -310,7 +328,7 @@ const AddDeviceForm = () => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date);
+                setFieldValue('futureCheckingDate', date.toISOString());
               }}
               value={moment(values.futureCheckingDate)}
             />
@@ -355,7 +373,7 @@ const AddDeviceForm = () => {
           onClick={handleNext}
           big
           hidden={currentTabKey === '2'}
-          disabled={temperatureSensorAllowed}
+          disabled={coldandthermo}
           style={{ marginLeft: '16px' }}
           type="button"
         >
@@ -364,23 +382,20 @@ const AddDeviceForm = () => {
 
         <ButtonTT
           color="blue"
-          type="button"
-          form={'addHousingMeteringDevice'}
-          onClick={(e: any) => handleAddDeviceSubmitForm(e)}
+          type="submit"
           hidden={currentTabKey !== '2'}
-          style={{ marginLeft: 16 }}
+          style={{ marginLeft: '16px' }}
           big
-          disabled={temperatureSensorAllowed}
+          disabled={coldandthermo}
+          onClick={handleSubmitForm}
         >
           Добавить
         </ButtonTT>
         <ButtonTT
           type="button"
           color="white"
-          onClick={() => {
-            setAddHousingVisible(false);
-          }}
-          style={{ marginLeft: 16 }}
+          onClick={handleCancel}
+          style={{ marginLeft: '16px' }}
         >
           Отмена
         </ButtonTT>

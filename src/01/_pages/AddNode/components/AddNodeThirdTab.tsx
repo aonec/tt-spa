@@ -20,19 +20,23 @@ const AddNodeThirdTab = () => {
   const {
     handleCancel,
     currentTabKey,
-    handlePrevious,
-    setAddHousingVisible,
+    setTab,
+    handleChangeTab,
+    handleNext,
+    addCalculator,
+    setAddCalculator,
+    addOdpu,
+    setAddOdpu,
     communicationPipes,
-    setCommunicationPipes,
-    setNodeModalVisible,
+    node,
+    setAddNode,
+    setNode,
+    addNode,
   } = useContext(AddNodeContext);
 
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  useEffect(() => {
-    console.log('communicationPipes', communicationPipes);
-  }, [communicationPipes]);
   const {
     handleSubmit,
     handleChange,
@@ -44,22 +48,31 @@ const AddNodeThirdTab = () => {
     setValues,
   } = useFormik({
     initialValues: {
-      communicationPipes: communicationPipes,
+      communicationPipes: [],
     },
     validationSchema,
+
     onSubmit: async () => {
-      const form = values.communicationPipes;
-      console.log(form);
-      setNodeModalVisible(true);
+      const form = {
+        communicationPipes: values.communicationPipes,
+      };
+      const nodeForm = { ...node, ...form };
+      console.log('nodeForm', nodeForm);
+      setNode(nodeForm);
+      setAddNode(true);
     },
   });
 
+  useEffect(() => {
+    setFieldValue('communicationPipes', communicationPipes);
+  }, [communicationPipes]);
+
+  function handleShowAddDevice() {
+    setAddOdpu(true);
+  }
+
   return (
-    <form
-      hidden={Number(currentTabKey) !== 3}
-      onSubmit={handleSubmit}
-      id={'devicesForm'}
-    >
+    <form hidden={Number(currentTabKey) !== 3} onSubmit={handleSubmit}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Подключенные приборы
@@ -68,41 +81,26 @@ const AddNodeThirdTab = () => {
           <RelatedDevices />
         </div>
         <ButtonTT
-          style={{ marginTop: 24 }}
+          style={{ marginTop: '24px' }}
           color="white"
           type="button"
-          onClick={() => {
-            setAddHousingVisible(true);
-          }}
+          onClick={handleShowAddDevice}
         >
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
-      <StyledFooter form right>
-        <div style={{ marginTop: 36 }}>
-          <ButtonTT
-            type="button"
-            color="white"
-            onClick={handlePrevious}
-            style={{
-              position: 'absolute',
-              left: 0,
-            }}
-          >
-            Назад
-          </ButtonTT>
-          <ButtonTT color="blue" big type="submit" form={'devicesForm'}>
-            Создать Узел
-          </ButtonTT>
-          <ButtonTT
-            type="button"
-            color="white"
-            onClick={handleCancel}
-            style={{ marginLeft: 16 }}
-          >
-            Отмена
-          </ButtonTT>
-        </div>
+      <StyledFooter form={true}>
+        <ButtonTT color="blue" big type="submit">
+          Создать Узел
+        </ButtonTT>
+        <ButtonTT
+          type="button"
+          color="white"
+          onClick={handleCancel}
+          style={{ marginLeft: 16 }}
+        >
+          Отмена
+        </ButtonTT>
       </StyledFooter>
       <ModalAddDevice />
       <ModalAddNode />

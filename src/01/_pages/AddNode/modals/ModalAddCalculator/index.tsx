@@ -4,21 +4,25 @@ import AddCalculatorForm from './AddCalculatorForm';
 import { StyledModal } from '../../../../tt-components';
 import { AddNodeContext } from '../../AddNodeContext';
 
-const ModalAddCalculator = () => {
-  const { addCalculatorVisible, setAddCalculatorVisible } = useContext(
-    AddNodeContext
-  );
+const ModalAddCalculator = (props: any) => {
+  const { addCalculator, setAddCalculator } = useContext(AddNodeContext);
+  const handleCancel = () => {
+    setAddCalculator(false);
+  };
+
+  const modalProps = {
+    handleCancel,
+  };
+
   return (
     <>
       <StyledModal
-        visible={addCalculatorVisible}
-        onCancel={() => {
-          setAddCalculatorVisible(false);
-        }}
+        visible={addCalculator}
+        onCancel={handleCancel}
         footer={null}
         width={800}
       >
-        <AddCalculatorForm />
+        <AddCalculatorForm {...modalProps} {...props} />
       </StyledModal>
     </>
   );
