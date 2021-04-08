@@ -114,9 +114,9 @@ const AddNodeFirstTab = () => {
           label="Вычислитель, к которому подключен узел"
           style={styles.w49}
         >
-          <SelectTT
+          <AutoCompleteTT
             options={calculators}
-            onChange={(value) => {
+            onSelect={(value: string) => {
               setFieldValue('calculatorId', value);
             }}
           />

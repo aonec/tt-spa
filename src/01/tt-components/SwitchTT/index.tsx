@@ -6,8 +6,9 @@ const styles = {
 };
 
 interface SwitchInterface {
-  onChange: () => void;
+  onChange: (checked: boolean) => void;
   title: string;
+  checked: boolean;
 }
 
 export const SwitchTT = ({ onChange, title }: SwitchInterface) => {
