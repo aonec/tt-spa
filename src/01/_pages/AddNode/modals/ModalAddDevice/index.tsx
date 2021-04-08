@@ -4,18 +4,23 @@ import AddDeviceForm from './components/AddDeviceForm';
 import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddDevice = () => {
-  const { setAddOdpu, addOdpu } = useContext(AddNodeContext);
+  const {
+    addHousingMeteringDeviceVisible: visible,
+    setAddHousingMeteringDeviceVisible: setVisible,
+  } = useContext(AddNodeContext);
+
   function handleCancel() {
-    setAddOdpu(false);
+    setVisible(false);
   }
+
   return (
     <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={addOdpu}
+      visible={visible}
     >
-      <AddDeviceForm handleCancel={handleCancel} />
+      <AddDeviceForm setVisible={setVisible} />
     </StyledModal>
   );
 };

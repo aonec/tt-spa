@@ -53,9 +53,9 @@ const AddCalculatorForm = (props: any) => {
     initialValues: {
       serialNumber: '',
       lastCheckingDate: moment(),
-      futureCheckingDate: moment().add(4, 'years'),
+      futureCheckingDate: moment().add(3, 'years'),
       lastCommercialAccountingDate: moment(),
-      futureCommercialAccountingDate: moment(),
+      futureCommercialAccountingDate: moment().add(3, 'years'),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,

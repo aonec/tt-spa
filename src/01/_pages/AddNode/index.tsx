@@ -17,7 +17,10 @@ export const AddNode = () => {
   const [calculators, setCalculators] = useState<any>();
   const [calculatorsExtended, setCalculatorsExtended] = useState<any>();
   const [addCalculator, setAddCalculator] = useState(false);
-  const [addOdpu, setAddOdpu] = useState(false);
+  const [
+    addHousingMeteringDeviceVisible,
+    setAddHousingMeteringDeviceVisible,
+  ] = useState(false);
   const [addNode, setAddNode] = useState(false);
   const [communicationPipes, setCommunicationPipes] = useState([]);
   const [node, setNode] = useState({});
@@ -104,8 +107,8 @@ export const AddNode = () => {
     calculators,
     addCalculator,
     setAddCalculator,
-    addOdpu,
-    setAddOdpu,
+    addHousingMeteringDeviceVisible,
+    setAddHousingMeteringDeviceVisible,
     calculatorsExtended,
     communicationPipes,
     setCommunicationPipes,

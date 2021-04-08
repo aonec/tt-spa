@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
@@ -17,36 +23,43 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
-  Warning,
+  StyledFormPage,
+  styles,
 } from '../../../../../tt-components';
-import TabsComponent from './TabsComponent';
-import { styles, StyledFormPage } from './styledComponents';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import { AddNodeContext } from '../../../AddNodeContext';
+import { AlertInterface } from '../../../../../tt-components/interfaces';
 
-const AddDeviceForm = (props) => {
-  const { handleCancel } = props;
+interface AddDeviceFormInterface {
+  setVisible: Dispatch<SetStateAction<boolean>>;
+}
 
+const AddDeviceForm = ({ setVisible }: AddDeviceFormInterface) => {
   const { node, communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
 
-  console.log('node', node);
-
   const { resource, entryNumber, calculatorId } = node;
 
   const [currentTabKey, setTab] = useState('1');
-  const [coldandthermo, setColdandthermo] = useState(false);
+  const [coldAndThermo, setcoldAndThermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  console.log('communicationPipes', communicationPipes);
-  console.log('communicationPipes', JSON.stringify(communicationPipes));
+  const tabsComponent = [
+    {
+      title: 'Шаг 1. Общие данные',
+      key: '1',
+    },
+    {
+      title: 'Шаг 2. Документы',
+      key: '2',
+    },
+  ];
 
   const tabErrors = [
     {
@@ -122,7 +135,7 @@ const AddDeviceForm = (props) => {
 
       if (pipeNumbers.includes(values.pipeNumber)) {
         const newCommunicationPipes = communicationPipes.map(
-          (communicationPipe) => {
+          (communicationPipe: any) => {
             const { number, devices } = communicationPipe;
             if (number === values.pipeNumber) {
               devices.push(device);
@@ -141,7 +154,10 @@ const AddDeviceForm = (props) => {
           devices: [device],
         };
 
-        setCommunicationPipes((prevState) => [...prevState, communicationPipe]);
+        setCommunicationPipes((prevState: any) => [
+          ...prevState,
+          communicationPipe,
+        ]);
       }
 
       setValues((prevValues) => ({
@@ -162,8 +178,8 @@ const AddDeviceForm = (props) => {
       values.resource === 'ColdWaterSupply' &&
       values.housingMeteringDeviceType === 'TemperatureSensor'
     ) {
-      setColdandthermo(true);
-    } else setColdandthermo(false);
+      setcoldAndThermo(true);
+    } else setcoldAndThermo(false);
   }, [values.resource, values.housingMeteringDeviceType]);
 
   useEffect(() => {
@@ -176,7 +192,7 @@ const AddDeviceForm = (props) => {
     }
   }, [values.housingMeteringDeviceType]);
 
-  const Alert = ({ name }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -184,10 +200,6 @@ const AddDeviceForm = (props) => {
     }
     return null;
   };
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
@@ -198,7 +210,7 @@ const AddDeviceForm = (props) => {
       tabErrors,
       errors
     );
-    if (hasError === true) {
+    if (hasError) {
       setTab(errorTab);
     }
   }
@@ -214,10 +226,7 @@ const AddDeviceForm = (props) => {
       const isSameType = _.find(getDevices.devices, {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
       });
-      console.log('isSameType', isSameType);
-      isSameType
-        ? console.log('на трубе уже есть утстройство такого типа')
-        : console.log('на трубе НЕТ утстройство такого типа');
+
       isSameType
         ? setFieldValue('isAllowed', false)
         : setFieldValue('isAllowed', true);
@@ -227,25 +236,19 @@ const AddDeviceForm = (props) => {
   }, [values.pipeNumber, values.housingMeteringDeviceType]);
 
   return (
-    <form id="formikFormAddOdpu" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
-        {/*<Alert name="isAllowed" />*/}
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        {/*{JSON.stringify(errors)}*/}
-        <Warning
-          hidden={!coldandthermo}
-          title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
-        />
-        <Warning
-          hidden={values.isAllowed}
-          title="На данной трубе уже есть такой тип устройства"
-        />
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
+        {/*<Warning*/}
+        {/*  hidden={!coldAndThermo}*/}
+        {/*  title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."*/}
+        {/*/>*/}
+        {/*<Warning*/}
+        {/*  hidden={values.isAllowed}*/}
+        {/*  title="На данной трубе уже есть такой тип устройства"*/}
+        {/*/>*/}
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Выберите тип прибора" style={styles.w100}>
             <SelectTT
@@ -275,7 +278,6 @@ const AddDeviceForm = (props) => {
           <Form.Item label="Выберите модель прибора" style={styles.w49}>
             <InputTT
               name="model"
-              type="text"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.model}
@@ -286,7 +288,6 @@ const AddDeviceForm = (props) => {
           <Form.Item label="Серийный номер" style={styles.w49}>
             <InputTT
               name="serialNumber"
-              type="text"
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.serialNumber}
@@ -315,7 +316,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date);
               }}
               value={moment(values.lastCheckingDate)}
             />
@@ -328,7 +329,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
               value={moment(values.futureCheckingDate)}
             />
@@ -373,7 +374,7 @@ const AddDeviceForm = (props) => {
           onClick={handleNext}
           big
           hidden={currentTabKey === '2'}
-          disabled={coldandthermo}
+          disabled={coldAndThermo}
           style={{ marginLeft: '16px' }}
           type="button"
         >
@@ -384,9 +385,9 @@ const AddDeviceForm = (props) => {
           color="blue"
           type="submit"
           hidden={currentTabKey !== '2'}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
           big
-          disabled={coldandthermo}
+          disabled={coldAndThermo}
           onClick={handleSubmitForm}
         >
           Добавить
@@ -394,7 +395,9 @@ const AddDeviceForm = (props) => {
         <ButtonTT
           type="button"
           color="white"
-          onClick={handleCancel}
+          onClick={() => {
+            setVisible(false);
+          }}
           style={{ marginLeft: '16px' }}
         >
           Отмена

@@ -30,3 +30,4 @@ export * from './EditButtonTT';
 export * from './MultiSelectTT';
 export * from './SwitchTT';
 export * from './Loader';
+export * from './Tabs';

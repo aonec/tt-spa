@@ -25,8 +25,8 @@ const AddNodeThirdTab = () => {
     handleNext,
     addCalculator,
     setAddCalculator,
-    addOdpu,
-    setAddOdpu,
+    addHousingMeteringDeviceVisible,
+    setAddHousingMeteringDeviceVisible,
     communicationPipes,
     node,
     setAddNode,
@@ -68,7 +68,7 @@ const AddNodeThirdTab = () => {
   }, [communicationPipes]);
 
   function handleShowAddDevice() {
-    setAddOdpu(true);
+    setAddHousingMeteringDeviceVisible(true);
   }
 
   return (
