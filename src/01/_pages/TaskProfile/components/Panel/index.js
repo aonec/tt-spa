@@ -62,10 +62,6 @@ const styles = css`
         'ta ta ta ta'
         'ub ub ub ub'
         'ul ul . push';
-
-      //display: flex;
-      //flex-direction: column;
-      //align-items: flex-end;
     }
   }
 

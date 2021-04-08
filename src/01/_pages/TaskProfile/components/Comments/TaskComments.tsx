@@ -19,18 +19,11 @@ const TaskComments = ({
 }: {
   comments: TaskCommentResponse[] | null;
 }) => {
-  // const { setData, setError, error, status, data, run } = useAsync<
-  //   TaskCommentResponse[] | null
-  // >({
-  //   status: 'resolved',
-  //   data: comments,
-  //   error: null,
-  // });
   const { perpetrator } = useContext(TasksProfileContext);
   const currentUser = JSON.parse(localStorage.getItem('user')!);
   const isPerpetrator = currentUser.id === perpetrator?.id;
 
-  const [data, setData] = useState(comments);
+  const [data, setData] = useState(comments || []);
   const { 0: id } = useParams();
   const [postStatus, setPostStatus] = useState('idle');
   const [postError, setPostError] = useState();
@@ -50,15 +43,17 @@ const TaskComments = ({
 
   const onClick = async () => {
     setPostStatus('loading');
+    // const dataArray = data || [];
     try {
       const comment = await postComment(id, currentComment);
       setPostStatus('success');
       setCurrentComment('');
-      if (data) {
-        setData([...data, comment]);
-        return;
-      }
-      setData([comment]);
+      // if (data) {
+      //   setData([...data, comment]);
+      //   return;
+      // }
+      // setData([comment]);
+      setData([...data, comment]);
     } catch (error) {
       setPostStatus('error');
       setPostError(error);
