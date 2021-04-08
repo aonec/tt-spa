@@ -15,14 +15,13 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Warning,
 } from '../../../../tt-components';
 
 import { useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../AddNodeContext';
 import { addNode } from '../../../../_api/apiRequests';
 
-const AddNodeForm = (props) => {
+const AddNodeForm = (props: any) => {
   const history = useHistory();
   const { handleCancel } = props;
 
@@ -172,7 +171,7 @@ const AddNodeForm = (props) => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {devicesList.map((device) => {
+        {devicesList.map((device: any) => {
           const { closingDate, model, serialNumber, pipe } = device;
           const { pipeNumber } = pipe;
           return (
