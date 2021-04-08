@@ -83,12 +83,6 @@ const styles = css`
   }
 `;
 
-//&[|styleSwitchDevicesAndChangeDevice] {
-//  display: flex;
-//  flex-direction:column;
-//  justify-content: space-between;
-//}
-
 const PushButton = ({ loading = false, ...props }) =>
   styled(s.button)`
     button {
@@ -139,14 +133,7 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  // console.log('currentUser', currentUser);
-  // console.log('taskPerpetrator', taskPerpetrator);
   const isPerpetrator = currentUser.id === taskPerpetrator?.id;
-  // console.log('isPerpetrator', isPerpetrator);
-
-  // const [deadline, setDeadline] = useState();
-  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
-  console.log(state);
 
   if (isObserver && AddDocuments && Switch) {
     return styled(
@@ -179,11 +166,8 @@ export const Panel = (
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline:
           AddPerpetrator && SetNextStageDeadline,
-        // styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
-
       {AddPerpetrator && (
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
@@ -238,8 +222,6 @@ export const Panel = (
           readingsBlocked={addReadingsDone || isObserver}
         />
       )}
-      {/* Скрываю кнопку "Завершить этап" только для задачи "Замена прибора" */}
-      {/* {!SwitchDevices && <PushButton {...pushProps} />} */}
       {!isObserver && <PushButton {...pushProps} />}
     </panel>
   );
