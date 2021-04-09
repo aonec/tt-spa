@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as s from '01/r_comp';
-import styled, { css } from 'reshadow/macro';
+import styled from 'reshadow/macro';
 import { getDevicesByApartment } from '../../../../_api/readings_page';
 import DeviceReadingForm from './DeviceReadingForm/DeviceReadingForm';
-// import readingsReducer, {setDevices} from "../../../../Redux/reducers/readingsReducer";
-import moment from 'moment';
 import { formReadingsToPush } from '../../../../utils/formReadingsToPush';
 import { setDevices } from '../../../../Redux/ducks/readings/actionCreators';
 import { selectDevices } from '../../../../Redux/ducks/readings/selectors';
@@ -83,8 +81,6 @@ const AddReadings = ({ apartmentId, addReadings, readingsBlocked }) => {
       device={device}
     />
   ));
-
-  // console.log(devices);
 
   return styled(s.input)(
     <div style={{ gridArea: 'ar' }}>
