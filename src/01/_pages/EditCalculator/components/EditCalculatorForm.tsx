@@ -1,14 +1,6 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Form, Switch } from 'antd';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import { NavLink } from 'react-router-dom';
 import moment from 'moment';
@@ -28,11 +20,6 @@ import { putCalculator } from './apiEditCalculator';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
-
-import {
-  defaultValidationSchema,
-  emptyConnectionValidationSchema,
-} from './validationSchemas';
 import isEmptyString from '../../../utils/isEmptyString';
 import { CalculatorResponse, UpdateCalculatorRequest } from '../../../../myApi';
 import {
@@ -42,6 +29,10 @@ import {
 } from '../../../tt-components/localBases';
 import _ from 'lodash';
 import { AlertInterface } from '../../../tt-components/interfaces';
+import {
+  calculatorNoConnectionValidationSchema,
+  calculatorValidationSchema,
+} from '../../../tt-components/validationSchemas';
 
 interface EditCalculatorFormInterface {
   calculator: CalculatorResponse;
@@ -71,7 +62,9 @@ const EditCalculatorForm = ({
     isConnected,
   } = calculator || DEFAULT_CALCULATOR;
 
-  const [validationSchema, setValidationSchema] = useState(Yup.object({}));
+  const [validationSchema, setValidationSchema] = useState<any>(
+    calculatorValidationSchema
+  );
 
   const getCurrentInfoId = model
     ? _.find<ItemInterface>(items, { label: model })
@@ -129,8 +122,6 @@ const EditCalculatorForm = ({
 
       console.log('form', form);
       putCalculator(id, form).then(({ show, id: existDeviceId }: any) => {
-        console.log('show', show);
-        console.log('id', existDeviceId);
         if (show) {
           setAlert(true);
           setExistCalculator(existDeviceId);
@@ -138,10 +129,6 @@ const EditCalculatorForm = ({
       });
     },
   });
-
-  useEffect(() => {
-    setValidationSchema(defaultValidationSchema);
-  }, []);
 
   function isEmptyConnection() {
     return (
@@ -154,17 +141,17 @@ const EditCalculatorForm = ({
   function onSwitchChange(checked: boolean) {
     setFieldValue('isConnected', checked);
     if (checked) {
-      setValidationSchema(defaultValidationSchema);
+      setValidationSchema(calculatorValidationSchema);
     }
     if (!checked) {
       if (isEmptyConnection() === true) {
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
       }
       if (isEmptyConnection() === false) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorValidationSchema);
       }
     }
   }
@@ -178,10 +165,10 @@ const EditCalculatorForm = ({
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
       }
       if (isEmptyConnection() === false) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorValidationSchema);
       }
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
@@ -190,7 +177,7 @@ const EditCalculatorForm = ({
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
@@ -212,7 +199,6 @@ const EditCalculatorForm = ({
       tabErrors,
       errors
     );
-    console.log(errors);
     if (hasError) {
       setTab(errorTab);
     } else {
@@ -290,6 +276,7 @@ const EditCalculatorForm = ({
             }}
             value={values.lastCommercialAccountingDate}
           />
+          <Alert name="lastCommercialAccountingDate" />
         </Form.Item>
 
         <Form.Item
@@ -306,6 +293,7 @@ const EditCalculatorForm = ({
             value={values.futureCommercialAccountingDate}
             name="futureCommercialAccountingDate"
           />
+          <Alert name="futureCommercialAccountingDate" />
         </Form.Item>
       </StyledFormPage>
       <StyledFormPage hidden={Number(tab) !== 2}>
@@ -335,10 +323,8 @@ const EditCalculatorForm = ({
             onChange={handleChange}
             name="ipV4"
             onBlur={handleBlur}
-            // disabled={!checked}
           />
           <Alert name="ipV4" />
-          {/* {(isEmpty() && !values.checked) ? null : <Alert name="ipV4" />} */}
         </Form.Item>
 
         <Form.Item label="Порт" style={styles.w100}>
@@ -351,7 +337,6 @@ const EditCalculatorForm = ({
             name="port"
           />
           <Alert name="port" />
-          {/* {(isEmpty() && !values.checked) ? null : <Alert name="port" /> } */}
         </Form.Item>
 
         <Form.Item label="Адрес устройства" style={styles.w100}>
@@ -362,10 +347,8 @@ const EditCalculatorForm = ({
             onChange={handleChange}
             onBlur={handleBlur}
             name="deviceAddress"
-            // disabled={!checked}
           />
           <Alert name="deviceAddress" />
-          {/* {(isEmpty() && !values.checked) ? null : <Alert name="deviceAddress" />} */}
         </Form.Item>
 
         <ConnectionTakesTime />
@@ -377,7 +360,7 @@ const EditCalculatorForm = ({
         <Title color="black">Компонент в разработке </Title>
       </StyledFormPage>
       <StyledFooter form>
-        <ButtonTT color="blue" style={{ marginRight: '16px' }} type="submit">
+        <ButtonTT color="blue" style={{ marginRight: 16 }} type="submit">
           Сохранить
         </ButtonTT>
 

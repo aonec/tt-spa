@@ -43,7 +43,6 @@ export const Information = ({ device }: InformationInterface) => {
 
   return (
     <ListWrap>
-      <Title>Информация</Title>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>

@@ -1,15 +1,13 @@
 import { Route, useParams, useHistory } from 'react-router-dom';
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile';
 import { Grid } from '../../_components';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
-import { Events } from './components/Events';
 import { Connection } from './components/Connection';
 import { Loader } from '../../components/Loader';
 import Documents from './components/Documents';
 import ModalCalculatorReport from './components/Modals/ModalCalculatorReport';
-import CheckDevice from './components/Modals/ModalCheck';
 import Nodes from './components/Nodes';
 import { CalculatorResponse, TaskListResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
@@ -18,6 +16,8 @@ import RelatedDevices from './components/RelatedDevices';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import { useAsync } from '../../hooks/useAsync';
 import { CalculatorProfileContext } from './CalculatorProfileContext';
+import ModalCheckDevice from '../../_modals/ModalCheckDevice';
+import Events from '../../tt-components/Events';
 
 export const CalculatorProfile = () => {
   const { deviceId } = useParams();
@@ -90,7 +90,7 @@ export const CalculatorProfile = () => {
   };
 
   if (!device || !tasks) {
-    return null;
+    return <Loader show={true} size={32} />;
   }
 
   return (
@@ -140,7 +140,11 @@ export const CalculatorProfile = () => {
             device={device}
           />
 
-          <CheckDevice device={device} check={check} setCheck={setCheck} />
+          <ModalCheckDevice
+            device={device}
+            visible={check}
+            setVisible={setCheck}
+          />
         </>
       )}
     </>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header } from '../../tt-components';
-import EditCalculatorTabs from './components/EditCalculatorTabs';
 import { Breadcrumb } from '../../tt-components';
 import { getCalculator } from './components/apiEditCalculator';
 import { CalculatorResponse } from '../../../myApi';
@@ -9,6 +8,8 @@ import { useAsync } from '../../hooks/useAsync';
 import EditCalculatorForm from './components/EditCalculatorForm';
 import { Loader } from '../../components';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
+import Tabs from '../../tt-components/Tabs';
+import { TabsItemInterface } from '../../tt-components/interfaces';
 
 export const EditCalculator = () => {
   const { deviceId } = useParams();
@@ -30,6 +31,29 @@ export const EditCalculator = () => {
 
   const { model, serialNumber } = calculator;
 
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общие данные',
+      key: '1',
+      cb: () => setTab('1'),
+    },
+    {
+      title: 'Настройки соединения',
+      key: '2',
+      cb: () => setTab('2'),
+    },
+    {
+      title: 'Подключенные приборы',
+      key: '3',
+      cb: () => setTab('3'),
+    },
+    {
+      title: 'Документы',
+      key: '4',
+      cb: () => setTab('4'),
+    },
+  ];
+
   return (
     <>
       {status === 'error' && (
@@ -43,7 +67,7 @@ export const EditCalculator = () => {
         <>
           <Breadcrumb path={`/calculators/${deviceId}`} />
           <Header>{`${model} (${serialNumber}). Редактирование`}</Header>
-          <EditCalculatorTabs tab={tab} setTab={setTab} />
+          <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={tab} />
           <EditCalculatorForm
             calculator={calculator}
             tab={tab}

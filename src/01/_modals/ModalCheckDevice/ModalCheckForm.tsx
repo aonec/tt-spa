@@ -1,31 +1,34 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React from 'react';
 import { Form } from 'antd';
-import _ from 'lodash';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {
-  ButtonTT,
-  DatePickerTT,
-  Header,
-  StyledModalBody,
-  StyledFooter,
-  StyledFormPage,
-  styles,
-} from '../../../../../tt-components';
 import { checkDevice } from './apiCheckDevice';
 import {
-  yupDate,
-  yupDeviceId,
-} from '../../../../../tt-components/yupTemplates';
-import { CalculatorResponse } from '../../../../../../myApi';
+  CalculatorResponse,
+  CheckDeviceRequest,
+  HousingMeteringDeviceResponse,
+} from '../../../myApi';
+import { StyledModalBody, StyledFormPage } from '../../tt-components/Modal';
+import {
+  DatePickerTT,
+  StyledFooter,
+  ButtonTT,
+  styles,
+} from '../../tt-components';
+import { Loader } from '../../components/Loader';
+import HeaderTT from '../../tt-components/HeaderTT';
+import { yupDate, yupDeviceId } from '../../tt-components/yupTemplates';
+import { AlertInterface } from '../../tt-components/interfaces';
+import _ from 'lodash';
 
 interface ModalCheckFormInterface {
   handleCancel: any;
-  device: CalculatorResponse;
+  device: CalculatorResponse | HousingMeteringDeviceResponse;
 }
 
 const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
+  const { id, lastCheckingDate, futureCheckingDate } = device;
   const {
     handleSubmit,
     handleChange,
@@ -36,9 +39,9 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      deviceId: device?.id,
-      lastCheckingDate: device?.lastCheckingDate,
-      futureCheckingDate: device?.futureCheckingDate,
+      deviceId: id,
+      lastCheckingDate: moment(lastCheckingDate),
+      futureCheckingDate: moment(futureCheckingDate),
     },
     validationSchema: Yup.object({
       deviceId: yupDeviceId,
@@ -46,34 +49,26 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
       futureCheckingDate: yupDate,
     }),
     onSubmit: async () => {
-      const form = {
+      const form: CheckDeviceRequest = {
         deviceId: values.deviceId,
-        currentCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
+        currentCheckingDate: values.lastCheckingDate.toISOString(),
+        futureCheckingDate: values.futureCheckingDate.toISOString(),
       };
       console.log(form);
       console.log(JSON.stringify(form));
       checkDevice(form).then((res) => {
-        // setTimeout(handleCancel, 1000);
+        setTimeout(handleCancel, 1000);
       });
     },
   });
 
-  if (!device) return <div>Loader</div>;
+  if (!device) return <Loader show={true} size={32} />;
 
-  // const {model, serialNumber, address: {id: houseId}, futureCheckingDate, lastCheckingDate, id} =device
-
-  interface FormInterface {
-    readonly deviceId: number;
-    currentCheckingDate: string;
-    futureCheckingDate: string;
-  }
-
-  const Alert = ({ name = '' }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
@@ -82,20 +77,20 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <StyledFormPage>
-          <Header>{`Поверка вычислителя ${device.model} (${device.serialNumber})`}</Header>
+          <HeaderTT>{`Поверка устройства ${device.model} (${device.serialNumber})`}</HeaderTT>
           <Form.Item label="Дата последней поверки прибора" style={styles.w49}>
             <DatePickerTT
               placeholder="Укажите дату"
               format="DD.MM.YYYY"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date!.toISOString());
+                setFieldValue('lastCheckingDate', moment(date));
                 setFieldValue(
                   'futureCheckingDate',
                   moment(date).add(3, 'years')
                 );
               }}
-              value={moment(values.lastCheckingDate)}
+              value={values.lastCheckingDate}
               name="lastCheckingDate"
             />
             <Alert name={'lastCheckingDate'} />
@@ -106,9 +101,9 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
               format="DD.MM.YYYY"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date!.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
-              value={moment(values.futureCheckingDate)}
+              value={values.futureCheckingDate}
               name="futureCheckingDate"
             />
             <Alert name={'futureCheckingDate'} />

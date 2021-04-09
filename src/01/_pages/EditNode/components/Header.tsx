@@ -84,12 +84,12 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
 
 export default Header;
 
-export const TitleWrap = styled.div`
+const TitleWrap = styled.div`
   display: flex;
   align-items: center;
 `;
 
-export const SubtitleWrap = styled.div`
+const SubtitleWrap = styled.div`
   display: flex;
   align-items: center;
 `;

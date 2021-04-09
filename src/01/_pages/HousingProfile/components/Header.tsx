@@ -16,11 +16,13 @@ import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
 interface HousingMeteringDeviceInterface {
   device: HousingMeteringDeviceResponse;
   setDeregister: Dispatch<SetStateAction<boolean>>;
+  setCheckVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Header = ({
   device,
   setDeregister,
+  setCheckVisible,
 }: HousingMeteringDeviceInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
@@ -39,6 +41,15 @@ export const Header = ({
       title: 'Редактировать ОДПУ',
       cb: () => {
         push(`/housingMeteringDevices/${device.id}/edit_odpu`);
+      },
+      show: show('HousingMeteringDeviceUpdate'),
+      color: 'default',
+      clickable: true,
+    },
+    {
+      title: 'Поверка ОДПУ',
+      cb: () => {
+        setCheckVisible(true);
       },
       show: show('HousingMeteringDeviceUpdate'),
       color: 'default',

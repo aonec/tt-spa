@@ -1,6 +1,7 @@
-import axios from '../../../../../axios';
+import axios from '../../axios';
+import { CheckDeviceRequest } from '../../../myApi';
 
-export async function checkDevice(form = {}) {
+export async function checkDevice(form: CheckDeviceRequest) {
   try {
     alert('Отправляется запрос изменение дат поверки !');
     const res = await axios.post('MeteringDevices/check', form);
