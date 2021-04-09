@@ -1,12 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { convertDate } from '01/_api/utils/convertDate';
+import React from 'react';
 import styled from 'styled-components';
-import { Loader } from '01/components';
 import { Icon } from '01/_components/Icon';
-import DeviceIcons from '01/_components/DeviceIcons';
-import _ from 'lodash';
+
 import { NavLink } from 'react-router-dom';
-import { HousingMeteringDeviceResponse, TaskResponse } from '../../../../myApi';
 import { IconTT } from '../../../tt-components';
 import moment from 'moment';
 
@@ -48,7 +44,6 @@ export const RelatedDevices = ({ device }: RelatedDevicesInterface) => {
 
   return (
     <ListWrap>
-      <Title>Соединение с вычислителем</Title>
       <CalcItem />
     </ListWrap>
   );

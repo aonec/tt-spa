@@ -4,7 +4,6 @@ import { Grid } from '01/_components';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
-import { Events } from './components/Events';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import {
@@ -15,6 +14,8 @@ import { useAsync } from '../../hooks/useAsync';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
+import ModalCheckDevice from '../../_modals/ModalCheckDevice';
+import Events from '../../tt-components/Events';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();
@@ -29,6 +30,7 @@ export const HousingProfile = () => {
 
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
   const [deregister, setDeregister] = useState<boolean>(false);
+  const [checkVisible, setCheckVisible] = useState(false);
 
   useEffect(() => {
     run(getHousingMeteringDevice(deviceId));
@@ -70,7 +72,11 @@ export const HousingProfile = () => {
 
   return (
     <>
-      <Header device={device} setDeregister={setDeregister} />
+      <Header
+        device={device}
+        setDeregister={setDeregister}
+        setCheckVisible={setCheckVisible}
+      />
       <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
         <Route path={`${path}`} exact>
@@ -88,6 +94,11 @@ export const HousingProfile = () => {
         visible={deregister}
         setVisible={setDeregister}
         device={device}
+      />
+      <ModalCheckDevice
+        device={device}
+        visible={checkVisible}
+        setVisible={setCheckVisible}
       />
     </>
   );
