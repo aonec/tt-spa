@@ -151,7 +151,7 @@ const AddNodeFirstTab = () => {
         </Form.Item>
       </StyledFormPage>
       <StyledFooter form>
-        <ButtonTT color="blue" big type="submit" disabled={values.disabled}>
+        <ButtonTT color="blue" big type="submit">
           Далее
         </ButtonTT>
         <ButtonTT
