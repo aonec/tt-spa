@@ -25,6 +25,11 @@ export const nodeValidationSchema = Yup.object({
 
 export const validationSchemaFlowMeter = Yup.object({
   isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
+  entryNumber: Yup.number()
+    .min(0)
+    .max(10, 'Укажите число до 10')
+    .typeError('Введите число, значение не может быть пустым')
+    .required('Введите номер ввода'),
   model: Yup.string()
     .min(3, 'Модель должна быть длиннее трех символов')
     .required('Введите модель'),

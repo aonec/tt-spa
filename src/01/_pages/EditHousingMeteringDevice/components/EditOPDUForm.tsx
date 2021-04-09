@@ -24,13 +24,13 @@ import {
   MagistralType,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
-import {
-  validationSchemaFlowMeter,
-  validationSchemaThermoSensor,
-} from './editOdpuValidationSchemas';
 import { putOdpu } from './apiEditOdpu';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
+import {
+  validationSchemaFlowMeter,
+  validationSchemaTemperatureSensor,
+} from '../../../tt-components/validationSchemas';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -143,7 +143,7 @@ const FormEditODPU = ({
   useEffect(() => {
     housingMeteringDeviceType === 'FlowMeter'
       ? setValidationSchema(validationSchemaFlowMeter)
-      : setValidationSchema(validationSchemaThermoSensor);
+      : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
 
   const tabErrors = [
