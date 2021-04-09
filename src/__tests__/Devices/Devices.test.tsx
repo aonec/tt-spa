@@ -1,24 +1,15 @@
-//@ts-nocheck
-
+import _ from 'lodash';
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import {
-  fireEvent,
-  screen,
-  waitForElementToBeRemoved,
-  waitFor,
-} from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DevicesFromSearch from '01/_pages/Devices';
 import { render as rtlRender } from '@testing-library/react';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
-// Import your own reducer
-import reducer from '../reducer';
 import rootReducer from '../../01/Redux/rootReducer';
 import thunkMiddleWare from 'redux-thunk';
-import sinon from 'sinon';
 
 window.matchMedia =
   window.matchMedia ||
@@ -32,6 +23,7 @@ window.matchMedia =
 
 delete global.window.location;
 const href = 'http://localhost:3000';
+// @ts-ignore
 global.window.location = { href };
 global.window.location.replace = () => {};
 // Make sure you import sinon
@@ -39,9 +31,9 @@ global.window.location.replace = () => {};
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 function render(
-  ui,
+  ui: React.ReactElement,
   {
-    initialState,
+    initialState = {},
     store = createStore(
       rootReducer,
       composeEnhancers(applyMiddleware(thunkMiddleWare))
@@ -49,9 +41,9 @@ function render(
     ...renderOptions
   } = {}
 ) {
-  function Wrapper({ children }) {
+  const Wrapper: React.FC = ({ children }) => {
     return <Provider store={store}>{children}</Provider>;
-  }
+  };
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
@@ -283,6 +275,10 @@ const calculatorsResponse = {
     previousPageNumber: 1,
   },
 };
+
+const calculatorsSecondPageResponse = _.cloneDeep(calculatorsResponse);
+calculatorsSecondPageResponse.successResponse.items[0].address.street =
+  'Космонавтов';
 
 const server = setupServer(
   rest.get('Calculators/?pageNumber=1&pageSize=5', (req, res, ctx) => {
