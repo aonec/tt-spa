@@ -1,5 +1,18 @@
 import * as Yup from 'yup';
 import { ipv4RegExp } from './localBases';
+import { yupDate } from './yupTemplates';
+
+export const editNodeValidationSchema = Yup.object({
+  resource: Yup.string().required('Укажите тип ресура'),
+  number: Yup.number()
+    .max(5, 'Число должно быть не длиннее 5 знаков')
+    .typeError('Ошибка типа: Укажите число')
+    .required('Укажите номер'),
+  nodeStatus: Yup.string().required('Укажите статус'),
+  serviceZone: Yup.string().required('Укажите зону'),
+  lastCommercialAccountingDate: yupDate,
+  futureCommercialAccountingDate: yupDate,
+});
 
 export const calculatorValidationSchema = Yup.object({
   serialNumber: Yup.string()
