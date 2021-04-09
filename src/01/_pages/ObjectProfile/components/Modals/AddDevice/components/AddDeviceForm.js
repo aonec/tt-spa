@@ -19,8 +19,6 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
-  Warning,
 } from '../../../../../../tt-components';
 import { addOdpu, getCalculator } from '../apiAddOdpu';
 import TabsComponent from './TabsComponent';
@@ -173,10 +171,10 @@ const AddDeviceForm = (props) => {
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        <Warning
-          hidden={!coldandthermo}
-          title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
-        />
+        {/*<Warning*/}
+        {/*  hidden={!coldandthermo}*/}
+        {/*  title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."*/}
+        {/*/>*/}
         <TabsComponent
           currentTabKey={currentTabKey}
           handleChangeTab={handleChangeTab}

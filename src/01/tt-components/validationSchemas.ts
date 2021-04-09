@@ -1,10 +1,27 @@
 import * as Yup from 'yup';
-import {
-  housingMeteringDeviceTypes,
-  isConnected,
-  magistrals,
-} from '../../../../../tt-components/localBases';
-import moment from 'moment';
+import { ipv4RegExp } from './localBases';
+
+export const calculatorValidationSchema = Yup.object({
+  serialNumber: Yup.string()
+    .typeError('Введите серийный номер')
+    .required('Введите серийный номер'),
+  ipV4: Yup.string()
+    .matches(ipv4RegExp, 'Укажите в формате X.X.X.X')
+    .typeError('Введите IP-адрес устройства')
+    .required('Введите IP-адрес устройства'),
+  deviceAddress: Yup.number()
+    .nullable()
+    .required('Введите сетевой адрес устройства'),
+  port: Yup.number().nullable().required('Введите порт устройства'),
+});
+
+export const calculatorNoConnectionValidationSchema = Yup.object({
+  serialNumber: Yup.string().required('Введите серийный номер'),
+});
+
+export const nodeValidationSchema = Yup.object({
+  number: Yup.number().required('Введите номер'),
+});
 
 export const validationSchemaFlowMeter = Yup.object({
   isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
@@ -17,8 +34,6 @@ export const validationSchemaFlowMeter = Yup.object({
   calculatorId: Yup.number()
     .typeError('Вы не выбрали вычислитель')
     .required('Выберите вычислитель'),
-  // entryNumber: Yup.number().min(0).max(10, 'Укажите число до 10').typeError('Введите число, значение не может быть пустым')
-  //   .required('Введите номер'),
   pipeNumber: Yup.number()
     .min(0)
     .max(10, 'Укажите число до 10')

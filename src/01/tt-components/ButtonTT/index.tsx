@@ -5,10 +5,11 @@ interface Props {
   name: string;
   size?: string;
   small?: boolean;
+  transparent?: boolean;
   big?: boolean;
   color: string;
   key: string;
-  onClick: () => void;
+  onClick: any;
   htmlType?: string;
   disabled?: boolean;
 }
@@ -111,6 +112,23 @@ export const ButtonTT = styled.button<Partial<Props>>`
       height: auto;
       display: flex;
 
+      svg {
+        margin-left: 16px;
+      }
+    `}
+  ${(props) =>
+    props.transparent &&
+    css`
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 8px 16px;
+      height: auto;
+      display: flex;
+      border: 1px solid #ffffff;
+      background: transparent;
+      color: #189ee9;
       svg {
         margin-left: 16px;
       }

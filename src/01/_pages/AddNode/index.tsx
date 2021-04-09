@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getHousingStock, getCalculators } from './apiAddNode';
 import Header from './components/Header';
 import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
 import { AddNodeContext } from './AddNodeContext';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { HousingStockResponse } from '../../../myApi';
+import {
+  getHousingStock,
+  getHousingStockCalculators,
+} from '../../_api/apiRequests';
 
 export const AddNode = () => {
   const { housingStockId, push } = useParams();
@@ -15,7 +18,6 @@ export const AddNode = () => {
     setHousingStock,
   ] = useState<HousingStockResponse | null>();
   const [calculators, setCalculators] = useState<any>();
-  const [calculatorsExtended, setCalculatorsExtended] = useState<any>();
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
   const [addNode, setAddNode] = useState(false);
@@ -56,24 +58,13 @@ export const AddNode = () => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function isEmpty(obj: any) {
-    for (const key in obj) {
-      // если тело цикла начнет выполняться - значит в объекте есть свойства
-      return false;
-    }
-    return true;
-  }
-
   function getPresentCalculators() {
-    getCalculators(housingStockId).then((res) => {
-      console.log(res);
+    getHousingStockCalculators(housingStockId).then((res) => {
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
-        return { value: id, label: `${model} ${serialNumber}` };
+        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
       });
-
       setCalculators(calculatorsList);
-      setCalculatorsExtended(res);
     });
   }
 
@@ -106,12 +97,10 @@ export const AddNode = () => {
     setAddCalculator,
     addOdpu,
     setAddOdpu,
-    calculatorsExtended,
     communicationPipes,
     setCommunicationPipes,
     housingStock,
     stepsArr,
-    isEmpty,
     addNode,
     setAddNode,
   };

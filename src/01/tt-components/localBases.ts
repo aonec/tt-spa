@@ -1,4 +1,8 @@
-import { ServiceZone } from '../../myApi';
+import {
+  ServiceZone,
+  HousingMeteringDeviceType,
+  MagistralType,
+} from '../../myApi';
 
 export interface ItemInterface {
   id: number;
@@ -51,13 +55,18 @@ export const serviceLife = [
   { value: '6', label: '6 лет', id: 2 },
 ];
 
-export const housingMeteringDeviceTypes = [
+interface HousingMeteringDeviceTypeInterface {
+  value: HousingMeteringDeviceType;
+  label: string;
+}
+
+export const housingMeteringDeviceTypes: Array<HousingMeteringDeviceTypeInterface> = [
   {
-    value: 'FlowMeter',
+    value: HousingMeteringDeviceType.FlowMeter,
     label: 'Расходомер',
   },
   {
-    value: 'TemperatureSensor',
+    value: HousingMeteringDeviceType.TemperatureSensor,
     label: 'Термодатчик',
   },
 ];
@@ -107,13 +116,18 @@ export const allResources = [
   },
 ];
 
-export const magistrals = [
+interface MagistralsInterface {
+  value: MagistralType;
+  label: string;
+}
+
+export const magistrals: Array<MagistralsInterface> = [
   {
-    value: 'FeedFlow',
+    value: MagistralType.FeedFlow,
     label: 'Подающая',
   },
   {
-    value: 'FeedBackFlow',
+    value: MagistralType.FeedBackFlow,
     label: 'Обратная',
   },
 ];
@@ -297,6 +311,11 @@ export const serviceZoneList: { value: ServiceZone; label: string }[] = [
     value: ServiceZone.CommonUsageAreas,
     label: 'Места общего пользования',
   },
+];
+
+export const entryNumberList = [
+  { value: 1, label: 1 },
+  { value: 2, label: 2 },
 ];
 
 export const serviceZoneListEnum = {

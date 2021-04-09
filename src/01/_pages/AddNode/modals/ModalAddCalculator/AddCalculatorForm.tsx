@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import _ from 'lodash';
 import { Form, Switch } from 'antd';
 import {
@@ -10,21 +9,17 @@ import {
   DatePickerTT,
   InputTT,
   SelectTT,
-  Wrap,
   StyledModalBody,
   StyledFooter,
   StyledFormPage,
   styles,
+  SwitchTT,
+  ConnectionTakesTime,
 } from '../../../../tt-components';
 import { items } from '../../../../tt-components/localBases';
 import Tabs from '../../../../tt-components/Tabs';
-import { addCalculator } from './apiAddCalculator';
 import { returnNullIfEmptyString } from '../../../../utils/returnNullIfEmptyString';
 import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
-import {
-  defaultValidationSchema,
-  emptyConnectionValidationSchema,
-} from './validationSchemas';
 import { isEmptyString } from '../../../../utils/isEmptyString';
 import { AddNodeContext } from '../../AddNodeContext';
 import {
@@ -32,13 +27,17 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import { CreateCalculatorRequest } from '../../../../../myApi';
+import {
+  calculatorNoConnectionValidationSchema,
+  calculatorValidationSchema,
+} from '../../../../tt-components/validationSchemas';
+import { addCalculator } from '../../../../_api/apiRequests';
 
-const AddCalculatorForm = (props: any) => {
+const AddCalculatorForm = ({ handleCancel }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
-  const { handleCancel } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    defaultValidationSchema
+    calculatorValidationSchema
   );
   const {
     handleSubmit,
@@ -106,10 +105,10 @@ const AddCalculatorForm = (props: any) => {
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
       }
       if (!isEmptyConnection()) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorValidationSchema);
       }
     }
   }, [values.deviceAddress, values.ipV4, values.port]);
@@ -117,17 +116,17 @@ const AddCalculatorForm = (props: any) => {
   function onSwitchChange(checked: boolean) {
     setFieldValue('isConnected', checked);
     if (checked) {
-      setValidationSchema(defaultValidationSchema);
+      setValidationSchema(calculatorNoConnectionValidationSchema);
     }
     if (!checked) {
       if (isEmptyConnection() === true) {
-        setValidationSchema(emptyConnectionValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
         setFieldError('ipV4', undefined);
         setFieldError('port', undefined);
         setFieldError('deviceAddress', undefined);
       }
       if (!isEmptyConnection()) {
-        setValidationSchema(defaultValidationSchema);
+        setValidationSchema(calculatorNoConnectionValidationSchema);
       }
     }
   }
@@ -165,7 +164,7 @@ const AddCalculatorForm = (props: any) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
@@ -280,24 +279,12 @@ const AddCalculatorForm = (props: any) => {
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-            }}
-          >
-            <Switch onChange={onSwitchChange} checked={values.isConnected} />
-            <span
-              style={{
-                fontSize: '16px',
-                lineHeight: '32px',
-                marginLeft: '16px',
-                color: 'rgba(39, 47, 90, 0.9)',
-              }}
-            >
-              Опрашивать вычислитель
-            </span>
+          <div style={styles.w100}>
+            <SwitchTT
+              onChange={onSwitchChange}
+              checked={values.isConnected}
+              title={'Опрашивать вычислитель'}
+            />
           </div>
 
           <Form.Item label="IP адрес вычислителя" style={styles.w49}>
@@ -336,16 +323,7 @@ const AddCalculatorForm = (props: any) => {
             <Alert name="deviceAddress" />
           </Form.Item>
 
-          <Wrap
-            style={{
-              background: ' rgba(255, 140, 104, 0.16)',
-              marginTop: '24px',
-              padding: '24px',
-              width: '100%',
-            }}
-          >
-            Подключение к новому прибору может занять до 30 минут.
-          </Wrap>
+          <ConnectionTakesTime />
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>

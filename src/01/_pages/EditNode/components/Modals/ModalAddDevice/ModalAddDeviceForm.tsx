@@ -4,7 +4,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import { InputNumber } from 'formik-antd';
 import {
   ButtonTT,
   DatePickerTT,
@@ -16,7 +15,6 @@ import {
   Title,
   StyledFormPage,
   styles,
-  Warning,
 } from '../../../../../tt-components';
 import {
   DEFAULT_CALCULATOR,
@@ -51,6 +49,7 @@ import {
 } from './template';
 import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
 import { addHousingMeteringDevice } from './apiModalAddDevice';
+import Warning from '../../../../../tt-components/Warning';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;

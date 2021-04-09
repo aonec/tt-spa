@@ -4,32 +4,51 @@ import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
 import { AddNodeContext } from '../AddNodeContext';
 
+interface PipeInterface {
+  calculatorId: number;
+  entryNumber: number;
+  magistral: string;
+  pipeNumber: number;
+}
+
+interface DeviceInterface {
+  diameter: number;
+  documentsIds: Array<any>;
+  futureCheckingDate: string;
+  futureCommercialAccountingDate: string;
+  housingMeteringDeviceType: string;
+  lastCheckingDate: string;
+  lastCommercialAccountingDate: string;
+  model: string;
+  pipe: PipeInterface;
+  resource: string;
+  serialNumber: string;
+  value?: string;
+}
+
 export const RelatedDevices = () => {
   const { communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
 
-  const flattenDevices = _.flatten(
-    communicationPipes.map((communicationPipe) => {
+  if (!communicationPipes) {
+    return null;
+  }
+
+  const flattenDevices: Array<DeviceInterface> = _.flatten(
+    communicationPipes.map((communicationPipe: any) => {
       const { devices } = communicationPipe;
-      return devices.map((device) => device);
+      return devices.map((device: any) => device);
     })
   );
 
-  const result = flattenDevices.map((device) => {
-    const {
-      model,
-      serialNumber,
-      resource,
-      pipe,
-      housingMeteringDeviceType,
-    } = device;
-
+  const result = flattenDevices.map((device: DeviceInterface) => {
+    const { model, serialNumber, resource, pipe } = device;
     const { pipeNumber, entryNumber } = pipe;
 
     function handleDelete() {
       const updatedCommunicationPipes = communicationPipes.map(
-        (communicationPipe, index) => {
+        (communicationPipe: any) => {
           const { devices } = communicationPipe;
 
           const devicesList = _.filter(
@@ -39,8 +58,6 @@ export const RelatedDevices = () => {
           return { ...communicationPipe, devices: devicesList };
         }
       );
-
-      console.log('updatedCommunicationPipes', updatedCommunicationPipes);
 
       const newCommunicationPipes = _.filter(
         updatedCommunicationPipes,
@@ -76,8 +93,6 @@ export const RelatedDevices = () => {
 };
 
 export default RelatedDevices;
-
-const Template = styled.div``;
 
 const Div = styled.div`
   display: inline-flex;
