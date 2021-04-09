@@ -77,7 +77,7 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <StyledFormPage>
-          <HeaderTT>{`Поверка вычислителя ${device.model} (${device.serialNumber})`}</HeaderTT>
+          <HeaderTT>{`Поверка устройства ${device.model} (${device.serialNumber})`}</HeaderTT>
           <Form.Item label="Дата последней поверки прибора" style={styles.w49}>
             <DatePickerTT
               placeholder="Укажите дату"
