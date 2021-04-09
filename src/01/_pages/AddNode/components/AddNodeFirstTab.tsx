@@ -117,6 +117,7 @@ const AddNodeFirstTab = () => {
           style={styles.w49}
         >
           <AutoCompleteTT
+            filterOption
             options={calculators}
             onSelect={(value: string, option: any) => {
               setFieldValue('calculatorId', option.key);

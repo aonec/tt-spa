@@ -44,7 +44,6 @@ export const RelatedDevices = () => {
 
   const result = flattenDevices.map((device: DeviceInterface) => {
     const { model, serialNumber, resource, pipe } = device;
-
     const { pipeNumber, entryNumber } = pipe;
 
     function handleDelete() {
