@@ -165,58 +165,58 @@ export interface LoginRequest {
 }
 
 export enum UserPermission {
-  Default = "Default",
-  ApartmentsRead = "ApartmentsRead",
-  ApartmentsStatusPatch = "ApartmentsStatusPatch",
-  ContractorsRead = "ContractorsRead",
-  ContractorsCreate = "ContractorsCreate",
-  ContractorsUpdate = "ContractorsUpdate",
-  DocumentsCreate = "DocumentsCreate",
-  DocumentsDelete = "DocumentsDelete",
-  HousingStocksRead = "HousingStocksRead",
-  MeteringDevicesRead = "MeteringDevicesRead",
-  IndividualDeviceReadingsCreate = "IndividualDeviceReadingsCreate",
-  ManagingFirmsRead = "ManagingFirmsRead",
-  ManagingFirmsUpdate = "ManagingFirmsUpdate",
-  ManagingFirmUsersRead = "ManagingFirmUsersRead",
-  ManagingFirmUsersCreate = "ManagingFirmUsersCreate",
-  ManagingFirmUsersUpdate = "ManagingFirmUsersUpdate",
-  TasksRead = "TasksRead",
-  TasksExecute = "TasksExecute",
-  TaskAssign = "TaskAssign",
-  TaskCommentsCreate = "TaskCommentsCreate",
-  TaskCommentsUpdate = "TaskCommentsUpdate",
-  TaskCommentsDelete = "TaskCommentsDelete",
-  TaskDocumentsDelete = "TaskDocumentsDelete",
-  UserRolesRead = "UserRolesRead",
-  TaskCreate = "TaskCreate",
-  MeteringDevicesClose = "MeteringDevicesClose",
-  MeteringDevicesCheck = "MeteringDevicesCheck",
-  CalculatorCreate = "CalculatorCreate",
-  HousingStocksCreate = "HousingStocksCreate",
-  HousingStocksUpdate = "HousingStocksUpdate",
-  ApartmentCreate = "ApartmentCreate",
-  CalculatorUpdate = "CalculatorUpdate",
-  IndividualDeviceCreate = "IndividualDeviceCreate",
-  IndividualDeviceUpdate = "IndividualDeviceUpdate",
-  HousingMeteringDeviceUpdate = "HousingMeteringDeviceUpdate",
-  HousingMeteringDeviceCreate = "HousingMeteringDeviceCreate",
-  ApartmentUpdate = "ApartmentUpdate",
-  CalculatorSwitch = "CalculatorSwitch",
-  CalculatorInfoRead = "CalculatorInfoRead",
-  HousingMeteringDeviceSwitch = "HousingMeteringDeviceSwitch",
-  IndividualDeviceMountPlaceRead = "IndividualDeviceMountPlaceRead",
-  HomeownersRead = "HomeownersRead",
-  HomeownersCreate = "HomeownersCreate",
-  HomeownersUpdate = "HomeownersUpdate",
-  IndividualDeviceReadingsRead = "IndividualDeviceReadingsRead",
-  IndividualDeviceReadingsUpdate = "IndividualDeviceReadingsUpdate",
-  ManagingFirmsReadAll = "ManagingFirmsReadAll",
-  TaskDelete = "TaskDelete",
-  ReportRead = "ReportRead",
-  ReportAdd = "ReportAdd",
-  IndividualDeviceClose = "IndividualDeviceClose",
-  DataMigration = "DataMigration",
+  Default = 'Default',
+  ApartmentsRead = 'ApartmentsRead',
+  ApartmentsStatusPatch = 'ApartmentsStatusPatch',
+  ContractorsRead = 'ContractorsRead',
+  ContractorsCreate = 'ContractorsCreate',
+  ContractorsUpdate = 'ContractorsUpdate',
+  DocumentsCreate = 'DocumentsCreate',
+  DocumentsDelete = 'DocumentsDelete',
+  HousingStocksRead = 'HousingStocksRead',
+  MeteringDevicesRead = 'MeteringDevicesRead',
+  IndividualDeviceReadingsCreate = 'IndividualDeviceReadingsCreate',
+  ManagingFirmsRead = 'ManagingFirmsRead',
+  ManagingFirmsUpdate = 'ManagingFirmsUpdate',
+  ManagingFirmUsersRead = 'ManagingFirmUsersRead',
+  ManagingFirmUsersCreate = 'ManagingFirmUsersCreate',
+  ManagingFirmUsersUpdate = 'ManagingFirmUsersUpdate',
+  TasksRead = 'TasksRead',
+  TasksExecute = 'TasksExecute',
+  TaskAssign = 'TaskAssign',
+  TaskCommentsCreate = 'TaskCommentsCreate',
+  TaskCommentsUpdate = 'TaskCommentsUpdate',
+  TaskCommentsDelete = 'TaskCommentsDelete',
+  TaskDocumentsDelete = 'TaskDocumentsDelete',
+  UserRolesRead = 'UserRolesRead',
+  TaskCreate = 'TaskCreate',
+  MeteringDevicesClose = 'MeteringDevicesClose',
+  MeteringDevicesCheck = 'MeteringDevicesCheck',
+  CalculatorCreate = 'CalculatorCreate',
+  HousingStocksCreate = 'HousingStocksCreate',
+  HousingStocksUpdate = 'HousingStocksUpdate',
+  ApartmentCreate = 'ApartmentCreate',
+  CalculatorUpdate = 'CalculatorUpdate',
+  IndividualDeviceCreate = 'IndividualDeviceCreate',
+  IndividualDeviceUpdate = 'IndividualDeviceUpdate',
+  HousingMeteringDeviceUpdate = 'HousingMeteringDeviceUpdate',
+  HousingMeteringDeviceCreate = 'HousingMeteringDeviceCreate',
+  ApartmentUpdate = 'ApartmentUpdate',
+  CalculatorSwitch = 'CalculatorSwitch',
+  CalculatorInfoRead = 'CalculatorInfoRead',
+  HousingMeteringDeviceSwitch = 'HousingMeteringDeviceSwitch',
+  IndividualDeviceMountPlaceRead = 'IndividualDeviceMountPlaceRead',
+  HomeownersRead = 'HomeownersRead',
+  HomeownersCreate = 'HomeownersCreate',
+  HomeownersUpdate = 'HomeownersUpdate',
+  IndividualDeviceReadingsRead = 'IndividualDeviceReadingsRead',
+  IndividualDeviceReadingsUpdate = 'IndividualDeviceReadingsUpdate',
+  ManagingFirmsReadAll = 'ManagingFirmsReadAll',
+  TaskDelete = 'TaskDelete',
+  ReportRead = 'ReportRead',
+  ReportAdd = 'ReportAdd',
+  IndividualDeviceClose = 'IndividualDeviceClose',
+  DataMigration = 'DataMigration',
 }
 
 export interface TokenResponse {
@@ -281,19 +281,19 @@ export interface CalculatorInfoListWrappedResponseSuccessApiResponse {
 }
 
 export enum ExpiresCheckingDateAt {
-  NextMonth = "NextMonth",
-  NextTwoMonth = "NextTwoMonth",
-  Past = "Past",
+  NextMonth = 'NextMonth',
+  NextTwoMonth = 'NextTwoMonth',
+  Past = 'Past',
 }
 
 export enum OrderByDestination {
-  Descending = "Descending",
-  Ascending = "Ascending",
+  Descending = 'Descending',
+  Ascending = 'Ascending',
 }
 
 export enum CalculatorOrderBy {
-  Street = "Street",
-  FutureCheckingDate = "FutureCheckingDate",
+  Street = 'Street',
+  FutureCheckingDate = 'FutureCheckingDate',
 }
 
 export interface TimeSpan {
@@ -331,6 +331,13 @@ export interface TimeSpan {
   totalSeconds?: number;
 }
 
+export interface ManagementFirmAddress {
+  city?: string | null;
+  street?: string | null;
+  houseNumber?: string | null;
+  corpus?: string | null;
+}
+
 export interface ManagementFirmResponse {
   /** @format int32 */
   id: number;
@@ -338,6 +345,8 @@ export interface ManagementFirmResponse {
   phoneNumber: string | null;
   information: string | null;
   timeZoneOffset: TimeSpan;
+  email: string | null;
+  address: ManagementFirmAddress;
 }
 
 export interface MeteringDeviceConnection {
@@ -351,19 +360,19 @@ export interface MeteringDeviceConnection {
 }
 
 export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
+  None = 'None',
+  Heat = 'Heat',
+  HotWaterSupply = 'HotWaterSupply',
+  ColdWaterSupply = 'ColdWaterSupply',
+  Electricity = 'Electricity',
 }
 
 export enum ServiceZone {
-  Apartments = "Apartments",
-  CommercialPremises = "CommercialPremises",
-  TechnicalPremises = "TechnicalPremises",
-  CommonUsageAreas = "CommonUsageAreas",
-  IntroductoryNode = "IntroductoryNode",
+  Apartments = 'Apartments',
+  CommercialPremises = 'CommercialPremises',
+  TechnicalPremises = 'TechnicalPremises',
+  CommonUsageAreas = 'CommonUsageAreas',
+  IntroductoryNode = 'IntroductoryNode',
 }
 
 export interface HousingMeteringDeviceHubConnectionResponse {
@@ -376,11 +385,11 @@ export interface HousingMeteringDeviceHubConnectionResponse {
 }
 
 export enum HousingMeteringDeviceType {
-  None = "None",
-  FlowMeter = "FlowMeter",
-  TemperatureSensor = "TemperatureSensor",
-  WeatherController = "WeatherController",
-  PressureMeter = "PressureMeter",
+  None = 'None',
+  FlowMeter = 'FlowMeter',
+  TemperatureSensor = 'TemperatureSensor',
+  WeatherController = 'WeatherController',
+  PressureMeter = 'PressureMeter',
 }
 
 export interface HousingMeteringDeviceListResponse {
@@ -405,6 +414,7 @@ export interface HousingMeteringDeviceListResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   hub: HousingMeteringDeviceHubConnectionResponse;
   diameter: string | null;
   resource: ResourceType;
@@ -470,6 +480,7 @@ export interface CalculatorListResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   hasTasks: boolean | null;
@@ -596,6 +607,7 @@ export interface CalculatorResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   connection: MeteringDeviceConnection;
   isConnected: boolean | null;
   address: HousingStockAddressResponse;
@@ -708,10 +720,10 @@ export interface ContractorUpdateRequest {
 }
 
 export enum DataMigrationMethod {
-  HousingStockNumberAndCorpus = "HousingStockNumberAndCorpus",
-  MeteringDeviceIsConnected = "MeteringDeviceIsConnected",
-  CommunicationPipeNumbers = "CommunicationPipeNumbers",
-  OldTasks = "OldTasks",
+  HousingStockNumberAndCorpus = 'HousingStockNumberAndCorpus',
+  MeteringDeviceIsConnected = 'MeteringDeviceIsConnected',
+  CommunicationPipeNumbers = 'CommunicationPipeNumbers',
+  OldTasks = 'OldTasks',
 }
 
 export interface DocumentResponse {
@@ -836,9 +848,9 @@ export interface HomeownersUpdateRequest {
 }
 
 export enum MagistralType {
-  None = "None",
-  FeedFlow = "FeedFlow",
-  FeedBackFlow = "FeedBackFlow",
+  None = 'None',
+  FeedFlow = 'FeedFlow',
+  FeedBackFlow = 'FeedBackFlow',
 }
 
 export interface PipeConnectionRequest {
@@ -916,6 +928,7 @@ export interface HousingMeteringDeviceResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   diameter: string | null;
   resource: ResourceType;
   housingMeteringDeviceType: HousingMeteringDeviceType;
@@ -1262,10 +1275,10 @@ export interface IndividualDeviceReadingsSetEmptyRequest {
 }
 
 export enum IndividualDeviceRateType {
-  None = "None",
-  OneZone = "OneZone",
-  TwoZone = "TwoZone",
-  ThreeZone = "ThreeZone",
+  None = 'None',
+  OneZone = 'OneZone',
+  TwoZone = 'TwoZone',
+  ThreeZone = 'ThreeZone',
 }
 
 export interface IndividualDeviceReadingsResponse {
@@ -1305,6 +1318,7 @@ export interface IndividualDeviceResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   address: FullAddressResponse;
   resource: ResourceType;
   mountPlace: string | null;
@@ -1367,6 +1381,7 @@ export interface IndividualDeviceListItemResponse {
 
   /** @format date-time */
   closingDate: string | null;
+  isActive: boolean;
   resource: ResourceType;
   mountPlace: string | null;
   rateType: IndividualDeviceRateType;
@@ -1659,10 +1674,10 @@ export interface CreateNodeRequest {
   serviceZone?: ServiceZone;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCommercialAccountingDate?: string | null;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
+  futureCommercialAccountingDate?: string | null;
 
   /** @format int32 */
   calculatorId?: number | null;
@@ -1697,10 +1712,10 @@ export interface ResourceTypeStringDictionaryItem {
 }
 
 export enum NodeCommercialAccountStatus {
-  NotRegistered = "NotRegistered",
-  Registered = "Registered",
-  OnReview = "OnReview",
-  Prepared = "Prepared",
+  NotRegistered = 'NotRegistered',
+  Registered = 'Registered',
+  OnReview = 'OnReview',
+  Prepared = 'Prepared',
 }
 
 export interface NodeCommercialAccountStatusStringDictionaryItem {
@@ -1749,17 +1764,17 @@ export interface GroupReportResponseSuccessApiResponse {
 }
 
 export enum EmailSubscriptionType {
-  Once = "Once",
-  OncePerTwoWeeks = "OncePerTwoWeeks",
-  OncePerMonth = "OncePerMonth",
-  OncePerQuarter = "OncePerQuarter",
+  Once = 'Once',
+  OncePerTwoWeeks = 'OncePerTwoWeeks',
+  OncePerMonth = 'OncePerMonth',
+  OncePerQuarter = 'OncePerQuarter',
 }
 
 export enum TaskGroupingFilter {
-  Executing = "Executing",
-  Observing = "Observing",
-  NotArchived = "NotArchived",
-  Archived = "Archived",
+  Executing = 'Executing',
+  Observing = 'Observing',
+  NotArchived = 'NotArchived',
+  Archived = 'Archived',
 }
 
 export interface ManagingFirmUserShortResponse {
@@ -1925,9 +1940,9 @@ export interface TaskResponseSuccessApiResponse {
 }
 
 export enum TaskTargetObjectRequestType {
-  None = "None",
-  Apartment = "Apartment",
-  MeteringDevice = "MeteringDevice",
+  None = 'None',
+  Apartment = 'Apartment',
+  MeteringDevice = 'MeteringDevice',
 }
 
 export interface TaskCreationTargetObjectRequest {
@@ -1997,6 +2012,10 @@ export interface StageListResponseWrappedListResponseSuccessApiResponse {
   successResponse: StageListResponseWrappedListResponse;
 }
 
+export interface TaskCommentRequest {
+  comment?: string | null;
+}
+
 export interface TaskCommentResponseSuccessApiResponse {
   successResponse: TaskCommentResponse;
 }
@@ -2022,11 +2041,17 @@ export interface UserRoleListWrappedResponseSuccessApiResponse {
   successResponse: UserRoleListWrappedResponse;
 }
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  ResponseType,
+} from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
 
-export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+export interface FullRequestParams
+  extends Omit<AxiosRequestConfig, 'data' | 'params' | 'url' | 'responseType'> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -2041,27 +2066,37 @@ export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "pa
   body?: unknown;
 }
 
-export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">;
+export type RequestParams = Omit<
+  FullRequestParams,
+  'body' | 'method' | 'query' | 'path'
+>;
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+export interface ApiConfig<SecurityDataType = unknown>
+  extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
   securityWorker?: (
-    securityData: SecurityDataType | null,
+    securityData: SecurityDataType | null
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
 }
 
 export enum ContentType {
-  Json = "application/json",
-  FormData = "multipart/form-data",
-  UrlEncoded = "application/x-www-form-urlencoded",
+  Json = 'application/json',
+  FormData = 'multipart/form-data',
+  UrlEncoded = 'application/x-www-form-urlencoded',
 }
 
 export class HttpClient<SecurityDataType = unknown> {
   private instance: AxiosInstance;
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
+  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
 
-  constructor({ securityWorker, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" });
+  constructor({
+    securityWorker,
+    ...axiosConfig
+  }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({
+      ...axiosConfig,
+      baseURL: axiosConfig.baseURL || '',
+    });
     this.securityWorker = securityWorker;
   }
 
@@ -2069,7 +2104,10 @@ export class HttpClient<SecurityDataType = unknown> {
     this.securityData = data;
   };
 
-  private mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
+  private mergeRequestParams(
+    params1: AxiosRequestConfig,
+    params2?: AxiosRequestConfig
+  ): AxiosRequestConfig {
     return {
       ...params1,
       ...(params2 || {}),
@@ -2085,17 +2123,23 @@ export class HttpClient<SecurityDataType = unknown> {
     path,
     type,
     query,
-    format = "json",
+    format = 'json',
     body,
     ...params
   }: FullRequestParams): Promise<AxiosResponse<T>> => {
-    const secureParams = (secure && this.securityWorker && (await this.securityWorker(this.securityData))) || {};
+    const secureParams =
+      (secure &&
+        this.securityWorker &&
+        (await this.securityWorker(this.securityData))) ||
+      {};
     const requestParams = this.mergeRequestParams(params, secureParams);
 
     return this.instance.request({
       ...requestParams,
       headers: {
-        ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+        ...(type && type !== ContentType.FormData
+          ? { 'Content-Type': type }
+          : {}),
         ...(requestParams.headers || {}),
       },
       params: query,
@@ -2106,7 +2150,9 @@ export class HttpClient<SecurityDataType = unknown> {
   };
 }
 
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown
+> extends HttpClient<SecurityDataType> {
   api = {
     /**
      * No description
@@ -2116,14 +2162,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Apartments
      * @secure
      */
-    apartmentsCreate: (data: ApartmentCreateRequest, params: RequestParams = {}) =>
+    apartmentsCreate: (
+      data: ApartmentCreateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2146,14 +2195,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<ApartmentPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2165,14 +2214,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest, params: RequestParams = {}) =>
+    apartmentsUpdate: (
+      apartmentId: number,
+      data: ApartmentUpdateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2187,9 +2240,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     apartmentsDetail: (apartmentId: number, params: RequestParams = {}) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2202,11 +2255,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     apartmentsApartmentStatusList: (params: RequestParams = {}) =>
-      this.request<ApartmentListStatusResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        ApartmentListStatusResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Apartments/ApartmentStatus`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2221,11 +2277,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     apartmentsSetStatusPartialUpdate: (
       apartmentId: number,
       data: ApartmentStatusSetRequest,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatus`,
-        method: "PATCH",
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -2243,11 +2299,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authLoginCreate: (data: LoginRequest, params: RequestParams = {}) =>
       this.request<TokenResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Auth/login`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2259,14 +2315,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Auth/refreshToken
      * @secure
      */
-    authRefreshTokenCreate: (data: RefreshTokenRequest, params: RequestParams = {}) =>
+    authRefreshTokenCreate: (
+      data: RefreshTokenRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<RefreshResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Auth/refreshToken`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2281,7 +2340,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authLogoutCreate: (data: LogoutRequest, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Auth/logout`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -2299,11 +2358,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authConfirmCreate: (data: ConfirmRequest, params: RequestParams = {}) =>
       this.request<ConfirmResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Auth/confirm`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2316,11 +2375,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     calculatorInfosList: (params: RequestParams = {}) =>
-      this.request<CalculatorInfoListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        CalculatorInfoListWrappedResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/CalculatorInfos`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2334,34 +2396,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     calculatorsList: (
       query?: {
-        "Filter.DiameterRange.From"?: number | null;
-        "Filter.DiameterRange.To"?: number | null;
-        "Filter.ExpiresCheckingDateAt"?: ExpiresCheckingDateAt;
-        "Filter.Resource"?: string | null;
-        "Filter.Model"?: string | null;
-        "Filter.CommercialDateRange.From"?: string | null;
-        "Filter.CommercialDateRange.To"?: string | null;
-        "Filter.Address.City"?: string | null;
-        "Filter.Address.Street"?: string | null;
-        "Filter.Address.HousingStockNumber"?: string | null;
-        "Filter.Address.Corpus"?: string | null;
-        "Filter.HousingStockId"?: number | null;
+        'Filter.DiameterRange.From'?: number | null;
+        'Filter.DiameterRange.To'?: number | null;
+        'Filter.ExpiresCheckingDateAt'?: ExpiresCheckingDateAt;
+        'Filter.Resource'?: string | null;
+        'Filter.Model'?: string | null;
+        'Filter.CommercialDateRange.From'?: string | null;
+        'Filter.CommercialDateRange.To'?: string | null;
+        'Filter.Address.City'?: string | null;
+        'Filter.Address.Street'?: string | null;
+        'Filter.Address.HousingStockNumber'?: string | null;
+        'Filter.Address.Corpus'?: string | null;
+        'Filter.HousingStockId'?: number | null;
         Question?: string | null;
-        "OrderBy.Destination"?: OrderByDestination;
-        "OrderBy.Rule"?: CalculatorOrderBy;
+        'OrderBy.Destination'?: OrderByDestination;
+        'OrderBy.Rule'?: CalculatorOrderBy;
         IsConnected?: boolean | null;
         CountTasks?: boolean | null;
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
-      this.request<CalculatorListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        CalculatorListResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Calculators`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2373,14 +2438,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Calculators
      * @secure
      */
-    calculatorsCreate: (data: CreateCalculatorRequest, params: RequestParams = {}) =>
+    calculatorsCreate: (
+      data: CreateCalculatorRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2395,9 +2463,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     calculatorsDetail: (deviceId: number, params: RequestParams = {}) =>
       this.request<CalculatorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2409,14 +2477,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Calculators/{deviceId}
      * @secure
      */
-    calculatorsUpdate: (deviceId: number, data: UpdateCalculatorRequest, params: RequestParams = {}) =>
+    calculatorsUpdate: (
+      deviceId: number,
+      data: UpdateCalculatorRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2428,14 +2500,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Calculators/switch
      * @secure
      */
-    calculatorsSwitchCreate: (data: SwitchCalculatorRequest, params: RequestParams = {}) =>
+    calculatorsSwitchCreate: (
+      data: SwitchCalculatorRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/switch`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2448,13 +2523,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     contractorsList: (params: RequestParams = {}) =>
-      this.request<PagedContractorResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Contractors`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
+      this.request<PagedContractorResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/Contractors`,
+          method: 'GET',
+          secure: true,
+          format: 'json',
+          ...params,
+        }
+      ),
 
     /**
      * No description
@@ -2464,14 +2541,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Contractors
      * @secure
      */
-    contractorsCreate: (data: ContractorCreateRequest, params: RequestParams = {}) =>
+    contractorsCreate: (
+      data: ContractorCreateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2486,9 +2566,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     contractorsDetail: (contractorId: number, params: RequestParams = {}) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2500,14 +2580,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Contractors/{contractorId}
      * @secure
      */
-    contractorsUpdate: (contractorId: number, data: ContractorUpdateRequest, params: RequestParams = {}) =>
+    contractorsUpdate: (
+      contractorId: number,
+      data: ContractorUpdateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2520,12 +2604,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     dataMigrationsMigrateList: (
-      query?: { method?: DataMigrationMethod; args?: string | null; saveChanges?: boolean },
-      params: RequestParams = {},
+      query?: {
+        method?: DataMigrationMethod;
+        args?: string | null;
+        saveChanges?: boolean;
+      },
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/DataMigrations/Migrate`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
         ...params,
@@ -2542,7 +2630,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     dataMigrationsCreateAdminCreate: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/DataMigrations/CreateAdmin`,
-        method: "POST",
+        method: 'POST',
         secure: true,
         ...params,
       }),
@@ -2556,11 +2644,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     documentsUploadCreate: (params: RequestParams = {}) =>
-      this.request<DocumentResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        DocumentResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Documents/upload`,
-        method: "POST",
+        method: 'POST',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2575,7 +2666,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     documentsDelete: (documentId: number, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Documents/${documentId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
@@ -2588,13 +2679,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Homeowners
      * @secure
      */
-    homeownersList: (query?: { PageNumber?: number; PageSize?: number }, params: RequestParams = {}) =>
-      this.request<HomeownersListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+    homeownersList: (
+      query?: { PageNumber?: number; PageSize?: number },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        HomeownersListResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Homeowners`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2606,14 +2703,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Homeowners
      * @secure
      */
-    homeownersCreate: (data: HomeownersCreateRequest, params: RequestParams = {}) =>
+    homeownersCreate: (
+      data: HomeownersCreateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2628,9 +2728,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     homeownersDetail: (homeownerId: number, params: RequestParams = {}) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2642,14 +2742,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Homeowners/{homeownerId}
      * @secure
      */
-    homeownersUpdate: (homeownerId: number, data: HomeownersUpdateRequest, params: RequestParams = {}) =>
+    homeownersUpdate: (
+      homeownerId: number,
+      data: HomeownersUpdateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2664,15 +2768,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     housingMeteringDevicesUpdate: (
       deviceId: number,
       data: UpdateHousingMeteringDeviceRequest,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2684,12 +2788,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/HousingMeteringDevices/{deviceId}
      * @secure
      */
-    housingMeteringDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<HousingMeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+    housingMeteringDevicesDetail: (
+      deviceId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        HousingMeteringDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/HousingMeteringDevices/${deviceId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2701,14 +2811,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/HousingMeteringDevices
      * @secure
      */
-    housingMeteringDevicesCreate: (data: CreateHousingMeteringDeviceRequest, params: RequestParams = {}) =>
+    housingMeteringDevicesCreate: (
+      data: CreateHousingMeteringDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2720,14 +2833,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/HousingMeteringDevices/switch
      * @secure
      */
-    housingMeteringDevicesSwitchCreate: (data: SwitchHousingMeteringDeviceRequest, params: RequestParams = {}) =>
+    housingMeteringDevicesSwitchCreate: (
+      data: SwitchHousingMeteringDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/switch`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2739,14 +2855,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/HousingStocks
      * @secure
      */
-    housingStocksCreate: (data: HousingStockCreateRequest, params: RequestParams = {}) =>
+    housingStocksCreate: (
+      data: HousingStockCreateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2767,14 +2886,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
-      this.request<HousingStockListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        HousingStockListResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/HousingStocks`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2786,14 +2908,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/HousingStocks/{housingStockId}
      * @secure
      */
-    housingStocksUpdate: (housingStockId: number, data: HousingStockUpdateRequest, params: RequestParams = {}) =>
+    housingStocksUpdate: (
+      housingStockId: number,
+      data: HousingStockUpdateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2808,9 +2934,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     housingStocksDetail: (housingStockId: number, params: RequestParams = {}) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2822,12 +2948,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/HousingStocks/{housingStockId}/Devices
      * @secure
      */
-    housingStocksDevicesDetail: (housingStockId: number, params: RequestParams = {}) =>
-      this.request<HousingStockDeviceListResponseSuccessApiResponse, ErrorApiResponse>({
+    housingStocksDevicesDetail: (
+      housingStockId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        HousingStockDeviceListResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/HousingStocks/${housingStockId}/Devices`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2841,12 +2973,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @duplicate
      * @secure
      */
-    housingStocksDevicesDetail2: (housingStockId: number, deviceId: number, params: RequestParams = {}) =>
-      this.request<HousingStockDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+    housingStocksDevicesDetail2: (
+      housingStockId: number,
+      deviceId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        HousingStockDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/HousingStocks/${housingStockId}/Devices/${deviceId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2858,12 +2997,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/HousingStocks/{housingStockId}/Devices/{deviceId}/Related
      * @secure
      */
-    housingStocksDevicesRelatedDetail: (housingStockId: number, deviceId: number, params: RequestParams = {}) =>
-      this.request<HousingStockDeviceListResponseSuccessApiResponse, ErrorApiResponse>({
+    housingStocksDevicesRelatedDetail: (
+      housingStockId: number,
+      deviceId: number,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        HousingStockDeviceListResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/HousingStocks/${housingStockId}/Devices/${deviceId}/Related`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2878,13 +3024,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     housingStocksDevicesCommunicationPipesDetail: (
       housingStockId: number,
       deviceId: number,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<PipesListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Devices/${deviceId}/CommunicationPipes`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2897,11 +3043,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDeviceMountPlacesList: (params: RequestParams = {}) =>
-      this.request<IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDeviceMountPlaces`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2913,14 +3062,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDeviceReadings/create
      * @secure
      */
-    individualDeviceReadingsCreateCreate: (data: IndividualDeviceReadingsCreateRequest, params: RequestParams = {}) =>
-      this.request<IndividualDeviceReadingsCreateListResponseSuccessApiResponse, ErrorApiResponse>({
+    individualDeviceReadingsCreateCreate: (
+      data: IndividualDeviceReadingsCreateRequest,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        IndividualDeviceReadingsCreateListResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDeviceReadings/create`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2933,15 +3088,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDeviceReadingsGetFlagsList: (
-      query: { Date: string; ManagementFirmId?: number | null; PageNumber?: number; PageSize?: number },
-      params: RequestParams = {},
+      query: {
+        Date: string;
+        ManagementFirmId?: number | null;
+        PageNumber?: number;
+        PageSize?: number;
+      },
+      params: RequestParams = {}
     ) =>
-      this.request<IndividualDeviceReadingsExistingFlagModelPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceReadingsExistingFlagModelPagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDeviceReadings/getFlags`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2955,11 +3118,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     individualDeviceReadingsSetEmptyCreate: (
       data: IndividualDeviceReadingsSetEmptyRequest,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/setEmpty`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -2975,11 +3138,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDevicesDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices/${deviceId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -2991,14 +3157,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/IndividualDevices/{deviceId}
      * @secure
      */
-    individualDevicesUpdate: (deviceId: number, data: UpdateIndividualDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesUpdate: (
+      deviceId: number,
+      data: UpdateIndividualDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3020,14 +3190,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
-      this.request<IndividualDeviceListItemResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        IndividualDeviceListItemResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/IndividualDevices`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3039,14 +3212,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDevices
      * @secure
      */
-    individualDevicesCreate: (data: CreateIndividualDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesCreate: (
+      data: CreateIndividualDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3058,10 +3234,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDevices/close
      * @secure
      */
-    individualDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesCloseCreate: (
+      data: CloseDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDevices/close`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3079,11 +3258,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     individualDevicesSwitchMagneticSealCreate: (
       deviceId: number,
       query?: { magneticSealInstallationDate?: string | null },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
-        method: "POST",
+        method: 'POST',
         query: query,
         secure: true,
         ...params,
@@ -3097,13 +3276,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/ManagingFirms
      * @secure
      */
-    managingFirmsList: (query?: { PageNumber?: number; PageSize?: number }, params: RequestParams = {}) =>
-      this.request<ManagementFirmResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+    managingFirmsList: (
+      query?: { PageNumber?: number; PageSize?: number },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        ManagementFirmResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirms`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3118,9 +3303,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     managingFirmsCurrentList: (params: RequestParams = {}) =>
       this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/current`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3132,14 +3317,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/ManagingFirms/{managingFirmId}
      * @secure
      */
-    managingFirmsUpdate: (managingFirmId: number, data: ManagementFirmUpdateRequest, params: RequestParams = {}) =>
+    managingFirmsUpdate: (
+      managingFirmId: number,
+      data: ManagementFirmUpdateRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3151,13 +3340,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/ManagingFirmUsers
      * @secure
      */
-    managingFirmUsersList: (query?: { RoleNames?: string[] | null }, params: RequestParams = {}) =>
-      this.request<PagedManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+    managingFirmUsersList: (
+      query?: { RoleNames?: string[] | null },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        PagedManagingFirmUserResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirmUsers`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3169,14 +3364,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/ManagingFirmUsers
      * @secure
      */
-    managingFirmUsersCreate: (data: ManagingFirmUserCreateRequest, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+    managingFirmUsersCreate: (
+      data: ManagingFirmUserCreateRequest,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        ManagingFirmUserResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirmUsers`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3189,11 +3390,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmUsersDetail: (userId: number, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        ManagingFirmUserResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirmUsers/${userId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3205,14 +3409,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/ManagingFirmUsers/{userId}
      * @secure
      */
-    managingFirmUsersUpdate: (userId: number, data: ManagingFirmUserUpdateRequest, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+    managingFirmUsersUpdate: (
+      userId: number,
+      data: ManagingFirmUserUpdateRequest,
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        ManagingFirmUserResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirmUsers/${userId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3225,11 +3436,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managingFirmUsersCurrentList: (params: RequestParams = {}) =>
-      this.request<ManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        ManagingFirmUserResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/ManagingFirmUsers/current`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3252,14 +3466,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
-      this.request<MeteringDeviceListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        MeteringDeviceListResponsePagedListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/MeteringDevices`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3272,15 +3489,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     meteringDevicesSearchList: (
-      query?: { DeviceType?: string | null; Status?: string | null; Question?: string | null; Take?: number },
-      params: RequestParams = {},
+      query?: {
+        DeviceType?: string | null;
+        Status?: string | null;
+        Question?: string | null;
+        Take?: number;
+      },
+      params: RequestParams = {}
     ) =>
-      this.request<MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/MeteringDevices/search`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3292,12 +3517,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/MeteringDevices/{meteringDeviceId}
      * @secure
      */
-    meteringDevicesDetail: (meteringDeviceId: number, params: RequestParams = {}) =>
+    meteringDevicesDetail: (
+      meteringDeviceId: number,
+      params: RequestParams = {}
+    ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/${meteringDeviceId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3309,13 +3537,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/MeteringDevices/related
      * @secure
      */
-    meteringDevicesRelatedList: (query: { DeviceId: number; PipeNumber?: number | null }, params: RequestParams = {}) =>
-      this.request<MeteringDeviceListResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+    meteringDevicesRelatedList: (
+      query: { DeviceId: number; PipeNumber?: number | null },
+      params: RequestParams = {}
+    ) =>
+      this.request<
+        MeteringDeviceListResponseIEnumerableSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/MeteringDevices/related`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3327,10 +3561,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/MeteringDevices/close
      * @secure
      */
-    meteringDevicesCloseCreate: (data: CloseDeviceRequest, params: RequestParams = {}) =>
+    meteringDevicesCloseCreate: (
+      data: CloseDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/close`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3345,10 +3582,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/MeteringDevices/check
      * @secure
      */
-    meteringDevicesCheckCreate: (data: CheckDeviceRequest, params: RequestParams = {}) =>
+    meteringDevicesCheckCreate: (
+      data: CheckDeviceRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/check`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3366,9 +3606,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nodesDetail: (nodeId: number, params: RequestParams = {}) =>
       this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3380,14 +3620,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Nodes/{nodeId}
      * @secure
      */
-    nodesUpdate: (nodeId: number, data: UpdateNodeRequest, params: RequestParams = {}) =>
+    nodesUpdate: (
+      nodeId: number,
+      data: UpdateNodeRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3399,13 +3643,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Nodes
      * @secure
      */
-    nodesList: (query?: { calculatorId?: number }, params: RequestParams = {}) =>
+    nodesList: (
+      query?: { calculatorId?: number },
+      params: RequestParams = {}
+    ) =>
       this.request<NodeResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3420,11 +3667,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nodesCreate: (data: CreateNodeRequest, params: RequestParams = {}) =>
       this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3437,11 +3684,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     nodesGetServiceZonesList: (params: RequestParams = {}) =>
-      this.request<NodeServiceZonesResponseListSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        NodeServiceZonesResponseListSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Nodes/GetServiceZones`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3454,13 +3704,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsList: (params: RequestParams = {}) =>
-      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
+      this.request<GroupReportFormResponseSuccessApiResponse, ErrorApiResponse>(
+        {
+          path: `/api/Reports`,
+          method: 'GET',
+          secure: true,
+          format: 'json',
+          ...params,
+        }
+      ),
 
     /**
      * No description
@@ -3470,14 +3722,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Reports
      * @secure
      */
-    reportsCreate: (data: CreateGroupReportRequest, params: RequestParams = {}) =>
+    reportsCreate: (
+      data: CreateGroupReportRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3490,12 +3745,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsGetArchivesList: (
-      query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
-      params: RequestParams = {},
+      query?: {
+        NodeId?: number | null;
+        ReportType?: string | null;
+        From?: string | null;
+        To?: string | null;
+      },
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/Reports/GetArchives`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
         ...params,
@@ -3510,12 +3770,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsGetReportList: (
-      query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
-      params: RequestParams = {},
+      query?: {
+        NodeId?: number | null;
+        ReportType?: string | null;
+        From?: string | null;
+        To?: string | null;
+      },
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/Reports/GetReport`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
         ...params,
@@ -3530,12 +3795,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsGetConsolidatedReportList: (
-      query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
-      params: RequestParams = {},
+      query?: {
+        CalculatorsId?: number[] | null;
+        ReportType?: string | null;
+        From?: string | null;
+        To?: string | null;
+      },
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/Reports/GetConsolidatedReport`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
         ...params,
@@ -3555,19 +3825,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HouseManagementId?: string | null;
         NodeResourceTypes?: ResourceType[] | null;
         NodeStatus?: NodeCommercialAccountStatus;
-        "Subscription.Email"?: string | null;
-        "Subscription.ContractorIds"?: number[] | null;
-        "Subscription.TriggerAt"?: string;
-        "Subscription.Type"?: EmailSubscriptionType;
+        'Subscription.Email'?: string | null;
+        'Subscription.ContractorIds'?: number[] | null;
+        'Subscription.TriggerAt'?: string;
+        'Subscription.Type'?: EmailSubscriptionType;
         ReportType?: string | null;
         From?: string | null;
         To?: string | null;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/Reports/GetGroupReport`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
         ...params,
@@ -3583,6 +3853,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     tasksList: (
       query?: {
+        SearchingFilter?: string | null;
         TargetType?: string | null;
         TaskId?: number | null;
         TaskType?: string | null;
@@ -3596,14 +3867,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         PageNumber?: number;
         PageSize?: number;
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks`,
-        method: "GET",
+        method: 'GET',
         query: query,
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3618,9 +3889,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksDetail: (taskId: number, params: RequestParams = {}) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3635,7 +3906,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksDelete: (taskId: number, params: RequestParams = {}) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
@@ -3651,11 +3922,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     tasksCreateCreate: (data: TaskCreateRequest, params: RequestParams = {}) =>
       this.request<TaskCreateResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/create`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3667,14 +3938,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/{taskId}/PushStage
      * @secure
      */
-    tasksPushStageCreate: (taskId: number, data: StagePushRequest, params: RequestParams = {}) =>
+    tasksPushStageCreate: (
+      taskId: number,
+      data: StagePushRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/PushStage`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3686,14 +3961,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/{taskId}/RevertStage
      * @secure
      */
-    tasksRevertStageCreate: (taskId: number, data: StageRevertRequest, params: RequestParams = {}) =>
+    tasksRevertStageCreate: (
+      taskId: number,
+      data: StageRevertRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/RevertStage`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3706,11 +3985,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     tasksNextStagesDetail: (taskId: number, params: RequestParams = {}) =>
-      this.request<StageListResponseWrappedListResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        StageListResponseWrappedListResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/Tasks/${taskId}/NextStages`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3722,14 +4004,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/{taskId}/Comments
      * @secure
      */
-    tasksCommentsCreate: (taskId: number, data: string | null, params: RequestParams = {}) =>
+    tasksCommentsCreate: (
+      taskId: number,
+      data: TaskCommentRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3741,14 +4027,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Tasks/{taskId}/Comments/{commentId}
      * @secure
      */
-    tasksCommentsUpdate: (taskId: number, commentId: number, data: string | null, params: RequestParams = {}) =>
+    tasksCommentsUpdate: (
+      taskId: number,
+      commentId: number,
+      data: TaskCommentRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        format: 'json',
         ...params,
       }),
 
@@ -3760,10 +4051,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/api/Tasks/{taskId}/Comments/{commentId}
      * @secure
      */
-    tasksCommentsDelete: (taskId: number, commentId: number, params: RequestParams = {}) =>
+    tasksCommentsDelete: (
+      taskId: number,
+      commentId: number,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
@@ -3776,10 +4071,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/api/Tasks/{taskId}/Documents/{documentId}
      * @secure
      */
-    tasksDocumentsDelete: (taskId: number, documentId: number, params: RequestParams = {}) =>
+    tasksDocumentsDelete: (
+      taskId: number,
+      documentId: number,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Documents/${documentId}`,
-        method: "DELETE",
+        method: 'DELETE',
         secure: true,
         ...params,
       }),
@@ -3792,10 +4091,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/assignMultiple
      * @secure
      */
-    tasksAssignMultipleCreate: (data: TaskAssignToMultipleRequest, params: RequestParams = {}) =>
+    tasksAssignMultipleCreate: (
+      data: TaskAssignToMultipleRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Tasks/assignMultiple`,
-        method: "POST",
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3811,11 +4113,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     userRolesList: (params: RequestParams = {}) =>
-      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<
+        UserRoleListWrappedResponseSuccessApiResponse,
+        ErrorApiResponse
+      >({
         path: `/api/UserRoles`,
-        method: "GET",
+        method: 'GET',
         secure: true,
-        format: "json",
+        format: 'json',
         ...params,
       }),
   };

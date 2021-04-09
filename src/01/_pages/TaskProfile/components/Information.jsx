@@ -19,7 +19,7 @@ export const Information = ({
   `(
     <information {...props}>
       <h2>Подробная информация</h2>
-      <Loader show={loading} size="32">
+      <Loader show={loading} size="20">
         <info_list>
           {list.map(({ title, value, url }) => (
             <info_item
