@@ -32,41 +32,6 @@ export const Header = ({ device }: HeaderInterface) => {
     apartmentId,
   } = address;
 
-  const menuButtonArr = device
-    ? [
-        {
-          title: 'Редактировать',
-          cb: () => push(`/individualDevices/${device.id}/edit`),
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
-        },
-        {
-          title: 'Открыть историю показаний',
-          cb: () => {
-            alert('Открыть историю показаний');
-          },
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
-        },
-        {
-          title: 'Поверить прибор',
-          cb: () => {
-            alert('Поверить прибор');
-          },
-          show: show('IndividualDeviceUpdate'),
-          color: 'default',
-        },
-        {
-          title: 'Закрыть прибор',
-          cb: () => {
-            alert('Закрыть прибор');
-          },
-          show: show('IndividualDeviceUpdate'),
-          color: 'red',
-        },
-      ]
-    : null;
-
   return (
     <Loader show={loading} size="32">
       <Breadcrumb path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
@@ -78,7 +43,7 @@ export const Header = ({ device }: HeaderInterface) => {
               size="24"
               style={{ marginRight: 8 }}
             />
-            {`${model} (${serialNumber})`}
+            {`${model} (${serialNumber}). Редактирование`}
           </Title>
           <div style={{ display: 'flex' }}>
             <Subtitle
@@ -87,8 +52,6 @@ export const Header = ({ device }: HeaderInterface) => {
             <IsActive closingDate={closingDate} />
           </div>
         </div>
-
-        <MenuButtonTT menuButtonArr={menuButtonArr} />
       </HeaderWrap>
     </Loader>
   );
