@@ -32,6 +32,7 @@ import {
   NodeProfile,
   EditNode,
   AddNode,
+  IndividualDeviceEdit,
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -146,6 +147,12 @@ const Internal = () => {
               <Route
                 path="/individualDevices/:deviceId/(readings|documents|changes)?"
                 component={IndividualDevice}
+                exact
+              />
+
+              <Route
+                path="/individualDevices/:deviceId/edit"
+                component={IndividualDeviceEdit}
                 exact
               />
 

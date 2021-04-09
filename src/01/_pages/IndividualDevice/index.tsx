@@ -15,7 +15,6 @@ import {
   getIndividualDevice,
   getIndividualDeviceTasks,
 } from '../../_api/apiRequests';
-import { Breadcrumb } from '../../tt-components/Breadcrumb';
 
 export const IndividualDevice = () => {
   const { push } = useHistory();
@@ -64,7 +63,6 @@ export const IndividualDevice = () => {
       ) : null}
       {status === 'resolved' ? (
         <>
-          <Breadcrumb path="/devices/" />
           <Header device={device} />
           <Tabs tabItems={tabItems} tabsType={'route'} />
           <Grid>
