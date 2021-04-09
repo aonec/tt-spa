@@ -58,6 +58,7 @@ const ShowToggle = styled.div`
   margin-top: 16px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const ClosedDevice = styled.div`

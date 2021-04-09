@@ -31,7 +31,7 @@ export function useMenu() {
     {
       name: 'Профиль компании',
       to: '/settings/',
-      icon: 'setting',
+      icon: 'company',
       perm: ['ManagingFirmAdministrator'],
     },
     {
