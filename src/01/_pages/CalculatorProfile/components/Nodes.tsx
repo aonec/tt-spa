@@ -70,12 +70,7 @@ export const Nodes = ({ device }: NodesInterface) => {
     );
   });
 
-  return (
-    <ListWrap>
-      <Title>Узлы</Title>
-      {result}
-    </ListWrap>
-  );
+  return <ListWrap>{result}</ListWrap>;
 };
 
 export default Nodes;

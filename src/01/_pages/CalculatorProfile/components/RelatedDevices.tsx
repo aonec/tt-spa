@@ -77,12 +77,7 @@ export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
     return result;
   });
 
-  return (
-    <ListWrap>
-      <Title>Приборы</Title>
-      {resultDevices}
-    </ListWrap>
-  );
+  return <ListWrap>{resultDevices}</ListWrap>;
 };
 
 export default NodeRelatedDevices;

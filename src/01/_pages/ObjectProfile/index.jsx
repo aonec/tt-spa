@@ -9,7 +9,7 @@ import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
-import { getCalculators, getObject, getServiceZones } from './apiObjectProfile';
+import { getCalculators, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
