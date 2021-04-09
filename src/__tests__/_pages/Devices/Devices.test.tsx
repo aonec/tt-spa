@@ -8,6 +8,7 @@ import {
   screen,
   waitForElementToBeRemoved,
   waitFor,
+  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DevicesFromSearch from '01/_pages/Devices';
@@ -295,6 +296,10 @@ const calculatorsResponseAfterSearch = _.cloneDeep(calculatorsResponse);
 calculatorsResponseAfterSearch.successResponse.items[0].address.street =
   'Космонавтов';
 
+const calculatorResponseAfterFilter = _.cloneDeep(calculatorsResponse);
+calculatorResponseAfterFilter.successResponse.items[0].address.street =
+  'Патриса Лумумбы';
+
 const server = setupServer(
   rest.get(
     'https://transparent-staging.herokuapp.com/api/Calculators/',
@@ -303,6 +308,8 @@ const server = setupServer(
       const pageNumber = query.get('pageNumber');
       const pageSize = query.get('pageSize');
       const Question = query.get('Question');
+      const Destination = query.get('OrderBy.Destination');
+      const Rule = query.get('OrderBy.Rule');
       if (Question === null) {
         return res(ctx.json(calculatorsResponse));
       }
@@ -311,6 +318,9 @@ const server = setupServer(
         calculatorsResponseAfterSearch.successResponse.items[0].serialNumber
       ) {
         return res(ctx.json(calculatorsResponseAfterSearch));
+      }
+      if (Destination === 'Ascending' && Rule === 'Street') {
+        return res(ctx.json(calculatorResponseAfterFilter));
       }
     }
   )
@@ -352,7 +362,6 @@ test('can load page and search for devices', async () => {
 
   await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-  // screen.debug(null, 30000);
   await waitFor(() => {
     expect(
       screen.getByText(
@@ -386,6 +395,31 @@ test('can load page and search for devices', async () => {
     expect(
       screen.getByText(
         calculatorsResponseAfterSearch.successResponse.items[0].address.street,
+        { exact: false }
+      )
+    ).toBeInTheDocument();
+  });
+
+  userEvent.click(
+    screen.getByRole('combobox', {
+      name: /сортировать по:/i,
+    })
+  );
+  screen.debug(null, 50000);
+
+  // await waitFor(() => {
+  //   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
+  // });
+  userEvent.click(screen.getByText(/улице \(возр\.\)/i));
+  await waitFor(() => {
+    expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
+  });
+  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
+  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText(
+        calculatorResponseAfterFilter.successResponse.items[0].address.street,
         { exact: false }
       )
     ).toBeInTheDocument();
