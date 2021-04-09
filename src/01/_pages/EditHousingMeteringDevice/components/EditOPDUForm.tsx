@@ -279,7 +279,7 @@ const FormEditODPU = ({
           <Alert name="magistral" />
         </Form.Item>
 
-        {device.housingMeteringDeviceType !== 'TemperatureSensor' ? (
+        {device.housingMeteringDeviceType === 'FlowMeter' ? (
           <Form.Item label="Диаметр прибора, мм" style={styles.w100}>
             <InputTT
               name="diameter"
@@ -299,6 +299,7 @@ const FormEditODPU = ({
             name="lastCheckingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
+              console.log(date);
               setFieldValue('lastCheckingDate', date);
               setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
             }}
@@ -353,7 +354,6 @@ const FormEditODPU = ({
         <Form.Item label="Город" style={styles.w100}>
           <InputTT
             name="city"
-            type="text"
             placeholder="Укажите город"
             onChange={handleChange}
             value={values.city}
@@ -365,7 +365,6 @@ const FormEditODPU = ({
         <Form.Item label="Улица" style={styles.w100}>
           <InputTT
             name="street"
-            type="text"
             placeholder="Укажите улицу"
             onChange={handleChange}
             value={values.street}
@@ -377,7 +376,6 @@ const FormEditODPU = ({
         <Form.Item label="Номер дома" style={styles.w100}>
           <InputTT
             name="housingStockNumber"
-            type="text"
             placeholder="Укажите дом"
             onChange={handleChange}
             value={values.housingStockNumber}
@@ -390,7 +388,6 @@ const FormEditODPU = ({
           <Form.Item label="Номер корпуса" style={styles.w100}>
             <InputTT
               name="corpus"
-              type="text"
               placeholder="Номер корпуса"
               onChange={handleChange}
               value={values.corpus}
