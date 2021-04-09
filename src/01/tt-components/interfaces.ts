@@ -27,8 +27,6 @@ export interface TabErrorsInterface {
 export interface AlertInterface {
   name: string;
   styles?: any;
-  errors?: object;
-  touched?: object;
 }
 
 export interface ModalInterface {

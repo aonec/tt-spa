@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
+  entryNumberList,
   housingMeteringDeviceTypes,
   magistrals,
   resources,
@@ -149,11 +150,14 @@ const FormEditODPU = ({
   const tabErrors = [
     {
       key: '1',
-      value: ['model', 'serialNumber', 'diameter'],
-    },
-    {
-      key: '2',
-      value: ['entryNumber', 'pipeNumber', 'calculatorId'],
+      value: [
+        'model',
+        'serialNumber',
+        'diameter',
+        'entryNumber',
+        'pipeNumber',
+        'calculatorId',
+      ],
     },
   ];
 
@@ -170,7 +174,7 @@ const FormEditODPU = ({
     }
   }
 
-  const Alert = ({ name, touched = {}, errors = {} }: AlertInterface) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
@@ -195,11 +199,7 @@ const FormEditODPU = ({
             value={values.housingMeteringDeviceType}
             disabled
           />
-          <Alert
-            name="housingMeteringDeviceType"
-            errors={errors}
-            touched={touched}
-          />
+          <Alert name="housingMeteringDeviceType" />
         </Form.Item>
 
         <Form.Item label="Тип ресурса" style={styles.w100}>
@@ -212,6 +212,7 @@ const FormEditODPU = ({
             value={values.resource}
             disabled
           />
+          <Alert name="resource" />
         </Form.Item>
 
         <Form.Item label="Модель прибора" style={styles.w100}>
@@ -223,7 +224,7 @@ const FormEditODPU = ({
             value={values.model}
             onBlur={handleBlur}
           />
-          <Alert name="model" errors={errors} touched={touched} />
+          <Alert name="model" />
         </Form.Item>
 
         <Form.Item label="Серийный номер" style={styles.w100}>
@@ -239,11 +240,13 @@ const FormEditODPU = ({
         </Form.Item>
 
         <Form.Item label="Номер ввода" style={styles.w100}>
-          <InputTT
+          <SelectTT
             name="entryNumber"
-            type="number"
+            options={entryNumberList}
             placeholder="Номер ввода"
-            onChange={handleChange}
+            onChange={(value) => {
+              setFieldValue('entryNumber', value);
+            }}
             onBlur={handleBlur}
             value={values.entryNumber}
           />
