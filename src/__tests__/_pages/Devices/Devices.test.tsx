@@ -22,6 +22,7 @@ import rootReducer from '../../../01/Redux/rootReducer';
 import { devicesAPI } from '../../../01/_api/devices_page';
 import { wait } from '@testing-library/user-event/dist/utils';
 import userEvent from '@testing-library/user-event/dist';
+import _ from 'lodash';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -290,127 +291,9 @@ const calculatorsResponse = {
     previousPageNumber: 1,
   },
 };
-const calculatorsResponseAfterSearch = {
-  successResponse: {
-    totalItems: 472,
-    pageNumber: 1,
-    pageSize: 5,
-    items: [
-      {
-        connection: { ipV4: '', port: null, deviceAddress: null },
-        isConnected: false,
-        hasTasks: null,
-        address: {
-          id: 556,
-          city: 'Казань',
-          street: 'Космонавтов',
-          housingStockNumber: '28',
-          corpus: null,
-        },
-        hubs: [
-          {
-            hub: {
-              entryNumber: 2,
-              hubNumber: null,
-              pipeNumber: 5,
-              magistral: 'FeedFlow',
-            },
-            diameter: '50',
-            resource: 'ColdWaterSupply',
-            housingMeteringDeviceType: 'FlowMeter',
-            id: 2543038,
-            transactionType: null,
-            model: 'РС (72-А)',
-            serialNumber: '044467',
-            managementFirm: {
-              id: 4,
-              name: 'ООО УК"ПЖКХ-17"',
-              phoneNumber: null,
-              information: null,
-              timeZoneOffset: '03:00:00',
-            },
-            lastCommercialAccountingDate: '2016-01-12T03:00:00',
-            futureCommercialAccountingDate: '2019-08-07T03:00:00',
-            lastCheckingDate: '2015-08-07T03:00:00',
-            futureCheckingDate: '2019-08-07T03:00:00',
-            closingDate: null,
-          },
-        ],
-        nodes: [
-          {
-            id: 1603,
-            number: 1,
-            nodeStatus: 'Сдан на коммерческий учет',
-            resource: 'ColdWaterSupply',
-            serviceZone: 'Апартаменты',
-            lastCommercialAccountingDate: '2016-01-12T00:00:00',
-            futureCommercialAccountingDate: '2019-08-07T00:00:00',
-            calculatorId: 2538345,
-            communicationPipes: [
-              {
-                id: 2539648,
-                number: 5,
-                entryNumber: 2,
-                hubNumber: null,
-                magistral: 'FeedFlow',
-                devices: [
-                  {
-                    hub: {
-                      entryNumber: 2,
-                      hubNumber: null,
-                      pipeNumber: 5,
-                      magistral: 'FeedFlow',
-                    },
-                    diameter: '50',
-                    resource: 'ColdWaterSupply',
-                    housingMeteringDeviceType: 'FlowMeter',
-                    id: 2543038,
-                    transactionType: null,
-                    model: 'РС (72-А)',
-                    serialNumber: '044467',
-                    managementFirm: {
-                      id: 4,
-                      name: 'ООО УК"ПЖКХ-17"',
-                      phoneNumber: null,
-                      information: null,
-                      timeZoneOffset: '03:00:00',
-                    },
-                    lastCommercialAccountingDate: '2016-01-12T03:00:00',
-                    futureCommercialAccountingDate: '2019-08-07T03:00:00',
-                    lastCheckingDate: '2015-08-07T03:00:00',
-                    futureCheckingDate: '2019-08-07T03:00:00',
-                    closingDate: null,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-        id: 2538345,
-        transactionType: null,
-        model: 'ТВ-7',
-        serialNumber: '12345678',
-        managementFirm: {
-          id: 4,
-          name: 'ООО УК"ПЖКХ-17"',
-          phoneNumber: null,
-          information: null,
-          timeZoneOffset: '03:00:00',
-        },
-        lastCommercialAccountingDate: '2016-01-12T00:00:00',
-        futureCommercialAccountingDate: '2019-08-07T00:00:00',
-        lastCheckingDate: '2015-11-16T00:00:00',
-        futureCheckingDate: '2019-11-16T00:00:00',
-        closingDate: null,
-      },
-    ],
-    totalPages: 95,
-    hasPreviousPage: false,
-    hasNextPage: true,
-    nextPageNumber: 2,
-    previousPageNumber: 1,
-  },
-};
+const calculatorsResponseAfterSearch = _.cloneDeep(calculatorsResponse);
+calculatorsResponseAfterSearch.successResponse.items[0].address.street =
+  'Космонавтов';
 
 const server = setupServer(
   rest.get(
@@ -439,30 +322,12 @@ afterEach(() => server.resetHandlers());
 
 test('thunk called with right arguments', async () => {
   jest.spyOn(devicesAPI, 'getDevices');
-
   render(<DevicesFromSearch />);
-test('loads and displays greeting', async () => {
-  render(<DevicesFromSearch />);
-  //
-  // expect(
-  //   screen.getByRole('heading', {
-  //     name: /Приборы/i,
-  //   })
-  // ).toBeInTheDocument();
-  //
-  // // await waitFor(() =>
-  // expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
 
   expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
   await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'), {
-    timeout: 5000,
-  });
-
-  // expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
-  // await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 
   expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
@@ -525,20 +390,4 @@ test('can load page and search for devices', async () => {
       )
     ).toBeInTheDocument();
   });
-
-  // const movie = await screen.findByText(
-  //   calculatorsResponse.successResponse.items[0].address.street,
-  //   { exact: false }
-  // );
 });
-
-//   await waitForElementToBeRemoved(screen.getByText('ЗАГРУЗКА...'));
-//   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-// });
-
-// await waitFor(
-//   () => {
-//     expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-//   },
-//   { timeout: 5000 }
-// );
