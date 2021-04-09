@@ -25,7 +25,7 @@ export function ApartmentDeviceItem({
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0].readingDate);
-  const isActive = device.isActive;
+  const { isActive } = device;
 
   useEffect(() => {
     const readingsArray: number[] = [];
