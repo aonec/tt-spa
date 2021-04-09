@@ -441,8 +441,28 @@ test('thunk called with right arguments', async () => {
   jest.spyOn(devicesAPI, 'getDevices');
 
   render(<DevicesFromSearch />);
+test('loads and displays greeting', async () => {
+  render(<DevicesFromSearch />);
+  //
+  // expect(
+  //   screen.getByRole('heading', {
+  //     name: /Приборы/i,
+  //   })
+  // ).toBeInTheDocument();
+  //
+  // // await waitFor(() =>
+  // expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
+
   expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
   await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
+  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+
+  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'), {
+    timeout: 5000,
+  });
+
+  // expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
+  // await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 
   expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
