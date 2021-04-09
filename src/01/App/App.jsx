@@ -6,7 +6,7 @@ import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import moment from 'moment';
-
+import { YMInitializer } from 'react-yandex-metrika';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';
@@ -35,7 +35,8 @@ import {
   AddNode,
 } from '../_pages';
 import { useApp } from './useApp';
-import EditODPU from '../_pages/EditODPU';
+import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
+import EditODPU from '../_pages/EditHousingMeteringDevice';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
@@ -167,6 +168,9 @@ export function App() {
     <Provider store={store}>
       <AppProvider>
         <ConfigProvider locale={ruRu}>
+          <YMInitializer accounts={[75258859]}
+                         options={{webvisor: true}}
+                         version="2"/>
           <YMaps>
             <Internal />
           </YMaps>

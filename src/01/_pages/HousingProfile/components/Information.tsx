@@ -32,7 +32,7 @@ export const Information = ({ device }: InformationInterface) => {
     diameter,
     housingMeteringDeviceType,
     hubConnection: {
-      hub: { entryNumber, hubNumber, pipeNumber, magistral },
+      hub: { entryNumber, pipeNumber, magistral },
     },
   } = device || DEFAULT_DEVICE;
 

@@ -2,6 +2,7 @@ import { ReadingsStateType } from '01/_api/houses_readings_page';
 import { IndividualDeviceType } from '../../../types/types';
 import { ActionTypes } from '../ducks/readings/actionCreators';
 import { ReadingsActionsType } from '../ducks/readings/contracts/actionTypes';
+import { IndividualDeviceListItemResponse } from '../../../myApi';
 
 export type DisabledStateType = {
   deviceId: number;
@@ -17,7 +18,7 @@ const ReadingsState = {
   previousPageNumber: 0,
   totalItems: 10,
   totalPages: 0,
-  items: [] as IndividualDeviceType[],
+  items: [] as IndividualDeviceListItemResponse[],
   disabledState: [] as DisabledStateType,
 };
 
@@ -45,14 +46,15 @@ const readingsReducer = (
           device.id === action.deviceId
             ? {
                 ...device,
-                readings: device.readings.map((reading, index) => {
-                  return index === 0
-                    ? {
-                        ...reading,
-                        [`value${action.readingNumber}`]: action.readingValue,
-                      }
-                    : reading;
-                }),
+                readings:
+                  device.readings?.map((reading, index) => {
+                    return index === 0
+                      ? {
+                          ...reading,
+                          [`value${action.readingNumber}`]: action.readingValue,
+                        }
+                      : reading;
+                  }) || [],
               }
             : device
         ),

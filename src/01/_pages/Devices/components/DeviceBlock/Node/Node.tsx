@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
 import { NodeResponse } from '../../../../../../myApi';
+import {
+  serviceZoneList,
+  serviceZoneListEnum,
+} from '../../../../../tt-components/localBases';
 
 const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {
@@ -46,7 +50,7 @@ const Node: React.FC<Props> = ({ node }) => {
               <NodeIcon icon={icon} color={color} />
               <span>{`Узел ${node.number}`}</span>
             </DeviceLink>
-            <ServiceZone>{node.serviceZone}</ServiceZone>
+            <ServiceZone>{serviceZoneListEnum[node.serviceZone]}</ServiceZone>
           </TitleWrapper>
         </div>
 

@@ -1,78 +1,15 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import styles from '../../../MetersPage/components/MeterDevices/MeterDevicesNew.module.scss';
-import Arrow from '../../../../_components/Arrow/Arrow';
-import moment from 'moment';
-import { firstLetterToUpperCase } from '../../../../utils/getMonthFromDate';
-import {
-  ArrowContainer,
-  CenterContainer,
-} from '../../../MetersPage/components/MeterDevices/ApartmentReadings';
-
 interface HeaderInterface {
-  sliderIndex: number;
-  setSliderIndex: Dispatch<SetStateAction<number>>;
-  isReadingsCurrent: boolean;
-  readingsLength: number;
+  slider: React.ReactElement;
 }
 
-export function Header({
-  sliderIndex,
-  setSliderIndex,
-  isReadingsCurrent,
-  readingsLength,
-}: HeaderInterface) {
-  const isRightArrowDisabled =
-    sliderIndex + 1 > readingsLength - +isReadingsCurrent - 1;
-
-  const onClickIncrease = () => {
-    setSliderIndex((index) => {
-      return isRightArrowDisabled ? index : index + 1;
-    });
-  };
-
-  const isLeftArrowDisabled = sliderIndex - 1 < 0;
-
-  const onClickDecrease = () => {
-    setSliderIndex((index) => {
-      return isLeftArrowDisabled ? index : index - 1;
-    });
-  };
-
-  const getPreviousReadingsMonth = (sliderIndex: number) => {
-    const month = moment()
-      .subtract(sliderIndex + 1, 'months')
-      .format('MMMM');
-
-    return firstLetterToUpperCase(month);
-  };
-
+export function Header({ slider }: HeaderInterface) {
   return (
     <HeaderWrap>
       <Title>Информация о приборе</Title>
       <div>Статус</div>
-      <CenterContainer>
-        <ArrowContainer
-          onClick={onClickDecrease}
-          className={
-            isLeftArrowDisabled ? styles.arrowDisabled : styles.arrowEnabled
-          }
-        >
-          <Arrow />
-        </ArrowContainer>
-        <CenterContainer>
-          {getPreviousReadingsMonth(sliderIndex)}
-        </CenterContainer>
-        <ArrowContainer
-          className={
-            isRightArrowDisabled ? styles.arrowDisabled : styles.arrowEnabled
-          }
-          onClick={onClickIncrease}
-          style={{ transform: 'rotate(180deg)' }}
-        >
-          <Arrow />
-        </ArrowContainer>
-      </CenterContainer>
+      {slider}
     </HeaderWrap>
   );
 }

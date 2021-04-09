@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
 import rateTypeToNumber from '../../../../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../../../../utils/formEmptyReadingsObject';
-import { IndividualDeviceType } from '../../../../../types/types';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
 import ActiveLine from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
+import { IndividualDeviceListItemResponse } from '../../../../../myApi';
 
 export function ApartmentDeviceItem({
   device,
   sliderIndex,
 }: {
-  device: IndividualDeviceType;
+  device: IndividualDeviceListItemResponse;
   sliderIndex: number;
 }) {
   const [readingsState, setReadingsState] = useState<{
@@ -24,14 +24,14 @@ export function ApartmentDeviceItem({
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device.readings[0].readingDate);
-  const isActive = device.closingDate === null;
+    currentMonth === getMonthFromDate(device.readings![0].readingDate);
+  const isActive = device.isActive;
 
   useEffect(() => {
     const readingsArray: number[] = [];
     const readings: Record<string, any> = isReadingsCurrent
-      ? device.readings
-      : [emptyReadingsObject, ...device.readings];
+      ? device.readings!
+      : [emptyReadingsObject, ...device.readings!];
 
     for (let i = 1; i <= numberOfReadings; i++) {
       readingsArray.push(readings[sliderIndex][`value${i}`] ?? '');

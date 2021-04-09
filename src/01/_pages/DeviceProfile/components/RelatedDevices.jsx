@@ -78,8 +78,8 @@ export const RelatedDevices = () => {
       housingStockId,
     } = value;
 
-    const { pipeNumber, entryNumber, hubNumber } =
-      hub === null ? { number: 'X', entryNumber: 'X', hubNumber: 'X' } : hub;
+    const { pipeNumber, entryNumber } =
+      hub === null ? { number: 'X', entryNumber: 'X' } : hub;
     const { icon, color } = DeviceIcons[resource];
 
     return (
@@ -95,7 +95,6 @@ export const RelatedDevices = () => {
           {`${closingdate !== null ? 'Активен' : 'Не активен'}`}
         </State>
         <Span>{`Ввод: ${entryNumber}`}</Span>
-        <Span>{`Узел: ${hubNumber}`}</Span>
         <Span>{`Труба: ${pipeNumber}`}</Span>
       </ListItem>
     );

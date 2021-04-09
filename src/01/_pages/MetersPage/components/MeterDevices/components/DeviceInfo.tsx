@@ -7,9 +7,10 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../../_components/Icon';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
+import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 
 interface DeviceInfoProps {
-  device: IndividualDeviceType;
+  device: IndividualDeviceListItemResponse;
 }
 
 const DeviceInfo = ({ device }: DeviceInfoProps) => {

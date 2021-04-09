@@ -14,7 +14,7 @@ interface HeaderInterface {
 }
 
 const Information = ({ node, calculator }: HeaderInterface) => {
-  if (!calculator) {
+  if (!node || !calculator) {
     return null;
   }
 
@@ -38,7 +38,6 @@ const Information = ({ node, calculator }: HeaderInterface) => {
 
   return (
     <ListWrap>
-      <Title>Информация</Title>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`}>

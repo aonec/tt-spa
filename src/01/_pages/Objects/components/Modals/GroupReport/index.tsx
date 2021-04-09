@@ -32,7 +32,6 @@ import {
   ResourceType,
 } from '../../../../../../myApi';
 import { useAsync } from '../../../../../hooks/useAsync';
-import { getArchive } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 import styled from 'styled-components';
 import { downloadReport } from './apiGroupReport';
 

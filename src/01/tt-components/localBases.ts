@@ -1,3 +1,5 @@
+import { ServiceZone } from '../../myApi';
+
 export interface ItemInterface {
   id: number;
   value: number;
@@ -203,7 +205,18 @@ export const DEFAULT_BUILDING = {
   id: null,
 };
 
+export const DEFAULT_NODE = {
+  futureCommercialAccountingDate: '',
+  lastCommercialAccountingDate: '',
+  nodeStatus: '',
+  number: null,
+  resource: '',
+  serviceZone: '',
+  communicationPipes: [],
+};
+
 export const DEFAULT_CALCULATOR = {
+  id: null,
   model: '',
   serialNumber: '',
   resource: '',
@@ -219,6 +232,13 @@ export const DEFAULT_CALCULATOR = {
     deviceAddress: null,
   },
   nodes: [],
+  address: {
+    city: '',
+    street: '',
+    corpus: '',
+    number: '',
+    housingStockNumber: null,
+  },
 };
 
 export const periodList = [
@@ -246,38 +266,46 @@ export const nodeStatusList = [
   {
     value: 'NotRegistered',
     label: 'Не на коммерческом учете',
-    icon: 'ok',
+    icon: 'block',
   },
   {
     value: 'OnReview',
     label: 'На утверждении',
-    icon: 'ok',
+    icon: 'timer',
   },
   {
     value: 'Prepared',
     label: 'Подготовлен к сдаче',
-    icon: 'ok',
+    icon: 'next',
   },
 ];
 
-export const serviceZoneList = [
+export const serviceZoneList: { value: ServiceZone; label: string }[] = [
   {
-    value: 'Apartments',
+    value: ServiceZone.Apartments,
     label: 'Апартаменты',
   },
   {
-    value: 'CommercialPremises',
+    value: ServiceZone.CommercialPremises,
     label: 'Коммерческие помещения',
   },
   {
-    value: 'TechnicalPremises',
+    value: ServiceZone.TechnicalPremises,
     label: 'Технические помещения',
   },
   {
-    value: 'CommonUsageAreas',
+    value: ServiceZone.CommonUsageAreas,
     label: 'Места общего пользования',
   },
 ];
+
+export const serviceZoneListEnum = {
+  [ServiceZone.Apartments]: 'Апартаменты',
+  [ServiceZone.CommercialPremises]: 'Коммерческие помещения',
+  [ServiceZone.TechnicalPremises]: 'Технические помещения',
+  [ServiceZone.CommonUsageAreas]: 'Места общего пользования',
+  [ServiceZone.IntroductoryNode]: 'Входной узел',
+};
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 

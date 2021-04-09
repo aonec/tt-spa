@@ -1,23 +1,24 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { HeaderWrap, Title } from '01/_components';
+import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { MenuButtonInterface } from '../../../tt-components/interfaces';
 
 interface HeaderInterface {
   node: NodeResponse;
   calculator: CalculatorResponse | null;
   nodeId: number;
-  setAddOdpu: Dispatch<SetStateAction<boolean>>;
+  setAddDevice: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Header = ({
   node,
   calculator,
-  setAddOdpu,
+  setAddDevice,
   nodeId,
 }: HeaderInterface) => {
   const { push } = useHistory();
@@ -37,13 +38,7 @@ export const Header = ({
     corpus,
   } = calculator.address;
 
-  interface MenuButtonInterface {
-    title: string;
-    show: () => void;
-    cb: () => void;
-  }
-
-  const menuButtonArr: Array<MenuButtonInterface> = [
+  const menuButtonArr: MenuButtonInterface[] = [
     {
       title: 'Редактировать узел',
       show: show('CalculatorUpdate'),
@@ -51,13 +46,13 @@ export const Header = ({
         push(`/nodes/${nodeId}/edit`);
       },
     },
-    {
-      title: 'Добавить новый прибор',
-      show: show('CalculatorUpdate'),
-      cb: () => {
-        setAddOdpu(true);
-      },
-    },
+    // {
+    //   title: 'Добавить новый прибор',
+    //   show: show('CalculatorUpdate'),
+    //   cb: () => {
+    //     setAddDevice(true);
+    //   },
+    // },
     {
       title: 'Поставить/Снять узел на коммерческий учёт',
       show: show('CalculatorUpdate'),
@@ -72,7 +67,7 @@ export const Header = ({
       ?.label ?? 'Статус не определен';
   const getNodeIconStatus =
     nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.icon ?? 'del';
+      ?.icon ?? 'close';
 
   const NodeStatus = () => (
     <div
@@ -82,11 +77,7 @@ export const Header = ({
         marginLeft: 8,
       }}
     >
-      <IconTT
-        icon={getNodeIconStatus}
-        size={16}
-        style={{ marginRight: '8px' }}
-      />
+      <IconTT icon={getNodeIconStatus} size={16} style={{ marginRight: 8 }} />
       {getNodeStatus}
     </div>
   );
@@ -103,17 +94,17 @@ export const Header = ({
           <IconTT
             icon={(resource || 'node').toLowerCase()}
             size={24}
-            style={{ marginRight: '8px' }}
+            style={{ marginRight: 8 }}
           />
           <Title>{`Узел ${number}`}</Title>
         </TitleWrap>
 
         <SubtitleWrap>
-          {/*<Subtitle to={`/objects/${objectId}`}>*/}
-          {/*  {`${city}, ${street}, ${housingStockNumber}${*/}
-          {/*    corpus ? `, к.${corpus}` : ''*/}
-          {/*  }`}*/}
-          {/*</Subtitle>*/}
+          <Subtitle to={`/objects/${objectId}`}>
+            {`${city}, ${street}, ${housingStockNumber}${
+              corpus ? `, к.${corpus}` : ''
+            }`}
+          </Subtitle>
           <NodeStatus />
         </SubtitleWrap>
       </div>

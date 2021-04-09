@@ -6,8 +6,19 @@ import Icon from '../../../tt-components/Icon';
 import { CalculatorResponse } from '../../../../myApi';
 
 interface ConnectionInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
 }
+
+export const NoConnection = ({ text = 'Вычислитель не опрашивается' }) => {
+  return (
+    <div className={styles.warning}>
+      <IconWithTooltip title="Вычислитель не опрашивается">
+        <Icon icon="notConnected" color="var(--main-100)" />
+      </IconWithTooltip>
+      <span>{text}</span>
+    </div>
+  );
+};
 
 export const Connection = ({ device }: ConnectionInterface) => {
   if (!device) {
@@ -15,17 +26,6 @@ export const Connection = ({ device }: ConnectionInterface) => {
   }
   const { connection, isConnected } = device;
   const { ipV4, port, deviceAddress } = connection;
-
-  const NoConnection = () => {
-    return (
-      <div className={styles.warning}>
-        <IconWithTooltip title="Вычислитель не опрашивается">
-          <Icon icon="notConnected" color="var(--main-100)" />
-        </IconWithTooltip>
-        <span>Вычислитель не опрашивается</span>
-      </div>
-    );
-  };
 
   return (
     <div>

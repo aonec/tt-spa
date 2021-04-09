@@ -14,10 +14,10 @@ import { TaskListResponse } from '../../../../myApi';
 
 interface EventsInterface {
   title: string;
-  tasks: TaskListResponse[];
+  tasks: TaskListResponse[] | null;
 }
 
-export const Events = ({ title = '', tasks }: EventsInterface) => {
+export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
   const buttonHandler = () => {
     console.log('buttonHandler');
   };

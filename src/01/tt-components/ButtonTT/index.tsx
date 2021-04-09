@@ -1,8 +1,9 @@
 import styled, { css } from 'styled-components';
 
 interface Props {
+  height: number;
   name: string;
-  size: string;
+  size?: string;
   small?: boolean;
   big?: boolean;
   color: string;
@@ -19,6 +20,7 @@ export const ButtonTT = styled.button<Partial<Props>>`
   font-size: 16px;
   line-height: 32px;
   height: 48px;
+  //height: ${({ height }) => (height ? `${height}px` : '48px')};
   border: 1px solid #dcdee4;
   padding: 8px 24px;
   background-color: #189ee9;

@@ -43,7 +43,7 @@ const HousesDevices: React.FC = () => {
 
   const deviceElems = devices
     .sort((device1, device2) => {
-      return +device1.apartmentNumber - +device2.apartmentNumber;
+      return Number(device1.apartmentNumber) - Number(device2.apartmentNumber);
     })
     .map((device, index) => (
       <HouseReadingLine key={device.id + 'f'} device={device} />

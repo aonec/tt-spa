@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
 import AddNodeForm from './components/AddNodeForm';
-import { AddNodeContext } from '../../index';
+import { AddNodeContext } from '../../AddNodeContext';
 
 const ModalAddNode = (props) => {
   const { addNode, setAddNode } = useContext(AddNodeContext);

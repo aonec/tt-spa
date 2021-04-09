@@ -4,9 +4,10 @@ import { IconTT } from '../../../tt-components';
 import { CalculatorResponse } from '../../../../myApi';
 import DeviceIcons from '../../../_components/DeviceIcons';
 import Icon from '../../../tt-components/Icon';
+import { serviceZoneListEnum } from '../../../tt-components/localBases';
 
 interface NodesInterface {
-  device: CalculatorResponse | undefined;
+  device: CalculatorResponse | null;
 }
 
 interface NodeInterface {
@@ -64,7 +65,7 @@ export const Nodes = ({ device }: NodesInterface) => {
         </NameWrap>
 
         <NodeStatus nodeStatus={nodeStatus} />
-        <Span>{serviceZone}</Span>
+        <Span>{serviceZoneListEnum[serviceZone]}</Span>
       </ListItem>
     );
   });

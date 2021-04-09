@@ -29,7 +29,7 @@ export function useMenu() {
       perm: ['all'],
     },
     {
-      name: 'Настройки',
+      name: 'Профиль компании',
       to: '/settings/',
       icon: 'setting',
       perm: ['ManagingFirmAdministrator'],

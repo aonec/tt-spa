@@ -21,3 +21,4 @@ export * from './IndividualDevice';
 export * from './MapTemplate';
 export * from './EditNode';
 export * from './AddNode';
+export * from './EditHousingMeteringDevice';

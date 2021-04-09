@@ -1,5 +1,5 @@
 import { Route, useParams, useLocation, useRouteMatch } from 'react-router-dom';
-import _ from 'lodash';
+import 'antd/dist/antd.css';
 import React, { useState, useEffect } from 'react';
 import { Grid } from '01/_components';
 import {
@@ -19,9 +19,8 @@ import { Information } from './components/Information';
 import { InformationNotCalculator } from './components/InformationNotCalculator';
 import { Events } from './components/Events';
 import { Connection } from './components/Connection';
-import { ConnectionNotCalculator } from './components/ConnectionNotCalculator';
 import { ModalODPU } from './components/Modals/Modal';
-import ModalDeregisterDevice from '../../_modals/ModalDeregisterDevice';
+
 import { RelatedDevices } from './components/RelatedDevices';
 import { RelatedDevicesNotCalculator } from './components/RelatedDevicesNotCalculator';
 import { HeaderNotCalculator } from './components/HeaderNotCalculator';
@@ -30,8 +29,6 @@ export const DeviceContext = React.createContext();
 
 export const DeviceProfile = () => {
   const params = useParams();
-  const match = useRouteMatch();
-
   let path;
   let typeODPU;
 
@@ -115,10 +112,6 @@ export const DeviceProfile = () => {
     }
   }, [typeODPU]);
 
-  const buttonHandler = () => {
-    getPagination();
-  };
-
   if (isLoading || typeODPU === undefined) return 'ЗАГРУЗКА...';
 
   if (typeODPU === 'Calculator') {
@@ -156,12 +149,11 @@ export const DeviceProfile = () => {
           <Events title="Задачи с объектом" />
         </Grid>
         <ModalODPU device={device} />
-        <ModalDeregisterDevice />
       </DeviceContext.Provider>
     );
   }
 
-  if (isLoading || typeODPU == undefined) return 'ЗАГРУЗКА...';
+  if (isLoading || !typeODPU) return 'ЗАГРУЗКА...';
   return (
     <DeviceContext.Provider
       value={{
@@ -197,7 +189,6 @@ export const DeviceProfile = () => {
 
         <Events title="Задачи с объектом" />
       </Grid>
-      <ModalDeregisterDevice deviceId={deviceId} />
     </DeviceContext.Provider>
   );
 };

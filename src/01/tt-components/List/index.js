@@ -9,7 +9,6 @@ export const Title = styled.h2`
 export const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 export const ListItem = styled.div`

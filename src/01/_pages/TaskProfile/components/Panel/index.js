@@ -8,13 +8,13 @@ import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
 import { StyledTextArea } from '../../../../tt-components';
-import ChangeDevice from '../ChangeDevice';
 
 const styles = css`
   panel {
     display: grid;
     grid-gap: 16px;
-    padding: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
     box-shadow: var(--shadow);
     &[|styleSwitch] {
       grid-template-columns: 1fr auto;
@@ -55,6 +55,14 @@ const styles = css`
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
     }
+    &[|styleAddPerpetratorAndAddDocumentsAndAddEmailNotify] {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-areas:
+        'p p c c'
+        'ta ta ta ta'
+        'ub ub ub ub'
+        'ul ul . push';
+    }
   }
 
   Perpetrator {
@@ -82,12 +90,6 @@ const styles = css`
     grid-area: ad;
   }
 `;
-
-//&[|styleSwitchDevicesAndChangeDevice] {
-//  display: flex;
-//  flex-direction:column;
-//  justify-content: space-between;
-//}
 
 const PushButton = ({ loading = false, ...props }) =>
   styled(s.button)`
@@ -139,14 +141,7 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  // console.log('currentUser', currentUser);
-  // console.log('taskPerpetrator', taskPerpetrator);
-  const isPerpetrator = currentUser.id === taskPerpetrator.id;
-  // console.log('isPerpetrator', isPerpetrator);
-
-  // const [deadline, setDeadline] = useState();
-  // const [addReadingsDone, setAddReadingsDone] = useState(stages.items[2].name === 'Ввод показаний' && Completion);
-  console.log(state);
+  const isPerpetrator = currentUser.id === taskPerpetrator?.id;
 
   if (isObserver && AddDocuments && Switch) {
     return styled(
@@ -175,15 +170,14 @@ export const Panel = (
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
         styleReadings: UploadReadings || addReadingsDone,
+        styleAddPerpetratorAndAddDocumentsAndAddEmailNotify:
+          AddDocuments && AddPerpetrator && EmailNotify,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
         styleAddDocuments: AddDocuments,
         styleAddPerpetratorAndSetNextStageDeadline:
           AddPerpetrator && SetNextStageDeadline,
-        // styleSwitchDevicesAndChangeDevice: SwitchDevices && ChangeDevice,
       })}
     >
-      {/*{(SwitchDevices && AddDocuments) && <ChangeDevice taskState={state} />}*/}
-
       {AddPerpetrator && (
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
@@ -220,7 +214,7 @@ export const Panel = (
         </>
       )}
 
-      {AddDocuments && (
+      {AddDocuments && !EmailNotify && (
         <>
           <UploadButton {...upload.button} />
           <UploadList {...upload.list} />
@@ -238,8 +232,6 @@ export const Panel = (
           readingsBlocked={addReadingsDone || isObserver}
         />
       )}
-      {/* Скрываю кнопку "Завершить этап" только для задачи "Замена прибора" */}
-      {/* {!SwitchDevices && <PushButton {...pushProps} />} */}
       {!isObserver && <PushButton {...pushProps} />}
     </panel>
   );
