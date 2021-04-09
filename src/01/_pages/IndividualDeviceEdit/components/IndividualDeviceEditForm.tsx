@@ -21,12 +21,15 @@ import {
 } from '../../../tt-components';
 import {
   HousingMeteringDeviceResponse,
+  IndividualDeviceRateType,
   IndividualDeviceResponse,
   MagistralType,
   UpdateHousingMeteringDeviceRequest,
+  UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
+import { putIndividualDevice } from '../../../_api/apiRequests';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -56,6 +59,7 @@ const IndividualDeviceEditForm = ({
     lastCheckingDate,
     futureCheckingDate,
     resource,
+    rateType,
   } = device;
 
   const initialValues = {
@@ -67,13 +71,7 @@ const IndividualDeviceEditForm = ({
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
       : null,
-    futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate)
-      : null,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
+    rateType,
   };
 
   const {
@@ -88,52 +86,27 @@ const IndividualDeviceEditForm = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
+      const rateTypeEnum: IndividualDeviceRateType = values.rateType as IndividualDeviceRateType;
+
+      const form: UpdateIndividualDeviceRequest = {
+        serialNumber: values.serialNumber,
+        lastCheckingDate: values.lastCheckingDate?.toISOString(),
+        futureCheckingDate: values.futureCheckingDate?.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
+        resource: values.resource,
+        model: values.model,
+        rateType: values.rateType,
+      };
       console.log(values);
-
-      // const magistralEnum: MagistralType = values.magistral as MagistralType;
-      //
-      // const form: UpdateHousingMeteringDeviceRequest = {
-      //   serialNumber: values.serialNumber,
-      //   lastCheckingDate: values.lastCheckingDate?.toISOString(),
-      //   futureCheckingDate: values.futureCheckingDate?.toISOString(),
-      //   lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
-      //   futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
-      //   housingMeteringDeviceType: values.housingMeteringDeviceType,
-      //   resource: values.resource,
-      //   model: values.model,
-      //   diameter: Number(values.diameter),
-      //   pipe: {
-      //     calculatorId: values.calculatorId,
-      //     entryNumber: Number(values.entryNumber),
-      //     pipeNumber: Number(values.pipeNumber),
-      //     magistral: magistralEnum,
-      //     nodeId: Number(values.nodeId),
-      //   },
-      // };
-      // putOdpu(id, form).then(({ show, id: existDeviceId }: any) => {
-      //   if (show) {
-      //     setAlert(true);
-      //     setExistDevice(existDeviceId);
-      //   }
-      // });
-
-      // console.log('PUT_EDIT_FORM', form);
-      // console.log('PUT_EDIT_FORM', JSON.stringify(form));
+      console.log('form', form);
+      putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
+        if (show) {
+          setAlert(true);
+          setExistDevice(existDeviceId);
+        }
+      });
     },
   });
-
-  const tabErrors = [
-    {
-      key: '1',
-      value: [
-        'model',
-        'serialNumber',
-        'entryNumber',
-        'pipeNumber',
-        'calculatorId',
-      ],
-    },
-  ];
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

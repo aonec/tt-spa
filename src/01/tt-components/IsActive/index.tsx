@@ -3,7 +3,6 @@ import { IconTT } from '../../tt-components';
 import styled from 'styled-components';
 
 export const IsActive = ({ closingDate = null }: any) => {
-  console.log('closingDate', closingDate);
   return (
     <StyledIsActive>
       {closingDate ? (

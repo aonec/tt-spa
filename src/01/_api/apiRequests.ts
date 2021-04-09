@@ -8,6 +8,7 @@ import {
   IndividualDeviceResponse,
   NodeResponse,
   TasksPagedList,
+  UpdateIndividualDeviceRequest,
   UpdateNodeRequest,
 } from '../../myApi';
 import axios from '../axios';
@@ -185,6 +186,23 @@ export async function putNode(nodeId: number, form: UpdateNodeRequest) {
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',
+    };
+  }
+}
+
+export async function putIndividualDevice(
+  deviceId: number,
+  form: UpdateIndividualDeviceRequest
+) {
+  try {
+    const res = await axios.put(`IndividualDevices/${deviceId}`, form);
+    alert('Прибор успешно изменен!');
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка изменения прибора',
     };
   }
 }

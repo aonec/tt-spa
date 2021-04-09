@@ -35,6 +35,7 @@ export const IndividualDevice = () => {
   if (!device || !tasks) {
     return <Loader size={'32'} show />;
   }
+  console.log(device);
 
   const tabItems: Array<TabsItemInterface> = [
     {
