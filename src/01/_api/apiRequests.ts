@@ -5,6 +5,7 @@ import {
   CreateHousingMeteringDeviceRequest,
   CreateNodeRequest,
   HousingStockResponse,
+  IndividualDeviceResponse,
   NodeResponse,
   TasksPagedList,
   UpdateNodeRequest,
@@ -55,6 +56,38 @@ export async function getNodeTasks(id: number) {
   try {
     const res = await axios.get<any, TasksPagedList>(
       `Tasks?GroupType=2&NodeId=${id}`
+    );
+    const { items } = res;
+    return items;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'tasks',
+      message: 'Произошла ошибка при загрузке данных по задачам',
+    };
+  }
+}
+
+export async function getIndividualDevice(id: number) {
+  try {
+    const res = await axios.get<any, IndividualDeviceResponse>(
+      `IndividualDevices/${id}`
+    );
+    // console.log(`IndividualDevices/${id}`, res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса устройства',
+    };
+  }
+}
+
+export async function getIndividualDeviceTasks(id: number) {
+  try {
+    const res = await axios.get<any, TasksPagedList>(
+      `Tasks?GroupType=2&DeviceId=${id}`
     );
     const { items } = res;
     return items;

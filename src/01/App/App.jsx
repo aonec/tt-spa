@@ -144,7 +144,7 @@ const Internal = () => {
                 exact
               />
               <Route
-                path="/individualDevices/(\\d+)/(readings|documents|changes)?"
+                path="/individualDevices/:deviceId/(readings|documents|changes)?"
                 component={IndividualDevice}
                 exact
               />

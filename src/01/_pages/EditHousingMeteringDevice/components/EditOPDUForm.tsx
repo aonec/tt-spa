@@ -288,7 +288,7 @@ const FormEditODPU = ({
             onChange={(date) => {
               console.log(date);
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
+              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
             }}
             value={values.lastCheckingDate}
           />
@@ -318,6 +318,10 @@ const FormEditODPU = ({
             placeholder="Укажите дату..."
             onChange={(date) => {
               setFieldValue('lastCommercialAccountingDate', date);
+              setFieldValue(
+                'futureCommercialAccountingDate',
+                moment(date).add(3, 'years')
+              );
             }}
             value={values.lastCommercialAccountingDate}
           />
