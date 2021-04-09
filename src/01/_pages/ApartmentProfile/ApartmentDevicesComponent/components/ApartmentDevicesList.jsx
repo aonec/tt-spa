@@ -6,18 +6,32 @@ import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 export function ApartmentDevicesList({ sliderIndex }) {
   const devices = useContext(ApartmentDevicesContext);
 
-  const validDevices = devices
-    .filter((device) => device.closingDate === null)
+  // const closedDevices = devices.filter(
+  //   ({ closingDate }) => closingDate !== null
+  // );
+
+  if (!devices) return null;
+
+  const filteredDevices = devices.reduce(
+    (acc, device) => {
+      if (device.closingDate === null) {
+        return { ...acc, validDevices: [...acc.validDevices, device] };
+      }
+      return { ...acc, closedDevices: [...acc.closedDevices, device] };
+    },
+    { validDevices: [], closedDevices: [] }
+  );
+
+  const validDeviceElems = filteredDevices.validDevices
+    .filter(({ closingDate }) => closingDate === null)
     .map((device) => (
       <ApartmentDeviceItem device={device} sliderIndex={sliderIndex} />
     ));
 
-  const closedDevices = devices.filter((device) => device.closingDate !== null);
-
   return (
     <>
-      {validDevices}
-      <ClosedDevices devices={closedDevices} />
+      {validDeviceElems}
+      <ClosedDevices devices={filteredDevices.closedDevices} />
     </>
   );
 }

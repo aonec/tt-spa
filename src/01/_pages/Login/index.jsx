@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components';
@@ -6,7 +6,7 @@ import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Title, Label, Wrap, Button, Input, Icon } from '01/tt-components';
+import { Title, Label, Button, Input, Icon } from '01/tt-components';
 
 import styled from 'styled-components';
 
@@ -87,7 +87,7 @@ export const Login = () => {
       <LoginRight>
         <Title size="big">Вход в систему</Title>
         <Form className="form" onSubmit={FormSubmitHadler}>
-          <Wrap>
+          <div>
             <Label>Логин</Label>
             <Input data-big>
               <input
@@ -102,9 +102,9 @@ export const Login = () => {
                 }}
               />
             </Input>
-          </Wrap>
+          </div>
 
-          <Wrap>
+          <div>
             <Label>Пароль</Label>
             <Input data-big>
               <input
@@ -124,7 +124,7 @@ export const Login = () => {
                 }}
               />
             </Input>
-          </Wrap>
+          </div>
           <Loader show={loading} size="48">
             <Button
               data-big

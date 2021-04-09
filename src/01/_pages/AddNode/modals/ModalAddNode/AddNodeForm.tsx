@@ -1,72 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Form } from 'antd';
+import React, { useContext, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
-  magistrals,
-  housingMeteringDeviceTypes,
-  isConnected,
   serviceZoneList,
   nodeStatusList,
   resources,
-} from '../../../../../tt-components/localBases';
+} from '../../../../tt-components/localBases';
 import {
   IconTT,
   Title,
-  SelectTT,
-  InputTT,
-  DatePickerTT,
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
-  Warning,
-  styles,
-  StyledFormPage,
-} from '../../../../../tt-components';
+} from '../../../../tt-components';
 
-import { ListItem, ListWrap } from '../../../../../tt-components/List';
-import { addNodeFinal } from '../../../apiAddNode';
-import { Redirect, useHistory } from 'react-router-dom';
-import { AddNodeContext } from '../../../AddNodeContext';
+import { useHistory } from 'react-router-dom';
+import { AddNodeContext } from '../../AddNodeContext';
+import { addNode } from '../../../../_api/apiRequests';
 
-const AddNodeForm = (props) => {
+const AddNodeForm = (props: any) => {
   const history = useHistory();
   const { handleCancel } = props;
 
-  const {
-    currentTabKey,
-    setTab,
-    handleChangeTab,
-    handleNext,
-    node,
-    setNode,
-    housingStockId,
-    calculators,
-    calculatorsExtended,
-    addCalculator,
-    setAddCalculator,
-    addOdpu,
-    setAddOdpu,
-    communicationPipes,
-    setCommunicationPipes,
-    housingStock,
-    stepsArr,
-    isEmpty,
-    addNode,
-    setAddNode,
-  } = useContext(AddNodeContext);
-
-  console.log('node', node);
+  const { node, housingStockId, calculators, communicationPipes } = useContext(
+    AddNodeContext
+  );
 
   const {
     calculatorId,
     entryNumber,
     futureCheckingDate,
-    isConnected,
     lastCheckingDate,
     nodeStatus,
     number,
@@ -74,7 +40,7 @@ const AddNodeForm = (props) => {
     serviceZone,
   } = node;
 
-  const calculator = _.find(calculatorsExtended, { id: calculatorId });
+  const calculator = _.find(calculators, { id: calculatorId });
   // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
@@ -88,9 +54,9 @@ const AddNodeForm = (props) => {
   const getNodeResource =
     _.find(resources, { value: resource })?.label ?? 'Ресурс не определен';
   const devicesList = _.flatten(
-    communicationPipes.map((communicationPipe) => {
+    communicationPipes.map((communicationPipe: any) => {
       const { devices } = communicationPipe;
-      return devices.map((device) => device);
+      return devices.map((device: any) => device);
     })
   );
 
@@ -123,7 +89,7 @@ const AddNodeForm = (props) => {
       console.log('addNodeForm', JSON.stringify(addNodeForm));
       console.log(history);
 
-      addNodeFinal(addNodeForm).then((res) => {
+      addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
         history.push(`/objects/${housingStockId}`);
         // setTimeout(handleCancel, 1000);
@@ -205,7 +171,7 @@ const AddNodeForm = (props) => {
     <Block>
       <BlockTitle>3. Приборы</BlockTitle>
       <ul>
-        {devicesList.map((device) => {
+        {devicesList.map((device: any) => {
           const { closingDate, model, serialNumber, pipe } = device;
           const { pipeNumber } = pipe;
           return (

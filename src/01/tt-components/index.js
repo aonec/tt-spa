@@ -1,6 +1,6 @@
 export * from './Title';
 export * from './Label';
-export * from './Wrap';
+export * from './ConnectionTakesTime';
 export * from './Button';
 export * from './Input';
 export * from './Icon';
@@ -30,3 +30,4 @@ export * from './EditButtonTT';
 export * from './MultiSelectTT';
 export * from './SwitchTT';
 export * from './Loader';
+export * from './Tabs';

@@ -18,7 +18,9 @@ export const useInformation = (state = {}) => {
           ...l,
           {
             title,
-            value: new Date(state[value]).toLocaleDateString(),
+            value: state[value]
+              ? new Date(state[value]).toLocaleDateString()
+              : '',
           },
         ];
       }

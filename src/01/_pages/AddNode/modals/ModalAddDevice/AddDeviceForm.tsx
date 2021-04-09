@@ -4,11 +4,12 @@ import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
+import Tabs from '../../../../tt-components/Tabs';
 import {
   magistrals,
   housingMeteringDeviceTypes,
   isConnected,
-} from '../../../../../tt-components/localBases';
+} from '../../../../tt-components/localBases';
 import {
   Title,
   SelectTT,
@@ -17,26 +18,27 @@ import {
   StyledModalBody,
   ButtonTT,
   StyledFooter,
-  Icon,
-  Warning,
-} from '../../../../../tt-components';
-import TabsComponent from './TabsComponent';
-import { styles, StyledFormPage } from './styledComponents';
-import { handleTabsBeforeFormSubmit } from '../../../../../utils/handleTabsBeforeFormSubmit';
+  StyledFormPage,
+  styles,
+} from '../../../../tt-components';
+import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
+import { AddNodeContext } from '../../AddNodeContext';
+import Warning from '../../../../tt-components/Warning';
 import {
   validationSchemaFlowMeter,
   validationSchemaTemperatureSensor,
-} from './validationSchemas';
-import { AddNodeContext } from '../../../AddNodeContext';
+} from '../../../../tt-components/validationSchemas';
+import {
+  AlertInterface,
+  TabsItemInterface,
+} from '../../../../tt-components/interfaces';
 
-const AddDeviceForm = (props) => {
+const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
 
   const { node, communicationPipes, setCommunicationPipes } = useContext(
     AddNodeContext
   );
-
-  console.log('node', node);
 
   const { resource, entryNumber, calculatorId } = node;
 
@@ -44,9 +46,6 @@ const AddDeviceForm = (props) => {
   const [coldandthermo, setColdandthermo] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
-
-  console.log('communicationPipes', communicationPipes);
-  console.log('communicationPipes', JSON.stringify(communicationPipes));
 
   const tabErrors = [
     {
@@ -67,10 +66,10 @@ const AddDeviceForm = (props) => {
     isConnected: isConnected[0].value,
     isAllowed: true,
     serialNumber: '',
-    lastCheckingDate: moment().toISOString(),
-    futureCheckingDate: moment().add(3, 'years').toISOString(),
-    lastCommercialAccountingDate: moment().toISOString(),
-    futureCommercialAccountingDate: moment().toISOString(),
+    lastCheckingDate: moment(),
+    futureCheckingDate: moment().add(3, 'years'),
+    lastCommercialAccountingDate: moment(),
+    futureCommercialAccountingDate: moment().add(3, 'years'),
     documentsIds: [],
     ipV4: '',
     deviceAddress: null,
@@ -91,9 +90,11 @@ const AddDeviceForm = (props) => {
     values,
     touched,
     errors,
+    setErrors,
     handleBlur,
     setFieldValue,
     setValues,
+    resetForm,
   } = useFormik({
     initialValues,
     validationSchema,
@@ -101,10 +102,10 @@ const AddDeviceForm = (props) => {
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: values.lastCheckingDate.toISOString(),
+        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
@@ -122,7 +123,7 @@ const AddDeviceForm = (props) => {
 
       if (pipeNumbers.includes(values.pipeNumber)) {
         const newCommunicationPipes = communicationPipes.map(
-          (communicationPipe) => {
+          (communicationPipe: any) => {
             const { number, devices } = communicationPipe;
             if (number === values.pipeNumber) {
               devices.push(device);
@@ -141,13 +142,13 @@ const AddDeviceForm = (props) => {
           devices: [device],
         };
 
-        setCommunicationPipes((prevState) => [...prevState, communicationPipe]);
+        setCommunicationPipes((prevState: any) => [
+          ...prevState,
+          communicationPipe,
+        ]);
       }
 
-      setValues((prevValues) => ({
-        ...prevValues,
-        ...initialValues,
-      }));
+      resetForm({});
 
       setTab('1');
     },
@@ -176,18 +177,14 @@ const AddDeviceForm = (props) => {
     }
   }, [values.housingMeteringDeviceType]);
 
-  const Alert = ({ name }) => {
+  const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
-
-  function handleChangeTab(value) {
-    setTab(value);
-  }
 
   function handleNext() {
     setTab(String(Number(currentTabKey) + 1));
@@ -198,7 +195,7 @@ const AddDeviceForm = (props) => {
       tabErrors,
       errors
     );
-    if (hasError === true) {
+    if (hasError) {
       setTab(errorTab);
     }
   }
@@ -226,14 +223,26 @@ const AddDeviceForm = (props) => {
     }
   }, [values.pipeNumber, values.housingMeteringDeviceType]);
 
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Шаг 1. Общие данные',
+      key: '1',
+      cb: () => setTab('1'),
+    },
+    {
+      title: 'Шаг 2. Документы',
+      key: '2',
+      cb: () => setTab('2'),
+    },
+  ];
+
   return (
     <form id="formikFormAddOdpu" onSubmit={handleSubmit}>
       <StyledModalBody>
-        {/*<Alert name="isAllowed" />*/}
         <Title size="middle" color="black">
           Добавление нового ОДПУ
         </Title>
-        {/*{JSON.stringify(errors)}*/}
+        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
         <Warning
           hidden={!coldandthermo}
           title="Для данного узла не предусмотрено наличие термодатчика. Проверьте выбранный ресурс."
@@ -242,10 +251,7 @@ const AddDeviceForm = (props) => {
           hidden={values.isAllowed}
           title="На данной трубе уже есть такой тип устройства"
         />
-        <TabsComponent
-          currentTabKey={currentTabKey}
-          handleChangeTab={handleChangeTab}
-        />
+
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Выберите тип прибора" style={styles.w100}>
             <SelectTT
@@ -258,19 +264,6 @@ const AddDeviceForm = (props) => {
             />
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
-
-          {/* <Form.Item label="Выберите тип ресурса" style={styles.w100}> */}
-          {/*  <SelectTT */}
-          {/*    name="resource" */}
-          {/*    onChange={(value) => { */}
-          {/*      setFieldValue('resource', value); */}
-          {/*    }} */}
-          {/*    options={resources} */}
-          {/*    defaultValue={resources[0].value} */}
-          {/*    value={values.resource} */}
-          {/*  /> */}
-          {/*  <Alert name="resource"/> */}
-          {/* </Form.Item> */}
 
           <Form.Item label="Выберите модель прибора" style={styles.w49}>
             <InputTT
@@ -312,12 +305,11 @@ const AddDeviceForm = (props) => {
             <DatePickerTT
               format="DD.MM.YYYY"
               name="lastCheckingDate"
-              placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date);
               }}
-              value={moment(values.lastCheckingDate)}
+              value={values.lastCheckingDate}
             />
           </Form.Item>
 
@@ -328,9 +320,9 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date);
               }}
-              value={moment(values.futureCheckingDate)}
+              value={values.futureCheckingDate}
             />
           </Form.Item>
 
@@ -374,7 +366,7 @@ const AddDeviceForm = (props) => {
           big
           hidden={currentTabKey === '2'}
           disabled={coldandthermo}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
           type="button"
         >
           Далее
@@ -395,7 +387,7 @@ const AddDeviceForm = (props) => {
           type="button"
           color="white"
           onClick={handleCancel}
-          style={{ marginLeft: '16px' }}
+          style={{ marginLeft: 16 }}
         >
           Отмена
         </ButtonTT>

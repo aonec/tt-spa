@@ -1,23 +1,25 @@
 import React, { useContext } from 'react';
 import { StyledModal } from '../../../../tt-components/Modal';
-import AddDeviceForm from './components/AddDeviceForm';
+import AddNodeForm from './AddNodeForm';
 import { AddNodeContext } from '../../AddNodeContext';
 
-const ModalAddDevice = () => {
-  const { setAddOdpu, addOdpu } = useContext(AddNodeContext);
+const ModalAddNode = () => {
+  const { addNode, setAddNode } = useContext(AddNodeContext);
+
   function handleCancel() {
-    setAddOdpu(false);
+    setAddNode(false);
   }
+
   return (
     <StyledModal
       onCancel={handleCancel}
       footer={null}
       width={800}
-      visible={addOdpu}
+      visible={addNode}
     >
-      <AddDeviceForm handleCancel={handleCancel} />
+      <AddNodeForm handleCancel={handleCancel} />
     </StyledModal>
   );
 };
 
-export default ModalAddDevice;
+export default ModalAddNode;

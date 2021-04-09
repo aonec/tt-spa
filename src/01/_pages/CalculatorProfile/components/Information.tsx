@@ -1,9 +1,12 @@
 import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { ListWrap, ListItem, Title } from '01/_components/List';
-import { DEFAULT_BUILDING, DEFAULT_DEVICE } from './Templates';
 import { Subtitle } from '../../../_components/Headers';
 import moment from 'moment';
 import { CalculatorResponse } from '../../../../myApi';
+import {
+  DEFAULT_BUILDING,
+  DEFAULT_DEVICE,
+} from '../../../tt-components/localBases';
 
 interface InformationInterface {
   device: CalculatorResponse | null;
@@ -22,7 +25,6 @@ export const Information = ({ device }: InformationInterface) => {
 
   return (
     <ListWrap>
-      <Title>Информация</Title>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>

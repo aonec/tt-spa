@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Grid } from '../../_components/Grid';
-import { getCalculator, getNode, getNodeTasks } from './apiNodeProfile';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
 import { useAsync } from '../../hooks/useAsync';
@@ -19,6 +18,7 @@ import NodeConnection from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
+import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();

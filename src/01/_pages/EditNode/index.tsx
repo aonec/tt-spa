@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../tt-components/antd.scss';
 import { useParams } from 'react-router-dom';
 import { Header } from './components/Header';
-import { getCalculator, getNode } from './components/apiEditNode';
 import EditNodeForm from './components/EditNodeForm';
 import { Breadcrumb } from '../../tt-components';
 import { useAsync } from '../../hooks/useAsync';
@@ -12,6 +11,7 @@ import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import ModalAddDevice from './components/Modals/ModalAddDevice';
 import { EditNodeContext } from './Context';
+import { getCalculator, getNode } from '../../_api/apiRequests';
 
 export const EditNode = () => {
   const { nodeId } = useParams();
