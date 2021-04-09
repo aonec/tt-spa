@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import _ from 'lodash';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
 import moment from 'moment';
@@ -29,9 +28,9 @@ import {
   validationSchemaFlowMeter,
   validationSchemaThermoSensor,
 } from './editOdpuValidationSchemas';
-import { AlertInterface } from '../../../tt-components/interfaces';
 import { putOdpu } from './apiEditOdpu';
-import { putCalculator } from '../../EditCalculator/components/apiEditCalculator';
+import { AlertInterface } from '../../../tt-components/interfaces';
+import _ from 'lodash';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -129,9 +128,7 @@ const FormEditODPU = ({
           nodeId: Number(values.nodeId),
         },
       };
-      putOdpu(id, form).then(({ show, id :existDeviceId }: any) => {
-        console.log('show', show);
-        console.log('id', existDeviceId) ;
+      putOdpu(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
           setAlert(true);
           setExistDevice(existDeviceId);
@@ -148,15 +145,6 @@ const FormEditODPU = ({
       ? setValidationSchema(validationSchemaFlowMeter)
       : setValidationSchema(validationSchemaThermoSensor);
   }, []);
-
-  const Alert = ({ name }: AlertInterface) => {
-    const touch = _.get(touched, `${name}`);
-    const error = _.get(errors, `${name}`);
-    if (touch && error) {
-      return <div>{error}</div>;
-    }
-    return null;
-  };
 
   const tabErrors = [
     {
@@ -182,7 +170,15 @@ const FormEditODPU = ({
     }
   }
 
-  console.log(device);
+  const Alert = ({ name, touched = {}, errors = {} }: AlertInterface) => {
+    const touch = _.get(touched, `${name}`);
+    const error = _.get(errors, `${name}`);
+    if (touch && error) {
+      return <div style={{ color: 'red' }}>{error}</div>;
+    }
+    return null;
+  };
+
   return (
     <form
       onSubmit={handleSubmitForm}
@@ -199,7 +195,11 @@ const FormEditODPU = ({
             value={values.housingMeteringDeviceType}
             disabled
           />
-          <Alert name="housingMeteringDeviceType" />
+          <Alert
+            name="housingMeteringDeviceType"
+            errors={errors}
+            touched={touched}
+          />
         </Form.Item>
 
         <Form.Item label="Тип ресурса" style={styles.w100}>
@@ -223,7 +223,7 @@ const FormEditODPU = ({
             value={values.model}
             onBlur={handleBlur}
           />
-          <Alert name="model" />
+          <Alert name="model" errors={errors} touched={touched} />
         </Form.Item>
 
         <Form.Item label="Серийный номер" style={styles.w100}>
