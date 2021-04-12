@@ -20,8 +20,8 @@ import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
 
 export const CalculatorProfile = () => {
-  const { deviceId } = useParams();
   const { push } = useHistory();
+  const { deviceId } = useParams();
   const path = `/calculators/${deviceId}`;
   const { data: device, status, run } = useAsync<CalculatorResponse>();
 

@@ -7,6 +7,7 @@ import ReadingsBlock from '../../../MetersPage/components/MeterDevices/component
 import ApartmentDevice from './ApartmentDevice';
 import ActiveLine from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import IsActive from '../../../../tt-components/IsActive';
 
 export function ApartmentDeviceItem({
   device,
@@ -54,10 +55,11 @@ export function ApartmentDeviceItem({
     />
   ));
 
+  console.log('isActive', isActive);
   return (
     <DeviceItem>
       <ApartmentDevice device={device} />
-      <ActiveLine isActive={isActive} />
+      <IsActive closingDate={isActive} />
       <DeviceReadingsContainer
         color={'var(--frame)'}
         resource={device.resource}

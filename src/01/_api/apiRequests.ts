@@ -5,8 +5,10 @@ import {
   CreateHousingMeteringDeviceRequest,
   CreateNodeRequest,
   HousingStockResponse,
+  IndividualDeviceResponse,
   NodeResponse,
   TasksPagedList,
+  UpdateIndividualDeviceRequest,
   UpdateNodeRequest,
 } from '../../myApi';
 import axios from '../axios';
@@ -55,6 +57,38 @@ export async function getNodeTasks(id: number) {
   try {
     const res = await axios.get<any, TasksPagedList>(
       `Tasks?GroupType=2&NodeId=${id}`
+    );
+    const { items } = res;
+    return items;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'tasks',
+      message: 'Произошла ошибка при загрузке данных по задачам',
+    };
+  }
+}
+
+export async function getIndividualDevice(id: number) {
+  try {
+    const res = await axios.get<any, IndividualDeviceResponse>(
+      `IndividualDevices/${id}`
+    );
+    // console.log(`IndividualDevices/${id}`, res);
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка запроса устройства',
+    };
+  }
+}
+
+export async function getIndividualDeviceTasks(id: number) {
+  try {
+    const res = await axios.get<any, TasksPagedList>(
+      `Tasks?GroupType=2&DeviceId=${id}`
     );
     const { items } = res;
     return items;
@@ -152,6 +186,23 @@ export async function putNode(nodeId: number, form: UpdateNodeRequest) {
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',
+    };
+  }
+}
+
+export async function putIndividualDevice(
+  deviceId: number,
+  form: UpdateIndividualDeviceRequest
+) {
+  try {
+    const res = await axios.put(`IndividualDevices/${deviceId}`, form);
+    alert('Прибор успешно изменен!');
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw {
+      resource: 'device',
+      message: 'Произошла ошибка изменения прибора',
     };
   }
 }
