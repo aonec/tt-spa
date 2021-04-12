@@ -1,9 +1,10 @@
 import React from 'react';
-import { convertDateDots } from '01/_api/utils/convertDate';
-import { ListWrap, ListItem, Title, Loader } from '01/_components';
+import { Loader } from '01/_components';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
 import { translateResource } from '../../../utils/translateResource';
 import { IndividualDeviceResponse } from '../../../../myApi';
+import moment from 'moment';
+import styled from 'styled-components';
 
 interface InformationInterface {
   device: IndividualDeviceResponse;
@@ -18,65 +19,92 @@ export const Information = ({ device }: InformationInterface) => {
     closingDate,
     mountPlace,
     resource,
+    hasMagneticSeal,
+    magneticSealInstallationDate,
   } = device;
 
   return (
     <ListWrap>
       <Loader show={loading} size="32">
-        <Title>Информация</Title>
-
-        <ListItem>
-          <span>Статус прибора</span>
-          <span>{closingDate ? 'Активен' : 'Не активен'}</span>
-        </ListItem>
-
-        <ListItem>
-          <span>Дата ввода в эксплуатацию</span>
-          <span>{convertDateDots(lastCommercialAccountingDate)}</span>
-        </ListItem>
-
-        <ListItem>
-          <span>Дата начальной поверки</span>
-          <span>{convertDateDots(lastCheckingDate)}</span>
-        </ListItem>
-
-        <ListItem>
-          <span>Дата следующей поверки прибора</span>
-          <span>{convertDateDots(futureCheckingDate)}</span>
-        </ListItem>
-
-        <ListItem>
-          <span>Тип ресурса</span>
-          <span>{translateResource(resource)}</span>
-        </ListItem>
-
-        <ListItem>
-          <span>Место установки</span>
-          <span>{translateMountPlace(mountPlace)}</span>
-        </ListItem>
-
-        {/*<StyledListItem>*/}
-        {/*  <span>Тип пломбы</span>*/}
-        {/*  <span></span>*/}
-        {/*</StyledListItem>*/}
-
-        {/*<StyledListItem>*/}
-        {/*  <span>Магнитная пломба</span>*/}
-        {/*  <span></span>*/}
-        {/*</StyledListItem>*/}
-
-        {/*<StyledListItem>*/}
-        {/*  <span>Организация</span>*/}
-        {/*  <span></span>*/}
-        {/*</StyledListItem>*/}
-
-        {/*<StyledListItem>*/}
-        {/*  <span>Монтажная организация</span>*/}
-        {/*  <span></span>*/}
-        {/*</StyledListItem>*/}
+        <ListItem
+          title={'Тип ресурса'}
+          description={translateResource(resource)}
+        />
+        <ListItem
+          title={'Место установки'}
+          description={translateMountPlace(mountPlace)}
+        />
+        <ListItem
+          title={'Дата ввода в эксплуатацию'}
+          description={moment(lastCommercialAccountingDate).format(
+            'DD.MM.YYYY'
+          )}
+        />
+        <ListItem
+          title={'Дата начальной поверки'}
+          description={moment(lastCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Дата следующей поверки прибора'}
+          description={moment(futureCheckingDate).format('DD.MM.YYYY')}
+        />
+        <ListItem
+          title={'Магнитная пломба'}
+          description={hasMagneticSeal ? 'Есть' : 'Нет'}
+        />
+        {/*<ListItem title={'title'} description={'description'} />*/}
       </Loader>
     </ListWrap>
   );
 };
 
 export default Information;
+
+interface ListItemInterface {
+  title: string;
+  description: string | boolean | undefined;
+}
+
+const ListItem = ({ title, description }: ListItemInterface) => {
+  return (
+    <StyledListItem>
+      <span>{title}</span>
+      <span>{description}</span>
+    </StyledListItem>
+  );
+};
+
+const ListWrap = styled.div`
+  display: grid;
+  height: min-content;
+}
+`;
+
+const StyledListItem = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 48px;
+  align-items: center;
+  border-bottom: 1px solid var(--frame);
+
+  &[|url] {
+    cursor: pointer;
+    font-weight: 500;
+    opacity: 1;
+
+    &:hover {
+      color: var(--primary-100);
+    }
+  }
+
+  & span {
+    padding: 8px;
+    opacity: 0.7;
+
+    &:first-of-type {
+      opacity: 0.9;
+      font-weight: normal;
+    }
+  }
+}
+`;

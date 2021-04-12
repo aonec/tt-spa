@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import _ from 'lodash';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
 import moment from 'moment';
 import {
+  entryNumberList,
   housingMeteringDeviceTypes,
   magistrals,
   resources,
@@ -25,13 +25,13 @@ import {
   MagistralType,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
+import { putOdpu } from './apiEditOdpu';
+import { AlertInterface } from '../../../tt-components/interfaces';
+import _ from 'lodash';
 import {
   validationSchemaFlowMeter,
-  validationSchemaThermoSensor,
-} from './editOdpuValidationSchemas';
-import { AlertInterface } from '../../../tt-components/interfaces';
-import { putOdpu } from './apiEditOdpu';
-import { putCalculator } from '../../EditCalculator/components/apiEditCalculator';
+  validationSchemaTemperatureSensor,
+} from '../../../tt-components/validationSchemas';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -107,7 +107,7 @@ const FormEditODPU = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      // console.log(values);
+      console.log(values);
 
       const magistralEnum: MagistralType = values.magistral as MagistralType;
 
@@ -129,9 +129,7 @@ const FormEditODPU = ({
           nodeId: Number(values.nodeId),
         },
       };
-      putOdpu(id, form).then(({ show, id :existDeviceId }: any) => {
-        console.log('show', show);
-        console.log('id', existDeviceId) ;
+      putOdpu(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
           setAlert(true);
           setExistDevice(existDeviceId);
@@ -146,48 +144,37 @@ const FormEditODPU = ({
   useEffect(() => {
     housingMeteringDeviceType === 'FlowMeter'
       ? setValidationSchema(validationSchemaFlowMeter)
-      : setValidationSchema(validationSchemaThermoSensor);
+      : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
+
+  useEffect(() => {
+    console.log('values', values);
+  }, [values]);
+
+  const tabErrors = [
+    {
+      key: '1',
+      value: [
+        'model',
+        'serialNumber',
+        'entryNumber',
+        'pipeNumber',
+        'calculatorId',
+      ],
+    },
+  ];
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
 
-  const tabErrors = [
-    {
-      key: '1',
-      value: ['model', 'serialNumber', 'diameter'],
-    },
-    {
-      key: '2',
-      value: ['entryNumber', 'pipeNumber', 'calculatorId'],
-    },
-  ];
-
-  function handleSubmitForm(e: any) {
-    e.preventDefault();
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-    if (hasError) {
-      setTab(errorTab);
-    } else {
-      handleSubmit();
-    }
-  }
-
-  console.log(device);
   return (
-    <form
-      onSubmit={handleSubmitForm}
-      style={{ paddingBottom: 40, maxWidth: 480 }}
-    >
+    <form onSubmit={handleSubmit} style={{ paddingBottom: 40, maxWidth: 480 }}>
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Тип прибора" style={styles.w100}>
           <SelectTT
@@ -212,6 +199,7 @@ const FormEditODPU = ({
             value={values.resource}
             disabled
           />
+          <Alert name="resource" />
         </Form.Item>
 
         <Form.Item label="Модель прибора" style={styles.w100}>
@@ -239,11 +227,13 @@ const FormEditODPU = ({
         </Form.Item>
 
         <Form.Item label="Номер ввода" style={styles.w100}>
-          <InputTT
+          <SelectTT
             name="entryNumber"
-            type="number"
+            options={entryNumberList}
             placeholder="Номер ввода"
-            onChange={handleChange}
+            onChange={(value) => {
+              setFieldValue('entryNumber', value);
+            }}
             onBlur={handleBlur}
             value={values.entryNumber}
           />
@@ -276,7 +266,7 @@ const FormEditODPU = ({
           <Alert name="magistral" />
         </Form.Item>
 
-        {device.housingMeteringDeviceType !== 'TemperatureSensor' ? (
+        {device.housingMeteringDeviceType === 'FlowMeter' ? (
           <Form.Item label="Диаметр прибора, мм" style={styles.w100}>
             <InputTT
               name="diameter"
@@ -296,8 +286,9 @@ const FormEditODPU = ({
             name="lastCheckingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
+              console.log(date);
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
+              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
             }}
             value={values.lastCheckingDate}
           />
@@ -327,6 +318,10 @@ const FormEditODPU = ({
             placeholder="Укажите дату..."
             onChange={(date) => {
               setFieldValue('lastCommercialAccountingDate', date);
+              setFieldValue(
+                'futureCommercialAccountingDate',
+                moment(date).add(3, 'years')
+              );
             }}
             value={values.lastCommercialAccountingDate}
           />
@@ -350,7 +345,6 @@ const FormEditODPU = ({
         <Form.Item label="Город" style={styles.w100}>
           <InputTT
             name="city"
-            type="text"
             placeholder="Укажите город"
             onChange={handleChange}
             value={values.city}
@@ -362,7 +356,6 @@ const FormEditODPU = ({
         <Form.Item label="Улица" style={styles.w100}>
           <InputTT
             name="street"
-            type="text"
             placeholder="Укажите улицу"
             onChange={handleChange}
             value={values.street}
@@ -374,7 +367,6 @@ const FormEditODPU = ({
         <Form.Item label="Номер дома" style={styles.w100}>
           <InputTT
             name="housingStockNumber"
-            type="text"
             placeholder="Укажите дом"
             onChange={handleChange}
             value={values.housingStockNumber}
@@ -387,7 +379,6 @@ const FormEditODPU = ({
           <Form.Item label="Номер корпуса" style={styles.w100}>
             <InputTT
               name="corpus"
-              type="text"
               placeholder="Номер корпуса"
               onChange={handleChange}
               value={values.corpus}

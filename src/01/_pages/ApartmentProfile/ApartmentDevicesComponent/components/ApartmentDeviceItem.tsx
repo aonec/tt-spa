@@ -7,6 +7,7 @@ import ReadingsBlock from '../../../MetersPage/components/MeterDevices/component
 import ApartmentDevice from './ApartmentDevice';
 import ActiveLine from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import IsActive from '../../../../tt-components/IsActive';
 
 export function ApartmentDeviceItem({
   device,
@@ -25,7 +26,7 @@ export function ApartmentDeviceItem({
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0].readingDate);
-  const isActive = device.isActive;
+  const { isActive } = device;
 
   useEffect(() => {
     const readingsArray: number[] = [];
@@ -54,10 +55,11 @@ export function ApartmentDeviceItem({
     />
   ));
 
+  console.log('isActive', isActive);
   return (
     <DeviceItem>
       <ApartmentDevice device={device} />
-      <ActiveLine isActive={isActive} />
+      <IsActive closingDate={isActive} />
       <DeviceReadingsContainer
         color={'var(--frame)'}
         resource={device.resource}

@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Route, useParams } from 'react-router-dom';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import { Grid } from '01/_components';
-import {
-  getIndividualDevice,
-  getIndividualDeviceTasks,
-} from './apiIndividualDevice';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Loader } from '../../components';
-import { ParamTypes } from './components/individualDeviceTypes';
 import { Title } from '../../tt-components/Title';
 import { useAsync } from '../../hooks/useAsync';
 import { IndividualDeviceResponse, TaskListResponse } from '../../../myApi';
-import { TabsIndividualDevice } from './components/Tabs';
-import Events from './components/Events';
 import ModalDeregister from '../../tt-components/ModalDeregister';
+import Events from '../../tt-components/Events';
+import { TabsItemInterface } from '../../tt-components/interfaces';
+import Tabs from '../../tt-components/Tabs';
+import {
+  getIndividualDevice,
+  getIndividualDeviceTasks,
+} from '../../_api/apiRequests';
 
 export const IndividualDevice = () => {
-  const { 0: deviceId } = useParams<ParamTypes>();
+  const { push } = useHistory();
+  const { deviceId } = useParams();
+  const path = `/individualDevices/${deviceId}`;
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
+
   const [deregister, setDeregister] = useState(false);
   const { data: tasks, status: tasksStatus, run: tasksRun } = useAsync<
     TaskListResponse[] | null
@@ -30,9 +33,26 @@ export const IndividualDevice = () => {
   }, [deviceId]);
 
   if (!device || !tasks) {
-    return null;
+    return <Loader size={'32'} show />;
   }
-  const path = `/individualDevices/${deviceId}/`;
+  console.log(device);
+
+  const tabItems: Array<TabsItemInterface> = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Документы',
+      key: 'documents',
+      cb: () => {
+        push(`${path}/documents`);
+      },
+    },
+  ];
 
   return (
     <>
@@ -45,24 +65,16 @@ export const IndividualDevice = () => {
       {status === 'resolved' ? (
         <>
           <Header device={device} />
-          <TabsIndividualDevice />
-
+          <Tabs tabItems={tabItems} tabsType={'route'} />
           <Grid>
             <Route path={path} exact>
               <Information device={device} />
             </Route>
 
-            <Route path={`${path}readings`} exact>
+            <Route path={`${path}/documents`} exact>
               <Title color="black">Компонент в разработке</Title>
             </Route>
 
-            <Route path={`${path}documents`} exact>
-              <Title color="black">Компонент в разработке</Title>
-            </Route>
-
-            <Route path={`${path}changes`} exact>
-              <Title color="black">Компонент в разработке</Title>
-            </Route>
             <Events title="Задачи с объектом" tasks={tasks} />
           </Grid>
           <ModalDeregister

@@ -1,7 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Form } from 'antd';
 import { NavLink } from 'react-router-dom';
-import { editNodeValidationSchema } from './validationSchemas';
 import {
   InputTT,
   SelectTT,
@@ -18,7 +17,6 @@ import {
   resources,
   serviceZoneList,
 } from '../../../tt-components/localBases';
-import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import {
   CalculatorResponse,
   NodeResponse,
@@ -27,8 +25,8 @@ import {
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
-import { putNode } from './apiEditNode';
 import { EditNodeContext } from '../Context';
+import { putNode } from '../../../_api/apiRequests';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -44,17 +42,10 @@ interface EditNodeFormInterface {
 const EditNodeForm = ({
   calculator,
   currentTabKey,
-  setTab,
-  setAlertVisible,
-  setExistCalculator,
   node,
   setDeregisterDevice,
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
-  const [validationSchema, setValidationSchema] = useState(
-    editNodeValidationSchema
-  );
-
   const { visibleAddDevice, setVisibleAddDevice } = useContext(EditNodeContext);
 
   if (!node) {
@@ -72,31 +63,6 @@ const EditNodeForm = ({
     id: nodeId,
     calculatorId,
   } = node;
-
-  // const tabErrors = [
-  //   {
-  //     key: '1',
-  //     value: [
-  //       'number',
-  //       'lastCommercialAccountingDate',
-  //       'futureCommercialAccountingDate',
-  //     ],
-  //   },
-  // ];
-
-  // function handleSubmitForm(e: any) {
-  //   e.preventDefault();
-  //   const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-  //     tabErrors,
-  //     errors
-  //   );
-  //   console.log(errors);
-  //   if (hasError) {
-  //     setTab(errorTab);
-  //   } else {
-  //     handleSubmit();
-  //   }
-  // }
 
   const [form] = Form.useForm();
   const {

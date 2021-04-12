@@ -31,7 +31,6 @@ export const Connection = ({ device }: ConnectionInterface) => {
     <div>
       {!isConnected ? <NoConnection /> : null}
       <ListWrap style={{ opacity: !isConnected ? '0.5' : '1.0' }}>
-        <Title>Настройки</Title>
         <ListItem>
           <span>IP адрес вычислителя</span>
           <span>{ipV4}</span>

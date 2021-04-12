@@ -18,22 +18,15 @@ import {
   styles,
   StyledFormPage,
 } from '../../../tt-components';
-import { addNodeValidationSchema } from './validationSchemas';
 import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
+import { nodeValidationSchema } from '../../../tt-components/validationSchemas';
 
 const AddNodeSecondTab = () => {
-  const {
-    handleCancel,
-    currentTabKey,
-    handleNext,
-    setNode,
-    isEmpty,
-  } = useContext(AddNodeContext);
-
-  const [validationSchema, setValidationSchema] = useState(
-    addNodeValidationSchema
+  const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
+    AddNodeContext
   );
+
   const {
     handleSubmit,
     handleChange,
@@ -51,8 +44,9 @@ const AddNodeSecondTab = () => {
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(1, 'years'),
+      disabledSecond: false,
     },
-    validationSchema,
+    validationSchema: nodeValidationSchema,
     onSubmit: async () => {
       const form = {
         resource: values.resource,
@@ -75,7 +69,7 @@ const AddNodeSecondTab = () => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
     if (touch && error) {
-      return <div>{error}</div>;
+      return <div style={{ color: 'red' }}>{error}</div>;
     }
     return null;
   };
@@ -179,7 +173,7 @@ const AddNodeSecondTab = () => {
         ) : null}
       </StyledFormPage>
       <StyledFooter form>
-        <ButtonTT color="blue" big type="submit" disabled={!isEmpty(errors)}>
+        <ButtonTT color="blue" big type="submit">
           Далее
         </ButtonTT>
 

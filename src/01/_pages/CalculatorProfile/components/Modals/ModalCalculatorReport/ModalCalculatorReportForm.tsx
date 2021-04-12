@@ -19,7 +19,7 @@ import { getReport } from './apiCalculatorReport';
 import { CalculatorResponse } from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
 
-export interface ModalCalculatorReportFormInterface {
+interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;
   handleCancel: any;
 }
@@ -67,7 +67,7 @@ const ModalCalculatorReportForm = ({
       };
     });
 
-  console.log('nodesList', nodesList);
+  console.log('device', device);
 
   const filteredGroup = _.groupBy(nodesList, 'resource');
 
@@ -118,12 +118,23 @@ const ModalCalculatorReportForm = ({
   });
 
   const prevOptions = Object.values(filteredGroup[values.resource]);
-  const options = prevOptions.map((option: any, index) => {
-    const { id, number, devices } = option;
+
+  const options = prevOptions.map((node: any, index) => {
+    const { id, number, communicationPipes } = node;
+
+    const devicesList = _.flatten(
+      communicationPipes.map((communicationPipe: any) => {
+        const { devices } = communicationPipe;
+        return devices.filter(
+          (device: any) => device.housingMeteringDeviceType === 'FlowMeter'
+        );
+      })
+    );
 
     let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;
-    _.forEach(devices, (value: any) => {
-      label = `${label}, ${value.model} (${value.serialNumber})`;
+
+    _.forEach(devicesList, (value: any) => {
+      label = label + `, ${value.model} (${value.serialNumber})`;
     });
     return { value: id, label };
   });

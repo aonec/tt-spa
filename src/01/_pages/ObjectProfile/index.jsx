@@ -3,16 +3,16 @@ import styled from 'reshadow/macro';
 import { Route, useParams, useHistory } from 'react-router-dom';
 import { grid } from '01/r_comp';
 import { Header } from './components/Header';
-import { Tabs } from './components/Tabs';
 import { Information } from './components/Information';
 import { Events } from './components/Events';
 import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
-import { getCalculators, getObject, getServiceZones } from './apiObjectProfile';
+import { getCalculators, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
+import Tabs from '../../tt-components/Tabs';
 
 export const ObjectContext = React.createContext();
 
@@ -29,7 +29,7 @@ function reducer(state, action) {
 
 export const ObjectProfile = () => {
   const { housingStockId } = useParams();
-
+  const path = `/objects/${housingStockId}`;
   const [state, dispatch] = React.useReducer(reducer, {});
 
   const [addCalculator, setAddCalculator] = useState(false);
@@ -69,6 +69,30 @@ export const ObjectProfile = () => {
     object,
   };
 
+  const tabItems = [
+    {
+      title: 'Общая информация',
+      key: '',
+      cb: () => {
+        push(`${path}`);
+      },
+    },
+    {
+      title: 'Квартиры',
+      key: 'connection',
+      cb: () => {
+        push(`${path}/apartments`);
+      },
+    },
+    {
+      title: 'ОДПУ',
+      key: 'nodes',
+      cb: () => {
+        push(`${path}/devices`);
+      },
+    },
+  ];
+
   return styled(grid)(
     <>
       <ObjectContext.Provider value={context}>
@@ -79,7 +103,7 @@ export const ObjectProfile = () => {
           commonReport={commonReport}
           object={object}
         />
-        <Tabs />
+        <Tabs tabItems={tabItems} tabsType={'route'} />
         <grid>
           <Route path="/objects/(\\d+)" exact>
             <div>

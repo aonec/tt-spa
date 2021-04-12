@@ -1,5 +1,13 @@
 import styled, { css } from 'styled-components';
 
+export const HeaderWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  grid-template-rows: 48px 16px;
+  grid-gap: 8px;
+  align-items: center;
+`;
+
 export const Header = styled.h1`
   font-weight: 300;
   color: #272f5a;
