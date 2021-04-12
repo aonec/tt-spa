@@ -1,10 +1,10 @@
 import React from 'react';
-import { Loader } from '01/_components';
 import { translateMountPlace } from '../../../utils/translateMountPlace';
 import { translateResource } from '../../../utils/translateResource';
 import { IndividualDeviceResponse } from '../../../../myApi';
 import moment from 'moment';
 import styled from 'styled-components';
+import { Loader } from '../../../_components/Loader';
 
 interface InformationInterface {
   device: IndividualDeviceResponse;
@@ -16,11 +16,9 @@ export const Information = ({ device }: InformationInterface) => {
     lastCommercialAccountingDate,
     futureCheckingDate,
     lastCheckingDate,
-    closingDate,
     mountPlace,
     resource,
     hasMagneticSeal,
-    magneticSealInstallationDate,
   } = device;
 
   return (

@@ -24,6 +24,7 @@ import { devicesAPI } from '../../../01/_api/devices_page';
 import { wait } from '@testing-library/user-event/dist/utils';
 import userEvent from '@testing-library/user-event/dist';
 import _ from 'lodash';
+import { Objects } from '../../../01/_pages/Objects';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -315,7 +316,9 @@ const server = setupServer(
       }
       if (
         Question ===
-        calculatorsResponseAfterSearch.successResponse.items[0].serialNumber
+          calculatorsResponseAfterSearch.successResponse.items[0]
+            .serialNumber &&
+        !Destination
       ) {
         return res(ctx.json(calculatorsResponseAfterSearch));
       }
@@ -338,8 +341,6 @@ test('thunk called with right arguments', async () => {
   await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 
-  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-
   expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
   expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
     searchTerm: '',
@@ -347,6 +348,32 @@ test('thunk called with right arguments', async () => {
     destination: '',
     rule: '',
   });
+  userEvent.click(
+    screen.getByRole('combobox', {
+      name: /сортировать по:/i,
+    })
+  );
+
+  // await waitFor(() => {
+  //   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
+  // });
+  expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
+
+  // act(() => {
+  fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
+  // });
+  await waitFor(() =>
+    expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument()
+  );
+  expect(devicesAPI.getDevices).toHaveBeenCalledTimes(2);
+  expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
+    searchTerm: '',
+    expirationDate: '',
+    destination: 'Ascending',
+    rule: 'Street',
+  });
+  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
+  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 });
 
 test('can load page and search for devices', async () => {
@@ -405,17 +432,16 @@ test('can load page and search for devices', async () => {
       name: /сортировать по:/i,
     })
   );
-  screen.debug(null, 50000);
 
-  // await waitFor(() => {
-  //   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
-  // });
-  userEvent.click(screen.getByText(/улице \(возр\.\)/i));
+  fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
+
   await waitFor(() => {
     expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
   });
   await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+  screen.debug(null, 50000);
+
   await waitFor(() => {
     expect(
       screen.getByText(
@@ -424,4 +450,10 @@ test('can load page and search for devices', async () => {
       )
     ).toBeInTheDocument();
   });
+});
+
+test('form test', () => {
+  render(<Objects />);
+  const form = document.querySelector('form');
+  console.log(form.elements);
 });

@@ -1,7 +1,6 @@
 import { Route, useParams, useHistory } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { getCalculatorTasks, getCalculator } from './apiCalculatorProfile';
-import { Grid } from '../../_components';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Connection } from './components/Connection';
@@ -18,6 +17,7 @@ import { useAsync } from '../../hooks/useAsync';
 import { CalculatorProfileContext } from './CalculatorProfileContext';
 import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
+import Grid from '../../_components/Grid';
 
 export const CalculatorProfile = () => {
   const { push } = useHistory();

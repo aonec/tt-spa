@@ -11,7 +11,6 @@ import {
 } from '../../../../tt-components/localBases';
 import {
   IconTT,
-  Title,
   StyledModalBody,
   ButtonTT,
   StyledFooter,
@@ -20,6 +19,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../AddNodeContext';
 import { addNode } from '../../../../_api/apiRequests';
+import Title from '../../../../tt-components/Title';
 
 const AddNodeForm = (props: any) => {
   const history = useHistory();
@@ -41,7 +41,6 @@ const AddNodeForm = (props: any) => {
   } = node;
 
   const calculator = _.find(calculators, { id: calculatorId });
-  // console.log('calculator', calculator);
 
   const { serialNumber, model, closingDate } = calculator;
 
@@ -66,16 +65,7 @@ const AddNodeForm = (props: any) => {
 
   const initialValues = { communicationPipes };
 
-  const {
-    handleSubmit,
-    handleChange,
-    values,
-    touched,
-    errors,
-    handleBlur,
-    setFieldValue,
-    setValues,
-  } = useFormik({
+  const { handleSubmit, values } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async () => {
@@ -83,17 +73,11 @@ const AddNodeForm = (props: any) => {
       const form = {
         communicationPipes: values.communicationPipes,
       };
-      console.log(form);
       const addNodeForm = { ...node, communicationPipes };
-      console.log('addNodeForm', addNodeForm);
-      console.log('addNodeForm', JSON.stringify(addNodeForm));
-      console.log(history);
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
         history.push(`/objects/${housingStockId}`);
-        // setTimeout(handleCancel, 1000);
-        // return <Redirect to={`/objects/${housingStockId}`} />
       });
     },
   });

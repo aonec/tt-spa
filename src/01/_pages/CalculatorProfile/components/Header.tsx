@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
+// import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
@@ -9,6 +9,7 @@ import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
+import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   device: CalculatorResponse | null;

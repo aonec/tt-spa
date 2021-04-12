@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
-import { Grid } from '01/_components';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
 import { Loader } from '../../components';
@@ -15,6 +14,7 @@ import {
   getIndividualDevice,
   getIndividualDeviceTasks,
 } from '../../_api/apiRequests';
+import { Grid } from '01/_components/Grid';
 
 export const IndividualDevice = () => {
   const { push } = useHistory();
