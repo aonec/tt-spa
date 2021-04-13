@@ -132,14 +132,14 @@ const ModalAddDeviceForm = ({
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
-    lastCheckingDate: moment(),
-    futureCheckingDate: moment().add(3, 'years'),
+    lastCheckingDate: moment().toISOString(),
+    futureCheckingDate: moment().add(3, 'years').toISOString(),
     lastCommercialAccountingDate: lastCommercialAccountingDate
-      ? moment(lastCommercialAccountingDate)
-      : moment(),
+      ? moment(lastCommercialAccountingDate).toISOString()
+      : moment().toISOString(),
     futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate)
-      : moment(),
+      ? moment(futureCommercialAccountingDate).toISOString()
+      : moment().toISOString(),
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
@@ -155,11 +155,12 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
+    debugger;
     // console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate.toISOString(),
-      futureCheckingDate: values.futureCheckingDate.toISOString(),
+      lastCheckingDate: values.lastCheckingDate,
+      futureCheckingDate: values.futureCheckingDate,
       lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
       futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
@@ -178,6 +179,7 @@ const ModalAddDeviceForm = ({
       },
     };
     console.log('form', form);
+    console.log();
     addHousingMeteringDevice(form).then((res) => {
       // console.log(res);
       setTimeout(() => {
@@ -196,8 +198,6 @@ const ModalAddDeviceForm = ({
       setTab(errorTab);
     }
   }
-
-  useEffect(() => {}, []);
 
   return (
     <Formik
