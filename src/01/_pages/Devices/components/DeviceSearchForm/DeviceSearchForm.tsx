@@ -1,9 +1,9 @@
 import styles from './DeviceSearchForm.module.scss';
 import './DeviceSearchForm.module.scss';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useRef } from 'react';
 import { setCurrentPage } from '../../../../Redux/reducers/reducerDevicesPage';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Button, Tooltip, Select } from 'antd';
+import { Form, Input, Button, Tooltip, Select, Slider } from 'antd';
 import { Icon } from '../../../../_components/Icon';
 import {
   setSearchTerm,
@@ -12,7 +12,10 @@ import {
   DeviceSearchReducerStateType,
   FilterParameterType,
   DeviceSearchActionTypes,
+  setDiameterRange,
 } from '../../devicesSearchReducer';
+import styled from 'styled-components';
+import _ from 'lodash';
 
 const { Option } = Select;
 
@@ -26,8 +29,10 @@ const DeviceSearchForm = ({
   dispatchSearchState,
 }: DeviceSearchFormPropsInterface) => {
   const dispatch = useDispatch();
+  const ref = useRef(null);
 
   const onValuesChangeHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
+    debugger;
     const targetValue = e.target.value;
     dispatchSearchState(setSearchTerm(targetValue));
     dispatch(setCurrentPage(1));
@@ -41,6 +46,16 @@ const DeviceSearchForm = ({
   const handleOnSortChange = (value: FilterParameterType) => {
     dispatchSearchState(setDevicesFilter(value));
     dispatch(setCurrentPage(1));
+  };
+
+  const handleDiameterChange = (value: [number, number]) => {
+    dispatchSearchState(setDiameterRange(value));
+    dispatch(setCurrentPage(1));
+  };
+
+  const marks = {
+    0: '0',
+    255: '255',
   };
 
   return (
@@ -101,7 +116,10 @@ const DeviceSearchForm = ({
         </Form.Item>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+      <div
+        // ref={ref}
+        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
+      >
         <Form.Item
           name="lastCheckingDate"
           style={{ width: '100%', marginRight: 25 }}
@@ -125,43 +143,44 @@ const DeviceSearchForm = ({
           </div>
         </Form.Item>
 
-        <Form.Item name="deviceDiameter" style={{ width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <label
-              htmlFor="deviceDiameter"
-              style={{ width: '30%', minWidth: 120 }}
-            >
-              Диаметр прибора{' '}
-            </label>
-            <div style={{ display: 'flex', width: '70%' }}>
-              <Select
-                showSearch
-                placeholder="Select a person"
-                id="minValue"
-                defaultValue="0"
-                style={{ width: '50%', marginRight: 8 }}
-                disabled
-              >
-                <Option value="0">От 0</Option>
-              </Select>
+        <Form.Item name="deviceDiameter">
+          <label
+            htmlFor="deviceDiameter"
+            style={{ width: '30%', minWidth: 120 }}
+          >
+            Диаметр прибора, мм{' '}
+          </label>
 
-              <Select
-                showSearch
-                placeholder="Select a person"
-                optionFilterProp="children"
-                id="maxValue"
-                defaultValue="255"
-                style={{ width: '50%' }}
-                disabled
-              >
-                <Option value="255">До 255</Option>
-              </Select>
-            </div>
-          </div>
+          {/*<StyledSlider>*/}
+          {/*<div className="stupidSlider">*/}
+          <StyledSlider
+            getTooltipPopupContainer={(triggerNode) =>
+              triggerNode.parentNode as any
+            }
+            defaultValue={[0, 255]}
+            max={255}
+            range
+            marks={marks}
+            onChange={_.debounce(handleDiameterChange, 250, {
+              maxWait: 1000,
+            })}
+            tooltipVisible
+            tooltipPlacement="bottom"
+          />
+          {/*</div>*/}
+          {/*</StyledSlider>*/}
         </Form.Item>
       </div>
     </Form>
   );
 };
+
+const StyledSlider = styled(Slider)`
+  .ant-tooltip-inner {
+    color: black;
+    background-color: transparent;
+    box-shadow: none;
+  }
+`;
 
 export default DeviceSearchForm;

@@ -35,7 +35,6 @@ import {
   IndividualDeviceEdit,
 } from '../_pages';
 import { useApp } from './useApp';
-import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
 import EditODPU from '../_pages/EditHousingMeteringDevice';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
@@ -52,7 +51,6 @@ const Internal = () => {
       <Route path="/error/" render={() => <ErrorPage />} />
       <Route path="/registration*" render={() => <Registration />} />
       <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
-      <Route path="/form/" render={() => <DeviceSearchForm />} />
       <Route path="/">
         <layout>
           <menu as="div">
