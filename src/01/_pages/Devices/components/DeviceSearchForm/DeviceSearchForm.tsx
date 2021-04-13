@@ -118,7 +118,7 @@ const DeviceSearchForm = ({
 
       <div
         // ref={ref}
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
+        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', padding: 8 }}
       >
         <Form.Item
           name="lastCheckingDate"
@@ -176,10 +176,16 @@ const DeviceSearchForm = ({
 };
 
 const StyledSlider = styled(Slider)`
+  .ant-tooltip-arrow {
+    display: none;
+  }
   .ant-tooltip-inner {
+    position: relative;
+    top: -11px;
     color: black;
     background-color: transparent;
     box-shadow: none;
+    padding: 0;
   }
 `;
 
