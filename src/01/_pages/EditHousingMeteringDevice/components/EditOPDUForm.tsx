@@ -107,7 +107,7 @@ const FormEditODPU = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      // console.log(values);
+      console.log(values);
 
       const magistralEnum: MagistralType = values.magistral as MagistralType;
 
@@ -147,32 +147,22 @@ const FormEditODPU = ({
       : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
 
+  useEffect(() => {
+    console.log('values', values);
+  }, [values]);
+
   const tabErrors = [
     {
       key: '1',
       value: [
         'model',
         'serialNumber',
-        'diameter',
         'entryNumber',
         'pipeNumber',
         'calculatorId',
       ],
     },
   ];
-
-  function handleSubmitForm(e: any) {
-    e.preventDefault();
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-    if (hasError) {
-      setTab(errorTab);
-    } else {
-      handleSubmit();
-    }
-  }
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -184,10 +174,7 @@ const FormEditODPU = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmitForm}
-      style={{ paddingBottom: 40, maxWidth: 480 }}
-    >
+    <form onSubmit={handleSubmit} style={{ paddingBottom: 40, maxWidth: 480 }}>
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
         <Form.Item label="Тип прибора" style={styles.w100}>
           <SelectTT
@@ -301,7 +288,7 @@ const FormEditODPU = ({
             onChange={(date) => {
               console.log(date);
               setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(3, 'years'));
+              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
             }}
             value={values.lastCheckingDate}
           />
@@ -331,6 +318,10 @@ const FormEditODPU = ({
             placeholder="Укажите дату..."
             onChange={(date) => {
               setFieldValue('lastCommercialAccountingDate', date);
+              setFieldValue(
+                'futureCommercialAccountingDate',
+                moment(date).add(3, 'years')
+              );
             }}
             value={values.lastCommercialAccountingDate}
           />

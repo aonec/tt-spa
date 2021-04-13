@@ -23,7 +23,7 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
   } = device;
   return (
     <DeviceColumn>
-      <DeviceLink to={`/housingMeteringDevices/${id}`}>
+      <DeviceLink to={`/individualDevices/${id}`}>
         <div>
           <DeviceIcon icon={icon} fill={color} />
         </div>

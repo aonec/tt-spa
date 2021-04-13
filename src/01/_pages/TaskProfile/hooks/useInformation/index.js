@@ -6,6 +6,7 @@ const taskInfo = [
   ['Номер задачи', 'id'],
   ['Дата создания', 'creationTime'],
   ['Адрес', 'address', 'housingStockId'],
+  ['Исполнитель', 'perpetrator', 'name'],
 ];
 
 export const useInformation = (state = {}) => {
@@ -24,6 +25,16 @@ export const useInformation = (state = {}) => {
           },
         ];
       }
+      if (/Исполнитель/i.test(title)) {
+        debugger;
+        return [
+          ...l,
+          {
+            title,
+            value: state[value] ? state[value][url] : '-',
+          },
+        ];
+      }
       if (/адрес/i.test(title)) {
         return [
           ...l,
@@ -34,6 +45,7 @@ export const useInformation = (state = {}) => {
           },
         ];
       }
+
       return [...l, { title, value: state[value] ?? '-' }];
     }, []),
   };

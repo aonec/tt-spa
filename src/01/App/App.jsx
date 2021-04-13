@@ -32,6 +32,7 @@ import {
   NodeProfile,
   EditNode,
   AddNode,
+  IndividualDeviceEdit,
 } from '../_pages';
 import { useApp } from './useApp';
 import DeviceSearchForm from '../_pages/Devices/components/DeviceSearchForm/DeviceSearchForm';
@@ -144,8 +145,14 @@ const Internal = () => {
                 exact
               />
               <Route
-                path="/individualDevices/(\\d+)/(readings|documents|changes)?"
+                path="/individualDevices/:deviceId/(readings|documents|changes)?"
                 component={IndividualDevice}
+                exact
+              />
+
+              <Route
+                path="/individualDevices/:deviceId/edit"
+                component={IndividualDeviceEdit}
                 exact
               />
 
@@ -169,9 +176,11 @@ export function App() {
     <Provider store={store}>
       <AppProvider>
         <ConfigProvider locale={ruRu}>
-          <YMInitializer accounts={[75258859]}
-                         options={{webvisor: true}}
-                         version="2"/>
+          <YMInitializer
+            accounts={[75427876]}
+            options={{ webvisor: true }}
+            version="2"
+          />
           <YMaps>
             <Internal />
           </YMaps>
