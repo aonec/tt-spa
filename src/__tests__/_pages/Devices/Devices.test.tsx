@@ -8,7 +8,6 @@ import {
   screen,
   waitForElementToBeRemoved,
   waitFor,
-  act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import DevicesFromSearch from '01/_pages/Devices';
@@ -16,12 +15,9 @@ import { render as rtlRender } from '@testing-library/react';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-// Import your own reducer
 import thunkMiddleWare from 'redux-thunk';
-import sinon from 'sinon';
 import rootReducer from '../../../01/Redux/rootReducer';
 import { devicesAPI } from '../../../01/_api/devices_page';
-import { wait } from '@testing-library/user-event/dist/utils';
 import userEvent from '@testing-library/user-event/dist';
 import _ from 'lodash';
 import { Objects } from '../../../01/_pages/Objects';
@@ -41,8 +37,6 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// jest.mock('../../../01/_api/devices_page');
 
 function render(
   ui,
@@ -354,14 +348,9 @@ test('thunk called with right arguments', async () => {
     })
   );
 
-  // await waitFor(() => {
-  //   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
-  // });
   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
 
-  // act(() => {
   fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
-  // });
   await waitFor(() =>
     expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument()
   );
@@ -452,8 +441,6 @@ test('can load page and search for devices', async () => {
   });
 });
 
-test('form test', () => {
+test('can load page and search for devices', async () => {
   render(<Objects />);
-  const form = document.querySelector('form');
-  console.log(form.elements);
 });
