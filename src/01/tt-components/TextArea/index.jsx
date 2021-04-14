@@ -1,5 +1,7 @@
 import React from 'react';
-import TextArea from 'antd/es/input/TextArea';
+import { Input } from 'antd';
+
+const { TextArea } = Input;
 
 const StyledTextArea = ({ labelText, ...props }) => (
   <div style={{ gridArea: 'ta' }}>
