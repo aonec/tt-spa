@@ -53,6 +53,10 @@ const DeviceSearchForm = ({
     dispatch(setCurrentPage(1));
   };
 
+  const debouncedFilterChange = _.debounce(handleDiameterChange, 250, {
+    maxWait: 1000,
+  });
+
   const marks = {
     0: '0',
     255: '255',
@@ -117,8 +121,12 @@ const DeviceSearchForm = ({
       </div>
 
       <div
-        // ref={ref}
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', padding: 8 }}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          padding: 8,
+          alignItems: 'center',
+        }}
       >
         <Form.Item
           name="lastCheckingDate"
@@ -133,7 +141,7 @@ const DeviceSearchForm = ({
             </label>
             <Select
               id="expirationDate"
-              style={{ width: '55%', marginRight: 16 }}
+              style={{ width: '65%', marginRight: 16 }}
               onSelect={handleOnExpirationChange}
             >
               <Option value={0}>Ближайший месяц</Option>
@@ -144,31 +152,31 @@ const DeviceSearchForm = ({
         </Form.Item>
 
         <Form.Item name="deviceDiameter">
-          <label
-            htmlFor="deviceDiameter"
-            style={{ width: '30%', minWidth: 120 }}
-          >
-            Диаметр прибора, мм{' '}
-          </label>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label
+              style={{
+                width: '30%',
+                minWidth: 150,
+                display: 'block',
+                textAlign: 'center',
+                marginRight: 8,
+              }}
+            >
+              Диаметр прибора, мм{' '}
+            </label>
 
-          {/*<StyledSlider>*/}
-          {/*<div className="stupidSlider">*/}
-          <StyledSlider
-            getTooltipPopupContainer={(triggerNode) =>
-              triggerNode.parentNode as any
-            }
-            defaultValue={[0, 255]}
-            max={255}
-            range
-            marks={marks}
-            onChange={_.debounce(handleDiameterChange, 250, {
-              maxWait: 1000,
-            })}
-            tooltipVisible
-            tooltipPlacement="bottom"
-          />
-          {/*</div>*/}
-          {/*</StyledSlider>*/}
+            <StyledSlider
+              style={{ width: '70%' }}
+              getTooltipPopupContainer={(triggerNode) =>
+                triggerNode.parentNode as HTMLElement
+              }
+              defaultValue={[0, 255]}
+              max={255}
+              range
+              marks={marks}
+              onChange={debouncedFilterChange}
+            />
+          </div>
         </Form.Item>
       </div>
     </Form>
@@ -176,17 +184,20 @@ const DeviceSearchForm = ({
 };
 
 const StyledSlider = styled(Slider)`
-  .ant-tooltip-arrow {
-    display: none;
+  &.ant-slider.ant-slider-with-marks {
+    margin-bottom: 12px !important;
   }
-  .ant-tooltip-inner {
-    position: relative;
-    top: -11px;
-    color: black;
-    background-color: transparent;
-    box-shadow: none;
-    padding: 0;
-  }
+  //.ant-tooltip-arrow {
+  //  display: none;
+  //}
+  //.ant-tooltip-inner {
+  //  position: relative;
+  //  top: -11px;
+  //  color: black;
+  //  background-color: transparent;
+  //  box-shadow: none;
+  //  padding: 0;
+  //}
 `;
 
 export default DeviceSearchForm;
