@@ -31,14 +31,9 @@ const TaskComments = ({
   };
 
   const postComment = async (taskId: number, comment: string) => {
-    // Успех в половине случаев.
-    if (Math.random() > 0.5) {
-      return axios.post<any, TaskCommentResponse>(`tasks/${taskId}/Comments`, {
-        comment,
-      });
-    } else {
-      return Promise.reject();
-    }
+    return axios.post<any, TaskCommentResponse>(`tasks/${taskId}/Comments`, {
+      comment,
+    });
   };
 
   const onClick = async () => {

@@ -28,8 +28,8 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
@@ -288,12 +288,16 @@ const calculatorsResponse = {
   },
 };
 const calculatorsResponseAfterSearch = _.cloneDeep(calculatorsResponse);
-calculatorsResponseAfterSearch.successResponse.items[0].address.street =
-  'Космонавтов';
+const {
+  address: addressAfterSearch,
+} = calculatorsResponseAfterSearch.successResponse.items[0];
+addressAfterSearch.street = 'Космонавтов';
 
 const calculatorResponseAfterFilter = _.cloneDeep(calculatorsResponse);
-calculatorResponseAfterFilter.successResponse.items[0].address.street =
-  'Патриса Лумумбы';
+const {
+  address: addressAfterFilter,
+} = calculatorResponseAfterFilter.successResponse.items[0];
+addressAfterFilter.street = 'Патриса Лумумбы';
 
 const server = setupServer(
   rest.get(
@@ -439,8 +443,4 @@ test('can load page and search for devices', async () => {
       )
     ).toBeInTheDocument();
   });
-});
-
-test('can load page and search for devices', async () => {
-  render(<Objects />);
 });
