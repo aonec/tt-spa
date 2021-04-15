@@ -1,8 +1,9 @@
-import axios from '../../../../../axios';
+// import axios from '../../../../../axios';
+import axiosWithHeaders from '01/axiosWithHeaders';
 
 export async function getReport(link: string) {
   try {
-    const res: any = await axios.get(link, {
+    const res: any = await axiosWithHeaders.get(link, {
       responseType: 'blob',
     });
     return res;
