@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
@@ -7,6 +6,7 @@ import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
+import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   node: NodeResponse;
@@ -15,12 +15,7 @@ interface HeaderInterface {
   setAddDevice: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({
-  node,
-  calculator,
-  setAddDevice,
-  nodeId,
-}: HeaderInterface) => {
+export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
@@ -46,13 +41,6 @@ export const Header = ({
         push(`/nodes/${nodeId}/edit`);
       },
     },
-    // {
-    //   title: 'Добавить новый прибор',
-    //   show: show('CalculatorUpdate'),
-    //   cb: () => {
-    //     setAddDevice(true);
-    //   },
-    // },
     {
       title: 'Поставить/Снять узел на коммерческий учёт',
       show: show('CalculatorUpdate'),

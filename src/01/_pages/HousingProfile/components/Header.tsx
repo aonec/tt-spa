@@ -1,8 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
-import styled from 'styled-components';
-import _ from 'lodash';
-import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components';
-import DeviceIcons from '01/_components/DeviceIcons';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import getAccessesList from '../../../_api/utils/getAccessesList';
@@ -11,7 +7,7 @@ import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
-import { setModalDeregisterVisible } from '../../../Redux/actions/actions';
+import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 
 interface HousingMeteringDeviceInterface {
   device: HousingMeteringDeviceResponse;

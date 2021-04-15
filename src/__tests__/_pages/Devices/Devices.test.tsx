@@ -1,5 +1,4 @@
 //@ts-nocheck
-
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -14,27 +13,26 @@ import DevicesFromSearch from '01/_pages/Devices';
 import { render as rtlRender } from '@testing-library/react';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
-// Import your own reducer
-import reducer from '../reducer';
-import rootReducer from '../../01/Redux/rootReducer';
+import { BrowserRouter as Router } from 'react-router-dom';
 import thunkMiddleWare from 'redux-thunk';
-import sinon from 'sinon';
+import rootReducer from '../../../01/Redux/rootReducer';
+import { devicesAPI } from '../../../01/_api/devices_page';
+import userEvent from '@testing-library/user-event/dist';
+import _ from 'lodash';
 
-window.matchMedia =
-  window.matchMedia ||
-  function () {
-    return {
-      matches: false,
-      addListener: function () {},
-      removeListener: function () {},
-    };
-  };
-
-delete global.window.location;
-const href = 'http://localhost:3000';
-global.window.location = { href };
-global.window.location.replace = () => {};
-// Make sure you import sinon
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -50,7 +48,11 @@ function render(
   } = {}
 ) {
   function Wrapper({ children }) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Router>
+        <Provider store={store}>{children}</Provider>
+      </Router>
+    );
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
@@ -283,20 +285,94 @@ const calculatorsResponse = {
     previousPageNumber: 1,
   },
 };
+const calculatorsResponseAfterSearch = _.cloneDeep(calculatorsResponse);
+const {
+  address: addressAfterSearch,
+} = calculatorsResponseAfterSearch.successResponse.items[0];
+addressAfterSearch.street = 'Космонавтов';
+
+const calculatorResponseAfterFilter = _.cloneDeep(calculatorsResponse);
+const {
+  address: addressAfterFilter,
+} = calculatorResponseAfterFilter.successResponse.items[0];
+addressAfterFilter.street = 'Патриса Лумумбы';
 
 const server = setupServer(
-  rest.get('Calculators/?pageNumber=1&pageSize=5', (req, res, ctx) => {
-    return res(ctx.json({ ...calculatorsResponse.successResponse }));
-  })
+  rest.get(
+    'https://transparent-staging.herokuapp.com/api/Calculators/',
+    (req, res, ctx) => {
+      const query = req.url.searchParams;
+      const pageNumber = query.get('pageNumber');
+      const pageSize = query.get('pageSize');
+      const Question = query.get('Question');
+      const Destination = query.get('OrderBy.Destination');
+      const Rule = query.get('OrderBy.Rule');
+      if (Question === null) {
+        return res(ctx.json(calculatorsResponse));
+      }
+      if (
+        Question ===
+          calculatorsResponseAfterSearch.successResponse.items[0]
+            .serialNumber &&
+        !Destination
+      ) {
+        return res(ctx.json(calculatorsResponseAfterSearch));
+      }
+      if (Destination === 'Ascending' && Rule === 'Street') {
+        return res(ctx.json(calculatorResponseAfterFilter));
+      }
+    }
+  )
 );
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+const waitForLoader = async () => {
+  await waitFor(() => {
+    expect(screen.getByRole('loader')).toBeInTheDocument();
+  });
+  await waitForElementToBeRemoved(() => screen.getByRole('loader'));
+};
 
-test('loads and displays greeting', async () => {
+beforeAll(() => server.listen());
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
+
+test('thunk called with right arguments', async () => {
+  jest.spyOn(devicesAPI, 'getDevices');
   render(<DevicesFromSearch />);
-  // await waitForElementToBeRemoved(() => screen.getByText(/загрузка/i));
+
+  await waitForLoader();
+
+  expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
+  expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
+    searchTerm: '',
+    expirationDate: '',
+    destination: '',
+    rule: '',
+  });
+  userEvent.click(
+    screen.getByRole('combobox', {
+      name: /сортировать по:/i,
+    })
+  );
+
+  expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
+
+  fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
+
+  await waitForLoader();
+
+  expect(devicesAPI.getDevices).toHaveBeenCalledTimes(2);
+  expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
+    searchTerm: '',
+    expirationDate: '',
+    destination: 'Ascending',
+    rule: 'Street',
+  });
+  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+});
+
+test('can load page and search for devices', async () => {
+  render(<DevicesFromSearch />);
 
   expect(
     screen.getByRole('heading', {
@@ -304,40 +380,58 @@ test('loads and displays greeting', async () => {
     })
   ).toBeInTheDocument();
 
-  // screen.debug(null, 20000);
+  await waitForLoader();
 
-  // await waitForElementToBeRemoved(() => {
-  //   screen.getByText(/загрузка/i);
-  // });
+  await waitFor(() => {
+    expect(
+      screen.getByText(
+        calculatorsResponse.successResponse.items[0].address.street,
+        { exact: false }
+      )
+    ).toBeInTheDocument();
+  });
 
-  // await waitFor(() => {
-  //   expect(screen.queryByText(/загрузка/i)).not.toBeInTheDocument();
-  // });
+  await waitFor(() => {
+    expect(
+      screen.getByText(
+        calculatorsResponse.successResponse.items[1].address.street,
+        { exact: false }
+      )
+    ).toBeInTheDocument();
+  });
 
-  await waitForElementToBeRemoved(screen.queryByText(/загрузка.../i));
+  userEvent.type(
+    screen.getByRole('textbox'),
+    calculatorsResponseAfterSearch.successResponse.items[0].serialNumber
+  );
 
-  // expect(screen.queryByText(/загрузка/i)).not.toBeInTheDocument();
+  await waitForLoader();
 
-  // fireEvent.click(screen.getByText('Load Greeting'));
-  // screen.debug();
-  // await waitFor(screen.getByLabelText(/загрузка/i));
-  // await waitFor(() => screen.getByRole('heading'));
+  await waitFor(() => {
+    expect(
+      screen.getByText(
+        calculatorsResponseAfterSearch.successResponse.items[0].address.street,
+        { exact: false }
+      )
+    ).toBeInTheDocument();
+  });
 
-  // expect(screen.getByRole('heading')).toHaveTextContent('hello there');
-  // expect(screen.getByRole('button')).toHaveAttribute('disabled');
+  userEvent.click(
+    screen.getByRole('combobox', {
+      name: /сортировать по:/i,
+    })
+  );
+
+  fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
+
+  await waitForLoader();
+
+  await waitFor(() => {
+    expect(
+      screen.getByText(
+        calculatorResponseAfterFilter.successResponse.items[0].address.street,
+        { exact: false }
+      )
+    ).toBeInTheDocument();
+  });
 });
-
-// test('handles server error', async () => {
-//   server.use(
-//     rest.get('/greeting', (req, res, ctx) => {
-//       return res(ctx.status(500));
-//     })
-//   );
-//
-//   fireEvent.click(screen.getByText('Load Greeting'));
-//
-//   await waitFor(() => screen.getByRole('alert'));
-//
-//   expect(screen.getByRole('alert')).toHaveTextContent('Oops, failed to fetch!');
-//   expect(screen.getByRole('button')).not.toHaveAttribute('disabled');
-// });
