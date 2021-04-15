@@ -13,8 +13,8 @@ export type DeviceSearchReducerStateType = {
   expirationDate: string;
   lowerDiameterRange: string;
   upperDiameterRange: string;
-  destination: 'Descending' | 'Ascending';
-  rule: 'FutureCheckingDate' | 'Street';
+  destination: string;
+  rule: string;
 };
 
 export type FilterParameterType =

@@ -6,7 +6,6 @@ import {
   StyledModalBody,
   StyledFormPage,
   InputTT,
-  Title,
   styles,
   RangePickerTT,
 } from '../../../../../tt-components';
@@ -21,6 +20,7 @@ import {
 } from '../../../../../../myApi';
 import { downloadReport } from './apiCommonReport';
 import { ModalInterface } from '../../../../../tt-components/interfaces';
+import Title from '../../../../../tt-components/Title';
 
 interface ObjectContextInterface {
   object: HousingStockResponse;
@@ -34,7 +34,6 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
   const handleCancel = () => {
     setVisible(false);
   };
-  // console.log(calculators)
   const ids = calculators?.map((calculator, index) => {
     const { id } = calculator;
     return `calculatorsId[${index}]=${id}`;

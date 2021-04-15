@@ -1,6 +1,4 @@
 import React from 'react';
-import { Loader, Title, Subtitle } from '01/_components';
-
 import { IndividualDeviceResponse } from '../../../../myApi';
 import { IconTT, HeaderWrap } from '../../../tt-components';
 import IsActive from '../../../tt-components/IsActive';
@@ -8,6 +6,8 @@ import { useHistory } from 'react-router-dom';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import MenuButtonTT from '../../../tt-components/MenuButtonTT';
 import { Breadcrumb } from '../../../tt-components/Breadcrumb';
+import { Loader } from '01/_components/Loader';
+import { Title, Subtitle } from '01/_components/Headers';
 
 interface HeaderInterface {
   device: IndividualDeviceResponse;

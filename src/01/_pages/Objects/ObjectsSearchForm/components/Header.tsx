@@ -1,13 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { Icon, Loader, HeaderWrap, Title, Subtitle } from '01/_components';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import getAccessesList from '../../../../_api/utils/getAccessesList';
 import { MenuButtonTT } from '../../../../tt-components';
 import styled from 'styled-components';
 import ModalGroupReport from '../../components/Modals/GroupReport';
+import { Title, HeaderWrap } from '01/_components/Headers';
 
 export const Header = () => {
-  const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
 
@@ -16,7 +14,6 @@ export const Header = () => {
   const menuButtonArr = [
     {
       title: 'Выгрузка группового отчёта',
-      // cb: () => push(`/calculators/edit`),
       cb: () => setGroupReport(true),
       show: show('ReportRead'),
       color: 'default',

@@ -43,7 +43,7 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
       </DeviceWrapper>
       <div>
         {calculator.nodes?.map((node) => (
-          <Node node={node} />
+          <Node node={node} key={node.id} />
         ))}
       </div>
     </>

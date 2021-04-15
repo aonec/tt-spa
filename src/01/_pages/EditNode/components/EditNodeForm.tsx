@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 import { Form } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
@@ -6,7 +6,6 @@ import {
   SelectTT,
   DatePickerTT,
   ButtonTT,
-  Title,
   StyledFooter,
   IconTT,
   styles,
@@ -27,6 +26,7 @@ import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
+import Title from '../../../tt-components/Title';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -46,13 +46,12 @@ const EditNodeForm = ({
   setDeregisterDevice,
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
-  const { visibleAddDevice, setVisibleAddDevice } = useContext(EditNodeContext);
+  const { setVisibleAddDevice } = useContext(EditNodeContext);
 
   if (!node) {
     return null;
   }
 
-  console.log('node', node);
   const {
     resource,
     number,
@@ -65,13 +64,7 @@ const EditNodeForm = ({
   } = node;
 
   const [form] = Form.useForm();
-  const {
-    setFieldsValue,
-    getFieldsValue,
-    getFieldValue,
-    validateFields,
-    getFieldsError,
-  } = form;
+  const { getFieldValue } = form;
 
   const onFinish = () => {
     console.log('onFinish');
@@ -89,7 +82,6 @@ const EditNodeForm = ({
       )?.toISOString(),
       calculatorId,
     };
-    // console.log('nodeForm', nodeForm);
 
     putNode(nodeId, nodeForm).then((res) => {
       console.log('putNode', res);
@@ -122,7 +114,6 @@ const EditNodeForm = ({
       onFieldsChange={(_, allFields) => {
         // onChange(allFields);
       }}
-      // onValuesChange={onFormLayoutChange}
       scrollToFirstError
     >
       <StyledFormPage hidden={Number(currentTabKey) !== 1}>
@@ -169,7 +160,6 @@ const EditNodeForm = ({
           />
         </Form.Item>
 
-        {/*{getFieldValue('nodeStatus') === 'Registered' ? (*/}
         <>
           <Form.Item
             style={styles.w100}
@@ -207,7 +197,6 @@ const EditNodeForm = ({
             />
           </Form.Item>
         </>
-        {/*) : null}*/}
       </StyledFormPage>
 
       <StyledFormPage hidden={Number(currentTabKey) !== 2}>

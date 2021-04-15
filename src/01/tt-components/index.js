@@ -1,4 +1,4 @@
-export * from './Title';
+// export * from './Title';
 export * from './Label';
 export * from './ConnectionTakesTime';
 export * from './Button';

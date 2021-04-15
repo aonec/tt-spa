@@ -1,5 +1,10 @@
 import axios from '../../axios';
-import { HousingMeteringDeviceResponse, TasksPagedList } from '../../../myApi';
+import {
+  HousingMeteringDeviceResponse,
+  TaskListResponse,
+  TasksPagedList,
+  TasksPagedListSuccessApiResponse,
+} from '../../../myApi';
 
 export async function getHousingMeteringDevice(id: number) {
   try {

@@ -26,7 +26,6 @@ export const useInformation = (state = {}) => {
         ];
       }
       if (/Исполнитель/i.test(title)) {
-        debugger;
         return [
           ...l,
           {
