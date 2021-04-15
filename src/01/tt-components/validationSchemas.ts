@@ -43,9 +43,7 @@ export const validationSchemaFlowMeter = Yup.object({
     .max(2, 'Укажите число до 2')
     .typeError('Введите число, значение не может быть пустым')
     .required('Введите номер ввода'),
-  model: Yup.string()
-    .min(3, 'Модель должна быть длиннее трех символов')
-    .required('Введите модель'),
+  model: Yup.string().required('Введите модель'),
   serialNumber: Yup.string()
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите серийный номер'),
@@ -65,9 +63,7 @@ export const validationSchemaFlowMeter = Yup.object({
 });
 
 export const validationSchemaTemperatureSensor = Yup.object({
-  model: Yup.string()
-    .min(3, 'Модель должна быть длиннее трех символов')
-    .required('Введите модель'),
+  model: Yup.string().required('Введите модель'),
   serialNumber: Yup.string()
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите серийный номер'),
