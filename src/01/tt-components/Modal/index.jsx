@@ -45,7 +45,14 @@ export const StyledFooter = styled.div.attrs((props) => ({
 `;
 
 export const StyledModal = styled(Modal)`
+  .ant-modal-header {
+    border: 0;
+  }
   .ant-modal-body {
+    padding: 0;
+  }
+
+  .ant-modal-footer {
     padding: 0;
   }
 `;
