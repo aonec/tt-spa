@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   StyledFooter,
   StyledModal,
@@ -12,7 +6,6 @@ import {
   StyledModalBody,
   StyledFormPage,
   InputTT,
-  Title,
   styles,
   RangePickerTT,
   SelectTT,
@@ -34,6 +27,7 @@ import {
 import { useAsync } from '../../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport } from './apiGroupReport';
+import Title from '../../../../../tt-components/Title';
 
 interface ModalPropsInterface {
   visible: boolean;
@@ -106,13 +100,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
       : [];
 
     const [form] = Form.useForm<GroupReportValuesInterface>();
-    const {
-      setFieldsValue,
-      getFieldsValue,
-      getFieldValue,
-      validateFields,
-      getFieldsError,
-    } = form;
+    const { setFieldsValue, getFieldValue, getFieldsError } = form;
 
     const onFinish = (values: GroupReportValuesInterface) => {
       console.log('values', values);

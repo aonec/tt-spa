@@ -14,7 +14,7 @@ const DevicesByAddress = ({
     id = null,
   } = addressDevicesGroup.address || {};
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
-    <DeviceBlock device={device} />
+    <DeviceBlock device={device} key={device.id} />
   ));
 
   return (

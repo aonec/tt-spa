@@ -15,7 +15,7 @@ const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {
     const devices = pipe.devices?.map((housingDevice) => {
       return (
-        <MeteringDeviceWrapper>
+        <MeteringDeviceWrapper key={housingDevice.id}>
           <div>
             <TitleWrapper>
               <DeviceLink to={`/housingMeteringDevices/${housingDevice.id}`}>

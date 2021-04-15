@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   node: NodeResponse;
@@ -14,10 +14,8 @@ interface HeaderInterface {
   setAddDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
-  const { push } = useHistory();
+export const Header = ({ node, calculator }: HeaderInterface) => {
   const access = getAccessesList();
-  const { show } = access;
 
   if (!node || !calculator) {
     return null;

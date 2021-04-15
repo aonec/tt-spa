@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';
 import ruRu from 'antd/es/locale/ru_RU';
+import { YMaps } from 'react-yandex-maps';
 import {
   Tasks,
   Login,
@@ -39,7 +40,6 @@ import EditODPU from '../_pages/EditHousingMeteringDevice';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
-import { YMaps } from 'react-yandex-maps';
 
 moment.locale('ru');
 

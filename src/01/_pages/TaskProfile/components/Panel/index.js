@@ -7,7 +7,7 @@ import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
 import { addReadings } from '../../hooks/usePanel';
-import { StyledTextArea } from '../../../../tt-components';
+import StyledTextArea from '../../../../tt-components/TextArea';
 
 const styles = css`
   panel {

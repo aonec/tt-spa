@@ -6,15 +6,14 @@ import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Title, Label, Button, Input, Icon } from '01/tt-components';
-
+import { Label, Button, Input, Icon } from '01/tt-components';
+import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 
 export const Main = styled.div`
   height: 100vh;
   padding: 40px;
   place-content: center;
-  /* background: var(--login-bg); */
   background: #12193d;
   color: #ffffff;
   display: grid;
@@ -56,10 +55,6 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
-
-  const someFunc = () => {
-    console.log('someFunc');
-  };
 
   async function FormSubmitHadler() {
     setLoading(true);

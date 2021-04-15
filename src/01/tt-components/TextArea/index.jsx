@@ -1,10 +1,10 @@
-import { Input } from 'antd';
 import React from 'react';
+import { Input } from 'antd';
 
 const { TextArea } = Input;
 
-export const StyledTextArea = ({ labelText, ...props }) => (
-  <div>
+const StyledTextArea = ({ labelText, ...props }) => (
+  <div style={{ gridArea: 'ta' }}>
     <label
       style={{
         fontSize: '16px',
@@ -19,5 +19,4 @@ export const StyledTextArea = ({ labelText, ...props }) => (
     <TextArea data-big data-primary {...props} style={{ marginTop: 8 }} />
   </div>
 );
-
 export default StyledTextArea;

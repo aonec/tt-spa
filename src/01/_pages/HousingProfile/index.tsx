@@ -1,6 +1,5 @@
 import { Route, useHistory, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Grid } from '01/_components';
 import { getHousingTasks, getHousingMeteringDevice } from './apiHousingProfile';
 import { Header } from './components/Header';
 import { Information } from './components/Information';
@@ -16,6 +15,7 @@ import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
 import ModalCheckDevice from '../../_modals/ModalCheckDevice';
 import Events from '../../tt-components/Events';
+import { Grid } from '01/_components/Grid';
 
 export const HousingProfile = () => {
   const { deviceId } = useParams();

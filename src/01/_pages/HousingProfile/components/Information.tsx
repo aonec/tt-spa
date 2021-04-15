@@ -1,15 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { convertDateDots } from '01/_api/utils/convertDate';
-import { Loader } from '01/components';
-import { ListWrap, ListItem, Title } from '01/_components/List';
-import _ from 'lodash';
-import { Subtitle } from '../../../_components';
+import { ListWrap, ListItem } from '01/_components/List';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
   magistrals,
 } from '../../../tt-components/localBases';
 import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { Subtitle } from '../../../_components/Headers';
 
 interface InformationInterface {
   device: HousingMeteringDeviceResponse;
@@ -20,7 +18,6 @@ export const Information = ({ device }: InformationInterface) => {
     return null;
   }
 
-  // console.log('device', device);
   const { address } = device || {};
   const { city, street, housingStockNumber, corpus, id } =
     address || DEFAULT_BUILDING;
@@ -32,7 +29,7 @@ export const Information = ({ device }: InformationInterface) => {
     diameter,
     housingMeteringDeviceType,
     hubConnection: {
-      hub: { entryNumber, pipeNumber, magistral },
+      hub: { magistral },
     },
   } = device || DEFAULT_DEVICE;
 
