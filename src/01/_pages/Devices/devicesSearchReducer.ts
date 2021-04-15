@@ -2,8 +2,7 @@ import { Action } from 'redux';
 
 enum DevicesSearchActions {
   SET_EXPIRATION_DATE = 'SET_EXPIRATION_DATE',
-  SET_LOWER_DIAMETER_RANGE = 'SET_LOWER_DIAMETER_RANGE',
-  SET_UPPER_DIAMETER_RANGE = 'SET_UPPER_DIAMETER_RANGE',
+  SET_DIAMETER_RANGE = 'SET_DIAMETER_RANGE',
   SET_SEARCHTERM = 'SET_SEARCHTERM',
   SET_DEVICES_FILTER = 'SET_DEVICES_FILTER',
 }
@@ -11,10 +10,9 @@ enum DevicesSearchActions {
 export type DeviceSearchReducerStateType = {
   searchTerm: string;
   expirationDate: string;
-  lowerDiameterRange: string;
-  upperDiameterRange: string;
-  destination: string;
-  rule: string;
+  diameterRange: [number, number];
+  destination: 'Descending' | 'Ascending';
+  rule: 'FutureCheckingDate' | 'Street';
 };
 
 export type FilterParameterType =
@@ -40,18 +38,10 @@ const devicesSearchReducer = (
         expirationDate: (action as SetExpirationDateInterface).expirationDate,
       };
 
-    case DevicesSearchActions.SET_LOWER_DIAMETER_RANGE:
+    case DevicesSearchActions.SET_DIAMETER_RANGE:
       return {
         ...state,
-        lowerDiameterRange: (action as SetLowerDiameterRange)
-          .lowerDiameterRange,
-      };
-
-    case DevicesSearchActions.SET_UPPER_DIAMETER_RANGE:
-      return {
-        ...state,
-        upperDiameterRange: (action as SetUpperDiameterRangeInterface)
-          .upperDiameterRange,
+        diameterRange: (action as SetDiameterRangeInterface).diameterRange,
       };
 
     case DevicesSearchActions.SET_DEVICES_FILTER:
@@ -107,26 +97,15 @@ export const setExpirationDate = (
   expirationDate,
 });
 
-interface SetLowerDiameterRange extends ActionCreatorsInterface {
-  lowerDiameterRange: string;
+interface SetDiameterRangeInterface extends ActionCreatorsInterface {
+  diameterRange: [number, number];
 }
 
-export const setLowerDiameterRange = (
-  lowerDiameterRange: string
-): SetLowerDiameterRange => ({
-  type: DevicesSearchActions.SET_LOWER_DIAMETER_RANGE,
-  lowerDiameterRange,
-});
-
-interface SetUpperDiameterRangeInterface extends ActionCreatorsInterface {
-  upperDiameterRange: string;
-}
-
-export const setUpperDiameterRange = (
-  upperDiameterRange: string
-): SetUpperDiameterRangeInterface => ({
-  type: DevicesSearchActions.SET_UPPER_DIAMETER_RANGE,
-  upperDiameterRange,
+export const setDiameterRange = (
+  diameterRange: [number, number]
+): SetDiameterRangeInterface => ({
+  type: DevicesSearchActions.SET_DIAMETER_RANGE,
+  diameterRange,
 });
 
 interface SetSearchTermInterface extends ActionCreatorsInterface {
@@ -151,8 +130,7 @@ export const setDevicesFilter = (
 
 export type DeviceSearchActionTypes =
   | SetExpirationDateInterface
-  | SetLowerDiameterRange
-  | SetUpperDiameterRangeInterface
+  | SetDiameterRangeInterface
   | SetSearchTermInterface
   | SetDevicesFilterInterface;
 

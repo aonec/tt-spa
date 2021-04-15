@@ -4,7 +4,7 @@ export const devicesAPI = {
   async getDevices(
     pageNumber,
     pageSize,
-    { searchTerm, expirationDate, destination, rule }
+    { searchTerm, expirationDate, destination, rule, diameterRange }
   ) {
     try {
       const extraQuery =
@@ -14,6 +14,9 @@ export const devicesAPI = {
           : '') +
         (rule
           ? `&OrderBy.Destination=${destination}&OrderBy.Rule=${rule}`
+          : '') +
+        (diameterRange
+          ? `&Filter.DiameterRange.From=${diameterRange[0]}&Filter.DiameterRange.To=${diameterRange[1]}`
           : '');
       const res = await axios.get(
         `Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${extraQuery}`

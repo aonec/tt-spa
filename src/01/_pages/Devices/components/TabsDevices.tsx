@@ -22,8 +22,9 @@ const { TabPane } = Tabs;
 
 const initialState = {
   expirationDate: '',
-  destination: '',
-  rule: '',
+  diameterRange: [0, 255] as [number, number],
+  destination: undefined,
+  rule: undefined,
   searchTerm: '',
 };
 
