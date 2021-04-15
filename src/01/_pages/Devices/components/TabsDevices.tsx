@@ -73,7 +73,7 @@ const TabsDevices = () => {
           dispatchSearchState={dispatchSearchState}
         />
         {devicePage.isLoading ? (
-          <div aria-label="loading">
+          <div role="loader">
             ЗАГРУЗКА...
             <Loader show />
           </div>

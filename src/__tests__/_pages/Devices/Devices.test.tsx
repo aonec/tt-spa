@@ -1,5 +1,4 @@
 //@ts-nocheck
-
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -20,7 +19,6 @@ import rootReducer from '../../../01/Redux/rootReducer';
 import { devicesAPI } from '../../../01/_api/devices_page';
 import userEvent from '@testing-library/user-event/dist';
 import _ from 'lodash';
-import { Objects } from '../../../01/_pages/Objects';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -327,6 +325,13 @@ const server = setupServer(
   )
 );
 
+const waitForLoader = async () => {
+  await waitFor(() => {
+    expect(screen.getByRole('loader')).toBeInTheDocument();
+  });
+  await waitForElementToBeRemoved(() => screen.getByRole('loader'));
+};
+
 beforeAll(() => server.listen());
 afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
@@ -335,9 +340,7 @@ test('thunk called with right arguments', async () => {
   jest.spyOn(devicesAPI, 'getDevices');
   render(<DevicesFromSearch />);
 
-  expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
-  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+  await waitForLoader();
 
   expect(devicesAPI.getDevices).toHaveBeenCalledTimes(1);
   expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
@@ -355,9 +358,9 @@ test('thunk called with right arguments', async () => {
   expect(screen.getByText(/улице \(возр\.\)/i)).toBeInTheDocument();
 
   fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
-  await waitFor(() =>
-    expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument()
-  );
+
+  await waitForLoader();
+
   expect(devicesAPI.getDevices).toHaveBeenCalledTimes(2);
   expect(devicesAPI.getDevices).toHaveBeenCalledWith(1, 5, {
     searchTerm: '',
@@ -365,7 +368,6 @@ test('thunk called with right arguments', async () => {
     destination: 'Ascending',
     rule: 'Street',
   });
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
   expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
 });
 
@@ -378,10 +380,8 @@ test('can load page and search for devices', async () => {
     })
   ).toBeInTheDocument();
 
-  expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
+  await waitForLoader();
 
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
-  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
   await waitFor(() => {
     expect(
       screen.getByText(
@@ -405,11 +405,7 @@ test('can load page and search for devices', async () => {
     calculatorsResponseAfterSearch.successResponse.items[0].serialNumber
   );
 
-  await waitFor(() => {
-    expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
-  });
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
-  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
+  await waitForLoader();
 
   await waitFor(() => {
     expect(
@@ -428,12 +424,7 @@ test('can load page and search for devices', async () => {
 
   fireEvent.click(screen.getByText(/улице \(возр\.\)/i));
 
-  await waitFor(() => {
-    expect(screen.getByText('ЗАГРУЗКА...')).toBeInTheDocument();
-  });
-  await waitForElementToBeRemoved(() => screen.getByText('ЗАГРУЗКА...'));
-  expect(screen.queryByText('ЗАГРУЗКА...')).not.toBeInTheDocument();
-  screen.debug(null, 50000);
+  await waitForLoader();
 
   await waitFor(() => {
     expect(
