@@ -28,10 +28,11 @@ import { useAsync } from '../../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport } from './apiGroupReport';
 import Title from '../../../../../tt-components/Title';
+import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
 
 interface ModalPropsInterface {
   visible: boolean;
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  setVisible: Dispatch<SetStateAction<ReportModalType>>;
 }
 
 interface GroupReportValuesInterface {
@@ -53,7 +54,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
   const { data, status, run } = useAsync<GroupReportFormResponse>();
 
   const handleCancel = () => {
-    setVisible(false);
+    setVisible(undefined);
   };
 
   useEffect(() => {
@@ -100,12 +101,22 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
       : [];
 
     const [form] = Form.useForm<GroupReportValuesInterface>();
-    const { setFieldsValue, getFieldValue, getFieldsError } = form;
+    (window as any).form = form;
+    // const values = form.getFieldsValue();
+    const {
+      setFieldsValue,
+      getFieldValue,
+      getFieldsError,
+      getFieldsValue,
+    } = form;
 
     const onFinish = (values: GroupReportValuesInterface) => {
       console.log('values', values);
-      const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-      const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
+      const beginDay = moment(getFieldValue('dates')[0]);
+      const endDay = moment(getFieldValue('dates')[1]);
+      const beginDayQuery = beginDay.format('YYYY-MM-DD');
+      const endDayQuery = endDay.format('YYYY-MM-DD');
+      const daysCount = endDay.diff(beginDay, 'days');
 
       const resources = getFieldValue('resource').map(
         (item: string, index: number) => {
@@ -113,17 +124,23 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
         }
       );
       const resResources = resources.join('&');
+      const valuess = getFieldsValue();
+      debugger;
+
+      if (daysCount >= 30 && getFieldValue('detailing') === 'hourly') {
+        setVisible('currentEmailForm');
+      }
 
       if (subscription) {
         console.log('C подпиской');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
       }
       if (!subscription) {
         console.log('Без подписки');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
@@ -287,7 +304,10 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
               style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}
             >
               <Form.Item name="subscribe">
-                <SwitchTT onChange={handleSwitch} />
+                <SwitchTT
+                  onChange={handleSwitch}
+                  disabled={getFieldsValue().period === 'customPeriod'}
+                />
               </Form.Item>
               <div style={{ paddingLeft: 16 }}>
                 <SwitchHeader>Регулярная выгрузка отчёта</SwitchHeader>

@@ -19,7 +19,6 @@ export const ModalCalculatorReport = ({
   device,
 }: ModalCalculatorReportInterface) => {
   const { pathname } = useLocation();
-  debugger;
   if (!report || !setReport || !device) {
     return null;
   }
