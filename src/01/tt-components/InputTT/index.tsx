@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Input } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
+import { InputProps } from 'antd/lib/input';
 
 interface Props {
   value?: any;
@@ -11,7 +12,7 @@ interface Props {
   // value: string | number | null
 }
 
-export const InputTT = styled(Input)<Props>`
+export const InputTT = styled(Input)<Props & InputProps>`
   color: rgba(39, 47, 90, 0.8);
   box-sizing: border-box;
   border-radius: 4px;

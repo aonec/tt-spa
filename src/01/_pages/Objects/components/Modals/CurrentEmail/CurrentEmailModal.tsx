@@ -15,6 +15,7 @@ const CurrentEmailModal = ({
     <StyledModal
       visible={visible}
       title={<Header>Отправить отчёт на почту</Header>}
+      onCancel={() => setVisible(undefined)}
       width={800}
       footer={
         <Footer>

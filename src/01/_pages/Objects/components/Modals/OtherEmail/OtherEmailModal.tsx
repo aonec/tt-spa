@@ -1,8 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import ButtonTT from '../../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
-import { Modal } from 'antd';
+import { Modal, Form, Button } from 'antd';
 import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
+import { useFormik } from 'formik';
+import InputTT from '../../../../../tt-components/InputTT';
 
 const OtherEmailModal = ({
   visible,
@@ -11,30 +13,48 @@ const OtherEmailModal = ({
   visible: boolean;
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
 }) => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    onSubmit: (values, actions) => {
+      debugger;
+      alert(JSON.stringify(values, null, 2));
+      setTimeout(() => actions.setSubmitting(false), 1000);
+    },
+  });
   return (
     <StyledModal
+      confirmLoading={formik.isSubmitting}
       visible={visible}
       title={<Header>Новая почта для отправки отчёта</Header>}
       width={800}
+      onCancel={() => setVisible(undefined)}
       footer={
         <Footer>
-          <ButtonTT
-            color={'white'}
-            key="submit"
-            onClick={() => setVisible(undefined)}
-          >
+          <ButtonTT color={'white'} onClick={() => setVisible(undefined)}>
             Отмена
           </ButtonTT>
-          <ButtonTT color={'blue'} key="back" onClick={() => alert('net')}>
+          <Button
+            type="primary"
+            color={'blue'}
+            onClick={() => formik.handleSubmit()}
+            // disabled={formik.isSubmitting}
+          >
             Отправить отчёт
-          </ButtonTT>
+          </Button>
         </Footer>
       }
     >
-      <p style={{ color: 'var(--main-100)', margin: 0 }}>
-        Вы внесли не все показания, если вы покинете страницу, то все изменения,
-        которые были сделаны вами на этой странице не сохранятся
-      </p>
+      <Form>
+        <Form.Item name="email">
+          <InputTT
+            name="email"
+            placeholder="Email"
+            onChange={formik.handleChange}
+          />
+        </Form.Item>
+      </Form>
     </StyledModal>
   );
 };
