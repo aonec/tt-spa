@@ -13,22 +13,22 @@ import {
   SwitchTT,
   DatePickerTT,
   MultiSelectTT,
-} from '../../../../../tt-components';
+} from '../../../../tt-components/index';
 
 import { Divider, Form, Radio } from 'antd';
 
 import moment, { Moment } from 'moment';
-import { getReports } from '../../../apiObjects';
+import { getReports } from '../../../../_pages/Objects/apiObjects';
 import {
   GroupReportFormResponse,
   NodeCommercialAccountStatus,
   ResourceType,
-} from '../../../../../../myApi';
-import { useAsync } from '../../../../../hooks/useAsync';
+} from '../../../../../myApi';
+import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport } from './apiGroupReport';
-import Title from '../../../../../tt-components/Title';
-import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
+import Title from '../../../../tt-components/Title';
+import { ReportModalType } from '../../store/groupReportReducer';
 
 interface ModalPropsInterface {
   visible: boolean;
@@ -76,7 +76,6 @@ const ModalGroupReport = ({
     console.log('data', data);
     const [subscription, setSubscription] = useState(false);
     const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
-    const reportName = `Выгрузка группового отчёта`;
     const { groupReports, nodeResourceTypes, nodeStatuses, contractors } = data;
 
     const groupReportsOptions = groupReports
@@ -132,8 +131,6 @@ const ModalGroupReport = ({
         }
       );
       const resResources = resources.join('&');
-      const valuess = getFieldsValue();
-      debugger;
 
       if (daysCount >= 30 && getFieldValue('detailing') === 'hourly') {
         setVisible('currentEmailForm');
@@ -181,18 +178,6 @@ const ModalGroupReport = ({
         default:
           setIsPeriodDisabled(true);
       }
-    };
-    const initialValues = {
-      name: reportName,
-      address: 'addressString',
-      period: 'currentMonth',
-      dates: [moment().startOf('month'), moment()],
-      detailing: 'daily',
-      hidden: true,
-      subscribePeriod: 'OncePerMonth',
-      nextDate: undefined,
-      email: undefined,
-      subscribe: false,
     };
 
     const handleSwitch = (event: boolean) => {

@@ -1,4 +1,4 @@
-import { getReport } from '../../../../CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
+import { getReport } from '../../../../_pages/CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 
 export function downloadReport(link: string, fileName: string) {
   getReport(link).then((response: any) => {

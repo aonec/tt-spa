@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import ButtonTT from '../../../../../tt-components/ButtonTT';
+import ButtonTT from '../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
-import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
 import { GroupReportValuesInterface } from '../GroupReport';
+import { ReportModalType } from '../../store/groupReportReducer';
 
 const CurrentEmailModal = ({
   visible,

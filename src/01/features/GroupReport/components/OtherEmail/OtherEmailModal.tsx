@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import ButtonTT from '../../../../../tt-components/ButtonTT';
+import ButtonTT from '../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Modal, Form, Button } from 'antd';
-import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
+import { ReportModalType } from '../../../../_pages/Objects/ObjectsSearchForm/components/Header';
 import { useFormik } from 'formik';
-import InputTT from '../../../../../tt-components/InputTT';
+import InputTT from '../../../../tt-components/InputTT';
 import { GroupReportValuesInterface } from '../GroupReport';
 
 const OtherEmailModal = ({

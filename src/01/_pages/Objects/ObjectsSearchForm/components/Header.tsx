@@ -4,10 +4,12 @@ import { MenuButtonTT } from '../../../../tt-components';
 import styled from 'styled-components';
 import ModalGroupReport, {
   GroupReportValuesInterface,
-} from '../../components/Modals/GroupReport';
+} from '../../../../features/GroupReport/components/GroupReport';
 import { Title, HeaderWrap } from '01/_components/Headers';
-import CurrentEmailModal from '../../components/Modals/CurrentEmail/CurrentEmailModal';
-import OtherEmailModal from '../../components/Modals/OtherEmail/OtherEmailModal';
+import CurrentEmailModal from '../../../../features/GroupReport/components/CurrentEmail/CurrentEmailModal';
+import OtherEmailModal from '../../../../features/GroupReport/components/OtherEmail/OtherEmailModal';
+import GroupReport from '../../../../features/GroupReport';
+import { ReportModalType } from '../../../../features/GroupReport/store/groupReportReducer';
 
 export const Header = () => {
   const access = getAccessesList();
@@ -31,28 +33,15 @@ export const Header = () => {
     },
   ];
 
-  const isReportModalModalVisible = groupReportStatus === 'reportForm';
-  const isCurrentEmailModalVisible = groupReportStatus === 'currentEmailForm';
-  const isOtherEmailModalVisible = groupReportStatus === 'otherEmailForm';
-
   return (
     <ObjectHeader>
-      <ModalGroupReport
-        visible={isReportModalModalVisible}
-        setVisible={setGroupReportStatus}
-        setGroupReportFormState={setGroupReportFormState}
-      />
-      <CurrentEmailModal
-        visible={isCurrentEmailModalVisible}
-        setVisible={setGroupReportStatus}
-        groupReportFormState={groupReportFormState}
-      />
-      <OtherEmailModal
-        visible={isOtherEmailModalVisible}
-        setVisible={setGroupReportStatus}
-        groupReportFormState={groupReportFormState}
-      />
       <Title>Объекты</Title>
+      <GroupReport
+        groupReportStatus={groupReportStatus}
+        setGroupReportStatus={setGroupReportStatus}
+        setGroupReportFormState={setGroupReportFormState}
+        groupReportFormState={groupReportFormState}
+      />
       <div style={{ position: 'relative' }}>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </div>
@@ -60,11 +49,6 @@ export const Header = () => {
   );
 };
 
-export type ReportModalType =
-  | 'reportForm'
-  | 'currentEmailForm'
-  | 'otherEmailForm'
-  | undefined;
 export default Header;
 
 const ObjectHeader = styled(HeaderWrap)`
