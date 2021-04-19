@@ -9,7 +9,6 @@ import { getIndividualDevice } from '../../_api/apiRequests';
 import IndividualDeviceEditForm from './components/IndividualDeviceEditForm';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
-import EditOdpuContext from '../EditHousingMeteringDevice/components/EditOdpuContext';
 
 export const IndividualDeviceEdit = () => {
   const { push } = useHistory();

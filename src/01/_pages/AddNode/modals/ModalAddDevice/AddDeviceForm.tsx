@@ -11,7 +11,6 @@ import {
   isConnected,
 } from '../../../../tt-components/localBases';
 import {
-  Title,
   SelectTT,
   InputTT,
   DatePickerTT,
@@ -32,6 +31,7 @@ import {
   AlertInterface,
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
+import Title from '../../../../tt-components/Title';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;

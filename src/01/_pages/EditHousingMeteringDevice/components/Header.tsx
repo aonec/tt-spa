@@ -1,11 +1,11 @@
 import React from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { IconTT } from '../../../tt-components';
 import { HousingMeteringDeviceResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
 } from '../../../tt-components/localBases';
+import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HousingMeteringDeviceInterface {
   device: HousingMeteringDeviceResponse;

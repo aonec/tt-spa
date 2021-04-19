@@ -3,15 +3,13 @@ import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
 import axios, { cancel } from '01/axios';
-import { Loader, Icon } from '01/components';
+import { Loader, Icon } from '../../components';
 import ObjectsSearchForm from './ObjectsSearchForm/ObjectsSearchForm';
 import { objectsSearchReducer } from '../../Redux/reducers/objectsSearchReducer';
 import { formQueryString } from '../../utils/formQueryString';
 import { useDebounce } from '../../hooks/useDebounce';
-import { IconWithTooltip } from '../../components/NotConnectedIcon/IconWithTooltip';
 import { sortObjects } from '../../utils/sortObjects';
 import Header from './ObjectsSearchForm/components/Header';
-import ModalGroupReport from './components/Modals/GroupReport';
 
 const styles = css`
   obj_item {

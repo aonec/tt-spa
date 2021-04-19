@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { HeaderWrap, Title, Subtitle } from '01/_components';
+// import { HeaderWrap, Title, Subtitle } from '01/_components';
 import { AddNodeContext } from '../AddNodeContext';
 import { Breadcrumb } from '../../../tt-components';
+import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 export const Header = () => {
   const { housingStock } = useContext(AddNodeContext);
