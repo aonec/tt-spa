@@ -18,6 +18,7 @@ import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import Index from '../../tt-components/Breadcrumb';
 import TaskComments from './components/Comments/TaskComments';
+import NodeInformation from '../NodeProfile/components/Information';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -61,8 +62,9 @@ export const TaskProfile = () => {
   // ?
   const infoDevice = useInformationDevice(state);
 
-  const { device } = state;
+  const { device, node } = state;
   const { type, id } = device || {};
+  debugger;
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
@@ -80,6 +82,22 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
+
+          <h2>Узел 1</h2>
+          <NodeInformation
+            node={node}
+            calculator={{
+              address: {
+                apartmentId: null,
+                apartmentNumber: null,
+                city: 'Нижнекамск',
+                corpus: null,
+                housingStockNumber: '34',
+                id: 604,
+                street: 'Мурадьяна',
+              },
+            }}
+          />
         </div>
         <Stages {...stages} state={state} />
       </grid>
