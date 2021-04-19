@@ -33,9 +33,12 @@ import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
 interface ModalPropsInterface {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
+  setGroupReportFormState: Dispatch<
+    SetStateAction<GroupReportValuesInterface | undefined>
+  >;
 }
 
-interface GroupReportValuesInterface {
+export interface GroupReportValuesInterface {
   group: string;
   name: string;
   resource: Array<ResourceType>;
@@ -50,7 +53,11 @@ interface GroupReportValuesInterface {
   subscribePeriod?: 'OncePerTwoWeeks' | 'OncePerMonth' | 'OncePerQuarter';
 }
 
-const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
+const ModalGroupReport = ({
+  visible,
+  setVisible,
+  setGroupReportFormState,
+}: ModalPropsInterface) => {
   const { data, status, run } = useAsync<GroupReportFormResponse>();
 
   const handleCancel = () => {
@@ -111,6 +118,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
     } = form;
 
     const onFinish = (values: GroupReportValuesInterface) => {
+      setGroupReportFormState(values);
       console.log('values', values);
       const beginDay = moment(getFieldValue('dates')[0]);
       const endDay = moment(getFieldValue('dates')[1]);

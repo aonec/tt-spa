@@ -3,13 +3,16 @@ import ButtonTT from '../../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
 import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
+import { GroupReportValuesInterface } from '../GroupReport';
 
 const CurrentEmailModal = ({
   visible,
   setVisible,
+  groupReportFormState,
 }: {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
+  groupReportFormState: GroupReportValuesInterface | undefined;
 }) => {
   return (
     <StyledModal

@@ -64,7 +64,7 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
 
       // const fileName = `Сводное потребление в системах объектов учета с 15.03.2021 по 20.03.2021.xlsx`
       const fileName = `Сводное потребление в системах объектов учета с ${beginName} по ${endName}.xlsx`;
-      downloadReport(link, fileName);
+      downloadReport(link);
     };
 
     const onFinishFailed = (errorInfo: any) => {

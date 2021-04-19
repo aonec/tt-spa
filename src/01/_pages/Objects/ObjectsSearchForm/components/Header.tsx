@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import getAccessesList from '../../../../_api/utils/getAccessesList';
 import { MenuButtonTT } from '../../../../tt-components';
 import styled from 'styled-components';
-import ModalGroupReport from '../../components/Modals/GroupReport';
+import ModalGroupReport, {
+  GroupReportValuesInterface,
+} from '../../components/Modals/GroupReport';
 import { Title, HeaderWrap } from '01/_components/Headers';
 import CurrentEmailModal from '../../components/Modals/CurrentEmail/CurrentEmailModal';
 import OtherEmailModal from '../../components/Modals/OtherEmail/OtherEmailModal';
@@ -11,36 +13,44 @@ export const Header = () => {
   const access = getAccessesList();
   const { show } = access;
 
-  const [groupReport, setGroupReport] = useState<ReportModalType>(undefined);
+  const [groupReportStatus, setGroupReportStatus] = useState<ReportModalType>(
+    undefined
+  );
+  const [groupReportFormState, setGroupReportFormState] = useState<
+    GroupReportValuesInterface | undefined
+  >(undefined);
 
   const menuButtonArr = [
     {
       title: 'Выгрузка группового отчёта',
       // cb: () => setGroupReport('reportForm'),
-      cb: () => setGroupReport('currentEmailForm'),
+      cb: () => setGroupReportStatus('reportForm'),
       show: show('ReportRead'),
       color: 'default',
       clickable: false,
     },
   ];
 
-  const isReportModalModalVisible = groupReport === 'reportForm';
-  const isCurrentEmailModalVisible = groupReport === 'currentEmailForm';
-  const isOtherEmailModalVisible = groupReport === 'otherEmailForm';
+  const isReportModalModalVisible = groupReportStatus === 'reportForm';
+  const isCurrentEmailModalVisible = groupReportStatus === 'currentEmailForm';
+  const isOtherEmailModalVisible = groupReportStatus === 'otherEmailForm';
 
   return (
     <ObjectHeader>
       <ModalGroupReport
         visible={isReportModalModalVisible}
-        setVisible={setGroupReport}
+        setVisible={setGroupReportStatus}
+        setGroupReportFormState={setGroupReportFormState}
       />
       <CurrentEmailModal
         visible={isCurrentEmailModalVisible}
-        setVisible={setGroupReport}
+        setVisible={setGroupReportStatus}
+        groupReportFormState={groupReportFormState}
       />
       <OtherEmailModal
         visible={isOtherEmailModalVisible}
-        setVisible={setGroupReport}
+        setVisible={setGroupReportStatus}
+        groupReportFormState={groupReportFormState}
       />
       <Title>Объекты</Title>
       <div style={{ position: 'relative' }}>

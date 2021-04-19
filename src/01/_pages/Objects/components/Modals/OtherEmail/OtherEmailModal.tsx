@@ -5,13 +5,16 @@ import { Modal, Form, Button } from 'antd';
 import { ReportModalType } from '../../../ObjectsSearchForm/components/Header';
 import { useFormik } from 'formik';
 import InputTT from '../../../../../tt-components/InputTT';
+import { GroupReportValuesInterface } from '../GroupReport';
 
 const OtherEmailModal = ({
   visible,
   setVisible,
+  groupReportFormState,
 }: {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
+  groupReportFormState: GroupReportValuesInterface | undefined;
 }) => {
   const formik = useFormik({
     initialValues: {
@@ -21,15 +24,20 @@ const OtherEmailModal = ({
       debugger;
       alert(JSON.stringify(values, null, 2));
       setTimeout(() => actions.setSubmitting(false), 1000);
+      // sendEmail(values, email)
+      //   .then(() => setIsVisible(undefined))
+      //   .catch((e) => setError(e));
     },
   });
   return (
     <StyledModal
-      confirmLoading={formik.isSubmitting}
+      // confirmLoading={formik.isSubmitting}
+      confirmLoading={true}
       visible={visible}
       title={<Header>Новая почта для отправки отчёта</Header>}
       width={800}
       onCancel={() => setVisible(undefined)}
+      onOk={() => formik.handleSubmit()}
       footer={
         <Footer>
           <ButtonTT color={'white'} onClick={() => setVisible(undefined)}>
@@ -39,6 +47,7 @@ const OtherEmailModal = ({
             type="primary"
             color={'blue'}
             onClick={() => formik.handleSubmit()}
+            loading={formik.isSubmitting}
             // disabled={formik.isSubmitting}
           >
             Отправить отчёт
@@ -48,6 +57,7 @@ const OtherEmailModal = ({
     >
       <Form>
         <Form.Item name="email">
+          {/*{error ? <div> error.message</div> : null}*/}
           <InputTT
             name="email"
             placeholder="Email"
