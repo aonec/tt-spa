@@ -25,12 +25,12 @@ export const Devices = ({ calculators }) => {
     const [tasks, setTasks] = useState([]);
     const { id, model, serialNumber, closingDate, nodes } = calculator;
 
-    useEffect(() => {
-      getDeviceTasks(id).then((res) => {
-        const { items } = res;
-        setTasks(items);
-      });
-    }, []);
+    // useEffect(() => {
+    //   getDeviceTasks(id).then((res) => {
+    //     const { items } = res;
+    //     setTasks(items);
+    //   });
+    // }, []);
 
     const CalculatorTasksIcon = () =>
       tasks.length > 0 ? <IconTT icon="alarm" /> : null;
