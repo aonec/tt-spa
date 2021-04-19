@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Loader, Icon } from '01/components';
 import styledComp from 'styled-components';
+import { Icon as IconTT } from '../../../tt-components/Icon';
 
 import { time_line } from '01/r_comp';
 import { Link, useHistory } from 'react-router-dom';
@@ -113,6 +114,7 @@ export const TasksList = ({ items }) => {
         calendar,
         perpetrator,
         showExecutor,
+        node,
       }) => (
         <task_item
           to={`/tasks/${id}`}
@@ -164,6 +166,13 @@ export const TasksList = ({ items }) => {
                 <device_number as="span">({device.serialNumber})</device_number>
               </device>
             )}
+            {node ? (
+              <device>
+                <IconTT icon="calculator" fill="black" />
+                <device_model as="span">{node.id}</device_model>{' '}
+                <device_number as="span">({node.id})</device_number>
+              </device>
+            ) : null}
             <addr>
               <Icon icon="map" />
               {/* {address} */}
