@@ -174,11 +174,6 @@ export function App() {
     <Provider store={store}>
       <AppProvider>
         <ConfigProvider locale={ruRu}>
-          <YMInitializer
-            accounts={[75427876]}
-            options={{ webvisor: true }}
-            version="2"
-          />
           <YMaps>
             <Internal />
           </YMaps>
