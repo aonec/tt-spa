@@ -9,7 +9,11 @@ import { Title, HeaderWrap } from '01/_components/Headers';
 import CurrentEmailModal from '../../../../features/GroupReport/components/CurrentEmail/CurrentEmailModal';
 import OtherEmailModal from '../../../../features/GroupReport/components/OtherEmail/OtherEmailModal';
 import GroupReport from '../../../../features/GroupReport';
-import { ReportModalType } from '../../../../features/GroupReport/store/groupReportReducer';
+import {
+  ReportModalType,
+  setGroupStatus,
+} from '../../../../features/GroupReport/models/groupReportReducer';
+import { useAppDispatch } from '../../../../Redux/store';
 
 export const Header = () => {
   const access = getAccessesList();
@@ -22,11 +26,13 @@ export const Header = () => {
     GroupReportValuesInterface | undefined
   >(undefined);
 
+  const dispatch = useAppDispatch();
+
   const menuButtonArr = [
     {
       title: 'Выгрузка группового отчёта',
-      // cb: () => setGroupReport('reportForm'),
-      cb: () => setGroupReportStatus('reportForm'),
+      // cb: () => setGroupStatus('reportForm'),
+      cb: () => dispatch(setGroupStatus('reportForm')),
       show: show('ReportRead'),
       color: 'default',
       clickable: false,
@@ -36,12 +42,7 @@ export const Header = () => {
   return (
     <ObjectHeader>
       <Title>Объекты</Title>
-      <GroupReport
-        groupReportStatus={groupReportStatus}
-        setGroupReportStatus={setGroupReportStatus}
-        setGroupReportFormState={setGroupReportFormState}
-        groupReportFormState={groupReportFormState}
-      />
+      <GroupReport />
       <div style={{ position: 'relative' }}>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </div>

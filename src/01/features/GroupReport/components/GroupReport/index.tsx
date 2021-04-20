@@ -28,10 +28,15 @@ import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport } from './apiGroupReport';
 import Title from '../../../../tt-components/Title';
-import { ReportModalType } from '../../store/groupReportReducer';
+import {
+  ReportModalType,
+  setGroupStatus,
+  setForm,
+} from '../../models/groupReportReducer';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
+import { useDispatch } from 'react-redux';
 
 interface ModalPropsInterface {
-  visible: boolean;
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
   setGroupReportFormState: Dispatch<
     SetStateAction<GroupReportValuesInterface | undefined>
@@ -39,10 +44,10 @@ interface ModalPropsInterface {
 }
 
 export interface GroupReportValuesInterface {
-  group: string;
+  houseManagementId?: string;
   name: string;
-  resource: Array<ResourceType>;
-  category: NodeCommercialAccountStatus;
+  resource?: Array<ResourceType>;
+  category?: NodeCommercialAccountStatus;
   dates: [Moment, Moment];
   detailing: 'daily';
   email?: string;
@@ -53,15 +58,35 @@ export interface GroupReportValuesInterface {
   subscribePeriod?: 'OncePerTwoWeeks' | 'OncePerMonth' | 'OncePerQuarter';
 }
 
-const ModalGroupReport = ({
-  visible,
-  setVisible,
-  setGroupReportFormState,
-}: ModalPropsInterface) => {
+const reportName = `Выгрузка группового отчёта`;
+
+const initialForm = {
+  name: reportName,
+  address: 'addressString',
+  period: 'currentMonth',
+  detailing: 'daily',
+  hidden: true,
+  subscribePeriod: 'OncePerMonth',
+  nextDate: undefined,
+  email: undefined,
+  subscribe: false,
+  category: undefined,
+};
+
+const ModalGroupReport = () => {
+  const groupReportFormState = useAppSelector(
+    (state) => state.groupReport.groupReportFormState
+  );
+  const groupReportStatus = useAppSelector(
+    (state) => state.groupReport.groupReportStatus
+  );
+  const dispatch = useAppDispatch();
+  const isVisible = groupReportStatus === 'reportForm';
+
   const { data, status, run } = useAsync<GroupReportFormResponse>();
 
   const handleCancel = () => {
-    setVisible(undefined);
+    dispatch(setGroupStatus(undefined));
   };
 
   useEffect(() => {
@@ -117,7 +142,13 @@ const ModalGroupReport = ({
     } = form;
 
     const onFinish = (values: GroupReportValuesInterface) => {
-      setGroupReportFormState(values);
+      dispatch(
+        setForm({
+          ...values,
+          dates: [values.dates[0].toISOString(), values.dates[1].toISOString()],
+        })
+      );
+
       console.log('values', values);
       const beginDay = moment(getFieldValue('dates')[0]);
       const endDay = moment(getFieldValue('dates')[1]);
@@ -125,27 +156,35 @@ const ModalGroupReport = ({
       const endDayQuery = endDay.format('YYYY-MM-DD');
       const daysCount = endDay.diff(beginDay, 'days');
 
-      const resources = getFieldValue('resource').map(
-        (item: string, index: number) => {
-          return `NodeResourceType=${item}`;
-        }
-      );
-      const resResources = resources.join('&');
+      const resources = getFieldValue('resource').join('&NodeResourceType=');
+      // map((item: string) => {
+      //   return `NodeResourceType=${item}`;
+      // });
+      // const resResources = resources.join('&NodeResourceType=');
 
-      if (daysCount >= 30 && getFieldValue('detailing') === 'hourly') {
-        setVisible('currentEmailForm');
+      // const resource = getFieldValue('resource');
+
+      if (
+        (daysCount >= 2 && getFieldValue('detailing') === 'hourly') ||
+        (daysCount >= 60 && getFieldValue('detailing') === 'daily')
+      ) {
+        // setVisible('currentEmailForm');
+        dispatch(setGroupStatus('currentEmailForm'));
+        return;
       }
+
+      debugger;
 
       if (subscription) {
         console.log('C подпиской');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}`;
+        const link = `Reports/GetGroupReport?houseManagementId=${values.houseManagementId}&NodeResourceType=${resources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
       }
       if (!subscription) {
         console.log('Без подписки');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
+        const link = `Reports/GetGroupReport?HouseManagementId=${values.houseManagementId}&NodeResourceType=${resources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
@@ -182,6 +221,7 @@ const ModalGroupReport = ({
 
     const handleSwitch = (event: boolean) => {
       setSubscription((prevState) => !prevState);
+      setFieldsValue({ subscribe: event });
     };
 
     const onChange = (allFields: any) => {
@@ -200,7 +240,7 @@ const ModalGroupReport = ({
 
     return (
       <Form
-        initialValues={initialValues}
+        initialValues={initialForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         form={form}
@@ -217,7 +257,7 @@ const ModalGroupReport = ({
           </Title>
           <StyledFormPage>
             <Form.Item
-              name="group"
+              name="houseManagementId"
               label="Группа"
               style={styles.w100}
               rules={[{ required: true, message: 'Выберите Группу' }]}
@@ -398,7 +438,7 @@ const ModalGroupReport = ({
 
   return (
     <StyledModal
-      visible={visible}
+      visible={isVisible}
       width={800}
       footer={null}
       onCancel={handleCancel}

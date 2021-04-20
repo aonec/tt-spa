@@ -5,6 +5,7 @@ import thunkMiddleWare from 'redux-thunk';
 import rootSaga from './saga';
 import { ReadingsStateType } from '../_api/houses_readings_page';
 import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 // declare global {
 //   interface Window {
@@ -22,14 +23,21 @@ const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export interface RootState {
-  readings: ReadingsStateType;
-  devicePage: DevicePageType;
-}
+// export interface RootState {
+//   readings: ReadingsStateType;
+//   devicePage: DevicePageType;
+// }
 
 export const store = configureStore({
   reducer: rootReducer,
 });
+
+(window as any).store = store;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 //   rootReducer,
 //   composeEnhancers(

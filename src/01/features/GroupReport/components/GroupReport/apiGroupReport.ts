@@ -2,7 +2,6 @@ import { getReport } from '../../../../_pages/CalculatorProfile/components/Modal
 
 export function downloadReport(link: string, fileName: string) {
   getReport(link).then((response: any) => {
-    debugger;
     // const url = window.URL.createObjectURL(new Blob([response]));
     // const link = document.createElement('a');
     // link.href = url;

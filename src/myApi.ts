@@ -286,6 +286,26 @@ export enum ExpiresCheckingDateAt {
   Past = "Past",
 }
 
+export enum ResourceType {
+  None = "None",
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
+}
+
+export enum HouseCategory {
+  Living = "Living",
+  NonResidential = "NonResidential",
+}
+
+export enum NodeCommercialAccountStatus {
+  NotRegistered = "NotRegistered",
+  Registered = "Registered",
+  OnReview = "OnReview",
+  Prepared = "Prepared",
+}
+
 export enum OrderByDestination {
   Descending = "Descending",
   Ascending = "Ascending",
@@ -359,20 +379,18 @@ export interface MeteringDeviceConnection {
   deviceAddress?: number | null;
 }
 
-export enum ResourceType {
-  None = "None",
-  Heat = "Heat",
-  HotWaterSupply = "HotWaterSupply",
-  ColdWaterSupply = "ColdWaterSupply",
-  Electricity = "Electricity",
-}
-
 export enum ServiceZone {
   Apartments = "Apartments",
   CommercialPremises = "CommercialPremises",
   TechnicalPremises = "TechnicalPremises",
   CommonUsageAreas = "CommonUsageAreas",
   IntroductoryNode = "IntroductoryNode",
+}
+
+export interface NodeServiceZoneResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
 }
 
 export interface HousingMeteringDeviceHubConnectionResponse {
@@ -443,6 +461,7 @@ export interface NodeResponse {
   nodeStatus: string | null;
   resource: ResourceType;
   serviceZone: ServiceZone;
+  nodeServiceZone: NodeServiceZoneResponse;
 
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
@@ -669,6 +688,33 @@ export interface SwitchCalculatorRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+}
+
+export interface NodeCommercialAccountStatusStringDictionaryItem {
+  key?: NodeCommercialAccountStatus;
+  value?: string | null;
+}
+
+export interface HouseCategoryStringDictionaryItem {
+  key?: HouseCategory;
+  value?: string | null;
+}
+
+export interface ResourceTypeStringDictionaryItem {
+  key?: ResourceType;
+  value?: string | null;
+}
+
+export interface CalculatorFilterResponse {
+  nodeStatuses: NodeCommercialAccountStatusStringDictionaryItem[] | null;
+  houseCategories: HouseCategoryStringDictionaryItem[] | null;
+  resourceTypes: ResourceTypeStringDictionaryItem[] | null;
+  cities: string[] | null;
+  streets: string[] | null;
+}
+
+export interface CalculatorFilterResponseSuccessApiResponse {
+  successResponse: CalculatorFilterResponse;
 }
 
 export interface ContractorListResponse {
@@ -1047,9 +1093,15 @@ export interface HousingStockResponseSuccessApiResponse {
   successResponse: HousingStockResponse;
 }
 
-export enum HouseCategory {
-  Living = "Living",
-  NonResidential = "NonResidential",
+export enum LivingHouseType {
+  ApartmentHouse = "ApartmentHouse",
+  Townhouse = "Townhouse",
+  Private = "Private",
+}
+
+export enum NonResidentialHouseType {
+  Social = "Social",
+  Commercial = "Commercial",
 }
 
 export interface HousingStockListResponse {
@@ -1179,6 +1231,43 @@ export interface PipesListResponse {
 
 export interface PipesListResponseSuccessApiResponse {
   successResponse: PipesListResponse;
+}
+
+export interface GuidStringDictionaryItem {
+  /** @format uuid */
+  key?: string;
+  value?: string | null;
+}
+
+export interface MeasurableInterval {
+  /** @format double */
+  maxValue?: number | null;
+
+  /** @format double */
+  minValue?: number | null;
+  measurableUnit?: string | null;
+}
+
+export interface LivingHouseTypeStringDictionaryItem {
+  key?: LivingHouseType;
+  value?: string | null;
+}
+
+export interface NonResidentialHouseTypeStringDictionaryItem {
+  key?: NonResidentialHouseType;
+  value?: string | null;
+}
+
+export interface HousingStockFilterResponse {
+  houseManagements: GuidStringDictionaryItem[] | null;
+  houseCategories: HouseCategoryStringDictionaryItem[] | null;
+  totalAreaIntervals: MeasurableInterval[] | null;
+  livingHouseTypes: LivingHouseTypeStringDictionaryItem[] | null;
+  nonResidentialHouseTypes: NonResidentialHouseTypeStringDictionaryItem[] | null;
+}
+
+export interface HousingStockFilterResponseSuccessApiResponse {
+  successResponse: HousingStockFilterResponse;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
@@ -1647,6 +1736,9 @@ export interface UpdateNodeRequest {
   resource?: ResourceType;
   serviceZone?: ServiceZone;
 
+  /** @format int32 */
+  nodeServiceZoneId?: number | null;
+
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
 
@@ -1678,6 +1770,9 @@ export interface CreateNodeRequest {
   resource?: ResourceType;
   serviceZone?: ServiceZone;
 
+  /** @format int32 */
+  nodeServiceZoneId?: number | null;
+
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
 
@@ -1689,17 +1784,20 @@ export interface CreateNodeRequest {
   communicationPipes?: CommunicationPipeRequest[] | null;
 }
 
-export interface ServiceZoneStringDictionaryItem {
-  key?: ServiceZone;
-  value?: string | null;
+export interface NodeServiceZoneListResponse {
+  nodeServiceZones: NodeServiceZoneResponse[] | null;
 }
 
-export interface NodeServiceZonesResponse {
-  serviceZones: ServiceZoneStringDictionaryItem[] | null;
+export interface NodeServiceZoneListResponseSuccessApiResponse {
+  successResponse: NodeServiceZoneListResponse;
 }
 
-export interface NodeServiceZonesResponseListSuccessApiResponse {
-  successResponse: NodeServiceZonesResponse[] | null;
+export interface NodeServiceZoneRequest {
+  name?: string | null;
+}
+
+export interface NodeServiceZoneResponseSuccessApiResponse {
+  successResponse: NodeServiceZoneResponse;
 }
 
 export interface GroupReportResponse {
@@ -1709,23 +1807,6 @@ export interface GroupReportResponse {
   /** @format uuid */
   houseManagementId: string | null;
   title: string | null;
-}
-
-export interface ResourceTypeStringDictionaryItem {
-  key?: ResourceType;
-  value?: string | null;
-}
-
-export enum NodeCommercialAccountStatus {
-  NotRegistered = "NotRegistered",
-  Registered = "Registered",
-  OnReview = "OnReview",
-  Prepared = "Prepared",
-}
-
-export interface NodeCommercialAccountStatusStringDictionaryItem {
-  key?: NodeCommercialAccountStatus;
-  value?: string | null;
 }
 
 export interface GroupReportHousingStock {
@@ -1773,6 +1854,14 @@ export enum EmailSubscriptionType {
   OncePerTwoWeeks = "OncePerTwoWeeks",
   OncePerMonth = "OncePerMonth",
   OncePerQuarter = "OncePerQuarter",
+}
+
+export enum EManagingFirmTaskType {
+  CalculatorMalfunctionAny = "CalculatorMalfunctionAny",
+  HousingDeviceMalfunctionAny = "HousingDeviceMalfunctionAny",
+  CalculatorLackOfConnection = "CalculatorLackOfConnection",
+  IndividualDeviceCheck = "IndividualDeviceCheck",
+  PipeRupture = "PipeRupture",
 }
 
 export enum TaskGroupingFilter {
@@ -1846,6 +1935,7 @@ export interface TaskListResponse {
   needsValidation: boolean;
   triggersInformation: TaskTriggersInformation;
   device: MeteringDeviceSearchListResponse;
+  node: NodeResponse;
 }
 
 export interface TasksPagedList {
@@ -1935,6 +2025,7 @@ export interface TaskResponse {
   currentStage: StageResponse;
   device: MeteringDeviceResponse;
   apartment: ApartmentResponse;
+  node: NodeResponse;
   documents: DocumentResponse[] | null;
   comments: TaskCommentResponse[] | null;
   stages: StageListResponse[] | null;
@@ -1948,6 +2039,7 @@ export enum TaskTargetObjectRequestType {
   None = "None",
   Apartment = "Apartment",
   MeteringDevice = "MeteringDevice",
+  Node = "Node",
 }
 
 export interface TaskCreationTargetObjectRequest {
@@ -1957,10 +2049,17 @@ export interface TaskCreationTargetObjectRequest {
   id?: number;
 }
 
+export enum TaskCreateType {
+  CalculatorMalfunction = "CalculatorMalfunction",
+  HousingDeviceMalfunction = "HousingDeviceMalfunction",
+  CalculatorLackOfConnection = "CalculatorLackOfConnection",
+  PipeRupture = "PipeRupture",
+}
+
 export interface TaskCreateRequest {
   targetObject: TaskCreationTargetObjectRequest;
   creationReason?: string | null;
-  taskType: string;
+  taskType: TaskCreateType;
 }
 
 export interface TaskCreateResponse {
@@ -2030,6 +2129,19 @@ export interface TaskAssignToMultipleRequest {
 
   /** @format int32 */
   nextPerpetratorId: number;
+}
+
+export interface EManagingFirmTaskTypeStringDictionaryItem {
+  key?: EManagingFirmTaskType;
+  value?: string | null;
+}
+
+export interface TaskFilterResponse {
+  taskTypes: EManagingFirmTaskTypeStringDictionaryItem[] | null;
+}
+
+export interface TaskFilterResponseSuccessApiResponse {
+  successResponse: TaskFilterResponse;
 }
 
 export interface UserRoleListResponse {
@@ -2361,7 +2473,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Filter.DiameterRange.From"?: number | null;
         "Filter.DiameterRange.To"?: number | null;
         "Filter.ExpiresCheckingDateAt"?: ExpiresCheckingDateAt;
-        "Filter.Resource"?: string | null;
+        "Filter.Resource"?: ResourceType;
         "Filter.Model"?: string | null;
         "Filter.CommercialDateRange.From"?: string | null;
         "Filter.CommercialDateRange.To"?: string | null;
@@ -2369,7 +2481,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Filter.Address.Street"?: string | null;
         "Filter.Address.HousingStockNumber"?: string | null;
         "Filter.Address.Corpus"?: string | null;
+        "Filter.Address.HouseCategory"?: HouseCategory;
         "Filter.HousingStockId"?: number | null;
+        "Filter.NodeStatus"?: NodeCommercialAccountStatus;
         Question?: string | null;
         "OrderBy.Destination"?: OrderByDestination;
         "OrderBy.Rule"?: CalculatorOrderBy;
@@ -2459,6 +2573,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Calculators
+     * @name CalculatorsFiltersList
+     * @request GET:/api/Calculators/filters
+     * @secure
+     */
+    calculatorsFiltersList: (params: RequestParams = {}) =>
+      this.request<CalculatorFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/filters`,
+        method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -2790,6 +2921,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Corpus?: string | null;
         HouseCategory?: HouseCategory;
         HouseManagementId?: string | null;
+        "TotalArea.MaxValue"?: number | null;
+        "TotalArea.MinValue"?: number | null;
+        "TotalArea.MeasurableUnit"?: string | null;
+        LivingHouseType?: LivingHouseType;
+        NonResidentialHouseType?: NonResidentialHouseType;
         PageNumber?: number;
         PageSize?: number;
       },
@@ -2908,6 +3044,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<PipesListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Devices/${deviceId}/CommunicationPipes`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksFiltersList
+     * @request GET:/api/HousingStocks/filters
+     * @secure
+     */
+    housingStocksFiltersList: (params: RequestParams = {}) =>
+      this.request<HousingStockFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/filters`,
         method: "GET",
         secure: true,
         format: "json",
@@ -3457,17 +3610,123 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Nodes
-     * @name NodesGetServiceZonesList
-     * @request GET:/api/Nodes/GetServiceZones
+     * @tags NodeServiceZones
+     * @name ManagingFirmsNodeServiceZonesDetail
+     * @request GET:/api/ManagingFirms/{managingFirmId}/NodeServiceZones
      * @secure
      */
-    nodesGetServiceZonesList: (params: RequestParams = {}) =>
-      this.request<NodeServiceZonesResponseListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Nodes/GetServiceZones`,
+    managingFirmsNodeServiceZonesDetail: (managingFirmId: number, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
         method: "GET",
         secure: true,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name ManagingFirmsNodeServiceZonesCreate
+     * @request POST:/api/ManagingFirms/{managingFirmId}/NodeServiceZones
+     * @secure
+     */
+    managingFirmsNodeServiceZonesCreate: (
+      managingFirmId: number,
+      data: NodeServiceZoneRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name ManagingFirmsNodeServiceZonesDetail2
+     * @request GET:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
+     * @originalName managingFirmsNodeServiceZonesDetail
+     * @duplicate
+     * @secure
+     */
+    managingFirmsNodeServiceZonesDetail2: (
+      managingFirmId: number,
+      nodeServiceZoneId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name ManagingFirmsNodeServiceZonesUpdate
+     * @request PUT:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
+     * @secure
+     */
+    managingFirmsNodeServiceZonesUpdate: (
+      managingFirmId: number,
+      nodeServiceZoneId: number,
+      data: NodeServiceZoneRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name ManagingFirmsNodeServiceZonesDelete
+     * @request DELETE:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
+     * @secure
+     */
+    managingFirmsNodeServiceZonesDelete: (
+      managingFirmId: number,
+      nodeServiceZoneId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name NodeServiceZonesMigrateCreate
+     * @request POST:/api/NodeServiceZones/migrate
+     * @secure
+     */
+    nodeServiceZonesMigrateCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/NodeServiceZones/migrate`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -3585,6 +3844,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Subscription.ContractorIds"?: number[] | null;
         "Subscription.TriggerAt"?: string;
         "Subscription.Type"?: EmailSubscriptionType;
+        DelayedEmailTarget?: string | null;
         ReportType?: string | null;
         From?: string | null;
         To?: string | null;
@@ -3612,7 +3872,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         SearchingFilter?: string | null;
         TargetType?: string | null;
         TaskId?: number | null;
-        TaskType?: string | null;
+        TaskType?: EManagingFirmTaskType;
         GroupType?: TaskGroupingFilter;
         DeviceId?: number | null;
         HousingStockId?: number | null;
@@ -3826,6 +4086,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tasks
+     * @name TasksFiltersList
+     * @request GET:/api/Tasks/filters
+     * @secure
+     */
+    tasksFiltersList: (params: RequestParams = {}) =>
+      this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/filters`,
+        method: "GET",
+        secure: true,
+        format: "json",
         ...params,
       }),
 

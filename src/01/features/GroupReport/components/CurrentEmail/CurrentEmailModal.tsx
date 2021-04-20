@@ -3,40 +3,81 @@ import ButtonTT from '../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
 import { GroupReportValuesInterface } from '../GroupReport';
-import { ReportModalType } from '../../store/groupReportReducer';
+import {
+  ReportModalType,
+  setGroupStatus,
+} from '../../models/groupReportReducer';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
+import axios from '01/axios';
+import { sendGroupReport } from '../../../../_api/group_report';
 
-const CurrentEmailModal = ({
-  visible,
-  setVisible,
-  groupReportFormState,
-}: {
-  visible: boolean;
-  setVisible: Dispatch<SetStateAction<ReportModalType>>;
-  groupReportFormState: GroupReportValuesInterface | undefined;
-}) => {
+const CurrentEmailModal = () => {
+  const groupReportFormState = useAppSelector(
+    (state) => state.groupReport.groupReportFormState
+  );
+  const groupReportStatus = useAppSelector(
+    (state) => state.groupReport.groupReportStatus
+  );
+  const dispatch = useAppDispatch();
+  const isVisible = groupReportStatus === 'currentEmailForm';
+  const { email } = JSON.parse(localStorage.getItem('user')!);
+  debugger;
+  // const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
+  const formQuery = (formState: GroupReportValuesInterface) => {
+    return {};
+  };
+
+  const {
+    houseManagementId,
+    category,
+    detailing,
+    resource,
+    dates,
+  } = groupReportFormState;
+  debugger;
+  // const resources = resource!.map((item: string) => {
+  //   return `NodeResourceType=${item}`;
+  // });
+  // const resResources = resources.join('&');
+
   return (
     <StyledModal
-      visible={visible}
+      visible={isVisible}
       title={<Header>Отправить отчёт на почту</Header>}
-      onCancel={() => setVisible(undefined)}
+      onCancel={() => dispatch(setGroupStatus(undefined))}
       width={800}
       footer={
         <Footer>
           <ButtonTT
             color={'white'}
             key="submit"
-            onClick={() => setVisible(undefined)}
+            onClick={() => dispatch(setGroupStatus(undefined))}
           >
             Отмена
           </ButtonTT>
           <ButtonTT
             color={'white'}
             key="submit"
-            onClick={() => setVisible('otherEmailForm')}
+            onClick={() => dispatch(setGroupStatus('otherEmailForm'))}
           >
             Указать другую почту
           </ButtonTT>
-          <ButtonTT color={'blue'} key="back" onClick={() => alert('net')}>
+          <ButtonTT
+            color={'blue'}
+            key="back"
+            // houseManagementId=${values.houseManagementId}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}
+            onClick={() =>
+              sendGroupReport({
+                HouseManagementId: houseManagementId,
+                NodeResourceTypes: resource,
+                NodeStatus: category,
+                ReportType: detailing,
+                From: dates[0],
+                To: dates[1],
+                DelayedEmailTarget: email,
+              })
+            }
+          >
             Отправить отчёт
           </ButtonTT>
         </Footer>
