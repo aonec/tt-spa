@@ -120,7 +120,6 @@ export const TasksList = ({ items }) => {
         node,
       }) => {
         const { icon, color } = DeviceIcons[node?.resource] || {};
-        debugger;
         return (
           <task_item
             to={`/tasks/${id}`}
@@ -179,8 +178,7 @@ export const TasksList = ({ items }) => {
               {node ? (
                 <device>
                   <IconTT icon={icon} fill={color} />
-                  <device_model as="span">{node.id}</device_model>{' '}
-                  <device_number as="span">({node.id})</device_number>
+                  <device_model as="span">Узел {node.number}</device_model>
                 </device>
               ) : null}
               <addr>

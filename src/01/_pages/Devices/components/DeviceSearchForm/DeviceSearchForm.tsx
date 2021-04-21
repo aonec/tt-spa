@@ -32,7 +32,6 @@ const DeviceSearchForm = ({
   const ref = useRef(null);
 
   const onValuesChangeHandler = (e: React.ChangeEvent<HTMLFormElement>) => {
-    debugger;
     const targetValue = e.target.value;
     dispatchSearchState(setSearchTerm(targetValue));
     dispatch(setCurrentPage(1));
