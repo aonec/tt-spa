@@ -105,7 +105,7 @@ export const TaskProfile = () => {
                 </div>
               </NodeLink>
 
-              <div style={{ marginLeft: 32 }}>
+              <div style={{ marginLeft: 32, marginTop: 8 }}>
                 <span style={{ color: 'var(--main-100)' }}>
                   {calculator.model}
                 </span>{' '}
