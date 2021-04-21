@@ -92,7 +92,7 @@ export const TaskProfile = () => {
 
           {/*подождать бэк и вынести в отдельный компонент*/}
           {node ? (
-            <div style={{ marginTop: 16, cursor: 'pointer' }}>
+            <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>
                 <div>
                   <IconTT
