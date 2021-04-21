@@ -155,7 +155,6 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
-    debugger;
     // console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
