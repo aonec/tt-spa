@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { useCancelFetch } from '01/_hooks';
 import { getTask, moveStage } from '01/_api/task_profile_page';
+import { getCalculator } from '../../../_api/device_page';
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();
@@ -10,7 +11,24 @@ export const usePageFetch = (state, dispatch) => {
   useCancelFetch();
 
   React.useEffect(() => {
-    getTask(id).then((data) => dispatch({ type: 'success', data }));
+    const initTaskData = async () => {
+      const task = await getTask(id);
+      if (!task.node) {
+        dispatch({ type: 'success', data: task });
+        return;
+      }
+      const calculator = await getCalculator(task.node.calculatorId);
+      dispatch({ type: 'success', data: { ...task, calculator } });
+    };
+
+    initTaskData();
+
+    // getTask(id).then((data) => {
+    //   getCalc(data.id).then((res) =>
+    //     dispatch({ type: 'success', data: { res, data } })
+    //   );
+    //   dispatch({ type: 'success', data });
+    // });
   }, []);
 
   React.useEffect(() => {
