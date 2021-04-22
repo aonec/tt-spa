@@ -27,6 +27,12 @@ import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
+import {
+  addServiceZoneButtonClicked,
+  inputChanged,
+} from '../../../features/addServiceZone/models/events';
+import { useStore } from 'effector-react';
+import { $input } from '../../../features/addServiceZone/models/store';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -47,6 +53,7 @@ const EditNodeForm = ({
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
   const { setVisibleAddDevice } = useContext(EditNodeContext);
+  const input = useStore($input);
 
   if (!node) {
     return null;
@@ -131,7 +138,7 @@ const EditNodeForm = ({
         </Form.Item>
 
         <Form.Item
-          style={styles.w100}
+          style={styles.w49}
           label="Номер узла"
           name="number"
           rules={[{ required: true, message: 'Выберите Номер узла' }]}
@@ -139,14 +146,25 @@ const EditNodeForm = ({
           <InputTT placeholder="Номер узла" />
         </Form.Item>
 
-        <Form.Item
-          style={styles.w100}
-          label="Зона"
-          name="serviceZone"
-          rules={[{ required: true, message: 'Выберите Зона' }]}
-        >
-          <SelectTT placeholder="Зона" options={serviceZoneList} />
-        </Form.Item>
+        <div style={{ display: 'flex' }}>
+          <Form.Item
+            style={styles.w100}
+            label="Зона"
+            name="serviceZone"
+            rules={[{ required: true, message: 'Выберите Зона' }]}
+          >
+            <SelectTT placeholder="Зона" options={serviceZoneList} />
+          </Form.Item>
+          <InputTT onChange={inputChanged} value={input} />
+          <ButtonTT
+            onClick={(e: any) => {
+              e.preventDefault();
+              addServiceZoneButtonClicked(e);
+            }}
+          >
+            Отправить
+          </ButtonTT>
+        </div>
 
         <Form.Item
           style={styles.w100}
