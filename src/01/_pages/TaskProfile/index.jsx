@@ -8,6 +8,7 @@ import { useStages } from './hooks/useStages';
 import { useDocuments } from './hooks/useDocuments';
 import { useInformation } from './hooks/useInformation';
 import { useInformationDevice } from './hooks/useInformationDevice';
+import styledC from 'styled-components';
 
 import { Header } from './components/Header';
 import { Panel } from './components/Panel';
@@ -18,6 +19,10 @@ import { Information } from './components/Information';
 import { InformationDevice } from './components/InformationDevice';
 import Index from '../../tt-components/Breadcrumb';
 import TaskComments from './components/Comments/TaskComments';
+import NodeInformation from '../NodeProfile/components/Information';
+import { Icon as IconTT } from '../../tt-components/Icon';
+import DeviceIcons from '../../_components/DeviceIcons';
+import { Link, NavLink } from 'react-router-dom';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -61,8 +66,12 @@ export const TaskProfile = () => {
   // ?
   const infoDevice = useInformationDevice(state);
 
-  const { device } = state;
+  const { device, node } = state;
   const { type, id } = device || {};
+  const { icon, color } = DeviceIcons[node?.resource] || {};
+  const { calculator } = state;
+
+  debugger;
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
@@ -80,11 +89,49 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
+
+          {/*подождать бэк и вынести в отдельный компонент*/}
+          {node ? (
+            <div style={{ marginTop: 16 }}>
+              <NodeLink to={`/nodes/${node.id}`}>
+                <div>
+                  <IconTT
+                    icon={icon}
+                    fill={color}
+                    size={24}
+                    style={{ marginRight: 8 }}
+                  />
+                  Узел {node.number}
+                </div>
+              </NodeLink>
+
+              <div style={{ marginLeft: 32, marginTop: 8 }}>
+                <span style={{ color: 'var(--main-100)' }}>
+                  {calculator.model}
+                </span>{' '}
+                <span style={{ color: 'var(--main-60)' }}>
+                  ({calculator.serialNumber})
+                </span>
+              </div>
+              {/*</div>*/}
+              <NodeInformation node={node} calculator={calculator} task />
+            </div>
+          ) : null}
         </div>
         <Stages {...stages} state={state} />
       </grid>
     </TasksProfileContext.Provider>
   );
 };
+
+const NodeLink = styledC(Link)`
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--main-100);
+  &:hover h2 {
+    color: var(--primary-100);
+  }
+`;
 
 export default TaskProfile;

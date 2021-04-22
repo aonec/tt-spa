@@ -191,7 +191,6 @@ const AddDeviceForm = (props) => {
             />
             <Alert name="housingMeteringDeviceType" />
           </Form.Item>
-
           <Form.Item label="Выберите тип ресурса" style={styles.w100}>
             <SelectTT
               name="resource"
@@ -204,7 +203,6 @@ const AddDeviceForm = (props) => {
             />
             <Alert name="resource" />
           </Form.Item>
-
           <Form.Item label="Выберите модель прибора" style={styles.w49}>
             <InputTT
               name="model"
@@ -215,7 +213,6 @@ const AddDeviceForm = (props) => {
             />
             <Alert name="model" />
           </Form.Item>
-
           <Form.Item label="Серийный номер" style={styles.w49}>
             <InputTT
               name="serialNumber"
@@ -226,7 +223,6 @@ const AddDeviceForm = (props) => {
             />
             <Alert name="serialNumber" />
           </Form.Item>
-
           {values.housingMeteringDeviceType === 'FlowMeter' ? (
             <Form.Item label="Диаметр трубы (мм)" style={styles.w100}>
               <InputTT
@@ -240,7 +236,6 @@ const AddDeviceForm = (props) => {
               <Alert name="diameter" />
             </Form.Item>
           ) : null}
-
           <Form.Item label="Дата поверки" style={styles.w49}>
             <DatePickerTT
               format="DD.MM.YYYY"
@@ -253,7 +248,6 @@ const AddDeviceForm = (props) => {
               value={moment(values.lastCheckingDate)}
             />
           </Form.Item>
-
           <Form.Item label="Дата следующей поверки" style={styles.w49}>
             <DatePickerTT
               format="DD.MM.YYYY"
@@ -266,7 +260,6 @@ const AddDeviceForm = (props) => {
               value={moment(values.futureCheckingDate)}
             />
           </Form.Item>
-
           <Form.Item
             label="Дата начала Акта действия допуска"
             style={styles.w49}
@@ -286,7 +279,6 @@ const AddDeviceForm = (props) => {
             />
             <StyledHint>Только для приборов коммерческого учета</StyledHint>
           </Form.Item>
-
           <Form.Item
             label="Дата окончания Акта действия допуска"
             style={styles.w49}

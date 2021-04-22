@@ -15,6 +15,7 @@ const ModalAddDevice = () => {
   useEffect(() => {
     async function setCalculatorsList() {
       try {
+        if (!objid) return;
         const objCalculators = await getObjectCalculators(objid);
         const { items } = objCalculators;
         const calcOnly = items.map((item) => ({

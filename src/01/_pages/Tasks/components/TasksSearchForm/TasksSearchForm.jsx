@@ -21,6 +21,7 @@ const TasksSearchForm = ({ searchState, dispatchSearchState }) => {
     { value: 2, label: 'Неполадки с ОДПУ' },
     { value: 3, label: 'Отсутствие подключения с вычислителем' },
     { value: 4, label: 'Проверка ИПУ' },
+    { value: 5, label: 'Порыв трубопровода' },
   ];
 
   return (

@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'reshadow/macro';
 import t from 'prop-types';
 
-import icons from '01/assets/icons.json';
+// import icons from '01/assets/icons.json';
+import icons from '../../assets/icons.json';
 
 export const Icon = ({ size = 16, icon = '', ...props }) =>
   styled()`

@@ -116,7 +116,7 @@ export async function getCalculatorResources(id = '') {
 export async function getCalculator(id = '') {
   try {
     const res = await axios.get(`Calculators/${id}`);
-    return res.model;
+    return res;
   } catch (error) {
     console.log(error);
     throw {

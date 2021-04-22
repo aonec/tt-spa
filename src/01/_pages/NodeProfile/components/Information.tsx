@@ -11,9 +11,10 @@ import { CalculatorResponse, NodeResponse } from '../../../../myApi';
 interface HeaderInterface {
   node: NodeResponse;
   calculator: CalculatorResponse | null;
+  task?: boolean;
 }
 
-const Information = ({ node, calculator }: HeaderInterface) => {
+const Information = ({ node, calculator, task = false }: HeaderInterface) => {
   if (!node || !calculator) {
     return null;
   }
@@ -38,14 +39,16 @@ const Information = ({ node, calculator }: HeaderInterface) => {
 
   return (
     <ListWrap>
-      <ListItem>
-        <span>Адрес</span>
-        <Subtitle to={`/objects/${id}`}>
-          {`${city}, ${street}, ${housingStockNumber} ${
-            corpus ? `, к.${corpus}` : ''
-          }`}
-        </Subtitle>
-      </ListItem>
+      {!task ? (
+        <ListItem>
+          <span>Адрес</span>
+          <Subtitle to={`/objects/${id}`}>
+            {`${city}, ${street}, ${housingStockNumber} ${
+              corpus ? `, к.${corpus}` : ''
+            }`}
+          </Subtitle>
+        </ListItem>
+      ) : null}
       <ListItem>
         <span>Зона</span>
         <div>{getServiceZone}</div>
