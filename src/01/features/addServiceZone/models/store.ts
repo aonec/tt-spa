@@ -1,19 +1,32 @@
-import { createStore, forward, Store } from 'effector';
+import { createEvent, createStore, forward, Store } from 'effector';
 import {
-  addServiceZoneButtonClicked,
-  inputChanged,
+  sendServiceZoneButtonClicked,
   nameChanged,
   sendServiceZoneFx,
+  addServiceZoneButtonClicked,
 } from './events';
 
-export const $input: Store<string> = createStore('');
+export const $addZoneInput: Store<string> = createStore('');
 
-$input.on(nameChanged, (_, newInput) => {
-  debugger;
+export const $isAddServiceModalShown = createStore(false);
+
+$addZoneInput.on(nameChanged, (_, newInput) => {
   return newInput;
 });
 
+$isAddServiceModalShown.on(addServiceZoneButtonClicked, () => {
+  debugger;
+  return !$isAddServiceModalShown.getState();
+});
+
+// forward({
+//   from: addServiceZoneButtonClicked.map((_) =>
+//     $isAddServiceModalShown.getState()
+//   ),
+//   to: sendServiceZoneFx,
+// });
+
 forward({
-  from: addServiceZoneButtonClicked.map((_) => $input.getState()),
+  from: sendServiceZoneButtonClicked.map((_) => $addZoneInput.getState()),
   to: sendServiceZoneFx,
 });

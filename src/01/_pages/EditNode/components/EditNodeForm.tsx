@@ -28,11 +28,16 @@ import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
 import {
-  addServiceZoneButtonClicked,
+  sendServiceZoneButtonClicked,
   inputChanged,
+  addServiceZoneButtonClicked,
 } from '../../../features/addServiceZone/models/events';
 import { useStore } from 'effector-react';
-import { $input } from '../../../features/addServiceZone/models/store';
+import {
+  $addZoneInput,
+  $isAddServiceModalShown,
+} from '../../../features/addServiceZone/models/store';
+import AddNewZonesModal from '../../../features/addServiceZone';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -53,7 +58,6 @@ const EditNodeForm = ({
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
   const { setVisibleAddDevice } = useContext(EditNodeContext);
-  const input = useStore($input);
 
   if (!node) {
     return null;
@@ -146,25 +150,33 @@ const EditNodeForm = ({
           <InputTT placeholder="Номер узла" />
         </Form.Item>
 
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', width: '100%', alignItems: 'flex-end' }}>
           <Form.Item
-            style={styles.w100}
+            style={styles.w49}
             label="Зона"
             name="serviceZone"
-            rules={[{ required: true, message: 'Выберите Зона' }]}
+            rules={[{ required: true, message: 'Выберите Зону' }]}
           >
             <SelectTT placeholder="Зона" options={serviceZoneList} />
           </Form.Item>
-          <InputTT onChange={inputChanged} value={input} />
-          <ButtonTT
-            onClick={(e: any) => {
-              e.preventDefault();
-              addServiceZoneButtonClicked(e);
+          <div
+            style={{
+              color: 'var(--primary-100)',
+              height: 48,
+              marginLeft: 16,
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+            onClick={(e) => {
+              debugger;
+              addServiceZoneButtonClicked();
             }}
           >
-            Отправить
-          </ButtonTT>
+            + Добавить новую зону
+          </div>
         </div>
+
+        <AddNewZonesModal />
 
         <Form.Item
           style={styles.w100}
