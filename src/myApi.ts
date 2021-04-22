@@ -847,6 +847,62 @@ export interface HomeownersUpdateRequest {
   apartmentsToRemove?: number[] | null;
 }
 
+export interface HousingMeteringDeviceReadingsResponse {
+  /** @format uuid */
+  id: string | null;
+
+  /** @format double */
+  value: number | null;
+
+  /** @format int32 */
+  nodeId: number;
+
+  /** @format int32 */
+  deviceId: number;
+  deviceModel: string | null;
+  deviceSerialNumber: string | null;
+
+  /** @format date-time */
+  createDate: string;
+
+  /** @format date-time */
+  updateDate: string | null;
+}
+
+export interface GetHousingMeteringDeviceReadingsResponse {
+  items: HousingMeteringDeviceReadingsResponse[] | null;
+}
+
+export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
+  successResponse: GetHousingMeteringDeviceReadingsResponse;
+}
+
+export interface CreateHousingMeteringDeviceReadingsRequest {
+  /** @format double */
+  value?: number;
+
+  /** @format int32 */
+  nodeId?: number;
+
+  /** @format int32 */
+  deviceId?: number;
+
+  /** @format date-time */
+  createDate?: string;
+}
+
+export interface HousingMeteringDeviceReadingsResponseSuccessApiResponse {
+  successResponse: HousingMeteringDeviceReadingsResponse;
+}
+
+export interface UpdateHousingMeteringDeviceReadingsRequest {
+  /** @format uuid */
+  id?: string;
+
+  /** @format double */
+  value?: number;
+}
+
 export enum MagistralType {
   None = "None",
   FeedFlow = "FeedFlow",
@@ -866,6 +922,11 @@ export interface PipeConnectionRequest {
 
   /** @format int32 */
   nodeId: number;
+}
+
+export enum EMeasuringUnit {
+  CubicMeter = "CubicMeter",
+  KiloWatt = "KiloWatt",
 }
 
 export interface UpdateHousingMeteringDeviceRequest {
@@ -892,6 +953,13 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format int32 */
   diameter?: number | null;
+  measuringUnit?: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue?: number | null;
+
+  /** @format double */
+  maxReadingsValue?: number | null;
 }
 
 export interface HousingMeteringDeviceConnectionResponse {
@@ -934,6 +1002,13 @@ export interface HousingMeteringDeviceResponse {
   housingMeteringDeviceType: HousingMeteringDeviceType;
   address: HousingStockAddressResponse;
   hubConnection: HousingMeteringDeviceConnectionResponse;
+  measuringUnit: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue: number | null;
+
+  /** @format double */
+  maxReadingsValue: number | null;
 }
 
 export interface HousingMeteringDeviceResponseSuccessApiResponse {
@@ -965,6 +1040,13 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format int32 */
   diameter?: number | null;
+  measuringUnit?: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue?: number | null;
+
+  /** @format double */
+  maxReadingsValue?: number | null;
 }
 
 export interface SwitchHousingMeteringDeviceRequest {
@@ -2674,6 +2756,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsList
+     * @request GET:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsList: (query?: { nodeId?: number }, params: RequestParams = {}) =>
+      this.request<GetHousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsCreate
+     * @request POST:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsCreate: (
+      data: CreateHousingMeteringDeviceReadingsRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsUpdate
+     * @request PUT:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsUpdate: (
+      data: UpdateHousingMeteringDeviceReadingsRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsDelete
+     * @request DELETE:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsDelete: (query?: { id?: string }, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "DELETE",
+        query: query,
+        secure: true,
         ...params,
       }),
 
