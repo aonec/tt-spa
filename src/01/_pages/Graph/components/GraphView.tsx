@@ -4,6 +4,7 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
   VictoryArea,
+  VictoryLine,
 } from 'victory';
 import React from 'react';
 import styled from 'styled-components';
@@ -144,6 +145,29 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
             data={graphData}
             x="time"
             y="value"
+          />
+          <VictoryLine y={() => (maxValue + minValue) / 2} />
+          <VictoryLine
+            style={{
+              data: {
+                stroke: 'black',
+                strokeDasharray: 5.5,
+                strokeWidth: 2,
+                fillOpacity: 0.4,
+              },
+            }}
+            y={() => ((maxValue + minValue) / 2) * 1.2}
+          />
+          <VictoryLine
+            style={{
+              data: {
+                stroke: 'black',
+                strokeDasharray: 5.5,
+                strokeWidth: 2,
+                fillOpacity: 0.4,
+              },
+            }}
+            y={() => ((maxValue + minValue) / 2) * 0.8}
           />
         </VictoryChart>
       </GraphWrapper>
