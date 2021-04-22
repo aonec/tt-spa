@@ -29,6 +29,7 @@
     "date-fns-tz": "^1.1.1",
     "downloadjs": "^1.4.7",
     "effector": "^21.8.11",
+    "effector-react": "^21.3.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "formik": "^2.2.0",
