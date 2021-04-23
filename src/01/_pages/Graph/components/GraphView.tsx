@@ -28,7 +28,9 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     searchQuery: { reportType },
   } = dataObject;
 
-  const { resource } = data;
+  const { resource, deltaMassAccuracy, averageDeltaMass } = data;
+
+  debugger;
 
   const archiveEntries = get(data, 'archiveEntries', []);
 
@@ -146,7 +148,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
             x="time"
             y="value"
           />
-          <VictoryLine y={() => (maxValue + minValue) / 2} />
+          <VictoryLine y={() => averageDeltaMass} />
           <VictoryLine
             style={{
               data: {
@@ -156,7 +158,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
                 fillOpacity: 0.4,
               },
             }}
-            y={() => ((maxValue + minValue) / 2) * 1.2}
+            y={() => averageDeltaMass * (1 + deltaMassAccuracy / 100)}
           />
           <VictoryLine
             style={{
@@ -167,7 +169,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
                 fillOpacity: 0.4,
               },
             }}
-            y={() => ((maxValue + minValue) / 2) * 0.8}
+            y={() => averageDeltaMass * (1 - deltaMassAccuracy / 100)}
           />
         </VictoryChart>
       </GraphWrapper>
@@ -211,6 +213,8 @@ export interface ReadingsInterface {
   resource: ResourceType;
   systemPipeCount: number;
   archiveEntries: ArchiveEntryInterface[];
+  averageDeltaMass: number;
+  deltaMassAccuracy: number;
 }
 
 export interface GraphDataInterface {
