@@ -158,7 +158,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
       const end = `${values.end.format('YYYY-MM-DD')}`;
 
-      const shortLink = `Reports/GetReport?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/Report?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       console.log('shortLink', shortLink);
       getReport(shortLink).then((response: any) => {
