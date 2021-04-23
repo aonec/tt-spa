@@ -4,6 +4,7 @@ import {
   nameChanged,
   sendServiceZoneFx,
   addServiceZoneButtonClicked,
+  cancelOrCloseButtonClicked,
 } from './events';
 
 export const $addZoneInput: Store<string> = createStore('');
@@ -14,17 +15,19 @@ $addZoneInput.on(nameChanged, (_, newInput) => {
   return newInput;
 });
 
-$isAddServiceModalShown.on(addServiceZoneButtonClicked, () => {
-  debugger;
-  return !$isAddServiceModalShown.getState();
-});
+$isAddServiceModalShown.on(
+  [addServiceZoneButtonClicked, cancelOrCloseButtonClicked],
+  () => {
+    return !$isAddServiceModalShown.getState();
+  }
+);
 
-// forward({
-//   from: addServiceZoneButtonClicked.map((_) =>
-//     $isAddServiceModalShown.getState()
-//   ),
-//   to: sendServiceZoneFx,
-// });
+$isAddServiceModalShown.on(
+  sendServiceZoneFx.done,
+  () => !$isAddServiceModalShown.getState()
+);
+
+$addZoneInput.reset(sendServiceZoneFx.done);
 
 forward({
   from: sendServiceZoneButtonClicked.map((_) => $addZoneInput.getState()),

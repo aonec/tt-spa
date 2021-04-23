@@ -2,6 +2,10 @@ import { createEffect, createEvent, Effect, forward } from 'effector';
 import { addServiceZone } from '../../../_api/service_zones';
 import { NodeServiceZoneResponse } from '../../../../myApi';
 
+export const cancelOrCloseButtonClicked = createEvent();
+
+export const okButtonClicked = createEvent();
+
 export const addServiceZoneButtonClicked = createEvent();
 
 export const nameChanged = createEvent();
