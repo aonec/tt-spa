@@ -116,14 +116,14 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
 
       if (subscription) {
         console.log('C подпиской');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
       }
       if (!subscription) {
         console.log('Без подписки');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
