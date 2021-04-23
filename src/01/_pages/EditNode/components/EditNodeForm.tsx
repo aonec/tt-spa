@@ -27,16 +27,7 @@ import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
-import {
-  sendServiceZoneButtonClicked,
-  inputChanged,
-  addServiceZoneButtonClicked,
-} from '../../../features/addServiceZone/models/events';
-import { useStore } from 'effector-react';
-import {
-  $addZoneInput,
-  $isAddServiceModalShown,
-} from '../../../features/addServiceZone/models/store';
+import { addServiceZoneButtonClicked } from '../../../features/addServiceZone/models';
 import AddNewZonesModal from '../../../features/addServiceZone';
 
 interface EditNodeFormInterface {

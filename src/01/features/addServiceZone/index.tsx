@@ -1,19 +1,20 @@
 import React from 'react';
 import {
   sendServiceZoneButtonClicked,
-  inputChanged,
   okButtonClicked,
   cancelOrCloseButtonClicked,
   sendServiceZoneFx,
-} from './models/events';
+  $addZoneInput,
+  $isAddServiceModalShown,
+} from './models';
 import { useStore } from 'effector-react';
-import { $addZoneInput, $isAddServiceModalShown } from './models/store';
 import ButtonTT from '../../tt-components/ButtonTT';
 import InputTT from '../../tt-components/InputTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
 import Header from '../../tt-components/Header';
 import { Loader } from '../../_components/Loader';
+import { inputChanged } from './models/init';
 
 const AddNewZonesModal = () => {
   const input = useStore($addZoneInput);
