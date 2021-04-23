@@ -39,10 +39,9 @@ export const requestNodeReadings = async (
     to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString(),
   };
 
-  const readings = await axios.get<any, ReadingsInterface>(
-    'Reports/GetArchives',
-    { params }
-  );
+  const readings = await axios.get<any, ReadingsInterface>('Reports/Archives', {
+    params,
+  });
 
   return { data: readings, searchQuery };
 };
