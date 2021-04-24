@@ -9,6 +9,7 @@ import {
   $isAddServiceModalShown,
 } from './index';
 import { addServiceZone } from '../../../../_api/service_zones';
+import { $serviceZones } from '../../selectServiceZones/models';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {
   return newInput;
@@ -37,4 +38,9 @@ $addZoneInput.reset(sendServiceZoneFx.done);
 forward({
   from: sendServiceZoneButtonClicked.map((_) => $addZoneInput.getState()),
   to: sendServiceZoneFx,
+});
+
+$serviceZones.on(sendServiceZoneFx.doneData, (s: any, a) => {
+  debugger;
+  return [...s, a];
 });

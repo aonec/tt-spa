@@ -29,7 +29,11 @@ import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
 import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
-import { PageGate } from '../../../features/serviceZones/selectServiceZones/models';
+import {
+  $serviceZones,
+  PageGate,
+} from '../../../features/serviceZones/selectServiceZones/models';
+import { useStore } from 'effector-react';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -50,6 +54,7 @@ const EditNodeForm = ({
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
   const { setVisibleAddDevice } = useContext(EditNodeContext);
+  const serviceZones = useStore($serviceZones);
 
   if (!node) {
     return null;
@@ -149,7 +154,13 @@ const EditNodeForm = ({
             name="serviceZone"
             rules={[{ required: true, message: 'Выберите Зону' }]}
           >
-            <SelectTT placeholder="Зона" options={serviceZoneList} />
+            <SelectTT
+              placeholder="Зона"
+              options={serviceZones.map((zone) => ({
+                value: zone.id,
+                label: zone.name,
+              }))}
+            />
           </Form.Item>
           <div
             style={{
