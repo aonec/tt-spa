@@ -171,6 +171,7 @@ export enum UserPermission {
   ContractorsRead = "ContractorsRead",
   ContractorsCreate = "ContractorsCreate",
   ContractorsUpdate = "ContractorsUpdate",
+  ContractorsDelete = "ContractorsDelete",
   DocumentsCreate = "DocumentsCreate",
   DocumentsDelete = "DocumentsDelete",
   HousingStocksRead = "HousingStocksRead",
@@ -217,6 +218,8 @@ export enum UserPermission {
   ReportAdd = "ReportAdd",
   IndividualDeviceClose = "IndividualDeviceClose",
   DataMigration = "DataMigration",
+  NodeWorkingRangeAddOrUpdate = "NodeWorkingRangeAddOrUpdate",
+  NodeWorkingRangeRead = "NodeWorkingRangeRead",
 }
 
 export interface TokenResponse {
@@ -1021,6 +1024,26 @@ export interface HousingMeteringDeviceConnectionResponse {
   calculatorConnection: MeteringDeviceConnection;
 }
 
+export interface LastModifiedUserResponse {
+  /** @format int32 */
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+export interface HousingMeteringDeviceCommentResponse {
+  /** @format int32 */
+  id: number;
+  text: string | null;
+
+  /** @format date-time */
+  lastModifiedDateTime: string;
+
+  /** @format date-time */
+  creationDateTime: string;
+  lastModifiedUser: LastModifiedUserResponse;
+}
+
 export interface HousingMeteringDeviceResponse {
   /** @format int32 */
   id: number;
@@ -1055,6 +1078,7 @@ export interface HousingMeteringDeviceResponse {
 
   /** @format double */
   maxReadingsValue: number | null;
+  comment: HousingMeteringDeviceCommentResponse;
 }
 
 export interface HousingMeteringDeviceResponseSuccessApiResponse {
@@ -1116,6 +1140,14 @@ export interface SwitchHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+}
+
+export interface HousingMeteringDeviceCommentResponseSuccessApiResponse {
+  successResponse: HousingMeteringDeviceCommentResponse;
+}
+
+export interface HousingMeteringDeviceCommentRequest {
+  text?: string | null;
 }
 
 export interface Point {
@@ -1914,6 +1946,98 @@ export interface NodeServiceZoneRequest {
 
 export interface NodeServiceZoneResponseSuccessApiResponse {
   successResponse: NodeServiceZoneResponse;
+}
+
+export enum ENodeWorkingRangeSeason {
+  HeatingSeason = "HeatingSeason",
+  InterHeating = "InterHeating",
+}
+
+export enum ENodeWorkingRangesType {
+  AllowableError = "AllowableError",
+  CriticalError = "CriticalError",
+  MassOfFeedFlowMagistral = "MassOfFeedFlowMagistral",
+  MassOfFeedBackFlowMagistral = "MassOfFeedBackFlowMagistral",
+  DeltaMassOfMagistral = "DeltaMassOfMagistral",
+}
+
+export interface AddOrUpdateNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+  typeWorkingRange?: ENodeWorkingRangesType;
+
+  /** @format float */
+  min?: number | null;
+
+  /** @format float */
+  max?: number | null;
+}
+
+export interface ValueNodeWorkingRangeResponse {
+  /** @format uuid */
+  nodeWorkingRangeId: string;
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: ResourceType;
+  nodeWorkingRangesType: ENodeWorkingRangesType;
+  unit: string | null;
+
+  /** @format float */
+  min: number | null;
+
+  /** @format float */
+  max: number | null;
+
+  /** @format int32 */
+  managementFirmId: number;
+
+  /** @format uuid */
+  houseManagementId: string;
+
+  /** @format int32 */
+  nodeId: number;
+}
+
+export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
+  successResponse: ValueNodeWorkingRangeResponse;
+}
+
+export interface GetNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+  typeWorkingRange?: ENodeWorkingRangesType;
+}
+
+export interface GetAllNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+}
+
+export interface AllNodeWorkingRangeResponse {
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: ResourceType;
+  nodeWorkingRanges: ValueNodeWorkingRangeResponse[] | null;
+}
+
+export interface AllNodeWorkingRangeResponseSuccessApiResponse {
+  successResponse: AllNodeWorkingRangeResponse;
 }
 
 export interface GroupReportResponse {
@@ -2785,6 +2909,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags Contractors
+     * @name ContractorsDelete
+     * @request DELETE:/api/Contractors/{contractorId}
+     * @secure
+     */
+    contractorsDelete: (contractorId: number, params: RequestParams = {}) =>
+      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Contractors/${contractorId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags DataMigrations
      * @name DataMigrationsMigrateList
      * @request GET:/api/DataMigrations/Migrate
@@ -3078,6 +3219,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentDetail
+     * @request GET:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentCreate
+     * @request POST:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentCreate: (
+      deviceId: number,
+      data: HousingMeteringDeviceCommentRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentUpdate
+     * @request PUT:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentUpdate: (
+      deviceId: number,
+      data: HousingMeteringDeviceCommentRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentDelete
+     * @request DELETE:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentDelete: (deviceId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
 
@@ -3929,6 +4149,63 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/NodeServiceZones/migrate`,
         method: "POST",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeAddOrUpdateCreate
+     * @request POST:/api/NodeWorkingRange/AddOrUpdate
+     * @secure
+     */
+    nodeWorkingRangeAddOrUpdateCreate: (data: AddOrUpdateNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/AddOrUpdate`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeGetList
+     * @request GET:/api/NodeWorkingRange/Get
+     * @secure
+     */
+    nodeWorkingRangeGetList: (data: GetNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/Get`,
+        method: "GET",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeGetAllList
+     * @request GET:/api/NodeWorkingRange/GetAll
+     * @secure
+     */
+    nodeWorkingRangeGetAllList: (data: GetAllNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/GetAll`,
+        method: "GET",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 

@@ -27,8 +27,9 @@ import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
-import { addServiceZoneButtonClicked } from '../../../features/addServiceZone/models';
-import AddNewZonesModal from '../../../features/addServiceZone';
+import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
+import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
+import { PageGate } from '../../../features/serviceZones/selectServiceZones/models';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;

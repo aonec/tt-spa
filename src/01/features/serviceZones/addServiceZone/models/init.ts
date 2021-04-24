@@ -8,13 +8,15 @@ import {
   $addZoneInput,
   $isAddServiceModalShown,
 } from './index';
-import { addServiceZone } from '../../../_api/service_zones';
+import { addServiceZone } from '../../../../_api/service_zones';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {
   return newInput;
 });
 
-export const inputChanged = nameChanged.prepend((e: any) => e.target.value);
+export const inputChanged = nameChanged.prepend(
+  (e: React.ChangeEvent<HTMLInputElement>) => e.target.value
+);
 
 $isAddServiceModalShown.on(
   [addServiceZoneButtonClicked, cancelOrCloseButtonClicked],

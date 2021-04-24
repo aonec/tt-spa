@@ -5,8 +5,8 @@ import {
   Effect,
   Store,
 } from 'effector';
-import { addServiceZone } from '../../../_api/service_zones';
-import { NodeServiceZoneResponse } from '../../../../myApi';
+import { addServiceZone } from '../../../../_api/service_zones';
+import { NodeServiceZoneResponse } from '../../../../../myApi';
 
 export const cancelOrCloseButtonClicked = createEvent();
 

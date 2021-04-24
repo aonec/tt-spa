@@ -8,12 +8,12 @@ import {
   $isAddServiceModalShown,
 } from './models';
 import { useStore } from 'effector-react';
-import ButtonTT from '../../tt-components/ButtonTT';
-import InputTT from '../../tt-components/InputTT';
+import ButtonTT from '../../../tt-components/ButtonTT';
+import InputTT from '../../../tt-components/InputTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
-import Header from '../../tt-components/Header';
-import { Loader } from '../../_components/Loader';
+import Header from '../../../tt-components/Header/index';
+import { Loader } from '../../../_components/Loader/index';
 import { inputChanged } from './models/init';
 
 const AddNewZonesModal = () => {
