@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // const baseURL = process.env.REACT_APP_URL
 
@@ -75,6 +75,10 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+
+// export type CustomGetResponse<T> = Promise<AxiosResponse<T>>;
 
 // utils
 function saveToLocStor(name: string, data: string) {

@@ -40,7 +40,6 @@ forward({
   to: sendServiceZoneFx,
 });
 
-$serviceZones.on(sendServiceZoneFx.doneData, (s: any, a) => {
-  debugger;
+$serviceZones.on(sendServiceZoneFx.doneData, (s, a) => {
   return [...s, a];
 });

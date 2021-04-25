@@ -5,7 +5,7 @@ import {
 } from '../../myApi';
 
 export const getServiceZones = (): Promise<NodeServiceZoneListResponse> =>
-  axios.get<any, NodeServiceZoneListResponse>('NodeServiceZones');
+  axios.get('NodeServiceZones');
 
 export const addServiceZone = (serviceZoneName: string) =>
   axios.post<any, NodeServiceZoneResponse>('NodeServiceZones', {

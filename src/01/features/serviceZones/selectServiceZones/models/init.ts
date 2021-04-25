@@ -1,40 +1,21 @@
-// import { PageGate, requestFx } from './index';
-import { $serviceZones, PageGate } from './index';
-import { createEffect, forward } from 'effector';
-import { createGate } from 'effector-react';
+import { $serviceZones, PageGate, requestServiceZonesFx } from './index';
+import { forward } from 'effector';
 import './index';
-import axios from '01/axios';
+import { getServiceZones } from '../../../../_api/service_zones';
 
-// requestFx.use(() => {
-//   console.log('Работает!');
-//   return '1';
-// });
-export const requestFx = createEffect(() => axios.get('NodeServiceZones'));
+requestServiceZonesFx.use(getServiceZones);
 
-$serviceZones.on(requestFx.doneData, (s, a: any) => [
-  ...s,
-  ...a.nodeServiceZones,
-]);
+$serviceZones.on(requestServiceZonesFx.doneData, (s, a) => {
+  if (a.nodeServiceZones !== null) {
+    return [...s, ...a.nodeServiceZones];
+  } else {
+    return s;
+  }
+});
 
 $serviceZones.watch((state) => console.log(JSON.stringify(state)));
 
 forward({
   from: PageGate.open,
-  to: requestFx,
+  to: requestServiceZonesFx,
 });
-
-// export const Gate = createGate();
-//
-// const getFx = createEffect(() => {
-//   console.log('works');
-//   return 1;
-// });
-
-// const $store = createStore('default').on(getFx.doneData, (_, result) => result)
-
-// $store.watch(state => {console.log('$store', state)})
-
-// forward({
-//   from: Gate.open,
-//   to: getFx,
-// });
