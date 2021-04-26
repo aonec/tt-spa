@@ -12,6 +12,7 @@ import { getGraphParams } from './utils';
 import styled from 'styled-components';
 import { ResourceType } from '../../../myApi';
 import { NoConnection } from '../CalculatorProfile/components/Connection';
+import { setDataToStore } from '../../features/graph/graphView/models';
 
 interface GraphProps {
   nodeId: number;
@@ -70,6 +71,10 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
   useEffect(() => {
     run(requestNodeReadings(searchQuery));
   }, [searchQuery, run]);
+
+  if (data) {
+    setDataToStore(data);
+  }
 
   return (
     <GraphContainer>
