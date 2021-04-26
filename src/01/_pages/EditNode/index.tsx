@@ -12,6 +12,7 @@ import ModalDeregister from '../../tt-components/ModalDeregister';
 import ModalAddDevice from './components/Modals/ModalAddDevice';
 import { EditNodeContext } from './Context';
 import { getCalculator, getNode } from '../../_api/apiRequests';
+import { PageGate } from '../../features/serviceZones/selectServiceZones/models';
 
 export const EditNode = () => {
   const { nodeId } = useParams();
@@ -78,6 +79,7 @@ export const EditNode = () => {
 
   return (
     <EditNodeContext.Provider value={context}>
+      <PageGate />
       <Breadcrumb path={`/nodes/${nodeId}`} />
       <Header calculator={calculator} node={node} nodeId={nodeId} />
       <div style={{ width: '66%' }}>
