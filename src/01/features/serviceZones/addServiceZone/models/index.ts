@@ -5,14 +5,13 @@ import {
   Effect,
   Store,
 } from 'effector';
-import { addServiceZone } from '../../../../_api/service_zones';
 import { NodeServiceZoneResponse } from '../../../../../myApi';
 
-export const cancelOrCloseButtonClicked = createEvent();
+export const addServiceZoneButtonClicked = createEvent();
+
+export const cancelButtonClicked = createEvent();
 
 export const okButtonClicked = createEvent();
-
-export const addServiceZoneButtonClicked = createEvent();
 
 export const nameChanged = createEvent();
 
@@ -22,6 +21,13 @@ export const sendServiceZoneFx: Effect<
   string,
   NodeServiceZoneResponse
 > = createEffect();
+
+// export const sendServiceZoneFx = createEffect();
+
+export const $error = createStore<any>(null).on(
+  sendServiceZoneFx.failData,
+  (_, error) => error
+);
 
 export const $addZoneInput: Store<string> = createStore('');
 

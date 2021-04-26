@@ -6,14 +6,14 @@ import { getServiceZones } from '../../../../_api/service_zones';
 requestServiceZonesFx.use(getServiceZones);
 
 $serviceZones.on(requestServiceZonesFx.doneData, (s, a) => {
-  if (a.nodeServiceZones !== null) {
-    return [...s, ...a.nodeServiceZones];
-  } else {
-    return s;
-  }
-});
+  let result = [...s];
 
-$serviceZones.watch((state) => console.log(JSON.stringify(state)));
+  if (a.nodeServiceZones !== null) {
+    result = [...result, ...a.nodeServiceZones];
+  }
+
+  return result;
+});
 
 forward({
   from: PageGate.open,

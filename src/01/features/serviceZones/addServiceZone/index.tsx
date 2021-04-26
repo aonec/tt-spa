@@ -2,16 +2,17 @@ import React from 'react';
 import {
   sendServiceZoneButtonClicked,
   okButtonClicked,
-  cancelOrCloseButtonClicked,
+  cancelButtonClicked,
   sendServiceZoneFx,
   $addZoneInput,
   $isAddServiceModalShown,
+  $error,
 } from './models';
 import { useStore } from 'effector-react';
 import ButtonTT from '../../../tt-components/ButtonTT';
 import InputTT from '../../../tt-components/InputTT';
 import styled from 'styled-components';
-import { Modal } from 'antd';
+import { Form, Modal } from 'antd';
 import Header from '../../../tt-components/Header/index';
 import { Loader } from '../../../_components/Loader/index';
 import { inputChanged } from './models/init';
@@ -20,11 +21,12 @@ const AddNewZonesModal = () => {
   const input = useStore($addZoneInput);
   const isModalVisible = useStore($isAddServiceModalShown);
   const isZoneLoading = useStore(sendServiceZoneFx.pending);
+  const isZoneSendError = useStore($error);
 
   return (
     <StyledModal
       onOk={() => okButtonClicked()}
-      onCancel={() => cancelOrCloseButtonClicked()}
+      onCancel={() => cancelButtonClicked()}
       title={
         <Header
         // style={{ paddingBottom: 0 }}
@@ -39,7 +41,8 @@ const AddNewZonesModal = () => {
           <ButtonTT
             color={'white'}
             key="back"
-            onClick={() => cancelOrCloseButtonClicked()}
+            onClick={() => cancelButtonClicked()}
+            disabled={isZoneLoading}
           >
             Отмена
           </ButtonTT>
@@ -50,26 +53,37 @@ const AddNewZonesModal = () => {
               e.preventDefault();
               sendServiceZoneButtonClicked(e);
             }}
+            disabled={isZoneLoading}
           >
             Добавить зону
           </ButtonTT>
         </Footer>
       }
     >
-      <form>
+      <Form>
         <label style={{ color: 'var(--main-70)', fontWeight: 500 }}>
           Зона:
         </label>
+        {/*{isZoneSendError ? <div>ОШИБКА</div> : null}*/}
         {isZoneLoading ? (
           <Loader show={true} />
         ) : (
-          <InputTT
-            onChange={inputChanged}
-            value={input}
-            style={{ marginTop: 8 }}
-          />
+          <Form.Item
+            validateStatus={isZoneSendError ? 'error' : ''}
+            help={
+              isZoneSendError
+                ? 'Произошла ошибка добавления. Попробуйте позже или обратитесь в техподдержку'
+                : ''
+            }
+          >
+            <InputTT
+              onChange={inputChanged}
+              value={input}
+              style={{ marginTop: 8 }}
+            />
+          </Form.Item>
         )}
-      </form>
+      </Form>
     </StyledModal>
   );
 };

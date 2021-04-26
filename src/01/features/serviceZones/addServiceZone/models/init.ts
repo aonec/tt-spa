@@ -4,12 +4,12 @@ import {
   nameChanged,
   sendServiceZoneFx,
   addServiceZoneButtonClicked,
-  cancelOrCloseButtonClicked,
+  cancelButtonClicked,
   $addZoneInput,
   $isAddServiceModalShown,
 } from './index';
-import { addServiceZone } from '../../../../_api/service_zones';
 import { $serviceZones } from '../../selectServiceZones/models';
+import { addServiceZone } from '../../../../_api/service_zones';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {
   return newInput;
@@ -20,13 +20,16 @@ export const inputChanged = nameChanged.prepend(
 );
 
 $isAddServiceModalShown.on(
-  [addServiceZoneButtonClicked, cancelOrCloseButtonClicked],
+  [addServiceZoneButtonClicked, cancelButtonClicked],
   () => {
     return !$isAddServiceModalShown.getState();
   }
 );
 
-sendServiceZoneFx.use(async (name: string) => addServiceZone(name));
+sendServiceZoneFx.use(
+  // async (serviceZoneName: string) => Promise.reject(serviceZoneName)
+  async (serviceZoneName: string) => addServiceZone(serviceZoneName)
+);
 
 $isAddServiceModalShown.on(
   sendServiceZoneFx.done,
