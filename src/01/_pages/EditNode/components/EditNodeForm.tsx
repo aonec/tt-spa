@@ -27,6 +27,13 @@ import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
 import Title from '../../../tt-components/Title';
+import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
+import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
+import {
+  $serviceZones,
+  PageGate,
+} from '../../../features/serviceZones/selectServiceZones/models';
+import { useStore } from 'effector-react';
 
 interface EditNodeFormInterface {
   calculator: CalculatorResponse;
@@ -47,6 +54,7 @@ const EditNodeForm = ({
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
   const { setVisibleAddDevice } = useContext(EditNodeContext);
+  const serviceZones = useStore($serviceZones);
 
   if (!node) {
     return null;
@@ -131,7 +139,7 @@ const EditNodeForm = ({
         </Form.Item>
 
         <Form.Item
-          style={styles.w100}
+          style={styles.w49}
           label="Номер узла"
           name="number"
           rules={[{ required: true, message: 'Выберите Номер узла' }]}
@@ -139,14 +147,39 @@ const EditNodeForm = ({
           <InputTT placeholder="Номер узла" />
         </Form.Item>
 
-        <Form.Item
-          style={styles.w100}
-          label="Зона"
-          name="serviceZone"
-          rules={[{ required: true, message: 'Выберите Зона' }]}
-        >
-          <SelectTT placeholder="Зона" options={serviceZoneList} />
-        </Form.Item>
+        <div style={{ display: 'flex', width: '100%', alignItems: 'flex-end' }}>
+          <Form.Item
+            style={styles.w49}
+            label="Зона"
+            name="serviceZone"
+            rules={[{ required: true, message: 'Выберите Зону' }]}
+          >
+            <SelectTT
+              placeholder="Зона"
+              options={serviceZones.map((zone) => ({
+                value: zone.id,
+                label: zone.name,
+              }))}
+            />
+          </Form.Item>
+          <div
+            style={{
+              color: 'var(--primary-100)',
+              height: 48,
+              marginLeft: 16,
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+            onClick={(e) => {
+              debugger;
+              addServiceZoneButtonClicked();
+            }}
+          >
+            + Добавить новую зону
+          </div>
+        </div>
+
+        <AddNewZonesModal />
 
         <Form.Item
           style={styles.w100}

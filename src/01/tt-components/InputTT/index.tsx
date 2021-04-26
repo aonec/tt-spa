@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { Input } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
+import { Event } from 'effector';
 
 interface Props {
   value?: any;
   disabled?: boolean;
   readonly?: boolean;
-  onChange?: Dispatch<SetStateAction<string>>;
+  onChange?:
+    | Dispatch<SetStateAction<string>>
+    | Event<React.ChangeEvent<HTMLInputElement>>;
 
   // value: string | number | null
 }

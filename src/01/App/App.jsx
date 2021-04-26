@@ -6,7 +6,6 @@ import '01/css/styles.css';
 import { app } from '01/styles/app';
 import { Logotip, Menu } from '01/components';
 import moment from 'moment';
-import { YMInitializer } from 'react-yandex-metrika';
 import { Provider } from 'react-redux';
 import 'moment/locale/ru';
 import { ConfigProvider } from 'antd';
@@ -40,6 +39,7 @@ import EditODPU from '../_pages/EditHousingMeteringDevice';
 import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
+import '../features/init';
 
 moment.locale('ru');
 
