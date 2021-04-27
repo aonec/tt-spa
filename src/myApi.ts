@@ -1898,20 +1898,6 @@ export interface CreateNodeRequest {
   communicationPipes?: CommunicationPipeRequest[] | null;
 }
 
-export interface NodeServiceZoneListResponse {
-  nodeServiceZones: NodeServiceZoneResponse[] | null;
-}
-
-export interface NodeServiceZoneListResponseSuccessApiResponse {
-  successResponse: NodeServiceZoneListResponse;
-}
-
-export interface NodeServiceZoneRequest {
-  name?: string | null;
-}
-
-export interface NodeServiceZoneResponseSuccessApiResponse {
-  successResponse: NodeServiceZoneResponse;
 export enum MagistralTypeModel {
   FeedFlow = "FeedFlow",
   FeedBackFlow = "FeedBackFlow",
@@ -2718,6 +2704,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Calculators
+     * @name CalculatorsExportList
+     * @request GET:/api/Calculators/Export
+     * @secure
+     */
+    calculatorsExportList: (
+      query?: {
+        "Filter.DiameterRange.From"?: number | null;
+        "Filter.DiameterRange.To"?: number | null;
+        "Filter.ExpiresCheckingDateAt"?: ExpiresCheckingDateAt;
+        "Filter.Resource"?: ResourceType;
+        "Filter.Model"?: string | null;
+        "Filter.CommercialDateRange.From"?: string | null;
+        "Filter.CommercialDateRange.To"?: string | null;
+        "Filter.Address.City"?: string | null;
+        "Filter.Address.Street"?: string | null;
+        "Filter.Address.HousingStockNumber"?: string | null;
+        "Filter.Address.Corpus"?: string | null;
+        "Filter.Address.HouseCategory"?: HouseCategory;
+        "Filter.HousingStockId"?: number | null;
+        "Filter.NodeStatus"?: NodeCommercialAccountStatus;
+        Question?: string | null;
+        "OrderBy.Destination"?: OrderByDestination;
+        "OrderBy.Rule"?: CalculatorOrderBy;
+        IsConnected?: boolean | null;
+        CountTasks?: boolean | null;
+        PageNumber?: number;
+        PageSize?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/Calculators/Export`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Calculators
      * @name CalculatorsList
      * @request GET:/api/Calculators
      * @secure
@@ -2837,23 +2865,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Calculators
      * @name CalculatorsFiltersList
      * @request GET:/api/Calculators/filters
-     * @secure
-     */
-    calculatorsFiltersList: (params: RequestParams = {}) =>
-      this.request<CalculatorFilterResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Calculators/filters`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Contractors
-     * @name ContractorsList
-     * @request GET:/api/Contractors
      * @secure
      */
     calculatorsFiltersList: (params: RequestParams = {}) =>
@@ -4056,14 +4067,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags NodeServiceZones
-     * @name ManagingFirmsNodeServiceZonesDetail
-     * @request GET:/api/ManagingFirms/{managingFirmId}/NodeServiceZones
-     * @secure
-     */
-    managingFirmsNodeServiceZonesDetail: (managingFirmId: number, params: RequestParams = {}) =>
-      this.request<NodeServiceZoneListResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
      * @tags Nodes
      * @name NodesPipesForAddingDeviceDetail
      * @request GET:/api/Nodes/{nodeId}/PipesForAddingDevice
@@ -4144,18 +4147,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags NodeServiceZones
-     * @name ManagingFirmsNodeServiceZonesCreate
-     * @request POST:/api/ManagingFirms/{managingFirmId}/NodeServiceZones
-     * @secure
-     */
-    managingFirmsNodeServiceZonesCreate: (
-      managingFirmId: number,
-      data: NodeServiceZoneRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
-        method: "POST",
      * @name NodeServiceZonesUpdate
      * @request PUT:/api/NodeServiceZones/{nodeServiceZoneId}
      * @secure
@@ -4175,22 +4166,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags NodeServiceZones
-     * @name ManagingFirmsNodeServiceZonesDetail2
-     * @request GET:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
-     * @originalName managingFirmsNodeServiceZonesDetail
-     * @duplicate
-     * @secure
-     */
-    managingFirmsNodeServiceZonesDetail2: (
-      managingFirmId: number,
-      nodeServiceZoneId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
      * @name NodeServiceZonesDelete
      * @request DELETE:/api/NodeServiceZones/{nodeServiceZoneId}
      * @secure
@@ -4207,19 +4182,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags NodeServiceZones
-     * @name ManagingFirmsNodeServiceZonesUpdate
-     * @request PUT:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
-     * @secure
-     */
-    managingFirmsNodeServiceZonesUpdate: (
-      managingFirmId: number,
-      nodeServiceZoneId: number,
-      data: NodeServiceZoneRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
-        method: "PUT",
      * @name NodeServiceZonesMigrateCreate
      * @request POST:/api/NodeServiceZones/migrate
      * @secure
@@ -4254,20 +4216,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags NodeServiceZones
-     * @name ManagingFirmsNodeServiceZonesDelete
-     * @request DELETE:/api/ManagingFirms/{managingFirmId}/NodeServiceZones/{nodeServiceZoneId}
-     * @secure
-     */
-    managingFirmsNodeServiceZonesDelete: (
-      managingFirmId: number,
-      nodeServiceZoneId: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
-        method: "DELETE",
-        secure: true,
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeGetList
      * @request GET:/api/NodeWorkingRange/Get
@@ -4287,16 +4235,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags NodeServiceZones
-     * @name NodeServiceZonesMigrateCreate
-     * @request POST:/api/NodeServiceZones/migrate
-     * @secure
-     */
-    nodeServiceZonesMigrateCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/NodeServiceZones/migrate`,
-        method: "POST",
-        secure: true,
      * @tags NodeWorkingRange
      * @name NodeWorkingRangeGetAllList
      * @request GET:/api/NodeWorkingRange/GetAll
@@ -4361,7 +4299,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/Archives`,
         method: "GET",
         query: query,
@@ -4381,7 +4319,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/Report`,
         method: "GET",
         query: query,
@@ -4401,7 +4339,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/ConsolidatedReport`,
         method: "GET",
         query: query,
@@ -4434,7 +4372,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/GroupReport`,
         method: "GET",
         query: query,
