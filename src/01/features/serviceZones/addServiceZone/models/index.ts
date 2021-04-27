@@ -22,12 +22,7 @@ export const sendServiceZoneFx: Effect<
   NodeServiceZoneResponse
 > = createEffect();
 
-// export const sendServiceZoneFx = createEffect();
-
-export const $error = createStore<any>(null).on(
-  sendServiceZoneFx.failData,
-  (_, error) => error
-);
+export const $addZoneStatus = createStore('init');
 
 export const $addZoneInput: Store<string> = createStore('');
 

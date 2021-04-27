@@ -3,10 +3,10 @@ import {
   sendServiceZoneButtonClicked,
   okButtonClicked,
   cancelButtonClicked,
-  sendServiceZoneFx,
   $addZoneInput,
   $isAddServiceModalShown,
-  $error,
+  $addZoneStatus,
+  sendServiceZoneFx,
 } from './models';
 import { useStore } from 'effector-react';
 import ButtonTT from '../../../tt-components/ButtonTT';
@@ -20,20 +20,24 @@ import { inputChanged } from './models/init';
 const AddNewZonesModal = () => {
   const input = useStore($addZoneInput);
   const isModalVisible = useStore($isAddServiceModalShown);
-  const isZoneLoading = useStore(sendServiceZoneFx.pending);
-  const isZoneSendError = useStore($error);
+  const addZoneStatus = useStore($addZoneStatus);
+  const isZoneLoading = addZoneStatus === 'loading';
+  const isAddZoneError = addZoneStatus === 'error';
+  const addZoneErrorMessage = isAddZoneError
+    ? 'Произошла ошибка добавления. Попробуйте позже или обратитесь в техподдержку'
+    : '';
+  const addZoneValidationStatus = isAddZoneError ? 'error' : '';
+
+  const sendButtonHandler = (e: React.ChangeEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    sendServiceZoneButtonClicked();
+  };
 
   return (
     <StyledModal
       onOk={() => okButtonClicked()}
       onCancel={() => cancelButtonClicked()}
-      title={
-        <Header
-        // style={{ paddingBottom: 0 }}
-        >
-          Новая зона обслуживания
-        </Header>
-      }
+      title={<Header>Новая зона обслуживания</Header>}
       visible={isModalVisible}
       width={800}
       footer={
@@ -49,10 +53,7 @@ const AddNewZonesModal = () => {
           <ButtonTT
             color={'blue'}
             key="submit"
-            onClick={(e: any) => {
-              e.preventDefault();
-              sendServiceZoneButtonClicked(e);
-            }}
+            onClick={sendButtonHandler}
             disabled={isZoneLoading}
           >
             Добавить зону
@@ -64,17 +65,12 @@ const AddNewZonesModal = () => {
         <label style={{ color: 'var(--main-70)', fontWeight: 500 }}>
           Зона:
         </label>
-        {/*{isZoneSendError ? <div>ОШИБКА</div> : null}*/}
         {isZoneLoading ? (
           <Loader show={true} />
         ) : (
           <Form.Item
-            validateStatus={isZoneSendError ? 'error' : ''}
-            help={
-              isZoneSendError
-                ? 'Произошла ошибка добавления. Попробуйте позже или обратитесь в техподдержку'
-                : ''
-            }
+            validateStatus={addZoneValidationStatus}
+            help={addZoneErrorMessage}
           >
             <InputTT
               onChange={inputChanged}
