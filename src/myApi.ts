@@ -171,6 +171,7 @@ export enum UserPermission {
   ContractorsRead = "ContractorsRead",
   ContractorsCreate = "ContractorsCreate",
   ContractorsUpdate = "ContractorsUpdate",
+  ContractorsDelete = "ContractorsDelete",
   DocumentsCreate = "DocumentsCreate",
   DocumentsDelete = "DocumentsDelete",
   HousingStocksRead = "HousingStocksRead",
@@ -217,6 +218,8 @@ export enum UserPermission {
   ReportAdd = "ReportAdd",
   IndividualDeviceClose = "IndividualDeviceClose",
   DataMigration = "DataMigration",
+  NodeWorkingRangeAddOrUpdate = "NodeWorkingRangeAddOrUpdate",
+  NodeWorkingRangeRead = "NodeWorkingRangeRead",
 }
 
 export interface TokenResponse {
@@ -893,6 +896,62 @@ export interface HomeownersUpdateRequest {
   apartmentsToRemove?: number[] | null;
 }
 
+export interface HousingMeteringDeviceReadingsResponse {
+  /** @format uuid */
+  id: string | null;
+
+  /** @format double */
+  value: number | null;
+
+  /** @format int32 */
+  nodeId: number;
+
+  /** @format int32 */
+  deviceId: number;
+  deviceModel: string | null;
+  deviceSerialNumber: string | null;
+
+  /** @format date-time */
+  createDate: string;
+
+  /** @format date-time */
+  updateDate: string | null;
+}
+
+export interface GetHousingMeteringDeviceReadingsResponse {
+  items: HousingMeteringDeviceReadingsResponse[] | null;
+}
+
+export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
+  successResponse: GetHousingMeteringDeviceReadingsResponse;
+}
+
+export interface CreateHousingMeteringDeviceReadingsRequest {
+  /** @format double */
+  value?: number;
+
+  /** @format int32 */
+  nodeId?: number;
+
+  /** @format int32 */
+  deviceId?: number;
+
+  /** @format date-time */
+  createDate?: string;
+}
+
+export interface HousingMeteringDeviceReadingsResponseSuccessApiResponse {
+  successResponse: HousingMeteringDeviceReadingsResponse;
+}
+
+export interface UpdateHousingMeteringDeviceReadingsRequest {
+  /** @format uuid */
+  id?: string;
+
+  /** @format double */
+  value?: number;
+}
+
 export enum MagistralType {
   None = "None",
   FeedFlow = "FeedFlow",
@@ -912,6 +971,11 @@ export interface PipeConnectionRequest {
 
   /** @format int32 */
   nodeId: number;
+}
+
+export enum EMeasuringUnit {
+  CubicMeter = "CubicMeter",
+  KiloWatt = "KiloWatt",
 }
 
 export interface UpdateHousingMeteringDeviceRequest {
@@ -938,6 +1002,13 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format int32 */
   diameter?: number | null;
+  measuringUnit?: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue?: number | null;
+
+  /** @format double */
+  maxReadingsValue?: number | null;
 }
 
 export interface HousingMeteringDeviceConnectionResponse {
@@ -951,6 +1022,26 @@ export interface HousingMeteringDeviceConnectionResponse {
   calculatorSerialNumber: string | null;
   calculatorModel: string | null;
   calculatorConnection: MeteringDeviceConnection;
+}
+
+export interface LastModifiedUserResponse {
+  /** @format int32 */
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+}
+
+export interface HousingMeteringDeviceCommentResponse {
+  /** @format int32 */
+  id: number;
+  text: string | null;
+
+  /** @format date-time */
+  lastModifiedDateTime: string;
+
+  /** @format date-time */
+  creationDateTime: string;
+  lastModifiedUser: LastModifiedUserResponse;
 }
 
 export interface HousingMeteringDeviceResponse {
@@ -980,6 +1071,14 @@ export interface HousingMeteringDeviceResponse {
   housingMeteringDeviceType: HousingMeteringDeviceType;
   address: HousingStockAddressResponse;
   hubConnection: HousingMeteringDeviceConnectionResponse;
+  measuringUnit: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue: number | null;
+
+  /** @format double */
+  maxReadingsValue: number | null;
+  comment: HousingMeteringDeviceCommentResponse;
 }
 
 export interface HousingMeteringDeviceResponseSuccessApiResponse {
@@ -1011,6 +1110,13 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format int32 */
   diameter?: number | null;
+  measuringUnit?: EMeasuringUnit;
+
+  /** @format double */
+  minReadingsValue?: number | null;
+
+  /** @format double */
+  maxReadingsValue?: number | null;
 }
 
 export interface SwitchHousingMeteringDeviceRequest {
@@ -1034,6 +1140,14 @@ export interface SwitchHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+}
+
+export interface HousingMeteringDeviceCommentResponseSuccessApiResponse {
+  successResponse: HousingMeteringDeviceCommentResponse;
+}
+
+export interface HousingMeteringDeviceCommentRequest {
+  text?: string | null;
 }
 
 export interface Point {
@@ -1798,6 +1912,146 @@ export interface NodeServiceZoneRequest {
 
 export interface NodeServiceZoneResponseSuccessApiResponse {
   successResponse: NodeServiceZoneResponse;
+export enum MagistralTypeModel {
+  FeedFlow = "FeedFlow",
+  FeedBackFlow = "FeedBackFlow",
+}
+
+export enum EHousingMeteringDeviceTypeModel {
+  FlowMeter = "FlowMeter",
+  TemperatureSensor = "TemperatureSensor",
+  WeatherController = "WeatherController",
+  PressureMeter = "PressureMeter",
+}
+
+export interface CommunicationPipeForAddingDeviceResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
+}
+
+export interface CommunicationPipeForAddingDeviceListResponse {
+  /** @format int32 */
+  nodeId: number;
+
+  /** @format int32 */
+  entryNumber: number;
+  magistralType: MagistralTypeModel;
+  pipes: CommunicationPipeForAddingDeviceResponse[] | null;
+}
+
+export interface CommunicationPipeForAddingDeviceListResponseSuccessApiResponse {
+  successResponse: CommunicationPipeForAddingDeviceListResponse;
+}
+
+export interface NodeServiceZoneListResponse {
+  nodeServiceZones: NodeServiceZoneResponse[] | null;
+}
+
+export interface NodeServiceZoneListResponseSuccessApiResponse {
+  successResponse: NodeServiceZoneListResponse;
+}
+
+export interface NodeServiceZoneRequest {
+  name?: string | null;
+}
+
+export interface NodeServiceZoneResponseSuccessApiResponse {
+  successResponse: NodeServiceZoneResponse;
+}
+
+export enum ENodeWorkingRangeSeason {
+  HeatingSeason = "HeatingSeason",
+  InterHeating = "InterHeating",
+}
+
+export enum ENodeWorkingRangesType {
+  AllowableError = "AllowableError",
+  CriticalError = "CriticalError",
+  MassOfFeedFlowMagistral = "MassOfFeedFlowMagistral",
+  MassOfFeedBackFlowMagistral = "MassOfFeedBackFlowMagistral",
+  DeltaMassOfMagistral = "DeltaMassOfMagistral",
+}
+
+export interface AddOrUpdateNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+  typeWorkingRange?: ENodeWorkingRangesType;
+
+  /** @format float */
+  min?: number | null;
+
+  /** @format float */
+  max?: number | null;
+}
+
+export interface ValueNodeWorkingRangeResponse {
+  /** @format uuid */
+  nodeWorkingRangeId: string;
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: ResourceType;
+  nodeWorkingRangesType: ENodeWorkingRangesType;
+  unit: string | null;
+
+  /** @format float */
+  min: number | null;
+
+  /** @format float */
+  max: number | null;
+
+  /** @format int32 */
+  managementFirmId: number;
+
+  /** @format uuid */
+  houseManagementId: string;
+
+  /** @format int32 */
+  nodeId: number;
+}
+
+export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
+  successResponse: ValueNodeWorkingRangeResponse;
+}
+
+export interface GetNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+  typeWorkingRange?: ENodeWorkingRangesType;
+}
+
+export interface GetAllNodeWorkingRangeRequest {
+  season?: ENodeWorkingRangeSeason;
+  nodeResourceType?: ResourceType;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+}
+
+export interface AllNodeWorkingRangeResponse {
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: ResourceType;
+  nodeWorkingRanges: ValueNodeWorkingRangeResponse[] | null;
+}
+
+export interface AllNodeWorkingRangeResponseSuccessApiResponse {
+  successResponse: AllNodeWorkingRangeResponse;
 }
 
 export interface GroupReportResponse {
@@ -2602,6 +2856,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Contractors
      * @secure
      */
+    calculatorsFiltersList: (params: RequestParams = {}) =>
+      this.request<CalculatorFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Calculators/filters`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contractors
+     * @name ContractorsList
+     * @request GET:/api/Contractors
+     * @secure
+     */
     contractorsList: (params: RequestParams = {}) =>
       this.request<PagedContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
@@ -2662,6 +2933,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Contractors
+     * @name ContractorsDelete
+     * @request DELETE:/api/Contractors/{contractorId}
+     * @secure
+     */
+    contractorsDelete: (contractorId: number, params: RequestParams = {}) =>
+      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Contractors/${contractorId}`,
+        method: "DELETE",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -2811,6 +3099,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsList
+     * @request GET:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsList: (query?: { nodeId?: number }, params: RequestParams = {}) =>
+      this.request<GetHousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsCreate
+     * @request POST:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsCreate: (
+      data: CreateHousingMeteringDeviceReadingsRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsUpdate
+     * @request PUT:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsUpdate: (
+      data: UpdateHousingMeteringDeviceReadingsRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsDelete
+     * @request DELETE:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsDelete: (query?: { id?: string }, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "DELETE",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesUpdate
      * @request PUT:/api/HousingMeteringDevices/{deviceId}
@@ -2883,6 +3250,85 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentDetail
+     * @request GET:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentDetail: (deviceId: number, params: RequestParams = {}) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentCreate
+     * @request POST:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentCreate: (
+      deviceId: number,
+      data: HousingMeteringDeviceCommentRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentUpdate
+     * @request PUT:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentUpdate: (
+      deviceId: number,
+      data: HousingMeteringDeviceCommentRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceCommentResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCommentDelete
+     * @request DELETE:/api/HousingMeteringDevices/{deviceId}/comment
+     * @secure
+     */
+    housingMeteringDevicesCommentDelete: (deviceId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/${deviceId}/comment`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
 
@@ -3618,6 +4064,76 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     managingFirmsNodeServiceZonesDetail: (managingFirmId: number, params: RequestParams = {}) =>
       this.request<NodeServiceZoneListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
+     * @tags Nodes
+     * @name NodesPipesForAddingDeviceDetail
+     * @request GET:/api/Nodes/{nodeId}/PipesForAddingDevice
+     * @secure
+     */
+    nodesPipesForAddingDeviceDetail: (
+      nodeId: number,
+      query: {
+        entryNumber: number;
+        magistralType: MagistralTypeModel;
+        housingMeteringDeviceType: EHousingMeteringDeviceTypeModel;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CommunicationPipeForAddingDeviceListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/PipesForAddingDevice`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name NodeServiceZonesList
+     * @request GET:/api/NodeServiceZones
+     * @secure
+     */
+    nodeServiceZonesList: (params: RequestParams = {}) =>
+      this.request<NodeServiceZoneListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name NodeServiceZonesCreate
+     * @request POST:/api/NodeServiceZones
+     * @secure
+     */
+    nodeServiceZonesCreate: (data: NodeServiceZoneRequest, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeServiceZones
+     * @name NodeServiceZonesDetail
+     * @request GET:/api/NodeServiceZones/{nodeServiceZoneId}
+     * @secure
+     */
+    nodeServiceZonesDetail: (nodeServiceZoneId: number, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
         method: "GET",
         secure: true,
         format: "json",
@@ -3640,6 +4156,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones`,
         method: "POST",
+     * @name NodeServiceZonesUpdate
+     * @request PUT:/api/NodeServiceZones/{nodeServiceZoneId}
+     * @secure
+     */
+    nodeServiceZonesUpdate: (nodeServiceZoneId: number, data: NodeServiceZoneRequest, params: RequestParams = {}) =>
+      this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: "PUT",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3667,6 +4191,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         secure: true,
         format: "json",
+     * @name NodeServiceZonesDelete
+     * @request DELETE:/api/NodeServiceZones/{nodeServiceZoneId}
+     * @secure
+     */
+    nodeServiceZonesDelete: (nodeServiceZoneId: number, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
 
@@ -3687,6 +4220,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
         method: "PUT",
+     * @name NodeServiceZonesMigrateCreate
+     * @request POST:/api/NodeServiceZones/migrate
+     * @secure
+     */
+    nodeServiceZonesMigrateCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/NodeServiceZones/migrate`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeAddOrUpdateCreate
+     * @request POST:/api/NodeWorkingRange/AddOrUpdate
+     * @secure
+     */
+    nodeWorkingRangeAddOrUpdateCreate: (data: AddOrUpdateNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/AddOrUpdate`,
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -3711,6 +4268,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ManagingFirms/${managingFirmId}/NodeServiceZones/${nodeServiceZoneId}`,
         method: "DELETE",
         secure: true,
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeGetList
+     * @request GET:/api/NodeWorkingRange/Get
+     * @secure
+     */
+    nodeWorkingRangeGetList: (data: GetNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/Get`,
+        method: "GET",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -3727,6 +4297,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/NodeServiceZones/migrate`,
         method: "POST",
         secure: true,
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeGetAllList
+     * @request GET:/api/NodeWorkingRange/GetAll
+     * @secure
+     */
+    nodeWorkingRangeGetAllList: (data: GetAllNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/GetAll`,
+        method: "GET",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -3770,16 +4353,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reports
-     * @name ReportsGetArchivesList
-     * @request GET:/api/Reports/GetArchives
+     * @name ReportsArchivesList
+     * @request GET:/api/Reports/Archives
      * @secure
      */
-    reportsGetArchivesList: (
+    reportsArchivesList: (
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/Reports/GetArchives`,
+        path: `/api/Reports/Archives`,
         method: "GET",
         query: query,
         secure: true,
@@ -3790,16 +4373,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reports
-     * @name ReportsGetReportList
-     * @request GET:/api/Reports/GetReport
+     * @name ReportsReportList
+     * @request GET:/api/Reports/Report
      * @secure
      */
-    reportsGetReportList: (
+    reportsReportList: (
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/Reports/GetReport`,
+        path: `/api/Reports/Report`,
         method: "GET",
         query: query,
         secure: true,
@@ -3810,16 +4393,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reports
-     * @name ReportsGetConsolidatedReportList
-     * @request GET:/api/Reports/GetConsolidatedReport
+     * @name ReportsConsolidatedReportList
+     * @request GET:/api/Reports/ConsolidatedReport
      * @secure
      */
-    reportsGetConsolidatedReportList: (
+    reportsConsolidatedReportList: (
       query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/Reports/GetConsolidatedReport`,
+        path: `/api/Reports/ConsolidatedReport`,
         method: "GET",
         query: query,
         secure: true,
@@ -3830,11 +4413,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reports
-     * @name ReportsGetGroupReportList
-     * @request GET:/api/Reports/GetGroupReport
+     * @name ReportsGroupReportList
+     * @request GET:/api/Reports/GroupReport
      * @secure
      */
-    reportsGetGroupReportList: (
+    reportsGroupReportList: (
       query?: {
         GroupReportId?: string | null;
         HouseManagementId?: string | null;
@@ -3852,7 +4435,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/Reports/GetGroupReport`,
+        path: `/api/Reports/GroupReport`,
         method: "GET",
         query: query,
         secure: true,

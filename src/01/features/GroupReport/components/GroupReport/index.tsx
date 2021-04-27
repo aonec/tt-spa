@@ -177,14 +177,14 @@ const ModalGroupReport = () => {
 
       if (subscription) {
         console.log('C подпиской');
-        const link = `Reports/GetGroupReport?houseManagementId=${values.houseManagementId}&NodeResourceType=${resources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}`;
+        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
       }
       if (!subscription) {
         console.log('Без подписки');
-        const link = `Reports/GetGroupReport?HouseManagementId=${values.houseManagementId}&NodeResourceType=${resources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
+        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
         console.log(link);
         const fileName = 'Report.zip';
         downloadReport(link, fileName);
