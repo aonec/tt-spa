@@ -6,7 +6,7 @@ import {
   ResourceType,
 } from '../../../../../myApi';
 
-export function downloadReport(query?: {
+export type reportQuery = {
   GroupReportId?: string | null;
   HouseManagementId?: string | null;
   NodeResourceTypes?: ResourceType[] | null;
@@ -19,8 +19,10 @@ export function downloadReport(query?: {
   ReportType?: string | null;
   From?: string | null;
   To?: string | null;
-}) {
-  sendGroupReport(query).then((response: any) => {
+};
+
+export function downloadReport(query?: reportQuery) {
+  return sendGroupReport(query).then((response: any) => {
     debugger;
     const fileNameWithJunk = response.headers['content-disposition'].split(';');
     const encodedFileName = fileNameWithJunk[2].split("'")[2];
