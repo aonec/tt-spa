@@ -1,11 +1,10 @@
-import axios from '../axios';
 import { ReadingsStateType } from './houses_readings_page';
 import {
-  Api,
   EmailSubscriptionType,
   NodeCommercialAccountStatus,
   ResourceType,
 } from '../../myApi';
+import axiosWithHeaders from '../axiosWithHeaders';
 
 export const sendGroupReport = async (query?: {
   GroupReportId?: string | null;
@@ -21,8 +20,15 @@ export const sendGroupReport = async (query?: {
   From?: string | null;
   To?: string | null;
 }): Promise<ReadingsStateType> => {
-  const res = await axios.get<any, any>(`Reports/GetGroupReport`, {
+  const config: Partial<{ params: typeof query } & { responseType: 'blob' }> = {
     params: query,
-  });
+  };
+  if (!query?.DelayedEmailTarget) {
+    config.responseType = 'blob';
+  }
+  const res = await axiosWithHeaders.get<any, any>(
+    `Reports/GroupReport`,
+    config
+  );
   return res;
 };

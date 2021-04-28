@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+  ChangeEventHandler,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
 import { Modal } from 'antd';
@@ -10,6 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import axios from '01/axios';
 import { sendGroupReport } from '../../../../_api/group_report';
+import { Loader } from '../../../../components/Loader';
 
 const CurrentEmailModal = () => {
   const groupReportFormState = useAppSelector(
@@ -21,7 +28,6 @@ const CurrentEmailModal = () => {
   const dispatch = useAppDispatch();
   const isVisible = groupReportStatus === 'currentEmailForm';
   const { email } = JSON.parse(localStorage.getItem('user')!);
-  debugger;
   // const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
   const formQuery = (formState: GroupReportValuesInterface) => {
     return {};
@@ -34,7 +40,49 @@ const CurrentEmailModal = () => {
     resource,
     dates,
   } = groupReportFormState;
-  debugger;
+
+  const [error, setError] = useState(null);
+  const [sendingStatus, setSendingStatus] = useState('idle');
+  const [inputValue, setInputValue] = useState('');
+
+  const isSending = sendingStatus === 'loading';
+  const isError = sendingStatus === 'error';
+  const isMounted = React.useRef(true);
+
+  const closeModal = () => dispatch(setGroupStatus(undefined));
+
+  const handleSubmit = async () => {
+    setSendingStatus('loading');
+    try {
+      await sendGroupReport({
+        HouseManagementId: houseManagementId,
+        NodeResourceTypes: resource,
+        NodeStatus: category,
+        ReportType: detailing,
+        From: dates[0],
+        To: dates[1],
+        DelayedEmailTarget: email,
+      });
+      if (!isMounted.current) return;
+
+      setSendingStatus('success');
+      closeModal();
+    } catch (error) {
+      if (!isMounted.current) return;
+
+      setError(error);
+      setSendingStatus('error');
+    }
+  };
+
+  const handleOtherEmailClick = () =>
+    dispatch(setGroupStatus('otherEmailForm'));
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
   // const resources = resource!.map((item: string) => {
   //   return `NodeResourceType=${item}`;
   // });
@@ -44,49 +92,34 @@ const CurrentEmailModal = () => {
     <StyledModal
       visible={isVisible}
       title={<Header>Отправить отчёт на почту</Header>}
-      onCancel={() => dispatch(setGroupStatus(undefined))}
+      onCancel={closeModal}
       width={800}
       footer={
         <Footer>
-          <ButtonTT
-            color={'white'}
-            key="submit"
-            onClick={() => dispatch(setGroupStatus(undefined))}
-          >
+          <ButtonTT color={'white'} key="submit" onClick={closeModal}>
             Отмена
           </ButtonTT>
           <ButtonTT
             color={'white'}
             key="submit"
-            onClick={() => dispatch(setGroupStatus('otherEmailForm'))}
+            onClick={handleOtherEmailClick}
           >
             Указать другую почту
           </ButtonTT>
           <ButtonTT
             color={'blue'}
             key="back"
-            // houseManagementId=${values.houseManagementId}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}
-            onClick={() =>
-              sendGroupReport({
-                HouseManagementId: houseManagementId,
-                NodeResourceTypes: resource,
-                NodeStatus: category,
-                ReportType: detailing,
-                From: dates[0],
-                To: dates[1],
-                DelayedEmailTarget: email,
-              })
-            }
+            onClick={handleSubmit}
+            disabled={isSending}
           >
             Отправить отчёт
           </ButtonTT>
         </Footer>
       }
     >
-      <p style={{ color: 'var(--main-100)', margin: 0 }}>
-        Вы внесли не все показания, если вы покинете страницу, то все изменения,
-        которые были сделаны вами на этой странице не сохранятся
-      </p>
+      <p>Отчет будет отправлен на почту {email}</p>
+      {isSending ? <Loader show /> : null}
+      {isError ? <div>ОШИБКА ОТПРАВКИ</div> : null}
     </StyledModal>
   );
 };

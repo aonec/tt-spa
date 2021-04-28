@@ -1,75 +1,110 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import styled from 'styled-components';
-import { Modal, Form, Button } from 'antd';
-import { useFormik } from 'formik';
+import { Modal, Form } from 'antd';
 import InputTT from '../../../../tt-components/InputTT';
 import { setGroupStatus } from '../../models/groupReportReducer';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
+import { sendGroupReport } from '../../../../_api/group_report';
+import { Loader } from '../../../../_components/Loader';
 
 const OtherEmailModal = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-    },
-    onSubmit: (values, actions) => {
-      alert(JSON.stringify(values, null, 2));
-      setTimeout(() => actions.setSubmitting(false), 1000);
-      // sendEmail(values, email)
-      //   .then(() => setIsVisible(undefined))
-      //   .catch((e) => setError(e));
-    },
-  });
-
+  const [error, setError] = useState(null);
+  const [sendingStatus, setSendingStatus] = useState('idle');
+  const [inputValue, setInputValue] = useState('');
   const groupReportFormState = useAppSelector(
     (state) => state.groupReport.groupReportFormState
   );
   const groupReportStatus = useAppSelector(
     (state) => state.groupReport.groupReportStatus
   );
+  const isMounted = React.useRef(true);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  const {
+    houseManagementId,
+    category,
+    detailing,
+    resource,
+    dates,
+  } = groupReportFormState;
+
+  const isSending = sendingStatus === 'loading';
+  const isError = sendingStatus === 'error';
+
   const isVisible = groupReportStatus === 'otherEmailForm';
-  const { email } = JSON.parse(localStorage.getItem('user')!);
+
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const closeModal = () => dispatch(setGroupStatus(undefined));
+
+  const handleSubmit = async () => {
+    setSendingStatus('loading');
+    try {
+      await sendGroupReport({
+        HouseManagementId: houseManagementId,
+        NodeResourceTypes: resource,
+        NodeStatus: category,
+        ReportType: detailing,
+        From: dates[0],
+        To: dates[1],
+        DelayedEmailTarget: inputValue,
+      });
+      if (!isMounted.current) return;
+      setSendingStatus('success');
+      closeModal();
+    } catch (error) {
+      if (!isMounted.current) return;
+      setError(error);
+      setSendingStatus('error');
+    }
+  };
 
   return (
     <StyledModal
-      // confirmLoading={formik.isSubmitting}
       confirmLoading={true}
       visible={isVisible}
       title={<Header>Новая почта для отправки отчёта</Header>}
       width={800}
-      onCancel={() => dispatch(setGroupStatus(undefined))}
-      onOk={() => formik.handleSubmit()}
+      onCancel={closeModal}
       footer={
         <Footer>
-          <ButtonTT
-            color={'white'}
-            onClick={() => dispatch(setGroupStatus(undefined))}
-          >
+          <ButtonTT color={'white'} onClick={closeModal}>
             Отмена
           </ButtonTT>
-          <Button
-            type="primary"
-            color={'blue'}
-            onClick={() => formik.handleSubmit()}
-            loading={formik.isSubmitting}
-            // disabled={formik.isSubmitting}
-          >
+          <ButtonTT color={'blue'} onClick={handleSubmit} disabled={isSending}>
             Отправить отчёт
-          </Button>
+          </ButtonTT>
         </Footer>
       }
     >
-      <Form>
-        <Form.Item name="email">
-          {/*{error ? <div> error.message</div> : null}*/}
+      {isSending ? (
+        <Loader show />
+      ) : (
+        <Form.Item
+          validateStatus={isError ? 'error' : ''}
+          help={
+            isError
+              ? 'Произошла ошибка отправления. Попробуйте позже или обратитесь в техподдержку'
+              : ''
+          }
+        >
           <InputTT
             name="email"
             placeholder="Email"
-            onChange={formik.handleChange}
+            value={inputValue}
+            onChange={handleChange}
           />
         </Form.Item>
-      </Form>
+      )}
     </StyledModal>
   );
 };

@@ -1,15 +1,27 @@
 import { getReport } from '../../../../_pages/CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
+import { sendGroupReport } from '../../../../_api/group_report';
+import {
+  EmailSubscriptionType,
+  NodeCommercialAccountStatus,
+  ResourceType,
+} from '../../../../../myApi';
 
-export function downloadReport(link: string, fileName: string) {
-  getReport(link).then((response: any) => {
-    // const url = window.URL.createObjectURL(new Blob([response]));
-    // const link = document.createElement('a');
-    // link.href = url;
-    // const fileName = `Report.zip`;
-    // link.setAttribute('download', fileName);
-    // document.body.appendChild(link);
-    // link.click();
-    // link.remove();
+export function downloadReport(query?: {
+  GroupReportId?: string | null;
+  HouseManagementId?: string | null;
+  NodeResourceTypes?: ResourceType[] | null;
+  NodeStatus?: NodeCommercialAccountStatus;
+  'Subscription.Email'?: string | null;
+  'Subscription.ContractorIds'?: number[] | null;
+  'Subscription.TriggerAt'?: string;
+  'Subscription.Type'?: EmailSubscriptionType;
+  DelayedEmailTarget?: string | null;
+  ReportType?: string | null;
+  From?: string | null;
+  To?: string | null;
+}) {
+  sendGroupReport(query).then((response: any) => {
+    debugger;
     const fileNameWithJunk = response.headers['content-disposition'].split(';');
     const encodedFileName = fileNameWithJunk[2].split("'")[2];
     const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');

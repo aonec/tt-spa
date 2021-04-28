@@ -20,6 +20,7 @@ import { Divider, Form, Radio } from 'antd';
 import moment, { Moment } from 'moment';
 import { getReports } from '../../../../_pages/Objects/apiObjects';
 import {
+  EmailSubscriptionType,
   GroupReportFormResponse,
   NodeCommercialAccountStatus,
   ResourceType,
@@ -55,7 +56,7 @@ export interface GroupReportValuesInterface {
   nextDate: undefined;
   period: 'currentMonth' | 'previousMonth' | 'customPeriod';
   subscribe: boolean;
-  subscribePeriod?: 'OncePerTwoWeeks' | 'OncePerMonth' | 'OncePerQuarter';
+  subscribePeriod?: EmailSubscriptionType;
 }
 
 const reportName = `Выгрузка группового отчёта`;
@@ -71,6 +72,7 @@ const initialForm = {
   email: undefined,
   subscribe: false,
   category: undefined,
+  dates: [moment().startOf('month'), moment()],
 };
 
 const ModalGroupReport = () => {
@@ -165,7 +167,7 @@ const ModalGroupReport = () => {
       // const resource = getFieldValue('resource');
 
       if (
-        (daysCount >= 30 && getFieldValue('detailing') === 'hourly') ||
+        (daysCount >= 2 && getFieldValue('detailing') === 'hourly') ||
         (daysCount >= 60 && getFieldValue('detailing') === 'daily')
       ) {
         // setVisible('currentEmailForm');
@@ -177,17 +179,35 @@ const ModalGroupReport = () => {
 
       if (subscription) {
         console.log('C подпиской');
-        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
-        console.log(link);
+        // const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        // console.log(link);
         const fileName = 'Report.zip';
-        downloadReport(link, fileName);
+        // downloadReport(link, fileName);
+        downloadReport({
+          HouseManagementId: values.houseManagementId,
+          NodeResourceTypes: resources,
+          NodeStatus: values.category,
+          ReportType: values.detailing,
+          From: beginDayQuery,
+          To: endDayQuery,
+          'Subscription.Email': values.email,
+          'Subscription.Type': values.subscribePeriod,
+        });
       }
       if (!subscription) {
         console.log('Без подписки');
-        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
-        console.log(link);
-        const fileName = 'Report.zip';
-        downloadReport(link, fileName);
+        // const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
+        // console.log(link);
+        // const fileName = 'Report.zip';
+        // downloadReport(link, fileName);
+        downloadReport({
+          HouseManagementId: values.houseManagementId,
+          NodeResourceTypes: resources,
+          NodeStatus: values.category,
+          ReportType: values.detailing,
+          From: beginDayQuery,
+          To: endDayQuery,
+        });
       }
     };
 
