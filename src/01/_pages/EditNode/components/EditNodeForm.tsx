@@ -171,7 +171,6 @@ const EditNodeForm = ({
               fontWeight: 500,
             }}
             onClick={(e) => {
-              debugger;
               addServiceZoneButtonClicked();
             }}
           >

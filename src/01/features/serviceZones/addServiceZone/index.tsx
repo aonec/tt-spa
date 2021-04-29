@@ -64,7 +64,6 @@ const AddNewZonesModal = () => {
         <label style={{ color: 'var(--main-70)', fontWeight: 500 }}>
           Зона:
         </label>
-        {/*{isZoneSendError ? <div>ОШИБКА</div> : null}*/}
         {isZoneLoading ? (
           <Loader show={true} />
         ) : (
@@ -77,7 +76,7 @@ const AddNewZonesModal = () => {
             }
           >
             <InputTT
-              onChange={inputChanged}
+              // onChange={inputChanged}
               value={input}
               style={{ marginTop: 8 }}
             />
