@@ -429,7 +429,7 @@ const ModalGroupReport = () => {
         </StyledModalBody>
         <StyledFooter modal>
           <LoaderWrapper>
-            <Loader size={32} show={true} />
+            <Loader size={32} show={isSending} />
           </LoaderWrapper>
           <ButtonTT
             type="button"
