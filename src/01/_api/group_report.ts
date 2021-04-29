@@ -5,6 +5,7 @@ import {
   ResourceType,
 } from '../../myApi';
 import axiosWithHeaders from '../axiosWithHeaders';
+import qs from 'qs';
 
 export const sendGroupReport = async (query?: {
   GroupReportId?: string | null;
@@ -19,16 +20,21 @@ export const sendGroupReport = async (query?: {
   ReportType?: string | null;
   From?: string | null;
   To?: string | null;
-}): Promise<ReadingsStateType> => {
-  const config: Partial<{ params: typeof query } & { responseType: 'blob' }> = {
+}) => {
+  const config: Partial<
+    {
+      params: typeof query;
+      paramsSerializer: (params: typeof query) => string;
+    } & {
+      responseType: 'blob';
+    }
+  > = {
     params: query,
+    paramsSerializer: (params) => qs.stringify(params),
   };
   if (!query?.DelayedEmailTarget) {
     config.responseType = 'blob';
   }
-  const res = await axiosWithHeaders.get<any, any>(
-    `Reports/GroupReport`,
-    config
-  );
+  const res = await axiosWithHeaders.get(`Reports/GroupReport`, config);
   return res;
 };

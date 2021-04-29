@@ -161,7 +161,10 @@ const ModalGroupReport = () => {
       const endDayQuery = endDay.format('YYYY-MM-DD');
       const daysCount = endDay.diff(beginDay, 'days');
 
-      const resources = getFieldValue('resource').join('&NodeResourceType=');
+      const resources = getFieldValue('resource');
+      // .join('&NodeResourceType=');
+
+      debugger;
 
       const tooBigReport =
         (daysCount >= 2 && getFieldValue('detailing') === 'hourly') ||
