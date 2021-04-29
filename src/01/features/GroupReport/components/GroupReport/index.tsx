@@ -37,6 +37,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
 import { useDispatch } from 'react-redux';
 import { sendGroupReport } from '../../../../_api/group_report';
+import { Loader } from '../../../../components/Loader';
 
 interface ModalPropsInterface {
   setVisible: Dispatch<SetStateAction<ReportModalType>>;
@@ -106,8 +107,8 @@ const ModalGroupReport = () => {
   }
 
   const GroupForm = () => {
+    const [isRangePickerDisabled, setIsRangePickerDisabled] = useState(true);
     const [subscription, setSubscription] = useState(false);
-    const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
     const { groupReports, nodeResourceTypes, nodeStatuses, contractors } = data;
 
     const groupReportsOptions = groupReports
@@ -139,7 +140,6 @@ const ModalGroupReport = () => {
       : [];
 
     const [form] = Form.useForm<GroupReportValuesInterface>();
-    // const values = form.getFieldsValue();
     const {
       setFieldsValue,
       getFieldValue,
@@ -148,6 +148,7 @@ const ModalGroupReport = () => {
     } = form;
 
     const onFinish = async (values: GroupReportValuesInterface) => {
+      debugger;
       dispatch(
         setForm({
           ...values,
@@ -162,9 +163,6 @@ const ModalGroupReport = () => {
       const daysCount = endDay.diff(beginDay, 'days');
 
       const resources = getFieldValue('resource');
-      // .join('&NodeResourceType=');
-
-      debugger;
 
       const tooBigReport =
         (daysCount >= 30 && getFieldValue('detailing') === 'hourly') ||
@@ -189,7 +187,6 @@ const ModalGroupReport = () => {
       const report = async (fn: Function) => {
         try {
           await fn(query);
-          debugger;
           if (!isMounted.current) return;
           setSendingStatus('success');
           closeModal();
@@ -216,10 +213,16 @@ const ModalGroupReport = () => {
 
     const onPeriodChange = (event: any) => {
       const period = event.target.value;
+
+      if (period !== 'customPeriod') {
+        setIsRangePickerDisabled(true);
+      } else {
+        setIsRangePickerDisabled(false);
+      }
+
       switch (period) {
         case 'currentMonth':
           setFieldsValue({ dates: [moment().startOf('month'), moment()] });
-          setIsPeriodDisabled(true);
           break;
         case 'previousMonth':
           setFieldsValue({
@@ -228,13 +231,10 @@ const ModalGroupReport = () => {
               moment().startOf('month'),
             ],
           });
-          setIsPeriodDisabled(true);
           break;
         case 'customPeriod':
-          setIsPeriodDisabled(false);
           break;
         default:
-          setIsPeriodDisabled(true);
       }
     };
 
@@ -244,14 +244,11 @@ const ModalGroupReport = () => {
     };
 
     const onChange = (allFields: any) => {
-      console.log('allFields', allFields);
+      // console.log('allFields', allFields);
     };
 
-    const onFormLayoutChange = (currentField: any, allFields: any) => {
-      formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
-      // console.log("onFormLayoutChange", currentField, allFields)
-      // console.log("formHasErrors", formHasErrors())
-      // console.log("getFieldsError()", getFieldsError())
+    const onFormLayoutChange = () => {
+      // formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
     };
 
     const formHasErrors = () =>
@@ -339,12 +336,13 @@ const ModalGroupReport = () => {
               label="Период выгрузки"
               name="dates"
               style={{ width: '300px' }}
+              shouldUpdate
             >
               <RangePickerTT
                 format="DD.MM.YYYY"
                 allowClear={false}
                 placeholder={['Дата Начала', 'Дата окончания']}
-                disabled={isPeriodDisabled}
+                disabled={isRangePickerDisabled}
                 disabledDate={(current) => {
                   return current && current > moment();
                 }}
@@ -356,11 +354,7 @@ const ModalGroupReport = () => {
               style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}
             >
               <Form.Item name="subscribe">
-                <SwitchTT
-                  onChange={handleSwitch}
-                  disabled={getFieldsValue().period === 'customPeriod'}
-                  checked={subscription}
-                />
+                <SwitchTT onChange={handleSwitch} checked={subscription} />
               </Form.Item>
               <div style={{ paddingLeft: 16 }}>
                 <SwitchHeader>Регулярная выгрузка отчёта</SwitchHeader>
@@ -434,6 +428,9 @@ const ModalGroupReport = () => {
           </StyledFormPage>
         </StyledModalBody>
         <StyledFooter modal>
+          <LoaderWrapper>
+            <Loader size={32} show={true} />
+          </LoaderWrapper>
           <ButtonTT
             type="button"
             color="white"
@@ -490,6 +487,11 @@ const SwitchSubheader = styled.span`
   font-size: 12px;
   line-height: 16px;
   color: var(--color-primary-90);
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export default ModalGroupReport;

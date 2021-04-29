@@ -27,11 +27,8 @@ const CurrentEmailModal = () => {
   );
   const dispatch = useAppDispatch();
   const isVisible = groupReportStatus === 'currentEmailForm';
-  const { email } = JSON.parse(localStorage.getItem('user')!);
-  // const link = `Reports/GetGroupReport?houseManagementId=${values.group}&NodeResourceType=${resource}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${beginDayQuery}&To=${endDayQuery}`;
-  const formQuery = (formState: GroupReportValuesInterface) => {
-    return {};
-  };
+  const user = localStorage.getItem('user');
+  const { email } = user ? JSON.parse(user) : '';
 
   const {
     houseManagementId,
