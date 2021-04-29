@@ -3,6 +3,7 @@ import {
   createEvent,
   createStore,
   Effect,
+  guard,
   Store,
 } from 'effector';
 import { NodeServiceZoneResponse } from '../../../../../myApi';
@@ -25,5 +26,10 @@ export const sendServiceZoneFx: Effect<
 export const $addZoneStatus = createStore('init');
 
 export const $addZoneInput: Store<string> = createStore('');
+
+//
+// const target = guard(setChosenInput, {
+//   filter: (x) => x > 0,
+// });
 
 export const $isAddServiceModalShown = createStore(false);

@@ -6,7 +6,6 @@ import {
   $addZoneInput,
   $isAddServiceModalShown,
   $addZoneStatus,
-  sendServiceZoneFx,
 } from './models';
 import { useStore } from 'effector-react';
 import ButtonTT from '../../../tt-components/ButtonTT';

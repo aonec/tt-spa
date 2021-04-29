@@ -9,7 +9,11 @@ import {
   $isAddServiceModalShown,
   $addZoneStatus,
 } from './index';
-import { $serviceZones } from '../../selectServiceZones/models';
+import {
+  $chosenInput,
+  $serviceZones,
+  setChosenInput,
+} from '../../selectServiceZones/models';
 import { addServiceZone } from '../../../../_api/service_zones';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {
@@ -45,6 +49,11 @@ forward({
 
 $serviceZones.on(sendServiceZoneFx.doneData, (s, a) => {
   return [...s, a];
+});
+
+$chosenInput.on(sendServiceZoneFx.doneData, (_, newInput) => {
+  debugger;
+  return newInput;
 });
 
 $addZoneStatus

@@ -1,12 +1,15 @@
 import {
+  $chosenInput,
   $requestServiceZonesStatus,
   $serviceZones,
   PageGate,
   requestServiceZonesFx,
+  setChosenInput,
 } from './index';
-import { forward } from 'effector';
+import { forward, sample } from 'effector';
 import './index';
 import { getServiceZones } from '../../../../_api/service_zones';
+import { NodeServiceZoneResponse } from '../../../../../myApi';
 
 requestServiceZonesFx.use(getServiceZones);
 
@@ -18,6 +21,14 @@ $serviceZones.on(requestServiceZonesFx.doneData, (s, a) => {
   }
 
   return result;
+});
+
+sample({
+  clock: setChosenInput /* 1 */,
+  source: $serviceZones /* 2 */,
+  fn: (serviceZones, chosenInputId) =>
+    serviceZones.find((el) => el.id === chosenInputId)! /* 3 */,
+  target: $chosenInput /* 4 */,
 });
 
 forward({
