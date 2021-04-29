@@ -167,7 +167,7 @@ const ModalGroupReport = () => {
       debugger;
 
       const tooBigReport =
-        (daysCount >= 2 && getFieldValue('detailing') === 'hourly') ||
+        (daysCount >= 30 && getFieldValue('detailing') === 'hourly') ||
         (daysCount >= 60 && getFieldValue('detailing') === 'daily');
 
       if (!subscription && tooBigReport) {
