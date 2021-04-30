@@ -148,32 +148,41 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
             x="time"
             y="value"
           />
-          <VictoryLine y={() => averageDeltaMass} />
-          <VictoryLine
-            style={{
-              data: {
-                stroke: 'black',
-                strokeDasharray: 5.5,
-                strokeWidth: 2,
-                fillOpacity: 0.4,
-              },
-            }}
-            y={() => averageDeltaMass * (1 + deltaMassAccuracy / 100)}
-          />
-          <VictoryLine
-            style={{
-              data: {
-                stroke: 'black',
-                strokeDasharray: 5.5,
-                strokeWidth: 2,
-                fillOpacity: 0.4,
-              },
-            }}
-            y={() => averageDeltaMass * (1 - deltaMassAccuracy / 100)}
-          />
+          {graphParam === 'deltaMass' ? (
+            <VictoryLine
+              y={() => averageDeltaMass}
+              style={{
+                data: {
+                  stroke: 'var(--main-100)',
+                },
+              }}
+            />
+          ) : null}
+          {/*<VictoryLine*/}
+          {/*  style={{*/}
+          {/*    data: {*/}
+          {/*      stroke: 'black',*/}
+          {/*      strokeDasharray: 5.5,*/}
+          {/*      strokeWidth: 2,*/}
+          {/*      fillOpacity: 0.4,*/}
+          {/*    },*/}
+          {/*  }}*/}
+          {/*  y={() => averageDeltaMass * (1 + deltaMassAccuracy / 100)}*/}
+          {/*/>*/}
+          {/*<VictoryLine*/}
+          {/*  style={{*/}
+          {/*    data: {*/}
+          {/*      stroke: 'black',*/}
+          {/*      strokeDasharray: 5.5,*/}
+          {/*      strokeWidth: 2,*/}
+          {/*      fillOpacity: 0.4,*/}
+          {/*    },*/}
+          {/*  }}*/}
+          {/*  y={() => averageDeltaMass * (1 - deltaMassAccuracy / 100)}*/}
+          {/*/>*/}
         </VictoryChart>
       </GraphWrapper>
-      <GraphLegend resource={data.resource} />
+      <GraphLegend graphParam={graphParam} />
     </>
   );
 };

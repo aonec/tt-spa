@@ -5,12 +5,13 @@ import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { $graphData } from '../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
+import { GraphParamsType } from '../Graph';
 
 interface Props {
   resource: ResourceType;
 }
 
-const GraphLegend = () => {
+const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
   const graphData = useStore($graphData);
   const { averageDeltaMass, deltaMassAccuracy, resource } = graphData.data;
   const absoluteDelta = Number(
@@ -21,9 +22,13 @@ const GraphLegend = () => {
   return (
     <LegendWrapper>
       <CurrentPeriod resource={resource}>Текущий период</CurrentPeriod>
-      {resource === 'Heat' ? (
+      {resource === 'Heat' && graphParam === 'deltaMass' ? (
         <div>
           <Tooltip
+            getPopupContainer={(triggerNode) =>
+              triggerNode.parentNode as HTMLElement
+            }
+            color={'var(--main-100)'}
             // title={`${Math.abs(
             //   (averageDeltaMass * deltaMassAccuracy) / 100
             // ).toFixed(1)}т`}
@@ -31,11 +36,13 @@ const GraphLegend = () => {
             title={
               absoluteDelta == 0
                 ? 'Абсолютная погрешность крайне мала'
-                : absoluteDelta
+                : `Абсолютная погрешность ${absoluteDelta} т`
             }
+            // title={`Абсолютная погрешность ${absoluteDelta} т`}
+            // title={`Абсолютная погрешность 4.66 т`}
           >
-            {Math.abs(deltaMassAccuracy).toFixed(1)}% - Относительная
-            погрешность
+            <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
+            <Accuracy>Относительная погрешность</Accuracy>
           </Tooltip>
         </div>
       ) : null}
@@ -45,14 +52,21 @@ const GraphLegend = () => {
 
 const LegendWrapper = styled.div`
   display: flex;
+  width: 100%;
   position: absolute;
   bottom: -100px;
   left: 75px;
+
+  .ant-tooltip-inner {
+    border-radius: 4px;
+    text-align: center;
+    //white-space: nowrap;
+  }
 `;
 
 const CurrentPeriod = styled.div<Props>`
   color: var(--main-70);
-  margin-right: 16px;
+  margin-right: 32px;
 
   &:before {
     content: '';
@@ -64,6 +78,16 @@ const CurrentPeriod = styled.div<Props>`
     height: 2px;
     background: ${(props) => getResourceColor(props.resource)};
   }
+`;
+
+const Percents = styled.span`
+  color: var(--main-100);
+  font-weight: 500;
+  margin-right: 8px;
+`;
+
+const Accuracy = styled.span`
+  color: var(--main-70);
 `;
 
 export default GraphLegend;
