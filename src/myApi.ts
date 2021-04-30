@@ -2049,6 +2049,30 @@ export interface GroupReportResponse {
   title: string | null;
 }
 
+export enum EResourceType {
+  Heat = "Heat",
+  HotWaterSupply = "HotWaterSupply",
+  ColdWaterSupply = "ColdWaterSupply",
+  Electricity = "Electricity",
+}
+
+export interface EResourceTypeNullableStringDictionaryItem {
+  key?: EResourceType;
+  value?: string | null;
+}
+
+export enum ENodeCommercialAccountStatus {
+  NotRegistered = "NotRegistered",
+  Registered = "Registered",
+  OnReview = "OnReview",
+  Prepared = "Prepared",
+}
+
+export interface ENodeCommercialAccountStatusNullableStringDictionaryItem {
+  key?: ENodeCommercialAccountStatus;
+  value?: string | null;
+}
+
 export interface GroupReportHousingStock {
   /** @format int32 */
   id?: number;
@@ -2070,8 +2094,8 @@ export interface GroupReportContractor {
 
 export interface GroupReportFormResponse {
   groupReports: GroupReportResponse[] | null;
-  nodeResourceTypes: ResourceTypeStringDictionaryItem[] | null;
-  nodeStatuses: NodeCommercialAccountStatusStringDictionaryItem[] | null;
+  nodeResourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
+  nodeStatuses: ENodeCommercialAccountStatusNullableStringDictionaryItem[] | null;
   housingStockGroups: GroupReportHousingStockGroup[] | null;
   contractors: GroupReportContractor[] | null;
 }
@@ -4359,8 +4383,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         GroupReportId?: string | null;
         HouseManagementId?: string | null;
-        NodeResourceTypes?: ResourceType[] | null;
-        NodeStatus?: NodeCommercialAccountStatus;
+        NodeResourceTypes?: EResourceType[] | null;
+        NodeStatus?: ENodeCommercialAccountStatus;
         "Subscription.Email"?: string | null;
         "Subscription.ContractorIds"?: number[] | null;
         "Subscription.TriggerAt"?: string;

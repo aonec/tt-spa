@@ -1,5 +1,5 @@
-import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { Alert, Form, Select } from 'antd';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
+import { Alert, Form } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
   InputTT,
@@ -68,8 +68,8 @@ const EditNodeForm = ({
   const serviceZones = useStore($serviceZones);
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
-  const chosenInput = useStore($chosenInput);
   const chosenInputForSelect = useStore($derivedChosenInput);
+
   if (!node) {
     return null;
   }
@@ -85,11 +85,6 @@ const EditNodeForm = ({
     setChosenInput(nodeServiceZoneId);
   }
 
-  // const chosenInputForSelect = {
-  //   value: chosenInput.id,
-  //   label: chosenInput.name,
-  // };
-
   const initialServiceZoneInfo = selectZonesOptions.find(
     (el) => el.value === nodeServiceZoneId
   );
@@ -98,12 +93,12 @@ const EditNodeForm = ({
   const [form] = Form.useForm();
   const { getFieldValue } = form;
 
-  const onFinish = () => {
+  const onFinish = async () => {
     const nodeForm: UpdateNodeRequest = {
       number: Number(getFieldValue('number')),
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),
-      serviceZone: getFieldValue('serviceZone'),
+      nodeServiceZoneId: chosenInputForSelect.value,
       lastCommercialAccountingDate: getFieldValue(
         'lastCommercialAccountingDate'
       )?.toISOString(),
@@ -113,12 +108,7 @@ const EditNodeForm = ({
       calculatorId,
     };
 
-    putNode(nodeId, nodeForm).then((res) => {
-      console.log('putNode', res);
-    });
-  };
-  const onFinishFailed = () => {
-    console.log('onFinishFailed');
+    await putNode(nodeId, nodeForm);
   };
 
   if (zonesLoadingStatus === 'loading' || zonesLoadingStatus === 'init')
@@ -153,7 +143,6 @@ const EditNodeForm = ({
       <Form
         initialValues={initialValues}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         form={form}
         requiredMark={false}
         scrollToFirstError
@@ -171,37 +160,11 @@ const EditNodeForm = ({
               disabled
             />
           </Form.Item>
-          <div
-            style={{
-              color: 'var(--primary-100)',
-              height: 48,
-              marginLeft: 16,
-              cursor: 'pointer',
-              fontWeight: 500,
-            }}
-            onClick={(e) => {
-              addServiceZoneButtonClicked();
-            }}
-          >
-            + Добавить новую зону
-        </div>
 
-        <AddNewZonesModal />
-
-        <Form.Item
-          style={styles.w100}
-          label="Коммерческий учет показателей приборов"
-          name="nodeStatus"
-          rules={[{ required: true, message: 'Выберите Коммерческий учет' }]}
-        >
-          <SelectTT
-            placeholder="Коммерческий учет показателей приборов"
-            options={nodeStatusList}
-          />
-        </Form.Item>
+          <AddNewZonesModal />
 
           <Form.Item
-            style={styles.w49}
+            style={styles.w100}
             label="Номер узла"
             name="number"
             rules={[{ required: true, message: 'Выберите Номер узла' }]}
@@ -209,28 +172,29 @@ const EditNodeForm = ({
             <InputTT placeholder="Номер узла" />
           </Form.Item>
 
-          <ZoneWrapper>
-            {/*<Form.Item*/}
-            {/*  style={styles.w49}*/}
-            {/*  label="Зона"*/}
-            {/*  name="serviceZone"*/}
-            {/*  rules={[{ required: true, message: 'Выберите Зону' }]}*/}
-            {/*>*/}
-            <SelectTT
-              style={styles.w49}
-              onChange={(chosenInputId) => {
-                setChosenInput(+chosenInputId);
-              }}
-              placeholder="Зона"
-              options={selectZonesOptions}
-              value={chosenInputForSelect.value}
-            />
-            {/*<SelectTT placeholder="Зона" options={[]} />*/}
-            {/*</Form.Item>*/}
-            <AddZoneText onClick={() => addServiceZoneButtonClicked()}>
-              + Добавить новую зону
-            </AddZoneText>
-          </ZoneWrapper>
+          <Zone>
+            <label
+              htmlFor="serviceZone"
+              style={{ color: 'var(--main-70)', fontWeight: 500 }}
+            >
+              Зона:
+            </label>
+            <ZoneInner>
+              <SelectTT
+                id="serviceZone"
+                style={styles.w49}
+                onChange={(chosenInputId) => {
+                  setChosenInput(+chosenInputId);
+                }}
+                placeholder="Зона"
+                options={selectZonesOptions}
+                value={chosenInputForSelect.value}
+              />
+              <AddZoneText onClick={() => addServiceZoneButtonClicked()}>
+                + Добавить новую зону
+              </AddZoneText>
+            </ZoneInner>
+          </Zone>
 
           <AddNewZonesModal />
 
@@ -350,10 +314,15 @@ const EditNodeForm = ({
   );
 };
 
-const ZoneWrapper = styled.div`
+const Zone = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
-  align-items: flex-end;
+`;
+
+const ZoneInner = styled.div`
+  display: flex;
+  margin: 8px 0;
 `;
 
 const AddZoneText = styled.div`

@@ -27,9 +27,7 @@ const yupDiameter = Yup.number()
   .max(150, 'до 150')
   .typeError('Нельзя оставлять пустое значение')
   .required('Введите число от 1');
-const yupModel = Yup.string()
-  .min(3, 'Модель должна быть длиннее трех символов')
-  .required('Введите модель');
+const yupModel = Yup.string().required('Введите модель');
 
 export const validationSchemaFlowMeter = Yup.object({
   model: yupModel,
