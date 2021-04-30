@@ -171,6 +171,34 @@ const EditNodeForm = ({
               disabled
             />
           </Form.Item>
+          <div
+            style={{
+              color: 'var(--primary-100)',
+              height: 48,
+              marginLeft: 16,
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+            onClick={(e) => {
+              addServiceZoneButtonClicked();
+            }}
+          >
+            + Добавить новую зону
+        </div>
+
+        <AddNewZonesModal />
+
+        <Form.Item
+          style={styles.w100}
+          label="Коммерческий учет показателей приборов"
+          name="nodeStatus"
+          rules={[{ required: true, message: 'Выберите Коммерческий учет' }]}
+        >
+          <SelectTT
+            placeholder="Коммерческий учет показателей приборов"
+            options={nodeStatusList}
+          />
+        </Form.Item>
 
           <Form.Item
             style={styles.w49}

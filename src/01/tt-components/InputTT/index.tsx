@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Input } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
+import { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
+import { InputProps } from 'antd/lib/input';
 import { Event } from 'effector';
 
 interface Props {
@@ -9,12 +10,13 @@ interface Props {
   readonly?: boolean;
   onChange?:
     | Dispatch<SetStateAction<string>>
-    | Event<React.ChangeEvent<HTMLInputElement>>;
+    | Event<React.ChangeEvent<HTMLInputElement>>
+    | ChangeEventHandler<HTMLInputElement>;
 
   // value: string | number | null
 }
 
-export const InputTT = styled(Input)<Props>`
+export const InputTT = styled(Input)<Partial<Props & InputProps>>`
   color: rgba(39, 47, 90, 0.8);
   box-sizing: border-box;
   border-radius: 4px;

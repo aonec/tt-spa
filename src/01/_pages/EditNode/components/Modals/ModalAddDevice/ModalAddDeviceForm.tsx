@@ -155,7 +155,6 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
-    // console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
@@ -482,71 +481,3 @@ const SubHeader = styled.h3`
   font-size: 16px;
   line-height: 32px;
 `;
-
-// const devices =
-//   communicationPipes ||
-//   [].map((communicationPipe) => {
-//     const { devices } = communicationPipe;
-//     return (
-//       devices ||
-//       [].map((device) => {
-//         return device;
-//       })
-//     );
-//   });
-// const res = _.flatten(devices);
-// const entryNumbers =
-//   res ||
-//   [].map((item) => {
-//     const { hub } = item;
-//     const { entryNumber } = hub;
-//     return entryNumber;
-//   });
-
-{
-  /*<SubHeader>Адрес установки</SubHeader>*/
-}
-
-{
-  /*<Form.Item name="city" label="Город" style={styles.w49}>*/
-}
-{
-  /*  <InputTT placeholder="Нижнекамск" />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item label="Улица" name="street" style={styles.w49}>*/
-}
-{
-  /*  <InputTT placeholder="Пр Мира" />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item label="Дом" name="housingStockNumber" style={styles.w49}>*/
-}
-{
-  /*  <InputTT />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item name="corpus" label="Корпус" style={styles.w49}>*/
-}
-{
-  /*  <InputTT />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Divider style={{ margin: 0 }} />*/
-}

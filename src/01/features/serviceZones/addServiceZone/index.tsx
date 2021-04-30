@@ -72,7 +72,7 @@ const AddNewZonesModal = () => {
             help={addZoneErrorMessage}
           >
             <InputTT
-              onChange={inputChanged}
+              // onChange={inputChanged}
               value={input}
               style={{ marginTop: 8 }}
             />

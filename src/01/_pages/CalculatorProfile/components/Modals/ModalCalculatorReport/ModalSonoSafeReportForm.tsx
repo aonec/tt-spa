@@ -162,13 +162,20 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
 
       console.log('shortLink', shortLink);
       getReport(shortLink).then((response: any) => {
-        const url = window.URL.createObjectURL(new Blob([response]));
+        const fileNameWithJunk = response.headers['content-disposition'].split(
+          ';'
+        );
+        const encodedFileName = fileNameWithJunk[2].split("'")[2];
+        const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // const url = window.URL.createObjectURL(new Blob([response]));
+        // const fileName = `${street}, ${housingStockNumber} - ${translate(
+        //   resource || ''
+        // )} с ${begin} по ${end}, ${translate(resource || '')}.xlsx`;
         const link = document.createElement('a');
         link.href = url;
-        const fileName = `${street}, ${housingStockNumber} - ${translate(
-          resource || ''
-        )} с ${begin} по ${end}, ${translate(resource || '')}.xlsx`;
-        link.setAttribute('download', fileName);
+        link.setAttribute('download', decodedFileName);
         document.body.appendChild(link);
         link.click();
         link.remove();
