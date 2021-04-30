@@ -36,6 +36,13 @@ forward({
   to: requestServiceZonesFx,
 });
 
+// forward({
+//   from: PageGate.close,
+//   to: $serviceZones.reset,
+// });
+
+$serviceZones.reset(PageGate.close);
+
 $requestServiceZonesStatus
   .on(requestServiceZonesFx, () => 'loading')
   .on(requestServiceZonesFx.done, () => 'done')

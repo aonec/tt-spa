@@ -79,9 +79,7 @@ const EditNodeForm = ({
     label: zone.name,
   }));
 
-  debugger;
-
-  if (nodeServiceZoneId && !chosenInputForSelect.label) {
+  if (nodeServiceZoneId && !chosenInputForSelect) {
     setChosenInput(nodeServiceZoneId);
   }
 
@@ -98,7 +96,7 @@ const EditNodeForm = ({
       number: Number(getFieldValue('number')),
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),
-      nodeServiceZoneId: chosenInputForSelect.value,
+      nodeServiceZoneId: chosenInputForSelect?.value,
       lastCommercialAccountingDate: getFieldValue(
         'lastCommercialAccountingDate'
       )?.toISOString(),
@@ -126,6 +124,8 @@ const EditNodeForm = ({
       ? moment(futureCommercialAccountingDate)
       : null,
   };
+
+  console.log(JSON.stringify(chosenInputForSelect));
 
   return (
     <>
@@ -188,7 +188,7 @@ const EditNodeForm = ({
                 }}
                 placeholder="Зона"
                 options={selectZonesOptions}
-                value={chosenInputForSelect.value}
+                value={chosenInputForSelect?.value}
               />
               <AddZoneText onClick={() => addServiceZoneButtonClicked()}>
                 + Добавить новую зону

@@ -11,6 +11,7 @@ import {
   NodeServiceZoneListResponse,
   NodeServiceZoneResponse,
 } from '../../../../../myApi';
+import _ from 'lodash';
 
 export const PageGate = createGate();
 
@@ -22,10 +23,14 @@ export const $chosenInput: Store<NodeServiceZoneResponse> = createStore(
   {} as NodeServiceZoneResponse
 );
 
-export const $derivedChosenInput = $chosenInput.map((oldInput) => ({
-  value: oldInput.id,
-  label: oldInput.name,
-}));
+export const $derivedChosenInput = $chosenInput.map((oldInput) => {
+  return _.isEmpty(oldInput)
+    ? null
+    : {
+        value: oldInput.id,
+        label: oldInput.name,
+      };
+});
 
 export const requestServiceZonesFx = createEffect<
   void,
