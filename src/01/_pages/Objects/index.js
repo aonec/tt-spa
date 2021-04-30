@@ -74,7 +74,7 @@ export const Objects = ({ isReadings = false }) => {
   React.useEffect(() => {
     (async () => {
       const queryString = formQueryString(debouncedSearchState);
-      const res = await axios.get('HousingStocks' + queryString);
+      const res = await axios.get(`HousingStocks${queryString}`);
       setState(res);
     })();
     return () => cancel();

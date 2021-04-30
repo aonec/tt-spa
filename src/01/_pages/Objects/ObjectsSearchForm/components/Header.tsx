@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import getAccessesList from '../../../../_api/utils/getAccessesList';
 import { MenuButtonTT } from '../../../../tt-components';
 import styled from 'styled-components';
-import ModalGroupReport from '../../components/Modals/GroupReport';
 import { Title, HeaderWrap } from '01/_components/Headers';
+import GroupReport from '../../../../features/GroupReport';
+import { setGroupStatus } from '../../../../features/GroupReport/models/groupReportReducer';
+import { useAppDispatch } from '../../../../Redux/store';
 
 export const Header = () => {
   const access = getAccessesList();
   const { show } = access;
 
-  const [groupReport, setGroupReport] = useState(false);
+  const dispatch = useAppDispatch();
 
   const menuButtonArr = [
     {
       title: 'Выгрузка группового отчёта',
-      cb: () => setGroupReport(true),
+      cb: () => dispatch(setGroupStatus('reportForm')),
       show: show('ReportRead'),
       color: 'default',
       clickable: false,
@@ -23,8 +25,8 @@ export const Header = () => {
 
   return (
     <ObjectHeader>
-      <ModalGroupReport visible={groupReport} setVisible={setGroupReport} />
       <Title>Объекты</Title>
+      <GroupReport />
       <div style={{ position: 'relative' }}>
         <MenuButtonTT menuButtonArr={menuButtonArr} />
       </div>

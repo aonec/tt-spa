@@ -2704,6 +2704,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Calculators
+     * @name CalculatorsExportList
+     * @request GET:/api/Calculators/Export
+     * @secure
+     */
+    calculatorsExportList: (
+      query?: {
+        "Filter.DiameterRange.From"?: number | null;
+        "Filter.DiameterRange.To"?: number | null;
+        "Filter.ExpiresCheckingDateAt"?: ExpiresCheckingDateAt;
+        "Filter.Resource"?: ResourceType;
+        "Filter.Model"?: string | null;
+        "Filter.CommercialDateRange.From"?: string | null;
+        "Filter.CommercialDateRange.To"?: string | null;
+        "Filter.Address.City"?: string | null;
+        "Filter.Address.Street"?: string | null;
+        "Filter.Address.HousingStockNumber"?: string | null;
+        "Filter.Address.Corpus"?: string | null;
+        "Filter.Address.HouseCategory"?: HouseCategory;
+        "Filter.HousingStockId"?: number | null;
+        "Filter.NodeStatus"?: NodeCommercialAccountStatus;
+        Question?: string | null;
+        "OrderBy.Destination"?: OrderByDestination;
+        "OrderBy.Rule"?: CalculatorOrderBy;
+        IsConnected?: boolean | null;
+        CountTasks?: boolean | null;
+        PageNumber?: number;
+        PageSize?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/Calculators/Export`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Calculators
      * @name CalculatorsList
      * @request GET:/api/Calculators
      * @secure
@@ -4257,7 +4299,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/Archives`,
         method: "GET",
         query: query,
@@ -4277,7 +4319,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/Report`,
         method: "GET",
         query: query,
@@ -4297,7 +4339,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/ConsolidatedReport`,
         method: "GET",
         query: query,
@@ -4330,7 +4372,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<any, ErrorApiResponse>({
         path: `/api/Reports/GroupReport`,
         method: "GET",
         query: query,

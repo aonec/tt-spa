@@ -13,32 +13,44 @@ import {
   SwitchTT,
   DatePickerTT,
   MultiSelectTT,
-} from '../../../../../tt-components';
+} from '../../../../tt-components/index';
 
 import { Divider, Form, Radio } from 'antd';
 
 import moment, { Moment } from 'moment';
-import { getReports } from '../../../apiObjects';
+import { getReports } from '../../../../_pages/Objects/apiObjects';
 import {
+  EmailSubscriptionType,
   GroupReportFormResponse,
   NodeCommercialAccountStatus,
   ResourceType,
-} from '../../../../../../myApi';
-import { useAsync } from '../../../../../hooks/useAsync';
+} from '../../../../../myApi';
+import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
-import { downloadReport } from './apiGroupReport';
-import Title from '../../../../../tt-components/Title';
+import { downloadReport, reportQuery } from './apiGroupReport';
+import Title from '../../../../tt-components/Title';
+import {
+  ReportModalType,
+  setGroupStatus,
+  setForm,
+} from '../../models/groupReportReducer';
+import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
+import { useDispatch } from 'react-redux';
+import { sendGroupReport } from '../../../../_api/group_report';
+import { Loader } from '../../../../components/Loader';
 
 interface ModalPropsInterface {
-  visible: boolean;
-  setVisible: Dispatch<SetStateAction<boolean>>;
+  setVisible: Dispatch<SetStateAction<ReportModalType>>;
+  setGroupReportFormState: Dispatch<
+    SetStateAction<GroupReportValuesInterface | undefined>
+  >;
 }
 
-interface GroupReportValuesInterface {
-  group: string;
+export interface GroupReportValuesInterface {
+  houseManagementId?: string;
   name: string;
-  resource: Array<ResourceType>;
-  category: NodeCommercialAccountStatus;
+  resource?: Array<ResourceType>;
+  category?: NodeCommercialAccountStatus;
   dates: [Moment, Moment];
   detailing: 'daily';
   email?: string;
@@ -46,14 +58,44 @@ interface GroupReportValuesInterface {
   nextDate: undefined;
   period: 'currentMonth' | 'previousMonth' | 'customPeriod';
   subscribe: boolean;
-  subscribePeriod?: 'OncePerTwoWeeks' | 'OncePerMonth' | 'OncePerQuarter';
+  subscribePeriod?: EmailSubscriptionType;
 }
 
-const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
+const reportName = `Выгрузка группового отчёта`;
+
+const initialForm = {
+  name: reportName,
+  address: 'addressString',
+  period: 'currentMonth',
+  detailing: 'daily',
+  hidden: true,
+  subscribePeriod: 'OncePerMonth',
+  nextDate: undefined,
+  email: undefined,
+  subscribe: false,
+  category: undefined,
+  dates: [moment().startOf('month'), moment()],
+};
+
+const ModalGroupReport = () => {
+  const [error, setError] = useState(null);
+  const [sendingStatus, setSendingStatus] = useState('idle');
+  const isSending = sendingStatus === 'loading';
+  const isError = sendingStatus === 'error';
+  const isMounted = React.useRef(true);
+
+  const groupReportStatus = useAppSelector(
+    (state) => state.groupReport.groupReportStatus
+  );
+  const dispatch = useAppDispatch();
+  const closeModal = () => dispatch(setGroupStatus(undefined));
+
+  const isVisible = groupReportStatus === 'reportForm';
+
   const { data, status, run } = useAsync<GroupReportFormResponse>();
 
   const handleCancel = () => {
-    setVisible(false);
+    dispatch(setGroupStatus(undefined));
   };
 
   useEffect(() => {
@@ -65,10 +107,8 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
   }
 
   const GroupForm = () => {
-    console.log('data', data);
+    const [isRangePickerDisabled, setIsRangePickerDisabled] = useState(true);
     const [subscription, setSubscription] = useState(false);
-    const [isPeriodDisabled, setIsPeriodDisabled] = useState(true);
-    const reportName = `Выгрузка группового отчёта`;
     const { groupReports, nodeResourceTypes, nodeStatuses, contractors } = data;
 
     const groupReportsOptions = groupReports
@@ -100,34 +140,71 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
       : [];
 
     const [form] = Form.useForm<GroupReportValuesInterface>();
-    const { setFieldsValue, getFieldValue, getFieldsError } = form;
+    const {
+      setFieldsValue,
+      getFieldValue,
+      getFieldsError,
+      getFieldsValue,
+    } = form;
 
-    const onFinish = (values: GroupReportValuesInterface) => {
-      console.log('values', values);
-      const begin = moment(getFieldValue('dates')[0]).format('YYYY-MM-DD');
-      const end = moment(getFieldValue('dates')[1]).format('YYYY-MM-DD');
-
-      const resources = getFieldValue('resource').map(
-        (item: string, index: number) => {
-          return `NodeResourceType=${item}`;
-        }
+    const onFinish = async (values: GroupReportValuesInterface) => {
+      debugger;
+      dispatch(
+        setForm({
+          ...values,
+          dates: [values.dates[0].toISOString(), values.dates[1].toISOString()],
+        })
       );
-      const resResources = resources.join('&');
+
+      const beginDay = moment(getFieldValue('dates')[0]);
+      const endDay = moment(getFieldValue('dates')[1]);
+      const beginDayQuery = beginDay.format('YYYY-MM-DD');
+      const endDayQuery = endDay.format('YYYY-MM-DD');
+      const daysCount = endDay.diff(beginDay, 'days');
+
+      const resources = getFieldValue('resource');
+
+      const tooBigReport =
+        (daysCount >= 30 && getFieldValue('detailing') === 'hourly') ||
+        (daysCount >= 60 && getFieldValue('detailing') === 'daily');
+
+      if (!subscription && tooBigReport) {
+        dispatch(setGroupStatus('currentEmailForm'));
+        return;
+      }
+
+      const query: reportQuery = {
+        HouseManagementId: values.houseManagementId,
+        NodeResourceTypes: resources,
+        NodeStatus: values.category,
+        ReportType: values.detailing,
+        From: beginDayQuery,
+        To: endDayQuery,
+      };
+
+      setSendingStatus('loading');
+
+      const report = async (fn: Function) => {
+        try {
+          await fn(query);
+          if (!isMounted.current) return;
+          setSendingStatus('success');
+          closeModal();
+        } catch (error) {
+          if (!isMounted.current) return;
+          setError(error);
+          setSendingStatus('error');
+        }
+      };
 
       if (subscription) {
-        console.log('C подпиской');
-        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&Subscription.Email=${values.email}&Subscription.Type=${values.subscribePeriod}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
-        console.log(link);
-        const fileName = 'Report.zip';
-        downloadReport(link, fileName);
+        query['Subscription.Email'] = values.email;
+        query['Subscription.Type'] = values.subscribePeriod;
+        await report(sendGroupReport);
+        return;
       }
-      if (!subscription) {
-        console.log('Без подписки');
-        const link = `Reports/GroupReport?houseManagementId=${values.group}&NodeResourceType=${resResources}&NodeStatus=${values.category}&ReportType=${values.detailing}&From=${begin}&To=${end}`;
-        console.log(link);
-        const fileName = 'Report.zip';
-        downloadReport(link, fileName);
-      }
+
+      await report(downloadReport);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -136,10 +213,16 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
 
     const onPeriodChange = (event: any) => {
       const period = event.target.value;
+
+      if (period !== 'customPeriod') {
+        setIsRangePickerDisabled(true);
+      } else {
+        setIsRangePickerDisabled(false);
+      }
+
       switch (period) {
         case 'currentMonth':
           setFieldsValue({ dates: [moment().startOf('month'), moment()] });
-          setIsPeriodDisabled(true);
           break;
         case 'previousMonth':
           setFieldsValue({
@@ -148,41 +231,24 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
               moment().startOf('month'),
             ],
           });
-          setIsPeriodDisabled(true);
           break;
         case 'customPeriod':
-          setIsPeriodDisabled(false);
           break;
         default:
-          setIsPeriodDisabled(true);
       }
-    };
-    const initialValues = {
-      name: reportName,
-      address: 'addressString',
-      period: 'currentMonth',
-      dates: [moment().startOf('month'), moment()],
-      detailing: 'daily',
-      hidden: true,
-      subscribePeriod: 'OncePerMonth',
-      nextDate: undefined,
-      email: undefined,
-      subscribe: false,
     };
 
     const handleSwitch = (event: boolean) => {
       setSubscription((prevState) => !prevState);
+      setFieldsValue({ subscribe: event });
     };
 
     const onChange = (allFields: any) => {
-      console.log('allFields', allFields);
+      // console.log('allFields', allFields);
     };
 
-    const onFormLayoutChange = (currentField: any, allFields: any) => {
-      formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
-      // console.log("onFormLayoutChange", currentField, allFields)
-      // console.log("formHasErrors", formHasErrors())
-      // console.log("getFieldsError()", getFieldsError())
+    const onFormLayoutChange = () => {
+      // formHasErrors() ? setIsPeriodDisabled(true) : setIsPeriodDisabled(false);
     };
 
     const formHasErrors = () =>
@@ -190,7 +256,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
 
     return (
       <Form
-        initialValues={initialValues}
+        initialValues={initialForm}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         form={form}
@@ -207,7 +273,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
           </Title>
           <StyledFormPage>
             <Form.Item
-              name="group"
+              name="houseManagementId"
               label="Группа"
               style={styles.w100}
               rules={[{ required: true, message: 'Выберите Группу' }]}
@@ -270,12 +336,13 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
               label="Период выгрузки"
               name="dates"
               style={{ width: '300px' }}
+              shouldUpdate
             >
               <RangePickerTT
                 format="DD.MM.YYYY"
                 allowClear={false}
                 placeholder={['Дата Начала', 'Дата окончания']}
-                disabled={isPeriodDisabled}
+                disabled={isRangePickerDisabled}
                 disabledDate={(current) => {
                   return current && current > moment();
                 }}
@@ -287,7 +354,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
               style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}
             >
               <Form.Item name="subscribe">
-                <SwitchTT onChange={handleSwitch} />
+                <SwitchTT onChange={handleSwitch} checked={subscription} />
               </Form.Item>
               <div style={{ paddingLeft: 16 }}>
                 <SwitchHeader>Регулярная выгрузка отчёта</SwitchHeader>
@@ -361,6 +428,9 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
           </StyledFormPage>
         </StyledModalBody>
         <StyledFooter modal>
+          <LoaderWrapper>
+            <Loader size={32} show={isSending} />
+          </LoaderWrapper>
           <ButtonTT
             type="button"
             color="white"
@@ -375,6 +445,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
             htmlType="submit"
             style={{ marginLeft: '16px' }}
             big
+            disabled={isSending}
           >
             Выгрузить отчет
           </ButtonTT>
@@ -385,7 +456,7 @@ const ModalGroupReport = ({ visible, setVisible }: ModalPropsInterface) => {
 
   return (
     <StyledModal
-      visible={visible}
+      visible={isVisible}
       width={800}
       footer={null}
       onCancel={handleCancel}
@@ -416,6 +487,11 @@ const SwitchSubheader = styled.span`
   font-size: 12px;
   line-height: 16px;
   color: var(--color-primary-90);
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export default ModalGroupReport;
