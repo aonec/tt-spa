@@ -5,6 +5,7 @@ import {
   VictoryVoronoiContainer,
   VictoryArea,
   VictoryLine,
+  VictoryLabel,
 } from 'victory';
 import React from 'react';
 import styled from 'styled-components';
@@ -110,7 +111,9 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
               overflow: 'visible',
             },
           }}
-          containerComponent={<VictoryVoronoiContainer />}
+          containerComponent={
+            <VictoryVoronoiContainer labels={({ datum }) => `2`} />
+          }
         >
           <VictoryAxis
             tickComponent={<TickComponent />}
@@ -150,6 +153,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
           />
           {graphParam === 'deltaMass' ? (
             <VictoryLine
+              // labels={({ datum }: any) => `y: ${datum.y}`}
+              samples={1}
+              labels={[
+                '',
+                `Среднее значение = ${averageDeltaMass.toFixed(2)} т`,
+              ]}
+              labelComponent={<VictoryLabel renderInPortal dx={80} dy={-20} />}
               y={() => averageDeltaMass}
               style={{
                 data: {
