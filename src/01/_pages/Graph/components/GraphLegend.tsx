@@ -19,11 +19,12 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
     Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
   );
 
-  debugger;
   return (
     <LegendWrapper>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <LegendLine resource={resource}>Текущий период</LegendLine>
+        <LegendLine resource={resource} style={{ marginBottom: 16 }}>
+          Текущий период
+        </LegendLine>
         {resource === 'Heat' && graphParam === 'deltaMass' ? (
           <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>
         ) : null}
