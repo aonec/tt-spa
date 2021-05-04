@@ -7,6 +7,7 @@ import {
   serviceZoneList,
 } from '../../../tt-components/localBases';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
   node: NodeResponse;
@@ -15,6 +16,7 @@ interface HeaderInterface {
 }
 
 const Information = ({ node, calculator, task = false }: HeaderInterface) => {
+  const data = useParams();
   if (!node || !calculator) {
     return null;
   }
@@ -25,6 +27,8 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
   } = node;
+
+  debugger;
 
   const { address } = calculator;
   const { city, street, housingStockNumber, corpus, id } = address;

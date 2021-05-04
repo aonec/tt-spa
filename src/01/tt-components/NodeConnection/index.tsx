@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import moment from 'moment';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { CalculatorResponse } from '../../../myApi';
 import IconTT from '../IconTT';
@@ -27,6 +27,8 @@ const NodeConnection = ({
     futureCheckingDate,
     closingDate,
   } = calculator;
+  const data = useParams();
+  debugger;
 
   const lastCheckingDateText = lastCheckingDate
     ? moment(lastCheckingDate).format('DD.MM.YYYY')

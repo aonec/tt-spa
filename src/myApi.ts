@@ -896,6 +896,11 @@ export interface HomeownersUpdateRequest {
   apartmentsToRemove?: number[] | null;
 }
 
+export enum EMagistralType {
+  FeedFlow = "FeedFlow",
+  FeedBackFlow = "FeedBackFlow",
+}
+
 export interface HousingMeteringDeviceReadingsResponse {
   /** @format uuid */
   id: string | null;
@@ -916,10 +921,22 @@ export interface HousingMeteringDeviceReadingsResponse {
 
   /** @format date-time */
   updateDate: string | null;
+  magistralType: EMagistralType;
+}
+
+export interface HousingMeteringDeviceMonthlyReadings {
+  month?: string | null;
+  items?: HousingMeteringDeviceReadingsResponse[] | null;
+}
+
+export interface HousingMeteringDeviceYearlyReadings {
+  /** @format int32 */
+  year?: number;
+  items?: HousingMeteringDeviceMonthlyReadings[] | null;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponse {
-  items: HousingMeteringDeviceReadingsResponse[] | null;
+  items: HousingMeteringDeviceYearlyReadings[] | null;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
@@ -931,13 +948,7 @@ export interface CreateHousingMeteringDeviceReadingsRequest {
   value?: number;
 
   /** @format int32 */
-  nodeId?: number;
-
-  /** @format int32 */
   deviceId?: number;
-
-  /** @format date-time */
-  createDate?: string;
 }
 
 export interface HousingMeteringDeviceReadingsResponseSuccessApiResponse {
@@ -4272,6 +4283,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsTestList
+     * @request GET:/api/Reports/Test
+     * @secure
+     */
+    reportsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Reports/Test`,
+        method: "GET",
+        secure: true,
         ...params,
       }),
 

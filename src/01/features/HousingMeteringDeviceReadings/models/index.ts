@@ -3,6 +3,7 @@ import {
   CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
+  UpdateHousingMeteringDeviceReadingsRequest,
 } from '../../../../myApi';
 import { createGate } from 'effector-react';
 
@@ -15,11 +16,18 @@ export const requestReadingsFx = createEffect<
   GetHousingMeteringDeviceReadingsResponse
 >();
 
-export const updateReadingsFx = createEffect<
+export const postReadingFx = createEffect<
   CreateHousingMeteringDeviceReadingsRequest,
+  HousingMeteringDeviceReadingsResponse
+>();
+
+export const updateReadingFx = createEffect<
+  UpdateHousingMeteringDeviceReadingsRequest,
   HousingMeteringDeviceReadingsResponse
 >();
 
 export const readingUpdated = createEvent<number>();
 
-export const HousingMeteringDeviceReadingsGate = createGate();
+export const HousingMeteringDeviceReadingsGate = createGate<{
+  nodeId: number;
+}>();

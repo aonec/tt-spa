@@ -19,6 +19,7 @@ import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
+import HousingMeteringDeviceReadings from '../../features/HousingMeteringDeviceReadings/components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -89,6 +90,14 @@ export const NodeProfile = () => {
       },
     },
     {
+      title: 'Ввод показаний',
+      key: 'readings',
+      cb: () => {
+        console.log('readings');
+        push(`${path}/readings`);
+      },
+    },
+    {
       title: 'Настройки соединения',
       key: 'connection',
       cb: () => {
@@ -147,6 +156,11 @@ export const NodeProfile = () => {
             </>
           )}
         </Route>
+
+        <Route path={`${path}/readings`} exact>
+          <HousingMeteringDeviceReadings nodeId={nodeId} />
+        </Route>
+
         <Route path={`${path}/connection`} exact>
           <NodeConnection calculator={calculator} edit={false} />
         </Route>

@@ -2,17 +2,21 @@ import {
   $readings,
   HousingMeteringDeviceReadingsGate,
   requestReadingsFx,
-  updateReadingsFx,
+  postReadingFx,
+  updateReadingFx,
 } from './index';
 import {
   requestReadings,
-  updateReadings,
+  postReading,
+  updateReading,
 } from '../../../_api/housing_metering_device_readings';
 import { forward } from 'effector';
 
 requestReadingsFx.use(requestReadings);
 
-updateReadingsFx.use(updateReadings);
+postReadingFx.use(postReading);
+
+updateReadingFx.use(updateReading);
 
 $readings.on(requestReadingsFx.doneData, (state, payload) => ({
   ...state,
@@ -20,6 +24,6 @@ $readings.on(requestReadingsFx.doneData, (state, payload) => ({
 }));
 
 forward({
-  from: HousingMeteringDeviceReadingsGate.open,
+  from: HousingMeteringDeviceReadingsGate.state,
   to: requestReadingsFx,
 });
