@@ -8,7 +8,8 @@ import { Tooltip } from 'antd';
 import { GraphParamsType } from '../Graph';
 
 interface Props {
-  resource: ResourceType;
+  resource?: ResourceType;
+  color?: string;
 }
 
 const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
@@ -21,30 +22,33 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
   debugger;
   return (
     <LegendWrapper>
-      <CurrentPeriod resource={resource}>Текущий период</CurrentPeriod>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <LegendLine resource={resource}>Текущий период</LegendLine>
+        {resource === 'Heat' && graphParam === 'deltaMass' ? (
+          <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>
+        ) : null}
+      </div>
       {resource === 'Heat' && graphParam === 'deltaMass' ? (
-        <div>
-          <Tooltip
-            getPopupContainer={(triggerNode) =>
-              triggerNode.parentNode as HTMLElement
-            }
-            color={'var(--main-100)'}
-            // title={`${Math.abs(
-            //   (averageDeltaMass * deltaMassAccuracy) / 100
-            // ).toFixed(1)}т`}
-            //
-            title={
-              absoluteDelta == 0
-                ? 'Абсолютная погрешность крайне мала'
-                : `Абсолютная погрешность ${absoluteDelta} т`
-            }
-            // title={`Абсолютная погрешность ${absoluteDelta} т`}
-            // title={`Абсолютная погрешность 4.66 т`}
-          >
-            <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
-            <Accuracy>Относительная погрешность</Accuracy>
-          </Tooltip>
-        </div>
+        <Tooltip
+          getPopupContainer={(triggerNode) =>
+            triggerNode.parentNode as HTMLElement
+          }
+          color={'var(--main-100)'}
+          // title={`${Math.abs(
+          //   (averageDeltaMass * deltaMassAccuracy) / 100
+          // ).toFixed(1)}т`}
+          //
+          title={
+            absoluteDelta == 0
+              ? 'Абсолютная погрешность крайне мала'
+              : `Абсолютная погрешность ${absoluteDelta} т`
+          }
+          // title={`Абсолютная погрешность ${absoluteDelta} т`}
+          // title={`Абсолютная погрешность 4.66 т`}
+        >
+          <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
+          <Accuracy>Относительная погрешность</Accuracy>
+        </Tooltip>
       ) : null}
     </LegendWrapper>
   );
@@ -64,9 +68,10 @@ const LegendWrapper = styled.div`
   }
 `;
 
-const CurrentPeriod = styled.div<Props>`
+const LegendLine = styled.div<Props>`
   color: var(--main-70);
-  margin-right: 32px;
+  margin-right: 64px;
+  position: relative;
 
   &:before {
     content: '';
@@ -76,7 +81,8 @@ const CurrentPeriod = styled.div<Props>`
     top: 10px;
     width: 32px;
     height: 2px;
-    background: ${(props) => getResourceColor(props.resource)};
+    background: ${(props) =>
+      props.resource ? getResourceColor(props.resource) : props.color};
   }
 `;
 

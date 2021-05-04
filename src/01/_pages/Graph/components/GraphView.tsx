@@ -31,8 +31,6 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
 
   const { resource, deltaMassAccuracy, averageDeltaMass } = data;
 
-  debugger;
-
   const archiveEntries = get(data, 'archiveEntries', []);
 
   const width = 750;
@@ -111,9 +109,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
               overflow: 'visible',
             },
           }}
-          containerComponent={
-            <VictoryVoronoiContainer labels={({ datum }) => `2`} />
-          }
+          containerComponent={<VictoryVoronoiContainer />}
         >
           <VictoryAxis
             tickComponent={<TickComponent />}
@@ -157,7 +153,8 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
               samples={1}
               labels={[
                 '',
-                `Среднее значение = ${averageDeltaMass.toFixed(2)} т`,
+                // `Среднее значение = ${averageDeltaMass.toFixed(2)} т`,
+                ``,
               ]}
               labelComponent={<VictoryLabel renderInPortal dx={80} dy={-20} />}
               y={() => averageDeltaMass}
