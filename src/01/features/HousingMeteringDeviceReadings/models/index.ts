@@ -37,6 +37,8 @@ export const updateReadingFx = createEffect<
 
 export const readingUpdated = createEvent<number>();
 
+export const inputLeft = createEvent();
+
 export const readingChanged = createEvent<{
   year: number;
   month: string | null;

@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import {
   $readings,
   $readingsToDisplay,
-  HousingMeteringDeviceReadingsGate,
+  HousingMeteringDeviceReadingsGate, inputLeft,
   readingChanged,
 } from '../models';
 import {
@@ -85,6 +85,7 @@ const DeviceReading = ({
         onChange={(e) => {
           readingChanged({ value: +e.target.value, deviceId, year, month });
         }}
+        onBlur={() => inputLeft()}
         disabled={isDisabled}
       />
     </DeviceReadings>
