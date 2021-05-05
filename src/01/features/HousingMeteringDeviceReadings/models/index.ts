@@ -6,10 +6,19 @@ import {
   UpdateHousingMeteringDeviceReadingsRequest,
 } from '../../../../myApi';
 import { createGate } from 'effector-react';
+import { prepareReadings } from '../lib/groupReadingsByDates';
 
 export const $readings = createStore<GetHousingMeteringDeviceReadingsResponse>({
   items: null,
 });
+
+export const $readingsToDisplay = $readings.map(prepareReadings);
+
+export const $latestSuccessReadings = createStore<GetHousingMeteringDeviceReadingsResponse>(
+  {
+    items: null,
+  }
+);
 
 export const requestReadingsFx = createEffect<
   { nodeId: number },
@@ -27,6 +36,13 @@ export const updateReadingFx = createEffect<
 >();
 
 export const readingUpdated = createEvent<number>();
+
+export const readingChanged = createEvent<{
+  year: number;
+  month: string | null;
+  deviceId: number;
+  value: number;
+}>();
 
 export const HousingMeteringDeviceReadingsGate = createGate<{
   nodeId: number;

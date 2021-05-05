@@ -922,21 +922,14 @@ export interface HousingMeteringDeviceReadingsResponse {
   /** @format date-time */
   updateDate: string | null;
   magistralType: EMagistralType;
-}
 
-export interface HousingMeteringDeviceMonthlyReadings {
-  month?: string | null;
-  items?: HousingMeteringDeviceReadingsResponse[] | null;
-}
-
-export interface HousingMeteringDeviceYearlyReadings {
   /** @format int32 */
-  year?: number;
-  items?: HousingMeteringDeviceMonthlyReadings[] | null;
+  year: number;
+  month: string | null;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponse {
-  items: HousingMeteringDeviceYearlyReadings[] | null;
+  items: HousingMeteringDeviceReadingsResponse[] | null;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponseSuccessApiResponse {
@@ -4283,22 +4276,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Reports
-     * @name ReportsTestList
-     * @request GET:/api/Reports/Test
-     * @secure
-     */
-    reportsTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/Reports/Test`,
-        method: "GET",
-        secure: true,
         ...params,
       }),
 

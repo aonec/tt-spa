@@ -1,23 +1,25 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import { $readings, HousingMeteringDeviceReadingsGate } from '../models';
 import {
-  HousingMeteringDeviceMonthlyReadings,
+  $readings,
+  $readingsToDisplay,
+  HousingMeteringDeviceReadingsGate,
+  readingChanged,
+} from '../models';
+import {
+  EMagistralType,
   HousingMeteringDeviceReadingsResponse,
-  HousingMeteringDeviceYearlyReadings,
 } from '../../../../myApi';
 import styled from 'styled-components';
+import InputTT from '../../../tt-components/InputTT';
+import { months } from '../lib/getMonthByNumber';
 
-const YearReading = ({
-  yearElement,
-}: {
-  yearElement: HousingMeteringDeviceYearlyReadings;
-}) => {
+const YearReading = ({ yearElement }: { yearElement: any }) => {
   return (
     <YearReadings>
       <Year>{yearElement.year} год</Year>
       <div>
-        {yearElement.items?.map((monthElement) => (
+        {yearElement.items?.map((monthElement: any) => (
           <MonthReading monthElement={monthElement} />
         ))}
       </div>
@@ -25,31 +27,66 @@ const YearReading = ({
   );
 };
 
-const MonthReading = ({
-  monthElement,
-}: {
-  monthElement: HousingMeteringDeviceMonthlyReadings;
-}) => {
+const MonthReading = ({ monthElement }: { monthElement: any }) => {
   return (
     <MonthReadings>
       <Month>{monthElement.month}</Month>
       <div style={{ display: 'flex' }}>
-        {monthElement.items?.map((deviceElement) => (
+        {monthElement.items?.map((deviceElement: any) => (
           <DeviceReading deviceElem={deviceElement} />
         ))}
       </div>
     </MonthReadings>
   );
 };
+//
+// id: string | null;
+//
+// /** @format double */
+// value: number | null;
+//
+// /** @format int32 */
+// nodeId: number;
+//
+// /** @format int32 */
+// deviceId: number;
+// deviceModel: string | null;
+// deviceSerialNumber: string | null;
+//
+// /** @format date-time */
+// createDate: string;
+//
+// /** @format date-time */
+// updateDate: string | null;
+// magistralType: EMagistralType;
+//
+// /** @format int32 */
+// year: number;
+// month: string | null;
 
 const DeviceReading = ({
   deviceElem,
 }: {
   deviceElem: HousingMeteringDeviceReadingsResponse;
 }) => {
+  const { value, deviceId, year, month } = deviceElem;
+  const today = new Date(); // Mon Nov 23 2020 15:23:46 GMT+0300 (Москва, стандартное время)
+  const todayYear = today.getFullYear(); // 2020
+  const todayMonth = months[today.getMonth() + 1];
+
+  const isActive = todayYear === year && todayMonth === month;
+  const isDisabled = !isActive;
+  debugger;
+
   return (
     <DeviceReadings>
-      <div>{deviceElem.value ?? 4071505}</div>
+      <InputTT
+        value={value}
+        onChange={(e) => {
+          readingChanged({ value: +e.target.value, deviceId, year, month });
+        }}
+        disabled={isDisabled}
+      />
     </DeviceReadings>
   );
 };
@@ -57,7 +94,10 @@ const DeviceReading = ({
 const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
   const readings = useStore($readings);
 
-  const readingsElems = readings.items?.map((yearElement) => (
+  const newReadings = useStore($readingsToDisplay);
+  debugger;
+
+  const readingsElems = newReadings?.map((yearElement) => (
     <YearReading yearElement={yearElement} />
   ));
 
