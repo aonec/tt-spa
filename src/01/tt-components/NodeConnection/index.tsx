@@ -28,7 +28,6 @@ const NodeConnection = ({
     closingDate,
   } = calculator;
   const data = useParams();
-  debugger;
 
   const lastCheckingDateText = lastCheckingDate
     ? moment(lastCheckingDate).format('DD.MM.YYYY')

@@ -148,7 +148,6 @@ const ModalGroupReport = () => {
     } = form;
 
     const onFinish = async (values: GroupReportValuesInterface) => {
-      debugger;
       dispatch(
         setForm({
           ...values,

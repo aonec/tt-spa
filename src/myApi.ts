@@ -926,6 +926,7 @@ export interface HousingMeteringDeviceReadingsResponse {
   /** @format int32 */
   year: number;
   month: string | null;
+  isActual: boolean;
 }
 
 export interface GetHousingMeteringDeviceReadingsResponse {

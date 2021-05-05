@@ -23,7 +23,6 @@ export type reportQuery = {
 
 export function downloadReport(query?: reportQuery) {
   return sendGroupReport(query).then((response: any) => {
-    debugger;
     const fileNameWithJunk = response.headers['content-disposition'].split(';');
     const encodedFileName = fileNameWithJunk[2].split("'")[2];
     const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');

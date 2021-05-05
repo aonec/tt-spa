@@ -28,8 +28,6 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
     futureCommercialAccountingDate,
   } = node;
 
-  debugger;
-
   const { address } = calculator;
   const { city, street, housingStockNumber, corpus, id } = address;
 

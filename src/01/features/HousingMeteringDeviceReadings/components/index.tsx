@@ -3,7 +3,8 @@ import { useStore } from 'effector-react';
 import {
   $readings,
   $readingsToDisplay,
-  HousingMeteringDeviceReadingsGate, inputLeft,
+  HousingMeteringDeviceReadingsGate,
+  inputBlur,
   readingChanged,
 } from '../models';
 import {
@@ -69,14 +70,13 @@ const DeviceReading = ({
 }: {
   deviceElem: HousingMeteringDeviceReadingsResponse;
 }) => {
-  const { value, deviceId, year, month } = deviceElem;
+  const { value, deviceId, year, month, id } = deviceElem;
   const today = new Date(); // Mon Nov 23 2020 15:23:46 GMT+0300 (Москва, стандартное время)
   const todayYear = today.getFullYear(); // 2020
   const todayMonth = months[today.getMonth() + 1];
 
   const isActive = todayYear === year && todayMonth === month;
   const isDisabled = !isActive;
-  debugger;
 
   return (
     <DeviceReadings>
@@ -85,7 +85,9 @@ const DeviceReading = ({
         onChange={(e) => {
           readingChanged({ value: +e.target.value, deviceId, year, month });
         }}
-        onBlur={() => inputLeft()}
+        onBlur={(e) => {
+          inputBlur({ value: +e.target.value, deviceId, year, month, id });
+        }}
         disabled={isDisabled}
       />
     </DeviceReadings>
@@ -93,10 +95,7 @@ const DeviceReading = ({
 };
 
 const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
-  const readings = useStore($readings);
-
   const newReadings = useStore($readingsToDisplay);
-  debugger;
 
   const readingsElems = newReadings?.map((yearElement) => (
     <YearReading yearElement={yearElement} />

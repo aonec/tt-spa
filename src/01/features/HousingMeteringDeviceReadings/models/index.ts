@@ -8,6 +8,11 @@ import {
 import { createGate } from 'effector-react';
 import { prepareReadings } from '../lib/groupReadingsByDates';
 
+export type PostDataType = {
+  inputEvent: InputPayloadType;
+  latestSuccessReadings: GetHousingMeteringDeviceReadingsResponse;
+};
+
 export const $readings = createStore<GetHousingMeteringDeviceReadingsResponse>({
   items: null,
 });
@@ -26,25 +31,28 @@ export const requestReadingsFx = createEffect<
 >();
 
 export const postReadingFx = createEffect<
-  CreateHousingMeteringDeviceReadingsRequest,
+  PostDataType,
   HousingMeteringDeviceReadingsResponse
 >();
 
 export const updateReadingFx = createEffect<
-  UpdateHousingMeteringDeviceReadingsRequest,
+  PostDataType,
   HousingMeteringDeviceReadingsResponse
 >();
 
 export const readingUpdated = createEvent<number>();
 
-export const inputLeft = createEvent();
-
-export const readingChanged = createEvent<{
-  year: number;
-  month: string | null;
+export type InputPayloadType = {
   deviceId: number;
   value: number;
-}>();
+  year: number;
+  month: string | null;
+  id?: string | null;
+};
+
+export const inputBlur = createEvent<InputPayloadType>();
+
+export const readingChanged = createEvent<InputPayloadType>();
 
 export const HousingMeteringDeviceReadingsGate = createGate<{
   nodeId: number;

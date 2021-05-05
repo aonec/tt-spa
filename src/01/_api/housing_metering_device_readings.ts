@@ -19,13 +19,9 @@ export const requestReadings = (query: {
 export const postReading = (
   query: CreateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
-  axios.post('HousingMeteringDeviceReadings', {
-    params: query,
-  });
+  axios.post('HousingMeteringDeviceReadings', query);
 
 export const updateReading = (
   query: UpdateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
-  axios.put('HousingMeteringDeviceReadings', {
-    params: query,
-  });
+  axios.put('HousingMeteringDeviceReadings', query);
