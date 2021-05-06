@@ -1,9 +1,7 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import {
-  CreateHousingMeteringDeviceReadingsRequest,
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
-  UpdateHousingMeteringDeviceReadingsRequest,
 } from '../../../../myApi';
 import { createGate } from 'effector-react';
 import { prepareReadings } from '../lib/groupReadingsByDates';
@@ -34,13 +32,6 @@ export const postReadingFx = createEffect<
   PostDataType,
   HousingMeteringDeviceReadingsResponse
 >();
-
-export const updateReadingFx = createEffect<
-  PostDataType,
-  HousingMeteringDeviceReadingsResponse
->();
-
-export const readingUpdated = createEvent<number>();
 
 export type InputPayloadType = {
   deviceId: number;
