@@ -119,8 +119,6 @@ export function changeItemStage(item, i, arr, uos) {
         moment(expectedCompletionTime).format('YYYYMMDD')
       : null;
 
-  console.log('diff', diff);
-
   const icon =
     status === 'Done' && diff > 0
       ? 'timer'

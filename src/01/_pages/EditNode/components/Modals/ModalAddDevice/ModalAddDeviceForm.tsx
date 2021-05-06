@@ -118,16 +118,12 @@ const ModalAddDeviceForm = ({
     ? communicationPipes[0].entryNumber
     : null;
 
-  // console.log(node);
-
   const allDevices = _.flatten(
     communicationPipes?.map((communicationPipe) => {
       const { devices } = communicationPipe;
       return devices;
     })
   );
-
-  // console.log('allDevices', allDevices);
 
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
@@ -155,7 +151,6 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
-    // console.log('handleSubmit', values);
     const form: CreateHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
@@ -177,10 +172,7 @@ const ModalAddDeviceForm = ({
         nodeId: node.id,
       },
     };
-    console.log('form', form);
-    console.log();
-    addHousingMeteringDevice(form).then((res) => {
-      // console.log(res);
+    addHousingMeteringDevice(form).then(() => {
       setTimeout(() => {
         setVisible(false);
       }, 1000);
@@ -193,7 +185,6 @@ const ModalAddDeviceForm = ({
       errors
     );
     if (hasError) {
-      console.log(errors);
       setTab(errorTab);
     }
   }
@@ -226,7 +217,6 @@ const ModalAddDeviceForm = ({
                 activeKey={currentTabKey}
               />
 
-              {/*First Tabs*/}
               <StyledFormPage hidden={Number(currentTabKey) !== 1}>
                 <Warning
                   style={styles.w100}
@@ -430,9 +420,7 @@ const ModalAddDeviceForm = ({
               <ButtonTT
                 color="blue"
                 onClick={() => {
-                  console.log(currentTabKey);
                   setTab((prevState) => String(Number(prevState) + 1));
-                  console.log(values);
                 }}
                 big
                 hidden={currentTabKey === '3'}
@@ -482,71 +470,3 @@ const SubHeader = styled.h3`
   font-size: 16px;
   line-height: 32px;
 `;
-
-// const devices =
-//   communicationPipes ||
-//   [].map((communicationPipe) => {
-//     const { devices } = communicationPipe;
-//     return (
-//       devices ||
-//       [].map((device) => {
-//         return device;
-//       })
-//     );
-//   });
-// const res = _.flatten(devices);
-// const entryNumbers =
-//   res ||
-//   [].map((item) => {
-//     const { hub } = item;
-//     const { entryNumber } = hub;
-//     return entryNumber;
-//   });
-
-{
-  /*<SubHeader>Адрес установки</SubHeader>*/
-}
-
-{
-  /*<Form.Item name="city" label="Город" style={styles.w49}>*/
-}
-{
-  /*  <InputTT placeholder="Нижнекамск" />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item label="Улица" name="street" style={styles.w49}>*/
-}
-{
-  /*  <InputTT placeholder="Пр Мира" />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item label="Дом" name="housingStockNumber" style={styles.w49}>*/
-}
-{
-  /*  <InputTT />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Form.Item name="corpus" label="Корпус" style={styles.w49}>*/
-}
-{
-  /*  <InputTT />*/
-}
-{
-  /*</Form.Item>*/
-}
-
-{
-  /*<Divider style={{ margin: 0 }} />*/
-}

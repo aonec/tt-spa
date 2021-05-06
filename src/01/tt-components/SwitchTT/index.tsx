@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch } from 'antd';
+import { SwitchProps } from 'antd/lib/switch';
 
 const styles = {
   width: 48,
@@ -11,7 +12,11 @@ interface SwitchInterface {
   checked?: boolean;
 }
 
-export const SwitchTT = ({ onChange, title }: SwitchInterface) => {
+export const SwitchTT = ({
+  onChange,
+  title,
+  ...props
+}: SwitchInterface & SwitchProps) => {
   return (
     <div
       style={{
@@ -19,7 +24,7 @@ export const SwitchTT = ({ onChange, title }: SwitchInterface) => {
         alignItems: 'center',
       }}
     >
-      <Switch style={styles} defaultChecked onChange={onChange} />
+      <Switch style={styles} defaultChecked onChange={onChange} {...props} />
       <span
         style={{
           fontSize: '16px',

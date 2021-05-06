@@ -71,8 +71,6 @@ export const TaskProfile = () => {
   const { icon, color } = DeviceIcons[node?.resource] || {};
   const { calculator } = state;
 
-  debugger;
-
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   return styled(s.grid)(

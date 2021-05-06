@@ -56,7 +56,6 @@ const AddNodeSecondTab = () => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
-      console.log('AddNodeFirstTab', form);
       setNode((prevState: any) => ({
         ...prevState,
         ...form,

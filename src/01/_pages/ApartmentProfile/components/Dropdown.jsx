@@ -31,7 +31,6 @@ const menu = (
 );
 
 export const DropdownTT = () => {
-  console.log('DropdownTT');
   return (
     <Dropdown overlay={menu} placement="bottomRight">
       <Button>

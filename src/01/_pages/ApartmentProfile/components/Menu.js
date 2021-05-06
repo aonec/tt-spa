@@ -11,7 +11,6 @@ const { SubMenu } = Menu;
 export const MenuTT = () => {
   const [current, setCurrent] = useState('mail');
   const handleClick = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
   return (

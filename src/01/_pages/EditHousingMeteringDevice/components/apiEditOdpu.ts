@@ -11,7 +11,6 @@ export async function getOdpu(id: number) {
       `HousingMeteringDevices/${id}`
     );
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса ОДПУ',
