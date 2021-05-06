@@ -6,7 +6,6 @@ export async function getCalculator(id: number) {
     const res = await axios.get<any, CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса Вычислителя',
@@ -22,7 +21,6 @@ export async function getCalculatorTasks(id: number) {
     const { items } = res;
     return items;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',

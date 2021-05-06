@@ -6,12 +6,7 @@ import { DeviceContext } from '../DeviceProfile';
 
 export const ConnectionNotCalculator = () => {
   const { device, loadings } = useContext(DeviceContext);
-  // const loadingDevice = _.get(loadings, 'device', true);
   const loading = _.get(loadings, 'device', true);
-
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
 
   return (
     <ListWrap>
@@ -34,6 +29,5 @@ export const ConnectionNotCalculator = () => {
     </ListWrap>
   );
 };
-// пока не получили данные - показываем Loader
 
 export default ConnectionNotCalculator;

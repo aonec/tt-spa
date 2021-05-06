@@ -130,15 +130,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       ? getDevicesSelectionByType(filteredGroup)
       : sonorSelection;
 
-  const {
-    handleSubmit,
-    handleChange,
-    values,
-    touched,
-    errors,
-    handleBlur,
-    setFieldValue,
-  } = useFormik({
+  const { handleSubmit, values, touched, errors, setFieldValue } = useFormik({
     initialValues: {
       period: 'month',
       detail: 'monthly',
@@ -169,10 +161,6 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
         const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
         const url = window.URL.createObjectURL(new Blob([response.data]));
 
-        // const url = window.URL.createObjectURL(new Blob([response]));
-        // const fileName = `${street}, ${housingStockNumber} - ${translate(
-        //   resource || ''
-        // )} с ${begin} по ${end}, ${translate(resource || '')}.xlsx`;
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', decodedFileName);
@@ -201,8 +189,6 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
     }
     setFieldValue('period', res);
     setFieldValue('customDisabled', res === 'month');
-
-    // setFieldValue('end', moment());
   };
 
   const onDetailChange = (event: any) => {

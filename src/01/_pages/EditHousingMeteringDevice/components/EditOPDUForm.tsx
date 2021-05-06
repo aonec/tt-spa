@@ -107,8 +107,6 @@ const FormEditODPU = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      console.log(values);
-
       const magistralEnum: MagistralType = values.magistral as MagistralType;
 
       const form: UpdateHousingMeteringDeviceRequest = {
@@ -135,9 +133,6 @@ const FormEditODPU = ({
           setExistDevice(existDeviceId);
         }
       });
-
-      console.log('PUT_EDIT_FORM', form);
-      console.log('PUT_EDIT_FORM', JSON.stringify(form));
     },
   });
 
@@ -146,10 +141,6 @@ const FormEditODPU = ({
       ? setValidationSchema(validationSchemaFlowMeter)
       : setValidationSchema(validationSchemaTemperatureSensor);
   }, []);
-
-  useEffect(() => {
-    console.log('values', values);
-  }, [values]);
 
   const tabErrors = [
     {
@@ -286,7 +277,6 @@ const FormEditODPU = ({
             name="lastCheckingDate"
             placeholder="Укажите дату..."
             onChange={(date) => {
-              console.log(date);
               setFieldValue('lastCheckingDate', date);
               setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
             }}

@@ -118,16 +118,12 @@ const ModalAddDeviceForm = ({
     ? communicationPipes[0].entryNumber
     : null;
 
-  // console.log(node);
-
   const allDevices = _.flatten(
     communicationPipes?.map((communicationPipe) => {
       const { devices } = communicationPipe;
       return devices;
     })
   );
-
-  // console.log('allDevices', allDevices);
 
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
@@ -176,10 +172,7 @@ const ModalAddDeviceForm = ({
         nodeId: node.id,
       },
     };
-    console.log('form', form);
-    console.log();
-    addHousingMeteringDevice(form).then((res) => {
-      // console.log(res);
+    addHousingMeteringDevice(form).then(() => {
       setTimeout(() => {
         setVisible(false);
       }, 1000);
@@ -192,7 +185,6 @@ const ModalAddDeviceForm = ({
       errors
     );
     if (hasError) {
-      console.log(errors);
       setTab(errorTab);
     }
   }
@@ -225,7 +217,6 @@ const ModalAddDeviceForm = ({
                 activeKey={currentTabKey}
               />
 
-              {/*First Tabs*/}
               <StyledFormPage hidden={Number(currentTabKey) !== 1}>
                 <Warning
                   style={styles.w100}
@@ -429,9 +420,7 @@ const ModalAddDeviceForm = ({
               <ButtonTT
                 color="blue"
                 onClick={() => {
-                  console.log(currentTabKey);
                   setTab((prevState) => String(Number(prevState) + 1));
-                  console.log(values);
                 }}
                 big
                 hidden={currentTabKey === '3'}

@@ -53,9 +53,6 @@ const TasksTitle = styled.h2`
   padding-bottom: 14px;
 `;
 
-const buttonHandler = () => {
-  console.log('buttonHandler');
-};
 export const Events = ({ title = '' }) => {
   const { tasks, loadings } = useContext(DeviceContext);
   // const loadingTasks = _.get(loadings, 'device', true);
@@ -86,7 +83,7 @@ export const Events = ({ title = '' }) => {
         <Loader show={loading} size="32">
           <TasksTitle>{title}</TasksTitle>
           {Tasks}
-          <Button onClick={buttonHandler}>Все задачи с объектом</Button>
+          <Button>Все задачи с объектом</Button>
         </Loader>
       </TasksWrap>
     );

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components/IconTT';
-import { getDeviceTasks } from '../apiObjectProfile';
 import { Name, Serial } from '../../../tt-components';
 import {
   nodeStatusList,
@@ -23,14 +22,7 @@ export const Devices = ({ calculators }) => {
   // Вычислитель
   const CalculatorItem = ({ calculator }) => {
     const [tasks, setTasks] = useState([]);
-    const { id, model, serialNumber, closingDate, nodes } = calculator;
-
-    // useEffect(() => {
-    //   getDeviceTasks(id).then((res) => {
-    //     const { items } = res;
-    //     setTasks(items);
-    //   });
-    // }, []);
+    const { id, model, serialNumber, closingDate } = calculator;
 
     const CalculatorTasksIcon = () =>
       tasks.length > 0 ? <IconTT icon="alarm" /> : null;
@@ -56,15 +48,7 @@ export const Devices = ({ calculators }) => {
 
   // Узел
   const NodeItem = ({ node }) => {
-    const {
-      id: nodeId,
-      serviceZone,
-      nodeStatus,
-      communicationPipes,
-      number,
-      resource,
-    } = node;
-    console.log('node', node);
+    const { id: nodeId, serviceZone, nodeStatus, number, resource } = node;
 
     //Бэкендеру - перевести с русского на английский!! nodeStatus
     const getNodeStatus =
@@ -73,9 +57,6 @@ export const Devices = ({ calculators }) => {
     const getNodeIconStatus =
       _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
 
-    console.log('getNodeIconStatus', getNodeIconStatus);
-    // const getNodeStatus = _.find(nodeStatusList, { value: nodeStatus })?.label ?? 'Статус не определен';
-    // const getNodeIconStatus = _.find(nodeStatusList, { value: nodeStatus })?.icon ?? 'del';
     const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
       .label;
     return (
@@ -97,24 +78,13 @@ export const Devices = ({ calculators }) => {
     );
   };
 
-  // Устройство Узла
   const NodeDevice = ({ device, closingDate }) => {
-    const {
-      model,
-      serialNumber,
-      closingdate,
-      hub,
-      resource,
-      id,
-      housingStockId,
-    } = device;
-    console.log('NodeDevice');
+    const { model, serialNumber, id } = device;
 
     return (
       <NodeDeviceWrap key={id}>
         <NavLink to={`/housingMeteringDevices/${id}`}>
           <NodeDeviceMainInfo>
-            {/*<IconTT icon={resource.toLowerCase()} />*/}
             <Name>{model}</Name>
             <Serial>{` (${serialNumber})`}</Serial>
           </NodeDeviceMainInfo>
@@ -171,19 +141,10 @@ export const Devices = ({ calculators }) => {
         )
       );
 
-      // if (_.isEmpty(devicesOnNode)) {
-      //     return <div>
-      //         <NodeItem node={node}/>
-      //         <span>Нет устройств</span>
-      //     </div>
-      // }
-
       const NodeDevices = () =>
         devicesOnNode.map((device) => (
           <NodeDevice device={device} closingDate={closingDate} />
         ));
-
-      console.log('isEmpty', _.isEmpty(devicesOnNode));
 
       return (
         <NodeWrap>

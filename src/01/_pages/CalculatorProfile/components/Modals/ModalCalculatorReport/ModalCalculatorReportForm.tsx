@@ -30,16 +30,14 @@ const ModalCalculatorReportForm = ({
   device,
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
-  console.log('device', device);
-
-  const { id, model, serialNumber, address, nodes } = device;
+  const { model, serialNumber, address, nodes } = device;
   const { housingStockNumber, street } = address;
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
   const nodesList =
     nodes ||
-    [].map((node, index) => {
+    [].map((node) => {
       const { id, number, resource, communicationPipes } = node;
 
       const devices = _.flatten(
@@ -67,22 +65,11 @@ const ModalCalculatorReportForm = ({
       };
     });
 
-  console.log('device', device);
-
   const filteredGroup = _.groupBy(nodesList, 'resource');
 
   const resources = _.keys(filteredGroup);
 
-  const {
-    handleSubmit,
-    handleChange,
-    values,
-    touched,
-    errors,
-    handleBlur,
-    setFieldError,
-    setFieldValue,
-  } = useFormik({
+  const { handleSubmit, values, touched, errors, setFieldValue } = useFormik({
     initialValues: {
       period: 'lastSevenDays',
       detail: 'daily',

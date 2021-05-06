@@ -4,6 +4,8 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
   VictoryArea,
+  VictoryLine,
+  VictoryLabel,
 } from 'victory';
 import React from 'react';
 import styled from 'styled-components';
@@ -20,6 +22,7 @@ import { Alert } from 'antd';
 import FallbackGraph from './FallbackGraph.svg';
 import GraphLegend from './GraphLegend';
 import { TickComponent } from './TickComponent';
+import { renderForHeatAndDeltaMass } from '../utils/renderForHeatAndDeltaMass';
 
 const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
   const {
@@ -27,7 +30,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     searchQuery: { reportType },
   } = dataObject;
 
-  const { resource } = data;
+  const { resource, averageDeltaMass } = data;
 
   const archiveEntries = get(data, 'archiveEntries', []);
 
@@ -90,6 +93,8 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
   };
 
+  const isAverageLineRendered = renderForHeatAndDeltaMass(resource, graphParam);
+
   return (
     <>
       <GraphWrapper>
@@ -145,9 +150,22 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
             x="time"
             y="value"
           />
+          {isAverageLineRendered ? (
+            <VictoryLine
+              samples={1}
+              labels={['', ``]}
+              labelComponent={<VictoryLabel renderInPortal dx={80} dy={-20} />}
+              y={() => averageDeltaMass}
+              style={{
+                data: {
+                  stroke: 'var(--main-100)',
+                },
+              }}
+            />
+          ) : null}
         </VictoryChart>
       </GraphWrapper>
-      <GraphLegend resource={data.resource} />
+      <GraphLegend graphParam={graphParam} />
     </>
   );
 };
@@ -187,6 +205,8 @@ export interface ReadingsInterface {
   resource: ResourceType;
   systemPipeCount: number;
   archiveEntries: ArchiveEntryInterface[];
+  averageDeltaMass: number;
+  deltaMassAccuracy: number;
 }
 
 export interface GraphDataInterface {

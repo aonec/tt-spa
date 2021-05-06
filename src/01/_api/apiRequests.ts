@@ -32,7 +32,6 @@ export async function getObjectCalculators(id: number) {
     const res = await axios.get(`Calculators?Filter.HousingStockId=${id}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'devices',
       message: 'Произошла ошибка запроса устройств',
@@ -45,7 +44,6 @@ export async function getNode(id: number) {
     const res = await axios.get<any, NodeResponse>(`Nodes/${id}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',
@@ -61,7 +59,6 @@ export async function getNodeTasks(id: number) {
     const { items } = res;
     return items;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
@@ -74,10 +71,8 @@ export async function getIndividualDevice(id: number) {
     const res = await axios.get<any, IndividualDeviceResponse>(
       `IndividualDevices/${id}`
     );
-    // console.log(`IndividualDevices/${id}`, res);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -93,7 +88,6 @@ export async function getIndividualDeviceTasks(id: number) {
     const { items } = res;
     return items;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
@@ -106,7 +100,6 @@ export async function getCalculator(id: number) {
     const res = await axios.get<any, CalculatorResponse>(`Calculators/${id}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -122,7 +115,6 @@ export async function addHousingMeteringDevice(
     alert('ОДПУ успешно создан !');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка добавления ОДПУ',
@@ -137,7 +129,6 @@ export async function getHousingStock(housingStockId: number) {
     );
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'housingStock',
       message: 'Произошла ошибка запроса дома',
@@ -153,7 +144,6 @@ export async function getHousingStockCalculators(id: number) {
     const { items } = res;
     return items;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'calculators',
       message: 'Произошла ошибка запроса вычислителей',

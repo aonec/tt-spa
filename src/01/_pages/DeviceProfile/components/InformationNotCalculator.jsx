@@ -14,30 +14,20 @@ export const InformationNotCalculator = (loading = true) => {
 
   loading = loadingDevice || loadingBuilding;
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
-
-  // const { city, street, number } = building || DEFAULT_BUILDING;
   const { city, street, housingStockNumber, corpus } =
     building || DEFAULT_BUILDING;
-  // const { commercialAccountingDate, futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } =
     device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
-  // console.log('error', error);
-  console.log('device', device);
   if (errorOfComponent) {
     return (
       <ListWrap>
         <Title>{error.message}</Title>
-        {/* <button onClick={buttonHandler}>button</button> */}
       </ListWrap>
     );
   }
 
-  console.log(convertDateDots(lastCommercialAccountingDate));
   return (
     <ListWrap>
       <Loader show={loading} size="32">

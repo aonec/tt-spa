@@ -83,8 +83,6 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         housingStockId: Number(values.housingStockId),
         infoId: Number(values.infoId),
       };
-      console.log('form', form);
-      console.log('form', JSON.stringify(form));
       addCalculator(form).then((res: any) => {
         setTimeout(() => {
           setAddCalculator(false);
