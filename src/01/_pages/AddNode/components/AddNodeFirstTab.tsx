@@ -62,7 +62,6 @@ const AddNodeFirstTab = () => {
         entryNumber: values.entryNumber,
         calculatorId: values.calculatorId,
       };
-      console.log(form);
 
       setNode((prevState: any) => ({
         ...prevState,

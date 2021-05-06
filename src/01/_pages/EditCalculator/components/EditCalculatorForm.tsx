@@ -15,7 +15,6 @@ import {
   styles,
   ConnectionTakesTime,
 } from '../../../tt-components';
-// import {ipv4RegExp, items} from '../../../tt-components/localBases'
 import { putCalculator } from './apiEditCalculator';
 import isDateNull from '../../../utils/isDateNull';
 import { returnNullIfEmptyString } from '../../../utils/returnNullIfEmptyString';
@@ -112,15 +111,12 @@ const EditCalculatorForm = ({
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
-      console.log('FORM', form);
-      console.log(JSON.stringify(form));
 
       interface ThenInterface {
         show: boolean | undefined;
         id: number | null | undefined;
       }
 
-      console.log('form', form);
       putCalculator(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
           setAlert(true);
@@ -157,9 +153,6 @@ const EditCalculatorForm = ({
   }
 
   useEffect(() => {
-    // setEmpty(isEmptyConnection());
-    console.log('Правда, что все строки пустые:?', isEmptyConnection());
-
     if (values.isConnected === false) {
       if (isEmptyConnection() === true) {
         setFieldError('ipV4', undefined);

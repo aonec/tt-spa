@@ -8,7 +8,6 @@ const styles = {
 };
 
 const SwitchTT = () => {
-  console.log('SwitchTT');
   return (
     <div
       style={{

@@ -19,7 +19,6 @@ export const Contractor = () => {
   useEffect(() => {
     getContractor(userId).then((res) => {
       setContractor(res);
-      console.log(res);
     });
   }, []);
 

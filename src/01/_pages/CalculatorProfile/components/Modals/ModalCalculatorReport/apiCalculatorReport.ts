@@ -8,7 +8,6 @@ export async function getReport(link: string) {
     });
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
