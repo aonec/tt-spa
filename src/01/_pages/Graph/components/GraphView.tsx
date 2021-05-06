@@ -22,6 +22,7 @@ import { Alert } from 'antd';
 import FallbackGraph from './FallbackGraph.svg';
 import GraphLegend from './GraphLegend';
 import { TickComponent } from './TickComponent';
+import { renderForHeatAndDeltaMass } from '../utils/renderForHeatAndDeltaMass';
 
 const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
   const {
@@ -29,7 +30,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     searchQuery: { reportType },
   } = dataObject;
 
-  const { resource, deltaMassAccuracy, averageDeltaMass } = data;
+  const { resource, averageDeltaMass } = data;
 
   const archiveEntries = get(data, 'archiveEntries', []);
 
@@ -92,6 +93,8 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
     grid: { stroke: 'var(--frame)', strokeDasharray: '0' },
   };
 
+  const isAverageLineRendered = renderForHeatAndDeltaMass(resource, graphParam);
+
   return (
     <>
       <GraphWrapper>
@@ -147,15 +150,10 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
             x="time"
             y="value"
           />
-          {graphParam === 'deltaMass' ? (
+          {isAverageLineRendered ? (
             <VictoryLine
-              // labels={({ datum }: any) => `y: ${datum.y}`}
               samples={1}
-              labels={[
-                '',
-                // `Среднее значение = ${averageDeltaMass.toFixed(2)} т`,
-                ``,
-              ]}
+              labels={['', ``]}
               labelComponent={<VictoryLabel renderInPortal dx={80} dy={-20} />}
               y={() => averageDeltaMass}
               style={{
@@ -165,28 +163,6 @@ const GraphView: React.FC<GraphViewProps> = ({ graphParam, dataObject }) => {
               }}
             />
           ) : null}
-          {/*<VictoryLine*/}
-          {/*  style={{*/}
-          {/*    data: {*/}
-          {/*      stroke: 'black',*/}
-          {/*      strokeDasharray: 5.5,*/}
-          {/*      strokeWidth: 2,*/}
-          {/*      fillOpacity: 0.4,*/}
-          {/*    },*/}
-          {/*  }}*/}
-          {/*  y={() => averageDeltaMass * (1 + deltaMassAccuracy / 100)}*/}
-          {/*/>*/}
-          {/*<VictoryLine*/}
-          {/*  style={{*/}
-          {/*    data: {*/}
-          {/*      stroke: 'black',*/}
-          {/*      strokeDasharray: 5.5,*/}
-          {/*      strokeWidth: 2,*/}
-          {/*      fillOpacity: 0.4,*/}
-          {/*    },*/}
-          {/*  }}*/}
-          {/*  y={() => averageDeltaMass * (1 - deltaMassAccuracy / 100)}*/}
-          {/*/>*/}
         </VictoryChart>
       </GraphWrapper>
       <GraphLegend graphParam={graphParam} />

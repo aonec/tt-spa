@@ -1,3 +1,3 @@
 import { $graphData, setDataToStore } from './index';
 
-$graphData.on(setDataToStore, (s, a) => a);
+$graphData.on(setDataToStore, (_, payload) => payload);

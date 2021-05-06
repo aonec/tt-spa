@@ -105,8 +105,6 @@ const AddDeviceForm = (props) => {
           magistral: values.magistral,
         },
       };
-      console.log(form);
-      console.log(JSON.stringify(form));
       addOdpu(form).then(() => {
         setTimeout(() => {
           setAddOdpu(false);
@@ -326,7 +324,6 @@ const AddDeviceForm = (props) => {
               onBlur={handleBlur}
               placeholder="Начните вводить серийный номер или IP адрес прибора"
               onChange={(value) => {
-                console.log(value);
                 setFieldValue('calculatorId', value);
                 getCalculator(value).then((result) => setCalculator(result));
               }}

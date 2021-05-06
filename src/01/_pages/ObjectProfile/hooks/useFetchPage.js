@@ -27,11 +27,6 @@ export const useFetchPage = (state, dispatch) => {
       );
     }
     if (pageApart?.isExact && !state.apartments && params.id) {
-      // const { city, street, number: HousingStockNumber, apartments } = state
-      // if ([city, street, HousingStockNumber].some((i) => !i)) {
-      //   replace(url)
-      // } else {
-      //   !apartments &&
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
       getApartments({ housingStockId: params.id }).then((data) =>
         dispatch({ type: 'success', data })
@@ -39,7 +34,6 @@ export const useFetchPage = (state, dispatch) => {
     }
 
     if ((info || devices) && !events) {
-      // console.log(params)
       getEvents(params.id).then((data) => dispatch({ type: 'success', data }));
     }
   }, [isExact, url, state, pageDevice, pageApart, replace]);

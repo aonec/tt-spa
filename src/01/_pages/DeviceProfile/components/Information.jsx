@@ -14,22 +14,17 @@ export const Information = (loading = true) => {
 
   loading = loadingDevice || loadingBuilding;
 
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
   const { city, street, housingStockNumber, corpus } =
     building || DEFAULT_BUILDING;
   const { lastCommercialAccountingDate, futureCheckingDate, lastCheckingDate } =
     device || DEFAULT_DEVICE;
 
   const errorOfComponent = _.get(error, 'resource', null);
-  // console.log('error', error);
 
   if (errorOfComponent) {
     return (
       <ListWrap>
         <Title>{error.message}</Title>
-        {/* <button onClick={buttonHandler}>button</button> */}
       </ListWrap>
     );
   }

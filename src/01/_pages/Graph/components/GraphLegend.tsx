@@ -6,6 +6,7 @@ import { useStore } from 'effector-react';
 import { $graphData } from '../../../features/graph/graphView/models';
 import { Tooltip } from 'antd';
 import { GraphParamsType } from '../Graph';
+import { renderForHeatAndDeltaMass } from '../utils/renderForHeatAndDeltaMass';
 
 interface Props {
   resource?: ResourceType;
@@ -13,11 +14,13 @@ interface Props {
 }
 
 const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
-  const graphData = useStore($graphData);
-  const { averageDeltaMass, deltaMassAccuracy, resource } = graphData.data;
+  const { data } = useStore($graphData);
+  const { averageDeltaMass, deltaMassAccuracy, resource } = data;
   const absoluteDelta = Number(
     Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
   );
+
+  const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
 
   return (
     <LegendWrapper>
@@ -25,27 +28,21 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
         <LegendLine resource={resource} style={{ marginBottom: 16 }}>
           Текущий период
         </LegendLine>
-        {resource === 'Heat' && graphParam === 'deltaMass' ? (
+        {isAccuracyRendered ? (
           <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>
         ) : null}
       </div>
-      {resource === 'Heat' && graphParam === 'deltaMass' ? (
+      {isAccuracyRendered ? (
         <Tooltip
           getPopupContainer={(triggerNode) =>
             triggerNode.parentNode as HTMLElement
           }
           color={'var(--main-100)'}
-          // title={`${Math.abs(
-          //   (averageDeltaMass * deltaMassAccuracy) / 100
-          // ).toFixed(1)}т`}
-          //
           title={
-            absoluteDelta == 0
+            absoluteDelta === 0
               ? 'Абсолютная погрешность крайне мала'
               : `Абсолютная погрешность ${absoluteDelta} т`
           }
-          // title={`Абсолютная погрешность ${absoluteDelta} т`}
-          // title={`Абсолютная погрешность 4.66 т`}
         >
           <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
           <Accuracy>Относительная погрешность</Accuracy>
@@ -65,7 +62,6 @@ const LegendWrapper = styled.div`
   .ant-tooltip-inner {
     border-radius: 4px;
     text-align: center;
-    //white-space: nowrap;
   }
 `;
 

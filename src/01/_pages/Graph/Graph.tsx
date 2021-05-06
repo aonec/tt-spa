@@ -42,8 +42,6 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
     run,
   } = useAsync<RequestNodeReadingsFunctionInterface>();
 
-  console.log(moment().utcOffset());
-
   const reportType = 'daily' as ReportType;
 
   const from = moment()

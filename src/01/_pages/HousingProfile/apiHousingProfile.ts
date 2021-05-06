@@ -13,7 +13,6 @@ export async function getHousingMeteringDevice(id: number) {
     );
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -29,7 +28,6 @@ export async function getHousingTasks(id: number) {
 
     return items;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
