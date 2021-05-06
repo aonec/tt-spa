@@ -3218,6 +3218,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsCreateOrUpdateLastCreate
+     * @request POST:/api/HousingMeteringDeviceReadings/CreateOrUpdateLast
+     * @secure
+     */
+    housingMeteringDeviceReadingsCreateOrUpdateLastCreate: (
+      data: CreateHousingMeteringDeviceReadingsRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings/CreateOrUpdateLast`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesUpdate
      * @request PUT:/api/HousingMeteringDevices/{deviceId}

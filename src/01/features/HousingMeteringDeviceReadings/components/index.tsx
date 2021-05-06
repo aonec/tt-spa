@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FocusEvent, ChangeEvent } from 'react';
 import { useStore } from 'effector-react';
 import {
   $readings,
@@ -78,16 +78,22 @@ const DeviceReading = ({
   const isActive = todayYear === year && todayMonth === month;
   const isDisabled = !isActive;
 
+  const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
+    // if (+e.target.value === value) return;
+    inputBlur({ value: +e.target.value, deviceId, year, month });
+  };
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    // if (+e.target.value === value) return;
+    readingChanged({ value: +e.target.value, deviceId, year, month });
+  };
+
   return (
     <DeviceReadings>
       <InputTT
         value={value}
-        onChange={(e) => {
-          readingChanged({ value: +e.target.value, deviceId, year, month });
-        }}
-        onBlur={(e) => {
-          inputBlur({ value: +e.target.value, deviceId, year, month, id });
-        }}
+        onChange={onChangeHandler}
+        onBlur={onBlurHandler}
         disabled={isDisabled}
       />
     </DeviceReadings>

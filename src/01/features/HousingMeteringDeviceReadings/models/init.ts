@@ -5,6 +5,8 @@ import {
   postReadingFx,
   readingChanged,
   $latestSuccessReadings,
+  inputBlur,
+  PostDataType,
 } from './index';
 import {
   requestReadings,
@@ -62,15 +64,20 @@ $readings.on(readingChanged, (readings, payload) => {
   };
 });
 
-// const postData = sample({
-//   source: $latestSuccessReadings,
-//   clock: inputBlur,
-//   fn: (latestSuccessReadings, inputEvent) =>
-//     ({
-//       inputEvent,
-//       latestSuccessReadings,
-//     } as PostDataType) /* 3 */,
-// });
+const postData = sample({
+  source: $latestSuccessReadings,
+  clock: inputBlur,
+  fn: (latestSuccessReadings, inputEvent) =>
+    ({
+      inputEvent,
+      latestSuccessReadings,
+    } as PostDataType) /* 3 */,
+});
+
+forward({
+  from: postData,
+  to: postReadingFx,
+});
 
 forward({
   from: HousingMeteringDeviceReadingsGate.state,
