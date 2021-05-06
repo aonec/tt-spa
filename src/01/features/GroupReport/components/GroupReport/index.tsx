@@ -301,7 +301,7 @@ const ModalGroupReport = () => {
               name="category"
               label="Категория узлов"
               style={styles.w49}
-              rules={[{ required: true, message: 'Категория узлов' }]}
+              // rules={[{ required: true, message: 'Категория узлов' }]}
             >
               <SelectTT options={nodeStatusesOptions} />
             </Form.Item>
