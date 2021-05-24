@@ -1,10 +1,11 @@
-import React, { FocusEvent, ChangeEvent } from 'react';
+import React, { FocusEvent, ChangeEvent, useState } from 'react';
 import { useStore } from 'effector-react';
 import {
-  $readings,
+  $postReadingsErrorMessage,
   $readingsToDisplay,
   HousingMeteringDeviceReadingsGate,
   inputBlur,
+  postReadingFx,
   readingChanged,
 } from '../models';
 import {
@@ -14,6 +15,9 @@ import {
 import styled from 'styled-components';
 import InputTT from '../../../tt-components/InputTT';
 import { months } from '../lib/getMonthByNumber';
+import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
+import { Spin } from 'antd';
+import { Loader } from '../../../components/Loader';
 
 const YearReading = ({ yearElement }: { yearElement: any }) => {
   return (
@@ -31,7 +35,7 @@ const YearReading = ({ yearElement }: { yearElement: any }) => {
 const MonthReading = ({ monthElement }: { monthElement: any }) => {
   return (
     <MonthReadings>
-      <Month>{monthElement.month}</Month>
+      <Month>{firstLetterToUpperCase(monthElement.month)}</Month>
       <div style={{ display: 'flex' }}>
         {monthElement.items?.map((deviceElement: any) => (
           <DeviceReading deviceElem={deviceElement} />
@@ -80,7 +84,7 @@ const DeviceReading = ({
 
   const onBlurHandler = (e: FocusEvent<HTMLInputElement>) => {
     // if (+e.target.value === value) return;
-    inputBlur({ value: +e.target.value, deviceId, year, month });
+    inputBlur({ value: +e.target.value, deviceId, year, month, id });
   };
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,13 +92,22 @@ const DeviceReading = ({
     readingChanged({ value: +e.target.value, deviceId, year, month });
   };
 
+  const isReadingsSending = useStore(postReadingFx.pending);
+
+  const renderLoader = () =>
+    isReadingsSending && !isDisabled ? <Loader show={true} /> : null;
+
+  debugger;
+
   return (
     <DeviceReadings>
       <InputTT
+        height={'32px'}
         value={value}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         disabled={isDisabled}
+        suffix={renderLoader()}
       />
     </DeviceReadings>
   );
@@ -102,6 +115,7 @@ const DeviceReading = ({
 
 const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
   const newReadings = useStore($readingsToDisplay);
+  const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
 
   const readingsElems = newReadings?.map((yearElement) => (
     <YearReading yearElement={yearElement} />
@@ -109,11 +123,12 @@ const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
 
   return (
     <div>
+      {postReadingsErrorMessage ? 'Ошибка' : null}
       <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
       <HousingMeteringReadingsHeader>
         <div>Месяц</div>
-        <div>V1, м3</div>
-        <div>V2, м3</div>
+        <div>V1, м³</div>
+        <div>V2, м³</div>
         <div>Потребление, м3</div>
       </HousingMeteringReadingsHeader>
       {readingsElems}
@@ -138,11 +153,14 @@ const Year = styled.div`
 
 const MonthReadings = styled.div`
   display: grid;
-  grid-template-columns: 4fr 4fr 4fr;
+  grid-template-columns: 3fr 5fr 4fr;
   padding: 8px 16px;
 `;
 
 const Month = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
   font-weight: 500;
   color: var(--main);
 `;
@@ -151,6 +169,10 @@ const DeviceReadings = styled.div`
   display: flex;
   font-size: 14px;
   margin-right: 16px;
+
+  input {
+    padding: 8px;
+  }
 `;
 
 const DeviceModel = styled.div`
@@ -169,7 +191,7 @@ const HousingMeteringReadingsHeader = styled.div`
   padding-left: 16px;
   margin-bottom: 8px;
   height: 48px;
-  grid-template-columns: 4fr 2fr 2fr 4fr;
+  grid-template-columns: 3fr 2.5fr 2.5fr 4fr;
   background-color: var(--main-4);
   overflow: hidden;
 `;

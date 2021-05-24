@@ -62,12 +62,3 @@ type GroupedReadings = {
 type MonthReadings = {
   [key: string]: HousingMeteringDeviceReadingsResponse[];
 };
-//
-//
-// [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, index, array) {
-//   return {accumulator: {currentValue}} ;
-// }, 10);
-//
-// {2021: {
-//   май: []
-// }}

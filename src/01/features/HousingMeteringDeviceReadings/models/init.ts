@@ -6,23 +6,27 @@ import {
   readingChanged,
   $latestSuccessReadings,
   inputBlur,
-  PostDataType,
+  InputPayloadType,
+  $postReadingsErrorMessage,
 } from './index';
 import {
   requestReadings,
   postReading,
 } from '../../../_api/housing_metering_device_readings';
-import { forward, sample } from 'effector';
+import { forward, guard, sample } from 'effector';
 import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
-
-//TODO
-// 1. Если ничего не изменилось в инпуте, то не отправлять
 
 requestReadingsFx.use(requestReadings);
 
 postReadingFx.use((data) => {
-  const { value, deviceId } = data.inputEvent;
+  const { value, deviceId } = data;
+
+  // return new Promise((resolve, reject) => {
+  // setTimeout(() => {
+  //   reject({ message: 'Ошибка' });
+  // }, 2000);
   return postReading({ value, deviceId });
+  // });
 });
 
 const addReadingsReducer = (
@@ -64,22 +68,33 @@ $readings.on(readingChanged, (readings, payload) => {
   };
 });
 
-const postData = sample({
-  source: $latestSuccessReadings,
-  clock: inputBlur,
-  fn: (latestSuccessReadings, inputEvent) =>
-    ({
-      inputEvent,
-      latestSuccessReadings,
-    } as PostDataType) /* 3 */,
-});
+const readingFilterFn = (
+  readings: GetHousingMeteringDeviceReadingsResponse,
+  inputPayload: InputPayloadType
+) => {
+  const isNewValue = readings.items?.some((reading) =>
+    reading.id === inputPayload.id
+      ? reading.value !== inputPayload.value
+      : false
+  );
+  return isNewValue!;
+};
 
-forward({
-  from: postData,
-  to: postReadingFx,
+sample({
+  clock: guard({
+    source: $latestSuccessReadings,
+    clock: inputBlur,
+    filter: readingFilterFn,
+  }),
+  source: inputBlur,
+  target: postReadingFx,
 });
 
 forward({
   from: HousingMeteringDeviceReadingsGate.state,
   to: requestReadingsFx,
 });
+
+$postReadingsErrorMessage
+  .on(postReadingFx.failData, (_, error) => error.message)
+  .reset(postReadingFx);

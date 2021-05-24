@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore, guard } from 'effector';
 import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
@@ -29,7 +29,8 @@ export const requestReadingsFx = createEffect<
 >();
 
 export const postReadingFx = createEffect<
-  PostDataType,
+  // PostDataType,
+  InputPayloadType,
   HousingMeteringDeviceReadingsResponse
 >();
 
@@ -42,6 +43,10 @@ export type InputPayloadType = {
 };
 
 export const inputBlur = createEvent<InputPayloadType>();
+
+// const source = createEvent()
+
+export const $postReadingsErrorMessage = createStore<string | null>(null);
 
 export const readingChanged = createEvent<InputPayloadType>();
 
