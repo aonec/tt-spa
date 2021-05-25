@@ -4,6 +4,7 @@ import {
   $chosenInputId,
   $postReadingsErrorMessage,
   $readingsToDisplay,
+  $requestReadingsErrorMessage,
   HousingMeteringDeviceReadingsGate,
   inputBlur,
   postReadingFx,
@@ -19,6 +20,7 @@ import {
   MonthReadingsType,
   YearReadingsType,
 } from '../lib/groupReadingsByDates';
+import { Alert } from 'antd';
 
 const YearReading = ({ yearElement }: { yearElement: YearReadingsType }) => {
   return (
@@ -103,14 +105,41 @@ const DeviceReading = ({
 const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
   const newReadings = useStore($readingsToDisplay);
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
+  const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
 
   const readingsElems = newReadings?.map((yearElement) => (
     <YearReading yearElement={yearElement} />
   ));
 
+  const renderAddReadingsAlert = () =>
+    postReadingsErrorMessage ? (
+      <Alert
+        message="Ошибка"
+        description="Не удалось добавить показания по прибору. Пожалуйста, обновите страницу или повторите попытку позже."
+        type="error"
+        showIcon
+        closable
+        style={{ marginBottom: 24 }}
+      />
+    ) : null;
+
+  const renderRequestReadingsAlert = () => {
+    return requestReadingsErrorMessage ? (
+      <Alert
+        message="Ошибка"
+        description="Не удалось получить показания по узлу. Пожалуйста, обновите страницу или повторите попытку позже."
+        type="error"
+        showIcon
+        closable
+        style={{ marginBottom: 24 }}
+      />
+    ) : null;
+  };
+
   return (
     <div>
-      {postReadingsErrorMessage ? 'Ошибка' : null}
+      {renderAddReadingsAlert()}
+      {renderRequestReadingsAlert()}
       <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
       <HousingMeteringReadingsHeader>
         <div>Месяц</div>
