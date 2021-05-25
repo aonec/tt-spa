@@ -23,6 +23,8 @@ export const $latestSuccessReadings = createStore<GetHousingMeteringDeviceReadin
   }
 );
 
+export const $chosenInputId = createStore<number | null>(null);
+
 export const requestReadingsFx = createEffect<
   { nodeId: number },
   GetHousingMeteringDeviceReadingsResponse

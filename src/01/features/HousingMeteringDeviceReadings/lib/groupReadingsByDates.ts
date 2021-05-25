@@ -5,7 +5,7 @@ import {
 
 const groupReadingsByDates = (
   readings: GetHousingMeteringDeviceReadingsResponse
-): GroupedReadings | null => {
+): GroupedReadingsByDates | null => {
   if (readings.items === null) return null;
 
   const groupedReadings = readings.items.reduce((acc, current) => {
@@ -28,11 +28,13 @@ const groupReadingsByDates = (
           : [current],
       },
     };
-  }, [] as GroupedReadings);
+  }, [] as GroupedReadingsByDates);
   return groupedReadings;
 };
 
-const formReadingsWithArrays = (yearObject: GroupedReadings | null) => {
+const formReadingsWithArrays = (
+  yearObject: GroupedReadingsByDates | null
+): YearReadingsType[] | null => {
   if (yearObject === null) return null;
   let readings = [];
   for (let [key, value] of Object.entries(yearObject)) {
@@ -41,7 +43,7 @@ const formReadingsWithArrays = (yearObject: GroupedReadings | null) => {
   return readings;
 };
 
-const formMonthReadings = (monthObject: MonthReadings) => {
+const formMonthReadings = (monthObject: MonthReadings): MonthReadingsType[] => {
   let monthArray = [];
   for (let [key, value] of Object.entries(monthObject)) {
     monthArray.push({ month: key, items: value });
@@ -55,10 +57,20 @@ export const prepareReadings = (
   return formReadingsWithArrays(groupReadingsByDates(readings));
 };
 
-type GroupedReadings = {
+type GroupedReadingsByDates = {
   [key: number]: MonthReadings;
 };
 
 type MonthReadings = {
   [key: string]: HousingMeteringDeviceReadingsResponse[];
+};
+
+export type MonthReadingsType = {
+  month: string;
+  items: HousingMeteringDeviceReadingsResponse[];
+};
+
+export type YearReadingsType = {
+  year: string;
+  items: MonthReadingsType[];
 };

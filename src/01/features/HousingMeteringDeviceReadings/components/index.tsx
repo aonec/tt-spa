@@ -1,6 +1,7 @@
-import React, { FocusEvent, ChangeEvent, useState } from 'react';
+import React, { FocusEvent, ChangeEvent } from 'react';
 import { useStore } from 'effector-react';
 import {
+  $chosenInputId,
   $postReadingsErrorMessage,
   $readingsToDisplay,
   HousingMeteringDeviceReadingsGate,
@@ -8,66 +9,48 @@ import {
   postReadingFx,
   readingChanged,
 } from '../models';
-import {
-  EMagistralType,
-  HousingMeteringDeviceReadingsResponse,
-} from '../../../../myApi';
+import { HousingMeteringDeviceReadingsResponse } from '../../../../myApi';
 import styled from 'styled-components';
 import InputTT from '../../../tt-components/InputTT';
-import { months } from '../lib/getMonthByNumber';
+import { monthByNumbers, months } from '../lib/monthTransform';
 import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
-import { Spin } from 'antd';
 import { Loader } from '../../../components/Loader';
+import {
+  MonthReadingsType,
+  YearReadingsType,
+} from '../lib/groupReadingsByDates';
 
-const YearReading = ({ yearElement }: { yearElement: any }) => {
+const YearReading = ({ yearElement }: { yearElement: YearReadingsType }) => {
   return (
     <YearReadings>
       <Year>{yearElement.year} год</Year>
       <div>
-        {yearElement.items?.map((monthElement: any) => (
-          <MonthReading monthElement={monthElement} />
-        ))}
+        {yearElement.items
+          ?.sort((a, b) => monthByNumbers[b.month] - monthByNumbers[a.month])
+          .map((monthElement) => (
+            <MonthReading monthElement={monthElement} />
+          ))}
       </div>
     </YearReadings>
   );
 };
 
-const MonthReading = ({ monthElement }: { monthElement: any }) => {
+const MonthReading = ({
+  monthElement,
+}: {
+  monthElement: MonthReadingsType;
+}) => {
   return (
     <MonthReadings>
       <Month>{firstLetterToUpperCase(monthElement.month)}</Month>
       <div style={{ display: 'flex' }}>
-        {monthElement.items?.map((deviceElement: any) => (
+        {monthElement.items?.map((deviceElement) => (
           <DeviceReading deviceElem={deviceElement} />
         ))}
       </div>
     </MonthReadings>
   );
 };
-//
-// id: string | null;
-//
-// /** @format double */
-// value: number | null;
-//
-// /** @format int32 */
-// nodeId: number;
-//
-// /** @format int32 */
-// deviceId: number;
-// deviceModel: string | null;
-// deviceSerialNumber: string | null;
-//
-// /** @format date-time */
-// createDate: string;
-//
-// /** @format date-time */
-// updateDate: string | null;
-// magistralType: EMagistralType;
-//
-// /** @format int32 */
-// year: number;
-// month: string | null;
 
 const DeviceReading = ({
   deviceElem,
@@ -75,6 +58,9 @@ const DeviceReading = ({
   deviceElem: HousingMeteringDeviceReadingsResponse;
 }) => {
   const { value, deviceId, year, month, id } = deviceElem;
+  const chosenInputId = useStore($chosenInputId);
+  const isInputChosen = chosenInputId === deviceId;
+  debugger;
   const today = new Date(); // Mon Nov 23 2020 15:23:46 GMT+0300 (Москва, стандартное время)
   const todayYear = today.getFullYear(); // 2020
   const todayMonth = months[today.getMonth() + 1];
@@ -94,10 +80,11 @@ const DeviceReading = ({
 
   const isReadingsSending = useStore(postReadingFx.pending);
 
-  const renderLoader = () =>
-    isReadingsSending && !isDisabled ? <Loader show={true} /> : null;
-
-  debugger;
+  const renderLoader = () => {
+    return isInputChosen && isReadingsSending && !isDisabled ? (
+      <Loader show={true} />
+    ) : null;
+  };
 
   return (
     <DeviceReadings>
@@ -167,11 +154,15 @@ const Month = styled.div`
 
 const DeviceReadings = styled.div`
   display: flex;
-  font-size: 14px;
+  //font-size: 14px;
   margin-right: 16px;
+  flex: 1 1 120px;
 
-  input {
+  input,
+  .ant-input-affix-wrapper {
     padding: 8px;
+    font-size: 16px;
+    line-height: 32px;
   }
 `;
 

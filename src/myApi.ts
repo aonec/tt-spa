@@ -220,6 +220,18 @@ export enum UserPermission {
   DataMigration = "DataMigration",
   NodeWorkingRangeAddOrUpdate = "NodeWorkingRangeAddOrUpdate",
   NodeWorkingRangeRead = "NodeWorkingRangeRead",
+  HeatingSeasonsRead = "HeatingSeasonsRead",
+  HeatingSeasonsCreate = "HeatingSeasonsCreate",
+  HeatingSeasonsUpdate = "HeatingSeasonsUpdate",
+  ManagementFirmCompetenceRead = "ManagementFirmCompetenceRead",
+  ManagementFirmCompetenceCreate = "ManagementFirmCompetenceCreate",
+  ManagementFirmCompetenceUpdate = "ManagementFirmCompetenceUpdate",
+  ManagementFirmUserDismissalStatusRead = "ManagementFirmUserDismissalStatusRead",
+  ManagementFirmUserDismissalStatusCreate = "ManagementFirmUserDismissalStatusCreate",
+  ManagementFirmUserDismissalStatusUpdate = "ManagementFirmUserDismissalStatusUpdate",
+  ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
+  ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
+  ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
 }
 
 export interface TokenResponse {
@@ -227,6 +239,7 @@ export interface TokenResponse {
   refreshToken: string | null;
   roles: string[] | null;
   permissions: UserPermission[] | null;
+  maintenanceMessage: string | null;
 }
 
 export interface TokenResponseSuccessApiResponse {
@@ -242,6 +255,7 @@ export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
   permissions: UserPermission[] | null;
+  maintenanceMessage: string | null;
 }
 
 export interface RefreshResponseSuccessApiResponse {
@@ -396,6 +410,22 @@ export interface NodeServiceZoneResponse {
   name: string | null;
 }
 
+export interface NodeHeatingSeasonListItemResponse {
+  /** @format uuid */
+  id: string;
+
+  /** @format date-time */
+  startDate: string;
+
+  /** @format date-time */
+  endDate: string | null;
+}
+
+export interface NodeHeatingSeasonListResponse {
+  isCurrentlyEnabled: boolean;
+  items: NodeHeatingSeasonListItemResponse[] | null;
+}
+
 export interface HousingMeteringDeviceHubConnectionResponse {
   /** @format int32 */
   entryNumber: number | null;
@@ -465,6 +495,7 @@ export interface NodeResponse {
   resource: ResourceType;
   serviceZone: ServiceZone;
   nodeServiceZone: NodeServiceZoneResponse;
+  heatingSeason: NodeHeatingSeasonListResponse;
 
   /** @format date-time */
   lastCommercialAccountingDate: string | null;
@@ -775,6 +806,25 @@ export enum DataMigrationMethod {
   OldTasks = "OldTasks",
 }
 
+export enum DocumentType {
+  Common = "Common",
+  DeviceCommissionCheckAct = "DeviceCommissionCheckAct",
+  DeviceCheckAct = "DeviceCheckAct",
+  DeviceCommercialAccountingAct = "DeviceCommercialAccountingAct",
+  DeviceAcceptanceAct = "DeviceAcceptanceAct",
+  DeviceDeploymentAct = "DeviceDeploymentAct",
+  DeviceClosingAct = "DeviceClosingAct",
+  DevicePassport = "DevicePassport",
+  DeviceTestCertificates = "DeviceTestCertificates",
+  ApartmentCheckingAct = "ApartmentCheckingAct",
+  ApartmentAccessDeniedAct = "ApartmentAccessDeniedAct",
+  ApartmentUnauthorizedInterferenceAct = "ApartmentUnauthorizedInterferenceAct",
+  AdditionalMaterials = "AdditionalMaterials",
+  HeatingSeasonStartingOrder = "HeatingSeasonStartingOrder",
+  HeatingSeasonEndingOrder = "HeatingSeasonEndingOrder",
+  HeatingSeasonChangingStatement = "HeatingSeasonChangingStatement",
+}
+
 export interface DocumentResponse {
   /** @format int32 */
   id: number;
@@ -789,6 +839,136 @@ export interface DocumentResponse {
 
 export interface DocumentResponseIEnumerableSuccessApiResponse {
   successResponse: DocumentResponse[] | null;
+}
+
+export enum EHouseCategory {
+  Living = "Living",
+  NonResidential = "NonResidential",
+}
+
+export enum ELivingHouseType {
+  ApartmentHouse = "ApartmentHouse",
+  Townhouse = "Townhouse",
+  Private = "Private",
+}
+
+export enum ENonResidentialHouseType {
+  Social = "Social",
+  Commercial = "Commercial",
+}
+
+export interface HeatingSeasonListItemResponse {
+  isInherited: boolean;
+
+  /** @format uuid */
+  adjustmentId: string | null;
+  title: string | null;
+
+  /** @format int32 */
+  housingStocksCount: number;
+  isOpening: boolean;
+
+  /** @format date-time */
+  triggerDate: string | null;
+  houseCategory: EHouseCategory;
+  livingHouseType: ELivingHouseType;
+  nonResidentialHouseType: ENonResidentialHouseType;
+}
+
+export interface HeatingSeasonHouseManagementListItemAdjustmentResponse {
+  /** @format uuid */
+  adjustmentId: string;
+  titleParts: string[] | null;
+  isOpening: boolean;
+
+  /** @format date-time */
+  triggerDate: string;
+  houseCategory: EHouseCategory;
+  livingHouseType: ELivingHouseType;
+  nonResidentialHouseType: ENonResidentialHouseType;
+}
+
+export interface HeatingSeasonHouseManagementListItemResponse {
+  /** @format uuid */
+  houseManagementId: string;
+  houseManagementName: string | null;
+
+  /** @format int32 */
+  housingStocksCount: number;
+  adjustments: HeatingSeasonHouseManagementListItemAdjustmentResponse[] | null;
+}
+
+export interface HeatingSeasonPageResponse {
+  /** @format uuid */
+  heatingSeasonId: string | null;
+  items: HeatingSeasonListItemResponse[] | null;
+  houseManagementItems: HeatingSeasonHouseManagementListItemResponse[] | null;
+}
+
+export interface HeatingSeasonPageResponseSuccessApiResponse {
+  successResponse: HeatingSeasonPageResponse;
+}
+
+export interface HeatingSeasonAdjustmentResponse {
+  /** @format uuid */
+  heatingSeasonId: string;
+
+  /** @format uuid */
+  adjustmentId: string;
+
+  /** @format date-time */
+  startsFrom: string;
+
+  /** @format date-time */
+  endsAt: string | null;
+  houseCategory: EHouseCategory;
+  livingHouseType: ELivingHouseType;
+  nonResidentialHouseType: ENonResidentialHouseType;
+
+  /** @format uuid */
+  houseManagementId: string | null;
+}
+
+export interface HeatingSeasonResponse {
+  /** @format uuid */
+  heatingSeasonId: string;
+
+  /** @format int32 */
+  managementFirmId: number;
+  adjustments: HeatingSeasonAdjustmentResponse[] | null;
+}
+
+export interface HeatingSeasonResponseSuccessApiResponse {
+  successResponse: HeatingSeasonResponse;
+}
+
+export interface SwitchHeatingSeasonRequest {
+  /** @format int32 */
+  documentId?: number;
+  isOpening?: boolean;
+
+  /** @format date-time */
+  triggerDate?: string;
+  houseCategory?: EHouseCategory;
+  livingHouseType?: ELivingHouseType;
+  nonResidentialHouseType?: ENonResidentialHouseType;
+}
+
+export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
+  /** @format date-time */
+  startDate?: string;
+
+  /** @format date-time */
+  endDate?: string | null;
+  houseCategory?: EHouseCategory;
+  livingHouseType?: ELivingHouseType;
+  nonResidentialHouseType?: ENonResidentialHouseType;
+
+  /** @format int32 */
+  documentId?: number;
+
+  /** @format uuid */
+  houseManagementId?: string;
 }
 
 export interface FullAddressResponse {
@@ -1667,6 +1847,51 @@ export interface CloseDeviceRequest {
   closingDate: string;
 }
 
+export enum ECompetenceType {
+  HeatEngineeringWorks = "HeatEngineeringWorks",
+  RepairMaintenanceWorks = "RepairMaintenanceWorks",
+}
+
+export interface ECompetenceTypeStringDictionaryItem {
+  key?: ECompetenceType;
+  value?: string | null;
+}
+
+export interface ECompetenceTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: ECompetenceTypeStringDictionaryItem[] | null;
+}
+
+export interface ManagementFirmCompetenceUserResponse {
+  /** @format int32 */
+  userId: number;
+}
+
+export interface ManagementFirmCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+  type: ECompetenceType;
+  relatedUserIds: ManagementFirmCompetenceUserResponse[] | null;
+}
+
+export interface ManagementFirmCompetencesListResponse {
+  /** @format int32 */
+  managementFirmId: number;
+  items: ManagementFirmCompetenceResponse[] | null;
+}
+
+export interface ManagementFirmCompetencesListResponseSuccessApiResponse {
+  successResponse: ManagementFirmCompetencesListResponse;
+}
+
+export interface AddManagementFirmCompetenceRequest {
+  type?: ECompetenceType;
+}
+
+export interface ManagementFirmCompetenceResponseSuccessApiResponse {
+  successResponse: ManagementFirmCompetenceResponse;
+}
+
 export interface ManagementFirmResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -1704,6 +1929,67 @@ export interface ManagementFirmUpdateRequest {
   timeZoneOffset?: TimeSpan;
 }
 
+export enum EManagingFirmUserDismissialStatusType {
+  Working = "Working",
+  OnVacation = "OnVacation",
+  Sick = "Sick",
+}
+
+export interface EManagingFirmUserDismissialStatusTypeStringDictionaryItem {
+  key?: EManagingFirmUserDismissialStatusType;
+  value?: string | null;
+}
+
+export interface EManagingFirmUserDismissialStatusTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: EManagingFirmUserDismissialStatusTypeStringDictionaryItem[] | null;
+}
+
+export interface AddManagingFirmUserDismissialStatusRequest {
+  /** @format int32 */
+  userId?: number;
+  type?: EManagingFirmUserDismissialStatusType;
+
+  /** @format date-time */
+  startDate?: string | null;
+
+  /** @format date-time */
+  endDate?: string | null;
+}
+
+export interface ManagingFirmUserDismissialStatusReponse {
+  /** @format uuid */
+  id?: string | null;
+  type?: EManagingFirmUserDismissialStatusType;
+
+  /** @format date-time */
+  startDate?: string | null;
+
+  /** @format date-time */
+  endDate?: string | null;
+}
+
+export interface ManagingFirmUserDismissialStatusReponseSuccessApiResponse {
+  successResponse: ManagingFirmUserDismissialStatusReponse;
+}
+
+export enum EManagingFirmUsersOrderBy {
+  AlphabeticallyByAscending = "AlphabeticallyByAscending",
+  AlphabeticallyByDescending = "AlphabeticallyByDescending",
+}
+
+export interface UserStatusResponse {
+  /** @format uuid */
+  id: string | null;
+  title: string | null;
+  type: EManagingFirmUserDismissialStatusType;
+
+  /** @format date-time */
+  startDate: string | null;
+
+  /** @format date-time */
+  endDate: string | null;
+}
+
 export interface ManagingFirmUserListResponse {
   /** @format int32 */
   id: number;
@@ -1713,6 +1999,7 @@ export interface ManagingFirmUserListResponse {
 
   /** @format int32 */
   executingTaskCount: number;
+  status: UserStatusResponse;
 }
 
 export interface PagedManagingFirmUserResponse {
@@ -1732,21 +2019,49 @@ export interface PagedManagingFirmUserResponseSuccessApiResponse {
 }
 
 export interface ManagingFirmUserCreateRequest {
-  email: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  cellphone: string;
-  department: string;
-  position: string;
-  number: string;
-  userRolesIds: number[];
+  email?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  middleName?: string | null;
+  cellphone?: string | null;
+  department?: string | null;
+  position?: string | null;
+  number?: string | null;
+  password?: string | null;
+  userRoleIds?: number[] | null;
+  firmCompetenceIds?: string[] | null;
 }
 
 export interface ManagementFirmShortResponse {
   /** @format int32 */
   id: number;
   name: string | null;
+}
+
+export interface UserCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+  type: ECompetenceType;
+}
+
+export enum ESecuredIdentityRoleName {
+  ManagingFirmAdministrator = "ManagingFirmAdministrator",
+  ManagingFirmExecutor = "ManagingFirmExecutor",
+  Homeowner = "Homeowner",
+  ManagingFirmOperator = "ManagingFirmOperator",
+  ErcService = "ErcService",
+  ScadaService = "ScadaService",
+  Admin = "Admin",
+  Worker = "Worker",
+  ManagingFirmSpectator = "ManagingFirmSpectator",
+}
+
+export interface UserRoleResponse {
+  /** @format int32 */
+  id: number;
+  type: ESecuredIdentityRoleName;
+  title: string | null;
 }
 
 export interface ManagingFirmUserResponse {
@@ -1760,8 +2075,16 @@ export interface ManagingFirmUserResponse {
   department: string | null;
   position: string | null;
   number: string | null;
+
+  /** @format date-time */
+  hireDate: string | null;
+
+  /** @format date-time */
+  dismissialDate: string | null;
   managementFirm: ManagementFirmShortResponse;
-  userRoleIds: number[] | null;
+  status: UserStatusResponse;
+  competences: UserCompetenceResponse[] | null;
+  userRoles: UserRoleResponse[] | null;
 }
 
 export interface ManagingFirmUserResponseSuccessApiResponse {
@@ -1777,7 +2100,8 @@ export interface ManagingFirmUserUpdateRequest {
   department?: string | null;
   position?: string | null;
   number?: string | null;
-  userRolesIds?: number[] | null;
+  userRoleIds?: number[] | null;
+  firmCompetenceIds?: string[] | null;
 }
 
 export interface MeteringDeviceListResponsePagedList {
@@ -2140,6 +2464,11 @@ export enum TaskGroupingFilter {
   Archived = "Archived",
 }
 
+export enum ETaskClosingStatus {
+  Properly = "Properly",
+  Interrupted = "Interrupted",
+}
+
 export interface ManagingFirmUserShortResponse {
   /** @format int32 */
   id: number;
@@ -2194,6 +2523,7 @@ export interface TaskListResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  closingStatus: ETaskClosingStatus;
   address: FullAddressResponse;
   perpetrator: ManagingFirmUserShortResponse;
   isResponsible: boolean;
@@ -2289,6 +2619,7 @@ export interface TaskResponse {
 
   /** @format date-time */
   closingTime: string | null;
+  closingStatus: ETaskClosingStatus;
   isResponsible: boolean;
   userOperatingStatus: string | null;
   currentStage: StageResponse;
@@ -2405,8 +2736,14 @@ export interface EManagingFirmTaskTypeStringDictionaryItem {
   value?: string | null;
 }
 
+export interface ETaskClosingStatusStringDictionaryItem {
+  key?: ETaskClosingStatus;
+  value?: string | null;
+}
+
 export interface TaskFilterResponse {
   taskTypes: EManagingFirmTaskTypeStringDictionaryItem[] | null;
+  closingStatuses: ETaskClosingStatusStringDictionaryItem[] | null;
 }
 
 export interface TaskFilterResponseSuccessApiResponse {
@@ -2416,7 +2753,8 @@ export interface TaskFilterResponseSuccessApiResponse {
 export interface UserRoleListResponse {
   /** @format int32 */
   id: number;
-  name: string | null;
+  type: ESecuredIdentityRoleName;
+  title: string | null;
 }
 
 export interface UserRoleListWrappedResponse {
@@ -3033,16 +3371,35 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags DataMigrations
+     * @name DataMigrationsRemoveApartmentTasksCreate
+     * @request POST:/api/DataMigrations/RemoveApartmentTasks
+     * @secure
+     */
+    dataMigrationsRemoveApartmentTasksCreate: (query?: { managementFirmId?: number }, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RemoveApartmentTasks`,
+        method: "POST",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Documents
      * @name DocumentsUploadCreate
      * @request POST:/api/Documents/upload
      * @secure
      */
-    documentsUploadCreate: (params: RequestParams = {}) =>
+    documentsUploadCreate: (data: { file?: File[] | null; type?: DocumentType }, params: RequestParams = {}) =>
       this.request<DocumentResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Documents/upload`,
         method: "POST",
+        body: data,
         secure: true,
+        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
@@ -3060,6 +3417,91 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Documents/${documentId}`,
         method: "DELETE",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingSeasons
+     * @name HeatingSeasonsList
+     * @request GET:/api/HeatingSeasons
+     * @secure
+     */
+    heatingSeasonsList: (params: RequestParams = {}) =>
+      this.request<HeatingSeasonPageResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingSeasons`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingSeasons
+     * @name HeatingSeasonsUpdate
+     * @request PUT:/api/HeatingSeasons
+     * @secure
+     */
+    heatingSeasonsUpdate: (
+      query?: {
+        StartDate?: string;
+        EndDate?: string | null;
+        HouseCategory?: EHouseCategory;
+        LivingHouseType?: ELivingHouseType;
+        NonResidentialHouseType?: ENonResidentialHouseType;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingSeasons`,
+        method: "PUT",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingSeasons
+     * @name HeatingSeasonsSwitchCreate
+     * @request POST:/api/HeatingSeasons/Switch
+     * @secure
+     */
+    heatingSeasonsSwitchCreate: (data: SwitchHeatingSeasonRequest, params: RequestParams = {}) =>
+      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingSeasons/Switch`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingSeasons
+     * @name HeatingSeasonsAddOrUpdateForHouseManagementCreate
+     * @request POST:/api/HeatingSeasons/AddOrUpdateForHouseManagement
+     * @secure
+     */
+    heatingSeasonsAddOrUpdateForHouseManagementCreate: (
+      data: AddOrUpdateHeatingSeasonForHouseManagementRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingSeasons/AddOrUpdateForHouseManagement`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -3779,6 +4221,75 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags ManagementFirmCompetences
+     * @name ManagementFirmCompetencesCatalogList
+     * @request GET:/api/ManagementFirmCompetences/Catalog
+     * @secure
+     */
+    managementFirmCompetencesCatalogList: (params: RequestParams = {}) =>
+      this.request<ECompetenceTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagementFirmCompetences/Catalog`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagementFirmCompetences
+     * @name ManagementFirmCompetencesList
+     * @request GET:/api/ManagementFirmCompetences
+     * @secure
+     */
+    managementFirmCompetencesList: (params: RequestParams = {}) =>
+      this.request<ManagementFirmCompetencesListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagementFirmCompetences`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagementFirmCompetences
+     * @name ManagementFirmCompetencesCreate
+     * @request POST:/api/ManagementFirmCompetences
+     * @secure
+     */
+    managementFirmCompetencesCreate: (data: AddManagementFirmCompetenceRequest, params: RequestParams = {}) =>
+      this.request<ManagementFirmCompetenceResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagementFirmCompetences`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagementFirmCompetences
+     * @name ManagementFirmCompetencesDelete
+     * @request DELETE:/api/ManagementFirmCompetences/{id}
+     * @secure
+     */
+    managementFirmCompetencesDelete: (id: string, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/ManagementFirmCompetences/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ManagingFirms
      * @name ManagingFirmsList
      * @request GET:/api/ManagingFirms
@@ -3833,12 +4344,60 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags ManagingFirmUserDismissialStatuses
+     * @name ManagingFirmUserDismissialStatusesList
+     * @request GET:/api/ManagingFirmUserDismissialStatuses
+     * @secure
+     */
+    managingFirmUserDismissialStatusesList: (params: RequestParams = {}) =>
+      this.request<EManagingFirmUserDismissialStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserDismissialStatuses`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagingFirmUserDismissialStatuses
+     * @name ManagingFirmUserDismissialStatusesCreate
+     * @request POST:/api/ManagingFirmUserDismissialStatuses
+     * @secure
+     */
+    managingFirmUserDismissialStatusesCreate: (
+      data: AddManagingFirmUserDismissialStatusRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<ManagingFirmUserDismissialStatusReponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserDismissialStatuses`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersList
      * @request GET:/api/ManagingFirmUsers
      * @secure
      */
-    managingFirmUsersList: (query?: { RoleNames?: string[] | null }, params: RequestParams = {}) =>
+    managingFirmUsersList: (
+      query?: {
+        Take?: number | null;
+        Skip?: number | null;
+        Name?: string | null;
+        RoleNames?: string[] | null;
+        OrderBy?: EManagingFirmUsersOrderBy;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<PagedManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers`,
         method: "GET",
@@ -4452,6 +5011,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HousingStockAddress?: string | null;
         HasChanged?: boolean | null;
         NodeId?: number | null;
+        ClosingStatuses?: ETaskClosingStatus[] | null;
         PageNumber?: number;
         PageSize?: number;
       },
@@ -4514,6 +5074,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tasks
+     * @name TasksCloseCreate
+     * @request POST:/api/Tasks/{taskId}/close
+     * @secure
+     */
+    tasksCloseCreate: (taskId: number, params: RequestParams = {}) =>
+      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/${taskId}/close`,
+        method: "POST",
+        secure: true,
         format: "json",
         ...params,
       }),

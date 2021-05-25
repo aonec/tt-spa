@@ -8,6 +8,7 @@ import {
   inputBlur,
   InputPayloadType,
   $postReadingsErrorMessage,
+  $chosenInputId,
 } from './index';
 import {
   requestReadings,
@@ -39,6 +40,10 @@ const addReadingsReducer = (
 
 $readings.on(requestReadingsFx.doneData, addReadingsReducer);
 $latestSuccessReadings.on(requestReadingsFx.doneData, addReadingsReducer);
+$chosenInputId.on(inputBlur, (_, inputPayload) => {
+  return inputPayload.deviceId;
+});
+// .reset([postReadingFx.doneData, postReadingFx.failData]);
 
 sample({
   clock: [postReadingFx.done],
