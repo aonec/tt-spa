@@ -82,15 +82,18 @@ $readings.on(readingChanged, (readings, payload) => {
   };
 });
 
+//lodash-fp
+//частичное применение readingFilterFn
+
 const readingFilterFn = (
   readings: GetHousingMeteringDeviceReadingsResponse,
   inputPayload: InputPayloadType
 ) => {
-  const isNewValue = readings.items?.some((reading) =>
-    reading.id === inputPayload.id
-      ? reading.value !== inputPayload.value
-      : false
-  );
+  const isNewValue = readings.items?.some((reading) => {
+    const isEqualId = reading.id === inputPayload.id;
+    const isValueChanged = reading.value !== inputPayload.value;
+    return isEqualId && isValueChanged;
+  });
   return isNewValue!;
 };
 
@@ -113,7 +116,6 @@ $postReadingsErrorMessage
   .on(postReadingFx.failData, (_, error) => error.message)
   .reset(postReadingFx);
 
-$requestReadingsErrorMessage.on(
-  requestReadingsFx.failData,
-  (_, error) => error.message
-);
+$requestReadingsErrorMessage
+  .on(requestReadingsFx.failData, (_, error) => error.message)
+  .reset(requestReadingsFx);

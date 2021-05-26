@@ -158,7 +158,7 @@ export const NodeProfile = () => {
         </Route>
 
         <Route path={`${path}/readings`} exact>
-          <HousingMeteringDeviceReadings nodeId={nodeId} />
+          <HousingMeteringDeviceReadings nodeId={nodeId} resource={resource} />
         </Route>
 
         <Route path={`${path}/connection`} exact>

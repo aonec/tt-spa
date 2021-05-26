@@ -50,12 +50,27 @@ const formMonthReadings = (monthObject: MonthReadings): MonthReadingsType[] => {
   }
   return monthArray;
 };
+//
+// const compose = (...fns: Function[]) => {
+//   return fns.reduce((acc, curr) => acc(curr));
+// };
 
 export const prepareReadings = (
   readings: GetHousingMeteringDeviceReadingsResponse
 ) => {
   return formReadingsWithArrays(groupReadingsByDates(readings));
+  // return compose(formReadingsWithArrays, groupReadingsByDates)(readings);
 };
+
+// const addConsumption = (readings: YearReadingsType[] | null) => {
+//   if (readings === null) return null;
+//
+//   const isColdWaterSupply = readings[0].items[0].items.length === 1;
+//
+//   if (isColdWaterSupply) return readings.map((yearReading) => {
+//     return yearReading.items.map((monthReading) => )
+//   });
+// };
 
 type GroupedReadingsByDates = {
   [key: number]: MonthReadings;

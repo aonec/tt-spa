@@ -11,6 +11,7 @@ export const $readings = createStore<GetHousingMeteringDeviceReadingsResponse>({
 });
 
 export const $readingsToDisplay = $readings.map(prepareReadings);
+// .map(addConsumption);
 
 export const $latestSuccessReadings = createStore<GetHousingMeteringDeviceReadingsResponse>(
   {

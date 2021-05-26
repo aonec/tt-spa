@@ -1,8 +1,11 @@
-import React, { FocusEvent, ChangeEvent } from 'react';
+//@ts-nocheck
+
+import React, { ChangeEvent, FocusEvent } from 'react';
 import { useStore } from 'effector-react';
 import {
   $chosenInputId,
   $postReadingsErrorMessage,
+  $readings,
   $readingsToDisplay,
   $requestReadingsErrorMessage,
   HousingMeteringDeviceReadingsGate,
@@ -10,7 +13,11 @@ import {
   postReadingFx,
   readingChanged,
 } from '../models';
-import { HousingMeteringDeviceReadingsResponse } from '../../../../myApi';
+import {
+  EMagistralType,
+  HousingMeteringDeviceReadingsResponse,
+  ResourceType,
+} from '../../../../myApi';
 import styled from 'styled-components';
 import InputTT from '../../../tt-components/InputTT';
 import { monthByNumbers, months } from '../lib/monthTransform';
@@ -29,9 +36,20 @@ const YearReading = ({ yearElement }: { yearElement: YearReadingsType }) => {
       <div>
         {yearElement.items
           ?.sort((a, b) => monthByNumbers[b.month] - monthByNumbers[a.month])
-          .map((monthElement) => (
-            <MonthReading monthElement={monthElement} />
-          ))}
+          .map((monthElement, i, arr) => {
+            // const isColdWaterSupply = monthElement.items.length === 1;
+            // debugger;
+            // const consumption = isColdWaterSupply
+            //   ? arr[i].items[0].value - arr[i - 1].items[0].value
+            //   : undefined;
+
+            return (
+              <MonthReading
+                monthElement={monthElement}
+                // consumption={consumption}
+              />
+            );
+          })}
       </div>
     </YearReadings>
   );
@@ -41,14 +59,46 @@ const MonthReading = ({
   monthElement,
 }: {
   monthElement: MonthReadingsType;
+  // consumption?: number | undefined;
 }) => {
+  const readings = useStore($readings);
+  const isColdWaterSupply = monthElement.items.length === 1;
+
+  const sortFeedFlowsFn = (
+    a: HousingMeteringDeviceReadingsResponse,
+    b: HousingMeteringDeviceReadingsResponse
+  ) => {
+    if (a.magistralType === EMagistralType.feedFlow) return 1;
+    return -1;
+  };
+
+  const sortedMonthElementItems = monthElement.items?.sort(sortFeedFlowsFn);
+
+  let consumption;
+  if (isColdWaterSupply) {
+    const currentReading = monthElement.items[0];
+    // debugger;
+
+    const previousReading = readings.items.find(
+      (reading) => reading.id === currentReading.previousReadingsId
+    );
+    debugger;
+    consumption = previousReading
+      ? currentReading.value - previousReading.value
+      : 0;
+  }
+
   return (
     <MonthReadings>
       <Month>{firstLetterToUpperCase(monthElement.month)}</Month>
       <div style={{ display: 'flex' }}>
-        {monthElement.items?.map((deviceElement) => (
+        {sortedMonthElementItems.map((deviceElement) => (
           <DeviceReading deviceElem={deviceElement} />
         ))}
+      </div>
+      <div>
+        {consumption ??
+          sortedMonthElementItems[0].value - sortedMonthElementItems[1].value}
       </div>
     </MonthReadings>
   );
@@ -62,7 +112,6 @@ const DeviceReading = ({
   const { value, deviceId, year, month, id } = deviceElem;
   const chosenInputId = useStore($chosenInputId);
   const isInputChosen = chosenInputId === deviceId;
-  debugger;
   const today = new Date(); // Mon Nov 23 2020 15:23:46 GMT+0300 (Москва, стандартное время)
   const todayYear = today.getFullYear(); // 2020
   const todayMonth = months[today.getMonth() + 1];
@@ -84,32 +133,40 @@ const DeviceReading = ({
 
   const renderLoader = () => {
     return isInputChosen && isReadingsSending && !isDisabled ? (
+      // return isReadingsSending && !isDisabled ? (
       <Loader show={true} />
     ) : null;
   };
 
   return (
     <DeviceReadings>
+      {renderLoader()}
       <InputTT
         height={'32px'}
         value={value}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         disabled={isDisabled}
-        suffix={renderLoader()}
+        // suffix={renderLoader()}
       />
     </DeviceReadings>
   );
 };
 
-const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
-  const newReadings = useStore($readingsToDisplay);
+const HousingMeteringDeviceReadings = ({
+  nodeId,
+  resource,
+}: {
+  nodeId: number;
+  resource: ResourceType;
+}) => {
+  const readings = useStore($readingsToDisplay);
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
 
-  const readingsElems = newReadings?.map((yearElement) => (
-    <YearReading yearElement={yearElement} />
-  ));
+  const readingsElems = readings
+    ?.sort((a, b) => b.year - a.year)
+    .map((yearElement) => <YearReading yearElement={yearElement} />);
 
   const renderAddReadingsAlert = () =>
     postReadingsErrorMessage ? (
@@ -136,6 +193,17 @@ const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
     ) : null;
   };
 
+  const renderVolumes = (resource: ResourceType) => {
+    return resource === ResourceType.ColdWaterSupply ? (
+      <div>V1, м³</div>
+    ) : (
+      <div style={{ display: 'flex' }}>
+        <div style={{ width: '50%' }}>V1, м³</div>
+        <div style={{ width: '50%' }}>V2, м³</div>
+      </div>
+    );
+  };
+
   return (
     <div>
       {renderAddReadingsAlert()}
@@ -143,8 +211,7 @@ const HousingMeteringDeviceReadings = ({ nodeId }: { nodeId: number }) => {
       <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
       <HousingMeteringReadingsHeader>
         <div>Месяц</div>
-        <div>V1, м³</div>
-        <div>V2, м³</div>
+        {renderVolumes(resource)}
         <div>Потребление, м3</div>
       </HousingMeteringReadingsHeader>
       {readingsElems}
@@ -211,7 +278,7 @@ const HousingMeteringReadingsHeader = styled.div`
   padding-left: 16px;
   margin-bottom: 8px;
   height: 48px;
-  grid-template-columns: 3fr 2.5fr 2.5fr 4fr;
+  grid-template-columns: 3fr 5fr 4fr;
   background-color: var(--main-4);
   overflow: hidden;
 `;
