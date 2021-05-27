@@ -10,6 +10,8 @@ import {
   $postReadingsErrorMessage,
   $chosenInputId,
   $requestReadingsErrorMessage,
+  ResourceGate,
+  $resource,
 } from './index';
 import {
   requestReadings,
@@ -119,3 +121,8 @@ $postReadingsErrorMessage
 $requestReadingsErrorMessage
   .on(requestReadingsFx.failData, (_, error) => error.message)
   .reset(requestReadingsFx);
+
+forward({
+  from: ResourceGate.state,
+  to: $resource,
+});

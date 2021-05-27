@@ -2,6 +2,7 @@ import { createEffect, createEvent, createStore } from 'effector';
 import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
+  ResourceType,
 } from '../../../../myApi';
 import { createGate } from 'effector-react';
 import { prepareReadings } from '../lib/groupReadingsByDates';
@@ -17,6 +18,16 @@ export const $latestSuccessReadings = createStore<GetHousingMeteringDeviceReadin
   {
     items: null,
   }
+);
+
+export const ResourceGate = createGate<{ resource: ResourceType | null }>();
+
+export const $resource = createStore<{ resource: ResourceType | null }>({
+  resource: null,
+});
+
+export const $isColdWaterSupply = $resource.map(
+  ({ resource }) => resource === ResourceType.ColdWaterSupply
 );
 
 export const $chosenInputId = createStore<number | null>(null);
