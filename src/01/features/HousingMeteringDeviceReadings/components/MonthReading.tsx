@@ -30,17 +30,24 @@ export const MonthReading = ({
 
   const sortedMonthElementItems = monthElement.items?.sort(sortFeedFlowsFn);
 
-  let consumption;
-  if (isColdWaterSupply) {
-    const currentReading = monthElement.items[0];
+  const calculateConsumption = (isColdWaterSupply: boolean) => {
+    let consumption;
+    if (isColdWaterSupply) {
+      const currentReading = monthElement.items[0];
 
-    const previousReading = readings.items.find(
-      (reading) => reading.id === currentReading.previousReadingsId
-    );
-    consumption = previousReading
-      ? currentReading.value - previousReading.value
-      : 0;
-  }
+      const previousReading = readings.items.find(
+        (reading) => reading.id === currentReading.previousReadingsId
+      );
+      consumption = previousReading
+        ? currentReading.value - previousReading.value
+        : 0;
+    } else {
+      consumption =
+        sortedMonthElementItems[0].value - sortedMonthElementItems[1].value;
+    }
+
+    return consumption;
+  };
 
   return (
     <MonthReadings isColdWaterSupply={isColdWaterSupply}>
@@ -51,8 +58,7 @@ export const MonthReading = ({
         ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {consumption ??
-          sortedMonthElementItems[0].value - sortedMonthElementItems[1].value}
+        {calculateConsumption(isColdWaterSupply)}
       </div>
     </MonthReadings>
   );

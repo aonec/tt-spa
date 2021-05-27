@@ -46,7 +46,6 @@ export const DeviceReading = ({
 
   const renderLoader = () => {
     return isInputChosen && isReadingsSending && !isDisabled ? (
-      // <Loader show={true} />
       <Spin indicator={antIcon} />
     ) : null;
   };

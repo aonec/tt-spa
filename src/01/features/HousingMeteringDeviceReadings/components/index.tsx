@@ -11,6 +11,7 @@ import { EResourceType } from '../../../../myApi';
 import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';
+import { YearReadingsType } from '../lib/groupReadingsByDates';
 
 const HousingMeteringDeviceReadings = ({
   nodeId,
@@ -22,10 +23,13 @@ const HousingMeteringDeviceReadings = ({
   const readings = useStore($readingsToDisplay);
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
+  const yearSortFn = (a: YearReadingsType, b: YearReadingsType) =>
+    Number(b.year) - Number(a.year);
+  const yearMapFn = (yearElement: YearReadingsType) => (
+    <YearReading yearElement={yearElement} />
+  );
 
-  const readingsElems = readings
-    ?.sort((a, b) => Number(b.year) - Number(a.year))
-    .map((yearElement) => <YearReading yearElement={yearElement} />);
+  const readingsElems = readings?.sort(yearSortFn).map(yearMapFn);
 
   const renderAddReadingsAlert = () =>
     postReadingsErrorMessage ? (
