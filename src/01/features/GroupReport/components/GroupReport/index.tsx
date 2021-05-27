@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyledFooter,
   StyledModal,
@@ -20,37 +20,25 @@ import { Divider, Form, Radio } from 'antd';
 import moment, { Moment } from 'moment';
 import { getReports } from '../../../../_pages/Objects/apiObjects';
 import {
-  EmailSubscriptionType,
+  EEmailSubscriptionType,
   GroupReportFormResponse,
-  NodeCommercialAccountStatus,
-  ResourceType,
+  ENodeCommercialAccountStatus,
+  EResourceType,
 } from '../../../../../myApi';
 import { useAsync } from '../../../../hooks/useAsync';
 import styled from 'styled-components';
 import { downloadReport, reportQuery } from './apiGroupReport';
 import Title from '../../../../tt-components/Title';
-import {
-  ReportModalType,
-  setGroupStatus,
-  setForm,
-} from '../../models/groupReportReducer';
+import { setGroupStatus, setForm } from '../../models/groupReportReducer';
 import { useAppDispatch, useAppSelector } from '../../../../Redux/store';
-import { useDispatch } from 'react-redux';
 import { sendGroupReport } from '../../../../_api/group_report';
 import { Loader } from '../../../../components/Loader';
-
-interface ModalPropsInterface {
-  setVisible: Dispatch<SetStateAction<ReportModalType>>;
-  setGroupReportFormState: Dispatch<
-    SetStateAction<GroupReportValuesInterface | undefined>
-  >;
-}
 
 export interface GroupReportValuesInterface {
   houseManagementId?: string;
   name: string;
-  resource?: Array<ResourceType>;
-  category?: NodeCommercialAccountStatus;
+  resource?: Array<EResourceType>;
+  category?: ENodeCommercialAccountStatus;
   dates: [Moment, Moment];
   detailing: 'daily';
   email?: string;
@@ -58,7 +46,7 @@ export interface GroupReportValuesInterface {
   nextDate: undefined;
   period: 'currentMonth' | 'previousMonth' | 'customPeriod';
   subscribe: boolean;
-  subscribePeriod?: EmailSubscriptionType;
+  subscribePeriod?: EEmailSubscriptionType;
 }
 
 const reportName = `Выгрузка группового отчёта`;

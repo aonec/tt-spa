@@ -56,7 +56,6 @@ const MonthReading = ({
   monthElement,
 }: {
   monthElement: MonthReadingsType;
-  // consumption?: number | undefined;
 }) => {
   const readings = useStore($readings);
   const isColdWaterSupply = useStore($isColdWaterSupply);
@@ -65,7 +64,7 @@ const MonthReading = ({
     a: HousingMeteringDeviceReadingsResponse,
     b: HousingMeteringDeviceReadingsResponse
   ) => {
-    if (a.magistralType === EMagistralType.feedFlow) return 1;
+    if (a.magistralType === EMagistralType.FeedFlow) return 1;
     return -1;
   };
 
@@ -74,7 +73,6 @@ const MonthReading = ({
   let consumption;
   if (isColdWaterSupply) {
     const currentReading = monthElement.items[0];
-    // debugger;
 
     const previousReading = readings.items.find(
       (reading) => reading.id === currentReading.previousReadingsId

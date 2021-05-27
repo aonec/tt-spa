@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ResourceType } from '../../../../myApi';
+import { EResourceType } from '../../../../myApi';
 import { useStore } from 'effector-react';
 import { $isColdWaterSupply, $resource } from '../models';
 
 export const HousingMeteringReadingsHeader = ({
   resource,
 }: {
-  resource: ResourceType;
+  resource: EResourceType;
 }) => {
   const isColdWaterSupply = useStore($isColdWaterSupply);
 

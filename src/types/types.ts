@@ -1,4 +1,4 @@
-import { ResourceType } from '../myApi';
+import { EResourceType } from '../myApi';
 
 export type ReadingType = {
   id: number;
@@ -37,7 +37,7 @@ export type IndividualDeviceType = {
   personalAccountNumber: string | null;
   rateType: string;
   readings: Array<ReadingType>;
-  resource: ResourceType;
+  resource: EResourceType;
   serialNumber: string | null;
   transactionType: string | null;
 };

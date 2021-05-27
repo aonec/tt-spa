@@ -19,10 +19,9 @@ import {
   StyledFormPage,
   styles,
 } from '../../../tt-components';
-import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import {
   HousingMeteringDeviceResponse,
-  MagistralType,
+  EMagistralType,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 import { putOdpu } from './apiEditOdpu';
@@ -109,7 +108,7 @@ const FormEditODPU = ({
     onSubmit: () => {
       console.log(values);
 
-      const magistralEnum: MagistralType = values.magistral as MagistralType;
+      const magistralEnum: EMagistralType = values.magistral as EMagistralType;
 
       const form: UpdateHousingMeteringDeviceRequest = {
         serialNumber: values.serialNumber,

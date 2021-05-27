@@ -1,20 +1,19 @@
-import { getReport } from '../../../../_pages/CalculatorProfile/components/Modals/ModalCalculatorReport/apiCalculatorReport';
 import { sendGroupReport } from '../../../../_api/group_report';
 import {
-  EmailSubscriptionType,
-  NodeCommercialAccountStatus,
-  ResourceType,
+  EEmailSubscriptionType,
+  ENodeCommercialAccountStatus,
+  EResourceType,
 } from '../../../../../myApi';
 
 export type reportQuery = {
   GroupReportId?: string | null;
   HouseManagementId?: string | null;
-  NodeResourceTypes?: ResourceType[] | null;
-  NodeStatus?: NodeCommercialAccountStatus;
+  NodeResourceTypes?: EResourceType[] | null;
+  NodeStatus?: ENodeCommercialAccountStatus;
   'Subscription.Email'?: string | null;
   'Subscription.ContractorIds'?: number[] | null;
   'Subscription.TriggerAt'?: string;
-  'Subscription.Type'?: EmailSubscriptionType;
+  'Subscription.Type'?: EEmailSubscriptionType;
   DelayedEmailTarget?: string | null;
   ReportType?: string | null;
   From?: string | null;

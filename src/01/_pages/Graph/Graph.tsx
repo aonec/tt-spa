@@ -10,12 +10,12 @@ import {
 import { useAsync } from '../../hooks/useAsync';
 import { getGraphParams } from './utils';
 import styled from 'styled-components';
-import { ResourceType } from '../../../myApi';
+import { EResourceType } from '../../../myApi';
 import { NoConnection } from '../CalculatorProfile/components/Connection';
 
 interface GraphProps {
   nodeId: number;
-  resource: ResourceType;
+  resource: EResourceType;
   pipeCount: number;
 }
 
