@@ -49,7 +49,9 @@ const addReadingsReducer = (
   items: payload.items,
 });
 
-$readings.on(requestReadingsFx.doneData, addReadingsReducer);
+$readings
+  .on(requestReadingsFx.doneData, addReadingsReducer)
+  .reset(HousingMeteringDeviceReadingsGate.close);
 $latestSuccessReadings.on(requestReadingsFx.doneData, addReadingsReducer);
 $chosenInputId.on(inputBlur, (_, inputPayload) => {
   return inputPayload.deviceId;

@@ -38,7 +38,6 @@ export const requestReadingsFx = createEffect<
 >();
 
 export const postReadingFx = createEffect<
-  // PostDataType,
   InputPayloadType,
   HousingMeteringDeviceReadingsResponse
 >();
@@ -52,8 +51,6 @@ export type InputPayloadType = {
 };
 
 export const inputBlur = createEvent<InputPayloadType>();
-
-// const source = createEvent()
 
 export const $postReadingsErrorMessage = createStore<string | null>(null);
 
