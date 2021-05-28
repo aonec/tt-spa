@@ -47,7 +47,7 @@ const Node: React.FC<Props> = ({ node }) => {
               <NodeIcon icon={icon} color={color} />
               <span>{`Узел ${node.number}`}</span>
             </DeviceLink>
-            <ServiceZone>{serviceZoneListEnum[node.serviceZone]}</ServiceZone>
+            <ServiceZone>{node.nodeServiceZone.name}</ServiceZone>
           </TitleWrapper>
         </div>
 
