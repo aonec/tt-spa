@@ -57,7 +57,6 @@ const AddNodeThirdTab = () => {
         communicationPipes: values.communicationPipes,
       };
       const nodeForm = { ...node, ...form };
-      console.log('nodeForm', nodeForm);
       setNode(nodeForm);
       setAddNode(true);
     },

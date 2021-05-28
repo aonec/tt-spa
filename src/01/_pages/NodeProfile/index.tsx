@@ -77,7 +77,6 @@ export const NodeProfile = () => {
       title: 'Общая информация',
       key: '',
       cb: () => {
-        console.log('');
         push(`${path}`);
       },
     },
@@ -85,7 +84,6 @@ export const NodeProfile = () => {
       title: 'Статистика',
       key: 'stats',
       cb: () => {
-        console.log('stats');
         push(`${path}/stats`);
       },
     },
@@ -101,7 +99,6 @@ export const NodeProfile = () => {
       title: 'Настройки соединения',
       key: 'connection',
       cb: () => {
-        console.log('connection');
         push(`${path}/connection`);
       },
     },
@@ -109,7 +106,6 @@ export const NodeProfile = () => {
       title: 'Подключенные приборы',
       key: 'related',
       cb: () => {
-        console.log('related');
         push(`${path}/related`);
       },
     },
@@ -117,7 +113,6 @@ export const NodeProfile = () => {
       title: 'Документы приборы',
       key: 'documents',
       cb: () => {
-        console.log('documents');
         push(`${path}/documents`);
       },
     },

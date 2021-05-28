@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
-import { Radio, DatePicker, Tabs, Select } from 'antd';
+import { Radio, DatePicker } from 'antd';
 import { ReportContext } from '../index';
 
 const { RangePicker } = DatePicker;
 
 export const PeriodType = () => {
-  console.log('PeriodType');
-
   const { onPeriodChange, onDetailChange } = useContext(ReportContext);
 
   return (
@@ -50,23 +48,12 @@ export const PeriodType = () => {
 };
 
 export const Bottom = () => {
-  const {
-    begin,
-    end,
-    datePickerHandler,
-    selectOptions,
-    onPeriodChange,
-    onDetailChange,
-  } = useContext(ReportContext);
-  const getContext = () => {
-    console.log('selectOptions', selectOptions);
-  };
+  const { begin, end, datePickerHandler } = useContext(ReportContext);
 
   return (
     <>
       <PeriodType />
       <div className="period">
-        {/* <button onClick={getContext}>getContext</button> */}
         <label className="modal__label" htmlFor="#period">
           Период выгрузки
         </label>

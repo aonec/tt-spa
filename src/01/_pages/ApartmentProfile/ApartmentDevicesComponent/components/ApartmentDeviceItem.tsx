@@ -55,7 +55,6 @@ export function ApartmentDeviceItem({
     />
   ));
 
-  console.log('isActive', isActive);
   return (
     <DeviceItem>
       <ApartmentDevice device={device} />

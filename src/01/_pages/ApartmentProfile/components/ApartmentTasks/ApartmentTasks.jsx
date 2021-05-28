@@ -86,13 +86,9 @@ export const Tasks = (props) => {
       color = '#17b45a';
     }
 
-    const taskHandler = () => {
-      console.log('taskHandler');
-    };
-
     return (
       <Link to={`/Tasks/${id}`}>
-        <ApartmentTask key={ind} onClick={taskHandler}>
+        <ApartmentTask key={ind}>
           <ApartmentTaskTitle>{name}</ApartmentTaskTitle>
           <ApartmentTaskState color={color}>
             <Icon icon={icon} />

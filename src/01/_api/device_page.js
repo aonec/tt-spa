@@ -7,7 +7,6 @@ export async function getDevice(url = '') {
     const res = await axios.get(`MeteringDevices/${url}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -20,7 +19,6 @@ export async function getODPU(url = '') {
     const res = await axios.get(`HousingMeteringDevices/${url}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса ОДПУ',
@@ -35,7 +33,6 @@ export async function getInfo(typeODPU, deviceId) {
     const res = await axios.get(`${deviceTypeURL}/${deviceId}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка запроса устройства',
@@ -48,10 +45,8 @@ const housingStocksURL = 'HousingStocks';
 export async function getObjectOfDevice(url = '') {
   try {
     const res = await axios.get(`${housingStocksURL}/${url}`);
-    console.log('getObjectOfDevice', res);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'building',
       message: 'Произошла ошибка при загрузке данных по зданию',
@@ -65,7 +60,6 @@ export async function getODPUTasks(url = '') {
     const res = await axios.get(newURL);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'tasks',
       message: 'Произошла ошибка при загрузке данных по задачам',
@@ -78,7 +72,6 @@ export async function getRelatedDevices(url = '') {
     const res = await axios.get(`MeteringDevices/related?DeviceId=${url}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'related',
       message:
@@ -92,7 +85,6 @@ export async function getTypeODPU(url = '') {
     const res = await axios.get(`MeteringDevices/${url}`);
     return res.type;
   } catch (error) {
-    console.log(error);
     throw {
       typeODPU: 'related',
       message: 'Произошла ошибка при загрузке данных по типу устройства',
@@ -105,7 +97,6 @@ export async function getCalculatorResources(id = '') {
     const res = await axios.get(`Calculators/${id}`);
     return res.hubs;
   } catch (error) {
-    console.log(error);
     throw {
       typeODPU: 'getCalculatorResources',
       message: 'Произошла ошибка при загрузке ресурсов вычислителя',
@@ -118,7 +109,6 @@ export async function getCalculator(id = '') {
     const res = await axios.get(`Calculators/${id}`);
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       typeODPU: 'getCalculatorResources',
       message: 'Произошла ошибка при загрузке ресурсов вычислителя',
@@ -131,7 +121,6 @@ export async function getPagination(id = '') {
     const res = await axios.get('MeteringDevices');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       typeODPU: 'getCalculatorResources',
       message: 'Произошла ошибка при загрузке ресурсов вычислителя',
@@ -146,7 +135,6 @@ export async function deregisterDevice(Device = {}) {
     alert('Вычислитель успешно снят с учета !');
     return res;
   } catch (error) {
-    console.log(error);
     alert('Что-то пошло не так: попробуйте еще раз');
     throw new Error(error);
   }

@@ -21,6 +21,7 @@ export const sendGroupReport = async (query?: {
   From?: string | null;
   To?: string | null;
 }) => {
+  debugger;
   const config: Partial<
     {
       params: typeof query;
@@ -32,6 +33,9 @@ export const sendGroupReport = async (query?: {
     params: query,
     paramsSerializer: (params) => qs.stringify(params),
   };
+  if (!query?.NodeStatus) {
+    delete query?.NodeStatus;
+  }
   if (!query?.DelayedEmailTarget) {
     config.responseType = 'blob';
   }
