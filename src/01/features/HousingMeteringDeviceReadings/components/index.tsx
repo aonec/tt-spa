@@ -62,7 +62,7 @@ const HousingMeteringDeviceReadings = ({
       {renderAddReadingsAlert()}
       {renderRequestReadingsAlert()}
       <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
-      <HousingMeteringReadingsHeader resource={resource} />
+      <HousingMeteringReadingsHeader />
       {readingsElems}
     </div>
   );

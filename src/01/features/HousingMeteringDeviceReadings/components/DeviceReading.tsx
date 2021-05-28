@@ -27,8 +27,8 @@ export const DeviceReading = ({
   const { value, deviceId, year, month, id } = deviceElem;
   const chosenInputId = useStore($chosenInputId);
   const isInputChosen = chosenInputId === deviceId;
-  const today = new Date(); // Mon Nov 23 2020 15:23:46 GMT+0300 (Москва, стандартное время)
-  const todayYear = today.getFullYear(); // 2020
+  const today = new Date();
+  const todayYear = today.getFullYear();
   const todayMonth = months[today.getMonth() + 1];
 
   const isActive = todayYear === year && todayMonth === month;

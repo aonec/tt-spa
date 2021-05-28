@@ -1,20 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { EResourceType } from '../../../../myApi';
 import { useStore } from 'effector-react';
-import { $isColdWaterSupply, $resource } from '../models';
+import { $isColdWaterSupply } from '../models';
 
-export const HousingMeteringReadingsHeader = ({
-  resource,
-}: {
-  resource: EResourceType;
-}) => {
+export const HousingMeteringReadingsHeader = () => {
   const isColdWaterSupply = useStore($isColdWaterSupply);
 
   const renderVolumes = () => {
-    // const isColdWaterSupply = resource === ResourceType.ColdWaterSupply;
-    debugger;
-
     return isColdWaterSupply ? (
       <div style={{ paddingLeft: 80 }}>V1, м³</div>
     ) : (
