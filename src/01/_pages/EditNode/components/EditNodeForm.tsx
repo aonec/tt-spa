@@ -116,7 +116,7 @@ const EditNodeForm = ({
   const initialValues = {
     resource: resource,
     number: number,
-    serviceZone: initialServiceZoneLabel,
+    serviceZone: serviceZone,
     nodeStatus: nodeStatus.value,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
