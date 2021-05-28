@@ -54,6 +54,7 @@ const EditNodeForm = ({
   setDeregisterDevice,
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
+  debugger;
   const {
     resource,
     number,
@@ -116,7 +117,7 @@ const EditNodeForm = ({
     resource: resource,
     number: number,
     serviceZone: initialServiceZoneLabel,
-    nodeStatus: nodeStatus,
+    nodeStatus: nodeStatus.value,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
       : null,
