@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
@@ -29,21 +31,22 @@ export const NodeProfile = () => {
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
   const { data: node, status, run } = useAsync<NodeResponse | null>();
-  const {
-    data: calculator,
-    status: statusCalculator,
-    run: runCalculator,
-  } = useAsync<CalculatorResponse>();
+  const { calculator } = node || {};
+  // const {
+  //   data: calculator,
+  //   status: statusCalculator,
+  //   run: runCalculator,
+  // } = useAsync<CalculatorResponse>();
 
   useEffect(() => {
     run(getNode(nodeId));
   }, [nodeId]);
 
-  useEffect(() => {
-    node && node.calculatorId
-      ? runCalculator(getCalculator(node.calculatorId))
-      : console.log('wait');
-  }, [node]);
+  // useEffect(() => {
+  //   node && node.calculatorId
+  //     ? runCalculator(getCalculator(node.calculatorId))
+  //     : console.log('wait');
+  // }, [node]);
 
   useEffect(() => {
     getNodeTasks(nodeId).then((res) => {
@@ -51,7 +54,7 @@ export const NodeProfile = () => {
     });
   }, []);
 
-  if (!node || !calculator || !tasks) {
+  if (!node) {
     return <Loader size={'32'} show />;
   }
 

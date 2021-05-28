@@ -21,7 +21,6 @@ export const sendGroupReport = async (query?: {
   From?: string | null;
   To?: string | null;
 }) => {
-  debugger;
   const config: Partial<
     {
       params: typeof query;

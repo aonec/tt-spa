@@ -103,7 +103,7 @@ const EditNodeForm = ({
     resource: resource,
     number: number,
     serviceZone: serviceZone,
-    nodeStatus: nodeStatus,
+    nodeStatus: nodeStatus.value,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
       : null,
