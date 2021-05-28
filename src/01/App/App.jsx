@@ -88,7 +88,9 @@ const Internal = () => {
               />
 
               <Route
-                path={['/nodes/:nodeId/(stats|connection|related|documents)?']}
+                path={
+                  '/nodes/:nodeId/(stats|connection|readings|related|documents)?'
+                }
                 component={NodeProfile}
                 exact
               />

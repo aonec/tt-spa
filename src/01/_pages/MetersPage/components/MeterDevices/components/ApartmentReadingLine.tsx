@@ -9,7 +9,7 @@ import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCre
 import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
-  ResourceType,
+  EResourceType,
 } from '../../../../../../myApi';
 
 interface ApartmentReadingLineProps {
@@ -95,7 +95,7 @@ const FullDeviceLine = styled.div`
   border-bottom: 1px solid #dcdee4;
 `;
 
-export const getInputColor = (resource: ResourceType) => {
+export const getInputColor = (resource: EResourceType) => {
   switch (resource) {
     case 'HotWaterSupply':
       return '#FF8C68';

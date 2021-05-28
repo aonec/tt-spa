@@ -7,6 +7,7 @@ import {
   serviceZoneList,
 } from '../../../tt-components/localBases';
 import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
   node: NodeResponse;
@@ -15,6 +16,7 @@ interface HeaderInterface {
 }
 
 const Information = ({ node, calculator, task = false }: HeaderInterface) => {
+  const data = useParams();
   if (!node || !calculator) {
     return null;
   }
@@ -34,8 +36,9 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
       (serviceZoneItem) => serviceZoneItem.value === serviceZone
     )?.label ?? 'Зона не определена';
   const getNodeStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.label ?? 'Статус не определен';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.label ?? 'Статус не определен';
 
   return (
     <ListWrap>

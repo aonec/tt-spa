@@ -3,12 +3,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form } from 'antd';
 import moment from 'moment';
-import {
-  entryNumberList,
-  housingMeteringDeviceTypes,
-  magistrals,
-  resources,
-} from '../../../tt-components/localBases';
+import { resources } from '../../../tt-components/localBases';
 import {
   ButtonTT,
   DatePickerTT,
@@ -20,11 +15,8 @@ import {
   styles,
 } from '../../../tt-components';
 import {
-  HousingMeteringDeviceResponse,
-  IndividualDeviceRateType,
+  EIndividualDeviceRateType,
   IndividualDeviceResponse,
-  MagistralType,
-  UpdateHousingMeteringDeviceRequest,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
 import { AlertInterface } from '../../../tt-components/interfaces';
@@ -86,7 +78,7 @@ const IndividualDeviceEditForm = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      const rateTypeEnum: IndividualDeviceRateType = values.rateType as IndividualDeviceRateType;
+      const rateTypeEnum: EIndividualDeviceRateType = values.rateType as EIndividualDeviceRateType;
 
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,

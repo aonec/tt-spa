@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
@@ -31,11 +30,13 @@ export const Header = ({ node, calculator }: HeaderInterface) => {
   } = calculator.address;
 
   const getNodeStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.label ?? 'Статус не определен';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.icon ?? 'close';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.icon ?? 'close';
 
   const NodeStatus = () => (
     <div
