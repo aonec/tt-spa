@@ -35,15 +35,17 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
     futureCommercialAccountingDate,
   } = node;
 
-  const { name: serviceZone } = nodeServiceZone;
+  debugger;
+
+  // const { name } = nodeServiceZone;
 
   const { address } = calculator || {};
   const { city, street, housingStockNumber, corpus, id } = address || {};
 
-  const getServiceZone =
-    serviceZoneList.find(
-      (serviceZoneItem) => serviceZoneItem.value === serviceZone
-    )?.label ?? 'Зона не определена';
+  // const getServiceZone =
+  //   serviceZoneList.find(
+  //     (serviceZoneItem) => serviceZoneItem.value === serviceZone
+  //   )?.label ?? 'Зона не определена';
   const getNodeStatus =
     nodeStatusList.find(
       (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
@@ -68,7 +70,7 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
       ) : null}
       <ListItem>
         <span>Зона</span>
-        <div>{serviceZone}</div>
+        <div>{nodeServiceZone?.name}</div>
       </ListItem>
       <ListItem>
         <span>Коммерческий учет показателей приборов</span>

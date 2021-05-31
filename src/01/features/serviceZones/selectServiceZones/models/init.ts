@@ -9,7 +9,6 @@ import {
 import { forward, sample } from 'effector';
 import './index';
 import { getServiceZones } from '../../../../_api/service_zones';
-import { NodeServiceZoneResponse } from '../../../../../myApi';
 
 requestServiceZonesFx.use(getServiceZones);
 

@@ -53,7 +53,7 @@ export const Nodes = ({ device }: NodesInterface) => {
   };
 
   const result = nodes.map((node) => {
-    const { id, number, nodeStatus, serviceZone, resource } = node;
+    const { id, number, nodeStatus, nodeServiceZone, resource } = node;
 
     const { icon, color } = DeviceIcons[resource!];
 
@@ -65,7 +65,7 @@ export const Nodes = ({ device }: NodesInterface) => {
         </NameWrap>
 
         <NodeStatus nodeStatus={nodeStatus.value} />
-        <Span>{serviceZoneListEnum[serviceZone]}</Span>
+        <Span>{nodeServiceZone.name}</Span>
       </ListItem>
     );
   });

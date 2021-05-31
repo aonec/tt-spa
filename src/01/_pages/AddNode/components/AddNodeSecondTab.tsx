@@ -21,11 +21,42 @@ import {
 import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import { nodeValidationSchema } from '../../../tt-components/validationSchemas';
+import {
+  $derivedChosenInput,
+  $requestServiceZonesStatus,
+  $serviceZones,
+  PageGate,
+  setChosenInput,
+} from '../../../features/serviceZones/selectServiceZones/models';
+import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
+import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
+import styled from 'styled-components';
+import { useStore } from 'effector-react';
 
 const AddNodeSecondTab = () => {
   const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
     AddNodeContext
   );
+
+  const serviceZones = useStore($serviceZones);
+  const zonesLoadingStatus = useStore($requestServiceZonesStatus);
+  const isRequestServiceZonesError = zonesLoadingStatus === 'error';
+  const chosenInputForSelect = useStore($derivedChosenInput);
+
+  // if (!node) {
+  //   return null;
+  // }
+  // const nodeServiceZoneId = nodeServiceZone?.id;
+  const selectZonesOptions = serviceZones.map((zone) => ({
+    value: zone.id,
+    label: zone.name,
+  }));
+
+  debugger;
+  //
+  // if (nodeServiceZoneId && !chosenInputForSelect) {
+  //   setChosenInput(nodeServiceZoneId);
+  // }
 
   const {
     handleSubmit,
@@ -40,7 +71,7 @@ const AddNodeSecondTab = () => {
     initialValues: {
       resource: resources[0].value,
       number: 1,
-      serviceZone: serviceZoneList[0].value,
+      serviceZone: chosenInputForSelect?.value,
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(1, 'years'),
@@ -51,11 +82,12 @@ const AddNodeSecondTab = () => {
       const form = {
         resource: values.resource,
         number: Number(values.number),
-        serviceZone: values.serviceZone,
+        serviceZone: chosenInputForSelect?.value,
         nodeStatus: values.nodeStatus,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
+      debugger;
       setNode((prevState: any) => ({
         ...prevState,
         ...form,
@@ -74,119 +106,158 @@ const AddNodeSecondTab = () => {
   };
 
   return (
-    <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
-      <StyledFormPage>
-        <Title color="black" style={styles.w100}>
-          Общие данные
-        </Title>
-        <Form.Item label="Тип ресурса" style={styles.w49}>
-          <SelectTT
-            name="resource"
-            onChange={(value) => {
-              setFieldValue('resource', value);
-            }}
-            onBlur={handleBlur}
-            options={resources}
-            value={values.resource}
-          />
-          <Alert name="resource" />
-        </Form.Item>
+    <>
+      <PageGate />
+      <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
+        <StyledFormPage>
+          <Title color="black" style={styles.w100}>
+            Общие данные
+          </Title>
+          <Form.Item label="Тип ресурса" style={styles.w49}>
+            <SelectTT
+              name="resource"
+              onChange={(value) => {
+                setFieldValue('resource', value);
+              }}
+              onBlur={handleBlur}
+              options={resources}
+              value={values.resource}
+            />
+            <Alert name="resource" />
+          </Form.Item>
 
-        <Form.Item label="Номер узла" style={styles.w49}>
-          <InputTT
-            name="number"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            value={values.number}
-          />
-          <Alert name="number" />
-        </Form.Item>
+          <Form.Item label="Номер узла" style={styles.w49}>
+            <InputTT
+              name="number"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.number}
+            />
+            <Alert name="number" />
+          </Form.Item>
 
-        <Form.Item label="Зона" style={styles.w100}>
-          <SelectTT
-            name="serviceZone"
-            onChange={(value) => {
-              setFieldValue('serviceZone', value);
-            }}
-            onBlur={handleBlur}
-            options={serviceZoneList}
-            value={values.serviceZone}
-          />
-          <Alert name="serviceZone" />
-        </Form.Item>
-
-        <Form.Item
-          label="Коммерческий учет показателей приборов"
-          style={styles.w100}
-        >
-          <SelectTT
-            name="nodeStatus"
-            onChange={(value) => {
-              setFieldValue('nodeStatus', value);
-              if (value === nodeStatusList[1].value) {
-                setFieldValue('futureCommercialAccountingDate', undefined);
-                setFieldValue('lastCommercialAccountingDate', undefined);
-              }
-            }}
-            onBlur={handleBlur}
-            options={nodeStatusList}
-            value={values.nodeStatus}
-          />
-          <Alert name="nodeStatus" />
-        </Form.Item>
-
-        {values.nodeStatus !== nodeStatusList[1].value ? (
-          <>
-            <Form.Item
-              label="Дата начала Акта действия допуска"
-              style={styles.w49}
+          <Zone>
+            <label
+              htmlFor="serviceZone"
+              style={{ color: 'var(--main-70)', fontWeight: 500 }}
             >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                name="lastCommercialAccountingDate"
-                allowClear={false}
-                onChange={(date) => {
-                  setFieldValue('lastCommercialAccountingDate', date);
+              Зона:
+            </label>
+            <ZoneInner>
+              <SelectTT
+                id="serviceZone"
+                style={styles.w49}
+                onChange={(chosenInputId) => {
+                  setChosenInput(+chosenInputId);
                 }}
-                value={values.lastCommercialAccountingDate}
+                placeholder="Зона"
+                options={selectZonesOptions}
+                value={
+                  chosenInputForSelect?.value ?? selectZonesOptions[0]?.value
+                }
               />
-              <Alert name="lastCheckingDate" />
-            </Form.Item>
+              <AddZoneText onClick={() => addServiceZoneButtonClicked()}>
+                + Добавить новую зону
+              </AddZoneText>
+            </ZoneInner>
+          </Zone>
 
-            <Form.Item
-              label="Дата окончания Акта действия допуска"
-              style={styles.w49}
-            >
-              <DatePickerTT
-                format="DD.MM.YYYY"
-                name="futureCommercialAccountingDate"
-                allowClear={false}
-                onChange={(date) => {
-                  setFieldValue('futureCommercialAccountingDate', date);
-                }}
-                value={values.futureCommercialAccountingDate}
-              />
-              <Alert name="futureCommercialAccountingDate" />
-            </Form.Item>
-          </>
-        ) : null}
-      </StyledFormPage>
-      <StyledFooter form>
-        <ButtonTT color="blue" big type="submit">
-          Далее
-        </ButtonTT>
+          <AddNewZonesModal />
 
-        <ButtonTT
-          type="button"
-          color="white"
-          onClick={handleCancel}
-          style={{ marginLeft: 16 }}
-        >
-          Отмена
-        </ButtonTT>
-      </StyledFooter>
-    </form>
+          <Form.Item
+            label="Коммерческий учет показателей приборов"
+            style={styles.w100}
+          >
+            <SelectTT
+              name="nodeStatus"
+              onChange={(value) => {
+                setFieldValue('nodeStatus', value);
+                if (value === nodeStatusList[1].value) {
+                  setFieldValue('futureCommercialAccountingDate', undefined);
+                  setFieldValue('lastCommercialAccountingDate', undefined);
+                }
+              }}
+              onBlur={handleBlur}
+              options={nodeStatusList}
+              value={values.nodeStatus}
+            />
+            <Alert name="nodeStatus" />
+          </Form.Item>
+
+          {values.nodeStatus !== nodeStatusList[1].value ? (
+            <>
+              <Form.Item
+                label="Дата начала Акта действия допуска"
+                style={styles.w49}
+              >
+                <DatePickerTT
+                  format="DD.MM.YYYY"
+                  name="lastCommercialAccountingDate"
+                  allowClear={false}
+                  onChange={(date) => {
+                    setFieldValue('lastCommercialAccountingDate', date);
+                  }}
+                  value={values.lastCommercialAccountingDate}
+                />
+                <Alert name="lastCheckingDate" />
+              </Form.Item>
+
+              <Form.Item
+                label="Дата окончания Акта действия допуска"
+                style={styles.w49}
+              >
+                <DatePickerTT
+                  format="DD.MM.YYYY"
+                  name="futureCommercialAccountingDate"
+                  allowClear={false}
+                  onChange={(date) => {
+                    setFieldValue('futureCommercialAccountingDate', date);
+                  }}
+                  value={values.futureCommercialAccountingDate}
+                />
+                <Alert name="futureCommercialAccountingDate" />
+              </Form.Item>
+            </>
+          ) : null}
+        </StyledFormPage>
+        <StyledFooter form>
+          <ButtonTT color="blue" big type="submit">
+            Далее
+          </ButtonTT>
+
+          <ButtonTT
+            type="button"
+            color="white"
+            onClick={handleCancel}
+            style={{ marginLeft: 16 }}
+          >
+            Отмена
+          </ButtonTT>
+        </StyledFooter>
+      </form>
+    </>
   );
 };
+
+const Zone = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ZoneInner = styled.div`
+  display: flex;
+  margin: 8px 0;
+`;
+
+const AddZoneText = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--primary-100);
+  height: 48px;
+  margin-left: 16px;
+  cursor: pointer;
+  font-weight: 500;
+`;
 
 export default AddNodeSecondTab;

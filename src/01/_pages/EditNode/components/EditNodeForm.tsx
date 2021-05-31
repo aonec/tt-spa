@@ -162,8 +162,6 @@ const EditNodeForm = ({
             />
           </Form.Item>
 
-          <AddNewZonesModal />
-
           <Form.Item
             style={styles.w100}
             label="Номер узла"

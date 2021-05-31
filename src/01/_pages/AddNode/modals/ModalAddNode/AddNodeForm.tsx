@@ -40,6 +40,8 @@ const AddNodeForm = (props: any) => {
     serviceZone,
   } = node;
 
+  debugger;
+
   const calculator = _.find(calculators, { id: calculatorId });
 
   const { serialNumber, model, closingDate } = calculator;

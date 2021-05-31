@@ -48,7 +48,7 @@ export const Devices = ({ calculators }) => {
 
   // Узел
   const NodeItem = ({ node }) => {
-    const { id: nodeId, serviceZone, nodeStatus, number, resource } = node;
+    const { id: nodeId, nodeServiceZone, nodeStatus, number, resource } = node;
 
     //Бэкендеру - перевести с русского на английский!! nodeStatus
     const getNodeStatus =
@@ -57,8 +57,8 @@ export const Devices = ({ calculators }) => {
     const getNodeIconStatus =
       _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
 
-    const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
-      .label;
+    // const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
+    //   .label;
     return (
       <Node>
         <NavLink to={`/nodes/${nodeId}`}>
@@ -66,7 +66,7 @@ export const Devices = ({ calculators }) => {
             <IconTT icon={resource.toLowerCase()} />
             <Name>{`Узел ${number}`}</Name>
           </NodeMainInfo>
-          <NodeZone>{serviceZoneText}</NodeZone>
+          <NodeZone>{nodeServiceZone?.name}</NodeZone>
         </NavLink>
         <Tooltip placement="topLeft" title={getNodeStatus} color={'#272F5A'}>
           <NodeStatus>
