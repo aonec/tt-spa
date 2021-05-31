@@ -71,7 +71,7 @@ const AddNodeSecondTab = () => {
     initialValues: {
       resource: resources[0].value,
       number: 1,
-      serviceZone: chosenInputForSelect?.value,
+      nodeServiceZoneId: chosenInputForSelect?.value,
       nodeStatus: nodeStatusList[0].value,
       lastCommercialAccountingDate: moment(),
       futureCommercialAccountingDate: moment().add(1, 'years'),
@@ -82,7 +82,7 @@ const AddNodeSecondTab = () => {
       const form = {
         resource: values.resource,
         number: Number(values.number),
-        serviceZone: chosenInputForSelect?.value,
+        nodeServiceZoneId: chosenInputForSelect?.value,
         nodeStatus: values.nodeStatus,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),

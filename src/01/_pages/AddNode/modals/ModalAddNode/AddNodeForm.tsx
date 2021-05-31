@@ -44,7 +44,7 @@ const AddNodeForm = (props: any) => {
     nodeStatus,
     number,
     resource,
-    serviceZone,
+    nodeServiceZoneId,
   } = node;
 
   debugger;
@@ -54,7 +54,8 @@ const AddNodeForm = (props: any) => {
   const { serialNumber, model, closingDate } = calculator;
 
   const getServiceZone =
-    _.find(serviceZones, { id: serviceZone })?.name ?? 'Зона не определена';
+    _.find(serviceZones, { id: nodeServiceZoneId })?.name ??
+    'Зона не определена';
   const getNodeStatus =
     _.find(nodeStatusList, { value: nodeStatus })?.label ??
     'Статус не определен';
