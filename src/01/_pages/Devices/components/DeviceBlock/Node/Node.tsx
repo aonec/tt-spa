@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
 import { NodeIntoCalculatorResponse } from '../../../../../../myApi';
-import { serviceZoneListEnum } from '../../../../../tt-components/localBases';
 
 const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {
@@ -47,7 +46,7 @@ const Node: React.FC<Props> = ({ node }) => {
               <NodeIcon icon={icon} color={color} />
               <span>{`Узел ${node.number}`}</span>
             </DeviceLink>
-            <ServiceZone>{node.nodeServiceZone.name}</ServiceZone>
+            <ServiceZone>{node.nodeServiceZone?.name}</ServiceZone>
           </TitleWrapper>
         </div>
 

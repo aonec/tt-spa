@@ -20,6 +20,11 @@ import { useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../AddNodeContext';
 import { addNode } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
+import { useStore } from 'effector-react';
+import {
+  $derivedChosenInput,
+  $serviceZones,
+} from '../../../../features/serviceZones/selectServiceZones/models';
 
 const AddNodeForm = (props: any) => {
   const history = useHistory();
@@ -28,6 +33,8 @@ const AddNodeForm = (props: any) => {
   const { node, housingStockId, calculators, communicationPipes } = useContext(
     AddNodeContext
   );
+
+  const serviceZones = useStore($serviceZones);
 
   const {
     calculatorId,
@@ -47,8 +54,7 @@ const AddNodeForm = (props: any) => {
   const { serialNumber, model, closingDate } = calculator;
 
   const getServiceZone =
-    _.find(serviceZoneList, { value: serviceZone })?.label ??
-    'Зона не определена';
+    _.find(serviceZones, { id: serviceZone })?.name ?? 'Зона не определена';
   const getNodeStatus =
     _.find(nodeStatusList, { value: nodeStatus })?.label ??
     'Статус не определен';
@@ -76,6 +82,8 @@ const AddNodeForm = (props: any) => {
         communicationPipes: values.communicationPipes,
       };
       const addNodeForm = { ...node, communicationPipes };
+
+      debugger;
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
