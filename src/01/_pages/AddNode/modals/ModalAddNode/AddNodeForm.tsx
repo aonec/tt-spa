@@ -44,7 +44,7 @@ const AddNodeForm = (props: any) => {
     nodeStatus,
     number,
     resource,
-    serviceZone,
+    nodeServiceZoneId,
   } = node;
 
   const calculator = _.find(calculators, { id: calculatorId });
@@ -52,7 +52,9 @@ const AddNodeForm = (props: any) => {
   const { serialNumber, model, closingDate } = calculator || {};
 
   const getServiceZone =
-    _.find(serviceZones, { id: serviceZone })?.name ?? 'Зона не определена';
+    _.find(serviceZones, { id: nodeServiceZoneId })?.name ??
+    'Зона не определена';
+
   const getNodeStatus =
     _.find(nodeStatusList, { value: nodeStatus })?.label ??
     'Статус не определен';
@@ -79,7 +81,10 @@ const AddNodeForm = (props: any) => {
       const form = {
         communicationPipes: values.communicationPipes,
       };
-      const addNodeForm = { ...node, communicationPipes };
+
+      // если в форме есть calculator (id), то отправляем так как есть
+      // если его нет, то добавляем в форму housingStockId
+      const addNodeForm = { ...node, communicationPipes, housingStockId: 533 };
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
