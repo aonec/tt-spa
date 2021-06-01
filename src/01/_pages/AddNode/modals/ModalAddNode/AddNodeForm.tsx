@@ -30,11 +30,17 @@ const AddNodeForm = (props: any) => {
   const history = useHistory();
   const { handleCancel } = props;
 
-  const { node, housingStockId, calculators, communicationPipes } = useContext(
-    AddNodeContext
-  );
+  const {
+    node,
+    housingStockId,
+    calculators,
+    communicationPipes,
+    housingStock,
+  } = useContext(AddNodeContext);
 
   const serviceZones = useStore($serviceZones);
+
+  const { id, city, street, number: houseNumber, corpus } = housingStock;
 
   const {
     calculatorId,
@@ -54,7 +60,6 @@ const AddNodeForm = (props: any) => {
   const getServiceZone =
     _.find(serviceZones, { id: nodeServiceZoneId })?.name ??
     'Зона не определена';
-
   const getNodeStatus =
     _.find(nodeStatusList, { value: nodeStatus })?.label ??
     'Статус не определен';
@@ -99,7 +104,9 @@ const AddNodeForm = (props: any) => {
       <ul>
         <List>
           <Info>Адрес</Info>
-          <Description>Нижнекамск, ул. Мира, 36</Description>
+          <Description>{`${city}, ${street}, ${houseNumber} ${
+            corpus ? ',' + corpus : ''
+          }`}</Description>
         </List>
         <List>
           <Info>Тип ресурса</Info>

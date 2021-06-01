@@ -12,9 +12,6 @@ export const requestReadings = (query: {
   axios.get('HousingMeteringDeviceReadings', {
     params: query,
   });
-//
-// CreateHousingMeteringDeviceReadingsRequest,
-//     HousingMeteringDeviceReadingsResponse
 
 export const postReading = (
   query: CreateHousingMeteringDeviceReadingsRequest

@@ -43,10 +43,6 @@ const AddNodeSecondTab = () => {
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
 
-  // if (!node) {
-  //   return null;
-  // }
-  // const nodeServiceZoneId = nodeServiceZone?.id;
   const selectZonesOptions = serviceZones.map((zone) => ({
     value: zone.id,
     label: zone.name,
@@ -76,7 +72,7 @@ const AddNodeSecondTab = () => {
       const form = {
         resource: values.resource,
         number: Number(values.number),
-        serviceZone:
+        nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
