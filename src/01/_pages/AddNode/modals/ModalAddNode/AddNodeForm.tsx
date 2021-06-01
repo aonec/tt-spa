@@ -47,8 +47,6 @@ const AddNodeForm = (props: any) => {
     serviceZone,
   } = node;
 
-  debugger;
-
   const calculator = _.find(calculators, { id: calculatorId });
 
   const { serialNumber, model, closingDate } = calculator;
@@ -82,8 +80,6 @@ const AddNodeForm = (props: any) => {
         communicationPipes: values.communicationPipes,
       };
       const addNodeForm = { ...node, communicationPipes };
-
-      debugger;
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);

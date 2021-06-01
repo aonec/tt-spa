@@ -52,7 +52,6 @@ $serviceZones.on(sendServiceZoneFx.doneData, (s, a) => {
 });
 
 $chosenInput.on(sendServiceZoneFx.doneData, (_, newInput) => {
-  debugger;
   return newInput;
 });
 

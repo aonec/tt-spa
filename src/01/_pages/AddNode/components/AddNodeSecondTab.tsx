@@ -52,12 +52,6 @@ const AddNodeSecondTab = () => {
     label: zone.name,
   }));
 
-  debugger;
-  //
-  // if (nodeServiceZoneId && !chosenInputForSelect) {
-  //   setChosenInput(nodeServiceZoneId);
-  // }
-
   const {
     handleSubmit,
     handleChange,
@@ -87,7 +81,6 @@ const AddNodeSecondTab = () => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
         futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
       };
-      debugger;
       setNode((prevState: any) => ({
         ...prevState,
         ...form,
