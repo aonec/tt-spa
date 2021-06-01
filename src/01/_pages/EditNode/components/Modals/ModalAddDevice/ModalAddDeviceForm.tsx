@@ -114,6 +114,8 @@ const ModalAddDeviceForm = ({
     communicationPipes,
   } = node || DEFAULT_NODE;
 
+  debugger;
+
   const entryNumber = communicationPipes
     ? communicationPipes[0].entryNumber
     : null;
@@ -146,7 +148,7 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0].value,
     number,
-    nodeStatus,
+    nodeStatus: nodeStatus.value,
     coldWaterWarningHidden: true,
   };
 
