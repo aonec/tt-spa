@@ -7,13 +7,13 @@ interface ModalAddDeviceInterface {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
   node: NodeResponse;
-  calculator: CalculatorResponse;
+  // calculator: CalculatorResponse;
 }
 
 const ModalAddDevice = ({
   visible,
   setVisible,
-  calculator,
+  // calculator,
   node,
 }: ModalAddDeviceInterface) => {
   function handleCancel() {
@@ -29,7 +29,7 @@ const ModalAddDevice = ({
     >
       <ModalAddDeviceForm
         handleCancel={handleCancel}
-        calculator={calculator}
+        // calculator={calculator}
         node={node}
         setVisible={setVisible}
       />

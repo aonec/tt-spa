@@ -238,6 +238,10 @@ export enum EUserPermission {
   ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
   ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
   ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
+  NodeRead = "NodeRead",
+  NodeCreate = "NodeCreate",
+  NodeUpdate = "NodeUpdate",
+  NodeDelete = "NodeDelete",
 }
 
 export interface TokenResponse {
@@ -796,10 +800,7 @@ export interface ContractorUpdateRequest {
 }
 
 export enum DataMigrationMethod {
-  HousingStockNumberAndCorpus = "HousingStockNumberAndCorpus",
-  MeteringDeviceIsConnected = "MeteringDeviceIsConnected",
-  CommunicationPipeNumbers = "CommunicationPipeNumbers",
-  OldTasks = "OldTasks",
+  NodesHousingStockId = "NodesHousingStockId",
 }
 
 export enum DocumentType {
@@ -1136,9 +1137,6 @@ export interface UpdateHousingMeteringDeviceReadingsRequest {
 
 export interface CreatePipeConnectionRequest {
   /** @format int32 */
-  calculatorId: number;
-
-  /** @format int32 */
   entryNumber: number;
 
   /** @format int32 */
@@ -1173,9 +1171,6 @@ export interface UpdateHousingMeteringDeviceRequest {
   housingMeteringDeviceType?: EHousingMeteringDeviceType;
   resource?: EResourceType;
   model?: string | null;
-
-  /** @format int32 */
-  pipeId?: number | null;
   pipe?: CreatePipeConnectionRequest;
 
   /** @format int32 */
@@ -1281,9 +1276,6 @@ export interface CreateHousingMeteringDeviceRequest {
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   resource: EResourceType;
   model: string;
-
-  /** @format int32 */
-  pipeId?: number | null;
   pipe?: CreatePipeConnectionRequest;
 
   /** @format int32 */
@@ -2047,6 +2039,7 @@ export enum ESecuredIdentityRoleName {
   Admin = "Admin",
   Worker = "Worker",
   ManagingFirmSpectator = "ManagingFirmSpectator",
+  ManagingFirmDispatcher = "ManagingFirmDispatcher",
 }
 
 export interface UserRoleResponse {
@@ -2213,7 +2206,8 @@ export interface NodeResponse {
   calculator: CalculatorIntoNodeResponse;
 
   /** @format int32 */
-  housingStockId: number | null;
+  housingStockId: number;
+  address: HousingStockAddressResponse;
   communicationPipes: CommunicationPipeResponse[] | null;
 }
 
@@ -2239,10 +2233,36 @@ export interface UpdateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+
+  /** @format int32 */
+  housingStockId?: number;
 }
 
-export interface NodeResponseListSuccessApiResponse {
-  successResponse: NodeResponse[] | null;
+export interface NodeResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+  items: NodeResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+}
+
+export interface NodeResponsePagedListSuccessApiResponse {
+  successResponse: NodeResponsePagedList;
 }
 
 export interface CreateCommunicationPipeRequest {
@@ -2256,6 +2276,9 @@ export interface CreateCommunicationPipeRequest {
 }
 
 export interface CreateNodeRequest {
+  /** @format int32 */
+  entryNumber?: number;
+
   /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
@@ -2273,6 +2296,9 @@ export interface CreateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+
+  /** @format int32 */
+  housingStockId?: number;
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
 }
 
@@ -4687,8 +4713,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Nodes
      * @secure
      */
-    nodesList: (query?: { calculatorId?: number }, params: RequestParams = {}) =>
-      this.request<NodeResponseListSuccessApiResponse, ErrorApiResponse>({
+    nodesList: (
+      query?: { CalculatorId?: number | null; HousingStockId?: number | null; PageNumber?: number; PageSize?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
         method: "GET",
         query: query,

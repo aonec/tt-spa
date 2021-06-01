@@ -54,13 +54,13 @@ import Warning from '../../../../../tt-components/Warning';
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: NodeResponse;
-  calculator: CalculatorResponse;
+  // calculator: CalculatorResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalAddDeviceForm = ({
   node,
-  calculator,
+  // calculator,
   handleCancel,
   setVisible,
 }: ModalAddDeviceFormInterface) => {
@@ -102,8 +102,7 @@ const ModalAddDeviceForm = ({
     },
   ];
 
-  const { address, id: calculatorId } = calculator || DEFAULT_CALCULATOR;
-  const { city, street, housingStockNumber, corpus } = address;
+  // const { id: calculatorId } = calculator || DEFAULT_CALCULATOR;
   const {
     futureCommercialAccountingDate,
     lastCommercialAccountingDate,
@@ -112,7 +111,11 @@ const ModalAddDeviceForm = ({
     resource,
     serviceZone,
     communicationPipes,
+    address,
+    calculatorId,
   } = node || DEFAULT_NODE;
+  debugger;
+  const { city, street, housingStockNumber, corpus } = address;
 
   debugger;
 
@@ -167,7 +170,7 @@ const ModalAddDeviceForm = ({
           ? values.diameter
           : null,
       pipe: {
-        calculatorId: calculatorId,
+        // calculatorId: calculatorId,
         entryNumber: values.entryNumber,
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,

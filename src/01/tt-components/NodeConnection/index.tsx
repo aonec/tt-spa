@@ -2,23 +2,29 @@ import React, { Dispatch, SetStateAction } from 'react';
 import moment from 'moment';
 import { NavLink, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { CalculatorIntoNodeResponse } from '../../../myApi';
+import { CalculatorIntoNodeResponse, NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { getCalculator } from './apiNodeConnection';
 
 interface ConnectionInterface {
-  calculator: CalculatorIntoNodeResponse;
+  // calculator: CalculatorIntoNodeResponse;
+  node: NodeResponse;
   edit: boolean;
   setDeregisterDeviceValue?: any;
   setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
 const NodeConnection = ({
-  calculator,
+  // calculator,
+  node,
   edit = false,
   setDeregisterDeviceValue,
   setDeregisterDevice,
 }: ConnectionInterface) => {
+  // if (!calculator) return null;
+
+  const { calculator } = node;
+
   const {
     model,
     id,
@@ -27,7 +33,6 @@ const NodeConnection = ({
     futureCheckingDate,
     closingDate,
   } = calculator;
-  const data = useParams();
 
   const lastCheckingDateText = lastCheckingDate
     ? moment(lastCheckingDate).format('DD.MM.YYYY')

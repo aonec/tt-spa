@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
 
 interface EditNodeFormInterface {
-  calculator: CalculatorResponse;
+  // calculator: CalculatorResponse;
   currentTabKey: string;
   setTab: any;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
@@ -48,7 +48,7 @@ interface EditNodeFormInterface {
 }
 
 const EditNodeForm = ({
-  calculator,
+  // calculator,
   currentTabKey,
   node,
   setDeregisterDevice,
@@ -248,12 +248,12 @@ const EditNodeForm = ({
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <NodeConnection
-            calculator={calculator}
-            edit={true}
-            setDeregisterDeviceValue={setDeregisterDeviceValue}
-            setDeregisterDevice={setDeregisterDevice}
-          />
+          {/*<NodeConnection*/}
+          {/*  // calculator={calculator}*/}
+          {/*  edit={true}*/}
+          {/*  setDeregisterDeviceValue={setDeregisterDeviceValue}*/}
+          {/*  setDeregisterDevice={setDeregisterDevice}*/}
+          {/*/>*/}
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>

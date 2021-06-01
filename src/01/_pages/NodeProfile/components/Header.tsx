@@ -16,22 +16,18 @@ interface HeaderInterface {
 }
 
 export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
+  debugger;
+
   const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
 
-  if (!node || !calculator) {
+  if (!node) {
     return null;
   }
 
-  const { resource, nodeStatus, number } = node;
-  const {
-    id: objectId,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
-  } = calculator.address;
+  const { resource, nodeStatus, number, address } = node;
+  const { id: objectId, city, street, housingStockNumber, corpus } = address;
 
   const menuButtonArr: MenuButtonInterface[] = [
     {

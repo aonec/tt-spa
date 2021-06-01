@@ -12,6 +12,18 @@ export async function getCalculators(id = '') {
   }
 }
 
+export async function getNodes(id = '') {
+  try {
+    const res = await axios.get(`Nodes?HousingStockId=${id}`);
+    return res;
+  } catch (error) {
+    throw {
+      resource: 'calculators',
+      message: 'Произошла ошибка запроса вычислителей',
+    };
+  }
+}
+
 export async function getDeviceTasks(id = '') {
   try {
     const res = await axios.get(`Tasks?DeviceId=${id}`);

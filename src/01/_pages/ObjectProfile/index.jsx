@@ -9,7 +9,7 @@ import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
-import { getCalculators, getObject } from './apiObjectProfile';
+import { getCalculators, getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
@@ -35,13 +35,13 @@ export const ObjectProfile = () => {
   const [addCalculator, setAddCalculator] = useState(false);
   const [addOdpu, setAddOdpu] = useState(false);
   const [commonReport, setCommonReport] = useState(false);
-  const [calculators, setCalculators] = useState();
+  const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
 
   useEffect(() => {
-    getCalculators(housingStockId).then((res) => {
+    getNodes(housingStockId).then((res) => {
       const { items } = res;
-      setCalculators(items);
+      setNodes(items);
     });
     getObject(housingStockId).then((res) => {
       setObject(res);
@@ -54,7 +54,7 @@ export const ObjectProfile = () => {
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
 
-  if (!object || !calculators) {
+  if (!object || !nodes) {
     return <Loader show={true} size={64} />;
   }
   const context = {
@@ -63,7 +63,7 @@ export const ObjectProfile = () => {
     addOdpu,
     setAddOdpu,
     housingStockId,
-    calculators,
+    nodes,
     commonReport,
     setCommonReport,
     object,
@@ -123,7 +123,7 @@ export const ObjectProfile = () => {
           </Route>
 
           <Route path="/objects/(\\d+)/devices" exact>
-            <Devices calculators={calculators} />
+            <Devices nodes={nodes} />
           </Route>
 
           <Events title="События с объектом" {...events} />

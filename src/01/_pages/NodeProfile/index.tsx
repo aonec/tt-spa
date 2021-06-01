@@ -32,21 +32,10 @@ export const NodeProfile = () => {
 
   const { data: node, status, run } = useAsync<NodeResponse | null>();
   const { calculator } = node || {};
-  // const {
-  //   data: calculator,
-  //   status: statusCalculator,
-  //   run: runCalculator,
-  // } = useAsync<CalculatorResponse>();
 
   useEffect(() => {
     run(getNode(nodeId));
   }, [nodeId]);
-
-  // useEffect(() => {
-  //   node && node.calculatorId
-  //     ? runCalculator(getCalculator(node.calculatorId))
-  //     : console.log('wait');
-  // }, [node]);
 
   useEffect(() => {
     getNodeTasks(nodeId).then((res) => {
@@ -160,7 +149,7 @@ export const NodeProfile = () => {
         </Route>
 
         <Route path={`${path}/connection`} exact>
-          <NodeConnection calculator={calculator} edit={false} />
+          <NodeConnection node={node} edit={false} />
         </Route>
         <Route path={`${path}/related`} exact>
           <NodeRelatedDevices node={node} />
