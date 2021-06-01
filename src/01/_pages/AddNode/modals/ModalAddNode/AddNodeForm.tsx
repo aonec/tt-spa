@@ -49,7 +49,7 @@ const AddNodeForm = (props: any) => {
 
   const calculator = _.find(calculators, { id: calculatorId });
 
-  const { serialNumber, model, closingDate } = calculator;
+  const { serialNumber, model, closingDate } = calculator || {};
 
   const getServiceZone =
     _.find(serviceZones, { id: serviceZone })?.name ?? 'Зона не определена';
@@ -128,11 +128,13 @@ const AddNodeForm = (props: any) => {
       <BlockTitle>2. Настройки соединения </BlockTitle>
       <ul>
         <List style={{ alignItems: 'center' }}>
-          <CalculatorInfo>
-            <IconTT icon="device" />
-            <DeviceModel>{model}</DeviceModel>{' '}
-            <DeviceSerial>({serialNumber})</DeviceSerial>
-          </CalculatorInfo>
+          {calculator ? (
+            <CalculatorInfo>
+              <IconTT icon="device" />
+              <DeviceModel>{model}</DeviceModel>{' '}
+              <DeviceSerial>({serialNumber})</DeviceSerial>
+            </CalculatorInfo>
+          ) : null}
           <DeviceDescription>
             <Description>
               {closingDate ? (
