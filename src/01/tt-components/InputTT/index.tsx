@@ -12,7 +12,6 @@ interface Props {
     | Dispatch<SetStateAction<string>>
     | Event<React.ChangeEvent<HTMLInputElement>>
     | ChangeEventHandler<HTMLInputElement>;
-
   // value: string | number | null
 }
 

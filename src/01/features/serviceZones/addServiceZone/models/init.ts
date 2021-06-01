@@ -7,8 +7,13 @@ import {
   cancelButtonClicked,
   $addZoneInput,
   $isAddServiceModalShown,
+  $addZoneStatus,
 } from './index';
-import { $serviceZones } from '../../selectServiceZones/models';
+import {
+  $chosenInput,
+  $serviceZones,
+  setChosenInput,
+} from '../../selectServiceZones/models';
 import { addServiceZone } from '../../../../_api/service_zones';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {
@@ -26,9 +31,8 @@ $isAddServiceModalShown.on(
   }
 );
 
-sendServiceZoneFx.use(
-  // async (serviceZoneName: string) => Promise.reject(serviceZoneName)
-  async (serviceZoneName: string) => addServiceZone(serviceZoneName)
+sendServiceZoneFx.use(async (serviceZoneName: string) =>
+  addServiceZone(serviceZoneName)
 );
 
 $isAddServiceModalShown.on(
@@ -46,3 +50,12 @@ forward({
 $serviceZones.on(sendServiceZoneFx.doneData, (s, a) => {
   return [...s, a];
 });
+
+$chosenInput.on(sendServiceZoneFx.doneData, (_, newInput) => {
+  return newInput;
+});
+
+$addZoneStatus
+  .on(sendServiceZoneFx, () => 'loading')
+  .on(sendServiceZoneFx.done, () => 'done')
+  .on(sendServiceZoneFx.fail, () => 'error');

@@ -6,36 +6,49 @@ import {
   nodeStatusList,
   serviceZoneList,
 } from '../../../tt-components/localBases';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import {
+  CalculatorIntoNodeResponse,
+  CalculatorResponse,
+  NodeResponse,
+} from '../../../../myApi';
+import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
   node: NodeResponse;
-  calculator: CalculatorResponse | null;
+  calculator: CalculatorIntoNodeResponse | null;
   task?: boolean;
 }
 
 const Information = ({ node, calculator, task = false }: HeaderInterface) => {
-  if (!node || !calculator) {
+  const data = useParams();
+
+  if (!node) {
     return null;
   }
 
   const {
-    serviceZone,
+    nodeServiceZone,
     nodeStatus,
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
   } = node;
 
-  const { address } = calculator;
-  const { city, street, housingStockNumber, corpus, id } = address;
+  // const { name } = nodeServiceZone;
 
-  const getServiceZone =
-    serviceZoneList.find(
-      (serviceZoneItem) => serviceZoneItem.value === serviceZone
-    )?.label ?? 'Зона не определена';
+  const { address } = calculator || {};
+  const { city, street, housingStockNumber, corpus, id } = address || {};
+
+  // const getServiceZone =
+  //   serviceZoneList.find(
+  //     (serviceZoneItem) => serviceZoneItem.value === serviceZone
+  //   )?.label ?? 'Зона не определена';
   const getNodeStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.label ?? 'Статус не определен';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.label ?? 'Статус не определен';
+
+  const renderAddressParam = (param: string | undefined | null) =>
+    param ? `, к.${param}` : '';
 
   return (
     <ListWrap>
@@ -43,15 +56,17 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
         <ListItem>
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
-            {`${city}, ${street}, ${housingStockNumber} ${
-              corpus ? `, к.${corpus}` : ''
-            }`}
+            {address
+              ? `${city}, ${street}, ${housingStockNumber} ${
+                  corpus ? `, к.${corpus}` : ''
+                }`
+              : ''}
           </Subtitle>
         </ListItem>
       ) : null}
       <ListItem>
         <span>Зона</span>
-        <div>{getServiceZone}</div>
+        <div>{nodeServiceZone?.name}</div>
       </ListItem>
       <ListItem>
         <span>Коммерческий учет показателей приборов</span>

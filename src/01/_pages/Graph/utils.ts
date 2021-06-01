@@ -5,7 +5,7 @@ import {
   ReportType,
 } from './components/GraphView';
 import { GraphParamsType } from './Graph';
-import { ResourceType } from '../../../myApi';
+import { EResourceType } from '../../../myApi';
 
 export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
@@ -106,7 +106,7 @@ export const getTickFormat = (
 };
 
 export const getGraphParams = (
-  resource: ResourceType,
+  resource: EResourceType,
   pipeCount: number
 ): GraphParamsType[] => {
   switch (resource) {

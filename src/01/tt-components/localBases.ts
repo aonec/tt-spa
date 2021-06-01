@@ -1,7 +1,7 @@
 import {
   ServiceZone,
-  HousingMeteringDeviceType,
-  MagistralType,
+  EHousingMeteringDeviceType,
+  EMagistralType,
 } from '../../myApi';
 
 export interface ItemInterface {
@@ -56,17 +56,17 @@ export const serviceLife = [
 ];
 
 interface HousingMeteringDeviceTypeInterface {
-  value: HousingMeteringDeviceType;
+  value: EHousingMeteringDeviceType;
   label: string;
 }
 
 export const housingMeteringDeviceTypes: Array<HousingMeteringDeviceTypeInterface> = [
   {
-    value: HousingMeteringDeviceType.FlowMeter,
+    value: EHousingMeteringDeviceType.FlowMeter,
     label: 'Расходомер',
   },
   {
-    value: HousingMeteringDeviceType.TemperatureSensor,
+    value: EHousingMeteringDeviceType.TemperatureSensor,
     label: 'Термодатчик',
   },
 ];
@@ -117,17 +117,17 @@ export const allResources = [
 ];
 
 interface MagistralsInterface {
-  value: MagistralType;
+  value: EMagistralType;
   label: string;
 }
 
 export const magistrals: Array<MagistralsInterface> = [
   {
-    value: MagistralType.FeedFlow,
+    value: EMagistralType.FeedFlow,
     label: 'Подающая',
   },
   {
-    value: MagistralType.FeedBackFlow,
+    value: EMagistralType.FeedBackFlow,
     label: 'Обратная',
   },
 ];
