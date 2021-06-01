@@ -22,8 +22,6 @@ interface HeaderInterface {
 const Information = ({ node, calculator, task = false }: HeaderInterface) => {
   const data = useParams();
 
-  debugger;
-
   if (!node) {
     return null;
   }
@@ -34,8 +32,6 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
     lastCommercialAccountingDate,
     futureCommercialAccountingDate,
   } = node;
-
-  debugger;
 
   // const { name } = nodeServiceZone;
 

@@ -34,7 +34,7 @@ const AddNodeFirstTab = () => {
   } = useContext(AddNodeContext);
 
   const validationSchema = Yup.object({
-    calculatorId: Yup.number().required(),
+    // calculatorId: Yup.number().required(),
     entryNumber: Yup.number().required(),
   });
 

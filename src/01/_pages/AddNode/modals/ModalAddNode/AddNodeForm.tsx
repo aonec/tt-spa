@@ -55,9 +55,7 @@ const AddNodeForm = (props: any) => {
 
   const calculator = _.find(calculators, { id: calculatorId });
 
-  debugger;
-
-  const { serialNumber, model, closingDate } = calculator;
+  const { serialNumber, model, closingDate } = calculator || {};
 
   const getServiceZone =
     _.find(serviceZones, { id: nodeServiceZoneId })?.name ??
@@ -89,8 +87,6 @@ const AddNodeForm = (props: any) => {
         communicationPipes: values.communicationPipes,
       };
       const addNodeForm = { ...node, communicationPipes };
-
-      debugger;
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
@@ -141,11 +137,13 @@ const AddNodeForm = (props: any) => {
       <BlockTitle>2. Настройки соединения </BlockTitle>
       <ul>
         <List style={{ alignItems: 'center' }}>
-          <CalculatorInfo>
-            <IconTT icon="device" />
-            <DeviceModel>{model}</DeviceModel>{' '}
-            <DeviceSerial>({serialNumber})</DeviceSerial>
-          </CalculatorInfo>
+          {calculator ? (
+            <CalculatorInfo>
+              <IconTT icon="device" />
+              <DeviceModel>{model}</DeviceModel>{' '}
+              <DeviceSerial>({serialNumber})</DeviceSerial>
+            </CalculatorInfo>
+          ) : null}
           <DeviceDescription>
             <Description>
               {closingDate ? (

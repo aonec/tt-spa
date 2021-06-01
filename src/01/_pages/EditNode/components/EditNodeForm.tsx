@@ -54,7 +54,6 @@ const EditNodeForm = ({
   setDeregisterDevice,
   setDeregisterDeviceValue,
 }: EditNodeFormInterface) => {
-  debugger;
   const {
     resource,
     number,
