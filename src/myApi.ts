@@ -95,11 +95,12 @@ export interface ApartmentListResponse {
 }
 
 export interface HousingStockAddressResponse {
-  /** @format int32 */
-  id: number;
   city: string | null;
   street: string | null;
   housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
   corpus: string | null;
 }
 
@@ -238,6 +239,10 @@ export enum EUserPermission {
   ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
   ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
   ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
+  HeatingStationRead = "HeatingStationRead",
+  HeatingStationCreate = "HeatingStationCreate",
+  HeatingStationUpdate = "HeatingStationUpdate",
+  HeatingStationDelete = "HeatingStationDelete",
   NodeRead = "NodeRead",
   NodeCreate = "NodeCreate",
   NodeUpdate = "NodeUpdate",
@@ -801,6 +806,7 @@ export interface ContractorUpdateRequest {
 
 export enum DataMigrationMethod {
   NodesHousingStockId = "NodesHousingStockId",
+  HeatingStationFill = "HeatingStationFill",
 }
 
 export enum DocumentType {
@@ -963,12 +969,51 @@ export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
   houseManagementId?: string;
 }
 
-export interface FullAddressResponse {
-  /** @format int32 */
-  id: number;
+export interface AddressResponse {
   city: string | null;
   street: string | null;
   housingStockNumber: string | null;
+}
+
+export interface HeatingStationResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  address: AddressResponse;
+  housingStocks: HousingStockShortResponse[] | null;
+}
+
+export interface HeatingStationResponseIEnumerableSuccessApiResponse {
+  successResponse: HeatingStationResponse[] | null;
+}
+
+export interface AddressRequest {
+  city: string;
+  street: string;
+  number: string;
+}
+
+export interface AddHeatingStationRequest {
+  name: string;
+  address?: AddressRequest;
+}
+
+export interface HeatingStationResponseSuccessApiResponse {
+  successResponse: HeatingStationResponse;
+}
+
+export interface UpdateHeatingStationRequest {
+  name?: string | null;
+  address?: AddressRequest;
+}
+
+export interface FullAddressResponse {
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
   corpus: string | null;
 
   /** @format int32 */
@@ -1348,6 +1393,17 @@ export interface HousingStockAddressRequest {
 
 export interface HousingStockCreateRequest {
   address: HousingStockAddressRequest;
+
+  /** @format uuid */
+  heatingStationId: string;
+  hasIndividualHeatingStation?: boolean;
+}
+
+export interface HeatingStationShortResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  address: AddressResponse;
 }
 
 export interface HousingStockResponse {
@@ -1379,6 +1435,8 @@ export interface HousingStockResponse {
 
   /** @format date-time */
   constructionDate: string | null;
+  hasIndividualHeatingStation: boolean;
+  heatingStation: HeatingStationShortResponse;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
@@ -1429,7 +1487,7 @@ export interface HousingStockListResponsePagedListSuccessApiResponse {
 
 export interface HousingStockUpdateRequest {
   address?: HousingStockAddressRequest;
-  houseCategory?: string | null;
+  houseCategory?: EHouseCategory;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -1455,6 +1513,10 @@ export interface HousingStockUpdateRequest {
 
   /** @format date-time */
   constructionDate?: string | null;
+  hasIndividualHeatingStation?: boolean | null;
+
+  /** @format uuid */
+  heatingStationId?: string | null;
 }
 
 export interface MeteringDeviceListResponse {
@@ -3553,6 +3615,94 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationList
+     * @request GET:/api/HeatingStation
+     * @secure
+     */
+    heatingStationList: (params: RequestParams = {}) =>
+      this.request<HeatingStationResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationCreate
+     * @request POST:/api/HeatingStation
+     * @secure
+     */
+    heatingStationCreate: (data: AddHeatingStationRequest, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationDetail
+     * @request GET:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationDetail: (id: string, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationUpdate
+     * @request PUT:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationUpdate: (id: string, data: UpdateHeatingStationRequest, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationDelete
+     * @request DELETE:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationDelete: (id: string, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "DELETE",
+        secure: true,
         ...params,
       }),
 

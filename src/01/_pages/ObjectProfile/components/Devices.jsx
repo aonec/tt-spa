@@ -9,6 +9,7 @@ import {
   serviceZoneList,
 } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
+import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
 
 function statusIcon(closingDate) {
   return !closingDate ? 'green' : 'red';
@@ -22,7 +23,7 @@ export const Devices = ({ nodes }) => {
   // Вычислитель
   const CalculatorItem = ({ calculator }) => {
     const [tasks, setTasks] = useState([]);
-    const { id, model, serialNumber, closingDate } = calculator;
+    const { id, model, serialNumber, closingDate } = calculator || {};
 
     const CalculatorTasksIcon = () =>
       tasks.length > 0 ? <IconTT icon="alarm" /> : null;
@@ -159,11 +160,13 @@ export const Devices = ({ nodes }) => {
     });
 
   const Result = ({ nodes }) => {
+    const calculators = groupNodesByCalculator(nodes);
+
     if (nodes) {
-      const res = nodes.map((node) => {
-        const { id, model, serialNumber, closingDate, calculator } = node;
+      const res = calculators.map((calculator) => {
+        const { id, model, serialNumber, closingDate, nodes } = calculator;
         return (
-          <div key={node.id}>
+          <div key={calculator.id}>
             <CalculatorItem calculator={calculator} />
             <NodesWithDevices nodes={nodes} closingDate={closingDate} />
           </div>

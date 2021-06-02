@@ -6,7 +6,8 @@ export function handleTabsBeforeFormSubmit(tabErrors, errors) {
     const res = _.find(tabErrors, (item) =>
       item.value.find((x) => keys.includes(x))
     );
-    return { hasError: true, errorTab: res.key };
+    debugger;
+    return { hasError: true, errorTab: res?.key };
   }
   return { hasError: false, errorTab: null };
 }

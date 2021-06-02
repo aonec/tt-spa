@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import moment from 'moment';
-import { NavLink, Link, useParams } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { CalculatorIntoNodeResponse, NodeResponse } from '../../../myApi';
+import { NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { getCalculator } from './apiNodeConnection';
 
@@ -15,16 +15,14 @@ interface ConnectionInterface {
 }
 
 const NodeConnection = ({
-  // calculator,
   node,
   edit = false,
   setDeregisterDeviceValue,
   setDeregisterDevice,
 }: ConnectionInterface) => {
-  // if (!calculator) return null;
-
   const { calculator } = node;
 
+  if (!calculator) return null;
   const {
     model,
     id,
