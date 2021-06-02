@@ -47,9 +47,9 @@ export const validationSchemaFlowMeter = Yup.object({
   serialNumber: Yup.string()
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите серийный номер'),
-  calculatorId: Yup.number()
-    .typeError('Вы не выбрали вычислитель')
-    .required('Выберите вычислитель'),
+  // calculatorId: Yup.number()
+  //   .typeError('Вы не выбрали вычислитель')
+  //   .required('Выберите вычислитель'),
   pipeNumber: Yup.number()
     .min(0)
     .max(10, 'Укажите число до 10')

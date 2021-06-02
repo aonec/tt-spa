@@ -16,8 +16,6 @@ interface HeaderInterface {
 }
 
 export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
-  debugger;
-
   const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;

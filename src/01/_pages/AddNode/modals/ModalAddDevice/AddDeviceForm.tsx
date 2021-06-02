@@ -34,6 +34,7 @@ import {
 import Title from '../../../../tt-components/Title';
 
 const AddDeviceForm = (props: any) => {
+  debugger;
   const { handleCancel } = props;
 
   const { node, communicationPipes, setCommunicationPipes } = useContext(

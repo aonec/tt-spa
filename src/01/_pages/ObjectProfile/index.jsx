@@ -9,7 +9,7 @@ import { Apartments } from './components/Apartments';
 import { Devices } from './components/Devices';
 import { useObjectInformation, useFetchPage } from './hooks';
 import Index from '../../tt-components/Breadcrumb';
-import { getCalculators, getNodes, getObject } from './apiObjectProfile';
+import { getNodes, getObject } from './apiObjectProfile';
 import MapObject from './components/MapObject';
 import { Loader } from '../../tt-components';
 import Tabs from '../../tt-components/Tabs';
@@ -55,7 +55,7 @@ export const ObjectProfile = () => {
   const { header = [], events = [], aparts = [] } = state;
 
   if (!object || !nodes) {
-    return <Loader show={true} size={64} />;
+    return <Loader size={'64'} />;
   }
   const context = {
     addCalculator,
@@ -134,11 +134,3 @@ export const ObjectProfile = () => {
 };
 
 export default ObjectProfile;
-
-// <Route path="/objects/(\\d+)/devices" exact>
-//   <Devices
-//     path="/*/devices"
-//     {...state?.devices}
-//     calculators={calculators}
-//   />
-// </Route>

@@ -18,7 +18,7 @@ function status(closingDate) {
   return !closingDate ? 'Активен' : 'Не активен';
 }
 
-export const Devices = ({ calculators }) => {
+export const Devices = ({ nodes }) => {
   // Вычислитель
   const CalculatorItem = ({ calculator }) => {
     const [tasks, setTasks] = useState([]);
@@ -143,24 +143,27 @@ export const Devices = ({ calculators }) => {
 
       const NodeDevices = () =>
         devicesOnNode.map((device) => (
-          <NodeDevice device={device} closingDate={closingDate} />
+          <NodeDevice
+            device={device}
+            closingDate={closingDate}
+            key={device.id}
+          />
         ));
 
       return (
-        <NodeWrap>
+        <NodeWrap key={node.id}>
           <NodeItem node={node} />
           {_.isEmpty(devicesOnNode) ? <NoNodeDevice /> : <NodeDevices />}
         </NodeWrap>
       );
     });
 
-  const Result = ({ calculators }) => {
-    if (calculators) {
-      const res = calculators.map((calculator) => {
-        const { id, model, serialNumber, closingDate, nodes } = calculator;
-
+  const Result = ({ nodes }) => {
+    if (nodes) {
+      const res = nodes.map((node) => {
+        const { id, model, serialNumber, closingDate, calculator } = node;
         return (
-          <div>
+          <div key={node.id}>
             <CalculatorItem calculator={calculator} />
             <NodesWithDevices nodes={nodes} closingDate={closingDate} />
           </div>
@@ -171,14 +174,14 @@ export const Devices = ({ calculators }) => {
     return <div>Загрузка</div>;
   };
 
-  if (!calculators) {
+  if (!nodes) {
     return <div>Загрузка</div>;
   }
 
   return (
     <div>
       <h2>Список приборов ОДПУ</h2>
-      <Result calculators={calculators} />
+      <Result nodes={nodes} />
     </div>
   );
 };
