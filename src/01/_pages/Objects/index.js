@@ -60,6 +60,7 @@ const initialState = {
   city: '',
   Street: '',
   HousingStockNumber: '',
+  Corpus: ''
 };
 
 export const Objects = ({ isReadings = false }) => {
