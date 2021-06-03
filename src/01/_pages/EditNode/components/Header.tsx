@@ -8,26 +8,17 @@ import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   node: NodeResponse;
-  calculator: CalculatorResponse | null;
   nodeId: number;
   setAddDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ node, calculator }: HeaderInterface) => {
-  const access = getAccessesList();
-
-  if (!node || !calculator) {
+export const Header = ({ node }: HeaderInterface) => {
+  if (!node) {
     return null;
   }
 
-  const { resource, nodeStatus, number } = node;
-  const {
-    id: objectId,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
-  } = calculator.address;
+  const { resource, nodeStatus, number, address } = node;
+  const { id: objectId, city, street, housingStockNumber, corpus } = address;
 
   const getNodeStatus =
     nodeStatusList.find(

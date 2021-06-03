@@ -95,11 +95,12 @@ export interface ApartmentListResponse {
 }
 
 export interface HousingStockAddressResponse {
-  /** @format int32 */
-  id: number;
   city: string | null;
   street: string | null;
   housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
   corpus: string | null;
 }
 
@@ -238,6 +239,14 @@ export enum EUserPermission {
   ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
   ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
   ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
+  HeatingStationRead = "HeatingStationRead",
+  HeatingStationCreate = "HeatingStationCreate",
+  HeatingStationUpdate = "HeatingStationUpdate",
+  HeatingStationDelete = "HeatingStationDelete",
+  NodeRead = "NodeRead",
+  NodeCreate = "NodeCreate",
+  NodeUpdate = "NodeUpdate",
+  NodeDelete = "NodeDelete",
 }
 
 export interface TokenResponse {
@@ -796,10 +805,8 @@ export interface ContractorUpdateRequest {
 }
 
 export enum DataMigrationMethod {
-  HousingStockNumberAndCorpus = "HousingStockNumberAndCorpus",
-  MeteringDeviceIsConnected = "MeteringDeviceIsConnected",
-  CommunicationPipeNumbers = "CommunicationPipeNumbers",
-  OldTasks = "OldTasks",
+  NodesHousingStockId = "NodesHousingStockId",
+  HeatingStationFill = "HeatingStationFill",
 }
 
 export enum DocumentType {
@@ -962,12 +969,51 @@ export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
   houseManagementId?: string;
 }
 
-export interface FullAddressResponse {
-  /** @format int32 */
-  id: number;
+export interface AddressResponse {
   city: string | null;
   street: string | null;
   housingStockNumber: string | null;
+}
+
+export interface HeatingStationResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  address: AddressResponse;
+  housingStocks: HousingStockShortResponse[] | null;
+}
+
+export interface HeatingStationResponseIEnumerableSuccessApiResponse {
+  successResponse: HeatingStationResponse[] | null;
+}
+
+export interface AddressRequest {
+  city: string;
+  street: string;
+  number: string;
+}
+
+export interface AddHeatingStationRequest {
+  name: string;
+  address?: AddressRequest;
+}
+
+export interface HeatingStationResponseSuccessApiResponse {
+  successResponse: HeatingStationResponse;
+}
+
+export interface UpdateHeatingStationRequest {
+  name?: string | null;
+  address?: AddressRequest;
+}
+
+export interface FullAddressResponse {
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
   corpus: string | null;
 
   /** @format int32 */
@@ -1136,9 +1182,6 @@ export interface UpdateHousingMeteringDeviceReadingsRequest {
 
 export interface CreatePipeConnectionRequest {
   /** @format int32 */
-  calculatorId: number;
-
-  /** @format int32 */
   entryNumber: number;
 
   /** @format int32 */
@@ -1173,9 +1216,6 @@ export interface UpdateHousingMeteringDeviceRequest {
   housingMeteringDeviceType?: EHousingMeteringDeviceType;
   resource?: EResourceType;
   model?: string | null;
-
-  /** @format int32 */
-  pipeId?: number | null;
   pipe?: CreatePipeConnectionRequest;
 
   /** @format int32 */
@@ -1281,9 +1321,6 @@ export interface CreateHousingMeteringDeviceRequest {
   housingMeteringDeviceType: EHousingMeteringDeviceType;
   resource: EResourceType;
   model: string;
-
-  /** @format int32 */
-  pipeId?: number | null;
   pipe?: CreatePipeConnectionRequest;
 
   /** @format int32 */
@@ -1356,6 +1393,17 @@ export interface HousingStockAddressRequest {
 
 export interface HousingStockCreateRequest {
   address: HousingStockAddressRequest;
+
+  /** @format uuid */
+  heatingStationId: string;
+  hasIndividualHeatingStation?: boolean;
+}
+
+export interface HeatingStationShortResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  address: AddressResponse;
 }
 
 export interface HousingStockResponse {
@@ -1387,6 +1435,8 @@ export interface HousingStockResponse {
 
   /** @format date-time */
   constructionDate: string | null;
+  hasIndividualHeatingStation: boolean;
+  heatingStation: HeatingStationShortResponse;
 }
 
 export interface HousingStockResponseSuccessApiResponse {
@@ -1437,7 +1487,7 @@ export interface HousingStockListResponsePagedListSuccessApiResponse {
 
 export interface HousingStockUpdateRequest {
   address?: HousingStockAddressRequest;
-  houseCategory?: string | null;
+  houseCategory?: EHouseCategory;
 
   /** @format int32 */
   numberOfEntrances?: number | null;
@@ -1463,6 +1513,10 @@ export interface HousingStockUpdateRequest {
 
   /** @format date-time */
   constructionDate?: string | null;
+  hasIndividualHeatingStation?: boolean | null;
+
+  /** @format uuid */
+  heatingStationId?: string | null;
 }
 
 export interface MeteringDeviceListResponse {
@@ -2047,6 +2101,7 @@ export enum ESecuredIdentityRoleName {
   Admin = "Admin",
   Worker = "Worker",
   ManagingFirmSpectator = "ManagingFirmSpectator",
+  ManagingFirmDispatcher = "ManagingFirmDispatcher",
 }
 
 export interface UserRoleResponse {
@@ -2213,7 +2268,8 @@ export interface NodeResponse {
   calculator: CalculatorIntoNodeResponse;
 
   /** @format int32 */
-  housingStockId: number | null;
+  housingStockId: number;
+  address: HousingStockAddressResponse;
   communicationPipes: CommunicationPipeResponse[] | null;
 }
 
@@ -2239,10 +2295,36 @@ export interface UpdateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+
+  /** @format int32 */
+  housingStockId?: number;
 }
 
-export interface NodeResponseListSuccessApiResponse {
-  successResponse: NodeResponse[] | null;
+export interface NodeResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+  items: NodeResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+}
+
+export interface NodeResponsePagedListSuccessApiResponse {
+  successResponse: NodeResponsePagedList;
 }
 
 export interface CreateCommunicationPipeRequest {
@@ -2256,6 +2338,9 @@ export interface CreateCommunicationPipeRequest {
 }
 
 export interface CreateNodeRequest {
+  /** @format int32 */
+  entryNumber?: number;
+
   /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
@@ -2273,6 +2358,9 @@ export interface CreateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+
+  /** @format int32 */
+  housingStockId?: number;
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
 }
 
@@ -3533,6 +3621,94 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HeatingStation
+     * @name HeatingStationList
+     * @request GET:/api/HeatingStation
+     * @secure
+     */
+    heatingStationList: (params: RequestParams = {}) =>
+      this.request<HeatingStationResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationCreate
+     * @request POST:/api/HeatingStation
+     * @secure
+     */
+    heatingStationCreate: (data: AddHeatingStationRequest, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationDetail
+     * @request GET:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationDetail: (id: string, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationUpdate
+     * @request PUT:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationUpdate: (id: string, data: UpdateHeatingStationRequest, params: RequestParams = {}) =>
+      this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HeatingStation
+     * @name HeatingStationDelete
+     * @request DELETE:/api/HeatingStation/{id}
+     * @secure
+     */
+    heatingStationDelete: (id: string, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HeatingStation/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Homeowners
      * @name HomeownersList
      * @request GET:/api/Homeowners
@@ -4687,8 +4863,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Nodes
      * @secure
      */
-    nodesList: (query?: { calculatorId?: number }, params: RequestParams = {}) =>
-      this.request<NodeResponseListSuccessApiResponse, ErrorApiResponse>({
+    nodesList: (
+      query?: { CalculatorId?: number | null; HousingStockId?: number | null; PageNumber?: number; PageSize?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
         method: "GET",
         query: query,

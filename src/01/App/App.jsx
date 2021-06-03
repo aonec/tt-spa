@@ -59,7 +59,8 @@ const Internal = () => {
           </menu>
           <main>
             <Switch>
-              <Redirect from={['/tasks', '/']} to="/tasks/executing" exact />
+              <Redirect from={'/'} to="/tasks/executing" exact />
+              <Redirect from={'/tasks'} to="/tasks/executing" exact />
               <Route
                 path="/tasks/(executing|observing|archived)/"
                 component={Tasks}

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -119,7 +121,7 @@ const FormEditODPU = ({
         model: values.model,
         diameter: Number(values.diameter),
         pipe: {
-          calculatorId: values.calculatorId,
+          // calculatorId: values.calculatorId,
           entryNumber: Number(values.entryNumber),
           pipeNumber: Number(values.pipeNumber),
           magistral: magistralEnum,

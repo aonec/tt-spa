@@ -9,6 +9,7 @@ import {
   serviceZoneList,
 } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
+import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
 
 function statusIcon(closingDate) {
   return !closingDate ? 'green' : 'red';
@@ -18,11 +19,11 @@ function status(closingDate) {
   return !closingDate ? 'Активен' : 'Не активен';
 }
 
-export const Devices = ({ calculators }) => {
+export const Devices = ({ nodes }) => {
   // Вычислитель
   const CalculatorItem = ({ calculator }) => {
     const [tasks, setTasks] = useState([]);
-    const { id, model, serialNumber, closingDate } = calculator;
+    const { id, model, serialNumber, closingDate } = calculator || {};
 
     const CalculatorTasksIcon = () =>
       tasks.length > 0 ? <IconTT icon="alarm" /> : null;
@@ -143,24 +144,29 @@ export const Devices = ({ calculators }) => {
 
       const NodeDevices = () =>
         devicesOnNode.map((device) => (
-          <NodeDevice device={device} closingDate={closingDate} />
+          <NodeDevice
+            device={device}
+            closingDate={closingDate}
+            key={device.id}
+          />
         ));
 
       return (
-        <NodeWrap>
+        <NodeWrap key={node.id}>
           <NodeItem node={node} />
           {_.isEmpty(devicesOnNode) ? <NoNodeDevice /> : <NodeDevices />}
         </NodeWrap>
       );
     });
 
-  const Result = ({ calculators }) => {
-    if (calculators) {
+  const Result = ({ nodes }) => {
+    const calculators = groupNodesByCalculator(nodes);
+
+    if (nodes) {
       const res = calculators.map((calculator) => {
         const { id, model, serialNumber, closingDate, nodes } = calculator;
-
         return (
-          <div>
+          <div key={calculator.id}>
             <CalculatorItem calculator={calculator} />
             <NodesWithDevices nodes={nodes} closingDate={closingDate} />
           </div>
@@ -171,14 +177,14 @@ export const Devices = ({ calculators }) => {
     return <div>Загрузка</div>;
   };
 
-  if (!calculators) {
+  if (!nodes) {
     return <div>Загрузка</div>;
   }
 
   return (
     <div>
       <h2>Список приборов ОДПУ</h2>
-      <Result calculators={calculators} />
+      <Result nodes={nodes} />
     </div>
   );
 };

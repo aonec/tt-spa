@@ -35,7 +35,7 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
 
   // const { name } = nodeServiceZone;
 
-  const { address } = calculator || {};
+  const { address } = node || {};
   const { city, street, housingStockNumber, corpus, id } = address || {};
 
   // const getServiceZone =
@@ -78,7 +78,11 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
       </ListItem>
       <ListItem>
         <span>Дата окончания действия акта-допуска</span>
-        <div>{moment(futureCommercialAccountingDate).format('DD.MM.YYYY')}</div>
+        <div>
+          {futureCommercialAccountingDate
+            ? moment(futureCommercialAccountingDate).format('DD.MM.YYYY')
+            : ''}
+        </div>
       </ListItem>
     </ListWrap>
   );

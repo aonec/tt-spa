@@ -86,7 +86,14 @@ const AddNodeForm = (props: any) => {
       const form = {
         communicationPipes: values.communicationPipes,
       };
-      const addNodeForm = { ...node, communicationPipes };
+
+      // если в форме есть calculator (id), то отправляем так как есть
+      // если его нет, то добавляем в форму housingStockId
+      const addNodeForm = {
+        ...node,
+        communicationPipes,
+        housingStockId: +housingStockId,
+      };
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
