@@ -104,6 +104,7 @@ export const Objects = ({ isReadings = false }) => {
                 number,
                 numberOfTasks,
                 street,
+                corpus,
                 numberOfApartments,
               }) => {
                 const task = numberOfTasks ? (
@@ -122,7 +123,7 @@ export const Objects = ({ isReadings = false }) => {
                     >
                       <span>
                         <h4 style={{ whiteSpace: 'nowrap' }}>
-                          {street}, {number}
+                          {street}, {number} {corpus ? `, к.${corpus}` : null}
                         </h4>
                         {task}
                       </span>
