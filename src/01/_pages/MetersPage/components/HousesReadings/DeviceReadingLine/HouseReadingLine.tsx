@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import { Footer, Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
   const textInput = React.createRef<Input>();
@@ -100,7 +101,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
         title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
         onOk={handleOk}
         onCancel={handleCancel}
-        // afterClose={afterCloseHandler}
         width={800}
         footer={
           <Footer>
@@ -161,51 +161,6 @@ const OwnerName = styled.div`
 const Consumption = styled.div`
   &:not(:last-child) {
     padding-bottom: 16px;
-  }
-`;
-const ModalText = styled.p`
-  color: var(--main-100);
-  margin: 0;
-`;
-
-const Footer = styled.div`
-  background-color: var(--bg);
-  height: 96px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 32px;
-  font-weight: 700;
-`;
-
-const Header = styled.h1`
-  font-size: 32px;
-  line-height: 1.5;
-  font-weight: 300;
-  margin: 0;
-`;
-
-const StyledModal = styled(Modal)`
-  .ant-modal-header {
-    padding: 24px 32px;
-    border: 0;
-  }
-
-  .ant-modal-body {
-    padding: 0 32px 32px 32px;
-  }
-
-  .ant-modal-footer {
-    padding: 0;
-  }
-
-  .ant-modal-close-x {
-    fill: var(--main-100);
-  }
-
-  .ant-modal-footer button + button {
-    margin-bottom: 0;
-    margin-left: 16px;
   }
 `;
 
