@@ -15,6 +15,7 @@ import {
 } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, InputTT } from '01/tt-components';
 import { Form } from 'antd';
+import { Loader } from '01/_components/Loader';
 
 export const AddContractorsFormModal = () => {
   const { fields, submit, eachValid } = useForm(addContractorsForm);
@@ -40,8 +41,13 @@ export const AddContractorsFormModal = () => {
           <ButtonTT color={'white'} key="back" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT color="blue" key="submit" onClick={onSubmit}>
-            Добавить
+          <ButtonTT
+            color="blue"
+            disabled={pending}
+            key="submit"
+            onClick={onSubmit}
+          >
+            {pending ? <Loader show={true} /> : 'Добавить'}
           </ButtonTT>
         </Footer>
       }

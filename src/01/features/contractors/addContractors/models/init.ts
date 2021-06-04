@@ -6,7 +6,8 @@ import {
   cancelAddingContractorsButtonClicked,
   postContractorsFx,
 } from '.';
-import { forward, merge } from 'effector';
+import { forward, merge, sample } from 'effector';
+import { $contractors } from '../../displayContractors/models';
 
 $isAddContractorsModalVisible.on(
   merge([
@@ -17,11 +18,24 @@ $isAddContractorsModalVisible.on(
   (isVisible) => !isVisible
 );
 
-postContractorsFx.use(postContractors);
+postContractorsFx.use(
+  // () =>
+  //   new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       reject({ message: 'Ошибка' });
+  //     }, 2000);
+  //   })
+
+  postContractors
+);
 
 forward({
   from: addContractorsForm.formValidated,
   to: postContractorsFx,
 });
+
+$contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
+  contractors ? [...contractors, contractor] : [contractor]
+);
 
 // $contractors.on(postContractorsFx.doneData, (contractors, newContractor) => [...contractors, newContractor]))

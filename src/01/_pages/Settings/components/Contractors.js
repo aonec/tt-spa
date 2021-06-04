@@ -1,6 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import { EditButtonTT, Title } from '../../../tt-components';
-import { SettingsContext } from '../index';
+import React from 'react';
 import classes from '../Settings.module.scss';
 import { Link } from 'react-router-dom';
 import {

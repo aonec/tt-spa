@@ -6,9 +6,6 @@ export const $isAddContractorsModalVisible = createStore(false);
 export type OrganizationNameType = string | null;
 export type OrganizationEmailType = string | null;
 
-// export const $organizationName = createStore<OrganizationNameType>(null);
-// export const $organizationEmail = createStore<OrganizationEmailType>(null);
-
 export const addContractorsButtonMenuClicked = createEvent();
 export const addContractorsButtonClicked = createEvent();
 export const cancelAddingContractorsButtonClicked = createEvent();
