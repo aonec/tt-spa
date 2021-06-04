@@ -1,13 +1,13 @@
-import { addContractorsForm } from './index';
-import { postContractors } from '../../../../_api/contractors';
+import { $isFailedAddingContractor, addContractorsForm } from './index';
 import {
   $isAddContractorsModalVisible,
   addContractorsButtonMenuClicked,
   cancelAddingContractorsButtonClicked,
   postContractorsFx,
 } from '.';
-import { forward, merge, sample } from 'effector';
+import { forward, merge } from 'effector';
 import { $contractors } from '../../displayContractors/models';
+import { postContractors } from '01/_api/contractors';
 
 $isAddContractorsModalVisible.on(
   merge([
@@ -18,16 +18,11 @@ $isAddContractorsModalVisible.on(
   (isVisible) => !isVisible
 );
 
-postContractorsFx.use(
-  // () =>
-  //   new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       reject({ message: 'Ошибка' });
-  //     }, 2000);
-  //   })
+$isFailedAddingContractor
+  .on(postContractorsFx.failData, () => true)
+  .reset(addContractorsForm.formValidated);
 
-  postContractors
-);
+postContractorsFx.use(postContractors);
 
 forward({
   from: addContractorsForm.formValidated,
@@ -37,5 +32,3 @@ forward({
 $contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
   contractors ? [...contractors, contractor] : [contractor]
 );
-
-// $contractors.on(postContractorsFx.doneData, (contractors, newContractor) => [...contractors, newContractor]))

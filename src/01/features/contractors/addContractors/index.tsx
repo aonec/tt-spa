@@ -3,6 +3,7 @@ import { useForm } from 'effector-forms';
 import { useStore } from 'effector-react';
 import {
   $isAddContractorsModalVisible,
+  $isFailedAddingContractor,
   addContractorsForm,
   cancelAddingContractorsButtonClicked,
   postContractorsFx,
@@ -14,13 +15,19 @@ import {
   StyledModal,
 } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, InputTT } from '01/tt-components';
-import { Form } from 'antd';
+import { Alert, Form } from 'antd';
 import { Loader } from '01/_components/Loader';
+import styled from 'styled-components';
+
+const ErrorMessage = styled.p`
+  color: red;
+`;
 
 export const AddContractorsFormModal = () => {
   const { fields, submit, eachValid } = useForm(addContractorsForm);
   const pending = useStore(postContractorsFx.pending);
   const isVisible = useStore($isAddContractorsModalVisible);
+  const isFailedAddingContractor = useStore($isFailedAddingContractor);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -28,6 +35,18 @@ export const AddContractorsFormModal = () => {
   };
 
   const onCancel = () => cancelAddingContractorsButtonClicked();
+
+  const renderPostContractsAlert = () =>
+    isFailedAddingContractor ? (
+      <Alert
+        message="Ошибка"
+        description="Не удалось добавить котрагента. Пожалуйста, обновите страницу или повторите попытку позже."
+        type="error"
+        showIcon
+        closable
+        style={{ marginBottom: 24 }}
+      />
+    ) : null;
 
   return (
     <StyledModal
@@ -53,18 +72,21 @@ export const AddContractorsFormModal = () => {
       }
     >
       <ModalText>
+        {renderPostContractsAlert()}
         <form onSubmit={onSubmit}>
           <Form.Item label="Название организации">
             <InputTT
-              name="Название организации"
+              name="name"
               type="text"
               value={fields.name.value}
               disabled={pending}
               onChange={(e) => fields.name.onChange(e.target.value)}
             />
-            {/* {fields.name.errorText({
-                  required: 'name required',
-                })} */}
+            <ErrorMessage>
+              {fields.name.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
           </Form.Item>
           <Form.Item label="Электронная почта">
             <InputTT
@@ -73,10 +95,12 @@ export const AddContractorsFormModal = () => {
               disabled={pending}
               onChange={(e) => fields.email.onChange(e.target.value)}
             />
+            <ErrorMessage>
+              {fields.email.errorText({
+                email: 'Введите корректный адрес электронной почты',
+              })}
+            </ErrorMessage>
           </Form.Item>
-          {/* {fields.email.errorText({
-                required: 'email required',
-              })} */}
           <button
             disabled={!eachValid || pending}
             type="submit"

@@ -2,6 +2,7 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
 
 export const $isAddContractorsModalVisible = createStore(false);
+export const $isFailedAddingContractor = createStore(false);
 
 export type OrganizationNameType = string | null;
 export type OrganizationEmailType = string | null;
@@ -12,35 +13,32 @@ export const cancelAddingContractorsButtonClicked = createEvent();
 
 export const addContractorsForm = createForm({
   fields: {
-    email: {
-      init: '', // field's store initial value
+    name: {
+      init: '',
       rules: [
         {
-          name: 'email',
-          validator: (value: string) => {
-            return true;
-          },
-          validateOn: ['change'],
+          name: 'required',
+          validator: (value: string) => Boolean(value),
         },
       ],
     },
-    name: {
-      init: '', // field's store initial value
+    email: {
+      init: '',
       rules: [
-        // {
-        //     name: "required",
-        //     validator: (value: string) => Boolean(value),
-        // }
+        {
+          name: 'email',
+          validator: (value: string) => /\S+@\S+\.\S+/.test(value),
+        },
       ],
     },
   },
-  validateOn: ['submit', 'change'],
+  validateOn: ['submit'],
 });
 
 export const postContractorsFx = createEffect<
-    {
-      name: OrganizationNameType;
-      email: OrganizationEmailType;
-    },
+  {
+    name: OrganizationNameType;
+    email: OrganizationEmailType;
+  },
   any
 >();
