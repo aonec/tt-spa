@@ -1,4 +1,8 @@
-import { $isFailedAddingContractor, addContractorsForm } from './index';
+import {
+  $isFailedAddingContractor,
+  addContractorsForm,
+  addContractorsButtonClicked,
+} from './index';
 import {
   $isAddContractorsModalVisible,
   addContractorsButtonMenuClicked,
@@ -20,7 +24,7 @@ $isAddContractorsModalVisible.on(
 
 $isFailedAddingContractor
   .on(postContractorsFx.failData, () => true)
-  .reset(addContractorsForm.formValidated);
+  .reset(postContractorsFx, addContractorsForm.submit);
 
 postContractorsFx.use(postContractors);
 

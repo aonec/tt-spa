@@ -21,6 +21,7 @@ export const addContractorsForm = createForm({
           validator: (value: string) => Boolean(value),
         },
       ],
+      validateOn: ['change'],
     },
     email: {
       init: '',

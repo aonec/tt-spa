@@ -3,6 +3,7 @@ import { createGate } from 'effector-react';
 import { ContractorResponse } from 'myApi';
 
 export const $contractors = createStore<ContractorResponse[] | null>(null);
+export const $isFetchingContractorsFailed = createStore(false)
 
 export const getContractorsFx = createEffect<any, any>();
 
