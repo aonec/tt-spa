@@ -65,7 +65,7 @@ export const Nodes = ({ device }: NodesInterface) => {
         </NameWrap>
 
         <NodeStatus nodeStatus={nodeStatus.value} />
-        <Span>{nodeServiceZone.name}</Span>
+        <Span>{nodeServiceZone?.name}</Span>
       </ListItem>
     );
   });
