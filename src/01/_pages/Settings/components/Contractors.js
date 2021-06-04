@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { EditButtonTT, Title } from '../../../tt-components';
 import { SettingsContext } from '../index';
 import classes from '../Settings.module.scss';
@@ -7,15 +7,12 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { useStore } from 'react-redux';
+import { useStore } from 'effector-react';
 
 const Contractors = () => {
   const contractors = useStore($contractors);
 
-  const { items } = contractors || {};
-  console.log('contractors', items);
-
-  const contractorsList = items?.map((contractor, index) => {
+  const contractorsList = contractors?.map((contractor, index) => {
     const { name, email, phoneNumber } = contractor;
     return (
       <li className={classes.staff} key={index}>

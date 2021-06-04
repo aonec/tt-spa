@@ -1,10 +1,18 @@
 import { requestContractors } from '../../../../_api/contractors';
-import { ContractorsGate, getContractorsFx } from './index';
-import { forward } from 'effector';
+import { $contractors, ContractorsGate, getContractorsFx } from './index';
+import { forward, guard } from 'effector';
 
-getContractorsFx.use(requestContractors)
+getContractorsFx.use(requestContractors);
+
+$contractors.on(getContractorsFx.doneData, (contractors, response) =>
+  contractors ? [...contractors, ...response.items] : response.items
+);
 
 forward({
-  from: ContractorsGate.open,
+  from: guard({
+    source: $contractors,
+    clock: ContractorsGate.open,
+    filter: (contractors) => contractors === null,
+  }),
   to: getContractorsFx,
 });
