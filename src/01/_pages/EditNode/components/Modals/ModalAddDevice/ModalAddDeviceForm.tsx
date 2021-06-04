@@ -115,7 +115,6 @@ const ModalAddDeviceForm = ({
     calculatorId,
   } = node || DEFAULT_NODE;
 
-  debugger;
   const { city, street, housingStockNumber, corpus } = address;
 
   const entryNumber = communicationPipes?.length
