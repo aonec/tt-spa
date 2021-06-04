@@ -1,8 +1,5 @@
 import React from 'react';
 import TabsDevices from './components/TabsDevices';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../Redux/store';
-import { DevicePageType } from '../../Redux/rootReducer';
 
 export const DevicesFromSearch = () => {
   return (

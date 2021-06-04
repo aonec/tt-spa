@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
 
 const StyledMenuButton = styled(Button).attrs((props) => ({
   form: props.form,
@@ -18,8 +19,21 @@ const MenuItem = styled(Menu.Item)`
   min-width: 408px;
   color: ${(props) => props.color || 'var(--primary)'};
 `;
+
+export interface MenuButtonInterface {
+  title: string;
+  cb: VoidFunction;
+  show: boolean;
+  color: string;
+  clickable?: boolean;
+}
+
+interface Props {
+  menuButtonArr: MenuButtonInterface[] | null;
+  size?: SizeType;
+}
+
 export const MenuButtonTT = (props: any) => {
-  // console.log('props', props);
   const { menuButtonArr: arr, size } = props;
 
   function getCurrentColor(color: string) {
@@ -39,11 +53,10 @@ export const MenuButtonTT = (props: any) => {
 
   const menu = (
     <Menu>
-      {arr.map((item: any) => {
+      {arr?.map((item: any) => {
         const { title, cb, color, clickable, show = false } = item;
 
         const currentColor = getCurrentColor(color);
-        // console.log("clickable", clickable)
         if (!show) {
           return null;
         }
@@ -59,7 +72,7 @@ export const MenuButtonTT = (props: any) => {
 
   return (
     <Dropdown overlay={menu} trigger={['click']}>
-      <StyledMenuButton size={props.size}>
+      <StyledMenuButton size={size}>
         <MoreOutlined />
       </StyledMenuButton>
     </Dropdown>

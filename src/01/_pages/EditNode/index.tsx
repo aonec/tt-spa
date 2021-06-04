@@ -44,7 +44,7 @@ export const EditNode = () => {
     setTab(value);
   }
 
-  if (!node || !calculator) {
+  if (!node) {
     return <div>ЗАГРУЗКА</div>;
   }
 
@@ -81,11 +81,10 @@ export const EditNode = () => {
     <EditNodeContext.Provider value={context}>
       <PageGate />
       <Breadcrumb path={`/nodes/${nodeId}`} />
-      <Header calculator={calculator} node={node} nodeId={nodeId} />
+      <Header node={node} nodeId={nodeId} />
       <div style={{ width: '66%' }}>
         <Tabs tabItems={tabItems} tabsType={'tabs'} />
         <EditNodeForm
-          calculator={calculator}
           currentTabKey={currentTabKey}
           node={node}
           setAlertVisible={setAlertVisible}
@@ -103,7 +102,7 @@ export const EditNode = () => {
       <ModalAddDevice
         visible={visibleAddDevice}
         setVisible={setVisibleAddDevice}
-        calculator={calculator}
+        // calculator={calculator}
         node={node}
       />
     </EditNodeContext.Provider>

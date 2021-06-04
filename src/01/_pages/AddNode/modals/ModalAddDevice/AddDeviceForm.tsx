@@ -32,6 +32,19 @@ import {
   TabsItemInterface,
 } from '../../../../tt-components/interfaces';
 import Title from '../../../../tt-components/Title';
+import {
+  CalculatorIntoNodeResponse,
+  CommunicationPipeResponse,
+  EResourceType,
+  HousingStockAddressResponse,
+  ManagementFirmResponse,
+  MeteringDeviceConnection,
+  NodeCommercialStatusResponse,
+  NodeHeatingSeasonListResponse,
+  NodeIntoCalculatorResponse,
+  NodeServiceZoneResponse,
+  ServiceZone,
+} from '../../../../../myApi';
 
 const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;

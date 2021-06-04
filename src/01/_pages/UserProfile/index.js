@@ -77,7 +77,7 @@ export const UserProfile = () => {
   }
   const { userRoleIds } = user;
 
-  const isTrue = (id) => userRoleIds.find((item) => item === id);
+  const isTrue = (id) => userRoleIds?.find((item) => item === id);
 
   const isManagingFirmStaff = isTrue(1334534);
   const isManagingFirmAdministrator = isTrue(1334533);

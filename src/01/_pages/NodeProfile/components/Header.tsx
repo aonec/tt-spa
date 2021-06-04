@@ -4,13 +4,13 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   node: NodeResponse;
-  calculator: CalculatorResponse | null;
+  calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
 }
@@ -20,18 +20,12 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   const access = getAccessesList();
   const { show } = access;
 
-  if (!node || !calculator) {
+  if (!node) {
     return null;
   }
 
-  const { resource, nodeStatus, number } = node;
-  const {
-    id: objectId,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
-  } = calculator.address;
+  const { resource, nodeStatus, number, address } = node;
+  const { id: objectId, city, street, housingStockNumber, corpus } = address;
 
   const menuButtonArr: MenuButtonInterface[] = [
     {
@@ -51,11 +45,13 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   ];
 
   const getNodeStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.label ?? 'Статус не определен';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.icon ?? 'close';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.icon ?? 'close';
 
   const NodeStatus = () => (
     <div

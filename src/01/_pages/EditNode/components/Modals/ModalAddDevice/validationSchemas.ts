@@ -37,8 +37,8 @@ export const validationSchemaFlowMeter = Yup.object({
   housingMeteringDeviceType: yupHousingMeteringDeviceType,
   model: yupModel,
   serialNumber: yupSerialNumber,
-  calculatorId: yupCalculatorId,
-  entryNumber: yupEntryNumber,
+  // calculatorId: yupCalculatorId,
+  // entryNumber: yupEntryNumber,
   pipeNumber: yupPipeNumber,
   diameter: yupDiameter,
 });
@@ -46,7 +46,7 @@ export const validationSchemaTemperatureSensor = Yup.object({
   housingMeteringDeviceType: yupHousingMeteringDeviceType,
   model: yupModel,
   serialNumber: yupSerialNumber,
-  calculatorId: yupCalculatorId,
-  entryNumber: yupEntryNumber,
+  // calculatorId: yupCalculatorId,
+  // entryNumber: yupEntryNumber,
   pipeNumber: yupPipeNumber,
 });

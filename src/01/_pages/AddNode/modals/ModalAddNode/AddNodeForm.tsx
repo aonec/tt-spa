@@ -20,14 +20,27 @@ import { useHistory } from 'react-router-dom';
 import { AddNodeContext } from '../../AddNodeContext';
 import { addNode } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
+import { useStore } from 'effector-react';
+import {
+  $derivedChosenInput,
+  $serviceZones,
+} from '../../../../features/serviceZones/selectServiceZones/models';
 
 const AddNodeForm = (props: any) => {
   const history = useHistory();
   const { handleCancel } = props;
 
-  const { node, housingStockId, calculators, communicationPipes } = useContext(
-    AddNodeContext
-  );
+  const {
+    node,
+    housingStockId,
+    calculators,
+    communicationPipes,
+    housingStock,
+  } = useContext(AddNodeContext);
+
+  const serviceZones = useStore($serviceZones);
+
+  const { id, city, street, number: houseNumber, corpus } = housingStock;
 
   const {
     calculatorId,
@@ -37,15 +50,15 @@ const AddNodeForm = (props: any) => {
     nodeStatus,
     number,
     resource,
-    serviceZone,
+    nodeServiceZoneId,
   } = node;
 
   const calculator = _.find(calculators, { id: calculatorId });
 
-  const { serialNumber, model, closingDate } = calculator;
+  const { serialNumber, model, closingDate } = calculator || {};
 
   const getServiceZone =
-    _.find(serviceZoneList, { value: serviceZone })?.label ??
+    _.find(serviceZones, { id: nodeServiceZoneId })?.name ??
     'Зона не определена';
   const getNodeStatus =
     _.find(nodeStatusList, { value: nodeStatus })?.label ??
@@ -73,7 +86,14 @@ const AddNodeForm = (props: any) => {
       const form = {
         communicationPipes: values.communicationPipes,
       };
-      const addNodeForm = { ...node, communicationPipes };
+
+      // если в форме есть calculator (id), то отправляем так как есть
+      // если его нет, то добавляем в форму housingStockId
+      const addNodeForm = {
+        ...node,
+        communicationPipes,
+        housingStockId: +housingStockId,
+      };
 
       addNode(addNodeForm).then((res) => {
         console.log('addNodeFormResponseFromServer', res);
@@ -88,7 +108,9 @@ const AddNodeForm = (props: any) => {
       <ul>
         <List>
           <Info>Адрес</Info>
-          <Description>Нижнекамск, ул. Мира, 36</Description>
+          <Description>{`${city}, ${street}, ${houseNumber} ${
+            corpus ? ',' + corpus : ''
+          }`}</Description>
         </List>
         <List>
           <Info>Тип ресурса</Info>
@@ -122,11 +144,13 @@ const AddNodeForm = (props: any) => {
       <BlockTitle>2. Настройки соединения </BlockTitle>
       <ul>
         <List style={{ alignItems: 'center' }}>
-          <CalculatorInfo>
-            <IconTT icon="device" />
-            <DeviceModel>{model}</DeviceModel>{' '}
-            <DeviceSerial>({serialNumber})</DeviceSerial>
-          </CalculatorInfo>
+          {calculator ? (
+            <CalculatorInfo>
+              <IconTT icon="device" />
+              <DeviceModel>{model}</DeviceModel>{' '}
+              <DeviceSerial>({serialNumber})</DeviceSerial>
+            </CalculatorInfo>
+          ) : null}
           <DeviceDescription>
             <Description>
               {closingDate ? (

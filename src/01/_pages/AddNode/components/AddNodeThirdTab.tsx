@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _ from 'lodash';
-import styled from 'styled-components';
 
 import {
   Title,

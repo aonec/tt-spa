@@ -20,7 +20,38 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
     Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
   );
 
-  const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
+  const renderAccuracyLegendLine = () => {
+    const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
+    if (!isAccuracyRendered) {
+      return null;
+    }
+    return <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>;
+  };
+
+  const renderAccuracyValue = () => {
+    const isAccuracyRendered = renderForHeatAndDeltaMass(resource, graphParam);
+
+    if (!isAccuracyRendered) {
+      return null;
+    }
+
+    return (
+      <Tooltip
+        getPopupContainer={(triggerNode) =>
+          triggerNode.parentNode as HTMLElement
+        }
+        color={'var(--main-100)'}
+        title={
+          absoluteDelta === 0
+            ? 'Абсолютная погрешность крайне мала'
+            : `Абсолютная погрешность ${absoluteDelta} т`
+        }
+      >
+        <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
+        <Accuracy>Относительная погрешность</Accuracy>
+      </Tooltip>
+    );
+  };
 
   return (
     <LegendWrapper>
@@ -28,26 +59,9 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
         <LegendLine resource={resource} style={{ marginBottom: 16 }}>
           Текущий период
         </LegendLine>
-        {isAccuracyRendered ? (
-          <LegendLine color={'var(--main-100)'}>Среднее значение</LegendLine>
-        ) : null}
+        {renderAccuracyLegendLine()}
       </div>
-      {isAccuracyRendered ? (
-        <Tooltip
-          getPopupContainer={(triggerNode) =>
-            triggerNode.parentNode as HTMLElement
-          }
-          color={'var(--main-100)'}
-          title={
-            absoluteDelta === 0
-              ? 'Абсолютная погрешность крайне мала'
-              : `Абсолютная погрешность ${absoluteDelta} т`
-          }
-        >
-          <Percents>{Math.abs(deltaMassAccuracy).toFixed(1)}%</Percents>
-          <Accuracy>Относительная погрешность</Accuracy>
-        </Tooltip>
-      ) : null}
+      {renderAccuracyValue()}
     </LegendWrapper>
   );
 };

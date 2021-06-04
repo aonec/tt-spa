@@ -62,15 +62,6 @@ export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
           </State>
           <Span>{`Ввод: ${entryNumber ?? ''}`}</Span>
           <Span>{`Труба: ${pipeNumber ?? ''}`}</Span>
-          {/*{edit ? (*/}
-          {/*  <Link*/}
-          {/*    to={`/housingMeteringDevices/${id}/edit_odpu`}*/}
-          {/*    title="Редактирование ОДПУ"*/}
-          {/*    style={{ display: 'inline-flex', width: 'min-content' }}*/}
-          {/*  >*/}
-          {/*    <IconTT icon="edit" />*/}
-          {/*  </Link>*/}
-          {/*) : null}*/}
         </ListItem>
       );
     });

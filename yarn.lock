@@ -5485,6 +5485,11 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+effector-forms@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/effector-forms/-/effector-forms-0.0.21.tgz#80edfbc3468d9b4dbd0d179e895dca8290071f61"
+  integrity sha512-+v/jnI0fzzugWMNwHWDhPAVTpSbRjBEd26j9uQWnfBVJGrMDpUBkKX3exDhNw2Oa/ibt6p0l43e5FxnGeS9N+Q==
+
 effector-react@^21.3.2:
   version "21.3.2"
   resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-21.3.2.tgz#1ef52bf72fb304cb76e8bd1d7b75dd5f588ff661"

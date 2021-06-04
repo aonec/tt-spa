@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -19,10 +21,9 @@ import {
   StyledFormPage,
   styles,
 } from '../../../tt-components';
-import { handleTabsBeforeFormSubmit } from '../../../utils/handleTabsBeforeFormSubmit';
 import {
   HousingMeteringDeviceResponse,
-  MagistralType,
+  EMagistralType,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 import { putOdpu } from './apiEditOdpu';
@@ -107,7 +108,7 @@ const FormEditODPU = ({
     initialValues: initialValues,
     validationSchema,
     onSubmit: () => {
-      const magistralEnum: MagistralType = values.magistral as MagistralType;
+      const magistralEnum: EMagistralType = values.magistral as EMagistralType;
 
       const form: UpdateHousingMeteringDeviceRequest = {
         serialNumber: values.serialNumber,
@@ -120,7 +121,7 @@ const FormEditODPU = ({
         model: values.model,
         diameter: Number(values.diameter),
         pipe: {
-          calculatorId: values.calculatorId,
+          // calculatorId: values.calculatorId,
           entryNumber: Number(values.entryNumber),
           pipeNumber: Number(values.pipeNumber),
           magistral: magistralEnum,

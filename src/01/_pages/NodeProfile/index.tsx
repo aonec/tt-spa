@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
@@ -19,6 +21,7 @@ import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
+import HousingMeteringDeviceReadings from '../../features/HousingMeteringDeviceReadings/components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -28,21 +31,11 @@ export const NodeProfile = () => {
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
   const { data: node, status, run } = useAsync<NodeResponse | null>();
-  const {
-    data: calculator,
-    status: statusCalculator,
-    run: runCalculator,
-  } = useAsync<CalculatorResponse>();
+  const { calculator } = node || {};
 
   useEffect(() => {
     run(getNode(nodeId));
   }, [nodeId]);
-
-  useEffect(() => {
-    node && node.calculatorId
-      ? runCalculator(getCalculator(node.calculatorId))
-      : console.log('wait');
-  }, [node]);
 
   useEffect(() => {
     getNodeTasks(nodeId).then((res) => {
@@ -50,7 +43,7 @@ export const NodeProfile = () => {
     });
   }, []);
 
-  if (!node || !calculator || !tasks) {
+  if (!node) {
     return <Loader size={'32'} show />;
   }
 
@@ -84,6 +77,14 @@ export const NodeProfile = () => {
       key: 'stats',
       cb: () => {
         push(`${path}/stats`);
+      },
+    },
+    {
+      title: 'Ввод показаний',
+      key: 'readings',
+      cb: () => {
+        console.log('readings');
+        push(`${path}/readings`);
       },
     },
     {
@@ -142,8 +143,13 @@ export const NodeProfile = () => {
             </>
           )}
         </Route>
+
+        <Route path={`${path}/readings`} exact>
+          <HousingMeteringDeviceReadings nodeId={nodeId} resource={resource} />
+        </Route>
+
         <Route path={`${path}/connection`} exact>
-          <NodeConnection calculator={calculator} edit={false} />
+          <NodeConnection node={node} edit={false} />
         </Route>
         <Route path={`${path}/related`} exact>
           <NodeRelatedDevices node={node} />

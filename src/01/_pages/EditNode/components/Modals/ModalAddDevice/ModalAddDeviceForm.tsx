@@ -54,13 +54,13 @@ import Warning from '../../../../../tt-components/Warning';
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: NodeResponse;
-  calculator: CalculatorResponse;
+  // calculator: CalculatorResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalAddDeviceForm = ({
   node,
-  calculator,
+  // calculator,
   handleCancel,
   setVisible,
 }: ModalAddDeviceFormInterface) => {
@@ -102,8 +102,7 @@ const ModalAddDeviceForm = ({
     },
   ];
 
-  const { address, id: calculatorId } = calculator || DEFAULT_CALCULATOR;
-  const { city, street, housingStockNumber, corpus } = address;
+  // const { id: calculatorId } = calculator || DEFAULT_CALCULATOR;
   const {
     futureCommercialAccountingDate,
     lastCommercialAccountingDate,
@@ -112,9 +111,13 @@ const ModalAddDeviceForm = ({
     resource,
     serviceZone,
     communicationPipes,
+    address,
+    calculatorId,
   } = node || DEFAULT_NODE;
 
-  const entryNumber = communicationPipes
+  const { city, street, housingStockNumber, corpus } = address;
+
+  const entryNumber = communicationPipes?.length
     ? communicationPipes[0].entryNumber
     : null;
 
@@ -146,7 +149,7 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0].value,
     number,
-    nodeStatus,
+    nodeStatus: nodeStatus.value,
     coldWaterWarningHidden: true,
   };
 
@@ -165,7 +168,7 @@ const ModalAddDeviceForm = ({
           ? values.diameter
           : null,
       pipe: {
-        calculatorId: calculatorId,
+        // calculatorId: calculatorId,
         entryNumber: values.entryNumber,
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,
@@ -271,21 +274,21 @@ const ModalAddDeviceForm = ({
                   />
                 </Form.Item>
 
-                <Form.Item
-                  name="calculatorId"
-                  label="Вычислитель, к которому подключен прибор"
-                  style={styles.w49}
-                >
-                  <InputFormik name="calculatorId" disabled />
-                </Form.Item>
+                {/*<Form.Item*/}
+                {/*  name="calculatorId"*/}
+                {/*  label="Вычислитель, к которому подключен прибор"*/}
+                {/*  style={styles.w49}*/}
+                {/*>*/}
+                {/*  <InputFormik name="calculatorId" disabled />*/}
+                {/*</Form.Item>*/}
 
-                <Form.Item
-                  name="entryNumber"
-                  label="Номер ввода"
-                  style={styles.w100}
-                >
-                  <InputFormik name="entryNumber" disabled />
-                </Form.Item>
+                {/*<Form.Item*/}
+                {/*  name="entryNumber"*/}
+                {/*  label="Номер ввода"*/}
+                {/*  style={styles.w100}*/}
+                {/*>*/}
+                {/*  <InputFormik name="entryNumber" disabled />*/}
+                {/*</Form.Item>*/}
 
                 <Form.Item name="number" label="Номер узла" style={styles.w49}>
                   <InputFormik name="number" disabled />

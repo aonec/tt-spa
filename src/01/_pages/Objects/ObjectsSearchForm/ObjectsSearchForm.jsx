@@ -5,6 +5,7 @@ import { Button, Form, Input, Select, Tooltip } from 'antd';
 import { Icon } from '../../../_components/Icon';
 import styles from '../../Devices/components/DeviceSearchForm/DeviceSearchForm.module.scss';
 import {
+  setCorpus,
   setHouseNumber,
   setStreet,
 } from '../../../Redux/reducers/objectsSearchReducer';
@@ -18,19 +19,33 @@ const ObjectsSearchForm = ({ searchState, dispatchSearchState }) => {
     let targetValue = Object.values(changedValues)[0];
     let setParam;
 
-    if (changedParam === 'HousingStockNumber') {
-      setParam = setHouseNumber;
-      dispatchSearchState(setParam(targetValue));
-      return;
-    } else {
-      setParam = setStreet;
+    switch (changedParam) {
+      case 'HousingStockNumber':
+        setParam = setHouseNumber;
+        dispatchSearchState(setParam(targetValue));
+        break;
+      case 'Street':
+        setParam = setStreet;
+        if (targetValue.length >= 4) {
+          dispatchSearchState(setParam(targetValue));
+        } else {
+          dispatchSearchState(setParam(''));
+        }
+        break;
+      case 'Corpus':
+        setParam = setCorpus;
+        dispatchSearchState(setParam(targetValue));
     }
 
-    if (targetValue.length >= 4) {
-      dispatchSearchState(setParam(targetValue));
-    } else {
-      dispatchSearchState(setParam(''));
-    }
+    // if (changedParam === 'HousingStockNumber') {
+    //   setParam = setHouseNumber;
+    //   dispatchSearchState(setParam(targetValue));
+    //   return;
+    // } else {
+    //   setParam = setStreet;
+    // }
+
+    
     // dispatch(setCurrentPage(1))
   };
 
@@ -46,7 +61,7 @@ const ObjectsSearchForm = ({ searchState, dispatchSearchState }) => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '0.5fr 2fr 4fr 1.5fr 4fr',
+          gridTemplateColumns: '0.5fr 2fr 4fr 1.5fr 1.5fr 4fr',
         }}
       >
         <Form.Item name="advancedButton" style={{ marginRight: 16 }}>
@@ -88,12 +103,24 @@ const ObjectsSearchForm = ({ searchState, dispatchSearchState }) => {
         <Form.Item
           name="HousingStockNumber"
           rules={[{ required: true, message: 'Дом' }]}
-          style={{ marginRight: 24 }}
+          style={{ marginRight: 16 }}
         >
           <Input
             className={styles.input}
             value={searchState.HousingStockNumber}
             placeholder="Дом"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="Corpus"
+          rules={[{ required: true, message: 'Корпус' }]}
+          style={{ marginRight: 24 }}
+        >
+          <Input
+            className={styles.input}
+            value={searchState.Corpus}
+            placeholder="Корпус"
           />
         </Form.Item>
 

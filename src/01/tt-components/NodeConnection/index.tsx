@@ -1,24 +1,28 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { CalculatorResponse } from '../../../myApi';
+import { NodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { getCalculator } from './apiNodeConnection';
 
 interface ConnectionInterface {
-  calculator: CalculatorResponse;
+  // calculator: CalculatorIntoNodeResponse;
+  node: NodeResponse;
   edit: boolean;
   setDeregisterDeviceValue?: any;
   setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
 const NodeConnection = ({
-  calculator,
+  node,
   edit = false,
   setDeregisterDeviceValue,
   setDeregisterDevice,
 }: ConnectionInterface) => {
+  const { calculator } = node;
+
+  if (!calculator) return null;
   const {
     model,
     id,

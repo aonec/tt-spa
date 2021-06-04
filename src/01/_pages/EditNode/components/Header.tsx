@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
@@ -9,33 +8,26 @@ import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
   node: NodeResponse;
-  calculator: CalculatorResponse | null;
   nodeId: number;
   setAddDevice?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ node, calculator }: HeaderInterface) => {
-  const access = getAccessesList();
-
-  if (!node || !calculator) {
+export const Header = ({ node }: HeaderInterface) => {
+  if (!node) {
     return null;
   }
 
-  const { resource, nodeStatus, number } = node;
-  const {
-    id: objectId,
-    city,
-    street,
-    housingStockNumber,
-    corpus,
-  } = calculator.address;
+  const { resource, nodeStatus, number, address } = node;
+  const { id: objectId, city, street, housingStockNumber, corpus } = address;
 
   const getNodeStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.label ?? 'Статус не определен';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
-    nodeStatusList.find((nodeStatusItem) => nodeStatusItem.value === nodeStatus)
-      ?.icon ?? 'close';
+    nodeStatusList.find(
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+    )?.icon ?? 'close';
 
   const NodeStatus = () => (
     <div
