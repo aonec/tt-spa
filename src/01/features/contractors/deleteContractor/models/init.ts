@@ -9,9 +9,17 @@ import {
 } from '.';
 import { $contractors } from '../../displayContractors/models';
 
+const contractorDeleted = sample({
+  source: combine($contractorIdToDelete, $contractors),
+  clock: deleteContractorFx.doneData,
+  fn: ([id, contractors]) =>
+    contractors?.filter((elem) => elem.id !== id) || null,
+  target: $contractors,
+});
+
 $contractorIdToDelete
   .on(deleteContractorButtonClicked, (_, id) => id)
-  .reset(deleteContractorCancelButtonClicked);
+  .reset(deleteContractorCancelButtonClicked, contractorDeleted);
 
 guard({
   source: $contractorIdToDelete,
@@ -21,11 +29,3 @@ guard({
 });
 
 deleteContractorFx.use(deleteContractor);
-
-sample({
-  source: combine($contractorIdToDelete, $contractors),
-  clock: deleteContractorFx.doneData,
-  fn: ([id, contractors]) =>
-    contractors?.filter((elem) => elem.id !== id) || null,
-  target: $contractors,
-});
