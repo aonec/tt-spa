@@ -43,7 +43,7 @@ export const MonthReading = ({
         ? currentReading.value - previousReading.value
         : 0;
     } else {
-      const isFirstReading = sortedMonthElementItems.length > 1;
+      const isFirstReading = (sortedMonthElementItems.length = 1);
       consumption = !isFirstReading
         ? sortedMonthElementItems[0]?.value - sortedMonthElementItems[1]?.value
         : sortedMonthElementItems[0]?.value;
