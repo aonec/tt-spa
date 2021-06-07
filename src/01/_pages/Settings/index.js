@@ -17,6 +17,7 @@ import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
+import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
@@ -130,7 +131,7 @@ export const Settings = () => {
 
   const addStaffButton = {
     title: 'Добавить сотрудника',
-    cb: () => {},
+    cb: addStaffButtonClicked,
     show: needShowButton('staff'),
     color: 'default',
     clickable: true,

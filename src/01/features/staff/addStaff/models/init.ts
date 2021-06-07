@@ -1,14 +1,14 @@
 import { addStaff } from '01/_api/staff';
 import { forward } from 'effector';
 import {
-  isAddStaffModalVisible,
+  $isAddStaffModalVisible,
   addStaffButtonClicked,
   addStaffModalCloseButtonClicked,
   addStaffForm,
   addStaffFx,
 } from './index';
 
-isAddStaffModalVisible
+$isAddStaffModalVisible
   .on(addStaffButtonClicked, () => true)
   .reset(addStaffModalCloseButtonClicked);
 

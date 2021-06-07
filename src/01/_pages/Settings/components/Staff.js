@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
 import { SettingsContext } from '../index';
+import { AddStaffModal } from '01/features/staff/addStaff';
 
 const Staff = () => {
   const { users } = useContext(SettingsContext);
@@ -32,6 +33,7 @@ const Staff = () => {
 
   return (
     <div>
+      <AddStaffModal />
       <ul>{res}</ul>
     </div>
   );
