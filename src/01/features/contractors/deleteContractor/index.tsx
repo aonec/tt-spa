@@ -1,10 +1,12 @@
 import { Footer, Header } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, StyledModal } from '01/tt-components';
 import { Loader } from '01/_components/Loader';
+import { Alert } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
   $isDeleteContractorModalVisible,
+  $isDeletionContractorFailed,
   deleteContractorCancelButtonClicked,
   deleteContractorConfirmButtonClicked,
   deleteContractorFx,
@@ -16,6 +18,19 @@ export const DeleteContractorModal = () => {
 
   const onCancel = () => deleteContractorCancelButtonClicked();
   const onOk = () => deleteContractorConfirmButtonClicked();
+  const isDeletionContractorFailed = useStore($isDeletionContractorFailed);
+
+  const renderDeleteContractorAlert = () =>
+    isDeletionContractorFailed ? (
+      <Alert
+        message="Ошибка"
+        description="Не удалось удалить котрагента. Пожалуйста, обновите страницу или повторите попытку позже."
+        type="error"
+        showIcon
+        closable
+        style={{ margin: '0 24px 24px' }}
+      />
+    ) : null;
 
   return (
     <StyledModal
@@ -39,6 +54,8 @@ export const DeleteContractorModal = () => {
           </ButtonTT>
         </Footer>
       }
-    />
+    >
+      {renderDeleteContractorAlert()}
+    </StyledModal>
   );
 };

@@ -2,6 +2,7 @@ import { deleteContractor } from '01/_api/contractors';
 import { combine, guard, sample } from 'effector';
 import {
   $contractorIdToDelete,
+  $isDeletionContractorFailed,
   deleteContractorButtonClicked,
   deleteContractorCancelButtonClicked,
   deleteContractorFx,
@@ -20,6 +21,10 @@ const contractorDeleted = sample({
 $contractorIdToDelete
   .on(deleteContractorButtonClicked, (_, id) => id)
   .reset(deleteContractorCancelButtonClicked, contractorDeleted);
+
+$isDeletionContractorFailed
+  .on(deleteContractorFx.failData, () => true)
+  .reset(deleteContractorButtonClicked, deleteContractorCancelButtonClicked);
 
 guard({
   source: $contractorIdToDelete,
