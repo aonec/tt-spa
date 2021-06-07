@@ -1,5 +1,7 @@
+import { ErrorMessage } from '01/features/contractors/addContractors';
 import { ModalText } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, StyledModal } from '01/tt-components';
+import { ButtonTT, InputTT, StyledModal } from '01/tt-components';
+import { Form } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
@@ -12,7 +14,7 @@ import {
 
 export const AddStaffModal: React.FC = () => {
   const visible = useStore($isAddStaffModalVisible);
-  const { submit: onSubmit, fields } = useForm(addStaffForm);
+  const { submit: onSubmit, fields, eachValid } = useForm(addStaffForm);
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   return (
@@ -32,19 +34,17 @@ export const AddStaffModal: React.FC = () => {
         </Footer>
       }
     >
-      <ModalText>
-        {/* {renderPostContractsAlert()} */}
-        {/* <form onSubmit={() => onSubmit()}>
+      <ModalText style={{ margin: '0 24px' }}>
+        <form onSubmit={() => onSubmit()}>
           <Form.Item label="Название организации">
             <InputTT
               name="name"
               type="text"
-              value={fields.name.value}
-              disabled={pending}
-              onChange={(e) => fields.name.onChange(e.target.value)}
+              value={fields.lastName.value}
+              onChange={(e) => fields.lastName.onChange(e.target.value)}
             />
             <ErrorMessage>
-              {fields.name.errorText({
+              {fields.email.errorText({
                 required: 'Это поле обязательное',
               })}
             </ErrorMessage>
@@ -53,7 +53,6 @@ export const AddStaffModal: React.FC = () => {
             <InputTT
               type="email"
               value={fields.email.value}
-              disabled={pending}
               onChange={(e) => fields.email.onChange(e.target.value)}
             />
             <ErrorMessage>
@@ -63,11 +62,11 @@ export const AddStaffModal: React.FC = () => {
             </ErrorMessage>
           </Form.Item>
           <button
-            disabled={!eachValid || pending}
+            disabled={!eachValid}
             type="submit"
             style={{ display: 'none' }}
           />
-        </form> */}
+        </form>
       </ModalText>
     </StyledModal>
   );
