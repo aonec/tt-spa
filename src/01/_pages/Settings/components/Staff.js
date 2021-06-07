@@ -2,9 +2,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
 import { SettingsContext } from '../index';
-import EditButtonTT from '../../../tt-components/EditButtonTT';
 
-const Staff = (props) => {
+const Staff = () => {
   const { users } = useContext(SettingsContext);
   const { items } = users;
   const userTemplate = {
