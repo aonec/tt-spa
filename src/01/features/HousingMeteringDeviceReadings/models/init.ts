@@ -111,9 +111,18 @@ sample({
   target: postReadingFx,
 });
 
-forward({
-  from: HousingMeteringDeviceReadingsGate.state,
-  to: requestReadingsFx,
+// forward({
+//   from: HousingMeteringDeviceReadingsGate.state.updates,
+//   to: requestReadingsFx,
+// });
+
+guard({
+  clock: [
+    HousingMeteringDeviceReadingsGate.open,
+    HousingMeteringDeviceReadingsGate.state,
+  ],
+  filter: HousingMeteringDeviceReadingsGate.status,
+  target: requestReadingsFx,
 });
 
 $postReadingsErrorMessage

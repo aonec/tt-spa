@@ -32,6 +32,7 @@ export const MonthReading = ({
 
   const calculateConsumption = (isColdWaterSupply: boolean) => {
     let consumption;
+    debugger;
     if (isColdWaterSupply) {
       const currentReading = monthElement.items[0];
 
@@ -43,7 +44,10 @@ export const MonthReading = ({
         : 0;
     } else {
       consumption =
-        sortedMonthElementItems[0].value - sortedMonthElementItems[1].value;
+        sortedMonthElementItems.length > 1
+          ? sortedMonthElementItems[0]?.value -
+            sortedMonthElementItems[1]?.value
+          : sortedMonthElementItems[0]?.value;
     }
 
     return consumption;

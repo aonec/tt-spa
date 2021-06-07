@@ -5,6 +5,7 @@ import {
   $readingsToDisplay,
   $requestReadingsErrorMessage,
   HousingMeteringDeviceReadingsGate,
+  requestReadingsFx,
   ResourceGate,
 } from '../models';
 import { EResourceType } from '../../../../myApi';
@@ -23,6 +24,8 @@ const HousingMeteringDeviceReadings = ({
   const readings = useStore($readingsToDisplay);
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
+  const isLoading = useStore(requestReadingsFx.pending);
+
   const yearSortFn = (a: YearReadingsType, b: YearReadingsType) =>
     Number(b.year) - Number(a.year);
   const yearMapFn = (yearElement: YearReadingsType) => (
@@ -56,14 +59,16 @@ const HousingMeteringDeviceReadings = ({
     ) : null;
   };
 
+  console.log(nodeId);
+
   return (
     <div>
       <ResourceGate resource={resource} />
       {renderAddReadingsAlert()}
       {renderRequestReadingsAlert()}
-      <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
+      {nodeId ? <HousingMeteringDeviceReadingsGate nodeId={nodeId} /> : null}
       <HousingMeteringReadingsHeader />
-      {readingsElems}
+      {!requestReadingsErrorMessage && !isLoading ? readingsElems : null}
     </div>
   );
 };
