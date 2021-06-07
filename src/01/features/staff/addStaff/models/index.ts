@@ -6,6 +6,7 @@ import { createForm } from 'effector-forms';
 import { createStore, createEvent, createEffect } from 'effector';
 
 export const $isAddStaffModalVisible = createStore(false);
+export const $isAddStaffFailed = createStore(false);
 
 export const addStaffButtonClicked = createEvent();
 export const addStaffModalCloseButtonClicked = createEvent();

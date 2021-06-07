@@ -6,11 +6,17 @@ import {
   addStaffModalCloseButtonClicked,
   addStaffForm,
   addStaffFx,
+  $isAddStaffFailed,
+  addStaffModalButtonClicked,
 } from './index';
 
 $isAddStaffModalVisible
   .on(addStaffButtonClicked, () => true)
-  .reset(addStaffModalCloseButtonClicked);
+  .reset(addStaffModalCloseButtonClicked, addStaffFx.doneData);
+
+$isAddStaffFailed
+  .on(addStaffFx.failData, () => true)
+  .reset(addStaffModalCloseButtonClicked, addStaffModalButtonClicked);
 
 forward({
   from: addStaffForm.formValidated,
