@@ -1,6 +1,5 @@
 import React from 'react';
 import classes from '../Settings.module.scss';
-import { Link } from 'react-router-dom';
 import {
   $contractors,
   $isFetchingContractorsFailed,
@@ -12,6 +11,8 @@ import { Alert } from 'antd';
 import { Loader } from '01/_components/Loader';
 import { CenterContainer } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { MenuButtonTT } from '01/tt-components';
+import { deleteContractorButtonClicked } from '01/features/contractors/deleteContractor/models';
+import { DeleteContractorModal } from '01/features/contractors/deleteContractor';
 
 const Contractors = () => {
   const contractors = useStore($contractors);
@@ -32,7 +33,6 @@ const Contractors = () => {
 
   const contractorsList = contractors?.map((contractor) => {
     const { name, email, phoneNumber, id } = contractor;
-    console.log(contractor)
     return (
       <li className={classes.staff} key={id}>
         <div className={classes.name}>{name}</div>
@@ -57,7 +57,7 @@ const Contractors = () => {
             },
             {
               title: 'Удалить контрагента',
-              cb: () => {},
+              cb: () => deleteContractorButtonClicked(id),
               show: true,
               color: 'red',
               clickable: true,
@@ -70,6 +70,7 @@ const Contractors = () => {
 
   return (
     <div>
+      <DeleteContractorModal />
       {renderFailedFetchingContractsAlert()}
       <CenterContainer>
         <ContractorsGate />

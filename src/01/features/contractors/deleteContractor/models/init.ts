@@ -1,5 +1,5 @@
 import { deleteContractor } from '01/_api/contractors';
-import { sample } from 'effector';
+import { combine, guard, sample } from 'effector';
 import {
   $contractorIdToDelete,
   deleteContractorButtonClicked,
@@ -13,14 +13,19 @@ $contractorIdToDelete
   .on(deleteContractorButtonClicked, (_, id) => id)
   .reset(deleteContractorCancelButtonClicked);
 
-sample({
+guard({
+  source: $contractorIdToDelete,
   clock: deleteContractorConfirmButtonClicked,
-  source: $contractorIdToDelete.map((id) => id!),
+  filter: (id): id is number => id !== null,
   target: deleteContractorFx,
 });
 
 deleteContractorFx.use(deleteContractor);
 
-$contractors.on(deleteContractorFx.doneData, (contractors, { id }) =>
-  contractors?.filter((elem) => elem.id !== id)
-);
+sample({
+  source: combine($contractorIdToDelete, $contractors),
+  clock: deleteContractorFx.doneData,
+  fn: ([id, contractors]) =>
+    contractors?.filter((elem) => elem.id !== id) || null,
+  target: $contractors,
+});
