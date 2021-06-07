@@ -1,7 +1,6 @@
 import {
   $isFailedAddingContractor,
   addContractorsForm,
-  addContractorsButtonClicked,
 } from './index';
 import {
   $isAddContractorsModalVisible,
