@@ -1,10 +1,11 @@
-import { Footer, Header } from '01/shared/ui/Modal/Modal';
+import { Footer, Header, ModalText } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, StyledModal } from '01/tt-components';
 import { Loader } from '01/_components/Loader';
 import { Alert } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
+  $deletedСonctractorName,
   $isDeleteContractorModalVisible,
   $isDeletionContractorFailed,
   deleteContractorCancelButtonClicked,
@@ -15,10 +16,11 @@ import {
 export const DeleteContractorModal = () => {
   const visible = useStore($isDeleteContractorModalVisible);
   const pending = useStore(deleteContractorFx.pending);
+  const isDeletionContractorFailed = useStore($isDeletionContractorFailed);
+  const deletedContractorName = useStore($deletedСonctractorName);
 
   const onCancel = () => deleteContractorCancelButtonClicked();
   const onOk = () => deleteContractorConfirmButtonClicked();
-  const isDeletionContractorFailed = useStore($isDeletionContractorFailed);
 
   const renderDeleteContractorAlert = () =>
     isDeletionContractorFailed ? (
@@ -35,7 +37,7 @@ export const DeleteContractorModal = () => {
   return (
     <StyledModal
       visible={visible}
-      title={<Header>Вы действительно хотите удалить контрагента?</Header>}
+      title={<Header>Подтвердите действие</Header>}
       onOk={onOk}
       onCancel={onCancel}
       width={800}
@@ -56,6 +58,9 @@ export const DeleteContractorModal = () => {
       }
     >
       {renderDeleteContractorAlert()}
+      <ModalText style={{ padding: '0 24px 24px', fontSize: '18px' }}>
+        Вы действительно хотите удалить контрагента {deletedContractorName}?
+      </ModalText>
     </StyledModal>
   );
 };

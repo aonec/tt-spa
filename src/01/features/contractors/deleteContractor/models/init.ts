@@ -7,6 +7,7 @@ import {
   deleteContractorCancelButtonClicked,
   deleteContractorFx,
   deleteContractorConfirmButtonClicked,
+  $deletedСonctractorName,
 } from '.';
 import { $contractors } from '../../displayContractors/models';
 
@@ -19,7 +20,7 @@ const contractorDeleted = sample({
 });
 
 $contractorIdToDelete
-  .on(deleteContractorButtonClicked, (_, id) => id)
+  .on(deleteContractorButtonClicked, (_, { id }) => id)
   .reset(deleteContractorCancelButtonClicked, contractorDeleted);
 
 $isDeletionContractorFailed
@@ -34,3 +35,7 @@ guard({
 });
 
 deleteContractorFx.use(deleteContractor);
+
+$deletedСonctractorName
+  .on(deleteContractorButtonClicked, (_, { name }) => name)
+  .reset(deleteContractorCancelButtonClicked, contractorDeleted);

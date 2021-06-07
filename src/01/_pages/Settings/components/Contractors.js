@@ -57,7 +57,7 @@ const Contractors = () => {
             },
             {
               title: 'Удалить контрагента',
-              cb: () => deleteContractorButtonClicked(id),
+              cb: () => deleteContractorButtonClicked({ id, name }),
               show: true,
               color: 'red',
               clickable: true,
