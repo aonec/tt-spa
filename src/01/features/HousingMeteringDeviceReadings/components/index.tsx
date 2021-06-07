@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from 'effector-react';
 import {
   $postReadingsErrorMessage,
+  $readings,
   $readingsToDisplay,
   $requestReadingsErrorMessage,
   HousingMeteringDeviceReadingsGate,
@@ -22,6 +23,8 @@ const HousingMeteringDeviceReadings = ({
   resource: EResourceType;
 }) => {
   const readings = useStore($readingsToDisplay);
+  const unprepared = useStore($readings);
+  debugger;
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
   const isLoading = useStore(requestReadingsFx.pending);
@@ -29,7 +32,7 @@ const HousingMeteringDeviceReadings = ({
   const yearSortFn = (a: YearReadingsType, b: YearReadingsType) =>
     Number(b.year) - Number(a.year);
   const yearMapFn = (yearElement: YearReadingsType) => (
-    <YearReading yearElement={yearElement} />
+    <YearReading key={yearElement.year} yearElement={yearElement} />
   );
 
   const readingsElems = readings?.sort(yearSortFn).map(yearMapFn);

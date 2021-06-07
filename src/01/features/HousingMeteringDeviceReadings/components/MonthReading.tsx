@@ -32,7 +32,6 @@ export const MonthReading = ({
 
   const calculateConsumption = (isColdWaterSupply: boolean) => {
     let consumption;
-    debugger;
     if (isColdWaterSupply) {
       const currentReading = monthElement.items[0];
 
@@ -57,7 +56,10 @@ export const MonthReading = ({
       <Month>{firstLetterToUpperCase(monthElement.month)}</Month>
       <div style={{ display: 'flex' }}>
         {sortedMonthElementItems.map((deviceElement) => (
-          <DeviceReading deviceElem={deviceElement} />
+          <DeviceReading
+            key={deviceElement.deviceSerialNumber + deviceElement.month}
+            deviceElem={deviceElement}
+          />
         ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>

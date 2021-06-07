@@ -52,11 +52,16 @@ const addReadingsReducer = (
 $readings
   .on(requestReadingsFx.doneData, addReadingsReducer)
   .reset(HousingMeteringDeviceReadingsGate.close);
-$latestSuccessReadings.on(requestReadingsFx.doneData, addReadingsReducer);
-$chosenInputId.on(inputBlur, (_, inputPayload) => {
-  return inputPayload.deviceId;
-});
-// .reset([postReadingFx.doneData, postReadingFx.failData]);
+
+$latestSuccessReadings
+  .on(requestReadingsFx.doneData, addReadingsReducer)
+  .reset(HousingMeteringDeviceReadingsGate.close);
+
+$chosenInputId
+  .on(inputBlur, (_, inputPayload) => {
+    return inputPayload.deviceId;
+  })
+  .reset([postReadingFx.doneData, postReadingFx.failData]);
 
 sample({
   clock: [postReadingFx.done],
@@ -134,6 +139,6 @@ $requestReadingsErrorMessage
   .reset(requestReadingsFx);
 
 forward({
-  from: ResourceGate.state,
+  from: ResourceGate.state.updates,
   to: $resource,
 });

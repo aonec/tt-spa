@@ -9,7 +9,6 @@ import {
 export const requestReadings = (query: {
   nodeId?: number;
 }): Promise<GetHousingMeteringDeviceReadingsResponse> => {
-  debugger;
   return axios.get('HousingMeteringDeviceReadings', {
     params: query,
   });
