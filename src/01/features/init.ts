@@ -4,3 +4,4 @@ import './HousingMeteringDeviceReadings/models/init';
 import './graph/graphView/models/init';
 import './contractors/addContractors/models/init';
 import './contractors/displayContractors/models/init';
+import './contractors/deleteContractor/models/init';
