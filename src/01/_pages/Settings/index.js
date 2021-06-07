@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory } from 'react-router-dom';
-import { Header } from '../../tt-components';
+import { Header, MenuButtonTT } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
 import Staff from './components/Staff';
@@ -15,6 +15,8 @@ import ModalAddContractor from './components/Modals/ModalAddContractor';
 import HeaderButton from './components/HeaderButton';
 import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
+import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
+import { AddContractorsFormModal } from '01/features/contractors/addContractors';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
@@ -22,7 +24,6 @@ export const Settings = () => {
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
-  const [contractors, setContractors] = useState();
 
   const [staff, setStaff] = useState(false);
   const [contractor, setContractor] = useState(false);
@@ -33,9 +34,6 @@ export const Settings = () => {
     });
     getManagingFirmUsers().then((res) => {
       setUsers(res);
-    });
-    getContractors().then((res) => {
-      setContractors(res);
     });
     setCurrentTabFromLink(location);
   }, []);
@@ -116,15 +114,26 @@ export const Settings = () => {
     hideStaff,
     showContractor,
     hideContractor,
-    contractors,
   };
+
+  const menuButtonArr = [
+    {
+      title: 'Добавить контрагента',
+      cb: addContractorsButtonMenuClicked,
+      show: true,
+      color: 'default',
+      clickable: true,
+    },
+  ];
 
   return (
     <SettingsContext.Provider value={context}>
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Header>Профиль компании</Header>
-          <HeaderButton />
+          <MenuButtonTT menuButtonArr={menuButtonArr} />
+          <AddContractorsFormModal />
+          {/* <HeaderButton /> */}
         </div>
         <SettingsTabs
           currentTabKey={currentTabKey}
