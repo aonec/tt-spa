@@ -4,6 +4,10 @@ import {
 } from '01/features/competences/fetchCompetences/models';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import {
+  $userRoles,
+  UserRolesGate,
+} from '01/features/userRoles/displayUserRoles/models';
+import {
   Footer,
   Header,
   ModalText,
@@ -44,12 +48,18 @@ const FormContainer = styled.form`
 export const AddStaffModal: React.FC = () => {
   const visible = useStore($isAddStaffModalVisible);
   const competences = useStore($competencesCatalog);
+  const userRoles = useStore($userRoles);
   const { submit: onSubmit, fields, eachValid } = useForm(addStaffForm);
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
     label: elem.value,
     value: elem.key,
+  }));
+
+  const multipleSelectionUserRoles = userRoles?.map((elem) => ({
+    label: elem.title,
+    value: elem.id,
   }));
 
   return (
@@ -70,6 +80,7 @@ export const AddStaffModal: React.FC = () => {
       }
     >
       <CompetencesGate />
+      <UserRolesGate />
       <ModalText>
         <FormContainer onSubmit={() => onSubmit()}>
           <FormItemsContainer>
@@ -145,7 +156,7 @@ export const AddStaffModal: React.FC = () => {
           <Form.Item label="Роль в системе">
             <MultiSelectTT
               mode="multiple"
-              options={[{ lable: 'text', value: 1 }]}
+              options={multipleSelectionUserRoles}
             />
             <ErrorMessage>
               {fields.cellPhone.errorText({

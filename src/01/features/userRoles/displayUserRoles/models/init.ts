@@ -1,4 +1,4 @@
-import { forward } from 'effector';
+import { forward, guard } from 'effector';
 import { fetchUserRoles } from '01/_api/userRoles';
 import {
   $isFetchingUserRolesFailed,
@@ -16,6 +16,10 @@ $isFetchingUserRolesFailed
   .reset(fetchUserRolesFx.doneData);
 
 forward({
-  from: UserRolesGate.open,
+  from: guard({
+    clock: UserRolesGate.open,
+    source: $userRoles,
+    filter: (userRoles) => userRoles === null,
+  }),
   to: fetchUserRolesFx,
 });
