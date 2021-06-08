@@ -4,7 +4,9 @@ interface Config<T> {
 }
 export function getValueByPriority<T>(configs: Config<T>[]): T | null {
   for (const elem of configs) {
-    if (elem.show) return elem.value;
+    if (elem.show) {
+      return elem.value;
+    }
   }
 
   return null;

@@ -1,15 +1,15 @@
 import { createStore, createEffect } from 'effector';
 import { createGate } from 'effector-react';
-import { ECompetenceTypeStringDictionaryItem } from './../../../../../myApi';
+import { ManagementFirmCompetenceResponse } from './../../../../../myApi';
 
 export const $competencesCatalog = createStore<
-  ECompetenceTypeStringDictionaryItem[] | null
+  ManagementFirmCompetenceResponse[] | null
 >(null);
 export const $isFetchingCompetencesFailed = createStore(false);
 
 export const fetchCompetencesFx = createEffect<
   void,
-  ECompetenceTypeStringDictionaryItem[] | null
+  ManagementFirmCompetenceResponse[] | null
 >();
 
 export const CompetencesGate = createGate();

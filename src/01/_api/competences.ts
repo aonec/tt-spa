@@ -1,6 +1,14 @@
 import axios from '01/axios';
-import { ECompetenceTypeStringDictionaryItem } from './../../myApi';
+import {
+  ECompetenceTypeStringDictionaryItem,
+  ManagementFirmCompetenceResponse,
+} from './../../myApi';
 
-export const getCompetencesCatalog = (): Promise<
-  ECompetenceTypeStringDictionaryItem[] | null
-> => axios.get('ManagementFirmCompetences/Catalog');
+export const getCompetencesCatalog = async (): Promise<
+  ManagementFirmCompetenceResponse[] | null
+> => {
+  const res: {
+    items: ManagementFirmCompetenceResponse[] | null;
+  } = await axios.get('ManagementFirmCompetences');
+  return res?.items;
+};

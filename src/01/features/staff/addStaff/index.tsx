@@ -64,8 +64,8 @@ export const AddStaffModal: React.FC = () => {
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem.value,
-    value: elem.key,
+    label: elem.title,
+    value: elem.id,
   }));
 
   const multipleSelectionUserRoles = userRoles?.map((elem) => ({
@@ -93,8 +93,8 @@ export const AddStaffModal: React.FC = () => {
       }
       message={getValueByPriority([
         {
-          show: failedFetchCompetances,
-          value: 'Не удалось загрузить компетенции',
+          show: isFailedAddingStaff,
+          value: 'Не удалось добавить сотрудника',
         },
         {
           show: failedFetchUserRoles || isFailedAddingStaff,
