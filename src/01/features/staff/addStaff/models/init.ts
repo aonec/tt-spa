@@ -27,4 +27,9 @@ forward({
   to: addStaffFx,
 });
 
+forward({
+  from: addStaffFx.doneData,
+  to: addStaffForm.reset,
+});
+
 addStaffFx.use(addStaff);

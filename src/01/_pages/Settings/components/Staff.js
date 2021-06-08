@@ -7,13 +7,6 @@ import { AddStaffModal } from '01/features/staff/addStaff';
 const Staff = () => {
   const { users } = useContext(SettingsContext);
   const { items } = users;
-  const userTemplate = {
-    id: 1334567,
-    email: '0.2@mail.ru',
-    name: 'Исполнитель УК А.',
-    cellphone: null,
-    executingTaskCount: 31,
-  };
 
   const res = items.map((item, index) => {
     const { id, email, name, cellphone, executingTaskCount } = item;
