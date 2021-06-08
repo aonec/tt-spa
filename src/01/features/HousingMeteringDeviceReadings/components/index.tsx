@@ -13,7 +13,7 @@ import { EResourceType } from '../../../../myApi';
 import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';
-import { YearReadingsType } from '../lib/groupReadingsByDates';
+import { prepareReadings, YearReadingsType } from '../lib/groupReadingsByDates';
 
 const HousingMeteringDeviceReadings = ({
   nodeId,
@@ -22,9 +22,10 @@ const HousingMeteringDeviceReadings = ({
   nodeId: number;
   resource: EResourceType;
 }) => {
+  const unpreparedReadings = useStore($readings);
   const readings = useStore($readingsToDisplay);
-  const unprepared = useStore($readings);
-  debugger;
+  const readingsToDisplay = prepareReadings(unpreparedReadings);
+
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
   const isLoading = useStore(requestReadingsFx.pending);
@@ -61,8 +62,6 @@ const HousingMeteringDeviceReadings = ({
       />
     ) : null;
   };
-
-  console.log(nodeId);
 
   return (
     <div>
