@@ -34,5 +34,5 @@ forward({
 });
 
 $contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
-  contractors ? [...contractors, contractor] : [contractor]
+  contractors ? [contractor, ...contractors] : [contractor]
 );
