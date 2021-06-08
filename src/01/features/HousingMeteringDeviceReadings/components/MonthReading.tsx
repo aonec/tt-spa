@@ -11,6 +11,7 @@ import { firstLetterToUpperCase } from '../../../utils/getMonthFromDate';
 import React from 'react';
 import styled from 'styled-components';
 import { DeviceReading } from './DeviceReading';
+import _ from 'lodash';
 
 export const MonthReading = ({
   monthElement,
@@ -42,8 +43,10 @@ export const MonthReading = ({
         ? currentReading.value - previousReading.value
         : 0;
     } else {
-      consumption =
-        sortedMonthElementItems[0].value - sortedMonthElementItems[1].value;
+      const isFirstReading = sortedMonthElementItems.length === 1;
+      consumption = !isFirstReading
+        ? sortedMonthElementItems[0]?.value - sortedMonthElementItems[1]?.value
+        : sortedMonthElementItems[0]?.value;
     }
 
     return consumption;
@@ -54,7 +57,10 @@ export const MonthReading = ({
       <Month>{firstLetterToUpperCase(monthElement.month)}</Month>
       <div style={{ display: 'flex' }}>
         {sortedMonthElementItems.map((deviceElement) => (
-          <DeviceReading deviceElem={deviceElement} />
+          <DeviceReading
+            key={deviceElement.deviceSerialNumber + deviceElement.month}
+            deviceElem={deviceElement}
+          />
         ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
