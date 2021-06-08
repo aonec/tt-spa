@@ -4,7 +4,6 @@ import { IconTT } from '../../../tt-components';
 import { CalculatorResponse } from '../../../../myApi';
 import DeviceIcons from '../../../_components/DeviceIcons';
 import Icon from '../../../tt-components/Icon';
-import { serviceZoneListEnum } from '../../../tt-components/localBases';
 
 interface NodesInterface {
   device: CalculatorResponse | null;

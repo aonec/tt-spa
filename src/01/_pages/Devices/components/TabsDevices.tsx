@@ -39,6 +39,7 @@ const TabsDevices = () => {
     devicesSearchReducer,
     initialState
   );
+
   const debouncedSearchState = useDebounce(searchState, 500);
 
   const pages = createPages(totalPages, currentPage);

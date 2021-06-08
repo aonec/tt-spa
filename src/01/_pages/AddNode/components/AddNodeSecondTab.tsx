@@ -1,13 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Form } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import {
-  resources,
-  serviceZoneList,
-  nodeStatusList,
-} from '../../../tt-components/localBases';
+import { resources, nodeStatusList } from '../../../tt-components/localBases';
 import {
   Title,
   SelectTT,
@@ -56,7 +52,6 @@ const AddNodeSecondTab = () => {
     errors,
     handleBlur,
     setFieldValue,
-    setValues,
   } = useFormik({
     initialValues: {
       resource: resources[0].value,
