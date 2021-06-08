@@ -14,6 +14,7 @@ import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';
 import { prepareReadings, YearReadingsType } from '../lib/groupReadingsByDates';
+import _ from 'lodash';
 
 const HousingMeteringDeviceReadings = ({
   nodeId,
@@ -22,16 +23,14 @@ const HousingMeteringDeviceReadings = ({
   nodeId: number;
   resource: EResourceType;
 }) => {
-  const unpreparedReadings = useStore($readings);
   const readings = useStore($readingsToDisplay);
-  const readingsToDisplay = prepareReadings(unpreparedReadings);
-
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
   const isLoading = useStore(requestReadingsFx.pending);
 
   const yearSortFn = (a: YearReadingsType, b: YearReadingsType) =>
     Number(b.year) - Number(a.year);
+
   const yearMapFn = (yearElement: YearReadingsType) => (
     <YearReading key={yearElement.year} yearElement={yearElement} />
   );

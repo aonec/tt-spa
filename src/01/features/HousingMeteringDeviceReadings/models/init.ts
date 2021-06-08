@@ -53,27 +53,27 @@ $readings
   .on(requestReadingsFx.doneData, addReadingsReducer)
   .reset(HousingMeteringDeviceReadingsGate.close);
 
-// $latestSuccessReadings
-//   .on(requestReadingsFx.doneData, addReadingsReducer)
-//   .reset(HousingMeteringDeviceReadingsGate.close);
-//
-// $chosenInputId
-//   .on(inputBlur, (_, inputPayload) => {
-//     return inputPayload.deviceId;
-//   })
-//   .reset([postReadingFx.doneData, postReadingFx.failData]);
-//
-// sample({
-//   clock: [postReadingFx.done],
-//   source: $readings,
-//   target: $latestSuccessReadings,
-// });
-//
-// sample({
-//   clock: [postReadingFx.fail],
-//   source: $latestSuccessReadings,
-//   target: $readings,
-// });
+$latestSuccessReadings
+  .on(requestReadingsFx.doneData, addReadingsReducer)
+  .reset(HousingMeteringDeviceReadingsGate.close);
+
+$chosenInputId
+  .on(inputBlur, (_, inputPayload) => {
+    return inputPayload.deviceId;
+  })
+  .reset([postReadingFx.doneData, postReadingFx.failData]);
+
+sample({
+  clock: [postReadingFx.done],
+  source: $readings,
+  target: $latestSuccessReadings,
+});
+
+sample({
+  clock: [postReadingFx.fail],
+  source: $latestSuccessReadings,
+  target: $readings,
+});
 
 $readings.on(readingChanged, (readings, payload) => {
   return {
@@ -94,32 +94,32 @@ $readings.on(readingChanged, (readings, payload) => {
 //lodash-fp
 //частичное применение readingFilterFn
 
-// const readingFilterFn = (
-//   readings: GetHousingMeteringDeviceReadingsResponse,
-//   inputPayload: InputPayloadType
-// ) => {
-//   const isNewValue = readings.items?.some((reading) => {
-//     const isEqualId = reading.id === inputPayload.id;
-//     const isValueChanged = reading.value !== inputPayload.value;
-//     return isEqualId && isValueChanged;
-//   });
-//   return isNewValue!;
-// };
+const readingFilterFn = (
+  readings: GetHousingMeteringDeviceReadingsResponse,
+  inputPayload: InputPayloadType
+) => {
+  const isNewValue = readings.items?.some((reading) => {
+    const isEqualId = reading.id === inputPayload.id;
+    const isValueChanged = reading.value !== inputPayload.value;
+    return isEqualId && isValueChanged;
+  });
+  return isNewValue!;
+};
 
-// sample({
-//   clock: guard({
-//     source: $latestSuccessReadings,
-//     clock: inputBlur,
-//     filter: readingFilterFn,
-//   }),
-//   source: inputBlur,
-//   target: postReadingFx,
-// });
+sample({
+  clock: guard({
+    source: $latestSuccessReadings,
+    clock: inputBlur,
+    filter: readingFilterFn,
+  }),
+  source: inputBlur,
+  target: postReadingFx,
+});
 
-// forward({
-//   from: HousingMeteringDeviceReadingsGate.state.updates,
-//   to: requestReadingsFx,
-// });
+forward({
+  from: HousingMeteringDeviceReadingsGate.state.updates,
+  to: requestReadingsFx,
+});
 
 guard({
   clock: [
@@ -130,15 +130,15 @@ guard({
   target: requestReadingsFx,
 });
 
-// $postReadingsErrorMessage
-//   .on(postReadingFx.failData, (_, error) => error.message)
-//   .reset(postReadingFx);
-//
-// $requestReadingsErrorMessage
-//   .on(requestReadingsFx.failData, (_, error) => error.message)
-//   .reset(requestReadingsFx);
-//
-// forward({
-//   from: ResourceGate.state.updates,
-//   to: $resource,
-// });
+$postReadingsErrorMessage
+  .on(postReadingFx.failData, (_, error) => error.message)
+  .reset(postReadingFx);
+
+$requestReadingsErrorMessage
+  .on(requestReadingsFx.failData, (_, error) => error.message)
+  .reset(requestReadingsFx);
+
+forward({
+  from: ResourceGate.state.updates,
+  to: $resource,
+});
