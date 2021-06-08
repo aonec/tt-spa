@@ -5,3 +5,4 @@ import './graph/graphView/models/init';
 import './contractors/addContractors/models/init';
 import './contractors/displayContractors/models/init';
 import './staff/addStaff/models/init';
+import './competences/fetchCompetences/models/init'

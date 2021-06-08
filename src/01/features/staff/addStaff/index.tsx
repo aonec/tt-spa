@@ -1,3 +1,7 @@
+import {
+  $competencesCatalog,
+  CompetencesGate,
+} from '01/features/competences/fetchCompetences/models';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import {
   Footer,
@@ -39,8 +43,14 @@ const FormContainer = styled.form`
 
 export const AddStaffModal: React.FC = () => {
   const visible = useStore($isAddStaffModalVisible);
+  const competences = useStore($competencesCatalog);
   const { submit: onSubmit, fields, eachValid } = useForm(addStaffForm);
   const onCancel = () => addStaffModalCloseButtonClicked();
+
+  const multipleSelectionCompetences = competences?.map((elem) => ({
+    label: elem.value,
+    value: elem.key,
+  }));
 
   return (
     <StyledModal
@@ -59,6 +69,7 @@ export const AddStaffModal: React.FC = () => {
         </Footer>
       }
     >
+      <CompetencesGate />
       <ModalText>
         <FormContainer onSubmit={() => onSubmit()}>
           <FormItemsContainer>
@@ -145,7 +156,7 @@ export const AddStaffModal: React.FC = () => {
           <Form.Item label="Компетенции">
             <MultiSelectTT
               mode="multiple"
-              options={[{ lable: 'text', value: 1 }]}
+              options={multipleSelectionCompetences}
             />
             <ErrorMessage>
               {fields.cellPhone.errorText({
