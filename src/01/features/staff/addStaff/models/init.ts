@@ -16,7 +16,11 @@ $isAddStaffModalVisible
 
 $isAddStaffFailed
   .on(addStaffFx.failData, () => true)
-  .reset(addStaffModalCloseButtonClicked, addStaffModalButtonClicked);
+  .reset(
+    addStaffModalCloseButtonClicked,
+    addStaffModalButtonClicked,
+    addStaffForm.submit
+  );
 
 forward({
   from: addStaffForm.formValidated,

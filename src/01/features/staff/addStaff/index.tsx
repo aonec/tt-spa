@@ -1,10 +1,14 @@
 import {
   $competencesCatalog,
+  $isFetchingCompetencesFailed,
   CompetencesGate,
+  fetchCompetencesFx,
 } from '01/features/competences/fetchCompetences/models';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import {
+  $isFetchingUserRolesFailed,
   $userRoles,
+  fetchUserRolesFx,
   UserRolesGate,
 } from '01/features/userRoles/displayUserRoles/models';
 import {
@@ -14,16 +18,21 @@ import {
   StyledModal,
 } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, InputTT, MultiSelectTT } from '01/tt-components';
+import { ErrorAlert } from '01/_components/Alert';
+import { Loader } from '01/_components/Loader';
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 import {
+  $isAddStaffFailed,
   $isAddStaffModalVisible,
   addStaffForm,
+  addStaffFx,
   addStaffModalCloseButtonClicked,
 } from './models';
+import { getValueByPriority } from './utils';
 
 const FormItemsContainer = styled.div`
   display: flex;
@@ -49,7 +58,9 @@ export const AddStaffModal: React.FC = () => {
   const visible = useStore($isAddStaffModalVisible);
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
+
   const { submit: onSubmit, fields, eachValid } = useForm(addStaffForm);
+
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
@@ -62,6 +73,145 @@ export const AddStaffModal: React.FC = () => {
     value: elem.id,
   }));
 
+  const isFailedAddingStaff = useStore($isAddStaffFailed);
+
+  const pendingAddStaffRequest = useStore(addStaffFx.pending);
+
+  const pendingFetchingCompetences = useStore(fetchCompetencesFx.pending);
+  const pendingFetchingUserRolse = useStore(fetchUserRolesFx.pending);
+
+  const pendingFetchingData =
+    pendingFetchingCompetences || pendingFetchingUserRolse;
+
+  const failedFetchCompetances = useStore($isFetchingCompetencesFailed);
+  const failedFetchUserRoles = useStore($isFetchingUserRolesFailed);
+
+  const errorAlert = (
+    <ErrorAlert
+      show={
+        isFailedAddingStaff || failedFetchCompetances || failedFetchUserRoles
+      }
+      message={getValueByPriority([
+        {
+          show: failedFetchCompetances,
+          value: 'Не удалось загрузить компетенции',
+        },
+        {
+          show: failedFetchUserRoles || isFailedAddingStaff,
+          value: 'Не удалось загрузить данные',
+        },
+      ])}
+    />
+  );
+
+  const modalContent = (
+    <ModalText>
+      <FormContainer onSubmit={() => onSubmit()}>
+        <FormItemsContainer>
+          <Form.Item label="Фамилия">
+            <InputTT
+              name="lastName"
+              type="text"
+              value={fields.lastName.value}
+              onChange={(e) => fields.lastName.onChange(e.target.value)}
+            />
+            <ErrorMessage>
+              {fields.lastName.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </Form.Item>
+          <Form.Item label="Имя">
+            <InputTT
+              type="firstName"
+              value={fields.firstName.value}
+              onChange={(e) => fields.firstName.onChange(e.target.value)}
+            />
+            <ErrorMessage>
+              {fields.firstName.errorText({
+                email: 'Введите корректный адрес электронной почты',
+              })}
+            </ErrorMessage>
+          </Form.Item>
+          <Form.Item label="Отчество">
+            <InputTT
+              name="middleName"
+              type="text"
+              value={fields.middleName.value}
+              onChange={(e) => fields.middleName.onChange(e.target.value)}
+            />
+            <ErrorMessage>
+              {fields.middleName.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </Form.Item>
+        </FormItemsContainer>
+        <FormItemsContainer>
+          <Form.Item label="Электронная почта">
+            <InputTT
+              name="email"
+              type="text"
+              value={fields.email.value}
+              onChange={(e) => fields.email.onChange(e.target.value)}
+            />
+            <ErrorMessage>
+              {fields.email.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </Form.Item>
+          <Form.Item label="Контактный телефон">
+            <InputTT
+              maxLength={11}
+              width="100%"
+              name="cellPhone"
+              type="number"
+              value={fields.cellPhone.value}
+              onChange={(e) => fields.cellPhone.onChange(e.target.value)}
+            />
+            <ErrorMessage>
+              {fields.cellPhone.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </Form.Item>
+        </FormItemsContainer>
+        <Form.Item label="Роль в системе">
+          <MultiSelectTT
+            mode="multiple"
+            value={fields.userRoleIds.value}
+            options={multipleSelectionUserRoles}
+            onChange={fields.userRoleIds.onChange as any}
+          />
+          <ErrorMessage>
+            {fields.cellPhone.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </Form.Item>
+        <Form.Item label="Компетенции">
+          <MultiSelectTT
+            mode="multiple"
+            value={fields.firmCompetenceIds.value}
+            options={multipleSelectionCompetences}
+            onChange={fields.firmCompetenceIds.onChange as any}
+          />
+          <ErrorMessage>
+            {fields.cellPhone.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </Form.Item>
+        <button
+          disabled={!eachValid}
+          type="submit"
+          style={{ display: 'none' }}
+        />
+      </FormContainer>
+    </ModalText>
+  );
+
   return (
     <StyledModal
       visible={visible}
@@ -73,115 +223,25 @@ export const AddStaffModal: React.FC = () => {
           <ButtonTT color={'white'} key="back" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT color="blue" key="submit" onClick={onSubmit}>
-            Добавить
+          <ButtonTT
+            color="blue"
+            key="submit"
+            onClick={onSubmit}
+            disabled={pendingAddStaffRequest}
+          >
+            {pendingAddStaffRequest ? <Loader show={true} /> : 'Добавить'}
           </ButtonTT>
         </Footer>
       }
     >
       <CompetencesGate />
       <UserRolesGate />
-      <ModalText>
-        <FormContainer onSubmit={() => onSubmit()}>
-          <FormItemsContainer>
-            <Form.Item label="Фамилия">
-              <InputTT
-                name="lastName"
-                type="text"
-                value={fields.lastName.value}
-                onChange={(e) => fields.lastName.onChange(e.target.value)}
-              />
-              <ErrorMessage>
-                {fields.lastName.errorText({
-                  required: 'Это поле обязательное',
-                })}
-              </ErrorMessage>
-            </Form.Item>
-            <Form.Item label="Имя">
-              <InputTT
-                type="firstName"
-                value={fields.firstName.value}
-                onChange={(e) => fields.firstName.onChange(e.target.value)}
-              />
-              <ErrorMessage>
-                {fields.firstName.errorText({
-                  email: 'Введите корректный адрес электронной почты',
-                })}
-              </ErrorMessage>
-            </Form.Item>
-            <Form.Item label="Отчество">
-              <InputTT
-                name="middleName"
-                type="text"
-                value={fields.middleName.value}
-                onChange={(e) => fields.middleName.onChange(e.target.value)}
-              />
-              <ErrorMessage>
-                {fields.middleName.errorText({
-                  required: 'Это поле обязательное',
-                })}
-              </ErrorMessage>
-            </Form.Item>
-          </FormItemsContainer>
-          <FormItemsContainer>
-            <Form.Item label="Электронная почта">
-              <InputTT
-                name="email"
-                type="text"
-                value={fields.email.value}
-                onChange={(e) => fields.email.onChange(e.target.value)}
-              />
-              <ErrorMessage>
-                {fields.email.errorText({
-                  required: 'Это поле обязательное',
-                })}
-              </ErrorMessage>
-            </Form.Item>
-            <Form.Item label="Контактный телефон">
-              <InputTT
-                maxLength={11}
-                width="100%"
-                name="cellPhone"
-                type="number"
-                value={fields.cellPhone.value}
-                onChange={(e) => fields.cellPhone.onChange(e.target.value)}
-              />
-              <ErrorMessage>
-                {fields.cellPhone.errorText({
-                  required: 'Это поле обязательное',
-                })}
-              </ErrorMessage>
-            </Form.Item>
-          </FormItemsContainer>
-          <Form.Item label="Роль в системе">
-            <MultiSelectTT
-              mode="multiple"
-              options={multipleSelectionUserRoles}
-            />
-            <ErrorMessage>
-              {fields.cellPhone.errorText({
-                required: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </Form.Item>
-          <Form.Item label="Компетенции">
-            <MultiSelectTT
-              mode="multiple"
-              options={multipleSelectionCompetences}
-            />
-            <ErrorMessage>
-              {fields.cellPhone.errorText({
-                required: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </Form.Item>
-          <button
-            disabled={!eachValid}
-            type="submit"
-            style={{ display: 'none' }}
-          />
-        </FormContainer>
-      </ModalText>
+      {errorAlert}
+      {pendingFetchingData ? (
+        <Loader show={true} />
+      ) : (
+        !failedFetchUserRoles && !failedFetchCompetances && modalContent
+      )}
     </StyledModal>
   );
 };
