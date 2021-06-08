@@ -142,7 +142,7 @@ export const AddStaffModal: React.FC = () => {
               })}
             </ErrorMessage>
           </Form.Item>
-          <Form.Item label="Коипетенции">
+          <Form.Item label="Компетенции">
             <MultiSelectTT
               mode="multiple"
               options={[{ lable: 'text', value: 1 }]}
