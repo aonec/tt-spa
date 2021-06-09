@@ -7,6 +7,10 @@ import {
   EResourceType,
 } from '../../myApi';
 import axios from '01/axios';
+import qs from 'qs';
+import axiosWithHeaders from '../axiosWithHeaders';
+import { sendGroupReport } from './group_report';
+import { reportQuery } from '../features/groupReport/components/GroupReport/apiGroupReport';
 
 export type RequestDevicesReportQueryType = {
   'Filter.DiameterRange.From'?: number | null;
@@ -32,6 +36,41 @@ export type RequestDevicesReportQueryType = {
   OrderBy?: EOrderByRule;
 };
 
-export const requestDevicesReport = (
+export const requestDevicesReport = async (
   query?: RequestDevicesReportQueryType
-): Promise<File | null> => axios.get('Calculators/Export', { params: query });
+): Promise<File | null> => {
+  const config: Partial<
+    {
+      params: typeof query;
+      paramsSerializer: (params: typeof query) => string;
+    } & {
+      responseType: 'blob';
+    }
+  > = {
+    params: query,
+    paramsSerializer: (params) => qs.stringify(params),
+  };
+
+  return axiosWithHeaders.get('Calculators/Export', config);
+};
+
+// const res = await axiosWithHeaders.get(`Reports/GroupReport`, config);
+// return res;
+
+export const downloadDevicesReport = (
+  query?: RequestDevicesReportQueryType
+) => {
+  return requestDevicesReport(query).then((response: any) => {
+    const fileNameWithJunk = response.headers['content-disposition'].split(';');
+    const encodedFileName = fileNameWithJunk[2].split("'")[2];
+    const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
+    debugger;
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', decodedFileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+};

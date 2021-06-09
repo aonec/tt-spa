@@ -14,14 +14,19 @@ import DevicesByAddress from './DevicesByAddress/DevicesByAddress';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { groupDevicesByObjects } from './utils/groupDevicesByObjects';
 import styled from 'styled-components';
-import { CalculatorListResponsePagedList } from '../../../../myApi';
+import {
+  CalculatorListResponsePagedList,
+  EExpiresCheckingDateAt,
+} from '../../../../myApi';
 import { RootState } from '../../../Redux/store';
 import { DevicePageType } from '../../../Redux/rootReducer';
+import { searchStateChanged } from '../../../features/devicesReport/models';
+import { DevicesReportModal } from '../../../features/devicesReport';
 
 const { TabPane } = Tabs;
 
 const initialState = {
-  expirationDate: '',
+  expirationDate: '' as EExpiresCheckingDateAt,
   diameterRange: [0, 255] as [number, number],
   destination: undefined,
   rule: undefined,
@@ -46,6 +51,7 @@ const TabsDevices = () => {
 
   useEffect(() => {
     dispatch(getDevices(currentPage, pageSize, debouncedSearchState));
+    searchStateChanged(debouncedSearchState);
   }, [currentPage, debouncedSearchState]);
 
   const devicesByObject = groupDevicesByObjects(devicePage.items);
@@ -68,25 +74,28 @@ const TabsDevices = () => {
   ));
 
   return (
-    <Tabs defaultActiveKey="1" style={{ maxWidth: 960 }}>
-      <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
-        <DeviceSearchForm
-          searchState={searchState}
-          dispatchSearchState={dispatchSearchState}
-        />
-        {devicePage.isLoading ? (
-          <div role="loader">
-            ЗАГРУЗКА...
-            <Loader show />
-          </div>
-        ) : (
-          <div>
-            <div>{deviceArray}</div>
-            <Pagination>{pagination}</Pagination>
-          </div>
-        )}
-      </Tab>
-    </Tabs>
+    <>
+      <Tabs defaultActiveKey="1" style={{ maxWidth: 960 }}>
+        <Tab tab={<span style={{ fontSize: 16 }}>ОДПУ</span>} key="1">
+          <DeviceSearchForm
+            searchState={searchState}
+            dispatchSearchState={dispatchSearchState}
+          />
+          {devicePage.isLoading ? (
+            <div role="loader">
+              ЗАГРУЗКА...
+              <Loader show />
+            </div>
+          ) : (
+            <div>
+              <div>{deviceArray}</div>
+              <Pagination>{pagination}</Pagination>
+            </div>
+          )}
+        </Tab>
+      </Tabs>
+      <DevicesReportModal />
+    </>
   );
 };
 

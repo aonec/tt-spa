@@ -16,6 +16,7 @@ import {
 } from '../../devicesSearchReducer';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { EExpiresCheckingDateAt } from '../../../../../myApi';
 
 const { Option } = Select;
 
@@ -37,7 +38,7 @@ const DeviceSearchForm = ({
     dispatch(setCurrentPage(1));
   };
 
-  const handleOnExpirationChange = (value: string) => {
+  const handleOnExpirationChange = (value: EExpiresCheckingDateAt) => {
     dispatchSearchState(setExpirationDate(value));
     dispatch(setCurrentPage(1));
   };
