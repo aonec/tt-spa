@@ -1,9 +1,9 @@
 import {
-  ECalculatorOrderBy,
+  ECalculatorOrderRule,
   EExpiresCheckingDateAt,
   EHouseCategory,
   ENodeCommercialAccountStatus,
-  EOrderByDestination,
+  EOrderByRule,
   EResourceType,
 } from '../../myApi';
 import axios from '01/axios';
@@ -24,12 +24,12 @@ export type RequestDevicesReportQueryType = {
   'Filter.HousingStockId'?: number | null;
   'Filter.NodeStatus'?: ENodeCommercialAccountStatus;
   Question?: string | null;
-  'OrderBy.Destination'?: EOrderByDestination;
-  'OrderBy.Rule'?: ECalculatorOrderBy;
+  OrderRule?: ECalculatorOrderRule;
   IsConnected?: boolean | null;
   CountTasks?: boolean | null;
   PageNumber?: number;
   PageSize?: number;
+  OrderBy?: EOrderByRule;
 };
 
 export const requestDevicesReport = (

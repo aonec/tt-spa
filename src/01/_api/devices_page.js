@@ -12,9 +12,7 @@ export const devicesAPI = {
         (expirationDate || expirationDate === 0
           ? `&Filter.ExpiresCheckingDateAt=${expirationDate}`
           : '') +
-        (rule
-          ? `&OrderBy.Destination=${destination}&OrderBy.Rule=${rule}`
-          : '') +
+        (rule ? `&OrderBy=${destination}&OrderRule=${rule}` : '') +
         (diameterRange && !(diameterRange[0] === 0 && diameterRange[1] === 255)
           ? `&Filter.DiameterRange.From=${diameterRange[0]}&Filter.DiameterRange.To=${diameterRange[1]}`
           : '');
