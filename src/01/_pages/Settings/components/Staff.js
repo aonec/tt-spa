@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
 import { SettingsContext } from '../index';
 import { AddStaffModal } from '01/features/staff/addStaff';
+import { $staffList, StaffGate } from '01/features/staff/displayStaff/models';
+import { useStore } from 'effector-react';
 
 const Staff = () => {
-  const { users } = useContext(SettingsContext);
-  const { items } = users;
+  const users = useStore($staffList);
 
-  const res = items.map((item, index) => {
+  const res = users?.map((item, index) => {
     const { id, email, name, cellphone, executingTaskCount } = item;
     return (
       <li className={classes.staff} key={index}>
@@ -26,6 +27,7 @@ const Staff = () => {
 
   return (
     <div>
+      <StaffGate />
       <AddStaffModal />
       <ul>{res}</ul>
     </div>
