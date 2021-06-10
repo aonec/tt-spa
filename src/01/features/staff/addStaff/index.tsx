@@ -32,7 +32,7 @@ import {
   addStaffFx,
   addStaffModalCloseButtonClicked,
 } from './models';
-import { getValueByPriority } from './utils';
+import { getValueByPriority, usePhoneMask } from './utils';
 
 const FormItemsContainer = styled.div`
   display: flex;
@@ -58,6 +58,8 @@ export const AddStaffModal: React.FC = () => {
   const visible = useStore($isAddStaffModalVisible);
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
+
+  const phoneMask = usePhoneMask();
 
   const { submit: onSubmit, fields, eachValid } = useForm(addStaffForm);
 
@@ -163,12 +165,15 @@ export const AddStaffModal: React.FC = () => {
           </Form.Item>
           <Form.Item label="Контактный телефон">
             <InputTT
-              maxLength={11}
               width="100%"
               name="cellPhone"
-              type="number"
-              value={fields.cellPhone.value}
-              onChange={(e) => fields.cellPhone.onChange(e.target.value)}
+              type="text"
+              value={phoneMask.maskValue(fields.cellPhone.value)}
+              onChange={(e) =>
+                fields.cellPhone.onChange(
+                  phoneMask.unmaskedValue(e.target.value)
+                )
+              }
             />
             <ErrorMessage>
               {fields.cellPhone.errorText({

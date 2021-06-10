@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
-import { SettingsContext } from '../index';
 import { AddStaffModal } from '01/features/staff/addStaff';
 import {
   $staffList,
@@ -10,11 +9,14 @@ import {
 } from '01/features/staff/displayStaff/models';
 import { useStore } from 'effector-react';
 import { Loader } from '01/_components/Loader';
+import { usePhoneMask } from '01/features/staff/addStaff/utils';
 
 const Staff = () => {
   const users = useStore($staffList);
 
   const pending = useStore(fetchStaffFx.pending);
+
+  const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
     const { id, email, name, cellphone, executingTaskCount } = item;
@@ -23,7 +25,7 @@ const Staff = () => {
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
         <div className={classes.cellphone}>
-          {cellphone || 'Телефон не указан'}
+          {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
         <div className={classes.status}>Работает</div>
         <div className={classes.button}>
