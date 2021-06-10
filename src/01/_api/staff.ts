@@ -17,4 +17,5 @@ export const fetchStaff = async () => {
   return res?.items || null;
 };
 
-export const deleteManagingFirmUser = () => axios.delete('ManagingFirmUsers');
+export const deleteManagingFirmUser = (id: number) =>
+  axios.delete(`ManagingFirmUsers/${id}`);
