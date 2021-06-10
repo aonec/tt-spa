@@ -1,8 +1,6 @@
 import { addStaff } from '01/_api/staff';
 import { forward } from 'effector';
 import {
-  $staffList,
-  fetchStaffFx,
   refetchStaff,
 } from '../../displayStaff/models';
 import {
