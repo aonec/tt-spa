@@ -1,4 +1,4 @@
-import { guard, sample } from 'effector';
+import { guard } from 'effector';
 import {
   $deletionUserId,
   $isDeletionStaffFailed,
