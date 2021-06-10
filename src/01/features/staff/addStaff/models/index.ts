@@ -41,7 +41,10 @@ export const addStaffForm = createForm({
       init: '',
       rules: [
         requiredValidation,
-        { name: 'phone', validator: (value) => value.lenght === 10 },
+        {
+          name: 'phone',
+          validator: (value) => value.length === 10,
+        },
       ],
     },
     userRoleIds: {
