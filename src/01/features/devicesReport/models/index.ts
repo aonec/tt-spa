@@ -6,12 +6,6 @@ export const $devicesSearchState = createStore<Partial<DeviceSearchReducerStateT
   null
 );
 
-// searchTerm: string;
-// expirationDate: string;
-// diameterRange: [number, number];
-// destination: 'Descending' | 'Ascending';
-// rule: 'FutureCheckingDate' | 'Street';
-
 export const mapDeviceSearchStateToDownloadQuery = (
   searchState: Partial<DeviceSearchReducerStateType>
 ): RequestDevicesReportQueryType => {
@@ -23,17 +17,20 @@ export const mapDeviceSearchStateToDownloadQuery = (
     rule,
   } = searchState;
 
+  const formDiameterParams = (diameters: [number, number] | undefined) => {
+    if (!diameters || (diameters[0] === 0 && diameters[1] === 255)) return {};
+    return {
+      'Filter.DiameterRange.From': diameters[0],
+      'Filter.DiameterRange.To': diameters[1],
+    };
+  };
+
   return {
     ...(searchTerm ? { Question: searchTerm } : {}),
     ...(expirationDate
       ? { 'Filter.ExpiresCheckingDateAt': expirationDate }
       : {}),
-    ...(diameterRange && diameterRange[0]
-      ? { 'Filter.DiameterRange.From': diameterRange[0] }
-      : {}),
-    ...(diameterRange && diameterRange[1]
-      ? { 'Filter.DiameterRange.To': diameterRange[1] }
-      : {}),
+    ...formDiameterParams(diameterRange),
     ...(destination ? { OrderBy: destination } : {}),
     ...(rule ? { OrderRule: rule } : {}),
   };
@@ -55,5 +52,3 @@ export const downloadDevicesReportFx = createEffect<
   RequestDevicesReportQueryType,
   void
 >();
-
-// const reportName = `Сводный_отчёт_${street}_${number}.xlsx`;

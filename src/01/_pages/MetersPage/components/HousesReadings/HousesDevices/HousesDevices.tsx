@@ -7,7 +7,6 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { HouseReadingLine } from '../DeviceReadingLine/HouseReadingLine';
 import { HouseReadingsHeader } from '../HouseReadingsHeader/HouseReadingsHeader';
 import { selectDevices } from '../../../../../Redux/ducks/readings/selectors';
@@ -42,10 +41,11 @@ const HousesDevices: React.FC = () => {
   if (isLoading || !house) return null;
 
   const deviceElems = devices
-    .sort((device1, device2) => {
+    ?.slice()
+    ?.sort((device1, device2) => {
       return Number(device1.apartmentNumber) - Number(device2.apartmentNumber);
     })
-    .map((device, index) => (
+    ?.map((device) => (
       <HouseReadingLine key={device.id + 'f'} device={device} />
     ));
 

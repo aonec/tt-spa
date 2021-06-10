@@ -11,10 +11,7 @@ import {
   showDownloadDeviceReportButtonClicked,
 } from './index';
 import { forward, guard, sample } from 'effector';
-import {
-  requestDevicesReport,
-  downloadDevicesReport,
-} from '../../../_api/devicesReport';
+import { downloadDevicesReport } from '../../../_api/devicesReport';
 
 downloadDevicesReportFx.use(downloadDevicesReport);
 

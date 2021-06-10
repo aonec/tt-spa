@@ -11,6 +11,7 @@ import {
 import ButtonTT from '../../tt-components/ButtonTT';
 import { Loader } from '../../_components/Loader';
 import InputTT from '../../tt-components/InputTT';
+import { Form } from 'antd';
 
 export const DevicesReportModal = () => {
   const isVisible = useStore($isDeviceReportModalVisible);
@@ -39,8 +40,17 @@ export const DevicesReportModal = () => {
         </Footer>
       }
     >
-      <Header>Выгрузка отчета об общедомовом потреблении</Header>
-      <InputTT readonly value={'Список приборов.xlsx'} />
+      <StyledModalBody>
+        <Header style={{ marginBottom: 8 }}>
+          Выгрузка отчета об общедомовом потреблении
+        </Header>
+        <div style={{ marginBottom: 16 }}>
+          При выгрузке списка прибров сохраняются все параметры фильтрации
+        </div>
+        <Form.Item label="Название списка">
+          <InputTT readOnly value={'Список приборов.xls'} />
+        </Form.Item>
+      </StyledModalBody>
     </StyledModal>
   );
 };

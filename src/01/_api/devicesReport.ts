@@ -6,11 +6,8 @@ import {
   EOrderByRule,
   EResourceType,
 } from '../../myApi';
-import axios from '01/axios';
 import qs from 'qs';
 import axiosWithHeaders from '../axiosWithHeaders';
-import { sendGroupReport } from './group_report';
-import { reportQuery } from '../features/groupReport/components/GroupReport/apiGroupReport';
 
 export type RequestDevicesReportQueryType = {
   'Filter.DiameterRange.From'?: number | null;
@@ -54,9 +51,6 @@ export const requestDevicesReport = async (
   return axiosWithHeaders.get('Calculators/Export', config);
 };
 
-// const res = await axiosWithHeaders.get(`Reports/GroupReport`, config);
-// return res;
-
 export const downloadDevicesReport = (
   query?: RequestDevicesReportQueryType
 ) => {
@@ -64,7 +58,6 @@ export const downloadDevicesReport = (
     const fileNameWithJunk = response.headers['content-disposition'].split(';');
     const encodedFileName = fileNameWithJunk[2].split("'")[2];
     const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
-    debugger;
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
