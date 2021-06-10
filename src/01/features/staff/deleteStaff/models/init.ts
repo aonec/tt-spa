@@ -1,24 +1,36 @@
-import { guard } from 'effector';
+import { deleteManagingFirmUser } from '01/_api/staff';
+import { combine, guard, sample } from 'effector';
 import {
-  $deletionUserId,
+  $userIdToDelete,
   $isDeletionStaffFailed,
   deleteStaffButtonClicked,
   deleteStaffConfirmButtonClicked,
   deleteStaffFx,
-  delteStaffModalCancelButtonClicked,
+  deleteStaffModalCancelButtonClicked,
 } from '.';
+import { $staffList } from '../../displayStaff/models';
 
-$deletionUserId
+deleteStaffFx.use(deleteManagingFirmUser);
+
+const staffUserDeleted = sample({
+  source: combine($userIdToDelete, $staffList),
+  clock: deleteStaffFx.doneData,
+  fn: ([idToDelete, users]) =>
+    users?.filter((elem) => elem.id !== idToDelete) || null,
+  target: $staffList,
+});
+
+$userIdToDelete
   .on(deleteStaffButtonClicked, (_, id) => id)
-  .reset(delteStaffModalCancelButtonClicked, deleteStaffFx.doneData);
+  .reset(deleteStaffModalCancelButtonClicked, staffUserDeleted);
 
 $isDeletionStaffFailed
   .on(deleteStaffFx.failData, () => true)
-  .reset(delteStaffModalCancelButtonClicked);
+  .reset(deleteStaffModalCancelButtonClicked);
 
 guard({
-  source: $deletionUserId,
+  source: $userIdToDelete,
   clock: deleteStaffConfirmButtonClicked,
-  filter: (id): id is number => id === null,
+  filter: (id): id is number => id !== null,
   target: deleteStaffFx,
 });

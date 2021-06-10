@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
 import { AddStaffModal } from '01/features/staff/addStaff';
 import {
@@ -10,6 +9,9 @@ import {
 import { useStore } from 'effector-react';
 import { Loader } from '01/_components/Loader';
 import { usePhoneMask } from '01/features/staff/addStaff/utils';
+import { MenuButtonTT } from '01/tt-components';
+import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
+import { DeleteStaffModal } from '01/features/staff/deleteStaff';
 
 const Staff = () => {
   const users = useStore($staffList);
@@ -28,9 +30,38 @@ const Staff = () => {
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
         <div className={classes.status}>Работает</div>
-        <div className={classes.button}>
-          <Link to={`/user/staff/${id}`}>{/*<EditButtonTT />*/}</Link>
-        </div>
+        <MenuButtonTT
+          menuButtonArr={[
+            {
+              title: 'Открыть профиль сотрудника',
+              cb: () => {},
+              show: true,
+              color: 'default',
+              clickable: true,
+            },
+            {
+              title: 'Изменить статус',
+              cb: () => {},
+              show: true,
+              color: 'default',
+              clickable: true,
+            },
+            {
+              title: 'Редактировать информацию о сотруднике',
+              cb: () => {},
+              show: true,
+              color: 'default',
+              clickable: true,
+            },
+            {
+              title: 'Удалить сотрудника',
+              cb: () => deleteStaffButtonClicked(id),
+              show: true,
+              color: 'red',
+              clickable: true,
+            },
+          ]}
+        />
       </li>
     );
   });
@@ -39,6 +70,7 @@ const Staff = () => {
     <div>
       <StaffGate />
       <AddStaffModal />
+      <DeleteStaffModal />
       {pending ? <Loader show={true} /> : <ul>{res}</ul>}
     </div>
   );
