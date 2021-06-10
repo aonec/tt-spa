@@ -7,6 +7,7 @@ export const useApartments = ({ apartments = {} }, { filter = '' }) => {
       .map((item) => ({
         ...item,
         // title: `${housingStock.street}, ${housingStock.number}, кв.${item.apartmentNumber}`,
+        // TODO проверить отображение корпуса внизу
         title: `${housingStock.street}, ${housingStockNumber}, кв.${
           item.apartmentNumber
         }${corpus ? `, ${corpus}` : null}`,

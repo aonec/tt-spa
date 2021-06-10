@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Tabs } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../../../components/Loader';
