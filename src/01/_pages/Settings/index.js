@@ -33,9 +33,6 @@ export const Settings = () => {
     getCurrentManagingFirm().then((res) => {
       setFirm(res);
     });
-    getManagingFirmUsers().then((res) => {
-      setUsers(res);
-    });
     setCurrentTabFromLink(location);
   }, []);
 
