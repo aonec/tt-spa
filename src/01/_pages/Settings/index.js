@@ -86,7 +86,7 @@ export const Settings = () => {
     }
   }
 
-  if (!firm || !users) {
+  if (!firm) {
     console.log('Загрузка');
     return (
       <div
