@@ -46,6 +46,7 @@ export const requestDevicesReport = async (
   > = {
     params: query,
     paramsSerializer: (params) => qs.stringify(params),
+    responseType: 'blob',
   };
 
   return axiosWithHeaders.get('Calculators/Export', config);

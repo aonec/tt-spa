@@ -35,20 +35,18 @@ export const DevicesReportModal = () => {
             key="submit"
             onClick={onSubmit}
           >
-            {pending ? <Loader show={true} /> : 'Добавить'}
+            {pending ? <Loader show={true} /> : 'Выгрузить'}
           </ButtonTT>
         </Footer>
       }
     >
       <StyledModalBody>
-        <Header style={{ marginBottom: 8 }}>
-          Выгрузка отчета об общедомовом потреблении
-        </Header>
+        <Header style={{ marginBottom: 8 }}>Выгрузить список приборов</Header>
         <div style={{ marginBottom: 16 }}>
-          При выгрузке списка прибров сохраняются все параметры фильтрации
+          При выгрузке списка приборов сохраняются все параметры фильтрации
         </div>
         <Form.Item label="Название списка">
-          <InputTT readOnly value={'Список приборов.xls'} />
+          <InputTT readOnly value={'Список приборов.xlsx'} />
         </Form.Item>
       </StyledModalBody>
     </StyledModal>
