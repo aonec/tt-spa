@@ -11,8 +11,9 @@ interface Props {
 
 export const MultiSelectTT = styled(Select)<Props>`
   .ant-select-selector {
-    height: 48px;
+    min-height: 48px;
     padding: 8px 24px;
+    border-radius: 4px !important;
   }
 
   .ant-select-selection-placeholder {
