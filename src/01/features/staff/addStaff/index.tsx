@@ -76,12 +76,9 @@ export const AddStaffModal: React.FC = () => {
   }));
 
   const isFailedAddingStaff = useStore($isAddStaffFailed);
-
   const pendingAddStaffRequest = useStore(addStaffFx.pending);
-
   const pendingFetchingCompetences = useStore(fetchCompetencesFx.pending);
   const pendingFetchingUserRolse = useStore(fetchUserRolesFx.pending);
-
   const pendingFetchingData =
     pendingFetchingCompetences || pendingFetchingUserRolse;
 
