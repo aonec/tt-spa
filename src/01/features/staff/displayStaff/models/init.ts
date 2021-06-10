@@ -1,6 +1,12 @@
 import { fetchStaff } from '01/_api/staff';
 import { forward, guard } from 'effector';
-import { $isFetchingStaffFailed, $staffList, fetchStaffFx, StaffGate } from '.';
+import {
+  $isFetchingStaffFailed,
+  $staffList,
+  fetchStaffFx,
+  refetchStaff,
+  StaffGate,
+} from '.';
 
 $staffList.on(fetchStaffFx.doneData, (_, staffList) => staffList);
 
@@ -16,5 +22,10 @@ forward({
     clock: StaffGate.open,
     filter: (staffList) => staffList === null,
   }),
+  to: fetchStaffFx,
+});
+
+forward({
+  from: refetchStaff,
   to: fetchStaffFx,
 });

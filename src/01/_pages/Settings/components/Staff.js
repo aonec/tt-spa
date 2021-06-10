@@ -3,14 +3,22 @@ import { Link } from 'react-router-dom';
 import classes from '../Settings.module.scss';
 import { SettingsContext } from '../index';
 import { AddStaffModal } from '01/features/staff/addStaff';
-import { $staffList, StaffGate } from '01/features/staff/displayStaff/models';
+import {
+  $staffList,
+  fetchStaffFx,
+  StaffGate,
+} from '01/features/staff/displayStaff/models';
 import { useStore } from 'effector-react';
+import { Loader } from '01/_components/Loader';
 
 const Staff = () => {
   const users = useStore($staffList);
 
+  const pending = useStore(fetchStaffFx.pending);
+
   const res = users?.map((item, index) => {
     const { id, email, name, cellphone, executingTaskCount } = item;
+
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
@@ -29,7 +37,7 @@ const Staff = () => {
     <div>
       <StaffGate />
       <AddStaffModal />
-      <ul>{res}</ul>
+      {pending ? <Loader show={true} /> : <ul>{res}</ul>}
     </div>
   );
 };

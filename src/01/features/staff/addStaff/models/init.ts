@@ -1,6 +1,11 @@
 import { addStaff } from '01/_api/staff';
 import { forward } from 'effector';
 import {
+  $staffList,
+  fetchStaffFx,
+  refetchStaff,
+} from '../../displayStaff/models';
+import {
   $isAddStaffModalVisible,
   addStaffButtonClicked,
   addStaffModalCloseButtonClicked,
@@ -29,7 +34,7 @@ forward({
 
 forward({
   from: addStaffFx.doneData,
-  to: addStaffForm.reset,
+  to: [addStaffForm.reset, refetchStaff],
 });
 
 addStaffFx.use(addStaff);
