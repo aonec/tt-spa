@@ -127,7 +127,7 @@ export const Settings = () => {
   };
 
   const addStaffButton = {
-    title: 'Добавить сотрудника'
+    title: 'Добавить сотрудника',
     cb: addStaffButtonClicked,
     show: needShowButton('staff'),
     color: 'default',
