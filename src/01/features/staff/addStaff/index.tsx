@@ -131,7 +131,7 @@ export const AddStaffModal: React.FC = () => {
             />
             <ErrorMessage>
               {fields.firstName.errorText({
-                email: 'Введите корректный адрес электронной почты',
+                required: 'Это поле обязательное',
               })}
             </ErrorMessage>
           </Form.Item>
@@ -160,6 +160,7 @@ export const AddStaffModal: React.FC = () => {
             <ErrorMessage>
               {fields.email.errorText({
                 required: 'Это поле обязательное',
+                email: 'Введите корректный email',
               })}
             </ErrorMessage>
           </Form.Item>
@@ -178,6 +179,7 @@ export const AddStaffModal: React.FC = () => {
             <ErrorMessage>
               {fields.cellPhone.errorText({
                 required: 'Это поле обязательное',
+                phone: 'Введите корректный номер телефона'
               })}
             </ErrorMessage>
           </Form.Item>
@@ -190,8 +192,8 @@ export const AddStaffModal: React.FC = () => {
             onChange={fields.userRoleIds.onChange as any}
           />
           <ErrorMessage>
-            {fields.cellPhone.errorText({
-              required: 'Это поле обязательное',
+            {fields.userRoleIds.errorText({
+              required: 'Выберите роль',
             })}
           </ErrorMessage>
         </Form.Item>
@@ -202,11 +204,6 @@ export const AddStaffModal: React.FC = () => {
             options={multipleSelectionCompetences}
             onChange={fields.firmCompetenceIds.onChange as any}
           />
-          <ErrorMessage>
-            {fields.cellPhone.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
         </Form.Item>
         <button
           disabled={!eachValid}

@@ -12,28 +12,46 @@ export const addStaffButtonClicked = createEvent();
 export const addStaffModalCloseButtonClicked = createEvent();
 export const addStaffModalButtonClicked = createEvent();
 
-const requireValidation = {
+const requiredValidation = {
   name: 'required',
   validator: (value: string) => Boolean(value),
 };
 
 const standartStringFieldInit = {
   init: '',
-  validator: [requireValidation],
+  rules: [requiredValidation],
 };
 
 export const addStaffForm = createForm({
   fields: {
     email: {
       init: '',
-      validator: (value: string) => /\S+@\S+\.\S+/.test(value),
+      rules: [
+        requiredValidation,
+        {
+          name: 'email',
+          validator: (value: string) => /\S+@\S+\.\S+/.test(value),
+        },
+      ],
     },
     firstName: standartStringFieldInit,
     lastName: standartStringFieldInit,
     middleName: standartStringFieldInit,
-    cellPhone: standartStringFieldInit,
+    cellPhone: {
+      init: '',
+      rules: [
+        requiredValidation,
+        { name: 'phone', validator: (value) => value.lenght === 10 },
+      ],
+    },
     userRoleIds: {
       init: [] as number[],
+      rules: [
+        {
+          name: 'required',
+          validator: (value) => value.length > 0,
+        },
+      ],
     },
     firmCompetenceIds: {
       init: [] as string[],

@@ -18,7 +18,7 @@ export function getValueByPriority<T>(configs: Config<T>[]): T | null {
 export function usePhoneMask() {
   const [mask] = useState(
     IMask.createMask({
-      mask: '+8 (000) 000-00-00',
+      mask: '8 (000) 000-00-00',
       max: 9,
     })
   );
