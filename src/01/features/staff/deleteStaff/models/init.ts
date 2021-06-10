@@ -26,7 +26,7 @@ $userIdToDelete
 
 $isDeletionStaffFailed
   .on(deleteStaffFx.failData, () => true)
-  .reset(deleteStaffModalCancelButtonClicked);
+  .reset(deleteStaffModalCancelButtonClicked, deleteStaffConfirmButtonClicked);
 
 guard({
   source: $userIdToDelete,
