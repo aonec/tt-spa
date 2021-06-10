@@ -40,6 +40,7 @@ const formReadingsWithArrays = (
   for (let [key, value] of Object.entries(yearObject)) {
     readings.push({ year: key, items: formMonthReadings(value) });
   }
+
   return readings;
 };
 
@@ -58,7 +59,12 @@ const formMonthReadings = (monthObject: MonthReadings): MonthReadingsType[] => {
 export const prepareReadings = (
   readings: GetHousingMeteringDeviceReadingsResponse
 ) => {
-  return formReadingsWithArrays(groupReadingsByDates(readings));
+  const preparedReadings = formReadingsWithArrays(
+    groupReadingsByDates(readings)
+  );
+  // debugger;
+
+  return preparedReadings;
   // return compose(formReadingsWithArrays, groupReadingsByDates)(readings);
 };
 

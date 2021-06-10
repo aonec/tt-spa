@@ -4,10 +4,7 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { IconTT } from '../../../tt-components/IconTT';
 import { Name, Serial } from '../../../tt-components';
-import {
-  nodeStatusList,
-  serviceZoneList,
-} from '../../../tt-components/localBases';
+import { nodeStatusList } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
 import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
 
@@ -49,14 +46,13 @@ export const Devices = ({ nodes }) => {
 
   // Узел
   const NodeItem = ({ node }) => {
-    const { id: nodeId, nodeServiceZone, nodeStatus, number, resource } = node;
+    const { id: nodeId, nodeStatus, number, resource } = node;
 
-    //Бэкендеру - перевести с русского на английский!! nodeStatus
-    const getNodeStatus =
-      _.find(nodeStatusList, { label: nodeStatus })?.label ??
-      'Статус не определен';
+    const statusValue = nodeStatus?.value;
+    const statusDescription = nodeStatus?.description;
+
     const getNodeIconStatus =
-      _.find(nodeStatusList, { label: nodeStatus })?.icon ?? 'alarm';
+      _.find(nodeStatusList, { value: statusValue })?.icon ?? 'alarm';
 
     // const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
     //   .label;
@@ -67,12 +63,16 @@ export const Devices = ({ nodes }) => {
             <IconTT icon={resource.toLowerCase()} />
             <Name>{`Узел ${number}`}</Name>
           </NodeMainInfo>
-          <NodeZone>{nodeServiceZone?.name}</NodeZone>
+          <NodeZone>{statusDescription}</NodeZone>
         </NavLink>
-        <Tooltip placement="topLeft" title={getNodeStatus} color={'#272F5A'}>
+        <Tooltip
+          placement="topLeft"
+          title={statusDescription}
+          color={'#272F5A'}
+        >
           <NodeStatus>
             <IconTT icon={getNodeIconStatus} />
-            <span>{getNodeStatus}</span>
+            <span>{statusDescription}</span>
           </NodeStatus>
         </Tooltip>
       </Node>
