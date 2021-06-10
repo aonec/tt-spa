@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
@@ -21,10 +21,10 @@ import { AddContractorsFormModal } from '01/features/contractors/addContractors'
 export const SettingsContext = createContext();
 export const Settings = () => {
   const { push, location } = useHistory();
+  const params = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
-
   const [staff, setStaff] = useState(false);
   const [contractor, setContractor] = useState(false);
 
@@ -116,15 +116,27 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const menuButtonArr = [
-    {
-      title: 'Добавить контрагента',
-      cb: addContractorsButtonMenuClicked,
-      show: true,
-      color: 'default',
-      clickable: true,
-    },
-  ];
+  const needShowButton = (route) => {
+    return params[0] ? route === params[0] : false;
+  };
+
+  const addContractorButton = {
+    title: 'Добавить контрагента',
+    cb: addContractorsButtonMenuClicked,
+    show: needShowButton('contractors'),
+    color: 'default',
+    clickable: true,
+  };
+
+  const addStaffButton = {
+    title: 'Добавить сотрудника',
+    cb: () => {},
+    show: needShowButton('staff'),
+    color: 'default',
+    clickable: true,
+  };
+
+  const menuButtonArr = [addContractorButton, addStaffButton];
 
   return (
     <SettingsContext.Provider value={context}>

@@ -1,8 +1,4 @@
-import {
-  $isFailedAddingContractor,
-  addContractorsForm,
-  addContractorsButtonClicked,
-} from './index';
+import { $isFailedAddingContractor, addContractorsForm } from './index';
 import {
   $isAddContractorsModalVisible,
   addContractorsButtonMenuClicked,
@@ -34,5 +30,10 @@ forward({
 });
 
 $contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
-  contractors ? [...contractors, contractor] : [contractor]
+  contractors ? [contractor, ...contractors] : [contractor]
 );
+
+forward({
+  from: postContractorsFx.doneData,
+  to: addContractorsForm.reset,
+});
