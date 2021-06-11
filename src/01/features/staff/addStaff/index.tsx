@@ -112,7 +112,9 @@ export const AddStaffModal: React.FC = () => {
               name="lastName"
               type="text"
               value={fields.lastName.value}
-              onChange={(e) => fields.lastName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.lastName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.lastName.errorText({
@@ -124,7 +126,9 @@ export const AddStaffModal: React.FC = () => {
             <InputTT
               type="firstName"
               value={fields.firstName.value}
-              onChange={(e) => fields.firstName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.firstName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.firstName.errorText({
@@ -137,7 +141,9 @@ export const AddStaffModal: React.FC = () => {
               name="middleName"
               type="text"
               value={fields.middleName.value}
-              onChange={(e) => fields.middleName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.middleName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.middleName.errorText({
@@ -152,7 +158,9 @@ export const AddStaffModal: React.FC = () => {
               name="email"
               type="text"
               value={fields.email.value}
-              onChange={(e) => fields.email.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.email.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.email.errorText({
@@ -167,7 +175,7 @@ export const AddStaffModal: React.FC = () => {
               name="cellPhone"
               type="text"
               value={phoneMask.maskValue(fields.cellPhone.value)}
-              onChange={(e) =>
+              onChange={(e: { target: { value: string } }) =>
                 fields.cellPhone.onChange(
                   phoneMask.unmaskedValue(e.target.value)
                 )
@@ -176,7 +184,7 @@ export const AddStaffModal: React.FC = () => {
             <ErrorMessage>
               {fields.cellPhone.errorText({
                 required: 'Это поле обязательное',
-                phone: 'Введите корректный номер телефона'
+                phone: 'Введите корректный номер телефона',
               })}
             </ErrorMessage>
           </Form.Item>
@@ -247,4 +255,4 @@ export const AddStaffModal: React.FC = () => {
 
 const StyledMultiSelect = styled(MultiSelectTT)`
   min-height: 48px;
-`
+`;
