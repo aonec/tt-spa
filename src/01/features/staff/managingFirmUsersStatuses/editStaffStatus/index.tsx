@@ -1,4 +1,5 @@
-import { StyledModal } from '01/shared/ui/Modal/Modal';
+import { Footer, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
+import { ButtonTT, Header } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -11,5 +12,24 @@ export const EditStaffStatusModal: React.FC = () => {
 
   const onCancel = () => editStaffStatusCancelButtonClicked();
 
-  return <StyledModal visible={visible} onCancel={onCancel}></StyledModal>;
+  return (
+    <StyledModal
+      width={800}
+      visible={visible}
+      onCancel={onCancel}
+      title={<Header>Статус сотрудника</Header>}
+      footer={
+        <Footer>
+          <ButtonTT color={'white'} key="back" onClick={onCancel}>
+            Отмена
+          </ButtonTT>
+          <ButtonTT color="blue" key="submit">
+            Изменить статус
+          </ButtonTT>
+        </Footer>
+      }
+    >
+      <ModalText>Изменение статуса</ModalText>
+    </StyledModal>
+  );
 };

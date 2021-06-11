@@ -10,5 +10,5 @@ import './userRoles/displayUserRoles/models/init';
 import './staff/displayStaff/models/init';
 import './staff/deleteStaff/models/init';
 import './contractors/deleteContractor/models/init';
-// import './staff/managingFirmUsersStatuses/editStaffStatus/models/init';
+import './staff/managingFirmUsersStatuses/editStaffStatus/models/init';
 import './staff/managingFirmUsersStatuses/staffStatuses/models/init';

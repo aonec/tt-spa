@@ -14,6 +14,8 @@ import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
 import { DeleteStaffModal } from '01/features/staff/deleteStaff';
 import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
 import { EManagingFirmUserDismissialStatusType } from 'myApi';
+import { editStaffStatusButtonClicked } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus/models';
+import { EditStaffStatusModal } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus';
 
 const Staff = () => {
   const users = useStore($staffList);
@@ -45,7 +47,7 @@ const Staff = () => {
             },
             {
               title: 'Изменить статус',
-              cb: () => {},
+              cb: () => editStaffStatusButtonClicked(id),
               show: true,
               color: 'default',
               clickable: true,
@@ -75,6 +77,7 @@ const Staff = () => {
       <StaffGate />
       <AddStaffModal />
       <DeleteStaffModal />
+      <EditStaffStatusModal />
       {pending ? <Loader show={true} /> : <ul>{res}</ul>}
     </div>
   );
