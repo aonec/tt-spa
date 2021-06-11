@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import _ from 'lodash';
 import styled from 'styled-components';
 import {
-  serviceZoneList,
   nodeStatusList,
   resources,
 } from '../../../../tt-components/localBases';
@@ -21,10 +20,7 @@ import { AddNodeContext } from '../../AddNodeContext';
 import { addNode } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
 import { useStore } from 'effector-react';
-import {
-  $derivedChosenInput,
-  $serviceZones,
-} from '../../../../features/serviceZones/selectServiceZones/models';
+import { $serviceZones } from '../../../../features/serviceZones/selectServiceZones/models';
 
 const AddNodeForm = (props: any) => {
   const history = useHistory();

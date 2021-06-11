@@ -32,7 +32,7 @@ const readingsReducer = (
     case ReadingsActionsType.SET_DEVICES:
       return {
         ...state,
-        items: [...action.devices],
+        items: action.devices,
         disabledState: action.devices.map((device) => ({
           deviceId: device.id,
           isDisabled: false,

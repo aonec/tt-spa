@@ -81,6 +81,11 @@ export interface ErrorApiResponse {
   errorResponse: ErrorResponse;
 }
 
+export enum EOrderByRule {
+  Ascending = "Ascending",
+  Descending = "Descending",
+}
+
 export interface ApartmentListResponse {
   /** @format int32 */
   id: number;
@@ -233,9 +238,9 @@ export enum EUserPermission {
   ManagementFirmCompetenceRead = "ManagementFirmCompetenceRead",
   ManagementFirmCompetenceCreate = "ManagementFirmCompetenceCreate",
   ManagementFirmCompetenceUpdate = "ManagementFirmCompetenceUpdate",
-  ManagementFirmUserDismissalStatusRead = "ManagementFirmUserDismissalStatusRead",
-  ManagementFirmUserDismissalStatusCreate = "ManagementFirmUserDismissalStatusCreate",
-  ManagementFirmUserDismissalStatusUpdate = "ManagementFirmUserDismissalStatusUpdate",
+  ManagementFirmUserWorkingStatusRead = "ManagementFirmUserWorkingStatusRead",
+  ManagementFirmUserWorkingStatusCreate = "ManagementFirmUserWorkingStatusCreate",
+  ManagementFirmUserWorkingStatusUpdate = "ManagementFirmUserWorkingStatusUpdate",
   ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
   ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
   ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
@@ -247,6 +252,9 @@ export enum EUserPermission {
   NodeCreate = "NodeCreate",
   NodeUpdate = "NodeUpdate",
   NodeDelete = "NodeDelete",
+  ResourceDisconnectingRead = "ResourceDisconnectingRead",
+  ResourceDisconnectingCreate = "ResourceDisconnectingCreate",
+  ResourceDisconnectingUpdate = "ResourceDisconnectingUpdate",
 }
 
 export interface TokenResponse {
@@ -337,12 +345,7 @@ export enum ENodeCommercialAccountStatus {
   Prepared = "Prepared",
 }
 
-export enum EOrderByDestination {
-  Descending = "Descending",
-  Ascending = "Ascending",
-}
-
-export enum ECalculatorOrderBy {
+export enum ECalculatorOrderRule {
   Street = "Street",
   FutureCheckingDate = "FutureCheckingDate",
 }
@@ -420,14 +423,6 @@ export interface NodeCommercialStatusResponse {
   description: string | null;
 }
 
-export enum ServiceZone {
-  Apartments = "Apartments",
-  CommercialPremises = "CommercialPremises",
-  TechnicalPremises = "TechnicalPremises",
-  CommonUsageAreas = "CommonUsageAreas",
-  IntroductoryNode = "IntroductoryNode",
-}
-
 export interface NodeServiceZoneResponse {
   /** @format int32 */
   id: number;
@@ -503,7 +498,7 @@ export interface CommunicationPipeResponse {
   number: number;
 
   /** @format int32 */
-  entryNumber: number;
+  entryNumber: number | null;
   magistral: string | null;
   devices: HousingMeteringDeviceListResponse[] | null;
 }
@@ -516,7 +511,6 @@ export interface NodeIntoCalculatorResponse {
   number: number;
   nodeStatus: NodeCommercialStatusResponse;
   resource: EResourceType;
-  serviceZone: ServiceZone;
   nodeServiceZone: NodeServiceZoneResponse;
   heatingSeason: NodeHeatingSeasonListResponse;
 
@@ -767,20 +761,31 @@ export interface ContractorListResponse {
   email: string | null;
 }
 
-export interface PagedContractorResponse {
+export interface ContractorListResponsePagedList {
   /** @format int32 */
-  totalCount: number;
+  totalItems: number;
 
   /** @format int32 */
-  take: number | null;
+  pageNumber: number;
 
   /** @format int32 */
-  skip: number | null;
+  pageSize: number;
   items: ContractorListResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
 }
 
-export interface PagedContractorResponseSuccessApiResponse {
-  successResponse: PagedContractorResponse;
+export interface ContractorListResponsePagedListSuccessApiResponse {
+  successResponse: ContractorListResponsePagedList;
 }
 
 export interface ContractorCreateRequest {
@@ -983,8 +988,31 @@ export interface HeatingStationResponse {
   housingStocks: HousingStockShortResponse[] | null;
 }
 
-export interface HeatingStationResponseIEnumerableSuccessApiResponse {
-  successResponse: HeatingStationResponse[] | null;
+export interface HeatingStationResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+  items: HeatingStationResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+}
+
+export interface HeatingStationResponsePagedListSuccessApiResponse {
+  successResponse: HeatingStationResponsePagedList;
 }
 
 export interface AddressRequest {
@@ -1182,9 +1210,6 @@ export interface UpdateHousingMeteringDeviceReadingsRequest {
 
 export interface CreatePipeConnectionRequest {
   /** @format int32 */
-  entryNumber: number;
-
-  /** @format int32 */
   pipeNumber: number;
   magistral: EMagistralType;
 
@@ -1233,7 +1258,7 @@ export interface HousingMeteringDeviceConnectionResponse {
   hub: HousingMeteringDeviceHubConnectionResponse;
 
   /** @format int32 */
-  calculatorId: number;
+  calculatorId: number | null;
 
   /** @format int32 */
   nodeId: number | null;
@@ -1975,59 +2000,18 @@ export interface ManagementFirmUpdateRequest {
   timeZoneOffset?: TimeSpan;
 }
 
-export enum EManagingFirmUserDismissialStatusType {
+export enum EManagingFirmUserWorkingStatusType {
   Working = "Working",
   OnVacation = "OnVacation",
   Sick = "Sick",
-}
-
-export interface EManagingFirmUserDismissialStatusTypeStringDictionaryItem {
-  key?: EManagingFirmUserDismissialStatusType;
-  value?: string | null;
-}
-
-export interface EManagingFirmUserDismissialStatusTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EManagingFirmUserDismissialStatusTypeStringDictionaryItem[] | null;
-}
-
-export interface AddManagingFirmUserDismissialStatusRequest {
-  /** @format int32 */
-  userId?: number;
-  type?: EManagingFirmUserDismissialStatusType;
-
-  /** @format date-time */
-  startDate?: string | null;
-
-  /** @format date-time */
-  endDate?: string | null;
-}
-
-export interface ManagingFirmUserDismissialStatusReponse {
-  /** @format uuid */
-  id?: string | null;
-  type?: EManagingFirmUserDismissialStatusType;
-
-  /** @format date-time */
-  startDate?: string | null;
-
-  /** @format date-time */
-  endDate?: string | null;
-}
-
-export interface ManagingFirmUserDismissialStatusReponseSuccessApiResponse {
-  successResponse: ManagingFirmUserDismissialStatusReponse;
-}
-
-export enum EManagingFirmUsersOrderBy {
-  AlphabeticallyByAscending = "AlphabeticallyByAscending",
-  AlphabeticallyByDescending = "AlphabeticallyByDescending",
+  OnDuty = "OnDuty",
 }
 
 export interface UserStatusResponse {
   /** @format uuid */
   id: string | null;
   title: string | null;
-  type: EManagingFirmUserDismissialStatusType;
+  type: EManagingFirmUserWorkingStatusType;
 
   /** @format date-time */
   startDate: string | null;
@@ -2048,20 +2032,31 @@ export interface ManagingFirmUserListResponse {
   status: UserStatusResponse;
 }
 
-export interface PagedManagingFirmUserResponse {
+export interface ManagingFirmUserListResponsePagedList {
   /** @format int32 */
-  totalCount: number;
+  totalItems: number;
 
   /** @format int32 */
-  take: number | null;
+  pageNumber: number;
 
   /** @format int32 */
-  skip: number | null;
+  pageSize: number;
   items: ManagingFirmUserListResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
 }
 
-export interface PagedManagingFirmUserResponseSuccessApiResponse {
-  successResponse: PagedManagingFirmUserResponse;
+export interface ManagingFirmUserListResponsePagedListSuccessApiResponse {
+  successResponse: ManagingFirmUserListResponsePagedList;
 }
 
 export interface ManagingFirmUserCreateRequest {
@@ -2127,7 +2122,7 @@ export interface ManagingFirmUserResponse {
   hireDate: string | null;
 
   /** @format date-time */
-  dismissialDate: string | null;
+  dismissalDate: string | null;
   managementFirm: ManagementFirmShortResponse;
   status: UserStatusResponse;
   competences: UserCompetenceResponse[] | null;
@@ -2136,6 +2131,128 @@ export interface ManagingFirmUserResponse {
 
 export interface ManagingFirmUserResponseSuccessApiResponse {
   successResponse: ManagingFirmUserResponse;
+}
+
+export enum EManagementFirmEventType {
+  Add = "Add",
+  Update = "Update",
+  Delete = "Delete",
+  IndividualDeviceClose = "IndividualDeviceClose",
+  HousingMeteringDeviceClose = "HousingMeteringDeviceClose",
+  MeteringDeviceCheck = "MeteringDeviceCheck",
+  TaskClose = "TaskClose",
+  TaskStagePush = "TaskStagePush",
+  TaskStageRevert = "TaskStageRevert",
+  ApartmentSetStatus = "ApartmentSetStatus",
+  CalculatorSwitch = "CalculatorSwitch",
+  HousingMeterignDeviceSwitch = "HousingMeterignDeviceSwitch",
+  IndividualDeviceSwitchMagneticSeal = "IndividualDeviceSwitchMagneticSeal",
+  CalculatorClose = "CalculatorClose",
+}
+
+export interface ManagementFirmEventDataDeviceResponse {
+  /** @format int32 */
+  id: number;
+  serialNumber: string | null;
+  model: string | null;
+  resource: EResourceType;
+}
+
+export interface ManagementFirmEventDataNodeResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format int32 */
+  number: number;
+
+  /** @format int32 */
+  entryNumber: number | null;
+  resource: EResourceType;
+}
+
+export interface ManagementFirmEventDataApartmentResponse {
+  /** @format int32 */
+  id: number;
+  number: string | null;
+}
+
+export interface ManagementFirmEventDataHousingStockResponse {
+  /** @format int32 */
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+}
+
+export enum EManagingFirmTaskType {
+  CalculatorMalfunction = "CalculatorMalfunction",
+  CalculatorMalfunctionNonComercial = "CalculatorMalfunctionNonComercial",
+  HousingDeviceMalfunction = "HousingDeviceMalfunction",
+  HousingDeviceMalfunctionNonComercial = "HousingDeviceMalfunctionNonComercial",
+  CalculatorLackOfConnection = "CalculatorLackOfConnection",
+  IndividualDeviceCheck = "IndividualDeviceCheck",
+  PipeRupture = "PipeRupture",
+}
+
+export interface ManagementFirmEventDataTaskResponse {
+  /** @format int32 */
+  id: number;
+  title: string | null;
+  type: EManagingFirmTaskType;
+}
+
+export interface ManagementFirmEventDataIdResponse {
+  id: string | null;
+  name: string | null;
+}
+
+export interface ManagementFirmEventDataChangingResponse {
+  fieldName: string | null;
+  oldValue: string | null;
+  newValue: string | null;
+}
+
+export interface ManagementFirmEventDataResponse {
+  switchedDevice: ManagementFirmEventDataDeviceResponse;
+  device: ManagementFirmEventDataDeviceResponse;
+  node: ManagementFirmEventDataNodeResponse;
+  apartment: ManagementFirmEventDataApartmentResponse;
+  housingStock: ManagementFirmEventDataHousingStockResponse;
+  task: ManagementFirmEventDataTaskResponse;
+  ids: ManagementFirmEventDataIdResponse[] | null;
+  changings: ManagementFirmEventDataChangingResponse[] | null;
+}
+
+export interface ManagingFirmUserEventResponse {
+  title: string | null;
+  eventType: EManagementFirmEventType;
+
+  /** @format date-time */
+  eventTime: string;
+  data: ManagementFirmEventDataResponse;
+}
+
+export interface ManagingFirmUserStatisticsResponse {
+  /** @format int32 */
+  userId: number;
+
+  /** @format int32 */
+  openedTasksCount: number;
+
+  /** @format int32 */
+  closedTasksCount: number;
+
+  /** @format int32 */
+  expiredTasksCount: number;
+
+  /** @format double */
+  inTimeClosedTasksPercent: number;
+  events: ManagingFirmUserEventResponse[] | null;
+}
+
+export interface ManagingFirmUserStatisticsResponseSuccessApiResponse {
+  successResponse: ManagingFirmUserStatisticsResponse;
 }
 
 export interface ManagingFirmUserUpdateRequest {
@@ -2149,6 +2266,43 @@ export interface ManagingFirmUserUpdateRequest {
   number?: string | null;
   userRoleIds?: number[] | null;
   firmCompetenceIds?: string[] | null;
+}
+
+export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItem {
+  key?: EManagingFirmUserWorkingStatusType;
+  value?: string | null;
+}
+
+export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null;
+}
+
+export interface AddManagingFirmUserWorkingStatusRequest {
+  /** @format int32 */
+  userId?: number;
+  type?: EManagingFirmUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate?: string | null;
+
+  /** @format date-time */
+  endDate?: string | null;
+}
+
+export interface ManagingFirmUserWorkingStatusResponse {
+  /** @format uuid */
+  id: string | null;
+  type: EManagingFirmUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate: string | null;
+
+  /** @format date-time */
+  endDate: string | null;
+}
+
+export interface ManagingFirmUserWorkingStatusResponseSuccessApiResponse {
+  successResponse: ManagingFirmUserWorkingStatusResponse;
 }
 
 export interface MeteringDeviceListResponsePagedList {
@@ -2253,7 +2407,6 @@ export interface NodeResponse {
   number: number;
   nodeStatus: NodeCommercialStatusResponse;
   resource: EResourceType;
-  serviceZone: ServiceZone;
   nodeServiceZone: NodeServiceZoneResponse;
   heatingSeason: NodeHeatingSeasonListResponse;
 
@@ -2268,6 +2421,9 @@ export interface NodeResponse {
   calculator: CalculatorIntoNodeResponse;
 
   /** @format int32 */
+  entryNumber: number | null;
+
+  /** @format int32 */
   housingStockId: number;
   address: HousingStockAddressResponse;
   communicationPipes: CommunicationPipeResponse[] | null;
@@ -2279,10 +2435,12 @@ export interface NodeResponseSuccessApiResponse {
 
 export interface UpdateNodeRequest {
   /** @format int32 */
+  entryNumber?: number | null;
+
+  /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
   resource?: EResourceType;
-  serviceZone?: ServiceZone;
 
   /** @format int32 */
   nodeServiceZoneId?: number | null;
@@ -2295,9 +2453,6 @@ export interface UpdateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
-
-  /** @format int32 */
-  housingStockId?: number;
 }
 
 export interface NodeResponsePagedList {
@@ -2330,25 +2485,21 @@ export interface NodeResponsePagedListSuccessApiResponse {
 export interface CreateCommunicationPipeRequest {
   /** @format int32 */
   number?: number;
-
-  /** @format int32 */
-  entryNumber?: number;
   magistral?: string | null;
   devices?: CreateHousingMeteringDeviceRequest[] | null;
 }
 
 export interface CreateNodeRequest {
   /** @format int32 */
-  entryNumber?: number;
+  entryNumber?: number | null;
 
   /** @format int32 */
   number?: number;
   nodeStatus?: ENodeCommercialAccountStatus;
   resource?: EResourceType;
-  serviceZone?: ServiceZone;
 
   /** @format int32 */
-  nodeServiceZoneId?: number | null;
+  nodeServiceZoneId?: number;
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
@@ -2377,7 +2528,7 @@ export interface CommunicationPipeForAddingDeviceListResponse {
   nodeId: number;
 
   /** @format int32 */
-  entryNumber: number;
+  entryNumber: number | null;
   magistralType: EMagistralType;
   pipes: CommunicationPipeForAddingDeviceResponse[] | null;
 }
@@ -2553,6 +2704,105 @@ export enum EEmailSubscriptionType {
   OncePerTwoWeeks = "OncePerTwoWeeks",
   OncePerMonth = "OncePerMonth",
   OncePerQuarter = "OncePerQuarter",
+}
+
+export enum EResourceDisconnectingType {
+  Other = "Other",
+  Planned = "Planned",
+  Emergency = "Emergency",
+  Preventive = "Preventive",
+  Repair = "Repair",
+}
+
+export enum EResourceDisconnectingOrderRule {
+  StartDate = "StartDate",
+  EndDate = "EndDate",
+}
+
+export interface ResourceDisconnectingTypeResponse {
+  value: EResourceDisconnectingType;
+  description: string | null;
+}
+
+export interface ResourceDisconnectingResponse {
+  /** @format uuid */
+  id: string;
+  resource: EResourceType;
+  disconnectingType: ResourceDisconnectingTypeResponse;
+
+  /** @format date-time */
+  startDate: string;
+
+  /** @format date-time */
+  endDate: string;
+  sender: string | null;
+  heatingStation: HeatingStationShortResponse;
+
+  /** @format int32 */
+  managementFirmId: number;
+  housingStocks: HousingStockAddressResponse[] | null;
+}
+
+export interface ResourceDisconnectingResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+  items: ResourceDisconnectingResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+}
+
+export interface ResourceDisconnectingResponsePagedListSuccessApiResponse {
+  successResponse: ResourceDisconnectingResponsePagedList;
+}
+
+export interface ResourceDisconnectingCreateRequest {
+  resource: EResourceType;
+  sender: string;
+
+  /** @format uuid */
+  heatingStationId?: string | null;
+  disconnectingType: EResourceDisconnectingType;
+  housingStockIds: number[];
+
+  /** @format date-time */
+  startDate: string;
+
+  /** @format date-time */
+  endDate: string;
+}
+
+export interface ResourceDisconnectingResponseSuccessApiResponse {
+  successResponse: ResourceDisconnectingResponse;
+}
+
+export interface EResourceDisconnectingTypeNullableStringDictionaryItem {
+  key?: EResourceDisconnectingType;
+  value?: string | null;
+}
+
+export interface ResourceDisconnectingFilterResponse {
+  disconnectingTypes: EResourceDisconnectingTypeNullableStringDictionaryItem[] | null;
+  resourceTypes: EResourceTypeNullableStringDictionaryItem[] | null;
+  cities: string[] | null;
+}
+
+export interface ResourceDisconnectingFilterResponseSuccessApiResponse {
+  successResponse: ResourceDisconnectingFilterResponse;
 }
 
 export enum ETaskTargetType {
@@ -2777,7 +3027,7 @@ export interface TaskCreateRequest {
 export interface TaskCreateResponse {
   /** @format int32 */
   id: number;
-  type: string | null;
+  type: EManagingFirmTaskType;
 
   /** @format date-time */
   triggerTime: string;
@@ -3000,6 +3250,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HousingStockId?: number | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -3204,12 +3455,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Filter.HousingStockId"?: number | null;
         "Filter.NodeStatus"?: ENodeCommercialAccountStatus;
         Question?: string | null;
-        "OrderBy.Destination"?: EOrderByDestination;
-        "OrderBy.Rule"?: ECalculatorOrderBy;
+        OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean | null;
         CountTasks?: boolean | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -3247,12 +3498,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Filter.HousingStockId"?: number | null;
         "Filter.NodeStatus"?: ENodeCommercialAccountStatus;
         Question?: string | null;
-        "OrderBy.Destination"?: EOrderByDestination;
-        "OrderBy.Rule"?: ECalculatorOrderBy;
+        OrderRule?: ECalculatorOrderRule;
         IsConnected?: boolean | null;
         CountTasks?: boolean | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -3365,7 +3616,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     contractorsList: (params: RequestParams = {}) =>
-      this.request<PagedContractorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ContractorListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
         method: "GET",
         secure: true,
@@ -3501,6 +3752,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags DataMigrations
+     * @name DataMigrationsMakeDemoCreate
+     * @request POST:/api/DataMigrations/MakeDemo
+     * @secure
+     */
+    dataMigrationsMakeDemoCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/MakeDemo`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Documents
      * @name DocumentsUploadCreate
      * @request POST:/api/Documents/upload
@@ -3627,7 +3894,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     heatingStationList: (params: RequestParams = {}) =>
-      this.request<HeatingStationResponseIEnumerableSuccessApiResponse, ErrorApiResponse>({
+      this.request<HeatingStationResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation`,
         method: "GET",
         secure: true,
@@ -3714,7 +3981,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Homeowners
      * @secure
      */
-    homeownersList: (query?: { PageNumber?: number; PageSize?: number }, params: RequestParams = {}) =>
+    homeownersList: (
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
       this.request<HomeownersListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners`,
         method: "GET",
@@ -4072,6 +4342,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Corpus?: string | null;
         HouseCategory?: EHouseCategory;
         HouseManagementId?: string | null;
+        HeatingStationId?: string | null;
         "TotalArea.MaxValue"?: number | null;
         "TotalArea.MinValue"?: number | null;
         "TotalArea.MeasurableUnit"?: string | null;
@@ -4079,6 +4350,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         NonResidentialHouseType?: ENonResidentialHouseType;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -4263,7 +4535,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDeviceReadingsGetFlagsList: (
-      query: { Date: string; ManagementFirmId?: number | null; PageNumber?: number; PageSize?: number },
+      query: {
+        Date: string;
+        ManagementFirmId?: number | null;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
       params: RequestParams = {},
     ) =>
       this.request<IndividualDeviceReadingsExistingFlagModelPagedListSuccessApiResponse, ErrorApiResponse>({
@@ -4349,6 +4627,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         TakeReadings?: number | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -4496,7 +4775,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/ManagingFirms
      * @secure
      */
-    managingFirmsList: (query?: { PageNumber?: number; PageSize?: number }, params: RequestParams = {}) =>
+    managingFirmsList: (
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
       this.request<ManagementFirmResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms`,
         method: "GET",
@@ -4545,45 +4827,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags ManagingFirmUserDismissialStatuses
-     * @name ManagingFirmUserDismissialStatusesList
-     * @request GET:/api/ManagingFirmUserDismissialStatuses
-     * @secure
-     */
-    managingFirmUserDismissialStatusesList: (params: RequestParams = {}) =>
-      this.request<EManagingFirmUserDismissialStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUserDismissialStatuses`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags ManagingFirmUserDismissialStatuses
-     * @name ManagingFirmUserDismissialStatusesCreate
-     * @request POST:/api/ManagingFirmUserDismissialStatuses
-     * @secure
-     */
-    managingFirmUserDismissialStatusesCreate: (
-      data: AddManagingFirmUserDismissialStatusRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<ManagingFirmUserDismissialStatusReponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUserDismissialStatuses`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersList
      * @request GET:/api/ManagingFirmUsers
@@ -4591,15 +4834,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     managingFirmUsersList: (
       query?: {
-        Take?: number | null;
-        Skip?: number | null;
         Name?: string | null;
         RoleNames?: string[] | null;
-        OrderBy?: EManagingFirmUsersOrderBy;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
-      this.request<PagedManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<ManagingFirmUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers`,
         method: "GET",
         query: query,
@@ -4635,10 +4878,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/ManagingFirmUsers/{userId}/statistics
      * @secure
      */
-    managingFirmUsersStatisticsDetail: (userId: number, params: RequestParams = {}) =>
-      this.request<ManagingFirmUserResponseSuccessApiResponse, ErrorApiResponse>({
+    managingFirmUsersStatisticsDetail: (
+      userId: number,
+      query?: { From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<ManagingFirmUserStatisticsResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers/${userId}/statistics`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -4700,6 +4948,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags ManagingFirmUserWorkingStatuses
+     * @name ManagingFirmUserWorkingStatusesList
+     * @request GET:/api/ManagingFirmUserWorkingStatuses
+     * @secure
+     */
+    managingFirmUserWorkingStatusesList: (params: RequestParams = {}) =>
+      this.request<EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserWorkingStatuses`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagingFirmUserWorkingStatuses
+     * @name ManagingFirmUserWorkingStatusesCreate
+     * @request POST:/api/ManagingFirmUserWorkingStatuses
+     * @secure
+     */
+    managingFirmUserWorkingStatusesCreate: (
+      data: AddManagingFirmUserWorkingStatusRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<ManagingFirmUserWorkingStatusResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserWorkingStatuses`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags MeteringDevices
      * @name MeteringDevicesList
      * @request GET:/api/MeteringDevices
@@ -4715,6 +5002,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HousingStockId?: number | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
@@ -4864,7 +5152,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     nodesList: (
-      query?: { CalculatorId?: number | null; HousingStockId?: number | null; PageNumber?: number; PageSize?: number },
+      query?: {
+        CalculatorId?: number | null;
+        HousingStockId?: number | null;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
       params: RequestParams = {},
     ) =>
       this.request<NodeResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -5005,22 +5299,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, ErrorApiResponse>({
         path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
         method: "DELETE",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags NodeServiceZones
-     * @name NodeServiceZonesMigrateCreate
-     * @request POST:/api/NodeServiceZones/migrate
-     * @secure
-     */
-    nodeServiceZonesMigrateCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/NodeServiceZones/migrate`,
-        method: "POST",
         secure: true,
         ...params,
       }),
@@ -5214,6 +5492,178 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingList
+     * @request GET:/api/ResourceDisconnecting
+     * @secure
+     */
+    resourceDisconnectingList: (
+      query?: {
+        City?: string | null;
+        Resource?: EResourceType;
+        DisconnectingType?: EResourceDisconnectingType;
+        OrderRule?: EResourceDisconnectingOrderRule;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ResourceDisconnectingResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingCreate
+     * @request POST:/api/ResourceDisconnecting
+     * @secure
+     */
+    resourceDisconnectingCreate: (data: ResourceDisconnectingCreateRequest, params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingDetail
+     * @request GET:/api/ResourceDisconnecting/{id}
+     * @secure
+     */
+    resourceDisconnectingDetail: (id: string, params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingUpdate
+     * @request PUT:/api/ResourceDisconnecting/{id}
+     * @secure
+     */
+    resourceDisconnectingUpdate: (
+      id: string,
+      query: {
+        DisconnectingType?: EResourceDisconnectingType;
+        HousingStockIds: number[];
+        StartDate?: string | null;
+        EndDate?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ResourceDisconnectingResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/${id}`,
+        method: "PUT",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ResourceDisconnecting
+     * @name ResourceDisconnectingFiltersList
+     * @request GET:/api/ResourceDisconnecting/filters
+     * @secure
+     */
+    resourceDisconnectingFiltersList: (params: RequestParams = {}) =>
+      this.request<ResourceDisconnectingFilterResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ResourceDisconnecting/filters`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Statistics
+     * @name StatisticsTasksFileDetail
+     * @request GET:/api/Statistics/{managementFirmId}/tasks/file
+     * @secure
+     */
+    statisticsTasksFileDetail: (
+      managementFirmId: number,
+      query?: { from?: string; to?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Statistics/${managementFirmId}/tasks/file`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Statistics
+     * @name StatisticsConsumptionsFileDetail
+     * @request GET:/api/Statistics/{managementFirmId}/consumptions/file
+     * @secure
+     */
+    statisticsConsumptionsFileDetail: (
+      managementFirmId: number,
+      query?: { from?: string; to?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Statistics/${managementFirmId}/consumptions/file`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Statistics
+     * @name StatisticsReadingsFileDetail
+     * @request GET:/api/Statistics/{managementFirmId}/readings/file
+     * @secure
+     */
+    statisticsReadingsFileDetail: (
+      managementFirmId: number,
+      query?: { from?: string; to?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/Statistics/${managementFirmId}/readings/file`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Tasks
      * @name TasksList
      * @request GET:/api/Tasks
@@ -5235,6 +5685,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ClosingStatuses?: ETaskClosingStatus[] | null;
         PageNumber?: number;
         PageSize?: number;
+        OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>

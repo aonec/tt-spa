@@ -7,6 +7,7 @@ import { Name, Serial } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
 import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
+import { CalculatorWrapper } from '../CalculatorWrapper';
 
 function statusIcon(closingDate) {
   return !closingDate ? 'green' : 'red';
@@ -27,14 +28,14 @@ export const Devices = ({ nodes }) => {
 
     return (
       <Calculator>
-        <NavLink to={`/calculators/${id}`}>
+        <CalculatorWrapper id={id}>
           <CalculatorMainInfo>
             <IconTT icon="device" />
-            <Name>{model}</Name>
-            <Serial>{`(${serialNumber})`}</Serial>
+            <Name>{model ? model : 'Вычислитель отсутствует'}</Name>
+            <Serial>{serialNumber ? `(${serialNumber})` : null}</Serial>
             <CalculatorTasksIcon />
           </CalculatorMainInfo>
-        </NavLink>
+        </CalculatorWrapper>
 
         <CalculatorStatus>
           <IconTT icon={statusIcon(closingDate)} />
@@ -54,8 +55,6 @@ export const Devices = ({ nodes }) => {
     const getNodeIconStatus =
       _.find(nodeStatusList, { value: statusValue })?.icon ?? 'alarm';
 
-    // const serviceZoneText = _.find(serviceZoneList, { value: serviceZone })
-    //   .label;
     return (
       <Node>
         <NavLink to={`/nodes/${nodeId}`}>
