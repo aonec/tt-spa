@@ -1,4 +1,4 @@
-import { EManagingFirmUserDismissialStatusTypeStringDictionaryItem } from './../../../../../myApi';
+import { EManagingFirmUserDismissialStatusTypeStringDictionaryItem } from '../../../../../myApi';
 import { createStore } from 'effector';
 import { createGate } from 'effector-react';
 
