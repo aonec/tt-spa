@@ -12,6 +12,8 @@ import { usePhoneMask } from '01/features/staff/addStaff/utils';
 import { MenuButtonTT } from '01/tt-components';
 import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
 import { DeleteStaffModal } from '01/features/staff/deleteStaff';
+import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
+import { EManagingFirmUserDismissialStatusType } from 'myApi';
 
 const Staff = () => {
   const users = useStore($staffList);
@@ -21,15 +23,17 @@ const Staff = () => {
   const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
-    const { id, email, name, cellphone, executingTaskCount } = item;
+    const { id, name, cellphone, status } = item;
 
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
+        <StaffStatus
+          status={status?.type || EManagingFirmUserDismissialStatusType.Working}
+        />
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
-        <div className={classes.status}>Работает</div>
         <MenuButtonTT
           menuButtonArr={[
             {
