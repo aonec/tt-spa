@@ -22,6 +22,7 @@ const staffStatusText = {
 
 export const StaffStatus: React.FC<Props> = ({ status }) => {
   const Point = styled.div`
+    margin-left: 5px;
     width: 6px;
     min-height: 6px;
     border-radius: 50%;
