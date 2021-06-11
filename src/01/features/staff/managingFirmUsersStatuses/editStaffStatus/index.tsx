@@ -1,7 +1,13 @@
-import { Footer, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
-import { ButtonTT, Header } from '01/tt-components';
+import {
+  Footer,
+  ModalText,
+  StyledModal,
+  Header,
+} from '01/shared/ui/Modal/Modal';
+import { ButtonTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React from 'react';
+import { StaffStatusesGate } from '../staffStatuses/models';
 import {
   $isEditStaffStatusModalVisible,
   editStaffStatusCancelButtonClicked,
@@ -29,6 +35,7 @@ export const EditStaffStatusModal: React.FC = () => {
         </Footer>
       }
     >
+      <StaffStatusesGate />
       <ModalText>Изменение статуса</ModalText>
     </StyledModal>
   );
