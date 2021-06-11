@@ -1,9 +1,10 @@
 import './serviceZones/addServiceZone/models/init';
 import './serviceZones/selectServiceZones/models/init';
-import './HousingMeteringDeviceReadings/models/init';
+import './housingMeteringDeviceReadings/models/init';
 import './graph/graphView/models/init';
 import './contractors/addContractors/models/init';
 import './contractors/displayContractors/models/init';
+import './devicesReport/models/init';
 import './staff/addStaff/models/init';
 import './competences/fetchCompetences/models/init';
 import './userRoles/displayUserRoles/models/init';

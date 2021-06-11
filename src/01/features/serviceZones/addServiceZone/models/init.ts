@@ -9,11 +9,7 @@ import {
   $isAddServiceModalShown,
   $addZoneStatus,
 } from './index';
-import {
-  $chosenInput,
-  $serviceZones,
-  setChosenInput,
-} from '../../selectServiceZones/models';
+import { $chosenInput, $serviceZones } from '../../selectServiceZones/models';
 import { addServiceZone } from '../../../../_api/service_zones';
 
 $addZoneInput.on(nameChanged, (_, newInput) => {

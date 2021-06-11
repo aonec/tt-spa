@@ -21,7 +21,7 @@ import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
-import HousingMeteringDeviceReadings from '../../features/HousingMeteringDeviceReadings/components';
+import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();

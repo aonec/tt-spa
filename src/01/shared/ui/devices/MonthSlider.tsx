@@ -5,7 +5,6 @@ import {
   CenterContainer,
 } from '../../../_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getPreviousReadingsMonth } from '../../lib/readings/getPreviousReadingsMonth';
-import styles from '../../../_pages/MetersPage/components/MeterDevices/MeterDevicesNew.module.scss';
 
 interface MonthSliderInterface {
   onClickDecrease: () => void;

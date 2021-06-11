@@ -1,4 +1,9 @@
 import { Action } from 'redux';
+import {
+  ECalculatorOrderRule,
+  EExpiresCheckingDateAt,
+  EOrderByRule,
+} from '../../../myApi';
 
 enum DevicesSearchActions {
   SET_EXPIRATION_DATE = 'SET_EXPIRATION_DATE',
@@ -9,10 +14,10 @@ enum DevicesSearchActions {
 
 export type DeviceSearchReducerStateType = {
   searchTerm: string;
-  expirationDate: string;
+  expirationDate: EExpiresCheckingDateAt;
   diameterRange: [number, number];
-  destination: 'Descending' | 'Ascending';
-  rule: 'FutureCheckingDate' | 'Street';
+  destination: EOrderByRule;
+  rule: ECalculatorOrderRule;
 };
 
 export type FilterParameterType =
@@ -49,29 +54,29 @@ const devicesSearchReducer = (
         case 'descendingFutureCheckingDate':
           return {
             ...state,
-            destination: 'Descending',
-            rule: 'FutureCheckingDate',
+            destination: EOrderByRule.Descending,
+            rule: ECalculatorOrderRule.FutureCheckingDate,
           };
 
         case 'ascendingFutureCheckingDate':
           return {
             ...state,
-            destination: 'Ascending',
-            rule: 'FutureCheckingDate',
+            destination: EOrderByRule.Ascending,
+            rule: ECalculatorOrderRule.FutureCheckingDate,
           };
 
         case 'descendingStreet':
           return {
             ...state,
-            destination: 'Descending',
-            rule: 'Street',
+            destination: EOrderByRule.Descending,
+            rule: ECalculatorOrderRule.Street,
           };
 
         case 'ascendingStreet':
           return {
             ...state,
-            destination: 'Ascending',
-            rule: 'Street',
+            destination: EOrderByRule.Ascending,
+            rule: ECalculatorOrderRule.Street,
           };
         default:
           throw new Error('Нет такого параметра!');
@@ -87,11 +92,11 @@ interface ActionCreatorsInterface extends Action<DevicesSearchActions> {
 }
 
 interface SetExpirationDateInterface extends ActionCreatorsInterface {
-  expirationDate: string;
+  expirationDate: EExpiresCheckingDateAt;
 }
 
 export const setExpirationDate = (
-  expirationDate: string
+  expirationDate: EExpiresCheckingDateAt
 ): SetExpirationDateInterface => ({
   type: DevicesSearchActions.SET_EXPIRATION_DATE,
   expirationDate,

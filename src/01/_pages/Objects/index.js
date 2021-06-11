@@ -60,7 +60,7 @@ const initialState = {
   city: '',
   Street: '',
   HousingStockNumber: '',
-  Corpus: ''
+  Corpus: '',
 };
 
 export const Objects = ({ isReadings = false }) => {
@@ -97,7 +97,7 @@ export const Objects = ({ isReadings = false }) => {
         <Loader show={!items} size="32">
           {items
             ?.sort(sortObjects)
-            .map(
+            ?.map(
               ({
                 city,
                 id,

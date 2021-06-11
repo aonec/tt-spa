@@ -62,10 +62,7 @@ export const prepareReadings = (
   const preparedReadings = formReadingsWithArrays(
     groupReadingsByDates(readings)
   );
-  // debugger;
-
   return preparedReadings;
-  // return compose(formReadingsWithArrays, groupReadingsByDates)(readings);
 };
 
 type GroupedReadingsByDates = {

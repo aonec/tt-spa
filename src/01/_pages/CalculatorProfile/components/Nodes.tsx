@@ -4,7 +4,6 @@ import { IconTT } from '../../../tt-components';
 import { CalculatorResponse } from '../../../../myApi';
 import DeviceIcons from '../../../_components/DeviceIcons';
 import Icon from '../../../tt-components/Icon';
-import { serviceZoneListEnum } from '../../../tt-components/localBases';
 
 interface NodesInterface {
   device: CalculatorResponse | null;
@@ -64,7 +63,7 @@ export const Nodes = ({ device }: NodesInterface) => {
           <Name>{`Узел ${number}`}</Name>
         </NameWrap>
 
-        <NodeStatus nodeStatus={nodeStatus.value} />
+        <NodeStatus nodeStatus={nodeStatus.description} />
         <Span>{nodeServiceZone?.name}</Span>
       </ListItem>
     );
