@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
 import Common from './components/Common';
@@ -17,23 +17,21 @@ import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
+import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
   const { push, location } = useHistory();
+  const params = useParams();
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
-
   const [staff, setStaff] = useState(false);
   const [contractor, setContractor] = useState(false);
 
   useEffect(() => {
     getCurrentManagingFirm().then((res) => {
       setFirm(res);
-    });
-    getManagingFirmUsers().then((res) => {
-      setUsers(res);
     });
     setCurrentTabFromLink(location);
   }, []);
@@ -88,7 +86,7 @@ export const Settings = () => {
     }
   }
 
-  if (!firm || !users) {
+  if (!firm) {
     console.log('Загрузка');
     return (
       <div
@@ -116,15 +114,27 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const menuButtonArr = [
-    {
-      title: 'Добавить контрагента',
-      cb: addContractorsButtonMenuClicked,
-      show: true,
-      color: 'default',
-      clickable: true,
-    },
-  ];
+  const needShowButton = (route) => {
+    return params[0] ? route === params[0] : false;
+  };
+
+  const addContractorButton = {
+    title: 'Добавить контрагента',
+    cb: addContractorsButtonMenuClicked,
+    show: needShowButton('contractors'),
+    color: 'default',
+    clickable: true,
+  };
+
+  const addStaffButton = {
+    title: 'Добавить сотрудника',
+    cb: addStaffButtonClicked,
+    show: needShowButton('staff'),
+    color: 'default',
+    clickable: true,
+  };
+
+  const menuButtonArr = [addContractorButton, addStaffButton];
 
   return (
     <SettingsContext.Provider value={context}>

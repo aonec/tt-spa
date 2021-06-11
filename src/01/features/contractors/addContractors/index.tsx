@@ -19,7 +19,7 @@ import { Alert, Form } from 'antd';
 import { Loader } from '01/_components/Loader';
 import styled from 'styled-components';
 
-const ErrorMessage = styled.p`
+export const ErrorMessage = styled.p`
   color: red;
 `;
 

@@ -2,15 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
-import {
-  nodeStatusList,
-  serviceZoneList,
-} from '../../../tt-components/localBases';
-import {
-  CalculatorIntoNodeResponse,
-  CalculatorResponse,
-  NodeResponse,
-} from '../../../../myApi';
+import { nodeStatusList } from '../../../tt-components/localBases';
+import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
 import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
@@ -19,9 +12,7 @@ interface HeaderInterface {
   task?: boolean;
 }
 
-const Information = ({ node, calculator, task = false }: HeaderInterface) => {
-  const data = useParams();
-
+const Information = ({ node, task = false }: HeaderInterface) => {
   if (!node) {
     return null;
   }
@@ -33,15 +24,9 @@ const Information = ({ node, calculator, task = false }: HeaderInterface) => {
     futureCommercialAccountingDate,
   } = node;
 
-  // const { name } = nodeServiceZone;
-
   const { address } = node || {};
   const { city, street, housingStockNumber, corpus, id } = address || {};
 
-  // const getServiceZone =
-  //   serviceZoneList.find(
-  //     (serviceZoneItem) => serviceZoneItem.value === serviceZone
-  //   )?.label ?? 'Зона не определена';
   const getNodeStatus =
     nodeStatusList.find(
       (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
