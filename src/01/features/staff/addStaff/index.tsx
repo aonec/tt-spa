@@ -76,12 +76,9 @@ export const AddStaffModal: React.FC = () => {
   }));
 
   const isFailedAddingStaff = useStore($isAddStaffFailed);
-
   const pendingAddStaffRequest = useStore(addStaffFx.pending);
-
   const pendingFetchingCompetences = useStore(fetchCompetencesFx.pending);
   const pendingFetchingUserRolse = useStore(fetchUserRolesFx.pending);
-
   const pendingFetchingData =
     pendingFetchingCompetences || pendingFetchingUserRolse;
 
@@ -185,7 +182,7 @@ export const AddStaffModal: React.FC = () => {
           </Form.Item>
         </FormItemsContainer>
         <Form.Item label="Роль в системе">
-          <MultiSelectTT
+          <StyledMultiSelect
             mode="multiple"
             value={fields.userRoleIds.value}
             options={multipleSelectionUserRoles}
@@ -198,7 +195,7 @@ export const AddStaffModal: React.FC = () => {
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Компетенции">
-          <MultiSelectTT
+          <StyledMultiSelect
             mode="multiple"
             value={fields.firmCompetenceIds.value}
             options={multipleSelectionCompetences}
@@ -247,3 +244,7 @@ export const AddStaffModal: React.FC = () => {
     </StyledModal>
   );
 };
+
+const StyledMultiSelect = styled(MultiSelectTT)`
+  min-height: 48px;
+`

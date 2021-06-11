@@ -9,3 +9,4 @@ import './competences/fetchCompetences/models/init';
 import './userRoles/displayUserRoles/models/init';
 import './staff/displayStaff/models/init';
 import './staff/deleteStaff/models/init'
+import './contractors/deleteContractor/models/init';

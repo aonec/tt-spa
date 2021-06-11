@@ -33,9 +33,6 @@ export const Settings = () => {
     getCurrentManagingFirm().then((res) => {
       setFirm(res);
     });
-    getManagingFirmUsers().then((res) => {
-      setUsers(res);
-    });
     setCurrentTabFromLink(location);
   }, []);
 
@@ -89,7 +86,7 @@ export const Settings = () => {
     }
   }
 
-  if (!firm || !users) {
+  if (!firm) {
     console.log('Загрузка');
     return (
       <div

@@ -10,3 +10,6 @@ export const postContractors = (
 
 export const requestContractors = (): Promise<PagedContractorResponse> =>
   axios.get('Contractors');
+
+export const deleteContractor = (id: number): Promise<ContractorResponse> =>
+  axios.delete(`Contractors/${id}`);
