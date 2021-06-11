@@ -1,21 +1,23 @@
-import { EManagingFirmUserDismissialStatusType } from 'myApi';
+import { EManagingFirmUserWorkingStatusType } from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  status: EManagingFirmUserDismissialStatusType;
+  status: EManagingFirmUserWorkingStatusType;
 }
 
 const staffStatusColors = {
   Working: '#17B45A',
   OnVacation: '#FF8A1F',
   Sick: '#FC525B',
+  OnDuty: '#3741c2',
 };
 
 const staffStatusText = {
   Working: 'Работает',
   OnVacation: 'В отпуске',
   Sick: 'Болеет',
+  OnDuty: 'На дежурстве',
 };
 
 export const StaffStatus: React.FC<Props> = ({ status }) => {

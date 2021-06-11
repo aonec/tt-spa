@@ -1,4 +1,4 @@
-import { EManagingFirmUserDismissialStatusTypeStringDictionaryItem } from './../../../../../../myApi';
+import { EManagingFirmUserWorkingStatusTypeStringDictionaryItem } from './../../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
 
@@ -21,7 +21,7 @@ const dateField = {
 export const editStaffStatusForm = createForm({
   fields: {
     type: {
-      init: null as EManagingFirmUserDismissialStatusTypeStringDictionaryItem | null,
+      init: null as EManagingFirmUserWorkingStatusTypeStringDictionaryItem | null,
       rules: [
         {
           name: 'required',
