@@ -238,9 +238,9 @@ export enum EUserPermission {
   ManagementFirmCompetenceRead = "ManagementFirmCompetenceRead",
   ManagementFirmCompetenceCreate = "ManagementFirmCompetenceCreate",
   ManagementFirmCompetenceUpdate = "ManagementFirmCompetenceUpdate",
-  ManagementFirmUserDismissalStatusRead = "ManagementFirmUserDismissalStatusRead",
-  ManagementFirmUserDismissalStatusCreate = "ManagementFirmUserDismissalStatusCreate",
-  ManagementFirmUserDismissalStatusUpdate = "ManagementFirmUserDismissalStatusUpdate",
+  ManagementFirmUserWorkingStatusRead = "ManagementFirmUserWorkingStatusRead",
+  ManagementFirmUserWorkingStatusCreate = "ManagementFirmUserWorkingStatusCreate",
+  ManagementFirmUserWorkingStatusUpdate = "ManagementFirmUserWorkingStatusUpdate",
   ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
   ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
   ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
@@ -2000,54 +2000,18 @@ export interface ManagementFirmUpdateRequest {
   timeZoneOffset?: TimeSpan;
 }
 
-export enum EManagingFirmUserDismissalStatusType {
+export enum EManagingFirmUserWorkingStatusType {
   Working = "Working",
   OnVacation = "OnVacation",
   Sick = "Sick",
-}
-
-export interface EManagingFirmUserDismissalStatusTypeStringDictionaryItem {
-  key?: EManagingFirmUserDismissalStatusType;
-  value?: string | null;
-}
-
-export interface EManagingFirmUserDismissalStatusTypeStringDictionaryItemListSuccessApiResponse {
-  successResponse: EManagingFirmUserDismissalStatusTypeStringDictionaryItem[] | null;
-}
-
-export interface AddManagingFirmUserDismissalStatusRequest {
-  /** @format int32 */
-  userId?: number;
-  type?: EManagingFirmUserDismissalStatusType;
-
-  /** @format date-time */
-  startDate?: string | null;
-
-  /** @format date-time */
-  endDate?: string | null;
-}
-
-export interface ManagingFirmUserDismissalStatusResponse {
-  /** @format uuid */
-  id: string | null;
-  type: EManagingFirmUserDismissalStatusType;
-
-  /** @format date-time */
-  startDate: string | null;
-
-  /** @format date-time */
-  endDate: string | null;
-}
-
-export interface ManagingFirmUserDismissalStatusResponseSuccessApiResponse {
-  successResponse: ManagingFirmUserDismissalStatusResponse;
+  OnDuty = "OnDuty",
 }
 
 export interface UserStatusResponse {
   /** @format uuid */
   id: string | null;
   title: string | null;
-  type: EManagingFirmUserDismissalStatusType;
+  type: EManagingFirmUserWorkingStatusType;
 
   /** @format date-time */
   startDate: string | null;
@@ -2302,6 +2266,43 @@ export interface ManagingFirmUserUpdateRequest {
   number?: string | null;
   userRoleIds?: number[] | null;
   firmCompetenceIds?: string[] | null;
+}
+
+export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItem {
+  key?: EManagingFirmUserWorkingStatusType;
+  value?: string | null;
+}
+
+export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null;
+}
+
+export interface AddManagingFirmUserWorkingStatusRequest {
+  /** @format int32 */
+  userId?: number;
+  type?: EManagingFirmUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate?: string | null;
+
+  /** @format date-time */
+  endDate?: string | null;
+}
+
+export interface ManagingFirmUserWorkingStatusResponse {
+  /** @format uuid */
+  id: string | null;
+  type: EManagingFirmUserWorkingStatusType;
+
+  /** @format date-time */
+  startDate: string | null;
+
+  /** @format date-time */
+  endDate: string | null;
+}
+
+export interface ManagingFirmUserWorkingStatusResponseSuccessApiResponse {
+  successResponse: ManagingFirmUserWorkingStatusResponse;
 }
 
 export interface MeteringDeviceListResponsePagedList {
@@ -3752,13 +3753,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsAddNodeEntryNumbersCreate
-     * @request POST:/api/DataMigrations/AddNodeEntryNumbers
+     * @name DataMigrationsMakeDemoCreate
+     * @request POST:/api/DataMigrations/MakeDemo
      * @secure
      */
-    dataMigrationsAddNodeEntryNumbersCreate: (params: RequestParams = {}) =>
+    dataMigrationsMakeDemoCreate: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/DataMigrations/AddNodeEntryNumbers`,
+        path: `/api/DataMigrations/MakeDemo`,
         method: "POST",
         secure: true,
         ...params,
@@ -4826,45 +4827,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags ManagingFirmUserDismissalStatuses
-     * @name ManagingFirmUserDismissalStatusesList
-     * @request GET:/api/ManagingFirmUserDismissalStatuses
-     * @secure
-     */
-    managingFirmUserDismissalStatusesList: (params: RequestParams = {}) =>
-      this.request<EManagingFirmUserDismissalStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUserDismissalStatuses`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags ManagingFirmUserDismissalStatuses
-     * @name ManagingFirmUserDismissalStatusesCreate
-     * @request POST:/api/ManagingFirmUserDismissalStatuses
-     * @secure
-     */
-    managingFirmUserDismissalStatusesCreate: (
-      data: AddManagingFirmUserDismissalStatusRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<ManagingFirmUserDismissalStatusResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagingFirmUserDismissalStatuses`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags ManagingFirmUsers
      * @name ManagingFirmUsersList
      * @request GET:/api/ManagingFirmUsers
@@ -4979,6 +4941,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ManagingFirmUsers/current`,
         method: "GET",
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagingFirmUserWorkingStatuses
+     * @name ManagingFirmUserWorkingStatusesList
+     * @request GET:/api/ManagingFirmUserWorkingStatuses
+     * @secure
+     */
+    managingFirmUserWorkingStatusesList: (params: RequestParams = {}) =>
+      this.request<EManagingFirmUserWorkingStatusTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserWorkingStatuses`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagingFirmUserWorkingStatuses
+     * @name ManagingFirmUserWorkingStatusesCreate
+     * @request POST:/api/ManagingFirmUserWorkingStatuses
+     * @secure
+     */
+    managingFirmUserWorkingStatusesCreate: (
+      data: AddManagingFirmUserWorkingStatusRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<ManagingFirmUserWorkingStatusResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ManagingFirmUserWorkingStatuses`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
