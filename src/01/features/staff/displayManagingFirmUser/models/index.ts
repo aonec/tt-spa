@@ -7,4 +7,3 @@ export const $managingFirmUser = createStore<ManagingFirmUserResponse | null>(
 );
 
 export const ManagingFirmUserGate = createGate();
-

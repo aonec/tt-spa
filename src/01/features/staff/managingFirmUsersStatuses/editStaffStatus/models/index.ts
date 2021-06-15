@@ -1,4 +1,4 @@
-import { EManagingFirmUserWorkingStatusTypeStringDictionaryItem } from './../../../../../../myApi';
+import { EManagingFirmUserWorkingStatusType } from './../../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
 
@@ -8,20 +8,10 @@ export const $isEditStaffStatusModalVisible = $editStaffStatusUserId.map(
   (id) => id !== null
 );
 
-const dateField = {
-  init: null as string | null,
-  rules: [
-    {
-      name: 'required',
-      validator: (value: string) => value !== null,
-    },
-  ],
-};
-
 export const editStaffStatusForm = createForm({
   fields: {
     type: {
-      init: null as EManagingFirmUserWorkingStatusTypeStringDictionaryItem | null,
+      init: null as EManagingFirmUserWorkingStatusType | null,
       rules: [
         {
           name: 'required',
@@ -29,8 +19,24 @@ export const editStaffStatusForm = createForm({
         },
       ],
     },
-    startDate: dateField,
-    endDate: dateField,
+    startDate: {
+      init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: (value) => value !== null,
+        },
+      ],
+    },
+    endDate: {
+      init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: (value) => value !== null,
+        },
+      ],
+    },
   },
 });
 

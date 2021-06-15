@@ -1,4 +1,4 @@
-import { fetchStatuses } from './../../../../../_api/staffStatuses';
+import { fetchStatuses } from '../../../../../_api/staffStatuses';
 import { forward, guard } from 'effector';
 import {
   $isFetchingStaffStatusesFailed,
