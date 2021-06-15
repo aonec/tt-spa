@@ -72,6 +72,11 @@ const Internal = () => {
                 path="/settings/(staff|contractors)?"
                 component={Settings}
               />
+              <Route
+                path="/settings/staff/:id"
+                component={Settings}
+              />
+              
               <Route path="/devices/(\\d+)" component={Devices} exact />
 
               <Route
