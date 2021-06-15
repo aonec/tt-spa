@@ -13,13 +13,13 @@ import {
 } from '../displayStaffStatuses/models';
 import {
   $isEditStaffStatusModalVisible,
+  $isEditStaffStatusRequestFailed,
   editStaffStatusCancelButtonClicked,
   editStaffStatusForm,
   editStaffStatusFx,
 } from './models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Form, Select as AntdSelect, DatePicker as AntdDatePicker } from 'antd';
-import { Option } from 'antd/lib/mentions';
 import styled from 'styled-components';
 import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
@@ -27,6 +27,7 @@ import { EManagingFirmUserWorkingStatusType } from 'myApi';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Loader } from '01/_components/Loader';
+import { ErrorAlert } from '01/_components/Alert';
 
 const Select = styled(AntdSelect)`
   .ant-select-selector {
@@ -54,6 +55,7 @@ export const EditStaffStatusModal: React.FC = () => {
   const visible = useStore($isEditStaffStatusModalVisible);
   const staffStatuses = useStore($staffStatuses);
   const pending = useStore(editStaffStatusFx.pending);
+  const isEditStatusFailed = useStore($isEditStaffStatusRequestFailed);
 
   const { fields, submit } = useForm(editStaffStatusForm);
 
@@ -83,68 +85,65 @@ export const EditStaffStatusModal: React.FC = () => {
       }
     >
       <StaffStatusesGate />
-      <ModalText>
-        <Flex>
-          <Form.Item
-            label="Текущий статус"
-            style={{ marginRight: '20px', width: '100%' }}
+      <Flex>
+        <ErrorAlert
+          show={isEditStatusFailed}
+          message="Не удалось изменить статус"
+        />
+        <Form.Item
+          label="Текущий статус"
+          style={{ marginRight: '20px', width: '100%' }}
+        >
+          <Select
+            value={fields.type.value || undefined}
+            onChange={(value) =>
+              fields.type.onChange(value as EManagingFirmUserWorkingStatusType)
+            }
+            placeholder="Выберите статус"
           >
-            <Select
-              value={fields.type.value || undefined}
-              onChange={(value) =>
-                fields.type.onChange(
-                  value as EManagingFirmUserWorkingStatusType
-                )
+            {staffStatuses?.map((elem) => (
+              <Select.Option value={elem.key!} key={elem.key}>
+                {<StaffStatus status={elem.key as any} />}
+              </Select.Option>
+            ))}
+          </Select>
+          <ErrorMessage>
+            {fields.type.errorText({
+              required: 'Это поле обязательно',
+            })}
+          </ErrorMessage>
+        </Form.Item>
+        <Form.Item label="Период" style={{ width: '100%' }}>
+          <RangePicker
+            value={
+              fields.startDate.value && fields.endDate.value
+                ? [moment(fields.startDate.value), moment(fields.endDate.value)]
+                : undefined
+            }
+            format="DD.MM.YYYY"
+            onChange={(value) => {
+              if (!value) {
+                fields.startDate.onChange(null);
+                fields.endDate.onChange(null);
+                return;
               }
-              placeholder="Выберите статус"
-            >
-              {staffStatuses?.map((elem) => (
-                <Option value={elem.key} key={elem.key}>
-                  {<StaffStatus status={elem.key as any} />}
-                </Option>
-              ))}
-            </Select>
-            <ErrorMessage>
-              {fields.type.errorText({
-                required: 'Это поле обязательно',
-              })}
-            </ErrorMessage>
-          </Form.Item>
-          <Form.Item label="Период" style={{ width: '100%' }}>
-            <RangePicker
-              value={
-                fields.startDate.value && fields.endDate.value
-                  ? [
-                      moment(fields.startDate.value),
-                      moment(fields.endDate.value),
-                    ]
-                  : undefined
-              }
-              format="DD.MM.YYYY"
-              onChange={(value) => {
-                if (!value) {
-                  fields.startDate.onChange(null);
-                  fields.endDate.onChange(null);
-                  return;
-                }
 
-                const [startDate, endDate] = value as [
-                  moment.Moment,
-                  moment.Moment
-                ];
+              const [startDate, endDate] = value as [
+                moment.Moment,
+                moment.Moment
+              ];
 
-                fields.startDate.onChange(startDate.toISOString());
-                fields.endDate.onChange(endDate.toISOString());
-              }}
-            />
-            <ErrorMessage>
-              {fields.startDate.errorText({
-                required: 'Это поле обязательно',
-              })}
-            </ErrorMessage>
-          </Form.Item>
-        </Flex>
-      </ModalText>
+              fields.startDate.onChange(startDate.toISOString());
+              fields.endDate.onChange(endDate.toISOString());
+            }}
+          />
+          <ErrorMessage>
+            {fields.startDate.errorText({
+              required: 'Это поле обязательно',
+            })}
+          </ErrorMessage>
+        </Form.Item>
+      </Flex>
     </StyledModal>
   );
 };
