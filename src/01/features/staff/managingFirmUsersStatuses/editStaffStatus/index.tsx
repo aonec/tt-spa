@@ -15,6 +15,7 @@ import {
   $isEditStaffStatusModalVisible,
   editStaffStatusCancelButtonClicked,
   editStaffStatusForm,
+  editStaffStatusFx,
 } from './models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Form, Select as AntdSelect, DatePicker as AntdDatePicker } from 'antd';
@@ -24,6 +25,8 @@ import { StaffStatus } from '../../displayStaff/models/components/StaffStatus';
 import { useForm } from 'effector-forms';
 import { EManagingFirmUserWorkingStatusType } from 'myApi';
 import moment from 'moment';
+import { ErrorMessage } from '01/features/contractors/addContractors';
+import { Loader } from '01/_components/Loader';
 
 const Select = styled(AntdSelect)`
   .ant-select-selector {
@@ -35,7 +38,12 @@ const Select = styled(AntdSelect)`
     display: flex;
     align-items: center;
   }
+
+  .ant-select-selection-placeholder {
+    transform: translateY(6px);
+  }
 `;
+
 const RangePicker = styled(AntdDatePicker.RangePicker)`
   width: 100%;
   height: 48px;
@@ -45,10 +53,12 @@ const RangePicker = styled(AntdDatePicker.RangePicker)`
 export const EditStaffStatusModal: React.FC = () => {
   const visible = useStore($isEditStaffStatusModalVisible);
   const staffStatuses = useStore($staffStatuses);
+  const pending = useStore(editStaffStatusFx.pending);
+
+  const { fields, submit } = useForm(editStaffStatusForm);
 
   const onCancel = () => editStaffStatusCancelButtonClicked();
-
-  const form = useForm(editStaffStatusForm);
+  const onSubmit = () => submit();
 
   return (
     <StyledModal
@@ -61,8 +71,13 @@ export const EditStaffStatusModal: React.FC = () => {
           <ButtonTT color={'white'} key="back" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT color="blue" key="submit">
-            Изменить статус
+          <ButtonTT
+            color="blue"
+            key="submit"
+            onClick={onSubmit}
+            disabled={pending}
+          >
+            {pending ? <Loader show={true} /> : 'Изменить статус'}
           </ButtonTT>
         </Footer>
       }
@@ -75,12 +90,13 @@ export const EditStaffStatusModal: React.FC = () => {
             style={{ marginRight: '20px', width: '100%' }}
           >
             <Select
-              value={form.fields.type.value || undefined}
+              value={fields.type.value || undefined}
               onChange={(value) =>
-                form.fields.type.onChange(
+                fields.type.onChange(
                   value as EManagingFirmUserWorkingStatusType
                 )
               }
+              placeholder="Выберите статус"
             >
               {staffStatuses?.map((elem) => (
                 <Option value={elem.key} key={elem.key}>
@@ -88,28 +104,44 @@ export const EditStaffStatusModal: React.FC = () => {
                 </Option>
               ))}
             </Select>
+            <ErrorMessage>
+              {fields.type.errorText({
+                required: 'Это поле обязательно',
+              })}
+            </ErrorMessage>
           </Form.Item>
           <Form.Item label="Период" style={{ width: '100%' }}>
             <RangePicker
               value={
-                form.fields.startDate.value && form.fields.endDate.value
+                fields.startDate.value && fields.endDate.value
                   ? [
-                      moment(form.fields.startDate.value),
-                      moment(form.fields.endDate.value),
+                      moment(fields.startDate.value),
+                      moment(fields.endDate.value),
                     ]
                   : undefined
               }
               format="DD.MM.YYYY"
               onChange={(value) => {
+                if (!value) {
+                  fields.startDate.onChange(null);
+                  fields.endDate.onChange(null);
+                  return;
+                }
+
                 const [startDate, endDate] = value as [
                   moment.Moment,
                   moment.Moment
                 ];
 
-                form.fields.startDate.onChange(startDate.toISOString());
-                form.fields.endDate.onChange(endDate.toISOString());
+                fields.startDate.onChange(startDate.toISOString());
+                fields.endDate.onChange(endDate.toISOString());
               }}
             />
+            <ErrorMessage>
+              {fields.startDate.errorText({
+                required: 'Это поле обязательно',
+              })}
+            </ErrorMessage>
           </Form.Item>
         </Flex>
       </ModalText>

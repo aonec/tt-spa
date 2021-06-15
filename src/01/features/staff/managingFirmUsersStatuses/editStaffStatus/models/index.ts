@@ -1,4 +1,7 @@
-import { EManagingFirmUserWorkingStatusType } from './../../../../../../myApi';
+import {
+  EManagingFirmUserWorkingStatusType,
+  ManagingFirmUserResponse,
+} from './../../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createEffect, createStore, createEvent } from 'effector';
 
@@ -40,8 +43,8 @@ export const editStaffStatusForm = createForm({
   },
 });
 
-export const editStaffStatusButtonClicked = createEvent<number>();
+export const editStaffStatusButtonClicked = createEvent<ManagingFirmUserResponse>();
 export const editStaffStatusCancelButtonClicked = createEvent();
 export const editStaffStatusConfirmButtonClicked = createEvent();
 
-export const updateStaffStatusFx = createEffect();
+export const editStaffStatusFx = createEffect();

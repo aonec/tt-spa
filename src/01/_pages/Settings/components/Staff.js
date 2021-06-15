@@ -30,9 +30,7 @@ const Staff = () => {
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
-        <StaffStatus
-          status={status?.type}
-        />
+        <StaffStatus status={status?.type} />
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
@@ -47,7 +45,7 @@ const Staff = () => {
             },
             {
               title: 'Изменить статус',
-              cb: () => editStaffStatusButtonClicked(id),
+              cb: () => editStaffStatusButtonClicked(item),
               show: true,
               color: 'default',
               clickable: true,
