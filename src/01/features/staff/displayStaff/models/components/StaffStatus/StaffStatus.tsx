@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  status: EManagingFirmUserWorkingStatusType;
+  status: EManagingFirmUserWorkingStatusType | null;
 }
 
 const staffStatusColors = {
@@ -26,7 +26,7 @@ export const StaffStatus: React.FC<Props> = ({ status }) => {
     width: 6px;
     min-height: 6px;
     border-radius: 50%;
-    background-color: ${staffStatusColors[status]};
+    background-color: ${status ? staffStatusColors[status] : 'none'};
     margin-right: 15px;
   `;
 
@@ -38,7 +38,7 @@ export const StaffStatus: React.FC<Props> = ({ status }) => {
   return (
     <Flex>
       <Point />
-      {staffStatusText[status]}
+      {status ? staffStatusText[status] : 'Статус не указан'}
     </Flex>
   );
 };

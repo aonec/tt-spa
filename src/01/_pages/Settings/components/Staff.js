@@ -31,7 +31,7 @@ const Staff = () => {
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
         <StaffStatus
-          status={status?.type || EManagingFirmUserWorkingStatusType.Working}
+          status={status?.type}
         />
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
