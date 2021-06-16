@@ -40,11 +40,6 @@ const Contractors = () => {
           {phoneNumber || 'Телефон не указан'}
         </div>
         <div className={classes.email}>{email}</div>
-        {/* <div className={classes.button}>
-          <Link to={`/user/contractor/${contractor.id}`}>
-            <EditButtonTT />
-          </Link>
-        </div> */}
         <MenuButtonTT
           size={'small'}
           menuButtonArr={[
