@@ -22,6 +22,8 @@ export const SettingsContext = createContext();
 export const Settings = () => {
   const { push, location } = useHistory();
   const params = useParams();
+  const roteParam = params[0];
+  
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
@@ -116,9 +118,7 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const needShowButton = (route) => {
-    return params[0] ? route === params[0] : false;
-  };
+  const needShowButton = (route) => (roteParam ? route === roteParam : false);
 
   const addContractorButton = {
     title: 'Добавить контрагента',
