@@ -133,7 +133,11 @@ export const Settings = () => {
   const menuButtonArr = [addContractorButton, addStaffButton];
 
   if (needShowByRoute('editManagingFirmUser'))
-    return <EditManagingFirmUserPage />;
+    return (
+      <Route path="/settings/editManagingFirmUser/:id">
+        <EditManagingFirmUserPage />
+      </Route>
+    );
 
   return (
     <SettingsContext.Provider value={context}>
