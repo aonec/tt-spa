@@ -12,4 +12,4 @@ export const fetchManagingFirmUserFx = createEffect<
   ManagingFirmUserResponse | null
 >();
 
-export const ManagingFirmUserGate = createGate<number>();
+export const ManagingFirmUserGate = createGate<{ id: number }>();
