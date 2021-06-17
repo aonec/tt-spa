@@ -23,6 +23,8 @@ export const ErrorMessage = styled.p`
   color: red;
 `;
 
+type InputTTEvent = { target: { value: string } };
+
 export const AddContractorsFormModal = () => {
   const { fields, submit, eachValid } = useForm(addContractorsForm);
   const pending = useStore(postContractorsFx.pending);
@@ -52,7 +54,6 @@ export const AddContractorsFormModal = () => {
     <StyledModal
       visible={isVisible}
       title={<Header>Добавление нового контрагента</Header>}
-      // onOk={handleOk}
       onCancel={onCancel}
       width={800}
       footer={
@@ -80,7 +81,9 @@ export const AddContractorsFormModal = () => {
               type="text"
               value={fields.name.value}
               disabled={pending}
-              onChange={(e) => fields.name.onChange(e.target.value)}
+              onChange={(e: InputTTEvent) =>
+                fields.name.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.name.errorText({
@@ -93,7 +96,9 @@ export const AddContractorsFormModal = () => {
               type="email"
               value={fields.email.value}
               disabled={pending}
-              onChange={(e) => fields.email.onChange(e.target.value)}
+              onChange={(e: InputTTEvent) =>
+                fields.email.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.email.errorText({
