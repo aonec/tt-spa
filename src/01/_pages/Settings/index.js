@@ -12,6 +12,7 @@ import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
 import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
@@ -131,7 +132,8 @@ export const Settings = () => {
 
   const menuButtonArr = [addContractorButton, addStaffButton];
 
-  if (needShowByRoute('editManagingFirmUser')) return 'hello';
+  if (needShowByRoute('editManagingFirmUser'))
+    return <EditManagingFirmUserPage />;
 
   return (
     <SettingsContext.Provider value={context}>
