@@ -13,15 +13,14 @@ import { MenuButtonTT } from '01/tt-components';
 import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
 import { DeleteStaffModal } from '01/features/staff/deleteStaff';
 import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
-import { EManagingFirmUserWorkingStatusType } from 'myApi';
 import { editStaffStatusButtonClicked } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus/models';
 import { EditStaffStatusModal } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus';
+import { useHistory } from 'react-router-dom';
 
 const Staff = () => {
   const users = useStore($staffList);
-
   const pending = useStore(fetchStaffFx.pending);
-
+  const history = useHistory();
   const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
@@ -52,7 +51,7 @@ const Staff = () => {
             },
             {
               title: 'Редактировать информацию о сотруднике',
-              cb: () => {},
+              cb: () => history.push(`/settings/editManagingFirmUser/${id}`),
               show: true,
               color: 'default',
               clickable: true,

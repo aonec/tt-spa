@@ -2,17 +2,11 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
-import Common from './components/Common';
 import Staff from './components/Staff';
 import Contractors from './components/Contractors';
-import {
-  getCurrentManagingFirm,
-  getManagingFirmUsers,
-  getContractors,
-} from './apiSettings';
+import { getCurrentManagingFirm } from './apiSettings';
 import ModalAddStaff from './components/Modals/ModalAddStaff';
 import ModalAddContractor from './components/Modals/ModalAddContractor';
-import HeaderButton from './components/HeaderButton';
 import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
@@ -23,6 +17,7 @@ export const SettingsContext = createContext();
 export const Settings = () => {
   const { push, location } = useHistory();
   const params = useParams();
+  const section = params.section;
   const [currentTabKey, setTab] = useState('1');
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
@@ -115,7 +110,7 @@ export const Settings = () => {
   };
 
   const needShowByRoute = (route) => {
-    return params[0] ? route === params[0] : false;
+    return section ? route === section : false;
   };
 
   const addContractorButton = {
@@ -137,6 +132,7 @@ export const Settings = () => {
   const menuButtonArr = [addContractorButton, addStaffButton];
 
   if (needShowByRoute('editManagingFirmUser')) return 'hello';
+
   return (
     <SettingsContext.Provider value={context}>
       <div>
