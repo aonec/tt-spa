@@ -758,6 +758,7 @@ export interface ContractorListResponse {
   /** @format int32 */
   id: number;
   name: string | null;
+  cellphone: string | null;
   email: string | null;
 }
 
@@ -790,6 +791,9 @@ export interface ContractorListResponsePagedListSuccessApiResponse {
 
 export interface ContractorCreateRequest {
   name?: string | null;
+  cellphone?: string | null;
+
+  /** @format email */
   email?: string | null;
 }
 
@@ -797,6 +801,7 @@ export interface ContractorResponse {
   /** @format int32 */
   id: number;
   name: string | null;
+  cellphone: string | null;
   email: string | null;
 }
 
@@ -806,6 +811,9 @@ export interface ContractorResponseSuccessApiResponse {
 
 export interface ContractorUpdateRequest {
   name?: string | null;
+  cellphone?: string | null;
+
+  /** @format email */
   email?: string | null;
 }
 
@@ -889,15 +897,13 @@ export interface HeatingSeasonHouseManagementListItemAdjustmentResponse {
   houseCategory: EHouseCategory;
   livingHouseType: ELivingHouseType;
   nonResidentialHouseType: ENonResidentialHouseType;
+  housingStocks: HousingStockAddressResponse[] | null;
 }
 
 export interface HeatingSeasonHouseManagementListItemResponse {
   /** @format uuid */
   houseManagementId: string;
   houseManagementName: string | null;
-
-  /** @format int32 */
-  housingStocksCount: number;
   adjustments: HeatingSeasonHouseManagementListItemAdjustmentResponse[] | null;
 }
 
@@ -930,6 +936,7 @@ export interface HeatingSeasonAdjustmentResponse {
 
   /** @format uuid */
   houseManagementId: string | null;
+  housingStockIds: number[] | null;
 }
 
 export interface HeatingSeasonResponse {
@@ -972,6 +979,7 @@ export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
 
   /** @format uuid */
   houseManagementId?: string;
+  housingStockIds?: number[] | null;
 }
 
 export interface AddressResponse {
@@ -2060,6 +2068,7 @@ export interface ManagingFirmUserListResponsePagedListSuccessApiResponse {
 }
 
 export interface ManagingFirmUserCreateRequest {
+  /** @format email */
   email?: string | null;
   firstName?: string | null;
   lastName?: string | null;
@@ -2123,6 +2132,9 @@ export interface ManagingFirmUserResponse {
 
   /** @format date-time */
   dismissalDate: string | null;
+
+  /** @format date-time */
+  suspendedFromDate: string | null;
   managementFirm: ManagementFirmShortResponse;
   status: UserStatusResponse;
   competences: UserCompetenceResponse[] | null;
@@ -2256,6 +2268,7 @@ export interface ManagingFirmUserStatisticsResponseSuccessApiResponse {
 }
 
 export interface ManagingFirmUserUpdateRequest {
+  /** @format email */
   email?: string | null;
   firstName?: string | null;
   lastName?: string | null;
@@ -3688,11 +3701,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     contractorsDelete: (contractorId: number, params: RequestParams = {}) =>
-      this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
         method: "DELETE",
         secure: true,
-        format: "json",
         ...params,
       }),
 
@@ -3793,7 +3805,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     documentsDelete: (documentId: number, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Documents/${documentId}`,
         method: "DELETE",
         secure: true,
@@ -3966,7 +3978,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     heatingStationDelete: (id: string, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/HeatingStation/${id}`,
         method: "DELETE",
         secure: true,
@@ -4760,7 +4772,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     managementFirmCompetencesDelete: (id: string, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/ManagementFirmCompetences/${id}`,
         method: "DELETE",
         secure: true,
@@ -4835,6 +4847,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     managingFirmUsersList: (
       query?: {
         Name?: string | null;
+        IsSuspended?: boolean | null;
         RoleNames?: string[] | null;
         PageNumber?: number;
         PageSize?: number;
@@ -4942,6 +4955,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         secure: true,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ManagingFirmUsers
+     * @name ManagingFirmUsersSuspendCreate
+     * @request POST:/api/ManagingFirmUsers/{userId}/suspend
+     * @secure
+     */
+    managingFirmUsersSuspendCreate: (userId: number, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/ManagingFirmUsers/${userId}/suspend`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -5408,7 +5437,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Reports/Archives`,
         method: "GET",
         query: query,
@@ -5428,7 +5457,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { NodeId?: number | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Reports/Report`,
         method: "GET",
         query: query,
@@ -5448,7 +5477,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { CalculatorsId?: number[] | null; ReportType?: string | null; From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ConsolidatedReport`,
         method: "GET",
         query: query,
@@ -5481,7 +5510,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Reports/GroupReport`,
         method: "GET",
         query: query,
@@ -5724,7 +5753,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     tasksDelete: (taskId: number, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}`,
         method: "DELETE",
         secure: true,
@@ -5869,7 +5898,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     tasksCommentsDelete: (taskId: number, commentId: number, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
         method: "DELETE",
         secure: true,
@@ -5885,7 +5914,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     tasksDocumentsDelete: (taskId: number, documentId: number, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Documents/${documentId}`,
         method: "DELETE",
         secure: true,

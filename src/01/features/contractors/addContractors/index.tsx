@@ -18,12 +18,30 @@ import { ButtonTT, InputTT } from '01/tt-components';
 import { Alert, Form } from 'antd';
 import { Loader } from '01/_components/Loader';
 import styled from 'styled-components';
+import { usePhoneMask } from '01/features/staff/addStaff/utils';
 
 export const ErrorMessage = styled.p`
   color: red;
 `;
 
 type InputTTEvent = { target: { value: string } };
+
+const Flex = styled.div`
+  display: flex;
+`;
+
+const StyledInputTT = styled(InputTT)`
+  width: 100%;
+`;
+
+const FormItem = styled(Form.Item)`
+  width: 100%;
+  margin-right: 20px;
+
+  :last-child {
+    margin-right: 0;
+  }
+`;
 
 export const AddContractorsFormModal = () => {
   const { fields, submit, eachValid } = useForm(addContractorsForm);
@@ -35,6 +53,8 @@ export const AddContractorsFormModal = () => {
     e.preventDefault();
     submit();
   };
+
+  const phoneMask = usePhoneMask();
 
   const onCancel = () => cancelAddingContractorsButtonClicked();
 
@@ -91,21 +111,41 @@ export const AddContractorsFormModal = () => {
               })}
             </ErrorMessage>
           </Form.Item>
-          <Form.Item label="Электронная почта">
-            <InputTT
-              type="email"
-              value={fields.email.value}
-              disabled={pending}
-              onChange={(e: InputTTEvent) =>
-                fields.email.onChange(e.target.value)
-              }
-            />
-            <ErrorMessage>
-              {fields.email.errorText({
-                email: 'Введите корректный адрес электронной почты',
-              })}
-            </ErrorMessage>
-          </Form.Item>
+          <Flex>
+            <FormItem label="Электронная почта">
+              <StyledInputTT
+                type="email"
+                value={fields.email.value}
+                disabled={pending}
+                onChange={(e: InputTTEvent) =>
+                  fields.email.onChange(e.target.value)
+                }
+              />
+              <ErrorMessage>
+                {fields.email.errorText({
+                  email: 'Введите корректный адрес электронной почты',
+                })}
+              </ErrorMessage>
+            </FormItem>
+            <FormItem label="Номер телефона">
+              <StyledInputTT
+                type="email"
+                value={phoneMask.maskValue(fields.cellPhone.value)}
+                disabled={pending}
+                onChange={(e: InputTTEvent) =>
+                  fields.cellPhone.onChange(
+                    phoneMask.unmaskedValue(e.target.value)
+                  )
+                }
+              />
+              <ErrorMessage>
+                {fields.cellPhone.errorText({
+                  phone: 'Введите корректный номер телефона',
+                  required: 'Это поле обязательное',
+                })}
+              </ErrorMessage>
+            </FormItem>
+          </Flex>
           <button
             disabled={!eachValid || pending}
             type="submit"
