@@ -69,14 +69,11 @@ const Internal = () => {
               <Route path="/objects/" component={Objects} exact />
               <Route path="/devices/" component={DevicesFromSearch} exact />
               <Route
-                path="/settings/(staff|contractors)?"
+                path="/settings/(staff|contractors|editManagingFirmUser/:id)?"
                 component={Settings}
               />
-              <Route
-                path="/settings/staff/:id"
-                component={Settings}
-              />
-              
+              <Route path="/settings/staff/:id" component={Settings} />
+
               <Route path="/devices/(\\d+)" component={Devices} exact />
 
               <Route

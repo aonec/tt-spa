@@ -114,14 +114,14 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const needShowButton = (route) => {
+  const needShowByRoute = (route) => {
     return params[0] ? route === params[0] : false;
   };
 
   const addContractorButton = {
     title: 'Добавить контрагента',
     cb: addContractorsButtonMenuClicked,
-    show: needShowButton('contractors'),
+    show: needShowByRoute('contractors'),
     color: 'default',
     clickable: true,
   };
@@ -129,13 +129,14 @@ export const Settings = () => {
   const addStaffButton = {
     title: 'Добавить сотрудника',
     cb: addStaffButtonClicked,
-    show: needShowButton('staff'),
+    show: needShowByRoute('staff'),
     color: 'default',
     clickable: true,
   };
 
   const menuButtonArr = [addContractorButton, addStaffButton];
 
+  if (needShowByRoute('editManagingFirmUser')) return 'hello';
   return (
     <SettingsContext.Provider value={context}>
       <div>
@@ -143,7 +144,6 @@ export const Settings = () => {
           <Header>Профиль компании</Header>
           <MenuButtonTT menuButtonArr={menuButtonArr} />
           <AddContractorsFormModal />
-          {/* <HeaderButton /> */}
         </div>
         <SettingsTabs
           currentTabKey={currentTabKey}
