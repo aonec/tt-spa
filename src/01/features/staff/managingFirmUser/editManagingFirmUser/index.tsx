@@ -23,6 +23,7 @@ import styled from 'styled-components';
 import { editManagingUserInfoForm } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
+import { useEffect } from 'react';
 
 const FormContainer = styled.div`
   max-width: 480px;
@@ -64,6 +65,8 @@ export const EditManagingFirmUserPage = () => {
     label: elem.title,
     value: elem.id,
   }));
+
+  useEffect(() => {}, []);
 
   const form = (
     <FormContainer>

@@ -1,10 +1,21 @@
+import { putManagingFirmUser } from './../../../../../_api/staff';
 import { sample, combine, forward } from 'effector';
 import {
   $managingFirmUser,
   fetchManagingFirmUserFx,
 } from '../../displayManagingFirmUser/models';
-import { editManagingUserInfoForm, editManagingUserInfoFx } from './index';
+import {
+  editManagingUserInfoForm,
+  editManagingUserInfoFx,
+  isUpdateManagingFirmUserSuccess,
+} from './index';
 import { ManagingFirmUserUpdateRequest } from 'myApi';
+
+editManagingUserInfoFx.use(putManagingFirmUser);
+
+isUpdateManagingFirmUserSuccess
+  .on(editManagingUserInfoFx.doneData, () => true)
+  .reset(editManagingUserInfoFx.failData);
 
 sample({
   source: combine(
@@ -15,11 +26,6 @@ sample({
   clock: editManagingUserInfoForm.formValidated,
   target: editManagingUserInfoFx as any,
 });
-
-editManagingUserInfoForm.$values.on(
-  fetchManagingFirmUserFx.doneData,
-  (_, payload) => ({ ...payload })
-);
 
 forward({
   from: fetchManagingFirmUserFx.doneData.map((user) => ({
