@@ -13,3 +13,5 @@ import './staff/deleteStaff/models/init';
 import './contractors/deleteContractor/models/init';
 import './staff/managingFirmUsersStatuses/editStaffStatus/models/init';
 import './staff/managingFirmUsersStatuses/displayStaffStatuses/models/init';
+import './staff/managingFirmUser/editManagingFirmUser/models/init';
+import './staff/managingFirmUser/displayManagingFirmUser/models/init'

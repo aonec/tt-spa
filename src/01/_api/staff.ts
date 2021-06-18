@@ -3,6 +3,7 @@ import {
   ManagingFirmUserResponse,
   ManagingFirmUserCreateRequest,
   ManagingFirmUserListResponse,
+  ManagingFirmUserUpdateRequest,
 } from './../../myApi';
 
 export const addStaff = (
@@ -19,3 +20,8 @@ export const fetchStaff = async () => {
 
 export const deleteManagingFirmUser = (id: number) =>
   axios.delete(`ManagingFirmUsers/${id}`);
+
+export const putManagingFirmUser = (
+  payload: { id: number } & ManagingFirmUserUpdateRequest
+): Promise<ManagingFirmUserResponse> =>
+  axios.put(`ManagingFirmUsers/${payload.id}`, payload);
