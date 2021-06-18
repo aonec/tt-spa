@@ -29,7 +29,7 @@ export const Settings = () => {
     getCurrentManagingFirm().then((res) => {
       setFirm(res);
     });
-  }, [firm]);
+  }, []);
 
   function showStaff() {
     setStaff(true);
