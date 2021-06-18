@@ -134,7 +134,9 @@ export const EditManagingFirmUserPage = () => {
             width="100%"
             name="cellphone"
             type="text"
-            value={phoneMask.maskValue(fields.cellphone.value)}
+            value={
+              phoneMask.maskValue(fields.cellphone.value)
+            }
             onChange={(e: { target: { value: string } }) =>
               fields.cellphone.onChange(phoneMask.unmaskedValue(e.target.value))
             }
@@ -173,7 +175,6 @@ export const EditManagingFirmUserPage = () => {
             Отмена
           </ButtonTT>
         </FormButtonsWrap>
-        <button type="submit" style={{ display: 'none' }} />
       </FormContainer>
     </>
   );

@@ -1,5 +1,5 @@
 import { getManagingFirmUser } from './../../../../../_api/managingFirmUser';
-import { guard, sample } from 'effector';
+import { guard, sample, combine } from 'effector';
 import { fetchManagingFirmUserFx, ManagingFirmUserGate } from './index';
 import { $managingFirmUser } from '.';
 
@@ -10,9 +10,13 @@ fetchManagingFirmUserFx.use(getManagingFirmUser);
 sample({
   source: ManagingFirmUserGate.state.map((state) => state.id),
   clock: guard({
-    source: $managingFirmUser,
+    source: combine(
+      $managingFirmUser,
+      ManagingFirmUserGate.state.map((state) => state.id),
+      (user, id) => ({ user, id })
+    ),
     clock: ManagingFirmUserGate.open,
-    filter: (user) => user === null,
+    filter: ({ user, id }) => user?.id !== id,
   }),
   target: fetchManagingFirmUserFx,
 });
