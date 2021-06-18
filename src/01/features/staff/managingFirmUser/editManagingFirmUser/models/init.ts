@@ -1,3 +1,4 @@
+import { refetchStaff } from './../../../displayStaff/models/index';
 import { putManagingFirmUser } from './../../../../../_api/staff';
 import { sample, combine, forward } from 'effector';
 import {
@@ -7,15 +8,21 @@ import {
 import {
   editManagingUserInfoForm,
   editManagingUserInfoFx,
-  isUpdateManagingFirmUserSuccess,
+  $isUpdateManagingFirmUserSuccess,
+  resetEditManagingUserRequest,
 } from './index';
 import { ManagingFirmUserUpdateRequest } from 'myApi';
 
 editManagingUserInfoFx.use(putManagingFirmUser);
 
-isUpdateManagingFirmUserSuccess
+$isUpdateManagingFirmUserSuccess
   .on(editManagingUserInfoFx.doneData, () => true)
-  .reset(editManagingUserInfoFx.failData);
+  .reset(editManagingUserInfoFx.failData, resetEditManagingUserRequest);
+
+forward({
+  from: editManagingUserInfoFx.doneData,
+  to: refetchStaff,
+});
 
 sample({
   source: combine(

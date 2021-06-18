@@ -20,7 +20,10 @@ import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
-import { editManagingUserInfoForm } from './models';
+import {
+  editManagingUserInfoForm,
+  $isUpdateManagingFirmUserSuccess,
+} from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
 import { useEffect } from 'react';
@@ -46,13 +49,15 @@ export const EditManagingFirmUserPage = () => {
   const { fields, submit } = useForm(editManagingUserInfoForm);
   const history = useHistory();
 
+  const isSuccessUpdated = useStore($isUpdateManagingFirmUserSuccess);
+
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
 
   const userId = Number(params.id);
 
   const onSubmit = () => submit();
-  const onCancel = () => history.goBack();
+  const onCancel = () => history.push('/settings/staff');
 
   const pending = useStore(fetchManagingFirmUserFx.pending);
 
@@ -66,7 +71,11 @@ export const EditManagingFirmUserPage = () => {
     value: elem.id,
   }));
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (isSuccessUpdated && !pending) {
+      history.push('/settings/staff');
+    }
+  }, [isSuccessUpdated, pending]);
 
   const form = (
     <FormContainer>
@@ -176,8 +185,9 @@ export const EditManagingFirmUserPage = () => {
           color="white"
           style={{ marginRight: '15px' }}
           onClick={onCancel}
+          disabled={pending}
         >
-          Отмена
+          {pending ? <Loader show={true} /> : 'Отмена'}
         </ButtonTT>
       </FormButtonsWrap>
     </FormContainer>

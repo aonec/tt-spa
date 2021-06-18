@@ -5,7 +5,7 @@ import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
 
 export const editManagingUserInfoForm = createForm(staffFormConfig);
 
-export const isUpdateManagingFirmUserSuccess = createStore<null | boolean>(
+export const $isUpdateManagingFirmUserSuccess = createStore<null | boolean>(
   null
 );
 export const resetEditManagingUserRequest = createEvent();
