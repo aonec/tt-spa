@@ -4,15 +4,16 @@ import {
   fetchManagingFirmUserFx,
 } from '../../displayManagingFirmUser/models';
 import { editManagingUserInfoForm, editManagingUserInfoFx } from './index';
+import { ManagingFirmUserUpdateRequest } from 'myApi';
 
 sample({
   source: combine(
     editManagingUserInfoForm.$values,
     $managingFirmUser.map((user) => user?.id),
-    (values, id) => ({ ...values, id })
+    (values: ManagingFirmUserUpdateRequest, id) => ({ ...values, id })
   ),
   clock: editManagingUserInfoForm.formValidated,
-  target: editManagingUserInfoFx,
+  target: editManagingUserInfoFx as any,
 });
 
 editManagingUserInfoForm.$values.on(
