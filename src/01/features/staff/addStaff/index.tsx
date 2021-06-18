@@ -172,17 +172,17 @@ export const AddStaffModal: React.FC = () => {
           <Form.Item label="Контактный телефон">
             <InputTT
               width="100%"
-              name="cellPhone"
+              name="cellphone"
               type="text"
-              value={phoneMask.maskValue(fields.cellPhone.value)}
+              value={phoneMask.maskValue(fields.cellphone.value)}
               onChange={(e: { target: { value: string } }) =>
-                fields.cellPhone.onChange(
+                fields.cellphone.onChange(
                   phoneMask.unmaskedValue(e.target.value)
                 )
               }
             />
             <ErrorMessage>
-              {fields.cellPhone.errorText({
+              {fields.cellphone.errorText({
                 required: 'Это поле обязательное',
                 phone: 'Введите корректный номер телефона',
               })}
@@ -190,7 +190,7 @@ export const AddStaffModal: React.FC = () => {
           </Form.Item>
         </FormItemsContainer>
         <Form.Item label="Роль в системе">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.userRoleIds.value}
             options={multipleSelectionUserRoles}
@@ -203,7 +203,7 @@ export const AddStaffModal: React.FC = () => {
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Компетенции">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.firmCompetenceIds.value}
             options={multipleSelectionCompetences}
@@ -252,7 +252,3 @@ export const AddStaffModal: React.FC = () => {
     </StyledModal>
   );
 };
-
-const StyledMultiSelect = styled(MultiSelectTT)`
-  min-height: 48px;
-`;

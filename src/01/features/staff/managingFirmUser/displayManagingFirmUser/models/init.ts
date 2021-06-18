@@ -12,10 +12,7 @@ sample({
   clock: guard({
     source: $managingFirmUser,
     clock: ManagingFirmUserGate.open,
-    filter: (user) => {
-      console.log(user);
-      return user === null;
-    },
+    filter: (user) => user === null,
   }),
   target: fetchManagingFirmUserFx,
 });

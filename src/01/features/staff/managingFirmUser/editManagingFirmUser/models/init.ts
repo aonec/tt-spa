@@ -1,7 +1,9 @@
-import { sample, combine } from 'effector';
-import { $managingFirmUser } from '../../displayManagingFirmUser/models';
+import { sample, combine, forward } from 'effector';
+import {
+  $managingFirmUser,
+  fetchManagingFirmUserFx,
+} from '../../displayManagingFirmUser/models';
 import { editManagingUserInfoForm, editManagingUserInfoFx } from './index';
-
 
 sample({
   source: combine(
@@ -11,4 +13,22 @@ sample({
   ),
   clock: editManagingUserInfoForm.formValidated,
   target: editManagingUserInfoFx,
+});
+
+editManagingUserInfoForm.$values.on(
+  fetchManagingFirmUserFx.doneData,
+  (_, payload) => ({ ...payload })
+);
+
+forward({
+  from: fetchManagingFirmUserFx.doneData.map((user) => ({
+    email: user?.email,
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    middleName: user?.middleName,
+    cellphone: user?.cellphone,
+    userRoleIds: user?.userRoles?.map((elem) => elem.id),
+    firmCompetenceIds: user?.competences?.map((elem) => elem.id),
+  })),
+  to: editManagingUserInfoForm.setForm,
 });

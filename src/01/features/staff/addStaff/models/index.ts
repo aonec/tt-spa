@@ -38,7 +38,7 @@ export const staffFormConfig: FormConfig<AnyFieldsConfigs> = {
     firstName: standartStringFieldInit,
     lastName: standartStringFieldInit,
     middleName: standartStringFieldInit,
-    cellPhone: {
+    cellphone: {
       init: '',
       rules: [
         requiredValidation,

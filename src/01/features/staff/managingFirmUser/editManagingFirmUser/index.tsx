@@ -17,7 +17,7 @@ import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
-import { editManagingUserInfoForm } from './models';
+import { editManagingUserInfoForm, EditManagingUserInfoGate } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Route } from 'react-router-dom';
 
@@ -28,10 +28,6 @@ const FormContainer = styled.form`
   .ant-form-item {
     margin: 0 !important;
   }
-`;
-
-const StyledMultiSelect = styled(MultiSelectTT)`
-  min-height: 48px;
 `;
 
 const FormButtonsWrap = styled.div`
@@ -69,6 +65,7 @@ export const EditManagingFirmUserPage = () => {
       <CompetencesGate />
       <UserRolesGate />
       <ManagingFirmUserGate id={userId} />
+      <EditManagingUserInfoGate />
       <GoBack path="/settings/staff" />
       <Header>Информация о сотруднике. Редактирование </Header>
       <FormContainer onSubmit={() => onSubmit()}>
@@ -135,22 +132,22 @@ export const EditManagingFirmUserPage = () => {
         <Form.Item label="Контактный телефон">
           <InputTT
             width="100%"
-            name="cellPhone"
+            name="cellphone"
             type="text"
-            value={phoneMask.maskValue(fields.cellPhone.value)}
+            value={phoneMask.maskValue(fields.cellphone.value)}
             onChange={(e: { target: { value: string } }) =>
-              fields.cellPhone.onChange(phoneMask.unmaskedValue(e.target.value))
+              fields.cellphone.onChange(phoneMask.unmaskedValue(e.target.value))
             }
           />
           <ErrorMessage>
-            {fields.cellPhone.errorText({
+            {fields.cellphone.errorText({
               required: 'Это поле обязательное',
               phone: 'Введите корректный номер телефона',
             })}
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Роль в системе">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.userRoleIds.value}
             options={multipleSelectionUserRoles}
@@ -163,7 +160,7 @@ export const EditManagingFirmUserPage = () => {
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Компетенции">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.firmCompetenceIds.value}
             options={multipleSelectionCompetences}
