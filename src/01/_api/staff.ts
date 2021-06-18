@@ -19,7 +19,7 @@ export const fetchStaff = async () => {
 };
 
 export const deleteManagingFirmUser = (id: number) =>
-  axios.delete(`ManagingFirmUsers/${id}`);
+  axios.post(`ManagingFirmUsers/${id}/suspend`);
 
 export const putManagingFirmUser = (
   payload: { id: number } & ManagingFirmUserUpdateRequest
