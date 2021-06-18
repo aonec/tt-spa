@@ -23,6 +23,8 @@ import styled from 'styled-components';
 import {
   editManagingUserInfoForm,
   $isUpdateManagingFirmUserSuccess,
+  resetEditManagingUserRequest,
+  editManagingUserInfoFx,
 } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
@@ -59,7 +61,8 @@ export const EditManagingFirmUserPage = () => {
   const onSubmit = () => submit();
   const onCancel = () => history.push('/settings/staff');
 
-  const pending = useStore(fetchManagingFirmUserFx.pending);
+  const pendingFetchRequest = useStore(fetchManagingFirmUserFx.pending);
+  const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
     label: elem.title,
@@ -72,10 +75,11 @@ export const EditManagingFirmUserPage = () => {
   }));
 
   useEffect(() => {
-    if (isSuccessUpdated && !pending) {
+    if (isSuccessUpdated && !pendingEditRequest) {
       history.push('/settings/staff');
+      resetEditManagingUserRequest();
     }
-  }, [isSuccessUpdated, pending]);
+  }, [isSuccessUpdated, pendingEditRequest]);
 
   const form = (
     <FormContainer>
@@ -178,16 +182,15 @@ export const EditManagingFirmUserPage = () => {
         />
       </Form.Item>
       <FormButtonsWrap>
-        <ButtonTT color="blue" onClick={onSubmit}>
-          Сохранить
+        <ButtonTT color="blue" onClick={onSubmit} disabled={pendingEditRequest}>
+          {pendingEditRequest ? <Loader show={true} /> : 'Сохранить'}
         </ButtonTT>
         <ButtonTT
           color="white"
           style={{ marginRight: '15px' }}
           onClick={onCancel}
-          disabled={pending}
         >
-          {pending ? <Loader show={true} /> : 'Отмена'}
+          Отмена
         </ButtonTT>
       </FormButtonsWrap>
     </FormContainer>
@@ -200,7 +203,13 @@ export const EditManagingFirmUserPage = () => {
       <ManagingFirmUserGate id={userId} />
       <GoBack path="/settings/staff" />
       <Header>Информация о сотруднике. Редактирование </Header>
-      {pending ? <Loader show={true} /> : form}
+      {pendingFetchRequest ? (
+        <div>
+          <Loader show={true} />
+        </div>
+      ) : (
+        form
+      )}
     </>
   );
 };
