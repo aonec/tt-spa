@@ -19,7 +19,6 @@ const tabs = [
 ];
 
 const SettingsTabs = (props) => {
-  console.log('SettingsTabs');
   const { currentTabKey, handleChangeTab } = props;
   return (
     <Tabs
