@@ -10,6 +10,7 @@ import {
   editManagingUserInfoFx,
   $isUpdateManagingFirmUserSuccess,
   resetEditManagingUserRequest,
+  EditManagingFirmUserGate,
 } from './index';
 import { ManagingFirmUserUpdateRequest } from 'myApi';
 
@@ -22,6 +23,11 @@ $isUpdateManagingFirmUserSuccess
 forward({
   from: editManagingUserInfoFx.doneData,
   to: refetchStaff,
+});
+
+forward({
+  from: EditManagingFirmUserGate.close,
+  to: editManagingUserInfoForm.resetValues,
 });
 
 sample({

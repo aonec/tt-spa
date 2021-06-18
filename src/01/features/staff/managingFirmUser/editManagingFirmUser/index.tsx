@@ -25,6 +25,7 @@ import {
   $isUpdateManagingFirmUserSuccess,
   resetEditManagingUserRequest,
   editManagingUserInfoFx,
+  EditManagingFirmUserGate,
 } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
@@ -201,6 +202,7 @@ export const EditManagingFirmUserPage = () => {
       <CompetencesGate />
       <UserRolesGate />
       <ManagingFirmUserGate id={userId} />
+      <EditManagingFirmUserGate />
       <GoBack path="/settings/staff" />
       <Header>Информация о сотруднике. Редактирование </Header>
       {pendingFetchRequest ? (

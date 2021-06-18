@@ -1,3 +1,4 @@
+import { createGate } from 'effector-react';
 import { staffFormConfig } from '01/features/staff/addStaff/models';
 import { createEvent, createEffect, createStore } from 'effector';
 import { createForm } from 'effector-forms';
@@ -15,3 +16,5 @@ export const editManagingUserInfoFx = createEffect<
   { id: number } & ManagingFirmUserUpdateRequest,
   ManagingFirmUserResponse
 >();
+
+export const EditManagingFirmUserGate = createGate();
