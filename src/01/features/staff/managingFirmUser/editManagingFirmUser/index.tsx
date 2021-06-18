@@ -65,7 +65,7 @@ export const EditManagingFirmUserPage = () => {
   const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem.title,
+    label: elem.competence.title,
     value: elem.id,
   }));
 
