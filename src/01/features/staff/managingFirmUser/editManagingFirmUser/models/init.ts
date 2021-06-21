@@ -11,6 +11,7 @@ import {
   $isUpdateManagingFirmUserSuccess,
   resetEditManagingUserRequest,
   EditManagingFirmUserGate,
+  $isEditingManagingFirmUserInfoRequestFailed,
 } from './index';
 import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
 
@@ -30,6 +31,10 @@ $isUpdateManagingFirmUserSuccess
   .on(editManagingUserInfoFx.doneData, () => true)
   .reset(editManagingUserInfoFx.failData, resetEditManagingUserRequest);
 
+$isEditingManagingFirmUserInfoRequestFailed
+  .on(editManagingUserInfoFx.failData, () => true)
+  .reset(editManagingUserInfoFx.doneData, editManagingUserInfoForm.submit);
+
 forward({
   from: editManagingUserInfoFx.doneData,
   to: refetchStaff,
@@ -41,17 +46,13 @@ forward({
 });
 
 sample({
-  source: $managingFirmUser.map((user) =>
-    prepareFormData(user)
-  ),
+  source: $managingFirmUser.map((user) => prepareFormData(user)),
   clock: EditManagingFirmUserGate.open,
   target: editManagingUserInfoForm.setForm,
 });
 
 forward({
-  from: fetchManagingFirmUserFx.doneData.map((user) =>
-    prepareFormData(user)
-  ),
+  from: fetchManagingFirmUserFx.doneData.map((user) => prepareFormData(user)),
   to: editManagingUserInfoForm.setForm,
 });
 
@@ -64,4 +65,3 @@ sample({
   clock: editManagingUserInfoForm.formValidated,
   target: editManagingUserInfoFx as any,
 });
-

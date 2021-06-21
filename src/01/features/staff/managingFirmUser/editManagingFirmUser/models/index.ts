@@ -1,6 +1,16 @@
-import { fetchManagingFirmUserFx } from './../../displayManagingFirmUser/models/index';
-import { fetchUserRolesFx } from './../../../../userRoles/displayUserRoles/models/index';
-import { fetchCompetencesFx } from './../../../../competences/fetchCompetences/models/index';
+import { reduceBooleanArr } from './utils';
+import {
+  $isFetchingManagingFirmUserFailed,
+  fetchManagingFirmUserFx,
+} from './../../displayManagingFirmUser/models/index';
+import {
+  $isFetchingUserRolesFailed,
+  fetchUserRolesFx,
+} from './../../../../userRoles/displayUserRoles/models/index';
+import {
+  $isFetchingCompetencesFailed,
+  fetchCompetencesFx,
+} from './../../../../competences/fetchCompetences/models/index';
 import { createGate } from 'effector-react';
 import { staffFormConfig } from '01/features/staff/addStaff/models';
 import { createEvent, createEffect, createStore, combine } from 'effector';
@@ -12,6 +22,7 @@ export const editManagingUserInfoForm = createForm(staffFormConfig);
 export const $isUpdateManagingFirmUserSuccess = createStore<null | boolean>(
   null
 );
+export const $isEditingManagingFirmUserInfoRequestFailed = createStore(false);
 export const resetEditManagingUserRequest = createEvent();
 export const saveManagingUserInfoButtonClicked = createEvent<number>();
 
@@ -26,5 +37,12 @@ export const $isFormDataLoading = combine(
   fetchCompetencesFx.pending,
   fetchUserRolesFx.pending,
   fetchManagingFirmUserFx.pending,
-  (...loaders) => loaders.reduce((acc, current) => acc || current)
+  reduceBooleanArr
+);
+
+export const $isFetchingFormDataFailed = combine(
+  $isFetchingCompetencesFailed,
+  $isFetchingUserRolesFailed,
+  $isFetchingManagingFirmUserFailed,
+  reduceBooleanArr
 );
