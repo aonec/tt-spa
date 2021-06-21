@@ -1,10 +1,7 @@
 import React from 'react';
 import GoBack from '01/tt-components/Breadcrumb';
 import { Header } from '01/tt-components/Header';
-import {
-  fetchManagingFirmUserFx,
-  ManagingFirmUserGate,
-} from '../displayManagingFirmUser/models';
+import { ManagingFirmUserGate } from '../displayManagingFirmUser/models';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   $competencesCatalog,
@@ -26,10 +23,14 @@ import {
   resetEditManagingUserRequest,
   editManagingUserInfoFx,
   EditManagingFirmUserGate,
+  $isFormDataLoading,
+  $isFetchingFormDataFailed,
+  $isEditingManagingFirmUserInfoRequestFailed,
 } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
 import { useEffect } from 'react';
+import { ErrorAlert } from '01/_components/Alert';
 
 const FormContainer = styled.div`
   max-width: 480px;
@@ -46,24 +47,44 @@ const FormButtonsWrap = styled.div`
   flex-direction: row-reverse;
 `;
 
+interface EditManagingFirmUserPageUrlParams {
+  id: string;
+}
+
+const useRedirectAfterSuccessRequest = (
+  isSuccessUpdated: boolean | null,
+  path: string
+) => {
+  const history = useHistory();
+  useEffect(() => {
+    if (isSuccessUpdated) {
+      history.push(path);
+      resetEditManagingUserRequest();
+    }
+  }, [isSuccessUpdated]);
+};
+
 export const EditManagingFirmUserPage = () => {
-  const params = useParams<{ id: string }>();
-  const phoneMask = usePhoneMask();
-  const { fields, submit } = useForm(editManagingUserInfoForm);
+  const params = useParams<EditManagingFirmUserPageUrlParams>();
+  const userId = Number(params.id);
   const history = useHistory();
 
   const isSuccessUpdated = useStore($isUpdateManagingFirmUserSuccess);
-
   const competences = useStore($competencesCatalog);
   const userRoles = useStore($userRoles);
+  const pendingFetchRequest = useStore($isFormDataLoading);
+  const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
+  const isFailedFetchFormData = useStore($isFetchingFormDataFailed);
+  const isFailedEditUserInfo = useStore(
+    $isEditingManagingFirmUserInfoRequestFailed
+  );
 
-  const userId = Number(params.id);
+  const { fields, submit } = useForm(editManagingUserInfoForm);
 
   const onSubmit = () => submit();
   const onCancel = () => history.push('/settings/staff');
 
-  const pendingFetchRequest = useStore(fetchManagingFirmUserFx.pending);
-  const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
+  const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
     label: elem.competence.title,
@@ -75,12 +96,7 @@ export const EditManagingFirmUserPage = () => {
     value: elem.id,
   }));
 
-  useEffect(() => {
-    if (isSuccessUpdated) {
-      history.push('/settings/staff');
-      resetEditManagingUserRequest();
-    }
-  }, [isSuccessUpdated]);
+  useRedirectAfterSuccessRequest(isSuccessUpdated, '/settings/staff');
 
   const form = (
     <FormContainer>
@@ -205,13 +221,22 @@ export const EditManagingFirmUserPage = () => {
       <EditManagingFirmUserGate />
       <GoBack path="/settings/staff" />
       <Header>Информация о сотруднике. Редактирование </Header>
-      {pendingFetchRequest ? (
-        <div>
-          <Loader show={true} />
-        </div>
-      ) : (
-        form
-      )}
+      <ErrorAlert
+        show={isFailedFetchFormData}
+        message="Не удалось загрузить данные"
+      >
+        <ErrorAlert
+          show={isFailedEditUserInfo}
+          message="Не удалось сохранить данные"
+        />
+        {pendingFetchRequest ? (
+          <div>
+            <Loader show={true} />
+          </div>
+        ) : (
+          form
+        )}
+      </ErrorAlert>
     </>
   );
 };
