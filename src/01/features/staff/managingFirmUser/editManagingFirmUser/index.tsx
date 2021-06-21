@@ -76,11 +76,11 @@ export const EditManagingFirmUserPage = () => {
   }));
 
   useEffect(() => {
-    if (isSuccessUpdated && !pendingEditRequest) {
+    if (isSuccessUpdated) {
       history.push('/settings/staff');
       resetEditManagingUserRequest();
     }
-  }, [isSuccessUpdated, pendingEditRequest]);
+  }, [isSuccessUpdated]);
 
   const form = (
     <FormContainer>

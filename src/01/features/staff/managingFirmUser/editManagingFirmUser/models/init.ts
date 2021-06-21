@@ -14,7 +14,7 @@ import {
 } from './index';
 import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
 
-const mutateUserToEditUserFormValues = (user: ManagingFirmUserResponse) => ({
+const prepareFormData = (user: ManagingFirmUserResponse | null) => ({
   email: user?.email,
   firstName: user?.firstName,
   lastName: user?.lastName,
@@ -42,10 +42,17 @@ forward({
 
 sample({
   source: $managingFirmUser.map((user) =>
-    mutateUserToEditUserFormValues(user!)
+    prepareFormData(user)
   ),
   clock: EditManagingFirmUserGate.open,
   target: editManagingUserInfoForm.setForm,
+});
+
+forward({
+  from: fetchManagingFirmUserFx.doneData.map((user) =>
+    prepareFormData(user)
+  ),
+  to: editManagingUserInfoForm.setForm,
 });
 
 sample({
@@ -58,9 +65,3 @@ sample({
   target: editManagingUserInfoFx as any,
 });
 
-forward({
-  from: fetchManagingFirmUserFx.doneData.map((user) =>
-    mutateUserToEditUserFormValues(user!)
-  ),
-  to: editManagingUserInfoForm.setForm,
-});
