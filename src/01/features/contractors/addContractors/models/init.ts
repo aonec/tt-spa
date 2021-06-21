@@ -1,4 +1,7 @@
-import { $isFailedAddingContractor, addContractorsForm } from './index';
+import {
+  $isFailedAddingContractor,
+  addContractorsForm,
+} from './index';
 import {
   $isAddContractorsModalVisible,
   addContractorsButtonMenuClicked,

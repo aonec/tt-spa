@@ -8,15 +8,16 @@ import {
 
 export const requestReadings = (query: {
   nodeId?: number;
-}): Promise<GetHousingMeteringDeviceReadingsResponse> =>
-  axios.get('HousingMeteringDeviceReadings', {
+}): Promise<GetHousingMeteringDeviceReadingsResponse> => {
+  return axios.get('HousingMeteringDeviceReadings', {
     params: query,
   });
+};
 
 export const postReading = (
   query: CreateHousingMeteringDeviceReadingsRequest
 ): Promise<HousingMeteringDeviceReadingsResponse> =>
-  axios.post('HousingMeteringDeviceReadings/CreateOrUpdateLast', query);
+  axios.post('housingMeteringDeviceReadings/CreateOrUpdateLast', query);
 
 export const updateReading = (
   query: UpdateHousingMeteringDeviceReadingsRequest

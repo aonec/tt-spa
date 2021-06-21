@@ -2,29 +2,24 @@ import React, { createContext, useEffect, useState } from 'react';
 import { Route, useHistory, useParams } from 'react-router-dom';
 import { Header, MenuButtonTT } from '../../tt-components';
 import SettingsTabs from './components/SettingsTabs';
-import Common from './components/Common';
 import Staff from './components/Staff';
 import Contractors from './components/Contractors';
-import {
-  getCurrentManagingFirm,
-  getManagingFirmUsers,
-  getContractors,
-} from './apiSettings';
 import ModalAddStaff from './components/Modals/ModalAddStaff';
 import ModalAddContractor from './components/Modals/ModalAddContractor';
-import HeaderButton from './components/HeaderButton';
 import { Loader } from '../../_components/Loader';
 import CompanyInfo from './components/CompanyInfo';
 import { addContractorsButtonMenuClicked } from '01/features/contractors/addContractors/models';
 import { AddContractorsFormModal } from '01/features/contractors/addContractors';
+import { addStaffButtonClicked } from '01/features/staff/addStaff/models';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
+import { getCurrentManagingFirm } from './apiSettings';
 
 export const SettingsContext = createContext();
 export const Settings = () => {
-  const { push, location } = useHistory();
+  const history = useHistory();
+  const { push } = history;
   const params = useParams();
-  const roteParam = params[0];
-  
-  const [currentTabKey, setTab] = useState('1');
+  const section = params.section;
   const [firm, setFirm] = useState();
   const [users, setUsers] = useState();
   const [staff, setStaff] = useState(false);
@@ -34,10 +29,6 @@ export const Settings = () => {
     getCurrentManagingFirm().then((res) => {
       setFirm(res);
     });
-    getManagingFirmUsers().then((res) => {
-      setUsers(res);
-    });
-    setCurrentTabFromLink(location);
   }, []);
 
   function showStaff() {
@@ -56,25 +47,21 @@ export const Settings = () => {
     setContractor(false);
   }
 
-  function setCurrentTabFromLink(location) {
-    const { pathname } = location;
-    switch (pathname) {
+  function getCurrentTabFromLink() {
+    const { location } = history;
+    switch (location.pathname) {
       case '/settings':
-        setTab('1');
-        break;
+        return '1';
       case '/settings/staff':
-        setTab('2');
-        break;
+        return '2';
       case '/settings/contractors':
-        setTab('3');
-        break;
+        return '3';
       default:
-        setTab('1');
+        return '1';
     }
   }
 
   function handleChangeTab(value) {
-    setTab(value);
     switch (value) {
       case '1':
         push('/settings');
@@ -90,8 +77,7 @@ export const Settings = () => {
     }
   }
 
-  if (!firm || !users) {
-    console.log('Загрузка');
+  if (!firm) {
     return (
       <div
         style={{
@@ -107,7 +93,6 @@ export const Settings = () => {
   }
 
   const context = {
-    currentTabKey,
     users,
     firm,
     staff,
@@ -118,25 +103,34 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const needShowButton = (route) => (roteParam ? route === roteParam : false);
+  const needShowByRoute = (route) => {
+    return section ? route === section : false;
+  };
 
   const addContractorButton = {
     title: 'Добавить контрагента',
     cb: addContractorsButtonMenuClicked,
-    show: needShowButton('contractors'),
+    show: needShowByRoute('contractors'),
     color: 'default',
     clickable: true,
   };
 
   const addStaffButton = {
     title: 'Добавить сотрудника',
-    cb: () => {},
-    show: needShowButton('staff'),
+    cb: addStaffButtonClicked,
+    show: needShowByRoute('staff'),
     color: 'default',
     clickable: true,
   };
 
   const menuButtonArr = [addContractorButton, addStaffButton];
+
+  if (needShowByRoute('editManagingFirmUser'))
+    return (
+      <Route path="/settings/editManagingFirmUser/:id">
+        <EditManagingFirmUserPage />
+      </Route>
+    );
 
   return (
     <SettingsContext.Provider value={context}>
@@ -145,10 +139,9 @@ export const Settings = () => {
           <Header>Профиль компании</Header>
           <MenuButtonTT menuButtonArr={menuButtonArr} />
           <AddContractorsFormModal />
-          {/* <HeaderButton /> */}
         </div>
         <SettingsTabs
-          currentTabKey={currentTabKey}
+          currentTabKey={getCurrentTabFromLink()}
           handleChangeTab={handleChangeTab}
         />
         <Route path="/settings" exact>

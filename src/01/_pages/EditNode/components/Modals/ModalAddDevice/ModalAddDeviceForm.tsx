@@ -1,15 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Divider } from 'antd';
 import _ from 'lodash';
 import moment from 'moment';
-import * as Yup from 'yup';
 import styled from 'styled-components';
 import {
   ButtonTT,
-  DatePickerTT,
   Header,
-  InputTT,
-  SelectTT,
   StyledFooter,
   StyledModalBody,
   Title,
@@ -17,7 +13,6 @@ import {
   styles,
 } from '../../../../../tt-components';
 import {
-  DEFAULT_CALCULATOR,
   DEFAULT_NODE,
   housingMeteringDeviceTypes,
   isConnectedOptions,
@@ -31,7 +26,6 @@ import {
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import {
-  CalculatorResponse,
   CreateHousingMeteringDeviceRequest,
   NodeResponse,
 } from '../../../../../../myApi';
@@ -54,13 +48,11 @@ import Warning from '../../../../../tt-components/Warning';
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
   node: NodeResponse;
-  // calculator: CalculatorResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalAddDeviceForm = ({
   node,
-  // calculator,
   handleCancel,
   setVisible,
 }: ModalAddDeviceFormInterface) => {
@@ -109,7 +101,6 @@ const ModalAddDeviceForm = ({
     nodeStatus,
     number,
     resource,
-    serviceZone,
     communicationPipes,
     address,
     calculatorId,
@@ -169,7 +160,6 @@ const ModalAddDeviceForm = ({
           : null,
       pipe: {
         // calculatorId: calculatorId,
-        entryNumber: values.entryNumber,
         pipeNumber: values.pipeNumber,
         magistral: values.magistral,
         nodeId: node.id,

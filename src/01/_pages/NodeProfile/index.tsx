@@ -21,7 +21,7 @@ import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
-import HousingMeteringDeviceReadings from '../../features/HousingMeteringDeviceReadings/components';
+import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -64,6 +64,18 @@ export const NodeProfile = () => {
 
   const { resource, communicationPipes } = node;
 
+  const isShowReadings =
+    node?.calculator === null || node?.calculator?.isConnected === false;
+
+  const readings: TabsItemInterface = {
+    title: 'Ввод показаний',
+    key: 'readings',
+    cb: () => {
+      console.log('readings');
+      push(`${path}/readings`);
+    },
+  };
+
   const tabItems: Array<TabsItemInterface> = [
     {
       title: 'Общая информация',
@@ -79,14 +91,7 @@ export const NodeProfile = () => {
         push(`${path}/stats`);
       },
     },
-    {
-      title: 'Ввод показаний',
-      key: 'readings',
-      cb: () => {
-        console.log('readings');
-        push(`${path}/readings`);
-      },
-    },
+    ...(isShowReadings ? [readings] : []),
     {
       title: 'Настройки соединения',
       key: 'connection',

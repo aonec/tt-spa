@@ -1,8 +1,4 @@
-import {
-  ServiceZone,
-  EHousingMeteringDeviceType,
-  EMagistralType,
-} from '../../myApi';
+import { EHousingMeteringDeviceType, EMagistralType } from '../../myApi';
 
 export interface ItemInterface {
   id: number;
@@ -294,37 +290,10 @@ export const nodeStatusList = [
   },
 ];
 
-export const serviceZoneList: { value: ServiceZone; label: string }[] = [
-  {
-    value: ServiceZone.Apartments,
-    label: 'Апартаменты',
-  },
-  {
-    value: ServiceZone.CommercialPremises,
-    label: 'Коммерческие помещения',
-  },
-  {
-    value: ServiceZone.TechnicalPremises,
-    label: 'Технические помещения',
-  },
-  {
-    value: ServiceZone.CommonUsageAreas,
-    label: 'Места общего пользования',
-  },
-];
-
 export const entryNumberList = [
   { value: 1, label: 1 },
   { value: 2, label: 2 },
 ];
-
-export const serviceZoneListEnum = {
-  [ServiceZone.Apartments]: 'Апартаменты',
-  [ServiceZone.CommercialPremises]: 'Коммерческие помещения',
-  [ServiceZone.TechnicalPremises]: 'Технические помещения',
-  [ServiceZone.CommonUsageAreas]: 'Места общего пользования',
-  [ServiceZone.IntroductoryNode]: 'Входной узел',
-};
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;
 

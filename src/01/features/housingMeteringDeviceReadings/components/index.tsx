@@ -2,16 +2,19 @@ import React from 'react';
 import { useStore } from 'effector-react';
 import {
   $postReadingsErrorMessage,
+  $readings,
   $readingsToDisplay,
   $requestReadingsErrorMessage,
   HousingMeteringDeviceReadingsGate,
+  requestReadingsFx,
   ResourceGate,
 } from '../models';
 import { EResourceType } from '../../../../myApi';
 import { Alert } from 'antd';
 import { HousingMeteringReadingsHeader } from './HousingMeteringReadingsHeader';
 import { YearReading } from './YearReading';
-import { YearReadingsType } from '../lib/groupReadingsByDates';
+import { prepareReadings, YearReadingsType } from '../lib/groupReadingsByDates';
+import _ from 'lodash';
 
 const HousingMeteringDeviceReadings = ({
   nodeId,
@@ -23,10 +26,13 @@ const HousingMeteringDeviceReadings = ({
   const readings = useStore($readingsToDisplay);
   const postReadingsErrorMessage = useStore($postReadingsErrorMessage);
   const requestReadingsErrorMessage = useStore($requestReadingsErrorMessage);
+  const isLoading = useStore(requestReadingsFx.pending);
+
   const yearSortFn = (a: YearReadingsType, b: YearReadingsType) =>
     Number(b.year) - Number(a.year);
+
   const yearMapFn = (yearElement: YearReadingsType) => (
-    <YearReading yearElement={yearElement} />
+    <YearReading key={yearElement.year} yearElement={yearElement} />
   );
 
   const readingsElems = readings?.sort(yearSortFn).map(yearMapFn);
@@ -61,9 +67,9 @@ const HousingMeteringDeviceReadings = ({
       <ResourceGate resource={resource} />
       {renderAddReadingsAlert()}
       {renderRequestReadingsAlert()}
-      <HousingMeteringDeviceReadingsGate nodeId={nodeId} />
+      {nodeId ? <HousingMeteringDeviceReadingsGate nodeId={nodeId} /> : null}
       <HousingMeteringReadingsHeader />
-      {readingsElems}
+      {!requestReadingsErrorMessage && !isLoading ? readingsElems : null}
     </div>
   );
 };

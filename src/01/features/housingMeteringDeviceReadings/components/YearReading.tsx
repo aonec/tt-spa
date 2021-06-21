@@ -16,7 +16,7 @@ export const YearReading = ({
     monthByNumbers[b.month] - monthByNumbers[a.month];
 
   const mapByMonthFn = (monthElement: MonthReadingsType) => (
-    <MonthReading monthElement={monthElement} />
+    <MonthReading key={monthElement.month} monthElement={monthElement} />
   );
 
   const monthElements = yearElement.items
