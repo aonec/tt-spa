@@ -22,8 +22,10 @@ export const DeleteContractorModal = () => {
   const onCancel = () => deleteContractorCancelButtonClicked();
   const onOk = () => deleteContractorConfirmButtonClicked();
 
-  const renderDeleteContractorAlert = () =>
-    isDeletionContractorFailed ? (
+  const renderDeleteContractorAlert = () => {
+    if (!isDeletionContractorFailed) return null;
+
+    return (
       <Alert
         message="Ошибка"
         description="Не удалось удалить котрагента. Пожалуйста, обновите страницу или повторите попытку позже."
@@ -32,7 +34,8 @@ export const DeleteContractorModal = () => {
         closable
         style={{ margin: '0 24px 24px' }}
       />
-    ) : null;
+    );
+  };
 
   return (
     <StyledModal
