@@ -26,6 +26,7 @@ import {
   resetEditManagingUserRequest,
   editManagingUserInfoFx,
   EditManagingFirmUserGate,
+  $isFormDataLoading,
 } from './models';
 import { usePhoneMask } from '../../addStaff/utils';
 import { Loader } from '01/_components/Loader';
@@ -62,7 +63,7 @@ export const EditManagingFirmUserPage = () => {
   const onSubmit = () => submit();
   const onCancel = () => history.push('/settings/staff');
 
-  const pendingFetchRequest = useStore(fetchManagingFirmUserFx.pending);
+  const pendingFetchRequest = useStore($isFormDataLoading);
   const pendingEditRequest = useStore(editManagingUserInfoFx.pending);
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
