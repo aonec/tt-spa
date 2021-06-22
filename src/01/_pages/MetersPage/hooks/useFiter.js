@@ -67,6 +67,12 @@ export const useFilter = (pageDispatch = () => {}) => {
         placeholder: 'Кв.',
         onChange,
       },
+      {
+        name: 'house',
+        value: house,
+        placeholder: 'Л/с или ФИО',
+        onChange,
+      },
     ],
   };
 };

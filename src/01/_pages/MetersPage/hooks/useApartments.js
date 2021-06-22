@@ -1,6 +1,5 @@
 export const useApartments = ({ apartments = {} }, { filter = '' }) => {
-  const { loading, items = [], housingStock } = apartments;
-  const { housingStockNumber, corpus } = { ...housingStock };
+  const { loading, items = [] } = apartments;
   return {
     loading,
     items: items
@@ -8,9 +7,11 @@ export const useApartments = ({ apartments = {} }, { filter = '' }) => {
         ...item,
         // title: `${housingStock.street}, ${housingStock.number}, кв.${item.apartmentNumber}`,
         // TODO проверить отображение корпуса внизу
-        title: `${housingStock.street}, ${housingStockNumber}, кв.${
-          item.apartmentNumber
-        }${corpus ? `, ${corpus}` : null}`,
+        title: `${item.housingStock.street}, ${
+          item.housingStock.number
+        }, кв.${item.apartmentNumber}${
+          item.housingStock.corpus ? `, ${item.housingStock.corpus}` : ""
+        }`,
         owner: item.homeownerName,
         number: item.personalAccountNumber,
       }))

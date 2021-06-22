@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { useFetchPage } from './hooks/useFetchPage';
 import { useFilter } from './hooks/useFiter';
 import { useApartments } from './hooks/useApartments';
