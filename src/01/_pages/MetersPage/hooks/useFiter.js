@@ -5,6 +5,7 @@ const initialState = {
   street: '',
   house: '',
   apart: '',
+  question: '',
 };
 
 function filterReducer(state, action) {
@@ -20,19 +21,23 @@ function filterReducer(state, action) {
 
 export const useFilter = (pageDispatch = () => {}) => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
-  const { city, street, house, apart } = state;
+  const { city, street, house, apart, question } = state;
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (street && house) {
         pageDispatch({
           type: 'get_apartments',
-          params: { street, HousingStockNumber: house },
+          params: {
+            Street: street,
+            HousingStockNumber: house,
+            Question: question,
+          },
         });
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [city, street, house]);
+  }, [city, street, house, question]);
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -65,6 +70,12 @@ export const useFilter = (pageDispatch = () => {}) => {
         name: 'apart',
         value: apart,
         placeholder: 'Кв.',
+        onChange,
+      },
+      {
+        name: 'question',
+        value: question,
+        placeholder: 'Л/С или ФИО',
         onChange,
       },
     ],
