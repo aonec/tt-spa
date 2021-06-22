@@ -25,7 +25,7 @@ export const useFilter = (pageDispatch = () => {}) => {
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (street && house) {
+      if (street || house || question) {
         pageDispatch({
           type: 'get_apartments',
           params: {

@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
-import { Loader } from '01/components';
+import { Loader as TTLoader } from '01/components';
 import { ApartmentListResponse } from '../../../../myApi';
+
+const Loader = styled(TTLoader)`
+  margin-top: 10px;
+`;
 
 const Apart = styled.div`
   display: grid;
