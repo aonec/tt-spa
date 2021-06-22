@@ -12,9 +12,9 @@ export const Filter = ({ inputs = [] }) => {
       grid-template-columns:
         minmax(200px, 1fr)
         minmax(200px, 1fr)
-        minmax(100px, 0.3fr)
-        minmax(100px, 0.3fr)
-        minmax(100px, 1fr);
+        minmax(100px, 0.5fr)
+        minmax(100px, 0.5fr);
+        /* minmax(100px, 1fr); */
       grid-gap: 16px;
     }
   `(
