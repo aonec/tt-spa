@@ -86,6 +86,21 @@ export enum EOrderByRule {
   Descending = "Descending",
 }
 
+export interface HousingStockListResponse {
+  /** @format int32 */
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+
+  /** @format int32 */
+  numberOfApartments: number;
+}
+
 export interface ApartmentListResponse {
   /** @format int32 */
   id: number;
@@ -97,19 +112,10 @@ export interface ApartmentListResponse {
   personalAccountNumber: string | null;
   status: string | null;
   square: string | null;
+  housingStock: HousingStockListResponse;
 }
 
-export interface HousingStockAddressResponse {
-  city: string | null;
-  street: string | null;
-  housingStockNumber: string | null;
-
-  /** @format int32 */
-  id: number;
-  corpus: string | null;
-}
-
-export interface ApartmentPagedList {
+export interface ApartmentListResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -130,11 +136,10 @@ export interface ApartmentPagedList {
 
   /** @format int32 */
   previousPageNumber: number;
-  housingStock: HousingStockAddressResponse;
 }
 
-export interface ApartmentPagedListSuccessApiResponse {
-  successResponse: ApartmentPagedList;
+export interface ApartmentListResponsePagedListSuccessApiResponse {
+  successResponse: ApartmentListResponsePagedList;
 }
 
 export interface ApartmentUpdateRequest {
@@ -259,6 +264,7 @@ export enum EUserPermission {
   TaskApplicationRead = "TaskApplicationRead",
   TaskApplicationUpdate = "TaskApplicationUpdate",
   TaskApplicationDelete = "TaskApplicationDelete",
+  DocumentsRead = "DocumentsRead",
 }
 
 export interface TokenResponse {
@@ -420,6 +426,16 @@ export interface MeteringDeviceConnection {
 
   /** @format int32 */
   deviceAddress?: number | null;
+}
+
+export interface HousingStockAddressResponse {
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
+  corpus: string | null;
 }
 
 export interface NodeCommercialStatusResponse {
@@ -698,9 +714,6 @@ export interface UpdateCalculatorRequest {
   isConnected?: boolean;
 
   /** @format int32 */
-  housingStockId?: number | null;
-
-  /** @format int32 */
   infoId?: number | null;
   connection?: MeteringDeviceConnection;
 }
@@ -822,7 +835,6 @@ export interface ContractorUpdateRequest {
 }
 
 export enum DataMigrationMethod {
-  NodesHousingStockId = "NodesHousingStockId",
   HeatingStationFill = "HeatingStationFill",
 }
 
@@ -844,6 +856,7 @@ export enum EDocumentType {
   HeatingSeasonEndingOrder = "HeatingSeasonEndingOrder",
   HeatingSeasonChangingStatement = "HeatingSeasonChangingStatement",
   Photo = "Photo",
+  NodeAdmissionAct = "NodeAdmissionAct",
 }
 
 export interface DocumentResponse {
@@ -861,6 +874,10 @@ export interface DocumentResponse {
 
 export interface DocumentResponseIEnumerableSuccessApiResponse {
   successResponse: DocumentResponse[] | null;
+}
+
+export interface StringSuccessApiResponse {
+  successResponse: string | null;
 }
 
 export enum ELivingHouseType {
@@ -1037,6 +1054,7 @@ export interface AddressRequest {
 
 export interface AddHeatingStationRequest {
   name: string;
+  isThermalChamber?: boolean;
   address?: AddressRequest;
 }
 
@@ -1046,6 +1064,7 @@ export interface HeatingStationResponseSuccessApiResponse {
 
 export interface UpdateHeatingStationRequest {
   name?: string | null;
+  isThermalChamber?: boolean;
   address?: AddressRequest;
 }
 
@@ -1448,6 +1467,9 @@ export interface HeatingStationShortResponse {
 export interface HousingStockResponse {
   /** @format int32 */
   id: number;
+
+  /** @format uuid */
+  fiasId: string | null;
   index: string | null;
   region: string | null;
   city: string | null;
@@ -1480,21 +1502,6 @@ export interface HousingStockResponse {
 
 export interface HousingStockResponseSuccessApiResponse {
   successResponse: HousingStockResponse;
-}
-
-export interface HousingStockListResponse {
-  /** @format int32 */
-  id: number;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
-
-  /** @format int32 */
-  numberOfTasks: number | null;
-
-  /** @format int32 */
-  numberOfApartments: number;
 }
 
 export interface HousingStockListResponsePagedList {
@@ -1561,9 +1568,6 @@ export interface HousingStockUpdateRequest {
 export interface MeteringDeviceListResponse {
   /** @format int32 */
   id: number;
-
-  /** @format int32 */
-  housingStockId: number | null;
   ipV4: string | null;
 
   /** @format int32 */
@@ -1650,6 +1654,11 @@ export interface HousingStockFilterResponse {
 
 export interface HousingStockFilterResponseSuccessApiResponse {
   successResponse: HousingStockFilterResponse;
+}
+
+export interface GuidSuccessApiResponse {
+  /** @format uuid */
+  successResponse: string;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
@@ -2443,6 +2452,16 @@ export interface CalculatorIntoNodeResponse {
   infoId: number | null;
 }
 
+export interface DocumentLiteResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+
+  /** @format date-time */
+  uploadingTime: string;
+  author: string | null;
+}
+
 export interface NodeResponse {
   /** @format int32 */
   id: number;
@@ -2471,10 +2490,22 @@ export interface NodeResponse {
   housingStockId: number;
   address: HousingStockAddressResponse;
   communicationPipes: CommunicationPipeResponse[] | null;
+  documents: DocumentLiteResponse[] | null;
 }
 
 export interface NodeResponseSuccessApiResponse {
   successResponse: NodeResponse;
+}
+
+export interface NodeAdmissionActRequest {
+  /** @format int32 */
+  documentId?: number;
+
+  /** @format date-time */
+  startCommercialAccountingDate?: string;
+
+  /** @format date-time */
+  endCommercialAccountingDate?: string;
 }
 
 export interface UpdateNodeRequest {
@@ -2489,14 +2520,9 @@ export interface UpdateNodeRequest {
   /** @format int32 */
   nodeServiceZoneId?: number | null;
 
-  /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
-
-  /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
-
   /** @format int32 */
   calculatorId?: number | null;
+  admissionAct?: NodeAdmissionActRequest;
 }
 
 export interface NodeResponsePagedList {
@@ -2545,18 +2571,13 @@ export interface CreateNodeRequest {
   /** @format int32 */
   nodeServiceZoneId?: number;
 
-  /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
-
-  /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
-
   /** @format int32 */
   calculatorId?: number | null;
 
   /** @format int32 */
   housingStockId?: number;
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
+  admissionAct?: NodeAdmissionActRequest;
 }
 
 export interface CommunicationPipeForAddingDeviceResponse {
@@ -3393,16 +3414,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         City?: string | null;
         Street?: string | null;
         HousingStockNumber?: string | null;
-        ApartmentNumber?: string | null;
         Corpus?: string | null;
+        ApartmentNumber?: string | null;
         HousingStockId?: number | null;
+        Question?: string | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
       params: RequestParams = {},
     ) =>
-      this.request<ApartmentPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ApartmentListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
         method: "GET",
         query: query,
@@ -3900,6 +3922,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
+     * @name DataMigrationsHousingStockAddFiasIdCreate
+     * @request POST:/api/DataMigrations/HousingStockAddFiasId
+     * @secure
+     */
+    dataMigrationsHousingStockAddFiasIdCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/HousingStockAddFiasId`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
      * @name DataMigrationsMakeDemoCreate
      * @request POST:/api/DataMigrations/MakeDemo
      * @secure
@@ -3927,6 +3965,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Documents
+     * @name DocumentsDetail
+     * @request GET:/api/Documents/{documentId}
+     * @secure
+     */
+    documentsDetail: (documentId: number, params: RequestParams = {}) =>
+      this.request<StringSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Documents/${documentId}`,
+        method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -4640,6 +4695,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingStocks
+     * @name HousingStocksGetFiasIdList
+     * @request GET:/api/HousingStocks/GetFiasId
+     * @secure
+     */
+    housingStocksGetFiasIdList: (
+      query: {
+        Region: string;
+        Area: string;
+        City: string;
+        Street: string;
+        HouseNumber: string;
+        HouseCorpus?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<GuidSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/GetFiasId`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags IndividualDeviceMountPlaces
      * @name IndividualDeviceMountPlacesList
      * @request GET:/api/IndividualDeviceMountPlaces
@@ -4772,6 +4855,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Resource?: string | null;
         LastReadingsMonth?: string | null;
         TakeReadings?: number | null;
+        ApartmentIds?: number[] | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -5365,6 +5449,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Nodes
+     * @name NodesAddAdmissionActCreate
+     * @request POST:/api/Nodes/{nodeId}/AddAdmissionAct
+     * @secure
+     */
+    nodesAddAdmissionActCreate: (nodeId: number, data: NodeAdmissionActRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/AddAdmissionAct`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
