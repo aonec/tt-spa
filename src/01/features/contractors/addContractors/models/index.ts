@@ -42,6 +42,8 @@ export const addContractorsForm = createForm({
         {
           name: 'phone',
           validator: (value) => {
+            if (Number(value) === NaN) return false;
+
             return value.length === 10;
           },
         },
