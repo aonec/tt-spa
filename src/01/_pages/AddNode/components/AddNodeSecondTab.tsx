@@ -28,6 +28,7 @@ import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addS
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
+import { DragAndDrop } from '../../../shared/ui/DragAndDrop';
 
 const AddNodeSecondTab = () => {
   const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
@@ -202,6 +203,12 @@ const AddNodeSecondTab = () => {
                 />
                 <Alert name="futureCommercialAccountingDate" />
               </Form.Item>
+              <DragAndDrop
+                text="Добавьте акт-допуска"
+                style={{ marginTop: '10px' }}
+                uniqId="node-second-tab"
+                fileHandler={() => {}}
+              />
             </>
           ) : null}
         </StyledFormPage>
