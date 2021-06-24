@@ -35,6 +35,7 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
+import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -244,6 +245,13 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
+            <DragAndDrop
+                accept="application/pdf"
+                text="Добавьте акт-допуска"
+                style={{ marginTop: '10px' }}
+                uniqId="node-second-tab"
+                fileHandler={console.log}
+              />
           </>
         </StyledFormPage>
 
