@@ -1,5 +1,10 @@
+import { DocumentResponse } from 'myApi';
 import React from 'react';
 
-export const FilesList: React.FC = () => {
+interface Props {
+  files: DocumentResponse[];
+}
+
+export const FilesList: React.FC<Props> = ({ files }) => {
   return <></>;
 };
