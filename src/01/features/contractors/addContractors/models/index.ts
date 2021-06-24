@@ -42,7 +42,6 @@ export const addContractorsForm = createForm({
         {
           name: 'phone',
           validator: (value) => {
-            console.log(value);
             return value.length === 10;
           },
         },
