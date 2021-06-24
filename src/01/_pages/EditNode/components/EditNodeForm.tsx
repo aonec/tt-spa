@@ -97,12 +97,12 @@ const EditNodeForm = ({
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),
       nodeServiceZoneId: chosenInputForSelect?.value,
-      lastCommercialAccountingDate: getFieldValue(
-        'lastCommercialAccountingDate'
-      )?.toISOString(),
-      futureCommercialAccountingDate: getFieldValue(
-        'futureCommercialAccountingDate'
-      )?.toISOString(),
+      // lastCommercialAccountingDate: getFieldValue(
+      //   'lastCommercialAccountingDate'
+      // )?.toISOString(),
+      // futureCommercialAccountingDate: getFieldValue(
+      //   'futureCommercialAccountingDate'
+      // )?.toISOString(),
       calculatorId,
     };
 
