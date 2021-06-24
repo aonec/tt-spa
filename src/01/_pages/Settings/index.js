@@ -103,9 +103,7 @@ export const Settings = () => {
     hideContractor,
   };
 
-  const needShowByRoute = (route) => {
-    return section ? route === section : false;
-  };
+  const needShowByRoute = (route) => route === section
 
   const addContractorButton = {
     title: 'Добавить контрагента',
