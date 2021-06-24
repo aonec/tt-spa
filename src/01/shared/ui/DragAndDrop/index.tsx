@@ -4,7 +4,6 @@ import { ReactComponent as FileUploadIcon } from './upload.svg';
 
 interface Props {
   fileHandler(files: FileList): void;
-  supportingFormats?: string;
   accept?: string;
   uniqId: string;
   text?: string;
@@ -72,8 +71,8 @@ const UploadFileIconContainer = styled(Center)`
   width: 33px;
   height: 33px;
   border-radius: 50%;
-  color: #3a3a3a;
-  background-color: #e6e6e6;
+  color: #585858;
+  background-color: #00000015;
   font-size: 25px;
 `;
 

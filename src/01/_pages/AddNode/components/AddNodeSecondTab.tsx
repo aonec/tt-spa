@@ -204,6 +204,7 @@ const AddNodeSecondTab = () => {
                 <Alert name="futureCommercialAccountingDate" />
               </Form.Item>
               <DragAndDrop
+                accept="application/pdf"
                 text="Добавьте акт-допуска"
                 style={{ marginTop: '10px' }}
                 uniqId="node-second-tab"
