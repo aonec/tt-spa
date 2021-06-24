@@ -18,20 +18,10 @@ $isEditStaffStatusRequestFailed
   .on(editStaffStatusFx.failData, () => true)
   .reset(editStaffStatusFx.doneData);
 
-editStaffStatusForm.$values.on(
-  editStaffStatusButtonClicked,
-  (state, { status }) => {
-    if (status) {
-      return {
-        type: status.type,
-        startDate: status.startDate,
-        endDate: status.startDate,
-      };
-    }
-
-    return state;
-  }
-);
+forward({
+  from: editStaffStatusButtonClicked.map((payload) => payload.status) as any,
+  to: editStaffStatusForm.setForm,
+});
 
 forward({
   from: editStaffStatusFx.doneData,

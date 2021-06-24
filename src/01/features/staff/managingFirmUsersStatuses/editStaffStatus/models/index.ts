@@ -13,6 +13,8 @@ export const $isEditStaffStatusModalVisible = $editStaffStatusUserId.map(
   (id) => id !== null
 );
 
+const isNotNull = (value: any) => value !== null;
+
 export const editStaffStatusForm = createForm({
   fields: {
     type: {
@@ -20,7 +22,7 @@ export const editStaffStatusForm = createForm({
       rules: [
         {
           name: 'required',
-          validator: (value) => value !== null,
+          validator: isNotNull,
         },
       ],
     },
@@ -29,7 +31,7 @@ export const editStaffStatusForm = createForm({
       rules: [
         {
           name: 'required',
-          validator: (value) => value !== null,
+          validator: isNotNull,
         },
       ],
     },
@@ -38,7 +40,7 @@ export const editStaffStatusForm = createForm({
       rules: [
         {
           name: 'required',
-          validator: (value) => value !== null,
+          validator: isNotNull,
         },
       ],
     },
