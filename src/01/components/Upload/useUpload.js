@@ -59,3 +59,5 @@ export const useUpload = (callback = () => {}) => {
     list: { items: state.fileList, del: deleteFile },
   };
 };
+
+export const useCustomUpload = () => {};

@@ -7,5 +7,7 @@ export async function uploadFile(file, type = 'AdditionalMaterials') {
   try {
     const res = await axios.post('documents/upload', formData);
     return { newFile: res[0] };
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error);
+  }
 }
