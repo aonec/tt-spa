@@ -58,7 +58,7 @@ export function useFilesUpload(): FileUploader {
   }
 
   async function removeFile(id: number) {
-    const fileId = files.find((elem) => elem.id === id)?.id;
+    const fileId = files.find((elem) => elem.id === id)?.fileResponse?.id;
 
     if (!fileId) return;
 
@@ -71,11 +71,7 @@ export function useFilesUpload(): FileUploader {
 
       await deleteDoc(fileId);
 
-      rewriteFile(id, (file) => ({
-        ...file,
-        loading: false,
-        status: 'done',
-      }));
+      setFiles((prev) => prev.filter((elem) => elem.id !== id));
     } catch (e) {
       rewriteFile(id, (file) => ({
         ...file,

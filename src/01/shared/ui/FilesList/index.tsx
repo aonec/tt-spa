@@ -19,7 +19,7 @@ const getFormattedDate = (date: string) =>
 export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
   return (
     <FilesWrap>
-      {files.map(({ fileResponse: file, loading }) => (
+      {files.map(({ fileResponse: file, loading, id }) => (
         <FileItemWrap key={file?.id}>
           {file && (
             <>
@@ -55,7 +55,7 @@ export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
                 },
                 {
                   title: 'удалить',
-                  cb: () => file && removeFile(file.id),
+                  cb: () => removeFile(id),
                   show: true,
                   color: 'red',
                   clickable: true,
