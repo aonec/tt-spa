@@ -36,6 +36,8 @@ import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
+import { useUpload } from '01/components/Upload';
+import { FilesList } from '01/shared/ui/FilesList';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -70,6 +72,8 @@ const EditNodeForm = ({
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
+
+  const { button, list } = useUpload();
 
   if (!node) {
     return null;
@@ -245,13 +249,17 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
-            <DragAndDrop
+            {list.items.length ? (
+              <FilesList files={list.items} />
+            ) : (
+              <DragAndDrop
                 accept="application/pdf"
                 text="Добавьте акт-допуска"
                 style={{ marginTop: '10px' }}
                 uniqId="node-second-tab"
-                fileHandler={console.log}
+                fileHandler={(file) => button.onChange(file[0])}
               />
+            )}
           </>
         </StyledFormPage>
 

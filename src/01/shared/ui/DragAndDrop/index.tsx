@@ -50,9 +50,8 @@ export const DragAndDrop: React.FC<Props> = (props) => {
               </UploadFileIconContainer>
             </Center>
             <div>
-              {text
-                ? text
-                : 'Перетащите ваши файлы в эту область или нажмите для выбора'}
+              {text ||
+                'Перетащите ваши файлы в эту область или нажмите для выбора'}
             </div>
           </div>
         </DragAndDropContainer>
