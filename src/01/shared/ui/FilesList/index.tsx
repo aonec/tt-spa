@@ -21,7 +21,7 @@ export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
     <FilesWrap>
       {files.map(({ fileResponse: file, loading, id }) => (
         <FileItemWrap key={file?.id}>
-          {file && (
+          {file ? (
             <>
               <Wide>
                 <Flex>
@@ -38,6 +38,17 @@ export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
                 <FileCreatedDate>
                   {getFormattedDate(file.uploadingTime)}
                 </FileCreatedDate>
+              </Wide>
+            </>
+          ) : (
+            <>
+              <Wide>
+                <LoadingContent style={{ width: 120 }} />
+                <LoadingContent style={{ width: 80, marginTop: 5 }} />
+              </Wide>
+              <Wide>
+                <LoadingContent style={{ width: 120 }} />
+                <LoadingContent style={{ width: 80, marginTop: 5 }} />
               </Wide>
             </>
           )}
@@ -104,4 +115,17 @@ const FileType = styled.div`
 const FileCreatedDate = styled.div`
   margin-top: 10px;
   margin-left: 22px;
+`;
+
+const LoadingContent = styled.div`
+  @keyframes background {
+    100% {
+      background-position: 0 200px;
+    }
+  }
+
+  animation: background 6s infinite alternate;
+  height: 15px;
+  border-radius: 3px;
+  background: linear-gradient(45deg, #afafaf, #d8d8d8);
 `;
