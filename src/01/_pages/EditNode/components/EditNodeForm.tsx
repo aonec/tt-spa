@@ -250,7 +250,10 @@ const EditNodeForm = ({
               />
             </Form.Item>
             {list.items.length ? (
-              <FilesList files={list.items} removeFile={list.del} />
+              <FilesList
+                files={list.items}
+                removeFile={(id) => list.del(id)()}
+              />
             ) : (
               <DragAndDrop
                 accept="application/pdf"

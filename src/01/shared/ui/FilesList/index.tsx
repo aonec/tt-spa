@@ -15,7 +15,7 @@ interface Props {
 const getFormattedDate = (date: string) =>
   moment(date).format('DD.MM.YYYY HH:mm');
 
-export const FilesList: React.FC<Props> = ({ files }) => {
+export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
   return (
     <FilesWrap>
       {files.map((file) => (
@@ -48,7 +48,7 @@ export const FilesList: React.FC<Props> = ({ files }) => {
                 },
                 {
                   title: 'удалить',
-                  cb: () => {},
+                  cb: () => removeFile(file.id),
                   show: true,
                   color: 'red',
                   clickable: true,
@@ -63,12 +63,8 @@ export const FilesList: React.FC<Props> = ({ files }) => {
 };
 
 const FilesWrap = styled.div`
-  padding: 15px;
-  border-bottom: 1px solid #dcdee4;
-  display: grid;
-  grid: minmax(200px, max-content), minmax(200px, max-content),
-    minmax(200px, max-content);
   width: 100%;
+  margin-top: 10px;
 `;
 
 const Wide = styled.div`
@@ -76,7 +72,15 @@ const Wide = styled.div`
 `;
 
 const FileItemWrap = styled.div`
+  border-bottom: 1px solid #dcdee4;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+
+  :first-child {
+    padding-top: 0;
+  }
 `;
 
 const FileName = styled.div`
