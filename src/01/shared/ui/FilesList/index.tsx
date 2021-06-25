@@ -5,9 +5,11 @@ import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
 import moment from 'moment';
 import { Flex } from '../Layout/Flex';
+import { MenuButtonTT } from '01/tt-components';
 
 interface Props {
   files: DocumentResponse[];
+  removeFile: (id: number) => void;
 }
 
 const getFormattedDate = (date: string) =>
@@ -34,6 +36,26 @@ export const FilesList: React.FC<Props> = ({ files }) => {
               {getFormattedDate(file.uploadingTime)}
             </FileCreatedDate>
           </Wide>
+          <div style={{ width: 33 }}>
+            <MenuButtonTT
+              menuButtonArr={[
+                {
+                  title: 'скачать',
+                  cb: () => {},
+                  show: true,
+                  color: 'default',
+                  clickable: true,
+                },
+                {
+                  title: 'удалить',
+                  cb: () => {},
+                  show: true,
+                  color: 'red',
+                  clickable: true,
+                },
+              ]}
+            />
+          </div>
         </FileItemWrap>
       ))}
     </FilesWrap>
@@ -44,7 +66,8 @@ const FilesWrap = styled.div`
   padding: 15px;
   border-bottom: 1px solid #dcdee4;
   display: grid;
-  grid: minmax(300px, max-content), minmax(300px, max-content);
+  grid: minmax(200px, max-content), minmax(200px, max-content),
+    minmax(200px, max-content);
   width: 100%;
 `;
 
