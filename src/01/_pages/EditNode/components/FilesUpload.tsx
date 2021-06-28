@@ -3,9 +3,7 @@ import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
 import React from 'react';
 
-interface Props {}
-
-export const FilesUpload: React.FC<Props> = () => {
+export const FilesUpload: React.FC = () => {
   const { files, addFile, removeFile } = useFilesUpload();
 
   return (
