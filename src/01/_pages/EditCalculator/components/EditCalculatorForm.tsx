@@ -108,7 +108,6 @@ const EditCalculatorForm = ({
           deviceAddress: returnNullIfEmptyString(values.deviceAddress),
           port: returnNullIfEmptyString(values.port),
         },
-        housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
 

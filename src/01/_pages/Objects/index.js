@@ -75,7 +75,7 @@ export const Objects = ({ isReadings = false }) => {
   React.useEffect(() => {
     (async () => {
       const queryString = formQueryString(debouncedSearchState);
-      const res = await axios.get(`HousingStocks${queryString}`);
+      const res = await axios.get(`Apartments${queryString}`);
       setState(res);
     })();
     return () => cancel();
@@ -97,6 +97,7 @@ export const Objects = ({ isReadings = false }) => {
         <Loader show={!items} size="32">
           {items
             ?.sort(sortObjects)
+            ?.map((elem) => elem.housingStock)
             ?.map(
               ({
                 city,
