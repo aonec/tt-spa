@@ -129,7 +129,7 @@ export const AddContractorsFormModal = () => {
             </FormItem>
             <FormItem label="Номер телефона">
               <StyledInputTT
-                type="email"
+                type="text"
                 value={phoneMask.maskValue(fields.cellPhone.value)}
                 disabled={pending}
                 onChange={(e: InputTTEvent) =>
