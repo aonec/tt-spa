@@ -51,6 +51,13 @@ const RangePicker = styled(AntdDatePicker.RangePicker)`
   border-radius: 4px;
 `;
 
+const getRangeValue = (
+  start: string | null,
+  end: string | null
+): [moment.Moment, moment.Moment] | undefined => {
+  if (start && end) return [moment(start), moment(end)];
+};
+
 export const EditStaffStatusModal: React.FC = () => {
   const visible = useStore($isEditStaffStatusModalVisible);
   const staffStatuses = useStore($staffStatuses);
@@ -115,11 +122,7 @@ export const EditStaffStatusModal: React.FC = () => {
         </Form.Item>
         <Form.Item label="Период" style={{ width: '100%' }}>
           <RangePicker
-            value={
-              fields.startDate.value && fields.endDate.value
-                ? [moment(fields.startDate.value), moment(fields.endDate.value)]
-                : undefined
-            }
+            value={getRangeValue(fields.startDate.value, fields.endDate.value)}
             format="DD.MM.YYYY"
             onChange={(value) => {
               if (!value) {
