@@ -1,7 +1,4 @@
-import {
-  $isFailedAddingContractor,
-  addContractorsForm,
-} from './index';
+import { $isFailedAddingContractor, addContractorsForm } from './index';
 import {
   $isAddContractorsModalVisible,
   addContractorsButtonMenuClicked,
@@ -11,6 +8,7 @@ import {
 import { forward, merge } from 'effector';
 import { $contractors } from '../../displayContractors/models';
 import { postContractors } from '01/_api/contractors';
+import _ from 'lodash';
 
 $isAddContractorsModalVisible.on(
   merge([
@@ -33,7 +31,7 @@ forward({
 });
 
 $contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
-  contractors ? [contractor, ...contractors] : [contractor]
+  _.concat(contractors || [], contractor)
 );
 
 forward({

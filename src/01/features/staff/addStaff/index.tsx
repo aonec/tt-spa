@@ -66,7 +66,7 @@ export const AddStaffModal: React.FC = () => {
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem.title,
+    label: elem.competence.title,
     value: elem.id,
   }));
 
@@ -112,7 +112,9 @@ export const AddStaffModal: React.FC = () => {
               name="lastName"
               type="text"
               value={fields.lastName.value}
-              onChange={(e) => fields.lastName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.lastName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.lastName.errorText({
@@ -124,7 +126,9 @@ export const AddStaffModal: React.FC = () => {
             <InputTT
               type="firstName"
               value={fields.firstName.value}
-              onChange={(e) => fields.firstName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.firstName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.firstName.errorText({
@@ -137,7 +141,9 @@ export const AddStaffModal: React.FC = () => {
               name="middleName"
               type="text"
               value={fields.middleName.value}
-              onChange={(e) => fields.middleName.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.middleName.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.middleName.errorText({
@@ -152,7 +158,9 @@ export const AddStaffModal: React.FC = () => {
               name="email"
               type="text"
               value={fields.email.value}
-              onChange={(e) => fields.email.onChange(e.target.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.email.onChange(e.target.value)
+              }
             />
             <ErrorMessage>
               {fields.email.errorText({
@@ -164,25 +172,25 @@ export const AddStaffModal: React.FC = () => {
           <Form.Item label="Контактный телефон">
             <InputTT
               width="100%"
-              name="cellPhone"
+              name="cellphone"
               type="text"
-              value={phoneMask.maskValue(fields.cellPhone.value)}
-              onChange={(e) =>
-                fields.cellPhone.onChange(
+              value={phoneMask.maskValue(fields.cellphone.value)}
+              onChange={(e: { target: { value: string } }) =>
+                fields.cellphone.onChange(
                   phoneMask.unmaskedValue(e.target.value)
                 )
               }
             />
             <ErrorMessage>
-              {fields.cellPhone.errorText({
+              {fields.cellphone.errorText({
                 required: 'Это поле обязательное',
-                phone: 'Введите корректный номер телефона'
+                phone: 'Введите корректный номер телефона',
               })}
             </ErrorMessage>
           </Form.Item>
         </FormItemsContainer>
         <Form.Item label="Роль в системе">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.userRoleIds.value}
             options={multipleSelectionUserRoles}
@@ -195,7 +203,7 @@ export const AddStaffModal: React.FC = () => {
           </ErrorMessage>
         </Form.Item>
         <Form.Item label="Компетенции">
-          <StyledMultiSelect
+          <MultiSelectTT
             mode="multiple"
             value={fields.firmCompetenceIds.value}
             options={multipleSelectionCompetences}
@@ -244,7 +252,3 @@ export const AddStaffModal: React.FC = () => {
     </StyledModal>
   );
 };
-
-const StyledMultiSelect = styled(MultiSelectTT)`
-  min-height: 48px;
-`

@@ -3,6 +3,7 @@ import { Menu, Dropdown, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
+import { Loader } from '01/components';
 
 const StyledMenuButton = styled(Button).attrs((props) => ({
   form: props.form,
@@ -31,10 +32,12 @@ export interface MenuButtonInterface {
 interface Props {
   menuButtonArr: MenuButtonInterface[] | null;
   size?: SizeType;
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 export const MenuButtonTT = (props: any) => {
-  const { menuButtonArr: arr, size } = props;
+  const { menuButtonArr: arr, size, disabled, loading } = props;
 
   function getCurrentColor(color: string) {
     switch (color) {
@@ -71,9 +74,9 @@ export const MenuButtonTT = (props: any) => {
   );
 
   return (
-    <Dropdown overlay={menu} trigger={['click']}>
+    <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
       <StyledMenuButton size={size}>
-        <MoreOutlined />
+        {loading ? <Loader show={true} /> : <MoreOutlined />}
       </StyledMenuButton>
     </Dropdown>
   );

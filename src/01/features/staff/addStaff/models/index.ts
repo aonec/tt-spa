@@ -4,6 +4,7 @@ import {
 } from './../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createStore, createEvent, createEffect } from 'effector';
+import { AnyFieldsConfigs, FormConfig } from 'effector-forms/dist/types';
 
 export const $isAddStaffModalVisible = createStore(false);
 export const $isAddStaffFailed = createStore(false);
@@ -22,7 +23,7 @@ const standartStringFieldInit = {
   rules: [requiredValidation],
 };
 
-export const addStaffForm = createForm({
+export const staffFormConfig: FormConfig<AnyFieldsConfigs> = {
   fields: {
     email: {
       init: '',
@@ -37,13 +38,13 @@ export const addStaffForm = createForm({
     firstName: standartStringFieldInit,
     lastName: standartStringFieldInit,
     middleName: standartStringFieldInit,
-    cellPhone: {
+    cellphone: {
       init: '',
       rules: [
         requiredValidation,
         {
           name: 'phone',
-          validator: (value) => value.length === 10,
+          validator: (value: string) => value.length === 10,
         },
       ],
     },
@@ -52,7 +53,7 @@ export const addStaffForm = createForm({
       rules: [
         {
           name: 'required',
-          validator: (value) => value.length > 0,
+          validator: (value: string) => value.length > 0,
         },
       ],
     },
@@ -61,7 +62,9 @@ export const addStaffForm = createForm({
     },
   },
   validateOn: ['submit'],
-});
+};
+
+export const addStaffForm = createForm(staffFormConfig);
 
 export const addStaffFx = createEffect<
   ManagingFirmUserCreateRequest,

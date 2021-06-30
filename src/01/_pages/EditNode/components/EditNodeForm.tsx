@@ -35,6 +35,10 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
+import { DragAndDrop } from '01/shared/ui/DragAndDrop';
+import { useUpload } from '01/components/Upload';
+import { FilesList } from '01/shared/ui/FilesList';
+import { FilesUpload } from './FilesUpload';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -97,12 +101,12 @@ const EditNodeForm = ({
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),
       nodeServiceZoneId: chosenInputForSelect?.value,
-      lastCommercialAccountingDate: getFieldValue(
-        'lastCommercialAccountingDate'
-      )?.toISOString(),
-      futureCommercialAccountingDate: getFieldValue(
-        'futureCommercialAccountingDate'
-      )?.toISOString(),
+      // lastCommercialAccountingDate: getFieldValue(
+      //   'lastCommercialAccountingDate'
+      // )?.toISOString(),
+      // futureCommercialAccountingDate: getFieldValue(
+      //   'futureCommercialAccountingDate'
+      // )?.toISOString(),
       calculatorId,
     };
 
@@ -124,8 +128,6 @@ const EditNodeForm = ({
       ? moment(futureCommercialAccountingDate)
       : null,
   };
-
-  console.log(JSON.stringify(chosenInputForSelect));
 
   return (
     <>
@@ -244,6 +246,7 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
+            <FilesUpload />
           </>
         </StyledFormPage>
 

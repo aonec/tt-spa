@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import { Loader } from '../../components';
 import AddNodeForm from './components/AddNodeForm';
@@ -12,7 +12,11 @@ import {
 } from '../../_api/apiRequests';
 
 export const AddNode = () => {
-  const { housingStockId, push } = useParams();
+  const { housingStockId: housingStockIdStr } = useParams<{
+    housingStockId: string;
+  }>();
+  const housingStockId = Number(housingStockIdStr);
+  const { push } = useHistory();
   const [
     housingStock,
     setHousingStock,

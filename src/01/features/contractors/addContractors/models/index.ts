@@ -32,6 +32,23 @@ export const addContractorsForm = createForm({
         },
       ],
     },
+    cellPhone: {
+      init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: (value: string) => Boolean(value),
+        },
+        {
+          name: 'phone',
+          validator: (value) => {
+            if (Number(value) === NaN) return false;
+
+            return value.length === 10;
+          },
+        },
+      ],
+    },
   },
   validateOn: ['submit'],
 });

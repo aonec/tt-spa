@@ -6,7 +6,7 @@ interface Props {
   message?: string | null;
 }
 
-export const ErrorAlert: React.FC<Props> = ({ show, message }) =>
+export const ErrorAlert: React.FC<Props> = ({ show, message, children }) =>
   show ? (
     <Alert
       message="Ошибка"
@@ -18,4 +18,6 @@ export const ErrorAlert: React.FC<Props> = ({ show, message }) =>
       closable
       style={{ marginBottom: 24 }}
     />
-  ) : null;
+  ) : (
+    <>{children}</>
+  );

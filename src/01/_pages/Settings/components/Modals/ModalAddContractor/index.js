@@ -6,7 +6,6 @@ import { SettingsContext } from '../../../index';
 export const ModalAddContractor = () => {
   const { contractor, hideContractor } = useContext(SettingsContext);
 
-  console.log('ModalAddStaff');
   return (
     <Modal
       visible={contractor}

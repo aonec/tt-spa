@@ -12,24 +12,27 @@ import { usePhoneMask } from '01/features/staff/addStaff/utils';
 import { MenuButtonTT } from '01/tt-components';
 import { deleteStaffButtonClicked } from '01/features/staff/deleteStaff/models';
 import { DeleteStaffModal } from '01/features/staff/deleteStaff';
+import { StaffStatus } from '01/features/staff/displayStaff/models/components/StaffStatus';
+import { editStaffStatusButtonClicked } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus/models';
+import { EditStaffStatusModal } from '01/features/staff/managingFirmUsersStatuses/editStaffStatus';
+import { useHistory } from 'react-router-dom';
 
 const Staff = () => {
   const users = useStore($staffList);
-
   const pending = useStore(fetchStaffFx.pending);
-
+  const history = useHistory();
   const phoneMask = usePhoneMask();
 
   const res = users?.map((item, index) => {
-    const { id, email, name, cellphone, executingTaskCount } = item;
+    const { id, name, cellphone, status } = item;
 
     return (
       <li className={classes.staff} key={index}>
         <div className={classes.name}>{name}</div>
+        <StaffStatus status={status?.type} />
         <div className={classes.cellphone}>
           {cellphone ? phoneMask.maskValue(cellphone) : 'Телефон не указан'}
         </div>
-        <div className={classes.status}>Работает</div>
         <MenuButtonTT
           menuButtonArr={[
             {
@@ -41,14 +44,14 @@ const Staff = () => {
             },
             {
               title: 'Изменить статус',
-              cb: () => {},
+              cb: () => editStaffStatusButtonClicked(item),
               show: true,
               color: 'default',
               clickable: true,
             },
             {
               title: 'Редактировать информацию о сотруднике',
-              cb: () => {},
+              cb: () => history.push(`/settings/editManagingFirmUser/${id}`),
               show: true,
               color: 'default',
               clickable: true,
@@ -71,6 +74,7 @@ const Staff = () => {
       <StaffGate />
       <AddStaffModal />
       <DeleteStaffModal />
+      <EditStaffStatusModal />
       {pending ? <Loader show={true} /> : <ul>{res}</ul>}
     </div>
   );

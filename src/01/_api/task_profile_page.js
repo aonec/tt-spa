@@ -74,11 +74,16 @@ export async function moveStage(id = '', move = '', data = {}) {
   } catch (error) {}
 }
 
-export async function deleteDoc(docId = '') {
+export async function deleteDoc(docId) {
+  if (!docId) {
+    docId = '';
+  }
   try {
     const res = await axios.delete(`documents/${docId}`);
     const { url = '' } = res;
     const responseId = Number(url.match(/(\d*)$/)[0]);
     return responseId;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error);
+  }
 }

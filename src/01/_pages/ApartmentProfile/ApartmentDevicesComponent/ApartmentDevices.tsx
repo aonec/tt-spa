@@ -16,9 +16,6 @@ export const ApartmentDevices = ({
 }: {
   devices: IndividualDeviceListItemResponsePagedList;
 }) => {
-  //TODO
-  //Check with/without current devices
-
   const { sliderIndex, sliderProps } = useMonthSlider(devices.items);
 
   const { items } = devices || {};

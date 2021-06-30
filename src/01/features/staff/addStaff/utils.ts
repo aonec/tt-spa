@@ -24,7 +24,8 @@ export function usePhoneMask() {
   );
 
   return {
-    maskValue: (phoneNumber: string) => mask.resolve(phoneNumber),
+    maskValue: (phoneNumber: string) =>
+      phoneNumber && mask.resolve(phoneNumber),
     unmaskedValue(value: string) {
       mask.resolve(value);
       return mask.unmaskedValue;
