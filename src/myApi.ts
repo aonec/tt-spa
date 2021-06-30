@@ -305,17 +305,6 @@ export interface ConfirmRequest {
   password: string;
 }
 
-export interface ConfirmResponse {
-  /** @format int32 */
-  id: number;
-  email: string | null;
-  password: string | null;
-}
-
-export interface ConfirmResponseSuccessApiResponse {
-  successResponse: ConfirmResponse;
-}
-
 export interface CalculatorInfoListResponse {
   /** @format int32 */
   id: number;
@@ -857,6 +846,7 @@ export enum EDocumentType {
   HeatingSeasonChangingStatement = "HeatingSeasonChangingStatement",
   Photo = "Photo",
   NodeAdmissionAct = "NodeAdmissionAct",
+  ImportedFile = "ImportedFile",
 }
 
 export interface DocumentResponse {
@@ -1659,6 +1649,47 @@ export interface HousingStockFilterResponseSuccessApiResponse {
 export interface GuidSuccessApiResponse {
   /** @format uuid */
   successResponse: string;
+}
+
+export enum EImportedEntityType {
+  IndividualDeviceReadings = "IndividualDeviceReadings",
+}
+
+export interface InvalidRowResponse {
+  /** @format int32 */
+  index: number;
+  errorMessage: string | null;
+}
+
+export interface ParseResultResponse {
+  isValid: boolean;
+  invalidRows: InvalidRowResponse[] | null;
+}
+
+export interface ImportResultResponse {
+  isValid: boolean;
+  importErrors: string[] | null;
+}
+
+export interface ImportLogResponse {
+  /** @format uuid */
+  id: string;
+  entityType: EImportedEntityType;
+  document: DocumentResponse;
+  parseResult: ParseResultResponse;
+  importResult: ImportResultResponse;
+}
+
+export interface ImportLogListResponse {
+  importLogs: ImportLogResponse[] | null;
+}
+
+export interface ImportLogListResponseSuccessApiResponse {
+  successResponse: ImportLogListResponse;
+}
+
+export interface ImportLogResponseSuccessApiResponse {
+  successResponse: ImportLogResponse;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
@@ -3573,13 +3604,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     authConfirmCreate: (data: ConfirmRequest, params: RequestParams = {}) =>
-      this.request<ConfirmResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<void, ErrorApiResponse>({
         path: `/api/Auth/confirm`,
         method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthResetPasswordCreate
+     * @request POST:/api/Auth/resetPassword
+     * @secure
+     */
+    authResetPasswordCreate: (data: string | null, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Auth/resetPassword`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthChangePasswordCreate
+     * @request POST:/api/Auth/changePassword
+     * @secure
+     */
+    authChangePasswordCreate: (data: ConfirmRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Auth/changePassword`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -4716,6 +4782,69 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ImportLogs
+     * @name ImportLogsList
+     * @request GET:/api/ImportLogs
+     * @secure
+     */
+    importLogsList: (params: RequestParams = {}) =>
+      this.request<ImportLogListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ImportLogs`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ImportLogs
+     * @name ImportLogsDetail
+     * @request GET:/api/ImportLogs/{id}
+     * @secure
+     */
+    importLogsDetail: (id: string, params: RequestParams = {}) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ImportLogs/${id}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags ImportReadings
+     * @name ImportReadingsImportCreate
+     * @request POST:/api/ImportReadings/import
+     * @secure
+     */
+    importReadingsImportCreate: (
+      data: {
+        ContentType?: string | null;
+        ContentDisposition?: string | null;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string | null;
+        FileName?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/ImportReadings/import`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
@@ -6372,6 +6501,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userRolesList: (params: RequestParams = {}) =>
       this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/UserRoles`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags UserRoles
+     * @name UserRolesForManagementFirmList
+     * @request GET:/api/UserRoles/ForManagementFirm
+     * @secure
+     */
+    userRolesForManagementFirmList: (params: RequestParams = {}) =>
+      this.request<UserRoleListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/UserRoles/ForManagementFirm`,
         method: "GET",
         secure: true,
         format: "json",

@@ -4,13 +4,20 @@ interface ObjectInterface {
   number: string;
 }
 
+interface UnderHousingStock<T> {
+  housingStock: T;
+}
+
 const getRealHouseNumber = (houseNumber: string) => {
   if (houseNumber.includes('/')) return houseNumber.split('/')[0];
   if (houseNumber.includes(' ')) return houseNumber.split(' ')[0];
   return houseNumber;
 };
 
-export const sortObjects = (a: ObjectInterface, b: ObjectInterface): number => {
+export const sortObjects = (
+  { housingStock: a }: UnderHousingStock<ObjectInterface>,
+  { housingStock: b }: UnderHousingStock<ObjectInterface>
+): number => {
   if (a.numberOfTasks === b.numberOfTasks) {
     if (a.street === b.street) {
       return +getRealHouseNumber(a.number) - +getRealHouseNumber(b.number) < 0
