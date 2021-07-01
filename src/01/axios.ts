@@ -1,16 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-const baseURL = process.env.REACT_APP_API_URL;
 
-// const baseURL = process.env.REACT_APP_URL
-
-//TODO вынести в переменные среды
-
-// const baseURL = 'https://transparent-development.herokuapp.com/api';
-// const baseURL = 'https://transparent-production.herokuapp.com/api';
-// const baseURL = 'https://transparent-staging.herokuapp.com/api';
-// const baseURL = 'https://transparent-production.herokuapp.com/api';
-
-// const baseURL = 'http://10.10.8.248:45455/api';
+const devUrl = 'https://transparent-development.herokuapp.com/api';
+const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
 
