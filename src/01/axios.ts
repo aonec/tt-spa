@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+const baseURL = process.env.API_URL;
 
 // const baseURL = process.env.REACT_APP_URL
 
@@ -6,7 +7,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // const baseURL = 'https://transparent-development.herokuapp.com/api';
 // const baseURL = 'https://transparent-production.herokuapp.com/api';
-const baseURL = 'https://transparent-staging.herokuapp.com/api';
+// const baseURL = 'https://transparent-staging.herokuapp.com/api';
 // const baseURL = 'https://transparent-production.herokuapp.com/api';
 
 // const baseURL = 'http://10.10.8.248:45455/api';

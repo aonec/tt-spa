@@ -177,8 +177,7 @@ export function App() {
       <AppProvider>
         <ConfigProvider locale={ruRu}>
           <YMaps>
-            <div>hello world</div>
-            {/*<Internal />*/}
+            <Internal />
           </YMaps>
         </ConfigProvider>
       </AppProvider>
