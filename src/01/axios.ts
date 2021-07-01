@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 const baseURL = process.env.API_URL;
+console.log(process.env);
 
 // const baseURL = process.env.REACT_APP_URL
 
