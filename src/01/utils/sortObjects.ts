@@ -15,8 +15,8 @@ const getRealHouseNumber = (houseNumber: string) => {
 };
 
 export const sortObjects = (
-  { housingStock: a }: UnderHousingStock<ObjectInterface>,
-  { housingStock: b }: UnderHousingStock<ObjectInterface>
+  a: ObjectInterface,
+  b : ObjectInterface
 ): number => {
   if (a.numberOfTasks === b.numberOfTasks) {
     if (a.street === b.street) {
