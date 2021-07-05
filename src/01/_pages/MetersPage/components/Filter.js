@@ -1,7 +1,5 @@
 import React from 'react';
-
-import styled, { use } from 'reshadow/macro';
-
+import styled from 'reshadow/macro';
 import { input } from '01/r_comp';
 
 export const Filter = ({ inputs = [] }) => {
@@ -19,17 +17,15 @@ export const Filter = ({ inputs = [] }) => {
     }
   `(
     <filter as="div">
-      {inputs.map((input) => {
-        return input.name === 'city' ? (
-          <input_frame data-disabled key={input.name}>
-            <input {...input} disabled />
-          </input_frame>
-        ) : (
-          <input_frame key={input.name}>
-            <input {...input} />
-          </input_frame>
-        );
-      })}
+      {inputs.map((input) => (
+        <input_frame data-disabled={input.name === 'city'} key={input.name}>
+          <input
+            {...input}
+            disabled={input.name === 'city'}
+            onKeyDown={console.log}
+          />
+        </input_frame>
+      ))}
     </filter>
   );
 };
