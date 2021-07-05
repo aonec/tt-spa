@@ -37,8 +37,6 @@ import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { useUpload } from '01/components/Upload';
-import { FilesList } from '01/shared/ui/FilesList';
-import { FilesUpload } from './FilesUpload';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -246,7 +244,6 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
-            <FilesUpload />
           </>
         </StyledFormPage>
 
