@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useMemo, useReducer, useState } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
@@ -75,7 +75,7 @@ export const Objects = ({ isReadings = false }) => {
   React.useEffect(() => {
     (async () => {
       const queryString = formQueryString(debouncedSearchState);
-      const res = await axios.get(`Apartments${queryString}`);
+      const res = await axios.get(`HousingStocks${queryString}`);
       setState(res);
     })();
     return () => cancel();
@@ -85,8 +85,6 @@ export const Objects = ({ isReadings = false }) => {
 
   if (items?.length === 1 && isReadings)
     return <Redirect to={`/meters/houses/${items[0].id}`} />;
-  
-  console.log(items)
 
   return styled(styles)(
     <div>
@@ -99,7 +97,6 @@ export const Objects = ({ isReadings = false }) => {
         <Loader show={!items} size="32">
           {items
             ?.sort(sortObjects)
-            ?.map((elem) => elem.housingStock)
             ?.map(
               ({
                 city,
