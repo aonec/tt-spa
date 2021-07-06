@@ -27,9 +27,7 @@ export function useFilesUpload(
     );
   };
 
-  useEffect(() => onChange && onChange(files), [
-    files.map((file) => file.id).join(),
-  ]);
+  useEffect(() => onChange && onChange(files), [files]);
 
   async function addFile(file: File) {
     const id = new Date().getTime();

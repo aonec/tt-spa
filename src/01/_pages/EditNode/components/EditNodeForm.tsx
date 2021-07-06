@@ -37,6 +37,7 @@ import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { useUpload } from '01/components/Upload';
+import { FilesUpload } from '01/shared/ui/FilesUpload';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -244,6 +245,11 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
+            <FilesUpload
+              max={1}
+              uniqId="node-second-tab"
+              onChange={console.log}
+            />
           </>
         </StyledFormPage>
 
