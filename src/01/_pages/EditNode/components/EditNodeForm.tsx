@@ -13,20 +13,17 @@ import {
 } from '../../../tt-components';
 import { nodeStatusList, resources } from '../../../tt-components/localBases';
 import {
-  CalculatorResponse,
+  DocumentResponse,
   NodeResponse,
   UpdateNodeRequest,
 } from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
-import NodeConnection from '../../../tt-components/NodeConnection';
 import moment from 'moment';
 import { EditNodeContext } from '../Context';
 import { putNode } from '../../../_api/apiRequests';
-import Title from '../../../tt-components/Title';
 import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addServiceZone/models';
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
 import {
-  $chosenInput,
   $derivedChosenInput,
   $requestServiceZonesStatus,
   $serviceZones,
@@ -35,12 +32,10 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '../../../components/Loader';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
-import { useUpload } from '01/components/Upload';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { DocumentsUpload } from './DocumentsUpload';
 import { FilesList } from '01/shared/ui/FilesList';
 import { FileData } from '01/hooks/useFilesUpload';
+import { postNodeDocuments } from '01/_api/editNode';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -69,6 +64,7 @@ const EditNodeForm = ({
     futureCommercialAccountingDate,
     id: nodeId,
     calculatorId,
+    documents,
   } = node;
   const { setVisibleAddDevice } = useContext(EditNodeContext);
   const serviceZones = useStore($serviceZones);
@@ -96,7 +92,19 @@ const EditNodeForm = ({
   const { label: initialServiceZoneLabel } = initialServiceZoneInfo || {};
 
   const [form] = Form.useForm();
-  const { getFieldValue, setFieldsValue } = form;
+  const { getFieldValue } = form;
+
+  async function saveDocuments() {
+    const newDocumentsIds = newDocuments.map((elem) => elem?.fileResponse?.id!);
+    const currentDocumentsIds =
+      (getFieldValue('documents') as DocumentResponse[])?.map(
+        (elem) => elem.id
+      ) || [];
+
+    const ids: number[] = [...newDocumentsIds, ...currentDocumentsIds];
+
+    return postNodeDocuments(nodeId, ids);
+  }
 
   const onFinish = async () => {
     const nodeForm: UpdateNodeRequest = {
@@ -113,6 +121,7 @@ const EditNodeForm = ({
       calculatorId,
     };
 
+    await saveDocuments();
     await putNode(nodeId, nodeForm);
   };
 
@@ -290,11 +299,10 @@ const EditNodeForm = ({
 
         <StyledFormPage hidden={Number(currentTabKey) !== 4}>
           <FilesList
-            initialFiles={getFieldValue('documents')}
+            initialFiles={(documents as DocumentResponse[]) || []}
             files={newDocuments}
             controlType="DELETE"
           />
-          
           <DocumentsUpload
             onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
           />
@@ -313,6 +321,7 @@ const EditNodeForm = ({
           <ButtonTT
             color="blue"
             type="submit"
+            onClick={onFinish}
             disabled={isRequestServiceZonesError}
           >
             Сохранить
