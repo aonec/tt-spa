@@ -111,6 +111,7 @@ const FileName = styled.div`
 
 const FileType = styled.div`
   margin-top: 10px;
+  margin-left: 22px;
   font-size: 14px;
   color: rgba(39, 47, 90, 0.6);
 `;
