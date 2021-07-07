@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { Alert, Form } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
@@ -40,6 +40,7 @@ import { useUpload } from '01/components/Upload';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { DocumentsUpload } from './DocumentsUpload';
 import { FilesList } from '01/shared/ui/FilesList';
+import { FileData } from '01/hooks/useFilesUpload';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -74,6 +75,7 @@ const EditNodeForm = ({
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
+  const [newDocuments, setNewDocuments] = useState<FileData[]>([]);
 
   if (!node) {
     return null;
@@ -94,7 +96,7 @@ const EditNodeForm = ({
   const { label: initialServiceZoneLabel } = initialServiceZoneInfo || {};
 
   const [form] = Form.useForm();
-  const { getFieldValue } = form;
+  const { getFieldValue, setFieldsValue } = form;
 
   const onFinish = async () => {
     const nodeForm: UpdateNodeRequest = {
@@ -287,9 +289,15 @@ const EditNodeForm = ({
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 4}>
-          <DocumentsUpload onAddHandler={() => {}} />
-
-          <FilesList />
+          <FilesList
+            initialFiles={getFieldValue('documents')}
+            files={newDocuments}
+            controlType="DELETE"
+          />
+          
+          <DocumentsUpload
+            onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
+          />
         </StyledFormPage>
 
         <StyledFooter form right>

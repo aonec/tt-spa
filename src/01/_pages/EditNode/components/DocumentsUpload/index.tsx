@@ -19,6 +19,7 @@ export const DocumentsUpload: React.FC<Props> = ({ onAddHandler }) => {
 
   const onAddFileHandler = () => {
     closeModal();
+    setFile(null);
     onAddHandler(file!);
   };
 
@@ -58,7 +59,12 @@ export const DocumentsUpload: React.FC<Props> = ({ onAddHandler }) => {
 
   return (
     <>
-      <Button type="link" onClick={openModal}>
+      <Button
+        size="large"
+        type="link"
+        onClick={openModal}
+        style={{ marginTop: '10px' }}
+      >
         + Добавить документ
       </Button>
       {modal}

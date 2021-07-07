@@ -8,6 +8,7 @@ import { MenuButtonTT } from '01/tt-components';
 import { FileData } from '01/hooks/useFilesUpload';
 import { DocumentResponse } from 'myApi';
 import { ReactComponent as DropIcon } from './drop.svg';
+import confirm from 'antd/lib/modal/confirm';
 
 interface Props {
   files?: FileData[];
@@ -99,7 +100,22 @@ export const FilesList: React.FC<Props> = ({
                 />
               ) : (
                 controlType === 'DELETE' && (
-                  <DropIcon style={{ color: 'red' }} />
+                  <DropIcon
+                    style={{
+                      color: 'red',
+                      cursor: 'pointer',
+                      transform: 'scale(1.15) translateY(-9px)',
+                    }}
+                    onClick={() =>
+                      confirm({
+                        title: 'Вы действительно хотите удалить этот файл?',
+                        onOk: () => removeFile && removeFile(id),
+                        cancelText: 'Отмена',
+                        okText: 'Да',
+                        maskClosable: true,
+                      })
+                    }
+                  />
                 )
               )}
             </div>
