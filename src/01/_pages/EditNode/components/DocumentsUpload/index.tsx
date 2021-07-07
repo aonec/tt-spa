@@ -11,7 +11,7 @@ export const DocumentsUpload = () => {
   const [file, setFile] = useState<FileData | null>(null);
 
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => {};
+  const closeModal = () => setIsModalOpen(false);
 
   const modal = (
     <StyledModal
@@ -37,6 +37,7 @@ export const DocumentsUpload = () => {
       <FilesUpload
         uniqId="upload-documents-in-node-modal"
         max={1}
+        text="Нажмите для выбора"
         onChange={(files) => {
           console.log(files);
           setFile(files.length ? files[0] : null);
