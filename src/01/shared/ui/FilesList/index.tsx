@@ -1,6 +1,5 @@
-import { DocumentResponse } from 'myApi';
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
 import moment from 'moment';

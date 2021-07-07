@@ -15,7 +15,8 @@ import { getCalculator, getNode } from '../../_api/apiRequests';
 import { PageGate } from '../../features/serviceZones/selectServiceZones/models';
 
 export const EditNode = () => {
-  const { nodeId } = useParams();
+  const { nodeId: nodeIdString } = useParams<{ nodeId: string }>();
+  const nodeId = Number(nodeIdString);
   const [currentTabKey, setTab] = useState('1');
   const [alertVisible, setAlertVisible] = useState(false);
   const [existDevice, setExistCalculator] = useState(false);
