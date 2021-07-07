@@ -14,6 +14,7 @@ interface FileUploader {
   files: FileData[];
   addFile: (file: File) => Promise<void>;
   removeFile: (id: number) => Promise<void>;
+  clearFiles: () => void;
 }
 
 export function useFilesUpload(
@@ -81,7 +82,7 @@ export function useFilesUpload(
     }
   }
 
-  return { files, addFile, removeFile };
+  return { files, addFile, removeFile, clearFiles: () => setFiles([]) };
 }
 
 const rewriteArrayElem = <T>(

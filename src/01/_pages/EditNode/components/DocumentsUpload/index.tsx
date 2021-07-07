@@ -1,5 +1,7 @@
-import { FileData } from '01/hooks/useFilesUpload';
-import { FilesUpload } from '01/shared/ui/FilesUpload';
+import { FileData, useFilesUpload } from '01/hooks/useFilesUpload';
+import { DragAndDrop } from '01/shared/ui/DragAndDrop';
+import { FilesList } from '01/shared/ui/FilesList';
+import { Wide } from '01/shared/ui/FilesUpload';
 import { StyledModal, Header, Footer } from '01/shared/ui/Modal/Modal';
 import { ButtonTT } from '01/tt-components';
 import { Button } from 'antd';
@@ -9,18 +11,21 @@ interface Props {
   onAddHandler(file: FileData): void;
 }
 
+const max = 1;
+
 export const DocumentsUpload: React.FC<Props> = ({ onAddHandler }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { files, addFile, removeFile, clearFiles } = useFilesUpload();
 
-  const [file, setFile] = useState<FileData | null>(null);
+  const file = files[0];
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const onAddFileHandler = () => {
     closeModal();
-    setFile(null);
-    onAddHandler(file!);
+    clearFiles();
+    onAddHandler(file);
   };
 
   const modal = (
@@ -45,15 +50,19 @@ export const DocumentsUpload: React.FC<Props> = ({ onAddHandler }) => {
         </Footer>
       }
     >
-      <FilesUpload
-        uniqId="upload-documents-in-node-modal"
-        max={1}
-        text="Нажмите для выбора"
-        onChange={(files) => {
-          console.log(files);
-          setFile(files.length ? files[0] : null);
-        }}
-      />
+      <Wide>
+        <FilesList files={files} removeFile={removeFile} />
+
+        {max > files.length && (
+          <DragAndDrop
+            accept="application/pdf"
+            text={'Нажмите для выбора'}
+            style={{ marginTop: '15px' }}
+            uniqId={`files-upload-component`}
+            fileHandler={(files) => addFile(files[0])}
+          />
+        )}
+      </Wide>
     </StyledModal>
   );
 

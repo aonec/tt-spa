@@ -32,6 +32,6 @@ export const FilesUpload: React.FC<Props> = (props) => {
   );
 };
 
-const Wide = styled.div`
+export const Wide = styled.div`
   width: 100%;
 `;
