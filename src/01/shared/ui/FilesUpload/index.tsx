@@ -8,21 +8,22 @@ interface Props {
   onChange?(files: FileData[]): void;
   max?: number;
   uniqId: string;
+  text?: string;
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
-  const { max, onChange, uniqId } = props;
+  const { max = Infinity, onChange, uniqId, text } = props;
   const { files, addFile, removeFile } = useFilesUpload(onChange);
 
   return (
     <Wide>
       <FilesList files={files} removeFile={removeFile} />
 
-      {max !== files.length && (
+      {max > files.length && (
         <DragAndDrop
           accept="application/pdf"
-          text="Добавьте акт-допуска"
-          style={{ marginTop: '10px' }}
+          text={text}
+          style={{ marginTop: '15px' }}
           uniqId={`upload-files-${uniqId}`}
           fileHandler={(files) => addFile(files[0])}
         />
@@ -33,4 +34,4 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
 const Wide = styled.div`
   width: 100%;
-`
+`;

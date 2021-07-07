@@ -213,7 +213,7 @@ const EditNodeForm = ({
             <Form.Item
               style={styles.w100}
               label="Дата начала действия акта-допуска"
-              name="lastCommercialAccountingDate"
+              name="startCommercialAccountingDate"
               rules={[
                 {
                   required: true,
@@ -231,7 +231,7 @@ const EditNodeForm = ({
             <Form.Item
               style={styles.w100}
               label="Дата окончания действия акта-допуска"
-              name="futureCommercialAccountingDate"
+              name="endCommercialAccountingDate"
               rules={[
                 {
                   required: true,
@@ -245,11 +245,6 @@ const EditNodeForm = ({
                 allowClear={false}
               />
             </Form.Item>
-            <FilesUpload
-              max={1}
-              uniqId="node-second-tab"
-              onChange={console.log}
-            />
           </>
         </StyledFormPage>
 
