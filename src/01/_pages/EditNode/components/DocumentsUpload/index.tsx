@@ -5,13 +5,22 @@ import { ButtonTT } from '01/tt-components';
 import { Button } from 'antd';
 import React, { useState } from 'react';
 
-export const DocumentsUpload = () => {
+interface Props {
+  onAddHandler(file: FileData): void;
+}
+
+export const DocumentsUpload: React.FC<Props> = ({ onAddHandler }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [file, setFile] = useState<FileData | null>(null);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const onAddFileHandler = () => {
+    closeModal();
+    onAddHandler(file!);
+  };
 
   const modal = (
     <StyledModal
@@ -28,6 +37,7 @@ export const DocumentsUpload = () => {
             color="blue"
             key="submit"
             disabled={!(file?.status === 'done')}
+            onClick={onAddFileHandler}
           >
             Добавить
           </ButtonTT>

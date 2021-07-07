@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as FileIcon } from './file.svg';
 import { ReactComponent as UserIcon } from './user.svg';
@@ -6,20 +6,41 @@ import moment from 'moment';
 import { Flex } from '../Layout/Flex';
 import { MenuButtonTT } from '01/tt-components';
 import { FileData } from '01/hooks/useFilesUpload';
+import { DocumentResponse } from 'myApi';
+import { ReactComponent as DropIcon } from './drop.svg';
 
 interface Props {
-  files: FileData[];
-  removeFile: (id: number) => void;
+  files?: FileData[];
+  removeFile?: (id: number) => void;
+  initialFiles?: DocumentResponse[];
+  controlType?: 'CONTROL' | 'DELETE';
 }
 
-const getFormattedDate = (date: string) =>
-  moment(date).format('DD.MM.YYYY HH:mm');
+export const FilesList: React.FC<Props> = ({
+  files,
+  removeFile,
+  initialFiles,
+  controlType = 'CONTROL',
+}) => {
+  const initialFilesData: FileData[] = useMemo(
+    () =>
+      initialFiles?.map(
+        (file): FileData => ({
+          id: Math.floor(Math.random() * 10 ** 8),
+          fileResponse: file,
+          status: 'done',
+        })
+      ) || [],
+    [files]
+  );
 
-export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
-  if (!files) return null;
+  const renderFiles = [...(files || []), ...initialFilesData];
+
+  if (!renderFiles) return null;
+
   return (
     <FilesWrap>
-      {files.map(({ fileResponse: file, id, status }) => {
+      {renderFiles.map(({ fileResponse: file, id, status }) => {
         const loading = status === 'pending';
         return (
           <FileItemWrap key={file?.id}>
@@ -55,26 +76,32 @@ export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
               </>
             )}
             <div style={{ width: 33 }}>
-              <MenuButtonTT
-                disabled={loading}
-                loading={loading}
-                menuButtonArr={[
-                  {
-                    title: 'скачать',
-                    cb: () => {},
-                    show: true,
-                    color: 'default',
-                    clickable: true,
-                  },
-                  {
-                    title: 'удалить',
-                    cb: () => removeFile(id),
-                    show: true,
-                    color: 'red',
-                    clickable: true,
-                  },
-                ]}
-              />
+              {controlType === 'CONTROL' ? (
+                <MenuButtonTT
+                  disabled={loading}
+                  loading={loading}
+                  menuButtonArr={[
+                    {
+                      title: 'скачать',
+                      cb: () => {},
+                      show: true,
+                      color: 'default',
+                      clickable: true,
+                    },
+                    {
+                      title: 'удалить',
+                      cb: () => removeFile && removeFile(id),
+                      show: true,
+                      color: 'red',
+                      clickable: true,
+                    },
+                  ]}
+                />
+              ) : (
+                controlType === 'DELETE' && (
+                  <DropIcon style={{ color: 'red' }} />
+                )
+              )}
             </div>
           </FileItemWrap>
         );
@@ -82,6 +109,9 @@ export const FilesList: React.FC<Props> = ({ files, removeFile }) => {
     </FilesWrap>
   );
 };
+
+const getFormattedDate = (date: string) =>
+  moment(date).format('DD.MM.YYYY HH:mm');
 
 const FilesWrap = styled.div`
   width: 100%;

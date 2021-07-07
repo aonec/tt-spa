@@ -39,6 +39,7 @@ import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { useUpload } from '01/components/Upload';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { DocumentsUpload } from './DocumentsUpload';
+import { FilesList } from '01/shared/ui/FilesList';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -286,7 +287,9 @@ const EditNodeForm = ({
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 4}>
-          <DocumentsUpload />
+          <DocumentsUpload onAddHandler={() => {}} />
+
+          <FilesList />
         </StyledFormPage>
 
         <StyledFooter form right>
