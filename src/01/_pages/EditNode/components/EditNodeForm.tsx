@@ -74,7 +74,6 @@ const EditNodeForm = ({
   const chosenInputForSelect = useStore($derivedChosenInput);
 
   const [newDocuments, setNewDocuments] = useState<FileData[]>([]);
-  const [addedDocumentIds, setAddedDocumentIds] = useState<number[]>([]);
   const [deletedDocumentIds, setDeletedDocumentIds] = useState<number[]>([]);
 
   if (!node) {
@@ -118,12 +117,12 @@ const EditNodeForm = ({
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),
       nodeServiceZoneId: chosenInputForSelect?.value,
-      // lastCommercialAccountingDate: getFieldValue(
-      //   'lastCommercialAccountingDate'
-      // )?.toISOString(),
-      // futureCommercialAccountingDate: getFieldValue(
-      //   'futureCommercialAccountingDate'
-      // )?.toISOString(),
+      startCommercialAccountingDate: getFieldValue(
+        'lastCommercialAccountingDate'
+      )?.toISOString(),
+      endCommercialAccountingDate: getFieldValue(
+        'futureCommercialAccountingDate'
+      )?.toISOString(),
       calculatorId,
     };
 
@@ -232,7 +231,7 @@ const EditNodeForm = ({
             <Form.Item
               style={styles.w100}
               label="Дата начала действия акта-допуска"
-              name="startCommercialAccountingDate"
+              name="lastCommercialAccountingDate"
               rules={[
                 {
                   required: true,
@@ -250,7 +249,7 @@ const EditNodeForm = ({
             <Form.Item
               style={styles.w100}
               label="Дата окончания действия акта-допуска"
-              name="endCommercialAccountingDate"
+              name="futureCommercialAccountingDate"
               rules={[
                 {
                   required: true,
@@ -330,7 +329,6 @@ const EditNodeForm = ({
           <ButtonTT
             color="blue"
             type="submit"
-            onClick={onFinish}
             disabled={isRequestServiceZonesError}
           >
             Сохранить

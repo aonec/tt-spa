@@ -12,7 +12,7 @@
 export interface ApartmentCreateRequest {
   /** @format int32 */
   housingStockId: number;
-  number?: string | null;
+  number: string;
 
   /** @format double */
   square?: number;
@@ -42,6 +42,7 @@ export interface HomeownerListResponse {
   lastName: string | null;
   phoneNumber: string | null;
   personalAccountNumber: string | null;
+  paymentCode: string | null;
 }
 
 export interface ApartmentResponse {
@@ -55,6 +56,9 @@ export interface ApartmentResponse {
   apartmentNumber: string | null;
   status: EApartmentStatus;
   square: string | null;
+
+  /** @format uuid */
+  mainHomeownerAccountId: string | null;
   homeowners: HomeownerListResponse[] | null;
 
   /** @format int32 */
@@ -151,6 +155,9 @@ export interface ApartmentUpdateRequest {
 
   /** @format int32 */
   normativeNumberOfLiving?: number | null;
+
+  /** @format uuid */
+  mainHomeownerAccountId?: string | null;
 }
 
 export interface ApartmentStatusResponse {
@@ -164,6 +171,52 @@ export interface ApartmentListStatusResponse {
 
 export interface ApartmentListStatusResponseSuccessApiResponse {
   successResponse: ApartmentListStatusResponse;
+}
+
+export interface HomeownersShortResponse {
+  /** @format int32 */
+  id: number;
+  firstName: string | null;
+  lastName: string | null;
+  middleName: string | null;
+  cellphone: string | null;
+  email: string | null;
+}
+
+export interface FullAddressResponse {
+  city: string | null;
+  street: string | null;
+  housingStockNumber: string | null;
+
+  /** @format int32 */
+  id: number;
+  corpus: string | null;
+
+  /** @format int32 */
+  apartmentId: number | null;
+  apartmentNumber: string | null;
+}
+
+export interface HomeownerAccountResponse {
+  /** @format uuid */
+  id: string;
+  user: HomeownersShortResponse;
+  apartment: FullAddressResponse;
+  paymentCode: string | null;
+  personalAccountNumber: string | null;
+
+  /** @format date-time */
+  openAt: string;
+
+  /** @format date-time */
+  closedAt: string | null;
+
+  /** @format double */
+  ownershipArea: number;
+}
+
+export interface HomeownerAccountResponseICollectionSuccessApiResponse {
+  successResponse: HomeownerAccountResponse[] | null;
 }
 
 export interface ApartmentStatusSetRequest {
@@ -1058,18 +1111,70 @@ export interface UpdateHeatingStationRequest {
   address?: AddressRequest;
 }
 
-export interface FullAddressResponse {
-  city: string | null;
-  street: string | null;
-  housingStockNumber: string | null;
+export enum HomeownerAccountOrderRule {
+  Street = "Street",
+  HomeownerName = "HomeownerName",
+  PaymentCode = "PaymentCode",
+}
+
+export enum StatusType {
+  All = "All",
+  Closed = "Closed",
+  NotClosed = "NotClosed",
+}
+
+export enum OrderByRule {
+  Ascending = "Ascending",
+  Descending = "Descending",
+}
+
+export interface HomeownerAccountResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
 
   /** @format int32 */
-  id: number;
-  corpus: string | null;
+  pageNumber: number;
 
   /** @format int32 */
-  apartmentId: number | null;
-  apartmentNumber: string | null;
+  pageSize: number;
+  items: HomeownerAccountResponse[] | null;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+}
+
+export interface HomeownerAccountResponsePagedListSuccessApiResponse {
+  successResponse: HomeownerAccountResponsePagedList;
+}
+
+export interface HomeownerAccountCreateServiceModel {
+  /** @format int32 */
+  apartmentId?: number;
+  paymentCode?: string | null;
+  personalAccountNumber?: string | null;
+
+  /** @format double */
+  ownershipArea?: number;
+}
+
+export interface HomeownerAccountResponseSuccessApiResponse {
+  successResponse: HomeownerAccountResponse;
+}
+
+export interface HomeownerCreateRequest {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  email?: string | null;
+  phone?: string | null;
 }
 
 export interface HomeownersListResponse {
@@ -1110,16 +1215,6 @@ export interface HomeownersListResponsePagedListSuccessApiResponse {
   successResponse: HomeownersListResponsePagedList;
 }
 
-export interface HomeownersCreateRequest {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  personalAccountNumber: string;
-
-  /** @format int32 */
-  apartmentId: number;
-}
-
 export interface HomeownersApartmentResponse {
   /** @format int32 */
   apartmentId: number;
@@ -1155,15 +1250,12 @@ export interface HomeownersResponseSuccessApiResponse {
   successResponse: HomeownersResponse;
 }
 
-export interface HomeownersUpdateRequest {
-  /** @format int32 */
-  id?: number;
+export interface HomeownerUpdateRequest {
   firstName?: string | null;
   lastName?: string | null;
   middleName?: string | null;
   cellphone?: string | null;
   email?: string | null;
-  apartmentsToRemove?: number[] | null;
 }
 
 export enum EMagistralType {
@@ -1653,6 +1745,7 @@ export interface GuidSuccessApiResponse {
 
 export enum EImportedEntityType {
   IndividualDeviceReadings = "IndividualDeviceReadings",
+  PersonalAccountNumber = "PersonalAccountNumber",
 }
 
 export interface InvalidRowResponse {
@@ -1680,16 +1773,16 @@ export interface ImportLogResponse {
   importResult: ImportResultResponse;
 }
 
+export interface ImportLogResponseSuccessApiResponse {
+  successResponse: ImportLogResponse;
+}
+
 export interface ImportLogListResponse {
   importLogs: ImportLogResponse[] | null;
 }
 
 export interface ImportLogListResponseSuccessApiResponse {
   successResponse: ImportLogListResponse;
-}
-
-export interface ImportLogResponseSuccessApiResponse {
-  successResponse: ImportLogResponse;
 }
 
 export interface IndividualDeviceMountPlaceListResponse {
@@ -1797,6 +1890,23 @@ export enum EIndividualDeviceRateType {
   ThreeZone = "ThreeZone",
 }
 
+export enum EIndividualDeviceReadingsSource {
+  Archive = "Archive",
+  Ttm = "Ttm",
+  GosUslugi = "GosUslugi",
+  Bank = "Bank",
+  Sputnik = "Sputnik",
+  Duplicated = "Duplicated",
+  Erc = "Erc",
+}
+
+export interface ManagingFirmUserShortResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  email: string | null;
+}
+
 export interface IndividualDeviceReadingsResponse {
   /** @format int32 */
   id: number;
@@ -1811,6 +1921,8 @@ export interface IndividualDeviceReadingsResponse {
 
   /** @format date-time */
   uploadTime: string;
+  source: EIndividualDeviceReadingsSource;
+  user: ManagingFirmUserShortResponse;
 }
 
 export interface IndividualDeviceResponse {
@@ -2149,6 +2261,7 @@ export interface ManagingFirmUserCreateRequest {
   password?: string | null;
   userRoleIds?: number[] | null;
   firmCompetenceIds?: string[] | null;
+  housingStockIds?: number[] | null;
 }
 
 export interface ManagementFirmShortResponse {
@@ -2175,6 +2288,7 @@ export enum ESecuredIdentityRoleName {
   Worker = "Worker",
   ManagingFirmSpectator = "ManagingFirmSpectator",
   ManagingFirmDispatcher = "ManagingFirmDispatcher",
+  Controller = "Controller",
 }
 
 export interface UserRoleResponse {
@@ -2208,6 +2322,7 @@ export interface ManagingFirmUserResponse {
   status: UserStatusResponse;
   competences: UserCompetenceResponse[] | null;
   userRoles: UserRoleResponse[] | null;
+  housingStocks: HousingStockShortResponse[] | null;
 }
 
 export interface ManagingFirmUserResponseSuccessApiResponse {
@@ -2350,6 +2465,7 @@ export interface ManagingFirmUserUpdateRequest {
   number?: string | null;
   userRoleIds?: number[] | null;
   firmCompetenceIds?: string[] | null;
+  housingStockIds?: number[] | null;
 }
 
 export interface EManagingFirmUserWorkingStatusTypeStringDictionaryItem {
@@ -2528,17 +2644,6 @@ export interface NodeResponseSuccessApiResponse {
   successResponse: NodeResponse;
 }
 
-export interface NodeAdmissionActRequest {
-  /** @format int32 */
-  documentId?: number;
-
-  /** @format date-time */
-  startCommercialAccountingDate?: string;
-
-  /** @format date-time */
-  endCommercialAccountingDate?: string;
-}
-
 export interface UpdateNodeRequest {
   /** @format int32 */
   entryNumber?: number | null;
@@ -2553,7 +2658,12 @@ export interface UpdateNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
-  admissionAct?: NodeAdmissionActRequest;
+
+  /** @format date-time */
+  startCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  endCommercialAccountingDate?: string | null;
 }
 
 export interface NodeResponsePagedList {
@@ -2590,6 +2700,17 @@ export interface CreateCommunicationPipeRequest {
   devices?: CreateHousingMeteringDeviceRequest[] | null;
 }
 
+export interface NodeAdmissionActRequest {
+  /** @format int32 */
+  documentId?: number;
+
+  /** @format date-time */
+  startCommercialAccountingDate?: string;
+
+  /** @format date-time */
+  endCommercialAccountingDate?: string;
+}
+
 export interface CreateNodeRequest {
   /** @format int32 */
   entryNumber?: number | null;
@@ -2609,6 +2730,10 @@ export interface CreateNodeRequest {
   housingStockId?: number;
   communicationPipes?: CreateCommunicationPipeRequest[] | null;
   admissionAct?: NodeAdmissionActRequest;
+}
+
+export interface AddNodeDocumentsRequest {
+  documentsIds?: number[] | null;
 }
 
 export interface CommunicationPipeForAddingDeviceResponse {
@@ -2938,13 +3063,6 @@ export interface TaskApplicationSourceResponse {
 export enum ETaskApplicationStatus {
   Open = "Open",
   Closed = "Closed",
-}
-
-export interface ManagingFirmUserShortResponse {
-  /** @format int32 */
-  id: number;
-  name: string | null;
-  email: string | null;
 }
 
 export interface TaskApplicationResponse {
@@ -3511,6 +3629,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     apartmentsApartmentStatusList: (params: RequestParams = {}) =>
       this.request<ApartmentListStatusResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/ApartmentStatus`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsHomeownerAccountsDetail
+     * @request GET:/api/Apartments/{apartmentId}/HomeownerAccounts
+     * @secure
+     */
+    apartmentsHomeownerAccountsDetail: (apartmentId: number, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
         method: "GET",
         secure: true,
         format: "json",
@@ -4244,6 +4379,125 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountList
+     * @request GET:/api/HomeownerAccount
+     * @secure
+     */
+    homeownerAccountList: (
+      query?: {
+        Question?: string | null;
+        PaymentCode?: string | null;
+        OrderRule?: HomeownerAccountOrderRule;
+        Status?: StatusType;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: OrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<HomeownerAccountResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountCreate
+     * @request POST:/api/HomeownerAccount
+     * @secure
+     */
+    homeownerAccountCreate: (data: HomeownerAccountCreateServiceModel, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountDetail
+     * @request GET:/api/HomeownerAccount/{homeownerAccId}
+     * @secure
+     */
+    homeownerAccountDetail: (homeownerAccId: string, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${homeownerAccId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountAttachNewHomeownerCreate
+     * @request POST:/api/HomeownerAccount/{id}/AttachNewHomeowner
+     * @secure
+     */
+    homeownerAccountAttachNewHomeownerCreate: (id: string, data: HomeownerCreateRequest, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}/AttachNewHomeowner`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountAttachHomeownerCreate
+     * @request POST:/api/HomeownerAccount/{id}/AttachHomeowner
+     * @secure
+     */
+    homeownerAccountAttachHomeownerCreate: (id: string, data: number, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}/AttachHomeowner`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountCloseCreate
+     * @request POST:/api/HomeownerAccount/{id}/Close
+     * @secure
+     */
+    homeownerAccountCloseCreate: (id: string, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}/Close`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Homeowners
      * @name HomeownersList
      * @request GET:/api/Homeowners
@@ -4258,25 +4512,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersCreate
-     * @request POST:/api/Homeowners
-     * @secure
-     */
-    homeownersCreate: (data: HomeownersCreateRequest, params: RequestParams = {}) =>
-      this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -4306,13 +4541,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Homeowners/{homeownerId}
      * @secure
      */
-    homeownersUpdate: (homeownerId: number, data: HomeownersUpdateRequest, params: RequestParams = {}) =>
+    homeownersUpdate: (homeownerId: number, data: HomeownerUpdateRequest, params: RequestParams = {}) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}`,
         method: "PUT",
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Homeowners
+     * @name HomeownersHomeownerAccountsDetail
+     * @request GET:/api/Homeowners/{homeownerId}/HomeownerAccounts
+     * @secure
+     */
+    homeownersHomeownerAccountsDetail: (homeownerId: number, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Homeowners/${homeownerId}/HomeownerAccounts`,
+        method: "GET",
+        secure: true,
         format: "json",
         ...params,
       }),
@@ -4789,6 +5041,93 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags Import
+     * @name ImportIndividualDevicesCreate
+     * @request POST:/api/Import/IndividualDevices
+     * @secure
+     */
+    importIndividualDevicesCreate: (
+      data: {
+        ContentType?: string | null;
+        ContentDisposition?: string | null;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string | null;
+        FileName?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Import/IndividualDevices`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Import
+     * @name ImportReadingsCreate
+     * @request POST:/api/Import/Readings
+     * @secure
+     */
+    importReadingsCreate: (
+      data: {
+        ContentType?: string | null;
+        ContentDisposition?: string | null;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string | null;
+        FileName?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Import/Readings`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Import
+     * @name ImportPersonalAccountNumbersCreate
+     * @request POST:/api/Import/PersonalAccountNumbers
+     * @secure
+     */
+    importPersonalAccountNumbersCreate: (
+      data: {
+        ContentType?: string | null;
+        ContentDisposition?: string | null;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string | null;
+        FileName?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Import/PersonalAccountNumbers`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ImportLogs
      * @name ImportLogsList
      * @request GET:/api/ImportLogs
@@ -4816,35 +5155,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ImportLogs/${id}`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags ImportReadings
-     * @name ImportReadingsImportCreate
-     * @request POST:/api/ImportReadings/import
-     * @secure
-     */
-    importReadingsImportCreate: (
-      data: {
-        ContentType?: string | null;
-        ContentDisposition?: string | null;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string | null;
-        FileName?: string | null;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ImportReadings/import`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
         format: "json",
         ...params,
       }),
@@ -5585,6 +5895,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Nodes
+     * @name NodesDocumentsCreate
+     * @request POST:/api/Nodes/{nodeId}/Documents
+     * @secure
+     */
+    nodesDocumentsCreate: (nodeId: number, data: AddNodeDocumentsRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Documents`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Nodes
      * @name NodesAddAdmissionActCreate
      * @request POST:/api/Nodes/{nodeId}/AddAdmissionAct
      * @secure
@@ -6132,6 +6460,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TaskApplications
+     * @name TaskApplicationsManagingFirmUsersList
+     * @request GET:/api/TaskApplications/managingFirmUsers
+     * @secure
+     */
+    taskApplicationsManagingFirmUsersList: (
+      query?: { Type?: ETaskApplicationType; Competence?: ECompetenceType; HousingStockId?: number | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<ManagingFirmUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/TaskApplications/managingFirmUsers`,
+        method: "GET",
+        query: query,
+        secure: true,
         format: "json",
         ...params,
       }),
