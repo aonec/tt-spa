@@ -71,7 +71,10 @@ const EditNodeForm = ({
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
   const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
+
   const [newDocuments, setNewDocuments] = useState<FileData[]>([]);
+  const [addedDocumentIds, setAddedDocumentIds] = useState<number[]>([]);
+  const [deletedDocumentIds, setDeletedDocumentIds] = useState<number[]>([]);
 
   if (!node) {
     return null;
@@ -94,14 +97,16 @@ const EditNodeForm = ({
   const [form] = Form.useForm();
   const { getFieldValue } = form;
 
-  async function saveDocuments() {
-    const newDocumentsIds = newDocuments.map((elem) => elem?.fileResponse?.id!);
-    const currentDocumentsIds =
-      (getFieldValue('documents') as DocumentResponse[])?.map(
-        (elem) => elem.id
-      ) || [];
+  const renderDocuments =
+    ([
+      ...(documents || []),
+      ...newDocuments.map((elem) => elem.fileResponse),
+    ] as DocumentResponse[]).filter(
+      (elem) => !deletedDocumentIds.includes(elem.id)
+    ) || [];
 
-    const ids: number[] = [...newDocumentsIds, ...currentDocumentsIds];
+  async function saveDocuments() {
+    const ids = renderDocuments.map((elem) => elem.id);
 
     return postNodeDocuments(nodeId, ids);
   }
@@ -299,9 +304,11 @@ const EditNodeForm = ({
 
         <StyledFormPage hidden={Number(currentTabKey) !== 4}>
           <FilesList
-            initialFiles={(documents as DocumentResponse[]) || []}
-            files={newDocuments}
+            initialFiles={renderDocuments}
             controlType="DELETE"
+            removeFile={(_, fileId = 0) =>
+              setDeletedDocumentIds((prev) => [...prev, fileId])
+            }
           />
           <DocumentsUpload
             onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}

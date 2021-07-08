@@ -12,7 +12,7 @@ import confirm from 'antd/lib/modal/confirm';
 
 interface Props {
   files?: FileData[];
-  removeFile?: (id: number) => void;
+  removeFile?: (id: number, documentId?: number) => void;
   initialFiles?: DocumentResponse[];
   controlType?: 'CONTROL' | 'DELETE';
 }
@@ -32,7 +32,7 @@ export const FilesList: React.FC<Props> = ({
           status: 'done',
         })
       ) || [],
-    [files]
+    [initialFiles]
   );
 
   const renderFiles = [...(files || []), ...initialFilesData];
@@ -83,15 +83,8 @@ export const FilesList: React.FC<Props> = ({
                   loading={loading}
                   menuButtonArr={[
                     {
-                      title: 'скачать',
-                      cb: () => {},
-                      show: true,
-                      color: 'default',
-                      clickable: true,
-                    },
-                    {
                       title: 'удалить',
-                      cb: () => removeFile && removeFile(id),
+                      cb: () => removeFile && removeFile(id, file?.id),
                       show: true,
                       color: 'red',
                       clickable: true,
@@ -109,7 +102,7 @@ export const FilesList: React.FC<Props> = ({
                     onClick={() =>
                       confirm({
                         title: 'Вы действительно хотите удалить этот файл?',
-                        onOk: () => removeFile && removeFile(id),
+                        onOk: () => removeFile && removeFile(id, file?.id),
                         cancelText: 'Отмена',
                         okText: 'Да',
                         maskClosable: true,
