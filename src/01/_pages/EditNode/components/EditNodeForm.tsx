@@ -36,6 +36,7 @@ import { DocumentsUpload } from './DocumentsUpload';
 import { FilesList } from '01/shared/ui/FilesList';
 import { FileData } from '01/hooks/useFilesUpload';
 import { postNodeDocuments } from '01/_api/editNode';
+import { deleteDoc } from '01/_api/task_profile_page';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -306,9 +307,10 @@ const EditNodeForm = ({
           <FilesList
             initialFiles={renderDocuments}
             controlType="DELETE"
-            removeFile={(_, fileId = 0) =>
-              setDeletedDocumentIds((prev) => [...prev, fileId])
-            }
+            removeFile={async (_, fileId = 0) => {
+              await deleteDoc(fileId);
+              setDeletedDocumentIds((prev) => [...prev, fileId]);
+            }}
           />
           <DocumentsUpload
             onAddHandler={(file) => setNewDocuments((prev) => [file, ...prev])}
