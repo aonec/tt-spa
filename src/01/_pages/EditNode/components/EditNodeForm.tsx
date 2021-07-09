@@ -37,6 +37,7 @@ import { FilesList } from '01/shared/ui/FilesList';
 import { FileData } from '01/hooks/useFilesUpload';
 import { postNodeDocuments } from '01/_api/editNode';
 import { deleteDoc } from '01/_api/task_profile_page';
+import _ from 'lodash';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -76,6 +77,8 @@ const EditNodeForm = ({
   const [newDocuments, setNewDocuments] = useState<FileData[]>([]);
   const [deletedDocumentIds, setDeletedDocumentIds] = useState<number[]>([]);
 
+  const [pendingSave, setPendingSave] = useState(false);
+
   if (!node) {
     return null;
   }
@@ -111,6 +114,12 @@ const EditNodeForm = ({
     return postNodeDocuments(nodeId, ids);
   }
 
+  async function deleteDocs() {
+    await Promise.all(
+      _.uniq<number>(deletedDocumentIds).map((elem) => deleteDoc(elem))
+    );
+  }
+
   const onFinish = async () => {
     const nodeForm: UpdateNodeRequest = {
       number: Number(getFieldValue('number')),
@@ -126,8 +135,15 @@ const EditNodeForm = ({
       calculatorId,
     };
 
-    await saveDocuments();
-    await putNode(nodeId, nodeForm);
+    setPendingSave(true);
+
+    await Promise.all([
+      saveDocuments(),
+      deleteDocs(),
+      putNode(nodeId, nodeForm),
+    ]);
+
+    setPendingSave(false);
   };
 
   if (zonesLoadingStatus === 'loading' || zonesLoadingStatus === 'init')
@@ -306,8 +322,7 @@ const EditNodeForm = ({
           <FilesList
             initialFiles={renderDocuments}
             controlType="DELETE"
-            removeFile={async (_, fileId = 0) => {
-              await deleteDoc(fileId);
+            removeFile={(_, fileId = 0) => {
               setDeletedDocumentIds((prev) => [...prev, fileId]);
             }}
           />
@@ -329,15 +344,29 @@ const EditNodeForm = ({
           <ButtonTT
             color="blue"
             type="submit"
-            disabled={isRequestServiceZonesError}
+            disabled={isRequestServiceZonesError || pendingSave}
           >
-            Сохранить
+            <Flex>
+              {pendingSave && (
+                <div
+                  style={{ marginRight: '6px', transform: 'translateY(2px)' }}
+                >
+                  <Loader show={true} />
+                </div>
+              )}
+              Сохранить
+            </Flex>
           </ButtonTT>
         </StyledFooter>
       </Form>
     </>
   );
 };
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const Zone = styled.div`
   display: flex;
