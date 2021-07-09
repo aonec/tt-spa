@@ -75,7 +75,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "updateTypes": "npx swagger-typescript-api -p http://transparent-staging.herokuapp.com/swagger/v1/swagger.json -o ./src -n myApi.ts --axios",
     "prettify": "yarn prettier --write ."
@@ -106,7 +106,6 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "jest-environment-jsdom-sixteen": "^1.0.3",
     "prettier": "^2.2.1"
   },
   "prettier": {
