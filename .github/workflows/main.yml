@@ -22,3 +22,5 @@ jobs:
         run: yarn install
       - name: Test
         run: CI=true yarn test
+      - name: Eslint
+        run: yarn eslint .
