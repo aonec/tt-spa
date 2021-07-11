@@ -20,10 +20,10 @@ import { Loader } from '../../../../components/Loader';
 
 const CurrentEmailModal = () => {
   const groupReportFormState = useAppSelector(
-    (state) => state.groupReport.groupReportFormState
+    (state) => state.groupReport.groupReportFormState,
   );
   const groupReportStatus = useAppSelector(
-    (state) => state.groupReport.groupReportStatus
+    (state) => state.groupReport.groupReportStatus,
   );
   const dispatch = useAppDispatch();
   const isVisible = groupReportStatus === 'currentEmailForm';

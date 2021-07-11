@@ -20,7 +20,7 @@ import { ManagingFirmUserResponse, ManagingFirmUserUpdateRequest } from 'myApi';
 export const editManagingUserInfoForm = createForm(staffFormConfig);
 
 export const $isUpdateManagingFirmUserSuccess = createStore<null | boolean>(
-  null
+  null,
 );
 export const $isEditingManagingFirmUserInfoRequestFailed = createStore(false);
 export const resetEditManagingUserRequest = createEvent();
@@ -37,12 +37,12 @@ export const $isFormDataLoading = combine(
   fetchCompetencesFx.pending,
   fetchUserRolesFx.pending,
   fetchManagingFirmUserFx.pending,
-  reduceBooleanArr
+  reduceBooleanArr,
 );
 
 export const $isFetchingFormDataFailed = combine(
   $isFetchingCompetencesFailed,
   $isFetchingUserRolesFailed,
   $isFetchingManagingFirmUserFailed,
-  reduceBooleanArr
+  reduceBooleanArr,
 );

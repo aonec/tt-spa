@@ -39,7 +39,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    calculatorValidationSchema
+    calculatorValidationSchema,
   );
   const {
     handleSubmit,
@@ -150,7 +150,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
     e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
 
     if (hasError) {
@@ -228,7 +228,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
                 setFieldValue('lastCheckingDate', date);
                 setFieldValue(
                   'futureCheckingDate',
-                  moment(date).add(3, 'years')
+                  moment(date).add(3, 'years'),
                 );
               }}
               value={values.lastCheckingDate}

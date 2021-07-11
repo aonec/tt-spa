@@ -11,7 +11,7 @@ export const formatDate = (timeStamp: string): Date => {
   const dateObject = new Date(timeStamp);
   const millisecondsInHour = 60 * 1000;
   const date = new Date(
-    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour
+    dateObject.valueOf() + dateObject.getTimezoneOffset() * millisecondsInHour,
   );
   return date;
 };
@@ -37,7 +37,7 @@ const isDayMultiplyFive = (timeStamp: string): boolean => {
 };
 
 const formHourlyTicks = (
-  archiveArr: ArchiveEntryInterface[]
+  archiveArr: ArchiveEntryInterface[],
 ): ArchiveEntryInterface[] => {
   if (archiveArr.length <= 24) return archiveArr;
   return [
@@ -47,13 +47,13 @@ const formHourlyTicks = (
 };
 
 const formDailyTicks = (
-  archiveArr: ArchiveEntryInterface[]
+  archiveArr: ArchiveEntryInterface[],
 ): ArchiveEntryInterface[] => {
   if (archiveArr.length <= 14) return archiveArr;
 
   const length = archiveArr.length;
   const multipleFives = archiveArr.filter((entry) =>
-    isDayMultiplyFive(entry.timestamp)
+    isDayMultiplyFive(entry.timestamp),
   );
   const delta1 =
     getDayFromTimeStamp(multipleFives[0].timestamp) -
@@ -74,7 +74,7 @@ const formDailyTicks = (
 
 export const formTicks = (
   archiveArr: ArchiveEntryInterface[],
-  reportType: ReportType
+  reportType: ReportType,
 ): ArchiveEntryInterface[] => {
   switch (reportType) {
     case 'hourly':
@@ -89,7 +89,7 @@ export const formTicks = (
 export const getTickFormat = (
   archiveArr: ArchiveEntryInterface[],
   reportType: ReportType,
-  x: string
+  x: string,
 ) => {
   if (reportType === 'daily') {
     return format(formatDate(x), 'dd.MM');
@@ -107,7 +107,7 @@ export const getTickFormat = (
 
 export const getGraphParams = (
   resource: EResourceType,
-  pipeCount: number
+  pipeCount: number,
 ): GraphParamsType[] => {
   switch (resource) {
     case 'ColdWaterSupply':
@@ -142,7 +142,7 @@ export const getGraphParams = (
         resource,
         'и количество труб ',
         pipeCount,
-        'не предусмотрено'
+        'не предусмотрено',
       );
       return [];
   }
@@ -162,7 +162,7 @@ export const paramsTranslation: Partial<
 
 export const formGraphData = (
   ticks: ArchiveEntryInterface[],
-  graphParam: GraphParamsType
+  graphParam: GraphParamsType,
 ): GraphDataInterface[] => {
   return ticks.map((entry) => {
     return {

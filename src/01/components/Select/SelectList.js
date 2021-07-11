@@ -29,7 +29,7 @@ export const SelectList = ({
     `(
       <select_list {...use({ show })} tabIndex="0" {...props}>
         <Loader show={loading} size="32" />
-      </select_list>
+      </select_list>,
     );
 
   const len = list?.length === 0 ? 1 : list.length;
@@ -84,7 +84,7 @@ export const SelectList = ({
           <span>{name}</span>
         </select_item>
       ))}
-    </select_list>
+    </select_list>,
   );
 };
 

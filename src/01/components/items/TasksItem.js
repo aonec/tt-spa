@@ -54,7 +54,7 @@ export const TasksItem = ({
           {date(creationTime).full}
         </span>
       </row>
-    </item>
+    </item>,
   );
 };
 

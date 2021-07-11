@@ -46,11 +46,11 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
 
   const getNodeStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value,
     )?.label ?? 'Статус не определен';
   const getNodeIconStatus =
     nodeStatusList.find(
-      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value
+      (nodeStatusItem) => nodeStatusItem.value === nodeStatus.value,
     )?.icon ?? 'close';
 
   const NodeStatus = () => (

@@ -53,7 +53,7 @@ export const Apartments = ({ loading = null, items = [] }) => {
           {square ?? '-'} м<sup>2</sup>
         </apart_square>
       </apart>
-    ))
+    )),
   );
 };
 

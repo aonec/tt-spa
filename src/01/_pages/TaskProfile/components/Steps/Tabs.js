@@ -26,6 +26,6 @@ export const Tabs = ({ url }) => {
           {tab}
         </NavLink>
       ))}
-    </tabs>
+    </tabs>,
   );
 };

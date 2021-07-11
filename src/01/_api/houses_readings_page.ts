@@ -38,10 +38,10 @@ export type HouseType = {
 };
 
 export const requestDevicesByHouse = async (
-  HousingStockId: string
+  HousingStockId: string,
 ): Promise<ReadingsStateType> => {
   const res = await axios.get<any, ReadingsStateType>(
-    `IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`
+    `IndividualDevices?HousingStockId=${HousingStockId}&Resource=Electricity`,
   );
   return res;
 };

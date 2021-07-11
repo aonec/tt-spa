@@ -100,7 +100,7 @@ const ApartmentProfile = () => {
       <Route path="/*/(\\d+)/testimony" exact>
         <ApartmentDevices devices={devices} />
       </Route>
-    </>
+    </>,
   );
 };
 

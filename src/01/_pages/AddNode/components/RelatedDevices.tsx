@@ -28,7 +28,7 @@ interface DeviceInterface {
 
 export const RelatedDevices = () => {
   const { communicationPipes, setCommunicationPipes } = useContext(
-    AddNodeContext
+    AddNodeContext,
   );
 
   if (!communicationPipes) {
@@ -39,7 +39,7 @@ export const RelatedDevices = () => {
     communicationPipes.map((communicationPipe: any) => {
       const { devices } = communicationPipe;
       return devices.map((device: any) => device);
-    })
+    }),
   );
 
   const result = flattenDevices.map((device: DeviceInterface) => {
@@ -53,15 +53,15 @@ export const RelatedDevices = () => {
 
           const devicesList = _.filter(
             devices,
-            (deviceInList) => !_.isEqual(deviceInList, device)
+            (deviceInList) => !_.isEqual(deviceInList, device),
           );
           return { ...communicationPipe, devices: devicesList };
-        }
+        },
       );
 
       const newCommunicationPipes = _.filter(
         updatedCommunicationPipes,
-        (communicationPipe) => communicationPipe.devices.length > 0
+        (communicationPipe) => communicationPipe.devices.length > 0,
       );
 
       setCommunicationPipes(newCommunicationPipes);

@@ -67,7 +67,7 @@ export const Events = ({ title = '' }) => {
         <TaskRow>
           <Icon icon="timer" style={{ marginRight: '8px' }} />
           {`${convertDate(currentStage.startingTime)} - ${convertDate(
-            currentStage.expectedCompletionTime
+            currentStage.expectedCompletionTime,
           )}`}
         </TaskRow>
         <TaskRow>

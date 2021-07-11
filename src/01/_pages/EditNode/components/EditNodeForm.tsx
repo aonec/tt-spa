@@ -88,7 +88,7 @@ const EditNodeForm = ({
   }
 
   const initialServiceZoneInfo = selectZonesOptions.find(
-    (el) => el.value === nodeServiceZoneId
+    (el) => el.value === nodeServiceZoneId,
   );
   const { label: initialServiceZoneLabel } = initialServiceZoneInfo || {};
 

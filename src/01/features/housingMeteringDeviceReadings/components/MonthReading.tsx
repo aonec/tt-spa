@@ -23,7 +23,7 @@ export const MonthReading = ({
 
   const sortFeedFlowsFn = (
     a: HousingMeteringDeviceReadingsResponse,
-    b: HousingMeteringDeviceReadingsResponse
+    b: HousingMeteringDeviceReadingsResponse,
   ) => {
     if (a.magistralType === EMagistralType.FeedFlow) return 1;
     return -1;
@@ -37,7 +37,7 @@ export const MonthReading = ({
       const currentReading = monthElement.items[0];
 
       const previousReading = readings.items.find(
-        (reading) => reading.id === currentReading.previousReadingsId
+        (reading) => reading.id === currentReading.previousReadingsId,
       );
       consumption = previousReading
         ? currentReading.value - previousReading.value

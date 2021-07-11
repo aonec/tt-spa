@@ -77,7 +77,7 @@ export async function postStaff(form = {}) {
     console.log(error);
     alert(
       'Что-то пошло не так: скорее всего уже есть пользователь с таким email \n' +
-        handleError.Message
+        handleError.Message,
     );
     // throw new Error(error);
   }

@@ -13,10 +13,10 @@ const OtherEmailModal = () => {
   const [sendingStatus, setSendingStatus] = useState('idle');
   const [inputValue, setInputValue] = useState('');
   const groupReportFormState = useAppSelector(
-    (state) => state.groupReport.groupReportFormState
+    (state) => state.groupReport.groupReportFormState,
   );
   const groupReportStatus = useAppSelector(
-    (state) => state.groupReport.groupReportStatus
+    (state) => state.groupReport.groupReportStatus,
   );
   const isMounted = React.useRef(true);
   const dispatch = useAppDispatch();

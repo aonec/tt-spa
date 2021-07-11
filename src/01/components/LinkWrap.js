@@ -15,7 +15,7 @@ export const LinkWrap = ({ children, to, ...props }) =>
     `(
       <Link to={to} {...props}>
         {children}
-      </Link>
+      </Link>,
     )
   ) : (
     <>{children}</>

@@ -37,7 +37,7 @@ const ModalAddContractorForm = () => {
         .required('Строка не должна быть пустой'),
       phoneNumber: Yup.string().matches(
         phoneRegExp,
-        'Укажите верно номер телефона'
+        'Укажите верно номер телефона',
       ),
     }),
     onSubmit: async () => {

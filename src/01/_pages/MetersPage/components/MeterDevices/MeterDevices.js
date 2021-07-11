@@ -106,7 +106,7 @@ const styles = css`
 export const MeterDevices = ({ items = [] }) => {
   return styled(
     styles,
-    style.button
+    style.button,
   )(
     <meters>
       <meter_header>Информация o приборe</meter_header>
@@ -155,8 +155,8 @@ export const MeterDevices = ({ items = [] }) => {
               </button>
             </div>
           </meter_device>
-        )
+        ),
       )}
-    </meters>
+    </meters>,
   );
 };

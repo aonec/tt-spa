@@ -129,7 +129,7 @@ export const ObjectProfile = () => {
           <Events title="События с объектом" {...events} />
         </grid>
       </ObjectContext.Provider>
-    </>
+    </>,
   );
 };
 

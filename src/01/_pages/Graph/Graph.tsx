@@ -60,10 +60,10 @@ const Graph: React.FC<GraphProps> = ({ nodeId, resource, pipeCount }) => {
   };
 
   const [graphParam, setGraphParam] = useState(
-    () => getGraphParams(resource, pipeCount)[0]
+    () => getGraphParams(resource, pipeCount)[0],
   );
   const [searchQuery, setSearchQuery] = useState<QueryInterface>(
-    getInitialState
+    getInitialState,
   );
 
   useEffect(() => {

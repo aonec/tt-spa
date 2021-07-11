@@ -35,7 +35,7 @@ export const Information = ({ device }: InformationInterface) => {
         <ListItem
           title={'Дата ввода в эксплуатацию'}
           description={moment(lastCommercialAccountingDate).format(
-            'DD.MM.YYYY'
+            'DD.MM.YYYY',
           )}
         />
         <ListItem

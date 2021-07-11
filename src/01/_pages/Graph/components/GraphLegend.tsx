@@ -17,7 +17,7 @@ const GraphLegend = ({ graphParam }: { graphParam: GraphParamsType }) => {
   const { data } = useStore($graphData);
   const { averageDeltaMass, deltaMassAccuracy, resource } = data;
   const absoluteDelta = Number(
-    Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1)
+    Math.abs((averageDeltaMass * deltaMassAccuracy) / 100).toFixed(1),
   );
 
   const renderAccuracyLegendLine = () => {

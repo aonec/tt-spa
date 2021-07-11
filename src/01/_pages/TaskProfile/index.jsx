@@ -118,7 +118,7 @@ export const TaskProfile = () => {
         </div>
         <Stages {...stages} state={state} />
       </grid>
-    </TasksProfileContext.Provider>
+    </TasksProfileContext.Provider>,
   );
 };
 

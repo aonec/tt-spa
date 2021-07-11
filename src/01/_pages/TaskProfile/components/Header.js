@@ -69,7 +69,7 @@ export const Header = React.memo(
   ({ title = '', name = '', timeline = null, timer = null }) =>
     styled(
       styles,
-      s.time_line
+      s.time_line,
     )(
       <h>
         <Loader show={!title} size="48" />
@@ -94,6 +94,6 @@ export const Header = React.memo(
             <time>{timer.stage?.before}</time>
           </timer>
         )}
-      </h>
-    )
+      </h>,
+    ),
 );

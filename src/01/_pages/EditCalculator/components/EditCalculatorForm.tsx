@@ -62,7 +62,7 @@ const EditCalculatorForm = ({
   } = calculator || DEFAULT_CALCULATOR;
 
   const [validationSchema, setValidationSchema] = useState<any>(
-    calculatorValidationSchema
+    calculatorValidationSchema,
   );
 
   const getCurrentInfoId = model
@@ -85,7 +85,7 @@ const EditCalculatorForm = ({
       futureCheckingDate: isDateNull(futureCheckingDate),
       lastCommercialAccountingDate: isDateNull(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateNull(
-        futureCommercialAccountingDate
+        futureCommercialAccountingDate,
       ),
       ipV4: ipV4,
       port: port,
@@ -189,7 +189,7 @@ const EditCalculatorForm = ({
     e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
     if (hasError) {
       setTab(errorTab);

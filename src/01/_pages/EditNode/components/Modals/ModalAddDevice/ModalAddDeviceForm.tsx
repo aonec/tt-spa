@@ -58,7 +58,7 @@ const ModalAddDeviceForm = ({
 }: ModalAddDeviceFormInterface) => {
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
-    validationSchemaFlowMeter
+    validationSchemaFlowMeter,
   );
 
   const tabItems: Array<TabsItemInterface> = [
@@ -116,7 +116,7 @@ const ModalAddDeviceForm = ({
     communicationPipes?.map((communicationPipe) => {
       const { devices } = communicationPipe;
       return devices;
-    })
+    }),
   );
 
   const initialValues = {
@@ -175,7 +175,7 @@ const ModalAddDeviceForm = ({
   function handleBeforeSubmit(errors: any) {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
     if (hasError) {
       setTab(errorTab);
@@ -238,7 +238,7 @@ const ModalAddDeviceForm = ({
                       value === 'FlowMeter'
                         ? setValidationSchema(validationSchemaFlowMeter)
                         : setValidationSchema(
-                            validationSchemaTemperatureSensor
+                            validationSchemaTemperatureSensor,
                           );
                       value !== 'FlowMeter'
                         ? setFieldValue('diameter', null)

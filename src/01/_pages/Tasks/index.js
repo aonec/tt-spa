@@ -38,7 +38,7 @@ export const Tasks = () => {
             </NavLink>
           );
         })}
-      </tabs>
+      </tabs>,
     );
   });
 
@@ -47,7 +47,7 @@ export const Tasks = () => {
   const debouncedSearchState = useDebounce(searchState, 500);
 
   const { items, executingTasksCount, observingTasksCount } = useTasks(
-    debouncedSearchState
+    debouncedSearchState,
   );
   console.log(useTasks(debouncedSearchState));
   return (

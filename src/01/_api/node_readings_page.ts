@@ -20,7 +20,7 @@ export interface RequestNodeReadingsFunctionInterface {
 }
 
 export const requestNodeReadings = async (
-  searchQuery: QueryInterface
+  searchQuery: QueryInterface,
 ): Promise<RequestNodeReadingsFunctionInterface> => {
   const params = {
     ...searchQuery,

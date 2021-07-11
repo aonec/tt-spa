@@ -23,7 +23,7 @@ export const MapObject = () => {
       // controls: ['zoomControl', 'fullscreenControl'],
       zoom,
     }),
-    [zoom]
+    [zoom],
   );
   const coordinatesList = [
     objectCoordinates,

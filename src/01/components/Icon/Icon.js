@@ -13,7 +13,7 @@ export const Icon = ({ size = 16, icon = '', ...props }) =>
   `(
     <svg viewBox="0 0 16 16" fill="currentColor" {...props}>
       <path as="path" clipRule="evenodd" fillRule="evenodd" d={icons[icon]} />
-    </svg>
+    </svg>,
   );
 
 Icon.propTypes = {

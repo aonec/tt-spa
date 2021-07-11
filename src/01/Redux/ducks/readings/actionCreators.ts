@@ -14,7 +14,7 @@ export const setDevices = (devices: DevicesType): SetDevicesActionType => {
 export const updateReadings = (
   deviceId: number,
   readingNumber: number,
-  readingValue: number
+  readingValue: number,
 ): UpdateReadingsActionType => {
   return {
     type: ReadingsActionsType.UPDATE_READINGS,
@@ -24,7 +24,7 @@ export const updateReadings = (
   };
 };
 export const setInputFocused = (
-  deviceId: number
+  deviceId: number,
 ): SetInputFocusedActionType => {
   return { type: ReadingsActionsType.SET_INPUT_FOCUSED, deviceId };
 };

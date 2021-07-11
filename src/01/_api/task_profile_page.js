@@ -14,7 +14,7 @@ export async function getTask(id) {
 
     const { currentStage, name, stages, userOperatingStatus } = res;
     const items = stages.map((...rest) =>
-      changeItemStage(...rest, userOperatingStatus === 'Executor')
+      changeItemStage(...rest, userOperatingStatus === 'Executor'),
     );
     return {
       ...res,
@@ -49,7 +49,7 @@ export async function moveStage(id = '', move = '', data = {}) {
       return { isReplace: true };
     }
     const items = stages.map((...rest) =>
-      changeItemStage(...rest, userOperatingStatus === 'Executor')
+      changeItemStage(...rest, userOperatingStatus === 'Executor'),
     );
     return {
       ...res,

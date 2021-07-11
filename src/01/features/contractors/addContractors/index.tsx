@@ -134,7 +134,7 @@ export const AddContractorsFormModal = () => {
                 disabled={pending}
                 onChange={(e: InputTTEvent) =>
                   fields.cellPhone.onChange(
-                    phoneMask.unmaskedValue(e.target.value)
+                    phoneMask.unmaskedValue(e.target.value),
                   )
                 }
               />

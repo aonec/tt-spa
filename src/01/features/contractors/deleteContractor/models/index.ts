@@ -3,7 +3,7 @@ import { createEvent, createStore, createEffect } from 'effector';
 
 export const $contractorIdToDelete = createStore<number | null>(null);
 export const $isDeleteContractorModalVisible = $contractorIdToDelete.map(
-  (id) => id !== null
+  (id) => id !== null,
 );
 export const $isDeletionContractorFailed = createStore(false);
 export const $deletedСonctractorName = createStore<string | null>(null);

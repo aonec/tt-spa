@@ -16,7 +16,7 @@ export const $readingsToDisplay = $readings.map(prepareReadings);
 export const $latestSuccessReadings = createStore<GetHousingMeteringDeviceReadingsResponse>(
   {
     items: null,
-  }
+  },
 );
 
 export const ResourceGate = createGate<{ resource: EResourceType | null }>();
@@ -26,7 +26,7 @@ export const $resource = createStore<{ resource: EResourceType | null }>({
 });
 
 export const $isColdWaterSupply = $resource.map(
-  ({ resource }) => resource === EResourceType.ColdWaterSupply
+  ({ resource }) => resource === EResourceType.ColdWaterSupply,
 );
 
 export const $chosenInputId = createStore<number | null>(null);

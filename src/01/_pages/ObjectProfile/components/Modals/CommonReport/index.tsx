@@ -29,7 +29,7 @@ interface ObjectContextInterface {
 
 const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
   const { object, calculators }: ObjectContextInterface = useContext(
-    ObjectContext
+    ObjectContext,
   );
   const handleCancel = () => {
     setVisible(false);

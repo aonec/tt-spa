@@ -85,7 +85,7 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
                 setFieldValue('lastCheckingDate', moment(date));
                 setFieldValue(
                   'futureCheckingDate',
-                  moment(date).add(3, 'years')
+                  moment(date).add(3, 'years'),
                 );
               }}
               value={values.lastCheckingDate}

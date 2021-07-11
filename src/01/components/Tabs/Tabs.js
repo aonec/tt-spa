@@ -48,7 +48,7 @@ export const Tabs = React.memo(({ children = [], ...props }) => {
           {name}
         </NavLink>
       ))}
-    </div>
+    </div>,
   );
 });
 
@@ -57,6 +57,6 @@ Tabs.propTypes = {
     t.shape({
       name: t.string.isRequired,
       to: t.string.isRequired,
-    })
+    }),
   ).isRequired,
 };

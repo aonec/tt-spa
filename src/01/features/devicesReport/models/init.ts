@@ -23,7 +23,7 @@ $isDeviceReportModalVisible.on(
     downloadDeviceReportCancelButtonClicked,
     downloadDevicesReportFx.done,
   ]),
-  (x) => !x
+  (x) => !x,
 );
 
 guard({

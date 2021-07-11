@@ -4,7 +4,7 @@ import {
 } from '../../../../../myApi';
 
 export const groupDevicesByObjects = (
-  devices: CalculatorListResponse[] | null
+  devices: CalculatorListResponse[] | null,
 ): DevicesByAddressInterface[] => {
   if (!devices) return [];
   const newDevices = devices.reduce<DevicesByAddressInterface[]>(
@@ -23,7 +23,7 @@ export const groupDevicesByObjects = (
         });
       }
     },
-    []
+    [],
   );
   return newDevices;
 };

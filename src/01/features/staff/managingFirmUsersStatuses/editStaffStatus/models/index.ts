@@ -10,7 +10,7 @@ import { createEffect, createStore, createEvent } from 'effector';
 export const $editStaffStatusUserId = createStore<number | null>(null);
 export const $isEditStaffStatusRequestFailed = createStore(false);
 export const $isEditStaffStatusModalVisible = $editStaffStatusUserId.map(
-  (id) => id !== null
+  (id) => id !== null,
 );
 
 const isNotNull = (value: any) => value !== null;

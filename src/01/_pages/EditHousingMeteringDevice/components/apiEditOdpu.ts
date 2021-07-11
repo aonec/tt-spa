@@ -8,7 +8,7 @@ import {
 export async function getOdpu(id: number) {
   try {
     return await axios.get<HousingMeteringDeviceResponse>(
-      `HousingMeteringDevices/${id}`
+      `HousingMeteringDevices/${id}`,
     );
   } catch (error) {
     throw {
@@ -20,7 +20,7 @@ export async function getOdpu(id: number) {
 
 export async function putOdpu(
   deviceId: number,
-  form: UpdateHousingMeteringDeviceRequest
+  form: UpdateHousingMeteringDeviceRequest,
 ) {
   try {
     const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);

@@ -29,5 +29,5 @@ export const FieldMeter = () =>
         <input placeholder="Тариф" />
         <span>0 m</span>
       </row>
-    </fm>
+    </fm>,
   );

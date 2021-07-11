@@ -5,7 +5,7 @@ import { Icon } from '../../../_components/Icon';
 
 const HeaderButton = () => {
   const { currentTabKey, showStaff, showContractor } = useContext(
-    SettingsContext
+    SettingsContext,
   );
   switch (currentTabKey) {
     case '1':

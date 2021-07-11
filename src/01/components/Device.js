@@ -13,7 +13,7 @@ export const Device = ({
     <device {...props}>
       <Icon {...getDeviceIconProps(resource)} />
       {model} ({serialNumber})
-    </device>
+    </device>,
   );
 };
 

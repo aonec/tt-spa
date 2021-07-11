@@ -19,7 +19,7 @@ export function ApartmentDevicesList({ sliderIndex }) {
       }
       return { ...acc, closedDevices: [...acc.closedDevices, device] };
     },
-    { validDevices: [], closedDevices: [] }
+    { validDevices: [], closedDevices: [] },
   );
 
   const validDeviceElems = filteredDevices.validDevices

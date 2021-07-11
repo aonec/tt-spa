@@ -30,7 +30,7 @@ const yupModel = Yup.string()
   .required('Введите модель');
 
 const yupHousingMeteringDeviceType = Yup.string().required(
-  'Выберите тип устройства'
+  'Выберите тип устройства',
 );
 
 export const validationSchemaFlowMeter = Yup.object({

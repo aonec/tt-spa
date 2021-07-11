@@ -9,7 +9,7 @@ export const AddCalculatorContext = React.createContext();
 
 const ModalCalculator = () => {
   const { addCalculator, setAddCalculator, housingStockId } = useContext(
-    ObjectContext
+    ObjectContext,
   );
   const handleCancel = () => {
     setAddCalculator(false);

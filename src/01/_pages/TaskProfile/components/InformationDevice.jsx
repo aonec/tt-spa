@@ -46,7 +46,7 @@ export const InformationDevice = ({
   if (hidden) return null;
   return styled(
     information,
-    style
+    style,
   )(
     <information {...props}>
       <device_title as="h3" onClick={() => push(path)}>
@@ -66,7 +66,7 @@ export const InformationDevice = ({
           </info_item>
         ))}
       </info_list>
-    </information>
+    </information>,
   );
 };
 

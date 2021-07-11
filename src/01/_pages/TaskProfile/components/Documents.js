@@ -88,8 +88,8 @@ export const Documents = ({
             </Loader>
           )}
         </documnet>
-      )
-    )
+      ),
+    ),
   );
 };
 

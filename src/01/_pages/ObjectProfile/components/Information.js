@@ -28,6 +28,6 @@ export const Information = ({ list = [], loading = true, ...props }) => {
         ))}
       </info_list>
       {/* </Loader> */}
-    </information>
+    </information>,
   );
 };

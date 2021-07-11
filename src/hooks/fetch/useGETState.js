@@ -8,7 +8,7 @@ export const useGetState = (config = {}, dispatch, triger = []) => {
         dispatch({
           type: 'get_state_success',
           payload: { ...data, loading: false },
-        })
+        }),
       );
     }
   }, triger);

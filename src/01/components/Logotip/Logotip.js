@@ -21,5 +21,5 @@ export const Logotip = (props) =>
       <img src={logo} alt="logotip" />
       <span>TT</span>
       Management
-    </logotip>
+    </logotip>,
   );

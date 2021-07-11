@@ -13,5 +13,5 @@ export interface CalculatorProfileContextInterface {
 }
 
 export const CalculatorProfileContext = React.createContext<CalculatorProfileContextInterface>(
-  {}
+  {},
 );

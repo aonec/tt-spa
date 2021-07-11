@@ -25,7 +25,7 @@ const { TabPane } = Tabs;
 
 const HousingChangeForm = () => {
   const { device, state, selected, disabled, taskId } = useContext(
-    ChangeDeviceContext
+    ChangeDeviceContext,
   );
 
   const [currentTabKey, setCurrentTabKey] = useState('1');
@@ -115,7 +115,7 @@ const HousingChangeForm = () => {
       model,
       lastCommercialAccountingDate: isDateEmpty(lastCommercialAccountingDate),
       futureCommercialAccountingDate: isDateEmpty(
-        futureCommercialAccountingDate
+        futureCommercialAccountingDate,
       ),
       lastCheckingDate: isDateEmpty(lastCheckingDate),
       futureCheckingDate: isDateEmpty(futureCheckingDate),

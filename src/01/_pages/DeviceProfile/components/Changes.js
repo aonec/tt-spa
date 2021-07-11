@@ -113,7 +113,7 @@ export const Changes = React.memo(
                             )
                     )} */}
         </changes>
-      </Route>
+      </Route>,
     );
-  }
+  },
 );

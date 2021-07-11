@@ -22,7 +22,7 @@ export const Panel = React.memo(
     const { email, document } = wrapper;
     return styled(
       styles,
-      button
+      button,
     )(
       <wrapper {...use({ ...wrapper })}>
         {email && perpetrator}
@@ -40,9 +40,9 @@ export const Panel = React.memo(
         <button data-primary data-big data-btn-push {...pushButton}>
           <span>Завершить этап</span>
         </button>
-      </wrapper>
+      </wrapper>,
     );
-  }
+  },
 );
 Panel.defaultProps = {
   styles: css`

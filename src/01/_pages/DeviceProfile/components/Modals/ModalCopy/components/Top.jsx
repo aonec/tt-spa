@@ -19,7 +19,7 @@ export const Uzel = () => {
   console.log('type', type);
 
   const modifiedSelectOptions = selectOptions.filter(
-    (option) => option.value == type
+    (option) => option.value == type,
   );
   console.log('modifiedSelectOptions', modifiedSelectOptions);
 

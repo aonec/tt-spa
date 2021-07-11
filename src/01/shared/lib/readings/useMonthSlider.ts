@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { IndividualDeviceType } from '../../../../types/types';
 
 export const useMonthSlider = (
-  items: IndividualDeviceListItemResponse[] | IndividualDeviceType[] | null = []
+  items:
+    | IndividualDeviceListItemResponse[]
+    | IndividualDeviceType[]
+    | null = [],
 ) => {
   const [sliderIndex, setSliderIndex] = useState(0);
 

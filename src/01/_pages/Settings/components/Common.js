@@ -31,7 +31,7 @@ const Common = () => {
     validationSchema: Yup.object({
       phoneNumber: Yup.string().matches(
         phoneRegExp,
-        'Укажите верно номер телефона'
+        'Укажите верно номер телефона',
       ),
       name: Yup.string().required('Введите наименование компании'),
     }),

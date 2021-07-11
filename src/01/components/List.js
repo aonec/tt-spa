@@ -15,6 +15,6 @@ export const List = ({ item = null, list = [], loading = false, ...props }) => {
       {list.map((item) => (
         <ItemList key={item.id} {...item} />
       ))}
-    </list>
+    </list>,
   );
 };

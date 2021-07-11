@@ -4,7 +4,7 @@ export const devicesAPI = {
   async getDevices(
     pageNumber,
     pageSize,
-    { searchTerm, expirationDate, destination, rule, diameterRange }
+    { searchTerm, expirationDate, destination, rule, diameterRange },
   ) {
     try {
       const extraQuery =
@@ -17,7 +17,7 @@ export const devicesAPI = {
           ? `&Filter.DiameterRange.From=${diameterRange[0]}&Filter.DiameterRange.To=${diameterRange[1]}`
           : '');
       const res = await axios.get(
-        `Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${extraQuery}`
+        `Calculators/?pageNumber=${pageNumber}&pageSize=${pageSize}${extraQuery}`,
       );
       return res;
     } catch (error) {}
@@ -25,7 +25,7 @@ export const devicesAPI = {
   async getDevicesBySerialNumber(serialNumber) {
     try {
       const res = await axios.get(
-        `Calculators?Question=${serialNumber}&pageNumber=${1}&pageSize=${10}`
+        `Calculators?Question=${serialNumber}&pageNumber=${1}&pageSize=${10}`,
       );
       if (res.totalItems === 0) {
         return;

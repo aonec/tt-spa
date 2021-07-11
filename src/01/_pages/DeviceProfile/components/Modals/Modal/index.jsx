@@ -117,7 +117,7 @@ export const ModalODPU = ({ device }) => {
         label: `${_.get(
           selectOptions[ind],
           'label',
-          'default'
+          'default',
         )} ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
@@ -142,7 +142,7 @@ export const ModalODPU = ({ device }) => {
       }&resourcetype=${type}&entrynumber=${entryNumberRes.current}&pipenumber=${
         pipeNumberRes.current
       }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
-        end
+        end,
       )}T00:00:00Z`;
       const lastTemplate =
         'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1542041&reporttype=hourly&resourcetype=coldwatersupply&entrynumber=2&from=2020-10-25T00:00:00Z&to=2020-10-27T00:00:00Z';

@@ -47,6 +47,6 @@ export const Pages = ({ children }) => {
       </pages>
       {/* <TasksPage />
       <ObjectPage /> */}
-    </main>
+    </main>,
   );
 };

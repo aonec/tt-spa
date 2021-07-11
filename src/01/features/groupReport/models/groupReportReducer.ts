@@ -17,7 +17,7 @@ const initialForm = {
   period: 'currentMonth',
   dates: [moment().startOf('month').toISOString(), moment().toISOString()] as [
     string,
-    string
+    string,
   ],
   detailing: 'daily',
   hidden: true,
@@ -47,7 +47,7 @@ const reportSlice = createSlice({
       state,
       action: PayloadAction<
         Omit<GroupReportValuesInterface, 'dates'> & { dates: [string, string] }
-      >
+      >,
     ) {
       state.groupReportFormState = action.payload;
     },

@@ -33,7 +33,7 @@ export const UploadList = ({
           )}
         </li>
       ))}
-    </ul>
+    </ul>,
   );
 };
 

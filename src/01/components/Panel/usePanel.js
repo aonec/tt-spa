@@ -17,12 +17,12 @@ export const usePanel = ({ data }, dispatch) => {
     {
       ...createProps('Исполнитель', 'Выберите исполнителя'),
       getSelectData: (id) => setNextPerpetratorId(id[0]),
-    }
+    },
   );
 
   const contractors = useSelectFetch(
     { url: 'Contractors' },
-    { ...createProps('Получатель', 'Выберите получателя') }
+    { ...createProps('Получатель', 'Выберите получателя') },
   );
   //------------
 

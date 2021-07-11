@@ -33,5 +33,5 @@ export const TaskList = ({ list = [] }) =>
           <row></row>
         </item>
       );
-    })
+    }),
   );

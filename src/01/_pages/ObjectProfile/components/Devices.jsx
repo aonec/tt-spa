@@ -137,8 +137,8 @@ export const Devices = ({ nodes }) => {
 
       const devicesOnNode = _.flatten(
         communicationPipes.map((communicationPipe) =>
-          communicationPipe.devices.map((resItem) => resItem)
-        )
+          communicationPipe.devices.map((resItem) => resItem),
+        ),
       );
 
       const NodeDevices = () =>

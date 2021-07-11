@@ -35,14 +35,14 @@ const initialState = {
 
 const TabsDevices = () => {
   const devicePage = useSelector<RootState, DevicePageType>(
-    (state) => state.devicePage
+    (state) => state.devicePage,
   );
   const dispatch = useDispatch();
   const { pageSize, currentPage, totalPages } = devicePage;
 
   const [searchState, dispatchSearchState] = useReducer(
     devicesSearchReducer,
-    initialState
+    initialState,
   );
 
   const debouncedSearchState = useDebounce(searchState, 500);

@@ -311,7 +311,7 @@ const FormEditODPU = ({
               setFieldValue('lastCommercialAccountingDate', date);
               setFieldValue(
                 'futureCommercialAccountingDate',
-                moment(date).add(3, 'years')
+                moment(date).add(3, 'years'),
               );
             }}
             value={values.lastCommercialAccountingDate}

@@ -20,7 +20,7 @@ $isAddStaffFailed
   .reset(
     addStaffModalCloseButtonClicked,
     addStaffModalButtonClicked,
-    addStaffForm.submit
+    addStaffForm.submit,
   );
 
 forward({

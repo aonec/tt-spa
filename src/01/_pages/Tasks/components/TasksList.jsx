@@ -103,7 +103,7 @@ export const TasksList = ({ items }) => {
 
   return styled(
     styles,
-    time_line
+    time_line,
   )(
     items?.map(
       ({
@@ -198,7 +198,7 @@ export const TasksList = ({ items }) => {
             </row>
           </task_item>
         );
-      }
-    ) ?? <Loader show size="32" />
+      },
+    ) ?? <Loader show size="32" />,
   );
 };

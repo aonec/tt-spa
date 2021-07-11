@@ -54,7 +54,7 @@ const ModalCalculatorReportForm = ({
                 return result;
               }, [])
             );
-          })
+          }),
       );
 
       return {
@@ -90,7 +90,7 @@ const ModalCalculatorReportForm = ({
 
       getReport(shortLink).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
-          ';'
+          ';',
         );
         const encodedFileName = fileNameWithJunk[2].split("'")[2];
         const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
@@ -114,9 +114,9 @@ const ModalCalculatorReportForm = ({
       communicationPipes.map((communicationPipe: any) => {
         const { devices } = communicationPipe;
         return devices.filter(
-          (device: any) => device.housingMeteringDeviceType === 'FlowMeter'
+          (device: any) => device.housingMeteringDeviceType === 'FlowMeter',
         );
-      })
+      }),
     );
 
     let label = `Узел ${number}: ${modelCalculator} (${serialNumberCalculator})`;

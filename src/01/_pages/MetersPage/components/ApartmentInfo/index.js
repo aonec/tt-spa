@@ -47,6 +47,6 @@ export const ApartmentInfo = ({ userInfo = [], title }) => {
           <UserInfo list={userInfo} />
         </drower_content>
       </drower>
-    </>
+    </>,
   );
 };

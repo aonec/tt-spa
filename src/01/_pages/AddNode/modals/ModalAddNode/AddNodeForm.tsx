@@ -65,7 +65,7 @@ const AddNodeForm = (props: any) => {
     communicationPipes.map((communicationPipe: any) => {
       const { devices } = communicationPipe;
       return devices.map((device: any) => device);
-    })
+    }),
   );
 
   console.log('node', node);

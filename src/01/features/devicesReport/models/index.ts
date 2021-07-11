@@ -3,7 +3,7 @@ import { DeviceSearchReducerStateType } from '../../../_pages/Devices/devicesSea
 import { RequestDevicesReportQueryType } from '../../../_api/devicesReport';
 
 export const $devicesSearchState = createStore<Partial<DeviceSearchReducerStateType> | null>(
-  null
+  null,
 );
 
 export const searchStateChanged = createEvent<

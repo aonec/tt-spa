@@ -41,7 +41,7 @@ function documnetReducer(state, action) {
       return {
         ...state,
         items: items.map((doc) =>
-          doc.id === deleteId ? { ...doc, deleted: true } : doc
+          doc.id === deleteId ? { ...doc, deleted: true } : doc,
         ),
         deleteId,
       };

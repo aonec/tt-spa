@@ -24,7 +24,7 @@ export const NodeRelatedDevices = ({ device }: RelatedDevicesInterface) => {
       communicationPipes?.map((item, index) => {
         const { devices } = item;
         return devices;
-      })
+      }),
     );
     const result = related.map((value: any) => {
       const {

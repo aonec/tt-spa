@@ -4,5 +4,5 @@ import { RequestNodeReadingsFunctionInterface } from '../../../../_api/node_read
 export const setDataToStore = createEvent<RequestNodeReadingsFunctionInterface>();
 
 export const $graphData = createStore<RequestNodeReadingsFunctionInterface>(
-  {} as RequestNodeReadingsFunctionInterface
+  {} as RequestNodeReadingsFunctionInterface,
 );

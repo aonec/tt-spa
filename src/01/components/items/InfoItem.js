@@ -32,8 +32,8 @@ export const InfoItem = React.memo(({ title, text, url }) =>
         <span>{title}</span>
         <span>{text}</span>
       </LinkWrap>
-    </info_item>
-  )
+    </info_item>,
+  ),
 );
 
 InfoItem.propTypes = {

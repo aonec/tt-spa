@@ -7,6 +7,6 @@ export const CommentsBlock = ({ url, comments, hidden, canBeCreate }) => {
   return styled(styles)(
     <comment_block>
       <h2>Комментарии</h2>
-    </comment_block>
+    </comment_block>,
   );
 };

@@ -17,7 +17,7 @@ export const TaksIdHeader = ({
     return styled(styles)(
       <block>
         <h1>Загрузка...</h1>
-      </block>
+      </block>,
     );
 
   // ---------create timer------------
@@ -33,7 +33,7 @@ export const TaksIdHeader = ({
         expectedCompletionTime,
         closingTime,
       }}
-    />
+    />,
   );
   // ------------archived--------------
   if (closingTime) {
@@ -41,7 +41,7 @@ export const TaksIdHeader = ({
       <block>
         <h1>{name}</h1>
         {timer}
-      </block>
+      </block>,
     );
   }
 
@@ -65,7 +65,7 @@ export const TaksIdHeader = ({
           color: var(--main-60);
         }
       `}
-    />
+    />,
   );
 
   // -----------executing, observing-------------
@@ -75,7 +75,7 @@ export const TaksIdHeader = ({
       <name>{name}</name>
       {timeline}
       {timer}
-    </block>
+    </block>,
   );
 };
 

@@ -6,7 +6,7 @@ export const Tab = ({ styles, name, ...props }) =>
   styled(styles)(
     <NavLink to="/" activeClassName={styles.active} {...props}>
       {name}
-    </NavLink>
+    </NavLink>,
   );
 
 Tab.defaultProps = {

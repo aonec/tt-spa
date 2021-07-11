@@ -7,7 +7,7 @@ export const UploadBtn = ({ styles, big, change }) => {
     <upload as="label" {...use({ big })}>
       Загрузить файл <Icon icon="upload" />
       <input type="file" multiple onChange={change} />
-    </upload>
+    </upload>,
   );
 };
 

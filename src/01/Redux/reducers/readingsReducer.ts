@@ -26,7 +26,7 @@ export type DevicesType = typeof ReadingsState.items;
 
 const readingsReducer = (
   state: ReadingsStateType = ReadingsState,
-  action: ActionTypes
+  action: ActionTypes,
 ): ReadingsStateType => {
   switch (action.type) {
     case ReadingsActionsType.SET_DEVICES:
@@ -56,7 +56,7 @@ const readingsReducer = (
                       : reading;
                   }) || [],
               }
-            : device
+            : device,
         ),
       };
 

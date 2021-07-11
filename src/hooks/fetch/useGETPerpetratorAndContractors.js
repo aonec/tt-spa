@@ -9,8 +9,8 @@ export const useGETPerpetratorsAndContractors = () => {
       .all([request('ManagingFirmUsers'), request('Contractors')])
       .then(
         axios.spread((p, c) =>
-          setData({ perpetrators: p.items, contractors: c.items })
-        )
+          setData({ perpetrators: p.items, contractors: c.items }),
+        ),
       );
   }, []);
 

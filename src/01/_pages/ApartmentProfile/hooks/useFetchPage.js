@@ -23,7 +23,7 @@ export const useFetchPage = (state, dispatch) => {
     }
     if (pageDevice?.isExact && !state.devices) {
       getDevices(pageDevice.url).then((data) =>
-        dispatch({ type: 'success', data })
+        dispatch({ type: 'success', data }),
       );
     }
     if (pageApart?.isExact) {

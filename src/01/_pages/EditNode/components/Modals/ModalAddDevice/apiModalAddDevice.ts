@@ -2,7 +2,7 @@ import axios from '../../../../../axios';
 import { CreateHousingMeteringDeviceRequest } from '../../../../../../myApi';
 
 export async function addHousingMeteringDevice(
-  form: CreateHousingMeteringDeviceRequest
+  form: CreateHousingMeteringDeviceRequest,
 ) {
   try {
     const res = await axios.post('HousingMeteringDevices', form);

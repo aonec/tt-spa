@@ -23,7 +23,7 @@ export const Menu = () => {
         <ExitIcon icon={'exitIcon'} />
         <span>Выход из системы</span>
       </ExitLink>
-    </nav>
+    </nav>,
   );
 };
 

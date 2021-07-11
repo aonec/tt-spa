@@ -14,7 +14,7 @@ axios.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) return refresh(err.config);
     return Promise.reject(err);
-  }
+  },
 );
 
 function getTokenData() {

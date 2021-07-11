@@ -20,7 +20,7 @@ export const $serviceZones = createStore<NodeServiceZoneResponse[]>([]);
 export const setChosenInput = createEvent<number>();
 
 export const $chosenInput: Store<NodeServiceZoneResponse> = createStore(
-  {} as NodeServiceZoneResponse
+  {} as NodeServiceZoneResponse,
 );
 
 export const $derivedChosenInput = $chosenInput.map((oldInput) => {

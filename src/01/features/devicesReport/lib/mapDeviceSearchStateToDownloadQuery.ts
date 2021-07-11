@@ -2,7 +2,7 @@ import { DeviceSearchReducerStateType } from '../../../_pages/Devices/devicesSea
 import { RequestDevicesReportQueryType } from '../../../_api/devicesReport';
 
 export const mapDeviceSearchStateToDownloadQuery = (
-  searchState: Partial<DeviceSearchReducerStateType>
+  searchState: Partial<DeviceSearchReducerStateType>,
 ): RequestDevicesReportQueryType => {
   const {
     searchTerm,

@@ -32,5 +32,5 @@ export const AccessDeniedPage = () =>
       </button>
       {/* <img  src="https://satamalam.ru/public/404.svg" /> */}
       <img className="access-denied__image" src={require('./403.svg')} />
-    </div>
+    </div>,
   );

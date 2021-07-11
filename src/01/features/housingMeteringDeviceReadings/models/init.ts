@@ -27,7 +27,7 @@ requestReadingsFx.use(
   //       reject({ message: 'Ошибка' });
   //     }, 2000);
   //   })
-  requestReadings
+  requestReadings,
 );
 
 postReadingFx.use((data) => {
@@ -43,7 +43,7 @@ postReadingFx.use((data) => {
 
 const addReadingsReducer = (
   state: GetHousingMeteringDeviceReadingsResponse,
-  payload: GetHousingMeteringDeviceReadingsResponse
+  payload: GetHousingMeteringDeviceReadingsResponse,
 ) => ({
   ...state,
   items: payload.items,
@@ -96,7 +96,7 @@ $readings.on(readingChanged, (readings, payload) => {
 
 const readingFilterFn = (
   readings: GetHousingMeteringDeviceReadingsResponse,
-  inputPayload: InputPayloadType
+  inputPayload: InputPayloadType,
 ) => {
   const isNewValue = readings.items?.some((reading) => {
     const isEqualId = reading.id === inputPayload.id;

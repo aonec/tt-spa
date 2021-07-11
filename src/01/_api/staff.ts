@@ -7,7 +7,7 @@ import {
 } from './../../myApi';
 
 export const addStaff = (
-  data: ManagingFirmUserCreateRequest
+  data: ManagingFirmUserCreateRequest,
 ): Promise<ManagingFirmUserResponse> => axios.post('ManagingFirmUsers', data);
 
 export const fetchStaff = async () => {
@@ -22,6 +22,6 @@ export const deleteManagingFirmUser = (id: number) =>
   axios.post(`ManagingFirmUsers/${id}/suspend`);
 
 export const putManagingFirmUser = (
-  payload: { id: number } & ManagingFirmUserUpdateRequest
+  payload: { id: number } & ManagingFirmUserUpdateRequest,
 ): Promise<ManagingFirmUserResponse> =>
   axios.put(`ManagingFirmUsers/${payload.id}`, payload);

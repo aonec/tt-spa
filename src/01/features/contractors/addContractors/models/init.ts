@@ -16,7 +16,7 @@ $isAddContractorsModalVisible.on(
     cancelAddingContractorsButtonClicked,
     postContractorsFx.done,
   ]),
-  (isVisible) => !isVisible
+  (isVisible) => !isVisible,
 );
 
 $isFailedAddingContractor
@@ -31,7 +31,7 @@ forward({
 });
 
 $contractors.on(postContractorsFx.doneData, (contractors, contractor) =>
-  _.concat(contractors || [], contractor)
+  _.concat(contractors || [], contractor),
 );
 
 forward({

@@ -47,7 +47,7 @@ export const HeaderBlock = ({
       <Route></Route>
       <Route></Route>
       <Route></Route>
-    </hb>
+    </hb>,
   );
 };
 const ButtonLink = (props) =>
@@ -65,5 +65,5 @@ const ButtonLink = (props) =>
       <span>
         <Icon icon="plus" size={24} />
       </span>
-    </button>
+    </button>,
   );

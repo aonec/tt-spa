@@ -156,7 +156,7 @@ const AddDeviceForm = (props) => {
   function handleSubmitForm() {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
     if (hasError === true) {
       setTab(errorTab);
@@ -270,7 +270,7 @@ const AddDeviceForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'lastCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(),
                 );
               }}
               value={moment(values.lastCommercialAccountingDate)}
@@ -289,7 +289,7 @@ const AddDeviceForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'futureCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(),
                 );
               }}
               value={moment(values.futureCommercialAccountingDate)}

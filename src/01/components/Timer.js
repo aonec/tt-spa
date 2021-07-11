@@ -28,7 +28,7 @@ export const Timer = ({
         <Icon icon="ok" />
         Выполненно за: <span>{final.str}</span>({diff.fail ? '-' : '+'}
         {diff.str})
-      </time>
+      </time>,
     );
   }
 
@@ -41,7 +41,7 @@ export const Timer = ({
       Время на этап:
       <span {...use({ fail: stage.fail })}>{stage.str}</span>
       (до {before})
-    </time>
+    </time>,
   );
 };
 

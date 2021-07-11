@@ -5,7 +5,7 @@ const UPDATE_READINGS = 'UPDATE_READINGS';
 
 export const usePanel = (
   { panel = {}, panelLoading = false, apartment, stages },
-  pageDispatch
+  pageDispatch,
 ) => {
   const [state, dispatch] = React.useReducer(dataReducer, {});
   const isObserver = panel.userOperatingStatus === 'Observer';
@@ -64,10 +64,10 @@ export function dataReducer(state, action) {
                         ...reading,
                         [`value${action.readingNumber}`]: action.readingValue,
                       }
-                    : reading
+                    : reading,
                 ),
               }
-            : device
+            : device,
         ),
       };
 
@@ -97,7 +97,7 @@ function isDisabled(
     SetNextStageDeadline,
     UploadReadings,
     isObserver,
-  }
+  },
 ) {
   if (Switch && AddPerpetrator) return !nextPerpetratorId || !nextStageId;
   if (Switch && AddDocuments) return !documentsIds.length;

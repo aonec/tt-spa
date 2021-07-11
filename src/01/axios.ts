@@ -59,7 +59,7 @@ axios.interceptors.response.use(
           () => {
             localStorage.clear();
             window.location.replace('/login');
-          }
+          },
         );
       });
     }
@@ -71,7 +71,7 @@ axios.interceptors.response.use(
     //       window.location.replace('/error/');
     //   }
     return Promise.reject(error);
-  }
+  },
 );
 
 // get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;

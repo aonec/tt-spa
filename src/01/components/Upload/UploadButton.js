@@ -40,7 +40,7 @@ export const UploadButton = ({
         <Icon icon="upload" />
       </Loader>
       <input type="file" onChange={onChangeHandler} disabled={loading} />
-    </upload>
+    </upload>,
   );
 };
 

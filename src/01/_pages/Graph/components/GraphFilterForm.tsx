@@ -50,7 +50,7 @@ const GraphFilterForm: React.FC<GraphFilterFormProps> = ({
 
   const handleSubmit = (
     values: FormValuesInterface,
-    actions: FormikHelpers<FormValuesInterface>
+    actions: FormikHelpers<FormValuesInterface>,
   ) => {
     setSearchQuery((prevQuery) => {
       return {

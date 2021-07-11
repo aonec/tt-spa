@@ -28,6 +28,6 @@ export const Tabs = React.memo(() => {
           {t[0]}
         </NavLink>
       ))}
-    </tabs>
+    </tabs>,
   );
 });

@@ -17,6 +17,6 @@ export const CommentCreator = () => {
           <span>Отмена</span>
         </button>
       </row>
-    </comment_creator>
+    </comment_creator>,
   );
 };

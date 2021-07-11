@@ -14,7 +14,7 @@ export const setUser = (value: any): SetUserInterface => ({
 
 export default function userReducer(
   state: any = initialState,
-  action: SetUserInterface
+  action: SetUserInterface,
 ): ManagingFirmUserResponse {
   return { ...state, ...action.payload };
 }

@@ -62,7 +62,7 @@ export const Select = ({
         show={showList}
         setShow={setShowList}
       />
-    </select_wraper>
+    </select_wraper>,
   );
 };
 

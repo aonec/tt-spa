@@ -19,7 +19,7 @@ export const useUploadReducer = () => {
           return state;
       }
     },
-    { files: [] }
+    { files: [] },
   );
 
   return useMemo(() => [state, dispatch], [state, dispatch]);

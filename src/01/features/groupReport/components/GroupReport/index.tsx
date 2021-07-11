@@ -73,7 +73,7 @@ const ModalGroupReport = () => {
   const isMounted = React.useRef(true);
 
   const groupReportStatus = useAppSelector(
-    (state) => state.groupReport.groupReportStatus
+    (state) => state.groupReport.groupReportStatus,
   );
   const dispatch = useAppDispatch();
   const closeModal = () => dispatch(setGroupStatus(undefined));
@@ -140,7 +140,7 @@ const ModalGroupReport = () => {
         setForm({
           ...values,
           dates: [values.dates[0].toISOString(), values.dates[1].toISOString()],
-        })
+        }),
       );
 
       const beginDay = moment(getFieldValue('dates')[0]);

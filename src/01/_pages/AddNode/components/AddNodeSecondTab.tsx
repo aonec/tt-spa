@@ -31,7 +31,7 @@ import { useStore } from 'effector-react';
 
 const AddNodeSecondTab = () => {
   const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
-    AddNodeContext
+    AddNodeContext,
   );
 
   const serviceZones = useStore($serviceZones);

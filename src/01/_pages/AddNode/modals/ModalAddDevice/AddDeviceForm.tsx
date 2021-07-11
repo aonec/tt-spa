@@ -37,7 +37,7 @@ const AddDeviceForm = (props: any) => {
   const { handleCancel } = props;
 
   const { node, communicationPipes, setCommunicationPipes } = useContext(
-    AddNodeContext
+    AddNodeContext,
   );
 
   const { resource, entryNumber, calculatorId } = node;
@@ -129,7 +129,7 @@ const AddDeviceForm = (props: any) => {
               devices.push(device);
             }
             return communicationPipe;
-          }
+          },
         );
 
         console.log('newCommunicationPipes', newCommunicationPipes);
@@ -193,7 +193,7 @@ const AddDeviceForm = (props: any) => {
   function handleSubmitForm() {
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
     if (hasError) {
       setTab(errorTab);

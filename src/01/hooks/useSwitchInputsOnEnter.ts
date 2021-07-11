@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export const useSwitchOnInputs = () => {
   const onKeyDown = (e: KeyboardEvent) => {
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      'input:not(:disabled)'
+      'input:not(:disabled)',
     );
 
     if (e.key === 'Enter') {

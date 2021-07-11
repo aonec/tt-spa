@@ -16,7 +16,7 @@ function useSafeDispatch<Action>(dispatch: React.Dispatch<Action>) {
         dispatch(...args);
       }
     },
-    [dispatch]
+    [dispatch],
   );
 }
 
@@ -52,7 +52,7 @@ type AsyncAction<DataType> =
 
 function asyncReducer<DataType>(
   state: AsyncState<DataType>,
-  action: AsyncAction<DataType>
+  action: AsyncAction<DataType>,
 ) {
   switch (action.type) {
     case 'pending': {
@@ -88,7 +88,7 @@ export function useAsync<DataType>(initialState?: AsyncState<DataType>) {
     (promise: Promise<DataType>) => {
       if (!promise || !promise.then) {
         throw new Error(
-          `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`
+          `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`,
         );
       }
       dispatch({ type: 'pending' });
@@ -100,19 +100,19 @@ export function useAsync<DataType>(initialState?: AsyncState<DataType>) {
         (error: Error) => {
           dispatch({ type: 'error', error });
           return error;
-        }
+        },
       );
     },
-    [dispatch]
+    [dispatch],
   );
 
   const setData = React.useCallback(
     (data: DataType) => dispatch({ type: 'resolved', data }),
-    [dispatch]
+    [dispatch],
   );
   const setError = React.useCallback(
     (error: Error) => dispatch({ type: 'error', error }),
-    [dispatch]
+    [dispatch],
   );
 
   return {

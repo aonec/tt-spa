@@ -33,7 +33,7 @@ export const Information = ({
           ))}
         </info_list>
       </Loader>
-    </information>
+    </information>,
   );
 };
 

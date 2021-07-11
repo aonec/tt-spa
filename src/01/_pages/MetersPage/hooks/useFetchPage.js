@@ -12,7 +12,7 @@ export const useFetchPage = (state, dispatch) => {
   React.useEffect(() => {
     if (apatrments?.isExact && state.params) {
       getApartmetns(state.params).then((data) =>
-        dispatch({ type: 'success', data })
+        dispatch({ type: 'success', data }),
       );
     }
   }, [state.params, apatrments?.isExact]);

@@ -6,7 +6,7 @@ export const Loader = ({ styles, size, center, ...props }) => {
   return styled(styles)(
     <div {...props} {...use({ center })}>
       <Icon icon="replacement" size={size} />
-    </div>
+    </div>,
   );
 };
 

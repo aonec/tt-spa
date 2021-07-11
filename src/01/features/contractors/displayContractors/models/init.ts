@@ -14,7 +14,7 @@ $isFetchingContractorsFailed
   .reset(getContractorsFx);
 
 $contractors.on(getContractorsFx.doneData, (contractors, response) =>
-  contractors ? [...contractors, ...response.items] : response.items
+  contractors ? [...contractors, ...response.items] : response.items,
 );
 
 forward({

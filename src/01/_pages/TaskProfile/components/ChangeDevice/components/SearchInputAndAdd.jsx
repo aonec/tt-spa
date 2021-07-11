@@ -7,7 +7,7 @@ import { selectedTemplate } from './localBase';
 
 const SearchInputAndAdd = () => {
   const { devices, setSelected, setState, deviceType } = useContext(
-    ChangeDeviceContext
+    ChangeDeviceContext,
   );
 
   const [value, setValue] = useState('');

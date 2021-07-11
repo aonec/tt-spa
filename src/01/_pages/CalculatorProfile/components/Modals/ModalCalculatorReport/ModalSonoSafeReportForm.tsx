@@ -155,7 +155,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
       console.log('shortLink', shortLink);
       getReport(shortLink).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
-          ';'
+          ';',
         );
         const encodedFileName = fileNameWithJunk[2].split("'")[2];
         const decodedFileName = decodeURI(encodedFileName).replace(/%2C/g, ',');
@@ -231,7 +231,7 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
   useEffect(() => {
     handleSelect(
       devicesSelectionByType[values.resource][0].value,
-      devicesSelectionByType[values.resource][0]
+      devicesSelectionByType[values.resource][0],
     );
   }, []);
 

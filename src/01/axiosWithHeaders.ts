@@ -67,7 +67,7 @@ axiosWithHeaders.interceptors.response.use(
           () => {
             localStorage.clear();
             window.location.replace('/login');
-          }
+          },
         );
       });
     }
@@ -79,7 +79,7 @@ axiosWithHeaders.interceptors.response.use(
     //       window.location.replace('/error/');
     //   }
     return Promise.reject(error);
-  }
+  },
 );
 
 // utils

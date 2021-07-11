@@ -83,9 +83,9 @@ export const Header = React.memo(
             </div>
           </Loader>
         </HeaderWrap>
-      </h>
+      </h>,
     );
-  }
+  },
 );
 
 export default Header;

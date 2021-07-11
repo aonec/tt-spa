@@ -38,7 +38,7 @@ export const getDevices = async (url = '', dispatch = () => {}) => {
 
 export const getEvents = async (
   { HousingStockId = null, DeviceId = null } = {},
-  dispatch = () => {}
+  dispatch = () => {},
 ) => {
   try {
     const res = await axios.get('tasks', {

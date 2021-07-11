@@ -13,7 +13,7 @@ sample({
     source: combine(
       $managingFirmUser,
       ManagingFirmUserGate.state.map((state) => state.id),
-      (user, id) => ({ user, id })
+      (user, id) => ({ user, id }),
     ),
     clock: ManagingFirmUserGate.open,
     filter: ({ user, id }) => user?.id !== id,

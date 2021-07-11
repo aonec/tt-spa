@@ -45,7 +45,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
     const previousReadings = readingsState?.previousReadingsArray || {};
     let consumptionArray = Array.from(
       { length: numberOfReadings },
-      (v, i) => i
+      (v, i) => i,
     );
     const consumption = consumptionArray.map((value, index) => {
       return +currentReadings[index] - +previousReadings[index] > 0

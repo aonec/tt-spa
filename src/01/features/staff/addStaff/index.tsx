@@ -177,7 +177,7 @@ export const AddStaffModal: React.FC = () => {
               value={phoneMask.maskValue(fields.cellphone.value)}
               onChange={(e: { target: { value: string } }) =>
                 fields.cellphone.onChange(
-                  phoneMask.unmaskedValue(e.target.value)
+                  phoneMask.unmaskedValue(e.target.value),
                 )
               }
             />

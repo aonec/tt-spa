@@ -3370,7 +3370,7 @@ export type RequestParams = Omit<
 export interface ApiConfig<SecurityDataType = unknown>
   extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
   securityWorker?: (
-    securityData: SecurityDataType | null
+    securityData: SecurityDataType | null,
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
 }
 
@@ -3402,7 +3402,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private mergeRequestParams(
     params1: AxiosRequestConfig,
-    params2?: AxiosRequestConfig
+    params2?: AxiosRequestConfig,
   ): AxiosRequestConfig {
     return {
       ...params1,
@@ -3460,7 +3460,7 @@ export class Api<
      */
     apartmentsCreate: (
       data: ApartmentCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments`,
@@ -3493,7 +3493,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ApartmentListResponsePagedListSuccessApiResponse,
@@ -3518,7 +3518,7 @@ export class Api<
     apartmentsUpdate: (
       apartmentId: number,
       data: ApartmentUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
@@ -3578,7 +3578,7 @@ export class Api<
     apartmentsSetStatusPartialUpdate: (
       apartmentId: number,
       data: ApartmentStatusSetRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatus`,
@@ -3618,7 +3618,7 @@ export class Api<
      */
     authRefreshTokenCreate: (
       data: RefreshTokenRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<RefreshResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Auth/refreshToken`,
@@ -3676,7 +3676,7 @@ export class Api<
      */
     authResetPasswordCreate: (
       data: string | null,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Auth/resetPassword`,
@@ -3697,7 +3697,7 @@ export class Api<
      */
     authChangePasswordCreate: (
       data: ConfirmRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Auth/changePassword`,
@@ -3760,7 +3760,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/Export`,
@@ -3803,7 +3803,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         CalculatorListResponsePagedListSuccessApiResponse,
@@ -3827,7 +3827,7 @@ export class Api<
      */
     calculatorsCreate: (
       data: CreateCalculatorRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators`,
@@ -3867,7 +3867,7 @@ export class Api<
     calculatorsUpdate: (
       deviceId: number,
       data: UpdateCalculatorRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/${deviceId}`,
@@ -3889,7 +3889,7 @@ export class Api<
      */
     calculatorsSwitchCreate: (
       data: SwitchCalculatorRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Calculators/switch`,
@@ -3951,7 +3951,7 @@ export class Api<
      */
     contractorsCreate: (
       data: ContractorCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors`,
@@ -3991,7 +3991,7 @@ export class Api<
     contractorsUpdate: (
       contractorId: number,
       data: ContractorUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ContractorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Contractors/${contractorId}`,
@@ -4033,7 +4033,7 @@ export class Api<
         args?: string | null;
         saveChanges?: boolean;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, any>({
         path: `/api/DataMigrations/Migrate`,
@@ -4069,7 +4069,7 @@ export class Api<
      */
     dataMigrationsRemoveApartmentTasksCreate: (
       query?: { managementFirmId?: number },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, any>({
         path: `/api/DataMigrations/RemoveApartmentTasks`,
@@ -4121,7 +4121,7 @@ export class Api<
      */
     documentsUploadCreate: (
       data: { file?: File[] | null; type?: EDocumentType },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         DocumentResponseIEnumerableSuccessApiResponse,
@@ -4205,7 +4205,7 @@ export class Api<
         LivingHouseType?: ELivingHouseType;
         NonResidentialHouseType?: ENonResidentialHouseType;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons`,
@@ -4226,7 +4226,7 @@ export class Api<
      */
     heatingSeasonsSwitchCreate: (
       data: SwitchHeatingSeasonRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons/Switch`,
@@ -4248,7 +4248,7 @@ export class Api<
      */
     heatingSeasonsAddOrUpdateForHouseManagementCreate: (
       data: AddOrUpdateHeatingSeasonForHouseManagementRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HeatingSeasonResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingSeasons/AddOrUpdateForHouseManagement`,
@@ -4290,7 +4290,7 @@ export class Api<
      */
     heatingStationCreate: (
       data: AddHeatingStationRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation`,
@@ -4330,7 +4330,7 @@ export class Api<
     heatingStationUpdate: (
       id: string,
       data: UpdateHeatingStationRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HeatingStationResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HeatingStation/${id}`,
@@ -4372,7 +4372,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HomeownersListResponsePagedListSuccessApiResponse,
@@ -4396,7 +4396,7 @@ export class Api<
      */
     homeownersCreate: (
       data: HomeownersCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners`,
@@ -4436,7 +4436,7 @@ export class Api<
     homeownersUpdate: (
       homeownerId: number,
       data: HomeownersUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}`,
@@ -4458,7 +4458,7 @@ export class Api<
      */
     housingMeteringDeviceReadingsList: (
       query?: { nodeId?: number },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         GetHousingMeteringDeviceReadingsResponseSuccessApiResponse,
@@ -4482,7 +4482,7 @@ export class Api<
      */
     housingMeteringDeviceReadingsCreate: (
       data: CreateHousingMeteringDeviceReadingsRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceReadingsResponseSuccessApiResponse,
@@ -4507,7 +4507,7 @@ export class Api<
      */
     housingMeteringDeviceReadingsUpdate: (
       data: UpdateHousingMeteringDeviceReadingsRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceReadingsResponseSuccessApiResponse,
@@ -4532,7 +4532,7 @@ export class Api<
      */
     housingMeteringDeviceReadingsDelete: (
       query?: { id?: string },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
@@ -4552,7 +4552,7 @@ export class Api<
      */
     housingMeteringDeviceReadingsCreateOrUpdateLastCreate: (
       data: CreateHousingMeteringDeviceReadingsRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceReadingsResponseSuccessApiResponse,
@@ -4578,7 +4578,7 @@ export class Api<
     housingMeteringDevicesUpdate: (
       deviceId: number,
       data: UpdateHousingMeteringDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}`,
@@ -4600,7 +4600,7 @@ export class Api<
      */
     housingMeteringDevicesDetail: (
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceResponseSuccessApiResponse,
@@ -4623,7 +4623,7 @@ export class Api<
      */
     housingMeteringDevicesCreate: (
       data: CreateHousingMeteringDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices`,
@@ -4645,7 +4645,7 @@ export class Api<
      */
     housingMeteringDevicesSwitchCreate: (
       data: SwitchHousingMeteringDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/switch`,
@@ -4667,7 +4667,7 @@ export class Api<
      */
     housingMeteringDevicesCommentDetail: (
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceCommentResponseSuccessApiResponse,
@@ -4691,7 +4691,7 @@ export class Api<
     housingMeteringDevicesCommentCreate: (
       deviceId: number,
       data: HousingMeteringDeviceAddCommentRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceCommentResponseSuccessApiResponse,
@@ -4717,7 +4717,7 @@ export class Api<
     housingMeteringDevicesCommentUpdate: (
       deviceId: number,
       data: HousingMeteringDeviceUpdateCommentRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingMeteringDeviceCommentResponseSuccessApiResponse,
@@ -4742,7 +4742,7 @@ export class Api<
      */
     housingMeteringDevicesCommentDelete: (
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/HousingMeteringDevices/${deviceId}/comment`,
@@ -4761,7 +4761,7 @@ export class Api<
      */
     housingStocksCreate: (
       data: HousingStockCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks`,
@@ -4799,7 +4799,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingStockListResponsePagedListSuccessApiResponse,
@@ -4824,7 +4824,7 @@ export class Api<
     housingStocksUpdate: (
       housingStockId: number,
       data: HousingStockUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
@@ -4863,7 +4863,7 @@ export class Api<
      */
     housingStocksDevicesDetail: (
       housingStockId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingStockDeviceListResponseSuccessApiResponse,
@@ -4889,7 +4889,7 @@ export class Api<
     housingStocksDevicesDetail2: (
       housingStockId: number,
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingStockDeviceResponseSuccessApiResponse,
@@ -4913,7 +4913,7 @@ export class Api<
     housingStocksDevicesRelatedDetail: (
       housingStockId: number,
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         HousingStockDeviceListResponseSuccessApiResponse,
@@ -4937,7 +4937,7 @@ export class Api<
     housingStocksDevicesCommunicationPipesDetail: (
       housingStockId: number,
       deviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<PipesListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}/Devices/${deviceId}/CommunicationPipes`,
@@ -4984,7 +4984,7 @@ export class Api<
         HouseNumber: string;
         HouseCorpus?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<GuidSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/GetFiasId`,
@@ -5046,7 +5046,7 @@ export class Api<
         Name?: string | null;
         FileName?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ImportReadings/import`,
@@ -5088,7 +5088,7 @@ export class Api<
      */
     individualDeviceReadingsCreateCreate: (
       data: IndividualDeviceReadingsCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         IndividualDeviceReadingsCreateListResponseSuccessApiResponse,
@@ -5119,7 +5119,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         IndividualDeviceReadingsExistingFlagModelPagedListSuccessApiResponse,
@@ -5143,7 +5143,7 @@ export class Api<
      */
     individualDeviceReadingsSetEmptyCreate: (
       data: IndividualDeviceReadingsSetEmptyRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDeviceReadings/setEmpty`,
@@ -5185,7 +5185,7 @@ export class Api<
     individualDevicesUpdate: (
       deviceId: number,
       data: UpdateIndividualDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}`,
@@ -5217,7 +5217,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         IndividualDeviceListItemResponsePagedListSuccessApiResponse,
@@ -5241,7 +5241,7 @@ export class Api<
      */
     individualDevicesCreate: (
       data: CreateIndividualDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices`,
@@ -5263,7 +5263,7 @@ export class Api<
      */
     individualDevicesCloseCreate: (
       data: CloseDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDevices/close`,
@@ -5285,7 +5285,7 @@ export class Api<
     individualDevicesSwitchMagneticSealCreate: (
       deviceId: number,
       query?: { magneticSealInstallationDate?: string | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/SwitchMagneticSeal`,
@@ -5345,7 +5345,7 @@ export class Api<
      */
     managementFirmCompetencesCreate: (
       data: AddManagementFirmCompetenceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagementFirmCompetenceResponseSuccessApiResponse,
@@ -5390,7 +5390,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagementFirmResponsePagedListSuccessApiResponse,
@@ -5432,7 +5432,7 @@ export class Api<
     managingFirmsUpdate: (
       managingFirmId: number,
       data: ManagementFirmUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<ManagementFirmResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ManagingFirms/${managingFirmId}`,
@@ -5461,7 +5461,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagingFirmUserListResponsePagedListSuccessApiResponse,
@@ -5485,7 +5485,7 @@ export class Api<
      */
     managingFirmUsersCreate: (
       data: ManagingFirmUserCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagingFirmUserResponseSuccessApiResponse,
@@ -5511,7 +5511,7 @@ export class Api<
     managingFirmUsersStatisticsDetail: (
       userId: number,
       query?: { From?: string | null; To?: string | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagingFirmUserStatisticsResponseSuccessApiResponse,
@@ -5556,7 +5556,7 @@ export class Api<
     managingFirmUsersUpdate: (
       userId: number,
       data: ManagingFirmUserUpdateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagingFirmUserResponseSuccessApiResponse,
@@ -5601,7 +5601,7 @@ export class Api<
      */
     managingFirmUsersSuspendCreate: (
       userId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/ManagingFirmUsers/${userId}/suspend`,
@@ -5640,7 +5640,7 @@ export class Api<
      */
     managingFirmUserWorkingStatusesCreate: (
       data: AddManagingFirmUserWorkingStatusRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ManagingFirmUserWorkingStatusResponseSuccessApiResponse,
@@ -5675,7 +5675,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         MeteringDeviceListResponsePagedListSuccessApiResponse,
@@ -5704,7 +5704,7 @@ export class Api<
         Question?: string | null;
         Take?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         MeteringDeviceSearchListResponseIEnumerableSuccessApiResponse,
@@ -5728,7 +5728,7 @@ export class Api<
      */
     meteringDevicesDetail: (
       meteringDeviceId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/MeteringDevices/${meteringDeviceId}`,
@@ -5748,7 +5748,7 @@ export class Api<
      */
     meteringDevicesRelatedList: (
       query: { DeviceId: number; PipeNumber?: number | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         MeteringDeviceListResponseIEnumerableSuccessApiResponse,
@@ -5772,7 +5772,7 @@ export class Api<
      */
     meteringDevicesCloseCreate: (
       data: CloseDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/close`,
@@ -5793,7 +5793,7 @@ export class Api<
      */
     meteringDevicesCheckCreate: (
       data: CheckDeviceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/MeteringDevices/check`,
@@ -5832,7 +5832,7 @@ export class Api<
     nodesUpdate: (
       nodeId: number,
       data: UpdateNodeRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<NodeResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}`,
@@ -5875,7 +5875,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<NodeResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Nodes`,
@@ -5916,7 +5916,7 @@ export class Api<
     nodesAddAdmissionActCreate: (
       nodeId: number,
       data: NodeAdmissionActRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Nodes/${nodeId}/AddAdmissionAct`,
@@ -5942,7 +5942,7 @@ export class Api<
         magistralType: EMagistralType;
         housingMeteringDeviceType: EHousingMeteringDeviceType;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         CommunicationPipeForAddingDeviceListResponseSuccessApiResponse,
@@ -5986,7 +5986,7 @@ export class Api<
      */
     nodeServiceZonesCreate: (
       data: NodeServiceZoneRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -5997,7 +5997,7 @@ export class Api<
           type: ContentType.Json,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6010,7 +6010,7 @@ export class Api<
      */
     nodeServiceZonesDetail: (
       nodeServiceZoneId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -6019,7 +6019,7 @@ export class Api<
           secure: true,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6033,7 +6033,7 @@ export class Api<
     nodeServiceZonesUpdate: (
       nodeServiceZoneId: number,
       data: NodeServiceZoneRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<NodeServiceZoneResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -6044,7 +6044,7 @@ export class Api<
           type: ContentType.Json,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6057,7 +6057,7 @@ export class Api<
      */
     nodeServiceZonesDelete: (
       nodeServiceZoneId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/NodeServiceZones/${nodeServiceZoneId}`,
@@ -6076,7 +6076,7 @@ export class Api<
      */
     nodeWorkingRangeAddOrUpdateCreate: (
       data: AddOrUpdateNodeWorkingRangeRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ValueNodeWorkingRangeResponseSuccessApiResponse,
@@ -6101,7 +6101,7 @@ export class Api<
      */
     nodeWorkingRangeGetList: (
       data: GetNodeWorkingRangeRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ValueNodeWorkingRangeResponseSuccessApiResponse,
@@ -6126,7 +6126,7 @@ export class Api<
      */
     nodeWorkingRangeGetAllList: (
       data: GetAllNodeWorkingRangeRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         AllNodeWorkingRangeResponseSuccessApiResponse,
@@ -6157,7 +6157,7 @@ export class Api<
           secure: true,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6170,7 +6170,7 @@ export class Api<
      */
     reportsCreate: (
       data: CreateGroupReportRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<GroupReportResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports`,
@@ -6197,7 +6197,7 @@ export class Api<
         From?: string | null;
         To?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/Archives`,
@@ -6222,7 +6222,7 @@ export class Api<
         From?: string | null;
         To?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/Report`,
@@ -6247,7 +6247,7 @@ export class Api<
         From?: string | null;
         To?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ConsolidatedReport`,
@@ -6280,7 +6280,7 @@ export class Api<
         From?: string | null;
         To?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/GroupReport`,
@@ -6308,7 +6308,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ResourceDisconnectingResponsePagedListSuccessApiResponse,
@@ -6332,7 +6332,7 @@ export class Api<
      */
     resourceDisconnectingCreate: (
       data: ResourceDisconnectingCreateRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ResourceDisconnectingResponseSuccessApiResponse,
@@ -6383,7 +6383,7 @@ export class Api<
         StartDate?: string | null;
         EndDate?: string | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         ResourceDisconnectingResponseSuccessApiResponse,
@@ -6428,7 +6428,7 @@ export class Api<
     statisticsTasksFileDetail: (
       managementFirmId: number,
       query?: { from?: string; to?: string | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, any>({
         path: `/api/Statistics/${managementFirmId}/tasks/file`,
@@ -6449,7 +6449,7 @@ export class Api<
     statisticsConsumptionsFileDetail: (
       managementFirmId: number,
       query?: { from?: string; to?: string | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, any>({
         path: `/api/Statistics/${managementFirmId}/consumptions/file`,
@@ -6470,7 +6470,7 @@ export class Api<
     statisticsReadingsFileDetail: (
       managementFirmId: number,
       query?: { from?: string; to?: string | null },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, any>({
         path: `/api/Statistics/${managementFirmId}/readings/file`,
@@ -6491,7 +6491,7 @@ export class Api<
     taskApplicationsLinkCreate: (
       taskId: number,
       data: CreateTaskApplicationRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskApplicationResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -6502,7 +6502,7 @@ export class Api<
           type: ContentType.Json,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6521,7 +6521,7 @@ export class Api<
         ApartmentId?: number | null;
         HousingStockId?: number | null;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskApplicationResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -6531,7 +6531,7 @@ export class Api<
           secure: true,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6544,7 +6544,7 @@ export class Api<
      */
     taskApplicationsCreate: (
       data: CreateTaskApplicationRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskApplicationResponseSuccessApiResponse, ErrorApiResponse>(
         {
@@ -6555,7 +6555,7 @@ export class Api<
           type: ContentType.Json,
           format: 'json',
           ...params,
-        }
+        },
       ),
 
     /**
@@ -6588,7 +6588,7 @@ export class Api<
      */
     taskApplicationSourcesCreate: (
       data: TaskApplicationSourceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         TaskApplicationSourceResponseSuccessApiResponse,
@@ -6613,7 +6613,7 @@ export class Api<
      */
     taskApplicationSourcesDetail: (
       sourceId: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         TaskApplicationSourceResponseSuccessApiResponse,
@@ -6637,7 +6637,7 @@ export class Api<
     taskApplicationSourcesUpdate: (
       sourceId: string,
       data: TaskApplicationSourceRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         TaskApplicationSourceResponseSuccessApiResponse,
@@ -6662,7 +6662,7 @@ export class Api<
      */
     taskApplicationSourcesDelete: (
       sourceId: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/TaskApplicationSources/${sourceId}`,
@@ -6697,7 +6697,7 @@ export class Api<
         PageSize?: number;
         OrderBy?: EOrderByRule;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks`,
@@ -6788,7 +6788,7 @@ export class Api<
     tasksPushStageCreate: (
       taskId: number,
       data: StagePushRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/PushStage`,
@@ -6811,7 +6811,7 @@ export class Api<
     tasksRevertStageCreate: (
       taskId: number,
       data: StageRevertRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/RevertStage`,
@@ -6854,7 +6854,7 @@ export class Api<
     tasksCommentsCreate: (
       taskId: number,
       data: TaskCommentRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments`,
@@ -6878,7 +6878,7 @@ export class Api<
       taskId: number,
       commentId: number,
       data: TaskCommentRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<TaskCommentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
@@ -6901,7 +6901,7 @@ export class Api<
     tasksCommentsDelete: (
       taskId: number,
       commentId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Comments/${commentId}`,
@@ -6921,7 +6921,7 @@ export class Api<
     tasksDocumentsDelete: (
       taskId: number,
       documentId: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/Documents/${documentId}`,
@@ -6940,7 +6940,7 @@ export class Api<
      */
     tasksAssignMultipleCreate: (
       data: TaskAssignToMultipleRequest,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<any, ErrorApiResponse>({
         path: `/api/Tasks/assignMultiple`,

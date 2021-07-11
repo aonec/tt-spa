@@ -40,10 +40,10 @@ export const Apartments = React.memo(
                   {square ?? '-'} м<sup>2</sup>
                 </item_square>
               </item>
-            )
+            ),
           )}
         </apartments>
-      </Route>
+      </Route>,
     );
-  }
+  },
 );

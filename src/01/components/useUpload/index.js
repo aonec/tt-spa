@@ -20,7 +20,7 @@ export const useUpload = ({ big } = {}) => {
         dispatch({
           type: 'success_upload',
           payload: Object.values(data),
-        })
+        }),
       );
     }
     if (deleteId) {

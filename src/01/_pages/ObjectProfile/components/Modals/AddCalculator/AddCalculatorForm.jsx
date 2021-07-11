@@ -34,7 +34,7 @@ const AddCalculatorForm = (props) => {
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
   const { setAlertVisible, setExistCalculator } = useContext(
-    AddCalculatorContext
+    AddCalculatorContext,
   );
   const {
     handleSubmit,
@@ -164,7 +164,7 @@ const AddCalculatorForm = (props) => {
     e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
-      errors
+      errors,
     );
 
     if (hasError === true) {
@@ -240,7 +240,7 @@ const AddCalculatorForm = (props) => {
                 setFieldValue('lastCheckingDate', date.toISOString());
                 setFieldValue(
                   'futureCheckingDate',
-                  moment(date).add(3, 'years')
+                  moment(date).add(3, 'years'),
                 );
               }}
               value={moment(values.lastCheckingDate)}
@@ -272,7 +272,7 @@ const AddCalculatorForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'lastCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(),
                 );
               }}
               value={moment(values.lastCommercialAccountingDate)}
@@ -291,7 +291,7 @@ const AddCalculatorForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'futureCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(),
                 );
               }}
               value={moment(values.futureCommercialAccountingDate)}

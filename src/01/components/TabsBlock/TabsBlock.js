@@ -115,6 +115,6 @@ export const TabsBlock = () => {
           ))}
         </tabbl>
       </Route>
-    </Switch>
+    </Switch>,
   );
 };

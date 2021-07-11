@@ -35,7 +35,7 @@ export const Pig = ({ label = '', text = '' }) =>
         {text}
         <Icon icon="down" />
       </body>
-    </pig>
+    </pig>,
   );
 
 Pig.propTypes = {

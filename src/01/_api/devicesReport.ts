@@ -34,7 +34,7 @@ export type RequestDevicesReportQueryType = {
 };
 
 export const requestDevicesReport = async (
-  query?: RequestDevicesReportQueryType
+  query?: RequestDevicesReportQueryType,
 ): Promise<File | null> => {
   const config: Partial<
     {
@@ -53,7 +53,7 @@ export const requestDevicesReport = async (
 };
 
 export const downloadDevicesReport = (
-  query?: RequestDevicesReportQueryType
+  query?: RequestDevicesReportQueryType,
 ) => {
   return requestDevicesReport(query).then((response: any) => {
     const fileNameWithJunk = response.headers['content-disposition'].split(';');

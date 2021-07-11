@@ -22,7 +22,7 @@ export function useFilesUpload(): FileUploader {
 
   const rewriteFile = (id: number, callback: (file: FileData) => FileData) => {
     setFiles((prev) =>
-      rewriteArrayElem(prev, (file) => file.id === id, callback)
+      rewriteArrayElem(prev, (file) => file.id === id, callback),
     );
   };
 
@@ -88,5 +88,5 @@ export function useFilesUpload(): FileUploader {
 const rewriteArrayElem = <T>(
   prev: T[],
   checker: (elem: T) => boolean,
-  getNewElem: (elem: T) => T
+  getNewElem: (elem: T) => T,
 ): T[] => prev.map((elem) => (checker(elem) ? getNewElem(elem) : elem));

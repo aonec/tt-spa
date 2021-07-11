@@ -17,7 +17,7 @@ export const Header = ({
       return styled(styles)(
         <header>
           <h1>{title}</h1>
-        </header>
+        </header>,
       );
   }
 };

@@ -53,7 +53,7 @@ const RangePicker = styled(AntdDatePicker.RangePicker)`
 
 const getRangeValue = (
   start: string | null,
-  end: string | null
+  end: string | null,
 ): [moment.Moment, moment.Moment] | undefined => {
   if (start && end) return [moment(start), moment(end)];
 };
@@ -133,7 +133,7 @@ export const EditStaffStatusModal: React.FC = () => {
 
               const [startDate, endDate] = value as [
                 moment.Moment,
-                moment.Moment
+                moment.Moment,
               ];
 
               fields.startDate.onChange(startDate.toISOString());

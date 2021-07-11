@@ -67,7 +67,7 @@ export const Objects = ({ isReadings = false }) => {
   const [state, setState] = useState({ items: null });
   const [searchState, dispatchSearchState] = useReducer(
     objectsSearchReducer,
-    initialState
+    initialState,
   );
 
   const debouncedSearchState = useDebounce(searchState, 500);
@@ -133,10 +133,10 @@ export const Objects = ({ isReadings = false }) => {
                     </LinkRow>
                   </obj_item>
                 );
-              }
+              },
             )}
         </Loader>
       </div>
-    </div>
+    </div>,
   );
 };

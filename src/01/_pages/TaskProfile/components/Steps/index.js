@@ -38,7 +38,7 @@ export const Steps = () => {
     styles,
     s.input,
     s.button,
-    s.label
+    s.label,
   )(
     <Route path={`${url}/(step1|step2|step3)`}>
       <steps>
@@ -93,6 +93,6 @@ export const Steps = () => {
           </Route>
         </Switch>
       </steps>
-    </Route>
+    </Route>,
   );
 };

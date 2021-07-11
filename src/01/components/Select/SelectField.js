@@ -26,7 +26,7 @@ export const SelectField = ({
         <>
           {checkedItem.icon && <Icon icon={checkedItem.icon} />}
           {checkedItem.name}
-        </>
+        </>,
       );
 
   return styled(styles)(
@@ -38,7 +38,7 @@ export const SelectField = ({
     >
       <content>{content}</content>
       <Icon icon="down" />
-    </field>
+    </field>,
   );
 };
 

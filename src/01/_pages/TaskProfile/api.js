@@ -42,7 +42,7 @@ export const postMoveStage = async (
   url = '',
   move = '',
   data = {},
-  dispatch = () => {}
+  dispatch = () => {},
 ) => {
   try {
     const res = await axios.post(`${url}/${move}stage`, data);

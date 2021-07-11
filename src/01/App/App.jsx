@@ -166,7 +166,7 @@ const Internal = () => {
           </main>
         </layout>
       </Route>
-    </Switch>
+    </Switch>,
   );
 };
 
@@ -181,7 +181,7 @@ export function App() {
           </YMaps>
         </ConfigProvider>
       </AppProvider>
-    </Provider>
+    </Provider>,
   );
 }
 

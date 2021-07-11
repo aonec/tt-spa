@@ -24,13 +24,13 @@ export const useFetchPage = (state, dispatch) => {
     }
     if (pageDevice?.isExact && !state.devices) {
       getDevices(pageDevice.url).then((data) =>
-        dispatch({ type: 'success', data })
+        dispatch({ type: 'success', data }),
       );
     }
     if (pageApart?.isExact && !state.apartments && params.id) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
       getApartments({ housingStockId: params.id }).then((data) =>
-        dispatch({ type: 'success', data })
+        dispatch({ type: 'success', data }),
       );
     }
 

@@ -17,23 +17,23 @@ $addZoneInput.on(nameChanged, (_, newInput) => {
 });
 
 export const inputChanged = nameChanged.prepend(
-  (e: React.ChangeEvent<HTMLInputElement>) => e.target.value
+  (e: React.ChangeEvent<HTMLInputElement>) => e.target.value,
 );
 
 $isAddServiceModalShown.on(
   [addServiceZoneButtonClicked, cancelButtonClicked],
   () => {
     return !$isAddServiceModalShown.getState();
-  }
+  },
 );
 
 sendServiceZoneFx.use(async (serviceZoneName: string) =>
-  addServiceZone(serviceZoneName)
+  addServiceZone(serviceZoneName),
 );
 
 $isAddServiceModalShown.on(
   sendServiceZoneFx.done,
-  () => !$isAddServiceModalShown.getState()
+  () => !$isAddServiceModalShown.getState(),
 );
 
 $addZoneInput.reset(sendServiceZoneFx.done);

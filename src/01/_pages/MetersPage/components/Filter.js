@@ -26,6 +26,6 @@ export const Filter = ({ inputs = [] }) => {
           />
         </input_frame>
       ))}
-    </filter>
+    </filter>,
   );
 };

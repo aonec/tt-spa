@@ -15,7 +15,7 @@ export async function getCalculator(id: number) {
 
 export async function putCalculator(
   deviceId: number,
-  form: UpdateCalculatorRequest
+  form: UpdateCalculatorRequest,
 ) {
   try {
     const res = await axios.put(`Calculators/${deviceId}`, form);

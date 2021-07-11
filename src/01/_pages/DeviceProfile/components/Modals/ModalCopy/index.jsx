@@ -123,7 +123,7 @@ export const ModalODPU = ({ device }) => {
         label: `${_.get(
           selectOptions[ind],
           'label',
-          'default'
+          'default',
         )} ПРЭМ (${serialNumber})`,
         value: resource,
         entryNumber,
@@ -148,7 +148,7 @@ export const ModalODPU = ({ device }) => {
       }&resourcetype=${type}&entrynumber=${entryNumberRes.current}&pipenumber=${
         pipeNumberRes.current
       }&from=${convertDateOnly(begin)}T00:00:00Z&to=${convertDateOnly(
-        end
+        end,
       )}T00:00:00Z`;
 
       const lastTemplate =

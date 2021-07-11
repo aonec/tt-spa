@@ -51,6 +51,6 @@ export const UploadList = ({ items = [], del = () => {}, ...props }) => {
           </Loader>
         </file_wrapper>
       ))}
-    </upload_list>
+    </upload_list>,
   );
 };

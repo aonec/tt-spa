@@ -72,6 +72,6 @@ export const Events = ({ title = '', loading = true, items = [] }) => {
           );
         })}
       </e_list>
-    </section>
+    </section>,
   );
 };

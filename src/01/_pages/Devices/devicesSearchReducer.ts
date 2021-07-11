@@ -28,7 +28,7 @@ export type FilterParameterType =
 
 const devicesSearchReducer = (
   state: Partial<DeviceSearchReducerStateType>,
-  action: DeviceSearchActionTypes
+  action: DeviceSearchActionTypes,
 ): Partial<DeviceSearchReducerStateType> => {
   switch (action.type) {
     case DevicesSearchActions.SET_SEARCHTERM:
@@ -96,7 +96,7 @@ interface SetExpirationDateInterface extends ActionCreatorsInterface {
 }
 
 export const setExpirationDate = (
-  expirationDate: EExpiresCheckingDateAt
+  expirationDate: EExpiresCheckingDateAt,
 ): SetExpirationDateInterface => ({
   type: DevicesSearchActions.SET_EXPIRATION_DATE,
   expirationDate,
@@ -107,7 +107,7 @@ interface SetDiameterRangeInterface extends ActionCreatorsInterface {
 }
 
 export const setDiameterRange = (
-  diameterRange: [number, number]
+  diameterRange: [number, number],
 ): SetDiameterRangeInterface => ({
   type: DevicesSearchActions.SET_DIAMETER_RANGE,
   diameterRange,
@@ -127,7 +127,7 @@ interface SetDevicesFilterInterface extends ActionCreatorsInterface {
 }
 
 export const setDevicesFilter = (
-  filterParameter: FilterParameterType
+  filterParameter: FilterParameterType,
 ): SetDevicesFilterInterface => ({
   type: DevicesSearchActions.SET_DEVICES_FILTER,
   filterParameter,

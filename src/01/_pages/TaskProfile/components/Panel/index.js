@@ -102,7 +102,7 @@ const PushButton = ({ loading = false, ...props }) =>
     <button data-big data-primary {...props}>
       <Loader show={loading} />
       <span>Завершить этап</span>
-    </button>
+    </button>,
   );
 
 export const Panel = (
@@ -146,7 +146,7 @@ export const Panel = (
   if (isObserver && AddDocuments && Switch) {
     return styled(
       styles,
-      s.input
+      s.input,
     )(
       <panel style={{ display: 'flex' }}>
         <input_frame data-disabled data-big style={{ width: '50%' }}>
@@ -155,7 +155,7 @@ export const Panel = (
         <input_frame data-disabled data-big style={{ width: '50%' }}>
           <input disabled value={deadline} />
         </input_frame>
-      </panel>
+      </panel>,
     );
   }
 
@@ -233,6 +233,6 @@ export const Panel = (
         />
       )}
       {!isObserver && <PushButton {...pushProps} />}
-    </panel>
+    </panel>,
   );
 };

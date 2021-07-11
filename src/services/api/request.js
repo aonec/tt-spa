@@ -23,11 +23,11 @@ request.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       return auth('refreshToken', { data: getTokenData() }).then(() =>
-        request(err.config)
+        request(err.config),
       );
     }
     return Promise.reject(err);
-  }
+  },
 );
 
 function createBearer() {

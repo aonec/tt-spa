@@ -13,6 +13,6 @@ export const UserInfo = ({ list = [] }) => {
           <span>{item[1]}</span>
         </info_item>
       ))}
-    </info_list>
+    </info_list>,
   );
 };

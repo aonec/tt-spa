@@ -3,7 +3,7 @@ import { createStore, createEffect } from 'effector';
 import { ManagingFirmUserResponse } from 'myApi';
 
 export const $managingFirmUser = createStore<ManagingFirmUserResponse | null>(
-  null
+  null,
 );
 export const $isFetchingManagingFirmUserFailed = createStore(false);
 

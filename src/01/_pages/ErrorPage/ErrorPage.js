@@ -24,6 +24,6 @@ export const ErrorPage = () => {
       </button>
       {/* <img  src="https://satamalam.ru/public/404.svg" /> */}
       <img className="error-page__image" src={require('./404.svg')} />
-    </div>
+    </div>,
   );
 };

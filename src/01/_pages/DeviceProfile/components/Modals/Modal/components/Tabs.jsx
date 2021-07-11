@@ -6,7 +6,7 @@ const { TabPane } = Tabs;
 
 const DevicesListDiv = () => {
   const { resources, translate, onTabsChangeHandler } = useContext(
-    ReportContext
+    ReportContext,
   );
 
   const resList = resources.map((value) => {

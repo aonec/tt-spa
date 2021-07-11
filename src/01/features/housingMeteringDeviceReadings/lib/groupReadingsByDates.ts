@@ -4,7 +4,7 @@ import {
 } from '../../../../myApi';
 
 const groupReadingsByDates = (
-  readings: GetHousingMeteringDeviceReadingsResponse
+  readings: GetHousingMeteringDeviceReadingsResponse,
 ): GroupedReadingsByDates | null => {
   if (readings.items === null) return null;
 
@@ -33,7 +33,7 @@ const groupReadingsByDates = (
 };
 
 const formReadingsWithArrays = (
-  yearObject: GroupedReadingsByDates | null
+  yearObject: GroupedReadingsByDates | null,
 ): YearReadingsType[] | null => {
   if (yearObject === null) return null;
   let readings = [];
@@ -57,10 +57,10 @@ const formMonthReadings = (monthObject: MonthReadings): MonthReadingsType[] => {
 // };
 
 export const prepareReadings = (
-  readings: GetHousingMeteringDeviceReadingsResponse
+  readings: GetHousingMeteringDeviceReadingsResponse,
 ) => {
   const preparedReadings = formReadingsWithArrays(
-    groupReadingsByDates(readings)
+    groupReadingsByDates(readings),
   );
   return preparedReadings;
 };

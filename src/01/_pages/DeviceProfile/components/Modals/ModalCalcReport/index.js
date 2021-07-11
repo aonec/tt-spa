@@ -14,7 +14,7 @@ import CalcReportForm from './CalcReportForm';
 const ModalCalcReport = ({ deviceId }) => {
   const dispatch = useDispatch();
   const visible = useSelector((state) =>
-    _.get(state, ['calcReportDeregisterReducer', 'visible'], false)
+    _.get(state, ['calcReportDeregisterReducer', 'visible'], false),
   );
   // const [device, setDevice] = useState();
 

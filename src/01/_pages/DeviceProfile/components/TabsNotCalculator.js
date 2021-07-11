@@ -27,6 +27,6 @@ export const TabsNotCalculator = React.memo(() => {
           {t[0]}
         </NavLink>
       ))}
-    </tabs>
+    </tabs>,
   );
 });

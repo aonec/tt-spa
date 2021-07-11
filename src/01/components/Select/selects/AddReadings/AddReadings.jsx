@@ -88,7 +88,7 @@ const AddReadings = ({ apartmentId, addReadings, readingsBlocked }) => {
         <input disabled value={'Ввод показаний'} />
       </input_frame>
       {readings}
-    </div>
+    </div>,
   );
 };
 

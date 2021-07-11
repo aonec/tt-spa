@@ -24,7 +24,7 @@ export const useTasks = (searchState) => {
   useCancelFetch([grouptype]);
   React.useEffect(() => {
     getTasks(grouptype, searchState).then((data) =>
-      dispatch({ type: 'success', data })
+      dispatch({ type: 'success', data }),
     );
     return () => dispatch({ type: 'reset' });
   }, [grouptype, searchState]);

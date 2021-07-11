@@ -28,7 +28,7 @@ import { IndividualDeviceListItemResponse } from '../../myApi';
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   textInput: MutableRefObject<Input | null>,
-  sliderIndex = 0
+  sliderIndex = 0,
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [isVisible, setIsVisible] = useState(false);
@@ -72,7 +72,7 @@ export const useReadings = (
 
   const formDeviceReadingObject = (
     deviceItem: IndividualDeviceListItemResponse,
-    readingsState: ReadingsStateType
+    readingsState: ReadingsStateType,
   ): ReadingType => {
     return {
       deviceId: deviceItem.id,
@@ -87,7 +87,7 @@ export const useReadings = (
     if (!readingsState) return;
     const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
       device,
-      readingsState
+      readingsState,
     );
     for (let i = 1; i < 4; i++) {
       if (+readingsState.currentReadingsArray[i]) {
@@ -113,7 +113,7 @@ export const useReadings = (
         dispatch(setInputUnfocused());
       }
     },
-    [readingsState, initialReadings]
+    [readingsState, initialReadings],
   );
 
   const onFocusHandler = useCallback(
@@ -127,12 +127,12 @@ export const useReadings = (
         dispatch(setInputFocused(device.id));
       }
     },
-    [readingsState]
+    [readingsState],
   );
 
   const onInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     e.preventDefault();
     if (isNaN(+e.target.value)) return;
@@ -141,7 +141,7 @@ export const useReadings = (
       currentReadingsArray: state.currentReadingsArray.map(
         (reading: any, i: any): number => {
           return i === index ? +e.target.value : reading;
-        }
+        },
       ),
     }));
   };
@@ -181,7 +181,7 @@ export const useReadings = (
         textInput={textInput}
         isDisabled={isDisabled}
       />
-    )
+    ),
   );
 
   const previousDeviceReadings = readingsState.previousReadingsArray.map(
@@ -196,12 +196,12 @@ export const useReadings = (
         houseReadings
         isDisabled
       />
-    )
+    ),
   );
 
   const options = (
     readingsElems: JSX.Element[],
-    isCurrent: boolean
+    isCurrent: boolean,
   ): OptionsInterface[] => [
     {
       value: () => (

@@ -50,7 +50,7 @@ export const Stages = ({
                 </Button>
               )}
             </StageItem>
-          )
+          ),
         )}
       </div>
     </section>

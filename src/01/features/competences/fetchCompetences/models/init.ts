@@ -15,7 +15,7 @@ $isFetchingCompetencesFailed
 
 $competencesCatalog.on(
   fetchCompetencesFx.doneData,
-  (_, competences) => competences
+  (_, competences) => competences,
 );
 
 forward({

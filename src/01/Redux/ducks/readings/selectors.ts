@@ -9,5 +9,5 @@ export const selectDevices = (state: RootState): DevicesType =>
   selectReadingsState(state).items;
 
 export const selectDisabledState = (
-  state: RootState
+  state: RootState,
 ): DisabledStateType | undefined => selectReadingsState(state).disabledState;

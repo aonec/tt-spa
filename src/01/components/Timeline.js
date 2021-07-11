@@ -35,7 +35,7 @@ export const Timeline = ({
       <time>
         {task.str} (до {before})
       </time>
-    </div>
+    </div>,
   );
 };
 
