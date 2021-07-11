@@ -152,7 +152,11 @@ export const TasksList = ({ items }) => {
               <timer>
                 <Icon {...timer.icon} />
                 <timer_text as="span">{timer.text}</timer_text>
-                <span {...use({ fail: timer?.stage?.fail ?? null })}>
+                <span
+                  {...use({
+                    fail: timer?.stage?.fail ?? null,
+                  })}
+                >
                   {timer.stage?.timeStr ?? timer.final.timeStr}
                 </span>
                 <time>{timer.stage?.before ?? timer.diff.timeStr}</time>

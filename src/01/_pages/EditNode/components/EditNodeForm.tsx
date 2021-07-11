@@ -202,7 +202,12 @@ const EditNodeForm = ({
             style={styles.w100}
             label="Коммерческий учет показателей приборов"
             name="nodeStatus"
-            rules={[{ required: true, message: 'Выберите Коммерческий учет' }]}
+            rules={[
+              {
+                required: true,
+                message: 'Выберите Коммерческий учет',
+              },
+            ]}
           >
             <SelectTT
               placeholder="Коммерческий учет показателей приборов"

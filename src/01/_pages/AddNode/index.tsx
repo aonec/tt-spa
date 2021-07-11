@@ -66,7 +66,11 @@ export const AddNode = () => {
     getHousingStockCalculators(housingStockId).then((res) => {
       const calculatorsList = res?.map((calculator) => {
         const { id, serialNumber, model } = calculator;
-        return { ...calculator, key: id, value: `${model} ${serialNumber}` };
+        return {
+          ...calculator,
+          key: id,
+          value: `${model} ${serialNumber}`,
+        };
       });
       setCalculators(calculatorsList);
     });

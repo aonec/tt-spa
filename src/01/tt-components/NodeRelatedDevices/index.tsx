@@ -75,7 +75,10 @@ export const NodeRelatedDevices = ({
             <Link
               to={`/housingMeteringDevices/${id}/edit_odpu`}
               title="Редактирование ОДПУ"
-              style={{ display: 'inline-flex', width: 'min-content' }}
+              style={{
+                display: 'inline-flex',
+                width: 'min-content',
+              }}
             >
               <IconTT icon="edit" />
             </Link>

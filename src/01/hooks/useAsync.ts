@@ -59,10 +59,18 @@ function asyncReducer<DataType>(
       return { status: 'pending' as const, data: null, error: null };
     }
     case 'resolved': {
-      return { status: 'resolved' as const, data: action.data, error: null };
+      return {
+        status: 'resolved' as const,
+        data: action.data,
+        error: null,
+      };
     }
     case 'error': {
-      return { status: 'error' as const, data: null, error: action.error };
+      return {
+        status: 'error' as const,
+        data: null,
+        error: action.error,
+      };
     }
     default: {
       throw new Error(`Unhandled action: ${JSON.stringify(action)}`);

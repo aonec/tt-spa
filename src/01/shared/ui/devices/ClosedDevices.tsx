@@ -27,7 +27,11 @@ const ClosedDevices = ({
               <Icon
                 icon="off"
                 color="var(--main-100)"
-                style={{ marginRight: 8, position: 'relative', top: 1 }}
+                style={{
+                  marginRight: 8,
+                  position: 'relative',
+                  top: 1,
+                }}
               />
               <span>Скрыть закрытые приборы</span>
             </>
@@ -36,7 +40,11 @@ const ClosedDevices = ({
               <Icon
                 icon="on"
                 color="var(--main-100)"
-                style={{ marginRight: 8, position: 'relative', top: 1 }}
+                style={{
+                  marginRight: 8,
+                  position: 'relative',
+                  top: 1,
+                }}
               />
               <span>Показать закрытые приборы</span>
             </>

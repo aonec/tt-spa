@@ -102,7 +102,10 @@ const ModalGroupReport = () => {
     const groupReportsOptions = groupReports
       ? groupReports.map((group) => {
           const { houseManagementId, title, id } = group;
-          return { value: id === null ? houseManagementId : id, label: title };
+          return {
+            value: id === null ? houseManagementId : id,
+            label: title,
+          };
         })
       : [];
 
@@ -209,7 +212,9 @@ const ModalGroupReport = () => {
 
       switch (period) {
         case 'currentMonth':
-          setFieldsValue({ dates: [moment().startOf('month'), moment()] });
+          setFieldsValue({
+            dates: [moment().startOf('month'), moment()],
+          });
           break;
         case 'previousMonth':
           setFieldsValue({
@@ -310,7 +315,10 @@ const ModalGroupReport = () => {
               style={styles.w49}
               name="detailing"
               rules={[
-                { required: true, message: 'Укажите детализацию отчета' },
+                {
+                  required: true,
+                  message: 'Укажите детализацию отчета',
+                },
               ]}
             >
               <Radio.Group>
@@ -338,7 +346,11 @@ const ModalGroupReport = () => {
 
             <Divider />
             <div
-              style={{ display: 'flex', alignItems: 'baseline', width: '100%' }}
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                width: '100%',
+              }}
             >
               <Form.Item name="subscribe">
                 <SwitchTT onChange={handleSwitch} checked={subscription} />

@@ -66,7 +66,10 @@ const NodeConnection = ({
           <>
             <Link
               to={`/calculators/${id}/edit`}
-              style={{ display: 'inline-flex', width: 'fit-content' }}
+              style={{
+                display: 'inline-flex',
+                width: 'fit-content',
+              }}
               title="Редактирование Вычислителя"
             >
               <IconTT icon="edit" style={{ marginLeft: 8 }} />

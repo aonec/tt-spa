@@ -122,7 +122,11 @@ export const Objects = ({ isReadings = false }) => {
                       }
                     >
                       <span>
-                        <h4 style={{ whiteSpace: 'nowrap' }}>
+                        <h4
+                          style={{
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
                           {street}, {number} {corpus ? `, к.${corpus}` : null}
                         </h4>
                         {task}

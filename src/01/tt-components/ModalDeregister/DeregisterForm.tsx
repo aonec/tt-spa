@@ -67,7 +67,10 @@ const ModalCalculatorDeregisterForm = ({
           label="Дата снятия прибора с учета"
           name="closingDate"
           rules={[
-            { required: true, message: 'Выберите Дата снятия прибора с учета' },
+            {
+              required: true,
+              message: 'Выберите Дата снятия прибора с учета',
+            },
           ]}
         >
           <DatePickerTT

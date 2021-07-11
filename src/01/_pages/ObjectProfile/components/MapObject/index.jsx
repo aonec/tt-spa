@@ -73,7 +73,10 @@ export const MapObject = () => {
               style={{ color: 'red' }}
             />
             <ZoomControl
-              options={{ size: 'small', position: { right: 16, bottom: 32 } }}
+              options={{
+                size: 'small',
+                position: { right: 16, bottom: 32 },
+              }}
             />
           </Map>
         </div>

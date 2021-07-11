@@ -65,7 +65,9 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
       const period = event.target.value;
       switch (period) {
         case 'currentMonth':
-          setFieldsValue({ dates: [moment().startOf('month'), moment()] });
+          setFieldsValue({
+            dates: [moment().startOf('month'), moment()],
+          });
           setIsDisabled(true);
           break;
         case 'previousMonth':
@@ -129,7 +131,10 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
               style={styles.w49}
               name="detailing"
               rules={[
-                { required: true, message: 'Укажите детализацию отчета' },
+                {
+                  required: true,
+                  message: 'Укажите детализацию отчета',
+                },
               ]}
             >
               <Radio.Group>

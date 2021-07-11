@@ -46,7 +46,9 @@ const reportSlice = createSlice({
     setForm(
       state,
       action: PayloadAction<
-        Omit<GroupReportValuesInterface, 'dates'> & { dates: [string, string] }
+        Omit<GroupReportValuesInterface, 'dates'> & {
+          dates: [string, string];
+        }
       >,
     ) {
       state.groupReportFormState = action.payload;

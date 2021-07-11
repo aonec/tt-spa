@@ -69,7 +69,13 @@ const TaskComments = ({
         </div>
       ) : null}
 
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
         <IconContainer>
           <Icon icon="avatar" color="var(--main-100)" />
         </IconContainer>
