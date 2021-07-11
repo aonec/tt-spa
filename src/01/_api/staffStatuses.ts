@@ -2,5 +2,5 @@ import { EManagingFirmUserWorkingStatusTypeStringDictionaryItem } from './../../
 import axios from '01/axios';
 
 export const fetchStatuses = (): Promise<
-EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null
+  EManagingFirmUserWorkingStatusTypeStringDictionaryItem[] | null
 > => axios.get('ManagingFirmUserWorkingStatuses');

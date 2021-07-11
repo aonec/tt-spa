@@ -45,7 +45,6 @@ const ObjectsSearchForm = ({ searchState, dispatchSearchState }) => {
     //   setParam = setStreet;
     // }
 
-    
     // dispatch(setCurrentPage(1))
   };
 

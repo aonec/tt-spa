@@ -7,11 +7,9 @@ export const useApartments = ({ apartments = {} }, { filter = '' }) => {
         ...item,
         // title: `${housingStock.street}, ${housingStock.number}, кв.${item.apartmentNumber}`,
         // TODO проверить отображение корпуса внизу
-        title: `${item.housingStock.street}, ${
-          item.housingStock.number
-        }, кв.${item.apartmentNumber}${
-          item.housingStock.corpus ? `, ${item.housingStock.corpus}` : ""
-        }`,
+        title: `${item.housingStock.street}, ${item.housingStock.number}, кв.${
+          item.apartmentNumber
+        }${item.housingStock.corpus ? `, ${item.housingStock.corpus}` : ''}`,
         owner: item.homeownerName,
         number: item.personalAccountNumber,
       }))

@@ -78,7 +78,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "updateTypes": "npx swagger-typescript-api -p http://transparent-staging.herokuapp.com/swagger/v1/swagger.json -o ./src -n myApi.ts --axios",
-    "prettify": "yarn prettier --write ."
+    "prettify": "yarn prettier --write \"**/*.+(js|jsx|ts|tsx|mdx)\""
   },
   "eslintConfig": {
     "extends": "react-app"

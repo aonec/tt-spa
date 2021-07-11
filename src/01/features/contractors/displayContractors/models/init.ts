@@ -7,9 +7,7 @@ import {
 } from './index';
 import { forward, guard } from 'effector';
 
-getContractorsFx.use(
-  requestContractors
-);
+getContractorsFx.use(requestContractors);
 
 $isFetchingContractorsFailed
   .on(getContractorsFx.failData, () => true)
