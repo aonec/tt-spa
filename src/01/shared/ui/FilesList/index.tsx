@@ -35,92 +35,107 @@ export const FilesList: React.FC<Props> = ({
     [initialFiles]
   );
 
-  const renderFiles = [...(files || []), ...initialFilesData];
+  const filesToRender = [...(files || []), ...initialFilesData];
 
-  if (!renderFiles) return null;
+  if (!filesToRender) return null;
 
-  return (
-    <FilesWrap>
-      {renderFiles.map(({ fileResponse: file, id, status }) => {
-        const loading = status === 'pending';
-        return (
-          <FileItemWrap key={file?.id}>
-            {file ? (
-              <>
-                <Wide>
-                  <Flex>
-                    <FileIcon style={{ margin: '5px 10px 0 0' }} />
-                    <FileName>{file.name}</FileName>
-                  </Flex>
-                  <FileType>{file.type}</FileType>
-                </Wide>
-                <Wide>
-                  <Flex>
-                    <UserIcon style={{ margin: '4px 10px 0 0' }} />
-                    {file.author}
-                  </Flex>
-                  <FileCreatedDate>
-                    {getFormattedDate(file.uploadingTime)}
-                  </FileCreatedDate>
-                </Wide>
-              </>
-            ) : (
-              <>
-                <Wide>
-                  <LoadingContent style={{ width: 120 }} />
-                  <LoadingContent style={{ width: 80, marginTop: 5 }} />
-                </Wide>
-                <Wide>
-                  <LoadingContent style={{ width: 120 }} />
-                  <LoadingContent style={{ width: 80, marginTop: 5 }} />
-                </Wide>
-              </>
-            )}
-            <div style={{ width: 33 }}>
-              {controlType === 'CONTROL' ? (
-                <MenuButtonTT
-                  disabled={loading}
-                  loading={loading}
-                  menuButtonArr={[
-                    {
-                      title: 'удалить',
-                      cb: () => removeFile && removeFile(id, file?.id),
-                      show: true,
-                      color: 'red',
-                      clickable: true,
-                    },
-                  ]}
-                />
-              ) : (
-                controlType === 'DELETE' && (
-                  <DropIcon
-                    style={{
-                      color: 'red',
-                      cursor: 'pointer',
-                      transform: 'scale(1.15) translateY(-9px)',
-                    }}
-                    onClick={() =>
-                      confirm({
-                        title: 'Вы действительно хотите удалить этот файл?',
-                        onOk: () => removeFile && removeFile(id, file?.id),
-                        cancelText: 'Отмена',
-                        okText: 'Да',
-                        maskClosable: true,
-                      })
-                    }
-                  />
-                )
-              )}
-            </div>
-          </FileItemWrap>
-        );
-      })}
-    </FilesWrap>
+  const fileInfo = (file: DocumentResponse) => (
+    <>
+      <Wide>
+        <Flex>
+          <FileIcon style={{ margin: '5px 10px 0 0' }} />
+          <FileName>{file.name}</FileName>
+        </Flex>
+        <FileType>{file.type}</FileType>
+      </Wide>
+      <Wide>
+        <Flex>
+          <UserIcon style={{ margin: '4px 10px 0 0' }} />
+          {file.author}
+        </Flex>
+        <FileCreatedDate>
+          {getFormattedDate(file.uploadingTime)}
+        </FileCreatedDate>
+      </Wide>
+    </>
   );
+
+  const pendingInfo = (
+    <>
+      <Wide>
+        <LoadingContent style={{ width: 120 }} />
+        <LoadingContent style={{ width: 80, marginTop: 5 }} />
+      </Wide>
+      <Wide>
+        <LoadingContent style={{ width: 120 }} />
+        <LoadingContent style={{ width: 80, marginTop: 5 }} />
+      </Wide>
+    </>
+  );
+
+  const controlFile = ({ fileResponse: file, id, status }: FileData) => {
+    const loading = status === 'pending';
+
+    const confirmDeletion = () =>
+      confirm({
+        title: 'Вы действительно хотите удалить этот файл?',
+        onOk: () => removeFile && removeFile(id, file?.id),
+        cancelText: 'Отмена',
+        okText: 'Да',
+        maskClosable: true,
+      });
+
+    const menuButtonArr = [
+      {
+        title: 'удалить',
+        cb: () => removeFile && removeFile(id, file?.id),
+        show: true,
+        color: 'red',
+        clickable: true,
+      },
+    ];
+
+    const components = {
+      CONTROL: (
+        <MenuButtonTT
+          disabled={loading}
+          loading={loading}
+          menuButtonArr={menuButtonArr}
+        />
+      ),
+      DELETE: <StyledDropIcon onClick={confirmDeletion} />,
+    };
+
+    const content = components[controlType];
+
+    return <ControlPanelWrap>{content}</ControlPanelWrap>;
+  };
+
+  const renderFile = (fileData: FileData) => {
+    const { fileResponse: file } = fileData;
+    return (
+      <FileItemWrap key={file?.id}>
+        {file ? fileInfo(file) : pendingInfo}
+        {controlFile}
+      </FileItemWrap>
+    );
+  };
+
+  return <FilesWrap>{filesToRender.map(renderFile)}</FilesWrap>;
 };
 
 const getFormattedDate = (date: string) =>
   moment(date).format('DD.MM.YYYY HH:mm');
+
+const ControlPanelWrap = styled.div`
+  width: 33px;
+`;
+
+const StyledDropIcon = styled(DropIcon)`
+  color: red;
+  cursor: pointer;
+  transform: scale(1.15) translateY(-9px);
+`;
 
 const FilesWrap = styled.div`
   width: 100%;
