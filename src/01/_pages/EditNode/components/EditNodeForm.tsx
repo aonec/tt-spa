@@ -103,21 +103,19 @@ const EditNodeForm = ({
   const renderDocuments =
     ([
       ...(documents || []),
-      ...newDocuments.map((elem) => elem.fileResponse),
+      ..._.map(newDocuments, 'fileResponse'),
     ] as DocumentResponse[]).filter(
       (elem) => !deletedDocumentIds.includes(elem.id)
     ) || [];
 
   async function saveDocuments() {
-    const ids = renderDocuments.map((elem) => elem.id);
+    const ids = _.map(renderDocuments, 'id');
 
     return postNodeDocuments(nodeId, ids);
   }
 
-  async function deleteDocs() {
-    await Promise.all(
-      _.uniq<number>(deletedDocumentIds).map((elem) => deleteDoc(elem))
-    );
+  function deleteDocs() {
+    return Promise.all(deletedDocumentIds.map(deleteDoc));
   }
 
   const onFinish = async () => {
@@ -347,13 +345,7 @@ const EditNodeForm = ({
             disabled={isRequestServiceZonesError || pendingSave}
           >
             <Flex>
-              {pendingSave && (
-                <div
-                  style={{ marginRight: '6px', transform: 'translateY(2px)' }}
-                >
-                  <Loader show={true} />
-                </div>
-              )}
+              {<ButtonLoader show={pendingSave} />}
               Сохранить
             </Flex>
           </ButtonTT>
@@ -362,6 +354,10 @@ const EditNodeForm = ({
     </>
   );
 };
+
+const ButtonLoader = styled(Loader)`
+  margin: 2px 6px 0 0;
+`;
 
 const Flex = styled.div`
   display: flex;

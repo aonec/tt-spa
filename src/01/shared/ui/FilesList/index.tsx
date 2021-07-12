@@ -27,7 +27,7 @@ export const FilesList: React.FC<Props> = ({
     () =>
       initialFiles?.map(
         (file): FileData => ({
-          id: Math.floor(Math.random() * 10 ** 8),
+          id: file.id,
           fileResponse: file,
           status: 'done',
         })
