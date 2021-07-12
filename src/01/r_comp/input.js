@@ -16,6 +16,9 @@ export const input = css`
     overflow: hidden;
     padding: 0 8px;
     cursor: text;
+
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, .15);
+
     &:hover:not([data-disabled]),
     &:focus-within:not([data-disabled]) {
       border-color: var(--active);
