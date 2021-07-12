@@ -17,7 +17,9 @@ export const input = css`
     padding: 0 8px;
     cursor: text;
 
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, .15);
+    &:not([data-disabled]) {
+      box-shadow: 0px 4px 7px rgba(0, 0, 80, 0.15);
+    }
 
     &:hover:not([data-disabled]),
     &:focus-within:not([data-disabled]) {

@@ -53,6 +53,7 @@ export const useFilter = (pageDispatch = () => {}) => {
         value: city,
         placeholder: 'Город',
         onChange,
+        disabled: true,
       },
       {
         name: 'street',

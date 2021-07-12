@@ -36,11 +36,11 @@ export const Filter = ({ inputs = [] }) => {
   `(
     <filter as="div">
       {inputs.map((input, index) => (
-        <input_frame data-disabled={input.name === 'city'} key={input.name}>
+        <input_frame data-disabled={input.disabled} key={input.name}>
           <input
             ref={inputsRefs[index]}
             {...input}
-            disabled={input.name === 'city'}
+            disabled={input.disabled}
             onKeyPress={(e) => onInputKeyPress(e, index)}
           />
         </input_frame>
