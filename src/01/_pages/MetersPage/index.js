@@ -38,11 +38,13 @@ export const MetersPage = () => {
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
-          <Route path="/*/apartments" exact>
+          <Route path="/meters">
             <Filter {...filter} />
+          </Route>
+          <Route path="/meters/apartments" exact>
             <Apartments {...aparts} />
           </Route>
-          <Route path="/*/apartments/:id">
+          <Route path="/meters/apartments/:id">
             <ApartmentInfo {...apartInfo} />
             <ApartmentReadings {...meterDev} />
           </Route>
