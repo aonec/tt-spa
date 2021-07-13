@@ -104,7 +104,7 @@ export const AddStaffModal: React.FC = () => {
   );
 
   const onChangeHandler = (e: any) =>
-    fields[e.target.name].onChange(e.target.value);
+    fields[e.target.name]?.onChange(e.target.value);
 
   const modalContent = (
     <ModalText>
@@ -125,7 +125,8 @@ export const AddStaffModal: React.FC = () => {
           </Form.Item>
           <Form.Item label="Имя">
             <InputTT
-              type="firstName"
+              name="firstName"
+              type="text"
               value={fields.firstName.value}
               onChange={onChangeHandler}
             />
