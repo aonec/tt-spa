@@ -6,13 +6,15 @@ interface Props {
   message?: string | null;
 }
 
-export const ErrorAlert: React.FC<Props> = ({ show, message, children }) =>
-  show ? (
+export const ErrorAlert: React.FC<Props> = ({ show, message, children }) => {
+  const description = `${
+    message ? message + '.' : ''
+  } Пожалуйста, обновите страницу или повторите попытку позже.`;
+
+  return show ? (
     <Alert
       message="Ошибка"
-      description={`${message}${
-        message && '.'
-      } Пожалуйста, обновите страницу или повторите попытку позже.`}
+      description={description}
       type="error"
       showIcon
       closable
@@ -21,3 +23,4 @@ export const ErrorAlert: React.FC<Props> = ({ show, message, children }) =>
   ) : (
     <>{children}</>
   );
+};

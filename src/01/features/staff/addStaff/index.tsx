@@ -103,6 +103,9 @@ export const AddStaffModal: React.FC = () => {
     />
   );
 
+  const onChangeHandler = (e: any) =>
+    fields[e.target.name].onChange(e.target.value);
+
   const modalContent = (
     <ModalText>
       <FormContainer onSubmit={() => onSubmit()}>
@@ -112,9 +115,7 @@ export const AddStaffModal: React.FC = () => {
               name="lastName"
               type="text"
               value={fields.lastName.value}
-              onChange={(e: { target: { value: string } }) =>
-                fields.lastName.onChange(e.target.value)
-              }
+              onChange={onChangeHandler}
             />
             <ErrorMessage>
               {fields.lastName.errorText({
@@ -126,9 +127,7 @@ export const AddStaffModal: React.FC = () => {
             <InputTT
               type="firstName"
               value={fields.firstName.value}
-              onChange={(e: { target: { value: string } }) =>
-                fields.firstName.onChange(e.target.value)
-              }
+              onChange={onChangeHandler}
             />
             <ErrorMessage>
               {fields.firstName.errorText({
@@ -141,9 +140,7 @@ export const AddStaffModal: React.FC = () => {
               name="middleName"
               type="text"
               value={fields.middleName.value}
-              onChange={(e: { target: { value: string } }) =>
-                fields.middleName.onChange(e.target.value)
-              }
+              onChange={onChangeHandler}
             />
             <ErrorMessage>
               {fields.middleName.errorText({
@@ -158,9 +155,7 @@ export const AddStaffModal: React.FC = () => {
               name="email"
               type="text"
               value={fields.email.value}
-              onChange={(e: { target: { value: string } }) =>
-                fields.email.onChange(e.target.value)
-              }
+              onChange={onChangeHandler}
             />
             <ErrorMessage>
               {fields.email.errorText({
@@ -204,6 +199,7 @@ export const AddStaffModal: React.FC = () => {
         </Form.Item>
         <Form.Item label="Компетенции">
           <MultiSelectTT
+            name="firmCompetenceIds"
             mode="multiple"
             value={fields.firmCompetenceIds.value}
             options={multipleSelectionCompetences}

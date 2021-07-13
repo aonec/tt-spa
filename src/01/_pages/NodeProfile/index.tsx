@@ -7,11 +7,7 @@ import { Grid } from '../../_components/Grid';
 import Documents from './components/Documents';
 import Graph from '../Graph/Graph';
 import { useAsync } from '../../hooks/useAsync';
-import {
-  CalculatorResponse,
-  NodeResponse,
-  TaskListResponse,
-} from '../../../myApi';
+import { NodeResponse, TaskListResponse } from '../../../myApi';
 import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
@@ -107,7 +103,7 @@ export const NodeProfile = () => {
       },
     },
     {
-      title: 'Документы приборы',
+      title: 'Документы',
       key: 'documents',
       cb: () => {
         push(`${path}/documents`);
