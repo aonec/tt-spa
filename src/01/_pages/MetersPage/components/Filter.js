@@ -27,8 +27,9 @@ export const Filter = ({ inputs = [] }) => {
       grid-column: 1 / -1;
       display: grid;
       grid-template-columns:
-        minmax(200px, 1fr)
-        minmax(200px, 1fr)
+        minmax(100px, 1fr)
+        minmax(100px, 1fr)
+        minmax(100px, 0.5fr)
         minmax(100px, 0.5fr)
         minmax(100px, 0.5fr)
         minmax(100px, 1fr);

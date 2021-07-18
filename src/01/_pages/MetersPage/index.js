@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { useFetchPage } from './hooks/useFetchPage';
 import { useFilter } from './hooks/useFiter';
@@ -32,6 +32,8 @@ export const MetersPage = () => {
   const handleTabClick = (key) => {
     history.replace(`/meters/${key}`); // < == router router v4
   };
+
+  useEffect(() => console.log(state), [state]);
 
   return (
     <div style={{ maxWidth: 960 }}>
@@ -69,6 +71,12 @@ function reducer(state, action) {
       return { ...state, ...data };
     case 'get_apartments':
       return { ...state, params, apartments: { loading: true } };
+    case 'clear_apartInfo':
+      return {
+        ...state,
+        meterDevices: undefined,
+        apartInfo: undefined,
+      };
 
     default:
       console.error('meters', type);
