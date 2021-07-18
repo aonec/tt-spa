@@ -23,7 +23,7 @@ export const useFetchPage = (state, dispatch) => {
         }
       });
     }
-  }, [state.params, apatrments?.isExact]);
+  }, [ state.params, apatrments?.isExact]);
 
   React.useEffect(() => {
     if (isExactPage && page?.isExact) {

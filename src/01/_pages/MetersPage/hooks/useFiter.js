@@ -26,7 +26,7 @@ export const useFilter = (pageDispatch = () => {}) => {
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (street || house || question || corpus) {
+      if (street || house || question || corpus || apart) {
         pageDispatch({
           type: 'get_apartments',
           params: {
@@ -34,12 +34,13 @@ export const useFilter = (pageDispatch = () => {}) => {
             HousingStockNumber: house,
             Question: question,
             Corpus: corpus,
+            ApartmentNumber: apart,
           },
         });
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [city, street, house, question, corpus]);
+  }, [city, street, house, question, corpus, apart]);
 
   const onChange = (e) => {
     const name = e.target.name;
