@@ -33,8 +33,6 @@ export const MetersPage = () => {
     history.replace(`/meters/${key}`); // < == router router v4
   };
 
-  useEffect(() => console.log(state), [state]);
-
   return (
     <div style={{ maxWidth: 960 }}>
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
