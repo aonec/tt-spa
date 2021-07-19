@@ -25,7 +25,7 @@ export const Connection = ({ device }: ConnectionInterface) => {
     return null;
   }
   const { connection, isConnected } = device;
-  const { ipV4, port, deviceAddress } = connection;
+  const { ipV4, port, deviceAddress } = connection || {};
 
   return (
     <div>

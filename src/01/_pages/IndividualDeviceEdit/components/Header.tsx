@@ -29,7 +29,7 @@ export const Header = ({ device }: HeaderInterface) => {
     apartmentNumber,
     id,
     apartmentId,
-  } = address;
+  } = address || {}
 
   return (
     <Loader show={loading} size="32">
