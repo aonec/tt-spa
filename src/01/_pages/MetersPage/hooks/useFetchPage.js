@@ -14,7 +14,7 @@ export const useFetchPage = (state, dispatch) => {
 
   React.useEffect(() => {
     if (isExactPage && state.params) {
-      getApartmetns(state.params).then((data) => {
+      getApartments(state.params).then((data) => {
         dispatch({ type: 'success', data });
 
         if (state.meters || state.apartInfo) {
