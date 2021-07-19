@@ -108,6 +108,8 @@ export const FilesList: React.FC<Props> = ({
 
     const content = components[controlType];
 
+    console.log(controlType, components, content);
+
     return <ControlPanelWrap>{content}</ControlPanelWrap>;
   };
 
@@ -116,7 +118,7 @@ export const FilesList: React.FC<Props> = ({
     return (
       <FileItemWrap key={file?.id}>
         {file ? fileInfo(file) : pendingInfo}
-        {controlFile}
+        {controlFile(fileData)}
       </FileItemWrap>
     );
   };
