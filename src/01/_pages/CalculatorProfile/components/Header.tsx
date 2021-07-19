@@ -57,7 +57,7 @@ export const Header = ({
         {
           title: 'Добавить Узел',
           cb: () => {
-            push(`/objects/${device.address.id}/add_node`);
+            push(`/objects/${device?.address?.id}/add_node`);
           },
           show: show('CalculatorUpdate'),
           color: 'default',

@@ -120,7 +120,7 @@ const EditNodeForm = ({
     resource: resource,
     number: number,
     serviceZone: initialServiceZoneLabel,
-    nodeStatus: nodeStatus.value,
+    nodeStatus: nodeStatus?.value,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
       : null,
