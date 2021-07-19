@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { useCancelFetch } from '01/_hooks/useCancelFetch';
-import { getApartmetns, getApartmentInfo } from '../api';
+import { getApartments, getApartmentInfo } from '../api';
 
 export const useFetchPage = (state, dispatch) => {
   const history = useHistory();
