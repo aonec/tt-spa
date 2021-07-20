@@ -9,6 +9,8 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Switch } from 'antd';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import axios from '01/axios';
+import moment from 'moment';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -18,7 +20,14 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
   const { icon, color } = DeviceIcons[device.resource];
   const isActive = device.closingDate === null;
 
-  async function onSwitchMagnetSeal() {}
+  async function onSwitchMagnetSeal() {
+    try {
+      axios.post(`IndividualDevices/${device.id}/SwitchMagneticSeal`, {
+        magneticSealInstallationDate: null,
+        magneticSealTypeName: null,
+      });
+    } catch (e) {}
+  }
 
   return (
     <DeviceColumn>
@@ -40,8 +49,13 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
           size="small"
           checked={device.hasMagneticSeal}
           disabled={!isActive}
+          onChange={onSwitchMagnetSeal}
         />
-        <div style={{ marginLeft: '10px' }}>Магнитная пломба</div>
+        <div style={{ marginLeft: '10px' }}>
+          Магнитная пломба{' '}
+          {device.magneticSealInstallationDate &&
+            moment(device.magneticSealInstallationDate).format('DD.MM.YYYY')}
+        </div>
       </MagnetSeal>
     </DeviceColumn>
   );
