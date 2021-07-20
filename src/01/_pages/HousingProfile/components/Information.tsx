@@ -31,7 +31,7 @@ export const Information = ({ device }: InformationInterface) => {
     hubConnection: {
       hub: { magistral },
     },
-  } = device || DEFAULT_DEVICE;
+  } = (device as any) || DEFAULT_DEVICE;
 
   const direction = magistrals.find((item) => item.value === magistral);
   const directionLabel = direction

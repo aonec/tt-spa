@@ -38,7 +38,7 @@ const IndividualDeviceEditForm = ({
   setAlert,
   setExistDevice,
 }: FormEditODPUInterface) => {
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{ deviceId: string }>();
   const [validationSchema, setValidationSchema] = useState<any>();
 
   const {
@@ -52,7 +52,7 @@ const IndividualDeviceEditForm = ({
     futureCheckingDate,
     resource,
     rateType,
-  } = device;
+  } = device as any;
 
   const initialValues = {
     resource,
