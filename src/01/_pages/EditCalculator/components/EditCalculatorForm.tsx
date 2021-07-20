@@ -59,7 +59,7 @@ const EditCalculatorForm = ({
     connection: { ipV4, port, deviceAddress },
     address: { id: houseId },
     isConnected,
-  } = calculator || DEFAULT_CALCULATOR;
+  } = (calculator as any) || DEFAULT_CALCULATOR;
 
   const [validationSchema, setValidationSchema] = useState<any>(
     calculatorValidationSchema

@@ -106,7 +106,7 @@ const ModalAddDeviceForm = ({
     calculatorId,
   } = node || DEFAULT_NODE;
 
-  const { city, street, housingStockNumber, corpus } = address;
+  const { city, street, housingStockNumber, corpus } = address || {};
 
   const entryNumber = communicationPipes?.length
     ? communicationPipes[0].entryNumber
@@ -140,7 +140,7 @@ const ModalAddDeviceForm = ({
     pipeNumber: null,
     magistral: magistrals[0].value,
     number,
-    nodeStatus: nodeStatus.value,
+    nodeStatus: nodeStatus?.value,
     coldWaterWarningHidden: true,
   };
 
