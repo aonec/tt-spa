@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ActiveLine from '../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
@@ -19,6 +19,7 @@ interface DeviceInfoProps {
 const DeviceInfo = ({ device }: DeviceInfoProps) => {
   const { icon, color } = DeviceIcons[device.resource];
   const isActive = device.closingDate === null;
+  const [switched, setSwitched] = useState(false);
 
   async function onSwitchMagnetSeal() {
     try {
@@ -26,6 +27,8 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         magneticSealInstallationDate: null,
         magneticSealTypeName: null,
       });
+
+      setSwitched((prev) => !prev);
     } catch (e) {}
   }
 
@@ -47,7 +50,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
       <MagnetSeal>
         <Switch
           size="small"
-          checked={device.hasMagneticSeal}
+          checked={switched ? !device.hasMagneticSeal : device.hasMagneticSeal}
           disabled={!isActive}
           onChange={onSwitchMagnetSeal}
         />
