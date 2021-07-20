@@ -1,5 +1,4 @@
 import React from 'react';
-import { IndividualDeviceType } from '../../../../../../types/types';
 import ActiveLine from '../../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
@@ -8,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { Icon } from '../../../../../_components/Icon';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import { Switch } from 'antd';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -16,6 +17,8 @@ interface DeviceInfoProps {
 const DeviceInfo = ({ device }: DeviceInfoProps) => {
   const { icon, color } = DeviceIcons[device.resource];
   const isActive = device.closingDate === null;
+
+  async function onSwitchMagnetSeal() {}
 
   return (
     <DeviceColumn>
@@ -32,9 +35,26 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         />
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </ApartmentInfo>
+      <MagnetSeal>
+        <Switch
+          size="small"
+          checked={device.hasMagneticSeal}
+          disabled={!isActive}
+        />
+        <div style={{ marginLeft: '10px' }}>Магнитная пломба</div>
+      </MagnetSeal>
     </DeviceColumn>
   );
 };
+
+const MagnetSeal = styled(Flex)`
+  align-items: center;
+  margin-top: 7px;
+
+  :first-child {
+    margin-right: 10px;
+  }
+`;
 
 const DeviceColumn = styled.div`
   display: flex;
