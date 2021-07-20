@@ -115,7 +115,6 @@ const Title = styled.h2``;
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const ListItem = styled.div`

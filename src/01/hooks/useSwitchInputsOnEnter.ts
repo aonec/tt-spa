@@ -30,8 +30,11 @@ export const useSwitchOnInputs = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', onKeyDown);
+    const node = document.getElementById('meters-component');
+    if (!node) return;
 
-    return () => document.removeEventListener('keydown', onKeyDown);
+    node.addEventListener('keydown', onKeyDown);
+
+    return () => node.removeEventListener('keydown', onKeyDown);
   }, [onKeyDown]);
 };
