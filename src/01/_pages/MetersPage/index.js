@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { useFetchPage } from './hooks/useFetchPage';
 import { useFilter } from './hooks/useFiter';
@@ -38,11 +38,13 @@ export const MetersPage = () => {
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
-          <Route path="/*/apartments" exact>
+          <Route path="/meters">
             <Filter {...filter} />
+          </Route>
+          <Route path="/meters/apartments" exact>
             <Apartments {...aparts} />
           </Route>
-          <Route path="/*/apartments/:id">
+          <Route path="/meters/apartments/:id">
             <ApartmentInfo {...apartInfo} />
             <ApartmentReadings {...meterDev} />
           </Route>
@@ -67,6 +69,12 @@ function reducer(state, action) {
       return { ...state, ...data };
     case 'get_apartments':
       return { ...state, params, apartments: { loading: true } };
+    case 'clear_apartInfo':
+      return {
+        ...state,
+        meterDevices: undefined,
+        apartInfo: undefined,
+      };
 
     default:
       console.error('meters', type);

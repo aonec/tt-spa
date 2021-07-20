@@ -45,7 +45,7 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   const currentMonth = getMonthFromDate();
 
   return (
-    <Meters>
+    <Meters id="meters-component">
       <MetersHeader>
         <span>Информация o приборe</span>
         {sliderProps ? (
