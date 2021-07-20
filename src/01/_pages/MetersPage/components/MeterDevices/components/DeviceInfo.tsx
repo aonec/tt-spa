@@ -20,17 +20,38 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
   const { icon, color } = DeviceIcons[device.resource];
   const isActive = device.closingDate === null;
   const [switched, setSwitched] = useState(false);
+  const [
+    switchedMagneticSealInstallationDate,
+    setSwitchedMagneticSealInstallationDate,
+  ] = useState<string | null>(null);
 
-  async function onSwitchMagnetSeal() {
+  async function switchMagnetSeal() {
+    setSwitched((prev) => !prev);
     try {
-      axios.post(`IndividualDevices/${device.id}/SwitchMagneticSeal`, {
-        magneticSealInstallationDate: null,
-        magneticSealTypeName: null,
-      });
+      const res: any = await axios.post(
+        `IndividualDevices/${device.id}/SwitchMagneticSeal`,
+        {
+          magneticSealInstallationDate: null,
+          magneticSealTypeName: null,
+        }
+      );
 
+      setSwitchedMagneticSealInstallationDate(
+        res?.magneticSealInstallationDate
+      );
+    } catch (e) {
       setSwitched((prev) => !prev);
-    } catch (e) {}
+    }
   }
+
+  const onSwitchMagnetSeal = () => void switchMagnetSeal();
+
+  const checked = switched ? !device.hasMagneticSeal : device.hasMagneticSeal;
+  const magneticSealInstallationDate = switchedMagneticSealInstallationDate
+    ? moment(switchedMagneticSealInstallationDate).format('DD.MM.YYYY')
+    : checked &&
+      device.magneticSealInstallationDate &&
+      moment(device.magneticSealInstallationDate).format('DD.MM.YYYY');
 
   return (
     <DeviceColumn>
@@ -50,14 +71,12 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
       <MagnetSeal>
         <Switch
           size="small"
-          checked={switched ? !device.hasMagneticSeal : device.hasMagneticSeal}
+          checked={checked}
           disabled={!isActive}
           onChange={onSwitchMagnetSeal}
         />
         <div style={{ marginLeft: '10px' }}>
-          Магнитная пломба{' '}
-          {device.magneticSealInstallationDate &&
-            moment(device.magneticSealInstallationDate).format('DD.MM.YYYY')}
+          Магнитная пломба {magneticSealInstallationDate}
         </div>
       </MagnetSeal>
     </DeviceColumn>
