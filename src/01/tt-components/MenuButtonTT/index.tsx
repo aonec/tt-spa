@@ -14,6 +14,7 @@ const StyledMenuButton = styled(Button).attrs((props) => ({
   justify-content: center;
   width: 48px;
   height: 48px;
+  border-radius: 4px;
 `;
 
 const MenuItem = styled(Menu.Item)`
