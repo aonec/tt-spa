@@ -45,7 +45,7 @@ export const useReadings = (
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device.readings![0].readingDate);
+    currentMonth === getMonthFromDate(device.readings![0]?.readingDate);
 
   useEffect(() => {
     const previousReadingsArray: number[] = [];
