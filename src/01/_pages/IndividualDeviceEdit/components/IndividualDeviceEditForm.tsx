@@ -1,13 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
 import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
   ButtonTT,
   DatePickerTT,
   Header,
+  InputNumberTT,
   InputTT,
   SelectTT,
   StyledFooter,
@@ -22,6 +23,7 @@ import {
 import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
 import { putIndividualDevice } from '../../../_api/apiRequests';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -29,6 +31,10 @@ interface FormEditODPUInterface {
   setTab: Dispatch<SetStateAction<string>>;
   setAlert: Dispatch<SetStateAction<boolean>>;
   setExistDevice: Dispatch<SetStateAction<any>>;
+}
+
+function toMoment(value: string | null): moment.Moment | null {
+  return value ? moment(value) : null;
 }
 
 const IndividualDeviceEditForm = ({
@@ -61,10 +67,13 @@ const IndividualDeviceEditForm = ({
     resource,
     model,
     serialNumber,
-    lastCheckingDate: lastCheckingDate ? moment(lastCheckingDate) : null,
+    lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
     lastCommercialAccountingDate: lastCommercialAccountingDate
       ? moment(lastCommercialAccountingDate)
+      : null,
+    futureCommercialAccountingDate: futureCommercialAccountingDate
+      ? moment(futureCommercialAccountingDate)
       : null,
     rateType,
     apartmentId: address?.apartmentId,
@@ -95,6 +104,8 @@ const IndividualDeviceEditForm = ({
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,
+        bitDepth: values.bitDepth,
+        scaleFactor: values.scaleFactor,
       };
       putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
@@ -154,6 +165,38 @@ const IndividualDeviceEditForm = ({
           <Alert name="serialNumber" />
         </Form.Item>
 
+        <Form.Item label="Место установки" style={styles.w100}>
+          <SelectTT options={[]} />
+        </Form.Item>
+
+        <Flex style={styles.w100}>
+          <Form.Item
+            label="Разрядность"
+            style={{ ...styles.w100, marginRight: 20 }}
+          >
+            <InputNumberTT
+              name="bitDepth"
+              placeholder="Укажите разрядность..."
+              type="number"
+              onChange={(value) => setFieldValue('bitDepth', value)}
+              value={values.bitDepth || void 0}
+              step="1"
+              onBlur={handleBlur}
+            />
+          </Form.Item>
+          <Form.Item label="Множитель" style={styles.w100}>
+            <InputNumberTT
+              name="scaleFactor"
+              placeholder="Укажите множитель..."
+              type="number"
+              onChange={(value) => setFieldValue('scaleFactor', value)}
+              value={values.scaleFactor || void 0}
+              step="1"
+              onBlur={handleBlur}
+            />
+          </Form.Item>
+        </Flex>
+
         <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
           <DatePickerTT
             format="DD.MM.YYYY"
@@ -200,7 +243,7 @@ const IndividualDeviceEditForm = ({
       </StyledFormPage>
 
       <StyledFooter form>
-        <ButtonTT color="blue" style={{ marginRight: 16 }} type={'submit'}>
+        <ButtonTT color="blue" type={'submit'}>
           Сохранить
         </ButtonTT>
 

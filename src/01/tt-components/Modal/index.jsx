@@ -13,7 +13,6 @@ export const StyledFooter = styled.div.attrs((props) => ({
   background: #f3f5f6;
   padding: 24px 32px;
   display: flex;
-  justify-content: flex-end;
   ${(props) =>
     props.form &&
     css`
