@@ -42,7 +42,7 @@ const IndividualDeviceEditForm = ({
   const [validationSchema, setValidationSchema] = useState<any>();
 
   const {
-    address: { city, street, housingStockNumber, corpus },
+    address,
     id,
     model,
     serialNumber,
@@ -52,7 +52,10 @@ const IndividualDeviceEditForm = ({
     futureCheckingDate,
     resource,
     rateType,
-  } = device as any;
+    mountPlace,
+    bitDepth,
+    scaleFactor,
+  } = device;
 
   const initialValues = {
     resource,
@@ -64,6 +67,10 @@ const IndividualDeviceEditForm = ({
       ? moment(lastCommercialAccountingDate)
       : null,
     rateType,
+    apartmentId: address?.apartmentId,
+    mountPlaceId: mountPlace,
+    bitDepth: bitDepth,
+    scaleFactor: scaleFactor,
   };
 
   const {
@@ -89,8 +96,6 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
       };
-      console.log(values);
-      console.log('form', form);
       putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
           setAlert(true);

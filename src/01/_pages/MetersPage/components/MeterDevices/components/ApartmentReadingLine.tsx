@@ -12,6 +12,7 @@ import {
   EResourceType,
 } from '../../../../../../myApi';
 import { MenuButtonTT } from '01/tt-components';
+import { useHistory } from 'react-router-dom';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -23,7 +24,7 @@ const ApartmentReadingLine = ({
   sliderIndex,
 }: ApartmentReadingLineProps) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const textInput = React.createRef<Input>();
 
   const {
@@ -51,6 +52,7 @@ const ApartmentReadingLine = ({
     {
       title: 'Редактировать',
       show: true,
+      cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
     {
       title: 'Закрытие прибора',
