@@ -3,8 +3,8 @@ import { createStore, createEffect } from 'effector';
 import { IndividualDeviceMountPlaceListResponse } from './../../../../../myApi';
 
 export const $individualDeviceMountPlaces = createStore<
-  IndividualDeviceMountPlaceListResponse[]
->([]);
+  IndividualDeviceMountPlaceListResponse[] | null
+>(null);
 
 export const fetchIndividualDeviceMountPlacesFx = createEffect<
   void,

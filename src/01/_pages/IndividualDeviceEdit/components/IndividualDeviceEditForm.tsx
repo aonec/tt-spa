@@ -24,6 +24,12 @@ import { AlertInterface } from '../../../tt-components/interfaces';
 import _ from 'lodash';
 import { putIndividualDevice } from '../../../_api/apiRequests';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import {
+  $individualDeviceMountPlaces,
+  fetchIndividualDeviceMountPlacesFx,
+  IndividualDeviceMountPlacesGate,
+} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { useStore } from 'effector-react';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -105,6 +111,10 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
         bitDepth: values.bitDepth,
+        mountPlaceId:
+          typeof values.mountPlaceId === 'string'
+            ? Number(values.mountPlaceId)
+            : values.mountPlaceId,
         scaleFactor: values.scaleFactor,
       };
       putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
@@ -116,6 +126,16 @@ const IndividualDeviceEditForm = ({
     },
   });
 
+  const mountPlaces = useStore($individualDeviceMountPlaces);
+
+  const mountPlaceInit = mountPlaces?.find(
+    (elem) => elem.name === device.mountPlace
+  );
+
+  useEffect(() => {
+    setFieldValue('mountPlaceId', mountPlaceInit?.description);
+  }, [mountPlace]);
+
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
     const error = _.get(errors, `${name}`);
@@ -126,134 +146,153 @@ const IndividualDeviceEditForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ paddingBottom: 40, maxWidth: 480 }}>
-      <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-        <Form.Item label="Тип ресурса" style={styles.w100}>
-          <SelectTT
-            name="resource"
-            onChange={(value) => {
-              setFieldValue('resource', value);
-            }}
-            options={resources}
-            value={values.resource}
-            disabled
-          />
-          <Alert name="resource" />
-        </Form.Item>
+    <>
+      <IndividualDeviceMountPlacesGate />
+      <form
+        onSubmit={handleSubmit}
+        style={{ paddingBottom: 40, maxWidth: 480 }}
+      >
+        <StyledFormPage hidden={Number(currentTabKey) !== 1}>
+          <Form.Item label="Тип ресурса" style={styles.w100}>
+            <SelectTT
+              name="resource"
+              onChange={(value) => {
+                setFieldValue('resource', value);
+              }}
+              options={resources}
+              value={values.resource}
+              disabled
+            />
+            <Alert name="resource" />
+          </Form.Item>
 
-        <Form.Item label="Модель прибора" style={styles.w100}>
-          <InputTT
-            name="model"
-            placeholder="Укажите модель..."
-            type="text"
-            onChange={handleChange}
-            value={values.model}
-            onBlur={handleBlur}
-          />
-          <Alert name="model" />
-        </Form.Item>
-
-        <Form.Item label="Серийный номер" style={styles.w100}>
-          <InputTT
-            name="serialNumber"
-            placeholder="Укажите серийный номер..."
-            type="text"
-            onChange={handleChange}
-            value={values.serialNumber}
-            onBlur={handleBlur}
-          />
-          <Alert name="serialNumber" />
-        </Form.Item>
-
-        <Form.Item label="Место установки" style={styles.w100}>
-          <SelectTT options={[]} />
-        </Form.Item>
-
-        <Flex style={styles.w100}>
-          <Form.Item
-            label="Разрядность"
-            style={{ ...styles.w100, marginRight: 20 }}
-          >
-            <InputNumberTT
-              name="bitDepth"
-              placeholder="Укажите разрядность..."
-              type="number"
-              onChange={(value) => setFieldValue('bitDepth', value)}
-              value={values.bitDepth || void 0}
-              step="1"
+          <Form.Item label="Модель прибора" style={styles.w100}>
+            <InputTT
+              name="model"
+              placeholder="Укажите модель..."
+              type="text"
+              onChange={handleChange}
+              value={values.model}
               onBlur={handleBlur}
             />
+            <Alert name="model" />
           </Form.Item>
-          <Form.Item label="Множитель" style={styles.w100}>
-            <InputNumberTT
-              name="scaleFactor"
-              placeholder="Укажите множитель..."
-              type="number"
-              onChange={(value) => setFieldValue('scaleFactor', value)}
-              value={values.scaleFactor || void 0}
-              step="1"
+
+          <Form.Item label="Серийный номер" style={styles.w100}>
+            <InputTT
+              name="serialNumber"
+              placeholder="Укажите серийный номер..."
+              type="text"
+              onChange={handleChange}
+              value={values.serialNumber}
               onBlur={handleBlur}
             />
+            <Alert name="serialNumber" />
           </Form.Item>
-        </Flex>
 
-        <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            name="lastCommercialAccountingDate"
-            placeholder="Укажите дату"
-            onChange={(date) => {
-              setFieldValue('lastCommercialAccountingDate', date);
-            }}
-            value={values.lastCommercialAccountingDate}
-          />
-        </Form.Item>
+          <Form.Item label="Место установки" style={styles.w100}>
+            <SelectTT
+              value={values.mountPlaceId}
+              onChange={(value: any) =>
+                setFieldValue('mountPlaceId', value?.lable)
+              }
+              options={mountPlaces?.map((elem) => ({
+                value: elem.description,
+                lable: elem.id,
+                key: elem.id,
+              }))}
+            />
+          </Form.Item>
 
-        <Form.Item label="Дата Поверки" style={styles.w100}>
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            name="lastCheckingDate"
-            placeholder="Укажите дату..."
-            onChange={(date) => {
-              console.log(date);
-              setFieldValue('lastCheckingDate', date);
-              setFieldValue('futureCheckingDate', moment(date).add(4, 'years'));
-            }}
-            value={values.lastCheckingDate}
-          />
-          <Alert name="lastCheckingDate" />
-        </Form.Item>
+          <Flex style={styles.w100}>
+            <Form.Item
+              label="Разрядность"
+              style={{ ...styles.w100, marginRight: 20 }}
+            >
+              <InputNumberTT
+                name="bitDepth"
+                placeholder="Укажите разрядность..."
+                type="number"
+                onChange={(value) => setFieldValue('bitDepth', value)}
+                value={values.bitDepth || void 0}
+                step="1"
+                onBlur={handleBlur}
+              />
+            </Form.Item>
+            <Form.Item label="Множитель" style={styles.w100}>
+              <InputNumberTT
+                name="scaleFactor"
+                placeholder="Укажите множитель..."
+                type="number"
+                onChange={(value) => setFieldValue('scaleFactor', value)}
+                value={values.scaleFactor || void 0}
+                step="1"
+                onBlur={handleBlur}
+              />
+            </Form.Item>
+          </Flex>
 
-        <Form.Item label="Дата Следующей поверки" style={styles.w100}>
-          <DatePickerTT
-            format="DD.MM.YYYY"
-            placeholder="Укажите дату..."
-            onChange={(date) => {
-              setFieldValue('futureCheckingDate', date);
-            }}
-            value={values.futureCheckingDate}
-            name="futureCheckingDate"
-          />
-          <Alert name="futureCheckingDate" />
-        </Form.Item>
-      </StyledFormPage>
+          <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="lastCommercialAccountingDate"
+              placeholder="Укажите дату"
+              onChange={(date) => {
+                setFieldValue('lastCommercialAccountingDate', date);
+              }}
+              value={values.lastCommercialAccountingDate}
+            />
+          </Form.Item>
 
-      <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-        <Header>Компонент в разработке</Header>
-      </StyledFormPage>
+          <Form.Item label="Дата Поверки" style={styles.w100}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              name="lastCheckingDate"
+              placeholder="Укажите дату..."
+              onChange={(date) => {
+                console.log(date);
+                setFieldValue('lastCheckingDate', date);
+                setFieldValue(
+                  'futureCheckingDate',
+                  moment(date).add(4, 'years')
+                );
+              }}
+              value={values.lastCheckingDate}
+            />
+            <Alert name="lastCheckingDate" />
+          </Form.Item>
 
-      <StyledFooter form>
-        <ButtonTT color="blue" type={'submit'}>
-          Сохранить
-        </ButtonTT>
+          <Form.Item label="Дата Следующей поверки" style={styles.w100}>
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              onChange={(date) => {
+                setFieldValue('futureCheckingDate', date);
+              }}
+              value={values.futureCheckingDate}
+              name="futureCheckingDate"
+            />
+            <Alert name="futureCheckingDate" />
+          </Form.Item>
+        </StyledFormPage>
 
-        <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
-          <ButtonTT style={{ marginLeft: 16 }} color="white">
-            Отмена
+        <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+          <Header>Компонент в разработке</Header>
+        </StyledFormPage>
+
+        <StyledFooter form>
+          <ButtonTT color="blue" type={'submit'}>
+            Сохранить
           </ButtonTT>
-        </NavLink>
-      </StyledFooter>
-    </form>
+
+          <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
+            <ButtonTT style={{ marginLeft: 16 }} color="white">
+              Отмена
+            </ButtonTT>
+          </NavLink>
+        </StyledFooter>
+      </form>
+    </>
   );
 };
 
