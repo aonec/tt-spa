@@ -30,6 +30,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { useStore } from 'effector-react';
+import styled from 'styled-components';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -83,7 +84,7 @@ const IndividualDeviceEditForm = ({
       : null,
     rateType,
     apartmentId: address?.apartmentId,
-    mountPlaceId: mountPlace,
+    mountPlaceId: null,
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
   };
@@ -111,12 +112,10 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
         bitDepth: values.bitDepth,
-        mountPlaceId:
-          typeof values.mountPlaceId === 'string'
-            ? Number(values.mountPlaceId)
-            : values.mountPlaceId,
+        mountPlaceId: values.mountPlaceId as any,
         scaleFactor: values.scaleFactor,
       };
+
       putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
         if (show) {
           setAlert(true);
@@ -128,13 +127,13 @@ const IndividualDeviceEditForm = ({
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
 
-  const mountPlaceInit = mountPlaces?.find(
-    (elem) => elem.name === device.mountPlace
-  );
+  const mountPlaceInit = mountPlaces?.find((elem) => elem.name === mountPlace);
 
   useEffect(() => {
-    setFieldValue('mountPlaceId', mountPlaceInit?.description);
-  }, [mountPlace]);
+    if (mountPlaceInit) {
+      setFieldValue('mountPlaceId', mountPlaceInit?.id);
+    }
+  }, [mountPlaceInit]);
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);
@@ -191,17 +190,16 @@ const IndividualDeviceEditForm = ({
           </Form.Item>
 
           <Form.Item label="Место установки" style={styles.w100}>
-            <SelectTT
-              value={values.mountPlaceId}
-              onChange={(value: any) =>
-                setFieldValue('mountPlaceId', value?.lable)
-              }
-              options={mountPlaces?.map((elem) => ({
-                value: elem.description,
-                lable: elem.id,
-                key: elem.id,
-              }))}
-            />
+            <StyledSelect
+              value={values.mountPlaceId || undefined}
+              onChange={(value) => setFieldValue('mountPlaceId', value)}
+            >
+              {mountPlaces?.map((elem) => (
+                <Select.Option value={elem.id}>
+                  {elem.description}
+                </Select.Option>
+              ))}
+            </StyledSelect>
           </Form.Item>
 
           <Flex style={styles.w100}>
@@ -297,3 +295,41 @@ const IndividualDeviceEditForm = ({
 };
 
 export default IndividualDeviceEditForm;
+
+const StyledSelect = styled(Select)`
+  height: 48px;
+  .ant-select-selector {
+    height: 100% !important;
+    padding: 8px 24px !important;
+    border-radius: 4px;
+
+    span {
+      font-size: 16px;
+      line-height: 32px;
+    }
+  }
+  .ant-select-arrow {
+    padding: 0 28px !important;
+  }
+  .ant-select-item {
+    margin: 0 !important;
+    //border: 1px solid black;
+    padding: 0 !important;
+
+    &:hover {
+      background: #189ee9 !important;
+      color: $white;
+    }
+
+    .ant-select-item-option-content {
+      background: white;
+      padding: 8px 24px !important;
+      margin: 0 !important;
+
+      &:hover {
+        background: #189ee9 !important;
+        color: $white;
+      }
+    }
+  }
+`;
