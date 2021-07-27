@@ -1,5 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {
+  BaseSyntheticEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Select } from 'antd';
 import moment from 'moment';
@@ -53,6 +59,8 @@ const IndividualDeviceEditForm = ({
   setExistDevice,
 }: FormEditODPUInterface) => {
   const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
 
   const {
     saveMagnetSeal,
@@ -328,11 +336,18 @@ const IndividualDeviceEditForm = ({
             {loading ? <Loader show={true} /> : 'Сохранить'}
           </ButtonTT>
 
-          <NavLink to={`/housingMeteringDevices/${device.id}/`}>
-            <ButtonTT style={{ marginLeft: 16 }} color="white">
-              Отмена
-            </ButtonTT>
-          </NavLink>
+          <ButtonTT
+            style={{ marginLeft: 16 }}
+            color="white"
+            onClick={(e: BaseSyntheticEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+
+              history.goBack();
+            }}
+          >
+            Отмена
+          </ButtonTT>
         </StyledFooter>
       </form>
     </>

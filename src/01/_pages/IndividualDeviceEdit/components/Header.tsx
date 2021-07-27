@@ -33,7 +33,7 @@ export const Header = ({ device }: HeaderInterface) => {
 
   return (
     <Loader show={loading} size="32">
-      <Breadcrumb path={`/objects/${id}/apartments/${apartmentId}/testimony`} />
+      <Breadcrumb />
       <HeaderWrap>
         <div>
           <Title>
