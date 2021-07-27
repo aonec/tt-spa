@@ -28,8 +28,6 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
   const { sliderIndex, sliderProps } = useMonthSlider(items);
 
-  console.log(sliderIndex, devices, useMonthSlider());
-
   if (!devices.length || sliderIndex === undefined) return null;
 
   const validDevices = devices

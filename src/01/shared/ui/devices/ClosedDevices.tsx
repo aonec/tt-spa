@@ -18,7 +18,7 @@ const ClosedDevices = ({
     </ClosedDevice>
   ));
   return (
-    <div>
+    <div style={{ marginBottom: 15 }}>
       <div>{showClosed ? closedDevices : null}</div>
       <ShowClosedBlock onClick={() => setShowClosed((x) => !x)}>
         <ShowToggle>
