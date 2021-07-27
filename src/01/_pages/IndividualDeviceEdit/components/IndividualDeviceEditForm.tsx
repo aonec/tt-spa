@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Select } from 'antd';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import {
   StyledFooter,
   StyledFormPage,
   styles,
+  SwitchTT,
 } from '../../../tt-components';
 import {
   EIndividualDeviceRateType,
@@ -26,11 +27,11 @@ import { putIndividualDevice } from '../../../_api/apiRequests';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
+import { Loader } from '01/components';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -47,12 +48,10 @@ function toMoment(value: string | null): moment.Moment | null {
 const IndividualDeviceEditForm = ({
   currentTabKey,
   device,
-  setTab,
   setAlert,
   setExistDevice,
 }: FormEditODPUInterface) => {
-  const { deviceId } = useParams<{ deviceId: string }>();
-  const [validationSchema, setValidationSchema] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
   const {
     address,
@@ -99,8 +98,7 @@ const IndividualDeviceEditForm = ({
     setFieldValue,
   } = useFormik({
     initialValues: initialValues,
-    validationSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
       const rateTypeEnum: EIndividualDeviceRateType = values.rateType as EIndividualDeviceRateType;
 
       const form: UpdateIndividualDeviceRequest = {
@@ -116,12 +114,18 @@ const IndividualDeviceEditForm = ({
         scaleFactor: values.scaleFactor,
       };
 
-      putIndividualDevice(id, form).then(({ show, id: existDeviceId }: any) => {
-        if (show) {
-          setAlert(true);
-          setExistDevice(existDeviceId);
+      setLoading(true);
+
+      await putIndividualDevice(id, form).then(
+        ({ show, id: existDeviceId }: any) => {
+          if (show) {
+            setAlert(true);
+            setExistDevice(existDeviceId);
+          }
         }
-      });
+      );
+
+      setLoading(false);
     },
   });
 
@@ -274,6 +278,27 @@ const IndividualDeviceEditForm = ({
             />
             <Alert name="futureCheckingDate" />
           </Form.Item>
+
+          <Form.Item label="Магнитная пломба" style={styles.w100}>
+            <Flex>
+              <SwitchTT onChange={() => {}} checked={device.hasMagneticSeal} />
+              <InputTT placeholder="Тип магнитной пломбы" />
+            </Flex>
+          </Form.Item>
+
+          <Form.Item
+            label="Дата установки пломбы"
+            style={styles.w100}
+          >
+            <DatePickerTT
+              format="DD.MM.YYYY"
+              placeholder="Укажите дату..."
+              onChange={(date) => {}}
+              value={null}
+              name="futureCheckingDate"
+            />
+            <Alert name="futureCheckingDate" />
+          </Form.Item>
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
@@ -281,11 +306,11 @@ const IndividualDeviceEditForm = ({
         </StyledFormPage>
 
         <StyledFooter form>
-          <ButtonTT color="blue" type={'submit'}>
-            Сохранить
+          <ButtonTT color="blue" type={'submit'} disabled={loading}>
+            {loading ? <Loader show={true} /> : 'Сохранить'}
           </ButtonTT>
 
-          <NavLink to={`/housingMeteringDevices/${deviceId}/`}>
+          <NavLink to={`/housingMeteringDevices/${device.id}/`}>
             <ButtonTT style={{ marginLeft: 16 }} color="white">
               Отмена
             </ButtonTT>
