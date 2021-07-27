@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../../../_components/Icon';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import moment from 'moment';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -20,6 +21,7 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     mountPlace,
     lastCheckingDate,
     futureCheckingDate,
+    hasMagneticSeal,
   } = device;
   return (
     <DeviceColumn>
@@ -37,9 +39,20 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
           futureCheckingDate={futureCheckingDate}
         />
       </ApartmentInfo>
+      {hasMagneticSeal && (
+        <MagneticSeal>
+          Магнитная пломба{' '}
+          {device.magneticSealInstallationDate &&
+            moment(device.magneticSealInstallationDate).format('DD.MM.YYYY')}
+        </MagneticSeal>
+      )}
     </DeviceColumn>
   );
 };
+
+const MagneticSeal = styled.div`
+  margin: 3px 0 0 24px;
+`;
 
 const DeviceColumn = styled.div`
   display: flex;

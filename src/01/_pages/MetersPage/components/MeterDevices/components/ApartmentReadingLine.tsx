@@ -11,6 +11,8 @@ import {
   IndividualDeviceListItemResponse,
   EResourceType,
 } from '../../../../../../myApi';
+import { MenuButtonTT } from '01/tt-components';
+import { useHistory } from 'react-router-dom';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -22,7 +24,7 @@ const ApartmentReadingLine = ({
   sliderIndex,
 }: ApartmentReadingLineProps) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const textInput = React.createRef<Input>();
 
   const {
@@ -46,6 +48,19 @@ const ApartmentReadingLine = ({
 
   if (!readingsState) return null;
 
+  const menuButtonArr = [
+    {
+      title: 'Редактировать',
+      show: true,
+      cb: () => history.push(`/individualDevices/${device.id}/edit`),
+    },
+    {
+      title: 'Закрытие прибора',
+      show: true,
+      color: 'red',
+    },
+  ];
+
   return (
     <>
       <FullDeviceLine>
@@ -55,6 +70,10 @@ const ApartmentReadingLine = ({
 
         {previousReadings}
         {currentReadings}
+
+        <div></div>
+
+        <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
       </FullDeviceLine>
 
       <StyledModal
@@ -85,7 +104,7 @@ const ApartmentReadingLine = ({
 
 const FullDeviceLine = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 2fr;
+  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 1fr 0fr;
   column-gap: 16px;
   margin-top: 8px;
   align-items: center;
