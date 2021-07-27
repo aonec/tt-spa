@@ -248,7 +248,6 @@ const IndividualDeviceEditForm = ({
               name="lastCheckingDate"
               placeholder="Укажите дату..."
               onChange={(date) => {
-                console.log(date);
                 setFieldValue('lastCheckingDate', date);
                 setFieldValue(
                   'futureCheckingDate',
