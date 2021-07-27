@@ -1,6 +1,6 @@
 import {
   closingIndividualDeviceButtonClicked,
-  closeClousingIndividualDeviceModalButtonClicked,
+  closeClosingIndividualDeviceModalButtonClicked,
   closeIndividualDeviceFx,
 } from './index';
 import { $closingIndividualDeviceId } from '.';
@@ -8,6 +8,6 @@ import { $closingIndividualDeviceId } from '.';
 $closingIndividualDeviceId
   .on(closingIndividualDeviceButtonClicked, (_, id) => id)
   .reset(
-    closeClousingIndividualDeviceModalButtonClicked,
+    closeClosingIndividualDeviceModalButtonClicked,
     closeIndividualDeviceFx.doneData
   );

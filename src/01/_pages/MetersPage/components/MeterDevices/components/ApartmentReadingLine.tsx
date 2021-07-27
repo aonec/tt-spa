@@ -13,6 +13,7 @@ import {
 } from '../../../../../../myApi';
 import { MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
+import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -58,6 +59,7 @@ const ApartmentReadingLine = ({
       title: 'Закрытие прибора',
       show: true,
       color: 'red',
+      cb: () => closingIndividualDeviceButtonClicked(device.id)
     },
   ];
 

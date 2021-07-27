@@ -20,6 +20,6 @@ export const closeIndividualDeviceForm = createForm({
 
 export const closingIndividualDeviceButtonClicked = createEvent<number>();
 export const closingIndividualDeviceModalButtonClicked = createEvent();
-export const closeClousingIndividualDeviceModalButtonClicked = createEvent();
+export const closeClosingIndividualDeviceModalButtonClicked = createEvent();
 
 export const closeIndividualDeviceFx = createEffect();
