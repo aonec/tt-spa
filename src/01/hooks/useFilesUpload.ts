@@ -70,7 +70,7 @@ export function useFilesUpload(
         status: 'pending',
       }));
 
-      await deleteDoc(fileId);
+      // await deleteDoc(fileId);
 
       setFiles((prev) => prev.filter((elem) => elem.id !== id));
     } catch (e) {
