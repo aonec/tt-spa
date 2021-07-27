@@ -8,11 +8,11 @@ export const useMonthSlider = (
 ) => {
   const [sliderIndex, setSliderIndex] = useState(0);
 
-  if (!items || !items.length || !items[0].readings?.length) return {};
+  if (!items || !items.length) return {};
   const currentMonth = getMonthFromDate();
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(items[0].readings![0].readingDate);
-  const readingsLength = items[0].readings?.length;
+    currentMonth === getMonthFromDate(items[0].readings![0]?.readingDate);
+  const readingsLength = items[0].readings?.length || 0;
 
   const isPreviousArrowDisabled =
     sliderIndex + 1 > readingsLength - Number(isReadingsCurrent) - 1;
@@ -30,6 +30,8 @@ export const useMonthSlider = (
       return isNextArrowDisabled ? index : index - 1;
     });
   };
+
+  console.log(sliderIndex);
 
   return {
     sliderIndex,

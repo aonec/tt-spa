@@ -48,6 +48,7 @@ export interface HomeownerListResponse {
   lastName: string | null;
   middleName: string | null;
   personType: EPersonType;
+  isMainPersonalAccountNumber: boolean;
   phoneNumber: string | null;
   personalAccountNumber: string | null;
   paymentCode: string | null;
@@ -149,20 +150,6 @@ export interface ApartmentListResponsePagedList {
 
 export interface ApartmentListResponsePagedListSuccessApiResponse {
   successResponse: ApartmentListResponsePagedList | null;
-}
-
-export interface ApartmentUpdateRequest {
-  /** @format double */
-  square?: number | null;
-
-  /** @format int32 */
-  numberOfLiving?: number | null;
-
-  /** @format int32 */
-  normativeNumberOfLiving?: number | null;
-
-  /** @format uuid */
-  mainHomeownerAccountId?: string | null;
 }
 
 export interface ApartmentStatusResponse {
@@ -3703,13 +3690,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest | null, params: RequestParams = {}) =>
+    apartmentsUpdate: (
+      apartmentId: number,
+      query?: {
+        Square?: number | null;
+        NumberOfLiving?: number | null;
+        NormativeNumberOfLiving?: number | null;
+        MainHomeownerAccountId?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: "PUT",
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -3756,10 +3751,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Apartments/{apartmentId}/HomeownerAccounts
      * @secure
      */
-    apartmentsHomeownerAccountsDetail: (apartmentId: number, params: RequestParams = {}) =>
+    apartmentsHomeownerAccountsDetail: (
+      apartmentId: number,
+      query?: { IsClosed?: boolean | null },
+      params: RequestParams = {},
+    ) =>
       this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -4725,10 +4725,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Homeowners/{homeownerId}/HomeownerAccounts
      * @secure
      */
-    homeownersHomeownerAccountsDetail: (homeownerId: number, params: RequestParams = {}) =>
+    homeownersHomeownerAccountsDetail: (
+      homeownerId: number,
+      query?: { IsClosed?: boolean | null },
+      params: RequestParams = {},
+    ) =>
       this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}/HomeownerAccounts`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -5362,10 +5367,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/IndividualDeviceMountPlaces
      * @secure
      */
-    individualDeviceMountPlacesList: (params: RequestParams = {}) =>
+    individualDeviceMountPlacesList: (query: { apartmentId: number }, params: RequestParams = {}) =>
       this.request<IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceMountPlaces`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
