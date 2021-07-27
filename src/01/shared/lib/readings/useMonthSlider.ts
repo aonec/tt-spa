@@ -31,8 +31,6 @@ export const useMonthSlider = (
     });
   };
 
-  console.log(sliderIndex);
-
   return {
     sliderIndex,
     sliderProps: {

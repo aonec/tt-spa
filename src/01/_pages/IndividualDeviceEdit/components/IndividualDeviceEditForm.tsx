@@ -1,5 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {
+  BaseSyntheticEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, Select } from 'antd';
 import moment from 'moment';
@@ -32,6 +38,7 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '01/components';
+import { useSwitchMagnetSeal } from '../hooks/useSwitchMagnetSeal';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -52,6 +59,15 @@ const IndividualDeviceEditForm = ({
   setExistDevice,
 }: FormEditODPUInterface) => {
   const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
+
+  const {
+    saveMagnetSeal,
+    magnetSeal,
+    computedValues: { magneticSealInstallationDate },
+    onChange,
+  } = useSwitchMagnetSeal(device);
 
   const {
     address,
@@ -116,6 +132,7 @@ const IndividualDeviceEditForm = ({
 
       setLoading(true);
 
+      await saveMagnetSeal();
       await putIndividualDevice(id, form).then(
         ({ show, id: existDeviceId }: any) => {
           if (show) {
@@ -281,20 +298,29 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Магнитная пломба" style={styles.w100}>
             <Flex>
-              <SwitchTT onChange={() => {}} checked={device.hasMagneticSeal} />
-              <InputTT placeholder="Тип магнитной пломбы" />
+              <SwitchTT
+                onChange={onChange.isInstalled}
+                checked={magnetSeal.isInstalled}
+              />
+              <InputTT
+                placeholder="Тип магнитной пломбы"
+                value={magnetSeal.magneticSealTypeName}
+                onChange={(value: any) =>
+                  onChange.magneticSealTypeName(value.target.value)
+                }
+              />
             </Flex>
           </Form.Item>
 
-          <Form.Item
-            label="Дата установки пломбы"
-            style={styles.w100}
-          >
+          <Form.Item label="Дата установки пломбы" style={styles.w100}>
             <DatePickerTT
               format="DD.MM.YYYY"
               placeholder="Укажите дату..."
-              onChange={(date) => {}}
-              value={null}
+              onChange={(value) =>
+                value &&
+                onChange.magneticSealInstallationDate(value.toISOString())
+              }
+              value={magneticSealInstallationDate}
               name="futureCheckingDate"
             />
             <Alert name="futureCheckingDate" />
@@ -310,11 +336,18 @@ const IndividualDeviceEditForm = ({
             {loading ? <Loader show={true} /> : 'Сохранить'}
           </ButtonTT>
 
-          <NavLink to={`/housingMeteringDevices/${device.id}/`}>
-            <ButtonTT style={{ marginLeft: 16 }} color="white">
-              Отмена
-            </ButtonTT>
-          </NavLink>
+          <ButtonTT
+            style={{ marginLeft: 16 }}
+            color="white"
+            onClick={(e: BaseSyntheticEvent) => {
+              e.stopPropagation();
+              e.preventDefault();
+
+              history.goBack();
+            }}
+          >
+            Отмена
+          </ButtonTT>
         </StyledFooter>
       </form>
     </>
