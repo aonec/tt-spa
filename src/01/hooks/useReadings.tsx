@@ -134,13 +134,14 @@ export const useReadings = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
+    console.log(e.target.value);
     e.preventDefault();
-    if (isNaN(+e.target.value)) return;
+    // if (isNaN(+e.target.value)) return;
     setReadingsState((state: any) => ({
       ...state,
       currentReadingsArray: state.currentReadingsArray.map(
         (reading: any, i: any): number => {
-          return i === index ? +e.target.value : reading;
+          return i === index ? e.target.value : reading;
         }
       ),
     }));

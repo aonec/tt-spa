@@ -48,6 +48,7 @@ export interface HomeownerListResponse {
   lastName: string | null;
   middleName: string | null;
   personType: EPersonType;
+  isMainPersonalAccountNumber: boolean;
   phoneNumber: string | null;
   personalAccountNumber: string | null;
   paymentCode: string | null;
@@ -149,20 +150,6 @@ export interface ApartmentListResponsePagedList {
 
 export interface ApartmentListResponsePagedListSuccessApiResponse {
   successResponse: ApartmentListResponsePagedList | null;
-}
-
-export interface ApartmentUpdateRequest {
-  /** @format double */
-  square?: number | null;
-
-  /** @format int32 */
-  numberOfLiving?: number | null;
-
-  /** @format int32 */
-  normativeNumberOfLiving?: number | null;
-
-  /** @format uuid */
-  mainHomeownerAccountId?: string | null;
 }
 
 export interface ApartmentStatusResponse {
@@ -552,6 +539,12 @@ export interface HousingMeteringDeviceListResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   hub: HousingMeteringDeviceHubConnectionResponse | null;
   diameter: string | null;
   resource: EResourceType;
@@ -613,6 +606,12 @@ export interface CalculatorListResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   hasTasks: boolean | null;
@@ -659,6 +658,12 @@ export interface CreateCalculatorRequest {
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
   documentsIds?: number[] | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
   connection?: MeteringDeviceConnection | null;
   isConnected?: boolean;
 
@@ -696,6 +701,12 @@ export interface MeteringDeviceResponse {
   isActive: boolean | null;
 
   /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
+
+  /** @format int32 */
   housingStockId: number | null;
   diameter: string | null;
   connection: MeteringDeviceConnection | null;
@@ -730,6 +741,12 @@ export interface CalculatorResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean | null;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   address: HousingStockAddressResponse | null;
@@ -759,6 +776,12 @@ export interface UpdateCalculatorRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
   isConnected?: boolean;
 
   /** @format int32 */
@@ -1398,6 +1421,12 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
   housingMeteringDeviceType?: EHousingMeteringDeviceType | null;
   resource?: EResourceType | null;
   model?: string | null;
@@ -1412,6 +1441,9 @@ export interface UpdateHousingMeteringDeviceRequest {
 
   /** @format double */
   maxReadingsValue?: number | null;
+
+  /** @format double */
+  roomConsumption?: number | null;
 }
 
 export interface HousingMeteringDeviceConnectionResponse {
@@ -1469,6 +1501,12 @@ export interface HousingMeteringDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean | null;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   diameter: string | null;
   resource: EResourceType;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
@@ -1482,6 +1520,9 @@ export interface HousingMeteringDeviceResponse {
   /** @format double */
   maxReadingsValue: number | null;
   comment: HousingMeteringDeviceCommentResponse | null;
+
+  /** @format double */
+  roomConsumption: number | null;
 }
 
 export interface HousingMeteringDeviceResponseSuccessApiResponse {
@@ -1501,6 +1542,12 @@ export interface CreateHousingMeteringDeviceRequest {
   lastCommercialAccountingDate?: string | null;
   documentsIds?: number[] | null;
 
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
+
   /** @format date-time */
   futureCommercialAccountingDate: string;
   housingMeteringDeviceType: EHousingMeteringDeviceType;
@@ -1517,6 +1564,9 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format double */
   maxReadingsValue?: number | null;
+
+  /** @format double */
+  roomConsumption?: number | null;
 }
 
 export interface SwitchHousingMeteringDeviceRequest {
@@ -1959,6 +2009,12 @@ export interface IndividualDeviceResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean | null;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   address: FullAddressResponse | null;
   resource: EResourceType;
   mountPlace: string | null;
@@ -1991,6 +2047,12 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format date-time */
   futureCommercialAccountingDate?: string | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
   model?: string | null;
 
   /** @format int32 */
@@ -2025,6 +2087,12 @@ export interface IndividualDeviceListItemResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   resource: EResourceType;
   mountPlace: string | null;
   rateType: EIndividualDeviceRateType;
@@ -2078,6 +2146,12 @@ export interface CreateIndividualDeviceRequest {
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
   documentsIds?: number[] | null;
+
+  /** @format int32 */
+  bitDepth?: number | null;
+
+  /** @format int32 */
+  scaleFactor?: number | null;
   model?: string | null;
 
   /** @format int32 */
@@ -2611,6 +2685,12 @@ export interface CalculatorIntoNodeResponse {
   /** @format date-time */
   closingDate: string | null;
   isActive: boolean | null;
+
+  /** @format int32 */
+  bitDepth: number | null;
+
+  /** @format int32 */
+  scaleFactor: number | null;
   connection: MeteringDeviceConnection | null;
   isConnected: boolean | null;
   address: HousingStockAddressResponse | null;
@@ -3610,13 +3690,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/Apartments/{apartmentId}
      * @secure
      */
-    apartmentsUpdate: (apartmentId: number, data: ApartmentUpdateRequest | null, params: RequestParams = {}) =>
+    apartmentsUpdate: (
+      apartmentId: number,
+      query?: {
+        Square?: number | null;
+        NumberOfLiving?: number | null;
+        NormativeNumberOfLiving?: number | null;
+        MainHomeownerAccountId?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ApartmentResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}`,
         method: "PUT",
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -3663,10 +3751,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Apartments/{apartmentId}/HomeownerAccounts
      * @secure
      */
-    apartmentsHomeownerAccountsDetail: (apartmentId: number, params: RequestParams = {}) =>
+    apartmentsHomeownerAccountsDetail: (
+      apartmentId: number,
+      query?: { IsClosed?: boolean | null },
+      params: RequestParams = {},
+    ) =>
       this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/HomeownerAccounts`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -4632,10 +4725,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Homeowners/{homeownerId}/HomeownerAccounts
      * @secure
      */
-    homeownersHomeownerAccountsDetail: (homeownerId: number, params: RequestParams = {}) =>
+    homeownersHomeownerAccountsDetail: (
+      homeownerId: number,
+      query?: { IsClosed?: boolean | null },
+      params: RequestParams = {},
+    ) =>
       this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Homeowners/${homeownerId}/HomeownerAccounts`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -5269,10 +5367,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/IndividualDeviceMountPlaces
      * @secure
      */
-    individualDeviceMountPlacesList: (params: RequestParams = {}) =>
+    individualDeviceMountPlacesList: (query: { apartmentId: number }, params: RequestParams = {}) =>
       this.request<IndividualDeviceMountPlaceListWrappedResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDeviceMountPlaces`,
         method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,

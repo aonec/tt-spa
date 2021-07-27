@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { IndividualDeviceType } from '../../../../types/types';
 import styled from 'styled-components';
 import DeviceInfo from '../../../_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import Icon from '../../../tt-components/Icon';
@@ -18,7 +17,7 @@ const ClosedDevices = ({
     </ClosedDevice>
   ));
   return (
-    <div>
+    <div style={{ marginBottom: 15 }}>
       <div>{showClosed ? closedDevices : null}</div>
       <ShowClosedBlock onClick={() => setShowClosed((x) => !x)}>
         <ShowToggle>
