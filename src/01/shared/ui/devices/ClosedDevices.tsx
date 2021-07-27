@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { IndividualDeviceType } from '../../../../types/types';
 import styled from 'styled-components';
 import DeviceInfo from '../../../_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import Icon from '../../../tt-components/Icon';

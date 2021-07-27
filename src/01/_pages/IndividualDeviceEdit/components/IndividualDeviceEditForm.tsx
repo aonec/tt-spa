@@ -146,7 +146,9 @@ const IndividualDeviceEditForm = ({
 
   return (
     <>
-      <IndividualDeviceMountPlacesGate />
+      {address?.apartmentId && (
+        <IndividualDeviceMountPlacesGate apartmentId={address?.apartmentId} />
+      )}
       <form
         onSubmit={handleSubmit}
         style={{ paddingBottom: 40, maxWidth: 480 }}
@@ -193,6 +195,7 @@ const IndividualDeviceEditForm = ({
             <StyledSelect
               value={values.mountPlaceId || undefined}
               onChange={(value) => setFieldValue('mountPlaceId', value)}
+              placeholder="Укажите место"
             >
               {mountPlaces?.map((elem) => (
                 <Select.Option value={elem.id}>

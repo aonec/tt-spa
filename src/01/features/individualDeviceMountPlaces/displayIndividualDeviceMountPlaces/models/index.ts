@@ -7,8 +7,10 @@ export const $individualDeviceMountPlaces = createStore<
 >(null);
 
 export const fetchIndividualDeviceMountPlacesFx = createEffect<
-  void,
+  number,
   IndividualDeviceMountPlaceListResponse[]
 >();
 
-export const IndividualDeviceMountPlacesGate = createGate();
+export const IndividualDeviceMountPlacesGate = createGate<{
+  apartmentId: number;
+}>();
