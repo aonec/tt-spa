@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
 export const $closingIndividualDeviceId = createStore<number | null>(null);
@@ -18,6 +18,8 @@ export const closeIndividualDeviceForm = createForm({
   },
 });
 
-export const closingIndividualDeviceButtonClicked = createEvent();
+export const closingIndividualDeviceButtonClicked = createEvent<number>();
 export const closingIndividualDeviceModalButtonClicked = createEvent();
-export const clouseClousingIndividualDeviceModalButtonClicked = createEvent();
+export const closeClousingIndividualDeviceModalButtonClicked = createEvent();
+
+export const closeIndividualDeviceFx = createEffect();
