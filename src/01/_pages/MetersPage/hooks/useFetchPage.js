@@ -10,7 +10,7 @@ export const useFetchPage = (state, dispatch) => {
   const history = useHistory();
   const apatrments = useRouteMatch('/*/apartments');
   const page = useRouteMatch('/meters/apartments/:id');
-  const { id } = page?.params;
+  const { id } = page?.params || {};
 
   const presetDeviceInfo = () =>
     getApartmentInfo(id).then((data) => {
