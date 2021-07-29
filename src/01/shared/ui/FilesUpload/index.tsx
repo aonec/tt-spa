@@ -13,6 +13,7 @@ interface Props {
 
 export const FilesUpload: React.FC<Props> = (props) => {
   const { max = Infinity, onChange, uniqId, text } = props;
+  
   const { files, addFile, removeFile } = useFilesUpload(onChange);
 
   return (
