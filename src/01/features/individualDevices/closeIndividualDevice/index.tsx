@@ -1,8 +1,11 @@
+import { Loader } from '01/components';
+import { ErrorMessage } from '01/features/contractors/addContractors';
 import { useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
 import { Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, DatePickerTT } from '01/tt-components';
+import { ErrorAlert } from '01/_components/Alert';
 import { Form } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import confirm from 'antd/lib/modal/confirm';
@@ -15,6 +18,7 @@ import {
   $isCloseIndividualDeviceModalOpen,
   closeClosingIndividualDeviceModalButtonClicked,
   closeIndividualDeviceForm,
+  closeIndividualDeviceFx,
 } from './models';
 
 export const CloseIndividualDeviceModal = () => {
@@ -34,7 +38,11 @@ export const CloseIndividualDeviceModal = () => {
 
   const { submit, fields } = useForm(closeIndividualDeviceForm);
 
-  const { addFile, removeFile } = useFilesUpload(fields.documentIds.onChange);
+  const { addFile, removeFile, pendingProcessing } = useFilesUpload(
+    fields.documentIds.onChange
+  );
+
+  const pendingSave = useStore(closeIndividualDeviceFx.pending);
 
   return (
     <StyledModal
@@ -56,8 +64,12 @@ export const CloseIndividualDeviceModal = () => {
           <ButtonTT color="white" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT color="red" onClick={submit}>
-            Снять прибор с учета
+          <ButtonTT
+            color="red"
+            onClick={submit}
+            disabled={pendingProcessing || pendingSave}
+          >
+            {pendingSave ? <Loader show={true} /> : 'Снять прибор с учета'}
           </ButtonTT>
         </Footer>
       }
@@ -76,6 +88,11 @@ export const CloseIndividualDeviceModal = () => {
             }
             format="DD.MM.YYYY"
           />
+          <ErrorMessage>
+            {fields.clousingDate.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <FilesList files={fields.documentIds.value} removeFile={removeFile} />
         <DragAndDrop
