@@ -1,10 +1,11 @@
+import { IndividualDeviceListItemResponse } from './../../../../../myApi';
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
 
-export const $closingIndividualDeviceId = createStore<number | null>(null);
-export const $isCloseIndividualDeviceModalOpen = $closingIndividualDeviceId.map(
+export const $closingIndividualDevice = createStore<IndividualDeviceListItemResponse | null>(null);
+export const $isCloseIndividualDeviceModalOpen = $closingIndividualDevice.map(
   Boolean
 );
 
@@ -25,7 +26,7 @@ export const closeIndividualDeviceForm = createForm({
   },
 });
 
-export const closingIndividualDeviceButtonClicked = createEvent<number>();
+export const closingIndividualDeviceButtonClicked = createEvent<IndividualDeviceListItemResponse>();
 export const closeClosingIndividualDeviceModalButtonClicked = createEvent();
 
 export const closeIndividualDeviceFx = createEffect<

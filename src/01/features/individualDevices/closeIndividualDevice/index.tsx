@@ -14,6 +14,7 @@ import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
 import {
+  $closingIndividualDevice,
   $isCloseIndividualDeviceModalOpen,
   closeClosingIndividualDeviceModalButtonClicked,
   closeIndividualDeviceForm,
@@ -43,6 +44,8 @@ export const CloseIndividualDeviceModal = () => {
 
   const pendingSave = useStore(closeIndividualDeviceFx.pending);
 
+  const device = useStore($closingIndividualDevice);
+
   return (
     <StyledModal
       centered
@@ -51,7 +54,10 @@ export const CloseIndividualDeviceModal = () => {
       width={800}
       title={
         <>
-          <Header>Вы действительно хотите закрыть прибор?</Header>
+          <Header>
+            Вы действительно хотите закрыть прибор {device?.model} (
+            {device?.serialNumber})?
+          </Header>
           <UnderModalTitleText>
             Показания по прибору будут приниматься, но они не учитываются для
             расчёта оплаты за потребление

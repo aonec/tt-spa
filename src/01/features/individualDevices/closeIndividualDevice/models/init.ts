@@ -7,11 +7,11 @@ import {
   closeIndividualDeviceForm,
   isClosingIndividualDeviceRequstSuccessfull,
 } from './index';
-import { $closingIndividualDeviceId } from '.';
+import { $closingIndividualDevice } from '.';
 
 closeIndividualDeviceFx.use(closeIndividualDevice);
 
-$closingIndividualDeviceId
+$closingIndividualDevice
   .on(closingIndividualDeviceButtonClicked, (_, id) => id)
   .reset(
     closeClosingIndividualDeviceModalButtonClicked,
@@ -32,10 +32,10 @@ sample({
       ...values,
       documentIds: values.documentIds.map((file) => file.fileResponse?.id!),
     })),
-    $closingIndividualDeviceId,
-    (props, deviceId) => ({
+    $closingIndividualDevice,
+    (props, device) => ({
       ...props,
-      deviceId: deviceId!,
+      deviceId: device?.id!,
       closingDate: props.clousingDate!,
     })
   ),
