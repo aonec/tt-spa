@@ -5,7 +5,6 @@ import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
 import { Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, DatePickerTT } from '01/tt-components';
-import { ErrorAlert } from '01/_components/Alert';
 import { Form } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import confirm from 'antd/lib/modal/confirm';
