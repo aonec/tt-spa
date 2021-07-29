@@ -1,3 +1,4 @@
+import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
@@ -9,7 +10,7 @@ export const $isCloseIndividualDeviceModalOpen = $closingIndividualDeviceId.map(
 export const closeIndividualDeviceForm = createForm({
   fields: {
     documentIds: {
-      init: [] as number[],
+      init: [] as FileData[],
     },
     clousingDate: {
       init: null as null | string,

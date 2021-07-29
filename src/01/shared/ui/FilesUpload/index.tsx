@@ -9,11 +9,12 @@ interface Props {
   max?: number;
   uniqId: string;
   text?: string;
+  filesInit?: FileData[];
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
   const { max = Infinity, onChange, uniqId, text } = props;
-  
+
   const { files, addFile, removeFile } = useFilesUpload(onChange);
 
   return (
