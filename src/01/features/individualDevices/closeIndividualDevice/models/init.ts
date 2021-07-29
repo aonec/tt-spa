@@ -19,7 +19,10 @@ $closingIndividualDeviceId
   );
 
 forward({
-  from: closeClosingIndividualDeviceModalButtonClicked,
+  from: [
+    closeClosingIndividualDeviceModalButtonClicked,
+    closeIndividualDeviceFx.doneData,
+  ],
   to: closeIndividualDeviceForm.resetValues,
 });
 
