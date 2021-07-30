@@ -1,4 +1,4 @@
-import { deleteDoc } from '01/_api/task_profile_page';
+// import { deleteDoc } from '01/_api/task_profile_page';
 import { uploadFile } from '01/_api/upload';
 import { useEffect, useState } from 'react';
 import { DocumentResponse } from './../../myApi';
@@ -15,12 +15,14 @@ interface FileUploader {
   addFile: (file: File) => Promise<void>;
   removeFile: (id: number) => Promise<void>;
   clearFiles: () => void;
+  pendingProcessing: boolean;
 }
 
 export function useFilesUpload(
   onChange?: (files: FileData[]) => void
 ): FileUploader {
   const [files, setFiles] = useState<FileData[]>([]);
+  const pendingProcessing = files.some((elem) => elem.status === 'pending');
 
   const rewriteFile = (id: number, callback: (file: FileData) => FileData) => {
     setFiles((prev) =>
@@ -82,7 +84,13 @@ export function useFilesUpload(
     }
   }
 
-  return { files, addFile, removeFile, clearFiles: () => setFiles([]) };
+  return {
+    files,
+    addFile,
+    removeFile,
+    clearFiles: () => setFiles([]),
+    pendingProcessing,
+  };
 }
 
 const rewriteArrayElem = <T>(

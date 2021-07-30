@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { useCancelFetch } from '01/_hooks/useCancelFetch';
 import { getApartments, getApartmentInfo } from '../api';
+import { useStore } from 'effector-react';
+import { isClosingIndividualDeviceRequstSuccessfull } from '01/features/individualDevices/closeIndividualDevice/models';
 
 export const useFetchPage = (state, dispatch) => {
   const history = useHistory();
   const apatrments = useRouteMatch('/*/apartments');
   const page = useRouteMatch('/meters/apartments/:id');
+  const { id } = page?.params || {};
+
+  const presetDeviceInfo = () =>
+    getApartmentInfo(id).then((data) => {
+      dispatch({ type: 'success', data });
+    });
+
+  const isSuccessCloseDevice = useStore(
+    isClosingIndividualDeviceRequstSuccessfull
+  );
+
+  useEffect(presetDeviceInfo, [isSuccessCloseDevice]);
+
   useCancelFetch();
 
   const isExactPage = apatrments?.isExact || page?.isExact;
@@ -23,14 +38,11 @@ export const useFetchPage = (state, dispatch) => {
         }
       });
     }
-  }, [ state.params, apatrments?.isExact]);
+  }, [state.params, apatrments?.isExact]);
 
   React.useEffect(() => {
     if (isExactPage && page?.isExact) {
-      const { id } = page?.params;
-      getApartmentInfo(id).then((data) => {
-        dispatch({ type: 'success', data });
-      });
+      presetDeviceInfo();
     }
   }, [page?.isExact]);
 };

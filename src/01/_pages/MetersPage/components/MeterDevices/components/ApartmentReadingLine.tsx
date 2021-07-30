@@ -59,7 +59,7 @@ const ApartmentReadingLine = ({
       title: 'Закрытие прибора',
       show: true,
       color: 'red',
-      cb: () => closingIndividualDeviceButtonClicked(device.id)
+      cb: () => closingIndividualDeviceButtonClicked(device),
     },
   ];
 
