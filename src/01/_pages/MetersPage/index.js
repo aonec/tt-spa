@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { Title } from '../../_components/Headers';
 import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
+import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 
 const { TabPane } = Tabs;
 
@@ -51,11 +52,13 @@ export const MetersPage = () => {
           </Route>
         </TabPane>
         <TabPane tab="По домам" key="houses">
-          <Route path="/*/houses" exact>
-            {/* <Houses /> */}
+          <Route path="/meters/houses">
+            <HousingStockFilter />
+          </Route>
+          <Route path="/meters/houses" exact>
             <HousingStocks />
           </Route>
-          <Route path="/*/houses/:id">
+          <Route path="/meters/houses/:id">
             <HouseReadings />
           </Route>
         </TabPane>

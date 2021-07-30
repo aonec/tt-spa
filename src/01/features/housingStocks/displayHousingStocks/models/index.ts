@@ -12,5 +12,3 @@ export const fetchHousingStocksFx = createEffect<
   void,
   HousingStockListResponse[]
 >();
-
-export const HousingStocksGate = createGate();

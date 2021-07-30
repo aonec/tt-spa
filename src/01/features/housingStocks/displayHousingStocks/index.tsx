@@ -1,10 +1,6 @@
 import React from 'react';
 import { useStore } from 'effector-react';
-import {
-  $housingStocks,
-  fetchHousingStocksFx,
-  HousingStocksGate,
-} from './models';
+import { $housingStocks, fetchHousingStocksFx } from './models';
 import { Loader } from '01/components';
 import styled from 'styled-components';
 import OperatorPlaceholder from './assets/OperatorPlaceholder.svg';
@@ -23,7 +19,6 @@ export const HousingStocks = () => {
 
   return (
     <>
-      {/* <HousingStocksGate /> */}
       {pending ? (
         <Loader show={true} />
       ) : housingStocks?.length ? (
