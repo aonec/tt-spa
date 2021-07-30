@@ -15,6 +15,7 @@ import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { Title } from '../../_components/Headers';
+import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
 
 const { TabPane } = Tabs;
 
@@ -51,7 +52,8 @@ export const MetersPage = () => {
         </TabPane>
         <TabPane tab="По домам" key="houses">
           <Route path="/*/houses" exact>
-            <Houses />
+            {/* <Houses /> */}
+            <HousingStocks />
           </Route>
           <Route path="/*/houses/:id">
             <HouseReadings />
