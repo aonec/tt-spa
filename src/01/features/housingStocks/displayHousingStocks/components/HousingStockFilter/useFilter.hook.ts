@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { filterFieldHasBeenChanged } from '../../models';
 
 export const useFilter = () => {
   const [filterFields, setFilterFields] = useState({
@@ -10,6 +11,10 @@ export const useFilter = () => {
 
   const setValue = (name: string, value: string) =>
     setFilterFields((prev) => ({ ...prev, [name]: value }));
+
+  useEffect(() => {
+    filterFieldHasBeenChanged();
+  }, [filterFields]);
 
   return {
     filterFields,
