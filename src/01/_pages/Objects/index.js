@@ -63,6 +63,39 @@ const initialState = {
   Corpus: '',
 };
 
+export const StyledObject = ({
+  id,
+  street,
+  number,
+  corpus,
+  numberOfApartments,
+  numberOfTasks,
+  city,
+}) => {
+  const task = numberOfTasks ? (
+    <task>
+      <Icon icon="alarm" />
+      Задач: {numberOfTasks}
+    </task>
+  ) : null;
+
+  return styled(styles)(
+    <obj_item key={id}>
+      <LinkRow to={`/meters/houses/${id}`}>
+        <span>
+          <h4 style={{ whiteSpace: 'nowrap' }}>
+            {street}, {number} {corpus ? `, к.${corpus}` : null}
+          </h4>
+          {task}
+        </span>
+        <city>{city}</city>
+        <span />
+        <aparts>{numberOfApartments} квартир</aparts>
+      </LinkRow>
+    </obj_item>
+  );
+};
+
 export const Objects = ({ isReadings = false }) => {
   const [state, setState] = useState({ items: null });
   const [searchState, dispatchSearchState] = useReducer(
