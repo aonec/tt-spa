@@ -16,7 +16,7 @@ export const useFilter = () => {
   const debouncedValue = useDebounce(filterFields, 500);
 
   useEffect(() => {
-    filterFieldHasBeenChanged();
+    filterFieldHasBeenChanged({});
   }, [debouncedValue]);
 
   return {

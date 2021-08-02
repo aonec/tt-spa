@@ -45,6 +45,7 @@ const styles = css`
 
   aparts {
     opacity: 0.6;
+    text-align: right;
   }
 
   LinkRow {
