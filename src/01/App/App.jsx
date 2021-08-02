@@ -161,6 +161,7 @@ const Internal = () => {
                 path="/meters/(apartments|houses)"
                 component={MetersPage}
               />
+              <Route path="/house/:id/addIndividualDevice">add device</Route>
               <Redirect to="/error/" />
             </Switch>
           </main>

@@ -15,7 +15,7 @@ const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
     {
       title: 'Добавить новый прибор',
       show: true,
-      cb: () => history.push(history.location.pathname + '/addIndividualDevice'),
+      cb: () => history.push(`/house/${house?.id}/addIndividualDevice`),
     },
   ];
 
