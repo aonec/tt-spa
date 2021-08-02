@@ -10,11 +10,11 @@ export const HousingStocks = () => {
   const pending = useStore(fetchHousingStocksFx.pending);
 
   const HousingStocksList = () => (
-    <>
+    <div>
       {housingStocks?.map((elem) => (
         <div>{elem.city}</div>
       ))}
-    </>
+    </div>
   );
 
   return (
@@ -37,7 +37,7 @@ const ImageContainer = styled.div`
 `;
 
 export const StartInputForDisplayImage = () => (
-  <ImageContainer>
+  <ImageContainer style={{ zIndex: 1 }}>
     <img src={OperatorPlaceholder} alt="OperatorPlaceholder" />
   </ImageContainer>
 );

@@ -15,7 +15,10 @@ export const HousingStockFilter = () => {
   );
 };
 
-const FieldsWrap = styled(Flex)``;
+const FieldsWrap = styled(Flex)`
+  height: 50px;
+`;
+
 const StyledInput = styled.input`
   border: 1px solid lightgray;
   margin-left: 15px;
@@ -26,18 +29,13 @@ const StyledInput = styled.input`
   box-sizing: border-box;
   border-radius: 4px;
 
-  --active: var(--primary-100);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-gap: 8px;
-    border: 1px solid var(--frame);
-    border-radius: 4px;
-    position: relative;
-    height: var(--h-norm);
-    background: #fff;
-    z-index: 10;
-    color: var(--main-80);
-    overflow: hidden;
-    padding: 0 8px;
-    cursor: text;
+  border: 1px solid var(--frame);
+  height: var(--h-norm);
+  z-index: 1000;
+
+  box-shadow: 0 4px 7px #02011b20;
+
+  &:hover {
+    border: 1px solid #2317cc;
+  }
 `;
