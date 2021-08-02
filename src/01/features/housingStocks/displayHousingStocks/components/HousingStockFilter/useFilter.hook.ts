@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export const useFilter = () => {
   const [filterFields, setFilterFields] = useState({
-    City: '',
+    City: 'Нижнекамск',
     Street: '',
     HousingStockNumber: '',
     Corpus: '',
