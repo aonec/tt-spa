@@ -2,16 +2,32 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { HouseType } from '../../../../../_api/houses_readings_page';
 import { Icon } from '../../../../../components/Icon';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { MenuButtonTT } from '01/tt-components';
+import { useHistory } from 'react-router-dom';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const [isVisible, setIsVisible] = useState(true);
 
+  const history = useHistory();
+
+  const menuButtonArray = [
+    {
+      title: 'Добавить новый прибор',
+      show: true,
+      cb: () => history.push(history.location.pathname + '/addIndividualDevice'),
+    },
+  ];
+
   return (
     <div>
-      <AddressHeader>
-        {house.city}, {house.street}, {house.number}
-        {house.corpus ? `,${house.corpus}` : ''}
-      </AddressHeader>
+      <Flex style={{ justifyContent: 'space-between', marginTop: 20 }}>
+        <AddressHeader>
+          {house.city}, {house.street}, {house.number}
+          {house.corpus ? `,${house.corpus}` : ''}
+        </AddressHeader>
+        <MenuButtonTT menuButtonArr={menuButtonArray} />
+      </Flex>
       <InfoSticker>
         <InfoHeader onClick={() => setIsVisible((prevState) => !prevState)}>
           <IconContainer show={isVisible}>
