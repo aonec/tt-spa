@@ -17,7 +17,7 @@ interface DeviceInfoProps {
 }
 
 const DeviceInfo = ({ device }: DeviceInfoProps) => {
-  const { icon, color } = DeviceIcons[device.resource];
+  const { icon, color } = DeviceIcons[device.resource] || {};
   const isActive = device.closingDate === null;
   const [switched, setSwitched] = useState(false);
   const [
