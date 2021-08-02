@@ -16,7 +16,7 @@ export const HousingStockFilter = () => {
     <FieldsWrap>
       <StyledSelctor
         placeholder="Город"
-        value={filterFields.City}
+        value={filterFields.City || undefined}
         onChange={(value: any) => setValue('City', value)}
       >
         {cities.map((city) => (
