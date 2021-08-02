@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import { useFetchPage } from './hooks/useFetchPage';
 import { useFilter } from './hooks/useFiter';
@@ -10,7 +10,6 @@ import { Apartments } from './components/Apartments';
 import { Filter } from './components/Filter';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
-import Houses from './components/HousesReadings/HousesReadings';
 import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';

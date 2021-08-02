@@ -8,7 +8,7 @@ export function useRedirectBetweenMetersPages() {
   const history = useHistory();
 
   useEffect(() => {
-    if (!housingStocks?.length) return;
+    if (!housingStocks) return;
 
     if (housingStocks?.length === 1) {
       history.push(`/meters/houses/${housingStocks[0]?.id}`);
