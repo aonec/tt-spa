@@ -60,7 +60,7 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     },
   });
 
-  if (!device) return <Loader show={true} size={32} />;
+  if (!device) return <Loader show size={32} />;
 
   const Alert = ({ name }: AlertInterface) => {
     const touch = _.get(touched, `${name}`);

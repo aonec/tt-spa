@@ -333,7 +333,7 @@ const IndividualDeviceEditForm = ({
 
         <StyledFooter form>
           <ButtonTT color="blue" type={'submit'} disabled={loading}>
-            {loading ? <Loader show={true} /> : 'Сохранить'}
+            {loading ? <Loader show /> : 'Сохранить'}
           </ButtonTT>
 
           <ButtonTT

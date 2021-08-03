@@ -74,7 +74,7 @@ export const CloseIndividualDeviceModal = () => {
             onClick={submit}
             disabled={pendingProcessing || pendingSave}
           >
-            {pendingSave ? <Loader show={true} /> : 'Снять прибор с учета'}
+            {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
           </ButtonTT>
         </Footer>
       }

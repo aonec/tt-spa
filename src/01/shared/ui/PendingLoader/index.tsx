@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const PendingLoader: React.FC<Props> = ({ children, loading }) => {
-  return <>{loading ? <Loader show={true} /> : children}</>;
+  return <>{loading ? <Loader show /> : children}</>;
 };

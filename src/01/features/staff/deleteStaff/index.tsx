@@ -38,7 +38,7 @@ export const DeleteStaffModal: React.FC = () => {
             key="submit"
             onClick={onOk}
           >
-            {pending ? <Loader show={true} /> : 'Удалить'}
+            {pending ? <Loader show /> : 'Удалить'}
           </ButtonTT>
         </Footer>
       }

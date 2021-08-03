@@ -90,14 +90,14 @@ export const CalculatorProfile = () => {
   };
 
   if (!device || !tasks) {
-    return <Loader show={true} size={32} />;
+    return <Loader show size={32} />;
   }
 
   return (
     <>
       {status === 'error' && <div style={{ background: 'red' }}>ОШИБКА</div>}
       {(status === 'pending' || status === 'idle') && (
-        <Loader show={true} size={32} />
+        <Loader show size={32} />
       )}
       {status === 'resolved' && (
         <>
