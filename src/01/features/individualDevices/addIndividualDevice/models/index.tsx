@@ -1,4 +1,9 @@
+import { createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
+
+export const $creationDeviceStage = createStore<1 | 2>(1);
+
+export const $isOpenCheckCreationDeviceFormDataModal = createStore(false);
 
 export const addIndividualDeviceForm = createForm({
   fields: {
@@ -23,9 +28,44 @@ export const addIndividualDeviceForm = createForm({
     },
     bitDepth: {
       init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     scaleFactor: {
       init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    apartmentId: {
+      init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    mountPlaceId: {
+      init: null as number | null,
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    model: {
+      init: '',
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    rateType: {
+      init: '',
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    resource: {
+      init: '',
+      rules: [{ name: 'required', validator: Boolean }],
+    },
+    magneticSealInstallationDate: {
+      init: null as null | string,
+    },
+    magneticSealTypeName: {
+      init: null as null | string,
+    },
+    isInstalled: {
+      init: false,
     },
   },
 });
+
+export const switchStageButtonClicked = createEvent<1 | 2>();
+
+export const nextStageButtonClicked = createEvent();
