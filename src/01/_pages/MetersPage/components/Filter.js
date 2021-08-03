@@ -23,7 +23,6 @@ export const Filter = ({ inputs = [] }) => {
   return styled(input)`
     filter {
       margin-bottom: 15px;
-      margin-right: 10px;
       grid-column: 1 / -1;
       display: grid;
       grid-template-columns:

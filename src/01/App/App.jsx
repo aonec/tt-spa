@@ -162,7 +162,7 @@ const Internal = () => {
                 path="/meters/(apartments|houses)"
                 component={MetersPage}
               />
-              <Route path="/house/:id/addIndividualDevice">
+              <Route path="/apartment/:id/addIndividualDevice" exact>
                 <AddIndividualDevice />
               </Route>
               <Redirect to="/error/" />
