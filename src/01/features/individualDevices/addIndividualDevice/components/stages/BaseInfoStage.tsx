@@ -1,13 +1,25 @@
+import {
+  $individualDeviceMountPlaces,
+  IndividualDeviceMountPlacesGate,
+} from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SelectTT, SwitchTT } from '01/tt-components';
 import { Form } from 'antd';
+import { useStore } from 'effector-react';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FormHeader } from '../Header';
 
 export const BaseInfoStage = () => {
+  const { id } = useParams<{ id: string }>();
+
+  const mountPlaces = useStore($individualDeviceMountPlaces);
+
   return (
     <>
+      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
+
       <FormHeader>Общие данные о приборе</FormHeader>
 
       <FormWrap>
