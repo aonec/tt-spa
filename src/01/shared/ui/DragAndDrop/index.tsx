@@ -49,7 +49,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
                 <FileUploadIcon />
               </UploadFileIconContainer>
             </Center>
-            <div>
+            <div style={{ marginTop: 4 }}>
               {text ||
                 'Перетащите ваши файлы в эту область или нажмите для выбора'}
             </div>
@@ -80,7 +80,7 @@ const DragAndDropContainer = styled.div`
   justify-content: center;
   align-items: center;
   border: 2px dashed #dcdee4;
-  height: 100px;
+  height: 105px;
   border-radius: 4px;
   font-size: 16px;
   transition: 0.3s;

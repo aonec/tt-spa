@@ -15,7 +15,7 @@ export const DocumentsStage = () => {
           />,
           <DragAndDrop
             uniqId="create-individual-device-passport"
-            text="Добавьте пасспорт прибора"
+            text="Добавьте паспорт прибора"
           />,
           <DragAndDrop
             uniqId="create-individual-device-check"
