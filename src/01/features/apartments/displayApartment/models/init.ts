@@ -13,10 +13,10 @@ sample({
     source: combine(
       $apartment,
       ApartmentGate.state.map((state) => state.id),
-      (house, id) => ({ house, id })
+      (apartment, id) => ({ apartment, id })
     ),
     clock: ApartmentGate.open,
-    filter: ({ house, id }) => house?.id !== id,
+    filter: ({ apartment, id }) => apartment?.id !== id,
   }),
   target: fetchApartmentFx,
 });

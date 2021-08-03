@@ -1,8 +1,11 @@
-import { HousingStockResponse } from './../../../../myApi';
+import { ApartmentResponse } from './../../../../myApi';
 
-export function getAddress(house: HousingStockResponse | null) {
-  if (!house) return;
+export function getAddress(apartment: ApartmentResponse | null) {
+  if (!apartment) return;
+
+  const house = apartment.housingStock;
+
   return `${house?.city}, ул. ${house?.street}, ${
-    house.corpus ? `к. ${house.corpus},` : ''
-  } кв. ${house.number}`;
+    house?.corpus ? `к. ${house?.corpus},` : ''
+  } кв. ${house?.number}`;
 }

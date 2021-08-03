@@ -20,4 +20,4 @@ import './individualDevices/closeIndividualDevice/models/init';
 import './housingStocks/displayHousingStocks/models/init';
 import './housingStocks/displayHousingStock/models/init';
 import './individualDevices/addIndividualDevice/models/init';
-import './apartments/displayApartment/models';
+import './apartments/displayApartment/models/init';
