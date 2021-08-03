@@ -1,7 +1,7 @@
 import { createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
-export const $creationDeviceStage = createStore<1 | 2>(1);
+export const $creationDeviceStage = createStore<0 | 1>(0);
 
 export const $isOpenCheckCreationDeviceFormDataModal = createStore(false);
 
@@ -66,6 +66,6 @@ export const addIndividualDeviceForm = createForm({
   },
 });
 
-export const switchStageButtonClicked = createEvent<1 | 2>();
+export const switchStageButtonClicked = createEvent<0 | 1>();
 
 export const nextStageButtonClicked = createEvent();

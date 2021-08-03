@@ -1,6 +1,16 @@
 import React from 'react';
-import { WrapCreateIndividualDeviceForm } from './components/Wrap';
+import { Grid } from './components/Grid';
+import { CreateIndividualDeviceFormHeader } from './components/Header';
+import { CreateIndividualDeviceFormStages } from './components/Stages';
 
 export const AddIndividualDevice = () => {
-  return <WrapCreateIndividualDeviceForm></WrapCreateIndividualDeviceForm>;
+  return (
+    <>
+      <CreateIndividualDeviceFormHeader />
+      <Grid>
+        <div>form</div>
+        <CreateIndividualDeviceFormStages />
+      </Grid>
+    </>
+  );
 };

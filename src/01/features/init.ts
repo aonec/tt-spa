@@ -19,3 +19,4 @@ import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/
 import './individualDevices/closeIndividualDevice/models/init';
 import './housingStocks/displayHousingStocks/models/init';
 import './housingStocks/displayHousingStock/models/init';
+import './individualDevices/addIndividualDevice/models/init';
