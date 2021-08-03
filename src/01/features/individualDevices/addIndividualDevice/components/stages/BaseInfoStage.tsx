@@ -4,7 +4,9 @@ import {
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SelectTT, SwitchTT } from '01/tt-components';
-import { Form } from 'antd';
+import { resources } from '01/tt-components/localBases';
+import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { Form, Select } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -24,7 +26,11 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Тип ресурса">
-          <StyledSelect options={[]} placeholder="Выберите тип ресурса" />
+          <StyledSelect placeholder="Выберите тип ресурса">
+            {resources.map((elem) => (
+              <Select.Option value={elem.value}>{elem.label}</Select.Option>
+            ))}
+          </StyledSelect>
         </FormItem>
 
         <FormItem label="Модель прибора">
@@ -36,7 +42,11 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Место установки">
-          <StyledSelect options={[]} placeholder="Выберите место установки" />
+          <StyledSelect placeholder="Выберите место установки">
+            {mountPlaces?.map((elem) => (
+              <Select.Option value={elem.id}>{elem.description}</Select.Option>
+            ))}
+          </StyledSelect>
         </FormItem>
 
         <FormItem label="Разрядность">
@@ -80,12 +90,6 @@ export const BaseInfoStage = () => {
 
 const DatePicker = styled(DatePickerTT)`
   border-radius: 4px;
-`;
-
-const StyledSelect = styled(SelectTT)`
-  .ant-select-selector {
-    border-radius: 4px !important;
-  }
 `;
 
 const FormItem = styled(Form.Item)`
