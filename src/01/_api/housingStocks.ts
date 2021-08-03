@@ -1,4 +1,4 @@
-import { HousingStockListResponse } from './../../myApi';
+import { HousingStockListResponse, HousingStockResponse } from './../../myApi';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
 
@@ -15,4 +15,10 @@ export const getHousingStocks = async (params: GetHousingStockParams) => {
     `HousingStocks${queryString}`
   );
   return res?.items;
+};
+
+export const getHousingStock = async (
+  id: number
+): Promise<HousingStockResponse> => {
+  return await axios.get(`HousingStocks/${id}`);
 };
