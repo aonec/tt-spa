@@ -40,6 +40,7 @@ import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
+import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 
 moment.locale('ru');
 
@@ -161,7 +162,9 @@ const Internal = () => {
                 path="/meters/(apartments|houses)"
                 component={MetersPage}
               />
-              <Route path="/house/:id/addIndividualDevice">add device</Route>
+              <Route path="/house/:id/addIndividualDevice">
+                <AddIndividualDevice />
+              </Route>
               <Redirect to="/error/" />
             </Switch>
           </main>
