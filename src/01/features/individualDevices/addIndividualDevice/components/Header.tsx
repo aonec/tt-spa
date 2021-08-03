@@ -15,7 +15,7 @@ export const CreateIndividualDeviceFormHeader: React.FC = () => (
       <div>
         <Breadcrumb />
         <div>
-          <Title>Добавление нового узла</Title>
+          <Title>Добавление нового прибора</Title>
           <HousingStockAddress />
         </div>
       </div>
