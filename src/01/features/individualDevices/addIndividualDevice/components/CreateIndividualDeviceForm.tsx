@@ -1,10 +1,13 @@
+import { useStore } from 'effector-react';
 import React from 'react';
-import { FormHeader } from './Header';
+import { $creationDeviceStage } from '../models';
+import { BaseInfoStage } from './stages/BaseInfoStage';
+import { DocumentsStage } from './stages/DocumentsStage';
 
 export const CreateIndividualDeviceForm = () => {
-  return (
-    <div>
-      <FormHeader>Общие данные о приборе</FormHeader>
-    </div>
-  );
+  const stageNumber = useStore($creationDeviceStage);
+
+  const pages = [<BaseInfoStage />, <DocumentsStage />];
+
+  return <div>{pages[stageNumber]}</div>;
 };

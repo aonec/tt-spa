@@ -1,4 +1,9 @@
-import { createEvent, createStore } from 'effector';
+import {
+  EResourceType,
+  CreateIndividualDeviceRequest,
+  MeteringDeviceResponseSuccessApiResponse,
+} from './../../../../../myApi';
+import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
@@ -51,7 +56,7 @@ export const addIndividualDeviceForm = createForm({
       rules: [{ name: 'required', validator: Boolean }],
     },
     resource: {
-      init: '',
+      init: null as EResourceType | null,
       rules: [{ name: 'required', validator: Boolean }],
     },
     magneticSealInstallationDate: {
@@ -67,5 +72,9 @@ export const addIndividualDeviceForm = createForm({
 });
 
 export const switchStageButtonClicked = createEvent<0 | 1>();
-
 export const nextStageButtonClicked = createEvent();
+
+export const createIndividualDeviceFx = createEffect<
+  CreateIndividualDeviceRequest,
+  MeteringDeviceResponseSuccessApiResponse
+>();

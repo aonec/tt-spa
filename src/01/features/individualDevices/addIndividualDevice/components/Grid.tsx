@@ -5,4 +5,5 @@ export const Grid = styled.div`
   max-width: 960px;
   display: grid;
   grid-template-columns: 4fr 1.5fr;
+  grid-gap: 45px;
 `;

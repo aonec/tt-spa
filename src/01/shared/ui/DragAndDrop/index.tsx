@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ReactComponent as FileUploadIcon } from './upload.svg';
 
 interface Props {
-  fileHandler(files: FileList): void;
+  fileHandler?(files: FileList): void;
   accept?: string;
   uniqId: string;
   text?: string;
@@ -22,7 +22,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
         multiple={false}
         value=""
         onChange={(event) =>
-          event.target.files && fileHandler(event.target.files)
+          event.target.files && fileHandler && fileHandler(event.target.files)
         }
         style={{ display: 'none' }}
         accept={accept}
@@ -36,7 +36,7 @@ export const DragAndDrop: React.FC<Props> = (props) => {
           onDrop={(event) => {
             event.preventDefault();
             event.stopPropagation();
-            fileHandler(event.dataTransfer.files);
+            fileHandler && fileHandler(event.dataTransfer.files);
           }}
           style={{
             margin: '0',
