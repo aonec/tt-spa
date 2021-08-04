@@ -54,6 +54,11 @@ export const BaseInfoStage = () => {
               <Select.Option value={elem.value}>{elem.label}</Select.Option>
             ))}
           </StyledSelect>
+          <ErrorMessage>
+            {fields.resource.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Модель прибора">
@@ -63,6 +68,11 @@ export const BaseInfoStage = () => {
             onChange={onChange}
             value={fields.model.value}
           />
+          <ErrorMessage>
+            {fields.model.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Серийный номер">
@@ -73,6 +83,11 @@ export const BaseInfoStage = () => {
             name="serialNumber"
             value={fields.serialNumber.value}
           />
+          <ErrorMessage>
+            {fields.serialNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Место установки">
@@ -85,6 +100,11 @@ export const BaseInfoStage = () => {
               <Select.Option value={elem.id}>{elem.description}</Select.Option>
             ))}
           </StyledSelect>
+          <ErrorMessage>
+            {fields.mountPlaceId.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Разрядность">
@@ -95,6 +115,11 @@ export const BaseInfoStage = () => {
             onChange={onChange}
             value={fields.bitDepth.value}
           />
+          <ErrorMessage>
+            {fields.bitDepth.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Множитель">
@@ -105,6 +130,11 @@ export const BaseInfoStage = () => {
             onChange={onChange}
             value={fields.scaleFactor.value}
           />
+          <ErrorMessage>
+            {fields.scaleFactor.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Первичные показания прибора">
@@ -123,6 +153,11 @@ export const BaseInfoStage = () => {
               fields.lastCommercialAccountingDate.value
             )}
           />
+          <ErrorMessage>
+            {fields.lastCommercialAccountingDate.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Дата последней проверки прибора">
@@ -131,6 +166,11 @@ export const BaseInfoStage = () => {
             onChange={onChangeDateField('lastCheckingDate')}
             value={getDatePickerValue(fields.lastCheckingDate.value)}
           />
+          <ErrorMessage>
+            {fields.lastCheckingDate.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Дата следующей проверки прибора">
@@ -139,6 +179,11 @@ export const BaseInfoStage = () => {
             onChange={onChangeDateField('futureCheckingDate')}
             value={getDatePickerValue(fields.futureCheckingDate.value)}
           />
+          <ErrorMessage>
+            {fields.futureCheckingDate.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         <FormItem label="Магнитная пломба">
@@ -168,6 +213,10 @@ export const BaseInfoStage = () => {
 function getDatePickerValue(value: string | null) {
   if (value) return moment(value);
 }
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
 
 const DatePicker = styled(DatePickerTT)`
   border-radius: 4px;

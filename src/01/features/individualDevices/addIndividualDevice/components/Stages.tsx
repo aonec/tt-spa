@@ -6,7 +6,7 @@ import { FormHeader } from './Header';
 
 const { Step } = Steps;
 
-const stepTitles = ['Общие данные о прибор', 'Документы'];
+const stepTitles = ['Общие данные о приборе', 'Документы'];
 
 export const CreateIndividualDeviceFormStages = () => {
   const currentStageNumber = useStore($creationDeviceStage);

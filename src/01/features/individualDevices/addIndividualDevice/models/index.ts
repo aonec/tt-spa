@@ -53,7 +53,6 @@ export const addIndividualDeviceForm = createForm({
     },
     rateType: {
       init: '',
-      rules: [{ name: 'required', validator: Boolean }],
     },
     resource: {
       init: null as EResourceType | null,
@@ -69,10 +68,12 @@ export const addIndividualDeviceForm = createForm({
       init: false,
     },
   },
+  validateOn: ['submit'],
 });
 
 export const switchStageButtonClicked = createEvent<0 | 1>();
 export const nextStageButtonClicked = createEvent();
+export const goNextStage = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
   CreateIndividualDeviceRequest,
