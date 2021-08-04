@@ -14,7 +14,7 @@ interface Props {
   files?: FileData[];
   removeFile?: (id: number, documentId?: number) => void;
   initialFiles?: DocumentResponse[];
-  controlType?: 'CONTROL' | 'DELETE';
+  controlType?: 'CONTROL' | 'DELETE' | "NONE";
 }
 
 export const FilesList: React.FC<Props> = ({
@@ -104,6 +104,7 @@ export const FilesList: React.FC<Props> = ({
         />
       ),
       DELETE: <StyledDropIcon onClick={confirmDeletion} />,
+      NONE: null
     };
 
     const content = components[controlType];

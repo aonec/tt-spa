@@ -38,6 +38,7 @@ export const DocumentsStage = () => {
         filesInit={getFilesArrByFile(completedWorks)}
         max={1}
         onChange={setFile('completedWorks')}
+        withoutDeletion
       />
 
       <FilesUpload
@@ -46,6 +47,7 @@ export const DocumentsStage = () => {
         filesInit={getFilesArrByFile(devicePassport)}
         max={1}
         onChange={setFile('devicePassport')}
+        withoutDeletion
       />
 
       <FilesUpload
@@ -54,6 +56,7 @@ export const DocumentsStage = () => {
         max={1}
         filesInit={getFilesArrByFile(deviceCheck)}
         onChange={setFile('deviceCheck')}
+        withoutDeletion
       />
     </>
   );

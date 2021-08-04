@@ -10,23 +10,30 @@ interface Props {
   uniqId: string;
   text?: string;
   filesInit?: FileData[];
+  withoutDeletion?: boolean;
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
-  const { max = Infinity, onChange, uniqId, text, filesInit } = props;
+  const {
+    max = Infinity,
+    onChange,
+    uniqId,
+    text,
+    filesInit,
+    withoutDeletion,
+  } = props;
 
   const { files, addFile, removeFile } = useFilesUpload(onChange);
-
-  console.log(filesInit);
 
   return (
     <Wide>
       <FilesList
         files={filesInit ? filesInit : files}
         removeFile={removeFile}
+        controlType={withoutDeletion ? 'NONE' : 'CONTROL'}
       />
 
-      {max > [...files, ...(filesInit || [])].length && (
+      {max > [...(filesInit ? [] : files), ...(filesInit || [])].length && (
         <DragAndDrop
           accept="application/pdf"
           text={text}
