@@ -1,4 +1,7 @@
 import { $individualDeviceMountPlaces } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
+import { FileData } from '01/hooks/useFilesUpload';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT } from '01/tt-components';
 import { resources } from '01/tt-components/localBases';
@@ -13,6 +16,7 @@ import {
   addIndividualDeviceForm,
   cancelCheckingButtonClicked,
 } from '../models';
+import { FileIcon, TrashIcon } from '../icons';
 
 interface ILine {
   name: string;
@@ -68,11 +72,8 @@ export const CheckFormValuesModal = () => {
     },
   ];
 
-  const renderLine = ({ name, value }: ILine) => (
-    <Line>
-      <div>{name}</div>
-      <div>{value || '—'}</div>
-    </Line>
+  const files: FileData[] = toArray<FileData>(fields.documentsIds.value).filter(
+    (elem) => elem?.fileResponse
   );
 
   return (
@@ -93,7 +94,14 @@ export const CheckFormValuesModal = () => {
       }
     >
       <Title>1. Общие данные о приборе</Title>
+
       {lines.map(renderLine)}
+
+      <Space style={{ height: 30 }} />
+
+      <Title>2. Документы</Title>
+
+      {files.map(renderFile)}
     </StyledModal>
   );
 };
@@ -108,6 +116,39 @@ const Line = styled.div`
   border-bottom: 1px solid lightgray;
   padding: 15px;
 `;
+
+const StyledFile = styled(Flex)`
+  justify-content: space-between;
+  background-color: #272f5a08;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  padding: 15px;
+
+  .File__name {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0em;
+    color: #272f5ab2;
+  }
+`;
+
+const renderLine = ({ name, value }: ILine) => (
+  <Line key={name}>
+    <div>{name}</div>
+    <div>{value || '—'}</div>
+  </Line>
+);
+
+const renderFile = (file: FileData) => (
+  <StyledFile>
+    <Flex className="File__name">
+      <FileIcon />
+      <Space />
+      {file?.fileResponse?.name}
+    </Flex>
+    <TrashIcon />
+  </StyledFile>
+);
 
 function getResourceName(resource: EResourceType | null) {
   if (!resource) return null;
@@ -132,4 +173,8 @@ function getDate(dateString: string | null) {
   if (!date.isValid) return null;
 
   return date.format('DD.MM.YYYY');
+}
+
+function toArray<T>(obj: object): T[] {
+  return Object.keys(obj).map((name) => (obj as any)[name]);
 }
