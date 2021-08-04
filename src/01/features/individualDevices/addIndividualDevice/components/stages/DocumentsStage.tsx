@@ -60,5 +60,5 @@ export const DocumentsStage = () => {
 };
 
 function getFilesArrByFile(fileData: FileData | null) {
-  if (fileData) return [fileData];
+  return fileData ? [fileData] : [];
 }

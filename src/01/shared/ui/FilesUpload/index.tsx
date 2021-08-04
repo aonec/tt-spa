@@ -17,6 +17,8 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
   const { files, addFile, removeFile } = useFilesUpload(onChange);
 
+  console.log(filesInit);
+
   return (
     <Wide>
       <FilesList
