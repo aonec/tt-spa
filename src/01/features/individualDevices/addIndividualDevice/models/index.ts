@@ -29,7 +29,9 @@ export const addIndividualDeviceForm = createForm({
       rules: [{ name: 'required', validator: Boolean }],
     },
     documentsIds: {
-      init: [] as number[],
+      init: {
+
+      },
     },
     bitDepth: {
       init: null as number | null,

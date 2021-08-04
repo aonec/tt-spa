@@ -1,6 +1,7 @@
-import { sample } from 'effector';
+import { forward, sample } from 'effector';
 import {
   $creationDeviceStage,
+  addIndividualDeviceForm,
   goNextStage,
   switchStageButtonClicked,
 } from './index';
@@ -15,3 +16,5 @@ sample({
   clock: goNextStage,
   target: switchStageButtonClicked,
 });
+
+forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });

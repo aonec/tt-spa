@@ -1,7 +1,7 @@
 import { Steps } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
-import { $creationDeviceStage, switchStageButtonClicked } from '../models';
+import { $creationDeviceStage } from '../models';
 import { FormHeader } from './Header';
 
 const { Step } = Steps;
@@ -15,11 +15,8 @@ export const CreateIndividualDeviceFormStages = () => {
     <div>
       <FormHeader>Этапы создания</FormHeader>
       <Steps direction="vertical" current={currentStageNumber}>
-        {stepTitles.map((step, index) => (
-          <Step
-            title={step}
-            onClick={() => switchStageButtonClicked(index as 0 | 1)}
-          />
+        {stepTitles.map((step) => (
+          <Step title={step} key={step} />
         ))}
       </Steps>
     </div>
