@@ -23,6 +23,10 @@ interface ILine {
   value: ReactNode;
 }
 
+interface RemoveFile {
+  removeFile: () => void;
+}
+
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
@@ -72,9 +76,19 @@ export const CheckFormValuesModal = () => {
     },
   ];
 
-  const files: FileData[] = toArray<FileData>(fields.documentsIds.value).filter(
-    (elem) => elem?.fileResponse
-  );
+  const files: (FileData & RemoveFile)[] = toArray<FileData>(
+    fields.documentsIds.value
+  )
+    .filter((elem) => elem?.fileResponse)
+    .map((elem) => ({
+      ...elem,
+      removeFile() {
+        fields.documentsIds.onChange({
+          ...fields.documentsIds.value,
+          [elem.__name__]: null,
+        } as any);
+      },
+    }));
 
   return (
     <StyledModal
@@ -99,7 +113,7 @@ export const CheckFormValuesModal = () => {
 
       <Space style={{ height: 30 }} />
 
-      <Title>2. Документы</Title>
+      {!!files.length && <Title>2. Документы</Title>}
 
       {files.map(renderFile)}
     </StyledModal>
@@ -139,14 +153,14 @@ const renderLine = ({ name, value }: ILine) => (
   </Line>
 );
 
-const renderFile = (file: FileData) => (
+const renderFile = (file: FileData & RemoveFile) => (
   <StyledFile>
     <Flex className="File__name">
       <FileIcon />
       <Space />
       {file?.fileResponse?.name}
     </Flex>
-    <TrashIcon />
+    <TrashIcon style={{ cursor: 'pointer' }} onClick={file.removeFile} />
   </StyledFile>
 );
 
@@ -175,6 +189,9 @@ function getDate(dateString: string | null) {
   return date.format('DD.MM.YYYY');
 }
 
-function toArray<T>(obj: object): T[] {
-  return Object.keys(obj).map((name) => (obj as any)[name]);
+function toArray<T extends object>(obj: object): (T & { __name__: string })[] {
+  return Object.keys(obj).map((name) => ({
+    ...(obj as any)[name],
+    __name__: name,
+  }));
 }
