@@ -11,6 +11,8 @@ import {
   goNextStage,
   switchStageButtonClicked,
   confirmCreationNewDeviceButtonClicked,
+  $isCreateIndividualDeviceSuccess,
+  resetCreationRequestStatus,
 } from './index';
 
 createIndividualDeviceFx.use(createIndividualDevice);
@@ -31,6 +33,15 @@ forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
   .reset([cancelCheckingButtonClicked, createIndividualDeviceFx.doneData]);
+
+forward({
+  from: createIndividualDeviceFx.doneData,
+  to: addIndividualDeviceForm.reset,
+});
+
+$isCreateIndividualDeviceSuccess
+  .on(createIndividualDeviceFx.doneData, () => true)
+  .reset(resetCreationRequestStatus);
 
 sample({
   source: addIndividualDeviceForm.$values.map(

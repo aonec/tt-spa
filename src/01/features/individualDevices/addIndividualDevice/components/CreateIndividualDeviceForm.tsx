@@ -1,6 +1,7 @@
 import { RightAlign } from '01/shared/ui/Layout/RightAlign';
 import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
+import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { useEffect } from 'react';
@@ -8,8 +9,10 @@ import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   $creationDeviceStage,
+  $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
   checkBeforSavingButtonClicked,
+  resetCreationRequestStatus,
   switchStageButtonClicked,
 } from '../models';
 import { BaseInfoStage } from './stages/BaseInfoStage';
@@ -17,12 +20,24 @@ import { DocumentsStage } from './stages/DocumentsStage';
 
 export const CreateIndividualDeviceForm = () => {
   const stageNumber = useStore($creationDeviceStage);
+  const individualDeviceCreationRequestStatus = useStore(
+    $isCreateIndividualDeviceSuccess
+  );
+
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   const pages = [<BaseInfoStage />, <DocumentsStage />];
 
   const { fields, submit } = useForm(addIndividualDeviceForm);
+
+  useEffect(() => {
+    if (!individualDeviceCreationRequestStatus) return;
+
+    history.goBack();
+    message.success('Прибор успешно создан!');
+    resetCreationRequestStatus();
+  }, [individualDeviceCreationRequestStatus]);
 
   useEffect(() => {
     fields.apartmentId.onChange(Number(id));
