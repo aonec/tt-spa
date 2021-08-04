@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import {
   $creationDeviceStage,
   addIndividualDeviceForm,
+  checkBeforSavingButtonClicked,
   switchStageButtonClicked,
 } from '../models';
 import { BaseInfoStage } from './stages/BaseInfoStage';
@@ -41,7 +42,10 @@ export const CreateIndividualDeviceForm = () => {
           <ButtonTT color="white" onClick={onCancel}>
             {stageNumber === 0 ? 'Отмена' : 'Назад'}
           </ButtonTT>
-          <ButtonTT color="blue" onClick={submit}>
+          <ButtonTT
+            color="blue"
+            onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
+          >
             {stageNumber === 1 ? 'Создать прибор' : 'Далее'}
           </ButtonTT>
         </Spaces>

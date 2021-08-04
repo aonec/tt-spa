@@ -195,6 +195,9 @@ export const BaseInfoStage = () => {
             <InputTT
               placeholder="Тип пломбы"
               disabled={!fields.isInstalled.value}
+              value={fields.magneticSealTypeName.value}
+              onChange={onChange}
+              name="magneticSealTypeName"
             />
           </Flex>
         </FormItem>
@@ -203,6 +206,10 @@ export const BaseInfoStage = () => {
           <DatePicker
             format="DD.MM.YYYY"
             disabled={!fields.isInstalled.value}
+            onChange={onChangeDateField('magneticSealInstallationDate')}
+            value={getDatePickerValue(
+              fields.magneticSealInstallationDate.value
+            )}
           />
         </FormItem>
       </FormWrap>

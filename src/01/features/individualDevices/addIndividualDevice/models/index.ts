@@ -9,7 +9,7 @@ import { FileData } from '01/hooks/useFilesUpload';
 
 export const $creationDeviceStage = createStore<0 | 1>(1);
 
-export const $isOpenCheckCreationDeviceFormDataModal = createStore(false);
+export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 
 export const addIndividualDeviceForm = createForm({
   fields: {
@@ -77,8 +77,11 @@ export const addIndividualDeviceForm = createForm({
 });
 
 export const switchStageButtonClicked = createEvent<0 | 1>();
-export const nextStageButtonClicked = createEvent();
 export const goNextStage = createEvent();
+
+export const checkBeforSavingButtonClicked = createEvent();
+export const cancelCheckingButtonClicked = createEvent();
+export const confirmCreationNewDeviceButtonClicked = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
   CreateIndividualDeviceRequest,
