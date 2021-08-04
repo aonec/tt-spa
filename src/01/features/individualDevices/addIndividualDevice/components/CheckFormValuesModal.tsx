@@ -72,6 +72,10 @@ export const CheckFormValuesModal = () => {
       value: fields.scaleFactor.value,
     },
     {
+      name: 'Первичные показания прибора',
+      value: getStartupReadingsString(fields.startupReadings.value),
+    },
+    {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),
     },
@@ -211,13 +215,16 @@ function getDate(dateString: string | null) {
   return date.format('DD.MM.YYYY');
 }
 
-export function toArray<T extends object>(
+export function toArray<T>(
   obj: object,
   setName: boolean = true
 ): (T & { __name__?: string })[] {
   const arr = Object.keys(obj).map((name) => {
+    const value = (obj as any)[name];
+    if (!setName) return value;
+
     const res = {
-      ...(obj as any)[name],
+      ...value,
     };
 
     if (setName) {
@@ -228,4 +235,24 @@ export function toArray<T extends object>(
   });
 
   return arr;
+}
+
+function getStartupReadingsString(value: { [key: string]: number | null }) {
+  const values = toArray(value, false);
+
+  const filteredValues = values.filter(Boolean);
+
+  if (!filteredValues.length) return null;
+
+  return (
+    <div>
+      {values.map((elem, index) =>
+        elem ? (
+          <div>
+            {index + 1}: {elem}
+          </div>
+        ) : null
+      )}
+    </div>
+  );
 }

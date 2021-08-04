@@ -1,7 +1,10 @@
 import { FileData } from '01/hooks/useFilesUpload';
 import { createIndividualDevice } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
-import { CreateIndividualDeviceRequest } from 'myApi';
+import {
+  BaseIndividualDeviceReadingsCreateRequest,
+  CreateIndividualDeviceRequest,
+} from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -55,12 +58,15 @@ sample({
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,
       mountPlaceId: values.mountPlaceId,
-      rateType: '1',
+      rateType: String(
+        toArray(values.startupReadings, false).filter(Boolean).length
+      ),
       resource: values.resource!,
       model: values.model,
       documentsIds: toArray<FileData>(values.documentsIds, false)
         .filter((elem) => elem?.fileResponse)
         .map((elem) => elem.fileResponse?.id!),
+      startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,

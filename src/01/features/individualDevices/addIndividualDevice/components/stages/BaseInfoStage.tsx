@@ -43,7 +43,7 @@ export const BaseInfoStage = () => {
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
-      [`value${valueNumber}`]: e.target.value,
+      [`value${valueNumber}`]: Number(e.target.value),
     });
 
   const isElectrisityResource =
@@ -220,6 +220,11 @@ export const BaseInfoStage = () => {
             onChange={onChangeStartupReadings(1)}
             value={fields.startupReadings.value.value1}
           />
+          <ErrorMessage>
+            {fields.startupReadings.errorText({
+              requiredFirstField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
 
         {fields.resource.value === EResourceType.Electricity && (
