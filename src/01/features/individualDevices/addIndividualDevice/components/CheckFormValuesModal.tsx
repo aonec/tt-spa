@@ -20,6 +20,8 @@ import {
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
+import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import DeviceIcons from '01/_components/DeviceIcons';
 
 interface ILine {
   name: string;
@@ -42,7 +44,15 @@ export const CheckFormValuesModal = () => {
   const lines: ILine[] = [
     {
       name: 'Ресурс',
-      value: getResourceName(fields.resource.value),
+      value: (
+        <Flex>
+          <DeviceIcon
+            icon={DeviceIcons[fields.resource.value! || '']?.icon}
+            fill={DeviceIcons[fields.resource.value! || '']?.color}
+          />
+          <div>{getResourceName(fields.resource.value)}</div>
+        </Flex>
+      ),
     },
     {
       name: 'Модель прибора',

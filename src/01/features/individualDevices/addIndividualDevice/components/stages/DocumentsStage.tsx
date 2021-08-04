@@ -27,8 +27,6 @@ export const DocumentsStage = () => {
           : fields.documentsIds.value[name],
     });
 
-  console.log(fields.documentsIds.value);
-
   return (
     <>
       <FormHeader>Документы</FormHeader>

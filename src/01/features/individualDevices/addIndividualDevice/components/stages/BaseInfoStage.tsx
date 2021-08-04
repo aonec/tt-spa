@@ -4,7 +4,7 @@ import {
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
-import { resources } from '01/tt-components/localBases';
+import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
@@ -15,6 +15,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
+import DeviceIcons from '../../../../../_components/DeviceIcons';
+import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,8 +52,16 @@ export const BaseInfoStage = () => {
             onChange={(value: any) => fields.resource.onChange(value)}
             value={fields.resource.value || undefined}
           >
-            {resources.map((elem) => (
-              <Select.Option value={elem.value}>{elem.label}</Select.Option>
+            {allResources.map((elem) => (
+              <Select.Option value={elem.value}>
+                <Flex>
+                  <DeviceIcon
+                    icon={DeviceIcons[elem.value]?.icon}
+                    fill={DeviceIcons[elem.value]?.color}
+                  />
+                  <div>{elem.label}</div>
+                </Flex>
+              </Select.Option>
             ))}
           </StyledSelect>
           <ErrorMessage>
