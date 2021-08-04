@@ -21,15 +21,12 @@ export const addIndividualDeviceForm = createForm({
     },
     lastCheckingDate: {
       init: null as string | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     futureCheckingDate: {
       init: null as string | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     lastCommercialAccountingDate: {
       init: null as string | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     documentsIds: {
       init: {
@@ -40,26 +37,21 @@ export const addIndividualDeviceForm = createForm({
     },
     bitDepth: {
       init: null as number | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     scaleFactor: {
       init: null as number | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     apartmentId: {
       init: null as number | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     mountPlaceId: {
       init: null as number | null,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     model: {
       init: '',
-      rules: [{ name: 'required', validator: Boolean }],
     },
-    rateType: {
-      init: '',
+    startupReadings: {
+      init: { value1: 0, value2: 0, value3: 0, value4: 0 },
     },
     resource: {
       init: null as EResourceType | null,

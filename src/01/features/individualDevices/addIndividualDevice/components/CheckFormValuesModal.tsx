@@ -58,6 +58,7 @@ export const CheckFormValuesModal = () => {
       name: 'Модель прибора',
       value: fields.model.value,
     },
+    { name: 'Серийный номер', value: fields.serialNumber.value },
     {
       name: 'Место установки',
       value: getMountPlaceById(fields.mountPlaceId.value, mountPlaces),
@@ -101,7 +102,7 @@ export const CheckFormValuesModal = () => {
       removeFile() {
         fields.documentsIds.onChange({
           ...fields.documentsIds.value,
-          [elem.__name__]: null,
+          [elem.__name__!]: null,
         } as any);
       },
     }));
@@ -210,9 +211,21 @@ function getDate(dateString: string | null) {
   return date.format('DD.MM.YYYY');
 }
 
-function toArray<T extends object>(obj: object): (T & { __name__: string })[] {
-  return Object.keys(obj).map((name) => ({
-    ...(obj as any)[name],
-    __name__: name,
-  }));
+export function toArray<T extends object>(
+  obj: object,
+  setName: boolean = true
+): (T & { __name__?: string })[] {
+  const arr = Object.keys(obj).map((name) => {
+    const res = {
+      ...(obj as any)[name],
+    };
+
+    if (setName) {
+      res.__name__ = name;
+    }
+
+    return res;
+  });
+
+  return arr;
 }

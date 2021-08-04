@@ -1,6 +1,8 @@
+import { FileData } from '01/hooks/useFilesUpload';
 import { createIndividualDevice } from '01/_api/individualDevices';
 import { forward, sample } from 'effector';
 import { CreateIndividualDeviceRequest } from 'myApi';
+import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
   $isCheckCreationDeviceFormDataModalOpen,
@@ -17,10 +19,9 @@ import {
 
 createIndividualDeviceFx.use(createIndividualDevice);
 
-$creationDeviceStage.on(
-  switchStageButtonClicked,
-  (_, stageNumber) => stageNumber
-);
+$creationDeviceStage
+  .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
+  .reset(createIndividualDeviceFx.doneData);
 
 sample({
   source: $creationDeviceStage.map((): 0 | 1 => 1),
@@ -57,6 +58,9 @@ sample({
       rateType: '1',
       resource: values.resource!,
       model: values.model,
+      documentsIds: toArray<FileData>(values.documentsIds, false)
+        .filter((elem) => elem?.fileResponse)
+        .map((elem) => elem.fileResponse?.id!),
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,
