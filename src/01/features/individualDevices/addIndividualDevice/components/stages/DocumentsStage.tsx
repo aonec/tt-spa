@@ -1,7 +1,5 @@
 import { FileData } from '01/hooks/useFilesUpload';
-import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
-import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { useForm } from 'effector-forms/dist';
 import React from 'react';
 import { addIndividualDeviceForm } from '../../models';
@@ -21,7 +19,12 @@ export const DocumentsStage = () => {
   ) => (files: FileData[]) =>
     fields.documentsIds.onChange({
       ...fields.documentsIds.value,
-      [name]: files[0],
+      [name]:
+        files.length === 0
+          ? null
+          : files.length === 1
+          ? files[0]
+          : fields.documentsIds.value[name],
     });
 
   console.log(fields.documentsIds.value);

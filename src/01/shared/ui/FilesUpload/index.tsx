@@ -20,17 +20,8 @@ export const FilesUpload: React.FC<Props> = (props) => {
   return (
     <Wide>
       <FilesList
-        files={files.filter(
-          (elem) =>
-            !filesInit
-              ?.filter((elem) => elem.fileResponse)
-              ?.map((elem) => elem.id)
-              ?.includes(elem.id)
-        )}
+        files={filesInit ? filesInit : files}
         removeFile={removeFile}
-        initialFiles={filesInit
-          ?.filter((elem) => elem.fileResponse)
-          .map((elem) => elem.fileResponse!)}
       />
 
       {max > [...files, ...(filesInit || [])].length && (
@@ -48,5 +39,5 @@ export const FilesUpload: React.FC<Props> = (props) => {
 
 export const Wide = styled.div`
   width: 100%;
-  margin-top: 5px;
+  margin-top: 15px;
 `;
