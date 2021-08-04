@@ -3,7 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { DatePickerTT, InputTT, SelectTT, SwitchTT } from '01/tt-components';
+import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
 import { resources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, Select } from 'antd';
@@ -45,7 +45,11 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Тип ресурса">
-          <StyledSelect placeholder="Выберите тип ресурса">
+          <StyledSelect
+            placeholder="Выберите тип ресурса"
+            onChange={(value: any) => fields.resource.onChange(value)}
+            value={fields.resource.value || undefined}
+          >
             {resources.map((elem) => (
               <Select.Option value={elem.value}>{elem.label}</Select.Option>
             ))}
@@ -57,19 +61,26 @@ export const BaseInfoStage = () => {
             placeholder="Введите модель прибора"
             name="model"
             onChange={onChange}
+            value={fields.model.value}
           />
         </FormItem>
 
         <FormItem label="Серийный номер">
           <InputTT
             type="number"
-            placeholder="Введите модель прибора"
+            placeholder="Введите серийный номер прибора"
             onChange={onChange}
+            name="serialNumber"
+            value={fields.serialNumber.value}
           />
         </FormItem>
 
         <FormItem label="Место установки">
-          <StyledSelect placeholder="Выберите место установки">
+          <StyledSelect
+            placeholder="Выберите место установки"
+            value={fields.mountPlaceId.value || undefined}
+            onChange={(value: any) => fields.mountPlaceId.onChange(value)}
+          >
             {mountPlaces?.map((elem) => (
               <Select.Option value={elem.id}>{elem.description}</Select.Option>
             ))}
@@ -82,6 +93,7 @@ export const BaseInfoStage = () => {
             placeholder="Введите разрядность прибора"
             name="bitDepth"
             onChange={onChange}
+            value={fields.bitDepth.value}
           />
         </FormItem>
 
@@ -91,6 +103,7 @@ export const BaseInfoStage = () => {
             placeholder="Введите множитель прибора"
             name="scaleFactor"
             onChange={onChange}
+            value={fields.scaleFactor.value}
           />
         </FormItem>
 
@@ -98,7 +111,6 @@ export const BaseInfoStage = () => {
           <InputTT
             type="number"
             placeholder="Введите первичные показания"
-            onChange={onChange}
             disabled
           />
         </FormItem>
@@ -107,6 +119,9 @@ export const BaseInfoStage = () => {
           <DatePicker
             format="DD.MM.YYYY"
             onChange={onChangeDateField('lastCommercialAccountingDate')}
+            value={getDatePickerValue(
+              fields.lastCommercialAccountingDate.value
+            )}
           />
         </FormItem>
 
@@ -114,6 +129,7 @@ export const BaseInfoStage = () => {
           <DatePicker
             format="DD.MM.YYYY"
             onChange={onChangeDateField('lastCheckingDate')}
+            value={getDatePickerValue(fields.lastCheckingDate.value)}
           />
         </FormItem>
 
@@ -121,6 +137,7 @@ export const BaseInfoStage = () => {
           <DatePicker
             format="DD.MM.YYYY"
             onChange={onChangeDateField('futureCheckingDate')}
+            value={getDatePickerValue(fields.futureCheckingDate.value)}
           />
         </FormItem>
 
@@ -130,17 +147,27 @@ export const BaseInfoStage = () => {
               onChange={fields.isInstalled.onChange}
               checked={fields.isInstalled.value}
             />
-            <InputTT placeholder="Тип пломбы" disabled />
+            <InputTT
+              placeholder="Тип пломбы"
+              disabled={!fields.isInstalled.value}
+            />
           </Flex>
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
-          <DatePicker format="DD.MM.YYYY" disabled />
+          <DatePicker
+            format="DD.MM.YYYY"
+            disabled={!fields.isInstalled.value}
+          />
         </FormItem>
       </FormWrap>
     </>
   );
 };
+
+function getDatePickerValue(value: string | null) {
+  if (value) return moment(value);
+}
 
 const DatePicker = styled(DatePickerTT)`
   border-radius: 4px;

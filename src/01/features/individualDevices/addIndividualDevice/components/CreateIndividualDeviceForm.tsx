@@ -3,6 +3,7 @@ import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React from 'react';
+import styled from 'styled-components';
 import { $creationDeviceStage } from '../models';
 import { BaseInfoStage } from './stages/BaseInfoStage';
 import { DocumentsStage } from './stages/DocumentsStage';
@@ -13,7 +14,7 @@ export const CreateIndividualDeviceForm = () => {
   const pages = [<BaseInfoStage />, <DocumentsStage />];
 
   return (
-    <div>
+    <Wrap>
       {pages[stageNumber]}
 
       <Space style={{ height: 20 }} />
@@ -26,6 +27,11 @@ export const CreateIndividualDeviceForm = () => {
           </ButtonTT>
         </Spaces>
       </RightAlign>
-    </div>
+    </Wrap>
   );
 };
+
+const Wrap = styled.div`
+  margin-bottom: 20px;
+`;
+
