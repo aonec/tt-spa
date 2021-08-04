@@ -62,4 +62,10 @@ const ImageContainer = styledC.div`
     top: 40%;
     left: 550px;
 `;
+
+export const StartInputForDisplayImage = (
+  <ImageContainer>
+    <img src={OperatorPlaceholder} alt="OperatorPlaceholder" />
+  </ImageContainer>
+);
 // homeownerName,personalAccountNumber,square

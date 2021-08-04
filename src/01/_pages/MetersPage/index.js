@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import { useFetchPage } from './hooks/useFetchPage';
 import { useFilter } from './hooks/useFiter';
@@ -10,11 +10,13 @@ import { Apartments } from './components/Apartments';
 import { Filter } from './components/Filter';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
-import Houses from './components/HousesReadings/HousesReadings';
 import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { Title } from '../../_components/Headers';
+import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
+import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { useRedirectBetweenMetersPages } from '01/features/housingStocks/displayHousingStocks/hooks/useRedirectsBetweenMetersPages';
 
 const { TabPane } = Tabs;
 
@@ -33,6 +35,8 @@ export const MetersPage = () => {
     history.replace(`/meters/${key}`); // < == router router v4
   };
 
+  useRedirectBetweenMetersPages();
+
   return (
     <div style={{ maxWidth: 960 }}>
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
@@ -50,10 +54,13 @@ export const MetersPage = () => {
           </Route>
         </TabPane>
         <TabPane tab="По домам" key="houses">
-          <Route path="/*/houses" exact>
-            <Houses />
+          <Route path="/meters/houses">
+            <HousingStockFilter />
           </Route>
-          <Route path="/*/houses/:id">
+          <Route path="/meters/houses" exact>
+            <HousingStocks />
+          </Route>
+          <Route path="/meters/houses/:id">
             <HouseReadings />
           </Route>
         </TabPane>
