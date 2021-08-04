@@ -5,8 +5,9 @@ import {
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { FileData } from '01/hooks/useFilesUpload';
 
-export const $creationDeviceStage = createStore<0 | 1>(0);
+export const $creationDeviceStage = createStore<0 | 1>(1);
 
 export const $isOpenCheckCreationDeviceFormDataModal = createStore(false);
 
@@ -30,7 +31,9 @@ export const addIndividualDeviceForm = createForm({
     },
     documentsIds: {
       init: {
-
+        completedWorks: null as FileData | null,
+        devicePassport: null as FileData | null,
+        deviceCheck: null as FileData | null,
       },
     },
     bitDepth: {
