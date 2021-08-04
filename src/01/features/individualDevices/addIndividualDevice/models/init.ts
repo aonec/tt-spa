@@ -5,7 +5,6 @@ import {
   addIndividualDeviceForm,
   cancelCheckingButtonClicked,
   checkBeforSavingButtonClicked,
-  confirmCreationNewDeviceButtonClicked,
   createIndividualDeviceFx,
   goNextStage,
   switchStageButtonClicked,

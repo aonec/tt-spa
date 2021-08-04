@@ -23,7 +23,9 @@ export const DocumentsStage = () => {
       ...fields.documentsIds.value,
       [name]: files[0],
     });
-  
+
+  console.log(fields.documentsIds.value);
+
   return (
     <>
       <FormHeader>Документы</FormHeader>

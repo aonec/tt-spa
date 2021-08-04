@@ -13,15 +13,27 @@ interface Props {
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
-  const { max = Infinity, onChange, uniqId, text } = props;
+  const { max = Infinity, onChange, uniqId, text, filesInit } = props;
 
   const { files, addFile, removeFile } = useFilesUpload(onChange);
 
   return (
     <Wide>
-      <FilesList files={files} removeFile={removeFile} />
+      <FilesList
+        files={files.filter(
+          (elem) =>
+            !filesInit
+              ?.filter((elem) => elem.fileResponse)
+              ?.map((elem) => elem.id)
+              ?.includes(elem.id)
+        )}
+        removeFile={removeFile}
+        initialFiles={filesInit
+          ?.filter((elem) => elem.fileResponse)
+          .map((elem) => elem.fileResponse!)}
+      />
 
-      {max > files.length && (
+      {max > [...files, ...(filesInit || [])].length && (
         <DragAndDrop
           accept="application/pdf"
           text={text}
