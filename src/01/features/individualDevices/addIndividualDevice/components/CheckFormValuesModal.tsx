@@ -4,7 +4,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Footer, Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT } from '01/tt-components';
-import { resources } from '01/tt-components/localBases';
+import { allResources } from '01/tt-components/localBases';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -188,7 +188,7 @@ const renderFile = (file: FileData & RemoveFile) => (
 function getResourceName(resource: EResourceType | null) {
   if (!resource) return null;
 
-  return resources.find((elem) => elem.value === resource)?.label || null;
+  return allResources.find((elem) => elem.value === resource)?.label || null;
 }
 
 function getMountPlaceById(
