@@ -15,8 +15,11 @@ import {
   $isCheckCreationDeviceFormDataModalOpen,
   addIndividualDeviceForm,
   cancelCheckingButtonClicked,
+  confirmCreationNewDeviceButtonClicked,
+  createIndividualDeviceFx,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
+import { Loader } from '01/components';
 
 interface ILine {
   name: string;
@@ -29,9 +32,12 @@ interface RemoveFile {
 
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
+  const mountPlaces = useStore($individualDeviceMountPlaces);
+
+  const pending = useStore(createIndividualDeviceFx.pending);
+
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
-  const mountPlaces = useStore($individualDeviceMountPlaces);
 
   const lines: ILine[] = [
     {
@@ -101,8 +107,13 @@ export const CheckFormValuesModal = () => {
           <ButtonTT color="white" key="back" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT color="blue" key="submit">
-            Создать прибор
+          <ButtonTT
+            color="blue"
+            key="submit"
+            disabled={pending}
+            onClick={confirmCreationNewDeviceButtonClicked}
+          >
+            {pending ? <Loader show /> : 'Создать прибор'}
           </ButtonTT>
         </Footer>
       }
