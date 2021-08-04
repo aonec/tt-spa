@@ -51,7 +51,9 @@ export const addIndividualDeviceForm = createForm({
       init: '',
     },
     startupReadings: {
-      init: { value1: 0, value2: 0, value3: 0, value4: 0 },
+      init: { value1: null, value2: null, value3: null, value4: null } as {
+        [key: string]: number | null;
+      },
     },
     resource: {
       init: null as EResourceType | null,
