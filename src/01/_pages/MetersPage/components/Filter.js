@@ -10,7 +10,7 @@ export const Filter = ({ inputs = [] }) => {
     e.stopPropagation();
 
     if (e.key !== 'Enter') return;
-    
+
     const isLastInput = index + 1 === inputs.length;
 
     const neededRef = isLastInput ? inputsRefs[1] : inputsRefs[index + 1];
