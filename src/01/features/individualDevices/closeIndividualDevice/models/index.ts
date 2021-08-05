@@ -9,8 +9,8 @@ export const $isCloseIndividualDeviceModalOpen = $closingIndividualDevice.map(
   Boolean
 );
 
-export const isClosingIndividualDeviceRequestFailed = createStore(false);
-export const isClosingIndividualDeviceRequstSuccessfull = createStore<
+export const $isClosingIndividualDeviceRequestFailed = createStore(false);
+export const $isClosingIndividualDeviceRequstSuccessfull = createStore<
   boolean | null
 >(null);
 
