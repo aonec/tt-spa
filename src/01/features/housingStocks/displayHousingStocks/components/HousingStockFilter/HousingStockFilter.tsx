@@ -3,12 +3,15 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Select } from 'antd';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
 import { useFilter, filterValuesInit } from './useFilter.hook';
 
 const cities = ['Большое Афанасово', 'Нижнекамск', 'Красный ключ'];
 
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();
+  
+  useRedirectBetweenMetersPages(filterFields);
 
   const refs: any[] = [useRef(), useRef(), useRef(), useRef()];
 

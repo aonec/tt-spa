@@ -16,7 +16,6 @@ import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevic
 import { Title } from '../../_components/Headers';
 import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { useRedirectBetweenMetersPages } from '01/features/housingStocks/displayHousingStocks/hooks/useRedirectsBetweenMetersPages';
 
 const { TabPane } = Tabs;
 
@@ -34,8 +33,6 @@ export const MetersPage = () => {
   const handleTabClick = (key) => {
     history.replace(`/meters/${key}`); // < == router router v4
   };
-
-  useRedirectBetweenMetersPages();
 
   return (
     <div style={{ maxWidth: 960 }}>
