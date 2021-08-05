@@ -5,7 +5,7 @@ import {
   closeClosingIndividualDeviceModalButtonClicked,
   closeIndividualDeviceFx,
   closeIndividualDeviceForm,
-  isClosingIndividualDeviceRequstSuccessfull,
+  $isClosingIndividualDeviceRequstSuccessfull,
 } from './index';
 import { $closingIndividualDevice } from '.';
 
@@ -43,6 +43,6 @@ sample({
   target: closeIndividualDeviceFx as any,
 });
 
-isClosingIndividualDeviceRequstSuccessfull
+$isClosingIndividualDeviceRequstSuccessfull
   .on(closeIndividualDeviceFx.doneData, () => true)
   .reset(closeClosingIndividualDeviceModalButtonClicked);

@@ -2,7 +2,9 @@ import { StyledInput, StyledSelctor } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Select } from 'antd';
 import React, { useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
 import { useFilter, filterValuesInit } from './useFilter.hook';
 
 const cities = ['Большое Афанасово', 'Нижнекамск', 'Красный ключ'];
@@ -10,12 +12,32 @@ const cities = ['Большое Афанасово', 'Нижнекамск', 'К
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();
 
+  useRedirectBetweenMetersPages(filterFields);
+
+  const history = useHistory();
+
   const refs: any[] = [useRef(), useRef(), useRef(), useRef()];
 
   const onKeyDownHandler = (e: any, index: number) => {
     if (e.key !== 'Enter') return;
 
-    const nextRef = refs[refs.length - 1 === index ? 0 : index + 1];
+    const isLastInput = refs.length - 1 === index;
+
+    if (
+      isLastInput &&
+      !(
+        history.location.pathname === '/meters/houses' ||
+        history.location.pathname === '/meters/houses/'
+      )
+    ) {
+      const node: any = document.getElementsByClassName('ant-input')[1];
+
+      node?.focus();
+
+      return;
+    }
+
+    const nextRef = refs[isLastInput ? 0 : index + 1];
 
     nextRef && nextRef.current.focus();
   };

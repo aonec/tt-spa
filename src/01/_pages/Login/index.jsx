@@ -56,13 +56,15 @@ export const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
 
+  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+
   async function FormSubmitHadler() {
     setLoading(true);
     try {
       await axios.post('auth/login', { email, password });
       await axios.get('ManagingFirmUsers/current');
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
-      replace('/tasks/');
+      replace(roles.includes('ManagingFirmOperator') ? '/meters' : '/tasks/');
     } catch (error) {
       alert('Корректно введите логин и пароль');
     } finally {

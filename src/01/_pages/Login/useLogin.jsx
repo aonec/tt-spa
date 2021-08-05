@@ -9,13 +9,18 @@ export const useLogin = () => {
   const [showPass, setShowPass] = React.useState(false);
   const { replace } = useHistory();
 
+  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+
   React.useEffect(() => {
     if (submit) {
       (async function () {
         try {
           await axios.post('auth/login', { email, password });
           await axios.get('ManagingFirmUsers/current');
-          replace('/tasks/');
+
+          replace(
+            roles.includes('ManagingFirmOperator') ? '/meters' : '/tasks/'
+          );
         } catch (error) {
           setSubmit(false);
         }

@@ -2,9 +2,11 @@ import React, { useRef } from 'react';
 import styled from 'reshadow/macro';
 import { input } from '01/r_comp';
 import { getArrayByCountRange } from './utils';
+import { useHistory } from 'react-router-dom';
 
 export const Filter = ({ inputs = [] }) => {
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
+  const history = useHistory();
 
   const onInputKeyPress = (e, index) => {
     e.stopPropagation();
@@ -12,6 +14,22 @@ export const Filter = ({ inputs = [] }) => {
     if (e.key !== 'Enter') return;
 
     const isLastInput = index + 1 === inputs.length;
+
+    console.log(history.location.pathname);
+
+    if (
+      isLastInput &&
+      !(
+        history.location.pathname === '/meters/apartments' ||
+        history.location.pathname === '/meters/apartments/'
+      )
+    ) {
+      const node = document.getElementsByClassName('ant-input')[1];
+
+      node && node.focus();
+
+      return;
+    }
 
     const neededRef = isLastInput ? inputsRefs[1] : inputsRefs[index + 1];
 

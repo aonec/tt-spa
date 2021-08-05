@@ -1,11 +1,8 @@
-import {
-  EResourceType,
-  CreateIndividualDeviceRequest,
-  MeteringDeviceResponseSuccessApiResponse,
-} from './../../../../../myApi';
+import { EResourceType, MeteringDeviceResponse } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
+import { CreateCreateIndividualDeviceWithMagnetSealRequest } from '01/_api/individualDevices';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
@@ -84,6 +81,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  CreateIndividualDeviceRequest,
-  MeteringDeviceResponseSuccessApiResponse
+  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  MeteringDeviceResponse
 >();

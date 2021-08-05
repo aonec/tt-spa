@@ -4,7 +4,8 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useCancelFetch } from '01/_hooks/useCancelFetch';
 import { getApartments, getApartmentInfo } from '../api';
 import { useStore } from 'effector-react';
-import { isClosingIndividualDeviceRequstSuccessfull } from '01/features/individualDevices/closeIndividualDevice/models';
+import { $isClosingIndividualDeviceRequstSuccessfull } from '01/features/individualDevices/closeIndividualDevice/models';
+import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 
 export const useFetchPage = (state, dispatch) => {
   const history = useHistory();
@@ -18,17 +19,20 @@ export const useFetchPage = (state, dispatch) => {
     });
 
   const isSuccessCloseDevice = useStore(
-    isClosingIndividualDeviceRequstSuccessfull
+    $isClosingIndividualDeviceRequstSuccessfull
   );
 
-  useEffect(presetDeviceInfo, [isSuccessCloseDevice]);
+  useEffect(() => {
+    presetDeviceInfo();
+    console.log('fetch');
+  }, [isSuccessCloseDevice]);
 
   useCancelFetch();
 
   const isExactPage = apatrments?.isExact || page?.isExact;
 
   React.useEffect(() => {
-    if (isExactPage && state.params) {
+    if (isExactPage && toArray(state.params || {}, false).some(Boolean)) {
       getApartments(state.params).then((data) => {
         dispatch({ type: 'success', data });
 
