@@ -41,15 +41,14 @@ export const CheckFormValuesModal = () => {
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
 
+  const deviceIcon = DeviceIcons[fields.resource.value! || ''];
+
   const lines: ILine[] = [
     {
       name: 'Ресурс',
       value: (
         <Flex>
-          <DeviceIcon
-            icon={DeviceIcons[fields.resource.value! || '']?.icon}
-            fill={DeviceIcons[fields.resource.value! || '']?.color}
-          />
+          <DeviceIcon icon={deviceIcon?.icon} fill={deviceIcon?.color} />
           <div>{getResourceName(fields.resource.value)}</div>
         </Flex>
       ),
@@ -73,7 +72,10 @@ export const CheckFormValuesModal = () => {
     },
     {
       name: 'Первичные показания прибора',
-      value: getStartupReadingsString(fields.startupReadings.value),
+      value: getStartupReadingsString(
+        fields.startupReadings.value,
+        deviceIcon?.color
+      ),
     },
     {
       name: 'Дата ввода в эксплуатацию',
@@ -237,22 +239,50 @@ export function toArray<T>(
   return arr;
 }
 
-function getStartupReadingsString(value: { [key: string]: number | null }) {
+function getStartupReadingsString(
+  value: { [key: string]: number | null },
+  color?: string | null
+) {
   const values = toArray(value, false);
 
   const filteredValues = values.filter(Boolean);
 
   if (!filteredValues.length) return null;
 
+  const StyledReadingsValues = styled.div`
+    border: 1px solid ${color || 'gray'};
+    border-left-width: 3px;
+    padding-left: 10px;
+    border-radius: 4px;
+    width: min-content;
+    min-width: 150px;
+  `;
+
+  const ReadingValue = styled(Flex)`
+    justify-content: space-between;
+    border-bottom: 1px solid ${color || 'gray'};
+
+    padding: 5px 5px 5px 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  `;
+
   return (
-    <div>
+    <StyledReadingsValues>
       {values.map((elem, index) =>
         elem ? (
-          <div>
-            {index + 1}: {elem}
-          </div>
+          <ReadingValue>
+            <div
+              style={{ color: 'lightgray', fontWeight: 600 }}
+            >
+              {index + 1}:
+            </div>
+            <div style={{ marginRight: '0 10px 0 30px' }}>{elem}</div>
+          </ReadingValue>
         ) : null
       )}
-    </div>
+    </StyledReadingsValues>
   );
 }
