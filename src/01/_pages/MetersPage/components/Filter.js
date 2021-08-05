@@ -13,7 +13,13 @@ export const Filter = ({ inputs = [] }) => {
 
     const isLastInput = index + 1 === inputs.length;
 
-    const neededRef = isLastInput ? inputsRefs[1] : inputsRefs[index + 1];
+    if (isLastInput) {
+      document.getElementsByClassName('ant-input')[1].focus();
+
+      return;
+    }
+
+    const neededRef = inputsRefs[index + 1];
 
     if (!neededRef) return;
 
