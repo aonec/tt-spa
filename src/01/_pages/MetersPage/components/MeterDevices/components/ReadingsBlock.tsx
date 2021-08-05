@@ -98,7 +98,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
           )
         }
         disabled={readingsBlocked || isDisabled}
-        type="text"
+        type="number"
         value={value}
         ref={operatorCabinet && !isDisabled ? textInput : undefined}
         onFocus={onFocusHandler}
@@ -106,6 +106,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
         onChange={onChange}
         required
         tabIndex={index + 1}
+        step="0.01"
       />
     </ReadingLineStyled>
   );

@@ -16,7 +16,6 @@ export const Stages = ({
   state = {},
   panelLoading,
 }) => {
-  console.log('Stages');
   return (
     <section>
       <h2>Этапы задачи</h2>

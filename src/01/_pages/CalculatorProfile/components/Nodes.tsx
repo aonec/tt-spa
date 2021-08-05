@@ -63,7 +63,7 @@ export const Nodes = ({ device }: NodesInterface) => {
           <Name>{`Узел ${number}`}</Name>
         </NameWrap>
 
-        <NodeStatus nodeStatus={nodeStatus.description} />
+        <NodeStatus nodeStatus={nodeStatus?.description || ""} />
         <Span>{nodeServiceZone?.name}</Span>
       </ListItem>
     );
@@ -115,7 +115,6 @@ const Title = styled.h2``;
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const ListItem = styled.div`

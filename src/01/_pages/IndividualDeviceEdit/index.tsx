@@ -12,7 +12,7 @@ import ModalDeviceExists from '../../tt-components/ModalDeviceExists';
 
 export const IndividualDeviceEdit = () => {
   const { push } = useHistory();
-  const { deviceId } = useParams();
+  const { deviceId } = useParams<{ deviceId: string }>();
   const path = `/individualDevices/${deviceId}`;
   const { data: device, status, run } = useAsync<IndividualDeviceResponse>();
   const [currentTabKey, setTab] = useState('1');

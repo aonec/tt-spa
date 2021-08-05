@@ -42,7 +42,7 @@ const EditODPU = () => {
   ];
 
   if (status === 'pending' || status === 'idle') {
-    return <Loader show={true} size={32} />;
+    return <Loader show size={32} />;
   }
 
   if (status === 'error' || !device) {

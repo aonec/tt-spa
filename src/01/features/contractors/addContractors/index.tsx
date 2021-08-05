@@ -87,7 +87,7 @@ export const AddContractorsFormModal = () => {
             key="submit"
             onClick={onSubmit}
           >
-            {pending ? <Loader show={true} /> : 'Добавить'}
+            {pending ? <Loader show /> : 'Добавить'}
           </ButtonTT>
         </Footer>
       }

@@ -15,6 +15,7 @@ export function useMenu() {
       to: '/tasks/',
       icon: 'task',
       perm: ['all'],
+      hidden: ['ManagingFirmOperator'],
     },
     {
       name: 'Объекты',
@@ -27,6 +28,7 @@ export function useMenu() {
       to: '/devices/',
       icon: 'devices',
       perm: ['all'],
+      hidden: ['ManagingFirmOperator'],
     },
     {
       name: 'Профиль компании',
@@ -59,9 +61,13 @@ export function useMenu() {
       icon: 'log',
       perm: [],
     },
-  ].reduce((menu, { perm, ...item }) => {
-    if (perm.includes('all')) menu.push(item);
-    if (roles.some((role) => perm.includes(role))) menu.push(item);
-    return menu;
-  }, []);
+  ]
+    .reduce((menu, { perm, ...item }) => {
+      if (perm.includes('all')) menu.push(item);
+      if (roles.some((role) => perm.includes(role))) menu.push(item);
+      return menu;
+    }, [])
+    .filter((menuItem) =>
+      menuItem.hidden ? !menuItem.hidden.some((e) => roles.includes(e)) : true
+    );
 }

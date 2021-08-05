@@ -74,7 +74,7 @@ export const UploadButton = ({
 //                 {name}
 //               </a>
 //               {deleted ? (
-//                 <Loader show={true} />
+//                 <Loader show />
 //               ) : (
 //                 <del as="Icon" icon="del" onClick={() => onDelete(id)} />
 //               )}

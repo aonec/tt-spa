@@ -31,7 +31,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { housingStockNumber, street } = address;
+  const { housingStockNumber, street } = address || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 

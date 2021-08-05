@@ -40,10 +40,13 @@ import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
+import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 
 moment.locale('ru');
 
 const Internal = () => {
+  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+
   return styled(app)(
     <Switch>
       <Route path="/login" component={Login} />
@@ -59,7 +62,15 @@ const Internal = () => {
           </menu>
           <main>
             <Switch>
-              <Redirect from={'/'} to="/tasks/executing" exact />
+              <Redirect
+                from={'/'}
+                to={
+                  roles.includes('ManagingFirmOperator')
+                    ? '/meters/apartments'
+                    : '/tasks/executing'
+                }
+                exact
+              />
               <Redirect from={'/tasks'} to="/tasks/executing" exact />
               <Route
                 path="/tasks/(executing|observing|archived)/"
@@ -161,6 +172,9 @@ const Internal = () => {
                 path="/meters/(apartments|houses)"
                 component={MetersPage}
               />
+              <Route path="/apartment/:id/addIndividualDevice" exact>
+                <AddIndividualDevice />
+              </Route>
               <Redirect to="/error/" />
             </Switch>
           </main>

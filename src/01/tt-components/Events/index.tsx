@@ -33,7 +33,7 @@ export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
         </TaskRow>
         <TaskRow>
           <Icon icon="username2" style={{ marginRight: '8px' }} />
-          {perpetrator.name}
+          {perpetrator?.name}
         </TaskRow>
       </Task>
     );

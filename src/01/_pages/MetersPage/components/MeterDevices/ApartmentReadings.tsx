@@ -10,6 +10,7 @@ import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 
 interface ApartmentReadingsProps {
   items: IndividualDeviceListItemResponse[];
@@ -45,17 +46,20 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   const currentMonth = getMonthFromDate();
 
   return (
-    <Meters>
-      <MetersHeader>
-        <span>Информация o приборe</span>
-        {sliderProps ? (
-          <MonthSlider sliderIndex={sliderIndex} {...sliderProps} />
-        ) : null}
-        <CenterContainer>{currentMonth}</CenterContainer>
-      </MetersHeader>
-      {validDevices}
-      <ClosedDevices devices={closedDevices} />
-    </Meters>
+    <>
+      <CloseIndividualDeviceModal />
+      <Meters id="meters-component">
+        <MetersHeader>
+          <span>Информация o приборe</span>
+          {sliderProps ? (
+            <MonthSlider sliderIndex={sliderIndex} {...sliderProps} />
+          ) : null}
+          <CenterContainer>{currentMonth}</CenterContainer>
+        </MetersHeader>
+        {validDevices}
+        <ClosedDevices devices={closedDevices} />
+      </Meters>
+    </>
   );
 };
 

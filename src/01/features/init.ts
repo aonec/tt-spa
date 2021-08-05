@@ -14,4 +14,10 @@ import './contractors/deleteContractor/models/init';
 import './staff/managingFirmUsersStatuses/editStaffStatus/models/init';
 import './staff/managingFirmUsersStatuses/displayStaffStatuses/models/init';
 import './staff/managingFirmUser/editManagingFirmUser/models/init';
-import './staff/managingFirmUser/displayManagingFirmUser/models/init'
+import './staff/managingFirmUser/displayManagingFirmUser/models/init';
+import './individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/init';
+import './individualDevices/closeIndividualDevice/models/init';
+import './housingStocks/displayHousingStocks/models/init';
+import './housingStocks/displayHousingStock/models/init';
+import './individualDevices/addIndividualDevice/models/init';
+import './apartments/displayApartment/models/init';

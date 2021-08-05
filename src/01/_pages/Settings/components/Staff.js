@@ -75,7 +75,7 @@ const Staff = () => {
       <AddStaffModal />
       <DeleteStaffModal />
       <EditStaffStatusModal />
-      {pending ? <Loader show={true} /> : <ul>{res}</ul>}
+      {pending ? <Loader show /> : <ul>{res}</ul>}
     </div>
   );
 };

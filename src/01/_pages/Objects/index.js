@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Link as LinkRow, Redirect } from 'react-router-dom';
 
@@ -45,6 +45,7 @@ const styles = css`
 
   aparts {
     opacity: 0.6;
+    text-align: right;
   }
 
   LinkRow {
@@ -61,6 +62,39 @@ const initialState = {
   Street: '',
   HousingStockNumber: '',
   Corpus: '',
+};
+
+export const StyledObject = ({
+  id,
+  street,
+  number,
+  corpus,
+  numberOfApartments,
+  numberOfTasks,
+  city,
+}) => {
+  const task = numberOfTasks ? (
+    <task>
+      <Icon icon="alarm" />
+      Задач: {numberOfTasks}
+    </task>
+  ) : null;
+
+  return styled(styles)(
+    <obj_item key={id}>
+      <LinkRow to={`/meters/houses/${id}`}>
+        <span>
+          <h4 style={{ whiteSpace: 'nowrap' }}>
+            {street}, {number} {corpus ? `, к.${corpus}` : null}
+          </h4>
+          {task}
+        </span>
+        <city>{city}</city>
+        <span />
+        <aparts>{numberOfApartments} квартир</aparts>
+      </LinkRow>
+    </obj_item>
+  );
 };
 
 export const Objects = ({ isReadings = false }) => {

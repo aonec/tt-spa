@@ -13,19 +13,25 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import { Footer, Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
+import {
+  Footer,
+  Header,
+  ModalText,
+  StyledModal,
+} from '01/shared/ui/Modal/Modal';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
   const textInput = React.createRef<Input>();
 
   const {
     readingsState,
-    isVisible,
     handleOk,
     handleCancel,
     previousReadings,
     currentReadings,
   } = useReadings(device, textInput);
+
+  const isVisible = false;
 
   const dispatch = useDispatch();
 

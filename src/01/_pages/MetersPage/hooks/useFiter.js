@@ -4,6 +4,7 @@ const initialState = {
   city: '',
   street: '',
   house: '',
+  corpus: '',
   apart: '',
   question: '',
 };
@@ -14,6 +15,9 @@ function filterReducer(state, action) {
     case 'change':
       return { ...state, ...payload };
 
+    case 'reset':
+      return { ...initialState };
+
     default:
       break;
   }
@@ -21,23 +25,25 @@ function filterReducer(state, action) {
 
 export const useFilter = (pageDispatch = () => {}) => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
-  const { city, street, house, apart, question } = state;
+  const { city, street, house, apart, question, corpus } = state;
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      if (street || house || question) {
+      if (street || house || question || corpus || apart) {
         pageDispatch({
           type: 'get_apartments',
           params: {
             Street: street,
             HousingStockNumber: house,
             Question: question,
+            Corpus: corpus,
+            ApartmentNumber: apart,
           },
         });
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [city, street, house, question]);
+  }, [city, street, house, question, corpus, apart]);
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -50,34 +56,39 @@ export const useFilter = (pageDispatch = () => {}) => {
     inputs: [
       {
         name: 'city',
-        value: city,
         placeholder: 'Город',
-        onChange,
+        disabled: true,
       },
       {
         name: 'street',
-        value: street,
         placeholder: 'Улица',
-        onChange,
       },
       {
         name: 'house',
-        value: house,
         placeholder: 'Дом',
-        onChange,
+      },
+      {
+        name: 'corpus',
+        placeholder: 'Корпус',
       },
       {
         name: 'apart',
-        value: apart,
         placeholder: 'Кв.',
-        onChange,
       },
       {
         name: 'question',
-        value: question,
         placeholder: 'Л/С или ФИО',
-        onChange,
       },
-    ],
+    ].map((elem) => ({
+      ...elem,
+      [elem.name]: state[elem.name],
+      onChange,
+      value: state[elem.name],
+      onFocus: (e) =>
+        dispatch({
+          type: e.target.name === 'street' ? 'reset' : 'change',
+          payload: { [elem.name]: '' },
+        }),
+    })),
   };
 };
