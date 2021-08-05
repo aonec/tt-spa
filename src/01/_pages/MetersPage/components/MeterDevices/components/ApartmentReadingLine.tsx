@@ -30,12 +30,12 @@ const ApartmentReadingLine = ({
 
   const {
     readingsState,
-    isVisible,
     handleOk,
     handleCancel,
     previousReadings,
     currentReadings,
   } = useReadings(device, textInput, sliderIndex);
+  const isVisible = false;
 
   //useInputsUnfocused
   useEffect(() => {

@@ -3,14 +3,12 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Select } from 'antd';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useFilter } from './useFilter.hook';
+import { useFilter, filterValuesInit } from './useFilter.hook';
 
 const cities = ['Большое Афанасово', 'Нижнекамск', 'Красный ключ'];
 
 export const HousingStockFilter = () => {
-  const { filterFields, setValue } = useFilter();
-
-  const onChangeHandler = (e: any) => setValue(e.target.name, e.target.value);
+  const { filterFields, setValue, setFilterFields } = useFilter();
 
   const refs: any[] = [useRef(), useRef(), useRef(), useRef()];
 
@@ -20,6 +18,15 @@ export const HousingStockFilter = () => {
     const nextRef = refs[refs.length - 1 === index ? 0 : index + 1];
 
     nextRef && nextRef.current.focus();
+  };
+
+  const onChangeHandler = (e: any) => setValue(e.target.name, e.target.value);
+
+  const onFocus = (e: any) => {
+    setValue(e.target.name, '');
+
+    if (e.target.name === 'Street')
+      setFilterFields((prev) => ({ ...filterValuesInit, City: prev.City }));
   };
 
   return (
@@ -42,6 +49,7 @@ export const HousingStockFilter = () => {
         value={filterFields.Street}
         onKeyDown={(e) => onKeyDownHandler(e, 1)}
         ref={refs[1]}
+        onFocus={onFocus}
       />
       <StyledInput
         name="HousingStockNumber"
@@ -50,6 +58,7 @@ export const HousingStockFilter = () => {
         onChange={onChangeHandler}
         onKeyDown={(e) => onKeyDownHandler(e, 2)}
         ref={refs[2]}
+        onFocus={onFocus}
       />
       <StyledInput
         name="Corpus"
@@ -58,6 +67,7 @@ export const HousingStockFilter = () => {
         onChange={onChangeHandler}
         onKeyDown={(e) => onKeyDownHandler(e, 3)}
         ref={refs[3]}
+        onFocus={onFocus}
       />
     </FieldsWrap>
   );

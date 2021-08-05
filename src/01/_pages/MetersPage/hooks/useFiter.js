@@ -15,6 +15,9 @@ function filterReducer(state, action) {
     case 'change':
       return { ...state, ...payload };
 
+    case 'reset':
+      return { ...initialState };
+
     default:
       break;
   }
@@ -53,41 +56,39 @@ export const useFilter = (pageDispatch = () => {}) => {
     inputs: [
       {
         name: 'city',
-        value: city,
         placeholder: 'Город',
-        onChange,
         disabled: true,
       },
       {
         name: 'street',
-        value: street,
         placeholder: 'Улица',
-        onChange,
       },
       {
         name: 'house',
-        value: house,
         placeholder: 'Дом',
-        onChange,
       },
       {
         name: 'corpus',
-        value: corpus,
         placeholder: 'Корпус',
-        onChange,
       },
       {
         name: 'apart',
-        value: apart,
         placeholder: 'Кв.',
-        onChange,
       },
       {
         name: 'question',
-        value: question,
         placeholder: 'Л/С или ФИО',
-        onChange,
       },
-    ],
+    ].map((elem) => ({
+      ...elem,
+      [elem.name]: state[elem.name],
+      onChange,
+      value: state[elem.name],
+      onFocus: (e) =>
+        dispatch({
+          type: e.target.name === 'street' ? 'reset' : 'change',
+          payload: { [elem.name]: '' },
+        }),
+    })),
   };
 };
