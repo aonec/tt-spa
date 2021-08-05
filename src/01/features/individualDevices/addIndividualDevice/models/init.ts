@@ -1,10 +1,10 @@
 import { FileData } from '01/hooks/useFilesUpload';
-import { createIndividualDevice } from '01/_api/individualDevices';
-import { forward, sample } from 'effector';
 import {
-  BaseIndividualDeviceReadingsCreateRequest,
-  CreateIndividualDeviceRequest,
-} from 'myApi';
+  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  createIndividualDevice,
+} from '01/_api/individualDevices';
+import { forward, sample } from 'effector';
+import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -49,24 +49,31 @@ $isCreateIndividualDeviceSuccess
 
 sample({
   source: addIndividualDeviceForm.$values.map(
-    (values): CreateIndividualDeviceRequest => ({
-      serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      bitDepth: Number(values.bitDepth),
-      scaleFactor: Number(values.scaleFactor),
-      apartmentId: values.apartmentId!,
-      mountPlaceId: values.mountPlaceId,
-      rateType: String(
-        toArray(values.startupReadings, false).filter(Boolean).length
-      ),
-      resource: values.resource!,
-      model: values.model,
-      documentsIds: toArray<FileData>(values.documentsIds, false)
-        .filter((elem) => elem?.fileResponse)
-        .map((elem) => elem.fileResponse?.id!),
-      startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+    (values): CreateCreateIndividualDeviceWithMagnetSealRequest => ({
+      device: {
+        serialNumber: values.serialNumber,
+        lastCheckingDate: values.lastCheckingDate,
+        futureCheckingDate: values.futureCheckingDate,
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+        bitDepth: Number(values.bitDepth),
+        scaleFactor: Number(values.scaleFactor),
+        apartmentId: values.apartmentId!,
+        mountPlaceId: values.mountPlaceId,
+        rateType: String(
+          toArray(values.startupReadings, false).filter(Boolean).length
+        ),
+        resource: values.resource!,
+        model: values.model,
+        documentsIds: toArray<FileData>(values.documentsIds, false)
+          .filter((elem) => elem?.fileResponse)
+          .map((elem) => elem.fileResponse?.id!),
+        startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      },
+      magnetSeal: {
+        isInstalled: values.isInstalled,
+        magneticSealInstallationDate: values.magneticSealInstallationDate,
+        magneticSealTypeName: values.magneticSealTypeName,
+      },
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,

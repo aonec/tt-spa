@@ -3,7 +3,7 @@ import moment from 'moment';
 import { IndividualDeviceResponse } from 'myApi';
 import axios from '01/axios';
 
-interface MagnetSeal {
+export interface MagnetSeal {
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
   isInstalled: boolean;
