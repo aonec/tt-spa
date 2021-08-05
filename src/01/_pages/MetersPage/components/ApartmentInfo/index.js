@@ -3,6 +3,9 @@ import styled, { css, use } from 'reshadow/macro';
 
 import { userInfo, UserInfo } from './UserInfo';
 import { Icon } from '01/components';
+import { useHistory, useParams } from 'react-router-dom';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { MenuButtonTT } from '01/tt-components';
 
 const styles = css`
   drower {
@@ -36,9 +39,23 @@ const styles = css`
 
 export const ApartmentInfo = ({ userInfo = [], title }) => {
   const [show, setShow] = React.useState(false);
+  const history = useHistory();
+  const { id } = useParams();
+
+  const menuButtonArray = [
+    {
+      title: 'Добавить новый прибор',
+      show: true,
+      cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
+    },
+  ];
   return styled(styles)(
     <>
-      <apart_title as="h2">{title}</apart_title>
+      <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
+        <apart_title as="h2">{title}</apart_title>
+        <MenuButtonTT menuButtonArr={menuButtonArray} />
+      </Flex>
+
       <drower>
         <drower_btn onClick={() => setShow(!show)}>
           <Icon icon="down" /> Информация о квартире

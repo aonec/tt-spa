@@ -43,7 +43,7 @@ interface ApartmentsProps {
 export const Apartments = ({ loading = null, items = [] }: ApartmentsProps) => {
   const { push } = useHistory();
   const { url } = useRouteMatch();
-  if (loading) return <Loader show={true} size="32" />;
+  if (loading) return <Loader show size="32" />;
 
   if (items?.length === 1)
     return <Redirect to={`/meters/apartments/${items[0].id}`} />;

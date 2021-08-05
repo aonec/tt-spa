@@ -236,7 +236,7 @@ export const AddStaffModal: React.FC = () => {
             onClick={onSubmit}
             disabled={pendingAddStaffRequest}
           >
-            {pendingAddStaffRequest ? <Loader show={true} /> : 'Добавить'}
+            {pendingAddStaffRequest ? <Loader show /> : 'Добавить'}
           </ButtonTT>
         </Footer>
       }
@@ -245,7 +245,7 @@ export const AddStaffModal: React.FC = () => {
       <UserRolesGate />
       {errorAlert}
       {pendingFetchingData ? (
-        <Loader show={true} />
+        <Loader show />
       ) : (
         !failedFetchUserRoles && !failedFetchCompetances && modalContent
       )}

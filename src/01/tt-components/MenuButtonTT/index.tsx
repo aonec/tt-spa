@@ -77,7 +77,7 @@ export const MenuButtonTT = (props: any) => {
   return (
     <Dropdown overlay={menu} trigger={['click']} disabled={disabled}>
       <StyledMenuButton size={size}>
-        {loading ? <Loader show={true} /> : <MoreOutlined />}
+        {loading ? <Loader show /> : <MoreOutlined />}
       </StyledMenuButton>
     </Dropdown>
   );

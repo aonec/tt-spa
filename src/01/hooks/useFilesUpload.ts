@@ -74,7 +74,11 @@ export function useFilesUpload(
 
       // await deleteDoc(fileId);
 
-      setFiles((prev) => prev.filter((elem) => elem.id !== id));
+      setFiles((prev) => {
+        const newFiles = prev.filter((elem) => elem.id !== id);
+
+        return newFiles;
+      });
     } catch (e) {
       rewriteFile(id, (file) => ({
         ...file,

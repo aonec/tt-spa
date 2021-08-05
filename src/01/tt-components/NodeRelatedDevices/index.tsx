@@ -23,7 +23,7 @@ export const NodeRelatedDevices = ({
   setDeregisterDevice,
 }: NodesInterface) => {
   if (!node) {
-    return <Loader show={true} size={32} />;
+    return <Loader show size={32} />;
   }
   const { communicationPipes } = node;
 

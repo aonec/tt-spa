@@ -31,7 +31,7 @@ const styles = css`
 export const Apartments = ({ loading = null, items = [] }) => {
   const { push } = useHistory();
   const { url } = useRouteMatch();
-  if (loading) return <Loader show={true} size="32" />;
+  if (loading) return <Loader show size="32" />;
 
   if (items.length === 0)
     return (

@@ -200,7 +200,7 @@ export const EditManagingFirmUserPage = () => {
       </Form.Item>
       <FormButtonsWrap>
         <ButtonTT color="blue" onClick={onSubmit} disabled={pendingEditRequest}>
-          {pendingEditRequest ? <Loader show={true} /> : 'Сохранить'}
+          {pendingEditRequest ? <Loader show /> : 'Сохранить'}
         </ButtonTT>
         <ButtonTT
           color="white"
@@ -231,7 +231,7 @@ export const EditManagingFirmUserPage = () => {
         />
         {pendingFetchRequest ? (
           <div>
-            <Loader show={true} />
+            <Loader show />
           </div>
         ) : (
           form

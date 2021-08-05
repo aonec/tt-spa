@@ -65,7 +65,7 @@ const AddNewZonesModal = () => {
           Зона:
         </label>
         {isZoneLoading ? (
-          <Loader show={true} />
+          <Loader show />
         ) : (
           <Form.Item
             validateStatus={addZoneValidationStatus}

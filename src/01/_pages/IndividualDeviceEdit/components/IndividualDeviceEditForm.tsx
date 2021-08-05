@@ -333,7 +333,7 @@ const IndividualDeviceEditForm = ({
 
         <StyledFooter form>
           <ButtonTT color="blue" type={'submit'} disabled={loading}>
-            {loading ? <Loader show={true} /> : 'Сохранить'}
+            {loading ? <Loader show /> : 'Сохранить'}
           </ButtonTT>
 
           <ButtonTT
@@ -356,12 +356,12 @@ const IndividualDeviceEditForm = ({
 
 export default IndividualDeviceEditForm;
 
-const StyledSelect = styled(Select)`
+export const StyledSelect = styled(Select)`
   height: 48px;
   .ant-select-selector {
     height: 100% !important;
     padding: 8px 24px !important;
-    border-radius: 4px;
+    border-radius: 4px !important;
 
     span {
       font-size: 16px;

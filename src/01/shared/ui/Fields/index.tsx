@@ -23,10 +23,6 @@ export const StyledSelctor = styled(Select)`
       box-shadow: 0 2px 7px #188fffae;
     }
   }
-
-  .ant-select-arrow {
-    transform: translateY(-9px);
-  }
 `;
 
 export const StyledInput = styled.input`

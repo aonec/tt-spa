@@ -21,7 +21,7 @@ export const HousingStocks = () => {
   return (
     <>
       {pending ? (
-        <Loader show={true} />
+        <Loader show />
       ) : housingStocks?.length ? (
         <HousingStocksList />
       ) : (

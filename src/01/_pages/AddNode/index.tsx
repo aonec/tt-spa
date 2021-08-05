@@ -84,7 +84,7 @@ export const AddNode = () => {
   }, [addCalculator]);
 
   if (!housingStock || !calculators || !communicationPipes) {
-    return <Loader size={32} show={true} />;
+    return <Loader size={32} show />;
   }
 
   const context = {

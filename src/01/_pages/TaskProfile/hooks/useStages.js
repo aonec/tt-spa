@@ -1,5 +1,4 @@
 export const useStages = ({ stages = {}, panelLoading }, dispatch) => {
-  console.log(stages.items);
   return {
     items: stages.items ?? [],
     revertProps: {

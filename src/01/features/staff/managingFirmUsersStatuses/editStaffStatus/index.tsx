@@ -86,7 +86,7 @@ export const EditStaffStatusModal: React.FC = () => {
             onClick={onSubmit}
             disabled={pending}
           >
-            {pending ? <Loader show={true} /> : 'Изменить статус'}
+            {pending ? <Loader show /> : 'Изменить статус'}
           </ButtonTT>
         </Footer>
       }
