@@ -94,7 +94,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
             <SuffixLine>м³</SuffixLine>
           )
         }
-        // disabled={readingsBlocked || isDisabled}
+        disabled={readingsBlocked || isDisabled}
         type="number"
         value={value}
         onFocus={onFocusHandler}

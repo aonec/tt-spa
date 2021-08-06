@@ -61,21 +61,29 @@ export const useReadings = (
       currId: currentReadings.id,
       resource: device.resource,
     });
-
-    console.log(device);
   }, [device.readings, sliderIndex]);
 
   const formDeviceReadingObject = (
     deviceItem: IndividualDeviceListItemResponse,
     readingsState: ReadingsStateType
   ): ReadingType => {
-    return {
+    const readingData = {
       deviceId: deviceItem.id,
-      value1: Number(readingsState.currentReadingsArray[0]),
+      ...readingsState.currentReadingsArray.filter(Boolean).reduce(
+        (acc, elem, index) => ({
+          ...acc,
+          [`value${index + 1}`]: Number(elem),
+        }),
+        {}
+      ),
       readingDate: moment().toISOString(),
       uploadTime: moment().toISOString(),
       isForced: true,
     };
+
+    console.log(readingData);
+
+    return readingData;
   };
 
   const sendReadings = useCallback(() => {
@@ -84,12 +92,6 @@ export const useReadings = (
       device,
       readingsState
     );
-    for (let i = 1; i < 4; i++) {
-      if (+readingsState.currentReadingsArray[i]) {
-        deviceReadingObject[`value${i + 1}`] =
-          readingsState.currentReadingsArray[i];
-      }
-    }
     axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
     setInitialReadings(readingsState.currentReadingsArray);
   }, [readingsState]);
@@ -269,7 +271,7 @@ export type ReadingsStateType = {
 
 type ReadingType = {
   deviceId: number;
-  value1: number;
+  value1?: number;
   value2?: number;
   value3?: number;
   value4?: number;
