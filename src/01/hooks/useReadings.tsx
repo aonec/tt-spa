@@ -36,11 +36,6 @@ export const useReadings = (
 
   const dispatch = useDispatch();
 
-  const disabledState = useSelector(selectDisabledState);
-
-  const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
-    ?.isDisabled;
-
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
@@ -180,7 +175,6 @@ export const useReadings = (
         resource={readingsState.resource}
         operatorCabinet
         textInput={textInput}
-        isDisabled={isDisabled}
       />
     )
   );

@@ -1,6 +1,5 @@
 export const useApartmentInfo = ({ apartInfo = {} }) => {
   const { housingStock = {}, apartmentNumber, homeowners = [] } = apartInfo;
-  console.log(apartInfo);
   return {
     title:
       apartmentNumber &&
