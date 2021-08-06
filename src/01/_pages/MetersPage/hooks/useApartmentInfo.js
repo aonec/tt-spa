@@ -3,9 +3,9 @@ export const useApartmentInfo = ({ apartInfo = {} }) => {
   return {
     title:
       apartmentNumber &&
-      `${housingStock.street}, ${housingStock.number}, кв.${apartmentNumber}${
-        housingStock.corpus ? `, к.${housingStock.corpus}` : ''
-      }`,
+      `${housingStock.street}, ${housingStock.number}${
+        housingStock.corpus || ''
+      }, кв.${apartmentNumber}`,
     userInfo: [
       ['Собственник', homeowners[0]?.firstName],
       ['Лицевой счет', homeowners[0]?.personalAccountNumber],
