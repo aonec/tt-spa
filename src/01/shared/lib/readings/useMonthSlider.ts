@@ -9,13 +9,15 @@ export const useMonthSlider = (
   const [sliderIndex, setSliderIndex] = useState(0);
 
   if (!items || !items.length) return {};
+
   const currentMonth = getMonthFromDate();
+
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(items[0].readings![0]?.readingDate);
+
   const readingsLength = items[0].readings?.length || 0;
 
-  const isPreviousArrowDisabled =
-    sliderIndex + 1 > readingsLength - Number(isReadingsCurrent) - 1;
+  const isPreviousArrowDisabled = false;
 
   const onClickIncrease = () => {
     setSliderIndex((index) => {

@@ -28,7 +28,6 @@ export const useReadings = (
   sliderIndex = 0
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
-  const [isVisible, setIsVisible] = useState(false);
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
 
   const dispatch = useDispatch();
@@ -42,7 +41,9 @@ export const useReadings = (
   useEffect(() => {
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
+
     const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
+
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
     const prevReadings: Record<string, any> =
@@ -60,6 +61,8 @@ export const useReadings = (
       currId: currentReadings.id,
       resource: device.resource,
     });
+
+    console.log(device);
   }, [device.readings, sliderIndex]);
 
   const formDeviceReadingObject = (
@@ -251,7 +254,6 @@ export const useReadings = (
 
   return {
     readingsState, // стейт с показаниями
-    isVisible, // состояние для модалки
     previousReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
