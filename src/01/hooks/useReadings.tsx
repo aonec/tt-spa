@@ -21,12 +21,10 @@ import {
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { v4 as uuid } from 'uuid';
-import { Input } from 'antd';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
-  textInput: MutableRefObject<Input | null>,
   sliderIndex = 0
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
@@ -143,25 +141,6 @@ export const useReadings = (
     }));
   };
 
-  const handleOk = () => {
-    setReadingsState((state: any) => ({
-      ...state,
-      currentReadingsArray: initialReadings,
-    }));
-    dispatch(setInputUnfocused());
-    setIsVisible(false);
-  };
-
-  const handleCancel = () => {
-    if (!textInput.current) return;
-    setReadingsState((state: any) => ({
-      ...state,
-      currentReadingsArray: initialReadings,
-    }));
-    textInput.current.focus();
-    setIsVisible(false);
-  };
-
   if (!readingsState) return {};
 
   const currentDeviceReadings = readingsState.currentReadingsArray.map(
@@ -175,7 +154,6 @@ export const useReadings = (
         value={value}
         resource={readingsState.resource}
         operatorCabinet
-        textInput={textInput}
       />
     )
   );
@@ -274,8 +252,6 @@ export const useReadings = (
   return {
     readingsState, // стейт с показаниями
     isVisible, // состояние для модалки
-    handleOk, // хендлер для модалки
-    handleCancel, // хендлер для модалки
     previousReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };

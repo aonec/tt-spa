@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
-import { Input, Modal } from 'antd';
-import ButtonTT from '../../../../../tt-components/ButtonTT';
+import { Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCreators';
 import DeviceInfo from './DeviceInfo';
@@ -26,15 +25,12 @@ const ApartmentReadingLine = ({
 }: ApartmentReadingLineProps) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const textInput = React.createRef<Input>();
 
   const {
     readingsState,
-    handleOk,
-    handleCancel,
     previousReadings,
     currentReadings,
-  } = useReadings(device, textInput, sliderIndex);
+  } = useReadings(device, sliderIndex);
   const isVisible = false;
 
   //useInputsUnfocused
@@ -77,29 +73,6 @@ const ApartmentReadingLine = ({
 
         <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
       </FullDeviceLine>
-
-      <StyledModal
-        visible={isVisible}
-        title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-        footer={
-          <Footer>
-            <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-              Отмена
-            </ButtonTT>
-            <ButtonTT color={'red'} key="submit" onClick={handleOk}>
-              Выйти без сохранения
-            </ButtonTT>
-          </Footer>
-        }
-      >
-        <p style={{ color: 'var(--main-100)', margin: 0 }}>
-          Вы внесли не все показания, если вы покинете страницу, то все
-          изменения, которые были сделаны вами на этой странице не сохранятся
-        </p>
-      </StyledModal>
     </>
   );
 };
