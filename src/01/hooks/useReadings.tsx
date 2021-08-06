@@ -21,16 +21,13 @@ import {
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { v4 as uuid } from 'uuid';
-import { Input } from 'antd';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
-  textInput: MutableRefObject<Input | null>,
   sliderIndex = 0
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
-  const [isVisible, setIsVisible] = useState(false);
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
 
   const dispatch = useDispatch();
@@ -44,7 +41,9 @@ export const useReadings = (
   useEffect(() => {
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
+
     const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
+
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
     const prevReadings: Record<string, any> =
@@ -68,13 +67,23 @@ export const useReadings = (
     deviceItem: IndividualDeviceListItemResponse,
     readingsState: ReadingsStateType
   ): ReadingType => {
-    return {
+    const readingData = {
       deviceId: deviceItem.id,
-      value1: Number(readingsState.currentReadingsArray[0]),
+      ...readingsState.currentReadingsArray.filter(Boolean).reduce(
+        (acc, elem, index) => ({
+          ...acc,
+          [`value${index + 1}`]: Number(elem),
+        }),
+        {}
+      ),
       readingDate: moment().toISOString(),
       uploadTime: moment().toISOString(),
       isForced: true,
     };
+
+    console.log(readingData);
+
+    return readingData;
   };
 
   const sendReadings = useCallback(() => {
@@ -83,12 +92,6 @@ export const useReadings = (
       device,
       readingsState
     );
-    for (let i = 1; i < 4; i++) {
-      if (+readingsState.currentReadingsArray[i]) {
-        deviceReadingObject[`value${i + 1}`] =
-          readingsState.currentReadingsArray[i];
-      }
-    }
     axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
     setInitialReadings(readingsState.currentReadingsArray);
   }, [readingsState]);
@@ -143,25 +146,6 @@ export const useReadings = (
     }));
   };
 
-  const handleOk = () => {
-    setReadingsState((state: any) => ({
-      ...state,
-      currentReadingsArray: initialReadings,
-    }));
-    dispatch(setInputUnfocused());
-    setIsVisible(false);
-  };
-
-  const handleCancel = () => {
-    if (!textInput.current) return;
-    setReadingsState((state: any) => ({
-      ...state,
-      currentReadingsArray: initialReadings,
-    }));
-    textInput.current.focus();
-    setIsVisible(false);
-  };
-
   if (!readingsState) return {};
 
   const currentDeviceReadings = readingsState.currentReadingsArray.map(
@@ -175,7 +159,6 @@ export const useReadings = (
         value={value}
         resource={readingsState.resource}
         operatorCabinet
-        textInput={textInput}
       />
     )
   );
@@ -273,9 +256,6 @@ export const useReadings = (
 
   return {
     readingsState, // стейт с показаниями
-    isVisible, // состояние для модалки
-    handleOk, // хендлер для модалки
-    handleCancel, // хендлер для модалки
     previousReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
@@ -291,7 +271,7 @@ export type ReadingsStateType = {
 
 type ReadingType = {
   deviceId: number;
-  value1: number;
+  value1?: number;
   value2?: number;
   value3?: number;
   value4?: number;

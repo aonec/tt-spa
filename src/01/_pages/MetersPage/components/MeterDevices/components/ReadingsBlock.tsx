@@ -73,19 +73,12 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   resource,
   operatorCabinet = false,
   houseReadings = false,
-  textInput,
   isDisabled,
 }) => {
   const onFocusHandler = (e: any) => {
-    if (e.target.value === '0') {
+    if (Number(e.target.value) === 0) {
       onChange && onChange(e);
     }
-
-    textInput!.current = e.target;
-  };
-
-  const onBlurHandler = (e: any) => {
-    textInput!.current = null;
   };
 
   return (
@@ -104,9 +97,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
         disabled={readingsBlocked || isDisabled}
         type="number"
         value={value}
-        ref={operatorCabinet && !isDisabled ? textInput : undefined}
         onFocus={onFocusHandler}
-        onBlur={onBlurHandler}
         onChange={onChange}
         required
         tabIndex={index + 1}

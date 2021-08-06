@@ -1,37 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IndividualDeviceType } from '../../../../../../types/types';
 import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
 import styles from '../../../../Devices/components/TabsDevices.module.scss';
 import { useReadings } from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
-import { ButtonTT } from '../../../../../tt-components';
-import { Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import {
-  Footer,
-  Header,
-  ModalText,
-  StyledModal,
-} from '01/shared/ui/Modal/Modal';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
-  const textInput = React.createRef<Input>();
-
   const {
     readingsState,
-    handleOk,
-    handleCancel,
     previousReadings,
     currentReadings,
-  } = useReadings(device, textInput);
-
-  const isVisible = false;
+  } = useReadings(device);
 
   const dispatch = useDispatch();
 
@@ -101,29 +86,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
 
       <div>{consumptionElems}</div>
       <div>-</div>
-
-      <StyledModal
-        visible={isVisible}
-        title={<Header>Вы действительно хотите уйти без сохранения?</Header>}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-        footer={
-          <Footer>
-            <ButtonTT color={'white'} key="back" onClick={handleCancel}>
-              Отмена
-            </ButtonTT>
-            <ButtonTT color={'red'} key="submit" onClick={handleOk}>
-              Выйти без сохранения
-            </ButtonTT>
-          </Footer>
-        }
-      >
-        <ModalText>
-          Вы внесли не все показания, если вы покинете страницу, то все
-          изменения, которые были сделаны вами на этой странице не сохранятся
-        </ModalText>
-      </StyledModal>
     </HouseReadingsDevice>
   );
 });

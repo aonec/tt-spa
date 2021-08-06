@@ -67,10 +67,10 @@ export const useFilter = (pageDispatch = () => {}) => {
         name: 'house',
         placeholder: 'Дом',
       },
-      {
-        name: 'corpus',
-        placeholder: 'Корпус',
-      },
+      // {
+      //   name: 'corpus',
+      //   placeholder: 'Корпус',
+      // },
       {
         name: 'apart',
         placeholder: 'Кв.',
