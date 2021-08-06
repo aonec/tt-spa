@@ -14,14 +14,13 @@ import {
   setInputFocused,
   setInputUnfocused,
 } from '../Redux/ducks/readings/actionCreators';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { v4 as uuid } from 'uuid';
-import { selectDisabledState } from '../Redux/ducks/readings/selectors';
 import { Input } from 'antd';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 
@@ -35,11 +34,6 @@ export const useReadings = (
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
 
   const dispatch = useDispatch();
-
-  const disabledState = useSelector(selectDisabledState);
-
-  const isDisabled = disabledState?.find((el) => el.deviceId === device.id)
-    ?.isDisabled;
 
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -91,8 +85,8 @@ export const useReadings = (
     );
     for (let i = 1; i < 4; i++) {
       if (+readingsState.currentReadingsArray[i]) {
-        deviceReadingObject[`value${i + 1}`] = +readingsState
-          .currentReadingsArray[i];
+        deviceReadingObject[`value${i + 1}`] =
+          readingsState.currentReadingsArray[i];
       }
     }
     axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
@@ -103,15 +97,11 @@ export const useReadings = (
     (e: React.FocusEvent<HTMLInputElement>) => {
       if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
         return;
-      const isNull = isNullInArray(readingsState.currentReadingsArray);
-      if (isNull) {
-        setIsVisible(true);
-      } else {
-        if (readingsState.currentReadingsArray !== initialReadings) {
-          sendReadings();
-        }
-        dispatch(setInputUnfocused());
+
+      if (readingsState.currentReadingsArray !== initialReadings) {
+        sendReadings();
       }
+      dispatch(setInputUnfocused());
     },
     [readingsState, initialReadings]
   );
@@ -134,14 +124,20 @@ export const useReadings = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    console.log(e.target.value);
     e.preventDefault();
-    // if (isNaN(+e.target.value)) return;
+
+    const value =
+      e.type === 'focus'
+        ? e.target.value === '0'
+          ? ''
+          : e.target.value
+        : e.target.value;
+
     setReadingsState((state: any) => ({
       ...state,
       currentReadingsArray: state.currentReadingsArray.map(
         (reading: any, i: any): number => {
-          return i === index ? e.target.value : reading;
+          return i === index ? value : reading;
         }
       ),
     }));
@@ -180,7 +176,6 @@ export const useReadings = (
         resource={readingsState.resource}
         operatorCabinet
         textInput={textInput}
-        isDisabled={isDisabled}
       />
     )
   );

@@ -77,6 +77,10 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   isDisabled,
 }) => {
   const onFocusHandler = (e: any) => {
+    if (e.target.value === '0') {
+      onChange && onChange(e);
+    }
+
     textInput!.current = e.target;
   };
 
