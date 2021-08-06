@@ -14,14 +14,13 @@ import {
   setInputFocused,
   setInputUnfocused,
 } from '../Redux/ducks/readings/actionCreators';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { v4 as uuid } from 'uuid';
-import { selectDisabledState } from '../Redux/ducks/readings/selectors';
 import { Input } from 'antd';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 
@@ -86,8 +85,8 @@ export const useReadings = (
     );
     for (let i = 1; i < 4; i++) {
       if (+readingsState.currentReadingsArray[i]) {
-        deviceReadingObject[`value${i + 1}`] = +readingsState
-          .currentReadingsArray[i];
+        deviceReadingObject[`value${i + 1}`] =
+          readingsState.currentReadingsArray[i];
       }
     }
     axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
@@ -98,15 +97,11 @@ export const useReadings = (
     (e: React.FocusEvent<HTMLInputElement>) => {
       if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
         return;
-      const isNull = isNullInArray(readingsState.currentReadingsArray);
-      if (isNull) {
-        setIsVisible(true);
-      } else {
-        if (readingsState.currentReadingsArray !== initialReadings) {
-          sendReadings();
-        }
-        dispatch(setInputUnfocused());
+
+      if (readingsState.currentReadingsArray !== initialReadings) {
+        sendReadings();
       }
+      dispatch(setInputUnfocused());
     },
     [readingsState, initialReadings]
   );
