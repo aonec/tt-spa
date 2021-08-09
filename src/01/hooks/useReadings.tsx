@@ -5,15 +5,12 @@ import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
 import { isNullInArray } from '../utils/checkArrayForNulls';
-import { setInputUnfocused } from '../Redux/ducks/readings/actionCreators';
-import { useDispatch } from 'react-redux';
 import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { IndividualDeviceListItemResponse } from '../../myApi';
-import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -21,8 +18,6 @@ export const useReadings = (
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
-
-  const dispatch = useDispatch();
 
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -84,25 +79,31 @@ export const useReadings = (
     return readingData;
   };
 
-  const sendReadings = useCallback(() => {
-    if (!readingsState) return;
-    const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
-      device,
-      readingsState
-    );
-    axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-    setInitialReadings(readingsState.currentReadingsArray);
-  }, [readingsState]);
+  const sendReadings = useCallback(
+    (isPrevious?: boolean) => {
+      if (!readingsState) return;
+
+      const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
+        device,
+        readingsState
+      );
+
+      axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+
+      setInitialReadings(readingsState.currentReadingsArray);
+    },
+    [readingsState]
+  );
 
   const onBlurHandler = useCallback(
-    (e: React.FocusEvent<HTMLDivElement>, value?: any) => {
+    (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
+      console.log(isPrevious);
       if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
         return;
 
       if (readingsState.currentReadingsArray !== initialReadings) {
-        sendReadings();
+        sendReadings(isPrevious);
       }
-      dispatch(setInputUnfocused());
     },
     [readingsState, initialReadings]
   );
@@ -209,7 +210,7 @@ export const useReadings = (
       value: () => (
         <DeviceReadingsContainer
           color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={(e) => onBlurHandler(e, readingsElems)}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           resource={device.resource}
         >
@@ -222,7 +223,7 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -246,7 +247,7 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
