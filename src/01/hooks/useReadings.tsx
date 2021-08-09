@@ -80,15 +80,18 @@ export const useReadings = (
   };
 
   const sendReadings = useCallback(
-    (isPrevious?: boolean) => {
+    async (isPrevious?: boolean) => {
       if (!readingsState) return;
+
+      if (isPrevious) {
+      }
 
       const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
         device,
         readingsState
       );
 
-      axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+      await axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
 
       setInitialReadings(readingsState.currentReadingsArray);
     },
@@ -97,9 +100,7 @@ export const useReadings = (
 
   const onBlurHandler = useCallback(
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
-      console.log(isPrevious);
-      if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
-        return;
+      if (!readingsState) return;
 
       if (readingsState.currentReadingsArray !== initialReadings) {
         sendReadings(isPrevious);
