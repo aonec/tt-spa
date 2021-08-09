@@ -71,7 +71,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   value,
   readingsBlocked = false,
   resource,
-  operatorCabinet = false,
   houseReadings = false,
   isDisabled,
 }) => {

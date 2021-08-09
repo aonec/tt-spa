@@ -1,9 +1,4 @@
-import React, {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
@@ -22,6 +17,7 @@ import {
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../myApi';
+import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -29,6 +25,10 @@ export const useReadings = (
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
+
+  const [previousReadings, setPreviousReadings] = useState<{
+    [index: number]: string;
+  }>({});
 
   const dispatch = useDispatch();
 
@@ -63,6 +63,26 @@ export const useReadings = (
     });
   }, [device.readings, sliderIndex]);
 
+  useEffect(() => {
+    const previousReadingsArray: number[] = [];
+
+    const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
+
+    const prevReadings: Record<string, any> =
+      device.readings![prevReadingsIndex] || {};
+
+    for (let i = 1; i <= numberOfReadings; i++) {
+      previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
+    }
+
+    setPreviousReadings({
+      ...previousReadingsArray.reduce(
+        (acc, current, index) => ({ ...acc, [index]: current }),
+        {}
+      ),
+    });
+  }, [device.readings, sliderIndex]);
+
   const formDeviceReadingObject = (
     deviceItem: IndividualDeviceListItemResponse,
     readingsState: ReadingsStateType
@@ -80,8 +100,6 @@ export const useReadings = (
       uploadTime: moment().toISOString(),
       isForced: true,
     };
-
-    console.log(readingData);
 
     return readingData;
   };
@@ -117,7 +135,6 @@ export const useReadings = (
       setInitialReadings(readingsState.currentReadingsArray);
       const isNull = isNullInArray(readingsState.currentReadingsArray);
       if (isNull) {
-        dispatch(setInputFocused(device.id));
       }
     },
     [readingsState]
@@ -146,6 +163,10 @@ export const useReadings = (
     }));
   };
 
+  const onChangePreviousReading = (value: string, index: number) => {
+    setPreviousReadings((prev) => ({ ...prev, [index]: value }));
+  };
+
   if (!readingsState) return {};
 
   const currentDeviceReadings = readingsState.currentReadingsArray.map(
@@ -163,17 +184,22 @@ export const useReadings = (
     )
   );
 
-  const previousDeviceReadings = readingsState.previousReadingsArray.map(
+  const previousDeviceReadings = toArray<number>(previousReadings, false).map(
     (value, index) => (
       <ReadingsBlock
-        key={uuid()}
+        key={device.id + index + '-prev-readings'}
         index={index}
         value={value}
-        resource={readingsState.resource}
         operatorCabinet
-        readingsBlocked
-        houseReadings
-        isDisabled
+        resource={readingsState.resource}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          e.preventDefault();
+
+          onChangePreviousReading(
+            e.type === 'focus' ? '' : e.target.value,
+            index
+          );
+        }}
       />
     )
   );
@@ -246,7 +272,7 @@ export const useReadings = (
     },
   ];
 
-  const previousReadings = options(previousDeviceReadings, false)
+  const previousResultReadings = options(previousDeviceReadings, false)
     .find((el) => el.isSuccess)!
     .value();
 
@@ -256,7 +282,7 @@ export const useReadings = (
 
   return {
     readingsState, // стейт с показаниями
-    previousReadings, // массив компонентов с показаниями за пред. месяцы
+    previousReadings: previousResultReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
 };
