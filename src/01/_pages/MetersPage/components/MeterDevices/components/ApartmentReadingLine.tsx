@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
-import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { Modal } from 'antd';
 import { useDispatch } from 'react-redux';
-import { setInputUnfocused } from '../../../../../Redux/ducks/readings/actionCreators';
 import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
@@ -23,7 +21,7 @@ const ApartmentReadingLine = ({
   device,
   sliderIndex,
 }: ApartmentReadingLineProps) => {
-  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const {
@@ -31,17 +29,6 @@ const ApartmentReadingLine = ({
     previousReadings,
     currentReadings,
   } = useReadings(device, sliderIndex);
-  const isVisible = false;
-
-  //useInputsUnfocused
-  useEffect(() => {
-    if (!readingsState?.currentReadingsArray) return;
-    const isNull = isNullInArray(readingsState.currentReadingsArray);
-
-    if (!isNull) {
-      dispatch(setInputUnfocused());
-    }
-  }, [readingsState]);
 
   if (!readingsState) return null;
 

@@ -5,17 +5,13 @@ import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
 import { isNullInArray } from '../utils/checkArrayForNulls';
-import {
-  setInputFocused,
-  setInputUnfocused,
-} from '../Redux/ducks/readings/actionCreators';
+import { setInputUnfocused } from '../Redux/ducks/readings/actionCreators';
 import { useDispatch } from 'react-redux';
 import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../myApi';
 import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 
@@ -25,10 +21,6 @@ export const useReadings = (
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
-
-  const [previousReadings, setPreviousReadings] = useState<{
-    [index: number]: string;
-  }>({});
 
   const dispatch = useDispatch();
 
@@ -54,32 +46,19 @@ export const useReadings = (
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
     }
 
-    setReadingsState({
-      previousReadingsArray,
-      currentReadingsArray,
-      prevId: prevReadings.id,
-      currId: currentReadings.id,
-      resource: device.resource,
-    });
-  }, [device.readings, sliderIndex]);
+    setReadingsState((prev) => {
+      console.log(prev);
 
-  useEffect(() => {
-    const previousReadingsArray: number[] = [];
-
-    const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
-
-    const prevReadings: Record<string, any> =
-      device.readings![prevReadingsIndex] || {};
-
-    for (let i = 1; i <= numberOfReadings; i++) {
-      previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
-    }
-
-    setPreviousReadings({
-      ...previousReadingsArray.reduce(
-        (acc, current, index) => ({ ...acc, [index]: current }),
-        {}
-      ),
+      return {
+        previousReadings: prev?.previousReadings[sliderIndex]
+          ? prev.previousReadings
+          : { [sliderIndex]: previousReadingsArray },
+        previousReadingsArray,
+        currentReadingsArray,
+        prevId: prevReadings.id,
+        currId: currentReadings.id,
+        resource: device.resource,
+      };
     });
   }, [device.readings, sliderIndex]);
 
@@ -115,7 +94,7 @@ export const useReadings = (
   }, [readingsState]);
 
   const onBlurHandler = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
+    (e: React.FocusEvent<HTMLDivElement>, value?: any) => {
       if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
         return;
 
@@ -142,7 +121,8 @@ export const useReadings = (
 
   const onInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
+    isPrevious?: boolean
   ) => {
     e.preventDefault();
 
@@ -152,6 +132,26 @@ export const useReadings = (
           ? ''
           : e.target.value
         : e.target.value;
+
+    if (isPrevious) {
+      setReadingsState((prev) => {
+        if (!prev) return prev;
+
+        const newValues = [...prev.previousReadings[sliderIndex]];
+
+        newValues[index] = value as any;
+
+        return {
+          ...prev,
+          previousReadings: {
+            ...prev.previousReadings,
+            [sliderIndex]: newValues,
+          },
+        };
+      });
+
+      return;
+    }
 
     setReadingsState((state: any) => ({
       ...state,
@@ -163,29 +163,31 @@ export const useReadings = (
     }));
   };
 
-  const onChangePreviousReading = (value: string, index: number) => {
-    setPreviousReadings((prev) => ({ ...prev, [index]: value }));
-  };
-
   if (!readingsState) return {};
 
   const currentDeviceReadings = readingsState.currentReadingsArray.map(
-    (value, index) => (
-      <ReadingsBlock
-        key={device.id + index}
-        index={index}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onInputChange(e, index)
-        }
-        value={value}
-        resource={readingsState.resource}
-        operatorCabinet
-      />
-    )
+    (value, index) => ({
+      elem: (
+        <ReadingsBlock
+          key={device.id + index}
+          index={index}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onInputChange(e, index)
+          }
+          value={value}
+          resource={readingsState.resource}
+          operatorCabinet
+        />
+      ),
+      value,
+    })
   );
 
-  const previousDeviceReadings = toArray<number>(previousReadings, false).map(
-    (value, index) => (
+  const previousDeviceReadings = toArray<number>(
+    readingsState.previousReadings,
+    false
+  ).map((value, index) => ({
+    elem: (
       <ReadingsBlock
         key={device.id + index + '-prev-readings'}
         index={index}
@@ -193,30 +195,26 @@ export const useReadings = (
         operatorCabinet
         resource={readingsState.resource}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          e.preventDefault();
-
-          onChangePreviousReading(
-            e.type === 'focus' ? '' : e.target.value,
-            index
-          );
+          onInputChange(e, index, true);
         }}
       />
-    )
-  );
+    ),
+    value,
+  }));
 
   const options = (
-    readingsElems: JSX.Element[],
+    readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean
   ): OptionsInterface[] => [
     {
       value: () => (
         <DeviceReadingsContainer
           color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, readingsElems)}
           onFocus={onFocusHandler}
           resource={device.resource}
         >
-          {readingsElems}
+          {readingsElems.map((elem) => elem.elem)}
         </DeviceReadingsContainer>
       ),
       isSuccess:
@@ -234,13 +232,13 @@ export const useReadings = (
             color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[0]}
+            {readingsElems.map((elem) => elem.elem)[0]}
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
             color={isCurrent ? '#957400' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[1]}
+            {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
         </div>
       ),
@@ -258,13 +256,16 @@ export const useReadings = (
             color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {[readingsElems[0], readingsElems[1]]}
+            {[
+              readingsElems.map((elem) => elem.elem)[0],
+              readingsElems.map((elem) => elem.elem)[1],
+            ]}
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
             color={isCurrent ? '#957400' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[2]}
+            {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
         </div>
       ),
@@ -289,6 +290,7 @@ export const useReadings = (
 
 export type ReadingsStateType = {
   previousReadingsArray: number[];
+  previousReadings: { [key: number]: number[] };
   currentReadingsArray: number[];
   prevId: number;
   currId: number;
