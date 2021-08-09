@@ -56,7 +56,7 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
           ) : null}
           <CenterContainer>{currentMonth}</CenterContainer>
         </MetersHeader>
-        {validDevices[0]}
+        {validDevices}
         <ClosedDevices devices={closedDevices} />
       </Meters>
     </>
@@ -102,4 +102,3 @@ export const CenterContainer = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
-

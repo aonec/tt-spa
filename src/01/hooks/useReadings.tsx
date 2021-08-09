@@ -47,12 +47,13 @@ export const useReadings = (
     }
 
     setReadingsState((prev) => {
-      console.log(prev);
-
       return {
-        previousReadings: prev?.previousReadings[sliderIndex]
-          ? prev.previousReadings
-          : { [sliderIndex]: previousReadingsArray },
+        previousReadings: {
+          ...prev?.previousReadings,
+          [sliderIndex]: prev?.previousReadings[sliderIndex]
+            ? prev?.previousReadings[sliderIndex]
+            : previousReadingsArray,
+        },
         previousReadingsArray,
         currentReadingsArray,
         prevId: prevReadings.id,
@@ -183,24 +184,22 @@ export const useReadings = (
     })
   );
 
-  const previousDeviceReadings = toArray<number>(
-    readingsState.previousReadings,
-    false
-  ).map((value, index) => ({
-    elem: (
-      <ReadingsBlock
-        key={device.id + index + '-prev-readings'}
-        index={index}
-        value={value}
-        operatorCabinet
-        resource={readingsState.resource}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          onInputChange(e, index, true);
-        }}
-      />
-    ),
-    value,
-  }));
+  const previousDeviceReadings =
+    readingsState.previousReadings[sliderIndex]?.map((value, index) => ({
+      elem: (
+        <ReadingsBlock
+          key={device.id + index + '-prev-readings'}
+          index={index}
+          value={value}
+          operatorCabinet
+          resource={readingsState.resource}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            onInputChange(e, index, true);
+          }}
+        />
+      ),
+      value,
+    })) || [];
 
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
