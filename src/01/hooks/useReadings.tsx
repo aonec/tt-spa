@@ -10,7 +10,10 @@ import {
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { IndividualDeviceListItemResponse } from '../../myApi';
+import {
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsResponse,
+} from '../../myApi';
 import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
 
 export const useReadings = (
@@ -36,11 +39,22 @@ export const useReadings = (
 
     const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
 
+    const preparedReadingsArrWIthEmpties: IndividualDeviceReadingsResponse[] =
+      device.readings?.reduce((acc, elem) => {
+        const index =
+          Number(moment().format('M')) -
+          Number(moment(elem.readingDate).format('M'));
+
+        acc[index] = elem;
+
+        return acc;
+      }, [] as IndividualDeviceReadingsResponse[]) || [];
+
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
 
     const prevReadings: Record<string, any> =
-      device.readings![prevReadingsIndex] || {};
+      preparedReadingsArrWIthEmpties![prevReadingsIndex] || {};
 
     for (let i = 1; i <= numberOfReadings; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
@@ -141,7 +155,6 @@ export const useReadings = (
           ),
           isForced: true,
           deviceId: device.id,
-          uploadTime: moment().toISOString(),
           readingDate: neededPreviousReadings.date,
         });
 
