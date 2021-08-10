@@ -128,7 +128,8 @@ export const useReadings = (
         const neededPreviousReadings =
           neededReadings.previousReadings[sliderIndex];
 
-        if (!neededPreviousReadings) return;
+        if (!neededPreviousReadings || !neededPreviousReadings?.values?.length)
+          return;
 
         await axios.post('/IndividualDeviceReadings/create', {
           ...neededPreviousReadings?.values.reduce(
