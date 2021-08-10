@@ -92,7 +92,6 @@ export const useReadings = (
       if (!readingsState) return;
 
       if (isPrevious) {
-        console.log('debug');
 
         return;
       }
@@ -112,11 +111,6 @@ export const useReadings = (
   const onBlurHandler = useCallback(
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
       if (!readingsState) return;
-
-      console.log(
-        initialPreviousReadingState.join(),
-        readingsState.previousReadings[sliderIndex]?.join()
-      );
 
       if (
         isPrevious &&
