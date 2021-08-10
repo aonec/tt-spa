@@ -18,6 +18,10 @@ export const useReadings = (
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
+  const [
+    initialPreviousReadingState,
+    setInitialPreviousReadingState,
+  ] = useState<number[]>([]);
 
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -42,13 +46,17 @@ export const useReadings = (
     }
 
     setReadingsState((prev) => {
+      const previousReadings = {
+        ...prev?.previousReadings,
+        [sliderIndex]: prev?.previousReadings[sliderIndex]
+          ? prev?.previousReadings[sliderIndex]
+          : previousReadingsArray,
+      };
+
+      setInitialPreviousReadingState(previousReadings[sliderIndex]);
+
       return {
-        previousReadings: {
-          ...prev?.previousReadings,
-          [sliderIndex]: prev?.previousReadings[sliderIndex]
-            ? prev?.previousReadings[sliderIndex]
-            : previousReadingsArray,
-        },
+        previousReadings,
         previousReadingsArray,
         currentReadingsArray,
         prevId: prevReadings.id,
@@ -84,6 +92,9 @@ export const useReadings = (
       if (!readingsState) return;
 
       if (isPrevious) {
+        console.log('debug');
+
+        return;
       }
 
       const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
@@ -102,8 +113,23 @@ export const useReadings = (
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
       if (!readingsState) return;
 
-      if (readingsState.currentReadingsArray !== initialReadings) {
+      console.log(
+        initialPreviousReadingState.join(),
+        readingsState.previousReadings[sliderIndex]?.join()
+      );
+
+      if (
+        isPrevious &&
+        initialPreviousReadingState.join() !==
+          readingsState.previousReadings[sliderIndex]?.join()
+      ) {
         sendReadings(isPrevious);
+
+        return;
+      }
+
+      if (readingsState.currentReadingsArray !== initialReadings) {
+        sendReadings();
       }
     },
     [readingsState, initialReadings]
