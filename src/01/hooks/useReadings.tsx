@@ -11,6 +11,7 @@ import {
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { IndividualDeviceListItemResponse } from '../../myApi';
+import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -96,7 +97,11 @@ export const useReadings = (
       if (!readingsState) return;
 
       if (isPrevious) {
-        setReadingsState((prev) => {
+        const getReadings = (prev: ReadingsStateType) => {
+          const date = getDateByReadingMonthSlider(sliderIndex).format(
+            'YYYY-MM'
+          );
+
           const res = prev && {
             ...prev,
             previousReadings: {
@@ -104,19 +109,39 @@ export const useReadings = (
               [sliderIndex]: {
                 ...prev?.previousReadings[sliderIndex],
                 date:
-                  prev?.previousReadings[sliderIndex].date ||
-                  moment().format('YYYY-MM-DD'),
+                  prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
               },
             },
           };
-
-          console.log(res?.previousReadings[sliderIndex]);
 
           setInitialPreviousReadingState(
             (prev) => res?.previousReadings || prev
           );
 
           return res;
+        };
+
+        const neededReadings = getReadings(readingsState);
+
+        setReadingsState(neededReadings);
+
+        const neededPreviousReadings =
+          neededReadings.previousReadings[sliderIndex];
+
+        if (!neededPreviousReadings) return;
+
+        await axios.post('/IndividualDeviceReadings/create', {
+          ...neededPreviousReadings?.values.reduce(
+            (acc: object, value: number, index: number) => ({
+              ...acc,
+              [`value${index + 1}`]: Number(value),
+            }),
+            {}
+          ),
+          isForced: true,
+          deviceId: device.id,
+          uploadTime: moment().toISOString(),
+          readingDate: neededPreviousReadings.date,
         });
 
         return;
