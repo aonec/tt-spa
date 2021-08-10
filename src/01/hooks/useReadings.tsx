@@ -21,7 +21,7 @@ export const useReadings = (
   const [
     initialPreviousReadingState,
     setInitialPreviousReadingState,
-  ] = useState<number[]>([]);
+  ] = useState<PreviousReadingState>({});
 
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -37,6 +37,7 @@ export const useReadings = (
 
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
+
     const prevReadings: Record<string, any> =
       device.readings![prevReadingsIndex] || {};
 
@@ -50,10 +51,13 @@ export const useReadings = (
         ...prev?.previousReadings,
         [sliderIndex]: prev?.previousReadings[sliderIndex]
           ? prev?.previousReadings[sliderIndex]
-          : previousReadingsArray,
+          : {
+              values: previousReadingsArray,
+              date: prevReadings.readingDate || null,
+            },
       };
 
-      setInitialPreviousReadingState(previousReadings[sliderIndex]);
+      setInitialPreviousReadingState(previousReadings);
 
       return {
         previousReadings,
@@ -92,6 +96,28 @@ export const useReadings = (
       if (!readingsState) return;
 
       if (isPrevious) {
+        setReadingsState((prev) => {
+          const res = prev && {
+            ...prev,
+            previousReadings: {
+              ...prev?.previousReadings,
+              [sliderIndex]: {
+                ...prev?.previousReadings[sliderIndex],
+                date:
+                  prev?.previousReadings[sliderIndex].date ||
+                  moment().format('YYYY-MM-DD'),
+              },
+            },
+          };
+
+          console.log(res?.previousReadings[sliderIndex]);
+
+          setInitialPreviousReadingState(
+            (prev) => res?.previousReadings || prev
+          );
+
+          return res;
+        });
 
         return;
       }
@@ -114,8 +140,8 @@ export const useReadings = (
 
       if (
         isPrevious &&
-        initialPreviousReadingState.join() !==
-          readingsState.previousReadings[sliderIndex]?.join()
+        initialPreviousReadingState[sliderIndex]?.values.join() !==
+          readingsState.previousReadings[sliderIndex]?.values.join()
       ) {
         sendReadings(isPrevious);
 
@@ -160,7 +186,7 @@ export const useReadings = (
       setReadingsState((prev) => {
         if (!prev) return prev;
 
-        const newValues = [...prev.previousReadings[sliderIndex]];
+        const newValues = [...prev.previousReadings[sliderIndex].values];
 
         newValues[index] = value as any;
 
@@ -168,7 +194,10 @@ export const useReadings = (
           ...prev,
           previousReadings: {
             ...prev.previousReadings,
-            [sliderIndex]: newValues,
+            [sliderIndex]: {
+              ...prev.previousReadings[sliderIndex],
+              values: newValues,
+            },
           },
         };
       });
@@ -207,7 +236,7 @@ export const useReadings = (
   );
 
   const previousDeviceReadings =
-    readingsState.previousReadings[sliderIndex]?.map((value, index) => ({
+    readingsState.previousReadings[sliderIndex]?.values.map((value, index) => ({
       elem: (
         <ReadingsBlock
           key={device.id + index + '-prev-readings'}
@@ -309,9 +338,13 @@ export const useReadings = (
   };
 };
 
+interface PreviousReadingState {
+  [key: number]: { values: number[]; date: string | null };
+}
+
 export type ReadingsStateType = {
   previousReadingsArray: number[];
-  previousReadings: { [key: number]: number[] };
+  previousReadings: PreviousReadingState;
   currentReadingsArray: number[];
   prevId: number;
   currId: number;
