@@ -3,11 +3,11 @@ import moment from 'moment';
 import { ListWrap, ListItem, Title } from '../../../tt-components/List';
 import { Subtitle } from '../../../_components/Headers';
 import { nodeStatusList } from '../../../tt-components/localBases';
-import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
 import { useParams } from 'react-router-dom';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   calculator: CalculatorIntoNodeResponse | null;
   task?: boolean;
 }

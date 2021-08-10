@@ -1,11 +1,11 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
 
 export interface EditNodeContextInterface {
   some?: string;
   visibleAddDevice?: boolean;
   setVisibleAddDevice?: Dispatch<SetStateAction<boolean>>;
-  node?: NodeResponse;
+  node?: PipeNodeResponse;
 }
 
 export const EditNodeContext = createContext<EditNodeContextInterface>({});

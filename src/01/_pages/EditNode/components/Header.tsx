@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { IconTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '../../../../myApi';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   nodeId: number;
   setAddDevice?: Dispatch<SetStateAction<boolean>>;
 }
