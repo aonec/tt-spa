@@ -37,13 +37,14 @@ export const useReadings = (
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
-    const prevReadingsIndex = sliderIndex + +!isReadingsCurrent;
+    const prevReadingsIndex = sliderIndex;
 
-    const preparedReadingsArrWIthEmpties: IndividualDeviceReadingsResponse[] =
+    const preparedReadingsArrWithEmpties: IndividualDeviceReadingsResponse[] =
       device.readings?.reduce((acc, elem) => {
         const index =
           Number(moment().format('M')) -
-          Number(moment(elem.readingDate).format('M'));
+          Number(moment(elem.readingDate).format('M')) -
+          1;
 
         acc[index] = elem;
 
@@ -54,7 +55,7 @@ export const useReadings = (
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
 
     const prevReadings: Record<string, any> =
-      preparedReadingsArrWIthEmpties![prevReadingsIndex] || {};
+      preparedReadingsArrWithEmpties![prevReadingsIndex] || {};
 
     for (let i = 1; i <= numberOfReadings; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
