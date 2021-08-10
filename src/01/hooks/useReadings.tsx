@@ -37,7 +37,7 @@ export const useReadings = (
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
-    const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
+    const prevReadingsIndex = sliderIndex + +!isReadingsCurrent;
 
     const preparedReadingsArrWIthEmpties: IndividualDeviceReadingsResponse[] =
       device.readings?.reduce((acc, elem) => {
