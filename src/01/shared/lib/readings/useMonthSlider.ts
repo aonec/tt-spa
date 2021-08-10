@@ -1,5 +1,4 @@
 import { IndividualDeviceListItemResponse } from '../../../../myApi';
-import { getMonthFromDate } from '../../../utils/getMonthFromDate';
 import { useState } from 'react';
 import { IndividualDeviceType } from '../../../../types/types';
 
@@ -10,14 +9,7 @@ export const useMonthSlider = (
 
   if (!items || !items.length) return {};
 
-  const currentMonth = getMonthFromDate();
-
-  const isReadingsCurrent =
-    currentMonth === getMonthFromDate(items[0].readings![0]?.readingDate);
-
-  const readingsLength = items[0].readings?.length || 0;
-
-  const isPreviousArrowDisabled = false;
+  const isPreviousArrowDisabled = sliderIndex === 2;
 
   const onClickIncrease = () => {
     setSliderIndex((index) => {
