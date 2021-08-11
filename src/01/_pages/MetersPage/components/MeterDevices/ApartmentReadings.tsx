@@ -8,12 +8,32 @@ import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
-import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import {
+  EIndividualDeviceRateType,
+  IndividualDeviceListItemResponse,
+} from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 
 interface ApartmentReadingsProps {
   items: IndividualDeviceListItemResponse[];
 }
+
+const getIndividualDeviceRateNumByName = (
+  rateType: EIndividualDeviceRateType
+) => {
+  const values = [
+    EIndividualDeviceRateType.OneZone,
+    EIndividualDeviceRateType.TwoZone,
+    EIndividualDeviceRateType.ThreeZone,
+  ];
+
+  const res = values.reduce(
+    (acc, elem, index) => (rateType === elem ? index + 1 : acc),
+    1
+  );
+
+  return res;
+};
 
 export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   const dispatch = useDispatch();
@@ -37,7 +57,12 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
       sliderIndex={sliderIndex}
       key={device.id}
       device={device}
-      numberOfPreviousReadingsInputs={0}
+      numberOfPreviousReadingsInputs={validDevicesList
+        .slice(0, index)
+        .reduce(
+          (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
+          0
+        )}
     />
   ));
 
