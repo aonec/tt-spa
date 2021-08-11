@@ -5,7 +5,7 @@ import { Header } from './components/Header';
 import EditNodeForm from './components/EditNodeForm';
 import { Breadcrumb } from '../../tt-components';
 import { useAsync } from '../../hooks/useAsync';
-import { CalculatorResponse, NodeResponse } from '../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '../../../myApi';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import Tabs from '../../tt-components/Tabs';
 import ModalDeregister from '../../tt-components/ModalDeregister';
@@ -29,7 +29,7 @@ export const EditNode = () => {
     status: statusCalculator,
     run: runCalculator,
   } = useAsync<CalculatorResponse>();
-  const { data: node, status, run } = useAsync<NodeResponse>();
+  const { data: node, status, run } = useAsync<PipeNodeResponse>();
 
   useEffect(() => {
     run(getNode(nodeId));

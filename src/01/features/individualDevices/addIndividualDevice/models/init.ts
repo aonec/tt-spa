@@ -1,3 +1,4 @@
+import { EIndividualDeviceRateType } from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
@@ -47,6 +48,16 @@ $isCreateIndividualDeviceSuccess
   .on(createIndividualDeviceFx.doneData, () => true)
   .reset(resetCreationRequestStatus);
 
+const getIndividualDeviceRateTypeByNum = (num: number) => {
+  const values = [
+    EIndividualDeviceRateType.OneZone,
+    EIndividualDeviceRateType.TwoZone,
+    EIndividualDeviceRateType.ThreeZone,
+  ];
+
+  return values[num];
+};
+
 sample({
   source: addIndividualDeviceForm.$values.map(
     (values): CreateCreateIndividualDeviceWithMagnetSealRequest => ({
@@ -59,7 +70,7 @@ sample({
         scaleFactor: Number(values.scaleFactor),
         apartmentId: values.apartmentId!,
         mountPlaceId: values.mountPlaceId,
-        rateType: String(
+        rateType: getIndividualDeviceRateTypeByNum(
           toArray(values.startupReadings, false).filter(Boolean).length
         ),
         resource: values.resource!,
@@ -68,7 +79,7 @@ sample({
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
         startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-      },
+      } as any,
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,
