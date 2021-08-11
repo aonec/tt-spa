@@ -3,7 +3,7 @@ import ActiveLine from '../../../../../components/Select/selects/AddReadings/Dev
 import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Icon } from '../../../../../_components/Icon';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
@@ -24,6 +24,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
     switchedMagneticSealInstallationDate,
     setSwitchedMagneticSealInstallationDate,
   ] = useState<string | null>(null);
+  const history = useHistory();
 
   async function switchMagnetSeal() {
     setSwitched((prev) => !prev);
@@ -55,7 +56,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
 
   return (
     <DeviceColumn>
-      <DeviceLink to={`/housingMeteringDevices/${device.id}`}>
+      <DeviceLink to={history.location.pathname}>
         <DeviceIcon icon={icon} fill={color} />
         {`${device.model} `}
         <SerialNumber>{` (${device.serialNumber})`}</SerialNumber>
