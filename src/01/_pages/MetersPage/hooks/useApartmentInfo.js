@@ -1,5 +1,8 @@
 export const useApartmentInfo = ({ apartInfo = {} }) => {
   const { housingStock = {}, apartmentNumber, homeowners = [] } = apartInfo;
+
+  const homeowner = homeowners[0] || {};
+
   return {
     title:
       apartmentNumber &&
@@ -7,7 +10,11 @@ export const useApartmentInfo = ({ apartInfo = {} }) => {
         housingStock.corpus || ''
       }, кв.${apartmentNumber}`,
     userInfo: [
-      ['Собственник', homeowners[0]?.firstName],
+      [
+        'Собственник',
+        homeowner.fillName ||
+          `${homeowner.lastName} ${homeowner.firstName} ${homeowner.middleName}`,
+      ],
       ['Лицевой счет', homeowners[0]?.personalAccountNumber],
       ['Телефон', homeowners[0]?.phoneNumber ?? '-'],
       ['Управляющая компания', '-'],
