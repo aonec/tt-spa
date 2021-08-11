@@ -18,7 +18,7 @@ interface ApartmentReadingsProps {
   items: IndividualDeviceListItemResponse[];
 }
 
-const getIndividualDeviceRateNumByName = (
+export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
 ) => {
   const values = [
