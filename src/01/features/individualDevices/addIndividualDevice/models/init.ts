@@ -79,7 +79,7 @@ sample({
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
         startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-      },
+      } as any,
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,
