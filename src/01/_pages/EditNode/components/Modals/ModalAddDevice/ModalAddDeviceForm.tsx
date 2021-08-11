@@ -27,7 +27,7 @@ import {
 } from './validationSchemas';
 import {
   CreateHousingMeteringDeviceRequest,
-  NodeResponse,
+  PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
   TabErrorsInterface,
@@ -47,7 +47,7 @@ import Warning from '../../../../../tt-components/Warning';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
-  node: NodeResponse;
+  node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 

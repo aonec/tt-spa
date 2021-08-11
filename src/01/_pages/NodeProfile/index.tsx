@@ -9,7 +9,7 @@ import Graph from '../Graph/Graph';
 import { useAsync } from '../../hooks/useAsync';
 import {
   CalculatorResponse,
-  NodeResponse,
+  PipeNodeResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { Loader } from '../../components';
@@ -30,7 +30,7 @@ export const NodeProfile = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
 
-  const { data: node, status, run } = useAsync<NodeResponse | null>();
+  const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
   const { calculator } = node || {};
 
   useEffect(() => {

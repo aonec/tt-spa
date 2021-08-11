@@ -14,8 +14,8 @@ import {
 import { nodeStatusList, resources } from '../../../tt-components/localBases';
 import {
   DocumentResponse,
-  NodeResponse,
-  UpdateNodeRequest,
+  PipeNodeResponse,
+  UpdatePipeNodeRequest,
 } from '../../../../myApi';
 import NodeRelatedDevices from '../../../tt-components/NodeRelatedDevices';
 import moment from 'moment';
@@ -45,7 +45,7 @@ interface EditNodeFormInterface {
   setTab: any;
   setAlertVisible: Dispatch<SetStateAction<boolean>>;
   setExistCalculator: Dispatch<SetStateAction<boolean>>;
-  node: NodeResponse;
+  node: PipeNodeResponse;
   setDeregisterDeviceValue: any;
   setDeregisterDevice: Dispatch<SetStateAction<boolean>>;
 }
@@ -119,7 +119,7 @@ const EditNodeForm = ({
   }
 
   const onFinish = async () => {
-    const nodeForm: UpdateNodeRequest = {
+    const nodeForm: UpdatePipeNodeRequest = {
       number: Number(getFieldValue('number')),
       nodeStatus: getFieldValue('nodeStatus'),
       resource: getFieldValue('resource'),

@@ -1,14 +1,14 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { NodeResponse } from '../../../myApi';
+import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { Link } from 'react-router-dom';
 import { getHousingMeteringDevice } from '../../_pages/HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
 
 interface NodesInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   edit?: boolean;
   close?: boolean;
   setDeregisterDeviceValue?: any;

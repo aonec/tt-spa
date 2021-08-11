@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { IconTT } from '../../../tt-components';
-import { CalculatorResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorResponse, PipeNodeResponse } from '../../../../myApi';
 
 interface RelatedDevicesInterface {
   device: CalculatorResponse | null;
