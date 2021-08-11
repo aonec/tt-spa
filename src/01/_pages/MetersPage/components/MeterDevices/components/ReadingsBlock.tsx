@@ -2,6 +2,7 @@ import React, { MutableRefObject } from 'react';
 
 import { Input } from 'antd';
 import styled from 'styled-components';
+import { useSwitchOnInputs } from '01/hooks/useSwitchInputsOnEnter';
 
 const ReadingLineStyled = styled.div<{
   houseReadings: boolean;
@@ -43,6 +44,8 @@ interface DeviceRatesVerticalProps {
   houseReadings?: boolean;
   isDisabled?: boolean | undefined;
   textInput?: MutableRefObject<Input | null>;
+  isCurrent?: boolean;
+  lineIndex?: number;
 }
 
 const SuffixLine = styled.span`
@@ -73,6 +76,8 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   resource,
   houseReadings = false,
   isDisabled,
+  isCurrent,
+  lineIndex,
 }) => {
   const onFocusHandler = (e: any) => {
     if (Number(e.target.value) === 0) {
@@ -80,8 +85,23 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
+  const { onKeyDown } = useSwitchOnInputs();
+
   return (
-    <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
+    <ReadingLineStyled
+      houseReadings={houseReadings}
+      isDisabled={isDisabled}
+      data-reading-input={
+        typeof isCurrent === 'boolean'
+          ? isCurrent
+            ? 'current'
+            : 'previous'
+          : 'none'
+      }
+      onKeyDown={(e) =>
+        typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
+      }
+    >
       <StyledInput
         prefix={
           <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>

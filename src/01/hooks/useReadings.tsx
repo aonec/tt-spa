@@ -18,7 +18,8 @@ import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousR
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
-  sliderIndex = 0
+  sliderIndex = 0,
+  numberOfPreviousReadingsInputs?: number
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
@@ -37,10 +38,8 @@ export const useReadings = (
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
-    const prevReadingsIndex = sliderIndex;
-
-    const preparedReadingsArrWithEmpties: IndividualDeviceReadingsResponse[] =
-      device.readings?.reduce((acc, elem) => {
+    const preparedReadingsArrWithEmpties = device.readings?.reduce(
+      (acc, elem) => {
         const index =
           Number(moment().format('M')) -
           Number(moment(elem.readingDate).format('M')) -
@@ -49,13 +48,15 @@ export const useReadings = (
         acc[index] = elem;
 
         return acc;
-      }, [] as IndividualDeviceReadingsResponse[]) || [];
+      },
+      {} as { [key: number]: IndividualDeviceReadingsResponse }
+    );
 
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
 
     const prevReadings: Record<string, any> =
-      preparedReadingsArrWithEmpties![prevReadingsIndex] || {};
+      preparedReadingsArrWithEmpties![sliderIndex] || {};
 
     for (let i = 1; i <= numberOfReadings; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
@@ -269,6 +270,11 @@ export const useReadings = (
           value={value}
           resource={readingsState.resource}
           operatorCabinet
+          isCurrent
+          lineIndex={
+            numberOfPreviousReadingsInputs &&
+            numberOfPreviousReadingsInputs + index
+          }
         />
       ),
       value,

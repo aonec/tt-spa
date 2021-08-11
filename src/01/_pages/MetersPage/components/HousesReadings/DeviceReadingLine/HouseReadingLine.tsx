@@ -11,84 +11,86 @@ import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 
-export const HouseReadingLine: React.FC<Props> = React.memo(({ device }) => {
-  const {
-    readingsState,
-    previousReadings,
-    currentReadings,
-  } = useReadings(device);
-
-  const dispatch = useDispatch();
-
-  const [consumptionState, setConsumptionState] = useState<number[]>([]);
-
-  const numberOfReadings: number = rateTypeToNumber(device.rateType);
-
-  //useConsumption
-  useEffect(() => {
-    if (!readingsState) return;
-    const currentReadings = readingsState?.currentReadingsArray || {};
-    const previousReadings = readingsState?.previousReadingsArray || {};
-    let consumptionArray = Array.from(
-      { length: numberOfReadings },
-      (v, i) => i
+export const HouseReadingLine: React.FC<Props> = React.memo(
+  ({ device, numberOfPreviousReadingsInputs }) => {
+    const { readingsState, previousReadings, currentReadings } = useReadings(
+      device,
+      undefined,
+      numberOfPreviousReadingsInputs
     );
-    const consumption = consumptionArray.map((value, index) => {
-      return +currentReadings[index] - +previousReadings[index] > 0
-        ? +currentReadings[index] - +previousReadings[index]
-        : 0;
+
+    const dispatch = useDispatch();
+
+    const [consumptionState, setConsumptionState] = useState<number[]>([]);
+
+    const numberOfReadings: number = rateTypeToNumber(device.rateType);
+
+    //useConsumption
+    useEffect(() => {
+      if (!readingsState) return;
+      const currentReadings = readingsState?.currentReadingsArray || {};
+      const previousReadings = readingsState?.previousReadingsArray || {};
+      let consumptionArray = Array.from(
+        { length: numberOfReadings },
+        (v, i) => i
+      );
+      const consumption = consumptionArray.map((value, index) => {
+        return +currentReadings[index] - +previousReadings[index] > 0
+          ? +currentReadings[index] - +previousReadings[index]
+          : 0;
+      });
+
+      setConsumptionState(consumption);
+    }, [readingsState]);
+
+    //useInputsUnfocused
+    useEffect(() => {
+      if (!readingsState) return;
+      const isNull = isNullInArray(readingsState.currentReadingsArray);
+
+      if (!isNull) {
+        dispatch(setInputUnfocused());
+      }
+    }, [readingsState]);
+
+    const consumptionElems = consumptionState.map((el) => {
+      return <Consumption key={uuid()}>{el} кВтч</Consumption>;
     });
 
-    setConsumptionState(consumption);
-  }, [readingsState]);
+    const { icon, color } = DeviceIcons[device.resource];
 
-  //useInputsUnfocused
-  useEffect(() => {
-    if (!readingsState) return;
-    const isNull = isNullInArray(readingsState.currentReadingsArray);
-
-    if (!isNull) {
-      dispatch(setInputUnfocused());
-    }
-  }, [readingsState]);
-
-  const consumptionElems = consumptionState.map((el) => {
-    return <Consumption key={uuid()}>{el} кВтч</Consumption>;
-  });
-
-  const { icon, color } = DeviceIcons[device.resource];
-
-  return (
-    <HouseReadingsDevice>
-      <div>
-        <Span>{device.apartmentNumber}</Span>
-      </div>
-      <Column>
-        <OwnerName>
-          <Span>{device.homeownerName}</Span>
-        </OwnerName>
-        <div>{device.personalAccountNumber}</div>
-      </Column>
-
-      <IconContainer>
-        <Icon className={styles.icon} icon={icon} fill={color} />
-      </IconContainer>
-
-      <Column>
+    return (
+      <HouseReadingsDevice>
         <div>
-          <Span>{device.model}</Span>
+          <Span>{device.apartmentNumber}</Span>
         </div>
-        <div>{device.serialNumber}</div>
-      </Column>
+        <Column>
+          <OwnerName>
+            <Span>{device.homeownerName}</Span>
+          </OwnerName>
+          <div>{device.personalAccountNumber}</div>
+        </Column>
 
-      {previousReadings}
-      {currentReadings}
+        <IconContainer>
+          <Icon className={styles.icon} icon={icon} fill={color} />
+        </IconContainer>
 
-      <div>{consumptionElems}</div>
-      <div>-</div>
-    </HouseReadingsDevice>
-  );
-});
+        <Column>
+          <div>
+            <Span>{device.model}</Span>
+          </div>
+          <div>{device.serialNumber}</div>
+        </Column>
+
+        {previousReadings}
+        {currentReadings}
+
+        <div>{consumptionElems}</div>
+        <div>-</div>
+      </HouseReadingsDevice>
+    );
+  }
+);
 
 const HouseReadingsDevice = styled.div`
   display: grid;
@@ -140,4 +142,5 @@ const Span = styled.span`
 
 type Props = {
   device: IndividualDeviceListItemResponse;
+  numberOfPreviousReadingsInputs: number;
 };
