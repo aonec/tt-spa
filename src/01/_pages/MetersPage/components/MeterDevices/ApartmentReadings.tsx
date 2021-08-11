@@ -19,7 +19,7 @@ interface ApartmentReadingsProps {
 export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   const dispatch = useDispatch();
 
-  useSwitchOnInputs();
+  // useSwitchOnInputs();
 
   useEffect(() => {
     dispatch(setDevices(items));

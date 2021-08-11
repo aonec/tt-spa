@@ -37,9 +37,7 @@ export const useReadings = (
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
-    const prevReadingsIndex = sliderIndex;
-
-    const preparedReadingsArrWithEmpties: IndividualDeviceReadingsResponse[] =
+    const preparedReadingsArrWithEmpties =
       device.readings?.reduce((acc, elem) => {
         const index =
           Number(moment().format('M')) -
@@ -49,13 +47,13 @@ export const useReadings = (
         acc[index] = elem;
 
         return acc;
-      }, [] as IndividualDeviceReadingsResponse[]) || [];
+      }, {} as { [key: number]: IndividualDeviceReadingsResponse });
 
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
 
     const prevReadings: Record<string, any> =
-      preparedReadingsArrWithEmpties![prevReadingsIndex] || {};
+      preparedReadingsArrWithEmpties![sliderIndex] || {};
 
     for (let i = 1; i <= numberOfReadings; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');

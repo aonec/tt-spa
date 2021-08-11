@@ -81,28 +81,30 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   };
 
   return (
-    <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
-      <StyledInput
-        prefix={
-          <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
-        }
-        suffix={
-          resource === 'Electricity' ? (
-            <SuffixLine>кВтч</SuffixLine>
-          ) : (
-            <SuffixLine>м³</SuffixLine>
-          )
-        }
-        disabled={readingsBlocked || isDisabled}
-        type="number"
-        value={value}
-        onFocus={onFocusHandler}
-        onChange={onChange}
-        required
-        tabIndex={index + 1}
-        step="0.01"
-      />
-    </ReadingLineStyled>
+    <div data-reading-input={index}>
+      <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
+        <StyledInput
+          prefix={
+            <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
+          }
+          suffix={
+            resource === 'Electricity' ? (
+              <SuffixLine>кВтч</SuffixLine>
+            ) : (
+              <SuffixLine>м³</SuffixLine>
+            )
+          }
+          disabled={readingsBlocked || isDisabled}
+          type="number"
+          value={value}
+          onFocus={onFocusHandler}
+          onChange={onChange}
+          required
+          tabIndex={index + 1}
+          step="0.01"
+        />
+      </ReadingLineStyled>
+    </div>
   );
 };
 
