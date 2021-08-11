@@ -8,3 +8,7 @@ export const getPreviousReadingsMonth = (sliderIndex: number) => {
 
   return firstLetterToUpperCase(month);
 };
+
+export const getDateByReadingMonthSlider = (sliderIndex: number) => {
+  return moment().subtract(sliderIndex + 1, 'months');
+};
