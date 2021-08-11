@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectDevices } from '../../../../Redux/ducks/readings/selectors';
 import { setDevices } from '../../../../Redux/ducks/readings/actionCreators';
 import styled from 'styled-components';
-import { useSwitchOnInputs } from '../../../../hooks/useSwitchInputsOnEnter';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
@@ -19,8 +18,6 @@ interface ApartmentReadingsProps {
 export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
   const dispatch = useDispatch();
 
-  // useSwitchOnInputs();
-
   useEffect(() => {
     dispatch(setDevices(items));
   }, [items]);
@@ -33,11 +30,12 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
   const validDevices = devices
     .filter((device) => device.closingDate === null)
-    .map((device) => (
+    .map((device, index) => (
       <ApartmentReadingLine
         sliderIndex={sliderIndex}
         key={device.id}
         device={device}
+        lineIndex={index}
       />
     ));
 
