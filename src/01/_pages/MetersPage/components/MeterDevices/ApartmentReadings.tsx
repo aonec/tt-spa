@@ -28,16 +28,18 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
   if (!devices.length || sliderIndex === undefined) return null;
 
-  const validDevices = devices
-    .filter((device) => device.closingDate === null)
-    .map((device, index) => (
-      <ApartmentReadingLine
-        sliderIndex={sliderIndex}
-        key={device.id}
-        device={device}
-        lineIndex={index}
-      />
-    ));
+  const validDevicesList = devices.filter(
+    (device) => device.closingDate === null
+  );
+
+  const validDevices = validDevicesList.map((device, index) => (
+    <ApartmentReadingLine
+      sliderIndex={sliderIndex}
+      key={device.id}
+      device={device}
+      numberOfPreviousReadingsInputs={0}
+    />
+  ));
 
   const closedDevices = devices.filter((device) => device.closingDate !== null);
 

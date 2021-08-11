@@ -88,7 +88,9 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   const { onKeyDown } = useSwitchOnInputs();
 
   return (
-    <div
+    <ReadingLineStyled
+      houseReadings={houseReadings}
+      isDisabled={isDisabled}
       data-reading-input={
         typeof isCurrent === 'boolean'
           ? isCurrent
@@ -100,29 +102,27 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
         typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
       }
     >
-      <ReadingLineStyled houseReadings={houseReadings} isDisabled={isDisabled}>
-        <StyledInput
-          prefix={
-            <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
-          }
-          suffix={
-            resource === 'Electricity' ? (
-              <SuffixLine>кВтч</SuffixLine>
-            ) : (
-              <SuffixLine>м³</SuffixLine>
-            )
-          }
-          disabled={readingsBlocked || isDisabled}
-          type="number"
-          value={value}
-          onFocus={onFocusHandler}
-          onChange={onChange}
-          required
-          tabIndex={index + 1}
-          step="0.01"
-        />
-      </ReadingLineStyled>
-    </div>
+      <StyledInput
+        prefix={
+          <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
+        }
+        suffix={
+          resource === 'Electricity' ? (
+            <SuffixLine>кВтч</SuffixLine>
+          ) : (
+            <SuffixLine>м³</SuffixLine>
+          )
+        }
+        disabled={readingsBlocked || isDisabled}
+        type="number"
+        value={value}
+        onFocus={onFocusHandler}
+        onChange={onChange}
+        required
+        tabIndex={index + 1}
+        step="0.01"
+      />
+    </ReadingLineStyled>
   );
 };
 

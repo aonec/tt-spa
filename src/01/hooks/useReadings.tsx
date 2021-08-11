@@ -19,7 +19,7 @@ import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousR
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
-  lineIndex?: number
+  numberOfPreviousReadingsInputs?: number
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
@@ -271,7 +271,10 @@ export const useReadings = (
           resource={readingsState.resource}
           operatorCabinet
           isCurrent
-          lineIndex={lineIndex}
+          lineIndex={
+            numberOfPreviousReadingsInputs &&
+            numberOfPreviousReadingsInputs + index
+          }
         />
       ),
       value,

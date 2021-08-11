@@ -15,20 +15,20 @@ import { closingIndividualDeviceButtonClicked } from '01/features/individualDevi
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
-  lineIndex?: number;
+  numberOfPreviousReadingsInputs: number;
 }
 
 const ApartmentReadingLine = ({
   device,
   sliderIndex,
-  lineIndex,
+  numberOfPreviousReadingsInputs,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
 
   const { readingsState, previousReadings, currentReadings } = useReadings(
     device,
     sliderIndex,
-    lineIndex
+    numberOfPreviousReadingsInputs
   );
 
   if (!readingsState) return null;
