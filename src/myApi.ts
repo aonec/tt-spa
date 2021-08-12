@@ -803,6 +803,9 @@ export interface CreateCalculatorRequest {
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  futureCommercialAccountingDate: string;
   documentsIds?: number[] | null;
 
   /** @format int32 */
@@ -821,9 +824,6 @@ export interface CreateCalculatorRequest {
 
   /** @format int32 */
   infoId: number;
-
-  /** @format date-time */
-  futureCommercialAccountingDate: string;
 }
 
 export interface MeteringDeviceResponse {
@@ -1073,6 +1073,11 @@ export interface ContractorUpdateRequest {
   /** @format email */
   email?: string | null;
 }
+
+/**
+ * @format int32
+ */
+export type DataMigrationMethod = number;
 
 export interface DocumentResponseIEnumerableSuccessApiResponse {
   successResponse: DocumentResponse[] | null;
@@ -1755,6 +1760,9 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  futureCommercialAccountingDate: string;
   documentsIds?: number[] | null;
 
   /** @format int32 */
@@ -1782,9 +1790,6 @@ export interface CreateHousingMeteringDeviceRequest {
 
   /** @format double */
   roomConsumption?: number | null;
-
-  /** @format date-time */
-  futureCommercialAccountingDate: string;
 }
 
 export interface SwitchHousingMeteringDeviceRequest {
@@ -2432,6 +2437,9 @@ export interface CreateIndividualDeviceRequest {
 
   /** @format date-time */
   lastCommercialAccountingDate?: string | null;
+
+  /** @format date-time */
+  futureCommercialAccountingDate: string;
   documentsIds?: number[] | null;
 
   /** @format int32 */
@@ -2517,49 +2525,6 @@ export interface SwitchIndividualDeviceRequest {
   newDeviceStartupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   newDeviceDefaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   previousDeviceFinishingReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-}
-
-export interface IndividualDeviceReadingsItemHistoryResponse {
-  /** @format int32 */
-  id: number;
-  hasError: boolean;
-  status: string | null;
-  statusMessage: string | null;
-  value1: string | null;
-  value2: string | null;
-  value3: string | null;
-  value4: string | null;
-  readingDate: string | null;
-
-  /** @format date-time */
-  uploadTime: string;
-  source: EIndividualDeviceReadingsSource;
-  user: ManagingFirmUserShortResponse | null;
-  isArchived: boolean;
-  consumption1: string | null;
-  consumption2: string | null;
-  consumption3: string | null;
-  consumption4: string | null;
-}
-
-export interface IndividualDeviceReadingsMonthHistoryResponse {
-  /** @format int32 */
-  month: number;
-  readings: IndividualDeviceReadingsItemHistoryResponse[] | null;
-}
-
-export interface IndividualDeviceReadingsYearHistoryResponse {
-  /** @format int32 */
-  year: number;
-  monthReadings: IndividualDeviceReadingsMonthHistoryResponse[] | null;
-}
-
-export interface IndividualDeviceReadingsHistoryResponse {
-  yearReadings: IndividualDeviceReadingsYearHistoryResponse[] | null;
-}
-
-export interface IndividualDeviceReadingsHistoryResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsHistoryResponse | null;
 }
 
 export enum ECompetenceType {
@@ -3702,10 +3667,6 @@ export interface TaskListResponse {
   device: MeteringDeviceSearchListResponse | null;
   pipeNode: PipeNodeResponse | null;
   applications: TaskApplicationForTaskResponse[] | null;
-  mainHomeowner: HomeownersShortResponse | null;
-
-  /** @format int32 */
-  totalHomeownersCount: number;
 }
 
 export interface TasksPagedList {
@@ -4605,6 +4566,26 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
+     * @name DataMigrationsMigrateList
+     * @request GET:/api/DataMigrations/Migrate
+     * @secure
+     */
+    dataMigrationsMigrateList: (
+      query?: { method?: DataMigrationMethod; args?: string | null; saveChanges?: boolean },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Migrate`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
      * @name DataMigrationsCreateAdminCreate
      * @request POST:/api/DataMigrations/CreateAdmin
      * @secure
@@ -5104,7 +5085,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/HomeownerAccount/{id}/AttachHomeowner
      * @secure
      */
-    homeownerAccountAttachHomeownerCreate: (id: string, data: number, params: RequestParams = {}) =>
+    homeownerAccountAttachHomeownerCreate: (id: string, data: DataMigrationMethod, params: RequestParams = {}) =>
       this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccount/${id}/AttachHomeowner`,
         method: "POST",
@@ -6123,23 +6104,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags IndividualDevices
-     * @name IndividualDevicesReadingsHistoryDetail
-     * @request GET:/api/IndividualDevices/{deviceId}/readingsHistory
-     * @secure
-     */
-    individualDevicesReadingsHistoryDetail: (deviceId: number, params: RequestParams = {}) =>
-      this.request<IndividualDeviceReadingsHistoryResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualDevices/${deviceId}/readingsHistory`,
-        method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),

@@ -78,6 +78,13 @@ export const CheckFormValuesModal = () => {
       ),
     },
     {
+      name: 'Текущие показания прибора',
+      value: getStartupReadingsString(
+        fields.defaultReadings.value,
+        deviceIcon?.color
+      ),
+    },
+    {
       name: 'Дата ввода в эксплуатацию',
       value: getDate(fields.lastCommercialAccountingDate.value),
     },
@@ -274,9 +281,7 @@ function getStartupReadingsString(
       {values.map((elem, index) =>
         elem ? (
           <ReadingValue>
-            <div
-              style={{ color: 'lightgray', fontWeight: 600 }}
-            >
+            <div style={{ color: 'lightgray', fontWeight: 600 }}>
               {index + 1}:
             </div>
             <div style={{ marginRight: '0 10px 0 30px' }}>{elem}</div>
