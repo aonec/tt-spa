@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 
 import { UserInfo } from './UserInfo';
-import { Icon } from '01/components';
+import { Icon, Loader } from '01/components';
 import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { MenuButtonTT } from '01/tt-components';
+import { ButtonTT, MenuButtonTT } from '01/tt-components';
+import styledComponents from 'styled-components';
+
+import { ReactComponent as EditIcon } from './icons/Edit.svg';
+import TextArea from 'antd/lib/input/TextArea';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import axios from '01/axios';
+import { formQueryString } from '01/utils/formQueryString';
 
 const styles = css`
   drower {
@@ -27,6 +34,7 @@ const styles = css`
   drower_content {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
     padding: 0;
     overflow: hidden;
     height: 0;
@@ -37,7 +45,85 @@ const styles = css`
   }
 `;
 
-export const ApartmentInfo = ({ userInfo = [], title }) => {
+const CommentModuleWrap = styledComponents.div``;
+const CommentTitle = styledComponents.div`
+  font-weight: 600;
+  opacity: 0.6; 
+`;
+const CommentWrap = styledComponents.div`
+  margin-top: 15px
+`;
+const CommentText = styledComponents.div``;
+
+const ApartmentComment = ({ comment: commentInitial }) => {
+  const [comment, setComment] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+
+  useEffect(() => setComment(commentInitial), [commentInitial]);
+
+  const onSaveHandler = async () => {
+    setLoading(true);
+    const queryString = formQueryString({ Comment: comment });
+
+    try {
+      await axios.put(`Apartments​/${Number(id)}${queryString}`);
+
+      setIsEditMode(false);
+    } catch (e) {}
+
+    setLoading(false);
+  };
+
+  const onCancelHandler = () => {
+    setComment(commentInitial);
+    setIsEditMode(false);
+  };
+
+  return (
+    <CommentModuleWrap>
+      <Flex style={{ justifyContent: 'space-between' }}>
+        <CommentTitle>Комментарий</CommentTitle>
+        <div>
+          <EditIcon onClick={() => setIsEditMode(true)} />
+        </div>
+      </Flex>
+      <CommentWrap>
+        {isEditMode ? (
+          <div>
+            <TextArea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <Space />
+            <Flex style={{ justifyContent: 'space-between' }}>
+              <div></div>
+              <Flex>
+                <ButtonTT onClick={onCancelHandler} color="white" size="small">
+                  Отмена
+                </ButtonTT>
+                <Space />
+                <ButtonTT
+                  disabled={loading}
+                  color="blue"
+                  size="small"
+                  onClick={onSaveHandler}
+                >
+                  {loading ? <Loader show /> : 'Сохранить'}
+                </ButtonTT>
+              </Flex>
+            </Flex>
+          </div>
+        ) : (
+          <CommentText>{comment || 'Нет комментария'}</CommentText>
+        )}
+      </CommentWrap>
+    </CommentModuleWrap>
+  );
+};
+
+export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
@@ -72,6 +158,7 @@ export const ApartmentInfo = ({ userInfo = [], title }) => {
         </drower_btn>
         <drower_content {...use({ show })}>
           <UserInfo list={userInfo} />
+          <ApartmentComment comment={comment} />
         </drower_content>
       </drower>
     </>
