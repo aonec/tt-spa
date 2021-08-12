@@ -80,7 +80,8 @@ export const useReadings = (
       return {
         previousReadings,
         previousReadingsArray,
-        currentReadingsArray,
+        currentReadingsArray:
+          prev?.currentReadingsArray || currentReadingsArray,
         prevId: prevReadings.id,
         currId: currentReadings.id,
         resource: device.resource,
