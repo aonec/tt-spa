@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css, use } from 'reshadow/macro';
 
-import { userInfo, UserInfo } from './UserInfo';
+import { UserInfo } from './UserInfo';
 import { Icon } from '01/components';
 import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -10,6 +10,7 @@ import { MenuButtonTT } from '01/tt-components';
 const styles = css`
   drower {
     box-shadow: var(--shadow);
+    margin-top: 16px;
     margin-bottom: 16px;
   }
 
@@ -26,12 +27,11 @@ const styles = css`
   drower_content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 8px;
     padding: 0;
     overflow: hidden;
     height: 0;
     &[|show] {
-      padding: 16px;
+      padding: 8px 16px;
       height: auto;
     }
   }
@@ -58,7 +58,17 @@ export const ApartmentInfo = ({ userInfo = [], title }) => {
 
       <drower>
         <drower_btn onClick={() => setShow(!show)}>
-          <Icon icon="down" /> Информация о квартире
+          <Flex
+            style={{
+              transform: `rotate(${show ? -180 : 0}deg) translate(${
+                show ? 8 : 0
+              }px, ${show ? 2 : 0}px)`,
+              transition: '.4s',
+            }}
+          >
+            <Icon icon="down" />
+          </Flex>
+          Информация о квартире
         </drower_btn>
         <drower_content {...use({ show })}>
           <UserInfo list={userInfo} />
