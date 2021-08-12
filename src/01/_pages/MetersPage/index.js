@@ -16,6 +16,7 @@ import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevic
 import { Title } from '../../_components/Headers';
 import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import styled from 'styled-components';
 
 const { TabPane } = Tabs;
 
@@ -35,7 +36,7 @@ export const MetersPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: 960 }}>
+    <Wrap style={{ maxWidth: 960 }}>
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
@@ -62,9 +63,15 @@ export const MetersPage = () => {
           </Route>
         </TabPane>
       </Tabs>
-    </div>
+    </Wrap>
   );
 };
+
+const Wrap = styled.div`
+  .ant-tabs {
+    overflow: visible !important;
+  }
+`;
 
 function reducer(state, action) {
   const { type, params, data } = action;

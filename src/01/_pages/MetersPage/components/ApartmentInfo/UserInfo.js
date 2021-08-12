@@ -10,7 +10,7 @@ export const UserInfo = ({ list = [] }) => {
       {list.map((item) => (
         <info_item key={item[0]}>
           <span>{item[0]}</span>
-          <span>{item[1]}</span>
+          <span style={{ color: 'black', fontWeight: 600 }}>{item[1]}</span>
         </info_item>
       ))}
     </info_list>

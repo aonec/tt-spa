@@ -59,8 +59,6 @@ export const useReadings = (
     const prevReadings: Record<string, any> =
       preparedReadingsArrWithEmpties![sliderIndex] || {};
 
-      
-      console.log(numberOfReadings);
     for (let i = 1; i <= 3; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
