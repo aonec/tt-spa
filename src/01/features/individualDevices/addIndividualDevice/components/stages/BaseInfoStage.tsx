@@ -54,7 +54,23 @@ export const BaseInfoStage = () => {
       <FormItem label="Дата последней проверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCheckingDate')}
+          onChange={(value: moment.Moment | null = moment()) => {
+            if (!value) return;
+
+            onChangeDateField('lastCheckingDate')(value);
+
+            const nextCheckingDate = moment(value);
+
+            if (!fields.resource.value) return;
+
+            const nextYear =
+              value?.year() +
+              (fields.resource.value === EResourceType.Electricity ? 16 : 6);
+
+            nextCheckingDate.set('year', nextYear);
+
+            onChangeDateField('futureCheckingDate')(nextCheckingDate);
+          }}
           value={getDatePickerValue(fields.lastCheckingDate.value)}
         />
         <ErrorMessage>

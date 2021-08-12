@@ -51,16 +51,6 @@ $isCreateIndividualDeviceSuccess
   .on(createIndividualDeviceFx.doneData, () => true)
   .reset(resetCreationRequestStatus);
 
-const getIndividualDeviceRateTypeByNum = (num: number) => {
-  const values = [
-    EIndividualDeviceRateType.OneZone,
-    EIndividualDeviceRateType.TwoZone,
-    EIndividualDeviceRateType.ThreeZone,
-  ];
-
-  return values[num];
-};
-
 sample({
   source: addIndividualDeviceForm.$values.map(
     (values): CreateCreateIndividualDeviceWithMagnetSealRequest => ({
