@@ -11,6 +11,7 @@ import {
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import {
+  EIndividualDeviceRateType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
@@ -58,7 +59,9 @@ export const useReadings = (
     const prevReadings: Record<string, any> =
       preparedReadingsArrWithEmpties![sliderIndex] || {};
 
-    for (let i = 1; i <= numberOfReadings; i++) {
+      
+      console.log(numberOfReadings);
+    for (let i = 1; i <= 3; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
     }
@@ -310,11 +313,23 @@ export const useReadings = (
           onFocus={onFocusHandler}
           resource={device.resource}
         >
-          {readingsElems.map((elem) => elem.elem)}
+          {readingsElems.map((elem) => elem.elem)[0]}
         </DeviceReadingsContainer>
       ),
-      isSuccess:
-        readingsState?.resource !== 'Electricity' || readingsElems.length === 1,
+      isSuccess: device.rateType === EIndividualDeviceRateType.None,
+    },
+    {
+      value: () => (
+        <DeviceReadingsContainer
+          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
+          onFocus={onFocusHandler}
+          resource={device.resource}
+        >
+          {readingsElems.map((elem) => elem.elem)[0]}
+        </DeviceReadingsContainer>
+      ),
+      isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
     },
     {
       value: () => (
@@ -338,7 +353,7 @@ export const useReadings = (
           </DeviceReadingsContainer>
         </div>
       ),
-      isSuccess: readingsElems.length === 2,
+      isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
     },
     {
       value: () => (
@@ -365,7 +380,7 @@ export const useReadings = (
           </DeviceReadingsContainer>
         </div>
       ),
-      isSuccess: true,
+      isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
     },
   ];
 

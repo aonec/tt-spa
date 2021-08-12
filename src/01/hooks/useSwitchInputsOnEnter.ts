@@ -1,15 +1,14 @@
 export const useSwitchOnInputs = () => {
   const onKeyDown = (e: any, index: number) => {
+    
+    if (e.key !== 'Enter') return;
+    
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       `[data-reading-input="current"]`
     );
 
-    if (e.key !== 'Enter') return;
-
-    const neededIndex = index;
-
-    const currentNode = inputList[neededIndex];
-    const nextNode = inputList[neededIndex + 1];
+    const currentNode = inputList[index];
+    const nextNode = inputList[index + 1];
 
     const currentInputNode: any = currentNode.getElementsByClassName(
       'ant-input'
