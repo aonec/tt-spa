@@ -1,4 +1,7 @@
-import { EIndividualDeviceRateType } from './../../../../../myApi';
+import {
+  EIndividualDeviceRateType,
+  EResourceType,
+} from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
@@ -70,9 +73,10 @@ sample({
         scaleFactor: Number(values.scaleFactor),
         apartmentId: values.apartmentId!,
         mountPlaceId: values.mountPlaceId,
-        rateType: getIndividualDeviceRateTypeByNum(
-          toArray(values.startupReadings, false).filter(Boolean).length
-        ),
+        rateType:
+          values.resource === EResourceType.Electricity
+            ? EIndividualDeviceRateType.ThreeZone
+            : EIndividualDeviceRateType.OneZone,
         resource: values.resource!,
         model: values.model,
         documentsIds: toArray<FileData>(values.documentsIds, false)
