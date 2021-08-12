@@ -46,6 +46,12 @@ export const BaseInfoStage = () => {
       [`value${valueNumber}`]: Number(e.target.value),
     });
 
+  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
+    fields.defaultReadings.onChange({
+      ...fields.defaultReadings.value,
+      [`value${valueNumber}`]: Number(e.target.value),
+    });
+
   const isElectrisityResource =
     fields.resource.value === EResourceType.Electricity;
 
@@ -94,25 +100,45 @@ export const BaseInfoStage = () => {
     </>
   );
 
-  const datesBlock = (
+  const defaultReadingsFields = (
     <>
-      <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+      <FormItem
+        label={`Текущие показания прибора${
+          fields.resource.value === EResourceType.Electricity ? ' (День)' : ''
+        }`}
+      >
+        <InputTT
+          type="number"
+          placeholder="Введите текущие показания"
+          onChange={onChangeDefaultReadings(1)}
+          value={fields.defaultReadings.value.value1}
         />
         <ErrorMessage>
-          {fields.lastCommercialAccountingDate.errorText({
-            required: 'Это поле обязательное',
+          {fields.defaultReadings.errorText({
+            requiredFirstField: 'Это поле обязательное',
           })}
         </ErrorMessage>
       </FormItem>
 
-      {isElectrisityResource ? (
-        <FormWrap>{bottomDateFields}</FormWrap>
-      ) : (
-        bottomDateFields
+      {fields.resource.value === EResourceType.Electricity && (
+        <>
+          <FormItem label="Первичные текущие прибора (Ночь)">
+            <InputTT
+              type="number"
+              placeholder="Введите текущие показания"
+              onChange={onChangeDefaultReadings(2)}
+              value={fields.defaultReadings.value.value2}
+            />
+          </FormItem>
+          <FormItem>
+            <InputTT
+              type="number"
+              placeholder="Введите текущие показания"
+              onChange={onChangeDefaultReadings(3)}
+              value={fields.defaultReadings.value.value3}
+            />
+          </FormItem>
+        </>
       )}
     </>
   );
@@ -133,6 +159,13 @@ export const BaseInfoStage = () => {
               if (value !== EResourceType.Electricity) {
                 fields.startupReadings.onChange({
                   ...fields.startupReadings.value,
+                  value2: null,
+                  value3: null,
+                  value4: null,
+                });
+
+                fields.defaultReadings.onChange({
+                  ...fields.defaultReadings.value,
                   value2: null,
                   value3: null,
                   value4: null,
@@ -275,10 +308,25 @@ export const BaseInfoStage = () => {
           </>
         )}
 
-        {!isElectrisityResource && datesBlock}
+        {!isElectrisityResource && defaultReadingsFields}
       </FormWrap>
 
-      {isElectrisityResource && datesBlock}
+      {isElectrisityResource && <FormWrap>{defaultReadingsFields}</FormWrap>}
+
+      <FormItem label="Дата ввода в эксплуатацию">
+        <DatePicker
+          format="DD.MM.YYYY"
+          onChange={onChangeDateField('lastCommercialAccountingDate')}
+          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+        />
+        <ErrorMessage>
+          {fields.lastCommercialAccountingDate.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+
+      <FormWrap>{bottomDateFields}</FormWrap>
 
       <FormWrap>
         <FormItem label="Магнитная пломба">
