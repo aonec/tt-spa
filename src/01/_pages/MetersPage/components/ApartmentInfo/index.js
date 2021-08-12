@@ -67,8 +67,10 @@ const ApartmentComment = ({ comment: commentInitial }) => {
     setLoading(true);
     const queryString = formQueryString({ Comment: comment });
 
+    const path = `/Apartments/${Number(id)}${queryString}`;
+
     try {
-      await axios.put(`Apartments​/${Number(id)}${queryString}`);
+      await axios.put(path);
 
       setIsEditMode(false);
     } catch (e) {}
