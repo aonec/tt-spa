@@ -85,7 +85,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
-  const { onKeyDown } = useSwitchOnInputs();
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
 
   return (
     <ReadingLineStyled
@@ -98,8 +98,10 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
             : 'previous'
           : 'none'
       }
-      onKeyDown={(e) =>
-        typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
+      onKeyDown={
+        isCurrent
+          ? (e) => typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
+          : onKeyDownPrevious
       }
     >
       <StyledInput

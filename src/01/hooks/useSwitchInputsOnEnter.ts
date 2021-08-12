@@ -1,8 +1,7 @@
 export const useSwitchOnInputs = () => {
   const onKeyDown = (e: any, index: number) => {
-    
     if (e.key !== 'Enter') return;
-    
+
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       `[data-reading-input="current"]`
     );
@@ -21,5 +20,7 @@ export const useSwitchOnInputs = () => {
     nextInputNode?.focus && nextInputNode.focus();
   };
 
-  return { onKeyDown };
+  const onKeyDownPrevious = (e: any) => e.key === 'Enter' && e.target?.blur();
+
+  return { onKeyDown, onKeyDownPrevious };
 };
