@@ -53,7 +53,7 @@ const CommentTitle = styledComponents.div`
 const CommentWrap = styledComponents.div`
   margin-top: 15px
 `;
-const CommentText = styledComponents.div``;
+const CommentText = styledComponents.div`font-size: 16px`;
 
 const ApartmentComment = ({ comment: commentInitial }) => {
   const [comment, setComment] = useState('');
