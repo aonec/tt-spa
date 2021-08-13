@@ -1,4 +1,8 @@
-import { EResourceType, MeteringDeviceResponse } from './../../../../../myApi';
+import {
+  EResourceType,
+  MeteringDeviceResponse,
+  EIndividualDeviceRateType,
+} from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
@@ -62,6 +66,10 @@ export const addIndividualDeviceForm = createForm({
       rules: [
         { name: 'requiredFirstField', validator: (value) => !!value.value1 },
       ],
+    },
+    rateType: {
+      init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     resource: {
       init: null as EResourceType | null,
