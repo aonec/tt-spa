@@ -28,10 +28,12 @@ export const createIndividualDevice = async (
     payload.device
   );
 
-  await axios.post(
-    `IndividualDevices/${res.id}/SetMagneticSeal`,
-    payload.magnetSeal
-  );
+  if (payload.magnetSeal.isInstalled) {
+    await axios.post(
+      `IndividualDevices/${res.id}/SetMagneticSeal`,
+      payload.magnetSeal
+    );
+  }
 
   return res;
 };

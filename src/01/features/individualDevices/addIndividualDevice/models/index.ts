@@ -7,12 +7,42 @@ import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
 import { CreateCreateIndividualDeviceWithMagnetSealRequest } from '01/_api/individualDevices';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
   null
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
+
+const readingsValuesValidators = [
+  {
+    name: 'requiredFirstField',
+    validator: (value: any) => Boolean(value.value1),
+  },
+  {
+    name: 'requiredSecondField',
+    validator: (value: any, form: any) => {
+      const rateNum = getIndividualDeviceRateNumByName(form.rateType);
+
+      const needToValidate = rateNum >= 2;
+
+      return needToValidate ? Boolean(value.value2) : true;
+    },
+  },
+  {
+    name: 'requiredThirdField',
+    validator: (value: any, form: any) => {
+      const rateNum = getIndividualDeviceRateNumByName(form.rateType);
+
+      const needToValidate = rateNum >= 3;
+
+      console.log(needToValidate, rateNum);
+
+      return needToValidate ? Boolean(value.value3) : true;
+    },
+  },
+];
 
 export const addIndividualDeviceForm = createForm({
   fields: {
@@ -55,17 +85,13 @@ export const addIndividualDeviceForm = createForm({
       init: { value1: null, value2: null, value3: null, value4: null } as {
         [key: string]: number | null;
       },
-      rules: [
-        { name: 'requiredFirstField', validator: (value) => !!value.value1 },
-      ],
+      rules: readingsValuesValidators,
     },
     defaultReadings: {
       init: { value1: null, value2: null, value3: null, value4: null } as {
         [key: string]: number | null;
       },
-      rules: [
-        { name: 'requiredFirstField', validator: (value) => !!value.value1 },
-      ],
+      rules: readingsValuesValidators,
     },
     rateType: {
       init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,

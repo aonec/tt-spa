@@ -44,17 +44,16 @@ export const BaseInfoStage = () => {
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
-      [`value${valueNumber}`]: Number(e.target.value),
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
     });
 
   const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.defaultReadings.onChange({
       ...fields.defaultReadings.value,
-      [`value${valueNumber}`]: Number(e.target.value),
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
     });
-
-  const isElectrisityResource =
-    fields.resource.value === EResourceType.Electricity;
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
@@ -129,6 +128,11 @@ export const BaseInfoStage = () => {
             onChange={onChangeDefaultReadings(2)}
             value={fields.defaultReadings.value.value2}
           />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredSecondField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
       )}
       {rateNum >= 3 && (
@@ -139,6 +143,11 @@ export const BaseInfoStage = () => {
             onChange={onChangeDefaultReadings(3)}
             value={fields.defaultReadings.value.value3}
           />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredThirdField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </FormItem>
       )}
     </>
@@ -314,6 +323,11 @@ export const BaseInfoStage = () => {
               onChange={onChangeStartupReadings(2)}
               value={fields.startupReadings.value.value2}
             />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredSecondField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
           </FormItem>
         )}
         {rateNum >= 3 && (
@@ -324,6 +338,11 @@ export const BaseInfoStage = () => {
               onChange={onChangeStartupReadings(3)}
               value={fields.startupReadings.value.value3}
             />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredThirdField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
           </FormItem>
         )}
 
