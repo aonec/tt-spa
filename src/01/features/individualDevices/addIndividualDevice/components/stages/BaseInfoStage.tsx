@@ -17,7 +17,8 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EResourceType } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,17 +44,18 @@ export const BaseInfoStage = () => {
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
-      [`value${valueNumber}`]: Number(e.target.value),
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
     });
 
   const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.defaultReadings.onChange({
       ...fields.defaultReadings.value,
-      [`value${valueNumber}`]: Number(e.target.value),
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
     });
 
-  const isElectrisityResource =
-    fields.resource.value === EResourceType.Electricity;
+  const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
   const bottomDateFields = (
     <>
@@ -103,9 +105,7 @@ export const BaseInfoStage = () => {
   const defaultReadingsFields = (
     <>
       <FormItem
-        label={`Текущие показания прибора${
-          fields.resource.value === EResourceType.Electricity ? ' (День)' : ''
-        }`}
+        label={`Текущие показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
       >
         <InputTT
           type="number"
@@ -120,25 +120,35 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
 
-      {fields.resource.value === EResourceType.Electricity && (
-        <>
-          <FormItem label="Первичные текущие прибора (Ночь)">
-            <InputTT
-              type="number"
-              placeholder="Введите текущие показания"
-              onChange={onChangeDefaultReadings(2)}
-              value={fields.defaultReadings.value.value2}
-            />
-          </FormItem>
-          <FormItem>
-            <InputTT
-              type="number"
-              placeholder="Введите текущие показания"
-              onChange={onChangeDefaultReadings(3)}
-              value={fields.defaultReadings.value.value3}
-            />
-          </FormItem>
-        </>
+      {rateNum >= 2 && (
+        <FormItem label="Первичные текущие прибора (Ночь)">
+          <InputTT
+            type="number"
+            placeholder="Введите текущие показания"
+            onChange={onChangeDefaultReadings(2)}
+            value={fields.defaultReadings.value.value2}
+          />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredSecondField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
+      )}
+      {rateNum >= 3 && (
+        <FormItem>
+          <InputTT
+            type="number"
+            placeholder="Введите текущие показания"
+            onChange={onChangeDefaultReadings(3)}
+            value={fields.defaultReadings.value.value3}
+          />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredThirdField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
       )}
     </>
   );
@@ -268,11 +278,29 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
+      </FormWrap>
 
+      <FormItem label="Тариф прибора">
+        <StyledSelect
+          placeholder="Выберите тариф прибора"
+          value={fields.rateType.value}
+          onChange={(value) => value && fields.rateType.onChange(value as any)}
+        >
+          <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+            Одна зона
+          </StyledSelect.Option>
+          <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+            Две зоны
+          </StyledSelect.Option>
+          <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+            Три зоны
+          </StyledSelect.Option>
+        </StyledSelect>
+      </FormItem>
+
+      <FormWrap>
         <FormItem
-          label={`Первичные показания прибора${
-            fields.resource.value === EResourceType.Electricity ? ' (День)' : ''
-          }`}
+          label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
         >
           <InputTT
             type="number"
@@ -287,31 +315,41 @@ export const BaseInfoStage = () => {
           </ErrorMessage>
         </FormItem>
 
-        {fields.resource.value === EResourceType.Electricity && (
-          <>
-            <FormItem label="Первичные показания прибора (Ночь)">
-              <InputTT
-                type="number"
-                placeholder="Введите первичные показания"
-                onChange={onChangeStartupReadings(2)}
-                value={fields.startupReadings.value.value2}
-              />
-            </FormItem>
-            <FormItem>
-              <InputTT
-                type="number"
-                placeholder="Введите первичные показания"
-                onChange={onChangeStartupReadings(3)}
-                value={fields.startupReadings.value.value3}
-              />
-            </FormItem>
-          </>
+        {rateNum >= 2 && (
+          <FormItem label="Первичные показания прибора (Ночь)">
+            <InputTT
+              type="number"
+              placeholder="Введите первичные показания"
+              onChange={onChangeStartupReadings(2)}
+              value={fields.startupReadings.value.value2}
+            />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredSecondField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </FormItem>
+        )}
+        {rateNum >= 3 && (
+          <FormItem>
+            <InputTT
+              type="number"
+              placeholder="Введите первичные показания"
+              onChange={onChangeStartupReadings(3)}
+              value={fields.startupReadings.value.value3}
+            />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredThirdField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </FormItem>
         )}
 
-        {!isElectrisityResource && defaultReadingsFields}
+        {rateNum === 1 && defaultReadingsFields}
       </FormWrap>
 
-      {isElectrisityResource && <FormWrap>{defaultReadingsFields}</FormWrap>}
+      {rateNum !== 1 && <FormWrap>{defaultReadingsFields}</FormWrap>}
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePicker

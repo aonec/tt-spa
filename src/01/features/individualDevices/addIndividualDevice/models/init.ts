@@ -63,10 +63,7 @@ sample({
         scaleFactor: Number(values.scaleFactor),
         apartmentId: values.apartmentId!,
         mountPlaceId: values.mountPlaceId,
-        rateType:
-          values.resource === EResourceType.Electricity
-            ? EIndividualDeviceRateType.ThreeZone
-            : EIndividualDeviceRateType.OneZone,
+        rateType: values.rateType,
         resource: values.resource!,
         model: values.model,
         documentsIds: toArray<FileData>(values.documentsIds, false)
