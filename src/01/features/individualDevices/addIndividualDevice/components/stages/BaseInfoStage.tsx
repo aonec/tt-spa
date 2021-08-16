@@ -213,8 +213,10 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Модель прибора">
-          <AutoComplete
+          <StyledAutoComplete
+            size="large"
             value={fields.model.value}
+            placeholder="Введите модель прибора"
             onChange={fields.model.onChange}
             options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
@@ -430,4 +432,16 @@ const FormWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 4px 20px;
+`;
+
+const StyledAutoComplete = styled(AutoComplete)`
+  .ant-select-selector {
+    border-radius: 4px !important;
+    height: 48px !important;
+    padding: 4px 24px !important;
+
+    input {
+      padding: 6px 12px 0 12px !important;
+    }
+  }
 `;
