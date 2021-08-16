@@ -19,11 +19,17 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import {
+  $individualDevicesNames,
+  IndividualDevicecModelsGate,
+} from '01/features/individualDevices/displayIndividualDevicesNames/models';
+import { useDebounce } from '01/hooks/useDebounce';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
+  const modelNames = useStore($individualDevicesNames);
 
   const { fields } = useForm(addIndividualDeviceForm);
 
@@ -56,6 +62,8 @@ export const BaseInfoStage = () => {
     });
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
+
+  const modelNameDebounced = useDebounce(fields.model.value, 300);
 
   const bottomDateFields = (
     <>
@@ -155,6 +163,7 @@ export const BaseInfoStage = () => {
 
   return (
     <Wrap>
+      <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
       <FormHeader>Общие данные о приборе</FormHeader>

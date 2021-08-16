@@ -20,9 +20,9 @@ export const getIndividualDevicesModels = async (
     ...data,
   });
 
-  const res: { items: string[] } = await axios.get(
-    `​MeteringDevices​/ExistingModels${queryString}`
-  );
+  const path = `MeteringDevices/ExistingModels/${queryString}`;
+
+  const res: { items: string[] } = await axios.get(path);
 
   return res.items;
 };

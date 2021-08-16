@@ -14,7 +14,7 @@ $individualDevicesNames.on(
 );
 
 forward({
-  from: IndividualDevicecModelsGate.open.map((value) => ({
+  from: IndividualDevicecModelsGate.state.map((value) => ({
     Text: value.model,
   })),
   to: fetchIndividualDevicesNames,
