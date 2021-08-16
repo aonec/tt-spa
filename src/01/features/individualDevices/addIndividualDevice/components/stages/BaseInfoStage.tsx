@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Form, Select } from 'antd';
+import { AutoComplete, Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -213,11 +213,10 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Модель прибора">
-          <InputTT
-            placeholder="Введите модель прибора"
-            name="model"
-            onChange={onChange}
+          <AutoComplete
             value={fields.model.value}
+            onChange={fields.model.onChange}
+            options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
           <ErrorMessage>
             {fields.model.errorText({

@@ -1,5 +1,5 @@
 import { getIndividualDevicesModels } from './../../../../_api/meteringDevices';
-import { forward } from 'effector';
+import { guard } from 'effector';
 import {
   fetchIndividualDevicesNames,
   IndividualDevicecModelsGate,
@@ -13,9 +13,10 @@ $individualDevicesNames.on(
   (_, value) => value
 );
 
-forward({
-  from: IndividualDevicecModelsGate.state.map((value) => ({
+guard({
+  clock: IndividualDevicecModelsGate.state.map((value) => ({
     Text: value.model,
   })),
-  to: fetchIndividualDevicesNames,
+  filter: ({ Text }) => Boolean(Text),
+  target: fetchIndividualDevicesNames,
 });
