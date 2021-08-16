@@ -260,7 +260,7 @@ function getStartupReadingsString(
     border: 1px solid ${color || 'gray'};
     border-left-width: 3px;
     padding-left: 10px;
-    border-radius: 4px;
+    border-radius: 8px;
     width: min-content;
     min-width: 150px;
   `;

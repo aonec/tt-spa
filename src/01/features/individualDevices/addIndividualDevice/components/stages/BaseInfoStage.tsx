@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Form, Select } from 'antd';
+import { AutoComplete, Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -19,11 +19,17 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import {
+  $individualDevicesNames,
+  IndividualDevicecModelsGate,
+} from '01/features/individualDevices/displayIndividualDevicesNames/models';
+import { useDebounce } from '01/hooks/useDebounce';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
+  const modelNames = useStore($individualDevicesNames);
 
   const { fields } = useForm(addIndividualDeviceForm);
 
@@ -56,6 +62,8 @@ export const BaseInfoStage = () => {
     });
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
+
+  const modelNameDebounced = useDebounce(fields.model.value, 300);
 
   const bottomDateFields = (
     <>
@@ -155,6 +163,7 @@ export const BaseInfoStage = () => {
 
   return (
     <Wrap>
+      <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
       <FormHeader>Общие данные о приборе</FormHeader>
@@ -204,11 +213,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Модель прибора">
-          <InputTT
-            placeholder="Введите модель прибора"
-            name="model"
-            onChange={onChange}
+          <StyledAutoComplete
+            size="large"
             value={fields.model.value}
+            placeholder="Введите модель прибора"
+            onChange={fields.model.onChange}
+            options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
           <ErrorMessage>
             {fields.model.errorText({
@@ -422,4 +432,16 @@ const FormWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 4px 20px;
+`;
+
+const StyledAutoComplete = styled(AutoComplete)`
+  .ant-select-selector {
+    border-radius: 4px !important;
+    height: 48px !important;
+    padding: 4px 24px !important;
+
+    input {
+      padding: 6px 12px 0 12px !important;
+    }
+  }
 `;
