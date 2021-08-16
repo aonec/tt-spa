@@ -37,15 +37,21 @@ export const ObjectProfile = () => {
   const [commonReport, setCommonReport] = useState(false);
   const [nodes, setNodes] = useState();
   const [object, setObject] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getNodes(housingStockId).then((res) => {
-      const { items } = res;
-      setNodes(items);
-    });
-    getObject(housingStockId).then((res) => {
-      setObject(res);
-    });
+    setLoading(true);
+    Promise.all([
+      getNodes(housingStockId).then((res) => {
+        const { pipeNodes } = res;
+        
+        setNodes(pipeNodes);
+      }),
+      getObject(housingStockId).then((res) => {
+        setObject(res);
+        
+      }),
+    ]).finally(() => setLoading(false));
   }, []);
 
   useFetchPage(state, dispatch);
@@ -54,7 +60,7 @@ export const ObjectProfile = () => {
   const info = useObjectInformation(state);
   const { header = [], events = [], aparts = [] } = state;
 
-  if (!object || !nodes) {
+  if (loading) {
     return <Loader size={'64'} />;
   }
   const context = {
