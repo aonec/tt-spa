@@ -85,6 +85,8 @@ const ApartmentReadingLine = ({
   );
 };
 
+type SwitchType = 'switch' | 'check';
+
 const SelectSwitchDeiveTypeModal = ({
   show,
   close,
@@ -94,6 +96,23 @@ const SelectSwitchDeiveTypeModal = ({
   deviceId: number;
   close(): void;
 }) => {
+  const history = useHistory();
+
+  const [
+    selectedSwitchType,
+    setSelectedSwitchType,
+  ] = useState<SwitchType | null>(null);
+
+  const next = (to: SwitchType) => () =>
+    history.push(`/individualDevice/${deviceId}/${to}`);
+
+  const setSwitchType = (to: SwitchType) => () =>
+    to === selectedSwitchType
+      ? setSelectedSwitchType(null)
+      : setSelectedSwitchType(to);
+
+  const isSwitchActive = (to: SwitchType) => to === selectedSwitchType;
+
   return (
     <StyledAntdModal
       width={800}
@@ -105,19 +124,30 @@ const SelectSwitchDeiveTypeModal = ({
           <ButtonTT color={'white'} key="back">
             Отмена
           </ButtonTT>
-          <ButtonTT color="blue" key="submit">
-            Добавить
+          <ButtonTT
+            color="blue"
+            key="submit"
+            disabled={!selectedSwitchType}
+            onClick={next(selectedSwitchType!)}
+          >
+            Далее
           </ButtonTT>
         </ModalFooter>
       }
     >
       <Flex>
-        <SwitchTypeButton>
+        <SwitchTypeButton
+          onClick={setSwitchType('switch')}
+          active={isSwitchActive('switch')}
+        >
           <SwitchIcon />
           <Space />
           Замена прибора
         </SwitchTypeButton>
-        <SwitchTypeButton>
+        <SwitchTypeButton
+          onClick={setSwitchType('check')}
+          active={isSwitchActive('check')}
+        >
           <CheckIcon />
           <Space />
           Поверка прибора
@@ -127,9 +157,13 @@ const SelectSwitchDeiveTypeModal = ({
   );
 };
 
+interface SwitchTypeButtonProps {
+  active?: boolean;
+}
+
 const SwitchTypeButton = styled(Flex)`
   border: 1px solid #dcdee4;
-  border-radius: 6px;
+  border-radius: 8px;
   width: 100%;
   transition: 0.3s;
   padding: 16px 0;
@@ -144,9 +178,16 @@ const SwitchTypeButton = styled(Flex)`
     margin-right: 0;
   }
 
-  &:hover {
+  ${(props: SwitchTypeButtonProps) =>
+    props.active
+      ? `{
     border-color: #189ee9;
     box-shadow: 0 4px 8px 0 #189ee955;
+  }`
+      : ''}
+
+  &:hover {
+    border-color: #189ee9;
   }
 `;
 
