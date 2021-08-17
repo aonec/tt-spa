@@ -26,7 +26,7 @@ import {
 import { useDebounce } from '01/hooks/useDebounce';
 
 export const BaseInfoStage = () => {
-  const { id } = useParams<{ id: string; }>();
+  const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
@@ -40,6 +40,8 @@ export const BaseInfoStage = () => {
 
     field.onChange(e.target.value);
   };
+
+  console.log(fields.model.value);
 
   const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
     if (!value || !(fields as any)[name]) return;

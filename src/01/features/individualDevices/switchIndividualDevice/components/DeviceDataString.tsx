@@ -1,12 +1,11 @@
 import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { Spaces } from '01/shared/ui/Layout/Space/Space';
 
 export const DeviceDataString = () => {
   const device = useStore($individualDevice);

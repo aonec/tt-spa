@@ -16,16 +16,19 @@ export const DocumentsStage = () => {
 
   const setFile = (
     name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
-  ) => (files: FileData[]) =>
+  ) => (files: FileData[]) => {
+    console.log(files);
+    if (files.length === 0) return;
     fields.documentsIds.onChange({
       ...fields.documentsIds.value,
       [name]:
         files.length === 0
           ? null
-          : files.length === 1
+          : files.length
           ? files[0]
           : fields.documentsIds.value[name],
     });
+  };
 
   return (
     <>

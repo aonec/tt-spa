@@ -1,7 +1,3 @@
-import {
-  EIndividualDeviceRateType,
-  EResourceType,
-} from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
@@ -23,6 +19,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
+import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
 
 createIndividualDeviceFx.use(createIndividualDevice);
 
@@ -50,6 +47,14 @@ forward({
 $isCreateIndividualDeviceSuccess
   .on(createIndividualDeviceFx.doneData, () => true)
   .reset(resetCreationRequestStatus);
+
+forward({
+  from: fetchIndividualDevice.doneData.map(
+    (values) =>
+      ({ resource: values.resource, mountPlaceId: values.mountPlace } as any)
+  ),
+  to: addIndividualDeviceForm.setForm,
+});
 
 sample({
   source: addIndividualDeviceForm.$values.map(

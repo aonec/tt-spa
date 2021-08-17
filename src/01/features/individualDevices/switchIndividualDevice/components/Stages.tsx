@@ -13,7 +13,7 @@ export const CreateIndividualDeviceFormStages = () => {
 
   return (
     <div>
-      <FormHeader>Этапы создания</FormHeader>
+      <FormHeader>Этапы замены</FormHeader>
       <Steps direction="vertical" current={currentStageNumber}>
         {stepTitles.map((step) => (
           <Step title={step} key={step} />
