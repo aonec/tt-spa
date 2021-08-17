@@ -2,6 +2,8 @@ import axios from '01/axios';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import {
   CreateIndividualDeviceRequest,
+  SwitchIndividualDeviceRequest,
+  IndividualDeviceResponse,
   MeteringDeviceResponse,
 } from '../../myApi';
 
@@ -15,9 +17,17 @@ export const closeIndividualDevice = (
   requestBody: CloseIndividualDeviceRequestBody
 ) => axios.post('IndividualDevices/close', requestBody);
 
-export interface CreateCreateIndividualDeviceWithMagnetSealRequest {
-  device: CreateIndividualDeviceRequest;
+interface WithMagnetSeal {
   magnetSeal: MagnetSeal;
+}
+
+export interface CreateCreateIndividualDeviceWithMagnetSealRequest
+  extends WithMagnetSeal {
+  device: CreateIndividualDeviceRequest;
+}
+
+export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
+  device: SwitchIndividualDeviceRequest;
 }
 
 export const createIndividualDevice = async (
@@ -37,3 +47,25 @@ export const createIndividualDevice = async (
 
   return res;
 };
+
+export const switchIndividualDevice = async (
+  requestPayload: SwitchIndividualDeviceRequestPayload
+) => {
+  const res: MeteringDeviceResponse = await axios.post(
+    'IndividualDevices/switch',
+    requestPayload.device
+  );
+
+  if (requestPayload.magnetSeal.isInstalled) {
+    await axios.post(
+      `IndividualDevices/${res.id}/SetMagneticSeal`,
+      requestPayload.magnetSeal
+    );
+  }
+
+  return res;
+};
+
+export const getIndividualDevice = (
+  id: number
+): Promise<IndividualDeviceResponse> => axios.get(`IndividualDevices/${id}`);
