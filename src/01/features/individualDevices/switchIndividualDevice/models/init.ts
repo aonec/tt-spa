@@ -1,16 +1,20 @@
-import { switchIndividualDevice } from './../../../../_api/individualDevices';
-import { IndividualDeviceGate } from './../../displayIndividualDevice/models/index';
+import {
+  switchIndividualDevice,
+  SwitchIndividualDeviceRequestPayload,
+} from './../../../../_api/individualDevices';
+import {
+  $individualDevice,
+  IndividualDeviceGate,
+} from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
   fetchIndividualDeviceMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
-import {
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
-  createIndividualDevice,
-} from '01/_api/individualDevices';
 import { forward, sample, combine } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
+import {
+  BaseIndividualDeviceReadingsCreateRequest,
+} from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -78,26 +82,29 @@ sample({
 });
 
 sample({
-  source: addIndividualDeviceForm.$values.map(
-    (values): CreateCreateIndividualDeviceWithMagnetSealRequest => ({
+  source: combine(
+    addIndividualDeviceForm.$values,
+    $individualDevice,
+    (values, device) => ({ values, device })
+  ).map(
+    ({ values, device }): SwitchIndividualDeviceRequestPayload => ({
       device: {
+        deviceId: device?.id!,
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate,
         futureCheckingDate: values.futureCheckingDate,
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         bitDepth: Number(values.bitDepth),
         scaleFactor: Number(values.scaleFactor),
-        apartmentId: values.apartmentId!,
-        mountPlaceId: values.mountPlaceId,
-        rateType: values.rateType,
-        resource: values.resource!,
+        // rateType: values.rateType,
         model: values.model,
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
-        startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        defaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-      } as any,
+        newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+        newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+        previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      },
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,

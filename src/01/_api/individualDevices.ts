@@ -52,7 +52,7 @@ export const switchIndividualDevice = async (
   requestPayload: SwitchIndividualDeviceRequestPayload
 ) => {
   const res: MeteringDeviceResponse = await axios.post(
-    'IndividualDevice/switch',
+    'IndividualDevices/switch',
     requestPayload.device
   );
 
