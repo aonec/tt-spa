@@ -22,3 +22,4 @@ import './housingStocks/displayHousingStock/models/init';
 import './individualDevices/addIndividualDevice/models/init';
 import './apartments/displayApartment/models/init';
 import './individualDevices/displayIndividualDevicesNames/models/init.ts';
+import './individualDevices/switchIndividualDevice/models/init';
