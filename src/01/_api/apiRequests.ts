@@ -41,7 +41,7 @@ export async function getObjectCalculators(id: number) {
 
 export async function getNode(id: number) {
   try {
-    const res = await axios.get<any, PipeNodeResponse>(`Nodes/${id}`);
+    const res = await axios.get<any, PipeNodeResponse>(`PipeNodes/${id}`);
     return res;
   } catch (error) {
     throw {
