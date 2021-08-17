@@ -23,6 +23,7 @@ import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
+import { $contractors } from '01/features/contractors/displayContractors/models';
 
 interface ILine {
   name: string;
@@ -41,6 +42,7 @@ export const CheckFormValuesModal = () => {
 
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
+  const contractors = useStore($contractors);
 
   const deviceIcon = DeviceIcons[fields.resource.value! || ''];
 
@@ -111,6 +113,11 @@ export const CheckFormValuesModal = () => {
     {
       name: 'Дата установки пломбы',
       value: getDate(fields.magneticSealInstallationDate.value),
+    },
+    {
+      name: 'Монтажная организация',
+      value: contractors?.find((elem) => elem.id === fields.contractorId.value)
+        ?.name,
     },
   ];
 

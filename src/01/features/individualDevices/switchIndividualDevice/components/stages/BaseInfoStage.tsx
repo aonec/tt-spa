@@ -24,12 +24,17 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { useDebounce } from '01/hooks/useDebounce';
+import {
+  $contractors,
+  ContractorsGate,
+} from '01/features/contractors/displayContractors/models';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
+  const contractors = useStore($contractors);
 
   const { fields } = useForm(addIndividualDeviceForm);
 
@@ -238,6 +243,7 @@ export const BaseInfoStage = () => {
 
   return (
     <Wrap>
+      <ContractorsGate />
       <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
@@ -457,6 +463,22 @@ export const BaseInfoStage = () => {
           />
         </FormItem>
       </FormWrap>
+
+      <FormItem label="Монтажная организация">
+        <StyledSelect
+          onChange={(value: any) =>
+            value && fields.contractorId.onChange(value)
+          }
+          value={fields.contractorId.value || void 0}
+          placeholder="Выберите монтажную организацию"
+        >
+          {contractors?.map((elem) => (
+            <StyledSelect.Option value={elem.id} key={elem.id}>
+              {elem.name}
+            </StyledSelect.Option>
+          ))}
+        </StyledSelect>
+      </FormItem>
     </Wrap>
   );
 };
