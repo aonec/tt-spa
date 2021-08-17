@@ -6,7 +6,10 @@ import {
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { CreateCreateIndividualDeviceWithMagnetSealRequest } from '01/_api/individualDevices';
+import {
+  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  SwitchIndividualDeviceRequestPayload,
+} from '01/_api/individualDevices';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
@@ -130,6 +133,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  SwitchIndividualDeviceRequestPayload,
   MeteringDeviceResponse
 >();

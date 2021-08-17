@@ -1,3 +1,4 @@
+import { switchIndividualDevice } from './../../../../_api/individualDevices';
 import { IndividualDeviceGate } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
@@ -26,7 +27,7 @@ import {
 } from './index';
 import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
 
-createIndividualDeviceFx.use(createIndividualDevice);
+createIndividualDeviceFx.use(switchIndividualDevice);
 
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
