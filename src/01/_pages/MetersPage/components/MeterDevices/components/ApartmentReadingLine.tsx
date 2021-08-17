@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
 import { Modal } from 'antd';
-import { useDispatch } from 'react-redux';
 import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
   EResourceType,
 } from '../../../../../../myApi';
-import { MenuButtonTT } from '01/tt-components';
+import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
+import {
+  Footer as ModalFooter,
+  Header as ModalHeader,
+  StyledModal as StyledAntdModal,
+} from '01/shared/ui/Modal/Modal';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { ReactComponent as SwitchIcon } from './icons/switch.svg';
+import { ReactComponent as CheckIcon } from './icons/check.svg';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -24,6 +32,8 @@ const ApartmentReadingLine = ({
   numberOfPreviousReadingsInputs,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { readingsState, previousReadings, currentReadings } = useReadings(
     device,
@@ -40,6 +50,11 @@ const ApartmentReadingLine = ({
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
     {
+      title: 'Замена или поверка прибора',
+      show: true,
+      cb: () => setIsModalOpen(true),
+    },
+    {
       title: 'Закрытие прибора',
       show: true,
       color: 'red',
@@ -49,6 +64,11 @@ const ApartmentReadingLine = ({
 
   return (
     <>
+      <SelectSwitchDeiveTypeModal
+        show={isModalOpen}
+        close={() => setIsModalOpen(false)}
+        deviceId={device.id}
+      />
       <FullDeviceLine>
         <DeviceInfo device={device} />
 
@@ -64,6 +84,71 @@ const ApartmentReadingLine = ({
     </>
   );
 };
+
+const SelectSwitchDeiveTypeModal = ({
+  show,
+  close,
+  deviceId,
+}: {
+  show: boolean;
+  deviceId: number;
+  close(): void;
+}) => {
+  return (
+    <StyledAntdModal
+      width={800}
+      visible={show}
+      onCancel={close}
+      title={<ModalHeader>Выберите действие</ModalHeader>}
+      footer={
+        <ModalFooter>
+          <ButtonTT color={'white'} key="back">
+            Отмена
+          </ButtonTT>
+          <ButtonTT color="blue" key="submit">
+            Добавить
+          </ButtonTT>
+        </ModalFooter>
+      }
+    >
+      <Flex>
+        <SwitchTypeButton>
+          <SwitchIcon />
+          <Space />
+          Замена прибора
+        </SwitchTypeButton>
+        <SwitchTypeButton>
+          <CheckIcon />
+          <Space />
+          Поверка прибора
+        </SwitchTypeButton>
+      </Flex>
+    </StyledAntdModal>
+  );
+};
+
+const SwitchTypeButton = styled(Flex)`
+  border: 1px solid #dcdee4;
+  border-radius: 6px;
+  width: 100%;
+  transition: 0.3s;
+  padding: 16px 0;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #272f5aee;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    border-color: #189ee9;
+    box-shadow: 0 4px 8px 0 #189ee955;
+  }
+`;
 
 const FullDeviceLine = styled.div`
   display: grid;
