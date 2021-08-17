@@ -176,10 +176,10 @@ const Internal = () => {
               <Route path="/apartment/:id/addIndividualDevice" exact>
                 <AddIndividualDevice />
               </Route>
-              <Route path="/individualDevice/:diveceId/switch">
+              <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                 <SwitchIndividualDevice />
               </Route>
-              <Route path="/individualDevice/:diveceId/check"></Route>
+              <Route path="/apartment/:id/individualDevice/:deviceId/check"></Route>
               <Redirect to="/error/" />
             </Switch>
           </main>

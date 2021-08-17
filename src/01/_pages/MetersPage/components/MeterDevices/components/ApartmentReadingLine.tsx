@@ -8,7 +8,7 @@ import {
   EResourceType,
 } from '../../../../../../myApi';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
 import {
   Footer as ModalFooter,
@@ -98,13 +98,15 @@ const SelectSwitchDeiveTypeModal = ({
 }) => {
   const history = useHistory();
 
+  const { id } = useParams<{ id: string }>();
+
   const [
     selectedSwitchType,
     setSelectedSwitchType,
   ] = useState<SwitchType | null>(null);
 
   const next = (to: SwitchType) => () =>
-    history.push(`/individualDevice/${deviceId}/${to}`);
+    history.push(`/apartment/${id}/individualDevice/${deviceId}/${to}`);
 
   const setSwitchType = (to: SwitchType) => () =>
     to === selectedSwitchType

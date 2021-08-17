@@ -26,7 +26,7 @@ import {
 import { useDebounce } from '01/hooks/useDebounce';
 
 export const BaseInfoStage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string; }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
@@ -171,6 +171,7 @@ export const BaseInfoStage = () => {
       <FormWrap>
         <FormItem label="Тип ресурса">
           <StyledSelect
+            disabled
             placeholder="Выберите тип ресурса"
             onChange={(value: any) => fields.resource.onChange(value)}
             value={fields.resource.value || undefined}
@@ -226,6 +227,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Место установки">
           <StyledSelect
+            disabled
             placeholder="Выберите место установки"
             value={fields.mountPlaceId.value || undefined}
             onChange={(value: any) => fields.mountPlaceId.onChange(value)}

@@ -2,6 +2,7 @@ import axios from '01/axios';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import {
   CreateIndividualDeviceRequest,
+  IndividualDeviceResponse,
   MeteringDeviceResponse,
 } from '../../myApi';
 
@@ -37,3 +38,7 @@ export const createIndividualDevice = async (
 
   return res;
 };
+
+export const getIndividualDevice = (
+  id: number
+): Promise<IndividualDeviceResponse> => axios.get(`IndividualDevices/${id}`);
