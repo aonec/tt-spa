@@ -41,27 +41,29 @@ export const BaseInfoStage = () => {
     field.onChange(e.target.value);
   };
 
-  console.log(fields.model.value);
-
   const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
     if (!value || !(fields as any)[name]) return;
 
     (fields as any)[name].onChange(value.toISOString());
   };
 
-  const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    fields.startupReadings.onChange({
-      ...fields.startupReadings.value,
+  const getReadingTemp = (
+    type:
+      | 'startupReadings'
+      | 'defaultReadings'
+      | 'previousDeviceFinishingReadings'
+  ) => (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
+    fields[type].onChange({
+      ...fields[type].value,
       [`value${valueNumber}`]:
         e.target.value === '' ? null : Number(e.target.value),
     });
 
-  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    fields.defaultReadings.onChange({
-      ...fields.defaultReadings.value,
-      [`value${valueNumber}`]:
-        e.target.value === '' ? null : Number(e.target.value),
-    });
+  const onChangeStartupReadings = getReadingTemp('startupReadings');
+  const onChangeDefaultReadings = getReadingTemp('defaultReadings');
+  const onChangePreviousDeviceFinishingReadings = getReadingTemp(
+    'previousDeviceFinishingReadings'
+  );
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
@@ -112,6 +114,77 @@ export const BaseInfoStage = () => {
     </>
   );
 
+  const rateTypeSelector = (
+    <FormItem label="Тариф прибора">
+      <StyledSelect
+        placeholder="Выберите тариф прибора"
+        value={fields.rateType.value}
+        onChange={(value) => value && fields.rateType.onChange(value as any)}
+      >
+        <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+          Одна зона
+        </StyledSelect.Option>
+        <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+          Две зоны
+        </StyledSelect.Option>
+        <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+          Три зоны
+        </StyledSelect.Option>
+      </StyledSelect>
+    </FormItem>
+  );
+
+  const previousDeviceFinishingReadings = (
+    <>
+      <FormItem
+        label={`Конечные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
+      >
+        <InputTT
+          type="number"
+          placeholder="Введите конечные показания"
+          onChange={onChangePreviousDeviceFinishingReadings(1)}
+          value={fields.previousDeviceFinishingReadings.value.value1}
+        />
+        <ErrorMessage>
+          {fields.previousDeviceFinishingReadings.errorText({
+            requiredFirstField: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+
+      {rateNum >= 2 && (
+        <FormItem label="Конечные показания прибора (Ночь)">
+          <InputTT
+            type="number"
+            placeholder="Введите конечные показания"
+            onChange={onChangePreviousDeviceFinishingReadings(2)}
+            value={fields.previousDeviceFinishingReadings.value.value2}
+          />
+          <ErrorMessage>
+            {fields.previousDeviceFinishingReadings.errorText({
+              requiredSecondField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
+      )}
+      {rateNum >= 3 && (
+        <FormItem>
+          <InputTT
+            type="number"
+            placeholder="Введите конечные показания"
+            onChange={onChangePreviousDeviceFinishingReadings(3)}
+            value={fields.previousDeviceFinishingReadings.value.value3}
+          />
+          <ErrorMessage>
+            {fields.previousDeviceFinishingReadings.errorText({
+              requiredThirdField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
+      )}
+    </>
+  );
+
   const defaultReadingsFields = (
     <>
       <FormItem
@@ -131,7 +204,7 @@ export const BaseInfoStage = () => {
       </FormItem>
 
       {rateNum >= 2 && (
-        <FormItem label="Первичные текущие прибора (Ночь)">
+        <FormItem label="Текущие показания прибора (Ночь)">
           <InputTT
             type="number"
             placeholder="Введите текущие показания"
@@ -276,23 +349,17 @@ export const BaseInfoStage = () => {
         </FormItem>
       </FormWrap>
 
-      <FormItem label="Тариф прибора">
-        <StyledSelect
-          placeholder="Выберите тариф прибора"
-          value={fields.rateType.value}
-          onChange={(value) => value && fields.rateType.onChange(value as any)}
-        >
-          <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
-            Одна зона
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
-            Две зоны
-          </StyledSelect.Option>
-          <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
-            Три зоны
-          </StyledSelect.Option>
-        </StyledSelect>
-      </FormItem>
+      {rateNum === 1 ? (
+        <FormWrap>
+          {rateTypeSelector}
+          {previousDeviceFinishingReadings}
+        </FormWrap>
+      ) : (
+        <>
+          {rateTypeSelector}
+          <FormWrap>{previousDeviceFinishingReadings}</FormWrap>
+        </>
+      )}
 
       <FormWrap>
         <FormItem

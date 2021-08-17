@@ -1,3 +1,4 @@
+import { IndividualDeviceGate } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
   fetchIndividualDeviceMountPlacesFx,
@@ -58,6 +59,11 @@ forward({
       ({ resource: values.resource, mountPlaceId: values.mountPlace } as any)
   ),
   to: addIndividualDeviceForm.setForm,
+});
+
+forward({
+  from: IndividualDeviceGate.close,
+  to: addIndividualDeviceForm.reset,
 });
 
 sample({

@@ -15,10 +15,13 @@ export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
 );
 export const $isCheckCreationDeviceFormDataModalOpen = createStore(false);
 
+export const readingValueValidate = (value: number | string | null) =>
+  Number(value) === 0 && value !== null ? true : Boolean(value);
+
 const readingsValuesValidators = [
   {
     name: 'requiredFirstField',
-    validator: (value: any) => Boolean(value.value1),
+    validator: (value: any) => readingValueValidate(value.value1),
   },
   {
     name: 'requiredSecondField',
@@ -27,7 +30,7 @@ const readingsValuesValidators = [
 
       const needToValidate = rateNum >= 2;
 
-      return needToValidate ? Boolean(value.value2) : true;
+      return needToValidate ? readingValueValidate(value.value2) : true;
     },
   },
   {
@@ -37,9 +40,7 @@ const readingsValuesValidators = [
 
       const needToValidate = rateNum >= 3;
 
-      console.log(needToValidate, rateNum);
-
-      return needToValidate ? Boolean(value.value3) : true;
+      return needToValidate ? readingValueValidate(value.value3) : true;
     },
   },
 ];

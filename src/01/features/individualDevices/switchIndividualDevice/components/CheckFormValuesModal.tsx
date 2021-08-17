@@ -17,6 +17,7 @@ import {
   cancelCheckingButtonClicked,
   confirmCreationNewDeviceButtonClicked,
   createIndividualDeviceFx,
+  readingValueValidate,
 } from '../models';
 import { FileIcon, TrashIcon } from '../icons';
 import { Loader } from '01/components';
@@ -81,6 +82,13 @@ export const CheckFormValuesModal = () => {
       name: 'Текущие показания прибора',
       value: getStartupReadingsString(
         fields.defaultReadings.value,
+        deviceIcon?.color
+      ),
+    },
+    {
+      name: 'Текущие показания прибора',
+      value: getStartupReadingsString(
+        fields.previousDeviceFinishingReadings.value,
         deviceIcon?.color
       ),
     },
@@ -250,9 +258,9 @@ function getStartupReadingsString(
   value: { [key: string]: number | null },
   color?: string | null
 ) {
-  const values = toArray(value, false);
+  const values = toArray<number | null>(value, false);
 
-  const filteredValues = values.filter(Boolean);
+  const filteredValues = values.filter(readingValueValidate);
 
   if (!filteredValues.length) return null;
 
@@ -279,7 +287,7 @@ function getStartupReadingsString(
   return (
     <StyledReadingsValues>
       {values.map((elem, index) =>
-        elem ? (
+        readingValueValidate(elem) ? (
           <ReadingValue>
             <div style={{ color: 'lightgray', fontWeight: 600 }}>
               {index + 1}:
