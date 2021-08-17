@@ -72,6 +72,13 @@ export const CheckFormValuesModal = () => {
       value: fields.scaleFactor.value,
     },
     {
+      name: 'Конечные показания прибора',
+      value: getStartupReadingsString(
+        fields.previousDeviceFinishingReadings.value,
+        deviceIcon?.color
+      ),
+    },
+    {
       name: 'Первичные показания прибора',
       value: getStartupReadingsString(
         fields.startupReadings.value,
@@ -82,13 +89,6 @@ export const CheckFormValuesModal = () => {
       name: 'Текущие показания прибора',
       value: getStartupReadingsString(
         fields.defaultReadings.value,
-        deviceIcon?.color
-      ),
-    },
-    {
-      name: 'Текущие показания прибора',
-      value: getStartupReadingsString(
-        fields.previousDeviceFinishingReadings.value,
         deviceIcon?.color
       ),
     },
