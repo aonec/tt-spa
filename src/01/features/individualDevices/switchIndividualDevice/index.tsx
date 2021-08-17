@@ -5,7 +5,7 @@ import { Grid } from './components/Grid';
 import { CreateIndividualDeviceFormHeader } from './components/Header';
 import { CreateIndividualDeviceFormStages } from './components/Stages';
 
-export const AddIndividualDevice = () => (
+export const SwitchIndividualDevice = () => (
   <>
     <CheckFormValuesModal />
     <CreateIndividualDeviceFormHeader />
