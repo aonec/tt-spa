@@ -1,9 +1,13 @@
+import {
+  $individualDeviceMountPlaces,
+  fetchIndividualDeviceMountPlacesFx,
+} from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
   createIndividualDevice,
 } from '01/_api/individualDevices';
-import { forward, sample } from 'effector';
+import { forward, sample, combine } from 'effector';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
@@ -54,6 +58,16 @@ forward({
       ({ resource: values.resource, mountPlaceId: values.mountPlace } as any)
   ),
   to: addIndividualDeviceForm.setForm,
+});
+
+sample({
+  source: combine(
+    $individualDeviceMountPlaces,
+    addIndividualDeviceForm.fields.mountPlaceId.$value,
+    (places, name) => places?.find((elem) => elem.name === name)?.id || null
+  ),
+  clock: fetchIndividualDeviceMountPlacesFx.doneData,
+  target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 
 sample({
