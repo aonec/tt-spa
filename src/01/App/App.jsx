@@ -42,6 +42,8 @@ import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
+import { CheckIndividualDevice } from '01/features/individualDevices/checkIndividualDevice';
+
 
 moment.locale('ru');
 
@@ -179,7 +181,9 @@ const Internal = () => {
               <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                 <SwitchIndividualDevice />
               </Route>
-              <Route path="/apartment/:id/individualDevice/:deviceId/check"></Route>
+              <Route path="/apartment/:id/individualDevice/:deviceId/check">
+                <CheckIndividualDevice />
+              </Route>
               <Redirect to="/error/" />
             </Switch>
           </main>
