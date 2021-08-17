@@ -67,7 +67,7 @@ export const BaseInfoStage = () => {
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
-  const modelNameDebounced = useDebounce(fields.model.value, 300);
+  const modelNameDebounced = useDebounce(fields.model.value, 150);
 
   const bottomDateFields = (
     <>

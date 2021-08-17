@@ -35,7 +35,7 @@ export const CreateIndividualDeviceForm = () => {
     if (!individualDeviceCreationRequestStatus) return;
 
     history.goBack();
-    message.success('Прибор успешно создан!');
+    message.success('Прибор успешно заменен!');
     resetCreationRequestStatus();
   }, [individualDeviceCreationRequestStatus]);
 
