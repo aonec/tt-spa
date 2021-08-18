@@ -5,6 +5,7 @@ import {
   SwitchIndividualDeviceRequest,
   IndividualDeviceResponse,
   MeteringDeviceResponse,
+  CheckIndividualDeviceRequest,
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
@@ -26,10 +27,6 @@ export interface CreateCreateIndividualDeviceWithMagnetSealRequest
   device: CreateIndividualDeviceRequest;
 }
 
-export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
-  device: SwitchIndividualDeviceRequest;
-}
-
 export const createIndividualDevice = async (
   payload: CreateCreateIndividualDeviceWithMagnetSealRequest
 ): Promise<MeteringDeviceResponse> => {
@@ -48,11 +45,37 @@ export const createIndividualDevice = async (
   return res;
 };
 
+export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
+  device: SwitchIndividualDeviceRequest;
+}
+
 export const switchIndividualDevice = async (
   requestPayload: SwitchIndividualDeviceRequestPayload
 ) => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/switch',
+    requestPayload.device
+  );
+
+  if (requestPayload.magnetSeal.isInstalled) {
+    await axios.post(
+      `IndividualDevices/${res.id}/SetMagneticSeal`,
+      requestPayload.magnetSeal
+    );
+  }
+
+  return res;
+};
+
+export interface CheckIndividualDeviceRequestPayload extends WithMagnetSeal {
+  device: CheckIndividualDeviceRequest;
+}
+
+export const checkIndividualDevice = async (
+  requestPayload: CheckIndividualDeviceRequestPayload
+): Promise<MeteringDeviceResponse> => {
+  const res: MeteringDeviceResponse = await axios.post(
+    'IndividualDevices/check',
     requestPayload.device
   );
 

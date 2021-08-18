@@ -140,7 +140,7 @@ export const CheckFormValuesModal = () => {
       width={800}
       visible={isOpen}
       onCancel={onCancel}
-      title={<Header>Замена прибора</Header>}
+      title={<Header>Поверка прибора</Header>}
       footer={
         <Footer>
           <ButtonTT color="white" key="back" onClick={onCancel}>
@@ -152,7 +152,7 @@ export const CheckFormValuesModal = () => {
             disabled={pending}
             onClick={confirmCreationNewDeviceButtonClicked}
           >
-            {pending ? <Loader show /> : 'Заменить прибор'}
+            {pending ? <Loader show /> : 'Отправить'}
           </ButtonTT>
         </Footer>
       }

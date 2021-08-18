@@ -35,7 +35,7 @@ export const CreateIndividualDeviceForm = () => {
     if (!individualDeviceCreationRequestStatus) return;
 
     history.goBack();
-    message.success('Прибор успешно заменен!');
+    message.success('Поверка прибора выполнена!');
     resetCreationRequestStatus();
   }, [individualDeviceCreationRequestStatus]);
 
@@ -61,7 +61,7 @@ export const CreateIndividualDeviceForm = () => {
             color="blue"
             onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
           >
-            {stageNumber === 1 ? 'PFvtyb прибор' : 'Далее'}
+            {stageNumber === 1 ? 'Сохранить' : 'Далее'}
           </ButtonTT>
         </Spaces>
       </RightAlign>
