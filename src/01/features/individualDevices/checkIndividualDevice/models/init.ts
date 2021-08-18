@@ -1,6 +1,7 @@
 import {
+  checkIndividualDevice,
   switchIndividualDevice,
-  SwitchIndividualDeviceRequestPayload,
+  CheckIndividualDeviceRequestPayload,
 } from './../../../../_api/individualDevices';
 import {
   $individualDevice,
@@ -29,7 +30,7 @@ import {
 } from './index';
 import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
 
-createIndividualDeviceFx.use(switchIndividualDevice);
+createIndividualDeviceFx.use(checkIndividualDevice);
 
 $creationDeviceStage
   .on(switchStageButtonClicked, (_, stageNumber) => stageNumber)
@@ -62,7 +63,7 @@ forward({
       resource: values.resource,
       mountPlaceId: values.mountPlace,
       model: values.model,
-      serialNumber: values.serialNumber
+      serialNumber: values.serialNumber,
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
@@ -94,17 +95,11 @@ sample({
     $individualDevice,
     (values, device) => ({ values, device })
   ).map(
-    ({ values, device }): SwitchIndividualDeviceRequestPayload => ({
+    ({ values, device }): CheckIndividualDeviceRequestPayload => ({
       device: {
         deviceId: device?.id!,
-        serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        bitDepth: Number(values.bitDepth),
-        scaleFactor: Number(values.scaleFactor),
-        rateType: values.rateType,
-        model: values.model,
+        futureCheckingDate: values.futureCheckingDate!,
+        currentCheckingDate: values.lastCheckingDate!,
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),

@@ -8,7 +8,7 @@ import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
-  SwitchIndividualDeviceRequestPayload,
+  CheckIndividualDeviceRequestPayload,
 } from '01/_api/individualDevices';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
@@ -56,9 +56,11 @@ export const addIndividualDeviceForm = createForm({
     },
     lastCheckingDate: {
       init: null as string | null,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     futureCheckingDate: {
       init: null as string | null,
+      rules: [{ name: 'required', validator: Boolean }],
     },
     lastCommercialAccountingDate: {
       init: null as string | null,
@@ -136,6 +138,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  SwitchIndividualDeviceRequestPayload,
+  CheckIndividualDeviceRequestPayload,
   MeteringDeviceResponse
 >();
