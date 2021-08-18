@@ -1,6 +1,6 @@
 import axios from '../../axios';
 import {
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
   TaskListResponse,
   TasksPagedList,
   TasksPagedListSuccessApiResponse,
@@ -8,7 +8,7 @@ import {
 
 export async function getHousingMeteringDevice(id: number) {
   try {
-    const res = await axios.get<any, HousingMeteringDeviceResponse>(
+    const res = await axios.get<any, PipeHousingMeteringDeviceResponse>(
       `HousingMeteringDevices/${id}`
     );
     return res;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconTT } from '../../../tt-components';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
@@ -8,7 +8,7 @@ import {
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HousingMeteringDeviceInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
 }
 
 export const Header = ({ device }: HousingMeteringDeviceInterface) => {

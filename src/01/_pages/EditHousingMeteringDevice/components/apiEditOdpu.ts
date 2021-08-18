@@ -1,13 +1,13 @@
 import axios from '../../../axios';
 import {
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
   MeteringDeviceResponseSuccessApiResponse,
   UpdateHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 
 export async function getOdpu(id: number) {
   try {
-    return await axios.get<HousingMeteringDeviceResponse>(
+    return await axios.get<PipeHousingMeteringDeviceResponse>(
       `HousingMeteringDevices/${id}`
     );
   } catch (error) {

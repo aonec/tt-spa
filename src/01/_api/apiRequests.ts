@@ -2,7 +2,7 @@ import {
   CalculatorListResponsePagedList,
   CalculatorResponse,
   CreateCalculatorRequest,
-  CreateHousingMeteringDeviceRequest,
+  CreatePipeHousingMeteringDeviceRequest,
   CreatePipeNodeRequest,
   HousingStockResponse,
   IndividualDeviceResponse,
@@ -108,7 +108,7 @@ export async function getCalculator(id: number) {
 }
 
 export async function addHousingMeteringDevice(
-  form: CreateHousingMeteringDeviceRequest
+  form: CreatePipeHousingMeteringDeviceRequest
 ) {
   try {
     const res = await axios.post('HousingMeteringDevices', form);
