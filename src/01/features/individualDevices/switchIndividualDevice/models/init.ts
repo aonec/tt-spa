@@ -94,7 +94,7 @@ sample({
         lastCommercialAccountingDate: values.lastCommercialAccountingDate,
         bitDepth: Number(values.bitDepth),
         scaleFactor: Number(values.scaleFactor),
-        // rateType: values.rateType,
+        rateType: values.rateType,
         model: values.model,
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
