@@ -26,7 +26,7 @@ import {
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import {
-  CreateHousingMeteringDeviceRequest,
+  CreatePipeHousingMeteringDeviceRequest,
   PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
@@ -145,7 +145,7 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
-    const form: CreateHousingMeteringDeviceRequest = {
+    const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
       futureCheckingDate: values.futureCheckingDate,

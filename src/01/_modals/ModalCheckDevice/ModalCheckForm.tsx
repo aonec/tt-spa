@@ -7,7 +7,7 @@ import { checkDevice } from './apiCheckDevice';
 import {
   CalculatorResponse,
   CheckDeviceRequest,
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
 } from '../../../myApi';
 import { StyledModalBody, StyledFormPage } from '../../tt-components/Modal';
 import {
@@ -24,7 +24,7 @@ import _ from 'lodash';
 
 interface ModalCheckFormInterface {
   handleCancel: any;
-  device: CalculatorResponse | HousingMeteringDeviceResponse;
+  device: CalculatorResponse | PipeHousingMeteringDeviceResponse;
 }
 
 const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
