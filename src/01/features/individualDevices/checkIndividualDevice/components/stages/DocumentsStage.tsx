@@ -34,29 +34,19 @@ export const DocumentsStage = () => {
     <>
       <FormHeader>Документы</FormHeader>
       <FilesUpload
-        uniqId="create-individual-device-completed-works"
-        text="Добавьте акт выполненных работ"
-        filesInit={getFilesArrByFile(completedWorks)}
-        max={1}
-        onChange={setFile('completedWorks')}
-        withoutDeletion
-      />
-
-      <FilesUpload
         uniqId="create-individual-device-passport"
-        text="Добавьте паспорт прибора"
+        text="Добавьте свидетельство о поверке прибора"
         filesInit={getFilesArrByFile(devicePassport)}
         max={1}
         onChange={setFile('devicePassport')}
         withoutDeletion
       />
-
       <FilesUpload
-        uniqId="create-individual-device-check"
-        text="Добавьте свидетельство о проверке прибора"
+        uniqId="create-individual-device-completed-works"
+        text="Добавьте акт выполненных работ"
+        filesInit={getFilesArrByFile(completedWorks)}
         max={1}
-        filesInit={getFilesArrByFile(deviceCheck)}
-        onChange={setFile('deviceCheck')}
+        onChange={setFile('completedWorks')}
         withoutDeletion
       />
     </>

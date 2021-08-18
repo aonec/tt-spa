@@ -122,6 +122,7 @@ export const BaseInfoStage = () => {
   const rateTypeSelector = (
     <FormItem label="Тариф прибора">
       <StyledSelect
+        disabled
         placeholder="Выберите тариф прибора"
         value={fields.rateType.value}
         onChange={(value) => value && fields.rateType.onChange(value as any)}
@@ -278,6 +279,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Модель прибора">
           <StyledAutoComplete
+            disabled
             size="large"
             value={fields.model.value}
             placeholder="Введите модель прибора"
@@ -293,6 +295,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Серийный номер">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите серийный номер прибора"
             onChange={onChange}
@@ -326,6 +329,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Разрядность">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
@@ -341,6 +345,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Множитель">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
@@ -422,6 +427,7 @@ export const BaseInfoStage = () => {
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePicker
+          disabled
           format="DD.MM.YYYY"
           onChange={onChangeDateField('lastCommercialAccountingDate')}
           value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}

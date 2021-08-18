@@ -11,7 +11,7 @@ import {
   fetchIndividualDeviceMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
-import { forward, sample, combine } from 'effector';
+import { forward, sample, combine, guard } from 'effector';
 import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
@@ -57,10 +57,14 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map(
-    (values) =>
-      ({ resource: values.resource, mountPlaceId: values.mountPlace } as any)
-  ),
+  from: fetchIndividualDevice.doneData.map((values) => {
+    return {
+      resource: values.resource,
+      mountPlaceId: values.mountPlace,
+      model: values.model,
+      serialNumber: values.serialNumber
+    } as any;
+  }),
   to: addIndividualDeviceForm.setForm,
 });
 
@@ -69,12 +73,17 @@ forward({
   to: addIndividualDeviceForm.reset,
 });
 
-sample({
+guard({
   source: combine(
     $individualDeviceMountPlaces,
     addIndividualDeviceForm.fields.mountPlaceId.$value,
-    (places, name) => places?.find((elem) => elem.name === name)?.id || null
+    (places, name) => {
+      const res = places?.find((elem) => elem.name === name)?.id || null;
+
+      return res;
+    }
   ),
+  filter: (value) => typeof value === 'number',
   clock: fetchIndividualDeviceMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
