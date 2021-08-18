@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import {
   DEFAULT_BUILDING,
   DEFAULT_DEVICE,
@@ -10,7 +10,7 @@ import {
 import { HeaderWrap, Title, Subtitle } from '01/_components/Headers';
 
 interface HousingMeteringDeviceInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
   setDeregister: Dispatch<SetStateAction<boolean>>;
   setCheckVisible: Dispatch<SetStateAction<boolean>>;
 }

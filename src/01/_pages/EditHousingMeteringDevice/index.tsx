@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Breadcrumb } from '../../tt-components';
 import FormEditODPU from './components/EditOPDUForm';
-import { HousingMeteringDeviceResponse } from '../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
 import { getHousingMeteringDevice } from '../HousingProfile/apiHousingProfile';
 import { Loader } from '../../components';
@@ -21,7 +21,7 @@ const EditODPU = () => {
     data: device,
     status,
     run,
-  } = useAsync<HousingMeteringDeviceResponse>();
+  } = useAsync<PipeHousingMeteringDeviceResponse>();
 
   useEffect(() => {
     run(getHousingMeteringDevice(deviceId));

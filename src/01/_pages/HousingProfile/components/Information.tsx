@@ -6,11 +6,11 @@ import {
   DEFAULT_DEVICE,
   magistrals,
 } from '../../../tt-components/localBases';
-import { HousingMeteringDeviceResponse } from '../../../../myApi';
+import { PipeHousingMeteringDeviceResponse } from '../../../../myApi';
 import { Subtitle } from '../../../_components/Headers';
 
 interface InformationInterface {
-  device: HousingMeteringDeviceResponse;
+  device: PipeHousingMeteringDeviceResponse;
 }
 
 export const Information = ({ device }: InformationInterface) => {
