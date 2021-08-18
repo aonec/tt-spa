@@ -22,12 +22,14 @@ export const useFilter = () => {
     setFilterFields((prev) => ({ ...prev, [name]: value }));
 
   const debouncedValue = useDebounce(filterFields, 500);
+  const valuesArray = toArray(debouncedValue, false)
+  const valuesString = valuesArray.join()
 
   useEffect(() => {
     if (toArray(filterFields).some(Boolean)) {
       filterFieldHasBeenChanged(filterFields);
     }
-  }, [debouncedValue]);
+  }, [valuesString]);
 
   return {
     filterFields,

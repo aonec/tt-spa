@@ -41,6 +41,7 @@ import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
+import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 
 moment.locale('ru');
 
@@ -175,6 +176,10 @@ const Internal = () => {
               <Route path="/apartment/:id/addIndividualDevice" exact>
                 <AddIndividualDevice />
               </Route>
+              <Route path="/apartment/:id/individualDevice/:deviceId/switch">
+                <SwitchIndividualDevice />
+              </Route>
+              <Route path="/apartment/:id/individualDevice/:deviceId/check"></Route>
               <Redirect to="/error/" />
             </Switch>
           </main>
