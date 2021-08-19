@@ -14,7 +14,6 @@ axios.interceptors.request.use((req) => {
   }
 
   if (req.url && checkUrl('refresh', req.url)) {
-    console.log(req);
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
