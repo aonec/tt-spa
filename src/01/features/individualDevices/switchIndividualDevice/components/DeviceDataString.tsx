@@ -27,7 +27,7 @@ const DeviceName = styled.span`
 `;
 
 const DeviceSerialNumber = styled.span`
-  color: #272f5aaa;
+  color: #272f5a66;
   font-weight: 400;
 
   &:before {

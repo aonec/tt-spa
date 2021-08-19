@@ -43,7 +43,7 @@ import '../features/init';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { CheckIndividualDevice } from '01/features/individualDevices/checkIndividualDevice';
-
+import { ReadingHistory } from '01/features/readings/displayReadingHistory';
 
 moment.locale('ru');
 
@@ -171,10 +171,18 @@ const Internal = () => {
               />
 
               <Redirect from="/meters/" to="/meters/apartments" exact />
+
               <Route
                 path="/meters/(apartments|houses)"
                 component={MetersPage}
               />
+
+              <Route
+                path="/apartment/:id/individualDevices/:deviceId/readingHistory"
+                component={ReadingHistory}
+                exact
+              />
+
               <Route path="/apartment/:id/addIndividualDevice" exact>
                 <AddIndividualDevice />
               </Route>

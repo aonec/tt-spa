@@ -32,6 +32,7 @@ const ApartmentReadingLine = ({
   numberOfPreviousReadingsInputs,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,6 +49,14 @@ const ApartmentReadingLine = ({
       title: 'Редактировать',
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
+    },
+    {
+      title: 'Открыть историю показаний',
+      show: true,
+      cb: () =>
+        history.push(
+          `/apartment/${id}/individualDevices/${device.id}/readingHistory`
+        ),
     },
     {
       title: 'Замена или поверка прибора',
