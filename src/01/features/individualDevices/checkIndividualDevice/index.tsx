@@ -1,3 +1,4 @@
+import { ReadingHistoryGate } from '01/features/readings/displayReadingHistory/models';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { IndividualDeviceGate } from '../displayIndividualDevice/models';
@@ -12,6 +13,7 @@ export const CheckIndividualDevice = () => {
   return (
     <>
       <IndividualDeviceGate id={Number(deviceId)} />
+      <ReadingHistoryGate deviceId={Number(deviceId)} />
       <CheckFormValuesModal />
       <CreateIndividualDeviceFormHeader />
       <Grid>

@@ -55,7 +55,7 @@ const ApartmentReadingLine = ({
       show: true,
       cb: () =>
         history.push(
-          `/apartment/${id}/individualDevices/${device.id}/readingHistory`
+          `/apartment/${id}/individualDevice/${device.id}/readingHistory`
         ),
     },
     {

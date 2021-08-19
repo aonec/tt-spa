@@ -177,14 +177,12 @@ const Internal = () => {
                 component={MetersPage}
               />
 
-              <Route
-                path="/apartment/:id/individualDevices/:deviceId/readingHistory"
-                component={ReadingHistory}
-                exact
-              />
-
               <Route path="/apartment/:id/addIndividualDevice" exact>
                 <AddIndividualDevice />
+              </Route>
+
+              <Route path="/apartment/:id/individualDevice/:deviceId/readingHistory">
+                <ReadingHistory />
               </Route>
               <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                 <SwitchIndividualDevice />
