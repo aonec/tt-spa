@@ -123,31 +123,17 @@ function useOpenedYears(years: IndividualDeviceReadingsYearHistoryResponse[]) {
     { year: number; openedMonths: number[]; open: boolean }[]
   >([]);
 
-  const [isWasOpenedFirst, setIsWasOpenedFirst] = useState(false);
-
   useEffect(
     () =>
       setOpenedYears(
-        years?.map((elem) => ({
+        years?.map((elem, index) => ({
           year: elem.year,
-          open: false,
+          open: index === 0,
           openedMonths: [],
         })) || []
       ),
     [years]
   );
-
-  useEffect(() => {
-    const firstYear = openedYears[0];
-
-    if (!firstYear || firstYear?.open || isWasOpenedFirst) return;
-
-    setOpenedYears((prev) =>
-      prev.map((elem, index) => (index === 0 ? { ...elem, open: true } : elem))
-    );
-
-    setIsWasOpenedFirst(true);
-  }, [openedYears]);
 
   const openYear = (year: number) =>
     setOpenedYears((prev) =>
