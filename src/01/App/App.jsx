@@ -43,7 +43,7 @@ import '../features/init';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { CheckIndividualDevice } from '01/features/individualDevices/checkIndividualDevice';
-import { ReadingHistory } from '01/features/readings/displayReadingHistory';
+import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
 
 moment.locale('ru');
 
@@ -182,7 +182,7 @@ const Internal = () => {
               </Route>
 
               <Route path="/apartment/:id/individualDevice/:deviceId/readingHistory">
-                <ReadingHistory />
+                <ReadingHistoryPage />
               </Route>
               <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                 <SwitchIndividualDevice />
