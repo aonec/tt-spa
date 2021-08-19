@@ -2,6 +2,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import {
+  IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
 } from 'myApi';
@@ -24,27 +25,63 @@ export const ReadingsHistoryList = () => {
     isMonthOpen,
   } = useOpenedYears(values?.yearReadings || []);
 
+  const renderReading = ({
+    reading,
+    isFirst,
+    month,
+    arrowButton,
+  }: {
+    reading: IndividualDeviceReadingsItemHistoryResponse;
+    isFirst?: boolean;
+    arrowButton?: React.ReactElement;
+    month: number;
+  }) => {
+    const WrapComponent = isFirst ? Month : PreviousReading;
+    const monthName = isFirst ? (
+      <span className="month-name">{getMonthName(month)}</span>
+    ) : (
+      <div></div>
+    );
+    const readings = <div>Readings</div>;
+    const consumption = <div>consumption</div>;
+    const source = <div>{reading.source}</div>;
+    const uploadTime = (
+      <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
+    );
+    const arrowButtonComponent = isFirst ? arrowButton : <ArrowButtonBlock />;
+
+    return (
+      <WrapComponent>
+        {monthName}
+        {readings}
+        {consumption}
+        {source}
+        {uploadTime}
+        {arrowButtonComponent}
+      </WrapComponent>
+    );
+  };
+
   const renderMonth = ({
     month,
     year,
+    readings,
   }: IndividualDeviceReadingsMonthHistoryResponse & { year: number }) => {
     const isOpen = isMonthOpen(year, month);
 
-    return (
-      <Month>
-        <span className="month-name">
-          {moment().subtract(month, 'months').format('MMMM')}
-        </span>
-        <div>Readings</div>
-        <div>consumation</div>
-        <div>consumation</div>
-        <div>last changes</div>
-        <ArrowButton
-          onClick={() => (isOpen ? closeMonth : openMonth)(year, month)}
-        >
-          <Arrow open={isOpen} />
-        </ArrowButton>
-      </Month>
+    const arrowButton = (
+      <ArrowButton
+        onClick={() => (isOpen ? closeMonth : openMonth)(year, month)}
+      >
+        <Arrow open={isOpen} />
+      </ArrowButton>
+    );
+
+    return (isOpen
+      ? readings
+      : [...[(readings || [])[0]]]
+    )?.map((reading, index) =>
+      renderReading({ reading, month, isFirst: index === 0, arrowButton })
     );
   };
 
@@ -171,6 +208,9 @@ const columnsNames = [
   'Последние показания',
 ];
 
+const getMonthName = (month: number) =>
+  moment().subtract(month, 'months').format('MMMM');
+
 const Wrap = styled.div`
   max-width: 960px;
 `;
@@ -200,6 +240,7 @@ const Month = styled(Grid)`
   padding: 16px;
   align-items: center;
   user-select: none;
+  color: #272f5ab2;
 
   .month-name {
     text-transform: capitalize;
@@ -207,6 +248,10 @@ const Month = styled(Grid)`
     font-size: 16px;
     color: #272f5a;
   }
+`;
+
+const PreviousReading = styled(Month)`
+  background: #272f5a08;
 `;
 
 const ArrowButton = styled(Flex)`
@@ -221,4 +266,9 @@ const ArrowButton = styled(Flex)`
   &:hover {
     background: #eff0f1;
   }
+`;
+
+const ArrowButtonBlock = styled.div`
+  width: 30px;
+  height: 30px;
 `;
