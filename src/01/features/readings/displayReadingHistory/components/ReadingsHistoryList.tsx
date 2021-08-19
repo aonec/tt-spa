@@ -30,14 +30,6 @@ export const ReadingsHistoryList = () => {
   }: IndividualDeviceReadingsMonthHistoryResponse & { year: number }) => {
     const isOpen = isMonthOpen(year, month);
 
-    const arrowButton = (
-      <ArrowButton
-        onClick={() => (isOpen ? closeMonth : openMonth)(year, month)}
-      >
-        <Arrow open={isOpen} />
-      </ArrowButton>
-    );
-
     return (
       <Month>
         <span className="month-name">
@@ -47,7 +39,11 @@ export const ReadingsHistoryList = () => {
         <div>consumation</div>
         <div>consumation</div>
         <div>last changes</div>
-        {arrowButton}
+        <ArrowButton
+          onClick={() => (isOpen ? closeMonth : openMonth)(year, month)}
+        >
+          <Arrow open={isOpen} />
+        </ArrowButton>
       </Month>
     );
   };
@@ -90,6 +86,8 @@ function useOpenedYears(years: IndividualDeviceReadingsYearHistoryResponse[]) {
     { year: number; openedMonths: number[]; open: boolean }[]
   >([]);
 
+  const [isWasOpenedFirst, setIsWasOpenedFirst] = useState(false);
+
   useEffect(
     () =>
       setOpenedYears(
@@ -101,6 +99,18 @@ function useOpenedYears(years: IndividualDeviceReadingsYearHistoryResponse[]) {
       ),
     [years]
   );
+
+  useEffect(() => {
+    const firstYear = openedYears[0];
+
+    if (!firstYear || firstYear?.open || isWasOpenedFirst) return;
+
+    setOpenedYears((prev) =>
+      prev.map((elem, index) => (index === 0 ? { ...elem, open: true } : elem))
+    );
+
+    setIsWasOpenedFirst(true);
+  }, [openedYears]);
 
   const openYear = (year: number) =>
     setOpenedYears((prev) =>
@@ -186,7 +196,7 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 0fr;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;
@@ -201,7 +211,7 @@ const Month = styled(Grid)`
 
 const ArrowButton = styled(Flex)`
   justify-content: center;
-  transform: translateX(8px);
+  transform: translateX(10px);
   border-radius: 50%;
   width: 30px;
   height: 30px;
