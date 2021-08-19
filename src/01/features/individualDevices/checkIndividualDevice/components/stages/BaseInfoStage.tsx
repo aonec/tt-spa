@@ -449,7 +449,7 @@ export const BaseInfoStage = () => {
               checked={fields.isInstalled.value}
             />
             <InputTT
-              placeholder="Тип пломбы"
+              placeholder="Номер пломбы"
               disabled={!fields.isInstalled.value}
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
