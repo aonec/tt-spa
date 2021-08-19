@@ -6,7 +6,10 @@ import {
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { CreateCreateIndividualDeviceWithMagnetSealRequest } from '01/_api/individualDevices';
+import {
+  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  SwitchIndividualDeviceRequestPayload,
+} from '01/_api/individualDevices';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const $creationDeviceStage = createStore<0 | 1>(0);
@@ -94,6 +97,12 @@ export const addIndividualDeviceForm = createForm({
       },
       rules: readingsValuesValidators,
     },
+    previousDeviceFinishingReadings: {
+      init: { value1: null, value2: null, value3: null, value4: null } as {
+        [key: string]: number | null;
+      },
+      rules: readingsValuesValidators,
+    },
     rateType: {
       init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
       rules: [{ name: 'required', validator: Boolean }],
@@ -111,6 +120,9 @@ export const addIndividualDeviceForm = createForm({
     isInstalled: {
       init: false,
     },
+    contractorId: {
+      init: null as number | null,
+    },
   },
   validateOn: ['submit'],
 });
@@ -124,6 +136,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
+  SwitchIndividualDeviceRequestPayload,
   MeteringDeviceResponse
 >();
