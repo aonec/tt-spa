@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { $readingHistory } from '../models';
 import { ReactComponent as ArrowIconTop } from './icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from './icons/arrowBottom.svg';
+import { SourceName } from './SourceIcon';
 
 export const ReadingsHistoryList = () => {
   const values = useStore($readingHistory);
@@ -44,7 +45,9 @@ export const ReadingsHistoryList = () => {
     );
     const readings = <div>Readings</div>;
     const consumption = <div>consumption</div>;
-    const source = <div>{reading.source}</div>;
+    const source = (
+      <SourceName sourceType={reading.source} user={reading.user} />
+    );
     const uploadTime = (
       <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
     );
@@ -203,7 +206,7 @@ const Wrap = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1.28fr 1fr;
 `;
 
 const TableHeader = styled(Grid)`
@@ -222,7 +225,7 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.2fr 1fr 0fr;
+  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.5fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;
