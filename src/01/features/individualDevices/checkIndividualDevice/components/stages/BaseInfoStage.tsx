@@ -76,7 +76,7 @@ export const BaseInfoStage = () => {
 
   const bottomDateFields = (
     <>
-      <FormItem label="Дата последней проверки прибора">
+      <FormItem label="Дата последней поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
           onChange={(value: moment.Moment | null = moment()) => {
@@ -104,7 +104,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      <FormItem label="Дата следующей проверки прибора">
+      <FormItem label="Дата следующей поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
           onChange={onChangeDateField('futureCheckingDate')}
