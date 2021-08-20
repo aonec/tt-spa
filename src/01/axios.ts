@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 
 const devUrl = 'https://transparent-staging.herokuapp.com/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
@@ -13,10 +13,6 @@ axios.interceptors.request.use((req) => {
     req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
   }
 
-  req.cancelToken = new axios.CancelToken((e) => {
-    cancel = e;
-  });
-
   if (req.url && checkUrl('refresh', req.url)) {
     req.data = {
       token: takeFromLocStor('token'),
@@ -30,7 +26,6 @@ axios.interceptors.response.use(
   ({ data, config }) => {
     const { url } = config;
 
-    // const url = config?.url;
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
       saveToLocStor('token', token);
@@ -44,10 +39,7 @@ axios.interceptors.response.use(
       saveToLocStor('user', user);
     }
     const res = data.successResponse ?? data ?? {};
-    // return { ...res, url };
     return res;
-
-    // return data
   },
   (error) => {
     const status = error?.response?.status;
@@ -64,21 +56,10 @@ axios.interceptors.response.use(
       });
     }
 
-    //   if (status === 403 ) {
-    //       window.location.replace('/access-denied/');
-    //   }
-    //   if (status === 404 ) {
-    //       window.location.replace('/error/');
-    //   }
     return Promise.reject(error);
   }
 );
 
-// get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
-
-// export type CustomGetResponse<T> = Promise<AxiosResponse<T>>;
-
-// utils
 function saveToLocStor(name: string, data: string) {
   localStorage.setItem(name, JSON.stringify(data));
 }

@@ -24,7 +24,7 @@ import {
 import {
   HousingMeteringDeviceResponse,
   EMagistralType,
-  UpdateHousingMeteringDeviceRequest,
+  UpdatePipeHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 import { putOdpu } from './apiEditOdpu';
 import { AlertInterface } from '../../../tt-components/interfaces';
@@ -110,7 +110,7 @@ const FormEditODPU = ({
     onSubmit: () => {
       const magistralEnum: EMagistralType = values.magistral as EMagistralType;
 
-      const form: UpdateHousingMeteringDeviceRequest = {
+      const form: UpdatePipeHousingMeteringDeviceRequest = {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(),
         futureCheckingDate: values.futureCheckingDate?.toISOString(),

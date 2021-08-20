@@ -2,14 +2,14 @@ import React, { Dispatch, SetStateAction } from 'react';
 import ModalCheckForm from './ModalCheckForm';
 import {
   CalculatorResponse,
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
 } from '../../../myApi';
 import { StyledModal } from '../../tt-components/Modal';
 
 interface ModalCheckFormInterface {
   visible: boolean;
   setVisible: Dispatch<SetStateAction<boolean>>;
-  device: CalculatorResponse | HousingMeteringDeviceResponse;
+  device: CalculatorResponse | PipeHousingMeteringDeviceResponse;
 }
 
 const ModalCheckDevice = ({

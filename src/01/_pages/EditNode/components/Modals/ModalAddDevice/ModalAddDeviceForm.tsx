@@ -26,8 +26,8 @@ import {
   validationSchemaTemperatureSensor,
 } from './validationSchemas';
 import {
-  CreateHousingMeteringDeviceRequest,
-  NodeResponse,
+  CreatePipeHousingMeteringDeviceRequest,
+  PipeNodeResponse,
 } from '../../../../../../myApi';
 import {
   TabErrorsInterface,
@@ -47,7 +47,7 @@ import Warning from '../../../../../tt-components/Warning';
 
 interface ModalAddDeviceFormInterface {
   handleCancel: any;
-  node: NodeResponse;
+  node: PipeNodeResponse;
   setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -145,7 +145,7 @@ const ModalAddDeviceForm = ({
   };
 
   const handleSubmit = (values: any) => {
-    const form: CreateHousingMeteringDeviceRequest = {
+    const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
       lastCheckingDate: values.lastCheckingDate,
       futureCheckingDate: values.futureCheckingDate,

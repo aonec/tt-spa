@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorIntoNodeResponse, NodeResponse } from '../../../../myApi';
+import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
 interface HeaderInterface {
-  node: NodeResponse;
+  node: PipeNodeResponse;
   calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;

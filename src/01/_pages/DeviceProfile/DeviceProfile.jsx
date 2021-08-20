@@ -69,7 +69,7 @@ export const DeviceProfile = () => {
     path = `/calculators/${deviceId}/`;
   } else if (pathname.includes('housingMeteringDevices')) {
     path = `/housingMeteringDevices/${deviceId}/`;
-    typeODPU = 'HousingMeteringDevice';
+    typeODPU = 'PipeHousingMeteringDevice';
   }
 
   useEffect(() => {

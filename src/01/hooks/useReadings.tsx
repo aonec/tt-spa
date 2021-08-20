@@ -1,9 +1,4 @@
-import React, {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import rateTypeToNumber from '../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
@@ -11,26 +6,28 @@ import moment from 'moment';
 import axios from '../axios';
 import { isNullInArray } from '../utils/checkArrayForNulls';
 import {
-  setInputFocused,
-  setInputUnfocused,
-} from '../Redux/ducks/readings/actionCreators';
-import { useDispatch } from 'react-redux';
-import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { v4 as uuid } from 'uuid';
-import { IndividualDeviceListItemResponse } from '../../myApi';
+import {
+  EIndividualDeviceRateType,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsResponse,
+} from '../../myApi';
+import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
-  sliderIndex = 0
+  sliderIndex = 0,
+  numberOfPreviousReadingsInputs?: number
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
-
-  const dispatch = useDispatch();
+  const [
+    initialPreviousReadingState,
+    setInitialPreviousReadingState,
+  ] = useState<PreviousReadingState>({});
 
   const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
@@ -42,24 +39,53 @@ export const useReadings = (
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
-    const prevReadingsIndex = sliderIndex + +isReadingsCurrent;
+    const preparedReadingsArrWithEmpties = device.readings?.reduce(
+      (acc, elem) => {
+        const index =
+          Number(moment().format('M')) -
+          Number(moment(elem.readingDate).format('M')) -
+          1;
+
+        acc[index] = elem;
+
+        return acc;
+      },
+      {} as { [key: number]: IndividualDeviceReadingsResponse }
+    );
 
     const currentReadings: Record<string, any> =
       (isReadingsCurrent ? device.readings![0] : emptyReadingsObject) || {};
-    const prevReadings: Record<string, any> =
-      device.readings![prevReadingsIndex] || {};
 
-    for (let i = 1; i <= numberOfReadings; i++) {
+    const prevReadings: Record<string, any> =
+      preparedReadingsArrWithEmpties![sliderIndex] || {};
+
+    for (let i = 1; i <= 3; i++) {
       previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
     }
 
-    setReadingsState({
-      previousReadingsArray,
-      currentReadingsArray,
-      prevId: prevReadings.id,
-      currId: currentReadings.id,
-      resource: device.resource,
+    setReadingsState((prev) => {
+      const previousReadings = {
+        ...prev?.previousReadings,
+        [sliderIndex]: prev?.previousReadings[sliderIndex]
+          ? prev?.previousReadings[sliderIndex]
+          : {
+              values: previousReadingsArray,
+              date: prevReadings.readingDate || null,
+            },
+      };
+
+      setInitialPreviousReadingState(previousReadings);
+
+      return {
+        previousReadings,
+        previousReadingsArray,
+        currentReadingsArray:
+          prev?.currentReadingsArray || currentReadingsArray,
+        prevId: prevReadings.id,
+        currId: currentReadings.id,
+        resource: device.resource,
+      };
     });
   }, [device.readings, sliderIndex]);
 
@@ -81,30 +107,93 @@ export const useReadings = (
       isForced: true,
     };
 
-    console.log(readingData);
-
     return readingData;
   };
 
-  const sendReadings = useCallback(() => {
-    if (!readingsState) return;
-    const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
-      device,
-      readingsState
-    );
-    axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-    setInitialReadings(readingsState.currentReadingsArray);
-  }, [readingsState]);
+  const sendReadings = useCallback(
+    async (isPrevious?: boolean) => {
+      if (!readingsState) return;
+
+      if (isPrevious) {
+        const getReadings = (prev: ReadingsStateType) => {
+          const date = getDateByReadingMonthSlider(sliderIndex).format(
+            'YYYY-MM'
+          );
+
+          const res = prev && {
+            ...prev,
+            previousReadings: {
+              ...prev?.previousReadings,
+              [sliderIndex]: {
+                ...prev?.previousReadings[sliderIndex],
+                date:
+                  prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
+              },
+            },
+          };
+
+          setInitialPreviousReadingState(
+            (prev) => res?.previousReadings || prev
+          );
+
+          return res;
+        };
+
+        const neededReadings = getReadings(readingsState);
+
+        setReadingsState(neededReadings);
+
+        const neededPreviousReadings =
+          neededReadings.previousReadings[sliderIndex];
+
+        if (!neededPreviousReadings || !neededPreviousReadings?.values?.length)
+          return;
+
+        await axios.post('/IndividualDeviceReadings/create', {
+          ...neededPreviousReadings?.values.reduce(
+            (acc: object, value: number, index: number) => ({
+              ...acc,
+              [`value${index + 1}`]: Number(value),
+            }),
+            {}
+          ),
+          isForced: true,
+          deviceId: device.id,
+          readingDate: neededPreviousReadings.date,
+        });
+
+        return;
+      }
+
+      const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
+        device,
+        readingsState
+      );
+
+      await axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
+
+      setInitialReadings(readingsState.currentReadingsArray);
+    },
+    [readingsState]
+  );
 
   const onBlurHandler = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
+    (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
+      if (!readingsState) return;
+
+      if (
+        isPrevious &&
+        initialPreviousReadingState[sliderIndex]?.values.join() !==
+          readingsState.previousReadings[sliderIndex]?.values.join()
+      ) {
+        sendReadings(isPrevious);
+
         return;
+      }
 
       if (readingsState.currentReadingsArray !== initialReadings) {
         sendReadings();
       }
-      dispatch(setInputUnfocused());
     },
     [readingsState, initialReadings]
   );
@@ -117,7 +206,6 @@ export const useReadings = (
       setInitialReadings(readingsState.currentReadingsArray);
       const isNull = isNullInArray(readingsState.currentReadingsArray);
       if (isNull) {
-        dispatch(setInputFocused(device.id));
       }
     },
     [readingsState]
@@ -125,7 +213,8 @@ export const useReadings = (
 
   const onInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
+    isPrevious?: boolean
   ) => {
     e.preventDefault();
 
@@ -135,6 +224,29 @@ export const useReadings = (
           ? ''
           : e.target.value
         : e.target.value;
+
+    if (isPrevious) {
+      setReadingsState((prev) => {
+        if (!prev) return prev;
+
+        const newValues = [...prev.previousReadings[sliderIndex].values];
+
+        newValues[index] = value as any;
+
+        return {
+          ...prev,
+          previousReadings: {
+            ...prev.previousReadings,
+            [sliderIndex]: {
+              ...prev.previousReadings[sliderIndex],
+              values: newValues,
+            },
+          },
+        };
+      });
+
+      return;
+    }
 
     setReadingsState((state: any) => ({
       ...state,
@@ -149,57 +261,79 @@ export const useReadings = (
   if (!readingsState) return {};
 
   const currentDeviceReadings = readingsState.currentReadingsArray.map(
-    (value, index) => (
-      <ReadingsBlock
-        key={device.id + index}
-        index={index}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onInputChange(e, index)
-        }
-        value={value}
-        resource={readingsState.resource}
-        operatorCabinet
-      />
-    )
+    (value, index) => ({
+      elem: (
+        <ReadingsBlock
+          key={device.id + index}
+          index={index}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onInputChange(e, index)
+          }
+          value={value}
+          resource={readingsState.resource}
+          operatorCabinet
+          isCurrent
+          lineIndex={
+            numberOfPreviousReadingsInputs &&
+            numberOfPreviousReadingsInputs + index
+          }
+        />
+      ),
+      value,
+    })
   );
 
-  const previousDeviceReadings = readingsState.previousReadingsArray.map(
-    (value, index) => (
-      <ReadingsBlock
-        key={uuid()}
-        index={index}
-        value={value}
-        resource={readingsState.resource}
-        operatorCabinet
-        readingsBlocked
-        houseReadings
-        isDisabled
-      />
-    )
-  );
+  const previousDeviceReadings =
+    readingsState.previousReadings[sliderIndex]?.values.map((value, index) => ({
+      elem: (
+        <ReadingsBlock
+          key={device.id + index + '-prev-readings'}
+          index={index}
+          value={value}
+          operatorCabinet
+          resource={readingsState.resource}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            onInputChange(e, index, true);
+          }}
+        />
+      ),
+      value,
+    })) || [];
 
   const options = (
-    readingsElems: JSX.Element[],
+    readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean
   ): OptionsInterface[] => [
     {
       value: () => (
         <DeviceReadingsContainer
           color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           resource={device.resource}
         >
-          {readingsElems}
+          {readingsElems.map((elem) => elem.elem)[0]}
         </DeviceReadingsContainer>
       ),
-      isSuccess:
-        readingsState?.resource !== 'Electricity' || readingsElems.length === 1,
+      isSuccess: device.rateType === EIndividualDeviceRateType.None,
+    },
+    {
+      value: () => (
+        <DeviceReadingsContainer
+          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
+          onFocus={onFocusHandler}
+          resource={device.resource}
+        >
+          {readingsElems.map((elem) => elem.elem)[0]}
+        </DeviceReadingsContainer>
+      ),
+      isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
     },
     {
       value: () => (
         <div
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -208,22 +342,22 @@ export const useReadings = (
             color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[0]}
+            {readingsElems.map((elem) => elem.elem)[0]}
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
             color={isCurrent ? '#957400' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[1]}
+            {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
         </div>
       ),
-      isSuccess: readingsElems.length === 2,
+      isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
     },
     {
       value: () => (
         <div
-          onBlur={onBlurHandler}
+          onBlur={(e) => onBlurHandler(e, !isCurrent)}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -232,21 +366,24 @@ export const useReadings = (
             color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {[readingsElems[0], readingsElems[1]]}
+            {[
+              readingsElems.map((elem) => elem.elem)[0],
+              readingsElems.map((elem) => elem.elem)[1],
+            ]}
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
             color={isCurrent ? '#957400' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems[2]}
+            {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
         </div>
       ),
-      isSuccess: true,
+      isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
     },
   ];
 
-  const previousReadings = options(previousDeviceReadings, false)
+  const previousResultReadings = options(previousDeviceReadings, false)
     .find((el) => el.isSuccess)!
     .value();
 
@@ -256,13 +393,18 @@ export const useReadings = (
 
   return {
     readingsState, // стейт с показаниями
-    previousReadings, // массив компонентов с показаниями за пред. месяцы
+    previousReadings: previousResultReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
 };
 
+interface PreviousReadingState {
+  [key: number]: { values: number[]; date: string | null };
+}
+
 export type ReadingsStateType = {
   previousReadingsArray: number[];
+  previousReadings: PreviousReadingState;
   currentReadingsArray: number[];
   prevId: number;
   currId: number;

@@ -6,7 +6,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
-import { Form, Select } from 'antd';
+import { AutoComplete, Form, Select } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -17,12 +17,19 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EResourceType } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import {
+  $individualDevicesNames,
+  IndividualDevicecModelsGate,
+} from '01/features/individualDevices/displayIndividualDevicesNames/models';
+import { useDebounce } from '01/hooks/useDebounce';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
 
   const mountPlaces = useStore($individualDeviceMountPlaces);
+  const modelNames = useStore($individualDevicesNames);
 
   const { fields } = useForm(addIndividualDeviceForm);
 
@@ -43,18 +50,43 @@ export const BaseInfoStage = () => {
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
     fields.startupReadings.onChange({
       ...fields.startupReadings.value,
-      [`value${valueNumber}`]: Number(e.target.value),
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
     });
 
-  const isElectrisityResource =
-    fields.resource.value === EResourceType.Electricity;
+  const onChangeDefaultReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
+    fields.defaultReadings.onChange({
+      ...fields.defaultReadings.value,
+      [`value${valueNumber}`]:
+        e.target.value === '' ? null : Number(e.target.value),
+    });
+
+  const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
+
+  const modelNameDebounced = useDebounce(fields.model.value, 300);
 
   const bottomDateFields = (
     <>
-      <FormItem label="Дата последней проверки прибора">
+      <FormItem label="Дата последней поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCheckingDate')}
+          onChange={(value: moment.Moment | null = moment()) => {
+            if (!value) return;
+
+            onChangeDateField('lastCheckingDate')(value);
+
+            const nextCheckingDate = moment(value);
+
+            if (!fields.resource.value) return;
+
+            const nextYear =
+              value?.year() +
+              (fields.resource.value === EResourceType.Electricity ? 16 : 6);
+
+            nextCheckingDate.set('year', nextYear);
+
+            onChangeDateField('futureCheckingDate')(nextCheckingDate);
+          }}
           value={getDatePickerValue(fields.lastCheckingDate.value)}
         />
         <ErrorMessage>
@@ -63,7 +95,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      <FormItem label="Дата следующей проверки прибора">
+      <FormItem label="Дата следующей поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
           onChange={onChangeDateField('futureCheckingDate')}
@@ -78,31 +110,60 @@ export const BaseInfoStage = () => {
     </>
   );
 
-  const datesBlock = (
+  const defaultReadingsFields = (
     <>
-      <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+      <FormItem
+        label={`Текущие показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
+      >
+        <InputTT
+          type="number"
+          placeholder="Введите текущие показания"
+          onChange={onChangeDefaultReadings(1)}
+          value={fields.defaultReadings.value.value1}
         />
         <ErrorMessage>
-          {fields.lastCommercialAccountingDate.errorText({
-            required: 'Это поле обязательное',
+          {fields.defaultReadings.errorText({
+            requiredFirstField: 'Это поле обязательное',
           })}
         </ErrorMessage>
       </FormItem>
 
-      {isElectrisityResource ? (
-        <FormWrap>{bottomDateFields}</FormWrap>
-      ) : (
-        bottomDateFields
+      {rateNum >= 2 && (
+        <FormItem label="Первичные текущие прибора (Ночь)">
+          <InputTT
+            type="number"
+            placeholder="Введите текущие показания"
+            onChange={onChangeDefaultReadings(2)}
+            value={fields.defaultReadings.value.value2}
+          />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredSecondField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
+      )}
+      {rateNum >= 3 && (
+        <FormItem>
+          <InputTT
+            type="number"
+            placeholder="Введите текущие показания"
+            onChange={onChangeDefaultReadings(3)}
+            value={fields.defaultReadings.value.value3}
+          />
+          <ErrorMessage>
+            {fields.defaultReadings.errorText({
+              requiredThirdField: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </FormItem>
       )}
     </>
   );
 
   return (
     <Wrap>
+      <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
 
       <FormHeader>Общие данные о приборе</FormHeader>
@@ -111,18 +172,7 @@ export const BaseInfoStage = () => {
         <FormItem label="Тип ресурса">
           <StyledSelect
             placeholder="Выберите тип ресурса"
-            onChange={(value: any) => {
-              fields.resource.onChange(value);
-
-              if (value !== EResourceType.Electricity) {
-                fields.startupReadings.onChange({
-                  ...fields.startupReadings.value,
-                  value2: null,
-                  value3: null,
-                  value4: null,
-                });
-              }
-            }}
+            onChange={(value: any) => fields.resource.onChange(value)}
             value={fields.resource.value || undefined}
           >
             {allResources.map((elem) => (
@@ -145,11 +195,12 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Модель прибора">
-          <InputTT
-            placeholder="Введите модель прибора"
-            name="model"
-            onChange={onChange}
+          <StyledAutoComplete
+            size="large"
             value={fields.model.value}
+            placeholder="Введите модель прибора"
+            onChange={fields.model.onChange}
+            options={modelNames?.map((elem) => ({ value: elem })) || []}
           />
           <ErrorMessage>
             {fields.model.errorText({
@@ -219,11 +270,29 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
+      </FormWrap>
 
+      <FormItem label="Тариф прибора">
+        <StyledSelect
+          placeholder="Выберите тариф прибора"
+          value={fields.rateType.value}
+          onChange={(value) => value && fields.rateType.onChange(value as any)}
+        >
+          <StyledSelect.Option value={EIndividualDeviceRateType.OneZone}>
+            Одна зона
+          </StyledSelect.Option>
+          <StyledSelect.Option value={EIndividualDeviceRateType.TwoZone}>
+            Две зоны
+          </StyledSelect.Option>
+          <StyledSelect.Option value={EIndividualDeviceRateType.ThreeZone}>
+            Три зоны
+          </StyledSelect.Option>
+        </StyledSelect>
+      </FormItem>
+
+      <FormWrap>
         <FormItem
-          label={`Первичные показания прибора${
-            fields.resource.value === EResourceType.Electricity ? ' (День)' : ''
-          }`}
+          label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
         >
           <InputTT
             type="number"
@@ -238,31 +307,56 @@ export const BaseInfoStage = () => {
           </ErrorMessage>
         </FormItem>
 
-        {fields.resource.value === EResourceType.Electricity && (
-          <>
-            <FormItem label="Первичные показания прибора (Ночь)">
-              <InputTT
-                type="number"
-                placeholder="Введите первичные показания"
-                onChange={onChangeStartupReadings(2)}
-                value={fields.startupReadings.value.value2}
-              />
-            </FormItem>
-            <FormItem>
-              <InputTT
-                type="number"
-                placeholder="Введите первичные показания"
-                onChange={onChangeStartupReadings(3)}
-                value={fields.startupReadings.value.value3}
-              />
-            </FormItem>
-          </>
+        {rateNum >= 2 && (
+          <FormItem label="Первичные показания прибора (Ночь)">
+            <InputTT
+              type="number"
+              placeholder="Введите первичные показания"
+              onChange={onChangeStartupReadings(2)}
+              value={fields.startupReadings.value.value2}
+            />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredSecondField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </FormItem>
+        )}
+        {rateNum >= 3 && (
+          <FormItem>
+            <InputTT
+              type="number"
+              placeholder="Введите первичные показания"
+              onChange={onChangeStartupReadings(3)}
+              value={fields.startupReadings.value.value3}
+            />
+            <ErrorMessage>
+              {fields.startupReadings.errorText({
+                requiredThirdField: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
+          </FormItem>
         )}
 
-        {!isElectrisityResource && datesBlock}
+        {rateNum === 1 && defaultReadingsFields}
       </FormWrap>
 
-      {isElectrisityResource && datesBlock}
+      {rateNum !== 1 && <FormWrap>{defaultReadingsFields}</FormWrap>}
+
+      <FormItem label="Дата ввода в эксплуатацию">
+        <DatePicker
+          format="DD.MM.YYYY"
+          onChange={onChangeDateField('lastCommercialAccountingDate')}
+          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+        />
+        <ErrorMessage>
+          {fields.lastCommercialAccountingDate.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+
+      <FormWrap>{bottomDateFields}</FormWrap>
 
       <FormWrap>
         <FormItem label="Магнитная пломба">
@@ -272,7 +366,7 @@ export const BaseInfoStage = () => {
               checked={fields.isInstalled.value}
             />
             <InputTT
-              placeholder="Тип пломбы"
+              placeholder="Номер пломбы"
               disabled={!fields.isInstalled.value}
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
@@ -320,4 +414,16 @@ const FormWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 4px 20px;
+`;
+
+const StyledAutoComplete = styled(AutoComplete)`
+  .ant-select-selector {
+    border-radius: 4px !important;
+    height: 48px !important;
+    padding: 4px 24px !important;
+
+    input {
+      padding: 6px 12px 0 12px !important;
+    }
+  }
 `;

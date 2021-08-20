@@ -24,7 +24,8 @@ export const DeviceReading = ({
   );
 
   const isColdWaterSupply = useStore($isColdWaterSupply);
-  const { value, deviceId, year, month, id } = deviceElem;
+  const { value, id, year, month } = deviceElem;
+  const deviceId = Number(id);
   const chosenInputId = useStore($chosenInputId);
   const isInputChosen = chosenInputId === deviceId;
   const today = new Date();

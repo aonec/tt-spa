@@ -5,7 +5,7 @@ import { DeviceLink, Diameter, SerialNumber } from '../DeviceBlock';
 import styled from 'styled-components';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import Icon from '../../../../../tt-components/Icon';
-import { NodeIntoCalculatorResponse } from '../../../../../../myApi';
+import { PipeNodeIntoCalculatorResponse } from '../../../../../../myApi';
 
 const Node: React.FC<Props> = ({ node }) => {
   const housingDevices = node.communicationPipes?.map((pipe) => {
@@ -107,7 +107,7 @@ interface NodeInterface {
 }
 
 interface Props {
-  node: NodeIntoCalculatorResponse;
+  node: PipeNodeIntoCalculatorResponse;
 }
 
 export default Node;

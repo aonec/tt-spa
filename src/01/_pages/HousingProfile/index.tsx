@@ -6,7 +6,7 @@ import { Information } from './components/Information';
 import Documents from './components/Documents';
 import { RelatedDevices } from './components/RelatedDevices';
 import {
-  HousingMeteringDeviceResponse,
+  PipeHousingMeteringDeviceResponse,
   TaskListResponse,
 } from '../../../myApi';
 import { useAsync } from '../../hooks/useAsync';
@@ -26,7 +26,7 @@ export const HousingProfile = () => {
     data: device,
     status,
     run,
-  } = useAsync<HousingMeteringDeviceResponse>();
+  } = useAsync<PipeHousingMeteringDeviceResponse>();
 
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
   const [deregister, setDeregister] = useState<boolean>(false);

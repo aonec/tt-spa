@@ -1,40 +1,26 @@
-import { useEffect } from 'react';
-
 export const useSwitchOnInputs = () => {
-  const onKeyDown = (e: KeyboardEvent) => {
+  const onKeyDown = (e: any, index: number) => {
+    if (e.key !== 'Enter') return;
+
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      'input:not(:disabled)'
+      `[data-reading-input="current"]`
     );
 
-    if (e.key === 'Enter') {
-      const activeInput: Element | null = document.activeElement;
-      const activeIndex = Array.prototype.indexOf.call(inputList, activeInput);
+    const currentNode = inputList[index];
+    const nextNode = inputList[index + 1];
 
-      if (
-        activeIndex === inputList.length - 1 &&
-        activeInput instanceof HTMLInputElement
-      ) {
-        activeInput.blur();
-      }
+    const currentInputNode: any = currentNode.getElementsByClassName(
+      'ant-input'
+    )[0];
 
-      if (activeIndex === -1) {
-        inputList[0].focus();
-        inputList[0].select();
-      }
+    if (!nextNode) return currentInputNode?.blur && currentInputNode.blur();
 
-      const nextInput = inputList[activeIndex + 1];
-      if (!nextInput) return;
-      nextInput.focus();
-      nextInput.select();
-    }
+    const nextInputNode: any = nextNode.getElementsByClassName('ant-input')[0];
+
+    nextInputNode?.focus && nextInputNode.focus();
   };
 
-  useEffect(() => {
-    const node = document.getElementById('meters-component');
-    if (!node) return;
+  const onKeyDownPrevious = (e: any) => e.key === 'Enter' && e.target?.blur();
 
-    node.addEventListener('keydown', onKeyDown);
-
-    return () => node.removeEventListener('keydown', onKeyDown);
-  }, [onKeyDown]);
+  return { onKeyDown, onKeyDownPrevious };
 };

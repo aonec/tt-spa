@@ -1,3 +1,7 @@
+import {
+  EIndividualDeviceRateType,
+  EResourceType,
+} from './../../../../../myApi';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
   CreateCreateIndividualDeviceWithMagnetSealRequest,
@@ -59,16 +63,15 @@ sample({
         scaleFactor: Number(values.scaleFactor),
         apartmentId: values.apartmentId!,
         mountPlaceId: values.mountPlaceId,
-        rateType: String(
-          toArray(values.startupReadings, false).filter(Boolean).length
-        ),
+        rateType: values.rateType,
         resource: values.resource!,
         model: values.model,
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
         startupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-      },
+        defaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      } as any,
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,
