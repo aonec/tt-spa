@@ -89,6 +89,15 @@ export const checkIndividualDevice = async (
   return res;
 };
 
-export const getIndividualDevice = (
+export const getIndividualDevice = async (
   id: number
-): Promise<IndividualDeviceResponse> => axios.get(`IndividualDevices/${id}`);
+): Promise<IndividualDeviceResponse> => {
+  try {
+    const res: IndividualDeviceResponse = await axios.get(
+      `IndividualDevices/${id}`
+    );
+    return res;
+  } catch (e) {
+    throw new Error(e);
+  }
+};

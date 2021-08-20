@@ -12,8 +12,6 @@ export const HousingStockAddress = () => {
   const housingStock = useStore($apartment);
   const address = getAddress(housingStock);
 
-  console.log(id);
-
   return (
     <>
       <ApartmentGate id={Number(id)} />

@@ -24,4 +24,5 @@ import './apartments/displayApartment/models/init';
 import './individualDevices/displayIndividualDevicesNames/models/init.ts';
 import './individualDevices/switchIndividualDevice/models/init';
 import './individualDevices/displayIndividualDevice/models/init';
-import './individualDevices/checkIndividualDevice/models/init'
+import './individualDevices/checkIndividualDevice/models/init';
+import './readings/displayReadingHistory/models/init';
