@@ -15,9 +15,12 @@ import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceIcon';
 import { getMonthName, getReadingValuesArray } from '../utils';
+import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const ReadingsHistoryList = () => {
   const values = useStore($readingHistory);
+  const device = useStore($individualDevice);
 
   const {
     isYearOpen,
@@ -49,16 +52,25 @@ export const ReadingsHistoryList = () => {
       <div></div>
     );
 
+    const getReadingValues = (type: 'value' | 'consumption') =>
+      getReadingValuesArray(
+        reading,
+        type,
+        getIndividualDeviceRateNumByName(device?.rateType!)
+      );
+
     const readings = (
       <RenderReadingFields
         editable
-        values={getReadingValuesArray(reading, 'value')}
+        values={getReadingValues('value')}
+        suffix={device?.measurableUnitString}
       />
     );
 
     const consumption = (
       <RenderReadingFields
-        values={getReadingValuesArray(reading, 'consumption')}
+        suffix={device?.measurableUnitString}
+        values={getReadingValues('consumption')}
       />
     );
 
@@ -99,10 +111,9 @@ export const ReadingsHistoryList = () => {
       </ArrowButton>
     );
 
-    return (isOpen
-      ? readings
-      : [...[(readings || [])[0]]]
-    )?.map((reading, index) =>
+    if (!readings?.length) return null;
+
+    return (isOpen ? readings : [readings[0]])?.map((reading, index) =>
       renderReading({ reading, month, isFirst: index === 0, arrowButton })
     );
   };
@@ -154,7 +165,7 @@ const Wrap = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.28fr 1fr;
+  grid-template-columns: 0.96fr 1fr 0.9fr 1.34fr 1fr;
 `;
 
 const TableHeader = styled(Grid)`
@@ -173,7 +184,7 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1fr 1.2fr 1.2fr 1.5fr 1fr 0fr;
+  grid-template-columns: 1fr 1.2fr 0.9fr 1.5fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;

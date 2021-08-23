@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 interface RenderReadingField {
   values: (string | null)[];
-  suffix?: string;
+  suffix?: string | null;
   editable?: boolean;
   onChange?(value: number, index: number): void;
 }
@@ -18,23 +18,19 @@ export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
     const suffix = globalSuffix || elem?.split(' ')[1];
 
     if (!editable)
-      return (
-        <ValueLine>
-          {value} {suffix}
-        </ValueLine>
-      );
+      return <ValueLine>{value ? `${value} ${suffix}` : ''}</ValueLine>;
 
-    const prefix = `T${index}`;
-    const fieldValue = value + ` ${suffix || ''}`;
-
+    const prefix = `T${index + 1}`;
     return (
       <EditableField
+        className={`history-reading-field-`}
         disabled={!editable}
-        value={fieldValue}
+        value={value}
+        suffix={suffix}
         prefix={<Prefix>{prefix}</Prefix>}
       />
     );
-  };
+  }; 
 
   return <FieldsWrap>{values.map(renderField)}</FieldsWrap>;
 };
@@ -54,6 +50,11 @@ const ValueLine = styled(Flex)`
 
 const EditableField = styled(Input)`
   border-radius: 10px;
-  border: none !important;
   background: white !important;
+`;
+
+const EditableFieldWrap = styled.div`
+  width: 145px;
+  border-radius: 10px;
+  border: 1px solid #eeeeee;
 `;

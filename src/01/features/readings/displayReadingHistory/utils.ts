@@ -3,11 +3,13 @@ import { IndividualDeviceReadingsItemHistoryResponse } from './../../../../myApi
 
 export const getReadingValuesArray = (
   reading: IndividualDeviceReadingsItemHistoryResponse,
-  type: 'consumption' | 'value'
+  type: 'consumption' | 'value',
+  rateNum: number
 ) => {
   const res: (string | null)[] = [];
 
-  for (let i = 0; i < 3; i++) res.push((reading as any)[`${type}${i + 1}`]);
+  for (let i = 0; i < rateNum; i++)
+    res.push((reading as any)[`${type}${i + 1}`]);
   return res;
 };
 

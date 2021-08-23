@@ -1748,6 +1748,25 @@ export interface HomeownerCreateRequest {
   personType?: EPersonType;
 }
 
+export interface IndividualDeviceIntoHomeownerCertificateResponse {
+  resourceDescription: string | null;
+  mountPlaceDescription: string | null;
+  model: string | null;
+  serialNumber: string | null;
+  lastReadings: string | null;
+  lastReadingsDate: string | null;
+}
+
+export interface HomeownerCertificateResponse {
+  fullName: string | null;
+  address: FullAddressResponse | null;
+  individualDevices: IndividualDeviceIntoHomeownerCertificateResponse[] | null;
+}
+
+export interface HomeownerCertificateResponseSuccessApiResponse {
+  successResponse: HomeownerCertificateResponse | null;
+}
+
 export interface HomeownersListResponse {
   /** @format int32 */
   id: number;
@@ -2393,6 +2412,17 @@ export interface HousingStockUpdateRequest {
   houseManagementId?: string | null;
 }
 
+export interface ManagingFirmUserShortResponse {
+  /** @format int32 */
+  id: number;
+  name: string | null;
+  email: string | null;
+}
+
+export interface ManagingFirmUserShortResponseSuccessApiResponse {
+  successResponse: ManagingFirmUserShortResponse | null;
+}
+
 export interface MeteringDeviceListResponse {
   /** @format int32 */
   id: number;
@@ -2636,13 +2666,6 @@ export enum EIndividualDeviceReadingsSource {
   TtmFromErc = "TtmFromErc",
 }
 
-export interface ManagingFirmUserShortResponse {
-  /** @format int32 */
-  id: number;
-  name: string | null;
-  email: string | null;
-}
-
 export interface IndividualDeviceReadingsResponse {
   /** @format int32 */
   id: number;
@@ -2707,6 +2730,7 @@ export interface IndividualDeviceResponse {
   /** @format date-time */
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
+  measurableUnitString: string | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -5715,6 +5739,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountCertificateDetail
+     * @request GET:/api/HomeownerAccount/{id}/Certificate
+     * @secure
+     */
+    homeownerAccountCertificateDetail: (id: string, params: RequestParams = {}) =>
+      this.request<HomeownerCertificateResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}/Certificate`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Homeowners
      * @name HomeownersList
      * @request GET:/api/Homeowners
@@ -6189,6 +6230,40 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingStocks/${housingStockId}`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksControllerDetail
+     * @request GET:/api/HousingStocks/{housingStockId}/Controller
+     * @secure
+     */
+    housingStocksControllerDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<ManagingFirmUserShortResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/Controller`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksReassignControllerCreate
+     * @request POST:/api/HousingStocks/{housingStockId}/ReassignController/{controllerId}
+     * @secure
+     */
+    housingStocksReassignControllerCreate: (housingStockId: number, controllerId: number, params: RequestParams = {}) =>
+      this.request<ManagingFirmUserShortResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/ReassignController/${controllerId}`,
+        method: "POST",
         secure: true,
         format: "json",
         ...params,
