@@ -8,7 +8,6 @@ import {
 } from 'myApi';
 import React from 'react';
 import styled from 'styled-components';
-import { $readingHistory } from '../models';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
@@ -17,9 +16,10 @@ import { SourceName } from './SourceIcon';
 import { getMonthName, getReadingValuesArray } from '../utils';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { useReadingHistoryValues } from '../hooks/useReadingValues';
 
 export const ReadingsHistoryList = () => {
-  const values = useStore($readingHistory);
+  const { values } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
   const {
