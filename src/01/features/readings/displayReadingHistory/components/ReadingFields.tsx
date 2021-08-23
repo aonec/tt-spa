@@ -1,4 +1,5 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
@@ -13,7 +14,11 @@ interface RenderReadingField {
 export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
   const { values, editable, onChange, suffix: globalSuffix } = props;
 
-  const renderField = (elem: string | null, index: number) => {
+  const renderField = (
+    elem: string | null,
+    index: number,
+    isOnlyOne?: boolean
+  ) => {
     const value = Number(elem?.split(' ')[0] || 0);
     const suffix = globalSuffix || elem?.split(' ')[1];
 
@@ -21,18 +26,44 @@ export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
       return <ValueLine>{value ? `${value} ${suffix}` : ''}</ValueLine>;
 
     const prefix = `T${index + 1}`;
-    return (
-      <EditableField
-        className={`history-reading-field-`}
-        disabled={!editable}
-        value={value}
-        suffix={suffix}
-        prefix={<Prefix>{prefix}</Prefix>}
-      />
-    );
-  }; 
 
-  return <FieldsWrap>{values.map(renderField)}</FieldsWrap>;
+    return (
+      <EditableFieldWrap isOnlyOne={isOnlyOne || values.length === 1}>
+        <EditableField
+          disabled={!editable}
+          className={`history-reading-field`}
+          value={value}
+          suffix={suffix}
+          prefix={<Prefix>{prefix}</Prefix>}
+        />
+      </EditableFieldWrap>
+    );
+  };
+
+  if (!editable)
+    return (
+      <FieldsWrap>
+        {values.map((elem, index) => renderField(elem, index, false))}
+      </FieldsWrap>
+    );
+
+  return (
+    <FieldsWrap>
+      {values.length === 3 ? (
+        <>
+          <div>
+            {[values[0], values[1]].map((elem, index) =>
+              renderField(elem, index, false)
+            )}
+          </div>
+          <Space style={{ height: 6 }} />
+          <div>{renderField(values[2], 2, true)}</div>
+        </>
+      ) : (
+        values.map((elem, index) => renderField(elem, index, false))
+      )}
+    </FieldsWrap>
+  );
 };
 
 const Prefix = styled.span`
@@ -49,12 +80,46 @@ const ValueLine = styled(Flex)`
 `;
 
 const EditableField = styled(Input)`
-  border-radius: 10px;
   background: white !important;
+  border-color: rgba(0, 0, 0, 0);
 `;
 
 const EditableFieldWrap = styled.div`
-  width: 145px;
-  border-radius: 10px;
   border: 1px solid #eeeeee;
+  border-radius: 0;
+  background: white;
+  border-bottom-color: white;
+  width: 145px;
+
+  ${(props: { isOnlyOne: boolean }) =>
+    props.isOnlyOne
+      ? `
+      border-radius: 6px;
+      .ant-input-affix-wrapper {
+      border-radius: 6px;
+    }`
+      : `
+    .ant-input-affix-wrapper {
+      border-radius: 0px;
+    }
+    
+    &:first-child {
+      border-radius: 6px 6px 0 0;
+      
+      .ant-input-affix-wrapper {
+          border-radius: 6px 6px 0 0;
+        }
+    }
+    
+    &:last-child {
+        border-radius: 0 0 6px 6px;
+        .ant-input-affix-wrapper {
+            border-radius: 0 0 6px 6px;
+        }
+    }
+  `}
+
+  &:last-child {
+    border-bottom-color: #eeeeee;
+  }
 `;
