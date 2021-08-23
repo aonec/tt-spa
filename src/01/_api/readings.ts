@@ -1,4 +1,8 @@
-import { IndividualDeviceReadingsHistoryResponse } from './../../myApi';
+import {
+  IndividualDeviceReadingsHistoryResponse,
+  IndividualDeviceReadingsCreateRequest,
+  IndividualDeviceReadingsCreateListResponse,
+} from './../../myApi';
 import axios from '01/axios';
 
 export const getReadingsHistory = (
@@ -6,3 +10,8 @@ export const getReadingsHistory = (
 ): Promise<IndividualDeviceReadingsHistoryResponse> => {
   return axios.get(`IndividualDevices/${deviceId}/readingsHistory`);
 };
+
+export const createReading = async (
+  requestPayload: IndividualDeviceReadingsCreateRequest
+): Promise<IndividualDeviceReadingsCreateListResponse> =>
+  axios.post('IndividualDeviceReadings​/create', requestPayload);
