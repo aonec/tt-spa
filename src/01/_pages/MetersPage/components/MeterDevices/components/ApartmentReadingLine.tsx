@@ -50,6 +50,7 @@ const ApartmentReadingLine = ({
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
+
     // {
     //   title: 'Открыть историю показаний',
     //   show: true,
