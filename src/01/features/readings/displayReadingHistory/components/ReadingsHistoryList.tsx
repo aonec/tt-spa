@@ -13,13 +13,22 @@ import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
 import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceIcon';
-import { getMonthName, getReadingValuesArray } from '../utils';
+import {
+  getMonthName,
+  getReadingValuesArray,
+  getReadingValuesObject,
+} from '../utils';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 
 export const ReadingsHistoryList = () => {
-  const { values, setFieldValue } = useReadingHistoryValues();
+  const {
+    values,
+    setFieldValue,
+    uploadingReadingsStatuses,
+    uploadReading,
+  } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
   const {
@@ -63,6 +72,18 @@ export const ReadingsHistoryList = () => {
 
     const readings = (
       <RenderReadingFields
+        onBlur={() =>
+          uploadReading({
+            ...getReadingValuesObject(
+              reading,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: reading.readingDate || moment().toISOString(),
+            isForced: true,
+          } as any)
+        }
+        status={uploadingReadingsStatuses[reading.readingDate || '']}
         editable
         values={getReadingValues('value')}
         suffix={device?.measurableUnitString}

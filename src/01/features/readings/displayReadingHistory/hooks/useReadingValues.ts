@@ -7,7 +7,7 @@ import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 
-type Status = 'pending' | 'done' | 'failed' | null;
+export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
 export function useReadingHistoryValues() {
   const [
@@ -16,7 +16,7 @@ export function useReadingHistoryValues() {
   ] = useState<IndividualDeviceReadingsHistoryResponse | null>();
 
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
-    [key: string]: Status;
+    [key: string]: RequestStatusShared;
   }>({});
 
   const initialValues = useStore($readingHistory);
@@ -56,16 +56,19 @@ export function useReadingHistoryValues() {
     }));
   };
 
-  const setReadingUploadRequestStatus = (id: string, status: Status) =>
+  const setReadingUploadRequestStatus = (
+    id: string,
+    status: RequestStatusShared
+  ) =>
     setUploadingReadingsStatuses((prev) => ({
       ...prev,
       [id]: status,
     }));
 
-  async function onUploadReadingHandler(
-    reading: IndividualDeviceReadingsCreateRequest
-  ) {
+  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
     const id = reading.readingDate;
+
+    console.log(reading);
 
     setReadingUploadRequestStatus(id, 'pending');
 
@@ -82,6 +85,6 @@ export function useReadingHistoryValues() {
     values: bufferedValues,
     setFieldValue,
     uploadingReadingsStatuses,
-    onUploadReadingHandler,
+    uploadReading,
   };
 }

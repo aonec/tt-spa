@@ -1,18 +1,24 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import React from 'react';
+import { IndividualDeviceReadingsCreateRequest } from 'myApi';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { RequestStatusShared } from '../hooks/useReadingValues';
 
-interface RenderReadingField {
+interface Props {
   values: (string | null)[];
   suffix?: string | null;
   editable?: boolean;
   onChange?(value: string, index: number): void;
+  onBlur?(): void;
+  status?: RequestStatusShared;
 }
 
-export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
-  const { values, editable, onChange, suffix: globalSuffix } = props;
+export const RenderReadingFields: React.FC<Props> = (props) => {
+  const { values, editable, onChange, suffix: globalSuffix, onBlur } = props;
+
+  const wrapRef = useRef<any>();
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -21,6 +27,12 @@ export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
     e.preventDefault();
 
     onChange && onChange(e.target.value, index);
+  };
+
+  const onBlurHandler = onBlur;
+
+  const onKeyHandler = (e: any) => {
+    e.key === 'Enter' && e.target.blur();
   };
 
   const renderField = (
@@ -37,8 +49,15 @@ export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
     const prefix = `T${index + 1}`;
 
     return (
-      <EditableFieldWrap isOnlyOne={isOnlyOne || values.length === 1}>
+      <EditableFieldWrap
+        ref={wrapRef}
+        onKeyDown={onKeyHandler}
+        isOnlyOne={isOnlyOne || values.length === 1}
+        onBlur={onBlurHandler}
+      >
         <EditableField
+          onWheel={(e) => e.preventDefault()}
+          type="number"
           disabled={!editable}
           className={`history-reading-field`}
           value={value}
