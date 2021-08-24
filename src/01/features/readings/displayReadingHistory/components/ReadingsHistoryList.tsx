@@ -79,7 +79,7 @@ export const ReadingsHistoryList = () => {
               getIndividualDeviceRateNumByName(device?.rateType!)
             ),
             deviceId: device?.id!,
-            readingDate: reading.readingDate || moment().toISOString(),
+            readingDate: reading.readingDateTime || moment().toISOString(),
             isForced: true,
           } as any)
         }

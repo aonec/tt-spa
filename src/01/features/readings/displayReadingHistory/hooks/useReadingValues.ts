@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+import { refetchReadingHistory } from './../models/index';
 import { createReading } from './../../../../_api/readings';
 import {
   IndividualDeviceReadingsHistoryResponse,
@@ -14,6 +16,10 @@ export function useReadingHistoryValues() {
     bufferedValues,
     setBufferedValues,
   ] = useState<IndividualDeviceReadingsHistoryResponse | null>();
+
+  const params = useParams<{ deviceId: string }>();
+
+  const { deviceId } = params;
 
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
     [key: string]: RequestStatusShared;
@@ -74,6 +80,7 @@ export function useReadingHistoryValues() {
 
     try {
       await createReading(reading);
+      refetchReadingHistory(Number(deviceId));
 
       setReadingUploadRequestStatus(id, 'done');
     } catch (e) {

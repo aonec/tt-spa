@@ -20,8 +20,7 @@ forward({
   to: fetchReadingHistoryFx,
 });
 
-sample({
-  source: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),
-  clock: refetchReadingHistory,
-  target: fetchReadingHistoryFx,
+forward({
+  from: refetchReadingHistory,
+  to: fetchReadingHistoryFx,
 });

@@ -13,4 +13,4 @@ export const fetchReadingHistoryFx = createEffect<
 
 export const ReadingHistoryGate = createGate<{ deviceId: number }>();
 
-export const refetchReadingHistory = createEvent();
+export const refetchReadingHistory = createEvent<number>();
