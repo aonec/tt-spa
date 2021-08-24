@@ -10,6 +10,7 @@ export const getReadingValuesArray = (
 
   for (let i = 0; i < rateNum; i++)
     res.push((reading as any)[`${type}${i + 1}`]);
+
   return res;
 };
 

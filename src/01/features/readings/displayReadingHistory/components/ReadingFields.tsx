@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import { IndividualDeviceReadingsCreateRequest } from 'myApi';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
@@ -47,7 +46,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     index: number,
     isOnlyOne?: boolean
   ) => {
-    const value = Number(elem?.split(' ')[0] || 0);
+    const value = Number(elem?.split(' ')[0]) || '';
     const suffix = globalSuffix || elem?.split(' ')[1];
 
     if (!editable)
@@ -132,6 +131,8 @@ const EditableFieldWrap = styled.div`
       ? '#ffd476'
       : status === 'done'
       ? '#0ddf53'
+      : status === 'failed'
+      ? '#FF0021'
       : `#eeeeee`};
   border: 1px solid var(--border-color);
   border-radius: 0;

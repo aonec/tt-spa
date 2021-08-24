@@ -74,15 +74,18 @@ export const ReadingsHistoryList = () => {
     const readings = (
       <RenderReadingFields
         onBlur={() =>
-          uploadReading({
-            ...getReadingValuesObject(
-              reading,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            ),
-            deviceId: device?.id!,
-            readingDate: reading.readingDateTime || moment().toISOString(),
-            isForced: true,
-          } as any)
+          uploadReading(
+            {
+              ...getReadingValuesObject(
+                reading,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate: reading.readingDateTime || moment().toISOString(),
+              isForced: true,
+            } as any,
+            { year, month, id: reading.id }
+          )
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
         editable
@@ -92,7 +95,7 @@ export const ReadingsHistoryList = () => {
           setFieldValue(value, {
             year,
             month,
-            date: reading.readingDate!,
+            id: reading.id,
             index,
           })
         }
