@@ -4,17 +4,20 @@ import {
   EIndividualDeviceReadingsSource,
   ManagingFirmUserShortResponse,
 } from 'myApi';
-import { ReactComponent as UserIcon } from './icons/userIcon.svg';
+import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
+import { ReactComponent as ErcIcon } from '../icons/erc.svg';
+import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';
+import { ReactComponent as BankIcon } from '../icons/bank.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({
     [EIndividualDeviceReadingsSource.Archive]: null,
-    [EIndividualDeviceReadingsSource.Bank]: null,
-    [EIndividualDeviceReadingsSource.GosUslugi]: null,
+    [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
+    [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
     [EIndividualDeviceReadingsSource.Sputnik]: null,
     [EIndividualDeviceReadingsSource.Duplicated]: null,
-    [EIndividualDeviceReadingsSource.Erc]: null,
+    [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
     [EIndividualDeviceReadingsSource.TtmFromErc]: null,
   }[sourceType]);

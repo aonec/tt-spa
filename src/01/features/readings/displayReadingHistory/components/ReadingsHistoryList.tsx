@@ -7,15 +7,29 @@ import {
   IndividualDeviceReadingsYearHistoryResponse,
 } from 'myApi';
 import React from 'react';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { $readingHistory } from '../models';
-import { ReactComponent as ArrowIconTop } from './icons/arrow.svg';
-import { ReactComponent as ArrowBottom } from './icons/arrowBottom.svg';
+import { useOpenedYears } from '../hooks/useOpenedYears';
+import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
+import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
+import { RenderReadingFields } from './ReadingFields';
 import { SourceName } from './SourceIcon';
+import {
+  getMonthName,
+  getReadingValuesArray,
+  getReadingValuesObject,
+} from '../utils';
+import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { useReadingHistoryValues } from '../hooks/useReadingValues';
 
 export const ReadingsHistoryList = () => {
-  const values = useStore($readingHistory);
+  const {
+    values,
+    setFieldValue,
+    uploadingReadingsStatuses,
+    uploadReading,
+  } = useReadingHistoryValues();
+  const device = useStore($individualDevice);
 
   const {
     isYearOpen,
@@ -26,32 +40,83 @@ export const ReadingsHistoryList = () => {
     isMonthOpen,
   } = useOpenedYears(values?.yearReadings || []);
 
-  const renderReading = ({
-    reading,
-    isFirst,
-    month,
-    arrowButton,
-  }: {
+  interface RenderReading {
     reading: IndividualDeviceReadingsItemHistoryResponse;
     isFirst?: boolean;
     arrowButton?: React.ReactElement;
     month: number;
-  }) => {
+    year: number;
+    readingsLength: number;
+  }
+
+  const renderReading = ({
+    year,
+    reading,
+    isFirst,
+    month,
+    arrowButton,
+    readingsLength,
+  }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
+
     const monthName = isFirst ? (
       <span className="month-name">{getMonthName(month)}</span>
     ) : (
       <div></div>
     );
-    const readings = <div>Readings</div>;
-    const consumption = <div>consumption</div>;
+
+    const getReadingValues = (type: 'value' | 'consumption') =>
+      getReadingValuesArray(
+        reading,
+        type,
+        getIndividualDeviceRateNumByName(device?.rateType!)
+      );
+
+    const readings = (
+      <RenderReadingFields
+        onBlur={() =>
+          uploadReading({
+            ...getReadingValuesObject(
+              reading,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: reading.readingDateTime || moment().toISOString(),
+            isForced: true,
+          } as any)
+        }
+        status={uploadingReadingsStatuses[reading.readingDate || '']}
+        editable
+        values={getReadingValues('value')}
+        suffix={device?.measurableUnitString}
+        onChange={(value, index) =>
+          setFieldValue(value, {
+            year,
+            month,
+            date: reading.readingDate!,
+            index,
+          })
+        }
+      />
+    );
+
+    const consumption = (
+      <RenderReadingFields
+        suffix={device?.measurableUnitString}
+        values={getReadingValues('consumption')}
+      />
+    );
+
     const source = (
       <SourceName sourceType={reading.source} user={reading.user} />
     );
+
     const uploadTime = (
       <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
     );
-    const arrowButtonComponent = isFirst ? arrowButton : <ArrowButtonBlock />;
+
+    const arrowButtonComponent =
+      isFirst && readingsLength > 1 ? arrowButton : <ArrowButtonBlock />;
 
     return (
       <WrapComponent>
@@ -80,11 +145,17 @@ export const ReadingsHistoryList = () => {
       </ArrowButton>
     );
 
-    return (isOpen
-      ? readings
-      : [...[(readings || [])[0]]]
-    )?.map((reading, index) =>
-      renderReading({ reading, month, isFirst: index === 0, arrowButton })
+    if (!readings?.length) return null;
+
+    return (isOpen ? readings : [readings[0]])?.map((reading, index) =>
+      renderReading({
+        reading,
+        month,
+        isFirst: index === 0,
+        arrowButton,
+        year,
+        readingsLength: readings.length,
+      })
     );
   };
 
@@ -121,74 +192,6 @@ export const ReadingsHistoryList = () => {
 const Arrow = ({ open }: { open?: boolean }) =>
   open ? <ArrowIconTop /> : <ArrowBottom />;
 
-function useOpenedYears(years: IndividualDeviceReadingsYearHistoryResponse[]) {
-  const [openedYears, setOpenedYears] = useState<
-    { year: number; openedMonths: number[]; open: boolean }[]
-  >([]);
-
-  useEffect(
-    () =>
-      setOpenedYears(
-        years?.map((elem, index) => ({
-          year: elem.year,
-          open: index === 0,
-          openedMonths: [],
-        })) || []
-      ),
-    [years]
-  );
-
-  const openYear = (year: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: true } : elem))
-    );
-
-  const closeYear = (year: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) => (elem.year === year ? { ...elem, open: false } : elem))
-    );
-
-  const isYearOpen = (year: number) =>
-    openedYears.find((elem) => elem.year === year)?.open;
-
-  const openMonth = (year: number, month: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) =>
-        elem.year === year
-          ? { ...elem, openedMonths: [...elem.openedMonths, month] }
-          : elem
-      )
-    );
-
-  const closeMonth = (year: number, month: number) =>
-    setOpenedYears((prev) =>
-      prev.map((elem) =>
-        elem.year === year
-          ? {
-              ...elem,
-              openedMonths: elem.openedMonths.filter((elem) => elem !== month),
-            }
-          : elem
-      )
-    );
-
-  const isMonthOpen = (year: number, month: number) =>
-    Boolean(
-      openedYears
-        .find((elem) => elem.year === year)
-        ?.openedMonths.find((elem) => elem === month)
-    );
-
-  return {
-    isYearOpen,
-    openYear,
-    closeYear,
-    openMonth,
-    closeMonth,
-    isMonthOpen,
-  };
-}
-
 const columnsNames = [
   'Период',
   'Показания',
@@ -197,16 +200,13 @@ const columnsNames = [
   'Последние показания',
 ];
 
-const getMonthName = (month: number) =>
-  moment().subtract(month, 'months').format('MMMM');
-
 const Wrap = styled.div`
   max-width: 960px;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.28fr 1fr;
+  grid-template-columns: 0.96fr 1fr 0.9fr 1.34fr 1fr;
 `;
 
 const TableHeader = styled(Grid)`
@@ -225,7 +225,7 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1.2fr 1.2fr 1.2fr 1.5fr 1fr 0fr;
+  grid-template-columns: 1fr 1.2fr 0.9fr 1.5fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;

@@ -50,15 +50,14 @@ const ApartmentReadingLine = ({
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
-
-    // {
-    //   title: 'Открыть историю показаний',
-    //   show: true,
-    //   cb: () =>
-    //     history.push(
-    //       `/apartment/${id}/individualDevice/${device.id}/readingHistory`
-    //     ),
-    // },
+    {
+      title: 'Открыть историю показаний',
+      show: true,
+      cb: () =>
+        history.push(
+          `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+        ),
+    },
     {
       title: 'Замена или поверка прибора',
       show: true,
@@ -133,7 +132,7 @@ const SelectSwitchDeiveTypeModal = ({
       title={<ModalHeader>Выберите действие</ModalHeader>}
       footer={
         <ModalFooter>
-          <ButtonTT color={'white'} key="back">
+          <ButtonTT color={'white'} key="back" onClick={close}>
             Отмена
           </ButtonTT>
           <ButtonTT

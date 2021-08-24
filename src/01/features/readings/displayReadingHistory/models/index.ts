@@ -1,6 +1,6 @@
 import { createGate } from 'effector-react';
 import { IndividualDeviceReadingsHistoryResponse } from './../../../../../myApi';
-import { createStore, createEffect } from 'effector';
+import { createStore, createEffect, createEvent } from 'effector';
 
 export const $readingHistory = createStore<IndividualDeviceReadingsHistoryResponse | null>(
   null
@@ -12,3 +12,5 @@ export const fetchReadingHistoryFx = createEffect<
 >();
 
 export const ReadingHistoryGate = createGate<{ deviceId: number }>();
+
+export const refetchReadingHistory = createEvent<number>();
