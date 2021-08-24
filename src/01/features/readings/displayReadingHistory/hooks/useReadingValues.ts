@@ -74,8 +74,6 @@ export function useReadingHistoryValues() {
   async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
     const id = reading.readingDate;
 
-    console.log(reading);
-
     setReadingUploadRequestStatus(id, 'pending');
 
     try {

@@ -128,12 +128,24 @@ interface EditableFieldWrapProps {
 
 const EditableFieldWrap = styled.div`
   --border-color: ${({ status }: EditableFieldWrapProps) =>
-    status === 'pending' ? '#ffd476' : `#eeeeee`};
+    status === 'pending'
+      ? '#ffd476'
+      : status === 'done'
+      ? '#0ddf53'
+      : `#eeeeee`};
   border: 1px solid var(--border-color);
   border-radius: 0;
   border-bottom-color: white;
   width: 145px;
   padding: -5px;
+
+  .ant-input,
+  .ant-input-affix-wrapper,
+  .ant-input-affix-wrapper:hover,
+  .ant-input-affix-wrapper-focused {
+    border: 0;
+    box-shadow: 0;
+  }
 
   ${(props: EditableFieldWrapProps) =>
     props.isOnlyOne

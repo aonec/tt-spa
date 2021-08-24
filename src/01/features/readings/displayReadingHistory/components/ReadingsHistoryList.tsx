@@ -71,7 +71,6 @@ export const ReadingsHistoryList = () => {
         type,
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
-
     const readings = (
       <RenderReadingFields
         onBlur={() =>
@@ -85,7 +84,7 @@ export const ReadingsHistoryList = () => {
             isForced: true,
           } as any)
         }
-        status={uploadingReadingsStatuses[reading.readingDate || '']}
+        status={uploadingReadingsStatuses[reading.readingDateTime || '']}
         editable
         values={getReadingValues('value')}
         suffix={device?.measurableUnitString}
