@@ -7,7 +7,7 @@ import {
   IndividualDeviceReadingsYearHistoryResponse,
 } from 'myApi';
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useOpenedYears } from '../hooks/useOpenedYears';
 import { ReactComponent as ArrowIconTop } from '../icons/arrow.svg';
 import { ReactComponent as ArrowBottom } from '../icons/arrowBottom.svg';
@@ -21,6 +21,7 @@ import {
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
+import { fetchReadingHistoryFx } from '../models';
 
 export const ReadingsHistoryList = () => {
   const {
@@ -30,6 +31,8 @@ export const ReadingsHistoryList = () => {
     uploadReading,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
+
+  const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
   const {
     isYearOpen,
@@ -181,6 +184,7 @@ export const ReadingsHistoryList = () => {
 
   return (
     <Wrap>
+      <GradientLoader loading={pendingHistory} />
       <TableHeader>
         {columnsNames.map((elem) => (
           <div>{elem}</div>
@@ -201,6 +205,31 @@ const columnsNames = [
   'Источник',
   'Последние показания',
 ];
+
+const slide = keyframes`
+  0% {
+    background-position: 0% 0;
+  }
+  
+  100% {
+    background-position: 100% 0;
+  }
+`;
+
+const GradientLoader = styled.div`
+  background: ${(props: { loading: boolean }) =>
+    props.loading
+      ? `repeating-linear-gradient(
+    45deg,
+    #e8ebff,
+    #e8ebff 10px,
+    #7584d6 10px,
+    #7584d6 20px
+  )`
+      : 'none'};
+  height: 5px;
+  animation: slide 2s infinite linear forwards;
+`;
 
 const Wrap = styled.div`
   max-width: 960px;
