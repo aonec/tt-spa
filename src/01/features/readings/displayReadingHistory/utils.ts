@@ -10,11 +10,14 @@ export const getReadingValuesArray = (
 
   for (let i = 0; i < rateNum; i++)
     res.push((reading as any)[`${type}${i + 1}`]);
+
   return res;
 };
 
 export const getMonthName = (month: number) =>
-  moment().subtract(month, 'months').format('MMMM');
+  moment()
+    .month(month - 1)
+    .format('MMMM');
 
 export const getReadingValuesObject = (
   reading: IndividualDeviceReadingsItemHistoryResponse,
