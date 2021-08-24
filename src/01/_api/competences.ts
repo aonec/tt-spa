@@ -1,6 +1,5 @@
 import axios from '01/axios';
 import {
-  ECompetenceTypeStringDictionaryItem,
   ManagementFirmCompetenceResponse,
 } from './../../myApi';
 

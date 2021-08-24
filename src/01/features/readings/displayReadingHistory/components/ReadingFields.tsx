@@ -114,18 +114,20 @@ const EditableField = styled(Input)`
 `;
 
 const EditableFieldWrap = styled.div`
+  --border-color: white;
   border: 1px solid #eeeeee;
   border-radius: 0;
   background: white;
   border-bottom-color: white;
   width: 145px;
+  padding: -5px;
 
   ${(props: { isOnlyOne: boolean }) =>
     props.isOnlyOne
       ? `
-      border-radius: 6px;
+      border-radius: 8px;
       .ant-input-affix-wrapper {
-      border-radius: 6px;
+      border-radius: 8px;
     }`
       : `
     .ant-input-affix-wrapper {
@@ -133,17 +135,17 @@ const EditableFieldWrap = styled.div`
     }
     
     &:first-child {
-      border-radius: 6px 6px 0 0;
+      border-radius: 8px 8px 0 0;
       
       .ant-input-affix-wrapper {
-          border-radius: 6px 6px 0 0;
+          border-radius: 8px 8px 0 0;
         }
     }
     
     &:last-child {
-        border-radius: 0 0 6px 6px;
+        border-radius: 0 0 8px 8px;
         .ant-input-affix-wrapper {
-            border-radius: 0 0 6px 6px;
+            border-radius: 0 0 8px 8px;
         }
     }
   `}
