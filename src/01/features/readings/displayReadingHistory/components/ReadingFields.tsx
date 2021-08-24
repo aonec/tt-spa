@@ -16,7 +16,14 @@ interface Props {
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
-  const { values, editable, onChange, suffix: globalSuffix, onBlur } = props;
+  const {
+    values,
+    editable,
+    onChange,
+    suffix: globalSuffix,
+    onBlur,
+    status,
+  } = props;
 
   const wrapRef = useRef<any>();
 
@@ -53,6 +60,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
         ref={wrapRef}
         onKeyDown={onKeyHandler}
         isOnlyOne={isOnlyOne || values.length === 1}
+        status={status!}
         onBlur={onBlurHandler}
       >
         <EditableField
@@ -113,16 +121,21 @@ const EditableField = styled(Input)`
   border-color: rgba(0, 0, 0, 0);
 `;
 
+interface EditableFieldWrapProps {
+  status: RequestStatusShared;
+  isOnlyOne: boolean;
+}
+
 const EditableFieldWrap = styled.div`
-  --border-color: white;
-  border: 1px solid #eeeeee;
+  --border-color: ${({ status }: EditableFieldWrapProps) =>
+    status === 'pending' ? '#ffd476' : `#eeeeee`};
+  border: 1px solid var(--border-color);
   border-radius: 0;
-  background: white;
   border-bottom-color: white;
   width: 145px;
   padding: -5px;
 
-  ${(props: { isOnlyOne: boolean }) =>
+  ${(props: EditableFieldWrapProps) =>
     props.isOnlyOne
       ? `
       border-radius: 8px;
@@ -151,6 +164,6 @@ const EditableFieldWrap = styled.div`
   `}
 
   &:last-child {
-    border-bottom-color: #eeeeee;
+    border-bottom-color: var(--border-color);
   }
 `;
