@@ -16,7 +16,7 @@ export function useOpenedYears(
           openedMonths: [],
         })) || []
       ),
-    [years]
+    [years.map((elem) => elem.year).join()]
   );
 
   const openYear = (year: number) =>

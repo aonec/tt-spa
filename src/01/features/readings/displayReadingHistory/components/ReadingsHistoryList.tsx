@@ -46,6 +46,7 @@ export const ReadingsHistoryList = () => {
     arrowButton?: React.ReactElement;
     month: number;
     year: number;
+    readingsLength: number;
   }
 
   const renderReading = ({
@@ -54,6 +55,7 @@ export const ReadingsHistoryList = () => {
     isFirst,
     month,
     arrowButton,
+    readingsLength,
   }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
@@ -113,7 +115,8 @@ export const ReadingsHistoryList = () => {
       <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
     );
 
-    const arrowButtonComponent = isFirst ? arrowButton : <ArrowButtonBlock />;
+    const arrowButtonComponent =
+      isFirst && readingsLength > 1 ? arrowButton : <ArrowButtonBlock />;
 
     return (
       <WrapComponent>
@@ -145,7 +148,14 @@ export const ReadingsHistoryList = () => {
     if (!readings?.length) return null;
 
     return (isOpen ? readings : [readings[0]])?.map((reading, index) =>
-      renderReading({ reading, month, isFirst: index === 0, arrowButton, year })
+      renderReading({
+        reading,
+        month,
+        isFirst: index === 0,
+        arrowButton,
+        year,
+        readingsLength: readings.length,
+      })
     );
   };
 
