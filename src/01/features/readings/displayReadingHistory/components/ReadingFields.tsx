@@ -8,11 +8,20 @@ interface RenderReadingField {
   values: (string | null)[];
   suffix?: string | null;
   editable?: boolean;
-  onChange?(value: number, index: number): void;
+  onChange?(value: string, index: number): void;
 }
 
 export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
   const { values, editable, onChange, suffix: globalSuffix } = props;
+
+  const onChangeHandeler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    e.preventDefault();
+
+    onChange && onChange(e.target.value, index);
+  };
 
   const renderField = (
     elem: string | null,
@@ -35,6 +44,7 @@ export const RenderReadingFields: React.FC<RenderReadingField> = (props) => {
           value={value}
           suffix={suffix}
           prefix={<Prefix>{prefix}</Prefix>}
+          onChange={(e) => onChangeHandeler(e, index + 1)}
         />
       </EditableFieldWrap>
     );

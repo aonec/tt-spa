@@ -19,7 +19,7 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 
 export const ReadingsHistoryList = () => {
-  const { values } = useReadingHistoryValues();
+  const { values, setFieldValue } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
   const {
@@ -36,9 +36,11 @@ export const ReadingsHistoryList = () => {
     isFirst?: boolean;
     arrowButton?: React.ReactElement;
     month: number;
+    year: number;
   }
 
   const renderReading = ({
+    year,
     reading,
     isFirst,
     month,
@@ -64,6 +66,14 @@ export const ReadingsHistoryList = () => {
         editable
         values={getReadingValues('value')}
         suffix={device?.measurableUnitString}
+        onChange={(value, index) =>
+          setFieldValue(value, {
+            year,
+            month,
+            date: reading.readingDate!,
+            index,
+          })
+        }
       />
     );
 
@@ -114,7 +124,7 @@ export const ReadingsHistoryList = () => {
     if (!readings?.length) return null;
 
     return (isOpen ? readings : [readings[0]])?.map((reading, index) =>
-      renderReading({ reading, month, isFirst: index === 0, arrowButton })
+      renderReading({ reading, month, isFirst: index === 0, arrowButton, year })
     );
   };
 

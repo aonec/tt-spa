@@ -1,13 +1,23 @@
-import { IndividualDeviceReadingsHistoryResponse } from './../../../../../myApi';
+import { createReading } from './../../../../_api/readings';
+import {
+  IndividualDeviceReadingsHistoryResponse,
+  IndividualDeviceReadingsCreateRequest,
+} from './../../../../../myApi';
 import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
+
+type Status = 'pending' | 'done' | 'failed' | null;
 
 export function useReadingHistoryValues() {
   const [
     bufferedValues,
     setBufferedValues,
   ] = useState<IndividualDeviceReadingsHistoryResponse | null>();
+
+  const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
+    [key: string]: Status;
+  }>({});
 
   const initialValues = useStore($readingHistory);
 
@@ -17,8 +27,8 @@ export function useReadingHistoryValues() {
 
   const setFieldValue = (
     value: string,
-    address: { year: number; month: number; date: string }
-  ) =>
+    address: { year: number; month: number; date: string; index: number }
+  ) => {
     setBufferedValues((prev) => ({
       ...prev,
       yearReadings:
@@ -34,7 +44,7 @@ export function useReadingHistoryValues() {
                           readings:
                             month.readings?.map((elem) =>
                               elem.readingDate === address.date
-                                ? { ...elem, ...{ value } }
+                                ? { ...elem, [`value${address.index}`]: value }
                                 : elem
                             ) || [],
                         }
@@ -44,6 +54,34 @@ export function useReadingHistoryValues() {
             : year
         ) || [],
     }));
+  };
 
-  return { values: bufferedValues, setFieldValue };
+  const setReadingUploadRequestStatus = (id: string, status: Status) =>
+    setUploadingReadingsStatuses((prev) => ({
+      ...prev,
+      [id]: status,
+    }));
+
+  async function onUploadReadingHandler(
+    reading: IndividualDeviceReadingsCreateRequest
+  ) {
+    const id = reading.readingDate;
+
+    setReadingUploadRequestStatus(id, 'pending');
+
+    try {
+      await createReading(reading);
+
+      setReadingUploadRequestStatus(id, 'done');
+    } catch (e) {
+      setReadingUploadRequestStatus(id, 'failed');
+    }
+  }
+
+  return {
+    values: bufferedValues,
+    setFieldValue,
+    uploadingReadingsStatuses,
+    onUploadReadingHandler,
+  };
 }
