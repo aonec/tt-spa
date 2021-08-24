@@ -15,7 +15,9 @@ export const getReadingValuesArray = (
 };
 
 export const getMonthName = (month: number) =>
-  moment().subtract(month, 'months').format('MMMM');
+  moment()
+    .month(month - 1)
+    .format('MMMM');
 
 export const getReadingValuesObject = (
   reading: IndividualDeviceReadingsItemHistoryResponse,
