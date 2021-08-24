@@ -3,8 +3,10 @@ import {
   ReadingHistoryGate,
   fetchReadingHistoryFx,
   $readingHistory,
+  refetchReadingHistory,
 } from './index';
 import { forward } from 'effector';
+import { sample } from 'lodash';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 
@@ -15,5 +17,10 @@ $readingHistory.on(
 
 forward({
   from: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),
+  to: fetchReadingHistoryFx,
+});
+
+forward({
+  from: refetchReadingHistory,
   to: fetchReadingHistoryFx,
 });

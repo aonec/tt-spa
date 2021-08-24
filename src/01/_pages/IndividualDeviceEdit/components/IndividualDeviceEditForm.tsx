@@ -121,7 +121,6 @@ const IndividualDeviceEditForm = ({
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(),
         futureCheckingDate: values.futureCheckingDate?.toISOString(),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,

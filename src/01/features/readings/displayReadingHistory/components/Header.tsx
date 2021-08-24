@@ -21,7 +21,7 @@ export const ReadingHistoryHeader = () => {
       >
         <div>
           <Breadcrumb />
-          <div>
+          <div style={{ marginTop: 5 }}>
             <Title>История показаний</Title>
             <Flex>
               <DeviceDataString />

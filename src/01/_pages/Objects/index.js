@@ -112,7 +112,6 @@ export const Objects = ({ isReadings = false }) => {
       const res = await axios.get(`HousingStocks${queryString}`);
       setState(res);
     })();
-    return () => cancel();
   }, [debouncedSearchState]);
 
   const { items } = state;
