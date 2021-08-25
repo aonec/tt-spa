@@ -91,7 +91,7 @@ export const ReadingsHistoryList = () => {
           )
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
-        editable
+        editable={isFirst}
         values={getReadingValues('value')}
         suffix={device?.measurableUnitString}
         onChange={(value, index) =>
@@ -109,6 +109,7 @@ export const ReadingsHistoryList = () => {
       <RenderReadingFields
         suffix={device?.measurableUnitString}
         values={getReadingValues('consumption')}
+        consumption
       />
     );
 
