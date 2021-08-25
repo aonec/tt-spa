@@ -15,15 +15,16 @@ export const Filter = ({ inputs = [] }) => {
 
     const isLastInput = index + 1 === inputs.length;
 
-    console.log(history.location.pathname);
-
-    if (
-      isLastInput &&
-      !(
+    if (isLastInput) {
+      if (
         history.location.pathname === '/meters/apartments' ||
         history.location.pathname === '/meters/apartments/'
-      )
-    ) {
+      ) {
+        e.target.blur && e.target.blur();
+
+        return;
+      }
+
       const node = document.getElementsByClassName('ant-input')[1];
 
       node && node.focus();
