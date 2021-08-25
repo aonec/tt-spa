@@ -12,6 +12,7 @@ interface Props {
   onChange?(value: string, index: number): void;
   onBlur?(): void;
   status?: RequestStatusShared;
+  consumption?: boolean;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -22,6 +23,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     suffix: globalSuffix,
     onBlur,
     status,
+    consumption,
   } = props;
 
   const wrapRef = useRef<any>();
@@ -50,7 +52,11 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     const suffix = globalSuffix || elem?.split(' ')[1];
 
     if (!editable)
-      return <ValueLine>{value ? `${value} ${suffix}` : ''}</ValueLine>;
+      return (
+        <ValueLine isReading={!consumption}>
+          {value ? `${value} ${suffix}` : ''}
+        </ValueLine>
+      );
 
     const prefix = `T${index + 1}`;
 
@@ -109,10 +115,24 @@ const Prefix = styled.span`
 
 const FieldsWrap = styled.div`
   margin-right: 20px;
+  counter-reset: section;
 `;
 
 const ValueLine = styled(Flex)`
   height: 30px;
+
+  ${(props: { isReading?: boolean }) =>
+    props.isReading
+      ? `
+    &:before {
+      counter-increment: section;
+      content: 'T' counter(section) ' ';
+      color: lightgray;
+      margin-right: 10px;
+    }
+  padding-left: 12px;
+    `
+      : ''}
 `;
 
 const EditableField = styled(Input)`
