@@ -1,5 +1,5 @@
 import { getApartment } from './../../../../_api/apartments';
-import { ApartmentGate } from './index';
+import { ApartmentGate, refetchApartment } from './index';
 import { sample } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
@@ -11,6 +11,6 @@ fetchApartmentFx.use(getApartment);
 
 sample({
   source: ApartmentGate.state.map((state) => state.id),
-  clock: ApartmentGate.open,
+  clock: [ApartmentGate.open, refetchApartment],
   target: fetchApartmentFx,
 });

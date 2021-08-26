@@ -1,5 +1,8 @@
 import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
-import { ApartmentGate } from './../../displayApartment/models/index';
+import {
+  ApartmentGate,
+  refetchApartment,
+} from './../../displayApartment/models/index';
 import {
   pauseApartmentForm,
   pauseApartmentModalCancelButtonClicked,
@@ -14,7 +17,15 @@ pauseApartmentStatusFx.use(setApartmentStatus);
 
 $isPauseApartmentModalVisible
   .on(pauseApartmentButtonClicked, () => true)
-  .reset(pauseApartmentModalCancelButtonClicked, pauseApartmentStatusFx.done);
+  .reset(
+    pauseApartmentModalCancelButtonClicked,
+    pauseApartmentStatusFx.doneData
+  );
+
+forward({
+  from: pauseApartmentStatusFx.done,
+  to: refetchApartment,
+});
 
 forward({
   from: [
