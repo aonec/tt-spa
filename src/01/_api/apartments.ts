@@ -19,5 +19,8 @@ export interface SetApartmentStatusRequest {
 export const setApartmentStatus = ({
   apartmentId,
   requestPayload,
-}: SetApartmentStatusRequest): Promise<IndividualDeviceWithExpiredCheckingDateListResponse> =>
-  axios.patch(`Apartments/${apartmentId}/SetStatus`, requestPayload);
+}: SetApartmentStatusRequest): Promise<IndividualDeviceWithExpiredCheckingDateListResponse> => {
+  console.log(apartmentId);
+
+  return axios.patch(`Apartments/${apartmentId}/SetStatus`, requestPayload);
+};

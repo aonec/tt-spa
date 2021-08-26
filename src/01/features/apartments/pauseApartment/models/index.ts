@@ -1,3 +1,4 @@
+import { FileData } from './../../../../hooks/useFilesUpload';
 import { SetApartmentStatusRequest } from './../../../../_api/apartments';
 import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../../../../myApi';
 import { createForm } from 'effector-forms';
@@ -9,7 +10,7 @@ export const $isPauseApartmentModalVisible = createStore(false);
 export const pauseApartmentForm = createForm({
   fields: {
     fromDate: {
-      init: moment().toISOString() as string,
+      init: moment().toISOString() as string | null,
       rules: [
         {
           name: 'required',
@@ -26,8 +27,8 @@ export const pauseApartmentForm = createForm({
         },
       ],
     },
-    documentId: {
-      init: null as number | null,
+    documents: {
+      init: [] as FileData[],
     },
   },
 });

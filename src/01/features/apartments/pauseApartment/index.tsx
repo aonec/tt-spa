@@ -1,5 +1,7 @@
+import { ErrorMessage } from '01/features/contractors/addContractors';
 import { Alert } from '01/shared/ui/Alert/Alert';
-import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
+import { FilesUpload } from '01/shared/ui/FilesUpload';
+import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { DatePickerTT } from '01/tt-components';
 import { Form } from 'antd';
@@ -18,7 +20,7 @@ import {
 export const PauseApartmentModal = () => {
   const visible = useStore($isPauseApartmentModalVisible);
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
-  const { fields } = useForm(pauseApartmentForm);
+  const { fields, submit } = useForm(pauseApartmentForm);
 
   return (
     <ModalTT
@@ -26,6 +28,7 @@ export const PauseApartmentModal = () => {
       visible={visible}
       title="Постановка квартиры на паузу"
       onCancel={pauseApartmentModalCancelButtonClicked}
+      onSubmit={submit}
       loading={pendingRequest}
     >
       <Spaces>
@@ -36,31 +39,49 @@ export const PauseApartmentModal = () => {
 
         <Grid>
           <Form.Item label="Дата начала" style={{ width: '100%' }}>
-            <DatePickerTT
+            <DatePicker
+              allowClear
               value={
                 fields.fromDate.value
                   ? moment(fields.fromDate.value)
                   : undefined
               }
               onChange={(value: moment.Moment | null) =>
-                value && fields.fromDate.onChange(value.toISOString())
+                fields.fromDate.onChange(value && value.toISOString())
               }
               format="YYYY.MM.DD"
             />
+            <ErrorMessage>
+              {fields.fromDate.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
           </Form.Item>
           <Form.Item label="Дата начала" style={{ width: '100%' }}>
-            <DatePickerTT
+            <DatePicker
+              allowClear
               value={
                 fields.toDate.value ? moment(fields.toDate.value) : undefined
               }
               onChange={(value: moment.Moment | null) =>
-                value && fields.toDate.onChange(value.toISOString())
+                fields.toDate.onChange(value && value.toISOString())
               }
               format="YYYY.MM.DD"
             />
+            <ErrorMessage>
+              {fields.toDate.errorText({
+                required: 'Это поле обязательное',
+              })}
+            </ErrorMessage>
           </Form.Item>
         </Grid>
       </Spaces>
+      <FilesUpload
+        filesInit={fields.documents.value}
+        uniqId={`pause-apartment`}
+        text="Добавьте заявление абонента о постановке квартиры на паузу"
+        onChange={fields.documents.onChange}
+      />
     </ModalTT>
   );
 };
@@ -69,4 +90,8 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
+`;
+
+const DatePicker = styled(DatePickerTT)`
+  border-radius: 4px;
 `;
