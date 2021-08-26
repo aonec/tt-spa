@@ -13,6 +13,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
+import { ApartmentGate } from '01/features/apartments/displayApartment/models';
 
 const styles = css`
   drower {
@@ -139,6 +140,7 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
   ];
   return styled(styles)(
     <>
+      <ApartmentGate id={id} />
       <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
         <apart_title as="h2">{title}</apart_title>
         <MenuButtonTT menuButtonArr={menuButtonArray} />
