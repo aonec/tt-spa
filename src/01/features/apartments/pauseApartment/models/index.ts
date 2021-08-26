@@ -2,13 +2,14 @@ import { SetApartmentStatusRequest } from './../../../../_api/apartments';
 import { IndividualDeviceWithExpiredCheckingDateListResponse } from './../../../../../myApi';
 import { createForm } from 'effector-forms';
 import { createStore, createEffect, createEvent } from 'effector';
+import moment from 'moment';
 
 export const $isPauseApartmentModalVisible = createStore(false);
 
 export const pauseApartmentForm = createForm({
   fields: {
     fromDate: {
-      init: null as string | null,
+      init: moment().toISOString() as string,
       rules: [
         {
           name: 'required',
