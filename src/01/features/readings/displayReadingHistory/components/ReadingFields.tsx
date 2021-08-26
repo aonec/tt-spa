@@ -69,8 +69,6 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
         onBlur={onBlurHandler}
       >
         <EditableField
-          onWheel={(e) => e.preventDefault()}
-          type="number"
           disabled={!editable}
           className={`history-reading-field`}
           value={value}
