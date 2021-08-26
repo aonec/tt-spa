@@ -1,3 +1,4 @@
+import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
 import { ApartmentGate } from './../../displayApartment/models/index';
 import {
   pauseApartmentForm,
@@ -7,6 +8,7 @@ import {
 import { $isPauseApartmentModalVisible, pauseApartmentButtonClicked } from '.';
 import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
+import { EApartmentStatus } from 'myApi';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -26,9 +28,16 @@ sample({
   source: combine(
     ApartmentGate.state as any,
     pauseApartmentForm.$values,
-    ({ id: apartmentId }: { id: number }, values: any) => ({
+    (
+      { id: apartmentId }: { id: number },
+      values: any
+    ): GetProblemDevicesRequestPayload => ({
       apartmentId,
-      requestPayload: { fromDate: values.fromDate, toDate: values.toDate },
+      requestPayload: {
+        fromDate: values.fromDate,
+        toDate: values.toDate,
+        status: EApartmentStatus.Pause,
+      },
     })
   ),
   clock: pauseApartmentForm.formValidated,

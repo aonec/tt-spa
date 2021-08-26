@@ -8,8 +8,11 @@ import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
+import { EApartmentStatus } from 'myApi';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { ProblemDevicesGate } from '../displayProblemDevices/models';
 import {
   $isPauseApartmentModalVisible,
   pauseApartmentForm,
@@ -21,6 +24,7 @@ export const PauseApartmentModal = () => {
   const visible = useStore($isPauseApartmentModalVisible);
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
   const { fields, submit } = useForm(pauseApartmentForm);
+  const { id } = useParams<{ id: string }>();
 
   return (
     <ModalTT
@@ -31,6 +35,14 @@ export const PauseApartmentModal = () => {
       onSubmit={submit}
       loading={pendingRequest}
     >
+      <ProblemDevicesGate
+        apartmentId={Number(id)}
+        requestPayload={{
+          status: EApartmentStatus.Pause,
+          fromDate: fields.fromDate.value,
+          toDate: fields.toDate.value,
+        }}
+      />
       <Spaces>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
         <Alert>
