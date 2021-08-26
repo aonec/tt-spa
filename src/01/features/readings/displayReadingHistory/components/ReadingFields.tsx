@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import { IndividualDeviceReadingsCreateRequest } from 'myApi';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
@@ -13,6 +12,7 @@ interface Props {
   onChange?(value: string, index: number): void;
   onBlur?(): void;
   status?: RequestStatusShared;
+  consumption?: boolean;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -23,6 +23,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     suffix: globalSuffix,
     onBlur,
     status,
+    consumption,
   } = props;
 
   const wrapRef = useRef<any>();
@@ -47,11 +48,15 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     index: number,
     isOnlyOne?: boolean
   ) => {
-    const value = Number(elem?.split(' ')[0] || 0);
+    const value = Number(elem?.split(' ')[0]) || '';
     const suffix = globalSuffix || elem?.split(' ')[1];
 
     if (!editable)
-      return <ValueLine>{value ? `${value} ${suffix}` : ''}</ValueLine>;
+      return (
+        <ValueLine isReading={!consumption}>
+          {value ? `${value} ${suffix}` : ''}
+        </ValueLine>
+      );
 
     const prefix = `T${index + 1}`;
 
@@ -110,10 +115,24 @@ const Prefix = styled.span`
 
 const FieldsWrap = styled.div`
   margin-right: 20px;
+  counter-reset: section;
 `;
 
 const ValueLine = styled(Flex)`
   height: 30px;
+
+  ${(props: { isReading?: boolean }) =>
+    props.isReading
+      ? `
+    &:before {
+      counter-increment: section;
+      content: 'T' counter(section) ' ';
+      color: lightgray;
+      margin-right: 10px;
+    }
+  padding-left: 12px;
+    `
+      : ''}
 `;
 
 const EditableField = styled(Input)`
@@ -128,12 +147,26 @@ interface EditableFieldWrapProps {
 
 const EditableFieldWrap = styled.div`
   --border-color: ${({ status }: EditableFieldWrapProps) =>
-    status === 'pending' ? '#ffd476' : `#eeeeee`};
+    status === 'pending'
+      ? '#ffd476'
+      : status === 'done'
+      ? '#0ddf53'
+      : status === 'failed'
+      ? '#FF0021'
+      : `#eeeeee`};
   border: 1px solid var(--border-color);
   border-radius: 0;
   border-bottom-color: white;
   width: 145px;
   padding: -5px;
+
+  .ant-input,
+  .ant-input-affix-wrapper,
+  .ant-input-affix-wrapper:hover,
+  .ant-input-affix-wrapper-focused {
+    border: 0;
+    box-shadow: 0;
+  }
 
   ${(props: EditableFieldWrapProps) =>
     props.isOnlyOne
