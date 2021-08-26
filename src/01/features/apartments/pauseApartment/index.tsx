@@ -76,15 +76,21 @@ export const PauseApartmentModal = () => {
           </Form.Item>
         </Grid>
       </Spaces>
-      <FilesUpload
-        filesInit={fields.documents.value}
-        uniqId={`pause-apartment`}
-        text="Добавьте заявление абонента о постановке квартиры на паузу"
-        onChange={fields.documents.onChange}
-      />
+      <FilesUploadWrap>
+        <FilesUpload
+          filesInit={fields.documents.value}
+          uniqId={`pause-apartment`}
+          text="Добавьте заявление абонента о постановке квартиры на паузу"
+          onChange={fields.documents.onChange}
+        />
+      </FilesUploadWrap>
     </ModalTT>
   );
 };
+
+const FilesUploadWrap = styled.div`
+  margin-top: -20px;
+`;
 
 const Grid = styled.div`
   display: grid;

@@ -15,7 +15,10 @@ $isPauseApartmentModalVisible
   .reset(pauseApartmentModalCancelButtonClicked, pauseApartmentStatusFx.done);
 
 forward({
-  from: pauseApartmentStatusFx.doneData,
+  from: [
+    pauseApartmentStatusFx.doneData,
+    pauseApartmentModalCancelButtonClicked,
+  ],
   to: pauseApartmentForm.reset,
 });
 
