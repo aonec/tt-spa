@@ -21,8 +21,6 @@ export const setApartmentStatus = ({
   apartmentId,
   requestPayload,
 }: SetApartmentStatusRequest): Promise<IndividualDeviceWithExpiredCheckingDateListResponse> => {
-  console.log(apartmentId);
-
   return axios.patch(`Apartments/${apartmentId}/SetStatus`, requestPayload);
 };
 

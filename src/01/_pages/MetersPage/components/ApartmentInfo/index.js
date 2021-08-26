@@ -13,9 +13,16 @@ import TextArea from 'antd/lib/input/TextArea';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
-import { ApartmentGate } from '01/features/apartments/displayApartment/models';
+import {
+  $apartment,
+  ApartmentGate,
+} from '01/features/apartments/displayApartment/models';
 import { pauseApartmentButtonClicked } from '01/features/apartments/pauseApartment/models';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
+import { Alert } from '01/shared/ui/Alert/Alert';
+import { useStore } from 'effector-react';
+import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
+import moment from 'moment';
 
 const styles = css`
   drower {
@@ -133,6 +140,8 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
   const history = useHistory();
   const { id } = useParams();
 
+  const apartment = useStore($apartment);
+
   const menuButtonArray = [
     {
       title: 'Поставить на паузу',
@@ -145,14 +154,30 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
       cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
     },
   ];
+
   return styled(styles)(
     <>
-      <ApartmentGate id={id} />
+      <ApartmentGate id={Number(id)} />
       <PauseApartmentModal />
       <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
         <apart_title as="h2">{title}</apart_title>
         <MenuButtonTT menuButtonArr={menuButtonArray} />
       </Flex>
+
+      {apartment?.status === 'Pause' && (
+        <div>
+          <Space />
+          <Alert type="stop">
+            <AlertContent>
+              <div>
+                Квартира на паузе до{' '}
+                {moment(apartment.stoppedTo).format('YYYY.MM.DD')}
+              </div>
+              <div className="ant-btn-link">Снять с паузы</div>
+            </AlertContent>
+          </Alert>
+        </div>
+      )}
 
       <drower>
         <drower_btn onClick={() => setShow(!show)}>
@@ -176,3 +201,9 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
     </>
   );
 };
+
+const AlertContent = styledComponents(Flex)`
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+`;
