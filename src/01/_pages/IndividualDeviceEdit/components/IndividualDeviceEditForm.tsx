@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { Form, Select } from 'antd';
+import { Form, message, Select } from 'antd';
 import moment from 'moment';
 import { resources } from '../../../tt-components/localBases';
 import {
@@ -131,16 +131,21 @@ const IndividualDeviceEditForm = ({
 
       setLoading(true);
 
-      await saveMagnetSeal();
-      await putIndividualDevice(id, form).then(
-        ({ show, id: existDeviceId }: any) => {
-          if (show) {
-            setAlert(true);
-            setExistDevice(existDeviceId);
+      try {
+        await saveMagnetSeal();
+        await putIndividualDevice(id, form).then(
+          ({ show, id: existDeviceId }: any) => {
+            if (show) {
+              setAlert(true);
+              setExistDevice(existDeviceId);
+            }
           }
-        }
-      );
+        );
 
+        history.goBack();
+      } catch (e) {
+        message.error('В выбранном месте уже есть прибор');
+      }
       setLoading(false);
     },
   });

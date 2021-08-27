@@ -12,7 +12,10 @@ import { EApartmentStatus } from 'myApi';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { ProblemDevicesGate } from '../displayProblemDevices/models';
+import {
+  $problemDevices,
+  ProblemDevicesGate,
+} from '../displayProblemDevices/models';
 import {
   $isPauseApartmentModalVisible,
   pauseApartmentForm,
@@ -25,6 +28,7 @@ export const PauseApartmentModal = () => {
   const pendingRequest = useStore(pauseApartmentStatusFx.pending);
   const { fields, submit } = useForm(pauseApartmentForm);
   const { id } = useParams<{ id: string }>();
+  const problemDevices = useStore($problemDevices);
 
   return (
     <ModalTT
@@ -47,9 +51,13 @@ export const PauseApartmentModal = () => {
       )}
       <Spaces>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
-        <Alert>
-          23.05.2020 выходит срок поверки у прибора <b> СГВ-5</b> (123456789)
-        </Alert>
+
+        {problemDevices?.map((elem) => (
+          <Alert>
+            23.05.2020 выходит срок поверки у прибора <b> {elem.model}</b> (
+            {elem.serialNumber})
+          </Alert>
+        ))}
 
         <Grid>
           <Form.Item label="Дата начала" style={{ width: '100%' }}>
