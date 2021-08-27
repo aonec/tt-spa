@@ -1,6 +1,5 @@
 import {
   GetProblemDevicesRequestPayload,
-  SetApartmentStatusRequest,
 } from './../../../../_api/apartments';
 import {
   ApartmentGate,

@@ -175,6 +175,11 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
       show: true,
       cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
     },
+    {
+      title: 'Выдать справку',
+      show: true,
+      cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
+    },
   ];
 
   return styled(styles)(
