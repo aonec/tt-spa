@@ -172,7 +172,19 @@ export const BaseInfoStage = () => {
         <FormItem label="Тип ресурса">
           <StyledSelect
             placeholder="Выберите тип ресурса"
-            onChange={(value: any) => fields.resource.onChange(value)}
+            onChange={(value: any) => {
+              switch (value) {
+                case EResourceType.Electricity:
+                  fields.bitDepth.onChange(6);
+                  fields.scaleFactor.onChange(2);
+                  break;
+                default:
+                  fields.bitDepth.onChange(5);
+                  fields.scaleFactor.onChange(3);
+              }
+
+              fields.resource.onChange(value);
+            }}
             value={fields.resource.value || undefined}
           >
             {allResources.map((elem) => (
