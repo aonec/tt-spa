@@ -186,13 +186,8 @@ export async function putIndividualDevice(
 ) {
   try {
     const res = await axios.put(`IndividualDevices/${deviceId}`, form);
-    alert('Прибор успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка изменения прибора',
-    };
+    throw error;
   }
 }

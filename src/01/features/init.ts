@@ -26,3 +26,5 @@ import './individualDevices/switchIndividualDevice/models/init';
 import './individualDevices/displayIndividualDevice/models/init';
 import './individualDevices/checkIndividualDevice/models/init';
 import './readings/displayReadingHistory/models/init';
+import './apartments/pauseApartment/models/init';
+import './apartments/displayProblemDevices/models/init';

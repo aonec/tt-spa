@@ -89,6 +89,12 @@ export interface ApartmentResponse {
 
   /** @format int32 */
   hotWaterRiserCount: number | null;
+
+  /** @format date-time */
+  stoppedFrom: string | null;
+
+  /** @format date-time */
+  stoppedTo: string | null;
 }
 
 export interface ApartmentResponseSuccessApiResponse {
@@ -254,6 +260,7 @@ export enum EDocumentType {
   NodeAdmissionAct = "NodeAdmissionAct",
   ImportedFile = "ImportedFile",
   ProfilePhoto = "ProfilePhoto",
+  ApartmentStoppingStatement = "ApartmentStoppingStatement",
 }
 
 export interface DocumentResponse {
@@ -304,6 +311,7 @@ export interface ApartmentStatusSetRequest {
 
   /** @format date-time */
   toDate?: string | null;
+  documentIds?: number[] | null;
 }
 
 export enum EClosingReason {
@@ -2660,6 +2668,7 @@ export interface IndividualDeviceResponse {
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
   measurableUnitString: string | null;
+  isPolling: boolean;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -2696,6 +2705,7 @@ export interface UpdateIndividualDeviceRequest {
   /** @format int32 */
   apartmentId?: number | null;
   rateType?: EIndividualDeviceRateType | null;
+  isPolling?: boolean | null;
 }
 
 export interface IndividualDeviceListItemResponse {
@@ -2744,6 +2754,7 @@ export interface IndividualDeviceListItemResponse {
   /** @format date-time */
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
+  isPolling: boolean;
   apartmentNumber: string | null;
   homeownerName: string | null;
   personalAccountNumber: string | null;
@@ -2826,6 +2837,7 @@ export interface CreateIndividualDeviceRequest {
   rateType: EIndividualDeviceRateType;
   startupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  isPolling?: boolean;
 }
 
 export interface CloseDeviceRequest {
@@ -4784,6 +4796,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsSetStatusProblemDevicesDetail
+     * @request GET:/api/Apartments/{apartmentId}/SetStatusProblemDevices
+     * @secure
+     */
+    apartmentsSetStatusProblemDevicesDetail: (
+      apartmentId: number,
+      data: ApartmentStatusSetRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/SetStatusProblemDevices`,
+        method: "GET",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

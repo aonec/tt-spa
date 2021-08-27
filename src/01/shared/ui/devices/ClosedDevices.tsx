@@ -79,7 +79,7 @@ const ShowToggle = styled.div`
 
 const ClosedDevice = styled(Flex)`
   justify-content: space-between;
-  padding: 8px 16px 16px;
+  padding: 8px 0 8px 8px;
   opacity: 0.6;
 `;
 

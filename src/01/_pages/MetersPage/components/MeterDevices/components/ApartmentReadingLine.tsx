@@ -81,14 +81,12 @@ const ApartmentReadingLine = ({
       <FullDeviceLine>
         <DeviceInfo device={device} />
 
-        {/*Инпуты с показаниями*/}
-
         {previousReadings}
         {currentReadings}
 
-        <div></div>
-
-        <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
+        <Flex style={{ justifyContent: 'flex-end', width: '100%' }}>
+          <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
+        </Flex>
       </FullDeviceLine>
     </>
   );
@@ -204,13 +202,13 @@ const SwitchTypeButton = styled(Flex)`
 
 const FullDeviceLine = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 1fr 0fr;
+  grid-template-columns: minmax(330px, 4.75fr) 2.25fr 2.25fr 1.2fr;
   column-gap: 16px;
   margin-top: 8px;
   align-items: center;
   justify-content: flex-start;
   white-space: nowrap;
-  padding: 8px 8px 16px;
+  padding: 8px 0px 16px 8px;
   border-bottom: 1px solid #dcdee4;
 `;
 

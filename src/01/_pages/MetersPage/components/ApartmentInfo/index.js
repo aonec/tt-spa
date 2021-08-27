@@ -13,6 +13,19 @@ import TextArea from 'antd/lib/input/TextArea';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
+import {
+  $apartment,
+  ApartmentGate,
+} from '01/features/apartments/displayApartment/models';
+import {
+  cancelPauseApartmentButtonClicked,
+  pauseApartmentButtonClicked,
+} from '01/features/apartments/pauseApartment/models';
+import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
+import { Alert } from '01/shared/ui/Alert/Alert';
+import { useStore } from 'effector-react';
+import moment from 'moment';
+import confirm from 'antd/lib/modal/confirm';
 
 const styles = css`
   drower {
@@ -130,19 +143,65 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
   const history = useHistory();
   const { id } = useParams();
 
+  const apartment = useStore($apartment);
+
+  const cancelPauseApartment = () =>
+    confirm({
+      title: 'Вы действительно хотите снять эту квартиру с паузы?',
+      okText: 'Снять с паузы',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        cancelPauseApartmentButtonClicked();
+
+        await new Promise((res) => setTimeout(res, 200));
+      },
+    });
+
+  const isPaused = apartment?.status === 'Pause';
+
   const menuButtonArray = [
+    {
+      title: 'Поставить на паузу',
+      show: !isPaused,
+      cb: pauseApartmentButtonClicked,
+    },
+    {
+      title: 'Снять с паузы',
+      show: isPaused,
+      cb: cancelPauseApartment,
+    },
     {
       title: 'Добавить новый прибор',
       show: true,
       cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
     },
   ];
+
   return styled(styles)(
     <>
+      <ApartmentGate id={Number(id)} />
+      <PauseApartmentModal />
       <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
         <apart_title as="h2">{title}</apart_title>
         <MenuButtonTT menuButtonArr={menuButtonArray} />
       </Flex>
+
+      {isPaused && (
+        <div>
+          <Space />
+          <Alert type="stop">
+            <AlertContent>
+              <div>
+                Квартира на паузе до{' '}
+                {moment(apartment.stoppedTo).format('YYYY.MM.DD')}
+              </div>
+              <div onClick={cancelPauseApartment} className="ant-btn-link">
+                Снять с паузы
+              </div>
+            </AlertContent>
+          </Alert>
+        </div>
+      )}
 
       <drower>
         <drower_btn onClick={() => setShow(!show)}>
@@ -166,3 +225,9 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
     </>
   );
 };
+
+const AlertContent = styledComponents(Flex)`
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+`;
