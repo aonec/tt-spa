@@ -4,7 +4,7 @@ import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { DatePickerTT } from '01/tt-components';
-import { Form } from 'antd';
+import { Form, Space } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -53,10 +53,13 @@ export const PauseApartmentModal = () => {
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
 
         {problemDevices?.map((elem) => (
-          <Alert>
-            23.05.2020 выходит срок поверки у прибора <b> {elem.model}</b> (
-            {elem.serialNumber})
-          </Alert>
+          <>
+            <Alert>
+              {moment(elem.lastCheckingDate).format('YYYY.MM.DD')} выходит срок
+              поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
+            </Alert>
+            {<Space />}
+          </>
         ))}
 
         <Grid>
@@ -72,6 +75,9 @@ export const PauseApartmentModal = () => {
                 fields.fromDate.onChange(value && value.toISOString())
               }
               format="YYYY.MM.DD"
+              disabledDate={(value) =>
+                value.diff(moment(fields.toDate.value)) > 0
+              }
             />
             <ErrorMessage>
               {fields.fromDate.errorText({

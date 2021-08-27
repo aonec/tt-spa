@@ -17,12 +17,15 @@ import {
   $apartment,
   ApartmentGate,
 } from '01/features/apartments/displayApartment/models';
-import { pauseApartmentButtonClicked } from '01/features/apartments/pauseApartment/models';
+import {
+  cancelPauseApartmentButtonClicked,
+  pauseApartmentButtonClicked,
+} from '01/features/apartments/pauseApartment/models';
 import { PauseApartmentModal } from '01/features/apartments/pauseApartment';
 import { Alert } from '01/shared/ui/Alert/Alert';
 import { useStore } from 'effector-react';
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import moment from 'moment';
+import confirm from 'antd/lib/modal/confirm';
 
 const styles = css`
   drower {
@@ -142,11 +145,30 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
 
   const apartment = useStore($apartment);
 
+  const cancelPauseApartment = () =>
+    confirm({
+      title: 'Вы действительно хотите снять эту квартиру с паузы?',
+      okText: 'Снять с паузы',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        cancelPauseApartmentButtonClicked();
+
+        await new Promise((res) => setTimeout(res, 200));
+      },
+    });
+
+  const isPaused = apartment?.status === 'Pause';
+
   const menuButtonArray = [
     {
       title: 'Поставить на паузу',
-      show: true,
+      show: !isPaused,
       cb: pauseApartmentButtonClicked,
+    },
+    {
+      title: 'Снять с паузы',
+      show: isPaused,
+      cb: cancelPauseApartment,
     },
     {
       title: 'Добавить новый прибор',
@@ -164,7 +186,7 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
         <MenuButtonTT menuButtonArr={menuButtonArray} />
       </Flex>
 
-      {apartment?.status === 'Pause' && (
+      {isPaused && (
         <div>
           <Space />
           <Alert type="stop">
@@ -173,7 +195,9 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
                 Квартира на паузе до{' '}
                 {moment(apartment.stoppedTo).format('YYYY.MM.DD')}
               </div>
-              <div className="ant-btn-link">Снять с паузы</div>
+              <div onClick={cancelPauseApartment} className="ant-btn-link">
+                Снять с паузы
+              </div>
             </AlertContent>
           </Alert>
         </div>

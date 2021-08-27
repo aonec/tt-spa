@@ -1,9 +1,13 @@
-import { GetProblemDevicesRequestPayload } from './../../../../_api/apartments';
+import {
+  GetProblemDevicesRequestPayload,
+  SetApartmentStatusRequest,
+} from './../../../../_api/apartments';
 import {
   ApartmentGate,
   refetchApartment,
 } from './../../displayApartment/models/index';
 import {
+  cancelPauseApartmentButtonClicked,
   pauseApartmentForm,
   pauseApartmentModalCancelButtonClicked,
   pauseApartmentStatusFx,
@@ -36,6 +40,31 @@ forward({
   to: pauseApartmentForm.reset,
 });
 
+const payload = combine(
+  ApartmentGate.state as any,
+  pauseApartmentForm.$values as any,
+  (
+    { id: apartmentId }: { id: number },
+    values: { fromDate: string; toDate: string; documents: FileData[] }
+  ): GetProblemDevicesRequestPayload => ({
+    apartmentId,
+    requestPayload: {
+      fromDate: values.fromDate,
+      toDate: values.toDate,
+      status: EApartmentStatus.Pause,
+      documentIds: values.documents
+        .filter((elem) => elem.fileResponse)
+        .map((elem) => elem.fileResponse?.id!),
+    },
+  })
+);
+
+sample({
+  source: payload,
+  clock: pauseApartmentForm.formValidated,
+  target: pauseApartmentStatusFx as any,
+});
+
 sample({
   source: combine(
     ApartmentGate.state as any,
@@ -46,15 +75,12 @@ sample({
     ): GetProblemDevicesRequestPayload => ({
       apartmentId,
       requestPayload: {
-        fromDate: values.fromDate,
-        toDate: values.toDate,
-        status: EApartmentStatus.Pause,
-        documentIds: values.documents
-          .filter((elem) => elem.fileResponse)
-          .map((elem) => elem.fileResponse?.id!),
+        fromDate: null,
+        toDate: null,
+        status: EApartmentStatus.Ok,
       },
     })
   ),
-  clock: pauseApartmentForm.formValidated,
+  clock: cancelPauseApartmentButtonClicked,
   target: pauseApartmentStatusFx as any,
 });
