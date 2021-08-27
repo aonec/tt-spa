@@ -24,6 +24,7 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { useDebounce } from '01/hooks/useDebounce';
+import { getBitDepthAndScaleFactor } from '../../utils';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -172,7 +173,18 @@ export const BaseInfoStage = () => {
         <FormItem label="Тип ресурса">
           <StyledSelect
             placeholder="Выберите тип ресурса"
-            onChange={(value: any) => fields.resource.onChange(value)}
+            onChange={(value: any) => {
+              fields.resource.onChange(value);
+
+              if (!value) return;
+
+              const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
+                value
+              );
+
+              fields.bitDepth.onChange(bitDepth);
+              fields.scaleFactor.onChange(scaleFactor);
+            }}
             value={fields.resource.value || undefined}
           >
             {allResources.map((elem) => (
