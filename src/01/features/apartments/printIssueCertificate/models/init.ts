@@ -1,12 +1,26 @@
+import { getHomeownerCertificate } from './../../../../_api/homeowners';
 import {
   getIssueCertificateButtonClicked,
   closeIssueCertificateModalButtonClicked,
-  printIssueSertificateButtonClicked,
+  $homeownerCertificatre,
+  fetchHomeownerCertificate,
+  HomeownerCerificateGate,
 } from './index';
 import { $isPrintIssueCertificateModalOpen } from '.';
+import { forward } from 'effector';
+
+fetchHomeownerCertificate.use(getHomeownerCertificate);
 
 $isPrintIssueCertificateModalOpen
   .on(getIssueCertificateButtonClicked, () => true)
   .reset(closeIssueCertificateModalButtonClicked);
 
-printIssueSertificateButtonClicked.watch(console.log);
+$homeownerCertificatre.on(
+  fetchHomeownerCertificate.doneData,
+  (_, certificate) => certificate
+);
+
+forward({
+  from: HomeownerCerificateGate.open.map((values) => values.id),
+  to: fetchHomeownerCertificate,
+});
