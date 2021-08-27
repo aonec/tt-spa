@@ -11,6 +11,6 @@ fetchProblemDevicesFx.use(getProblemDevices);
 $problemDevices.on(fetchProblemDevicesFx.doneData, (_, devices) => devices);
 
 forward({
-  from: ProblemDevicesGate.open,
+  from: ProblemDevicesGate.state,
   to: fetchProblemDevicesFx,
 });

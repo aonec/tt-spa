@@ -35,14 +35,16 @@ export const PauseApartmentModal = () => {
       onSubmit={submit}
       loading={pendingRequest}
     >
-      <ProblemDevicesGate
-        apartmentId={Number(id)}
-        requestPayload={{
-          status: EApartmentStatus.Pause,
-          fromDate: fields.fromDate.value,
-          toDate: fields.toDate.value,
-        }}
-      />
+      {visible && (
+        <ProblemDevicesGate
+          apartmentId={Number(id)}
+          requestPayload={{
+            status: EApartmentStatus.Pause,
+            fromDate: fields.fromDate.value,
+            toDate: fields.toDate.value,
+          }}
+        />
+      )}
       <Spaces>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
         <Alert>
@@ -69,7 +71,7 @@ export const PauseApartmentModal = () => {
               })}
             </ErrorMessage>
           </Form.Item>
-          <Form.Item label="Дата начала" style={{ width: '100%' }}>
+          <Form.Item label="Дата окончания" style={{ width: '100%' }}>
             <DatePicker
               allowClear
               value={
@@ -77,6 +79,10 @@ export const PauseApartmentModal = () => {
               }
               onChange={(value: moment.Moment | null) =>
                 fields.toDate.onChange(value && value.toISOString())
+              }
+              disabled={!fields.fromDate.value}
+              disabledDate={(value) =>
+                value.diff(moment(fields.fromDate.value)) < 0
               }
               format="YYYY.MM.DD"
             />

@@ -5,6 +5,7 @@ import {
   IndividualDeviceWithExpiredCheckingDateResponse,
 } from './../../myApi';
 import axios from '01/axios';
+import { formQueryString } from '01/utils/formQueryString';
 
 export const getApartment = async (id: number): Promise<ApartmentResponse> => {
   const res: any = await axios.get(`Apartments/${id}`);
@@ -36,8 +37,9 @@ export const getProblemDevices = ({
   IndividualDeviceWithExpiredCheckingDateResponse[]
 > => {
   const res: any = axios.get(
-    `Apartments/${apartmentId}/SetStatusProblemDevices`,
-    requestPayload as any
+    `Apartments/${apartmentId}/SetStatusProblemDevices${formQueryString(
+      requestPayload
+    )}`
   );
 
   return res.devices;

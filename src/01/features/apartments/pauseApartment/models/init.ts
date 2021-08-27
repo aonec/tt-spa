@@ -12,6 +12,7 @@ import { $isPauseApartmentModalVisible, pauseApartmentButtonClicked } from '.';
 import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
+import { FileData } from '01/hooks/useFilesUpload';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -38,16 +39,19 @@ forward({
 sample({
   source: combine(
     ApartmentGate.state as any,
-    pauseApartmentForm.$values,
+    pauseApartmentForm.$values as any,
     (
       { id: apartmentId }: { id: number },
-      values: any
+      values: { fromDate: string; toDate: string; documents: FileData[] }
     ): GetProblemDevicesRequestPayload => ({
       apartmentId,
       requestPayload: {
         fromDate: values.fromDate,
         toDate: values.toDate,
         status: EApartmentStatus.Pause,
+        documentIds: values.documents
+          .filter((elem) => elem.fileResponse)
+          .map((elem) => elem.fileResponse?.id!),
       },
     })
   ),
