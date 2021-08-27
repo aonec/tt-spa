@@ -55,6 +55,7 @@
     "react-tagsinput": "^3.19.0",
     "react-test-render": "^1.1.2",
     "react-thunk": "^1.0.0",
+    "react-to-print": "^2.13.0",
     "react-uuid": "^1.0.2",
     "react-yandex-maps": "^4.6.0",
     "react-yandex-metrika": "^2.6.0",
