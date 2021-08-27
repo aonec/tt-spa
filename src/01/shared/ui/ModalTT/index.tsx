@@ -12,7 +12,7 @@ interface Props {
   visible: boolean;
   onCancel?(): void;
   title: string | ReactNode;
-  saveBtnText: string;
+  saveBtnText?: string;
   loading?: boolean;
   onSubmit?(): void;
 }
@@ -45,7 +45,7 @@ export const ModalTT: React.FC<Props> = (props) => {
             onClick={onSubmit}
             disabled={loading}
           >
-            {loading ? <Loader show /> : saveBtnText}
+            {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
           </ButtonTT>
         </Footer>
       }

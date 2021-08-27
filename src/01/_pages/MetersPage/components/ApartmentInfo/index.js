@@ -26,6 +26,8 @@ import { Alert } from '01/shared/ui/Alert/Alert';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import confirm from 'antd/lib/modal/confirm';
+import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
+import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 
 const styles = css`
   drower {
@@ -178,14 +180,17 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
     {
       title: 'Выдать справку',
       show: true,
-      cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
+      cb: () => getIssueCertificateButtonClicked(),
     },
   ];
 
   return styled(styles)(
     <>
       <ApartmentGate id={Number(id)} />
+
       <PauseApartmentModal />
+      <GetIssueCertificateModal />
+
       <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
         <apart_title as="h2">{title}</apart_title>
         <MenuButtonTT menuButtonArr={menuButtonArray} />
