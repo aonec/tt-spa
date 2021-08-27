@@ -28,6 +28,7 @@ import {
   resetCreationRequestStatus,
 } from './index';
 import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
+import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -57,10 +58,18 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map(
-    (values) =>
-      ({ resource: values.resource, mountPlaceId: values.mountPlace } as any)
-  ),
+  from: fetchIndividualDevice.doneData.map((values) => {
+    const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
+      values.resource
+    );
+
+    return {
+      resource: values.resource,
+      mountPlaceId: values.mountPlace,
+      bitDepth,
+      scaleFactor,
+    } as any;
+  }),
   to: addIndividualDeviceForm.setForm,
 });
 

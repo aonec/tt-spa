@@ -24,6 +24,7 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { useDebounce } from '01/hooks/useDebounce';
+import { getBitDepthAndScaleFactor } from '../../utils';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -173,17 +174,16 @@ export const BaseInfoStage = () => {
           <StyledSelect
             placeholder="Выберите тип ресурса"
             onChange={(value: any) => {
-              switch (value) {
-                case EResourceType.Electricity:
-                  fields.bitDepth.onChange(6);
-                  fields.scaleFactor.onChange(2);
-                  break;
-                default:
-                  fields.bitDepth.onChange(5);
-                  fields.scaleFactor.onChange(3);
-              }
-
               fields.resource.onChange(value);
+
+              if (!value) return;
+
+              const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
+                value
+              );
+
+              fields.bitDepth.onChange(bitDepth);
+              fields.scaleFactor.onChange(scaleFactor);
             }}
             value={fields.resource.value || undefined}
           >
