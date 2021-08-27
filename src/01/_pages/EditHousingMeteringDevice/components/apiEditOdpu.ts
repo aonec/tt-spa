@@ -1,13 +1,12 @@
 import axios from '../../../axios';
 import {
-  HousingMeteringDeviceResponse,
-  MeteringDeviceResponseSuccessApiResponse,
-  UpdateHousingMeteringDeviceRequest,
+  PipeHousingMeteringDeviceResponse,
+  UpdatePipeHousingMeteringDeviceRequest,
 } from '../../../../myApi';
 
 export async function getOdpu(id: number) {
   try {
-    return await axios.get<HousingMeteringDeviceResponse>(
+    return await axios.get<PipeHousingMeteringDeviceResponse>(
       `HousingMeteringDevices/${id}`
     );
   } catch (error) {
@@ -20,7 +19,7 @@ export async function getOdpu(id: number) {
 
 export async function putOdpu(
   deviceId: number,
-  form: UpdateHousingMeteringDeviceRequest
+  form: UpdatePipeHousingMeteringDeviceRequest
 ) {
   try {
     const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);

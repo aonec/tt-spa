@@ -32,6 +32,7 @@ const ApartmentReadingLine = ({
   numberOfPreviousReadingsInputs,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,6 +49,14 @@ const ApartmentReadingLine = ({
       title: 'Редактировать',
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
+    },
+    {
+      title: 'Открыть историю показаний',
+      show: true,
+      cb: () =>
+        history.push(
+          `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+        ),
     },
     {
       title: 'Замена или поверка прибора',
@@ -72,14 +81,12 @@ const ApartmentReadingLine = ({
       <FullDeviceLine>
         <DeviceInfo device={device} />
 
-        {/*Инпуты с показаниями*/}
-
         {previousReadings}
         {currentReadings}
 
-        <div></div>
-
-        <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
+        <Flex style={{ justifyContent: 'flex-end', width: '100%' }}>
+          <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
+        </Flex>
       </FullDeviceLine>
     </>
   );
@@ -123,7 +130,7 @@ const SelectSwitchDeiveTypeModal = ({
       title={<ModalHeader>Выберите действие</ModalHeader>}
       footer={
         <ModalFooter>
-          <ButtonTT color={'white'} key="back">
+          <ButtonTT color={'white'} key="back" onClick={close}>
             Отмена
           </ButtonTT>
           <ButtonTT
@@ -195,13 +202,13 @@ const SwitchTypeButton = styled(Flex)`
 
 const FullDeviceLine = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 5.5fr) 2.25fr 2.25fr 1fr 0fr;
+  grid-template-columns: minmax(330px, 4.75fr) 2.25fr 2.25fr 1.2fr;
   column-gap: 16px;
   margin-top: 8px;
   align-items: center;
   justify-content: flex-start;
   white-space: nowrap;
-  padding: 8px 8px 16px;
+  padding: 8px 0px 16px 8px;
   border-bottom: 1px solid #dcdee4;
 `;
 

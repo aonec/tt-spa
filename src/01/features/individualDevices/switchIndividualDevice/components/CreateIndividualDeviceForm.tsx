@@ -61,7 +61,7 @@ export const CreateIndividualDeviceForm = () => {
             color="blue"
             onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
           >
-            {stageNumber === 1 ? 'Создать прибор' : 'Далее'}
+            {stageNumber === 1 ? 'Заменить прибор' : 'Далее'}
           </ButtonTT>
         </Spaces>
       </RightAlign>

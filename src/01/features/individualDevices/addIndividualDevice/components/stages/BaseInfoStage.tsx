@@ -24,6 +24,7 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { useDebounce } from '01/hooks/useDebounce';
+import { getBitDepthAndScaleFactor } from '../../utils';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -67,7 +68,7 @@ export const BaseInfoStage = () => {
 
   const bottomDateFields = (
     <>
-      <FormItem label="Дата последней проверки прибора">
+      <FormItem label="Дата последней поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
           onChange={(value: moment.Moment | null = moment()) => {
@@ -95,7 +96,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      <FormItem label="Дата следующей проверки прибора">
+      <FormItem label="Дата следующей поверки прибора">
         <DatePicker
           format="DD.MM.YYYY"
           onChange={onChangeDateField('futureCheckingDate')}
@@ -172,7 +173,18 @@ export const BaseInfoStage = () => {
         <FormItem label="Тип ресурса">
           <StyledSelect
             placeholder="Выберите тип ресурса"
-            onChange={(value: any) => fields.resource.onChange(value)}
+            onChange={(value: any) => {
+              fields.resource.onChange(value);
+
+              if (!value) return;
+
+              const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
+                value
+              );
+
+              fields.bitDepth.onChange(bitDepth);
+              fields.scaleFactor.onChange(scaleFactor);
+            }}
             value={fields.resource.value || undefined}
           >
             {allResources.map((elem) => (
@@ -366,7 +378,7 @@ export const BaseInfoStage = () => {
               checked={fields.isInstalled.value}
             />
             <InputTT
-              placeholder="Тип пломбы"
+              placeholder="Номер пломбы"
               disabled={!fields.isInstalled.value}
               value={fields.magneticSealTypeName.value}
               onChange={onChange}

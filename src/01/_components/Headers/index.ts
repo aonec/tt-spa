@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const HeaderWrap = styled.div`
+  margin-bottom: 10px;
   display: grid;
   grid-template-rows: 48px 16px;
   grid-gap: 8px;

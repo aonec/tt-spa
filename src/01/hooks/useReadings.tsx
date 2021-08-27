@@ -16,6 +16,7 @@ import {
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
 import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -149,14 +150,18 @@ export const useReadings = (
         if (!neededPreviousReadings || !neededPreviousReadings?.values?.length)
           return;
 
+        console.log(neededPreviousReadings?.values);
+
         await axios.post('/IndividualDeviceReadings/create', {
-          ...neededPreviousReadings?.values.reduce(
-            (acc: object, value: number, index: number) => ({
-              ...acc,
-              [`value${index + 1}`]: Number(value),
-            }),
-            {}
-          ),
+          ...neededPreviousReadings?.values
+            .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+            .reduce(
+              (acc: object, value: number, index: number) => ({
+                ...acc,
+                [`value${index + 1}`]: Number(value),
+              }),
+              {}
+            ),
           isForced: true,
           deviceId: device.id,
           readingDate: neededPreviousReadings.date,

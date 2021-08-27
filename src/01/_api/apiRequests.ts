@@ -2,7 +2,7 @@ import {
   CalculatorListResponsePagedList,
   CalculatorResponse,
   CreateCalculatorRequest,
-  CreateHousingMeteringDeviceRequest,
+  CreatePipeHousingMeteringDeviceRequest,
   CreatePipeNodeRequest,
   HousingStockResponse,
   IndividualDeviceResponse,
@@ -108,7 +108,7 @@ export async function getCalculator(id: number) {
 }
 
 export async function addHousingMeteringDevice(
-  form: CreateHousingMeteringDeviceRequest
+  form: CreatePipeHousingMeteringDeviceRequest
 ) {
   try {
     const res = await axios.post('HousingMeteringDevices', form);
@@ -186,13 +186,8 @@ export async function putIndividualDevice(
 ) {
   try {
     const res = await axios.put(`IndividualDevices/${deviceId}`, form);
-    alert('Прибор успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
-    throw {
-      resource: 'device',
-      message: 'Произошла ошибка изменения прибора',
-    };
+    throw error;
   }
 }

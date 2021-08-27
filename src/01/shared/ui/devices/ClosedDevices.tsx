@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import DeviceInfo from '../../../_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import Icon from '../../../tt-components/Icon';
 import { IndividualDeviceListItemResponse } from '../../../../myApi';
+import { useHistory, useParams } from 'react-router-dom';
+import { Flex } from '../Layout/Flex';
+import { MenuButtonTT } from '01/tt-components';
 
 const ClosedDevices = ({
   devices,
@@ -10,10 +13,24 @@ const ClosedDevices = ({
   devices: IndividualDeviceListItemResponse[];
 }) => {
   const [showClosed, setShowClosed] = useState(false);
+  const history = useHistory();
+  const { id } = useParams<{ id: string }>();
 
   const closedDevices = devices.map((device) => (
     <ClosedDevice>
       <DeviceInfo device={device} />
+      <MenuButtonTT
+        menuButtonArr={[
+          {
+            title: 'Открыть историю показаний',
+            show: true,
+            cb: () =>
+              history.push(
+                `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+              ),
+          },
+        ]}
+      />
     </ClosedDevice>
   ));
   return (
@@ -60,8 +77,9 @@ const ShowToggle = styled.div`
   cursor: pointer;
 `;
 
-const ClosedDevice = styled.div`
-  padding: 8px 16px 16px;
+const ClosedDevice = styled(Flex)`
+  justify-content: space-between;
+  padding: 8px 0 8px 8px;
   opacity: 0.6;
 `;
 
