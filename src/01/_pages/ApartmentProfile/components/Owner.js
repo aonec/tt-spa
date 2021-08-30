@@ -3,9 +3,8 @@ import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
 import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
-import ReactToPrint from 'react-to-print';
 
-class ComponentToPrint extends React.Component {
+export class Certificate extends React.Component {
   render() {
     const { certificate } = this.props;
     const { fullName, address, individualDevices: devices } = certificate;
@@ -248,21 +247,6 @@ class ComponentToPrint extends React.Component {
     );
   }
 }
-
-export const Certificate = ({ certificate }) => {
-  const componentRef = useRef();
-
-  return (
-    <div>
-      <ComponentToPrint ref={componentRef} certificate={certificate} />
-
-      <ReactToPrint
-        trigger={() => <a href="#">Print this out!</a>}
-        content={() => componentRef.current}
-      />
-    </div>
-  );
-};
 
 const TitleWrap = styled.div`
   display: flex;

@@ -1,7 +1,9 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
+import { ButtonTT } from '01/tt-components';
 import { Certificate } from '01/_pages/ApartmentProfile/components';
 import { useStore } from 'effector-react';
-import React from 'react';
+import React, { useRef } from 'react';
+import ReactToPrint from 'react-to-print';
 import { $apartment } from '../displayApartment/models';
 import {
   $homeownerCertificatre,
@@ -15,8 +17,7 @@ export const GetIssueCertificateModal = () => {
   const apartment = useStore($apartment);
 
   const homeownerCertificate = useStore($homeownerCertificatre);
-
-  console.log(homeownerCertificate, apartment);
+  const certificateRef = useRef();
 
   if (!apartment?.homeowners) return <></>;
 
@@ -30,9 +31,24 @@ export const GetIssueCertificateModal = () => {
         visible={visible}
         title="Выдача справки"
         saveBtnText="Печать"
+        customSubmit={
+          <ReactToPrint
+            trigger={() => (
+              <ButtonTT color="blue" key="submit">
+                Печать
+              </ButtonTT>
+            )}
+            content={() => (certificateRef as any).current}
+          />
+        }
       >
         {homeownerCertificate && (
-          <Certificate certificate={homeownerCertificate} />
+          <div style={{ marginBottom: 70 }}>
+            <Certificate
+              certificate={homeownerCertificate}
+              ref={certificateRef as any}
+            />
+          </div>
         )}
       </ModalTT>
     </>
