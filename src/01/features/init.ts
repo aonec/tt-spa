@@ -28,3 +28,4 @@ import './individualDevices/checkIndividualDevice/models/init';
 import './readings/displayReadingHistory/models/init';
 import './apartments/pauseApartment/models/init';
 import './apartments/displayProblemDevices/models/init';
+import './apartments/printIssueCertificate/models/init';

@@ -19,7 +19,8 @@ interface FileUploader {
 }
 
 export function useFilesUpload(
-  onChange?: (files: FileData[]) => void
+  onChange?: (files: FileData[]) => void,
+  type?: string
 ): FileUploader {
   const [files, setFiles] = useState<FileData[]>([]);
   const pendingProcessing = files.some((elem) => elem.status === 'pending');
@@ -44,7 +45,7 @@ export function useFilesUpload(
     setFiles((prev) => [newFilesListItem, ...prev]);
 
     try {
-      const res = await uploadFile(file);
+      const res = await uploadFile(file, type);
 
       rewriteFile(id, (file) => ({
         ...file,

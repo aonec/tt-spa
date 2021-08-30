@@ -11,6 +11,7 @@ interface Props {
   text?: string;
   filesInit?: FileData[];
   withoutDeletion?: boolean;
+  type?: string;
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
@@ -21,9 +22,13 @@ export const FilesUpload: React.FC<Props> = (props) => {
     text,
     filesInit,
     withoutDeletion,
+    type,
   } = props;
 
-  const { files, addFile, removeFile, clearFiles } = useFilesUpload(onChange);
+  const { files, addFile, removeFile, clearFiles } = useFilesUpload(
+    onChange,
+    type
+  );
 
   useEffect(() => {
     if (filesInit?.length === 0) clearFiles();

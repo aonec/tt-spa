@@ -12,9 +12,10 @@ interface Props {
   visible: boolean;
   onCancel?(): void;
   title: string | ReactNode;
-  saveBtnText: string;
+  saveBtnText?: string;
   loading?: boolean;
   onSubmit?(): void;
+  customSubmit?: ReactNode;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -26,6 +27,7 @@ export const ModalTT: React.FC<Props> = (props) => {
     loading,
     onSubmit,
     saveBtnText,
+    customSubmit,
   } = props;
 
   return (
@@ -39,14 +41,16 @@ export const ModalTT: React.FC<Props> = (props) => {
           <ButtonTT color={'white'} key="back" onClick={onCancel}>
             Отмена
           </ButtonTT>
-          <ButtonTT
-            color="blue"
-            key="submit"
-            onClick={onSubmit}
-            disabled={loading}
-          >
-            {loading ? <Loader show /> : saveBtnText}
-          </ButtonTT>
+          {customSubmit || (
+            <ButtonTT
+              color="blue"
+              key="submit"
+              onClick={onSubmit}
+              disabled={loading}
+            >
+              {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
+            </ButtonTT>
+          )}
         </Footer>
       }
     >

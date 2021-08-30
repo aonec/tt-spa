@@ -1,6 +1,5 @@
 import {
   GetProblemDevicesRequestPayload,
-  SetApartmentStatusRequest,
 } from './../../../../_api/apartments';
 import {
   ApartmentGate,
@@ -71,7 +70,6 @@ sample({
     pauseApartmentForm.$values as any,
     (
       { id: apartmentId }: { id: number },
-      values: { fromDate: string; toDate: string; documents: FileData[] }
     ): GetProblemDevicesRequestPayload => ({
       apartmentId,
       requestPayload: {

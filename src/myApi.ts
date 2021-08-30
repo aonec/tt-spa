@@ -56,6 +56,9 @@ export interface HomeownerListResponse {
   middleName: string | null;
   fullName: string | null;
   personType: EPersonType;
+
+  /** @format uuid */
+  homeownerAccountId: string;
   isMainPersonalAccountNumber: boolean;
   phoneNumber: string | null;
   personalAccountNumber: string | null;
@@ -303,17 +306,6 @@ export interface DocumentResponsePagedListSuccessApiResponse {
   successResponse: DocumentResponsePagedList | null;
 }
 
-export interface ApartmentStatusSetRequest {
-  status: EApartmentStatus;
-
-  /** @format date-time */
-  fromDate?: string | null;
-
-  /** @format date-time */
-  toDate?: string | null;
-  documentIds?: number[] | null;
-}
-
 export enum EClosingReason {
   None = "None",
   Manually = "Manually",
@@ -380,6 +372,17 @@ export interface IndividualDeviceWithExpiredCheckingDateListResponse {
 
 export interface IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse {
   successResponse: IndividualDeviceWithExpiredCheckingDateListResponse | null;
+}
+
+export interface ApartmentStatusSetRequest {
+  status: EApartmentStatus;
+
+  /** @format date-time */
+  fromDate?: string | null;
+
+  /** @format date-time */
+  toDate?: string | null;
+  documentIds?: number[] | null;
 }
 
 export interface LoginRequest {
@@ -2669,6 +2672,9 @@ export interface IndividualDeviceResponse {
   magneticSealTypeName: string | null;
   measurableUnitString: string | null;
   isPolling: boolean;
+
+  /** @format int32 */
+  contractorId: number | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -2706,6 +2712,9 @@ export interface UpdateIndividualDeviceRequest {
   apartmentId?: number | null;
   rateType?: EIndividualDeviceRateType | null;
   isPolling?: boolean | null;
+
+  /** @format int32 */
+  contractorId?: number | null;
 }
 
 export interface IndividualDeviceListItemResponse {
@@ -2758,6 +2767,9 @@ export interface IndividualDeviceListItemResponse {
   apartmentNumber: string | null;
   homeownerName: string | null;
   personalAccountNumber: string | null;
+
+  /** @format int32 */
+  contractorId: number | null;
 }
 
 export interface IndividualDeviceListItemResponsePagedList {
@@ -2838,6 +2850,9 @@ export interface CreateIndividualDeviceRequest {
   startupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   isPolling?: boolean;
+
+  /** @format int32 */
+  contractorId?: number | null;
 }
 
 export interface CloseDeviceRequest {
@@ -4810,15 +4825,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     apartmentsSetStatusProblemDevicesDetail: (
       apartmentId: number,
-      data: ApartmentStatusSetRequest | null,
+      query: {
+        Status: EApartmentStatus;
+        FromDate?: string | null;
+        ToDate?: string | null;
+        DocumentIds?: number[] | null;
+      },
       params: RequestParams = {},
     ) =>
       this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatusProblemDevices`,
         method: "GET",
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -5695,6 +5714,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     exportsIndividualDeviceReadingsList: (query?: { year?: number; month?: number }, params: RequestParams = {}) =>
       this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/IndividualDeviceReadings`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Exports
+     * @name ExportsHousingDeviceReadingsList
+     * @request GET:/api/Exports/HousingDeviceReadings
+     * @secure
+     */
+    exportsHousingDeviceReadingsList: (query?: { year?: number; month?: number }, params: RequestParams = {}) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Exports/HousingDeviceReadings`,
         method: "GET",
         query: query,
         secure: true,

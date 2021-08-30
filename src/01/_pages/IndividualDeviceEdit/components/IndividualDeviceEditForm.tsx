@@ -307,7 +307,7 @@ const IndividualDeviceEditForm = ({
                 checked={magnetSeal.isInstalled}
               />
               <InputTT
-                placeholder="Тип магнитной пломбы"
+                placeholder="Номер магнитн*ой пломбы"
                 value={magnetSeal.magneticSealTypeName}
                 onChange={(value: any) =>
                   onChange.magneticSealTypeName(value.target.value)

@@ -114,6 +114,7 @@ export const PauseApartmentModal = () => {
           uniqId={`pause-apartment`}
           text="Добавьте заявление абонента о постановке квартиры на паузу"
           onChange={fields.documents.onChange}
+          type="ApartmentStoppingStatement"
         />
       </FilesUploadWrap>
     </ModalTT>

@@ -40,6 +40,7 @@ export const DocumentsStage = () => {
         max={1}
         onChange={setFile('devicePassport')}
         withoutDeletion
+        type="DeviceTestCertificates"
       />
       <FilesUpload
         uniqId="create-individual-device-completed-works"
@@ -48,6 +49,7 @@ export const DocumentsStage = () => {
         max={1}
         onChange={setFile('completedWorks')}
         withoutDeletion
+        type="DeviceAcceptanceAct"
       />
     </>
   );
