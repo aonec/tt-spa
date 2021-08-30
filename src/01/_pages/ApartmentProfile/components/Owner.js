@@ -3,12 +3,15 @@ import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
 import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
+import moment from 'moment';
 
 export class Certificate extends React.Component {
   render() {
     const { certificate } = this.props;
     const { fullName, address, individualDevices: devices } = certificate;
     const { city, street, housingStockNumber, apartmentNumber } = address;
+
+    console.log(devices);
 
     const nowDate = new Date();
     const months = [
@@ -182,7 +185,7 @@ export class Certificate extends React.Component {
                       borderBottom: '1px solid black',
                     }}
                   >
-                    {x.resource}
+                    {x.resourceDescription}
                   </td>
                   <td
                     style={{
@@ -191,7 +194,7 @@ export class Certificate extends React.Component {
                       borderBottom: '1px solid black',
                     }}
                   >
-                    {x.mountPlace}
+                    {x.mountPlaceDescription}
                   </td>
                   <td
                     style={{
@@ -218,12 +221,12 @@ export class Certificate extends React.Component {
                       borderBottom: '1px solid black',
                     }}
                   >
-                    {x.reading}
+                    {x.lastReadings}
                   </td>
                   <td
                     style={{ padding: '6px', borderBottom: '1px solid black' }}
                   >
-                    {x.readingDate}
+                    {moment(x.readingDate).format('YYYY.MM.DD')}
                   </td>
                 </tr>
               ))}
