@@ -3,8 +3,8 @@ import styled from 'reshadow/macro';
 import { input } from '01/r_comp';
 import { getArrayByCountRange } from './utils';
 import { useHistory } from 'react-router-dom';
-import { AutoComplete } from 'antd';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { StyledAutocomplete } from '01/shared/ui/Fields';
 
 export const Filter = ({ inputs = [] }) => {
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
@@ -60,7 +60,7 @@ export const Filter = ({ inputs = [] }) => {
         Street={inputs.find((elem) => elem.name === 'street').value}
       />
       {inputs.map((input, index) => (
-        <AutoComplete
+        <StyledAutocomplete
           options={input.options}
           ref={inputsRefs[index]}
           onKeyPress={(e) => onInputKeyPress(e, index)}

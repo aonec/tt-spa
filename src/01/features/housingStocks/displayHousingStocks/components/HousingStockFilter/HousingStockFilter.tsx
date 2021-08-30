@@ -1,4 +1,4 @@
-import { StyledInput, StyledSelctor } from '01/shared/ui/Fields';
+import { StyledInput, StyledSelector } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Select } from 'antd';
 import React, { useRef } from 'react';
@@ -53,7 +53,7 @@ export const HousingStockFilter = () => {
 
   return (
     <FieldsWrap>
-      <StyledSelctor
+      <StyledSelector
         placeholder="Город"
         value={filterFields.City || undefined}
         onChange={(value: any) => setValue('City', value)}
@@ -63,7 +63,7 @@ export const HousingStockFilter = () => {
         {cities.map((city) => (
           <Select.Option value={city}>{city}</Select.Option>
         ))}
-      </StyledSelctor>
+      </StyledSelector>
       <StyledInput
         placeholder="Название улицы"
         onChange={onChangeHandler}
