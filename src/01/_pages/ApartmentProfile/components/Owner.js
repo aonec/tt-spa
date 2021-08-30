@@ -226,7 +226,7 @@ export class Certificate extends React.Component {
                   <td
                     style={{ padding: '6px', borderBottom: '1px solid black' }}
                   >
-                    {moment(x.readingDate).format('YYYY.MM.DD')}
+                    {moment(x.readingDate).format('DD.MM.YYYY')}
                   </td>
                 </tr>
               ))}
