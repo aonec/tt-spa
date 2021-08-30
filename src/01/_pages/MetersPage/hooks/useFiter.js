@@ -1,3 +1,5 @@
+import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { useStore } from 'effector-react';
 import React from 'react';
 
 const initialState = {
@@ -45,11 +47,11 @@ export const useFilter = (pageDispatch = () => {}) => {
     return () => clearTimeout(timer);
   }, [city, street, house, question, corpus, apart]);
 
-  const onChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+  const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
+
+  const streetSuggestions = useStore($existingStreets);
 
   return {
     filter: apart,
@@ -62,15 +64,14 @@ export const useFilter = (pageDispatch = () => {}) => {
       {
         name: 'street',
         placeholder: 'Улица',
+        options: streetSuggestions.map((elem) => ({
+          value: elem,
+        })),
       },
       {
         name: 'house',
         placeholder: 'Дом',
       },
-      // {
-      //   name: 'corpus',
-      //   placeholder: 'Корпус',
-      // },
       {
         name: 'apart',
         placeholder: 'Кв.',
@@ -82,12 +83,12 @@ export const useFilter = (pageDispatch = () => {}) => {
     ].map((elem) => ({
       ...elem,
       [elem.name]: state[elem.name],
-      onChange,
+      onChange: (value) => onChange(value, elem.name),
       value: state[elem.name],
-      onFocus: (e) =>
+      onFocus: (name) =>
         dispatch({
-          type: e.target.name === 'street' ? 'reset' : 'change',
-          payload: { [elem.name]: '' },
+          type: name === 'street' ? 'reset' : 'change',
+          payload: { [name]: '' },
         }),
     })),
   };
