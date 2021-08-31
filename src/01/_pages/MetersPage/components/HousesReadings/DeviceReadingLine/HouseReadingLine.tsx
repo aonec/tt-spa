@@ -110,9 +110,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
 const HouseReadingsDevice = styled.div`
   display: grid;
-  grid-template-columns:
-    32px minmax(120px, 160px) 16px minmax(152px, 232px) minmax(120px, 160px)
-    minmax(120px, 160px) 75px minmax(134px, 304px) 48px;
+  grid-template-columns: 10px minmax(130px, 160px) 1px minmax(110px, 150px) minmax(
+      140px,
+      180px
+    ) minmax(140px, 180px) 75px minmax(134px, 304px) 32px;
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);

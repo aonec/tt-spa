@@ -12,6 +12,7 @@ import {
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import {
   EIndividualDeviceRateType,
+  EIndividualDeviceReadingsSource,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
@@ -78,6 +79,7 @@ export const useReadings = (
               values: previousReadingsArray,
               date: prevReadings.readingDate || null,
               uploadTime: prevReadings.uploadTime,
+              source: prevReadings.source,
             },
       };
 
@@ -92,6 +94,7 @@ export const useReadings = (
         currId: currentReadings.id,
         resource: device.resource,
         uploadTime: currentReadings.uploadTime,
+        source: currentReadings.source,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -300,6 +303,7 @@ export const useReadings = (
     (value, index) => ({
       elem: (
         <ReadingsBlock
+          source={readingsState.source}
           key={device.id + index}
           index={index}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -326,6 +330,7 @@ export const useReadings = (
           key={device.id + index + '-prev-readings'}
           index={index}
           value={value}
+          source={readingsState.previousReadings[sliderIndex].source}
           operatorCabinet
           resource={readingsState.resource}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -339,7 +344,7 @@ export const useReadings = (
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
-    uploadTime: string
+    uploadTime?: string
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -372,7 +377,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[0]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </Wide>
       ),
@@ -399,7 +405,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </div>
       ),
@@ -429,7 +436,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </div>
       ),
@@ -461,7 +469,12 @@ export const useReadings = (
 };
 
 interface PreviousReadingState {
-  [key: number]: { values: number[]; date: string | null; uploadTime: string };
+  [key: number]: {
+    values: number[];
+    date: string | null;
+    uploadTime?: string;
+    source?: EIndividualDeviceReadingsSource;
+  };
 }
 
 export type ReadingsStateType = {
@@ -471,7 +484,8 @@ export type ReadingsStateType = {
   prevId: number;
   currId: number;
   resource: string;
-  uploadTime: string;
+  uploadTime?: string;
+  source?: EIndividualDeviceReadingsSource;
 };
 
 type ReadingType = {
