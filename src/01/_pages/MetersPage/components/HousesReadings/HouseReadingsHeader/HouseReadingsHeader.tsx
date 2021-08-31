@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: grid;
   grid-template-columns:
-    32px minmax(120px, 160px) 16px minmax(152px, 232px) minmax(120px, 160px)
-    minmax(120px, 160px) 75px minmax(134px, 304px) 48px;
+    10px minmax(130px, 160px) 1px minmax(110px, 150px) minmax(140px, 180px)
+    minmax(140px, 180px) 75px minmax(134px, 304px) 32px;
 
   column-gap: 16px;
   color: var(--main-90);
