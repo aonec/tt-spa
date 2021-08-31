@@ -7,10 +7,6 @@ fetchExistingStreets.use(getExistingStreets);
 $existingStreets.on(fetchExistingStreets.doneData, (_, payload) => payload);
 
 forward({
-  from: guard({
-    clock: ExistingStreetsGate.state,
-    source: ExistingStreetsGate.state.map((values) => values),
-    filter: (values) => Boolean(values.Street),
-  }),
+  from: ExistingStreetsGate.state.map((values) => values),
   to: fetchExistingStreets,
 });
