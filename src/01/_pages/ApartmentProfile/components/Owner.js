@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
@@ -10,8 +10,6 @@ export class Certificate extends React.Component {
     const { certificate } = this.props;
     const { fullName, address, individualDevices: devices } = certificate;
     const { city, street, housingStockNumber, apartmentNumber } = address;
-
-    console.log(devices);
 
     const nowDate = new Date();
     const months = [
@@ -278,45 +276,6 @@ const Owner = (props) => {
         <Title size="24" style={{ paddingLeft: '8px' }}>
           {firstName || 'Собственник: данные обновляются'}
         </Title>
-        <div>
-          <Certificate
-            certificate={{
-              fullName: firstName,
-              address: {
-                city: 'Нижнекамск',
-                street: 'Тихая Аллея',
-                housingStockNumber: '4А',
-                apartmentNumber: '143',
-              },
-              device: [
-                {
-                  resource: 'ХВС',
-                  mountPlace: 'ТУ',
-                  model: 'СГВ',
-                  serialNumber: '123456',
-                  reading: '12.34',
-                  readingDate: '01.08.2021',
-                },
-                {
-                  resource: 'ГВС',
-                  mountPlace: 'ТУ',
-                  model: 'СГВ',
-                  serialNumber: '456789',
-                  reading: '87.69',
-                  readingDate: '01.08.2021',
-                },
-                {
-                  resource: 'Электроэнергия',
-                  mountPlace: '--',
-                  model: 'Меркурий',
-                  serialNumber: '987321',
-                  reading: 'День: 15444 Ночь: 5369',
-                  readingDate: '01.08.2021',
-                },
-              ],
-            }}
-          />
-        </div>
       </TitleWrap>
       <ListItem>
         <ListItemDescription>Номер лицевого счета</ListItemDescription>

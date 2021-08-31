@@ -17,6 +17,10 @@ import {
 } from '../../myApi';
 import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Wide } from '01/shared/ui/FilesUpload';
+import styled from 'styled-components';
+import { message } from 'antd';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -73,6 +77,7 @@ export const useReadings = (
           : {
               values: previousReadingsArray,
               date: prevReadings.readingDate || null,
+              uploadTime: prevReadings.uploadTime,
             },
       };
 
@@ -86,6 +91,7 @@ export const useReadings = (
         prevId: prevReadings.id,
         currId: currentReadings.id,
         resource: device.resource,
+        uploadTime: currentReadings.uploadTime,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -113,71 +119,96 @@ export const useReadings = (
 
   const sendReadings = useCallback(
     async (isPrevious?: boolean) => {
-      if (!readingsState) return;
+      try {
+        if (!readingsState) return;
 
-      if (isPrevious) {
-        const getReadings = (prev: ReadingsStateType) => {
-          const date = getDateByReadingMonthSlider(sliderIndex).format(
-            'YYYY-MM'
-          );
+        if (isPrevious) {
+          const getReadings = (prev: ReadingsStateType) => {
+            const date = getDateByReadingMonthSlider(sliderIndex).format(
+              'YYYY-MM'
+            );
 
-          const res = prev && {
-            ...prev,
-            previousReadings: {
-              ...prev?.previousReadings,
-              [sliderIndex]: {
-                ...prev?.previousReadings[sliderIndex],
-                date:
-                  prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
+            const res = prev && {
+              ...prev,
+              previousReadings: {
+                ...prev?.previousReadings,
+                [sliderIndex]: {
+                  ...prev?.previousReadings[sliderIndex],
+                  date:
+                    prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
+                },
               },
-            },
+            };
+
+            setInitialPreviousReadingState(
+              (prev) => res?.previousReadings || prev
+            );
+
+            return res;
           };
 
-          setInitialPreviousReadingState(
-            (prev) => res?.previousReadings || prev
-          );
+          const neededReadings = getReadings(readingsState);
 
-          return res;
-        };
+          setReadingsState(neededReadings);
 
-        const neededReadings = getReadings(readingsState);
+          const neededPreviousReadings =
+            neededReadings.previousReadings[sliderIndex];
 
-        setReadingsState(neededReadings);
+          if (
+            !neededPreviousReadings ||
+            !neededPreviousReadings?.values?.length
+          )
+            return;
 
-        const neededPreviousReadings =
-          neededReadings.previousReadings[sliderIndex];
+          console.log(neededPreviousReadings?.values);
 
-        if (!neededPreviousReadings || !neededPreviousReadings?.values?.length)
+          await axios.post('/IndividualDeviceReadings/create', {
+            ...neededPreviousReadings?.values
+              .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+              .reduce(
+                (acc: object, value: number, index: number) => ({
+                  ...acc,
+                  [`value${index + 1}`]: Number(value),
+                }),
+                {}
+              ),
+            isForced: true,
+            deviceId: device.id,
+            readingDate: neededPreviousReadings.date,
+          });
+
+          setReadingsState((prev: any) => ({
+            ...prev,
+            previousReadings: {
+              ...prev.previousReadings,
+              [sliderIndex]: {
+                ...prev.previousReadings[sliderIndex],
+                uploadTime: moment().toISOString(),
+              },
+            },
+          }));
+
           return;
+        }
 
-        console.log(neededPreviousReadings?.values);
+        const deviceReadingObject: Record<
+          string,
+          any
+        > = formDeviceReadingObject(device, readingsState);
 
-        await axios.post('/IndividualDeviceReadings/create', {
-          ...neededPreviousReadings?.values
-            .slice(0, getIndividualDeviceRateNumByName(device.rateType))
-            .reduce(
-              (acc: object, value: number, index: number) => ({
-                ...acc,
-                [`value${index + 1}`]: Number(value),
-              }),
-              {}
-            ),
-          isForced: true,
-          deviceId: device.id,
-          readingDate: neededPreviousReadings.date,
-        });
+        await axios.post(
+          '/IndividualDeviceReadings/create',
+          deviceReadingObject
+        );
 
-        return;
+        setReadingsState((prev: any) => ({
+          ...prev,
+          uploadTime: moment().toISOString(),
+        }));
+        setInitialReadings(readingsState.currentReadingsArray);
+      } catch (e) {
+        message.error('Не удалось сохранить покзаания, попробуйте позже');
       }
-
-      const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
-        device,
-        readingsState
-      );
-
-      await axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-
-      setInitialReadings(readingsState.currentReadingsArray);
     },
     [readingsState]
   );
@@ -307,31 +338,43 @@ export const useReadings = (
 
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
-    isCurrent: boolean
+    isCurrent: boolean,
+    uploadTime: string
   ): OptionsInterface[] => [
     {
       value: () => (
-        <DeviceReadingsContainer
-          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
-          onFocus={onFocusHandler}
-          resource={device.resource}
-        >
-          {readingsElems.map((elem) => elem.elem)[0]}
-        </DeviceReadingsContainer>
+        <div>
+          <DeviceReadingsContainer
+            color={
+              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
+            }
+            onBlur={(e) => onBlurHandler(e, !isCurrent)}
+            onFocus={onFocusHandler}
+            resource={device.resource}
+          >
+            {readingsElems.map((elem) => elem.elem)[0]}
+          </DeviceReadingsContainer>
+        </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.None,
     },
     {
       value: () => (
-        <DeviceReadingsContainer
-          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
-          onFocus={onFocusHandler}
-          resource={device.resource}
-        >
-          {readingsElems.map((elem) => elem.elem)[0]}
-        </DeviceReadingsContainer>
+        <Wide>
+          <DeviceReadingsContainer
+            color={
+              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
+            }
+            onBlur={(e) => onBlurHandler(e, !isCurrent)}
+            onFocus={onFocusHandler}
+            resource={device.resource}
+          >
+            {readingsElems.map((elem) => elem.elem)[0]}
+          </DeviceReadingsContainer>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
+        </Wide>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
     },
@@ -355,6 +398,9 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
@@ -382,17 +428,28 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
     },
   ];
 
-  const previousResultReadings = options(previousDeviceReadings, false)
+  const previousResultReadings = options(
+    previousDeviceReadings,
+    false,
+    readingsState.previousReadings[sliderIndex]?.uploadTime
+  )
     .find((el) => el.isSuccess)!
     .value();
 
-  const currentReadings = options(currentDeviceReadings, true)
+  const currentReadings = options(
+    currentDeviceReadings,
+    true,
+    readingsState.uploadTime
+  )
     .find((el) => el.isSuccess)!
     .value();
 
@@ -404,7 +461,7 @@ export const useReadings = (
 };
 
 interface PreviousReadingState {
-  [key: number]: { values: number[]; date: string | null };
+  [key: number]: { values: number[]; date: string | null; uploadTime: string };
 }
 
 export type ReadingsStateType = {
@@ -414,6 +471,7 @@ export type ReadingsStateType = {
   prevId: number;
   currId: number;
   resource: string;
+  uploadTime: string;
 };
 
 type ReadingType = {
@@ -431,3 +489,9 @@ interface OptionsInterface {
   value: () => JSX.Element;
   isSuccess: boolean;
 }
+
+const ReadingUploadDate = styled(Flex)`
+  justify-content: flex-end;
+  color: #929292;
+  margin-top: 2px;
+`;

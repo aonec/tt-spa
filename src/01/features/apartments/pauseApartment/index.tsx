@@ -55,7 +55,7 @@ export const PauseApartmentModal = () => {
         {problemDevices?.map((elem) => (
           <>
             <Alert>
-              {moment(elem.lastCheckingDate).format('YYYY.MM.DD')} выходит срок
+              {moment(elem.lastCheckingDate).format('DD.MM.YYYY')} выходит срок
               поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
             </Alert>
             {<Space />}
@@ -74,7 +74,7 @@ export const PauseApartmentModal = () => {
               onChange={(value: moment.Moment | null) =>
                 fields.fromDate.onChange(value && value.toISOString())
               }
-              format="YYYY.MM.DD"
+              format="DD.MM.YYYY"
               disabledDate={(value) =>
                 value.diff(moment(fields.toDate.value)) > 0
               }
@@ -98,7 +98,7 @@ export const PauseApartmentModal = () => {
               disabledDate={(value) =>
                 value.diff(moment(fields.fromDate.value)) < 0
               }
-              format="YYYY.MM.DD"
+              format="DD.MM.YYYY"
             />
             <ErrorMessage>
               {fields.toDate.errorText({

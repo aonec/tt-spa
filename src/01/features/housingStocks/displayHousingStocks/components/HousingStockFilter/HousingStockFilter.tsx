@@ -112,4 +112,5 @@ const FieldsWrap = styled(Flex)`
   display: grid;
   grid-template-columns: 1fr 2fr 0.7fr 0.7fr;
   grid-gap: 15px;
+  margin-top: -9px;
 `;
