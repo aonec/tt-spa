@@ -203,7 +203,7 @@ export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
             <AlertContent>
               <div>
                 Квартира на паузе до{' '}
-                {moment(apartment.stoppedTo).format('YYYY.MM.DD')}
+                {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
               </div>
               <div onClick={cancelPauseApartment} className="ant-btn-link">
                 Снять с паузы

@@ -17,6 +17,9 @@ import {
 } from '../../myApi';
 import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Wide } from '01/shared/ui/FilesUpload';
+import styled from 'styled-components';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -311,27 +314,36 @@ export const useReadings = (
   ): OptionsInterface[] => [
     {
       value: () => (
-        <DeviceReadingsContainer
-          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
-          onFocus={onFocusHandler}
-          resource={device.resource}
-        >
-          {readingsElems.map((elem) => elem.elem)[0]}
-        </DeviceReadingsContainer>
+        <div>
+          <DeviceReadingsContainer
+            color={
+              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
+            }
+            onBlur={(e) => onBlurHandler(e, !isCurrent)}
+            onFocus={onFocusHandler}
+            resource={device.resource}
+          >
+            {readingsElems.map((elem) => elem.elem)[0]}
+          </DeviceReadingsContainer>
+        </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.None,
     },
     {
       value: () => (
-        <DeviceReadingsContainer
-          color={isCurrent ? getInputColor(device.resource) : 'var(--main-90)'}
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
-          onFocus={onFocusHandler}
-          resource={device.resource}
-        >
-          {readingsElems.map((elem) => elem.elem)[0]}
-        </DeviceReadingsContainer>
+        <Wide>
+          <DeviceReadingsContainer
+            color={
+              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
+            }
+            onBlur={(e) => onBlurHandler(e, !isCurrent)}
+            onFocus={onFocusHandler}
+            resource={device.resource}
+          >
+            {readingsElems.map((elem) => elem.elem)[0]}
+          </DeviceReadingsContainer>
+          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
+        </Wide>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
     },
@@ -355,6 +367,7 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
+          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
@@ -382,6 +395,7 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
+          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
@@ -431,3 +445,9 @@ interface OptionsInterface {
   value: () => JSX.Element;
   isSuccess: boolean;
 }
+
+const ReadingUploadDate = styled(Flex)`
+  justify-content: flex-end;
+  color: #929292;
+  margin-top: 2px;
+`;

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
@@ -11,7 +11,7 @@ export class Certificate extends React.Component {
     const { fullName, address, individualDevices: devices } = certificate;
     const { city, street, housingStockNumber, apartmentNumber } = address;
 
-    console.log(devices);
+    console.log(fullName);
 
     const nowDate = new Date();
     const months = [

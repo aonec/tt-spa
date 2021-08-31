@@ -118,7 +118,7 @@ export const ReadingsHistoryList = () => {
     );
 
     const uploadTime = (
-      <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
+      <div>{moment(reading.uploadTime).format('DD.MM.YYYY hh:mm')}</div>
     );
 
     const arrowButtonComponent =
