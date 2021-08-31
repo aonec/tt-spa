@@ -184,6 +184,9 @@ const Internal = () => {
               <Route path="/apartment/:id/individualDevice/:deviceId/readingHistory">
                 <ReadingHistoryPage />
               </Route>
+              <Route path="/houses/individualDevice/:deviceId/readingHistory">
+                <ReadingHistoryPage />
+              </Route>
               <Route path="/apartment/:id/individualDevice/:deviceId/switch">
                 <SwitchIndividualDevice />
               </Route>
