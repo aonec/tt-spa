@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: grid;
   grid-template-columns:
-    32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px)
-    minmax(120px, 160px) 75px minmax(134px, 304px);
+    32px minmax(120px, 160px) 16px minmax(152px, 232px) minmax(120px, 160px)
+    minmax(120px, 160px) 75px minmax(134px, 304px) 48px;
 
   column-gap: 16px;
   color: var(--main-90);
@@ -28,6 +28,7 @@ export const HouseReadingsHeader: React.FC = () => {
       <div>Тек. показ.</div>
       <div>Потребл.</div>
       <div>Комментарии</div>
+      <div></div>
     </Container>
   );
 };

@@ -23,7 +23,6 @@ import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
-import { useDebounce } from '01/hooks/useDebounce';
 import { getBitDepthAndScaleFactor } from '../../utils';
 
 export const BaseInfoStage = () => {
@@ -64,7 +63,7 @@ export const BaseInfoStage = () => {
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
-  const modelNameDebounced = useDebounce(fields.model.value, 300);
+  const modelNameDebounced = fields.model.value
 
   const bottomDateFields = (
     <>
