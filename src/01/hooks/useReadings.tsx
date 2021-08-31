@@ -20,6 +20,7 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
+import { message } from 'antd';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -118,71 +119,96 @@ export const useReadings = (
 
   const sendReadings = useCallback(
     async (isPrevious?: boolean) => {
-      if (!readingsState) return;
+      try {
+        if (!readingsState) return;
 
-      if (isPrevious) {
-        const getReadings = (prev: ReadingsStateType) => {
-          const date = getDateByReadingMonthSlider(sliderIndex).format(
-            'YYYY-MM'
-          );
+        if (isPrevious) {
+          const getReadings = (prev: ReadingsStateType) => {
+            const date = getDateByReadingMonthSlider(sliderIndex).format(
+              'YYYY-MM'
+            );
 
-          const res = prev && {
-            ...prev,
-            previousReadings: {
-              ...prev?.previousReadings,
-              [sliderIndex]: {
-                ...prev?.previousReadings[sliderIndex],
-                date:
-                  prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
+            const res = prev && {
+              ...prev,
+              previousReadings: {
+                ...prev?.previousReadings,
+                [sliderIndex]: {
+                  ...prev?.previousReadings[sliderIndex],
+                  date:
+                    prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
+                },
               },
-            },
+            };
+
+            setInitialPreviousReadingState(
+              (prev) => res?.previousReadings || prev
+            );
+
+            return res;
           };
 
-          setInitialPreviousReadingState(
-            (prev) => res?.previousReadings || prev
-          );
+          const neededReadings = getReadings(readingsState);
 
-          return res;
-        };
+          setReadingsState(neededReadings);
 
-        const neededReadings = getReadings(readingsState);
+          const neededPreviousReadings =
+            neededReadings.previousReadings[sliderIndex];
 
-        setReadingsState(neededReadings);
+          if (
+            !neededPreviousReadings ||
+            !neededPreviousReadings?.values?.length
+          )
+            return;
 
-        const neededPreviousReadings =
-          neededReadings.previousReadings[sliderIndex];
+          console.log(neededPreviousReadings?.values);
 
-        if (!neededPreviousReadings || !neededPreviousReadings?.values?.length)
+          await axios.post('/IndividualDeviceReadings/create', {
+            ...neededPreviousReadings?.values
+              .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+              .reduce(
+                (acc: object, value: number, index: number) => ({
+                  ...acc,
+                  [`value${index + 1}`]: Number(value),
+                }),
+                {}
+              ),
+            isForced: true,
+            deviceId: device.id,
+            readingDate: neededPreviousReadings.date,
+          });
+
+          setReadingsState((prev: any) => ({
+            ...prev,
+            previousReadings: {
+              ...prev.previousReadings,
+              [sliderIndex]: {
+                ...prev.previousReadings[sliderIndex],
+                uploadTime: moment().toISOString(),
+              },
+            },
+          }));
+
           return;
+        }
 
-        console.log(neededPreviousReadings?.values);
+        const deviceReadingObject: Record<
+          string,
+          any
+        > = formDeviceReadingObject(device, readingsState);
 
-        await axios.post('/IndividualDeviceReadings/create', {
-          ...neededPreviousReadings?.values
-            .slice(0, getIndividualDeviceRateNumByName(device.rateType))
-            .reduce(
-              (acc: object, value: number, index: number) => ({
-                ...acc,
-                [`value${index + 1}`]: Number(value),
-              }),
-              {}
-            ),
-          isForced: true,
-          deviceId: device.id,
-          readingDate: neededPreviousReadings.date,
-        });
+        await axios.post(
+          '/IndividualDeviceReadings/create',
+          deviceReadingObject
+        );
 
-        return;
+        setReadingsState((prev: any) => ({
+          ...prev,
+          uploadTime: moment().toISOString(),
+        }));
+        setInitialReadings(readingsState.currentReadingsArray);
+      } catch (e) {
+        message.error('Не удалось сохранить покзаания, попробуйте позже');
       }
-
-      const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
-        device,
-        readingsState
-      );
-
-      await axios.post('/IndividualDeviceReadings/create', deviceReadingObject);
-
-      setInitialReadings(readingsState.currentReadingsArray);
     },
     [readingsState]
   );
