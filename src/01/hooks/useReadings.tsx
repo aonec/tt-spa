@@ -76,6 +76,7 @@ export const useReadings = (
           : {
               values: previousReadingsArray,
               date: prevReadings.readingDate || null,
+              uploadTime: prevReadings.uploadTime,
             },
       };
 
@@ -89,6 +90,7 @@ export const useReadings = (
         prevId: prevReadings.id,
         currId: currentReadings.id,
         resource: device.resource,
+        uploadTime: currentReadings.uploadTime,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -310,7 +312,8 @@ export const useReadings = (
 
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
-    isCurrent: boolean
+    isCurrent: boolean,
+    uploadTime: string
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -342,7 +345,9 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[0]}
           </DeviceReadingsContainer>
-          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
         </Wide>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
@@ -367,7 +372,9 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
-          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
@@ -395,18 +402,28 @@ export const useReadings = (
           >
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
-          <ReadingUploadDate>{moment().format('DD.MM.YYYY')}</ReadingUploadDate>
+          <ReadingUploadDate>
+            {moment(uploadTime).format('DD.MM.YYYY')}
+          </ReadingUploadDate>
         </div>
       ),
       isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
     },
   ];
 
-  const previousResultReadings = options(previousDeviceReadings, false)
+  const previousResultReadings = options(
+    previousDeviceReadings,
+    false,
+    readingsState.previousReadings[sliderIndex]?.uploadTime
+  )
     .find((el) => el.isSuccess)!
     .value();
 
-  const currentReadings = options(currentDeviceReadings, true)
+  const currentReadings = options(
+    currentDeviceReadings,
+    true,
+    readingsState.uploadTime
+  )
     .find((el) => el.isSuccess)!
     .value();
 
@@ -418,7 +435,7 @@ export const useReadings = (
 };
 
 interface PreviousReadingState {
-  [key: number]: { values: number[]; date: string | null };
+  [key: number]: { values: number[]; date: string | null; uploadTime: string };
 }
 
 export type ReadingsStateType = {
@@ -428,6 +445,7 @@ export type ReadingsStateType = {
   prevId: number;
   currId: number;
   resource: string;
+  uploadTime: string;
 };
 
 type ReadingType = {

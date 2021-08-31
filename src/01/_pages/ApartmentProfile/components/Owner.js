@@ -11,8 +11,6 @@ export class Certificate extends React.Component {
     const { fullName, address, individualDevices: devices } = certificate;
     const { city, street, housingStockNumber, apartmentNumber } = address;
 
-    console.log(fullName);
-
     const nowDate = new Date();
     const months = [
       ' января ',
