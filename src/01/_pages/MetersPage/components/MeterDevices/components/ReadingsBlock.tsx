@@ -3,6 +3,9 @@ import React, { MutableRefObject } from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
 import { useSwitchOnInputs } from '01/hooks/useSwitchInputsOnEnter';
+import { EIndividualDeviceReadingsSource } from 'myApi';
+import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 const ReadingLineStyled = styled.div<{
   houseReadings: boolean;
@@ -46,6 +49,7 @@ interface DeviceRatesVerticalProps {
   textInput?: MutableRefObject<Input | null>;
   isCurrent?: boolean;
   lineIndex?: number;
+  source?: EIndividualDeviceReadingsSource;
 }
 
 const SuffixLine = styled.span`
@@ -78,6 +82,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   isDisabled,
   isCurrent,
   lineIndex,
+  source,
 }) => {
   const onFocusHandler = (e: any) => {
     if (Number(e.target.value) === 0) {
@@ -86,6 +91,14 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   };
 
   const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
+
+  const sourceIcon = source ? (
+    <Flex style={{ marginLeft: 7, marginRight: 2 }}>
+      {getSourceIcon(source)}
+    </Flex>
+  ) : (
+    <></>
+  );
 
   return (
     <ReadingLineStyled
@@ -109,11 +122,14 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
           <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
         }
         suffix={
-          resource === 'Electricity' ? (
-            <SuffixLine>кВтч</SuffixLine>
-          ) : (
-            <SuffixLine>м³</SuffixLine>
-          )
+          <>
+            {resource === 'Electricity' ? (
+              <SuffixLine>кВтч</SuffixLine>
+            ) : (
+              <SuffixLine>м³</SuffixLine>
+            )}
+            {sourceIcon}
+          </>
         }
         disabled={readingsBlocked || isDisabled}
         type="number"

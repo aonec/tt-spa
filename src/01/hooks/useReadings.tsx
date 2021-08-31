@@ -79,6 +79,7 @@ export const useReadings = (
               values: previousReadingsArray,
               date: prevReadings.readingDate || null,
               uploadTime: prevReadings.uploadTime,
+              source: prevReadings.source,
             },
       };
 
@@ -93,6 +94,7 @@ export const useReadings = (
         currId: currentReadings.id,
         resource: device.resource,
         uploadTime: currentReadings.uploadTime,
+        source: currentReadings.source,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -301,6 +303,7 @@ export const useReadings = (
     (value, index) => ({
       elem: (
         <ReadingsBlock
+          source={readingsState.source}
           key={device.id + index}
           index={index}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -327,6 +330,7 @@ export const useReadings = (
           key={device.id + index + '-prev-readings'}
           index={index}
           value={value}
+          source={readingsState.previousReadings[sliderIndex].source}
           operatorCabinet
           resource={readingsState.resource}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

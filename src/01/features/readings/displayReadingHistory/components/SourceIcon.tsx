@@ -12,7 +12,9 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({
-    [EIndividualDeviceReadingsSource.Archive]: null,
+    [EIndividualDeviceReadingsSource.Archive]: (
+      <ErcIcon style={{ color: 'gray' }} />
+    ),
     [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
     [EIndividualDeviceReadingsSource.Sputnik]: null,
