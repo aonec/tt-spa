@@ -29,8 +29,6 @@ export const getReadingValuesObject = (
     const index = `value${i + 1}`;
 
     res[index] = Number(((reading as any)[index] as string).split(' ')[0]) || 0;
-
-    console.log(res, rateNum);
   }
   return res;
 };

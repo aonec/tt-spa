@@ -12,6 +12,7 @@ import {
 import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import {
   EIndividualDeviceRateType,
+  EIndividualDeviceReadingsSource,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
@@ -339,7 +340,7 @@ export const useReadings = (
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
-    uploadTime: string
+    uploadTime?: string
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -372,7 +373,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[0]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </Wide>
       ),
@@ -399,7 +401,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[1]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </div>
       ),
@@ -429,7 +432,8 @@ export const useReadings = (
             {readingsElems.map((elem) => elem.elem)[2]}
           </DeviceReadingsContainer>
           <ReadingUploadDate>
-            {moment(uploadTime).format('DD.MM.YYYY')}
+            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+              'Нет показаний'}
           </ReadingUploadDate>
         </div>
       ),
@@ -461,7 +465,12 @@ export const useReadings = (
 };
 
 interface PreviousReadingState {
-  [key: number]: { values: number[]; date: string | null; uploadTime: string };
+  [key: number]: {
+    values: number[];
+    date: string | null;
+    uploadTime?: string;
+    source?: EIndividualDeviceReadingsSource;
+  };
 }
 
 export type ReadingsStateType = {
@@ -471,7 +480,8 @@ export type ReadingsStateType = {
   prevId: number;
   currId: number;
   resource: string;
-  uploadTime: string;
+  uploadTime?: string;
+  source?: EIndividualDeviceReadingsSource;
 };
 
 type ReadingType = {
