@@ -53,7 +53,6 @@ export const PauseApartmentModal = () => {
           allowClear
           value={fields.toDate.value ? moment(fields.toDate.value) : undefined}
           onChange={(value: moment.Moment | null) => {
-            console.log('change');
             fields.toDate.onChange(value && value.toISOString());
           }}
           disabledDate={(value) =>

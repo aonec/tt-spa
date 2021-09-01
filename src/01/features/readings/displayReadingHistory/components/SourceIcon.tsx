@@ -23,15 +23,10 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.TtmFromErc]: null,
   }[sourceType]);
 
-export const SourceName = ({
-  sourceType,
-  user,
-}: {
-  sourceType: EIndividualDeviceReadingsSource;
-  user?: ManagingFirmUserShortResponse | null;
-}) => {
-  const userName = user?.name;
-
+export const getSourceName = (
+  source: EIndividualDeviceReadingsSource,
+  userName: string | null = ''
+) => {
   const name = {
     [EIndividualDeviceReadingsSource.Archive]: 'Архив',
     [EIndividualDeviceReadingsSource.Bank]: 'Банк',
@@ -41,9 +36,22 @@ export const SourceName = ({
     [EIndividualDeviceReadingsSource.Erc]: 'ЕРЦ',
     [EIndividualDeviceReadingsSource.Ttm]: userName || 'TTM',
     [EIndividualDeviceReadingsSource.TtmFromErc]: null,
-  }[sourceType];
+  }[source];
+
+  return name;
+};
+
+export const SourceName = ({
+  sourceType,
+  user,
+}: {
+  sourceType: EIndividualDeviceReadingsSource;
+  user?: ManagingFirmUserShortResponse | null;
+}) => {
+  const userName = user?.name;
 
   const icon = getSourceIcon(sourceType);
+  const name = getSourceName(sourceType, userName);
 
   return (
     <Flex>

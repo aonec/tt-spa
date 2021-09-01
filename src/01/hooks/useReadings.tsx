@@ -80,6 +80,7 @@ export const useReadings = (
               date: prevReadings.readingDate || null,
               uploadTime: prevReadings.uploadTime,
               source: prevReadings.source,
+              user: prevReadings.user,
             },
       };
 
@@ -95,6 +96,7 @@ export const useReadings = (
         resource: device.resource,
         uploadTime: currentReadings.uploadTime,
         source: currentReadings.source,
+        user: currentReadings.user,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -163,22 +165,25 @@ export const useReadings = (
           )
             return;
 
-          console.log(neededPreviousReadings?.values);
+          const { current: res }: any = await axios.post(
+            '/IndividualDeviceReadings/create',
+            {
+              ...neededPreviousReadings?.values
+                .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+                .reduce(
+                  (acc: object, value: number, index: number) => ({
+                    ...acc,
+                    [`value${index + 1}`]: Number(value),
+                  }),
+                  {}
+                ),
+              isForced: true,
+              deviceId: device.id,
+              readingDate: neededPreviousReadings.date,
+            }
+          );
 
-          await axios.post('/IndividualDeviceReadings/create', {
-            ...neededPreviousReadings?.values
-              .slice(0, getIndividualDeviceRateNumByName(device.rateType))
-              .reduce(
-                (acc: object, value: number, index: number) => ({
-                  ...acc,
-                  [`value${index + 1}`]: Number(value),
-                }),
-                {}
-              ),
-            isForced: true,
-            deviceId: device.id,
-            readingDate: neededPreviousReadings.date,
-          });
+          console.log(res);
 
           setReadingsState((prev: any) => ({
             ...prev,
@@ -186,7 +191,9 @@ export const useReadings = (
               ...prev.previousReadings,
               [sliderIndex]: {
                 ...prev.previousReadings[sliderIndex],
-                uploadTime: moment().toISOString(),
+                uploadTime: moment(res.uploadDate).toISOString(),
+                source: res.source,
+                user: res.user,
               },
             },
           }));
@@ -199,14 +206,16 @@ export const useReadings = (
           any
         > = formDeviceReadingObject(device, readingsState);
 
-        await axios.post(
+        const { current: res }: any = await axios.post(
           '/IndividualDeviceReadings/create',
           deviceReadingObject
         );
 
         setReadingsState((prev: any) => ({
           ...prev,
-          uploadTime: moment().toISOString(),
+          uploadTime: moment(res.uploadDate).toISOString(),
+          source: res.source,
+          user: res.user,
         }));
         setInitialReadings(readingsState.currentReadingsArray);
       } catch (e) {
@@ -303,6 +312,7 @@ export const useReadings = (
     (value, index) => ({
       elem: (
         <ReadingsBlock
+          user={readingsState.user}
           source={readingsState.source}
           key={device.id + index}
           index={index}
@@ -327,6 +337,7 @@ export const useReadings = (
     readingsState.previousReadings[sliderIndex]?.values.map((value, index) => ({
       elem: (
         <ReadingsBlock
+          user={readingsState.previousReadings[sliderIndex].user}
           key={device.id + index + '-prev-readings'}
           index={index}
           value={value}
@@ -474,6 +485,7 @@ interface PreviousReadingState {
     date: string | null;
     uploadTime?: string;
     source?: EIndividualDeviceReadingsSource;
+    user?: any;
   };
 }
 
@@ -486,6 +498,7 @@ export type ReadingsStateType = {
   resource: string;
   uploadTime?: string;
   source?: EIndividualDeviceReadingsSource;
+  user?: any;
 };
 
 type ReadingType = {
