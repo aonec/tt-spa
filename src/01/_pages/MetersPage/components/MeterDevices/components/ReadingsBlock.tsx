@@ -1,10 +1,13 @@
 import React, { MutableRefObject } from 'react';
 
-import { Input } from 'antd';
+import { Input, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { useSwitchOnInputs } from '01/hooks/useSwitchInputsOnEnter';
 import { EIndividualDeviceReadingsSource } from 'myApi';
-import { getSourceIcon } from '01/features/readings/displayReadingHistory/components/SourceIcon';
+import {
+  getSourceIcon,
+  getSourceName,
+} from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 
 const ReadingLineStyled = styled.div<{
@@ -50,6 +53,7 @@ interface DeviceRatesVerticalProps {
   isCurrent?: boolean;
   lineIndex?: number;
   source?: EIndividualDeviceReadingsSource;
+  user?: any;
 }
 
 const SuffixLine = styled.span`
@@ -83,6 +87,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   isCurrent,
   lineIndex,
   source,
+  user,
 }) => {
   const onFocusHandler = (e: any) => {
     if (Number(e.target.value) === 0) {
@@ -128,7 +133,9 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
             ) : (
               <SuffixLine>м³</SuffixLine>
             )}
-            {sourceIcon}
+            <Tooltip title={source ? getSourceName(source, user?.name) : ''}>
+              {sourceIcon}
+            </Tooltip>
           </>
         }
         disabled={readingsBlocked || isDisabled}
