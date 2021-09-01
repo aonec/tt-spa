@@ -1,7 +1,7 @@
 import { FileData, useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   text?: string;
   filesInit?: FileData[];
   withoutDeletion?: boolean;
+  type?: string;
 }
 
 export const FilesUpload: React.FC<Props> = (props) => {
@@ -21,9 +22,17 @@ export const FilesUpload: React.FC<Props> = (props) => {
     text,
     filesInit,
     withoutDeletion,
+    type,
   } = props;
 
-  const { files, addFile, removeFile } = useFilesUpload(onChange);
+  const { files, addFile, removeFile, clearFiles } = useFilesUpload(
+    onChange,
+    type
+  );
+
+  useEffect(() => {
+    if (filesInit?.length === 0) clearFiles();
+  }, [filesInit?.map((elem) => elem.id).join('')]);
 
   return (
     <Wide>

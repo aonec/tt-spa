@@ -1,6 +1,15 @@
-import { StyledInput, StyledSelctor } from '01/shared/ui/Fields';
+import {
+  $existingStreets,
+  ExistingStreetsGate,
+} from '01/features/housingStocks/displayHousingStockStreets/model';
+import {
+  StyledAutocomplete,
+  StyledInput,
+  StyledSelector,
+} from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Select } from 'antd';
+import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -51,9 +60,12 @@ export const HousingStockFilter = () => {
       setFilterFields((prev) => ({ ...filterValuesInit, City: prev.City }));
   };
 
+  const existingStreets = useStore($existingStreets);
+
   return (
     <FieldsWrap>
-      <StyledSelctor
+      <ExistingStreetsGate Street={filterFields.Street} />
+      <StyledSelector
         placeholder="Город"
         value={filterFields.City || undefined}
         onChange={(value: any) => setValue('City', value)}
@@ -63,11 +75,11 @@ export const HousingStockFilter = () => {
         {cities.map((city) => (
           <Select.Option value={city}>{city}</Select.Option>
         ))}
-      </StyledSelctor>
-      <StyledInput
+      </StyledSelector>
+      <StyledAutocomplete
+        options={existingStreets.map((value) => ({ value }))}
         placeholder="Название улицы"
-        onChange={onChangeHandler}
-        name="Street"
+        onChange={(value) => setValue('Street', value)}
         value={filterFields.Street}
         onKeyDown={(e) => onKeyDownHandler(e, 1)}
         ref={refs[1]}
@@ -100,4 +112,5 @@ const FieldsWrap = styled(Flex)`
   display: grid;
   grid-template-columns: 1fr 2fr 0.7fr 0.7fr;
   grid-gap: 15px;
+  margin-top: -9px;
 `;

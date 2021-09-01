@@ -40,6 +40,7 @@ export const DocumentsStage = () => {
         max={1}
         onChange={setFile('completedWorks')}
         withoutDeletion
+        type="DeviceAcceptanceAct"
       />
 
       <FilesUpload
@@ -49,6 +50,7 @@ export const DocumentsStage = () => {
         max={1}
         onChange={setFile('devicePassport')}
         withoutDeletion
+        type="DevicePassport"
       />
 
       <FilesUpload
@@ -58,6 +60,7 @@ export const DocumentsStage = () => {
         filesInit={getFilesArrByFile(deviceCheck)}
         onChange={setFile('deviceCheck')}
         withoutDeletion
+        type="DeviceTestCertificates"
       />
     </>
   );

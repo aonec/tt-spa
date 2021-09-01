@@ -6,7 +6,6 @@ import {
   refetchReadingHistory,
 } from './index';
 import { forward } from 'effector';
-import { sample } from 'lodash';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 

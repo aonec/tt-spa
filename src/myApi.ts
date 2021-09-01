@@ -56,6 +56,9 @@ export interface HomeownerListResponse {
   middleName: string | null;
   fullName: string | null;
   personType: EPersonType;
+
+  /** @format uuid */
+  homeownerAccountId: string;
   isMainPersonalAccountNumber: boolean;
   phoneNumber: string | null;
   personalAccountNumber: string | null;
@@ -89,6 +92,12 @@ export interface ApartmentResponse {
 
   /** @format int32 */
   hotWaterRiserCount: number | null;
+
+  /** @format date-time */
+  stoppedFrom: string | null;
+
+  /** @format date-time */
+  stoppedTo: string | null;
 }
 
 export interface ApartmentResponseSuccessApiResponse {
@@ -254,6 +263,7 @@ export enum EDocumentType {
   NodeAdmissionAct = "NodeAdmissionAct",
   ImportedFile = "ImportedFile",
   ProfilePhoto = "ProfilePhoto",
+  ApartmentStoppingStatement = "ApartmentStoppingStatement",
 }
 
 export interface DocumentResponse {
@@ -294,16 +304,6 @@ export interface DocumentResponsePagedList {
 
 export interface DocumentResponsePagedListSuccessApiResponse {
   successResponse: DocumentResponsePagedList | null;
-}
-
-export interface ApartmentStatusSetRequest {
-  status: EApartmentStatus;
-
-  /** @format date-time */
-  fromDate?: string | null;
-
-  /** @format date-time */
-  toDate?: string | null;
 }
 
 export enum EClosingReason {
@@ -372,6 +372,17 @@ export interface IndividualDeviceWithExpiredCheckingDateListResponse {
 
 export interface IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse {
   successResponse: IndividualDeviceWithExpiredCheckingDateListResponse | null;
+}
+
+export interface ApartmentStatusSetRequest {
+  status: EApartmentStatus;
+
+  /** @format date-time */
+  fromDate?: string | null;
+
+  /** @format date-time */
+  toDate?: string | null;
+  documentIds?: number[] | null;
 }
 
 export interface LoginRequest {
@@ -2660,6 +2671,10 @@ export interface IndividualDeviceResponse {
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
   measurableUnitString: string | null;
+  isPolling: boolean;
+
+  /** @format int32 */
+  contractorId: number | null;
 }
 
 export interface IndividualDeviceResponseSuccessApiResponse {
@@ -2696,6 +2711,10 @@ export interface UpdateIndividualDeviceRequest {
   /** @format int32 */
   apartmentId?: number | null;
   rateType?: EIndividualDeviceRateType | null;
+  isPolling?: boolean | null;
+
+  /** @format int32 */
+  contractorId?: number | null;
 }
 
 export interface IndividualDeviceListItemResponse {
@@ -2744,9 +2763,13 @@ export interface IndividualDeviceListItemResponse {
   /** @format date-time */
   magneticSealInstallationDate: string | null;
   magneticSealTypeName: string | null;
+  isPolling: boolean;
   apartmentNumber: string | null;
   homeownerName: string | null;
   personalAccountNumber: string | null;
+
+  /** @format int32 */
+  contractorId: number | null;
 }
 
 export interface IndividualDeviceListItemResponsePagedList {
@@ -2826,6 +2849,10 @@ export interface CreateIndividualDeviceRequest {
   rateType: EIndividualDeviceRateType;
   startupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  isPolling?: boolean;
+
+  /** @format int32 */
+  contractorId?: number | null;
 }
 
 export interface CloseDeviceRequest {
@@ -4792,6 +4819,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Apartments
+     * @name ApartmentsSetStatusProblemDevicesDetail
+     * @request GET:/api/Apartments/{apartmentId}/SetStatusProblemDevices
+     * @secure
+     */
+    apartmentsSetStatusProblemDevicesDetail: (
+      apartmentId: number,
+      query: {
+        Status: EApartmentStatus;
+        FromDate?: string | null;
+        ToDate?: string | null;
+        DocumentIds?: number[] | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/SetStatusProblemDevices`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
      * @name ApartmentsSetStatusPartialUpdate
      * @request PATCH:/api/Apartments/{apartmentId}/SetStatus
      * @secure
@@ -5660,6 +5714,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     exportsIndividualDeviceReadingsList: (query?: { year?: number; month?: number }, params: RequestParams = {}) =>
       this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/IndividualDeviceReadings`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Exports
+     * @name ExportsHousingDeviceReadingsList
+     * @request GET:/api/Exports/HousingDeviceReadings
+     * @secure
+     */
+    exportsHousingDeviceReadingsList: (query?: { year?: number; month?: number }, params: RequestParams = {}) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Exports/HousingDeviceReadings`,
         method: "GET",
         query: query,
         secure: true,

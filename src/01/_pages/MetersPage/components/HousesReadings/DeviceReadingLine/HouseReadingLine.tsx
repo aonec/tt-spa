@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import { MenuButtonTT } from '01/tt-components';
+import { useHistory } from 'react-router-dom';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
   ({ device, numberOfPreviousReadingsInputs }) => {
@@ -20,6 +22,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     );
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [consumptionState, setConsumptionState] = useState<number[]>([]);
 
@@ -87,6 +90,19 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
         <div>{consumptionElems}</div>
         <div>-</div>
+
+        <MenuButtonTT
+          menuButtonArr={[
+            {
+              title: 'Открыть историю показаний',
+              cb: () =>
+                history.push(
+                  `/houses/individualDevice/${device.id}/readingHistory`
+                ),
+              show: true,
+            },
+          ]}
+        />
       </HouseReadingsDevice>
     );
   }
@@ -94,9 +110,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
 const HouseReadingsDevice = styled.div`
   display: grid;
-  grid-template-columns:
-    32px minmax(180px, 240px) 16px minmax(152px, 232px) minmax(120px, 160px)
-    minmax(120px, 160px) 75px minmax(134px, 304px);
+  grid-template-columns: 10px minmax(130px, 160px) 1px minmax(110px, 150px) minmax(
+      140px,
+      180px
+    ) minmax(140px, 180px) 75px minmax(134px, 304px) 32px;
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);

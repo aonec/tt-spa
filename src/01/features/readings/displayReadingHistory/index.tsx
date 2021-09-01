@@ -6,7 +6,7 @@ import { ReadingsHistoryList } from './components/ReadingsHistoryList';
 import { ReadingHistoryGate } from './models';
 
 export const ReadingHistoryPage = () => {
-  const { deviceId } = useParams<{ id: string; deviceId: string }>();
+  const { deviceId } = useParams<{ deviceId: string }>();
   return (
     <>
       <IndividualDeviceGate id={Number(deviceId)} />

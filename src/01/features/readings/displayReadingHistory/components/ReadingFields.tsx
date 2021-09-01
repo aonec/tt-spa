@@ -66,10 +66,8 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
         onKeyDown={onKeyHandler}
         isOnlyOne={isOnlyOne || values.length === 1}
         status={status!}
-        onBlur={onBlurHandler}
       >
         <EditableField
-          onWheel={(e) => e.preventDefault()}
           type="number"
           disabled={!editable}
           className={`history-reading-field`}
@@ -90,7 +88,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     );
 
   return (
-    <FieldsWrap>
+    <FieldsWrap onBlur={onBlurHandler}>
       {values.length === 3 ? (
         <>
           <div>

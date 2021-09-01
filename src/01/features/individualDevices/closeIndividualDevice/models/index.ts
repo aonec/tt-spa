@@ -4,7 +4,9 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { CloseIndividualDeviceRequestBody } from '01/_api/individualDevices';
 
-export const $closingIndividualDevice = createStore<IndividualDeviceListItemResponse | null>(null);
+export const $closingIndividualDevice = createStore<IndividualDeviceListItemResponse | null>(
+  null
+);
 export const $isCloseIndividualDeviceModalOpen = $closingIndividualDevice.map(
   Boolean
 );

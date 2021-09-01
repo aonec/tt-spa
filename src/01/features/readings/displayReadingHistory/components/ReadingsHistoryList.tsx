@@ -118,7 +118,7 @@ export const ReadingsHistoryList = () => {
     );
 
     const uploadTime = (
-      <div>{moment(reading.uploadTime).format('YYYY.MM.DD hh:mm')}</div>
+      <div>{moment(reading.uploadTime).format('DD.MM.YYYY hh:mm')}</div>
     );
 
     const arrowButtonComponent =
@@ -209,12 +209,13 @@ const columnsNames = [
 
 const slide = keyframes`
   0% {
-    background-position: 0% 0;
+		background-position: 100% 0%;
+	}
+	100% {
+		background-position: 0% 0%;
+	} 
   }
-  
-  100% {
-    background-position: 100% 0;
-  }
+	} 
 `;
 
 const GradientLoader = styled.div`
@@ -229,7 +230,9 @@ const GradientLoader = styled.div`
   )`
       : 'none'};
   height: 5px;
-  animation: slide 2s infinite linear forwards;
+  background-size: 400% 400%;
+  animation: ${slide} 40s linear infinite;
+  transform: scale(1, -1);
 `;
 
 const Wrap = styled.div`

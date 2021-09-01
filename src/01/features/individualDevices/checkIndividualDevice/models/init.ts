@@ -64,6 +64,8 @@ forward({
       mountPlaceId: values.mountPlace,
       model: values.model,
       serialNumber: values.serialNumber,
+      bitDepth: values.bitDepth,
+      scaleFactor: values.scaleFactor,
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
