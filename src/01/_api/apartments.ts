@@ -30,13 +30,13 @@ export interface GetProblemDevicesRequestPayload {
   requestPayload: ApartmentStatusSetRequest;
 }
 
-export const getProblemDevices = ({
+export const getProblemDevices = async ({
   requestPayload,
   apartmentId,
 }: GetProblemDevicesRequestPayload): Promise<
   IndividualDeviceWithExpiredCheckingDateResponse[]
 > => {
-  const res: any = axios.get(
+  const res: any = await axios.get(
     `Apartments/${apartmentId}/SetStatusProblemDevices${formQueryString(
       requestPayload
     )}`
