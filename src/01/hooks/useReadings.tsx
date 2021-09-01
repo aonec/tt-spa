@@ -210,7 +210,7 @@ export const useReadings = (
         }));
         setInitialReadings(readingsState.currentReadingsArray);
       } catch (e) {
-        message.error('Не удалось сохранить покзаания, попробуйте позже');
+        message.error('Не удалось сохранить показания, попробуйте позже');
       }
     },
     [readingsState]

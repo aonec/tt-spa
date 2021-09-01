@@ -8,13 +8,12 @@ import { ReactComponent as UserIcon } from '../icons/userIcon.svg';
 import { ReactComponent as ErcIcon } from '../icons/erc.svg';
 import { ReactComponent as GosUslugiIcon } from '../icons/gosuslugi.svg';
 import { ReactComponent as BankIcon } from '../icons/bank.svg';
+import { ReactComponent as ArchiveIcon } from '../icons/archive.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
   ({
-    [EIndividualDeviceReadingsSource.Archive]: (
-      <ErcIcon style={{ color: 'gray' }} />
-    ),
+    [EIndividualDeviceReadingsSource.Archive]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
     [EIndividualDeviceReadingsSource.Sputnik]: null,
