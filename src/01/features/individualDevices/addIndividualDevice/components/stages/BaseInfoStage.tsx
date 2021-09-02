@@ -24,6 +24,10 @@ import {
   IndividualDevicecModelsGate,
 } from '01/features/individualDevices/displayIndividualDevicesNames/models';
 import { getBitDepthAndScaleFactor } from '../../utils';
+import {
+  $contractors,
+  ContractorsGate,
+} from '01/features/contractors/displayContractors/models';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +36,8 @@ export const BaseInfoStage = () => {
   const modelNames = useStore($individualDevicesNames);
 
   const { fields } = useForm(addIndividualDeviceForm);
+
+  const contractors = useStore($contractors);
 
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];
@@ -63,7 +69,7 @@ export const BaseInfoStage = () => {
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
-  const modelNameDebounced = fields.model.value
+  const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
     <>
@@ -165,7 +171,7 @@ export const BaseInfoStage = () => {
     <Wrap>
       <IndividualDevicecModelsGate model={modelNameDebounced} />
       <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
-
+      <ContractorsGate />
       <FormHeader>Общие данные о приборе</FormHeader>
 
       <FormWrap>
@@ -397,6 +403,22 @@ export const BaseInfoStage = () => {
           />
         </FormItem>
       </FormWrap>
+
+      <FormItem label="Монтажная организация">
+        <StyledSelect
+          onChange={(value: any) =>
+            value && fields.contractorId.onChange(value)
+          }
+          value={fields.contractorId.value || void 0}
+          placeholder="Выберите монтажную организацию"
+        >
+          {contractors?.map((elem) => (
+            <StyledSelect.Option value={elem.id} key={elem.id}>
+              {elem.name}
+            </StyledSelect.Option>
+          ))}
+        </StyledSelect>
+      </FormItem>
     </Wrap>
   );
 };

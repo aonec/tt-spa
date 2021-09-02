@@ -19,7 +19,7 @@ export const GetIssueCertificateModal = () => {
   const homeownerCertificate = useStore($homeownerCertificatre);
   const certificateRef = useRef();
 
-  if (!apartment?.homeowners) return <></>;
+  if (!apartment?.homeowners?.length) return <></>;
 
   return (
     <>
