@@ -25,7 +25,7 @@ export const MetersPage = () => {
   useFetchPage(state, dispatch);
   const filter = useFilter(dispatch);
   const aparts = useApartments(state, filter);
-  const apartInfo = useApartmentInfo(state);
+  
   const meterDev = useMeterDevices(state);
 
   const history = useHistory();
@@ -47,7 +47,7 @@ export const MetersPage = () => {
             <Apartments {...aparts} />
           </Route>
           <Route path="/meters/apartments/:id">
-            <ApartmentInfo {...apartInfo} />
+            <ApartmentInfo />
             <ApartmentReadings {...meterDev} />
           </Route>
         </TabPane>

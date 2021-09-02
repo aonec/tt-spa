@@ -28,6 +28,7 @@ import moment from 'moment';
 import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
+import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 
 const styles = css`
   drower {
@@ -140,12 +141,13 @@ const ApartmentComment = ({ comment: commentInitial }) => {
   );
 };
 
-export const ApartmentInfo = ({ userInfo = [], title, comment }) => {
+export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
 
   const apartment = useStore($apartment);
+  const { userInfo = [], title, comment } = useApartmentInfo(apartment);
 
   const cancelPauseApartment = () =>
     confirm({
