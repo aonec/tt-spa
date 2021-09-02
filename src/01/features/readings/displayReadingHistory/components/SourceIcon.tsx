@@ -17,10 +17,10 @@ export const getSourceIcon = (sourceType: EIndividualDeviceReadingsSource) =>
     [EIndividualDeviceReadingsSource.Bank]: <BankIcon />,
     [EIndividualDeviceReadingsSource.GosUslugi]: <GosUslugiIcon />,
     [EIndividualDeviceReadingsSource.Sputnik]: null,
-    [EIndividualDeviceReadingsSource.Duplicated]: null,
+    [EIndividualDeviceReadingsSource.Duplicated]: <ArchiveIcon />,
     [EIndividualDeviceReadingsSource.Erc]: <ErcIcon />,
     [EIndividualDeviceReadingsSource.Ttm]: <UserIcon />,
-    [EIndividualDeviceReadingsSource.TtmFromErc]: null,
+    [EIndividualDeviceReadingsSource.TtmFromErc]: <ErcIcon />,
   }[sourceType]);
 
 export const getSourceName = (
@@ -32,10 +32,10 @@ export const getSourceName = (
     [EIndividualDeviceReadingsSource.Bank]: 'Банк',
     [EIndividualDeviceReadingsSource.GosUslugi]: 'Госуслуги',
     [EIndividualDeviceReadingsSource.Sputnik]: 'Спутник',
-    [EIndividualDeviceReadingsSource.Duplicated]: 'Duplicated',
+    [EIndividualDeviceReadingsSource.Duplicated]: 'Архив (Повторные показания)',
     [EIndividualDeviceReadingsSource.Erc]: 'ЕРЦ',
     [EIndividualDeviceReadingsSource.Ttm]: userName || 'TTM',
-    [EIndividualDeviceReadingsSource.TtmFromErc]: null,
+    [EIndividualDeviceReadingsSource.TtmFromErc]: 'ЕРЦ (TTM)',
   }[source];
 
   return name;

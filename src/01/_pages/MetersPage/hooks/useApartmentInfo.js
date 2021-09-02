@@ -1,5 +1,6 @@
-export const useApartmentInfo = ({ apartInfo = {} }) => {
-  const { housingStock = {}, apartmentNumber, homeowners = [] } = apartInfo;
+export const useApartmentInfo = (apartInfo) => {
+  const { housingStock = {}, apartmentNumber, homeowners = [], comment } =
+    apartInfo || {};
 
   const homeowner = homeowners[0] || {};
 
@@ -22,6 +23,6 @@ export const useApartmentInfo = ({ apartInfo = {} }) => {
       ['Управляющая компания', '-'],
       ['Информация об УК', '-'],
     ],
-    comment: apartInfo.comment,
+    comment: comment,
   };
 };

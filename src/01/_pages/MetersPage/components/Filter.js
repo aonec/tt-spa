@@ -5,8 +5,10 @@ import { getArrayByCountRange } from './utils';
 import { useHistory } from 'react-router-dom';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
+import { useFilter } from '../hooks/useFilter';
 
-export const Filter = ({ inputs = [] }) => {
+export const Filter = () => {
+  const { inputs } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
 
