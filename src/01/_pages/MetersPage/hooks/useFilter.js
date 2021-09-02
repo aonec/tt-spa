@@ -5,6 +5,7 @@ import { $existingStreets } from '01/features/housingStocks/displayHousingStockS
 import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
+import stringSimilarity from 'string-similarity';
 
 const initialState = {
   city: '',
@@ -48,6 +49,8 @@ export const useFilter = () => {
       });
   }, [apartment]);
 
+  useEffect(() => {}, []);
+
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
@@ -81,11 +84,30 @@ export const useFilter = () => {
   const streets = useStore($existingStreets);
 
   const enterKeyDownHandler = (callback) => (e) => {
-    if (e.key !== 'Enter' || [street, house, apart].some((value) => !value))
-      return;
+    if (e.key !== 'Enter') return;
 
     callback();
   };
+
+  const matches =
+    typeof state.street === 'string' && Array.isArray(streets)
+      ? stringSimilarity.findBestMatch(
+          state.street,
+          typeof streets[0] === 'string' ? streets : ['']
+        )
+      : null;
+
+  const matchesArray =
+    matches?.ratings
+      .filter((value) =>
+        value.target
+          .toUpperCase()
+          .startsWith(String(state.street.toUpperCase()))
+      )
+      .sort((a, b) => b.rating - a.rating)
+      .map(({ target }) => ({ value: target })) || [];
+
+  const streetMatch = matchesArray[0]?.value;
 
   return {
     state,
@@ -99,10 +121,12 @@ export const useFilter = () => {
       {
         name: 'street',
         placeholder: 'Улица',
-        options: streets.map((value) => ({
-          value,
-        })),
-        onKeyDown: enterKeyDownHandler(() => console.log('runs')),
+        onKeyDown: enterKeyDownHandler(
+          () =>
+            streetMatch &&
+            dispatch({ type: 'change', payload: { street: streetMatch } })
+        ),
+        options: matchesArray?.length ? [matchesArray[0]] : [],
       },
       {
         name: 'house',

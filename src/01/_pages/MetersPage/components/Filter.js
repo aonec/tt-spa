@@ -17,21 +17,10 @@ export const Filter = () => {
 
     if (e.key !== 'Enter') return;
 
-    const isLastInput = index + 1 === inputs.length;
+    const isLastInput = index + 1 === inputs.length - 1;
 
     if (isLastInput) {
-      if (
-        history.location.pathname === '/meters/apartments' ||
-        history.location.pathname === '/meters/apartments/'
-      ) {
-        e.target.blur && e.target.blur();
-
-        return;
-      }
-
-      const node = document.getElementsByClassName('ant-input')[1];
-
-      node && node.focus();
+      e.target.blur && e.target.blur();
 
       return;
     }
@@ -58,15 +47,22 @@ export const Filter = () => {
     }
   `(
     <filter as="div">
-      <ExistingStreetsGate
-        Street={inputs.find((elem) => elem.name === 'street').value}
-      />
+      <ExistingStreetsGate />
       {inputs.map((input, index) => (
         <StyledAutocomplete
           options={input.options}
           ref={inputsRefs[index]}
           onKeyPress={(e) => onInputKeyPress(e, index)}
           {...input}
+          {...(input.name === 'street'
+            ? {
+                onKeyDown: (e) => {
+                  if (e.key !== 'Enter') return;
+                  input.onKeyDown(e);
+                  inputsRefs[index + 1].current.focus();
+                },
+              }
+            : {})}
           onFocus={() => input.onFocus(input.name)}
         />
       ))}
