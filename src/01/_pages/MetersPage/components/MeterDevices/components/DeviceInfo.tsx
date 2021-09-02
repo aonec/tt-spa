@@ -54,6 +54,8 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
       device.magneticSealInstallationDate &&
       moment(device.magneticSealInstallationDate).format('DD.MM.YYYY');
 
+  console.log(icon, color, DeviceIcons, device.resource);
+
   return (
     <DeviceColumn>
       <DeviceLink to={history.location.pathname}>
