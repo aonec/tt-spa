@@ -11,17 +11,6 @@ fetchApartmentFx.use(getApartment);
 
 sample({
   source: ApartmentGate.state.map((state) => state.id),
-  clock: [
-    guard({
-      source: combine(
-        ApartmentGate.state,
-        $apartment,
-        (gateState, apartment) => apartment?.id !== gateState.id
-      ),
-      clock: ApartmentGate.open,
-      filter: (value) => value,
-    }),
-    refetchApartment,
-  ],
+  clock: [ApartmentGate.state, refetchApartment],
   target: fetchApartmentFx,
 });

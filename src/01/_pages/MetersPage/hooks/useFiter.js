@@ -1,6 +1,6 @@
-import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
-import { useStore } from 'effector-react';
+import axios from '01/axios';
 import React from 'react';
+import { useHistory } from 'react-router';
 
 const initialState = {
   city: '',
@@ -27,19 +27,38 @@ function filterReducer(state, action) {
 
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
-  const { city, street, house, apart, question, corpus } = state;
+  const { apart, street, house } = state;
+  const history = useHistory();
 
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
 
-  const onApartmentKeyHandler = (e) => {
-    if (e.key !== 'Enter') return;
+  const onApartmentKeyHandler = async (e) => {
+    if (e.key !== 'Enter' || [street, house, apart].some((value) => !value))
+      return;
 
-    console.log('runs');
+    try {
+      const res = await axios.get('Apartments', {
+        params: {
+          ...{
+            Street: street,
+            ApartmentNumber: apart,
+            HousingStockNumber: house,
+            Question: state.question,
+          },
+          PageSize: 1,
+          PageNumber: 1,
+        },
+      });
+
+      const apartment = res.items[0];
+
+      if (apartment) history.push(`/meters/apartments/${apartment.id}`);
+
+      if (!apartment) history.push(`/meters/apartments/`);
+    } catch (error) {}
   };
-
-  const streetSuggestions = useStore($existingStreets);
 
   return {
     state,
@@ -53,9 +72,6 @@ export const useFilter = () => {
       {
         name: 'street',
         placeholder: 'Улица',
-        options: streetSuggestions.map((elem) => ({
-          value: elem,
-        })),
       },
       {
         name: 'house',
@@ -69,6 +85,7 @@ export const useFilter = () => {
       {
         name: 'question',
         placeholder: 'Л/С или ФИО',
+        onKeyDown: onApartmentKeyHandler,
       },
     ].map((elem) => ({
       ...elem,
