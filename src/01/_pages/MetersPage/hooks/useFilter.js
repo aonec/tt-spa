@@ -48,6 +48,8 @@ export const useFilter = () => {
       });
   }, [apartment]);
 
+  useEffect(() => {}, []);
+
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
@@ -81,8 +83,7 @@ export const useFilter = () => {
   const streets = useStore($existingStreets);
 
   const enterKeyDownHandler = (callback) => (e) => {
-    if (e.key !== 'Enter' || [street, house, apart].some((value) => !value))
-      return;
+    if (e.key !== 'Enter') return;
 
     callback();
   };
@@ -99,10 +100,11 @@ export const useFilter = () => {
       {
         name: 'street',
         placeholder: 'Улица',
-        options: streets.map((value) => ({
-          value,
-        })),
-        onKeyDown: enterKeyDownHandler(() => console.log('runs')),
+        onKeyDown: enterKeyDownHandler(
+          () =>
+            streets[0] &&
+            dispatch({ type: 'change', payload: { street: streets[0] } })
+        ),
       },
       {
         name: 'house',

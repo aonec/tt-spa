@@ -121,7 +121,6 @@ export interface GetIndividualDeviceRequestParams {
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams
 ) => {
-  console.log(params);
 
   const res: {
     items: IndividualDeviceListItemResponse[];
