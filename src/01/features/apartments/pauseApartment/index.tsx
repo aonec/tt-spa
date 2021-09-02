@@ -96,8 +96,8 @@ export const PauseApartmentModal = () => {
         {problemDevices?.map((elem) => (
           <>
             <Alert>
-              {moment(elem.lastCheckingDate).format('DD.MM.YYYY')} выходит срок
-              поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
+              {moment(elem.futureCheckingDate).format('DD.MM.YYYY')} выходит
+              срок поверки у прибора <b> {elem.model}</b> ({elem.serialNumber})
             </Alert>
             {<Space />}
           </>
