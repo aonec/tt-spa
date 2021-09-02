@@ -8,7 +8,7 @@ import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFiter';
 
 export const Filter = () => {
-  const { inputs, state } = useFilter();
+  const { inputs } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
 

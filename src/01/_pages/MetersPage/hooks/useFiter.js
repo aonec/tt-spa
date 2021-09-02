@@ -33,6 +33,12 @@ export const useFilter = () => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
 
+  const onApartmentKeyHandler = (e) => {
+    if (e.key !== 'Enter') return;
+
+    console.log('runs');
+  };
+
   const streetSuggestions = useStore($existingStreets);
 
   return {
@@ -58,6 +64,7 @@ export const useFilter = () => {
       {
         name: 'apart',
         placeholder: 'Кв.',
+        onKeyDown: onApartmentKeyHandler,
       },
       {
         name: 'question',

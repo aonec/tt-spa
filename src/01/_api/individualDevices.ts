@@ -124,7 +124,5 @@ export const getIndividualDevices = async (
     items: IndividualDeviceListItemResponse[];
   } = await axios.get('IndividualDevices', { params });
 
-  console.log(resolve);
-
   return res?.items;
 };

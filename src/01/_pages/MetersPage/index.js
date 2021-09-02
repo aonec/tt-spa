@@ -19,7 +19,7 @@ export const MetersPage = () => {
   const defaultKey = history.location.pathname.split('/')[2];
 
   const handleTabClick = (key) => {
-    history.replace(`/meters/${key}`); // < == router router v4
+    history.replace(`/meters/${key}`);
   };
 
   return (
