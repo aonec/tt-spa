@@ -22,9 +22,6 @@ export const Filter = () => {
     if (isLastInput) {
       e.target.blur && e.target.blur();
 
-      // const node = document.getElementsByClassName('ant-input')[1];
-      // node && node.focus();
-
       return;
     }
 
@@ -57,6 +54,15 @@ export const Filter = () => {
           ref={inputsRefs[index]}
           onKeyPress={(e) => onInputKeyPress(e, index)}
           {...input}
+          {...(input.name === 'street'
+            ? {
+                onKeyDown: (e) => {
+                  if (e.key !== 'Enter') return;
+                  input.onKeyDown(e);
+                  inputsRefs[index + 1].current.focus();
+                },
+              }
+            : {})}
           onFocus={() => input.onFocus(input.name)}
         />
       ))}

@@ -90,12 +90,24 @@ export const useFilter = () => {
   };
 
   const matches =
-    state.street && streets
-      ? stringSimilarity.findBestMatch(state.street, streets)
+    typeof state.street === 'string' && Array.isArray(streets)
+      ? stringSimilarity.findBestMatch(
+          state.street,
+          typeof streets[0] === 'string' ? streets : ['']
+        )
       : null;
 
-  const streetMatch =
-    state.street.length > 1 && matches && streets[matches.bestMatchIndex];
+  const matchesArray =
+    matches?.ratings
+      .filter((value) =>
+        value.target
+          .toUpperCase()
+          .startsWith(String(state.street.toUpperCase()))
+      )
+      .sort((a, b) => b.rating - a.rating)
+      .map(({ target }) => ({ value: target })) || [];
+
+  const streetMatch = matchesArray[0]?.value;
 
   return {
     state,
@@ -114,6 +126,7 @@ export const useFilter = () => {
             streetMatch &&
             dispatch({ type: 'change', payload: { street: streetMatch } })
         ),
+        options: matchesArray?.length ? [matchesArray[0]] : [],
       },
       {
         name: 'house',
