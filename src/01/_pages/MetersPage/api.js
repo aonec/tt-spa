@@ -4,7 +4,9 @@ import { formReadingToPush } from '../../utils/formReadingsToPush';
 
 export async function getApartments(params) {
   try {
-    const res = await axios.get('apartments', { params });
+    const res = await axios.get('apartments', {
+      params: { ...params, PageSize: 50, PageNumber: 1 },
+    });
     return { apartments: res };
   } catch (error) {}
 }

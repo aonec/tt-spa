@@ -14,6 +14,7 @@ export const useFetchPage = (state, dispatch) => {
   const { id } = page?.params || {};
 
   const presetDeviceInfo = () =>
+    id &&
     getApartmentInfo(id).then((data) => {
       dispatch({ type: 'success', data });
     });
@@ -24,7 +25,6 @@ export const useFetchPage = (state, dispatch) => {
 
   useEffect(() => {
     presetDeviceInfo();
-    console.log('fetch');
   }, [isSuccessCloseDevice]);
 
   useCancelFetch();
