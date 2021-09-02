@@ -44,7 +44,7 @@ export const MetersPage = () => {
             <Filter {...filter} />
           </Route>
           <Route path="/meters/apartments" exact>
-            <Apartments {...aparts} />
+            <Apartments />
           </Route>
           <Route path="/meters/apartments/:id">
             <ApartmentInfo />

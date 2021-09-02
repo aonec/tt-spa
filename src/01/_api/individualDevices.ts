@@ -6,6 +6,8 @@ import {
   IndividualDeviceResponse,
   MeteringDeviceResponse,
   CheckIndividualDeviceRequest,
+  EOrderByRule,
+  IndividualDeviceListItemResponse,
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
@@ -98,6 +100,28 @@ export const getIndividualDevice = async (
     );
     return res;
   } catch (e) {
-    throw new Error(e);
+    throw new Error(e as any);
   }
+};
+
+export interface GetIndividualDeviceRequestParams {
+  ApartmentId?: number | null;
+  HousingStockId?: number | null;
+  Resource?: string | null;
+  LastReadingsMonth?: string | null;
+  TakeReadings?: number | null;
+  ApartmentIds?: number[] | null;
+  PageNumber?: number;
+  PageSize?: number;
+  OrderBy?: EOrderByRule;
+}
+
+export const getIndividualDevices = async (
+  params: GetIndividualDeviceRequestParams
+) => {
+  const res: {
+    items: IndividualDeviceListItemResponse[];
+  } = await axios.get('IndivididualDevices', { params });
+
+  return res?.items;
 };
