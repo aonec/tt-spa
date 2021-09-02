@@ -1,6 +1,10 @@
 import axios from '01/axios';
 import React from 'react';
 import { useHistory } from 'react-router';
+import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
+import { useStore } from 'effector-react';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { useEffect } from 'react';
 
 const initialState = {
   city: '',
@@ -29,6 +33,20 @@ export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
   const { apart, street, house } = state;
   const history = useHistory();
+
+  const apartment = useStore($apartment);
+
+  useEffect(() => {
+    if (apartment && apartment.housingStock)
+      dispatch({
+        type: 'change',
+        payload: {
+          street: apartment.housingStock.street,
+          house: apartment.housingStock.number,
+          apart: apartment.apartmentNumber,
+        },
+      });
+  }, [apartment]);
 
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
@@ -60,6 +78,15 @@ export const useFilter = () => {
     } catch (error) {}
   };
 
+  const streets = useStore($existingStreets);
+
+  const enterKeyDownHandler = (callback) => (e) => {
+    if (e.key !== 'Enter' || [street, house, apart].some((value) => !value))
+      return;
+
+    callback();
+  };
+
   return {
     state,
     filter: apart,
@@ -72,6 +99,10 @@ export const useFilter = () => {
       {
         name: 'street',
         placeholder: 'Улица',
+        options: streets.map((value) => ({
+          value,
+        })),
+        onKeyDown: enterKeyDownHandler(() => console.log('runs')),
       },
       {
         name: 'house',
@@ -85,18 +116,20 @@ export const useFilter = () => {
       {
         name: 'question',
         placeholder: 'Л/С или ФИО',
-        onKeyDown: onApartmentKeyHandler,
+        onKeyDown: (e) => e.target.value && onApartmentKeyHandler(e),
       },
     ].map((elem) => ({
       ...elem,
       [elem.name]: state[elem.name],
       onChange: (value) => onChange(value, elem.name),
       value: state[elem.name],
-      onFocus: (name) =>
-        dispatch({
-          type: name === 'street' ? 'reset' : 'change',
-          payload: { [name]: '' },
-        }),
+      onFocus: elem.onFocus
+        ? elem.onFocus
+        : (name) =>
+            dispatch({
+              type: name === 'street' ? 'reset' : 'change',
+              payload: { [name]: '' },
+            }),
     })),
   };
 };

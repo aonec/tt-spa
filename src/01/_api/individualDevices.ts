@@ -1,4 +1,5 @@
 import axios from '01/axios';
+import { toArray } from '01/features/individualDevices/addIndividualDevice/components/CheckFormValuesModal';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
 import { resolve } from 'path';
 import {
@@ -120,6 +121,8 @@ export interface GetIndividualDeviceRequestParams {
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams
 ) => {
+  console.log(params);
+
   const res: {
     items: IndividualDeviceListItemResponse[];
   } = await axios.get('IndividualDevices', { params });
