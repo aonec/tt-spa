@@ -5,6 +5,7 @@ import { $existingStreets } from '01/features/housingStocks/displayHousingStockS
 import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
+import stringSimilarity from 'string-similarity';
 
 const initialState = {
   city: '',
@@ -88,6 +89,14 @@ export const useFilter = () => {
     callback();
   };
 
+  const matches =
+    state.street && streets
+      ? stringSimilarity.findBestMatch(state.street, streets)
+      : null;
+
+  const streetMatch =
+    state.street.length > 1 && matches && streets[matches.bestMatchIndex];
+
   return {
     state,
     filter: apart,
@@ -102,8 +111,8 @@ export const useFilter = () => {
         placeholder: 'Улица',
         onKeyDown: enterKeyDownHandler(
           () =>
-            streets[0] &&
-            dispatch({ type: 'change', payload: { street: streets[0] } })
+            streetMatch &&
+            dispatch({ type: 'change', payload: { street: streetMatch } })
         ),
       },
       {

@@ -50,9 +50,7 @@ export const Filter = () => {
     }
   `(
     <filter as="div">
-      <ExistingStreetsGate
-        Street={inputs.find((elem) => elem.name === 'street').value}
-      />
+      <ExistingStreetsGate />
       {inputs.map((input, index) => (
         <StyledAutocomplete
           options={input.options}
