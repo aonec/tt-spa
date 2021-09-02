@@ -111,6 +111,9 @@ export const addIndividualDeviceForm = createForm({
     isInstalled: {
       init: false,
     },
+    contractorId: {
+      init: null as number | null,
+    },
   },
   validateOn: ['submit'],
 });

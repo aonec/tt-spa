@@ -7,7 +7,7 @@ import {
   HomeownerCerificateGate,
 } from './index';
 import { $isPrintIssueCertificateModalOpen } from '.';
-import { forward } from 'effector';
+import { guard } from 'effector';
 
 fetchHomeownerCertificate.use(getHomeownerCertificate);
 
@@ -20,7 +20,9 @@ $homeownerCertificatre.on(
   (_, certificate) => certificate
 );
 
-forward({
-  from: HomeownerCerificateGate.open.map((values) => values.id),
-  to: fetchHomeownerCertificate,
+guard({
+  source: HomeownerCerificateGate.state.map((values) => values.id),
+  clock: HomeownerCerificateGate.state,
+  filter: Boolean,
+  target: fetchHomeownerCertificate,
 });
