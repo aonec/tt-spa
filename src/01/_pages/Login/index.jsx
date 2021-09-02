@@ -9,6 +9,7 @@ import logo from '01/assets/svg/logo.svg';
 import { Label, Button, Input, Icon } from '01/tt-components';
 import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
+import { message } from 'antd';
 
 export const Main = styled.div`
   height: 100vh;
@@ -56,22 +57,19 @@ export const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { replace } = useHistory();
 
-  const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
-
   async function FormSubmitHadler() {
     setLoading(true);
     try {
       await axios.post('auth/login', { email, password });
       const res = await axios.get('ManagingFirmUsers/current');
       // здесь получаем через функцию checkUrl роль и пересылаем на страницу /tasks/
-      console.log(res);
       replace(
         res.userRoles.some((elem) => elem.type === 'ManagingFirmOperator')
           ? '/meters'
           : '/tasks/'
       );
     } catch (error) {
-      alert('Корректно введите логин и пароль');
+      message.error('Корректно введите логин и пароль');
     } finally {
       setLoading(false);
     }
