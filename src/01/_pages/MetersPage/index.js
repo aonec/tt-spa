@@ -1,11 +1,5 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { useFetchPage } from './hooks/useFetchPage';
-import { useFilter } from './hooks/useFiter';
-import { useApartments } from './hooks/useApartments';
-import { useApartmentInfo } from './hooks/useApartmentInfo';
-import { useMeterDevices } from './hooks/useMeterDevices';
-
 import { Apartments } from './components/Apartments';
 import { Filter } from './components/Filter';
 import { ApartmentInfo } from './components/ApartmentInfo';
@@ -21,13 +15,6 @@ import styled from 'styled-components';
 const { TabPane } = Tabs;
 
 export const MetersPage = () => {
-  const [state, dispatch] = React.useReducer(reducer, {});
-  useFetchPage(state, dispatch);
-  const filter = useFilter(dispatch);
-  const aparts = useApartments(state, filter);
-  
-  const meterDev = useMeterDevices(state);
-
   const history = useHistory();
   const defaultKey = history.location.pathname.split('/')[2];
 
@@ -40,15 +27,15 @@ export const MetersPage = () => {
       <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
-          <Route path="/meters">
-            <Filter {...filter} />
+          <Route path="/meters/apartments">
+            <Filter />
           </Route>
           <Route path="/meters/apartments" exact>
             <Apartments />
           </Route>
           <Route path="/meters/apartments/:id">
             <ApartmentInfo />
-            <ApartmentReadings {...meterDev} />
+            <ApartmentReadings />
           </Route>
         </TabPane>
         <TabPane tab="По домам" key="houses">

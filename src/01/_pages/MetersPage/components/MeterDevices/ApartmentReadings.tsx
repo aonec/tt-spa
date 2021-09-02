@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
 import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDevices } from '../../../../Redux/ducks/readings/selectors';
-import { setDevices } from '../../../../Redux/ducks/readings/actionCreators';
 import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
@@ -13,6 +10,12 @@ import {
   IndividualDeviceListItemResponse,
 } from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
+import { useStore } from 'effector-react';
+import {
+  $individualDevices,
+  IndividualDevicesGate,
+} from '01/features/individualDevices/displayIndividualDevices/models';
+import { useParams } from 'react-router';
 
 interface ApartmentReadingsProps {
   items: IndividualDeviceListItemResponse[];
@@ -35,36 +38,34 @@ export const getIndividualDeviceRateNumByName = (
   return res;
 };
 
-export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
-  const dispatch = useDispatch();
+export const ApartmentReadings = () => {
+  const devices = useStore($individualDevices);
+  const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    dispatch(setDevices(items));
-  }, [items]);
-
-  const devices = useSelector(selectDevices);
-
-  const { sliderIndex, sliderProps } = useMonthSlider(items);
-
-  if (!devices.length || sliderIndex === undefined) return null;
+  const { sliderIndex, sliderProps } = useMonthSlider(devices);
 
   const validDevicesList = devices.filter(
     (device) => device.closingDate === null
   );
 
-  const validDevices = validDevicesList.map((device, index) => (
-    <ApartmentReadingLine
-      sliderIndex={sliderIndex}
-      key={device.id}
-      device={device}
-      numberOfPreviousReadingsInputs={validDevicesList
-        .slice(0, index)
-        .reduce(
-          (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
-          0
-        )}
-    />
-  ));
+  const isSliderIndexExist = sliderIndex !== undefined;
+
+  const validDevices = !isSliderIndexExist
+    ? []
+    : validDevicesList.map((device, index) => (
+        <ApartmentReadingLine
+          sliderIndex={sliderIndex!}
+          key={device.id}
+          device={device}
+          numberOfPreviousReadingsInputs={validDevicesList
+            .slice(0, index)
+            .reduce(
+              (acc, elem) =>
+                acc + getIndividualDeviceRateNumByName(elem.rateType),
+              0
+            )}
+        />
+      ));
 
   const closedDevices = devices.filter((device) => device.closingDate !== null);
 
@@ -72,18 +73,22 @@ export const ApartmentReadings = ({ items = [] }: ApartmentReadingsProps) => {
 
   return (
     <>
+      <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
-      <Meters id="meters-component">
-        <MetersHeader>
-          <span>Информация o приборe</span>
-          {sliderProps ? (
-            <MonthSlider sliderIndex={sliderIndex} {...sliderProps} />
-          ) : null}
-          <CenterContainer>{currentMonth}</CenterContainer>
-        </MetersHeader>
-        {validDevices}
-        <ClosedDevices devices={closedDevices} />
-      </Meters>
+
+      {isSliderIndexExist && (
+        <Meters id="meters-component">
+          <MetersHeader>
+            <span>Информация o приборe</span>
+            {sliderProps ? (
+              <MonthSlider sliderIndex={sliderIndex!} {...sliderProps} />
+            ) : null}
+            <CenterContainer>{currentMonth}</CenterContainer>
+          </MetersHeader>
+          {validDevices}
+          <ClosedDevices devices={closedDevices} />
+        </Meters>
+      )}
     </>
   );
 };

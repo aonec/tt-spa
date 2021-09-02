@@ -4,8 +4,8 @@ import { createGate } from 'effector-react';
 import { IndividualDeviceListItemResponse } from 'myApi';
 
 export const $individualDevices = createStore<
-  IndividualDeviceListItemResponse[] | null
->(null);
+  IndividualDeviceListItemResponse[]
+>([]);
 
 export const fetchIndividualDevices = createEffect<
   GetIndividualDeviceRequestParams,

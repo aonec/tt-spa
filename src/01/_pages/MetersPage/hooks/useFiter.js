@@ -25,27 +25,9 @@ function filterReducer(state, action) {
   }
 }
 
-export const useFilter = (pageDispatch = () => {}) => {
+export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
   const { city, street, house, apart, question, corpus } = state;
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      if (street || house || question || corpus || apart) {
-        pageDispatch({
-          type: 'get_apartments',
-          params: {
-            Street: street,
-            HousingStockNumber: house,
-            Question: question,
-            Corpus: corpus,
-            ApartmentNumber: apart,
-          },
-        });
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [city, street, house, question, corpus, apart]);
 
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
@@ -54,6 +36,7 @@ export const useFilter = (pageDispatch = () => {}) => {
   const streetSuggestions = useStore($existingStreets);
 
   return {
+    state,
     filter: apart,
     inputs: [
       {

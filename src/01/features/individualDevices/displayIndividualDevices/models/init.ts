@@ -11,6 +11,6 @@ fetchIndividualDevices.use(getIndividualDevices);
 $individualDevices.on(fetchIndividualDevices.doneData, (_, devices) => devices);
 
 forward({
-  from: IndividualDevicesGate.state,
+  from: IndividualDevicesGate.state.map((elem) => elem),
   to: fetchIndividualDevices,
 });
