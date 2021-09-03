@@ -86,7 +86,10 @@ export const ApartmentReadings = () => {
             <CenterContainer>{currentMonth}</CenterContainer>
           </MetersHeader>
           {validDevices}
-          <ClosedDevices devices={closedDevices} sliderIndex={sliderIndex} />
+          <ClosedDevices
+            devices={closedDevices}
+            sliderIndex={sliderIndex || 0}
+          />
         </Meters>
       )}
     </>
