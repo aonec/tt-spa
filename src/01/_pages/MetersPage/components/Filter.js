@@ -17,9 +17,9 @@ export const Filter = () => {
 
     if (e.key !== 'Enter') return;
 
-    const isLastInput = index + 1 === inputs.length - 1;
+    const isLastInput = index === inputs.length - 1;
 
-    if (isLastInput) {
+    if (e.target.name === 'apart') {
       e.target.blur && e.target.blur();
 
       return;
@@ -52,7 +52,7 @@ export const Filter = () => {
         <StyledAutocomplete
           options={input.options}
           ref={inputsRefs[index]}
-          onKeyPress={(e) => onInputKeyPress(e, index)}
+          onKeyDown={(e) => onInputKeyPress(e, index)}
           {...input}
           {...(input.name === 'street'
             ? {
