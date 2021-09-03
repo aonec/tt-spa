@@ -26,7 +26,8 @@ import { message } from 'antd';
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
-  numberOfPreviousReadingsInputs?: number
+  numberOfPreviousReadingsInputs?: number,
+  closed?: boolean
 ) => {
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
@@ -312,6 +313,7 @@ export const useReadings = (
     (value, index) => ({
       elem: (
         <ReadingsBlock
+          closed={closed}
           user={readingsState.user}
           source={readingsState.source}
           key={device.id + index}
@@ -337,6 +339,7 @@ export const useReadings = (
     readingsState.previousReadings[sliderIndex]?.values.map((value, index) => ({
       elem: (
         <ReadingsBlock
+          closed={closed}
           user={readingsState.previousReadings[sliderIndex].user}
           key={device.id + index + '-prev-readings'}
           index={index}
