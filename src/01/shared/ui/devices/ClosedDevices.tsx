@@ -5,33 +5,31 @@ import Icon from '../../../tt-components/Icon';
 import { IndividualDeviceListItemResponse } from '../../../../myApi';
 import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '../Layout/Flex';
-import { MenuButtonTT } from '01/tt-components';
+import ApartmentReadingLine from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 const ClosedDevices = ({
   devices,
+  sliderIndex,
 }: {
   devices: IndividualDeviceListItemResponse[];
+  sliderIndex: number;
 }) => {
   const [showClosed, setShowClosed] = useState(false);
-  const history = useHistory();
-  const { id } = useParams<{ id: string }>();
 
-  const closedDevices = devices.map((device) => (
-    <ClosedDevice>
-      <DeviceInfo device={device} />
-      <MenuButtonTT
-        menuButtonArr={[
-          {
-            title: 'Открыть историю показаний',
-            show: true,
-            cb: () =>
-              history.push(
-                `/apartment/${id}/individualDevice/${device.id}/readingHistory`
-              ),
-          },
-        ]}
-      />
-    </ClosedDevice>
+  const closedDevices = devices.map((device, index) => (
+    <ApartmentReadingLine
+      closed
+      sliderIndex={sliderIndex!}
+      key={device.id}
+      device={device}
+      numberOfPreviousReadingsInputs={devices
+        .slice(0, index)
+        .reduce(
+          (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
+          0
+        )}
+    />
   ));
   return (
     <div style={{ marginBottom: 15 }}>
