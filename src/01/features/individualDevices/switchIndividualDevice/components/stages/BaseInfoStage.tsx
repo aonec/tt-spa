@@ -71,7 +71,7 @@ export const BaseInfoStage = () => {
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
-  const modelNameDebounced = fields.model.value
+  const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
     <>
@@ -292,7 +292,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Серийный номер">
           <InputTT
-            type="number"
+            type="text"
             placeholder="Введите серийный номер прибора"
             onChange={onChange}
             name="serialNumber"

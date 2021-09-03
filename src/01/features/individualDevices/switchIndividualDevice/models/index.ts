@@ -101,7 +101,7 @@ export const addIndividualDeviceForm = createForm({
       init: { value1: null, value2: null, value3: null, value4: null } as {
         [key: string]: number | null;
       },
-      // rules: readingsValuesValidators,
+      rules: readingsValuesValidators,
     },
     rateType: {
       init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,

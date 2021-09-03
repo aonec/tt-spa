@@ -228,7 +228,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Серийный номер">
           <InputTT
-            type="number"
+            type="text"
             placeholder="Введите серийный номер прибора"
             onChange={onChange}
             name="serialNumber"
