@@ -6,7 +6,7 @@ const objectChanges = [
   // ["Тип ресурса", "numberOfFloors"],
   // ["Место установки", "isThereElevator"],
   // ["Тип пломбы", "numberOfApartments"],
-  // ["Магнитная пломба", "totalLivingArea"],
+  // ["Пломба", "totalLivingArea"],
   // ["Организация", "areaOfNonResidential"],
   // ["Монтажная организация", "houseArea"],
   // ["Общая площадь", "totalArea"],

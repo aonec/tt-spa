@@ -29,6 +29,10 @@ import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
+import {
+  $housingStock,
+  HousingStockGate,
+} from '01/features/housingStocks/displayHousingStock/models';
 
 const styles = css`
   drower {
@@ -147,7 +151,12 @@ export const ApartmentInfo = () => {
   const { id } = useParams();
 
   const apartment = useStore($apartment);
-  const { userInfo = [], title, comment } = useApartmentInfo(apartment);
+  const housingStock = useStore($housingStock);
+
+  const { userInfo = [], title, comment } = useApartmentInfo(
+    apartment,
+    housingStock?.houseManagement
+  );
 
   const cancelPauseApartment = () =>
     confirm({
@@ -189,7 +198,9 @@ export const ApartmentInfo = () => {
   return styled(styles)(
     <>
       <ApartmentGate id={Number(id)} />
-
+      {apartment?.housingStock?.id && (
+        <HousingStockGate id={Number(apartment?.housingStock?.id)} />
+      )}
       <PauseApartmentModal />
       <GetIssueCertificateModal />
 

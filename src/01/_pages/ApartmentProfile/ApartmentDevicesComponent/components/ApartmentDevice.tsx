@@ -41,7 +41,7 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
       </ApartmentInfo>
       {hasMagneticSeal && (
         <MagneticSeal>
-          Магнитная пломба{' '}
+          Пломба{' '}
           {device.magneticSealInstallationDate &&
             moment(device.magneticSealInstallationDate).format('DD.MM.YYYY')}
         </MagneticSeal>

@@ -107,7 +107,7 @@ export const CheckFormValuesModal = () => {
       value: getDate(fields.futureCheckingDate.value),
     },
     {
-      name: 'Магнитная пломба',
+      name: 'Пломба',
       value: fields.magneticSealTypeName.value,
     },
     {

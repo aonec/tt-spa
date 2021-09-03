@@ -1,4 +1,4 @@
-export const useApartmentInfo = (apartInfo) => {
+export const useApartmentInfo = (apartInfo, houseManagement) => {
   const { housingStock = {}, apartmentNumber, homeowners = [], comment } =
     apartInfo || {};
 
@@ -20,8 +20,13 @@ export const useApartmentInfo = (apartInfo) => {
       ],
       ['Лицевой счет', homeowners[0]?.personalAccountNumber],
       ['Телефон', homeowners[0]?.phoneNumber ?? '-'],
-      ['Управляющая компания', '-'],
-      ['Информация об УК', '-'],
+      ['Управляющая компания', houseManagement?.name || '-'],
+      [
+        'Информация об УК',
+        houseManagement
+          ? `${houseManagement.comment}\n${houseManagement.phone}`
+          : '-',
+      ],
     ],
     comment: comment,
   };
