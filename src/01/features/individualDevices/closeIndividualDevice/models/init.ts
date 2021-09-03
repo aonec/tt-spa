@@ -8,6 +8,7 @@ import {
   $isClosingIndividualDeviceRequstSuccessfull,
 } from './index';
 import { $closingIndividualDevice } from '.';
+import { refetchIndividualDevices } from '../../displayIndividualDevices/models';
 
 closeIndividualDeviceFx.use(closeIndividualDevice);
 
@@ -24,6 +25,11 @@ forward({
     closeIndividualDeviceFx.doneData,
   ],
   to: closeIndividualDeviceForm.resetValues,
+});
+
+forward({
+  from: closeIndividualDeviceFx.doneData,
+  to: refetchIndividualDevices,
 });
 
 sample({
