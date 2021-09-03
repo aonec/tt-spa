@@ -77,7 +77,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
           onChange={onSwitchMagnetSeal}
         />
         <div style={{ marginLeft: '10px' }}>
-          Магнитная пломба {magneticSealInstallationDate}
+          Пломба {magneticSealInstallationDate}
         </div>
       </MagnetSeal>
     </DeviceColumn>

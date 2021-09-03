@@ -47,7 +47,7 @@ export const Information = ({ device }: InformationInterface) => {
           description={moment(futureCheckingDate).format('DD.MM.YYYY')}
         />
         <ListItem
-          title={'Магнитная пломба'}
+          title={'Пломба'}
           description={hasMagneticSeal ? 'Есть' : 'Нет'}
         />
         {/*<ListItem title={'title'} description={'description'} />*/}

@@ -376,7 +376,7 @@ export const BaseInfoStage = () => {
       <FormWrap>{bottomDateFields}</FormWrap>
 
       <FormWrap>
-        <FormItem label="Магнитная пломба">
+        <FormItem label="Пломба">
           <Flex>
             <SwitchTT
               onChange={fields.isInstalled.onChange}

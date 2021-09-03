@@ -2534,6 +2534,17 @@ export interface IndividualDeviceReadingsCreateRequest {
   uploadTime?: string | null;
 }
 
+export enum EIndividualDeviceReadingsSource {
+  Archive = "Archive",
+  Ttm = "Ttm",
+  GosUslugi = "GosUslugi",
+  Bank = "Bank",
+  Sputnik = "Sputnik",
+  Duplicated = "Duplicated",
+  Erc = "Erc",
+  TtmFromErc = "TtmFromErc",
+}
+
 export interface IndividualDeviceReadingsCreateResponse {
   status: string | null;
   date: string | null;
@@ -2542,6 +2553,11 @@ export interface IndividualDeviceReadingsCreateResponse {
   /** @format int32 */
   taskId: number | null;
   message: string | null;
+
+  /** @format date-time */
+  uploadDate: string;
+  source: EIndividualDeviceReadingsSource;
+  user: ManagingFirmUserShortResponse | null;
 }
 
 export interface IndividualDeviceReadingsCreateListResponse {
@@ -2590,17 +2606,6 @@ export interface IndividualDeviceReadingsSetEmptyRequest {
   /** @format date-time */
   date: string;
   devicesIds: number[];
-}
-
-export enum EIndividualDeviceReadingsSource {
-  Archive = "Archive",
-  Ttm = "Ttm",
-  GosUslugi = "GosUslugi",
-  Bank = "Bank",
-  Sputnik = "Sputnik",
-  Duplicated = "Duplicated",
-  Erc = "Erc",
-  TtmFromErc = "TtmFromErc",
 }
 
 export interface IndividualDeviceReadingsResponse {
@@ -3262,6 +3267,7 @@ export enum EManagementFirmEventType {
   CalculatorClose = "CalculatorClose",
   IndividualDeviceSwitch = "IndividualDeviceSwitch",
   IndividualDeviceReopen = "IndividualDeviceReopen",
+  TaskReturn = "TaskReturn",
 }
 
 export interface ManagementFirmEventDataDeviceResponse {
@@ -4252,6 +4258,7 @@ export enum TaskGroupingFilter {
   Observing = "Observing",
   NotArchived = "NotArchived",
   Archived = "Archived",
+  Returnable = "Returnable",
 }
 
 export enum ETaskClosingStatus {
@@ -4269,6 +4276,7 @@ export interface StageResponse {
   perpetrator: ManagingFirmUserShortResponse | null;
   status: string | null;
   actions: string[] | null;
+  additionalActions: string[] | null;
   allowedDocumentTypes: string[] | null;
 
   /** @format date-time */
@@ -4692,6 +4700,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ApartmentNumber?: string | null;
         HousingStockId?: number | null;
         Question?: string | null;
+        IndividualDeviceSerialNumber?: string | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -5700,6 +5709,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Exports
+     * @name ExportsMilurDevicesList
+     * @request GET:/api/Exports/MilurDevices
+     * @secure
+     */
+    exportsMilurDevicesList: (query?: { startDate?: string; endDate?: string }, params: RequestParams = {}) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Exports/MilurDevices`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -8761,6 +8788,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<TaskFilterResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/filters`,
         method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tasks
+     * @name TasksReturnCreate
+     * @request POST:/api/Tasks/{taskId}/return
+     * @secure
+     */
+    tasksReturnCreate: (taskId: number, params: RequestParams = {}) =>
+      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/${taskId}/return`,
+        method: "POST",
         secure: true,
         format: "json",
         ...params,
