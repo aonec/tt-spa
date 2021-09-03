@@ -74,6 +74,7 @@ const IndividualDeviceEditForm = ({
     bitDepth,
     scaleFactor,
     sealInstallationDate,
+    deviceMountPlace,
   } = device;
 
   const initialValues = {
@@ -90,7 +91,7 @@ const IndividualDeviceEditForm = ({
       : null,
     rateType,
     apartmentId: address?.apartmentId,
-    mountPlaceId: null,
+    mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
     sealNumber: device.sealNumber,
@@ -116,7 +117,6 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
         bitDepth: values.bitDepth,
-        // mountPlaceId: values.mountPlaceId as any,
         scaleFactor: values.scaleFactor,
         sealNumber: values.sealNumber,
         sealInstallationDate: moment(

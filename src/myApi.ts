@@ -28,13 +28,28 @@ export interface ApartmentCreateRequest {
   hotWaterRiserCount?: number | null;
 }
 
-export interface HousingStockShortResponse {
+export interface HouseManagementResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  phone: string | null;
+  comment: string | null;
+}
+
+export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
   city: string | null;
   street: string | null;
   number: string | null;
   corpus: string | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+
+  /** @format int32 */
+  numberOfApartments: number;
+  houseManagement: HouseManagementResponse | null;
 }
 
 export enum EApartmentStatus {
@@ -71,7 +86,7 @@ export interface ApartmentResponse {
 
   /** @format double */
   coefficient: number | null;
-  housingStock: HousingStockShortResponse | null;
+  housingStock: HousingStockListResponse | null;
   comment: string | null;
   apartmentNumber: string | null;
   status: EApartmentStatus;
@@ -117,21 +132,6 @@ export interface ErrorApiResponse {
 export enum EOrderByRule {
   Ascending = "Ascending",
   Descending = "Descending",
-}
-
-export interface HousingStockListResponse {
-  /** @format int32 */
-  id: number;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
-
-  /** @format int32 */
-  numberOfTasks: number | null;
-
-  /** @format int32 */
-  numberOfApartments: number;
 }
 
 export interface ApartmentListResponse {
@@ -1678,6 +1678,15 @@ export interface AddressResponse {
   housingStockNumber: string | null;
 }
 
+export interface HousingStockShortResponse {
+  /** @format int32 */
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+}
+
 export interface HeatingStationResponse {
   /** @format uuid */
   id: string;
@@ -1907,14 +1916,6 @@ export interface HomeownerUpdateRequest {
 export interface UpdateHouseManagementRequest {
   phone?: string | null;
   comment?: string | null;
-}
-
-export interface HouseManagementResponse {
-  /** @format uuid */
-  id: string;
-  name: string | null;
-  phone: string | null;
-  comment: string | null;
 }
 
 export interface HouseManagementResponseSuccessApiResponse {
@@ -2668,6 +2669,7 @@ export interface IndividualDeviceResponse {
   address: FullAddressResponse | null;
   resource: EResourceType;
   mountPlace: string | null;
+  deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
@@ -2761,6 +2763,7 @@ export interface IndividualDeviceListItemResponse {
   checkingNumber: number;
   resource: EResourceType;
   mountPlace: string | null;
+  deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
@@ -6998,10 +7001,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         ApartmentId?: number | null;
         HousingStockId?: number | null;
-        Resource?: string | null;
+        Resource?: EResourceType | null;
         LastReadingsMonth?: string | null;
         TakeReadings?: number | null;
         ApartmentIds?: number[] | null;
+        IsOpened?: boolean | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;

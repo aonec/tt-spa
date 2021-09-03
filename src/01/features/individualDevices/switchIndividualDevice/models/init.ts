@@ -65,7 +65,7 @@ forward({
 
     return {
       resource: values.resource,
-      mountPlaceId: values.mountPlace,
+      mountPlaceId: values.deviceMountPlace?.id,
       bitDepth,
       scaleFactor,
     } as any;

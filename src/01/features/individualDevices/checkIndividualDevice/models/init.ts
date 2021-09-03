@@ -61,7 +61,7 @@ forward({
   from: fetchIndividualDevice.doneData.map((values) => {
     return {
       resource: values.resource,
-      mountPlaceId: values.mountPlace,
+      mountPlaceId: values.deviceMountPlace?.id,
       model: values.model,
       serialNumber: values.serialNumber,
       bitDepth: values.bitDepth,
