@@ -1,5 +1,5 @@
 import { GetIndividualDeviceRequestParams } from '01/_api/individualDevices';
-import { createEffect, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { createGate } from 'effector-react';
 import { IndividualDeviceListItemResponse } from 'myApi';
 
@@ -13,3 +13,5 @@ export const fetchIndividualDevices = createEffect<
 >();
 
 export const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
+
+export const refetchIndividualDevices = createEvent();
