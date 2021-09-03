@@ -235,7 +235,7 @@ export class Certificate extends React.Component {
           >
             Представитель на основании
             <br />
-            доверенности №6 от 5.05.2021г.
+            доверенности №6 от 11.01.2021г.
           </div>
           <div
             style={{ paddingTop: '36px', float: 'right', fontWeight: 'bold' }}
