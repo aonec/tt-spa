@@ -7,7 +7,6 @@ import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
 import {
-  CreateCreateIndividualDeviceWithMagnetSealRequest,
   SwitchIndividualDeviceRequestPayload,
 } from '01/_api/individualDevices';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
