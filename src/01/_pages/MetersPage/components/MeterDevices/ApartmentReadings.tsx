@@ -4,10 +4,7 @@ import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
 import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
-import {
-  EIndividualDeviceRateType,
-  IndividualDeviceListItemResponse,
-} from '../../../../../myApi';
+import { EIndividualDeviceRateType } from '../../../../../myApi';
 import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeIndividualDevice';
 import { useStore } from 'effector-react';
 import {
@@ -16,10 +13,6 @@ import {
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
-
-interface ApartmentReadingsProps {
-  items: IndividualDeviceListItemResponse[];
-}
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType

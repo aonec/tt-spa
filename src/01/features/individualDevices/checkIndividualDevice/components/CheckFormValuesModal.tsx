@@ -152,7 +152,7 @@ export const CheckFormValuesModal = () => {
             disabled={pending}
             onClick={confirmCreationNewDeviceButtonClicked}
           >
-            {pending ? <Loader show /> : 'Отправить'}
+            {pending ? <Loader show /> : 'Поверить'}
           </ButtonTT>
         </Footer>
       }

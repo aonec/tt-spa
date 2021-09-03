@@ -63,13 +63,6 @@ const IndividualDeviceEditForm = ({
   const history = useHistory();
 
   const {
-    saveMagnetSeal,
-    magnetSeal,
-    computedValues: { magneticSealInstallationDate },
-    onChange,
-  } = useSwitchMagnetSeal(device);
-
-  const {
     address,
     id,
     model,
@@ -83,6 +76,7 @@ const IndividualDeviceEditForm = ({
     mountPlace,
     bitDepth,
     scaleFactor,
+    sealInstallationDate,
   } = device;
 
   const initialValues = {
@@ -102,6 +96,8 @@ const IndividualDeviceEditForm = ({
     mountPlaceId: null,
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
+    sealNumber: device.sealNumber,
+    sealInstallationDate: moment(sealInstallationDate).format('DD.MM.YYYY'),
   };
 
   const {
@@ -115,8 +111,6 @@ const IndividualDeviceEditForm = ({
   } = useFormik({
     initialValues: initialValues,
     onSubmit: async () => {
-      const rateTypeEnum: EIndividualDeviceRateType = values.rateType as EIndividualDeviceRateType;
-
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(),
@@ -125,14 +119,18 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
         bitDepth: values.bitDepth,
-        mountPlaceId: values.mountPlaceId as any,
+        // mountPlaceId: values.mountPlaceId as any,
         scaleFactor: values.scaleFactor,
+        sealNumber: values.sealNumber,
+        sealInstallationDate: moment(
+          values.sealInstallationDate,
+          'DD.MM.YYYY'
+        ).toISOString(),
       };
 
       setLoading(true);
 
       try {
-        await saveMagnetSeal();
         await putIndividualDevice(id, form).then(
           ({ show, id: existDeviceId }: any) => {
             if (show) {
@@ -218,6 +216,7 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Место установки" style={styles.w100}>
             <StyledSelect
+              disabled
               value={values.mountPlaceId || undefined}
               onChange={(value) => setFieldValue('mountPlaceId', value)}
               placeholder="Укажите место"
@@ -302,15 +301,11 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Пломба" style={styles.w100}>
             <Flex>
-              <SwitchTT
-                onChange={onChange.isInstalled}
-                checked={magnetSeal.isInstalled}
-              />
               <InputTT
-                placeholder="Номер магнитной пломбы"
-                value={magnetSeal.magneticSealTypeName}
+                placeholder="Номер пломбы"
+                value={values.sealNumber}
                 onChange={(value: any) =>
-                  onChange.magneticSealTypeName(value.target.value)
+                  setFieldValue('sealNumber', value.target.value)
                 }
               />
             </Flex>
@@ -320,11 +315,18 @@ const IndividualDeviceEditForm = ({
             <DatePickerTT
               format="DD.MM.YYYY"
               placeholder="Укажите дату..."
-              onChange={(value) =>
+              onChange={(value) => {
                 value &&
-                onChange.magneticSealInstallationDate(value.toISOString())
+                  setFieldValue(
+                    'sealInstallationDate',
+                    value.format('DD.MM.YYYY')
+                  );
+              }}
+              value={
+                values.sealInstallationDate
+                  ? moment(values.sealInstallationDate, 'DD.MM.YYYY')
+                  : undefined
               }
-              value={magneticSealInstallationDate}
               name="futureCheckingDate"
             />
             <Alert name="futureCheckingDate" />
