@@ -17,6 +17,6 @@ sample({
   source: IndividualDeviceMountPlacesGate.state.map(
     (params) => params.apartmentId
   ),
-  clock: IndividualDeviceMountPlacesGate.open,
+  clock: IndividualDeviceMountPlacesGate.state,
   target: fetchIndividualDeviceMountPlacesFx,
 });

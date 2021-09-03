@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, message, Select } from 'antd';
 import moment from 'moment';
@@ -20,10 +20,8 @@ import {
   StyledFooter,
   StyledFormPage,
   styles,
-  SwitchTT,
 } from '../../../tt-components';
 import {
-  EIndividualDeviceRateType,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
@@ -38,7 +36,6 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '01/components';
-import { useSwitchMagnetSeal } from '../hooks/useSwitchMagnetSeal';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
