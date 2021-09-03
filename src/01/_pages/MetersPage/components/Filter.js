@@ -25,7 +25,7 @@ export const Filter = () => {
       return;
     }
 
-    const neededRef = isLastInput ? inputsRefs[1] : inputsRefs[index + 1];
+    const neededRef = isLastInput ? inputsRefs[1] : inputsRefs[index];
 
     if (!neededRef) return;
 
