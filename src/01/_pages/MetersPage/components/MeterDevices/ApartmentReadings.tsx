@@ -1,6 +1,5 @@
 import React from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
-import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
 import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../../shared/ui/devices/MonthSlider';
@@ -16,6 +15,7 @@ import {
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
+import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 
 interface ApartmentReadingsProps {
   items: IndividualDeviceListItemResponse[];
@@ -69,8 +69,6 @@ export const ApartmentReadings = () => {
 
   const closedDevices = devices.filter((device) => device.closingDate !== null);
 
-  const currentMonth = getMonthFromDate();
-
   return (
     <>
       <IndividualDevicesGate ApartmentId={Number(id)} />
@@ -83,7 +81,7 @@ export const ApartmentReadings = () => {
             {sliderProps ? (
               <MonthSlider sliderIndex={sliderIndex!} {...sliderProps} />
             ) : null}
-            <CenterContainer>{currentMonth}</CenterContainer>
+            <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
           </MetersHeader>
           {validDevices}
           <ClosedDevices
