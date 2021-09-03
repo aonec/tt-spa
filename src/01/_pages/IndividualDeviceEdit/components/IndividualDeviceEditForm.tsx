@@ -300,7 +300,7 @@ const IndividualDeviceEditForm = ({
             <Alert name="futureCheckingDate" />
           </Form.Item>
 
-          <Form.Item label="Магнитная пломба" style={styles.w100}>
+          <Form.Item label="Пломба" style={styles.w100}>
             <Flex>
               <SwitchTT
                 onChange={onChange.isInstalled}
