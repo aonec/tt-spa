@@ -3,12 +3,9 @@ import styled from 'styled-components';
 import { HouseType } from '../../../../../_api/houses_readings_page';
 import { Icon } from '../../../../../components/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { useHistory } from 'react-router-dom';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const [isVisible, setIsVisible] = useState(true);
-
-  const history = useHistory();
 
   return (
     <div>
