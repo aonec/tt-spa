@@ -54,6 +54,7 @@ interface DeviceRatesVerticalProps {
   lineIndex?: number;
   source?: EIndividualDeviceReadingsSource;
   user?: any;
+  closed?: boolean;
 }
 
 const SuffixLine = styled.span`
@@ -88,6 +89,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   lineIndex,
   source,
   user,
+  closed,
 }) => {
   const onFocusHandler = (e: any) => {
     if (Number(e.target.value) === 0) {
@@ -108,7 +110,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   return (
     <ReadingLineStyled
       houseReadings={houseReadings}
-      isDisabled={isDisabled}
+      isDisabled={isDisabled || closed}
       data-reading-input={
         typeof isCurrent === 'boolean'
           ? isCurrent
@@ -138,7 +140,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
             </Tooltip>
           </>
         }
-        disabled={readingsBlocked || isDisabled}
+        disabled={readingsBlocked || isDisabled || closed}
         type="number"
         value={value}
         onFocus={onFocusHandler}

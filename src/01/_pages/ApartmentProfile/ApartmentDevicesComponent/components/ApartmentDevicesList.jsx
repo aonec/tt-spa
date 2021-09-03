@@ -31,7 +31,10 @@ export function ApartmentDevicesList({ sliderIndex }) {
   return (
     <>
       {validDeviceElems}
-      <ClosedDevices devices={filteredDevices.closedDevices} />
+      <ClosedDevices
+        devices={filteredDevices.closedDevices}
+        sliderIndex={sliderIndex}
+      />
     </>
   );
 }

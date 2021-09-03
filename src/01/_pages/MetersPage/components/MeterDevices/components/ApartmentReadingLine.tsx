@@ -24,12 +24,14 @@ interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
   numberOfPreviousReadingsInputs: number;
+  closed?: boolean;
 }
 
 const ApartmentReadingLine = ({
   device,
   sliderIndex,
   numberOfPreviousReadingsInputs,
+  closed,
 }: ApartmentReadingLineProps) => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
@@ -39,7 +41,8 @@ const ApartmentReadingLine = ({
   const { readingsState, previousReadings, currentReadings } = useReadings(
     device,
     sliderIndex,
-    numberOfPreviousReadingsInputs
+    numberOfPreviousReadingsInputs,
+    closed
   );
 
   if (!readingsState) return null;
@@ -65,7 +68,7 @@ const ApartmentReadingLine = ({
     },
     {
       title: 'Закрытие прибора',
-      show: true,
+      show: !closed,
       color: 'red',
       cb: () => closingIndividualDeviceButtonClicked(device),
     },
@@ -78,7 +81,7 @@ const ApartmentReadingLine = ({
         close={() => setIsModalOpen(false)}
         deviceId={device.id}
       />
-      <FullDeviceLine>
+      <FullDeviceLine closed={closed}>
         <DeviceInfo device={device} />
 
         {previousReadings}
@@ -210,6 +213,7 @@ const FullDeviceLine = styled.div`
   white-space: nowrap;
   padding: 8px 0px 16px 8px;
   border-bottom: 1px solid #dcdee4;
+  ${({ closed }: { closed?: boolean }) => (closed ? 'opacity: 0.7;' : '')}
 `;
 
 export const getInputColor = (resource: EResourceType) => {
