@@ -1,22 +1,38 @@
 import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
-import { EResourceType } from 'myApi';
+import { EResourceType, IndividualDeviceResponse } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 
-export const DeviceDataString = () => {
-  const device = useStore($individualDevice);
+export interface DataStringDevice {
+  resource: EResourceType | null;
+  model: string | null;
+  serialNumber: string | null;
+}
+
+interface Props {
+  device?: DataStringDevice;
+}
+
+export const DeviceDataString: React.FC<Props> = ({
+  device: deviceFromProps,
+}) => {
+  const deviceFromStore = useStore($individualDevice);
+
+  const device = deviceFromProps || deviceFromStore;
 
   if (!device) return <></>;
 
   return (
     <Spaces flex spaceStyles={{ width: 4 }}>
-      <RenderDeviceIcon resource={device?.resource} />
+      {device?.resource && <RenderDeviceIcon resource={device?.resource} />}
       <DeviceName>{device.model}</DeviceName>
-      <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
+      {device.serialNumber && (
+        <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
+      )}
     </Spaces>
   );
 };
@@ -58,3 +74,9 @@ export const RenderDeviceIcon = ({
     />
   );
 };
+
+export function getResourceColor(resource: EResourceType) {
+  const { color } = DeviceIcons[resource];
+
+  return color;
+}
