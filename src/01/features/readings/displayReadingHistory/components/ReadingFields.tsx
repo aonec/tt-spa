@@ -13,6 +13,7 @@ interface Props {
   onBlur?(): void;
   status?: RequestStatusShared;
   consumption?: boolean;
+  style?: React.CSSProperties;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -24,6 +25,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     onBlur,
     status,
     consumption,
+    style,
   } = props;
 
   const wrapRef = useRef<any>();
@@ -82,13 +84,13 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   if (!editable)
     return (
-      <FieldsWrap>
+      <FieldsWrap style={style}>
         {values.map((elem, index) => renderField(elem, index, false))}
       </FieldsWrap>
     );
 
   return (
-    <FieldsWrap onBlur={onBlurHandler}>
+    <FieldsWrap onBlur={onBlurHandler} style={style}>
       {values.length === 3 ? (
         <>
           <div>

@@ -266,6 +266,8 @@ export const BaseInfoStage = () => {
               resource: fields.resource.value!,
               model: fields.model.value,
               serialNumber: fields.serialNumber.value,
+              measurableUnitString: device?.measurableUnitString,
+              rateType: fields.rateType.value,
             }}
           />
         </>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { RenderReadingFields } from '01/features/readings/displayReadingHistory/components/ReadingFields';
 
 export interface ReadingInputElem {
   value1: number | null;
@@ -36,15 +37,33 @@ export const ReadingsInput: React.FC<Props> = ({
         <DeviceDataString device={device} />
       </DeviceInfo>
       <ReadingsWrap>
+        <Flex style={{ justifyContent: 'space-between', maxWidth: 140 }}>
+          <div>{'<'}</div>
+          <div>Январь 2021</div>
+          <div>{'>'}</div>
+        </Flex>
 
+        <Flex style={{ justifyContent: 'Center', maxWidth: 140 }}>
+          <div>Февраль 2021</div>
+        </Flex>
+
+        <RenderReadingFields
+          style={{ marginRight: 0 }}
+          values={['']}
+          editable
+          suffix={device.measurableUnitString}
+        />
+
+        <RenderReadingFields
+          style={{ marginRight: 0 }}
+          values={['']}
+          editable
+          suffix={device.measurableUnitString}
+        />
       </ReadingsWrap>
     </Wrap>
   );
 };
-
-const HalfBlock = styled.div`
-  width: 50%;
-`;
 
 const Title = styled.div`
   font-size: 15px;
@@ -52,14 +71,18 @@ const Title = styled.div`
 `;
 
 const Wrap = styled(Flex)`
-box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16);
-padding: 15px;
+  box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16);
+  padding: 15px 20px;
   justify-content: space-between;
-  `;
+`;
 
-const DeviceInfo = styled(HalfBlock)``;
+const DeviceInfo = styled.div``;
 
-const ReadingsWrap = styled(HalfBlock)``;
+const ReadingsWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+`;
 
 function useSliderIndex() {
   const [sliderIndex, setSliderIndex] = useState(0);

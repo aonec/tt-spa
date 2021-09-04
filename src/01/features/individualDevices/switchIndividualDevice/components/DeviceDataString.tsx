@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
-import { EResourceType, IndividualDeviceResponse } from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
@@ -11,6 +11,8 @@ export interface DataStringDevice {
   resource: EResourceType | null;
   model: string | null;
   serialNumber: string | null;
+  measurableUnitString?: string | null;
+  rateType: EIndividualDeviceRateType;
 }
 
 interface Props {
