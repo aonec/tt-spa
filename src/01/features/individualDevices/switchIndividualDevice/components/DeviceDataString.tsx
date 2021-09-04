@@ -12,7 +12,7 @@ export interface DataStringDevice {
   model: string | null;
   serialNumber: string | null;
   measurableUnitString?: string | null;
-  rateType: EIndividualDeviceRateType;
+  rateType?: EIndividualDeviceRateType;
 }
 
 interface Props {

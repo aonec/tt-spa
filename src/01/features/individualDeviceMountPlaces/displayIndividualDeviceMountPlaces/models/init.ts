@@ -3,13 +3,13 @@ import { IndividualDeviceMountPlacesGate } from './index';
 import { sample } from 'effector';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
+  fetchIndividualDeviceFxMountPlacesFx,
 } from '.';
 
-fetchIndividualDeviceMountPlacesFx.use(getIndividualDeviceMountPlaces);
+fetchIndividualDeviceFxMountPlacesFx.use(getIndividualDeviceMountPlaces);
 
 $individualDeviceMountPlaces.on(
-  fetchIndividualDeviceMountPlacesFx.doneData,
+  fetchIndividualDeviceFxMountPlacesFx.doneData,
   (_, places) => places
 );
 
@@ -18,5 +18,5 @@ sample({
     (params) => params.apartmentId
   ),
   clock: IndividualDeviceMountPlacesGate.state,
-  target: fetchIndividualDeviceMountPlacesFx,
+  target: fetchIndividualDeviceFxMountPlacesFx,
 });

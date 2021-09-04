@@ -6,7 +6,7 @@ export const $individualDeviceMountPlaces = createStore<
   IndividualDeviceMountPlaceListResponse[] | null
 >(null);
 
-export const fetchIndividualDeviceMountPlacesFx = createEffect<
+export const fetchIndividualDeviceFxMountPlacesFx = createEffect<
   number,
   IndividualDeviceMountPlaceListResponse[]
 >();

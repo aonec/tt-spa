@@ -8,11 +8,10 @@ import {
 } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
+  fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -27,8 +26,9 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
-import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
+import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
+import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -58,7 +58,23 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map((values) => {
+  from: fetchIndividualDeviceFx.doneData.map(
+    (device): SwitchIndividualDeviceReadingsCreateRequest[] =>
+      device?.readings?.map(
+        (elem): SwitchIndividualDeviceReadingsCreateRequest => ({
+          value1: Number(elem.value1),
+          value2: Number(elem.value2),
+          value3: Number(elem.value3),
+          value4: Number(elem.value4),
+          readingDate: elem.readingDateTime,
+        })
+      ) || []
+  ),
+  to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
+});
+
+forward({
+  from: fetchIndividualDeviceFx.doneData.map((values) => {
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource
     );
@@ -84,7 +100,7 @@ sample({
     addIndividualDeviceForm.fields.mountPlaceId.$value,
     (places, name) => places?.find((elem) => elem.name === name)?.id || null
   ),
-  clock: fetchIndividualDeviceMountPlacesFx.doneData,
+  clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 
@@ -108,11 +124,11 @@ sample({
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
-        newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+        // newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+        // newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+        // previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
         contractorId: values.contractorId,
-      },
+      } as any,
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,

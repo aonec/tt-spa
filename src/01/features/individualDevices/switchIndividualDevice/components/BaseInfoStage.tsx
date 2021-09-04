@@ -253,14 +253,14 @@ export const BaseInfoStage = () => {
         <>
           <ReadingsInput
             title="Закрываемый прибор"
-            readings={[]}
+            readings={fields.oldDeviceReadings.value}
             onChange={() => {}}
             device={device}
           />
           <Space />
           <ReadingsInput
             title="Новый прибор"
-            readings={[]}
+            readings={fields.newDeviceReadings.value}
             onChange={() => {}}
             device={{
               resource: fields.resource.value!,

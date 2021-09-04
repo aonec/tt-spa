@@ -5,18 +5,13 @@ import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RenderReadingFields } from '01/features/readings/displayReadingHistory/components/ReadingFields';
-
-export interface ReadingInputElem {
-  value1: number | null;
-  value2?: number | null;
-  value3?: number | null;
-  value4?: number | null;
-  readingDate: string;
-}
+import { SwitchIndividualDeviceReadingsCreateRequest } from '../../../../../../myApi';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 interface Props {
-  readings: ReadingInputElem[];
-  onChange: (readings: ReadingInputElem[]) => void;
+  readings: SwitchIndividualDeviceReadingsCreateRequest[];
+  onChange: (readings: SwitchIndividualDeviceReadingsCreateRequest[]) => void;
   title: string;
   device: DataStringDevice;
 }
@@ -28,6 +23,15 @@ export const ReadingsInput: React.FC<Props> = ({
   onChange,
 }) => {
   const { sliderIndex, up, down } = useSliderIndex();
+
+  const defaultValues = device.rateType
+    ? getArrayByCountRange(
+        getIndividualDeviceRateNumByName(device.rateType),
+        () => ''
+      )
+    : [''];
+
+  console.log(readings);
 
   return (
     <Wrap>
@@ -49,14 +53,14 @@ export const ReadingsInput: React.FC<Props> = ({
 
         <RenderReadingFields
           style={{ marginRight: 0 }}
-          values={['']}
+          values={defaultValues}
           editable
           suffix={device.measurableUnitString}
         />
 
         <RenderReadingFields
           style={{ marginRight: 0 }}
-          values={['']}
+          values={defaultValues}
           editable
           suffix={device.measurableUnitString}
         />
