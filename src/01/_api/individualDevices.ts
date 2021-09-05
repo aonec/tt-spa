@@ -67,19 +67,12 @@ export interface CheckIndividualDeviceRequestPayload extends WithMagnetSeal {
 }
 
 export const checkIndividualDevice = async (
-  requestPayload: CheckIndividualDeviceRequestPayload
+  requestPayload: CheckIndividualDeviceRequest
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/check',
-    requestPayload.device
+    requestPayload
   );
-
-  if (requestPayload.magnetSeal.isInstalled) {
-    await axios.post(
-      `IndividualDevices/${res.id}/SetMagneticSeal`,
-      requestPayload.magnetSeal
-    );
-  }
 
   return res;
 };

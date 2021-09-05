@@ -1,7 +1,5 @@
 import {
   checkIndividualDevice,
-  switchIndividualDevice,
-  CheckIndividualDeviceRequestPayload,
 } from './../../../../_api/individualDevices';
 import {
   $individualDevice,
@@ -13,7 +11,7 @@ import {
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine, guard } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
+import { BaseIndividualDeviceReadingsCreateRequest, CheckIndividualDeviceRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -97,24 +95,15 @@ sample({
     $individualDevice,
     (values, device) => ({ values, device })
   ).map(
-    ({ values, device }): CheckIndividualDeviceRequestPayload => ({
-      device: {
-        deviceId: device?.id!,
-        futureCheckingDate: values.futureCheckingDate!,
-        currentCheckingDate: values.lastCheckingDate!,
-        documentsIds: toArray<FileData>(values.documentsIds, false)
-          .filter((elem) => elem?.fileResponse)
-          .map((elem) => elem.fileResponse?.id!),
-        newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        contractorId: values.contractorId,
-      },
-      magnetSeal: {
-        isInstalled: values.isInstalled,
-        magneticSealInstallationDate: values.magneticSealInstallationDate,
-        magneticSealTypeName: values.magneticSealTypeName,
-      },
+    ({ values, device }): CheckIndividualDeviceRequest => ({
+      deviceId: device?.id!,
+      futureCheckingDate: values.futureCheckingDate!,
+      currentCheckingDate: values.lastCheckingDate!,
+      documentsIds: toArray<FileData>(values.documentsIds, false)
+        .filter((elem) => elem?.fileResponse)
+        .map((elem) => elem.fileResponse?.id!),
+      newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      contractorId: values.contractorId,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,

@@ -52,23 +52,16 @@ export const BaseInfoStage = () => {
     (fields as any)[name].onChange(value.toISOString());
   };
 
-  const getReadingTemp = (
-    type:
-      | 'startupReadings'
-      | 'defaultReadings'
-      | 'previousDeviceFinishingReadings'
-  ) => (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
+  const getReadingTemp = (type: 'defaultReadings') => (
+    valueNumber: 1 | 2 | 3 | 4
+  ) => (e: any) =>
     fields[type].onChange({
       ...fields[type].value,
       [`value${valueNumber}`]:
         e.target.value === '' ? null : Number(e.target.value),
     });
 
-  const onChangeStartupReadings = getReadingTemp('startupReadings');
   const onChangeDefaultReadings = getReadingTemp('defaultReadings');
-  const onChangePreviousDeviceFinishingReadings = getReadingTemp(
-    'previousDeviceFinishingReadings'
-  );
 
   const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
@@ -140,57 +133,6 @@ export const BaseInfoStage = () => {
     </FormItem>
   );
 
-  const previousDeviceFinishingReadings = (
-    <>
-      <FormItem
-        label={`Конечные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
-      >
-        <InputTT
-          type="number"
-          placeholder="Введите конечные показания"
-          onChange={onChangePreviousDeviceFinishingReadings(1)}
-          value={fields.previousDeviceFinishingReadings.value.value1}
-        />
-        <ErrorMessage>
-          {fields.previousDeviceFinishingReadings.errorText({
-            requiredFirstField: 'Это поле обязательное',
-          })}
-        </ErrorMessage>
-      </FormItem>
-
-      {rateNum >= 2 && (
-        <FormItem label="Конечные показания прибора (Ночь)">
-          <InputTT
-            type="number"
-            placeholder="Введите конечные показания"
-            onChange={onChangePreviousDeviceFinishingReadings(2)}
-            value={fields.previousDeviceFinishingReadings.value.value2}
-          />
-          <ErrorMessage>
-            {fields.previousDeviceFinishingReadings.errorText({
-              requiredSecondField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-      {rateNum >= 3 && (
-        <FormItem>
-          <InputTT
-            type="number"
-            placeholder="Введите конечные показания"
-            onChange={onChangePreviousDeviceFinishingReadings(3)}
-            value={fields.previousDeviceFinishingReadings.value.value3}
-          />
-          <ErrorMessage>
-            {fields.previousDeviceFinishingReadings.errorText({
-              requiredThirdField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-    </>
-  );
-
   const defaultReadingsFields = (
     <>
       <FormItem
@@ -225,7 +167,7 @@ export const BaseInfoStage = () => {
         </FormItem>
       )}
       {rateNum >= 3 && (
-        <FormItem>
+        <FormItem label="Текущие показания прибора (T3)">
           <InputTT
             type="number"
             placeholder="Введите текущие показания"
@@ -360,70 +302,10 @@ export const BaseInfoStage = () => {
         </FormItem>
       </FormWrap>
 
-      {rateNum === 1 ? (
-        <FormWrap>
-          {rateTypeSelector}
-          {previousDeviceFinishingReadings}
-        </FormWrap>
-      ) : (
-        <>
-          {rateTypeSelector}
-          <FormWrap>{previousDeviceFinishingReadings}</FormWrap>
-        </>
-      )}
-
       <FormWrap>
-        <FormItem
-          label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
-        >
-          <InputTT
-            type="number"
-            placeholder="Введите первичные показания"
-            onChange={onChangeStartupReadings(1)}
-            value={fields.startupReadings.value.value1}
-          />
-          <ErrorMessage>
-            {fields.startupReadings.errorText({
-              requiredFirstField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-
-        {rateNum >= 2 && (
-          <FormItem label="Первичные показания прибора (Ночь)">
-            <InputTT
-              type="number"
-              placeholder="Введите первичные показания"
-              onChange={onChangeStartupReadings(2)}
-              value={fields.startupReadings.value.value2}
-            />
-            <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredSecondField: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </FormItem>
-        )}
-        {rateNum >= 3 && (
-          <FormItem>
-            <InputTT
-              type="number"
-              placeholder="Введите первичные показания"
-              onChange={onChangeStartupReadings(3)}
-              value={fields.startupReadings.value.value3}
-            />
-            <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredThirdField: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </FormItem>
-        )}
-
-        {rateNum === 1 && defaultReadingsFields}
+        {rateTypeSelector}
+        {defaultReadingsFields}
       </FormWrap>
-
-      {rateNum !== 1 && <FormWrap>{defaultReadingsFields}</FormWrap>}
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePicker
@@ -443,25 +325,17 @@ export const BaseInfoStage = () => {
 
       <FormWrap>
         <FormItem label="Пломба">
-          <Flex>
-            <SwitchTT
-              onChange={fields.isInstalled.onChange}
-              checked={fields.isInstalled.value}
-            />
-            <InputTT
-              placeholder="Номер пломбы"
-              disabled={!fields.isInstalled.value}
-              value={fields.magneticSealTypeName.value}
-              onChange={onChange}
-              name="magneticSealTypeName"
-            />
-          </Flex>
+          <InputTT
+            placeholder="Номер пломбы"
+            value={fields.magneticSealTypeName.value}
+            onChange={onChange}
+            name="magneticSealTypeName"
+          />
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
           <DatePicker
             format="DD.MM.YYYY"
-            disabled={!fields.isInstalled.value}
             onChange={onChangeDateField('magneticSealInstallationDate')}
             value={getDatePickerValue(
               fields.magneticSealInstallationDate.value
