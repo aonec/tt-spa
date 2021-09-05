@@ -320,7 +320,8 @@ const IndividualDeviceEditForm = ({
                   );
               }}
               value={
-                values.sealInstallationDate
+                values.sealInstallationDate &&
+                moment(values.sealInstallationDate, 'DD.MM.YYYY').isValid()
                   ? moment(values.sealInstallationDate, 'DD.MM.YYYY')
                   : undefined
               }
