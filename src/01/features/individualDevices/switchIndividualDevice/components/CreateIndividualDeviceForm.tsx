@@ -15,7 +15,7 @@ import {
   resetCreationRequestStatus,
   switchStageButtonClicked,
 } from '../models';
-import { BaseInfoStage } from './BaseInfoStage';
+import { BaseInfoStage } from './stages/BaseInfoStage';
 import { DocumentsStage } from './stages/DocumentsStage';
 
 export const CreateIndividualDeviceForm = () => {

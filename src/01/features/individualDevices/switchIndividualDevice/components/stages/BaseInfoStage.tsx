@@ -13,9 +13,9 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addIndividualDeviceForm } from '../models';
-import { FormHeader } from './Header';
-import DeviceIcons from '../../../../_components/DeviceIcons';
+import { addIndividualDeviceForm } from '../../models';
+import { FormHeader } from '../Header';
+import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import {
@@ -26,8 +26,8 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from './stages/ReadingsInput';
-import { $individualDevice } from '../../displayIndividualDevice/models';
+import { ReadingsInput } from './ReadingsInput';
+import { $individualDevice } from '../../../displayIndividualDevice/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const BaseInfoStage = () => {
@@ -254,7 +254,7 @@ export const BaseInfoStage = () => {
           <ReadingsInput
             title="Закрываемый прибор"
             readings={fields.oldDeviceReadings.value}
-            onChange={() => {}}
+            onChange={fields.oldDeviceReadings.onChange}
             device={device}
           />
           <Space />
