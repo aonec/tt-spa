@@ -51,6 +51,7 @@ export const addIndividualDeviceForm = createForm({
     mountPlaceId: {
       init: null as number | null,
     },
+    
     model: {
       init: '',
     },

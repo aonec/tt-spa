@@ -13,11 +13,10 @@ import {
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
 import { RenderReadingFields } from '../RenderReadingFields';
-import { getMonthFromDate } from '01/utils/getMonthFromDate';
 
 interface Props {
   readings: SwitchIndividualDeviceReadingsCreateRequest[];
-  onChange: (readings: SwitchIndividualDeviceReadingsCreateRequest[]) => void;
+  onChange?: (readings: SwitchIndividualDeviceReadingsCreateRequest[]) => void;
   title: string;
   device: DataStringDevice;
 }
@@ -61,6 +60,8 @@ export const ReadingsInput: React.FC<Props> = ({
     isNew?: boolean;
     isPrevious?: boolean;
   }) {
+    if (!onChange) return;
+
     const { value, index, readingDate, isNew, isPrevious } = props;
 
     if (isNew) {
@@ -68,7 +69,6 @@ export const ReadingsInput: React.FC<Props> = ({
         ...(getNewReadingValuesByIndex(value, index) as any),
         readingDate: getNewReadingDate(isPrevious ? sliderIndex : -1),
       };
-      console.log(newReading);
 
       return onChange([...readings, newReading]);
     }
@@ -80,8 +80,6 @@ export const ReadingsInput: React.FC<Props> = ({
         ...{ ...elem, [`value${index}`]: value },
         readingDate: readingDate!,
       };
-
-      console.log(changedReading);
 
       return changedReading;
     });

@@ -29,6 +29,8 @@ import {
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -104,6 +106,17 @@ sample({
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 
+const clearEmptyValueFields = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest,
+  rateNum: number
+): SwitchIndividualDeviceReadingsCreateRequest => {
+  const clearValues = getArrayByCountRange(rateNum, (index) => ({
+    [`value${index}`]: Number((reading as any)[`value${index}`]),
+  })).reduce((acc, elem) => ({ ...acc, ...elem }), {});
+
+  return { ...clearValues, readingDate: reading.readingDate } as any;
+};
+
 sample({
   source: combine(
     addIndividualDeviceForm.$values,
@@ -124,11 +137,20 @@ sample({
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
-        // newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        // newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        // previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
         contractorId: values.contractorId,
-      } as any,
+        oldDeviceReadings: values.oldDeviceReadings.map((elem) =>
+          clearEmptyValueFields(
+            elem,
+            getIndividualDeviceRateNumByName(values.rateType)
+          )
+        ),
+        newDeviceReadings: values.newDeviceReadings.map((elem) =>
+          clearEmptyValueFields(
+            elem,
+            getIndividualDeviceRateNumByName(values.rateType)
+          )
+        ),
+      },
       magnetSeal: {
         isInstalled: values.isInstalled,
         magneticSealInstallationDate: values.magneticSealInstallationDate,

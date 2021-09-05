@@ -24,6 +24,8 @@ import { Loader } from '01/components';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { $contractors } from '01/features/contractors/displayContractors/models';
+import { ReadingsInput } from './stages/ReadingsInput';
+import { $individualDevice } from '../../displayIndividualDevice/models';
 
 interface ILine {
   name: string;
@@ -43,6 +45,8 @@ export const CheckFormValuesModal = () => {
   const isOpen = useStore($isCheckCreationDeviceFormDataModalOpen);
   const onCancel = () => cancelCheckingButtonClicked();
   const contractors = useStore($contractors);
+
+  const device = useStore($individualDevice);
 
   const deviceIcon = DeviceIcons[fields.resource.value! || ''];
 
@@ -114,6 +118,28 @@ export const CheckFormValuesModal = () => {
       },
     }));
 
+  const readings = (
+    <>
+      <ReadingsInput
+        title="Закрываемый прибор"
+        readings={fields.oldDeviceReadings.value}
+        device={device!}
+      />
+      <Space />
+      <ReadingsInput
+        title="Новый прибор"
+        readings={fields.newDeviceReadings.value}
+        device={{
+          resource: fields.resource.value!,
+          model: fields.model.value,
+          serialNumber: fields.serialNumber.value,
+          measurableUnitString: device?.measurableUnitString,
+          rateType: fields.rateType.value,
+        }}
+      />
+    </>
+  );
+
   return (
     <StyledModal
       width={800}
@@ -142,7 +168,15 @@ export const CheckFormValuesModal = () => {
 
       <Space style={{ height: 30 }} />
 
-      {!!files.length && <Title>2. Документы</Title>}
+      <Title>2. Общие данные о приборе</Title>
+
+      {readings}
+
+      {!!files.length && (
+        <>
+          <Space style={{ height: 30 }} /> <Title>3. Документы</Title>
+        </>
+      )}
 
       {files.map(renderFile)}
     </StyledModal>
