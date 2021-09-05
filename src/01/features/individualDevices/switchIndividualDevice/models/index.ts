@@ -4,11 +4,11 @@ import {
   EIndividualDeviceRateType,
   SwitchIndividualDeviceReadingsCreateRequest,
   EClosingReason,
+  SwitchIndividualDeviceRequest,
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { FileData } from '01/hooks/useFilesUpload';
-import { SwitchIndividualDeviceRequestPayload } from '01/_api/individualDevices';
 export const $creationDeviceStage = createStore<0 | 1>(0);
 export const $isCreateIndividualDeviceSuccess = createStore<boolean | null>(
   null
@@ -78,9 +78,6 @@ export const addIndividualDeviceForm = createForm({
     magneticSealTypeName: {
       init: null as null | string,
     },
-    isInstalled: {
-      init: false,
-    },
     contractorId: {
       init: null as number | null,
     },
@@ -97,6 +94,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  SwitchIndividualDeviceRequestPayload,
+  SwitchIndividualDeviceRequest,
   MeteringDeviceResponse
 >();
