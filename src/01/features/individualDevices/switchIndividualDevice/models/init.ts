@@ -31,6 +31,7 @@ import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import moment, { months } from 'moment';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -117,6 +118,26 @@ const clearEmptyValueFields = (
   return { ...clearValues, readingDate: reading.readingDate } as any;
 };
 
+const upMonthInReading = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest
+) => {
+  const readingDate = moment(reading.readingDate);
+
+  readingDate.add(1, 'month');
+
+  return { ...reading, readingDate: readingDate.toISOString() };
+};
+
+const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
+  let res = array;
+
+  for (const callback of callbacks) {
+    res = res.map(callback);
+  }
+
+  return res;
+};
+
 sample({
   source: combine(
     addIndividualDeviceForm.$values,
@@ -138,17 +159,23 @@ sample({
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
         contractorId: values.contractorId,
-        oldDeviceReadings: values.oldDeviceReadings.map((elem) =>
-          clearEmptyValueFields(
-            elem,
-            getIndividualDeviceRateNumByName(values.rateType)
-          )
+        oldDeviceReadings: mapArray(
+          values.oldDeviceReadings,
+          upMonthInReading,
+          (elem) =>
+            clearEmptyValueFields(
+              elem,
+              getIndividualDeviceRateNumByName(values.rateType)
+            )
         ),
-        newDeviceReadings: values.newDeviceReadings.map((elem) =>
-          clearEmptyValueFields(
-            elem,
-            getIndividualDeviceRateNumByName(values.rateType)
-          )
+        newDeviceReadings: mapArray(
+          values.newDeviceReadings,
+          upMonthInReading,
+          (elem) =>
+            clearEmptyValueFields(
+              elem,
+              getIndividualDeviceRateNumByName(values.rateType)
+            )
         ),
         oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
       },

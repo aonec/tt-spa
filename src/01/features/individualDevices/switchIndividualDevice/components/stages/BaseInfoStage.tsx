@@ -132,7 +132,7 @@ export const BaseInfoStage = () => {
         onChange={fields.oldDeviceClosingReason.onChange as any}
       >
         {Object.entries(clousingReasons).map(([key, elem]) => (
-          <Select.Option value={elem} key={key}>
+          <Select.Option value={key} key={key}>
             {elem}
           </Select.Option>
         ))}
@@ -349,9 +349,9 @@ export const BaseInfoStage = () => {
 };
 
 export const clousingReasons = {
+  [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
   [EClosingReason.None]: 'Не указано',
-  [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
