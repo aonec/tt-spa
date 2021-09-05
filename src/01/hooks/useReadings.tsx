@@ -36,9 +36,10 @@ export const useReadings = (
     setInitialPreviousReadingState,
   ] = useState<PreviousReadingState>({});
 
-  const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
+  
+  const currentMonth = getMonthFromDate();
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0]?.readingDate);
 

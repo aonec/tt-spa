@@ -13,6 +13,7 @@ import {
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
 import { RenderReadingFields } from '../RenderReadingFields';
+import { getMonthFromDate } from '01/utils/getMonthFromDate';
 
 interface Props {
   readings: SwitchIndividualDeviceReadingsCreateRequest[];
@@ -45,29 +46,29 @@ export const ReadingsInput: React.FC<Props> = ({
     rateNum
   );
 
-  const currentReading = getReadingValuesArray(
-    preparedReadingsArrWithEmpties[1],
-    rateNum
+  const readingByCurrentMonth = readings.find((elem) =>
+    compareDates(elem.readingDate, moment().toISOString())
   );
 
-  function onChangeHandler({
-    value,
-    index,
-    readingDate,
-    isNew,
-    isPrevious,
-  }: {
+  const currentReading = readingByCurrentMonth
+    ? getReadingValuesArray(readingByCurrentMonth, rateNum)
+    : null;
+
+  function onChangeHandler(props: {
     value: string;
     index: number;
     readingDate?: string;
     isNew?: boolean;
     isPrevious?: boolean;
   }) {
+    const { value, index, readingDate, isNew, isPrevious } = props;
+
     if (isNew) {
       const newReading = {
         ...(getNewReadingValuesByIndex(value, index) as any),
         readingDate: getNewReadingDate(isPrevious ? sliderIndex : -1),
       };
+      console.log(newReading);
 
       return onChange([...readings, newReading]);
     }
@@ -144,14 +145,8 @@ export const ReadingsInput: React.FC<Props> = ({
   );
 };
 
-// const getDateByReadingMonthSlider = (sliderIndex: number) => {
-//   const date = moment();
-
-//   date.set('month', Number(date.format('m')));
-//   date.set('day', 15);
-
-//   return date;
-// };
+const compareDates = (date1: string, date2: string) =>
+  moment(date1).format('MM.YYYY') === moment(date2).format('MM.YYYY');
 
 const getNewReadingDate = (sliderIndex: number) =>
   getDateByReadingMonthSlider(sliderIndex).toISOString();
