@@ -150,6 +150,7 @@ sample({
             getIndividualDeviceRateNumByName(values.rateType)
           )
         ),
+        oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
       },
       magnetSeal: {
         isInstalled: values.isInstalled,

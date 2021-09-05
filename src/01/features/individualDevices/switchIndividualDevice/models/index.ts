@@ -3,6 +3,7 @@ import {
   MeteringDeviceResponse,
   EIndividualDeviceRateType,
   SwitchIndividualDeviceReadingsCreateRequest,
+  EClosingReason,
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
@@ -51,7 +52,9 @@ export const addIndividualDeviceForm = createForm({
     mountPlaceId: {
       init: null as number | null,
     },
-    
+    oldDeviceClosingReason: {
+      init: null as EClosingReason | null,
+    },
     model: {
       init: '',
     },

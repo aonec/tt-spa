@@ -310,6 +310,7 @@ export enum EClosingReason {
   None = "None",
   Manually = "Manually",
   NoReadings = "NoReadings",
+  DeviceBroken = "DeviceBroken",
 }
 
 export enum EResourceType {
@@ -2630,6 +2631,10 @@ export interface IndividualDeviceReadingsResponse {
   uploadTime: string;
   source: EIndividualDeviceReadingsSource;
   user: ManagingFirmUserShortResponse | null;
+}
+
+export interface IndividualDeviceReadingsResponseSuccessApiResponse {
+  successResponse: IndividualDeviceReadingsResponse | null;
 }
 
 export interface IndividualDeviceResponse {
@@ -6958,6 +6963,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDeviceReadings
+     * @name IndividualDeviceReadingsSetArchivedCreate
+     * @request POST:/api/IndividualDeviceReadings/{readingId}/setArchived
+     * @secure
+     */
+    individualDeviceReadingsSetArchivedCreate: (readingId: number, params: RequestParams = {}) =>
+      this.request<IndividualDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDeviceReadings/${readingId}/setArchived`,
+        method: "POST",
+        secure: true,
+        format: "json",
         ...params,
       }),
 

@@ -17,7 +17,11 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import {
+  EIndividualDeviceRateType,
+  EResourceType,
+  EClosingReason,
+} from 'myApi';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
@@ -122,9 +126,15 @@ export const BaseInfoStage = () => {
 
   const selectSwitchReason = (
     <Form.Item label="Причина замены">
-      <StyledSelect placeholder="Выберите причину замены">
-        {['Поломка', 'Окончание эксплуатации'].map((elem) => (
-          <Select.Option value={elem}>{elem}</Select.Option>
+      <StyledSelect
+        placeholder="Выберите причину замены"
+        value={fields.oldDeviceClosingReason.value || undefined}
+        onChange={fields.oldDeviceClosingReason.onChange as any}
+      >
+        {Object.entries(clousingReasons).map(([key, elem]) => (
+          <Select.Option value={elem} key={key}>
+            {elem}
+          </Select.Option>
         ))}
       </StyledSelect>
     </Form.Item>
@@ -336,6 +346,13 @@ export const BaseInfoStage = () => {
       </FormItem>
     </Wrap>
   );
+};
+
+export const clousingReasons = {
+  [EClosingReason.DeviceBroken]: 'Поломка',
+  [EClosingReason.None]: 'Не указано',
+  [EClosingReason.Manually]: 'Плановая замена',
+  [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {
