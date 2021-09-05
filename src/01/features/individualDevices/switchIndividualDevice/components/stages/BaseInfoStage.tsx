@@ -261,7 +261,7 @@ export const BaseInfoStage = () => {
           <ReadingsInput
             title="Новый прибор"
             readings={fields.newDeviceReadings.value}
-            onChange={() => {}}
+            onChange={fields.newDeviceReadings.onChange}
             device={{
               resource: fields.resource.value!,
               model: fields.model.value,
