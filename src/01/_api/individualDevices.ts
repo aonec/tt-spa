@@ -52,19 +52,12 @@ export interface SwitchIndividualDeviceRequestPayload extends WithMagnetSeal {
 }
 
 export const switchIndividualDevice = async (
-  requestPayload: SwitchIndividualDeviceRequestPayload
+  requestPayload: SwitchIndividualDeviceRequest
 ) => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/switch',
-    requestPayload.device
+    requestPayload
   );
-
-  if (requestPayload.magnetSeal.isInstalled) {
-    await axios.post(
-      `IndividualDevices/${res.id}/SetMagneticSeal`,
-      requestPayload.magnetSeal
-    );
-  }
 
   return res;
 };
@@ -74,19 +67,12 @@ export interface CheckIndividualDeviceRequestPayload extends WithMagnetSeal {
 }
 
 export const checkIndividualDevice = async (
-  requestPayload: CheckIndividualDeviceRequestPayload
+  requestPayload: CheckIndividualDeviceRequest
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/check',
-    requestPayload.device
+    requestPayload
   );
-
-  if (requestPayload.magnetSeal.isInstalled) {
-    await axios.post(
-      `IndividualDevices/${res.id}/SetMagneticSeal`,
-      requestPayload.magnetSeal
-    );
-  }
 
   return res;
 };
@@ -119,7 +105,6 @@ export interface GetIndividualDeviceRequestParams {
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams
 ) => {
-
   const res: {
     items: IndividualDeviceListItemResponse[];
   } = await axios.get('IndividualDevices', { params });

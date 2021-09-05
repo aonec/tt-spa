@@ -28,9 +28,13 @@ import {
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
-import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
+import {
+  SwitchIndividualDeviceReadingsCreateRequest,
+  SwitchIndividualDeviceRequest,
+} from 'myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import moment, { months } from 'moment';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -117,45 +121,67 @@ const clearEmptyValueFields = (
   return { ...clearValues, readingDate: reading.readingDate } as any;
 };
 
+const upMonthInReading = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest
+) => {
+  const readingDate = moment(reading.readingDate);
+
+  readingDate.add(1, 'month');
+
+  return { ...reading, readingDate: readingDate.toISOString() };
+};
+
+const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
+  let res = array;
+
+  for (const callback of callbacks) {
+    res = res.map(callback);
+  }
+
+  return res;
+};
+
 sample({
   source: combine(
     addIndividualDeviceForm.$values,
     $individualDevice,
     (values, device) => ({ values, device })
   ).map(
-    ({ values, device }): SwitchIndividualDeviceRequestPayload => ({
-      device: {
-        deviceId: device?.id!,
-        serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        bitDepth: Number(values.bitDepth),
-        scaleFactor: Number(values.scaleFactor),
-        rateType: values.rateType,
-        model: values.model,
-        documentsIds: toArray<FileData>(values.documentsIds, false)
-          .filter((elem) => elem?.fileResponse)
-          .map((elem) => elem.fileResponse?.id!),
-        contractorId: values.contractorId,
-        oldDeviceReadings: values.oldDeviceReadings.map((elem) =>
+    ({ values, device }): SwitchIndividualDeviceRequest => ({
+      deviceId: device?.id!,
+      serialNumber: values.serialNumber,
+      lastCheckingDate: values.lastCheckingDate,
+      futureCheckingDate: values.futureCheckingDate,
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+      bitDepth: Number(values.bitDepth),
+      scaleFactor: Number(values.scaleFactor),
+      rateType: values.rateType,
+      model: values.model,
+      documentsIds: toArray<FileData>(values.documentsIds, false)
+        .filter((elem) => elem?.fileResponse)
+        .map((elem) => elem.fileResponse?.id!),
+      contractorId: values.contractorId,
+      oldDeviceReadings: mapArray(
+        values.oldDeviceReadings,
+        upMonthInReading,
+        (elem) =>
           clearEmptyValueFields(
             elem,
             getIndividualDeviceRateNumByName(values.rateType)
           )
-        ),
-        newDeviceReadings: values.newDeviceReadings.map((elem) =>
+      ),
+      newDeviceReadings: mapArray(
+        values.newDeviceReadings,
+        upMonthInReading,
+        (elem) =>
           clearEmptyValueFields(
             elem,
             getIndividualDeviceRateNumByName(values.rateType)
           )
-        ),
-      },
-      magnetSeal: {
-        isInstalled: values.isInstalled,
-        magneticSealInstallationDate: values.magneticSealInstallationDate,
-        magneticSealTypeName: values.magneticSealTypeName,
-      },
+      ),
+      sealInstallationDate: values.magneticSealInstallationDate,
+      sealNumber: values.magneticSealTypeName,
+      oldDeviceClosingReason: values.oldDeviceClosingReason || undefined,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,

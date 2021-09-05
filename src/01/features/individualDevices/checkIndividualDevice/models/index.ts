@@ -2,6 +2,7 @@ import {
   EResourceType,
   MeteringDeviceResponse,
   EIndividualDeviceRateType,
+  CheckIndividualDeviceRequest,
 } from './../../../../../myApi';
 import { createEvent, createStore, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
@@ -87,19 +88,7 @@ export const addIndividualDeviceForm = createForm({
     model: {
       init: '',
     },
-    startupReadings: {
-      init: { value1: null, value2: null, value3: null, value4: null } as {
-        [key: string]: number | null;
-      },
-      rules: readingsValuesValidators,
-    },
     defaultReadings: {
-      init: { value1: null, value2: null, value3: null, value4: null } as {
-        [key: string]: number | null;
-      },
-      rules: readingsValuesValidators,
-    },
-    previousDeviceFinishingReadings: {
       init: { value1: null, value2: null, value3: null, value4: null } as {
         [key: string]: number | null;
       },
@@ -119,9 +108,6 @@ export const addIndividualDeviceForm = createForm({
     magneticSealTypeName: {
       init: null as null | string,
     },
-    isInstalled: {
-      init: false,
-    },
     contractorId: {
       init: null as number | null,
     },
@@ -138,6 +124,6 @@ export const confirmCreationNewDeviceButtonClicked = createEvent();
 export const resetCreationRequestStatus = createEvent();
 
 export const createIndividualDeviceFx = createEffect<
-  CheckIndividualDeviceRequestPayload,
+  CheckIndividualDeviceRequest,
   MeteringDeviceResponse
 >();

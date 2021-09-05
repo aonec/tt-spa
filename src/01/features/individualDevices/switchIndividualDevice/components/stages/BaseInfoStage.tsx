@@ -17,7 +17,11 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
+import {
+  EIndividualDeviceRateType,
+  EResourceType,
+  EClosingReason,
+} from 'myApi';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
@@ -122,9 +126,15 @@ export const BaseInfoStage = () => {
 
   const selectSwitchReason = (
     <Form.Item label="Причина замены">
-      <StyledSelect placeholder="Выберите причину замены">
-        {['Поломка', 'Окончание эксплуатации'].map((elem) => (
-          <Select.Option value={elem}>{elem}</Select.Option>
+      <StyledSelect
+        placeholder="Выберите причину замены"
+        value={fields.oldDeviceClosingReason.value || undefined}
+        onChange={fields.oldDeviceClosingReason.onChange as any}
+      >
+        {Object.entries(clousingReasons).map(([key, elem]) => (
+          <Select.Option value={key} key={key}>
+            {elem}
+          </Select.Option>
         ))}
       </StyledSelect>
     </Form.Item>
@@ -293,13 +303,8 @@ export const BaseInfoStage = () => {
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
-            <SwitchTT
-              onChange={fields.isInstalled.onChange}
-              checked={fields.isInstalled.value}
-            />
             <InputTT
               placeholder="Номер пломбы"
-              disabled={!fields.isInstalled.value}
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
               name="magneticSealTypeName"
@@ -310,7 +315,6 @@ export const BaseInfoStage = () => {
         <FormItem label="Дата установки пломбы">
           <DatePicker
             format="DD.MM.YYYY"
-            disabled={!fields.isInstalled.value}
             onChange={onChangeDateField('magneticSealInstallationDate')}
             value={getDatePickerValue(
               fields.magneticSealInstallationDate.value
@@ -336,6 +340,13 @@ export const BaseInfoStage = () => {
       </FormItem>
     </Wrap>
   );
+};
+
+export const clousingReasons = {
+  [EClosingReason.Manually]: 'Плановая замена',
+  [EClosingReason.DeviceBroken]: 'Поломка',
+  [EClosingReason.None]: 'Не указано',
+  [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {
