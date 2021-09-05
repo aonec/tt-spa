@@ -1,15 +1,15 @@
 import { getIndividualDevicesModels } from './../../../../_api/meteringDevices';
 import { guard } from 'effector';
 import {
-  fetchIndividualDevicesNames,
+  fetchIndividualDeviceFxsNames,
   IndividualDevicecModelsGate,
 } from './index';
 import { $individualDevicesNames } from '.';
 
-fetchIndividualDevicesNames.use(getIndividualDevicesModels);
+fetchIndividualDeviceFxsNames.use(getIndividualDevicesModels);
 
 $individualDevicesNames.on(
-  fetchIndividualDevicesNames.doneData,
+  fetchIndividualDeviceFxsNames.doneData,
   (_, value) => value
 );
 
@@ -18,5 +18,5 @@ guard({
     Text: value.model,
   })),
   filter: ({ Text }) => Boolean(Text),
-  target: fetchIndividualDevicesNames,
+  target: fetchIndividualDeviceFxsNames,
 });

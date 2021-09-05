@@ -6,7 +6,7 @@ export const $individualDevice = createStore<IndividualDeviceResponse | null>(
   null
 );
 
-export const fetchIndividualDevice = createEffect<
+export const fetchIndividualDeviceFx = createEffect<
   number,
   IndividualDeviceResponse
 >();

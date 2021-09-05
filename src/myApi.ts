@@ -28,13 +28,28 @@ export interface ApartmentCreateRequest {
   hotWaterRiserCount?: number | null;
 }
 
-export interface HousingStockShortResponse {
+export interface HouseManagementResponse {
+  /** @format uuid */
+  id: string;
+  name: string | null;
+  phone: string | null;
+  comment: string | null;
+}
+
+export interface HousingStockListResponse {
   /** @format int32 */
   id: number;
   city: string | null;
   street: string | null;
   number: string | null;
   corpus: string | null;
+
+  /** @format int32 */
+  numberOfTasks: number | null;
+
+  /** @format int32 */
+  numberOfApartments: number;
+  houseManagement: HouseManagementResponse | null;
 }
 
 export enum EApartmentStatus {
@@ -71,7 +86,7 @@ export interface ApartmentResponse {
 
   /** @format double */
   coefficient: number | null;
-  housingStock: HousingStockShortResponse | null;
+  housingStock: HousingStockListResponse | null;
   comment: string | null;
   apartmentNumber: string | null;
   status: EApartmentStatus;
@@ -117,21 +132,6 @@ export interface ErrorApiResponse {
 export enum EOrderByRule {
   Ascending = "Ascending",
   Descending = "Descending",
-}
-
-export interface HousingStockListResponse {
-  /** @format int32 */
-  id: number;
-  city: string | null;
-  street: string | null;
-  number: string | null;
-  corpus: string | null;
-
-  /** @format int32 */
-  numberOfTasks: number | null;
-
-  /** @format int32 */
-  numberOfApartments: number;
 }
 
 export interface ApartmentListResponse {
@@ -1034,6 +1034,7 @@ export interface SwitchCalculatorRequest {
 
   /** @format int32 */
   checkingNumber?: number | null;
+  oldDeviceClosingReason?: EClosingReason;
 
   /** @format int32 */
   calculatorInfoId?: number | null;
@@ -1678,6 +1679,15 @@ export interface AddressResponse {
   housingStockNumber: string | null;
 }
 
+export interface HousingStockShortResponse {
+  /** @format int32 */
+  id: number;
+  city: string | null;
+  street: string | null;
+  number: string | null;
+  corpus: string | null;
+}
+
 export interface HeatingStationResponse {
   /** @format uuid */
   id: string;
@@ -1909,14 +1919,6 @@ export interface UpdateHouseManagementRequest {
   comment?: string | null;
 }
 
-export interface HouseManagementResponse {
-  /** @format uuid */
-  id: string;
-  name: string | null;
-  phone: string | null;
-  comment: string | null;
-}
-
 export interface HouseManagementResponseSuccessApiResponse {
   successResponse: HouseManagementResponse | null;
 }
@@ -2141,6 +2143,7 @@ export interface SwitchHousingMeteringDeviceRequest {
 
   /** @format int32 */
   checkingNumber?: number | null;
+  oldDeviceClosingReason?: EClosingReason;
 
   /** @format int32 */
   bitDepth?: number | null;
@@ -2668,6 +2671,7 @@ export interface IndividualDeviceResponse {
   address: FullAddressResponse | null;
   resource: EResourceType;
   mountPlace: string | null;
+  deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
@@ -2712,9 +2716,6 @@ export interface UpdateIndividualDeviceRequest {
   /** @format int32 */
   mountPlaceId?: number | null;
   resource?: EResourceType | null;
-
-  /** @format int32 */
-  apartmentId?: number | null;
   rateType?: EIndividualDeviceRateType | null;
   isPolling?: boolean | null;
 
@@ -2761,6 +2762,7 @@ export interface IndividualDeviceListItemResponse {
   checkingNumber: number;
   resource: EResourceType;
   mountPlace: string | null;
+  deviceMountPlace: IndividualDeviceMountPlaceListResponse | null;
   rateType: EIndividualDeviceRateType;
   readings: IndividualDeviceReadingsResponse[] | null;
   hasMagneticSeal: boolean;
@@ -2867,15 +2869,7 @@ export interface CloseDeviceRequest {
 
   /** @format date-time */
   closingDate: string;
-}
-
-export interface ReopenDeviceRequest {
-  /** @format date-time */
-  lastCheckingDate?: string | null;
-
-  /** @format date-time */
-  futureCheckingDate?: string | null;
-  documentsIds?: number[] | null;
+  closingReason?: EClosingReason;
 }
 
 export interface SwitchMagneticSealRequest {
@@ -2889,6 +2883,23 @@ export interface SetMagneticSealRequest {
   magneticSealInstallationDate?: string | null;
   magneticSealTypeName?: string | null;
   isInstalled?: boolean;
+}
+
+export interface SwitchIndividualDeviceReadingsCreateRequest {
+  /** @format double */
+  value1: number;
+
+  /** @format double */
+  value2?: number | null;
+
+  /** @format double */
+  value3?: number | null;
+
+  /** @format double */
+  value4?: number | null;
+
+  /** @format date-time */
+  readingDate: string;
 }
 
 export interface SwitchIndividualDeviceRequest {
@@ -2924,6 +2935,7 @@ export interface SwitchIndividualDeviceRequest {
 
   /** @format int32 */
   checkingNumber?: number | null;
+  oldDeviceClosingReason?: EClosingReason;
 
   /** @format int32 */
   bitDepth?: number | null;
@@ -2932,9 +2944,8 @@ export interface SwitchIndividualDeviceRequest {
   scaleFactor?: number | null;
   model?: string | null;
   rateType?: EIndividualDeviceRateType;
-  newDeviceStartupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  newDeviceDefaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  previousDeviceFinishingReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  oldDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
+  newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
 }
 
 export interface IndividualDeviceReadingsItemHistoryResponse {
@@ -6998,10 +7009,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         ApartmentId?: number | null;
         HousingStockId?: number | null;
-        Resource?: string | null;
+        Resource?: EResourceType | null;
         LastReadingsMonth?: string | null;
         TakeReadings?: number | null;
         ApartmentIds?: number[] | null;
+        IsOpened?: boolean | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -7063,13 +7075,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/IndividualDevices/{deviceId}/reopen
      * @secure
      */
-    individualDevicesReopenCreate: (deviceId: number, data: ReopenDeviceRequest, params: RequestParams = {}) =>
+    individualDevicesReopenCreate: (deviceId: number, params: RequestParams = {}) =>
       this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/${deviceId}/reopen`,
         method: "POST",
-        body: data,
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -7129,7 +7139,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDevicesSwitchCreate: (data: SwitchIndividualDeviceRequest | null, params: RequestParams = {}) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/switch`,
         method: "POST",
         body: data,
@@ -7165,7 +7175,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     individualDevicesCheckCreate: (data: CheckIndividualDeviceRequest | null, params: RequestParams = {}) =>
-      this.request<MeteringDeviceResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/IndividualDevices/check`,
         method: "POST",
         body: data,
@@ -8600,7 +8610,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/Tasks/create
      * @secure
      */
-    tasksCreateCreate: (data: TaskCreateRequest, params: RequestParams = {}) =>
+    tasksCreateCreate: (data: TaskCreateRequest | null, params: RequestParams = {}) =>
       this.request<TaskCreateResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/create`,
         method: "POST",

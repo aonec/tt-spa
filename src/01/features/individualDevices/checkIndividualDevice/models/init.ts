@@ -9,7 +9,7 @@ import {
 } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
+  fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine, guard } from 'effector';
@@ -28,7 +28,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
-import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
+import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 
 createIndividualDeviceFx.use(checkIndividualDevice);
 
@@ -58,10 +58,10 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map((values) => {
+  from: fetchIndividualDeviceFx.doneData.map((values) => {
     return {
       resource: values.resource,
-      mountPlaceId: values.mountPlace,
+      mountPlaceId: values.deviceMountPlace?.id,
       model: values.model,
       serialNumber: values.serialNumber,
       bitDepth: values.bitDepth,
@@ -87,7 +87,7 @@ guard({
     }
   ),
   filter: (value) => typeof value === 'number',
-  clock: fetchIndividualDeviceMountPlacesFx.doneData,
+  clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 

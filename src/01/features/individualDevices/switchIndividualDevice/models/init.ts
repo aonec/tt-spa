@@ -8,11 +8,10 @@ import {
 } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
+  fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -27,8 +26,11 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
-import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
+import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
+import { SwitchIndividualDeviceReadingsCreateRequest } from 'myApi';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -58,14 +60,30 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map((values) => {
+  from: fetchIndividualDeviceFx.doneData.map(
+    (device): SwitchIndividualDeviceReadingsCreateRequest[] =>
+      device?.readings?.map(
+        (elem): SwitchIndividualDeviceReadingsCreateRequest => ({
+          value1: Number(elem.value1),
+          value2: Number(elem.value2),
+          value3: Number(elem.value3),
+          value4: Number(elem.value4),
+          readingDate: elem.readingDateTime,
+        })
+      ) || []
+  ),
+  to: addIndividualDeviceForm.fields.oldDeviceReadings.$value,
+});
+
+forward({
+  from: fetchIndividualDeviceFx.doneData.map((values) => {
     const { bitDepth, scaleFactor } = getBitDepthAndScaleFactor(
       values.resource
     );
 
     return {
       resource: values.resource,
-      mountPlaceId: values.mountPlace,
+      mountPlaceId: values.deviceMountPlace?.id,
       bitDepth,
       scaleFactor,
     } as any;
@@ -84,9 +102,20 @@ sample({
     addIndividualDeviceForm.fields.mountPlaceId.$value,
     (places, name) => places?.find((elem) => elem.name === name)?.id || null
   ),
-  clock: fetchIndividualDeviceMountPlacesFx.doneData,
+  clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
+
+const clearEmptyValueFields = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest,
+  rateNum: number
+): SwitchIndividualDeviceReadingsCreateRequest => {
+  const clearValues = getArrayByCountRange(rateNum, (index) => ({
+    [`value${index}`]: Number((reading as any)[`value${index}`]),
+  })).reduce((acc, elem) => ({ ...acc, ...elem }), {});
+
+  return { ...clearValues, readingDate: reading.readingDate } as any;
+};
 
 sample({
   source: combine(
@@ -108,10 +137,19 @@ sample({
         documentsIds: toArray<FileData>(values.documentsIds, false)
           .filter((elem) => elem?.fileResponse)
           .map((elem) => elem.fileResponse?.id!),
-        newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
         contractorId: values.contractorId,
+        oldDeviceReadings: values.oldDeviceReadings.map((elem) =>
+          clearEmptyValueFields(
+            elem,
+            getIndividualDeviceRateNumByName(values.rateType)
+          )
+        ),
+        newDeviceReadings: values.newDeviceReadings.map((elem) =>
+          clearEmptyValueFields(
+            elem,
+            getIndividualDeviceRateNumByName(values.rateType)
+          )
+        ),
       },
       magnetSeal: {
         isInstalled: values.isInstalled,
