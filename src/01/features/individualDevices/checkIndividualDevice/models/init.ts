@@ -1,6 +1,4 @@
-import {
-  checkIndividualDevice,
-} from './../../../../_api/individualDevices';
+import { checkIndividualDevice } from './../../../../_api/individualDevices';
 import {
   $individualDevice,
   IndividualDeviceGate,
@@ -11,7 +9,10 @@ import {
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine, guard } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest, CheckIndividualDeviceRequest } from 'myApi';
+import {
+  BaseIndividualDeviceReadingsCreateRequest,
+  CheckIndividualDeviceRequest,
+} from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -104,6 +105,8 @@ sample({
         .map((elem) => elem.fileResponse?.id!),
       newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
       contractorId: values.contractorId,
+      sealInstallationDate: values.magneticSealInstallationDate,
+      sealNumber: values.serialNumber,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,
