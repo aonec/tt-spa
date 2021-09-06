@@ -9,6 +9,7 @@ import {
   getSourceName,
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 
 const ReadingLineStyled = styled.div<{
   houseReadings: boolean;
@@ -55,6 +56,7 @@ interface DeviceRatesVerticalProps {
   source?: EIndividualDeviceReadingsSource;
   user?: any;
   closed?: boolean;
+  status?: RequestStatusShared;
 }
 
 const SuffixLine = styled.span`
@@ -75,7 +77,32 @@ const StyledInput = styled(Input)`
   .ant-input .ant-input-disabled {
     color: var(--main-70) !important;
   }
+
+  .ant-input {
+    transform: translateX(-5px);
+    padding-left: 7px !important;
+    border-radius: 5px;
+    background-color: ${({ status }: { status?: RequestStatusShared }) => {
+      if (!status) return 'none';
+
+      const color = getColorByRequestStatus(status);
+
+      return color ? `${color}40` : 'none';
+    }};
+  }
 `;
+
+export function getColorByRequestStatus(status: RequestStatusShared) {
+  return status
+    ? status === 'pending'
+      ? '#ffd476'
+      : status === 'done'
+      ? '#0ddf53'
+      : status === 'failed'
+      ? '#FF0021'
+      : `#eeeeee`
+    : null;
+}
 
 const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   index,
@@ -90,6 +117,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   source,
   user,
   closed,
+  status,
 }) => {
   const onFocusHandler = (e: any) => {
     if (Number(e.target.value) === 0) {
@@ -125,6 +153,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
       }
     >
       <StyledInput
+        status={status}
         prefix={
           <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
         }
