@@ -238,7 +238,7 @@ export const useReadings = (
                 uploadTime: moment(res.uploadDate).toISOString(),
                 source: res.source,
                 user: res.user,
-                id: res.id,
+                id: res.readingId,
               },
             },
           }));
@@ -270,7 +270,7 @@ export const useReadings = (
           uploadTime: moment(res.uploadDate).toISOString(),
           source: res.source,
           user: res.user,
-          currentReadingId: res.id || prev.currentReadingId,
+          currentReadingId: res.readingId || prev.currentReadingId,
         }));
         setInitialReadings(readingsState.currentReadingsArray);
       } catch (e) {

@@ -16,6 +16,7 @@ import { formQueryString } from '01/utils/formQueryString';
 import {
   $apartment,
   ApartmentGate,
+  fetchApartmentFx,
 } from '01/features/apartments/displayApartment/models';
 import {
   cancelPauseApartmentButtonClicked,
@@ -29,14 +30,9 @@ import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
-import {
-  $housingStock,
-  HousingStockGate,
-} from '01/features/housingStocks/displayHousingStock/models';
 
 const styles = css`
   drower {
-    box-shadow: var(--shadow);
     margin-top: 16px;
     margin-bottom: 16px;
   }
@@ -44,7 +40,6 @@ const styles = css`
   drower_btn {
     display: flex;
     align-items: center;
-    padding: 16px;
     cursor: pointer;
     & Icon {
       margin-right: 8px;
@@ -156,6 +151,8 @@ export const ApartmentInfo = () => {
     apartment?.housingStock?.houseManagement
   );
 
+  const pending = useStore(fetchApartmentFx.pending);
+
   const cancelPauseApartment = () =>
     confirm({
       title: 'Вы действительно хотите снять эту квартиру с паузы?',
@@ -201,45 +198,51 @@ export const ApartmentInfo = () => {
 
       <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
         <apart_title as="h2">{title}</apart_title>
-        <MenuButtonTT menuButtonArr={menuButtonArray} />
+        <MenuButtonTT menuButtonArr={menuButtonArray} loading={pending} />
       </Flex>
 
-      {isPaused && (
-        <div>
-          <Space />
-          <Alert type="stop">
-            <AlertContent>
-              <div>
-                Квартира на паузе до{' '}
-                {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
-              </div>
-              <div onClick={cancelPauseApartment} className="ant-btn-link">
-                Снять с паузы
-              </div>
-            </AlertContent>
-          </Alert>
-        </div>
-      )}
+      {apartment && (
+        <>
+          {isPaused && (
+            <div>
+              <Space />
+              <Alert type="stop">
+                <AlertContent>
+                  <div>
+                    Квартира на паузе до{' '}
+                    {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
+                  </div>
+                  <div onClick={cancelPauseApartment} className="ant-btn-link">
+                    Снять с паузы
+                  </div>
+                </AlertContent>
+              </Alert>
+            </div>
+          )}
 
-      <drower>
-        <drower_btn onClick={() => setShow(!show)}>
-          <Flex
-            style={{
-              transform: `rotate(${show ? -180 : 0}deg) translate(${
-                show ? 8 : 0
-              }px, ${show ? 2 : 0}px)`,
-              transition: '.4s',
-            }}
-          >
-            <Icon icon="down" />
-          </Flex>
-          Информация о квартире
-        </drower_btn>
-        <drower_content {...use({ show })}>
-          <UserInfo list={userInfo} />
-          <ApartmentComment comment={comment} />
-        </drower_content>
-      </drower>
+          <drower>
+            <drower_btn onClick={() => setShow(!show)}>
+              <Flex
+                style={{
+                  transform: `rotate(${show ? -180 : 0}deg) translate(${
+                    show ? 8 : 0
+                  }px, ${show ? 2 : 0}px)`,
+                  transition: '.4s',
+                }}
+              >
+                <Icon icon="down" />
+              </Flex>
+              {show
+                ? 'Скрыть подробную информацию'
+                : 'Показать подробную информацию'}
+            </drower_btn>
+            <drower_content {...use({ show })}>
+              <UserInfo list={userInfo} />
+              <ApartmentComment comment={comment} />
+            </drower_content>
+          </drower>
+        </>
+      )}
     </>
   );
 };
