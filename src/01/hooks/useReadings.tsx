@@ -40,9 +40,13 @@ export const useReadings = (
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
 
+  const currentDate = moment();
+
   const currentMonth = getMonthFromDate();
+
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device.readings![0]?.readingDate);
+    currentMonth === getMonthFromDate(device.readings![0]?.readingDateTime) &&
+    currentDate.diff(device.readings![0]?.readingDateTime, 'months') < 11;
 
   useEffect(() => {
     const previousReadingsArray: number[] = [];
@@ -50,9 +54,11 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
+        if (currentDate.diff(elem.readingDateTime, 'months') > 11) return acc;
+
         const index =
           Number(moment().format('M')) -
-          Number(moment(elem.readingDate).format('M')) -
+          Number(moment(elem.readingDateTime).format('M')) -
           1;
 
         acc[index] = elem;
@@ -73,8 +79,6 @@ export const useReadings = (
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
     }
 
-    console.log(prevReadings, currentReadings);
-
     setReadingsState((prev) => {
       const previousReadings = {
         ...prev?.previousReadings,
@@ -82,7 +86,7 @@ export const useReadings = (
           ? prev?.previousReadings[sliderIndex]
           : {
               values: previousReadingsArray,
-              date: prevReadings.readingDate || null,
+              date: prevReadings.readingDateTime || null,
               uploadTime: prevReadings.uploadTime,
               source: prevReadings.source,
               user: prevReadings.user,
@@ -110,7 +114,7 @@ export const useReadings = (
 
   async function setReadingArchived(id: number) {
     try {
-      await axios.post(`IndividualDeviceReadings/${id}​/setArchived`);
+      await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
       refetchIndividualDevicesFx();
     } catch (error) {}
@@ -181,6 +185,8 @@ export const useReadings = (
             return;
 
           if (!neededPreviousReadings?.values.some(Boolean)) {
+            if (!neededPreviousReadings.id) return;
+
             return setReadingArchived(neededPreviousReadings.id);
           }
 
