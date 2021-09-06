@@ -4,7 +4,7 @@ import {
   $individualDevices,
   fetchIndividualDeviceFxs,
   IndividualDevicesGate,
-  refetchIndividualDeviceFxs,
+  refetchIndividualDevicesFx,
 } from '.';
 import { toArray } from '../../addIndividualDevice/components/CheckFormValuesModal';
 
@@ -21,6 +21,6 @@ const refetchEffect = guard({
 
 sample({
   source: IndividualDevicesGate.state.map((elem) => elem),
-  clock: refetchIndividualDeviceFxs,
+  clock: refetchIndividualDevicesFx,
   target: fetchIndividualDeviceFxs,
 });

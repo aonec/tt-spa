@@ -151,11 +151,9 @@ export const ApartmentInfo = () => {
   const { id } = useParams();
 
   const apartment = useStore($apartment);
-  const housingStock = useStore($housingStock);
-
   const { userInfo = [], title, comment } = useApartmentInfo(
     apartment,
-    housingStock?.houseManagement
+    apartment?.housingStock?.houseManagement
   );
 
   const cancelPauseApartment = () =>
@@ -198,9 +196,6 @@ export const ApartmentInfo = () => {
   return styled(styles)(
     <>
       <ApartmentGate id={Number(id)} />
-      {apartment?.housingStock?.id && (
-        <HousingStockGate id={Number(apartment?.housingStock?.id)} />
-      )}
       <PauseApartmentModal />
       <GetIssueCertificateModal />
 

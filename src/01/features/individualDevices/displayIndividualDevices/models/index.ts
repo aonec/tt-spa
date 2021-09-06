@@ -14,4 +14,4 @@ export const fetchIndividualDeviceFxs = createEffect<
 
 export const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
 
-export const refetchIndividualDeviceFxs = createEvent();
+export const refetchIndividualDevicesFx = createEvent();
