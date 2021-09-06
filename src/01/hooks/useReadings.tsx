@@ -22,6 +22,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
 import { message } from 'antd';
+import { refetchIndividualDevicesFx } from '01/features/individualDevices/displayIndividualDevices/models';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -36,9 +37,10 @@ export const useReadings = (
     setInitialPreviousReadingState,
   ] = useState<PreviousReadingState>({});
 
-  const currentMonth = getMonthFromDate();
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
+
+  const currentMonth = getMonthFromDate();
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0]?.readingDate);
 
@@ -71,6 +73,8 @@ export const useReadings = (
       currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
     }
 
+    console.log(prevReadings, currentReadings);
+
     setReadingsState((prev) => {
       const previousReadings = {
         ...prev?.previousReadings,
@@ -82,6 +86,7 @@ export const useReadings = (
               uploadTime: prevReadings.uploadTime,
               source: prevReadings.source,
               user: prevReadings.user,
+              id: prevReadings.id,
             },
       };
 
@@ -98,9 +103,18 @@ export const useReadings = (
         uploadTime: currentReadings.uploadTime,
         source: currentReadings.source,
         user: currentReadings.user,
+        currentReadingId: currentReadings.id,
       };
     });
   }, [device.readings, sliderIndex]);
+
+  async function setReadingArchived(id: number) {
+    try {
+      await axios.post(`IndividualDeviceReadings/${id}​/setArchived`);
+
+      refetchIndividualDevicesFx();
+    } catch (error) {}
+  }
 
   const formDeviceReadingObject = (
     deviceItem: IndividualDeviceListItemResponse,
@@ -166,25 +180,28 @@ export const useReadings = (
           )
             return;
 
+          if (!neededPreviousReadings?.values.some(Boolean)) {
+            return setReadingArchived(neededPreviousReadings.id);
+          }
+
+          const requestPayload = {
+            ...neededPreviousReadings?.values
+              .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+              .reduce(
+                (acc: object, value: number, index: number) => ({
+                  ...acc,
+                  [`value${index + 1}`]: Number(value),
+                }),
+                {}
+              ),
+            isForced: true,
+            deviceId: device.id,
+            readingDate: neededPreviousReadings.date,
+          };
           const { current: res }: any = await axios.post(
             '/IndividualDeviceReadings/create',
-            {
-              ...neededPreviousReadings?.values
-                .slice(0, getIndividualDeviceRateNumByName(device.rateType))
-                .reduce(
-                  (acc: object, value: number, index: number) => ({
-                    ...acc,
-                    [`value${index + 1}`]: Number(value),
-                  }),
-                  {}
-                ),
-              isForced: true,
-              deviceId: device.id,
-              readingDate: neededPreviousReadings.date,
-            }
+            requestPayload
           );
-
-          console.log(res);
 
           setReadingsState((prev: any) => ({
             ...prev,
@@ -489,6 +506,7 @@ interface PreviousReadingState {
     uploadTime?: string;
     source?: EIndividualDeviceReadingsSource;
     user?: any;
+    id: number;
   };
 }
 
@@ -496,6 +514,7 @@ export type ReadingsStateType = {
   previousReadingsArray: number[];
   previousReadings: PreviousReadingState;
   currentReadingsArray: number[];
+  currentReadingId: number;
   prevId: number;
   currId: number;
   resource: string;

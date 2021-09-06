@@ -17,8 +17,11 @@ import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
-import { EIndividualDeviceRateType, EResourceType } from 'myApi';
-import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import {
+  EIndividualDeviceRateType,
+  EResourceType,
+  EClosingReason,
+} from 'myApi';
 import {
   $individualDevicesNames,
   IndividualDevicecModelsGate,
@@ -27,6 +30,9 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
+import { ReadingsInput } from './ReadingsInput';
+import { $individualDevice } from '../../../displayIndividualDevice/models';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +40,7 @@ export const BaseInfoStage = () => {
   const mountPlaces = useStore($individualDeviceMountPlaces);
   const modelNames = useStore($individualDevicesNames);
   const contractors = useStore($contractors);
-
+  const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
 
   const onChange = (e: any) => {
@@ -50,26 +56,6 @@ export const BaseInfoStage = () => {
 
     (fields as any)[name].onChange(value.toISOString());
   };
-
-  const getReadingTemp = (
-    type:
-      | 'startupReadings'
-      | 'defaultReadings'
-      | 'previousDeviceFinishingReadings'
-  ) => (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
-    fields[type].onChange({
-      ...fields[type].value,
-      [`value${valueNumber}`]:
-        e.target.value === '' ? null : Number(e.target.value),
-    });
-
-  const onChangeStartupReadings = getReadingTemp('startupReadings');
-  const onChangeDefaultReadings = getReadingTemp('defaultReadings');
-  const onChangePreviousDeviceFinishingReadings = getReadingTemp(
-    'previousDeviceFinishingReadings'
-  );
-
-  const rateNum = getIndividualDeviceRateNumByName(fields.rateType.value);
 
   const modelNameDebounced = fields.model.value;
 
@@ -138,106 +124,20 @@ export const BaseInfoStage = () => {
     </FormItem>
   );
 
-  const previousDeviceFinishingReadings = (
-    <>
-      <FormItem
-        label={`Конечные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
+  const selectSwitchReason = (
+    <Form.Item label="Причина замены">
+      <StyledSelect
+        placeholder="Выберите причину замены"
+        value={fields.oldDeviceClosingReason.value || undefined}
+        onChange={fields.oldDeviceClosingReason.onChange as any}
       >
-        <InputTT
-          type="number"
-          placeholder="Введите конечные показания"
-          onChange={onChangePreviousDeviceFinishingReadings(1)}
-          value={fields.previousDeviceFinishingReadings.value.value1}
-        />
-        <ErrorMessage>
-          {fields.previousDeviceFinishingReadings.errorText({
-            requiredFirstField: 'Это поле обязательное',
-          })}
-        </ErrorMessage>
-      </FormItem>
-
-      {rateNum >= 2 && (
-        <FormItem label="Конечные показания прибора (Ночь)">
-          <InputTT
-            type="number"
-            placeholder="Введите конечные показания"
-            onChange={onChangePreviousDeviceFinishingReadings(2)}
-            value={fields.previousDeviceFinishingReadings.value.value2}
-          />
-          <ErrorMessage>
-            {fields.previousDeviceFinishingReadings.errorText({
-              requiredSecondField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-      {rateNum >= 3 && (
-        <FormItem>
-          <InputTT
-            type="number"
-            placeholder="Введите конечные показания"
-            onChange={onChangePreviousDeviceFinishingReadings(3)}
-            value={fields.previousDeviceFinishingReadings.value.value3}
-          />
-          <ErrorMessage>
-            {fields.previousDeviceFinishingReadings.errorText({
-              requiredThirdField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-    </>
-  );
-
-  const defaultReadingsFields = (
-    <>
-      <FormItem
-        label={`Текущие показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
-      >
-        <InputTT
-          type="number"
-          placeholder="Введите текущие показания"
-          onChange={onChangeDefaultReadings(1)}
-          value={fields.defaultReadings.value.value1}
-        />
-        <ErrorMessage>
-          {fields.defaultReadings.errorText({
-            requiredFirstField: 'Это поле обязательное',
-          })}
-        </ErrorMessage>
-      </FormItem>
-
-      {rateNum >= 2 && (
-        <FormItem label="Текущие показания прибора (Ночь)">
-          <InputTT
-            type="number"
-            placeholder="Введите текущие показания"
-            onChange={onChangeDefaultReadings(2)}
-            value={fields.defaultReadings.value.value2}
-          />
-          <ErrorMessage>
-            {fields.defaultReadings.errorText({
-              requiredSecondField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-      {rateNum >= 3 && (
-        <FormItem>
-          <InputTT
-            type="number"
-            placeholder="Введите текущие показания"
-            onChange={onChangeDefaultReadings(3)}
-            value={fields.defaultReadings.value.value3}
-          />
-          <ErrorMessage>
-            {fields.defaultReadings.errorText({
-              requiredThirdField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-      )}
-    </>
+        {Object.entries(clousingReasons).map(([key, elem]) => (
+          <Select.Option value={key} key={key}>
+            {elem}
+          </Select.Option>
+        ))}
+      </StyledSelect>
+    </Form.Item>
   );
 
   return (
@@ -354,70 +254,36 @@ export const BaseInfoStage = () => {
         </FormItem>
       </FormWrap>
 
-      {rateNum === 1 ? (
-        <FormWrap>
-          {rateTypeSelector}
-          {previousDeviceFinishingReadings}
-        </FormWrap>
-      ) : (
+      <FormWrap>
+        {rateTypeSelector}
+        {selectSwitchReason}
+      </FormWrap>
+
+      {device && (
         <>
-          {rateTypeSelector}
-          <FormWrap>{previousDeviceFinishingReadings}</FormWrap>
+          <ReadingsInput
+            title="Закрываемый прибор"
+            readings={fields.oldDeviceReadings.value}
+            onChange={fields.oldDeviceReadings.onChange}
+            device={device}
+          />
+          <Space />
+          <ReadingsInput
+            title="Новый прибор"
+            readings={fields.newDeviceReadings.value}
+            onChange={fields.newDeviceReadings.onChange}
+            device={{
+              resource: fields.resource.value!,
+              model: fields.model.value,
+              serialNumber: fields.serialNumber.value,
+              measurableUnitString: device?.measurableUnitString,
+              rateType: fields.rateType.value,
+            }}
+          />
         </>
       )}
 
-      <FormWrap>
-        <FormItem
-          label={`Первичные показания прибора${rateNum !== 1 ? ' (День)' : ''}`}
-        >
-          <InputTT
-            type="number"
-            placeholder="Введите первичные показания"
-            onChange={onChangeStartupReadings(1)}
-            value={fields.startupReadings.value.value1}
-          />
-          <ErrorMessage>
-            {fields.startupReadings.errorText({
-              requiredFirstField: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-
-        {rateNum >= 2 && (
-          <FormItem label="Первичные показания прибора (Ночь)">
-            <InputTT
-              type="number"
-              placeholder="Введите первичные показания"
-              onChange={onChangeStartupReadings(2)}
-              value={fields.startupReadings.value.value2}
-            />
-            <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredSecondField: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </FormItem>
-        )}
-        {rateNum >= 3 && (
-          <FormItem>
-            <InputTT
-              type="number"
-              placeholder="Введите первичные показания"
-              onChange={onChangeStartupReadings(3)}
-              value={fields.startupReadings.value.value3}
-            />
-            <ErrorMessage>
-              {fields.startupReadings.errorText({
-                requiredThirdField: 'Это поле обязательное',
-              })}
-            </ErrorMessage>
-          </FormItem>
-        )}
-
-        {rateNum === 1 && defaultReadingsFields}
-      </FormWrap>
-
-      {rateNum !== 1 && <FormWrap>{defaultReadingsFields}</FormWrap>}
+      <Space />
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePicker
@@ -437,13 +303,8 @@ export const BaseInfoStage = () => {
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
-            <SwitchTT
-              onChange={fields.isInstalled.onChange}
-              checked={fields.isInstalled.value}
-            />
             <InputTT
               placeholder="Номер пломбы"
-              disabled={!fields.isInstalled.value}
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
               name="magneticSealTypeName"
@@ -454,7 +315,6 @@ export const BaseInfoStage = () => {
         <FormItem label="Дата установки пломбы">
           <DatePicker
             format="DD.MM.YYYY"
-            disabled={!fields.isInstalled.value}
             onChange={onChangeDateField('magneticSealInstallationDate')}
             value={getDatePickerValue(
               fields.magneticSealInstallationDate.value
@@ -480,6 +340,13 @@ export const BaseInfoStage = () => {
       </FormItem>
     </Wrap>
   );
+};
+
+export const clousingReasons = {
+  [EClosingReason.Manually]: 'Плановая замена',
+  [EClosingReason.DeviceBroken]: 'Поломка',
+  [EClosingReason.None]: 'Не указано',
+  [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {

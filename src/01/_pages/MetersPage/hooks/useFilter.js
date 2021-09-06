@@ -45,6 +45,7 @@ export const useFilter = () => {
           street: apartment.housingStock.street,
           house: apartment.housingStock.number,
           apart: apartment.apartmentNumber,
+          question: apartment.homeowners[0]?.fullName,
         },
       });
   }, [apartment]);
@@ -136,6 +137,16 @@ export const useFilter = () => {
         name: 'apart',
         placeholder: 'Кв.',
         onKeyDown: onApartmentKeyHandler,
+        onFocus: () =>
+          dispatch({
+            type: 'change',
+            payload: { ['question']: '' },
+          }),
+        onChange: () =>
+          dispatch({
+            type: 'change',
+            payload: { ['question']: '' },
+          }),
       },
       {
         name: 'question',
@@ -145,15 +156,19 @@ export const useFilter = () => {
     ].map((elem) => ({
       ...elem,
       [elem.name]: state[elem.name],
-      onChange: (value) => onChange(value, elem.name),
+      onChange: (value) => {
+        elem.onChange && elem.onChange(value);
+        onChange(value, elem.name);
+      },
       value: state[elem.name],
-      onFocus: elem.onFocus
-        ? elem.onFocus
-        : (name) =>
-            dispatch({
-              type: name === 'street' ? 'reset' : 'change',
-              payload: { [name]: '' },
-            }),
+      onFocus: (name) => {
+        elem.onFocus && elem.onFocus();
+
+        dispatch({
+          type: name === 'street' ? 'reset' : 'change',
+          payload: { [name]: '' },
+        });
+      },
     })),
   };
 };

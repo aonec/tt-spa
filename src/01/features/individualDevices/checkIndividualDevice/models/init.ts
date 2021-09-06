@@ -1,19 +1,18 @@
-import {
-  checkIndividualDevice,
-  switchIndividualDevice,
-  CheckIndividualDeviceRequestPayload,
-} from './../../../../_api/individualDevices';
+import { checkIndividualDevice } from './../../../../_api/individualDevices';
 import {
   $individualDevice,
   IndividualDeviceGate,
 } from './../../displayIndividualDevice/models/index';
 import {
   $individualDeviceMountPlaces,
-  fetchIndividualDeviceMountPlacesFx,
+  fetchIndividualDeviceFxMountPlacesFx,
 } from './../../../individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models/index';
 import { FileData } from '01/hooks/useFilesUpload';
 import { forward, sample, combine, guard } from 'effector';
-import { BaseIndividualDeviceReadingsCreateRequest } from 'myApi';
+import {
+  BaseIndividualDeviceReadingsCreateRequest,
+  CheckIndividualDeviceRequest,
+} from 'myApi';
 import { toArray } from '../components/CheckFormValuesModal';
 import {
   $creationDeviceStage,
@@ -28,7 +27,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
-import { fetchIndividualDevice } from '../../displayIndividualDevice/models';
+import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 
 createIndividualDeviceFx.use(checkIndividualDevice);
 
@@ -58,10 +57,10 @@ $isCreateIndividualDeviceSuccess
   .reset(resetCreationRequestStatus);
 
 forward({
-  from: fetchIndividualDevice.doneData.map((values) => {
+  from: fetchIndividualDeviceFx.doneData.map((values) => {
     return {
       resource: values.resource,
-      mountPlaceId: values.mountPlace,
+      mountPlaceId: values.deviceMountPlace?.id,
       model: values.model,
       serialNumber: values.serialNumber,
       bitDepth: values.bitDepth,
@@ -87,7 +86,7 @@ guard({
     }
   ),
   filter: (value) => typeof value === 'number',
-  clock: fetchIndividualDeviceMountPlacesFx.doneData,
+  clock: fetchIndividualDeviceFxMountPlacesFx.doneData,
   target: addIndividualDeviceForm.fields.mountPlaceId.set,
 });
 
@@ -97,24 +96,17 @@ sample({
     $individualDevice,
     (values, device) => ({ values, device })
   ).map(
-    ({ values, device }): CheckIndividualDeviceRequestPayload => ({
-      device: {
-        deviceId: device?.id!,
-        futureCheckingDate: values.futureCheckingDate!,
-        currentCheckingDate: values.lastCheckingDate!,
-        documentsIds: toArray<FileData>(values.documentsIds, false)
-          .filter((elem) => elem?.fileResponse)
-          .map((elem) => elem.fileResponse?.id!),
-        newDeviceStartupReadings: (values.startupReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        previousDeviceFinishingReadings: (values.previousDeviceFinishingReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
-        contractorId: values.contractorId,
-      },
-      magnetSeal: {
-        isInstalled: values.isInstalled,
-        magneticSealInstallationDate: values.magneticSealInstallationDate,
-        magneticSealTypeName: values.magneticSealTypeName,
-      },
+    ({ values, device }): CheckIndividualDeviceRequest => ({
+      deviceId: device?.id!,
+      futureCheckingDate: values.futureCheckingDate!,
+      currentCheckingDate: values.lastCheckingDate!,
+      documentsIds: toArray<FileData>(values.documentsIds, false)
+        .filter((elem) => elem?.fileResponse)
+        .map((elem) => elem.fileResponse?.id!),
+      newDeviceDefaultReadings: (values.defaultReadings as unknown) as BaseIndividualDeviceReadingsCreateRequest,
+      contractorId: values.contractorId,
+      sealInstallationDate: values.magneticSealInstallationDate,
+      sealNumber: values.serialNumber,
     })
   ),
   clock: confirmCreationNewDeviceButtonClicked,

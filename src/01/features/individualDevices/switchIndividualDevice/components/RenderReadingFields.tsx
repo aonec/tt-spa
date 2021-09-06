@@ -1,9 +1,9 @@
+import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {
   values: (string | null)[];

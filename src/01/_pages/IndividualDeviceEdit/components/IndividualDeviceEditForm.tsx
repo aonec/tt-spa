@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Form, message, Select } from 'antd';
 import moment from 'moment';
@@ -20,10 +20,8 @@ import {
   StyledFooter,
   StyledFormPage,
   styles,
-  SwitchTT,
 } from '../../../tt-components';
 import {
-  EIndividualDeviceRateType,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
@@ -38,7 +36,6 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '01/components';
-import { useSwitchMagnetSeal } from '../hooks/useSwitchMagnetSeal';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -77,6 +74,7 @@ const IndividualDeviceEditForm = ({
     bitDepth,
     scaleFactor,
     sealInstallationDate,
+    deviceMountPlace,
   } = device;
 
   const initialValues = {
@@ -93,7 +91,7 @@ const IndividualDeviceEditForm = ({
       : null,
     rateType,
     apartmentId: address?.apartmentId,
-    mountPlaceId: null,
+    mountPlaceId: deviceMountPlace?.id,
     bitDepth: bitDepth,
     scaleFactor: scaleFactor,
     sealNumber: device.sealNumber,
@@ -119,7 +117,6 @@ const IndividualDeviceEditForm = ({
         model: values.model,
         rateType: values.rateType,
         bitDepth: values.bitDepth,
-        // mountPlaceId: values.mountPlaceId as any,
         scaleFactor: values.scaleFactor,
         sealNumber: values.sealNumber,
         sealInstallationDate: moment(
@@ -323,7 +320,8 @@ const IndividualDeviceEditForm = ({
                   );
               }}
               value={
-                values.sealInstallationDate
+                values.sealInstallationDate &&
+                moment(values.sealInstallationDate, 'DD.MM.YYYY').isValid()
                   ? moment(values.sealInstallationDate, 'DD.MM.YYYY')
                   : undefined
               }

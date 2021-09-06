@@ -7,11 +7,11 @@ export const $individualDevices = createStore<
   IndividualDeviceListItemResponse[]
 >([]);
 
-export const fetchIndividualDevices = createEffect<
+export const fetchIndividualDeviceFxs = createEffect<
   GetIndividualDeviceRequestParams,
   IndividualDeviceListItemResponse[]
 >();
 
 export const IndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
 
-export const refetchIndividualDevices = createEvent();
+export const refetchIndividualDevicesFx = createEvent();
