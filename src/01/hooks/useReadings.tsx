@@ -16,7 +16,10 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
-import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import {
+  getDateByReadingMonthSlider,
+  getPreviousReadingsMonth,
+} from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
@@ -47,6 +50,10 @@ export const useReadings = (
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0]?.readingDateTime) &&
     currentDate.diff(device.readings![0]?.readingDateTime, 'months') < 11;
+
+  useEffect(() => {
+    setReadingsState(undefined);
+  }, [device]);
 
   useEffect(() => {
     const previousReadingsArray: number[] = [];
@@ -112,12 +119,21 @@ export const useReadings = (
     });
   }, [device.readings, sliderIndex]);
 
-  async function setReadingArchived(id: number) {
+  async function setReadingArchived(id: number, readingDate: string) {
     try {
       await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
       refetchIndividualDevicesFx();
-    } catch (error) {}
+
+      message.info(
+        `Показание за ${readingDate.toLowerCase()} на приборе ${
+          device.model
+        } (${device.serialNumber}) было удалено`,
+        4.5
+      );
+    } catch (error) {
+      message.error('Не удалось удалить показание');
+    }
   }
 
   const formDeviceReadingObject = (
@@ -187,7 +203,10 @@ export const useReadings = (
           if (!neededPreviousReadings?.values.some(Boolean)) {
             if (!neededPreviousReadings.id) return;
 
-            return setReadingArchived(neededPreviousReadings.id);
+            return setReadingArchived(
+              neededPreviousReadings.id,
+              getPreviousReadingsMonth(sliderIndex)
+            );
           }
 
           const requestPayload = {
@@ -204,6 +223,7 @@ export const useReadings = (
             deviceId: device.id,
             readingDate: neededPreviousReadings.date,
           };
+
           const { current: res }: any = await axios.post(
             '/IndividualDeviceReadings/create',
             requestPayload
@@ -218,6 +238,7 @@ export const useReadings = (
                 uploadTime: moment(res.uploadDate).toISOString(),
                 source: res.source,
                 user: res.user,
+                id: res.id,
               },
             },
           }));
@@ -230,6 +251,15 @@ export const useReadings = (
           any
         > = formDeviceReadingObject(device, readingsState);
 
+        if (!readingsState.currentReadingsArray?.some(Boolean)) {
+          if (!readingsState.currentReadingId) return;
+
+          return setReadingArchived(
+            readingsState.currentReadingId,
+            getPreviousReadingsMonth(-1)
+          );
+        }
+
         const { current: res }: any = await axios.post(
           '/IndividualDeviceReadings/create',
           deviceReadingObject
@@ -240,6 +270,7 @@ export const useReadings = (
           uploadTime: moment(res.uploadDate).toISOString(),
           source: res.source,
           user: res.user,
+          currentReadingId: res.id || prev.currentReadingId,
         }));
         setInitialReadings(readingsState.currentReadingsArray);
       } catch (e) {
