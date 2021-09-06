@@ -49,6 +49,10 @@ export const useReadings = (
     currentDate.diff(device.readings![0]?.readingDateTime, 'months') < 11;
 
   useEffect(() => {
+    setReadingsState(undefined);
+  }, [device]);
+
+  useEffect(() => {
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
@@ -204,6 +208,7 @@ export const useReadings = (
             deviceId: device.id,
             readingDate: neededPreviousReadings.date,
           };
+
           const { current: res }: any = await axios.post(
             '/IndividualDeviceReadings/create',
             requestPayload
@@ -218,6 +223,7 @@ export const useReadings = (
                 uploadTime: moment(res.uploadDate).toISOString(),
                 source: res.source,
                 user: res.user,
+                id: res.id,
               },
             },
           }));
@@ -230,6 +236,12 @@ export const useReadings = (
           any
         > = formDeviceReadingObject(device, readingsState);
 
+        if (!readingsState.currentReadingsArray?.some(Boolean)) {
+          if (!readingsState.currentReadingId) return;
+
+          return setReadingArchived(readingsState.currentReadingId);
+        }
+
         const { current: res }: any = await axios.post(
           '/IndividualDeviceReadings/create',
           deviceReadingObject
@@ -240,6 +252,7 @@ export const useReadings = (
           uploadTime: moment(res.uploadDate).toISOString(),
           source: res.source,
           user: res.user,
+          currentReadingId: res.id || prev.currentReadingId,
         }));
         setInitialReadings(readingsState.currentReadingsArray);
       } catch (e) {
