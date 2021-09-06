@@ -16,13 +16,18 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
-import { getDateByReadingMonthSlider } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import {
+  getDateByReadingMonthSlider,
+  getPreviousReadingsMonth,
+} from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
 import { message } from 'antd';
 import { refetchIndividualDevicesFx } from '01/features/individualDevices/displayIndividualDevices/models';
+import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -47,6 +52,10 @@ export const useReadings = (
   const isReadingsCurrent =
     currentMonth === getMonthFromDate(device.readings![0]?.readingDateTime) &&
     currentDate.diff(device.readings![0]?.readingDateTime, 'months') < 11;
+
+  useEffect(() => {
+    setReadingsState(undefined);
+  }, [device]);
 
   useEffect(() => {
     const previousReadingsArray: number[] = [];
@@ -112,12 +121,21 @@ export const useReadings = (
     });
   }, [device.readings, sliderIndex]);
 
-  async function setReadingArchived(id: number) {
+  async function setReadingArchived(id: number, readingDate: string) {
     try {
       await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
       refetchIndividualDevicesFx();
-    } catch (error) {}
+
+      message.info(
+        `Показание за ${readingDate.toLowerCase()} на приборе ${
+          device.model
+        } (${device.serialNumber}) было удалено`,
+        4.5
+      );
+    } catch (error) {
+      message.error('Не удалось удалить показание');
+    }
   }
 
   const formDeviceReadingObject = (
@@ -187,7 +205,10 @@ export const useReadings = (
           if (!neededPreviousReadings?.values.some(Boolean)) {
             if (!neededPreviousReadings.id) return;
 
-            return setReadingArchived(neededPreviousReadings.id);
+            return setReadingArchived(
+              neededPreviousReadings.id,
+              getPreviousReadingsMonth(sliderIndex)
+            );
           }
 
           const requestPayload = {
@@ -204,10 +225,6 @@ export const useReadings = (
             deviceId: device.id,
             readingDate: neededPreviousReadings.date,
           };
-          const { current: res }: any = await axios.post(
-            '/IndividualDeviceReadings/create',
-            requestPayload
-          );
 
           setReadingsState((prev: any) => ({
             ...prev,
@@ -215,12 +232,60 @@ export const useReadings = (
               ...prev.previousReadings,
               [sliderIndex]: {
                 ...prev.previousReadings[sliderIndex],
-                uploadTime: moment(res.uploadDate).toISOString(),
-                source: res.source,
-                user: res.user,
+                status: 'pending',
               },
             },
           }));
+
+          try {
+            const { current: res }: any = await axios.post(
+              '/IndividualDeviceReadings/create',
+              requestPayload
+            );
+
+            setReadingsState((prev: any) => ({
+              ...prev,
+              previousReadings: {
+                ...prev.previousReadings,
+                [sliderIndex]: {
+                  ...prev.previousReadings[sliderIndex],
+                  uploadTime: moment(res.uploadDate).toISOString(),
+                  source: res.source,
+                  user: res.user,
+                  id: res.readingId,
+                  status: 'done',
+                },
+              },
+            }));
+
+            // setTimeout(
+            //   () =>
+            //     setReadingsState((prev: any) => ({
+            //       ...prev,
+            //       previousReadings: {
+            //         ...prev.previousReadings,
+            //         [sliderIndex]: {
+            //           ...prev.previousReadings[sliderIndex],
+            //           status: 'done',
+            //         },
+            //       },
+            //     })),
+            //   15000
+            // );
+          } catch (error) {
+            setReadingsState((prev: any) => ({
+              ...prev,
+              previousReadings: {
+                ...prev.previousReadings,
+                [sliderIndex]: {
+                  ...prev.previousReadings[sliderIndex],
+                  status: 'failed',
+                },
+              },
+            }));
+
+            throw error;
+          }
 
           return;
         }
@@ -230,18 +295,53 @@ export const useReadings = (
           any
         > = formDeviceReadingObject(device, readingsState);
 
-        const { current: res }: any = await axios.post(
-          '/IndividualDeviceReadings/create',
-          deviceReadingObject
-        );
+        if (!readingsState.currentReadingsArray?.some(Boolean)) {
+          if (!readingsState.currentReadingId) return;
+
+          return setReadingArchived(
+            readingsState.currentReadingId,
+            getPreviousReadingsMonth(-1)
+          );
+        }
 
         setReadingsState((prev: any) => ({
           ...prev,
-          uploadTime: moment(res.uploadDate).toISOString(),
-          source: res.source,
-          user: res.user,
+          status: 'pending',
         }));
-        setInitialReadings(readingsState.currentReadingsArray);
+
+        try {
+          const { current: res }: any = await axios.post(
+            '/IndividualDeviceReadings/create',
+            deviceReadingObject
+          );
+
+          setReadingsState((prev: any) => ({
+            ...prev,
+            uploadTime: moment(res.uploadDate).toISOString(),
+            source: res.source,
+            user: res.user,
+            currentReadingId: res.readingId || prev.currentReadingId,
+            status: 'done',
+          }));
+
+          // setTimeout(
+          //   () =>
+          //     setReadingsState((prev: any) => ({
+          //       ...prev,
+          //       status: null,
+          //     })),
+          //   15000
+          // );
+
+          setInitialReadings(readingsState.currentReadingsArray);
+        } catch (error) {
+          setReadingsState((prev: any) => ({
+            ...prev,
+            status: 'failed',
+          }));
+
+          throw error;
+        }
       } catch (e) {
         message.error('Не удалось сохранить показания, попробуйте позже');
       }
@@ -352,6 +452,7 @@ export const useReadings = (
             numberOfPreviousReadingsInputs &&
             numberOfPreviousReadingsInputs + index
           }
+          status={readingsState.status}
         />
       ),
       value,
@@ -373,6 +474,7 @@ export const useReadings = (
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             onInputChange(e, index, true);
           }}
+          status={readingsState.previousReadings[sliderIndex]?.status}
         />
       ),
       value,
@@ -381,7 +483,8 @@ export const useReadings = (
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
-    uploadTime?: string
+    uploadTime?: string,
+    status?: RequestStatusShared
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -485,7 +588,8 @@ export const useReadings = (
   const previousResultReadings = options(
     previousDeviceReadings,
     false,
-    readingsState.previousReadings[sliderIndex]?.uploadTime
+    readingsState.previousReadings[sliderIndex]?.uploadTime,
+    readingsState.previousReadings[sliderIndex]?.status
   )
     .find((el) => el.isSuccess)!
     .value();
@@ -493,7 +597,8 @@ export const useReadings = (
   const currentReadings = options(
     currentDeviceReadings,
     true,
-    readingsState.uploadTime
+    readingsState.uploadTime,
+    readingsState.status
   )
     .find((el) => el.isSuccess)!
     .value();
@@ -513,6 +618,7 @@ interface PreviousReadingState {
     source?: EIndividualDeviceReadingsSource;
     user?: any;
     id: number;
+    status?: RequestStatusShared;
   };
 }
 
@@ -527,6 +633,7 @@ export type ReadingsStateType = {
   uploadTime?: string;
   source?: EIndividualDeviceReadingsSource;
   user?: any;
+  status?: RequestStatusShared;
 };
 
 type ReadingType = {

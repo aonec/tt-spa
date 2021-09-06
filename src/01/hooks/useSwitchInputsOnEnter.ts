@@ -1,6 +1,8 @@
-export const useSwitchOnInputs = () => {
-  const onKeyDown = (e: any, index: number) => {
-    if (e.key !== 'Enter') return;
+import { useEffect } from 'react';
+
+export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
+  const onKeyDown = (e: any, index: number, isForced?: boolean) => {
+    if (e.key !== 'Enter' && !isForced) return;
 
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       `[data-reading-input="current"]`
@@ -9,9 +11,8 @@ export const useSwitchOnInputs = () => {
     const currentNode = inputList[index];
     const nextNode = inputList[index + 1];
 
-    const currentInputNode: any = currentNode.getElementsByClassName(
-      'ant-input'
-    )[0];
+    const currentInputNode: any =
+      index < 0 ? null : currentNode.getElementsByClassName('ant-input')[0];
 
     if (!nextNode) return currentInputNode?.blur && currentInputNode.blur();
 
@@ -21,6 +22,12 @@ export const useSwitchOnInputs = () => {
   };
 
   const onKeyDownPrevious = (e: any) => e.key === 'Enter' && e.target?.blur();
+
+  useEffect(() => {
+    if (focusOnFirst) {
+      onKeyDown({}, -1, true);
+    }
+  }, [focusOnFirst]);
 
   return { onKeyDown, onKeyDownPrevious };
 };
