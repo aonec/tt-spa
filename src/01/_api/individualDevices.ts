@@ -30,19 +30,12 @@ export interface CreateCreateIndividualDeviceWithMagnetSealRequest
 }
 
 export const createIndividualDevice = async (
-  payload: CreateCreateIndividualDeviceWithMagnetSealRequest
+  payload: CreateIndividualDeviceRequest
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices',
-    payload.device
+    payload
   );
-
-  if (payload.magnetSeal.isInstalled) {
-    await axios.post(
-      `IndividualDevices/${res.id}/SetMagneticSeal`,
-      payload.magnetSeal
-    );
-  }
 
   return res;
 };
