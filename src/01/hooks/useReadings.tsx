@@ -25,7 +25,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
 import { message } from 'antd';
-import { refetchIndividualDevicesFx } from '01/features/individualDevices/displayIndividualDevices/models';
+import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
@@ -127,7 +127,7 @@ export const useReadings = (
       try {
         await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
-        refetchIndividualDevicesFx();
+        refetchIndividualDevices();
 
         message.info(
           `Показание за ${readingDate.toLowerCase()} на приборе ${
