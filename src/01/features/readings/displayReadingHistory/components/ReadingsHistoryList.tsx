@@ -123,7 +123,11 @@ export const ReadingsHistoryList = () => {
     );
 
     const arrowButtonComponent =
-      isFirst && readingsLength > 1 ? arrowButton : <ArrowButtonBlock />;
+      !readings || (isFirst && readingsLength > 1) ? (
+        arrowButton
+      ) : (
+        <ArrowButtonBlock />
+      );
 
     return (
       <WrapComponent>
@@ -154,8 +158,6 @@ export const ReadingsHistoryList = () => {
 
     if (!readings?.length) return null;
 
-    console.log(readings.length);
-
     const previewReading = !readings[0].isArchived ? readings[0] : void 0;
 
     const firstReadingline = renderReading({
@@ -173,7 +175,7 @@ export const ReadingsHistoryList = () => {
         {isOpen &&
           readings
             .filter((elem, index) => !(index === 0 && !elem.isArchived))
-            ?.map((reading, index) =>
+            ?.map((reading) =>
               renderReading({
                 reading,
                 month,
