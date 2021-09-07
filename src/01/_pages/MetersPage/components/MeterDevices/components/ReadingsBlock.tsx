@@ -140,7 +140,9 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
       houseReadings={houseReadings}
       isDisabled={isDisabled || closed}
       data-reading-input={
-        typeof isCurrent === 'boolean'
+        closed
+          ? ''
+          : typeof isCurrent === 'boolean'
           ? isCurrent
             ? 'current'
             : 'previous'
