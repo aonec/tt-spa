@@ -10,6 +10,7 @@ import { Space } from '../../../shared/ui/Layout/Space/Space';
 import { useHistory, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { Apartments } from './Apartments';
+import { SerialNumberSearch } from './SerialNumberSearch';
 
 export const Filter = () => {
   const { inputs } = useFilter();
@@ -43,14 +44,22 @@ export const Filter = () => {
     <>
       <Radio.Group
         value={searchContext}
-        onChange={({ target: { value } }) => setSearchContext(value)}
+        onChange={({ target: { value } }) => {
+          if (value === 2) history.push('/meters/apartments');
+
+          if (value === 1) history.goBack();
+
+          setSearchContext(value);
+        }}
       >
         <Radio value={1}>Поиск по адресу</Radio>
         <Radio value={2}>Поиск по серийному номеру</Radio>
       </Radio.Group>
       <Space style={{ minHeight: 20 }} />
       {isSerialNumberPage ? (
-        <></>
+        <>
+          <SerialNumberSearch />
+        </>
       ) : (
         <>
           {styled(input)`
