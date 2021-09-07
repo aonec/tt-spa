@@ -27,7 +27,6 @@ import styled from 'styled-components';
 import { message } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
 
 export const useReadings = (
@@ -105,6 +104,7 @@ export const useReadings = (
       };
 
       setInitialPreviousReadingState(previousReadings);
+      setInitialReadings(prev?.currentReadingsArray || currentReadingsArray);
 
       return {
         previousReadings,
@@ -118,6 +118,7 @@ export const useReadings = (
         source: currentReadings.source,
         user: currentReadings.user,
         currentReadingId: currentReadings.id,
+        status: prev?.status,
       };
     });
   }, [device.readings, sliderIndex]);
@@ -341,11 +342,6 @@ export const useReadings = (
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
       if (!readingsState) return;
 
-      console.log(
-        initialPreviousReadingState[sliderIndex]?.values.join() !==
-          readingsState.previousReadings[sliderIndex]?.values.join()
-      );
-
       if (
         isPrevious &&
         initialPreviousReadingState[sliderIndex]?.values.join() !==
@@ -366,15 +362,7 @@ export const useReadings = (
   );
 
   const onFocusHandler = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      if (e.currentTarget.contains(e.relatedTarget as Node) || !readingsState)
-        return;
-
-      setInitialReadings(readingsState.currentReadingsArray);
-      const isNull = isNullInArray(readingsState.currentReadingsArray);
-      if (isNull) {
-      }
-    },
+    (e: React.FocusEvent<HTMLInputElement>) => {},
     [readingsState]
   );
 
