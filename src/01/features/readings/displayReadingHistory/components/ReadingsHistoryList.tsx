@@ -153,15 +153,19 @@ export const ReadingsHistoryList = () => {
 
     if (!readings?.length) return null;
 
-    return (isOpen ? readings : [readings[0]])?.map((reading, index) =>
-      renderReading({
-        reading,
-        month,
-        isFirst: index === 0,
-        arrowButton,
-        year,
-        readingsLength: readings.length,
-      })
+    return (
+      <>
+        {(isOpen ? readings : [readings[0]])?.map((reading, index) =>
+          renderReading({
+            reading,
+            month,
+            isFirst: index === 0,
+            arrowButton,
+            year,
+            readingsLength: readings.length,
+          })
+        )}
+      </>
     );
   };
 

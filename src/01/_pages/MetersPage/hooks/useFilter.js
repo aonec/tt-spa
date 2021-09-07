@@ -64,15 +64,10 @@ export const useFilter = () => {
     try {
       const res = await axios.get('Apartments', {
         params: {
-          ...(isQuestion
-            ? {
-                Question: state.question,
-              }
-            : {
-                Street: street,
-                ApartmentNumber: apart,
-                HousingStockNumber: house,
-              }),
+          Street: street,
+          ApartmentNumber: apart,
+          HousingStockNumber: house,
+          Question: state.question,
           PageSize: 1,
           PageNumber: 1,
         },
