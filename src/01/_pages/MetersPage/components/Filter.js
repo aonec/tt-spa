@@ -11,15 +11,12 @@ import { useHistory, Route, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Apartments } from './Apartments';
 import { SerialNumberSearch } from './SerialNumberSearch';
-import { useEffect } from 'react';
 
 export const Filter = () => {
   const { inputs } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
   const [searchContext, setSearchContext] = useState(1);
-  const params = useParams();
-  const { id } = params;
 
   const onInputKeyPress = (e, index) => {
     e.stopPropagation();
@@ -43,6 +40,12 @@ export const Filter = () => {
 
   const isSerialNumberPage = searchContext === 2;
 
+  const serialNumberComponent = (
+    <>
+      <SerialNumberSearch setSearchContext={setSearchContext} />
+    </>
+  );
+
   return (
     <>
       <Radio.Group
@@ -60,9 +63,7 @@ export const Filter = () => {
       </Radio.Group>
       <Space style={{ minHeight: 20 }} />
       {isSerialNumberPage ? (
-        <>
-          <SerialNumberSearch setSearchContext={setSearchContext} />
-        </>
+        serialNumberComponent
       ) : (
         <>
           {styled(input)`
