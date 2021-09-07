@@ -19,13 +19,7 @@ const ModalCalculatorDeregisterForm = ({
   const { model, serialNumber, id } = device;
 
   const [form] = Form.useForm();
-  const {
-    setFieldsValue,
-    getFieldsValue,
-    getFieldValue,
-    validateFields,
-    getFieldsError,
-  } = form;
+  const { getFieldValue } = form;
 
   const initialValues = {
     closingDate: moment(),
@@ -48,9 +42,7 @@ const ModalCalculatorDeregisterForm = ({
     });
   };
 
-  const onFinishFailed = () => {
-    console.log('onFinishFailed');
-  };
+  const onFinishFailed = () => {};
 
   return (
     <Form
@@ -89,35 +81,5 @@ const ModalCalculatorDeregisterForm = ({
     </Form>
   );
 };
-
-// const {
-//   handleSubmit,
-//   handleChange,
-//   values,
-//   touched,
-//   errors,
-//   handleBlur,
-//   setFieldValue,
-// } = useFormik({
-//   initialValues: {
-//     closingDateTime: moment().toISOString(),
-//     documentsIds: [],
-//     deviceId: device.id,
-//   },
-//   validationSchema: Yup.object({
-//     deviceId: Yup.number().required('Не передан ИД устройства'),
-//   }),
-//   onSubmit: async () => {
-//     const form = {
-//       deviceId: values.deviceId,
-//       documentsIds: values.documentsIds,
-//       closingDateTime: values.closingDateTime,
-//     };
-//     console.log(form);
-//     deregisterDevice(form);
-//     setTimeout(handleCancel, 1000);
-//   },
-// });
-//
 
 export default ModalCalculatorDeregisterForm;

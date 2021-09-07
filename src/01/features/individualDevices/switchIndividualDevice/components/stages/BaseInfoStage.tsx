@@ -3,7 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
+import { DatePickerTT, InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select } from 'antd';
