@@ -118,6 +118,7 @@ export const useReadings = (
         source: currentReadings.source,
         user: currentReadings.user,
         currentReadingId: currentReadings.id,
+        status: prev?.status,
       };
     });
   }, [device.readings, sliderIndex]);
