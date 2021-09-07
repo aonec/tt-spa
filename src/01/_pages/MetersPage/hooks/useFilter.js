@@ -50,8 +50,6 @@ export const useFilter = () => {
       });
   }, [apartment]);
 
-  useEffect(() => {}, []);
-
   const onChange = (value, name) => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };

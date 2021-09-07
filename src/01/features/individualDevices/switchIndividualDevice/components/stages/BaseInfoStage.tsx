@@ -345,8 +345,8 @@ export const BaseInfoStage = () => {
 export const clousingReasons = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
-  [EClosingReason.None]: 'Не указано',
-  [EClosingReason.NoReadings]: 'Нет показаний',
+  // [EClosingReason.None]: 'Не указано',
+  // [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {
