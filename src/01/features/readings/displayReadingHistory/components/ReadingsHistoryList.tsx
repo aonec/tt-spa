@@ -63,7 +63,7 @@ export const ReadingsHistoryList = () => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
     const monthName = isFirst ? (
-      <span className="month-name">{getMonthName(month + 1)}</span>
+      <span className="month-name">{getMonthName(month)}</span>
     ) : (
       <div></div>
     );
