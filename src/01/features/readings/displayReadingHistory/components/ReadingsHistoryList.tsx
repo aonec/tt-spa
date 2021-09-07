@@ -154,21 +154,25 @@ export const ReadingsHistoryList = () => {
 
     if (!readings?.length) return null;
 
+    console.log(readings.length);
+
     const previewReading = !readings[0].isArchived ? readings[0] : void 0;
+
+    const firstReadingline = renderReading({
+      reading: previewReading,
+      isFirst: true,
+      arrowButton,
+      year,
+      month,
+      readingsLength: readings.length,
+    });
 
     return (
       <>
-        {renderReading({
-          reading: previewReading,
-          isFirst: true,
-          arrowButton,
-          year,
-          month,
-          readingsLength: readings.length,
-        })}
+        {firstReadingline}
         {isOpen &&
           readings
-            .filter((elem) => elem.isArchived)
+            .filter((elem, index) => !(index === 0 && !elem.isArchived))
             ?.map((reading, index) =>
               renderReading({
                 reading,

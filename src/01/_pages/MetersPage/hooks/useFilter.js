@@ -117,6 +117,7 @@ export const useFilter = () => {
         name: 'city',
         placeholder: 'Город',
         disabled: true,
+        // option:
       },
       {
         name: 'street',
