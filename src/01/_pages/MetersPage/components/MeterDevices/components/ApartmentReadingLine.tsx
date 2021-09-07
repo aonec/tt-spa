@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
@@ -19,6 +19,9 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReactComponent as SwitchIcon } from './icons/switch.svg';
 import { ReactComponent as CheckIcon } from './icons/check.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import confirm from 'antd/lib/modal/confirm';
+import { reopenIndividualDevice } from '01/_api/individualDevices';
+import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -65,6 +68,27 @@ const ApartmentReadingLine = ({
       title: 'Замена или поверка прибора',
       show: true,
       cb: () => setIsModalOpen(true),
+    },
+    {
+      title: 'Открыть прибор',
+      show: closed,
+      cb: () =>
+        confirm({
+          title: `Вы действительно хотите открыть прибор ${device.model} (${device.serialNumber})?`,
+          onOk: async () => {
+            try {
+              await reopenIndividualDevice(device.id);
+
+              message.success('Прибор успешно переоткрыт');
+
+              refetchIndividualDevices();
+            } catch (error) {
+              message.error('Не удалось открыть прибор');
+            }
+          },
+          okText: 'Да',
+          cancelText: 'Отмена',
+        }),
     },
     {
       title: 'Закрытие прибора',
