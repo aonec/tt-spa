@@ -164,8 +164,11 @@ function getNewReadingValuesByIndex(value: string, index: number) {
 
 const getReadingsArrayWithEmpties = (
   readings: SwitchIndividualDeviceReadingsCreateRequest[]
-) =>
-  readings.reduce((acc, elem) => {
+) => {
+  const currentDate = moment();
+  return readings.reduce((acc, elem) => {
+    if (currentDate.diff(elem.readingDate, 'months') > 11) return acc;
+
     const index =
       Number(moment().format('M')) -
       Number(moment(elem.readingDate).format('M')) -
@@ -175,6 +178,7 @@ const getReadingsArrayWithEmpties = (
 
     return acc;
   }, {} as { [key: number]: SwitchIndividualDeviceReadingsCreateRequest });
+};
 
 const getReadingValuesArray = (
   reading?: SwitchIndividualDeviceReadingsCreateRequest,

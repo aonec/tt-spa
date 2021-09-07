@@ -345,7 +345,7 @@ export const BaseInfoStage = () => {
 export const clousingReasons = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
-  // [EClosingReason.None]: 'Не указано',
+  [EClosingReason.CertificateIssued]: 'Выдана справка',
   // [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
