@@ -123,6 +123,7 @@ const IndividualDeviceEditForm = ({
           values.sealInstallationDate,
           'DD.MM.YYYY'
         ).toISOString(),
+        mountPlaceId: values.mountPlaceId,
       };
 
       setLoading(true);
@@ -213,7 +214,6 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Место установки" style={styles.w100}>
             <StyledSelect
-              disabled
               value={values.mountPlaceId || undefined}
               onChange={(value) => setFieldValue('mountPlaceId', value)}
               placeholder="Укажите место"
