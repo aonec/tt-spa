@@ -56,19 +56,25 @@ export const useFilter = () => {
     dispatch({ type: 'change', payload: { [name]: value } });
   };
 
-  const onApartmentKeyHandler = async (e) => {
-    if (e.key !== 'Enter' || [street, house, apart].some((value) => !value))
+  const onApartmentKeyHandler = async (e, isQuestion = false) => {
+    if (
+      (e.key !== 'Enter' || [street, house, apart].some((value) => !value)) &&
+      !isQuestion
+    )
       return;
 
     try {
       const res = await axios.get('Apartments', {
         params: {
-          ...{
-            Street: street,
-            ApartmentNumber: apart,
-            HousingStockNumber: house,
-            Question: state.question,
-          },
+          ...(isQuestion
+            ? {
+                Question: state.question,
+              }
+            : {
+                Street: street,
+                ApartmentNumber: apart,
+                HousingStockNumber: house,
+              }),
           PageSize: 1,
           PageNumber: 1,
         },
@@ -151,7 +157,7 @@ export const useFilter = () => {
       {
         name: 'question',
         placeholder: 'Л/С или ФИО',
-        onKeyDown: (e) => e.target.value && onApartmentKeyHandler(e),
+        onKeyDown: (e) => e.target.value && onApartmentKeyHandler(e, true),
       },
     ].map((elem) => ({
       ...elem,

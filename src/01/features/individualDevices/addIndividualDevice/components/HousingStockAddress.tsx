@@ -9,8 +9,8 @@ import {
 
 export const HousingStockAddress = () => {
   const { id } = useParams<{ id: string }>();
-  const housingStock = useStore($apartment);
-  const address = getAddress(housingStock);
+  const apartment = useStore($apartment);
+  const address = getAddress(apartment);
 
   return (
     <>

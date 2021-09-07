@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import styled from 'reshadow/macro';
 import { input } from '01/r_comp';
 import { getArrayByCountRange } from './utils';
-import { useHistory } from 'react-router-dom';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFilter';
@@ -10,7 +9,6 @@ import { useFilter } from '../hooks/useFilter';
 export const Filter = () => {
   const { inputs } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
-  const history = useHistory();
 
   const onInputKeyPress = (e, index) => {
     e.stopPropagation();
