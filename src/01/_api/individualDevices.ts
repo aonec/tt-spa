@@ -104,3 +104,7 @@ export const getIndividualDevices = async (
 
   return res?.items;
 };
+
+export const reopenIndividualDevice = async (deviceId: number) => {
+  return await axios.post(`IndividualDevices/${deviceId}/reopen`);
+};
