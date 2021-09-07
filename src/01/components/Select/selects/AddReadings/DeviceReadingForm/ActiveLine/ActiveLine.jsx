@@ -1,7 +1,8 @@
 import React from 'react';
 import { Badge } from 'antd';
+import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage';
 
-const ActiveLine = ({ isActive }) => {
+const ActiveLine = ({ isActive, closingReason }) => {
   return (
     <div
       style={{
@@ -13,7 +14,14 @@ const ActiveLine = ({ isActive }) => {
       {isActive ? (
         <Badge status="success" text="Активен" />
       ) : (
-        <Badge status="error" text="Не активен" />
+        <Badge
+          status="error"
+          text={`Закрыт${
+            closingReasons && closingReasons[closingReason]
+              ? ` (${closingReasons[closingReason]})`
+              : ''
+          }`}
+        />
       )}
     </div>
   );
