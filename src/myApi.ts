@@ -311,6 +311,7 @@ export enum EClosingReason {
   Manually = "Manually",
   NoReadings = "NoReadings",
   DeviceBroken = "DeviceBroken",
+  CheckingDate = "CheckingDate",
 }
 
 export enum EResourceType {
@@ -2550,6 +2551,8 @@ export enum EIndividualDeviceReadingsSource {
 }
 
 export interface IndividualDeviceReadingsCreateResponse {
+  /** @format int32 */
+  readingId: number;
   status: string | null;
   date: string | null;
   resource: string | null;
@@ -5725,6 +5728,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Exports
+     * @name ExportsMilurDevicesTempList
+     * @request GET:/api/Exports/MilurDevicesTemp
+     * @secure
+     */
+    exportsMilurDevicesTempList: (
+      query?: { startDate?: string; endDate?: string; isPolling?: boolean | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Exports/MilurDevicesTemp`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 

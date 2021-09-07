@@ -9,7 +9,7 @@ import {
 export async function getHousingMeteringDevice(id: number) {
   try {
     const res = await axios.get<any, PipeHousingMeteringDeviceResponse>(
-      `HousingMeteringDevices/${id}`
+      `PipeHousingMeteringDevices/${id}`
     );
     return res;
   } catch (error) {
