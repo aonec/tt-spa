@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Flex } from '../Flex';
 
 export const Space = styled.div`
-  width: 15px;
-  height: 15px;
+  min-width: 15px;
+  min-height: 15px;
 `;
 
 interface SpaceProps {
