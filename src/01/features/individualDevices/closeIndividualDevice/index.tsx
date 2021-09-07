@@ -28,17 +28,7 @@ import {
 export const CloseIndividualDeviceModal = () => {
   const visible = useStore($isCloseIndividualDeviceModalOpen);
 
-  const onCancel = () =>
-    confirm({
-      title: 'Вы действительно хотите закрыть окно?',
-      content: <>данные при этом не сохранятся</>,
-      cancelText: 'Отмена',
-      okText: 'Да',
-      onOk: () =>
-        void setTimeout(closeClosingIndividualDeviceModalButtonClicked, 200),
-      centered: true,
-      closable: true,
-    });
+  const onCancel = () => closeClosingIndividualDeviceModalButtonClicked();
 
   const { submit, fields } = useForm(closeIndividualDeviceForm);
 
