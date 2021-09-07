@@ -7,7 +7,7 @@ export function getAddress(apartment: ApartmentResponse | null) {
 
   return `${house?.city}, ул. ${house?.street}, ${
     house?.corpus ? `к. ${house?.corpus},` : ''
-  } кв. ${house?.number}`;
+  } д. ${house?.number}, кв. ${apartment.apartmentNumber}`;
 }
 
 export function getBitDepthAndScaleFactor(
