@@ -44,7 +44,7 @@ export const ReadingsHistoryList = () => {
   } = useOpenedYears(values?.yearReadings || []);
 
   interface RenderReading {
-    reading: IndividualDeviceReadingsItemHistoryResponse;
+    reading?: IndividualDeviceReadingsItemHistoryResponse;
     isFirst?: boolean;
     arrowButton?: React.ReactElement;
     month: number;
@@ -69,12 +69,13 @@ export const ReadingsHistoryList = () => {
     );
 
     const getReadingValues = (type: 'value' | 'consumption') =>
+      reading &&
       getReadingValuesArray(
         reading,
         type,
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
-    const readings = (
+    const readings = reading && (
       <RenderReadingFields
         onBlur={() =>
           uploadReading(
@@ -92,7 +93,7 @@ export const ReadingsHistoryList = () => {
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
         editable={isFirst}
-        values={getReadingValues('value')}
+        values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
         onChange={(value, index) =>
           setFieldValue(value, {
@@ -105,19 +106,19 @@ export const ReadingsHistoryList = () => {
       />
     );
 
-    const consumption = (
+    const consumption = reading && (
       <RenderReadingFields
         suffix={device?.measurableUnitString}
-        values={getReadingValues('consumption')}
+        values={getReadingValues('consumption') || []}
         consumption
       />
     );
 
-    const source = (
+    const source = reading && (
       <SourceName sourceType={reading.source} user={reading.user} />
     );
 
-    const uploadTime = (
+    const uploadTime = reading && (
       <div>{moment(reading.uploadTime).format('DD.MM.YYYY hh:mm')}</div>
     );
 
@@ -127,10 +128,10 @@ export const ReadingsHistoryList = () => {
     return (
       <WrapComponent>
         {monthName}
-        {readings}
-        {consumption}
-        {source}
-        {uploadTime}
+        {readings || <div></div>}
+        {consumption || <div></div>}
+        {source || <div></div>}
+        {uploadTime || <div></div>}
         {arrowButtonComponent}
       </WrapComponent>
     );
@@ -153,18 +154,35 @@ export const ReadingsHistoryList = () => {
 
     if (!readings?.length) return null;
 
+    console.log(readings.length);
+
+    const previewReading = !readings[0].isArchived ? readings[0] : void 0;
+
+    const firstReadingline = renderReading({
+      reading: previewReading,
+      isFirst: true,
+      arrowButton,
+      year,
+      month,
+      readingsLength: readings.length,
+    });
+
     return (
       <>
-        {(isOpen ? readings : [readings[0]])?.map((reading, index) =>
-          renderReading({
-            reading,
-            month,
-            isFirst: index === 0,
-            arrowButton,
-            year,
-            readingsLength: readings.length,
-          })
-        )}
+        {firstReadingline}
+        {isOpen &&
+          readings
+            .filter((elem, index) => !(index === 0 && !elem.isArchived))
+            ?.map((reading, index) =>
+              renderReading({
+                reading,
+                month,
+                isFirst: false,
+                arrowButton,
+                year,
+                readingsLength: readings.length,
+              })
+            )}
       </>
     );
   };

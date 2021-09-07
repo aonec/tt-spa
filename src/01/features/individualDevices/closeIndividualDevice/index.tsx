@@ -16,7 +16,7 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
-import { clousingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';
+import { closingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';
 import {
   $closingIndividualDevice,
   $isCloseIndividualDeviceModalOpen,
@@ -103,7 +103,7 @@ export const CloseIndividualDeviceModal = () => {
             value={fields.closingReason.value || undefined}
             onChange={fields.closingReason.onChange as any}
           >
-            {Object.entries(clousingReasons).map(([key, elem]) => (
+            {Object.entries(closingReasons).map(([key, elem]) => (
               <Select.Option value={key} key={key}>
                 {elem}
               </Select.Option>

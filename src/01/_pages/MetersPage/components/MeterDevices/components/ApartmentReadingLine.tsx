@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
-import { message, Modal } from 'antd';
+import { message, Modal, Tooltip } from 'antd';
 import DeviceInfo from './DeviceInfo';
 import {
   IndividualDeviceListItemResponse,
@@ -22,6 +22,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
+import { ReactComponent as HistoryIcon } from './icons/history.svg';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -56,14 +57,14 @@ const ApartmentReadingLine = ({
       show: true,
       cb: () => history.push(`/individualDevices/${device.id}/edit`),
     },
-    {
-      title: 'Открыть историю показаний',
-      show: true,
-      cb: () =>
-        history.push(
-          `/apartment/${id}/individualDevice/${device.id}/readingHistory`
-        ),
-    },
+    // {
+    //   title: 'Открыть историю показаний',
+    //   show: true,
+    //   cb: () =>
+    //     history.push(
+    //       `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+    //     ),
+    // },
     {
       title: 'Замена или поверка прибора',
       show: true,
@@ -112,6 +113,17 @@ const ApartmentReadingLine = ({
         {currentReadings}
 
         <Flex style={{ justifyContent: 'flex-end', width: '100%' }}>
+          <Tooltip title="История показаний">
+            <HistoryIcon
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                history.push(
+                  `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+                )
+              }
+            />
+          </Tooltip>
+          <Space />
           <MenuButtonTT menuButtonArr={menuButtonArr} size="small" />
         </Flex>
       </FullDeviceLine>
