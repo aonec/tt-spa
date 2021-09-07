@@ -4,14 +4,18 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { message } from 'antd';
 import { CancelTokenSource } from 'axios';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const SerialNumberSearch: React.FC = () => {
+interface Props {
+  setSearchContext: (context: 1 | 2) => void;
+}
+
+export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
   const [serialNumber, setSerialNumber] = useState('');
   const [devices, setDevices] = useState<IndividualDeviceListItemResponse[]>();
   const [loading, setLoading] = useState(false);
@@ -53,9 +57,14 @@ export const SerialNumberSearch: React.FC = () => {
     device: IndividualDeviceListItemResponse,
     index: number
   ) => (
-    <Device key={index}>
-      <DeviceDataString device={device} />
-    </Device>
+    <NavLink
+      to={`/meters/apartments/${device.apartmentId}`}
+      onClick={() => setSearchContext(1)}
+    >
+      <Device key={index}>
+        <DeviceDataString device={device} />
+      </Device>
+    </NavLink>
   );
 
   return (
@@ -93,9 +102,9 @@ const Device = styled.div`
     border: 1px solid rgba(24, 158, 233, 0.3);
     background: rgba(24, 158, 233, 0.07);
     z-index: 1;
-  }
 
-  &:last-child {
-    border-bottom: 0;
+    * {
+      color: #000000e1;
+    }
   }
 `;

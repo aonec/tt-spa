@@ -7,16 +7,19 @@ import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFilter';
 import { Radio } from 'antd';
 import { Space } from '../../../shared/ui/Layout/Space/Space';
-import { useHistory, Route } from 'react-router-dom';
+import { useHistory, Route, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Apartments } from './Apartments';
 import { SerialNumberSearch } from './SerialNumberSearch';
+import { useEffect } from 'react';
 
 export const Filter = () => {
   const { inputs } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
   const [searchContext, setSearchContext] = useState(1);
+  const params = useParams();
+  const { id } = params;
 
   const onInputKeyPress = (e, index) => {
     e.stopPropagation();
@@ -58,7 +61,7 @@ export const Filter = () => {
       <Space style={{ minHeight: 20 }} />
       {isSerialNumberPage ? (
         <>
-          <SerialNumberSearch />
+          <SerialNumberSearch setSearchContext={setSearchContext} />
         </>
       ) : (
         <>
