@@ -167,7 +167,7 @@ const getReadingsArrayWithEmpties = (
 ) => {
   const currentDate = moment();
   return readings.reduce((acc, elem) => {
-    if (currentDate.diff(elem.readingDate, 'months') > 11) return acc;
+    // if (currentDate.diff(elem.readingDate, 'months') > 11) return acc;
 
     const index =
       Number(moment().format('M')) -
