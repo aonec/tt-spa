@@ -28,6 +28,7 @@ import { message } from 'antd';
 import { refetchIndividualDevicesFx } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import confirm from 'antd/lib/modal/confirm';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -121,21 +122,32 @@ export const useReadings = (
     });
   }, [device.readings, sliderIndex]);
 
-  async function setReadingArchived(id: number, readingDate: string) {
-    try {
-      await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
+  function setReadingArchived(id: number, readingDate: string) {
+    const request = async () => {
+      try {
+        await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
-      refetchIndividualDevicesFx();
+        refetchIndividualDevicesFx();
 
-      message.info(
-        `Показание за ${readingDate.toLowerCase()} на приборе ${
-          device.model
-        } (${device.serialNumber}) было удалено`,
-        4.5
-      );
-    } catch (error) {
-      message.error('Не удалось удалить показание');
-    }
+        message.info(
+          `Показание за ${readingDate.toLowerCase()} на приборе ${
+            device.model
+          } (${device.serialNumber}) было удалено`,
+          4.5
+        );
+      } catch (error) {
+        message.error('Не удалось удалить показание');
+      }
+    };
+
+    confirm({
+      okText: "Да",
+      cancelText: 'Отмена',
+      onOk: request,
+      title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
+        device.model
+      } (${device.serialNumber})?`,
+    });
   }
 
   const formDeviceReadingObject = (
@@ -257,21 +269,6 @@ export const useReadings = (
                 },
               },
             }));
-
-            // setTimeout(
-            //   () =>
-            //     setReadingsState((prev: any) => ({
-            //       ...prev,
-            //       previousReadings: {
-            //         ...prev.previousReadings,
-            //         [sliderIndex]: {
-            //           ...prev.previousReadings[sliderIndex],
-            //           status: 'done',
-            //         },
-            //       },
-            //     })),
-            //   15000
-            // );
           } catch (error) {
             setReadingsState((prev: any) => ({
               ...prev,
@@ -323,15 +320,6 @@ export const useReadings = (
             currentReadingId: res.readingId || prev.currentReadingId,
             status: 'done',
           }));
-
-          // setTimeout(
-          //   () =>
-          //     setReadingsState((prev: any) => ({
-          //       ...prev,
-          //       status: null,
-          //     })),
-          //   15000
-          // );
 
           setInitialReadings(readingsState.currentReadingsArray);
         } catch (error) {
