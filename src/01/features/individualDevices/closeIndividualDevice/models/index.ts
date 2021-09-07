@@ -1,4 +1,7 @@
-import { IndividualDeviceListItemResponse } from './../../../../../myApi';
+import {
+  EClosingReason,
+  IndividualDeviceListItemResponse,
+} from './../../../../../myApi';
 import { FileData } from './../../../../hooks/useFilesUpload';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
@@ -24,6 +27,9 @@ export const closeIndividualDeviceForm = createForm({
     clousingDate: {
       init: null as null | string,
       rules: [{ name: 'required', validator: Boolean }],
+    },
+    closingReason: {
+      init: null as EClosingReason | null,
     },
   },
 });
