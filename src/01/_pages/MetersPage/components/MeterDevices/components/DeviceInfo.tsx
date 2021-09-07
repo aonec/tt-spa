@@ -25,7 +25,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         <SerialNumber>{` (${device.serialNumber})`}</SerialNumber>
       </DeviceLink>
       <ApartmentInfo>
-        <ActiveLine isActive={isActive} />
+        <ActiveLine isActive={isActive} closingReason={device.closingReason} />
         <DateLine
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}
