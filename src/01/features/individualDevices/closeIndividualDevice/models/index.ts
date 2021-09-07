@@ -30,6 +30,12 @@ export const closeIndividualDeviceForm = createForm({
     },
     closingReason: {
       init: null as EClosingReason | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
   },
 });

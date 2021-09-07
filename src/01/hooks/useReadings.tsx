@@ -141,7 +141,7 @@ export const useReadings = (
     };
 
     confirm({
-      okText: "Да",
+      okText: 'Да',
       cancelText: 'Отмена',
       onOk: request,
       title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
@@ -341,6 +341,11 @@ export const useReadings = (
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
       if (!readingsState) return;
 
+      console.log(
+        initialPreviousReadingState[sliderIndex]?.values.join() !==
+          readingsState.previousReadings[sliderIndex]?.values.join()
+      );
+
       if (
         isPrevious &&
         initialPreviousReadingState[sliderIndex]?.values.join() !==
@@ -351,7 +356,9 @@ export const useReadings = (
         return;
       }
 
-      if (readingsState.currentReadingsArray !== initialReadings) {
+      if (
+        readingsState.currentReadingsArray.join('') !== initialReadings.join('')
+      ) {
         sendReadings();
       }
     },
@@ -468,11 +475,14 @@ export const useReadings = (
       value,
     })) || [];
 
+  const fromEnter = (callback: (e: any) => void) => (e: any) => {
+    if (e?.key === 'Enter') callback(e);
+  };
+
   const options = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
-    uploadTime?: string,
-    status?: RequestStatusShared
+    uploadTime?: string
   ): OptionsInterface[] => [
     {
       value: () => (
@@ -498,7 +508,7 @@ export const useReadings = (
             color={
               isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
             }
-            onBlur={(e) => onBlurHandler(e, !isCurrent)}
+            onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
             onFocus={onFocusHandler}
             resource={device.resource}
           >
@@ -515,7 +525,7 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
+          onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -543,7 +553,7 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onBlur={(e) => onBlurHandler(e, !isCurrent)}
+          onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -576,8 +586,7 @@ export const useReadings = (
   const previousResultReadings = options(
     previousDeviceReadings,
     false,
-    readingsState.previousReadings[sliderIndex]?.uploadTime,
-    readingsState.previousReadings[sliderIndex]?.status
+    readingsState.previousReadings[sliderIndex]?.uploadTime
   )
     .find((el) => el.isSuccess)!
     .value();
@@ -585,8 +594,7 @@ export const useReadings = (
   const currentReadings = options(
     currentDeviceReadings,
     true,
-    readingsState.uploadTime,
-    readingsState.status
+    readingsState.uploadTime
   )
     .find((el) => el.isSuccess)!
     .value();

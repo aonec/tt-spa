@@ -312,6 +312,7 @@ export enum EClosingReason {
   NoReadings = "NoReadings",
   DeviceBroken = "DeviceBroken",
   CheckingDate = "CheckingDate",
+  CertificateIssued = "CertificateIssued",
 }
 
 export enum EResourceType {
