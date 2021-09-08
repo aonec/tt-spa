@@ -2551,6 +2551,31 @@ export enum EIndividualDeviceReadingsSource {
   TtmFromErc = "TtmFromErc",
 }
 
+export interface IndividualDeviceReadingsResponse {
+  /** @format int32 */
+  id: number;
+  hasError: boolean;
+  status: string | null;
+  statusMessage: string | null;
+  value1: string | null;
+  value2: string | null;
+  value3: string | null;
+  value4: string | null;
+  readingDate: string | null;
+
+  /** @format date-time */
+  readingDateTime: string;
+
+  /** @format date-time */
+  uploadTime: string;
+  source: EIndividualDeviceReadingsSource;
+  user: ManagingFirmUserShortResponse | null;
+}
+
+export interface IndividualDeviceReadingsResponseSuccessApiResponse {
+  successResponse: IndividualDeviceReadingsResponse | null;
+}
+
 export interface IndividualDeviceReadingsCreateResponse {
   /** @format int32 */
   readingId: number;
@@ -2614,31 +2639,6 @@ export interface IndividualDeviceReadingsSetEmptyRequest {
   /** @format date-time */
   date: string;
   devicesIds: number[];
-}
-
-export interface IndividualDeviceReadingsResponse {
-  /** @format int32 */
-  id: number;
-  hasError: boolean;
-  status: string | null;
-  statusMessage: string | null;
-  value1: string | null;
-  value2: string | null;
-  value3: string | null;
-  value4: string | null;
-  readingDate: string | null;
-
-  /** @format date-time */
-  readingDateTime: string;
-
-  /** @format date-time */
-  uploadTime: string;
-  source: EIndividualDeviceReadingsSource;
-  user: ManagingFirmUserShortResponse | null;
-}
-
-export interface IndividualDeviceReadingsResponseSuccessApiResponse {
-  successResponse: IndividualDeviceReadingsResponse | null;
 }
 
 export interface IndividualDeviceResponse {
@@ -6746,7 +6746,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     housingStocksExistingStreetsList: (
-      query?: { Street?: string | null; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      query?: {
+        Street?: string | null;
+        City?: string | null;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
       params: RequestParams = {},
     ) =>
       this.request<StringPagedListSuccessApiResponse, ErrorApiResponse>({
@@ -6923,6 +6929,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDeviceReadings
+     * @name IndividualDeviceReadingsCreateLiteCreate
+     * @request POST:/api/IndividualDeviceReadings/createLite
+     * @secure
+     */
+    individualDeviceReadingsCreateLiteCreate: (
+      data: IndividualDeviceReadingsCreateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<IndividualDeviceReadingsResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/IndividualDeviceReadings/createLite`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
