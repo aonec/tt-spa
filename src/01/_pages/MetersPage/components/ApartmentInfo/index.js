@@ -100,7 +100,7 @@ export const ApartmentInfo = () => {
     <div style={{ fontSize: 12, fontWeight: 500 }}>
       {houseManagement.name}
       <span>{houseManagement.comment}</span>
-      <span>(тел: {houseManagement.phone})</span>
+      <span> (тел: {houseManagement.phone})</span>
     </div>
   );
 
@@ -158,7 +158,11 @@ export const ApartmentInfo = () => {
           <Flex>
             <ApartmentTitle>{title}</ApartmentTitle>
             <Space />
-            <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
+            {homeowner?.personalAccountNumber && (
+              <PersonalNumber>
+                {homeowner?.personalAccountNumber}
+              </PersonalNumber>
+            )}
           </Flex>
           <MenuButtonWrap>
             <MenuButtonTT
@@ -168,8 +172,12 @@ export const ApartmentInfo = () => {
             />
           </MenuButtonWrap>
         </Flex>
-        <Space />
-        {content}
+        {content && (
+          <>
+            <Space />
+            {content}
+          </>
+        )}
       </ApartmentInfoWrap>
 
       {apartment && <>{pausedAlert}</>}
