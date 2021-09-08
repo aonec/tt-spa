@@ -290,27 +290,56 @@ export const useReadings = (
             return;
           };
 
-          const neededPrevPreviousReadingStruct = Object.entries(
-            neededReadings.previousReadings
-          )
-            .sort(([a], [b]) => (a > b ? 1 : a < b ? -1 : 0))
-            .find(([key, elem]) => Number(key) > sliderIndex && elem);
+          const {
+            validated,
+            valuesValidationResults,
+            limit,
+          } = isCorrectReadingValues(
+            device.resource,
+            device.rateType,
+            readingsState.previousReadings[sliderIndex]?.values,
+            getNextPreviousReading(
+              readingsState.previousReadings || [],
+              sliderIndex
+            )?.values || undefined
+          );
 
-          const neededPrevPreviousReading =
-            neededPrevPreviousReadingStruct &&
-            neededPrevPreviousReadingStruct[1];
-
-          if (
-            isCorrectReadingValues(
-              device.resource,
-              device.rateType,
-              neededPreviousReadings?.values,
-              neededPrevPreviousReading?.values
-            ).validated
-          ) {
+          if (validated) {
             await sendPreviousReading();
           } else {
-            message.error('Перерасход');
+            const neededValueWarning = valuesValidationResults?.find((elem) =>
+              Boolean(elem.type)
+            );
+
+            if (neededValueWarning?.type === 'down') {
+              message.error(
+                `Введенное показание по прибору ${device.model} (${device.serialNumber}) меньше предыдущего`,
+                4.5
+              );
+              setReadingsState((prev: any) => ({
+                ...prev,
+                previousReadings: {
+                  ...prev.previousReadings,
+                  [sliderIndex]: {
+                    ...prev.previousReadings[sliderIndex],
+                    status: 'failed',
+                  },
+                },
+              }));
+              return;
+            }
+
+            Modal.confirm({
+              title: `${
+                neededValueWarning?.type === 'up'
+                  ? `Расход ${neededValueWarning.difference}${unit}, больше чем лимит ${limit}${unit}`
+                  : ''
+              }`,
+              onOk: () => void sendPreviousReading(),
+              okText: 'Да',
+              cancelText: 'Отмена',
+              centered: true,
+            });
           }
 
           return;
@@ -729,16 +758,40 @@ const isCorrectReadingValues = (
   );
 };
 
+const getNextPreviousReading = (
+  readings: PreviousReadingState,
+  sliderIndex: number
+) => {
+  const readingsLength = Object.entries(readings).length;
+  let index = sliderIndex;
+  let res: ReadingElem | null = null;
+
+  while (true) {
+    index++;
+
+    if (readings[index]) {
+      res = readings[index];
+      break;
+    }
+
+    if (index > readingsLength) break;
+  }
+
+  return res;
+};
+
+interface ReadingElem {
+  values: number[];
+  date: string | null;
+  uploadTime?: string;
+  source?: EIndividualDeviceReadingsSource;
+  user?: any;
+  id: number;
+  status?: RequestStatusShared;
+}
+
 interface PreviousReadingState {
-  [key: number]: {
-    values: number[];
-    date: string | null;
-    uploadTime?: string;
-    source?: EIndividualDeviceReadingsSource;
-    user?: any;
-    id: number;
-    status?: RequestStatusShared;
-  };
+  [key: number]: ReadingElem;
 }
 
 export type ReadingsStateType = {

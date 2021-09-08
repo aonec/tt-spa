@@ -100,7 +100,7 @@ export const ApartmentInfo = () => {
     <div style={{ fontSize: 12, fontWeight: 500 }}>
       {houseManagement.name}
       <span>{houseManagement.comment}</span>
-      <span>(тел: {houseManagement.phone})</span>
+      <span> (тел: {houseManagement.phone})</span>
     </div>
   );
 
