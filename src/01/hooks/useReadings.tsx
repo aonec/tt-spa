@@ -8,7 +8,9 @@ import {
   DeviceReadingsContainer,
   getInputColor,
 } from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
-import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import ReadingsBlock, {
+  getMeasurementUnit,
+} from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import {
   EIndividualDeviceRateType,
   EIndividualDeviceReadingsSource,
@@ -24,7 +26,7 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
@@ -35,6 +37,7 @@ export const useReadings = (
   numberOfPreviousReadingsInputs?: number,
   closed?: boolean
 ) => {
+  const unit = getMeasurementUnit(device.resource);
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
   const [
@@ -339,6 +342,8 @@ export const useReadings = (
               deviceReadingObject
             );
 
+            console.log(res);
+
             setReadingsState((prev: any) => ({
               ...prev,
               uploadTime: moment(res.uploadDate).toISOString(),
@@ -390,11 +395,10 @@ export const useReadings = (
             return;
           }
 
-          confirm({
-            type: '',
+          Modal.confirm({
             title: `${
               neededValueWarning?.type === 'up'
-                ? `Расход ${neededValueWarning.difference} больше чем лимит ${limit}`
+                ? `Расход ${neededValueWarning.difference}${unit}, больше чем лимит ${limit}${unit}`
                 : ''
             }`,
             onOk: () => void sendCurrentReadings(),

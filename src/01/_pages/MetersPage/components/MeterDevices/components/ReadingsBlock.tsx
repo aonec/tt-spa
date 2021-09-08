@@ -11,10 +11,12 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 
-const ReadingLineStyled = styled.div<{
+interface ReadingLineStyledProps {
   houseReadings: boolean;
   isDisabled: boolean | undefined;
-}>`
+}
+
+const ReadingLineStyled = styled.div`
   position: relative;
 
   &:not(:first-child) {
@@ -137,8 +139,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
 
   return (
     <ReadingLineStyled
-      houseReadings={houseReadings}
-      isDisabled={isDisabled || closed}
       data-reading-input={
         closed
           ? ''
@@ -185,3 +185,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
 };
 
 export default ReadingsBlock;
+
+export const getMeasurementUnit = (resource: any) =>
+  resource === 'Electricity' ? 'кВтч' : 'м³';
