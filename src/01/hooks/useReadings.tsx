@@ -360,7 +360,11 @@ export const useReadings = (
           }
         };
 
-        const { validated, valuesValidationResults } = isCorrectReadingValues(
+        const {
+          validated,
+          valuesValidationResults,
+          limit,
+        } = isCorrectReadingValues(
           device.resource,
           device.rateType,
           readingsState.currentReadingsArray,
@@ -373,11 +377,24 @@ export const useReadings = (
           const neededValueWarning = valuesValidationResults?.find((elem) =>
             Boolean(elem.type)
           );
+
+          if (neededValueWarning?.type === 'down') {
+            message.error(
+              `Введенное показание по прибору ${device.model} (${device.serialNumber}) меньше предыдущего`,
+              4.5
+            );
+            setReadingsState((prev: any) => ({
+              ...prev,
+              status: 'failed',
+            }));
+            return;
+          }
+
           confirm({
             type: '',
             title: `${
               neededValueWarning?.type === 'up'
-                ? `Перерасход ${neededValueWarning.difference}`
+                ? `Расход ${neededValueWarning.difference} больше чем лимит ${limit}`
                 : ''
             }`,
             onOk: () => void sendCurrentReadings(),
@@ -693,12 +710,13 @@ const isCorrectReadingValues = (
 
       return {
         ...acc,
-        validated: acc && isDown && isUp,
+        validated: acc && !isDown && !isUp,
         valuesValidationResults: [
           ...(acc.valuesValidationResults || []),
           {
+            index: index + 1,
             type,
-            difference: difference > 0 ? difference - limit : difference,
+            difference,
             currentValue,
             prevValue,
           },
