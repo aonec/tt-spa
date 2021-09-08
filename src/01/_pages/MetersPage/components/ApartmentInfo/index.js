@@ -158,7 +158,11 @@ export const ApartmentInfo = () => {
           <Flex>
             <ApartmentTitle>{title}</ApartmentTitle>
             <Space />
-            <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
+            {homeowner?.personalAccountNumber && (
+              <PersonalNumber>
+                {homeowner?.personalAccountNumber}
+              </PersonalNumber>
+            )}
           </Flex>
           <MenuButtonWrap>
             <MenuButtonTT
@@ -168,8 +172,12 @@ export const ApartmentInfo = () => {
             />
           </MenuButtonWrap>
         </Flex>
-        <Space />
-        {content}
+        {content && (
+          <>
+            <Space />
+            {content}
+          </>
+        )}
       </ApartmentInfoWrap>
 
       {apartment && <>{pausedAlert}</>}

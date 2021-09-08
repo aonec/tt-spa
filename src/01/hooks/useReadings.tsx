@@ -12,6 +12,7 @@ import ReadingsBlock from '../_pages/MetersPage/components/MeterDevices/componen
 import {
   EIndividualDeviceRateType,
   EIndividualDeviceReadingsSource,
+  EResourceType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
 } from '../../myApi';
@@ -175,39 +176,36 @@ export const useReadings = (
   const sendReadings = useCallback(
     async (isPrevious?: boolean) => {
       try {
-        if (!readingsState) return;
+        const getReadings = (prev: ReadingsStateType) => {
+          const date = getDateByReadingMonthSlider(sliderIndex).toISOString();
 
-        if (isPrevious) {
-          const getReadings = (prev: ReadingsStateType) => {
-            const date = getDateByReadingMonthSlider(sliderIndex).format(
-              'YYYY-MM'
-            );
-
-            const res = prev && {
-              ...prev,
-              previousReadings: {
-                ...prev?.previousReadings,
-                [sliderIndex]: {
-                  ...prev?.previousReadings[sliderIndex],
-                  date:
-                    prev?.previousReadings[sliderIndex].date || `${date}-${15}`,
-                },
+          const res = prev && {
+            ...prev,
+            previousReadings: {
+              ...prev?.previousReadings,
+              [sliderIndex]: {
+                ...prev?.previousReadings[sliderIndex],
+                date: prev?.previousReadings[sliderIndex].date || date,
               },
-            };
-
-            setInitialPreviousReadingState(
-              (prev) => res?.previousReadings || prev
-            );
-
-            return res;
+            },
           };
 
-          const neededReadings = getReadings(readingsState);
+          setInitialPreviousReadingState(
+            (prev) => res?.previousReadings || prev
+          );
 
+          return res;
+        };
+
+        if (!readingsState) return;
+
+        const neededReadings = getReadings(readingsState);
+
+        const neededPreviousReadings =
+          neededReadings.previousReadings[sliderIndex];
+
+        if (isPrevious) {
           setReadingsState(neededReadings);
-
-          const neededPreviousReadings =
-            neededReadings.previousReadings[sliderIndex];
 
           if (
             !neededPreviousReadings ||
@@ -289,8 +287,30 @@ export const useReadings = (
             return;
           };
 
-          // if (rea)
-          return await sendPreviousReading();
+          const neededPrevPreviousReadingStruct = Object.entries(
+            neededReadings.previousReadings
+          )
+            .sort(([a], [b]) => (a > b ? 1 : a < b ? -1 : 0))
+            .find(([key, elem]) => Number(key) > sliderIndex && elem);
+
+          const neededPrevPreviousReading =
+            neededPrevPreviousReadingStruct &&
+            neededPrevPreviousReadingStruct[1];
+
+          if (
+            isCorrectReadingValues(
+              device.resource,
+              device.rateType,
+              neededPreviousReadings?.values,
+              neededPrevPreviousReading?.values
+            ).validated
+          ) {
+            await sendPreviousReading();
+          } else {
+            message.error('Перерасход');
+          }
+
+          return;
         }
 
         const deviceReadingObject: Record<
@@ -340,7 +360,34 @@ export const useReadings = (
           }
         };
 
-        return await sendCurrentReadings();
+        const { validated, valuesValidationResults } = isCorrectReadingValues(
+          device.resource,
+          device.rateType,
+          readingsState.currentReadingsArray,
+          readingsState.previousReadings[sliderIndex]?.values
+        );
+
+        if (validated) {
+          await sendCurrentReadings();
+        } else {
+          const neededValueWarning = valuesValidationResults?.find((elem) =>
+            Boolean(elem.type)
+          );
+          confirm({
+            type: '',
+            title: `${
+              neededValueWarning?.type === 'up'
+                ? `Перерасход ${neededValueWarning.difference}`
+                : ''
+            }`,
+            onOk: () => void sendCurrentReadings(),
+            okText: 'Да',
+            cancelText: 'Отмена',
+            centered: true,
+          });
+        }
+
+        return;
       } catch (e) {}
     },
     [readingsState]
@@ -600,6 +647,66 @@ export const useReadings = (
     previousReadings: previousResultReadings, // массив компонентов с показаниями за пред. месяцы
     currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
+};
+
+const limits = {
+  [EResourceType.ColdWaterSupply]: 25,
+  [EResourceType.HotWaterSupply]: 15,
+  [EResourceType.Electricity]: 1000,
+};
+
+const getResourceUpLimit = (resource: EResourceType) => {
+  return (limits as any)[resource] || Infinity;
+};
+
+interface CorrectReadingValuesValidationResult {
+  validated: boolean;
+  valuesValidationResults?: {
+    type: 'up' | 'down' | null;
+    difference: number;
+  }[];
+  limit?: number;
+}
+
+const isCorrectReadingValues = (
+  resource: EResourceType,
+  rateType: EIndividualDeviceRateType,
+  nextReadings: number[],
+  previousReadings?: number[]
+): CorrectReadingValuesValidationResult => {
+  if (!previousReadings) return { validated: true };
+
+  const rateNum = getIndividualDeviceRateNumByName(rateType);
+  const limit = getResourceUpLimit(resource);
+
+  return nextReadings.reduce(
+    (acc, elem, index) => {
+      if (index + 1 > rateNum) return acc;
+
+      const currentValue = Number(elem) || 0;
+      const prevValue = Number(previousReadings[index]) || 0;
+
+      const isDown = currentValue < prevValue;
+      const isUp = currentValue - prevValue > limit;
+      const type = isUp ? 'up' : isDown ? 'down' : null;
+      const difference = currentValue - prevValue;
+
+      return {
+        ...acc,
+        validated: acc && isDown && isUp,
+        valuesValidationResults: [
+          ...(acc.valuesValidationResults || []),
+          {
+            type,
+            difference: difference > 0 ? difference - limit : difference,
+            currentValue,
+            prevValue,
+          },
+        ],
+      };
+    },
+    { validated: true, limit } as CorrectReadingValuesValidationResult
+  );
 };
 
 interface PreviousReadingState {
