@@ -267,7 +267,7 @@ export const useReadings = (
                     uploadTime: moment(res.uploadTime).toISOString(),
                     source: res.source,
                     user: res.user,
-                    id: res.readingId,
+                    id: res.id,
                     status: 'done',
                   },
                 },
@@ -342,14 +342,12 @@ export const useReadings = (
               deviceReadingObject
             );
 
-            console.log(res);
-
             setReadingsState((prev: any) => ({
               ...prev,
               uploadTime: moment(res.uploadDate).toISOString(),
               source: res.source,
               user: res.user,
-              currentReadingId: res.readingId || prev.currentReadingId,
+              currentReadingId: res.id || prev.currentReadingId,
               status: 'done',
             }));
 
