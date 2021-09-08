@@ -2781,6 +2781,9 @@ export interface IndividualDeviceListItemResponse {
   magneticSealTypeName: string | null;
   isPolling: boolean;
   apartmentNumber: string | null;
+
+  /** @format int32 */
+  apartmentId: number;
   homeownerName: string | null;
   personalAccountNumber: string | null;
 
@@ -7061,6 +7064,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         TakeReadings?: number | null;
         ApartmentIds?: number[] | null;
         IsOpened?: boolean | null;
+        SerialNumber?: string | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -8575,6 +8579,44 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/TaskApplicationSources/${sourceId}`,
         method: "DELETE",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Tasks
+     * @name TasksExportList
+     * @request GET:/api/Tasks/Export
+     * @secure
+     */
+    tasksExportList: (
+      query?: {
+        SearchingFilter?: string | null;
+        TargetType?: ETaskTargetType | null;
+        TaskId?: number | null;
+        TaskType?: EManagingFirmTaskFilterType | null;
+        GroupType?: TaskGroupingFilter | null;
+        DeviceId?: number | null;
+        HousingStockId?: number | null;
+        ApartmentId?: number | null;
+        HousingStockAddress?: string | null;
+        HasChanged?: boolean | null;
+        PipeNodeId?: number | null;
+        ClosingStatuses?: ETaskClosingStatus[] | null;
+        ApplicationCompetenceType?: ECompetenceType | null;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/Export`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 
