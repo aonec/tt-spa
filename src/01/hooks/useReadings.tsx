@@ -38,7 +38,9 @@ export const useReadings = (
   closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
+  
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
+  
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
   const [
     initialPreviousReadingState,
