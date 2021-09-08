@@ -332,7 +332,9 @@ export const useReadings = (
             Modal.confirm({
               title: `${
                 neededValueWarning?.type === 'up'
-                  ? `Расход ${neededValueWarning.difference}${unit}, больше чем лимит ${limit}${unit}`
+                  ? `Расход ${neededValueWarning.difference.toFixed(
+                      3
+                    )}${unit}, больше чем лимит ${limit}${unit}`
                   : ''
               }`,
               onOk: () => void sendPreviousReading(),
@@ -425,7 +427,7 @@ export const useReadings = (
           Modal.confirm({
             title: `${
               neededValueWarning?.type === 'up'
-                ? `Расход ${neededValueWarning.difference}${unit}, больше чем лимит ${limit}${unit}`
+                ? `Расход ${neededValueWarning.difference.toFixed()}${unit}, больше чем лимит ${limit}${unit}`
                 : ''
             }`,
             onOk: () => void sendCurrentReadings(),
