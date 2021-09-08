@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
 import { useFilter, filterValuesInit } from './useFilter.hook';
 
-const cities = ['Большое Афанасово', 'Нижнекамск', 'Красный ключ'];
+export const cities = ['Нижнекамск', 'Большое Афанасово', 'Красный ключ'];
 
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();

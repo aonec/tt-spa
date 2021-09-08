@@ -6,9 +6,10 @@ import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
+import { cities } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 
 const initialState = {
-  city: '',
+  city: 'Нижнекамск',
   street: '',
   house: '',
   corpus: '',
@@ -23,7 +24,7 @@ function filterReducer(state, action) {
       return { ...state, ...payload };
 
     case 'reset':
-      return { ...initialState };
+      return { ...initialState, city: state.sity };
 
     default:
       break;
@@ -32,7 +33,7 @@ function filterReducer(state, action) {
 
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
-  const { apart, street, house } = state;
+  const { apart, street, house, city } = state;
   const history = useHistory();
 
   const apartment = useStore($apartment);
@@ -64,6 +65,7 @@ export const useFilter = () => {
     try {
       const res = await axios.get('Apartments', {
         params: {
+          City: city,
           Street: street,
           ApartmentNumber: apart,
           HousingStockNumber: house,
@@ -116,8 +118,7 @@ export const useFilter = () => {
       {
         name: 'city',
         placeholder: 'Город',
-        disabled: true,
-        // option:
+        options: cities.map((value) => ({ value })),
       },
       {
         name: 'street',

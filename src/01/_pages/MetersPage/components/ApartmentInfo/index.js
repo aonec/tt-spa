@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css, use } from 'reshadow/macro';
 
 import { UserInfo } from './UserInfo';
 import { Icon, Loader } from '01/components';
 import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
-import styledComponents from 'styled-components';
+import styled from 'styled-components';
 
 import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
 import {
@@ -31,44 +30,199 @@ import { GetIssueCertificateModal } from '01/features/apartments/printIssueCerti
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 
-const styles = css`
-  drower {
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
+export const ApartmentInfo = () => {
+  const [show, setShow] = React.useState(false);
+  const history = useHistory();
+  const { id } = useParams();
 
-  drower_btn {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    & Icon {
-      margin-right: 8px;
-    }
-  }
+  const apartment = useStore($apartment);
+  const { userInfo = [], title, comment } = useApartmentInfo(apartment);
+  const homeowner = apartment?.homeowners[0];
+  const houseManagement = apartment?.housingStock?.houseManagement;
 
-  drower_content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 16px;
-    padding: 0;
-    overflow: hidden;
-    height: 0;
-    &[|show] {
-      padding: 8px 16px;
-      height: auto;
-    }
-  }
+  const pending = useStore(fetchApartmentFx.pending);
+
+  const cancelPauseApartment = () =>
+    confirm({
+      title: 'Вы действительно хотите снять эту квартиру с паузы?',
+      okText: 'Снять с паузы',
+      cancelText: 'Отмена',
+      onOk: async () => {
+        cancelPauseApartmentButtonClicked();
+
+        await new Promise((res) => setTimeout(res, 200));
+      },
+    });
+
+  const isPaused = apartment?.status === 'Pause';
+
+  const menuButtonArray = [
+    {
+      title: 'Поставить на паузу',
+      show: !isPaused,
+      cb: pauseApartmentButtonClicked,
+    },
+    {
+      title: 'Снять с паузы',
+      show: isPaused,
+      cb: cancelPauseApartment,
+    },
+    {
+      title: 'Добавить новый прибор',
+      show: true,
+      cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
+    },
+    {
+      title: 'Выдать справку',
+      show: true,
+      cb: () => getIssueCertificateButtonClicked(),
+    },
+  ];
+
+  const pausedAlert = isPaused && (
+    <>
+      <Alert type="stop">
+        <AlertContent>
+          <div>
+            Квартира на паузе до{' '}
+            {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
+          </div>
+          <div onClick={cancelPauseApartment} className="ant-btn-link">
+            Снять с паузы
+          </div>
+        </AlertContent>
+      </Alert>
+      <Space />
+    </>
+  );
+
+  const houseManagementRender = houseManagement && (
+    <div style={{ fontSize: 16, fontWeight: 500 }}>
+      <b>{houseManagement.name} </b>
+      <span>{houseManagement.comment}</span>
+      <br />
+      <span>(тел: {houseManagement.phone})</span>
+    </div>
+  );
+
+  const toggle = (
+    <div onClick={() => setShow((p) => !p)} style={{ cursor: 'pointer' }}>
+      {show ? (
+        <>
+          <Icon
+            icon="off"
+            color="var(--main-100)"
+            style={{ marginRight: 8, position: 'relative', top: 1 }}
+          />
+          <span>Скрыть подробную информацию</span>
+        </>
+      ) : (
+        <>
+          <Icon
+            icon="on"
+            color="var(--main-100)"
+            style={{ marginRight: 8, position: 'relative', top: 1 }}
+          />
+          <span>Показать подробную информацию</span>
+        </>
+      )}
+    </div>
+  );
+
+  const content = apartment && (
+    <Grid>
+      <div>
+        <Spaces spaceStyles={{ height: 10 }}>
+          <CommentTitle>Лицевой счет</CommentTitle>
+          <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
+          <CommentTitle>Управляющая компания</CommentTitle>
+          {houseManagementRender}
+          {toggle}
+        </Spaces>
+        {show ? (
+          <>
+            <Space h={10} />
+            <UserInfo list={userInfo} />
+          </>
+        ) : null}
+      </div>
+      <ApartmentComment comment={comment} />
+    </Grid>
+  );
+
+  return (
+    <>
+      <ApartmentGate id={Number(id)} />
+      <PauseApartmentModal />
+      <GetIssueCertificateModal />
+
+      <ApartmentInfoWrap>
+        <Flex style={{ justifyContent: 'space-between' }}>
+          <ApartmentTitle>{title}</ApartmentTitle>
+          <MenuButtonTT
+            menuButtonArr={menuButtonArray}
+            loading={pending}
+            size="small"
+          />
+        </Flex>
+        <Space />
+        {content}
+      </ApartmentInfoWrap>
+
+      {apartment && <>{pausedAlert}</>}
+    </>
+  );
+};
+
+const PersonalNumber = styled.div`
+  background-color: rgba(24, 158, 233, 1);
+  border-radius: 5px;
+  padding: 4px 10px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  width: min-content;
 `;
 
-const CommentModuleWrap = styledComponents.div``;
-const CommentTitle = styledComponents.div`
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+`;
+
+const ApartmentInfoWrap = styled.div`
+  padding: 15px 15px 15px 25px;
+  margin: 15px 0;
+  background: rgba(24, 158, 233, 0.1);
+  border-radius: 10px;
+`;
+
+const ApartmentTitle = styled.div`
+  font-weight: 500;
+  font-size: 18px;
+`;
+
+const AlertContent = styled(Flex)`
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+`;
+
+const CommentModuleWrap = styled.div``;
+const CommentTitle = styled.div`
   font-weight: 600;
-  opacity: 0.6; 
+  opacity: 0.6;
+
+  &:after {
+    content: ':';
+  }
 `;
-const CommentWrap = styledComponents.div`
-  margin-top: 15px
+const CommentWrap = styled.div`
+  margin-top: 10px;
 `;
-const CommentText = styledComponents.div`font-size: 16px`;
+const CommentText = styled.div`
+  font-size: 16px;
+`;
 
 const ApartmentComment = ({ comment: commentInitial }) => {
   const [comment, setComment] = useState('');
@@ -139,116 +293,3 @@ const ApartmentComment = ({ comment: commentInitial }) => {
     </CommentModuleWrap>
   );
 };
-
-export const ApartmentInfo = () => {
-  const [show, setShow] = React.useState(false);
-  const history = useHistory();
-  const { id } = useParams();
-
-  const apartment = useStore($apartment);
-  const { userInfo = [], title, comment } = useApartmentInfo(
-    apartment,
-    apartment?.housingStock?.houseManagement
-  );
-
-  const pending = useStore(fetchApartmentFx.pending);
-
-  const cancelPauseApartment = () =>
-    confirm({
-      title: 'Вы действительно хотите снять эту квартиру с паузы?',
-      okText: 'Снять с паузы',
-      cancelText: 'Отмена',
-      onOk: async () => {
-        cancelPauseApartmentButtonClicked();
-
-        await new Promise((res) => setTimeout(res, 200));
-      },
-    });
-
-  const isPaused = apartment?.status === 'Pause';
-
-  const menuButtonArray = [
-    {
-      title: 'Поставить на паузу',
-      show: !isPaused,
-      cb: pauseApartmentButtonClicked,
-    },
-    {
-      title: 'Снять с паузы',
-      show: isPaused,
-      cb: cancelPauseApartment,
-    },
-    {
-      title: 'Добавить новый прибор',
-      show: true,
-      cb: () => history.push(`/apartment/${id}/addIndividualDevice`),
-    },
-    {
-      title: 'Выдать справку',
-      show: true,
-      cb: () => getIssueCertificateButtonClicked(),
-    },
-  ];
-
-  return styled(styles)(
-    <>
-      <ApartmentGate id={Number(id)} />
-      <PauseApartmentModal />
-      <GetIssueCertificateModal />
-
-      <Flex style={{ justifyContent: 'space-between', marginTop: 40 }}>
-        <apart_title as="h2">{title}</apart_title>
-        <MenuButtonTT menuButtonArr={menuButtonArray} loading={pending} />
-      </Flex>
-
-      {apartment && (
-        <>
-          {isPaused && (
-            <div>
-              <Space />
-              <Alert type="stop">
-                <AlertContent>
-                  <div>
-                    Квартира на паузе до{' '}
-                    {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
-                  </div>
-                  <div onClick={cancelPauseApartment} className="ant-btn-link">
-                    Снять с паузы
-                  </div>
-                </AlertContent>
-              </Alert>
-            </div>
-          )}
-
-          <drower>
-            <drower_btn onClick={() => setShow(!show)}>
-              <Flex
-                style={{
-                  transform: `rotate(${show ? -180 : 0}deg) translate(${
-                    show ? 8 : 0
-                  }px, ${show ? 2 : 0}px)`,
-                  transition: '.4s',
-                }}
-              >
-                <Icon icon="down" />
-              </Flex>
-              {show
-                ? 'Скрыть подробную информацию'
-                : 'Показать подробную информацию'}
-            </drower_btn>
-            <drower_content {...use({ show })}>
-              <UserInfo list={userInfo} />
-              <ApartmentComment comment={comment} />
-            </drower_content>
-          </drower>
-        </>
-      )}
-    </>
-  );
-};
-
-const AlertContent = styledComponents(Flex)`
-  justify-content: space-between;
-  width: 100%;
-  cursor: pointer;
-`;
