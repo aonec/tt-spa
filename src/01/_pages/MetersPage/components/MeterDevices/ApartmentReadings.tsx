@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
 import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
@@ -35,7 +36,9 @@ export const ApartmentReadings = () => {
   const devices = useStore($individualDevices);
   const { id } = useParams<{ id: string }>();
 
-  const { sliderIndex, sliderProps } = useMonthSlider(devices);
+  const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+
+  useEffect(() => reset && reset(), [id]);
 
   const validDevicesList = devices.filter(
     (device) => device.closingDate === null

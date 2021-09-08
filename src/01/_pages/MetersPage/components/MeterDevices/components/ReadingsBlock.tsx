@@ -176,7 +176,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
         value={value}
         onFocus={onFocusHandler}
         onChange={onChange}
-        required
         tabIndex={index + 1}
         step="0.01"
       />
