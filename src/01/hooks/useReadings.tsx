@@ -60,7 +60,7 @@ export const useReadings = (
     setReadingsState(undefined);
   }, [device]);
 
-  useEffect(() => {
+  const setInitialData = (sliderIndex: number) => {
     const previousReadingsArray: number[] = [];
     const currentReadingsArray: number[] = [];
 
@@ -107,9 +107,6 @@ export const useReadings = (
             },
       };
 
-      setInitialPreviousReadingState(previousReadings);
-      setInitialReadings(prev?.currentReadingsArray || currentReadingsArray);
-
       return {
         previousReadings,
         previousReadingsArray,
@@ -125,7 +122,17 @@ export const useReadings = (
         status: prev?.status,
       };
     });
+  };
+
+  useEffect(() => {
+    setInitialData(sliderIndex);
   }, [device.readings, sliderIndex]);
+
+  useEffect(() => {
+    device?.readings?.forEach((_, index) => {
+      setInitialData(index);
+    });
+  }, [device.readings]);
 
   function setReadingArchived(id: number, readingDate: string) {
     const request = async () => {
@@ -208,8 +215,6 @@ export const useReadings = (
           neededReadings.previousReadings[sliderIndex];
 
         if (isPrevious) {
-          setReadingsState(neededReadings);
-
           if (
             !neededPreviousReadings ||
             !neededPreviousReadings?.values?.length
@@ -298,10 +303,8 @@ export const useReadings = (
             device.resource,
             device.rateType,
             readingsState.previousReadings[sliderIndex]?.values,
-            getNextPreviousReading(
-              readingsState.previousReadings || [],
-              sliderIndex
-            )?.values || undefined
+            getNextPreviousReading(readingsState.previousReadings, sliderIndex)
+              ?.values || undefined
           );
 
           if (validated) {
@@ -312,8 +315,15 @@ export const useReadings = (
             );
 
             if (neededValueWarning?.type === 'down') {
+              const failedReadingValidateResult = valuesValidationResults?.find(
+                (elem) => !elem.validated
+              );
               message.error(
-                `Введенное показание по прибору ${device.model} (${device.serialNumber}) меньше предыдущего`,
+                `Введенное показание по прибору ${device.model} (${
+                  device.serialNumber
+                }) меньше предыдущего на ${Math.abs(
+                  round(failedReadingValidateResult?.difference || 0, 3)
+                )}${unit} [T${failedReadingValidateResult?.index}]`,
                 4.5
               );
               setReadingsState((prev: any) => ({
@@ -332,13 +342,14 @@ export const useReadings = (
             Modal.confirm({
               title: `${
                 neededValueWarning?.type === 'up'
-                  ? `Расход ${neededValueWarning.difference.toFixed(
+                  ? `Расход ${round(
+                      neededValueWarning.difference,
                       3
                     )}${unit}, больше чем лимит ${limit}${unit}`
                   : ''
               }`,
               onOk: () => void sendPreviousReading(),
-              okText: 'Да',
+              okText: 'Сохранить',
               cancelText: 'Отмена',
               centered: true,
             });
@@ -402,19 +413,26 @@ export const useReadings = (
           device.resource,
           device.rateType,
           readingsState.currentReadingsArray,
-          readingsState.previousReadings[sliderIndex]?.values
+          getNextPreviousReading(
+            readingsState.previousReadings,
+            sliderIndex - 1
+          )?.values
         );
 
         if (validated) {
           await sendCurrentReadings();
         } else {
-          const neededValueWarning = valuesValidationResults?.find((elem) =>
-            Boolean(elem.type)
+          const neededValueWarning = valuesValidationResults?.find(
+            (elem) => !elem.validated
           );
 
           if (neededValueWarning?.type === 'down') {
             message.error(
-              `Введенное показание по прибору ${device.model} (${device.serialNumber}) меньше предыдущего`,
+              `Введенное показание по прибору ${device.model} (${
+                device.serialNumber
+              }) меньше предыдущего на ${Math.abs(
+                round(neededValueWarning?.difference || 0, 3)
+              )}${unit} [T${neededValueWarning?.index}]`,
               4.5
             );
             setReadingsState((prev: any) => ({
@@ -427,11 +445,14 @@ export const useReadings = (
           Modal.confirm({
             title: `${
               neededValueWarning?.type === 'up'
-                ? `Расход ${neededValueWarning.difference.toFixed()}${unit}, больше чем лимит ${limit}${unit}`
+                ? `Расход ${round(
+                    neededValueWarning.difference,
+                    3
+                  )}${unit}, больше чем лимит ${limit}${unit}`
                 : ''
             }`,
             onOk: () => void sendCurrentReadings(),
-            okText: 'Да',
+            okText: 'Сохранить',
             cancelText: 'Отмена',
             centered: true,
           });
@@ -713,7 +734,11 @@ interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
     type: 'up' | 'down' | null;
+    validated: boolean;
+    index: number;
     difference: number;
+    currentValue: number;
+    prevValue: number;
   }[];
   limit?: number;
 }
@@ -729,7 +754,7 @@ const isCorrectReadingValues = (
   const rateNum = getIndividualDeviceRateNumByName(rateType);
   const limit = getResourceUpLimit(resource);
 
-  return nextReadings.reduce(
+  const res = nextReadings.reduce(
     (acc, elem, index) => {
       if (index + 1 > rateNum) return acc;
 
@@ -738,15 +763,18 @@ const isCorrectReadingValues = (
 
       const isDown = currentValue < prevValue;
       const isUp = currentValue - prevValue > limit;
-      const type = isUp ? 'up' : isDown ? 'down' : null;
+      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
       const difference = currentValue - prevValue;
+
+      const validated = acc.validated && !isDown && !isUp;
 
       return {
         ...acc,
-        validated: acc && !isDown && !isUp,
+        validated,
         valuesValidationResults: [
           ...(acc.valuesValidationResults || []),
           {
+            validated,
             index: index + 1,
             type,
             difference,
@@ -758,6 +786,10 @@ const isCorrectReadingValues = (
     },
     { validated: true, limit } as CorrectReadingValuesValidationResult
   );
+
+  console.log(res);
+
+  return res;
 };
 
 const getNextPreviousReading = (
@@ -771,7 +803,7 @@ const getNextPreviousReading = (
   while (true) {
     index++;
 
-    if (readings[index]) {
+    if (readings[index]?.values?.some(Boolean)) {
       res = readings[index];
       break;
     }
@@ -831,3 +863,8 @@ const ReadingUploadDate = styled(Flex)`
   color: #929292;
   margin-top: 2px;
 `;
+
+function round(x: number, n: number) {
+  const m = Math.pow(10, n);
+  return Math.round(x * m) / m;
+}
