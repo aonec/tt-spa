@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { ButtonTT } from '01/tt-components';
 import { Certificate } from '01/_pages/ApartmentProfile/components';
@@ -10,6 +11,7 @@ import {
   $isPrintIssueCertificateModalOpen,
   closeIssueCertificateModalButtonClicked,
   HomeownerCerificateGate,
+  fetchHomeownerCertificate,
 } from './models';
 
 export const GetIssueCertificateModal = () => {
@@ -17,6 +19,7 @@ export const GetIssueCertificateModal = () => {
   const apartment = useStore($apartment);
 
   const homeownerCertificate = useStore($homeownerCertificatre);
+  const pendingCertificate = useStore(fetchHomeownerCertificate.pending);
   const certificateRef = useRef();
 
   if (!apartment?.homeowners?.length) return <></>;
@@ -36,15 +39,15 @@ export const GetIssueCertificateModal = () => {
         customSubmit={
           <ReactToPrint
             trigger={() => (
-              <ButtonTT color="blue" key="submit">
-                Печать
+              <ButtonTT color="blue" key="submit" disabled={pendingCertificate}>
+                {pendingCertificate ? <Loader show /> : 'Печать'}
               </ButtonTT>
             )}
             content={() => (certificateRef as any).current}
           />
         }
       >
-        {homeownerCertificate && (
+        {homeownerCertificate && !pendingCertificate && (
           <div style={{ marginBottom: 70 }}>
             <Certificate
               certificate={homeownerCertificate}
