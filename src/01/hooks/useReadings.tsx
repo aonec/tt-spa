@@ -38,9 +38,9 @@ export const useReadings = (
   closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
-  
+
   const [readingsState, setReadingsState] = useState<ReadingsStateType>();
-  
+
   const [initialReadings, setInitialReadings] = useState<number[]>([]);
   const [
     initialPreviousReadingState,
@@ -108,6 +108,9 @@ export const useReadings = (
               status: prevReadings.status,
             },
       };
+
+      setInitialPreviousReadingState(previousReadings);
+      setInitialReadings(prev?.currentReadingsArray || currentReadingsArray);
 
       return {
         previousReadings,
@@ -472,17 +475,15 @@ export const useReadings = (
 
       if (
         isPrevious &&
-        initialPreviousReadingState[sliderIndex]?.values.join() !==
-          readingsState.previousReadings[sliderIndex]?.values.join()
+        initialPreviousReadingState[sliderIndex]?.values !==
+          readingsState.previousReadings[sliderIndex]?.values
       ) {
         sendReadings(isPrevious);
 
         return;
       }
 
-      if (
-        readingsState.currentReadingsArray.join('') !== initialReadings.join('')
-      ) {
+      if (readingsState.currentReadingsArray !== initialReadings) {
         sendReadings();
       }
     },
