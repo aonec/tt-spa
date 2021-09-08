@@ -7,6 +7,12 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '../Layout/Flex';
 import ApartmentReadingLine from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import {
+  $isShownClosedDevices,
+  hideClosedDevices,
+  showClosedDevices,
+} from '01/features/individualDevices/displayIndividualDevices/models';
+import { useStore } from 'effector-react';
 
 const ClosedDevices = ({
   devices,
@@ -15,7 +21,7 @@ const ClosedDevices = ({
   devices: IndividualDeviceListItemResponse[];
   sliderIndex: number;
 }) => {
-  const [showClosed, setShowClosed] = useState(false);
+  const showClosed = useStore($isShownClosedDevices);
 
   const closedDevices = devices.map((device, index) => (
     <ApartmentReadingLine
@@ -34,7 +40,9 @@ const ClosedDevices = ({
   return (
     <div style={{ marginBottom: 15 }}>
       <div>{showClosed ? closedDevices : null}</div>
-      <ShowClosedBlock onClick={() => setShowClosed((x) => !x)}>
+      <ShowClosedBlock
+        onClick={() => (showClosed ? hideClosedDevices : showClosedDevices)()}
+      >
         <ShowToggle>
           {showClosed ? (
             <>
