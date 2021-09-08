@@ -4,7 +4,6 @@ import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
-import { isNullInArray } from '../utils/checkArrayForNulls';
 import {
   DeviceReadingsContainer,
   getInputColor,
@@ -100,6 +99,7 @@ export const useReadings = (
               source: prevReadings.source,
               user: prevReadings.user,
               id: prevReadings.id,
+              status: prevReadings.status,
             },
       };
 
@@ -239,53 +239,58 @@ export const useReadings = (
             readingDate: neededPreviousReadings.date,
           };
 
-          setReadingsState((prev: any) => ({
-            ...prev,
-            previousReadings: {
-              ...prev.previousReadings,
-              [sliderIndex]: {
-                ...prev.previousReadings[sliderIndex],
-                status: 'pending',
-              },
-            },
-          }));
-
-          try {
-            const { current: res }: any = await axios.post(
-              '/IndividualDeviceReadings/create',
-              requestPayload
-            );
-
+          const sendPreviousReading = async () => {
             setReadingsState((prev: any) => ({
               ...prev,
               previousReadings: {
                 ...prev.previousReadings,
                 [sliderIndex]: {
                   ...prev.previousReadings[sliderIndex],
-                  uploadTime: moment(res.uploadDate).toISOString(),
-                  source: res.source,
-                  user: res.user,
-                  id: res.readingId,
-                  status: 'done',
-                },
-              },
-            }));
-          } catch (error) {
-            setReadingsState((prev: any) => ({
-              ...prev,
-              previousReadings: {
-                ...prev.previousReadings,
-                [sliderIndex]: {
-                  ...prev.previousReadings[sliderIndex],
-                  status: 'failed',
+                  status: 'pending',
                 },
               },
             }));
 
-            throw error;
-          }
+            try {
+              const { current: res }: any = await axios.post(
+                '/IndividualDeviceReadings/create',
+                requestPayload
+              );
 
-          return;
+              setReadingsState((prev: any) => ({
+                ...prev,
+                previousReadings: {
+                  ...prev.previousReadings,
+                  [sliderIndex]: {
+                    ...prev.previousReadings[sliderIndex],
+                    uploadTime: moment(res.uploadDate).toISOString(),
+                    source: res.source,
+                    user: res.user,
+                    id: res.readingId,
+                    status: 'done',
+                  },
+                },
+              }));
+            } catch (error) {
+              setReadingsState((prev: any) => ({
+                ...prev,
+                previousReadings: {
+                  ...prev.previousReadings,
+                  [sliderIndex]: {
+                    ...prev.previousReadings[sliderIndex],
+                    status: 'failed',
+                  },
+                },
+              }));
+              message.error('Не удалось сохранить показания, попробуйте позже');
+              throw error;
+            }
+
+            return;
+          };
+
+          // if (rea)
+          return await sendPreviousReading();
         }
 
         const deviceReadingObject: Record<
@@ -302,38 +307,45 @@ export const useReadings = (
           );
         }
 
-        setReadingsState((prev: any) => ({
-          ...prev,
-          status: 'pending',
-        }));
-
-        try {
-          const { current: res }: any = await axios.post(
-            '/IndividualDeviceReadings/create',
-            deviceReadingObject
-          );
-
+        const sendCurrentReadings = async () => {
           setReadingsState((prev: any) => ({
             ...prev,
-            uploadTime: moment(res.uploadDate).toISOString(),
-            source: res.source,
-            user: res.user,
-            currentReadingId: res.readingId || prev.currentReadingId,
-            status: 'done',
+            status: 'pending',
           }));
 
-          setInitialReadings(readingsState.currentReadingsArray);
-        } catch (error) {
-          setReadingsState((prev: any) => ({
-            ...prev,
-            status: 'failed',
-          }));
+          try {
+            const { current: res }: any = await axios.post(
+              '/IndividualDeviceReadings/create',
+              deviceReadingObject
+            );
 
-          throw error;
-        }
-      } catch (e) {
-        message.error('Не удалось сохранить показания, попробуйте позже');
-      }
+            setReadingsState((prev: any) => ({
+              ...prev,
+              uploadTime: moment(res.uploadDate).toISOString(),
+              source: res.source,
+              user: res.user,
+              currentReadingId: res.readingId || prev.currentReadingId,
+              status: 'done',
+            }));
+
+            setInitialReadings(readingsState.currentReadingsArray);
+          } catch (error) {
+            setReadingsState((prev: any) => ({
+              ...prev,
+              status: 'failed',
+            }));
+
+            message.error('Не удалось сохранить показания, попробуйте позже');
+            throw error;
+          }
+        };
+
+        confirm({
+          onOk: sendCurrentReadings,
+        });
+
+        return await sendCurrentReadings();
+      } catch (e) {}
     },
     [readingsState]
   );
