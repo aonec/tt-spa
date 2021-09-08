@@ -14,7 +14,16 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     const currentInputNode: any =
       index < 0 ? null : currentNode.getElementsByClassName('ant-input')[0];
 
-    if (!nextNode) return currentInputNode?.blur && currentInputNode.blur();
+    if (!nextNode) {
+      const firstNode = inputList[0];
+
+      const neededInputNode: any = firstNode.getElementsByClassName(
+        'ant-input'
+      )[0];
+
+      neededInputNode && neededInputNode.focus && neededInputNode.focus();
+      return; // currentInputNode?.blur && currentInputNode.blur()
+    }
 
     const nextInputNode: any = nextNode.getElementsByClassName('ant-input')[0];
 
