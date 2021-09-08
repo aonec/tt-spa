@@ -100,7 +100,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
               renderField(elem, index, false)
             )}
           </div>
-          <Space style={{ height: 6 }} />
+          <Space h={6} />
           <div>{renderField(values[2], 2, true)}</div>
         </>
       ) : (
