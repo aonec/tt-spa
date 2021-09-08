@@ -252,8 +252,8 @@ export const useReadings = (
             }));
 
             try {
-              const { current: res }: any = await axios.post(
-                '/IndividualDeviceReadings/create',
+              const res: any = await axios.post(
+                '/IndividualDeviceReadings/createLite',
                 requestPayload
               );
 
@@ -263,7 +263,7 @@ export const useReadings = (
                   ...prev.previousReadings,
                   [sliderIndex]: {
                     ...prev.previousReadings[sliderIndex],
-                    uploadTime: moment(res.uploadDate).toISOString(),
+                    uploadTime: moment(res.uploadTime).toISOString(),
                     source: res.source,
                     user: res.user,
                     id: res.readingId,
@@ -314,8 +314,8 @@ export const useReadings = (
           }));
 
           try {
-            const { current: res }: any = await axios.post(
-              '/IndividualDeviceReadings/create',
+            const res: any = await axios.post(
+              '/IndividualDeviceReadings/createLite',
               deviceReadingObject
             );
 
@@ -339,10 +339,6 @@ export const useReadings = (
             throw error;
           }
         };
-
-        confirm({
-          onOk: sendCurrentReadings,
-        });
 
         return await sendCurrentReadings();
       } catch (e) {}
