@@ -1,9 +1,12 @@
 import axios from '01/axios';
 import { Loader } from '01/components';
+import ActiveLine from '01/components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { translateMountPlace } from '01/utils/translateMountPlace';
+import { DateLine } from '01/_components/DateLine/DateLine';
 import { CancelTokenSource } from 'axios';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
@@ -62,7 +65,20 @@ export const SerialNumberSearch: React.FC<Props> = ({ setSearchContext }) => {
       onClick={() => setSearchContext(1)}
     >
       <Device key={index}>
-        <DeviceDataString device={device} />
+        <Flex>
+          <DeviceDataString device={device} />
+          <Space />
+          <ActiveLine
+            isActive={device.closingDate === null}
+            closingReason={device.closingReason}
+          />
+          <DateLine
+            lastCheckingDate={device.lastCheckingDate}
+            futureCheckingDate={device.futureCheckingDate}
+          />
+          <Space />
+          <div>{translateMountPlace(device.mountPlace)}</div>
+        </Flex>
       </Device>
     </NavLink>
   );

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as EditIcon } from './icons/Edit.svg';
 import TextArea from 'antd/lib/input/TextArea';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space, Spaces } from '01/shared/ui/Layout/Space/Space';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
 import {
@@ -36,10 +36,9 @@ export const ApartmentInfo = () => {
   const { id } = useParams();
 
   const apartment = useStore($apartment);
-  const { userInfo = [], title, comment } = useApartmentInfo(
-    apartment,
-    apartment?.housingStock?.houseManagement
-  );
+  const { userInfo = [], title, comment } = useApartmentInfo(apartment);
+  const homeowner = apartment?.homeowners[0];
+  const houseManagement = apartment?.housingStock?.houseManagement;
 
   const pending = useStore(fetchApartmentFx.pending);
 
@@ -97,6 +96,60 @@ export const ApartmentInfo = () => {
     </>
   );
 
+  const houseManagementRender = houseManagement && (
+    <div style={{ fontSize: 16, fontWeight: 500 }}>
+      <b>{houseManagement.name} </b>
+      <span>{houseManagement.comment}</span>
+      <br />
+      <span>(тел: {houseManagement.phone})</span>
+    </div>
+  );
+
+  const toggle = (
+    <div onClick={() => setShow((p) => !p)} style={{ cursor: 'pointer' }}>
+      {show ? (
+        <>
+          <Icon
+            icon="off"
+            color="var(--main-100)"
+            style={{ marginRight: 8, position: 'relative', top: 1 }}
+          />
+          <span>Скрыть подробную информацию</span>
+        </>
+      ) : (
+        <>
+          <Icon
+            icon="on"
+            color="var(--main-100)"
+            style={{ marginRight: 8, position: 'relative', top: 1 }}
+          />
+          <span>Показать подробную информацию</span>
+        </>
+      )}
+    </div>
+  );
+
+  const content = apartment && (
+    <Grid>
+      <div>
+        <Spaces spaceStyles={{ height: 10 }}>
+          <CommentTitle>Лицевой счет</CommentTitle>
+          <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
+          <CommentTitle>Управляющая компания</CommentTitle>
+          {houseManagementRender}
+          {toggle}
+        </Spaces>
+        {show ? (
+          <>
+            <Space h={10} />
+            <UserInfo list={userInfo} />
+          </>
+        ) : null}
+      </div>
+      <ApartmentComment comment={comment} />
+    </Grid>
+  );
+
   return (
     <>
       <ApartmentGate id={Number(id)} />
@@ -112,6 +165,8 @@ export const ApartmentInfo = () => {
             size="small"
           />
         </Flex>
+        <Space />
+        {content}
       </ApartmentInfoWrap>
 
       {apartment && <>{pausedAlert}</>}
@@ -119,8 +174,24 @@ export const ApartmentInfo = () => {
   );
 };
 
+const PersonalNumber = styled.div`
+  background-color: rgba(24, 158, 233, 1);
+  border-radius: 5px;
+  padding: 4px 10px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  width: min-content;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+`;
+
 const ApartmentInfoWrap = styled.div`
-  padding: 15px;
+  padding: 15px 15px 15px 25px;
   margin: 15px 0;
   background: rgba(24, 158, 233, 0.1);
   border-radius: 10px;
@@ -141,9 +212,13 @@ const CommentModuleWrap = styled.div``;
 const CommentTitle = styled.div`
   font-weight: 600;
   opacity: 0.6;
+
+  &:after {
+    content: ':';
+  }
 `;
 const CommentWrap = styled.div`
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 const CommentText = styled.div`
   font-size: 16px;
