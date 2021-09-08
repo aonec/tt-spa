@@ -97,10 +97,9 @@ export const ApartmentInfo = () => {
   );
 
   const houseManagementRender = houseManagement && (
-    <div style={{ fontSize: 16, fontWeight: 500 }}>
-      <b>{houseManagement.name} </b>
+    <div style={{ fontSize: 12, fontWeight: 500 }}>
+      {houseManagement.name}
       <span>{houseManagement.comment}</span>
-      <br />
       <span>(тел: {houseManagement.phone})</span>
     </div>
   );
@@ -133,8 +132,6 @@ export const ApartmentInfo = () => {
     <Grid>
       <div>
         <Spaces spaceStyles={{ height: 10 }}>
-          <CommentTitle>Лицевой счет</CommentTitle>
-          <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
           <CommentTitle>Управляющая компания</CommentTitle>
           {houseManagementRender}
           {toggle}
@@ -157,13 +154,19 @@ export const ApartmentInfo = () => {
       <GetIssueCertificateModal />
 
       <ApartmentInfoWrap>
-        <Flex style={{ justifyContent: 'space-between' }}>
-          <ApartmentTitle>{title}</ApartmentTitle>
-          <MenuButtonTT
-            menuButtonArr={menuButtonArray}
-            loading={pending}
-            size="small"
-          />
+        <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
+          <Flex>
+            <ApartmentTitle>{title}</ApartmentTitle>
+            <Space />
+            <PersonalNumber>{homeowner?.personalAccountNumber}</PersonalNumber>
+          </Flex>
+          <MenuButtonWrap>
+            <MenuButtonTT
+              menuButtonArr={menuButtonArray}
+              loading={pending}
+              size="small"
+            />
+          </MenuButtonWrap>
         </Flex>
         <Space />
         {content}
@@ -173,6 +176,10 @@ export const ApartmentInfo = () => {
     </>
   );
 };
+
+const MenuButtonWrap = styled.div`
+  transform: scale(-0.7) translate(-5px, 5px);
+`;
 
 const PersonalNumber = styled.div`
   background-color: rgba(24, 158, 233, 1);
@@ -191,7 +198,7 @@ const Grid = styled.div`
 `;
 
 const ApartmentInfoWrap = styled.div`
-  padding: 15px 15px 15px 25px;
+  padding: 10px 10px 10px 15px;
   margin: 15px 0;
   background: rgba(24, 158, 233, 0.1);
   border-radius: 10px;
@@ -212,7 +219,7 @@ const CommentModuleWrap = styled.div``;
 const CommentTitle = styled.div`
   font-weight: 600;
   opacity: 0.6;
-
+  margin-bottom: -10px;
   &:after {
     content: ':';
   }

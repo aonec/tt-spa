@@ -18,7 +18,6 @@ export const useApartmentInfo = (apartInfo) => {
             homeowner.middleName || ''
           }`,
       ],
-      ['Лицевой счет', homeowners[0]?.personalAccountNumber],
       ['Телефон', homeowners[0]?.phoneNumber ?? '-'],
     ],
     comment: comment,

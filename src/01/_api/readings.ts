@@ -14,4 +14,4 @@ export const getReadingsHistory = (
 export const createReading = async (
   requestPayload: IndividualDeviceReadingsCreateRequest
 ): Promise<IndividualDeviceReadingsCreateListResponse> =>
-  axios.post(`IndividualDeviceReadings/create`, requestPayload);
+  axios.post(`IndividualDeviceReadings/createLite`, requestPayload);

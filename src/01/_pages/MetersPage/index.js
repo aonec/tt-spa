@@ -24,7 +24,6 @@ export const MetersPage = () => {
 
   return (
     <Wrap style={{ maxWidth: 960 }}>
-      <Title style={{ marginBottom: 16 }}>Ввод показаний</Title>
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
           <Route path="/meters/apartments">
