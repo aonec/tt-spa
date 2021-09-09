@@ -204,7 +204,9 @@ const Title = styled.div`
 `;
 
 const Wrap = styled(Flex)`
-  box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16);
+  /* box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16); */
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
   padding: 15px 20px;
   justify-content: space-between;
 `;

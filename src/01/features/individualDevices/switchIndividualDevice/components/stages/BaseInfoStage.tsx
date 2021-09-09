@@ -263,6 +263,7 @@ export const BaseInfoStage = () => {
 
       {device && (
         <>
+          <Space />
           <ReadingsInput
             title="Закрываемый прибор"
             readings={fields.oldDeviceReadings.value}
