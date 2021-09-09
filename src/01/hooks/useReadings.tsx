@@ -579,7 +579,7 @@ export const useReadings = (
           user={readingsState.previousReadings[sliderIndex].user}
           key={device.id + index + '-prev-readings'}
           index={index}
-          // value={value}
+          value={value}
           source={readingsState.previousReadings[sliderIndex].source}
           operatorCabinet
           resource={readingsState.resource}
