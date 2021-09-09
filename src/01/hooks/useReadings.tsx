@@ -30,6 +30,7 @@ import { message, Modal, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -134,8 +135,9 @@ export const useReadings = (
   }, [device.readings, sliderIndex]);
 
   useEffect(() => {
-    device?.readings?.forEach((_, index) => {
-      setInitialData(index);
+    getArrayByCountRange(11, () => '').forEach((_, index) => {
+      const res = setInitialData(index);
+      console.log(res, index);
     });
   }, [device.readings]);
 
