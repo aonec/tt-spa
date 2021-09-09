@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Icon } from '../../../../../_components/Icon';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
+import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -20,9 +21,11 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
   return (
     <DeviceColumn>
       <DeviceLink to={history.location.pathname}>
-        <DeviceIcon icon={icon} fill={color} />
-        {`${device.model} `}
-        <SerialNumber>{` (${device.serialNumber})`}</SerialNumber>
+        <DeviceIcon icon={icon} fill={color} dark />
+        <Space w={7} />
+        {device.serialNumber}
+        <SerialNumber>{` ${device.model}`}</SerialNumber>
+        <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </DeviceLink>
       <ApartmentInfo>
         <ActiveLine isActive={isActive} closingReason={device.closingReason} />
@@ -30,7 +33,6 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}
         />
-        <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
       </ApartmentInfo>
     </DeviceColumn>
   );
@@ -63,10 +65,12 @@ const SerialNumber = styled.span`
 
 const ApartmentInfo = styled.div`
   display: flex;
+  margin-left: 22px;
 `;
 
 const MountPlace = styled.div`
-  margin-left: 16px;
+  margin-left: 8px;
+  font-weight: 400;
   color: rgba(39, 47, 90, 0.6);
 `;
 
