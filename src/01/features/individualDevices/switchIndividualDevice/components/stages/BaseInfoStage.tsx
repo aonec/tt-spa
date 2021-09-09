@@ -161,8 +161,10 @@ export const BaseInfoStage = () => {
                 <Flex>
                   <DeviceIcon
                     icon={DeviceIcons[elem.value]?.icon}
+                    dark
                     fill={DeviceIcons[elem.value]?.color}
                   />
+                  <Space />
                   <div>{elem.label}</div>
                 </Flex>
               </Select.Option>

@@ -18,7 +18,7 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
       <DeviceWrapper>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DeviceLink to={`/calculators/${calculator.id}`}>
-            <DeviceIcon icon="device" fill="var(--main-100)" />
+            <DeviceIcon dark icon="device" fill="var(--main-100)" />
             {calculator.model}
             <SerialNumber>({calculator.serialNumber})</SerialNumber>
           </DeviceLink>

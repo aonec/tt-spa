@@ -73,6 +73,7 @@ export const RenderDeviceIcon = ({
       style={{ marginRight: 0 }}
       icon={deviceIcon.icon}
       fill={deviceIcon.color}
+      dark
     />
   );
 };
