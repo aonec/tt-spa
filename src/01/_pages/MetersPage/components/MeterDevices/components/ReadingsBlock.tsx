@@ -46,7 +46,7 @@ const TarifLabel = styled.span<{ houseReadings: boolean }>`
 interface DeviceRatesVerticalProps {
   index: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: number;
+  value?: number;
   readingsBlocked?: boolean;
   resource: string;
   operatorCabinet?: boolean;
