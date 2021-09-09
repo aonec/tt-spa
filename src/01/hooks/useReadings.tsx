@@ -579,13 +579,17 @@ export const useReadings = (
           user={readingsState.previousReadings[sliderIndex].user}
           key={device.id + index + '-prev-readings'}
           index={index}
-          value={value}
+          // value={value}
           source={readingsState.previousReadings[sliderIndex].source}
           operatorCabinet
           resource={readingsState.resource}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             onInputChange(e, index, true);
           }}
+          lineIndex={
+            numberOfPreviousReadingsInputs &&
+            numberOfPreviousReadingsInputs + index
+          }
           status={readingsState.previousReadings[sliderIndex]?.status}
         />
       ),
@@ -726,37 +730,33 @@ export const useReadings = (
   const isExistNextPrevious = nextPreviousReading?.values.some(Boolean);
 
   const previousReadingsWithTooltip =
-    isExistCurrentPrevious || !isExistNextPrevious ? (
-      previousResultReadings
-    ) : (
-      <Tooltip
-        title={getPreviousReadingTooltipString(
-          nextPreviousReading?.values || [],
-          device?.rateType,
-          unit
-        )}
-      >
-        {previousResultReadings}
-      </Tooltip>
-    );
+    isExistCurrentPrevious || !isExistNextPrevious
+      ? previousResultReadings
+      : // <Tooltip
+        //   title={getPreviousReadingTooltipString(
+        //     nextPreviousReading?.values || [],
+        //     device?.rateType,
+        //     unit
+        //   )}
+        // >
+        previousResultReadings;
+        // </Tooltip>
 
   const isExistCurrentReading =
     readingsState.currentReadingsArray?.some(Boolean) && readingsState.source;
 
   const currentReadingsWithTooltip =
-    isExistCurrentPrevious || !isExistNextPrevious || isExistCurrentReading ? (
-      currentReadings
-    ) : (
-      <Tooltip
-        title={getPreviousReadingTooltipString(
-          nextPreviousReading?.values || [],
-          device?.rateType,
-          unit
-        )}
-      >
-        {currentReadings}
-      </Tooltip>
-    );
+    isExistCurrentPrevious || !isExistNextPrevious || isExistCurrentReading
+      ? currentReadings
+      : // <Tooltip
+        //   title={getPreviousReadingTooltipString(
+        //     nextPreviousReading?.values || [],
+        //     device?.rateType,
+        //     unit
+        //   )}
+        // >
+        currentReadings;
+        // </Tooltip>
 
   return {
     readingsState, // стейт с показаниями
