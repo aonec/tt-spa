@@ -21,7 +21,9 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
   return (
     <DeviceColumn>
       <DeviceLink to={history.location.pathname}>
-        <DeviceIcon icon={icon} fill={color} dark />
+        <Space>
+          <DeviceIcon icon={icon} fill={color} dark />
+        </Space>
         <Space w={7} />
         {device.serialNumber}
         <SerialNumber>{` ${device.model}`}</SerialNumber>
