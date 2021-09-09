@@ -137,7 +137,6 @@ export const useReadings = (
   useEffect(() => {
     getArrayByCountRange(11, () => '').forEach((_, index) => {
       const res = setInitialData(index);
-      console.log(res, index);
     });
   }, [device.readings]);
 

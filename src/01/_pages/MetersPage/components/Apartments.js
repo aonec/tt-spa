@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'reshadow/macro';
 import { Redirect, useHistory, useRouteMatch } from 'react-router-dom';
 import { Loader } from '01/components';
 import OperatorPlaceholder from './OperatorPlaceholder.svg';
 import styledC from 'styled-components';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { useStore } from 'effector-react';
 
 const styles = css`
   apart {
@@ -31,8 +33,16 @@ const styles = css`
 export const Apartments = ({ loading = null, items = [] }) => {
   const { push } = useHistory();
   const { url } = useRouteMatch();
-  if (loading) return <Loader show size="32" />;
 
+  const apartment = useStore($apartment);
+  const history = useHistory();
+
+  useEffect(() => {
+    console.log(apartment);
+    if (apartment?.id) history.push(`/meters/apartments/${apartment.id}`);
+  }, [apartment]);
+
+  if (loading) return <Loader show size="32" />;
   if (items.length === 0)
     return (
       <ImageContainer>
