@@ -1,13 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { Apartments } from './components/Apartments';
 import { Filter } from './components/Filter';
 import { ApartmentInfo } from './components/ApartmentInfo';
 import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
-import { Title } from '../../_components/Headers';
 import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
