@@ -729,34 +729,40 @@ export const useReadings = (
   const isExistCurrentPrevious = currentPreviousReading?.values.some(Boolean);
   const isExistNextPrevious = nextPreviousReading?.values.some(Boolean);
 
-  const previousReadingsWithTooltip =
-    isExistCurrentPrevious || !isExistNextPrevious
-      ? previousResultReadings
-      : // <Tooltip
-        //   title={getPreviousReadingTooltipString(
-        //     nextPreviousReading?.values || [],
-        //     device?.rateType,
-        //     unit
-        //   )}
-        // >
-        previousResultReadings;
-        // </Tooltip>
+  const previousReadingsWithTooltip = (
+    <Tooltip
+      title={
+        !isExistCurrentPrevious && isExistNextPrevious
+          ? getPreviousReadingTooltipString(
+              nextPreviousReading?.values || [],
+              device?.rateType,
+              unit
+            )
+          : undefined
+      }
+    >
+      {previousResultReadings}
+    </Tooltip>
+  );
 
   const isExistCurrentReading =
     readingsState.currentReadingsArray?.some(Boolean) && readingsState.source;
 
-  const currentReadingsWithTooltip =
-    isExistCurrentPrevious || !isExistNextPrevious || isExistCurrentReading
-      ? currentReadings
-      : // <Tooltip
-        //   title={getPreviousReadingTooltipString(
-        //     nextPreviousReading?.values || [],
-        //     device?.rateType,
-        //     unit
-        //   )}
-        // >
-        currentReadings;
-        // </Tooltip>
+  const currentReadingsWithTooltip = (
+    <Tooltip
+      title={
+        !isExistCurrentReading && isExistNextPrevious && !isExistCurrentPrevious
+          ? getPreviousReadingTooltipString(
+              nextPreviousReading?.values || [],
+              device?.rateType,
+              unit
+            )
+          : undefined
+      }
+    >
+      {currentReadings}
+    </Tooltip>
+  );
 
   return {
     readingsState, // стейт с показаниями
