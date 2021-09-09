@@ -10,7 +10,6 @@ import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeI
 import { useStore } from 'effector-react';
 import {
   $individualDevices,
-  $isShownClosedDevices,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
@@ -38,13 +37,12 @@ export const ApartmentReadings = () => {
   const { id } = useParams<{ id: string }>();
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
-  const showClosed = useStore($isShownClosedDevices);
 
   useEffect(() => reset && reset(), [id]);
 
-  const validDevicesList = showClosed
-    ? devices
-    : devices.filter((device) => device.closingDate === null);
+  const validDevicesList = devices.filter(
+    (device) => device.closingDate === null
+  );
 
   const isSliderIndexExist = sliderIndex !== undefined;
 
@@ -81,7 +79,7 @@ export const ApartmentReadings = () => {
             <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
           </MetersHeader>
           {validDevices}
-          <ClosedDevices />
+          <ClosedDevices sliderIndex={sliderIndex!} />
         </Meters>
       )}
     </>
