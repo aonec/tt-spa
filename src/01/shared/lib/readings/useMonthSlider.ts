@@ -1,7 +1,6 @@
 import { IndividualDeviceListItemResponse } from '../../../../myApi';
 import { useState } from 'react';
 import { IndividualDeviceType } from '../../../../types/types';
-import { useEffect } from 'react-router/node_modules/@types/react';
 
 export const useMonthSlider = (
   items: IndividualDeviceListItemResponse[] | IndividualDeviceType[] | null = []
@@ -10,7 +9,7 @@ export const useMonthSlider = (
 
   if (!items || !items.length) return {};
 
-  const isPreviousArrowDisabled = sliderIndex === 2;
+  const isPreviousArrowDisabled = sliderIndex === 3;
 
   const onClickIncrease = () => {
     setSliderIndex((index) => {

@@ -223,7 +223,7 @@ function useSliderIndex() {
   return {
     sliderIndex,
     up() {
-      setSliderIndex((prev) => (prev !== 2 ? ++prev : prev));
+      setSliderIndex((prev) => (prev !== 3 ? ++prev : prev));
     },
     down() {
       setSliderIndex((prev) => (prev !== 0 ? --prev : prev));
