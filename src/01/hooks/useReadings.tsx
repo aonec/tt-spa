@@ -26,7 +26,7 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
-import { message, Modal } from 'antd';
+import { message, Modal, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
@@ -716,11 +716,73 @@ export const useReadings = (
     .find((el) => el.isSuccess)!
     .value();
 
+  const nextPreviousReading = getNextPreviousReading(
+    readingsState.previousReadings,
+    sliderIndex
+  );
+  const currentPreviousReading = readingsState.previousReadings[sliderIndex];
+
+  const isExistCurrentPrevious = currentPreviousReading?.values.some(Boolean);
+  const isExistNextPrevious = nextPreviousReading?.values.some(Boolean);
+
+  const previousReadingsWithTooltip =
+    isExistCurrentPrevious || !isExistNextPrevious ? (
+      previousResultReadings
+    ) : (
+      <Tooltip
+        title={getPreviousReadingTooltipString(
+          nextPreviousReading?.values || [],
+          device?.rateType,
+          unit
+        )}
+      >
+        {previousResultReadings}
+      </Tooltip>
+    );
+
+  const isExistCurrentReading =
+    readingsState.currentReadingsArray?.some(Boolean) && readingsState.source;
+
+  const currentReadingsWithTooltip =
+    isExistCurrentPrevious || !isExistNextPrevious || isExistCurrentReading ? (
+      currentReadings
+    ) : (
+      <Tooltip
+        title={getPreviousReadingTooltipString(
+          nextPreviousReading?.values || [],
+          device?.rateType,
+          unit
+        )}
+      >
+        {currentReadings}
+      </Tooltip>
+    );
+
   return {
     readingsState, // стейт с показаниями
-    previousReadings: previousResultReadings, // массив компонентов с показаниями за пред. месяцы
-    currentReadings, // массив компонентов с показаниями за текущий месяц с возможностью ввода
+    previousReadings: previousReadingsWithTooltip, // массив компонентов с показаниями за пред. месяцы
+    currentReadings: currentReadingsWithTooltip, // массив компонентов с показаниями за текущий месяц с возможностью ввода
   };
+};
+
+const getPreviousReadingTooltipString = (
+  readings: number[],
+  rateType: EIndividualDeviceRateType,
+  unit: string
+) => {
+  const rateNum = getIndividualDeviceRateNumByName(rateType);
+  const valuesString = readings
+    .reduce(
+      (acc, elem, index) => (index + 1 > rateNum ? acc : [...acc, elem]),
+      [] as number[]
+    )
+    .map(
+      (elem, index) =>
+        `${rateNum === 1 ? '' : `[T${index + 1}]:`} ${elem}${unit}`
+    )
+    .join(', ');
+
+  return `Предыдущие показания: ${valuesString}`;
 };
 
 const limits = {
@@ -789,8 +851,6 @@ const isCorrectReadingValues = (
     },
     { validated: true, limit } as CorrectReadingValuesValidationResult
   );
-
-  console.log(res);
 
   return res;
 };
