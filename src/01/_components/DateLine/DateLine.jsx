@@ -12,9 +12,11 @@ const Container = styled.div`
 `;
 
 export const DateLine = ({ lastCheckingDate, futureCheckingDate }) => {
+  const last = transformDate(lastCheckingDate);
+  const future = transformDate(futureCheckingDate);
   return (
     <Container>
-      {transformDate(lastCheckingDate)} — {transformDate(futureCheckingDate)}
+      {last} {!!(last && future) && '—'} {future}
     </Container>
   );
 };
