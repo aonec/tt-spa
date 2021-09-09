@@ -1,6 +1,7 @@
 import { IndividualDeviceListItemResponse } from '../../../../myApi';
 import { useState } from 'react';
 import { IndividualDeviceType } from '../../../../types/types';
+import { useEffect } from 'react-router/node_modules/@types/react';
 
 export const useMonthSlider = (
   items: IndividualDeviceListItemResponse[] | IndividualDeviceType[] | null = []
@@ -32,6 +33,9 @@ export const useMonthSlider = (
       onClickDecrease,
       isPreviousArrowDisabled,
       isNextArrowDisabled,
+    },
+    reset() {
+      setSliderIndex(0);
     },
   };
 };

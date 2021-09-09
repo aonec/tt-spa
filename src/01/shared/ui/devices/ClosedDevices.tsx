@@ -1,42 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import DeviceInfo from '../../../_pages/MetersPage/components/MeterDevices/components/DeviceInfo';
 import Icon from '../../../tt-components/Icon';
-import { IndividualDeviceListItemResponse } from '../../../../myApi';
-import { useHistory, useParams } from 'react-router-dom';
 import { Flex } from '../Layout/Flex';
 import ApartmentReadingLine from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
+  $individualDevices,
   $isShownClosedDevices,
   hideClosedDevices,
   showClosedDevices,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useStore } from 'effector-react';
 
-const ClosedDevices = ({
-  devices,
-  sliderIndex,
-}: {
-  devices: IndividualDeviceListItemResponse[];
-  sliderIndex: number;
-}) => {
+const ClosedDevices = ({ sliderIndex = 0 }: { sliderIndex: number }) => {
   const showClosed = useStore($isShownClosedDevices);
+  const devices = useStore($individualDevices);
 
-  const closedDevices = devices.map((device, index) => (
-    <ApartmentReadingLine
-      closed
-      sliderIndex={sliderIndex!}
-      key={device.id}
-      device={device}
-      numberOfPreviousReadingsInputs={devices
-        .slice(0, index)
-        .reduce(
-          (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
-          0
-        )}
-    />
-  ));
+  const closedDevices = devices
+    .filter((device) => device.closingDate !== null)
+    .map((device, index) => (
+      <ApartmentReadingLine
+        closed
+        sliderIndex={sliderIndex!}
+        key={device.id}
+        device={device}
+        numberOfPreviousReadingsInputs={devices
+          .slice(0, index)
+          .reduce(
+            (acc, elem) =>
+              acc + getIndividualDeviceRateNumByName(elem.rateType),
+            0
+          )}
+      />
+    ));
   return (
     <div style={{ marginBottom: 15 }}>
       <div>{showClosed ? closedDevices : null}</div>
