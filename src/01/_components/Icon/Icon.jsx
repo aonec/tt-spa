@@ -10,12 +10,12 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 
 export const darkIcons = {
   water: WaterIcon,
-  heat: HeatIcon,
+  hotWater: HeatIcon,
   electro: ElectroIcon,
 };
 
 export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
-  const DarkIcon = darkIcons[props.fill === '#FF8C68' ? 'heat' : icon];
+  const DarkIcon = darkIcons[icon];
 
   if (DarkIcon && dark) {
     const Icon = styled(DarkIcon)`
@@ -24,7 +24,7 @@ export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
     `;
 
     return (
-      <Flex style={{ transform: "translateY(2px)" }}>
+      <Flex style={{ transform: 'translateY(2px)' }}>
         <Space>
           <Icon />
         </Space>

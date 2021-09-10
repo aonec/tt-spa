@@ -4,10 +4,10 @@ import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import { translateMountPlace } from '../../../../../utils/translateMountPlace';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
-import { Icon } from '../../../../../_components/Icon';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
+import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -53,10 +53,6 @@ const DeviceLink = styled(Link)`
   font-size: 16px;
   line-height: 2;
   color: #272f5a;
-`;
-
-const DeviceIcon = styled(Icon)`
-  margin-right: 8px;
 `;
 
 const SerialNumber = styled.span`

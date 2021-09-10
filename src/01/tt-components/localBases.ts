@@ -95,12 +95,12 @@ export const resources = [
 
 export const allResources = [
   {
-    value: 'HotWaterSupply',
-    label: 'ГВС',
-  },
-  {
     value: 'ColdWaterSupply',
     label: 'ХВС',
+  },
+  {
+    value: 'HotWaterSupply',
+    label: 'ГВС',
   },
   {
     value: 'Heat',
