@@ -31,30 +31,21 @@ export const DeviceDataString: React.FC<Props> = ({
   return (
     <Spaces flex spaceStyles={{ width: 4 }}>
       {device?.resource && <RenderDeviceIcon resource={device?.resource} />}
-      <DeviceName>{device.model}</DeviceName>
       {device.serialNumber && (
         <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
       )}
+      <DeviceName>{device.model}</DeviceName>
     </Spaces>
   );
 };
 
 const DeviceName = styled.span`
-  font-weight: 500;
-  color: #272f5aee;
+  color: #272f5a66;
 `;
 
 const DeviceSerialNumber = styled.span`
-  color: #272f5a66;
-  font-weight: 400;
-
-  &:before {
-    content: '(';
-  }
-
-  &:after {
-    content: ')';
-  }
+  font-weight: 500;
+  color: #272f5aee;
 `;
 
 export const RenderDeviceIcon = ({

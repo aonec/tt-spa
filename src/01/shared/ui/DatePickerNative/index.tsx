@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 interface Props {
   value: string;
@@ -17,15 +19,14 @@ export const DatePickerNative: React.FC<Props> = ({
   return (
     <Wrap
       value={value}
-      type="date"
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      style={style}
+      onChange={(date) =>
+        date instanceof Date && onChange(moment(date).toISOString())
+      }
     />
   );
 };
 
-const Wrap = styled.input`
+const Wrap = styled(DatePicker)`
   height: 48px;
   border: 1px solid #d9d9d9;
 

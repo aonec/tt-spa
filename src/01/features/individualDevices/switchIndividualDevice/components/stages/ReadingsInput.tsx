@@ -27,7 +27,7 @@ export const ReadingsInput: React.FC<Props> = ({
   readings,
   onChange,
 }) => {
-  const { sliderIndex, up, down } = useSliderIndex();
+  const { sliderIndex, up, down, canUp, canDown } = useSliderIndex();
 
   const defaultValues = device.rateType
     ? getArrayByCountRange(
@@ -96,9 +96,9 @@ export const ReadingsInput: React.FC<Props> = ({
       </DeviceInfo>
       <ReadingsWrap>
         <Flex style={{ justifyContent: 'space-between', maxWidth: 140 }}>
-          <SliderArrow onClick={up}>{'<'}</SliderArrow>
+          <SliderArrow onClick={up}>{canUp && '<'}</SliderArrow>
           <div>{getPreviousReadingsMonth(sliderIndex)}</div>
-          <SliderArrow onClick={down}>{'>'}</SliderArrow>
+          <SliderArrow onClick={down}>{canDown && '>'}</SliderArrow>
         </Flex>
 
         <Flex style={{ justifyContent: 'Center', maxWidth: 140 }}>
@@ -204,7 +204,9 @@ const Title = styled.div`
 `;
 
 const Wrap = styled(Flex)`
-  box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16);
+  /* box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16); */
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
   padding: 15px 20px;
   justify-content: space-between;
 `;
@@ -218,12 +220,15 @@ const ReadingsWrap = styled.div`
 `;
 
 function useSliderIndex() {
+  const limit = 3;
   const [sliderIndex, setSliderIndex] = useState(0);
 
   return {
     sliderIndex,
+    canUp: sliderIndex < 3,
+    canDown: sliderIndex > 0,
     up() {
-      setSliderIndex((prev) => (prev !== 3 ? ++prev : prev));
+      setSliderIndex((prev) => (prev !== limit ? ++prev : prev));
     },
     down() {
       setSliderIndex((prev) => (prev !== 0 ? --prev : prev));
