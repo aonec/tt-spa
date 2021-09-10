@@ -34,7 +34,7 @@ import {
 } from 'myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import moment, { months } from 'moment';
+import moment from 'moment';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 

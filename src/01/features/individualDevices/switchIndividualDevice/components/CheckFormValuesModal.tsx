@@ -9,7 +9,7 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EResourceType, IndividualDeviceMountPlaceListResponse } from 'myApi';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   $isCheckCreationDeviceFormDataModalOpen,
@@ -39,6 +39,10 @@ interface RemoveFile {
 export const CheckFormValuesModal = () => {
   const { fields } = useForm(addIndividualDeviceForm);
   const mountPlaces = useStore($individualDeviceMountPlaces);
+
+  useEffect(() => {
+    createIndividualDeviceFx.finally.watch(console.dir);
+  }, []);
 
   const pending = useStore(createIndividualDeviceFx.pending);
 

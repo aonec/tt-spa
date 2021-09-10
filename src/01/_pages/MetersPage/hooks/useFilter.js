@@ -24,7 +24,7 @@ function filterReducer(state, action) {
       return { ...state, ...payload };
 
     case 'reset':
-      return { ...initialState, city: state.sity };
+      return { ...initialState, city: state.city || initialState.sity };
 
     default:
       break;
