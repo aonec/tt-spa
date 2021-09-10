@@ -11,7 +11,7 @@ export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {
     return (
       <Flex style={{ transform: 'translateY(2px)' }}>
         <Space>
-          <DarkIcon />
+          <DarkIcon width={size} height={size} />
         </Space>
       </Flex>
     );

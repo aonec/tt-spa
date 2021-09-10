@@ -16,7 +16,6 @@ import {
   Header,
   InputNumberTT,
   InputTT,
-  SelectTT,
   StyledFooter,
   StyledFormPage,
   styles,
@@ -36,6 +35,11 @@ import {
 import { useStore } from 'effector-react';
 import styled from 'styled-components';
 import { Loader } from '01/components';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { StyledSelector } from '01/shared/ui/Fields';
+import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import DeviceIcons from '01/_components/DeviceIcons';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 interface FormEditODPUInterface {
   currentTabKey: string;
@@ -176,15 +180,29 @@ const IndividualDeviceEditForm = ({
       >
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Тип ресурса" style={styles.w100}>
-            <SelectTT
-              name="resource"
+            <StyledSelect
               onChange={(value) => {
                 setFieldValue('resource', value);
               }}
-              options={resources}
               value={values.resource}
               disabled
-            />
+            >
+              {resources.map((elem) => {
+                const { icon, color } = DeviceIcons[elem.value as any];
+
+                return (
+                  <Select.Option value={elem.value} key={elem.value}>
+                    <Flex>
+                      <div>
+                        <DeviceIcon icon={icon} fill={color} dark />
+                      </div>
+                      <Space />
+                      {elem.label}
+                    </Flex>
+                  </Select.Option>
+                );
+              })}
+            </StyledSelect>
             <Alert name="resource" />
           </Form.Item>
 
@@ -255,43 +273,34 @@ const IndividualDeviceEditForm = ({
           </Flex>
 
           <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCommercialAccountingDate"
-              placeholder="Укажите дату"
+            <DatePickerNative
+              value={values.lastCommercialAccountingDate?.toISOString()}
               onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date);
+                setFieldValue('lastCommercialAccountingDate', moment(date));
               }}
-              value={values.lastCommercialAccountingDate}
             />
           </Form.Item>
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCheckingDate"
-              placeholder="Укажите дату..."
+            <DatePickerNative
+              value={values.lastCheckingDate?.toISOString()}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date);
+                setFieldValue('lastCheckingDate', moment(date));
                 setFieldValue(
                   'futureCheckingDate',
                   moment(date).add(4, 'years')
                 );
               }}
-              value={values.lastCheckingDate}
             />
             <Alert name="lastCheckingDate" />
           </Form.Item>
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              placeholder="Укажите дату..."
+            <DatePickerNative
+              value={values.futureCheckingDate?.toISOString()}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date);
+                setFieldValue('futureCheckingDate', moment(date));
               }}
-              value={values.futureCheckingDate}
-              name="futureCheckingDate"
             />
             <Alert name="futureCheckingDate" />
           </Form.Item>
