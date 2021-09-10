@@ -52,23 +52,16 @@ export const BaseInfoStage = () => {
     field.onChange(e.target.value);
   };
 
-  const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
-    if (!value || !(fields as any)[name]) return;
-
-    (fields as any)[name].onChange(value.toISOString());
-  };
-
   const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
     <>
       <FormItem label="Дата последней поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={(value: moment.Moment | null = moment()) => {
-            if (!value) return;
+        <DatePickerNative
+          onChange={(incomingValue: string) => {
+            const value = moment(incomingValue);
 
-            onChangeDateField('lastCheckingDate')(value);
+            fields.lastCheckingDate.onChange(incomingValue);
 
             const nextCheckingDate = moment(value);
 
@@ -80,9 +73,9 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            onChangeDateField('futureCheckingDate')(nextCheckingDate);
+            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString());
           }}
-          value={getDatePickerValue(fields.lastCheckingDate.value)}
+          value={fields.lastCheckingDate.value}
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
@@ -91,10 +84,9 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('futureCheckingDate')}
-          value={getDatePickerValue(fields.futureCheckingDate.value)}
+        <DatePickerNative
+          onChange={fields.futureCheckingDate.onChange}
+          value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
@@ -290,14 +282,10 @@ export const BaseInfoStage = () => {
       <Space />
 
       <FormItem label="Дата ввода в эксплуатацию">
-        {/* <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
-        /> */}
         <DatePickerNative
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
+          value={fields.lastCommercialAccountingDate.value}
+          onChange={fields.lastCommercialAccountingDate.onChange}
+          placeholder="Введите дату"
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -321,12 +309,10 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
-          <DatePicker
-            format="DD.MM.YYYY"
-            onChange={onChangeDateField('magneticSealInstallationDate')}
-            value={getDatePickerValue(
-              fields.magneticSealInstallationDate.value
-            )}
+          <DatePickerNative
+            value={fields.magneticSealInstallationDate.value}
+            onChange={fields.magneticSealInstallationDate.onChange}
+            placeholder="Введите дату"
           />
         </FormItem>
       </FormWrap>

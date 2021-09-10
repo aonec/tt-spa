@@ -1,38 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 interface Props {
-  value: moment.Moment | undefined;
-  onChange: (value: moment.Moment) => void;
+  value?: string | null;
+  onChange: (value: string) => void;
+  placeholder?: string;
 }
 
-export const DatePickerNative: React.FC<Props> = ({ value, onChange }) => {
-  const [innerValue, setInnerValue] = useState('');
+export const DatePickerNative: React.FC<Props> = ({
+  value: incomingValue,
+  placeholder,
+  onChange,
+}) => {
+  const [innerValue, setInnerValue] = useState<any>();
+  const value = moment(incomingValue).toISOString();
+  const currentValueToMoment = moment(innerValue);
+  const isCurrentValueValid = currentValueToMoment.isValid();
+  const setInitialInnerValue = () => {
+    value && setInnerValue(moment(value).format('YYYY-MM-DD'));
+  };
 
-  useEffect(() => {
-    value && setInnerValue(value?.format('DD.MM.YYYY'));
-  }, [value]);
-
-  function onGlobalChangeHandler() {}
-
-  function onEneterHandler(e: any) {
-    
+  function onChangeGlobal() {
+    isCurrentValueValid
+      ? onChange(currentValueToMoment.toISOString())
+      : setInitialInnerValue();
   }
 
+  useEffect(setInitialInnerValue, [value]);
+
   return (
-    <Wrap
-      onBlur={onGlobalChangeHandler}
-      onKeyDown={onEneterHandler}
-      value={value?.format('DD.MM.YYYY')}
-      onChange={(e) => setInnerValue(e.target.value)}
+    <StyledInput
+      onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
+      onBlur={onChangeGlobal}
+      value={innerValue}
+      onChange={(e: { target: { value: string } }) => {
+        console.log(e.target.value);
+        setInnerValue(e.target.value);
+      }}
+      placeholder={placeholder}
+      type="date"
     />
   );
 };
 
-const Wrap = styled.input`
+const StyledInput = styled.input`
   height: 48px;
   border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: 0.2s;
 
   &:hover,
   &:focus {
@@ -45,3 +61,6 @@ const Wrap = styled.input`
 
   padding: 10px 15px;
 `;
+
+const fromEnter = (callback: (e: any) => void) => (e: any) =>
+  e?.key === 'Enter' && callback(e);
