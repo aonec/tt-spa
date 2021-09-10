@@ -6,12 +6,14 @@ interface Props {
   value?: string | null;
   onChange: (value: string) => void;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export const DatePickerNative: React.FC<Props> = ({
   value: incomingValue,
   placeholder,
   onChange,
+  disabled,
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString();
@@ -31,6 +33,7 @@ export const DatePickerNative: React.FC<Props> = ({
 
   return (
     <StyledInput
+      disabled={disabled}
       onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
       onBlur={onChangeGlobal}
       value={innerValue}
@@ -50,13 +53,18 @@ const StyledInput = styled.input`
   border-radius: 4px;
   transition: 0.2s;
 
-  &:hover,
+  &:hover:not([disabled]),
   &:focus {
     border-color: #40a9ff;
   }
 
   &:focus {
     box-shadow: 0 4px 8px #40a9ff34;
+  }
+
+  &:disabled {
+    background: #f5f5f5;
+    color: rgba(0, 0, 0, 0.25);
   }
 
   padding: 10px 15px;

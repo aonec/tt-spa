@@ -52,6 +52,7 @@ export const CheckFormValuesModal = () => {
       value: (
         <Flex>
           <DeviceIcon dark icon={deviceIcon?.icon} fill={deviceIcon?.color} />
+          <Space />
           <div>{getResourceName(fields.resource.value)}</div>
         </Flex>
       ),
