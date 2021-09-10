@@ -1,32 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 interface Props {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-  style: React.CSSProperties;
+  value: moment.Moment | undefined;
+  onChange: (value: moment.Moment) => void;
 }
 
-export const DatePickerNative: React.FC<Props> = ({
-  value,
-  onChange,
-  placeholder,
-  style,
-}) => {
+export const DatePickerNative: React.FC<Props> = ({ value, onChange }) => {
+  const [innerValue, setInnerValue] = useState('');
+
+  useEffect(() => {
+    value && setInnerValue(value?.format('DD.MM.YYYY'));
+  }, [value]);
+
+  function onGlobalChangeHandler() {}
+
+  function onEneterHandler(e: any) {
+    
+  }
+
   return (
     <Wrap
-      value={value}
-      onChange={(date) =>
-        date instanceof Date && onChange(moment(date).toISOString())
-      }
+      onBlur={onGlobalChangeHandler}
+      onKeyDown={onEneterHandler}
+      value={value?.format('DD.MM.YYYY')}
+      onChange={(e) => setInnerValue(e.target.value)}
     />
   );
 };
 
-const Wrap = styled(DatePicker)`
+const Wrap = styled.input`
   height: 48px;
   border: 1px solid #d9d9d9;
 

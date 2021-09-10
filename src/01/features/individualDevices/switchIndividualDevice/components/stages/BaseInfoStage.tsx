@@ -33,6 +33,7 @@ import {
 import { ReadingsInput } from './ReadingsInput';
 import { $individualDevice } from '../../../displayIndividualDevice/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -289,10 +290,14 @@ export const BaseInfoStage = () => {
       <Space />
 
       <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
+        {/* <DatePicker
           format="DD.MM.YYYY"
           onChange={onChangeDateField('lastCommercialAccountingDate')}
           value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+        /> */}
+        <DatePickerNative
+          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+          onChange={onChangeDateField('lastCommercialAccountingDate')}
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
