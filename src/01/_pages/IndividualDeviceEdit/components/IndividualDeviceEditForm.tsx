@@ -37,7 +37,7 @@ import styled from 'styled-components';
 import { Loader } from '01/components';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { StyledSelector } from '01/shared/ui/Fields';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
@@ -194,7 +194,7 @@ const IndividualDeviceEditForm = ({
                   <Select.Option value={elem.value} key={elem.value}>
                     <Flex>
                       <div>
-                        <DeviceIcon icon={icon} fill={color} dark />
+                        <StockIconTT icon={icon} fill={color} dark />
                       </div>
                       <Space />
                       {elem.label}

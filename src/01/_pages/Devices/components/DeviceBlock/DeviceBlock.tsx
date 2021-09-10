@@ -6,6 +6,8 @@ import { IconWithTooltip } from '../../../../components/NotConnectedIcon/IconWit
 import { Dates } from './Dates';
 import Node from './Node/Node';
 import { CalculatorListResponse } from '../../../../../myApi';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
   const { isConnected } = calculator;
@@ -18,9 +20,12 @@ const DeviceBlock = ({ device: calculator }: DeviceBlockPropsInterface) => {
       <DeviceWrapper>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <DeviceLink to={`/calculators/${calculator.id}`}>
-            <DeviceIcon dark icon="device" fill="var(--main-100)" />
-            {calculator.model}
-            <SerialNumber>({calculator.serialNumber})</SerialNumber>
+            <Flex>
+              <StockIconTT dark icon="device" fill="var(--main-100)" />
+              <Space w={7} />
+              {calculator.model}
+              <SerialNumber>({calculator.serialNumber})</SerialNumber>
+            </Flex>
           </DeviceLink>
 
           {!isConnected && (
@@ -83,7 +88,7 @@ export const DeviceLink = styled(NavLink)`
   margin-right: 8px;
 `;
 
-export const DeviceIcon = styled(Icon)`
+export const StockIconTT = styled(Icon)`
   margin-right: 8px;
 `;
 

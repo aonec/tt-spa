@@ -7,7 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -22,7 +22,7 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
     <DeviceColumn>
       <DeviceLink to={history.location.pathname}>
         <Space>
-          <DeviceIcon icon={icon} fill={color} dark />
+          <StockIconTT icon={icon} fill={color} dark />
         </Space>
         <Space w={7} />
         {device.serialNumber}

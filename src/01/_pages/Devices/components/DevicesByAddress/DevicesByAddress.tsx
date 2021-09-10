@@ -13,6 +13,7 @@ const DevicesByAddress = ({
     corpus = null,
     id = null,
   } = addressDevicesGroup.address || {};
+
   const deviceElems = addressDevicesGroup.devices?.map((device) => (
     <DeviceBlock device={device} key={device.id} />
   ));

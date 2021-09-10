@@ -8,6 +8,8 @@ import { nodeStatusList } from '../../../tt-components/localBases';
 import { Tooltip } from 'antd';
 import { groupNodesByCalculator } from './utis/groupNodesByCalculator';
 import { CalculatorWrapper } from '../CalculatorWrapper';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 function statusIcon(closingDate) {
   return !closingDate ? 'green' : 'red';
@@ -30,16 +32,22 @@ export const Devices = ({ nodes }) => {
       <Calculator>
         <CalculatorWrapper id={id}>
           <CalculatorMainInfo>
-            <IconTT icon="device" />
-            <Name>{model ? model : 'Вычислитель отсутствует'}</Name>
+            <Flex>
+              <IconTT icon="device" />
+              <Space />
+              <Name>{model ? model : 'Вычислитель отсутствует'}</Name>
+            </Flex>
             <Serial>{serialNumber ? `(${serialNumber})` : null}</Serial>
             <CalculatorTasksIcon />
           </CalculatorMainInfo>
         </CalculatorWrapper>
 
         <CalculatorStatus>
-          <IconTT icon={statusIcon(closingDate)} />
-          <span>{status(closingDate)}</span>
+          <Flex>
+            <IconTT icon={statusIcon(closingDate)} />
+            <Space />
+            <div>{status(closingDate)}</div>
+          </Flex>
         </CalculatorStatus>
       </Calculator>
     );

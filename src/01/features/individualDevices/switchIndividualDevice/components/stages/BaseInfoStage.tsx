@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
   EResourceType,
@@ -152,7 +152,7 @@ export const BaseInfoStage = () => {
             {allResources.map((elem) => (
               <Select.Option value={elem.value}>
                 <Flex>
-                  <DeviceIcon
+                  <StockIconTT
                     icon={DeviceIcons[elem.value]?.icon}
                     dark
                     fill={DeviceIcons[elem.value]?.color}
