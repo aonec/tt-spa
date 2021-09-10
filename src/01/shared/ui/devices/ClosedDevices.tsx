@@ -11,6 +11,7 @@ import {
   showClosedDevices,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useStore } from 'effector-react';
+import { Space } from '../Layout/Space/Space';
 
 const ClosedDevices = ({ sliderIndex = 0 }: { sliderIndex: number }) => {
   const showClosed = useStore($isShownClosedDevices);
@@ -41,23 +42,25 @@ const ClosedDevices = ({ sliderIndex = 0 }: { sliderIndex: number }) => {
       >
         <ShowToggle>
           {showClosed ? (
-            <>
+            <Flex>
               <Icon
                 icon="off"
                 color="var(--main-100)"
                 style={{ marginRight: 8, position: 'relative', top: 1 }}
               />
+              <Space w={5} />
               <span>Скрыть закрытые приборы</span>
-            </>
+            </Flex>
           ) : (
-            <>
+            <Flex>
               <Icon
                 icon="on"
                 color="var(--main-100)"
                 style={{ marginRight: 8, position: 'relative', top: 1 }}
               />
+              <Space w={5} />
               <span>Показать закрытые приборы</span>
-            </>
+            </Flex>
           )}
           <span style={{ marginLeft: 4 }}>({closedDevices?.length})</span>
         </ShowToggle>
