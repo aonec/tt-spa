@@ -4,7 +4,7 @@ import { createStore, createEffect } from 'effector';
 
 export const $individualDevicesNames = createStore<string[] | null>(null);
 
-export const fetchIndividualDeviceFxsNames = createEffect<
+export const fetchIndividualDeviceNamesFx = createEffect<
   GetMeteringDevicesModelsRequest,
   string[]
 >();

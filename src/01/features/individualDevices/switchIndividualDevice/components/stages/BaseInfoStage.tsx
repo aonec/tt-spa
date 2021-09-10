@@ -31,9 +31,13 @@ import {
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from './ReadingsInput';
-import { $individualDevice } from '../../../displayIndividualDevice/models';
+import {
+  $individualDevice,
+  fetchIndividualDeviceFx,
+} from '../../../displayIndividualDevice/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { Loader } from '01/components';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,6 +47,8 @@ export const BaseInfoStage = () => {
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
+
+  const pending = useStore(fetchIndividualDeviceFx.pending);
 
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];
@@ -133,14 +139,8 @@ export const BaseInfoStage = () => {
     </Form.Item>
   );
 
-  return (
-    <Wrap>
-      <ContractorsGate />
-      <IndividualDevicecModelsGate model={modelNameDebounced} />
-      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
-
-      <FormHeader>Общие данные о приборе</FormHeader>
-
+  const form = (
+    <>
       <FormWrap>
         <FormItem label="Тип ресурса">
           <StyledSelect
@@ -248,12 +248,10 @@ export const BaseInfoStage = () => {
           </ErrorMessage>
         </FormItem>
       </FormWrap>
-
       <FormWrap>
         {rateTypeSelector}
         {selectSwitchReason}
       </FormWrap>
-
       {device && (
         <>
           <Space />
@@ -278,9 +276,7 @@ export const BaseInfoStage = () => {
           />
         </>
       )}
-
       <Space />
-
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
           value={fields.lastCommercialAccountingDate.value}
@@ -293,9 +289,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-
       <FormWrap>{bottomDateFields}</FormWrap>
-
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
@@ -316,7 +310,6 @@ export const BaseInfoStage = () => {
           />
         </FormItem>
       </FormWrap>
-
       <FormItem label="Монтажная организация">
         <StyledSelect
           onChange={(value: any) =>
@@ -332,6 +325,18 @@ export const BaseInfoStage = () => {
           ))}
         </StyledSelect>
       </FormItem>
+    </>
+  );
+
+  return (
+    <Wrap>
+      <ContractorsGate />
+      <IndividualDevicecModelsGate model={modelNameDebounced} />
+      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
+
+      <FormHeader>Общие данные о приборе</FormHeader>
+
+      {pending ? <Loader show size={32} /> : form}
     </Wrap>
   );
 };
@@ -340,7 +345,6 @@ export const closingReasons = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
   [EClosingReason.CertificateIssued]: 'Выдана справка',
-  // [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {

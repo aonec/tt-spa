@@ -63,6 +63,12 @@ export const addIndividualDeviceForm = createForm({
     },
     newDeviceReadings: {
       init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      rules: [
+        {
+          name: 'required',
+          validator: (value) => Boolean(value.length),
+        },
+      ],
     },
     rateType: {
       init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,

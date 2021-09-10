@@ -60,6 +60,7 @@ export const CheckFormValuesModal = () => {
       value: (
         <Flex>
           <DeviceIcon icon={deviceIcon?.icon} fill={deviceIcon?.color} dark />
+          <Space />
           <div>{getResourceName(fields.resource.value)}</div>
         </Flex>
       ),
@@ -172,7 +173,7 @@ export const CheckFormValuesModal = () => {
 
       <Space style={{ height: 30 }} />
 
-      <Title>2. Общие данные о приборе</Title>
+      <Title>2. Показания по приборам</Title>
 
       {readings}
 
@@ -278,48 +279,48 @@ export function toArray<T>(
   return arr;
 }
 
-function getStartupReadingsString(
-  value: { [key: string]: number | null },
-  color?: string | null
-) {
-  const values = toArray<number | null>(value, false);
+// function getStartupReadingsString(
+//   value: { [key: string]: number | null },
+//   color?: string | null
+// ) {
+//   const values = toArray<number | null>(value, false);
 
-  const filteredValues = values.filter(readingValueValidate);
+//   const filteredValues = values.filter(readingValueValidate);
 
-  if (!filteredValues.length) return null;
+//   if (!filteredValues.length) return null;
 
-  const StyledReadingsValues = styled.div`
-    border: 1px solid ${color || 'gray'};
-    border-left-width: 3px;
-    padding-left: 10px;
-    border-radius: 8px;
-    width: min-content;
-    min-width: 150px;
-  `;
+//   const StyledReadingsValues = styled.div`
+//     border: 1px solid ${color || 'gray'};
+//     border-left-width: 3px;
+//     padding-left: 10px;
+//     border-radius: 8px;
+//     width: min-content;
+//     min-width: 150px;
+//   `;
 
-  const ReadingValue = styled(Flex)`
-    justify-content: space-between;
-    border-bottom: 1px solid ${color || 'gray'};
+//   const ReadingValue = styled(Flex)`
+//     justify-content: space-between;
+//     border-bottom: 1px solid ${color || 'gray'};
 
-    padding: 5px 5px 5px 0;
+//     padding: 5px 5px 5px 0;
 
-    &:last-child {
-      border-bottom: none;
-    }
-  `;
+//     &:last-child {
+//       border-bottom: none;
+//     }
+//   `;
 
-  return (
-    <StyledReadingsValues>
-      {values.map((elem, index) =>
-        readingValueValidate(elem) ? (
-          <ReadingValue>
-            <div style={{ color: 'lightgray', fontWeight: 600 }}>
-              {index + 1}:
-            </div>
-            <div style={{ marginRight: '0 10px 0 30px' }}>{elem}</div>
-          </ReadingValue>
-        ) : null
-      )}
-    </StyledReadingsValues>
-  );
-}
+//   return (
+//     <StyledReadingsValues>
+//       {values.map((elem, index) =>
+//         readingValueValidate(elem) ? (
+//           <ReadingValue>
+//             <div style={{ color: 'lightgray', fontWeight: 600 }}>
+//               {index + 1}:
+//             </div>
+//             <div style={{ marginRight: '0 10px 0 30px' }}>{elem}</div>
+//           </ReadingValue>
+//         ) : null
+//       )}
+//     </StyledReadingsValues>
+//   );
+// }
