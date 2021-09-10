@@ -29,6 +29,7 @@ import {
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import {
+  IndividualDeviceResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'myApi';
@@ -187,3 +188,4 @@ sample({
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
 });
+
