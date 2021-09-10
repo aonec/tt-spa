@@ -84,7 +84,7 @@ export const ReadingsInput: React.FC<Props> = ({
       return changedReading;
     });
 
-    onChange(newValues);
+    onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
   }
 
   return (
@@ -142,6 +142,15 @@ export const ReadingsInput: React.FC<Props> = ({
     </Wrap>
   );
 };
+
+const isReadingEmpty = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest,
+  rateNum: number
+) =>
+  getReadingValuesArray(reading, rateNum)?.value?.reduce(
+    (acc, elem) => acc || Boolean(elem),
+    false
+  );
 
 const compareDates = (date1: string, date2: string) =>
   moment(date1).format('MM.YYYY') === moment(date2).format('MM.YYYY');

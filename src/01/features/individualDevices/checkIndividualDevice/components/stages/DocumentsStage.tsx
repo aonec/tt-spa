@@ -17,7 +17,7 @@ export const DocumentsStage = () => {
   const setFile = (
     name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
   ) => (files: FileData[]) => {
-    console.log(files);
+    ;
     if (files.length === 0) return;
     fields.documentsIds.onChange({
       ...fields.documentsIds.value,

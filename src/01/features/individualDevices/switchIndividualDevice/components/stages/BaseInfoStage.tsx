@@ -274,6 +274,11 @@ export const BaseInfoStage = () => {
               rateType: fields.rateType.value,
             }}
           />
+          <ErrorMessage>
+            {fields.newDeviceReadings.errorText({
+              required: 'Заполните хотя бы одно показание',
+            })}
+          </ErrorMessage>
         </>
       )}
       <Space />
