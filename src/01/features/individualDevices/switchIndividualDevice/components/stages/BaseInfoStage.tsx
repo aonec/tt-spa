@@ -220,6 +220,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Разрядность">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
@@ -235,6 +236,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Множитель">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
