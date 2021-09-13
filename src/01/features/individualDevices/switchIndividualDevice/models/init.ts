@@ -176,7 +176,7 @@ sample({
         (elem) =>
           clearEmptyValueFields(
             elem,
-            getIndividualDeviceRateNumByName(values.rateType)
+            getIndividualDeviceRateNumByName(device?.rateType!)
           )
       ),
       newDeviceReadings: mapArray(
