@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { AppContext } from '01/context';
-import { message } from 'antd';
 
 export function useApp() {
   const { replace } = useHistory();
@@ -12,18 +11,17 @@ export function useApp() {
     return { ...state, user };
   });
 
-  React.useEffect(() => {
-    if (window.location.href.match(/registration/gi)) {
-      return;
-    }
+  // React.useEffect(() => {
+  //   if (window.location.href.match(/registration/gi)) {
+  //     return;
+  //   }
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      localStorage.clear();
-      replace('/login');
-      message('runs');
-    }
-  }, [replace]);
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     localStorage.clear();
+  //     replace('/login');
+  //   }
+  // }, [replace]);
 
   return ({ children }) => (
     <AppContext.Provider

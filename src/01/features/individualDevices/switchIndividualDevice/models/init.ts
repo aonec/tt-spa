@@ -48,8 +48,6 @@ sample({
   target: switchStageButtonClicked,
 });
 
-forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });
-
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
   .reset([cancelCheckingButtonClicked, createIndividualDeviceFx.doneData]);
@@ -195,6 +193,11 @@ sample({
   ),
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
+});
+
+forward({
+  from: addIndividualDeviceForm.formValidated,
+  to: checkBeforSavingButtonClicked,
 });
 
 function getChangedReadings(

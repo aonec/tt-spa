@@ -5,7 +5,6 @@ import { CheckFormValuesModal } from './components/CheckFormValuesModal';
 import { CreateIndividualDeviceForm } from './components/CreateIndividualDeviceForm';
 import { Grid } from './components/Grid';
 import { CreateIndividualDeviceFormHeader } from './components/Header';
-import { CreateIndividualDeviceFormStages } from './components/Stages';
 import { SwitchIndividualDeviceGate } from './models';
 
 interface Props {
@@ -22,7 +21,6 @@ export const SwitchIndividualDevice: React.FC<Props> = ({ check }) => {
       <CreateIndividualDeviceFormHeader />
       <Grid>
         <CreateIndividualDeviceForm />
-        <CreateIndividualDeviceFormStages />
       </Grid>
     </>
   );

@@ -11,7 +11,6 @@ import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
-  checkBeforSavingButtonClicked,
   resetCreationRequestStatus,
   switchStageButtonClicked,
 } from '../models';
@@ -57,11 +56,8 @@ export const CreateIndividualDeviceForm = () => {
           <ButtonTT color="white" onClick={onCancel}>
             {stageNumber === 0 ? 'Отмена' : 'Назад'}
           </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
-          >
-            {stageNumber === 1 ? 'Заменить прибор' : 'Далее'}
+          <ButtonTT color="blue" onClick={submit}>
+            Далее
           </ButtonTT>
         </Spaces>
       </RightAlign>
