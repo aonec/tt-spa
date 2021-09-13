@@ -33,12 +33,12 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from './ReadingsInput';
+import { ReadingsInput } from '../ReadingsInput';
 import {
   $individualDevice,
   fetchIndividualDeviceFx,
 } from '../../../displayIndividualDevice/models';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
 
@@ -65,7 +65,7 @@ export const BaseInfoStage = () => {
   const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
-    <>
+    <FormWrap>
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
           onChange={(incomingValue: string) => {
@@ -104,7 +104,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-    </>
+    </FormWrap>
   );
 
   const rateTypeSelector = (
@@ -143,85 +143,84 @@ export const BaseInfoStage = () => {
     </Form.Item>
   );
 
-  const form = (
-    <>
-      <FormWrap>
-        <FormItem label="Тип ресурса">
-          <StyledSelect
-            disabled
-            placeholder="Выберите тип ресурса"
-            onChange={(value: any) => fields.resource.onChange(value)}
-            value={fields.resource.value || undefined}
-          >
-            {allResources.map((elem) => (
-              <Select.Option value={elem.value}>
-                <Flex>
-                  <StockIconTT
-                    icon={DeviceIcons[elem.value]?.icon}
-                    dark
-                    fill={DeviceIcons[elem.value]?.color}
-                  />
-                  <Space />
-                  <div>{elem.label}</div>
-                </Flex>
-              </Select.Option>
-            ))}
-          </StyledSelect>
-          <ErrorMessage>
-            {fields.resource.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+  const baseInfo = (
+    <FormWrap>
+      <FormItem label="Тип ресурса">
+        <StyledSelect
+          disabled
+          placeholder="Выберите тип ресурса"
+          onChange={(value: any) => fields.resource.onChange(value)}
+          value={fields.resource.value || undefined}
+        >
+          {allResources.map((elem) => (
+            <Select.Option value={elem.value}>
+              <Flex>
+                <StockIconTT
+                  icon={DeviceIcons[elem.value]?.icon}
+                  dark
+                  fill={DeviceIcons[elem.value]?.color}
+                />
+                <Space />
+                <div>{elem.label}</div>
+              </Flex>
+            </Select.Option>
+          ))}
+        </StyledSelect>
+        <ErrorMessage>
+          {fields.resource.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Модель прибора">
-          <StyledAutoComplete
-            size="large"
-            value={fields.model.value}
-            placeholder="Введите модель прибора"
-            onChange={fields.model.onChange}
-            options={modelNames?.map((elem) => ({ value: elem })) || []}
-          />
-          <ErrorMessage>
-            {fields.model.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+      <FormItem label="Модель прибора">
+        <StyledAutoComplete
+          size="large"
+          value={fields.model.value}
+          placeholder="Введите модель прибора"
+          onChange={fields.model.onChange}
+          options={modelNames?.map((elem) => ({ value: elem })) || []}
+        />
+        <ErrorMessage>
+          {fields.model.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Серийный номер">
-          <InputTT
-            type="text"
-            placeholder="Введите серийный номер прибора"
-            onChange={onChange}
-            name="serialNumber"
-            value={fields.serialNumber.value}
-          />
-          <ErrorMessage>
-            {fields.serialNumber.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+      <FormItem label="Серийный номер">
+        <InputTT
+          type="text"
+          placeholder="Введите серийный номер прибора"
+          onChange={onChange}
+          name="serialNumber"
+          value={fields.serialNumber.value}
+        />
+        <ErrorMessage>
+          {fields.serialNumber.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Место установки">
-          <StyledSelect
-            disabled
-            placeholder="Выберите место установки"
-            value={fields.mountPlaceId.value || undefined}
-            onChange={(value: any) => fields.mountPlaceId.onChange(value)}
-          >
-            {mountPlaces?.map((elem) => (
-              <Select.Option value={elem.id}>{elem.description}</Select.Option>
-            ))}
-          </StyledSelect>
-          <ErrorMessage>
-            {fields.mountPlaceId.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
-
+      <FormItem label="Место установки">
+        <StyledSelect
+          disabled
+          placeholder="Выберите место установки"
+          value={fields.mountPlaceId.value || undefined}
+          onChange={(value: any) => fields.mountPlaceId.onChange(value)}
+        >
+          {mountPlaces?.map((elem) => (
+            <Select.Option value={elem.id}>{elem.description}</Select.Option>
+          ))}
+        </StyledSelect>
+        <ErrorMessage>
+          {fields.mountPlaceId.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+      <Flex>
         <FormItem label="Разрядность">
           <InputTT
             disabled
@@ -237,7 +236,7 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
-
+        <Space />
         <FormItem label="Множитель">
           <InputTT
             disabled
@@ -253,41 +252,8 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
-      </FormWrap>
-      <FormWrap>
-        {rateTypeSelector}
-        {selectSwitchReason}
-      </FormWrap>
-      {device && (
-        <>
-          <Space />
-          <ReadingsInput
-            title="Закрываемый прибор"
-            readings={fields.oldDeviceReadings.value}
-            onChange={fields.oldDeviceReadings.onChange}
-            device={device}
-          />
-          <Space />
-          <ReadingsInput
-            title="Новый прибор"
-            readings={fields.newDeviceReadings.value}
-            onChange={fields.newDeviceReadings.onChange}
-            device={{
-              resource: fields.resource.value!,
-              model: fields.model.value,
-              serialNumber: fields.serialNumber.value,
-              measurableUnitString: device?.measurableUnitString,
-              rateType: fields.rateType.value,
-            }}
-          />
-          <ErrorMessage>
-            {fields.newDeviceReadings.errorText({
-              required: 'Заполните хотя бы одно показание',
-            })}
-          </ErrorMessage>
-        </>
-      )}
-      <Space />
+      </Flex>
+
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
           value={fields.lastCommercialAccountingDate.value}
@@ -300,7 +266,14 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      <FormWrap>{bottomDateFields}</FormWrap>
+
+      {rateTypeSelector}
+      {selectSwitchReason}
+    </FormWrap>
+  );
+
+  const seal = (
+    <>
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
@@ -336,6 +309,46 @@ export const BaseInfoStage = () => {
           ))}
         </StyledSelect>
       </FormItem>
+    </>
+  );
+
+  const readingInputs = device && (
+    <div style={{ margin: '10px 0' }}>
+      <ReadingsInput
+        title="Закрываемый прибор"
+        readings={fields.oldDeviceReadings.value}
+        onChange={fields.oldDeviceReadings.onChange}
+        device={device}
+      />
+      <Space />
+      <ReadingsInput
+        title="Новый прибор"
+        readings={fields.newDeviceReadings.value}
+        onChange={fields.newDeviceReadings.onChange}
+        device={{
+          resource: fields.resource.value!,
+          model: fields.model.value,
+          serialNumber: fields.serialNumber.value,
+          measurableUnitString: device?.measurableUnitString,
+          rateType: fields.rateType.value,
+        }}
+      />
+      <ErrorMessage>
+        {fields.newDeviceReadings.errorText({
+          required: 'Заполните хотя бы одно показание',
+        })}
+      </ErrorMessage>
+    </div>
+  );
+
+  const form = (
+    <>
+      {baseInfo}
+      {bottomDateFields}
+      <SpaceLine />
+      {readingInputs}
+      <SpaceLine />
+      {seal}
     </>
   );
 
