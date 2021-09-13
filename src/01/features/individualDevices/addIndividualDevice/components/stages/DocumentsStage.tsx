@@ -17,16 +17,17 @@ export const DocumentsStage = () => {
   const setFile = (
     name: 'completedWorks' | 'devicePassport' | 'deviceCheck'
   ) => (files: FileData[]) => {
-    ;
     if (files.length === 0) return;
+
+    const isFilesListEmpty = files.length === 0;
+
+    const neededFile = isFilesListEmpty
+      ? null
+      : files[0] || fields.documentsIds.value[name];
+
     fields.documentsIds.onChange({
       ...fields.documentsIds.value,
-      [name]:
-        files.length === 0
-          ? null
-          : files.length
-          ? files[0]
-          : fields.documentsIds.value[name],
+      [name]: neededFile,
     });
   };
 
