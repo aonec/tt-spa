@@ -191,7 +191,7 @@ const Internal = () => {
                 <SwitchIndividualDevice />
               </Route>
               <Route path="/apartment/:id/individualDevice/:deviceId/check">
-                <CheckIndividualDevice />
+                <SwitchIndividualDevice />
               </Route>
               <Redirect to="/error/" />
             </Switch>
