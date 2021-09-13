@@ -230,7 +230,5 @@ function getChangedReadings(
     return true;
   });
 
-  console.log(res, 'changed filter');
-
   return res;
 }
