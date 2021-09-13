@@ -27,7 +27,7 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     <DeviceColumn>
       <DeviceLink to={`/individualDevices/${id}`}>
         <div>
-          <DeviceIcon icon={icon} fill={color} />
+          <StockIconTT dark icon={icon} fill={color} />
         </div>
         {`${model} `}
         <SerialNumber>{` (${serialNumber})`}</SerialNumber>
@@ -70,7 +70,7 @@ const DeviceLink = styled(Link)`
   color: #272f5a;
 `;
 
-const DeviceIcon = styled(Icon)`
+const StockIconTT = styled(Icon)`
   margin-right: 8px;
 `;
 

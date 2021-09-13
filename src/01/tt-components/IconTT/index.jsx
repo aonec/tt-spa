@@ -5,8 +5,6 @@ import icons from './icons.json';
 export const IconTT = (props) => {
   const { icon = 'device', size = 16, stroke, hover, style } = props;
 
-  console.log(icons, icon)
-
   return (
     <svg
       viewBox="0 0 16 16"

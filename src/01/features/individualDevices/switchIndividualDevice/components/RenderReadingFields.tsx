@@ -100,7 +100,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
               renderField(elem, index, false)
             )}
           </div>
-          <Space style={{ height: 6 }} />
+          <Space h={6} />
           <div>{renderField(values[2], 2, true)}</div>
         </>
       ) : (
@@ -155,7 +155,7 @@ const EditableFieldWrap = styled.div`
       ? '#0ddf53'
       : status === 'failed'
       ? '#FF0021'
-      : `#eeeeee`};
+      : `#d9d9d9`};
   border: 1px solid var(--border-color);
   border-radius: 0;
   border-bottom-color: white;

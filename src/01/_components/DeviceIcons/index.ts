@@ -1,15 +1,8 @@
-// export const DevicesIcons = () => {
-//   HotWaterSupply: { icon: 'water', color: '#FF8C68' },
-//   ColdWaterSupply: { icon: 'water', color: '#79AFFF' },
-//   Electricity: { icon: 'electro', color: '#E2B104' },
-// };
-// export default DevicesIcons;
-
 const DeviceIcons: {
   [index: string]: { icon: string; color: string; translate: string };
 } = {
   HotWaterSupply: {
-    icon: 'water',
+    icon: 'hotWater',
     color: '#FF8C68',
     translate: 'Горячая вода',
   },

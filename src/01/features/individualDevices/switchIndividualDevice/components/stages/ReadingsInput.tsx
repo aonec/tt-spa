@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { SwitchIndividualDeviceReadingsCreateRequest } from '../../../../../../myApi';
+import {
+  IndividualDeviceReadingsResponse,
+  SwitchIndividualDeviceReadingsCreateRequest,
+} from '../../../../../../myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
@@ -15,8 +18,10 @@ import moment from 'moment';
 import { RenderReadingFields } from '../RenderReadingFields';
 
 interface Props {
-  readings: SwitchIndividualDeviceReadingsCreateRequest[];
-  onChange?: (readings: SwitchIndividualDeviceReadingsCreateRequest[]) => void;
+  readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
+  onChange?: (
+    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[]
+  ) => void;
   title: string;
   device: DataStringDevice;
 }
@@ -27,7 +32,7 @@ export const ReadingsInput: React.FC<Props> = ({
   readings,
   onChange,
 }) => {
-  const { sliderIndex, up, down } = useSliderIndex();
+  const { sliderIndex, up, down, canUp, canDown } = useSliderIndex();
 
   const defaultValues = device.rateType
     ? getArrayByCountRange(
@@ -84,7 +89,7 @@ export const ReadingsInput: React.FC<Props> = ({
       return changedReading;
     });
 
-    onChange(newValues);
+    onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
   }
 
   return (
@@ -96,9 +101,9 @@ export const ReadingsInput: React.FC<Props> = ({
       </DeviceInfo>
       <ReadingsWrap>
         <Flex style={{ justifyContent: 'space-between', maxWidth: 140 }}>
-          <SliderArrow onClick={up}>{'<'}</SliderArrow>
+          <SliderArrow onClick={up}>{canUp && '<'}</SliderArrow>
           <div>{getPreviousReadingsMonth(sliderIndex)}</div>
-          <SliderArrow onClick={down}>{'>'}</SliderArrow>
+          <SliderArrow onClick={down}>{canDown && '>'}</SliderArrow>
         </Flex>
 
         <Flex style={{ justifyContent: 'Center', maxWidth: 140 }}>
@@ -143,6 +148,15 @@ export const ReadingsInput: React.FC<Props> = ({
   );
 };
 
+const isReadingEmpty = (
+  reading: SwitchIndividualDeviceReadingsCreateRequest,
+  rateNum: number
+) =>
+  getReadingValuesArray(reading, rateNum)?.value?.reduce(
+    (acc, elem) => acc || Boolean(elem),
+    false
+  );
+
 const compareDates = (date1: string, date2: string) =>
   moment(date1).format('MM.YYYY') === moment(date2).format('MM.YYYY');
 
@@ -180,8 +194,10 @@ const getReadingsArrayWithEmpties = (
   }, {} as { [key: number]: SwitchIndividualDeviceReadingsCreateRequest });
 };
 
-const getReadingValuesArray = (
-  reading?: SwitchIndividualDeviceReadingsCreateRequest,
+export const getReadingValuesArray = (
+  reading?:
+    | IndividualDeviceReadingsResponse
+    | SwitchIndividualDeviceReadingsCreateRequest,
   rateNum?: number
 ) => {
   if (!reading || !rateNum) return null;
@@ -190,7 +206,10 @@ const getReadingValuesArray = (
 
   for (let i = 0; i < rateNum; i++) res.push((reading as any)[`value${i + 1}`]);
 
-  return { value: res, readingDate: reading.readingDate };
+  return {
+    value: res,
+    readingDate: (reading as any).readingDateTime || reading.readingDate,
+  };
 };
 
 const SliderArrow = styled.div`
@@ -204,7 +223,9 @@ const Title = styled.div`
 `;
 
 const Wrap = styled(Flex)`
-  box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16);
+  /* box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16); */
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
   padding: 15px 20px;
   justify-content: space-between;
 `;
@@ -218,12 +239,15 @@ const ReadingsWrap = styled.div`
 `;
 
 function useSliderIndex() {
+  const limit = 3;
   const [sliderIndex, setSliderIndex] = useState(0);
 
   return {
     sliderIndex,
+    canUp: sliderIndex < 3,
+    canDown: sliderIndex > 0,
     up() {
-      setSliderIndex((prev) => (prev !== 2 ? ++prev : prev));
+      setSliderIndex((prev) => (prev !== limit ? ++prev : prev));
     },
     down() {
       setSliderIndex((prev) => (prev !== 0 ? --prev : prev));

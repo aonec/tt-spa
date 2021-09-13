@@ -3,7 +3,7 @@ import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
 import { Spaces } from '01/shared/ui/Layout/Space/Space';
 
@@ -31,30 +31,21 @@ export const DeviceDataString: React.FC<Props> = ({
   return (
     <Spaces flex spaceStyles={{ width: 4 }}>
       {device?.resource && <RenderDeviceIcon resource={device?.resource} />}
-      <DeviceName>{device.model}</DeviceName>
       {device.serialNumber && (
         <DeviceSerialNumber>{device.serialNumber}</DeviceSerialNumber>
       )}
+      <DeviceName>{device.model}</DeviceName>
     </Spaces>
   );
 };
 
 const DeviceName = styled.span`
-  font-weight: 500;
-  color: #272f5aee;
+  color: #272f5a66;
 `;
 
 const DeviceSerialNumber = styled.span`
-  color: #272f5a66;
-  font-weight: 400;
-
-  &:before {
-    content: '(';
-  }
-
-  &:after {
-    content: ')';
-  }
+  font-weight: 500;
+  color: #272f5aee;
 `;
 
 export const RenderDeviceIcon = ({
@@ -69,10 +60,11 @@ export const RenderDeviceIcon = ({
   if (!deviceIcon) return <></>;
 
   return (
-    <DeviceIcon
+    <StockIconTT
       style={{ marginRight: 0 }}
       icon={deviceIcon.icon}
       fill={deviceIcon.color}
+      dark
     />
   );
 };

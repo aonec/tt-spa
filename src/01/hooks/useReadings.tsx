@@ -30,6 +30,7 @@ import { message, Modal, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -134,8 +135,8 @@ export const useReadings = (
   }, [device.readings, sliderIndex]);
 
   useEffect(() => {
-    device?.readings?.forEach((_, index) => {
-      setInitialData(index);
+    getArrayByCountRange(11, () => '').forEach((_, index) => {
+      const res = setInitialData(index);
     });
   }, [device.readings]);
 
@@ -727,7 +728,7 @@ export const useReadings = (
   const currentPreviousReading = readingsState.previousReadings[sliderIndex];
 
   const isExistCurrentPrevious = currentPreviousReading?.values.some(Boolean);
-  const isExistNextPrevious = nextPreviousReading?.values.some(Boolean);
+  const isExistNextPrevious = nextPreviousReading?.values?.some(Boolean);
 
   const previousReadingsWithTooltip = (
     <Tooltip
@@ -736,7 +737,8 @@ export const useReadings = (
           ? getPreviousReadingTooltipString(
               nextPreviousReading?.values || [],
               device?.rateType,
-              unit
+              unit,
+              nextPreviousReading?.index
             )
           : undefined
       }
@@ -755,7 +757,8 @@ export const useReadings = (
           ? getPreviousReadingTooltipString(
               nextPreviousReading?.values || [],
               device?.rateType,
-              unit
+              unit,
+              nextPreviousReading?.index
             )
           : undefined
       }
@@ -774,7 +777,8 @@ export const useReadings = (
 const getPreviousReadingTooltipString = (
   readings: number[],
   rateType: EIndividualDeviceRateType,
-  unit: string
+  unit: string,
+  sliderIndex?: number
 ) => {
   const rateNum = getIndividualDeviceRateNumByName(rateType);
   const valuesString = readings
@@ -784,11 +788,13 @@ const getPreviousReadingTooltipString = (
     )
     .map(
       (elem, index) =>
-        `${rateNum === 1 ? '' : `[T${index + 1}]:`} ${elem}${unit}`
+        `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
     )
     .join(', ');
 
-  return `Предыдущие показания: ${valuesString}`;
+  const month = sliderIndex && getPreviousReadingsMonth(sliderIndex);
+
+  return `Последнее показание: ${valuesString} (${month})`;
 };
 
 const limits = {
@@ -880,7 +886,7 @@ const getNextPreviousReading = (
     if (index > readingsLength) break;
   }
 
-  return res;
+  return res && { ...res, index };
 };
 
 interface ReadingElem {

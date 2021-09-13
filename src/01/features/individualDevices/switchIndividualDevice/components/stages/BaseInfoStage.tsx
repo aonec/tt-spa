@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
   EResourceType,
@@ -31,8 +31,13 @@ import {
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
 import { ReadingsInput } from './ReadingsInput';
-import { $individualDevice } from '../../../displayIndividualDevice/models';
+import {
+  $individualDevice,
+  fetchIndividualDeviceFx,
+} from '../../../displayIndividualDevice/models';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
+import { Loader } from '01/components';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,6 +48,8 @@ export const BaseInfoStage = () => {
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
 
+  const pending = useStore(fetchIndividualDeviceFx.pending);
+
   const onChange = (e: any) => {
     const field = (fields as any)[e.target.name];
 
@@ -51,23 +58,16 @@ export const BaseInfoStage = () => {
     field.onChange(e.target.value);
   };
 
-  const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
-    if (!value || !(fields as any)[name]) return;
-
-    (fields as any)[name].onChange(value.toISOString());
-  };
-
   const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
     <>
       <FormItem label="Дата последней поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={(value: moment.Moment | null = moment()) => {
-            if (!value) return;
+        <DatePickerNative
+          onChange={(incomingValue: string) => {
+            const value = moment(incomingValue);
 
-            onChangeDateField('lastCheckingDate')(value);
+            fields.lastCheckingDate.onChange(incomingValue);
 
             const nextCheckingDate = moment(value);
 
@@ -79,9 +79,9 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            onChangeDateField('futureCheckingDate')(nextCheckingDate);
+            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString());
           }}
-          value={getDatePickerValue(fields.lastCheckingDate.value)}
+          value={fields.lastCheckingDate.value}
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
@@ -90,10 +90,9 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('futureCheckingDate')}
-          value={getDatePickerValue(fields.futureCheckingDate.value)}
+        <DatePickerNative
+          onChange={fields.futureCheckingDate.onChange}
+          value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
@@ -140,14 +139,8 @@ export const BaseInfoStage = () => {
     </Form.Item>
   );
 
-  return (
-    <Wrap>
-      <ContractorsGate />
-      <IndividualDevicecModelsGate model={modelNameDebounced} />
-      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
-
-      <FormHeader>Общие данные о приборе</FormHeader>
-
+  const form = (
+    <>
       <FormWrap>
         <FormItem label="Тип ресурса">
           <StyledSelect
@@ -159,10 +152,12 @@ export const BaseInfoStage = () => {
             {allResources.map((elem) => (
               <Select.Option value={elem.value}>
                 <Flex>
-                  <DeviceIcon
+                  <StockIconTT
                     icon={DeviceIcons[elem.value]?.icon}
+                    dark
                     fill={DeviceIcons[elem.value]?.color}
                   />
+                  <Space />
                   <div>{elem.label}</div>
                 </Flex>
               </Select.Option>
@@ -225,6 +220,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Разрядность">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите разрядность прибора"
             name="bitDepth"
@@ -240,6 +236,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Множитель">
           <InputTT
+            disabled
             type="number"
             placeholder="Введите множитель прибора"
             name="scaleFactor"
@@ -253,14 +250,13 @@ export const BaseInfoStage = () => {
           </ErrorMessage>
         </FormItem>
       </FormWrap>
-
       <FormWrap>
         {rateTypeSelector}
         {selectSwitchReason}
       </FormWrap>
-
       {device && (
         <>
+          <Space />
           <ReadingsInput
             title="Закрываемый прибор"
             readings={fields.oldDeviceReadings.value}
@@ -280,16 +276,19 @@ export const BaseInfoStage = () => {
               rateType: fields.rateType.value,
             }}
           />
+          <ErrorMessage>
+            {fields.newDeviceReadings.errorText({
+              required: 'Заполните хотя бы одно показание',
+            })}
+          </ErrorMessage>
         </>
       )}
-
       <Space />
-
       <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+        <DatePickerNative
+          value={fields.lastCommercialAccountingDate.value}
+          onChange={fields.lastCommercialAccountingDate.onChange}
+          placeholder="Введите дату"
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -297,9 +296,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-
       <FormWrap>{bottomDateFields}</FormWrap>
-
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
@@ -313,16 +310,13 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
-          <DatePicker
-            format="DD.MM.YYYY"
-            onChange={onChangeDateField('magneticSealInstallationDate')}
-            value={getDatePickerValue(
-              fields.magneticSealInstallationDate.value
-            )}
+          <DatePickerNative
+            value={fields.magneticSealInstallationDate.value}
+            onChange={fields.magneticSealInstallationDate.onChange}
+            placeholder="Введите дату"
           />
         </FormItem>
       </FormWrap>
-
       <FormItem label="Монтажная организация">
         <StyledSelect
           onChange={(value: any) =>
@@ -338,6 +332,18 @@ export const BaseInfoStage = () => {
           ))}
         </StyledSelect>
       </FormItem>
+    </>
+  );
+
+  return (
+    <Wrap>
+      <ContractorsGate />
+      <IndividualDevicecModelsGate model={modelNameDebounced} />
+      <IndividualDeviceMountPlacesGate apartmentId={Number(id)} />
+
+      <FormHeader>Общие данные о приборе</FormHeader>
+
+      {pending ? <Loader show size={32} /> : form}
     </Wrap>
   );
 };
@@ -346,7 +352,6 @@ export const closingReasons = {
   [EClosingReason.Manually]: 'Плановая замена',
   [EClosingReason.DeviceBroken]: 'Поломка',
   [EClosingReason.CertificateIssued]: 'Выдана справка',
-  // [EClosingReason.NoReadings]: 'Нет показаний',
 };
 
 function getDatePickerValue(value: string | null) {
