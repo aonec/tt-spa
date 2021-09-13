@@ -1,11 +1,11 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { AppContext } from '01/context';
+import { message } from 'antd';
 
 export function useApp() {
   const { replace } = useHistory();
-  // const { pathname } = useLocation()
 
   const [state, dispatch] = React.useReducer(reducer, {}, (state) => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -21,6 +21,7 @@ export function useApp() {
     if (!token) {
       localStorage.clear();
       replace('/login');
+      message('runs');
     }
   }, [replace]);
 

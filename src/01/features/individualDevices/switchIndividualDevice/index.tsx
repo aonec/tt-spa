@@ -6,11 +6,17 @@ import { CreateIndividualDeviceForm } from './components/CreateIndividualDeviceF
 import { Grid } from './components/Grid';
 import { CreateIndividualDeviceFormHeader } from './components/Header';
 import { CreateIndividualDeviceFormStages } from './components/Stages';
+import { SwitchIndividualDeviceGate } from './models';
 
-export const SwitchIndividualDevice = () => {
+interface Props {
+  check?: boolean;
+}
+
+export const SwitchIndividualDevice: React.FC<Props> = ({ check }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
   return (
     <>
+      <SwitchIndividualDeviceGate check={check} />
       <IndividualDeviceGate id={Number(deviceId)} />
       <CheckFormValuesModal />
       <CreateIndividualDeviceFormHeader />
