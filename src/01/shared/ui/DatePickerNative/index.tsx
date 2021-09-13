@@ -18,16 +18,15 @@ export const DatePickerNative: React.FC<Props> = ({
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString();
   const currentValueToMoment = moment(innerValue);
-  const isCurrentValueValid = !!incomingValue && currentValueToMoment.isValid();
+  const isCurrentValueValid = currentValueToMoment.isValid();
 
   const setInitialInnerValue = () => {
     setInnerValue(value ? moment(value).format('YYYY-MM-DD') : undefined);
   };
 
   function onChangeGlobal() {
-    isCurrentValueValid
-      ? onChange(currentValueToMoment.toISOString())
-      : setInitialInnerValue();
+    onChange(currentValueToMoment.toISOString());
+    if (isCurrentValueValid) setInitialInnerValue();
   }
 
   useEffect(setInitialInnerValue, [value]);
