@@ -40,10 +40,7 @@ import { Devices } from '../_pages/ObjectProfile/components/Devices';
 import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
-import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
-import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
-import { CheckIndividualDevice } from '01/features/individualDevices/checkIndividualDevice';
-import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
+import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
 
 moment.locale('ru');
 
@@ -177,22 +174,8 @@ const Internal = () => {
                 component={MetersPage}
               />
 
-              <Route path="/apartment/:id/addIndividualDevice" exact>
-                <AddIndividualDevice />
-              </Route>
+              <ApartmentsRouteGroup />
 
-              <Route path="/apartment/:id/individualDevice/:deviceId/readingHistory">
-                <ReadingHistoryPage />
-              </Route>
-              <Route path="/houses/individualDevice/:deviceId/readingHistory">
-                <ReadingHistoryPage />
-              </Route>
-              <Route path="/apartment/:id/individualDevice/:deviceId/switch">
-                <SwitchIndividualDevice />
-              </Route>
-              <Route path="/apartment/:id/individualDevice/:deviceId/check">
-                <SwitchIndividualDevice />
-              </Route>
               <Redirect to="/error/" />
             </Switch>
           </main>
