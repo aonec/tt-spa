@@ -181,7 +181,7 @@ const Internal = () => {
           </main>
         </layout>
       </Route>
-    </Switch>
+    </Switch> 
   );
 };
 

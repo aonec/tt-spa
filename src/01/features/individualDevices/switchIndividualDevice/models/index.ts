@@ -1,3 +1,4 @@
+import { createGate } from 'effector-react';
 import {
   EResourceType,
   MeteringDeviceResponse,
@@ -105,3 +106,5 @@ export const createIndividualDeviceFx = createEffect<
   SwitchIndividualDeviceRequest,
   MeteringDeviceResponse
 >();
+
+export const SwitchIndividualDeviceGate = createGate<{ check?: boolean }>();

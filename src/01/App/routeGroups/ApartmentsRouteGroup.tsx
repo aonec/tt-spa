@@ -20,7 +20,7 @@ export const ApartmentsRouteGroup = () => (
       <SwitchIndividualDevice />
     </Route>
     <Route path="/apartment/:id/individualDevice/:deviceId/check">
-      <SwitchIndividualDevice />
+      <SwitchIndividualDevice check />
     </Route>
   </Switch>
 );

@@ -13,7 +13,10 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addIndividualDeviceForm } from '../../models';
+import {
+  addIndividualDeviceForm,
+  SwitchIndividualDeviceGate,
+} from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
@@ -47,6 +50,7 @@ export const BaseInfoStage = () => {
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
+  const { check } = useStore(SwitchIndividualDeviceGate.state);
 
   const pending = useStore(fetchIndividualDeviceFx.pending);
 
