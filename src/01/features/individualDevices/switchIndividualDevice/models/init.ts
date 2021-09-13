@@ -215,16 +215,17 @@ function getChangedReadings(
 
     if (!neededPrevReading) return true;
 
-    if (
-      getReadingValuesArray(
-        clearEmptyValueFields(neededPrevReading as any, rateNum),
-        rateNum
-      )?.value.join('') ===
-      getReadingValuesArray(
-        clearEmptyValueFields(newReading as any, rateNum),
-        rateNum
-      )?.value.join('')
-    )
+    const oldDeviceReadingValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(neededPrevReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    const formOldDeviceValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(newReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    if (compareArrays(oldDeviceReadingValues, formOldDeviceValues))
       return false;
 
     return true;
@@ -232,3 +233,6 @@ function getChangedReadings(
 
   return res;
 }
+
+const compareArrays = <T>(array1: T[], array2: T[]) =>
+  array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
