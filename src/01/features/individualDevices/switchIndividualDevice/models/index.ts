@@ -59,7 +59,9 @@ export const addIndividualDeviceForm = createForm({
       init: '',
     },
     oldDeviceReadings: {
-      init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
+        id?: number;
+      })[],
     },
     newDeviceReadings: {
       init: [] as SwitchIndividualDeviceReadingsCreateRequest[],

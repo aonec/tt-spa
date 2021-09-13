@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { SwitchIndividualDeviceReadingsCreateRequest } from '../../../../../../myApi';
+import {
+  IndividualDeviceReadingsResponse,
+  SwitchIndividualDeviceReadingsCreateRequest,
+} from '../../../../../../myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
@@ -15,8 +18,10 @@ import moment from 'moment';
 import { RenderReadingFields } from '../RenderReadingFields';
 
 interface Props {
-  readings: SwitchIndividualDeviceReadingsCreateRequest[];
-  onChange?: (readings: SwitchIndividualDeviceReadingsCreateRequest[]) => void;
+  readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
+  onChange?: (
+    readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[]
+  ) => void;
   title: string;
   device: DataStringDevice;
 }
@@ -189,8 +194,10 @@ const getReadingsArrayWithEmpties = (
   }, {} as { [key: number]: SwitchIndividualDeviceReadingsCreateRequest });
 };
 
-const getReadingValuesArray = (
-  reading?: SwitchIndividualDeviceReadingsCreateRequest,
+export const getReadingValuesArray = (
+  reading?:
+    | IndividualDeviceReadingsResponse
+    | SwitchIndividualDeviceReadingsCreateRequest,
   rateNum?: number
 ) => {
   if (!reading || !rateNum) return null;
@@ -199,7 +206,10 @@ const getReadingValuesArray = (
 
   for (let i = 0; i < rateNum; i++) res.push((reading as any)[`value${i + 1}`]);
 
-  return { value: res, readingDate: reading.readingDate };
+  return {
+    value: res,
+    readingDate: (reading as any).readingDateTime || reading.readingDate,
+  };
 };
 
 const SliderArrow = styled.div`
