@@ -11,17 +11,17 @@ export function useApp() {
     return { ...state, user };
   });
 
-  // React.useEffect(() => {
-  //   if (window.location.href.match(/registration/gi)) {
-  //     return;
-  //   }
+  React.useEffect(() => {
+    if (window.location.href.match(/registration/gi)) {
+      return;
+    }
 
-  //   const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     localStorage.clear();
-  //     replace('/login');
-  //   }
-  // }, [replace]);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      localStorage.clear();
+      replace('/login');
+    }
+  }, [replace]);
 
   return ({ children }) => (
     <AppContext.Provider

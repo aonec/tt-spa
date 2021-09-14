@@ -1,8 +1,8 @@
 import { Steps } from 'antd';
 import { useStore } from 'effector-react';
 import React from 'react';
-import { $creationDeviceStage } from '../models';
-import { FormHeader } from './Header';
+import { $creationDeviceStage } from '../../models';
+import { FormHeader } from '../Header';
 
 const { Step } = Steps;
 

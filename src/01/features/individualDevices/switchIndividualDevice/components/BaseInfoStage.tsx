@@ -3,7 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { DatePickerTT, InputTT } from '01/tt-components';
+import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select } from 'antd';
@@ -13,12 +13,9 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  addIndividualDeviceForm,
-  SwitchIndividualDeviceGate,
-} from '../../models';
-import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
+import { addIndividualDeviceForm, SwitchIndividualDeviceGate } from '../models';
+import { FormHeader } from './Header';
+import DeviceIcons from '../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
@@ -33,11 +30,11 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from '../ReadingsInput';
+import { ReadingsInput } from './ReadingsInput';
 import {
   $individualDevice,
   fetchIndividualDeviceFx,
-} from '../../../displayIndividualDevice/models';
+} from '../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
@@ -175,36 +172,6 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
 
-      <FormItem label="Модель прибора">
-        <StyledAutoComplete
-          size="large"
-          value={fields.model.value}
-          placeholder="Введите модель прибора"
-          onChange={fields.model.onChange}
-          options={modelNames?.map((elem) => ({ value: elem })) || []}
-        />
-        <ErrorMessage>
-          {fields.model.errorText({
-            required: 'Это поле обязательное',
-          })}
-        </ErrorMessage>
-      </FormItem>
-
-      <FormItem label="Серийный номер">
-        <InputTT
-          type="text"
-          placeholder="Введите серийный номер прибора"
-          onChange={onChange}
-          name="serialNumber"
-          value={fields.serialNumber.value}
-        />
-        <ErrorMessage>
-          {fields.serialNumber.errorText({
-            required: 'Это поле обязательное',
-          })}
-        </ErrorMessage>
-      </FormItem>
-
       <FormItem label="Место установки">
         <StyledSelect
           disabled
@@ -222,6 +189,37 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
+      
+      <FormItem label="Серийный номер">
+        <InputTT
+          type="text"
+          placeholder="Введите серийный номер прибора"
+          onChange={onChange}
+          name="serialNumber"
+          value={fields.serialNumber.value}
+        />
+        <ErrorMessage>
+          {fields.serialNumber.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+
+      <FormItem label="Модель прибора">
+        <StyledAutoComplete
+          size="large"
+          value={fields.model.value}
+          placeholder="Введите модель прибора"
+          onChange={fields.model.onChange}
+          options={modelNames?.map((elem) => ({ value: elem })) || []}
+        />
+        <ErrorMessage>
+          {fields.model.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
+
       <Flex>
         <FormItem label="Разрядность">
           <InputTT
@@ -346,6 +344,7 @@ export const BaseInfoStage = () => {
   const form = (
     <>
       {baseInfo}
+      <SpaceLine />
       {bottomDateFields}
       <SpaceLine />
       {readingInputs}
@@ -373,16 +372,9 @@ export const closingReasons = {
   [EClosingReason.CertificateIssued]: 'Выдана справка',
 };
 
-function getDatePickerValue(value: string | null) {
-  if (value) return moment(value);
-}
-
 const ErrorMessage = styled.div`
+  margin-top: 5px;
   color: red;
-`;
-
-const DatePicker = styled(DatePickerTT)`
-  border-radius: 4px;
 `;
 
 const FormItem = styled(Form.Item)`
