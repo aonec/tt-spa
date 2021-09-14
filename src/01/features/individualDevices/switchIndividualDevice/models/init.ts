@@ -95,12 +95,15 @@ forward({
 
     const serialNumberAfterString = getSerialNumberAfterString(type);
 
-    return {
+    const res = {
       ...values,
       bitDepth,
       scaleFactor,
       serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
+      mountPlaceId: values.mountPlace,
     } as any;
+
+    return res;
   }),
   to: addIndividualDeviceForm.setForm,
 });
