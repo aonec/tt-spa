@@ -23,6 +23,7 @@ import confirm from 'antd/lib/modal/confirm';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { ReactComponent as HistoryIcon } from './icons/history.svg';
+import { ReactComponent as StarIcon } from './icons/star.svg';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -105,6 +106,17 @@ const ApartmentReadingLine = ({
         {currentReadings}
 
         <Flex style={{ justifyContent: 'flex-end', width: '100%' }}>
+          <Tooltip title="Переоткрытие прибора">
+            <StarIcon
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                history.push(
+                  `/apartment/${id}/individualDevice/${device.id}/reopen`
+                )
+              }
+            />
+          </Tooltip>
+          <Space w={8} />
           <Tooltip title="История показаний">
             <HistoryIcon
               style={{ cursor: 'pointer' }}

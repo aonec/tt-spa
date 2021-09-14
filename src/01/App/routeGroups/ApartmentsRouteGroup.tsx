@@ -10,17 +10,23 @@ export const ApartmentsRouteGroup = () => (
       <AddIndividualDevice />
     </Route>
 
-    <Route path="/apartment/:id/individualDevice/:deviceId/readingHistory">
+    <Route
+      path="/apartment/:id/individualDevice/:deviceId/readingHistory"
+      exact
+    >
       <ReadingHistoryPage />
     </Route>
-    <Route path="/houses/individualDevice/:deviceId/readingHistory">
+    <Route path="/houses/individualDevice/:deviceId/readingHistory" exact>
       <ReadingHistoryPage />
     </Route>
-    <Route path="/apartment/:id/individualDevice/:deviceId/switch">
-      <SwitchIndividualDevice />
+    <Route path="/apartment/:id/individualDevice/:deviceId/switch" exact>
+      <SwitchIndividualDevice type="switch" />
     </Route>
-    <Route path="/apartment/:id/individualDevice/:deviceId/check">
-      <SwitchIndividualDevice check />
+    <Route path="/apartment/:id/individualDevice/:deviceId/check" exact>
+      <SwitchIndividualDevice type="check" />
+    </Route>
+    <Route path="/apartment/:id/individualDevice/:deviceId/reopen" exact>
+      <SwitchIndividualDevice type="reopen" />
     </Route>
   </Switch>
 );

@@ -50,7 +50,9 @@ export const BaseInfoStage = () => {
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
-  const { check } = useStore(SwitchIndividualDeviceGate.state);
+  const check = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type === 'check')
+  );
 
   const pending = useStore(fetchIndividualDeviceFx.pending);
 

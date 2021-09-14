@@ -9,8 +9,16 @@ import { SwitchIndividualDeviceGate } from '../models';
 import { DeviceDataString } from './DeviceDataString';
 import { HousingStockAddress } from './HousingStockAddress';
 
+const headerTitles = {
+  reopen: 'Переоткрытие прибора',
+  switch: 'Замена прибора',
+  check: 'Поверка прибора',
+};
+
 export const CreateIndividualDeviceFormHeader: React.FC = () => {
-  const { check } = useStore(SwitchIndividualDeviceGate.state);
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
 
   return (
     <>
@@ -23,7 +31,7 @@ export const CreateIndividualDeviceFormHeader: React.FC = () => {
         <div>
           <Breadcrumb />
           <div>
-            <Title>{check ? 'Поверка прибора' : 'Замена прибора'}</Title>
+            <Title>{headerTitles[type]}</Title>
             <Flex>
               <HousingStockAddress />
               <Space />
