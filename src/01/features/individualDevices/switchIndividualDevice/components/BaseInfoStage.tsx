@@ -47,9 +47,12 @@ export const BaseInfoStage = () => {
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
-  const check = useStore(
-    SwitchIndividualDeviceGate.state.map(({ type }) => type === 'check')
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
   );
+  const isCheck = type === 'check';
+  const isReopen = type === 'reopen';
+  const isSwitch = type === 'switch';
 
   const pending = useStore(fetchIndividualDeviceFx.pending);
 
@@ -67,6 +70,7 @@ export const BaseInfoStage = () => {
     <FormWrap>
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
+          disabled={isReopen}
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
@@ -94,6 +98,7 @@ export const BaseInfoStage = () => {
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
+          disabled={isReopen}
           onChange={fields.futureCheckingDate.onChange}
           value={fields.futureCheckingDate.value}
         />
@@ -189,9 +194,10 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      
+
       <FormItem label="Серийный номер">
         <InputTT
+          disabled={isCheck || isReopen}
           type="text"
           placeholder="Введите серийный номер прибора"
           onChange={onChange}
@@ -207,6 +213,7 @@ export const BaseInfoStage = () => {
 
       <FormItem label="Модель прибора">
         <StyledAutoComplete
+          disabled={isCheck || isReopen}
           size="large"
           value={fields.model.value}
           placeholder="Введите модель прибора"
@@ -256,6 +263,7 @@ export const BaseInfoStage = () => {
 
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
+          disabled={isCheck || isReopen}
           value={fields.lastCommercialAccountingDate.value}
           onChange={fields.lastCommercialAccountingDate.onChange}
           placeholder="Введите дату"
@@ -267,8 +275,12 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
 
-      {rateTypeSelector}
-      {selectSwitchReason}
+      {isSwitch && (
+        <>
+          {rateTypeSelector}
+          {selectSwitchReason}
+        </>
+      )}
     </FormWrap>
   );
 
@@ -278,6 +290,7 @@ export const BaseInfoStage = () => {
         <FormItem label="Пломба">
           <Flex>
             <InputTT
+              disabled={isCheck || isReopen}
               placeholder="Номер пломбы"
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
@@ -288,6 +301,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
+            disabled={isCheck || isReopen}
             value={fields.magneticSealInstallationDate.value}
             onChange={fields.magneticSealInstallationDate.onChange}
             placeholder="Введите дату"

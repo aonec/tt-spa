@@ -12,6 +12,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
   switchStageButtonClicked,
 } from '../models';
 import { BaseInfoStage } from './BaseInfoStage';
@@ -30,11 +31,24 @@ export const CreateIndividualDeviceForm = () => {
 
   const { fields, submit } = useForm(addIndividualDeviceForm);
 
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
+
   useEffect(() => {
     if (!individualDeviceCreationRequestStatus) return;
 
+    const messageText =
+      type === 'check'
+        ? 'поверен'
+        : type === 'reopen'
+        ? 'переоткрыт'
+        : type === 'switch'
+        ? 'заменен'
+        : '';
+
     history.goBack();
-    message.success('Прибор успешно заменен!');
+    message.success(`Прибор успешно ${messageText}!`);
     resetCreationRequestStatus();
   }, [individualDeviceCreationRequestStatus]);
 

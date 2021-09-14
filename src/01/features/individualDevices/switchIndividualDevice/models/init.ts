@@ -22,6 +22,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
@@ -88,11 +89,17 @@ forward({
       values.resource
     );
 
+    const type = SwitchIndividualDeviceGate.state
+      .map(({ type }) => type)
+      .getState();
+
+    const serialNumberAfterString = getSerialNumberAfterString(type);
+
     return {
-      resource: values.resource,
-      mountPlaceId: values.deviceMountPlace?.id,
+      ...values,
       bitDepth,
       scaleFactor,
+      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
@@ -239,3 +246,11 @@ function getChangedReadings(
 
 const compareArrays = <T>(array1: T[], array2: T[]) =>
   array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
+
+const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
+  return {
+    switch: '',
+    check: '*П1',
+    reopen: '*',
+  }[type];
+};
