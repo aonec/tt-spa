@@ -107,4 +107,6 @@ export const createIndividualDeviceFx = createEffect<
   MeteringDeviceResponse
 >();
 
-export const SwitchIndividualDeviceGate = createGate<{ check?: boolean }>();
+export const SwitchIndividualDeviceGate = createGate<{
+  type: 'reopen' | 'check' | 'switch';
+}>();

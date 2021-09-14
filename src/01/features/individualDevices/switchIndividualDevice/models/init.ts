@@ -22,6 +22,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
@@ -34,7 +35,7 @@ import {
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import moment from 'moment';
-import { getReadingValuesArray } from '../components/stages/ReadingsInput';
+import { getReadingValuesArray } from '../components/ReadingsInput';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -47,8 +48,6 @@ sample({
   clock: goNextStage,
   target: switchStageButtonClicked,
 });
-
-forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });
 
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
@@ -90,11 +89,17 @@ forward({
       values.resource
     );
 
+    const type = SwitchIndividualDeviceGate.state
+      .map(({ type }) => type)
+      .getState();
+
+    const serialNumberAfterString = getSerialNumberAfterString(type);
+
     return {
-      resource: values.resource,
-      mountPlaceId: values.deviceMountPlace?.id,
+      ...values,
       bitDepth,
       scaleFactor,
+      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
@@ -197,6 +202,11 @@ sample({
   target: createIndividualDeviceFx,
 });
 
+forward({
+  from: addIndividualDeviceForm.formValidated,
+  to: checkBeforSavingButtonClicked,
+});
+
 function getChangedReadings(
   prevReadings: IndividualDeviceReadingsResponse[],
   currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {
@@ -236,3 +246,11 @@ function getChangedReadings(
 
 const compareArrays = <T>(array1: T[], array2: T[]) =>
   array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
+
+const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
+  return {
+    switch: '',
+    check: '*П1',
+    reopen: '*',
+  }[type];
+};

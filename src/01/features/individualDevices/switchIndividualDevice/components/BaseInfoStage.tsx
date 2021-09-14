@@ -3,7 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { DatePickerTT, InputTT } from '01/tt-components';
+import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select } from 'antd';
@@ -13,12 +13,9 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  addIndividualDeviceForm,
-  SwitchIndividualDeviceGate,
-} from '../../models';
-import { FormHeader } from '../Header';
-import DeviceIcons from '../../../../../_components/DeviceIcons';
+import { addIndividualDeviceForm, SwitchIndividualDeviceGate } from '../models';
+import { FormHeader } from './Header';
+import DeviceIcons from '../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
@@ -37,8 +34,8 @@ import { ReadingsInput } from './ReadingsInput';
 import {
   $individualDevice,
   fetchIndividualDeviceFx,
-} from '../../../displayIndividualDevice/models';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+} from '../../displayIndividualDevice/models';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
 
@@ -50,7 +47,12 @@ export const BaseInfoStage = () => {
   const contractors = useStore($contractors);
   const device = useStore($individualDevice);
   const { fields } = useForm(addIndividualDeviceForm);
-  const { check } = useStore(SwitchIndividualDeviceGate.state);
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
+  const isCheck = type === 'check';
+  const isReopen = type === 'reopen';
+  const isSwitch = type === 'switch';
 
   const pending = useStore(fetchIndividualDeviceFx.pending);
 
@@ -65,9 +67,10 @@ export const BaseInfoStage = () => {
   const modelNameDebounced = fields.model.value;
 
   const bottomDateFields = (
-    <>
+    <FormWrap>
       <FormItem label="Дата последней поверки прибора">
         <DatePickerNative
+          disabled={isReopen}
           onChange={(incomingValue: string) => {
             const value = moment(incomingValue);
 
@@ -95,6 +98,7 @@ export const BaseInfoStage = () => {
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
         <DatePickerNative
+          disabled={isReopen}
           onChange={fields.futureCheckingDate.onChange}
           value={fields.futureCheckingDate.value}
         />
@@ -104,7 +108,7 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-    </>
+    </FormWrap>
   );
 
   const rateTypeSelector = (
@@ -143,85 +147,87 @@ export const BaseInfoStage = () => {
     </Form.Item>
   );
 
-  const form = (
-    <>
-      <FormWrap>
-        <FormItem label="Тип ресурса">
-          <StyledSelect
-            disabled
-            placeholder="Выберите тип ресурса"
-            onChange={(value: any) => fields.resource.onChange(value)}
-            value={fields.resource.value || undefined}
-          >
-            {allResources.map((elem) => (
-              <Select.Option value={elem.value}>
-                <Flex>
-                  <StockIconTT
-                    icon={DeviceIcons[elem.value]?.icon}
-                    dark
-                    fill={DeviceIcons[elem.value]?.color}
-                  />
-                  <Space />
-                  <div>{elem.label}</div>
-                </Flex>
-              </Select.Option>
-            ))}
-          </StyledSelect>
-          <ErrorMessage>
-            {fields.resource.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+  const baseInfo = (
+    <FormWrap>
+      <FormItem label="Тип ресурса">
+        <StyledSelect
+          disabled
+          placeholder="Выберите тип ресурса"
+          onChange={(value: any) => fields.resource.onChange(value)}
+          value={fields.resource.value || undefined}
+        >
+          {allResources.map((elem) => (
+            <Select.Option value={elem.value}>
+              <Flex>
+                <StockIconTT
+                  icon={DeviceIcons[elem.value]?.icon}
+                  dark
+                  fill={DeviceIcons[elem.value]?.color}
+                />
+                <Space />
+                <div>{elem.label}</div>
+              </Flex>
+            </Select.Option>
+          ))}
+        </StyledSelect>
+        <ErrorMessage>
+          {fields.resource.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Модель прибора">
-          <StyledAutoComplete
-            size="large"
-            value={fields.model.value}
-            placeholder="Введите модель прибора"
-            onChange={fields.model.onChange}
-            options={modelNames?.map((elem) => ({ value: elem })) || []}
-          />
-          <ErrorMessage>
-            {fields.model.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+      <FormItem label="Место установки">
+        <StyledSelect
+          disabled
+          placeholder="Выберите место установки"
+          value={fields.mountPlaceId.value || undefined}
+          onChange={(value: any) => fields.mountPlaceId.onChange(value)}
+        >
+          {mountPlaces?.map((elem) => (
+            <Select.Option value={elem.id}>{elem.description}</Select.Option>
+          ))}
+        </StyledSelect>
+        <ErrorMessage>
+          {fields.mountPlaceId.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Серийный номер">
-          <InputTT
-            type="text"
-            placeholder="Введите серийный номер прибора"
-            onChange={onChange}
-            name="serialNumber"
-            value={fields.serialNumber.value}
-          />
-          <ErrorMessage>
-            {fields.serialNumber.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+      <FormItem label="Серийный номер">
+        <InputTT
+          disabled={isCheck || isReopen}
+          type="text"
+          placeholder="Введите серийный номер прибора"
+          onChange={onChange}
+          name="serialNumber"
+          value={fields.serialNumber.value}
+        />
+        <ErrorMessage>
+          {fields.serialNumber.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
-        <FormItem label="Место установки">
-          <StyledSelect
-            disabled
-            placeholder="Выберите место установки"
-            value={fields.mountPlaceId.value || undefined}
-            onChange={(value: any) => fields.mountPlaceId.onChange(value)}
-          >
-            {mountPlaces?.map((elem) => (
-              <Select.Option value={elem.id}>{elem.description}</Select.Option>
-            ))}
-          </StyledSelect>
-          <ErrorMessage>
-            {fields.mountPlaceId.errorText({
-              required: 'Это поле обязательное',
-            })}
-          </ErrorMessage>
-        </FormItem>
+      <FormItem label="Модель прибора">
+        <StyledAutoComplete
+          disabled={isCheck || isReopen}
+          size="large"
+          value={fields.model.value}
+          placeholder="Введите модель прибора"
+          onChange={fields.model.onChange}
+          options={modelNames?.map((elem) => ({ value: elem })) || []}
+        />
+        <ErrorMessage>
+          {fields.model.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
+      </FormItem>
 
+      <Flex>
         <FormItem label="Разрядность">
           <InputTT
             disabled
@@ -237,7 +243,7 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
-
+        <Space />
         <FormItem label="Множитель">
           <InputTT
             disabled
@@ -253,43 +259,11 @@ export const BaseInfoStage = () => {
             })}
           </ErrorMessage>
         </FormItem>
-      </FormWrap>
-      <FormWrap>
-        {rateTypeSelector}
-        {selectSwitchReason}
-      </FormWrap>
-      {device && (
-        <>
-          <Space />
-          <ReadingsInput
-            title="Закрываемый прибор"
-            readings={fields.oldDeviceReadings.value}
-            onChange={fields.oldDeviceReadings.onChange}
-            device={device}
-          />
-          <Space />
-          <ReadingsInput
-            title="Новый прибор"
-            readings={fields.newDeviceReadings.value}
-            onChange={fields.newDeviceReadings.onChange}
-            device={{
-              resource: fields.resource.value!,
-              model: fields.model.value,
-              serialNumber: fields.serialNumber.value,
-              measurableUnitString: device?.measurableUnitString,
-              rateType: fields.rateType.value,
-            }}
-          />
-          <ErrorMessage>
-            {fields.newDeviceReadings.errorText({
-              required: 'Заполните хотя бы одно показание',
-            })}
-          </ErrorMessage>
-        </>
-      )}
-      <Space />
+      </Flex>
+
       <FormItem label="Дата ввода в эксплуатацию">
         <DatePickerNative
+          disabled={isCheck || isReopen}
           value={fields.lastCommercialAccountingDate.value}
           onChange={fields.lastCommercialAccountingDate.onChange}
           placeholder="Введите дату"
@@ -300,11 +274,23 @@ export const BaseInfoStage = () => {
           })}
         </ErrorMessage>
       </FormItem>
-      <FormWrap>{bottomDateFields}</FormWrap>
+
+      {isSwitch && (
+        <>
+          {rateTypeSelector}
+          {selectSwitchReason}
+        </>
+      )}
+    </FormWrap>
+  );
+
+  const seal = (
+    <>
       <FormWrap>
         <FormItem label="Пломба">
           <Flex>
             <InputTT
+              disabled={isCheck || isReopen}
               placeholder="Номер пломбы"
               value={fields.magneticSealTypeName.value}
               onChange={onChange}
@@ -315,6 +301,7 @@ export const BaseInfoStage = () => {
 
         <FormItem label="Дата установки пломбы">
           <DatePickerNative
+            disabled={isCheck || isReopen}
             value={fields.magneticSealInstallationDate.value}
             onChange={fields.magneticSealInstallationDate.onChange}
             placeholder="Введите дату"
@@ -339,6 +326,63 @@ export const BaseInfoStage = () => {
     </>
   );
 
+  const readingInputs = device && (
+    <div style={{ margin: '10px 0' }}>
+      <ReadingsInput
+        title={
+          isSwitch
+            ? 'Заменяемый прибор'
+            : isCheck
+            ? 'Прибор до поверки'
+            : isReopen
+            ? 'Прибор до переоткрытия'
+            : ''
+        }
+        readings={fields.oldDeviceReadings.value}
+        onChange={fields.oldDeviceReadings.onChange}
+        device={device}
+      />
+      <Space />
+      <ReadingsInput
+        title={
+          isSwitch
+            ? 'Новый прибор'
+            : isCheck
+            ? 'Прибор после поверки'
+            : isReopen
+            ? 'Прибор после переоткрытия'
+            : ''
+        }
+        readings={fields.newDeviceReadings.value}
+        onChange={fields.newDeviceReadings.onChange}
+        device={{
+          resource: fields.resource.value!,
+          model: fields.model.value,
+          serialNumber: fields.serialNumber.value,
+          measurableUnitString: device?.measurableUnitString,
+          rateType: fields.rateType.value,
+        }}
+      />
+      <ErrorMessage>
+        {fields.newDeviceReadings.errorText({
+          required: 'Заполните хотя бы одно показание',
+        })}
+      </ErrorMessage>
+    </div>
+  );
+
+  const form = (
+    <>
+      {baseInfo}
+      <SpaceLine />
+      {bottomDateFields}
+      <SpaceLine />
+      {readingInputs}
+      <SpaceLine />
+      {seal}
+    </>
+  );
+
   return (
     <Wrap>
       <ContractorsGate />
@@ -358,16 +402,9 @@ export const closingReasons = {
   [EClosingReason.CertificateIssued]: 'Выдана справка',
 };
 
-function getDatePickerValue(value: string | null) {
-  if (value) return moment(value);
-}
-
 const ErrorMessage = styled.div`
+  margin-top: 5px;
   color: red;
-`;
-
-const DatePicker = styled(DatePickerTT)`
-  border-radius: 4px;
 `;
 
 const FormItem = styled(Form.Item)`

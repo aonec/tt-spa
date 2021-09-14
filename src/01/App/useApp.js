@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { AppContext } from '01/context';
-import { message } from 'antd';
 
 export function useApp() {
   const { replace } = useHistory();
@@ -21,7 +20,6 @@ export function useApp() {
     if (!token) {
       localStorage.clear();
       replace('/login');
-      message('runs');
     }
   }, [replace]);
 
