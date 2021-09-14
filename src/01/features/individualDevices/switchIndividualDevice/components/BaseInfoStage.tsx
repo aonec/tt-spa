@@ -329,14 +329,30 @@ export const BaseInfoStage = () => {
   const readingInputs = device && (
     <div style={{ margin: '10px 0' }}>
       <ReadingsInput
-        title="Закрываемый прибор"
+        title={
+          isSwitch
+            ? 'Заменяемый прибор'
+            : isCheck
+            ? 'Прибор до поверки'
+            : isReopen
+            ? 'Прибор до переоткрытия'
+            : ''
+        }
         readings={fields.oldDeviceReadings.value}
         onChange={fields.oldDeviceReadings.onChange}
         device={device}
       />
       <Space />
       <ReadingsInput
-        title="Новый прибор"
+        title={
+          isSwitch
+            ? 'Новый прибор'
+            : isCheck
+            ? 'Прибор после поверки'
+            : isReopen
+            ? 'Прибор после переоткрытия'
+            : ''
+        }
         readings={fields.newDeviceReadings.value}
         onChange={fields.newDeviceReadings.onChange}
         device={{
