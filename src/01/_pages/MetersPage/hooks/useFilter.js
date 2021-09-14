@@ -56,11 +56,9 @@ export const useFilter = () => {
   };
 
   const onApartmentKeyHandler = async (e, isQuestion = false) => {
-    if (
-      (e.key !== 'Enter' || [street, house, apart].some((value) => !value)) &&
-      !isQuestion
-    )
-      return;
+    if (e.key !== 'Enter') return;
+
+    if (!isQuestion && [street, house, apart].some((value) => !value)) return;
 
     try {
       const res = await axios.get('Apartments', {
