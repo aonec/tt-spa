@@ -27,17 +27,16 @@ const HousesDevices: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   useSwitchOnInputs();
 
-  useEffect(() => {
-    const setInfoAsync = async () => {
-      setIsLoading(true);
-      const res = await requestDevicesByHouse(housingStockId);
-      const houseObject = await requestHouse(housingStockId);
-      setHouse(houseObject);
-      dispatch(setDevices(res.items));
-      setIsLoading(false);
-    };
-    setInfoAsync();
-  }, [housingStockId]);
+  const setInfoAsync = async () => {
+    setIsLoading(true);
+    const res = await requestDevicesByHouse(housingStockId);
+    const houseObject = await requestHouse(housingStockId);
+    setHouse(houseObject);
+    dispatch(setDevices(res.items));
+    setIsLoading(false);
+  };
+
+  useEffect(() => void setInfoAsync(), [housingStockId]);
 
   if (isLoading || !house) return null;
 
