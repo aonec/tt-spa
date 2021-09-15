@@ -7,9 +7,8 @@ import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFilter';
 import { Radio } from 'antd';
 import { Space } from '../../../shared/ui/Layout/Space/Space';
-import { useHistory, Route, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
-import { Apartments } from './Apartments';
 import { SerialNumberSearch } from './SerialNumberSearch';
 
 export const Filter = () => {
@@ -102,9 +101,6 @@ export const Filter = () => {
               ))}
             </filter>
           )}
-          <Route path="/meters/apartments" exact>
-            <Apartments />
-          </Route>
         </>
       )}
     </>
