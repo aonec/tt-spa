@@ -17,7 +17,7 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     if (!nextNode) {
       const firstNode = inputList[0];
 
-      const neededInputNode: any = firstNode.getElementsByClassName(
+      const neededInputNode: any = firstNode?.getElementsByClassName(
         'ant-input'
       )[0];
 
