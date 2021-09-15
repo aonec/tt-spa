@@ -67,12 +67,16 @@ export const ReadingsInput: React.FC<Props> = ({
   }) {
     if (!onChange) return;
 
-    const { value, index, readingDate, isNew, isPrevious } = props;
+    const { value, index, isNew, isPrevious, readingDate } = props;
+
+    const newReadingDateByMonth = getNewReadingDate(
+      isPrevious ? sliderIndex : -1
+    );
 
     if (isNew) {
       const newReading = {
         ...(getNewReadingValuesByIndex(value, index) as any),
-        readingDate: getNewReadingDate(isPrevious ? sliderIndex : -1),
+        readingDate: newReadingDateByMonth,
       };
 
       return onChange([...readings, newReading]);
@@ -83,7 +87,7 @@ export const ReadingsInput: React.FC<Props> = ({
 
       const changedReading = {
         ...{ ...elem, [`value${index}`]: value },
-        readingDate: readingDate!,
+        readingDate: newReadingDateByMonth,
       };
 
       return changedReading;

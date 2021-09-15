@@ -38,7 +38,6 @@ export const DatePickerNative: React.FC<Props> = ({
       onBlur={onChangeGlobal}
       value={innerValue}
       onChange={(e: { target: { value: string } }) => {
-        console.log(e.target.value);
         setInnerValue(e.target.value);
       }}
       placeholder={placeholder}
