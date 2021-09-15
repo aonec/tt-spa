@@ -34,9 +34,11 @@ export const Nodes = ({ device }: NodesInterface) => {
 
   const NodeStatus = ({ nodeStatus }: NodeStatusInterface) => {
     let icon;
+    
     if (nodeStatus === 'Сдан на коммерческий учет') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }} />;
     }
+
     return (
       <div
         style={{
