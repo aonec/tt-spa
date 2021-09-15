@@ -243,12 +243,12 @@ const ReadingsWrap = styled.div`
 `;
 
 function useSliderIndex() {
-  const limit = 3;
+  const limit = 6;
   const [sliderIndex, setSliderIndex] = useState(0);
 
   return {
     sliderIndex,
-    canUp: sliderIndex < 3,
+    canUp: sliderIndex < limit,
     canDown: sliderIndex > 0,
     up() {
       setSliderIndex((prev) => (prev !== limit ? ++prev : prev));
