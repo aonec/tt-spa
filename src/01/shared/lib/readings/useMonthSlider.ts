@@ -25,7 +25,7 @@ export const useMonthSlider = (
     setSliderIndex((index) => {
       return isNextArrowDisabled ? index : index - 1;
     });
-  };
+};
 
   return {
     sliderIndex,
@@ -34,6 +34,7 @@ export const useMonthSlider = (
       onClickDecrease,
       isPreviousArrowDisabled,
       isNextArrowDisabled,
+      sliderIndex,
     },
     reset() {
       setSliderIndex(0);

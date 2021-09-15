@@ -12,12 +12,15 @@ import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
+import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
-      undefined,
+      sliderIndex,
       numberOfPreviousReadingsInputs
     );
 
@@ -64,9 +67,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
     return (
       <HouseReadingsDevice>
-        <div>
-          <Span>{device.apartmentNumber}</Span>
-        </div>
         <Column>
           <OwnerName>
             <Span>{device.homeownerName}</Span>
@@ -91,18 +91,29 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <div>{consumptionElems}</div>
         <div>-</div>
 
-        <MenuButtonTT
-          menuButtonArr={[
-            {
-              title: 'Открыть историю показаний',
-              cb: () =>
-                history.push(
-                  `/houses/individualDevice/${device.id}/readingHistory`
-                ),
-              show: true,
-            },
-          ]}
-        />
+        <Flex style={{ minWidth: 80 }}>
+          <HistoryComponent
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              history.push(
+                `/houses/individualDevice/${device.id}/readingHistory`
+              )
+            }
+          />
+          <Space />
+          <MenuButtonTT
+            menuButtonArr={[
+              {
+                title: 'Открыть историю показаний',
+                cb: () =>
+                  history.push(
+                    `/houses/individualDevice/${device.id}/readingHistory`
+                  ),
+                show: true,
+              },
+            ]}
+          />
+        </Flex>
       </HouseReadingsDevice>
     );
   }
@@ -110,7 +121,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
 const HouseReadingsDevice = styled.div`
   display: grid;
-  grid-template-columns: 10px 100px 6px 130px 170px 170px 47px minmax(100px, 135px) 0px;
+  grid-template-columns: 100px 6px 130px 160px 160px 47px minmax(100px, 135px) minmax(
+      0,
+      80px
+    );
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);
@@ -157,4 +171,5 @@ const Span = styled.span`
 type Props = {
   device: IndividualDeviceListItemResponse;
   numberOfPreviousReadingsInputs: number;
+  sliderIndex: number;
 };
