@@ -127,7 +127,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
-  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs(true);
 
   const sourceIcon = source ? (
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
