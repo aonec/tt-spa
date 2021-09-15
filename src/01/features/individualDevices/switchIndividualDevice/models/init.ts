@@ -107,6 +107,8 @@ forward({
       ...(isCheck || isSwitch
         ? { lastCheckingDate: null, futureCheckingDate: null }
         : {}),
+
+      ...(isSwitch ? { model: '', serialNumber: '' } : {}),
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
