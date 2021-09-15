@@ -310,6 +310,7 @@ export const BaseInfoStage = () => {
       </FormWrap>
       <FormItem label="Монтажная организация">
         <StyledSelect
+          disabled={isCheck || isReopen}
           onChange={(value: any) =>
             value && fields.contractorId.onChange(value)
           }
