@@ -93,13 +93,20 @@ forward({
       .map(({ type }) => type)
       .getState();
 
+    const isCheck = type === 'check';
+    const isSwitch = type === 'switch';
+
     const serialNumberAfterString = getSerialNumberAfterString(type);
 
     return {
       ...values,
       bitDepth,
       scaleFactor,
+      mountPlaceId: values.deviceMountPlace?.id,
       serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
+      ...(isCheck || isSwitch
+        ? { lastCheckingDate: null, futureCheckingDate: null }
+        : {}),
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
