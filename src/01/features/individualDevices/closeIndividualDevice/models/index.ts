@@ -26,7 +26,6 @@ export const closeIndividualDeviceForm = createForm({
     },
     clousingDate: {
       init: null as null | string,
-      rules: [{ name: 'required', validator: Boolean }],
     },
     closingReason: {
       init: null as EClosingReason | null,
