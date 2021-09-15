@@ -17,6 +17,7 @@ import {
 import { combine } from 'effector';
 import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { EResourceType } from 'myApi';
+import { PendingLoader } from '01/shared/ui/PendingLoader';
 
 type ParamsType = {
   id: string;
@@ -56,13 +57,15 @@ const HousesDevices: React.FC = () => {
   return (
     <>
       <HousingStockGate id={Number(housingStockId)} />
-      <IndividualDevicesGate
-        HousingStockId={Number(housingStockId)}
-        Resource={EResourceType.Electricity}
-      />
-      {house && <HouseBanner house={house} />}
-      <HouseReadingsHeader />
-      {deviceElems}
+      <PendingLoader loading={isLoading}>
+        <IndividualDevicesGate
+          HousingStockId={Number(housingStockId)}
+          Resource={EResourceType.Electricity}
+        />
+        {house && <HouseBanner house={house} />}
+        <HouseReadingsHeader />
+        {deviceElems}
+      </PendingLoader>
     </>
   );
 };
