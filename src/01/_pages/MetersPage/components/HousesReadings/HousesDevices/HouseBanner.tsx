@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { HouseType } from '../../../../../_api/houses_readings_page';
 import { Icon } from '../../../../../components/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { HousingStockResponse } from '../../../../../../myApi';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <div>
+    <div style={{ cursor: 'pointer' }}>
       <Flex style={{ justifyContent: 'space-between', marginTop: 20 }}>
         <AddressHeader>
           {house.city}, {house.street}, {house.number}
@@ -117,7 +117,7 @@ const InfoItemHeader = styled.div`
 `;
 
 interface HouseBannerProps {
-  house: HouseType;
+  house: HousingStockResponse;
 }
 
 interface ShowProps {

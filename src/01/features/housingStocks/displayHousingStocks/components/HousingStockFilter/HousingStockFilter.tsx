@@ -26,7 +26,7 @@ export const HousingStockFilter = () => {
 
   const history = useHistory();
 
-  const refs: any[] = [useRef(), useRef(), useRef(), useRef()];
+  const refs: any[] = [useRef(), useRef(), useRef()];
 
   const onKeyDownHandler = (e: any, index: number) => {
     if (e.key !== 'Enter') return;
@@ -49,7 +49,11 @@ export const HousingStockFilter = () => {
 
     const nextRef = refs[isLastInput ? 0 : index + 1];
 
-    nextRef && nextRef.current.focus();
+    if (nextRef.current) return nextRef.current.focus();
+
+    const currentNode = refs[index];
+
+    if (currentNode.current) return currentNode.current.blur();
   };
 
   const onChangeHandler = (e: any) => setValue(e.target.name, e.target.value);
@@ -98,15 +102,6 @@ export const HousingStockFilter = () => {
         ref={refs[2]}
         onFocus={onFocus}
       />
-      <StyledInput
-        name="Corpus"
-        placeholder="Корпус"
-        value={filterFields.Corpus}
-        onChange={onChangeHandler}
-        onKeyDown={(e) => onKeyDownHandler(e, 3)}
-        ref={refs[3]}
-        onFocus={onFocus}
-      />
     </FieldsWrap>
   );
 };
@@ -114,7 +109,7 @@ export const HousingStockFilter = () => {
 const FieldsWrap = styled(Flex)`
   height: 50px;
   display: grid;
-  grid-template-columns: 1fr 2fr 0.7fr 0.7fr;
+  grid-template-columns: 1fr 2fr 0.7fr;
   grid-gap: 15px;
   margin-top: -9px;
 `;
