@@ -14,6 +14,7 @@ import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
+import { fetchHousingStocksFx } from '../../models';
 import { useFilter, filterValuesInit } from './useFilter.hook';
 
 export const cities = ['Нижнекамск', 'Большое Афанасово', 'Красный ключ'];
@@ -90,7 +91,10 @@ export const HousingStockFilter = () => {
         placeholder="дом"
         value={filterFields.HousingStockNumber}
         onChange={onChangeHandler}
-        onKeyDown={(e) => onKeyDownHandler(e, 2)}
+        onKeyDown={(e) => {
+          onKeyDownHandler(e, 2);
+          fromEnter(() => fetchHousingStocksFx(filterFields))(e);
+        }}
         ref={refs[2]}
         onFocus={onFocus}
       />
@@ -114,3 +118,9 @@ const FieldsWrap = styled(Flex)`
   grid-gap: 15px;
   margin-top: -9px;
 `;
+
+export function fromEnter(callback: () => void) {
+  return (e?: any) => {
+    if (e?.key === 'Enter') callback();
+  };
+}

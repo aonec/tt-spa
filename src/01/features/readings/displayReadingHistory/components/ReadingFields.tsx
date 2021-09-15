@@ -147,15 +147,18 @@ interface EditableFieldWrapProps {
   isOnlyOne: boolean;
 }
 
+const statusColors = {
+  pending: '#ffd476',
+  done: '#0ddf53',
+  failed: '#FF0021',
+};
+
+const getColorByStatus = (status: RequestStatusShared) =>
+  (status && statusColors[status]) || `#eeeeee`;
+
 const EditableFieldWrap = styled.div`
   --border-color: ${({ status }: EditableFieldWrapProps) =>
-    status === 'pending'
-      ? '#ffd476'
-      : status === 'done'
-      ? '#0ddf53'
-      : status === 'failed'
-      ? '#FF0021'
-      : `#eeeeee`};
+    getColorByStatus(status)};
   border: 1px solid var(--border-color);
   border-radius: 0;
   border-bottom-color: white;

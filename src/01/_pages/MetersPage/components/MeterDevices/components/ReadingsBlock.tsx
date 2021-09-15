@@ -133,9 +133,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
       {getSourceIcon(source)}
     </Flex>
-  ) : (
-    <></>
-  );
+  ) : null;
 
   return (
     <ReadingLineStyled
@@ -156,21 +154,16 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     >
       <StyledInput
         status={status}
-        prefix={
-          <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
-        }
         suffix={
-          <>
-            {resource === 'Electricity' ? (
-              <SuffixLine>кВтч</SuffixLine>
-            ) : (
-              <SuffixLine>м³</SuffixLine>
+          <div style={{ marginLeft: -5 }}>
+            {sourceIcon && (
+              <Tooltip title={source ? getSourceName(source, user?.name) : ''}>
+                {sourceIcon}
+              </Tooltip>
             )}
-            <Tooltip title={source ? getSourceName(source, user?.name) : ''}>
-              {sourceIcon}
-            </Tooltip>
-          </>
+          </div>
         }
+        placeholder={`Т${index + 1}`}
         disabled={readingsBlocked || isDisabled || closed}
         type="number"
         value={value}

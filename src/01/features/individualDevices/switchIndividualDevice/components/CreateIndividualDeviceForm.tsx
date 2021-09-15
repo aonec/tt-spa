@@ -11,11 +11,11 @@ import {
   $creationDeviceStage,
   $isCreateIndividualDeviceSuccess,
   addIndividualDeviceForm,
-  checkBeforSavingButtonClicked,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
   switchStageButtonClicked,
 } from '../models';
-import { BaseInfoStage } from './stages/BaseInfoStage';
+import { BaseInfoStage } from './BaseInfoStage';
 import { DocumentsStage } from './stages/DocumentsStage';
 
 export const CreateIndividualDeviceForm = () => {
@@ -31,11 +31,24 @@ export const CreateIndividualDeviceForm = () => {
 
   const { fields, submit } = useForm(addIndividualDeviceForm);
 
+  const type = useStore(
+    SwitchIndividualDeviceGate.state.map(({ type }) => type)
+  );
+
   useEffect(() => {
     if (!individualDeviceCreationRequestStatus) return;
 
+    const messageText =
+      type === 'check'
+        ? 'поверен'
+        : type === 'reopen'
+        ? 'переоткрыт'
+        : type === 'switch'
+        ? 'заменен'
+        : '';
+
     history.goBack();
-    message.success('Прибор успешно заменен!');
+    message.success(`Прибор успешно ${messageText}!`);
     resetCreationRequestStatus();
   }, [individualDeviceCreationRequestStatus]);
 
@@ -57,11 +70,8 @@ export const CreateIndividualDeviceForm = () => {
           <ButtonTT color="white" onClick={onCancel}>
             {stageNumber === 0 ? 'Отмена' : 'Назад'}
           </ButtonTT>
-          <ButtonTT
-            color="blue"
-            onClick={stageNumber === 1 ? checkBeforSavingButtonClicked : submit}
-          >
-            {stageNumber === 1 ? 'Заменить прибор' : 'Далее'}
+          <ButtonTT color="blue" onClick={submit}>
+            Далее
           </ButtonTT>
         </Spaces>
       </RightAlign>

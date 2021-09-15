@@ -26,7 +26,7 @@ export const DeviceDataString: React.FC<Props> = ({
 
   const device = deviceFromProps || deviceFromStore;
 
-  if (!device) return <></>;
+  if (!device) return null;
 
   return (
     <Spaces flex spaceStyles={{ width: 4 }}>

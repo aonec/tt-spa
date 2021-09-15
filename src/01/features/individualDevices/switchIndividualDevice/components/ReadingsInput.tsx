@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
-import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
+import { DataStringDevice, DeviceDataString } from './DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
-} from '../../../../../../myApi';
+} from '../../../../../myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
@@ -15,7 +15,7 @@ import {
   getDateByReadingMonthSlider,
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
-import { RenderReadingFields } from '../RenderReadingFields';
+import { RenderReadingFields } from './RenderReadingFields';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
@@ -67,12 +67,16 @@ export const ReadingsInput: React.FC<Props> = ({
   }) {
     if (!onChange) return;
 
-    const { value, index, readingDate, isNew, isPrevious } = props;
+    const { value, index, isNew, isPrevious, readingDate } = props;
+
+    const newReadingDateByMonth = getNewReadingDate(
+      isPrevious ? sliderIndex : -1
+    );
 
     if (isNew) {
       const newReading = {
         ...(getNewReadingValuesByIndex(value, index) as any),
-        readingDate: getNewReadingDate(isPrevious ? sliderIndex : -1),
+        readingDate: newReadingDateByMonth,
       };
 
       return onChange([...readings, newReading]);
@@ -83,7 +87,7 @@ export const ReadingsInput: React.FC<Props> = ({
 
       const changedReading = {
         ...{ ...elem, [`value${index}`]: value },
-        readingDate: readingDate!,
+        readingDate: newReadingDateByMonth,
       };
 
       return changedReading;
@@ -223,10 +227,10 @@ const Title = styled.div`
 `;
 
 const Wrap = styled(Flex)`
-  /* box-shadow: 0 4px 8px rgba(78, 93, 146, 0.16); */
-  border: 1px solid #d9d9d9;
+  /* border: 1px solid #d9d9d9; */
+  box-shadow: 0 4px 8px #1115352d;
   border-radius: 4px;
-  padding: 15px 20px;
+  padding: 15px 15px 15px 25px;
   justify-content: space-between;
 `;
 

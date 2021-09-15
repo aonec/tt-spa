@@ -22,6 +22,7 @@ import {
   confirmCreationNewDeviceButtonClicked,
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
@@ -34,7 +35,7 @@ import {
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import moment from 'moment';
-import { getReadingValuesArray } from '../components/stages/ReadingsInput';
+import { getReadingValuesArray } from '../components/ReadingsInput';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -47,8 +48,6 @@ sample({
   clock: goNextStage,
   target: switchStageButtonClicked,
 });
-
-forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });
 
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
@@ -90,11 +89,26 @@ forward({
       values.resource
     );
 
+    const type = SwitchIndividualDeviceGate.state
+      .map(({ type }) => type)
+      .getState();
+
+    const isCheck = type === 'check';
+    const isSwitch = type === 'switch';
+
+    const serialNumberAfterString = getSerialNumberAfterString(type);
+
     return {
-      resource: values.resource,
-      mountPlaceId: values.deviceMountPlace?.id,
+      ...values,
       bitDepth,
       scaleFactor,
+      mountPlaceId: values.deviceMountPlace?.id,
+      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
+      ...(isCheck || isSwitch
+        ? { lastCheckingDate: null, futureCheckingDate: null }
+        : {}),
+
+      ...(isSwitch ? { model: '', serialNumber: '' } : {}),
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
@@ -197,6 +211,11 @@ sample({
   target: createIndividualDeviceFx,
 });
 
+forward({
+  from: addIndividualDeviceForm.formValidated,
+  to: checkBeforSavingButtonClicked,
+});
+
 function getChangedReadings(
   prevReadings: IndividualDeviceReadingsResponse[],
   currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {
@@ -215,16 +234,17 @@ function getChangedReadings(
 
     if (!neededPrevReading) return true;
 
-    if (
-      getReadingValuesArray(
-        clearEmptyValueFields(neededPrevReading as any, rateNum),
-        rateNum
-      )?.value.join('') ===
-      getReadingValuesArray(
-        clearEmptyValueFields(newReading as any, rateNum),
-        rateNum
-      )?.value.join('')
-    )
+    const oldDeviceReadingValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(neededPrevReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    const formOldDeviceValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(newReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    if (compareArrays(oldDeviceReadingValues, formOldDeviceValues))
       return false;
 
     return true;
@@ -232,3 +252,14 @@ function getChangedReadings(
 
   return res;
 }
+
+const compareArrays = <T>(array1: T[], array2: T[]) =>
+  array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
+
+const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
+  return {
+    switch: '',
+    check: '*П1',
+    reopen: '*',
+  }[type];
+};

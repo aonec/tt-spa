@@ -2956,6 +2956,9 @@ export interface SwitchIndividualDeviceRequest {
   scaleFactor?: number | null;
   model?: string | null;
   rateType?: EIndividualDeviceRateType;
+
+  /** @format int32 */
+  newDeviceMountPlaceId?: number | null;
   oldDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
 }

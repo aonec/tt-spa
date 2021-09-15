@@ -101,8 +101,7 @@ export function useReadingHistoryValues() {
       .map((elem) => elem?.split(' ')[0])
       .join('');
 
-    console.log(current, prev);
-
+    // проверка на изменение значений, если изменились, то инициируется отправка данных
     if (current === prev) return;
 
     const id = reading.readingDate;
@@ -124,7 +123,9 @@ export function useReadingHistoryValues() {
   useEffect(() => {
     if (!pendingHistory) return;
 
-    setUploadingReadingsStatuses((prev) => {
+    setUploadingReadingsStatuses((prevState) => {
+      const prev = { ...prevState };
+
       for (const key in prev) {
         if (prev[key] === 'done') delete prev[key];
       }

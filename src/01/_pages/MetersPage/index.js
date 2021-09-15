@@ -53,23 +53,3 @@ const Wrap = styled.div`
     overflow: visible !important;
   }
 `;
-
-function reducer(state, action) {
-  const { type, params, data } = action;
-  switch (type) {
-    case 'success':
-      return { ...state, ...data };
-    case 'get_apartments':
-      return { ...state, params, apartments: { loading: true } };
-    case 'clear_apartInfo':
-      return {
-        ...state,
-        meterDevices: undefined,
-        apartInfo: undefined,
-      };
-
-    default:
-      console.error('meters', type);
-      return state;
-  }
-}

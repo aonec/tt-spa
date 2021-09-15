@@ -25,7 +25,7 @@ export const DatePickerNative: React.FC<Props> = ({
   };
 
   function onChangeGlobal() {
-    onChange(currentValueToMoment.toISOString());
+    if (innerValue) onChange(currentValueToMoment.toISOString());
     if (isCurrentValueValid) setInitialInnerValue();
   }
 
@@ -38,7 +38,6 @@ export const DatePickerNative: React.FC<Props> = ({
       onBlur={onChangeGlobal}
       value={innerValue}
       onChange={(e: { target: { value: string } }) => {
-        console.log(e.target.value);
         setInnerValue(e.target.value);
       }}
       placeholder={placeholder}
@@ -48,6 +47,7 @@ export const DatePickerNative: React.FC<Props> = ({
 };
 
 const StyledInput = styled.input`
+  cursor: text;
   height: 48px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
