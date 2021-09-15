@@ -1,11 +1,13 @@
 import { getApartment } from './../../../../_api/apartments';
-import { ApartmentGate, refetchApartment } from './index';
-import { combine, guard, sample } from 'effector';
+import { ApartmentGate, refetchApartment, resetApartment } from './index';
+import { sample } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
-$apartment.on(fetchApartmentFx.doneData, (_, apartment) => {
-  return apartment;
-});
+$apartment
+  .on(fetchApartmentFx.doneData, (_, apartment) => {
+    return apartment;
+  })
+  .on(resetApartment, () => null);
 
 fetchApartmentFx.use(getApartment);
 

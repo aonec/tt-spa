@@ -7,16 +7,16 @@ import {
   hideClosedDevices,
   IndividualDevicesGate,
   refetchIndividualDevices,
+  resetIndividualDevices,
   showClosedDevices,
 } from '.';
 import { toArray } from '../../addIndividualDevice/components/CheckFormValuesModal';
 
 fetchIndividualDeviceFxs.use(getIndividualDevices);
 
-$individualDevices.on(
-  fetchIndividualDeviceFxs.doneData,
-  (_, devices) => devices
-);
+$individualDevices
+  .on(fetchIndividualDeviceFxs.doneData, (_, devices) => devices)
+  .reset(resetIndividualDevices);
 
 guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
