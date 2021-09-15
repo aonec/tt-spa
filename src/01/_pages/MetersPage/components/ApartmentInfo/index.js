@@ -81,13 +81,17 @@ export const ApartmentInfo = () => {
 
   const pausedAlert = isPaused && (
     <>
-      <Alert type="stop">
+      <Alert type="stop" color="FC525B">
         <AlertContent>
           <div>
             Квартира на паузе до{' '}
             {moment(apartment.stoppedTo).format('DD.MM.YYYY')}
           </div>
-          <div onClick={cancelPauseApartment} className="ant-btn-link">
+          <div
+            onClick={cancelPauseApartment}
+            className="ant-btn-link"
+            style={{ color: '#FC525B' }}
+          >
             Снять с паузы
           </div>
         </AlertContent>

@@ -3,10 +3,14 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
-import { $apartment } from '01/features/apartments/displayApartment/models';
+import {
+  $apartment,
+  resetApartment,
+} from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
 import { cities } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { resetIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 
 const initialState = {
   city: 'Нижнекамск',
@@ -77,7 +81,12 @@ export const useFilter = () => {
 
       if (apartment) history.push(`/meters/apartments/${apartment.id}`);
 
-      if (!apartment) history.push(`/meters/apartments/`);
+      if (!apartment) {
+        resetApartment();
+        resetIndividualDevices();
+        dispatch({ type: 'reset' });
+        history.push(`/meters/apartments/`);
+      }
     } catch (error) {}
   };
 
