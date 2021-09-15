@@ -73,9 +73,7 @@ export const ApartmentReadings = () => {
         <Meters id="meters-component">
           <MetersHeader>
             <span>Информация o приборe</span>
-            {sliderProps ? (
-              <MonthSlider sliderIndex={sliderIndex!} {...sliderProps} />
-            ) : null}
+            {sliderProps ? <MonthSlider {...sliderProps} /> : null}
             <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
           </MetersHeader>
           {validDevices}

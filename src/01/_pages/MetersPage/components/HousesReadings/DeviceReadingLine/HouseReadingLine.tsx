@@ -17,10 +17,10 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
-      undefined,
+      sliderIndex,
       numberOfPreviousReadingsInputs
     );
 
@@ -171,4 +171,5 @@ const Span = styled.span`
 type Props = {
   device: IndividualDeviceListItemResponse;
   numberOfPreviousReadingsInputs: number;
+  sliderIndex: number;
 };

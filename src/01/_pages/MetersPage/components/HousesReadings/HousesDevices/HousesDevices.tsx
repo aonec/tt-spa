@@ -18,6 +18,8 @@ import { combine } from 'effector';
 import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { EResourceType } from 'myApi';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
+import { useEffect } from 'react';
 
 type ParamsType = {
   id: string;
@@ -37,12 +39,17 @@ const HousesDevices: React.FC = () => {
     )
   );
 
+  const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+
+  useEffect(() => reset && reset(), [housingStockId]);
+
   const deviceElemsList = devices?.slice()?.sort((device1, device2) => {
     return Number(device1.apartmentNumber) - Number(device2.apartmentNumber);
   });
 
   const deviceElems = deviceElemsList.map((device, index) => (
     <HouseReadingLine
+      sliderIndex={sliderIndex || 0}
       numberOfPreviousReadingsInputs={deviceElemsList
         .slice(0, index)
         .reduce(
@@ -63,7 +70,7 @@ const HousesDevices: React.FC = () => {
           Resource={EResourceType.Electricity}
         />
         {house && <HouseBanner house={house} />}
-        <HouseReadingsHeader />
+        <HouseReadingsHeader sliderProps={sliderProps} />
         {deviceElems}
       </PendingLoader>
     </>
