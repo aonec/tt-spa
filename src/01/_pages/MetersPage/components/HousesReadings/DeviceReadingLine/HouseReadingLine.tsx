@@ -21,7 +21,9 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
       sliderIndex,
-      numberOfPreviousReadingsInputs
+      numberOfPreviousReadingsInputs,
+      false,
+      true
     );
 
     const dispatch = useDispatch();
