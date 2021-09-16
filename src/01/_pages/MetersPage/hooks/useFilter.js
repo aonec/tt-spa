@@ -46,9 +46,14 @@ export function useStreetAutocomplete(street, streets) {
 
   const matchesArray =
     matches?.ratings
-      .filter((value) =>
-        value.target.toUpperCase().startsWith(String(street.toUpperCase()))
-      )
+      .filter((value) => {
+        const wordsInStreetName = value.target.toUpperCase().split(' ');
+
+        return wordsInStreetName.reduce(
+          (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
+          false
+        );
+      })
       .sort((a, b) => b.rating - a.rating)
       .map(({ target }) => ({ value: target })) || [];
 
