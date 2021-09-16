@@ -56,7 +56,7 @@ export function useStreetAutocomplete(street, streets) {
 
   return {
     streetMatch,
-    options: matchesArray?.length ? [matchesArray[0]] : [],
+    options: matchesArray?.length && street ? [matchesArray[0]] : [],
   };
 }
 
@@ -123,25 +123,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const matches =
-    typeof state.street === 'string' && Array.isArray(streets)
-      ? stringSimilarity.findBestMatch(
-          state.street,
-          typeof streets[0] === 'string' ? streets : ['']
-        )
-      : null;
-
-  const matchesArray =
-    matches?.ratings
-      .filter((value) =>
-        value.target
-          .toUpperCase()
-          .startsWith(String(state.street.toUpperCase()))
-      )
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
-
-  const streetMatch = matchesArray[0]?.value;
+  const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
 
   return {
     state,
@@ -160,7 +142,7 @@ export const useFilter = () => {
             streetMatch &&
             dispatch({ type: 'change', payload: { street: streetMatch } })
         ),
-        options: matchesArray?.length ? [matchesArray[0]] : [],
+        options: options,
       },
       {
         name: 'house',
