@@ -16,7 +16,7 @@ fetchIndividualDeviceFxs.use(getIndividualDevices);
 
 $individualDevices
   .on(fetchIndividualDeviceFxs.doneData, (_, devices) => devices)
-  .reset(resetIndividualDevices);
+  .reset(resetIndividualDevices, IndividualDevicesGate.close);
 
 guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
