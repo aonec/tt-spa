@@ -4,7 +4,11 @@ import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
 import styles from '../../../../Devices/components/TabsDevices.module.scss';
-import { useReadings } from '../../../../../hooks/useReadings';
+import {
+  getNextPreviousReading,
+  round,
+  useReadings,
+} from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
@@ -29,7 +33,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [consumptionState, setConsumptionState] = useState<number[]>([]);
+    const [consumptionState, setConsumptionState] = useState<(number | string)[]>([]);
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
@@ -37,15 +41,23 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     useEffect(() => {
       if (!readingsState) return;
       const currentReadings = readingsState?.currentReadingsArray || {};
-      const previousReadings = readingsState?.previousReadingsArray || {};
+      const previousReadings: any = getNextPreviousReading(
+        readingsState?.previousReadings,
+        -1
+      );
       let consumptionArray = Array.from(
         { length: numberOfReadings },
         (v, i) => i
       );
-      const consumption = consumptionArray.map((value, index) => {
-        return +currentReadings[index] - +previousReadings[index] > 0
-          ? +currentReadings[index] - +previousReadings[index]
-          : 0;
+      const consumption = consumptionArray.map((_, index) => {
+        return (
+          round(
+            +currentReadings[index] - +previousReadings?.values[index] > 0
+              ? +currentReadings[index] - +previousReadings?.values[index]
+              : 0,
+            3
+          ) || ''
+        );
       });
 
       setConsumptionState(consumption);
