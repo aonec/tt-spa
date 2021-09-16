@@ -36,7 +36,8 @@ export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean
+  closed?: boolean,
+  clearOnFocus?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -787,8 +788,7 @@ const getPreviousReadingTooltipString = (
       [] as number[]
     )
     .map(
-      (elem, index) =>
-        `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
+      (elem, index) => `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
     )
     .join(', ');
 

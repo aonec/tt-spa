@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: grid;
   grid-template-columns:
+    15px
     100px 6px 130px 160px 160px 47px minmax(100px, 135px)
     minmax(0, 80px);
 
@@ -44,6 +45,7 @@ export const HouseReadingsHeader: React.FC<{ sliderProps: any }> = ({
 
   return (
     <Container>
+      <div>№ кв.</div>
       <div>ФИО собственника</div>
       <div></div>
       <div>Прибор</div>
