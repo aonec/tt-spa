@@ -70,7 +70,9 @@ const HousesDevices: React.FC = () => {
           Resource={EResourceType.Electricity}
         />
         {house && <HouseBanner house={house} />}
-        <HouseReadingsHeader sliderProps={sliderProps} />
+        {!!deviceElems.length && (
+          <HouseReadingsHeader sliderProps={sliderProps} />
+        )}
         {deviceElems}
       </PendingLoader>
     </>

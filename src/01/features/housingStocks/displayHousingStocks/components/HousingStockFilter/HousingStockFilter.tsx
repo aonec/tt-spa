@@ -8,6 +8,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
 import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
@@ -67,6 +68,11 @@ export const HousingStockFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
+  const { streetMatch, options } = useStreetAutocomplete(
+    filterFields.Street,
+    existingStreets
+  );
+
   return (
     <FieldsWrap>
       <ExistingStreetsGate Street={filterFields.Street} />
@@ -82,11 +88,18 @@ export const HousingStockFilter = () => {
         ))}
       </StyledSelector>
       <StyledAutocomplete
-        options={existingStreets.map((value) => ({ value }))}
+        options={options}
         placeholder="Название улицы"
         onChange={(value) => setValue('Street', value)}
         value={filterFields.Street}
-        onKeyDown={(e) => onKeyDownHandler(e, 1)}
+        onKeyDown={(e) => {
+          fromEnter(() => setValue('Street', streetMatch))(e);
+          onKeyDownHandler(e, 1);
+        }}
+        onClick={() => {
+          setValue('Street', '');
+          setValue('HousingStockNumber', '');
+        }}
         ref={refs[1]}
         onFocus={onFocus}
       />

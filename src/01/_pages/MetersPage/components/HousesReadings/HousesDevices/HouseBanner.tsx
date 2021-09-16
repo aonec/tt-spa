@@ -5,7 +5,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { HousingStockResponse } from '../../../../../../myApi';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <div style={{ cursor: 'pointer' }}>
