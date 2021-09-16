@@ -1,19 +1,25 @@
-import React, { useEffect } from 'react';
-import {
-  requestDevicesByHouse,
-  requestHouse,
-  HouseType,
-} from '../../../../../_api/houses_readings_page';
-import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { HouseReadingLine } from '../DeviceReadingLine/HouseReadingLine';
 import { HouseReadingsHeader } from '../HouseReadingsHeader/HouseReadingsHeader';
-import { selectDevices } from '../../../../../Redux/ducks/readings/selectors';
-import { setDevices } from '01/Redux/ducks/readings/actionCreators';
 import HouseBanner from './HouseBanner';
-import { useSwitchOnInputs } from '../../../../../hooks/useSwitchInputsOnEnter';
 import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentReadings';
+import { useStore } from 'effector-react';
+import {
+  $individualDevices,
+  IndividualDevicesGate,
+} from '01/features/individualDevices/displayIndividualDevices/models';
+import {
+  $housingStock,
+  fetchHousingStockFx,
+  HousingStockGate,
+} from '01/features/housingStocks/displayHousingStock/models';
+import { combine } from 'effector';
+import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
+import { EResourceType } from 'myApi';
+import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
+import { useEffect } from 'react';
 
 type ParamsType = {
   id: string;
@@ -21,25 +27,21 @@ type ParamsType = {
 
 const HousesDevices: React.FC = () => {
   let { id: housingStockId }: ParamsType = useParams();
-  const dispatch = useDispatch();
-  const devices = useSelector(selectDevices);
-  const [house, setHouse] = useState<HouseType>();
-  const [isLoading, setIsLoading] = useState(true);
-  useSwitchOnInputs();
 
-  useEffect(() => {
-    const setInfoAsync = async () => {
-      setIsLoading(true);
-      const res = await requestDevicesByHouse(housingStockId);
-      const houseObject = await requestHouse(housingStockId);
-      setHouse(houseObject);
-      dispatch(setDevices(res.items));
-      setIsLoading(false);
-    };
-    setInfoAsync();
-  }, [housingStockId]);
+  const devices = useStore($individualDevices);
+  const house = useStore($housingStock);
 
-  if (isLoading || !house) return null;
+  const isLoading = useStore(
+    combine(
+      fetchIndividualDeviceFx.pending,
+      fetchHousingStockFx.pending,
+      (pendingDevices, pendingHouse) => pendingDevices || pendingHouse
+    )
+  );
+
+  const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+
+  useEffect(() => reset && reset(), [housingStockId]);
 
   const deviceElemsList = devices?.slice()?.sort((device1, device2) => {
     return Number(device1.apartmentNumber) - Number(device2.apartmentNumber);
@@ -47,6 +49,7 @@ const HousesDevices: React.FC = () => {
 
   const deviceElems = deviceElemsList.map((device, index) => (
     <HouseReadingLine
+      sliderIndex={sliderIndex || 0}
       numberOfPreviousReadingsInputs={deviceElemsList
         .slice(0, index)
         .reduce(
@@ -60,9 +63,18 @@ const HousesDevices: React.FC = () => {
 
   return (
     <>
-      <HouseBanner house={house} />
-      <HouseReadingsHeader />
-      {deviceElems}
+      <HousingStockGate id={Number(housingStockId)} />
+      <PendingLoader loading={isLoading}>
+        <IndividualDevicesGate
+          HousingStockId={Number(housingStockId)}
+          Resource={EResourceType.Electricity}
+        />
+        {house && <HouseBanner house={house} />}
+        {!!deviceElems.length && (
+          <HouseReadingsHeader sliderProps={sliderProps} />
+        )}
+        {deviceElems}
+      </PendingLoader>
     </>
   );
 };

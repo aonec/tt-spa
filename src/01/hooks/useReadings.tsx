@@ -36,7 +36,8 @@ export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean
+  closed?: boolean,
+  clearOnFocus?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -787,8 +788,7 @@ const getPreviousReadingTooltipString = (
       [] as number[]
     )
     .map(
-      (elem, index) =>
-        `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
+      (elem, index) => `${rateNum === 1 ? '' : `T${index + 1}:`} ${elem}${unit}`
     )
     .join(', ');
 
@@ -867,7 +867,7 @@ const isCorrectReadingValues = (
   return res;
 };
 
-const getNextPreviousReading = (
+export const getNextPreviousReading = (
   readings: PreviousReadingState,
   sliderIndex: number
 ) => {
@@ -939,7 +939,7 @@ const ReadingUploadDate = styled(Flex)`
   margin-top: 2px;
 `;
 
-function round(x: number, n: number) {
+export function round(x: number, n: number) {
   const m = Math.pow(10, n);
   return Math.round(x * m) / m;
 }

@@ -8,6 +8,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
 import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
@@ -26,7 +27,7 @@ export const HousingStockFilter = () => {
 
   const history = useHistory();
 
-  const refs: any[] = [useRef(), useRef(), useRef(), useRef()];
+  const refs: any[] = [useRef(), useRef(), useRef()];
 
   const onKeyDownHandler = (e: any, index: number) => {
     if (e.key !== 'Enter') return;
@@ -49,7 +50,11 @@ export const HousingStockFilter = () => {
 
     const nextRef = refs[isLastInput ? 0 : index + 1];
 
-    nextRef && nextRef.current.focus();
+    if (nextRef.current) return nextRef.current.focus();
+
+    const currentNode = refs[index];
+
+    if (currentNode.current) return currentNode.current.blur();
   };
 
   const onChangeHandler = (e: any) => setValue(e.target.name, e.target.value);
@@ -63,9 +68,14 @@ export const HousingStockFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
+  const { streetMatch, options } = useStreetAutocomplete(
+    filterFields.Street,
+    existingStreets
+  );
+
   return (
     <FieldsWrap>
-      <ExistingStreetsGate Street={filterFields.Street} />
+      <ExistingStreetsGate />
       <StyledSelector
         placeholder="Город"
         value={filterFields.City || undefined}
@@ -78,11 +88,18 @@ export const HousingStockFilter = () => {
         ))}
       </StyledSelector>
       <StyledAutocomplete
-        options={existingStreets.map((value) => ({ value }))}
+        options={options}
         placeholder="Название улицы"
         onChange={(value) => setValue('Street', value)}
         value={filterFields.Street}
-        onKeyDown={(e) => onKeyDownHandler(e, 1)}
+        onKeyDown={(e) => {
+          fromEnter(() => setValue('Street', streetMatch))(e);
+          onKeyDownHandler(e, 1);
+        }}
+        onClick={() => {
+          setValue('Street', '');
+          setValue('HousingStockNumber', '');
+        }}
         ref={refs[1]}
         onFocus={onFocus}
       />
@@ -98,15 +115,6 @@ export const HousingStockFilter = () => {
         ref={refs[2]}
         onFocus={onFocus}
       />
-      <StyledInput
-        name="Corpus"
-        placeholder="Корпус"
-        value={filterFields.Corpus}
-        onChange={onChangeHandler}
-        onKeyDown={(e) => onKeyDownHandler(e, 3)}
-        ref={refs[3]}
-        onFocus={onFocus}
-      />
     </FieldsWrap>
   );
 };
@@ -114,7 +122,7 @@ export const HousingStockFilter = () => {
 const FieldsWrap = styled(Flex)`
   height: 50px;
   display: grid;
-  grid-template-columns: 1fr 2fr 0.7fr 0.7fr;
+  grid-template-columns: 1fr 2fr 0.7fr;
   grid-gap: 15px;
   margin-top: -9px;
 `;

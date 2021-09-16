@@ -35,6 +35,36 @@ function filterReducer(state, action) {
   }
 }
 
+export function useStreetAutocomplete(street, streets) {
+  const matches =
+    typeof street === 'string' && Array.isArray(streets)
+      ? stringSimilarity.findBestMatch(
+          street,
+          typeof streets[0] === 'string' ? streets : ['']
+        )
+      : null;
+
+  const matchesArray =
+    matches?.ratings
+      .filter((value) => {
+        const wordsInStreetName = value.target.toUpperCase().split(' ');
+
+        return wordsInStreetName.reduce(
+          (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
+          false
+        );
+      })
+      .sort((a, b) => b.rating - a.rating)
+      .map(({ target }) => ({ value: target })) || [];
+
+  const streetMatch = matchesArray[0]?.value;
+
+  return {
+    streetMatch,
+    options: matchesArray?.length && street ? [matchesArray[0]] : [],
+  };
+}
+
 export const useFilter = () => {
   const [state, dispatch] = React.useReducer(filterReducer, initialState);
   const { apart, street, house, city } = state;
@@ -98,25 +128,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const matches =
-    typeof state.street === 'string' && Array.isArray(streets)
-      ? stringSimilarity.findBestMatch(
-          state.street,
-          typeof streets[0] === 'string' ? streets : ['']
-        )
-      : null;
-
-  const matchesArray =
-    matches?.ratings
-      .filter((value) =>
-        value.target
-          .toUpperCase()
-          .startsWith(String(state.street.toUpperCase()))
-      )
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
-
-  const streetMatch = matchesArray[0]?.value;
+  const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
 
   return {
     state,
@@ -135,7 +147,7 @@ export const useFilter = () => {
             streetMatch &&
             dispatch({ type: 'change', payload: { street: streetMatch } })
         ),
-        options: matchesArray?.length ? [matchesArray[0]] : [],
+        options: options,
       },
       {
         name: 'house',

@@ -1,19 +1,14 @@
 import { useState } from 'react';
 
 export const filterValuesInit = {
-  City: '',
+  City: 'Нижнекамск',
   Street: '',
   HousingStockNumber: '',
   Corpus: '',
 };
 
 export const useFilter = () => {
-  const [filterFields, setFilterFields] = useState({
-    City: '',
-    Street: '',
-    HousingStockNumber: '',
-    Corpus: '',
-  });
+  const [filterFields, setFilterFields] = useState(filterValuesInit);
 
   const setValue = (name: string, value: string) =>
     setFilterFields((prev) => ({ ...prev, [name]: value }));

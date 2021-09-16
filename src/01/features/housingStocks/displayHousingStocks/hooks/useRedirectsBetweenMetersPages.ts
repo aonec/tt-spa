@@ -12,9 +12,9 @@ export function useRedirectBetweenMetersPages(values: {
 
   useEffect(() => {
     if (!housingStocks) return;
-    if (!toArray(values, false).some(Boolean)) return;
+    if (toArray(values, false).every(Boolean)) return;
 
-    if (housingStocks?.length === 1) {
+    if (housingStocks?.length) {
       history.push(`/meters/houses/${housingStocks[0]?.id}`);
     } else {
       history.push('/meters/houses');

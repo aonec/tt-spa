@@ -2880,8 +2880,8 @@ export interface CloseDeviceRequest {
   documentsIds?: number[] | null;
 
   /** @format date-time */
-  closingDate: string;
-  closingReason?: EClosingReason;
+  closingDate?: string | null;
+  closingReason?: EClosingReason | null;
 }
 
 export interface SwitchMagneticSealRequest {
@@ -2959,7 +2959,7 @@ export interface SwitchIndividualDeviceRequest {
 
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
-  oldDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
+  oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
 }
 
@@ -2987,6 +2987,10 @@ export interface IndividualDeviceReadingsItemHistoryResponse {
   consumption2: string | null;
   consumption3: string | null;
   consumption4: string | null;
+  averageConsumption1: string | null;
+  averageConsumption2: string | null;
+  averageConsumption3: string | null;
+  averageConsumption4: string | null;
 }
 
 export interface IndividualDeviceReadingsMonthHistoryResponse {
@@ -5746,10 +5750,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/Exports/MilurDevicesTemp
      * @secure
      */
-    exportsMilurDevicesTempList: (
-      query?: { startDate?: string; endDate?: string; isPolling?: boolean | null },
-      params: RequestParams = {},
-    ) =>
+    exportsMilurDevicesTempList: (query?: { startDate?: string; endDate?: string }, params: RequestParams = {}) =>
       this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Exports/MilurDevicesTemp`,
         method: "GET",
