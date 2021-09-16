@@ -60,13 +60,15 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     }, [readingsState]);
 
     const consumptionElems = consumptionState.map((el) => {
-      return <Consumption key={uuid()}>{el} кВтч</Consumption>;
+      return <Consumption key={uuid()}>{el}</Consumption>;
     });
 
     const { icon, color } = DeviceIcons[device.resource];
 
     return (
       <HouseReadingsDevice>
+        <div>{device.apartmentNumber}</div>
+
         <Column>
           <OwnerName>
             <Span>{device.homeownerName}</Span>
@@ -80,9 +82,11 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
         <Column>
           <div>
+            <b>{device.serialNumber}</b>
+          </div>
+          <div>
             <Span>{device.model}</Span>
           </div>
-          <div>{device.serialNumber}</div>
         </Column>
 
         {previousReadings}
@@ -121,10 +125,9 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
 const HouseReadingsDevice = styled.div`
   display: grid;
-  grid-template-columns: 100px 6px 130px 160px 160px 47px minmax(100px, 135px) minmax(
-      0,
-      80px
-    );
+  grid-template-columns:
+    15px 100px 6px 130px 160px 160px 47px 115px
+    minmax(0, 80px);
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);
