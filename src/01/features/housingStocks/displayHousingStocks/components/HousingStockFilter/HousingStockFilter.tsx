@@ -75,7 +75,7 @@ export const HousingStockFilter = () => {
 
   return (
     <FieldsWrap>
-      <ExistingStreetsGate Street={filterFields.Street} />
+      <ExistingStreetsGate />
       <StyledSelector
         placeholder="Город"
         value={filterFields.City || undefined}

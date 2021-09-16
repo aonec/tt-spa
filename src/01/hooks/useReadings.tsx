@@ -867,7 +867,7 @@ const isCorrectReadingValues = (
   return res;
 };
 
-const getNextPreviousReading = (
+export const getNextPreviousReading = (
   readings: PreviousReadingState,
   sliderIndex: number
 ) => {

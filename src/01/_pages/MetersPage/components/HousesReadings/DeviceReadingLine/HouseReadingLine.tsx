@@ -4,7 +4,11 @@ import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
 import styles from '../../../../Devices/components/TabsDevices.module.scss';
-import { round, useReadings } from '../../../../../hooks/useReadings';
+import {
+  getNextPreviousReading,
+  round,
+  useReadings,
+} from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
@@ -37,16 +41,18 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     useEffect(() => {
       if (!readingsState) return;
       const currentReadings = readingsState?.currentReadingsArray || {};
-      const previousReadings =
-        readingsState?.previousReadings[sliderIndex] || {};
+      const previousReadings: any = getNextPreviousReading(
+        readingsState?.previousReadings,
+        -1
+      );
       let consumptionArray = Array.from(
         { length: numberOfReadings },
         (v, i) => i
       );
       const consumption = consumptionArray.map((_, index) => {
         return round(
-          +currentReadings[index] - +previousReadings.values[index] > 0
-            ? +currentReadings[index] - +previousReadings.values[index]
+          +currentReadings[index] - +previousReadings?.values[index] > 0
+            ? +currentReadings[index] - +previousReadings?.values[index]
             : 0,
           3
         );
