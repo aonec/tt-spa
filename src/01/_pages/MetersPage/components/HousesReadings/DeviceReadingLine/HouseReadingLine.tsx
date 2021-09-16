@@ -33,7 +33,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [consumptionState, setConsumptionState] = useState<number[]>([]);
+    const [consumptionState, setConsumptionState] = useState<(number | string)[]>([]);
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
@@ -50,11 +50,13 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         (v, i) => i
       );
       const consumption = consumptionArray.map((_, index) => {
-        return round(
-          +currentReadings[index] - +previousReadings?.values[index] > 0
-            ? +currentReadings[index] - +previousReadings?.values[index]
-            : 0,
-          3
+        return (
+          round(
+            +currentReadings[index] - +previousReadings?.values[index] > 0
+              ? +currentReadings[index] - +previousReadings?.values[index]
+              : 0,
+            3
+          ) || ''
         );
       });
 
