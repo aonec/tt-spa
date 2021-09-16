@@ -939,7 +939,7 @@ const ReadingUploadDate = styled(Flex)`
   margin-top: 2px;
 `;
 
-function round(x: number, n: number) {
+export function round(x: number, n: number) {
   const m = Math.pow(10, n);
   return Math.round(x * m) / m;
 }
