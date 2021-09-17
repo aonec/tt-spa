@@ -16,7 +16,7 @@ export async function getDevice(url = '') {
 
 export async function getODPU(url = '') {
   try {
-    const res = await axios.get(`HousingMeteringDevices/${url}`);
+    const res = await axios.get(`PipeHousingMeteringDevices/${url}`);
     return res;
   } catch (error) {
     throw {
@@ -28,7 +28,7 @@ export async function getODPU(url = '') {
 
 export async function getInfo(typeODPU, deviceId) {
   let deviceTypeURL =
-    typeODPU === 'Calculator' ? 'Calculators' : 'HousingMeteringDevices';
+    typeODPU === 'Calculator' ? 'Calculators' : 'PipeHousingMeteringDevices';
   try {
     const res = await axios.get(`${deviceTypeURL}/${deviceId}`);
     return res;

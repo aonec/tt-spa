@@ -7,7 +7,7 @@ import {
 export async function getOdpu(id: number) {
   try {
     return await axios.get<PipeHousingMeteringDeviceResponse>(
-      `HousingMeteringDevices/${id}`
+      `PipeHousingMeteringDevices/${id}`
     );
   } catch (error) {
     throw {
@@ -22,7 +22,7 @@ export async function putOdpu(
   form: UpdatePipeHousingMeteringDeviceRequest
 ) {
   try {
-    const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
+    const res = await axios.put(`PipeHousingMeteringDevices/${deviceId}`, form);
     alert('ОДПУ успешно изменен!');
     return res;
   } catch (error) {

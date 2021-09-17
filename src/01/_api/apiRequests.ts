@@ -111,7 +111,7 @@ export async function addHousingMeteringDevice(
   form: CreatePipeHousingMeteringDeviceRequest
 ) {
   try {
-    const res = await axios.post('HousingMeteringDevices', form);
+    const res = await axios.post('PipeHousingMeteringDevices', form);
     alert('ОДПУ успешно создан !');
     return res;
   } catch (error) {

@@ -29,7 +29,7 @@ export async function getCalculator(id = '') {
 
 export async function getOdpu(id = '') {
   try {
-    const res = await axios.get(`HousingMeteringDevices/${id}`);
+    const res = await axios.get(`PipeHousingMeteringDevices/${id}`);
     console.log('getOdpu', res);
     return res;
   } catch (error) {
@@ -85,7 +85,7 @@ export async function putCalculator(deviceId = '', form = {}) {
 export async function putOdpu(deviceId = '', form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
-    const res = await axios.put(`HousingMeteringDevices/${deviceId}`, form);
+    const res = await axios.put(`PipeHousingMeteringDevices/${deviceId}`, form);
     // console.log("putCalculator", form)
     alert('ОДПУ успешно изменен!');
     return res;
@@ -99,7 +99,7 @@ export async function putOdpu(deviceId = '', form = {}) {
 export async function createOdpu(form = {}) {
   alert('Cейчас будем отправлять данные!');
   try {
-    const res = await axios.post('HousingMeteringDevices', form);
+    const res = await axios.post('PipeHousingMeteringDevices', form);
     // console.log("putCalculator", form)
     alert('ОДПУ успешно создан!');
     console.log(res);
