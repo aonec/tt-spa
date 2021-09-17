@@ -450,7 +450,6 @@ export const useReadings = (
       const neededPreviousReadings =
         readingsState.previousReadings[sliderIndex];
 
-      console.log(isPrevious);
       if (isPrevious) {
         sendPreviousReadingController(neededPreviousReadings);
       } else {
