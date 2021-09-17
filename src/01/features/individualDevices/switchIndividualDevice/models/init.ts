@@ -170,11 +170,11 @@ sample({
       deviceId: device?.id!,
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
-        .set('hours', 21)
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
         .toISOString(),
       futureCheckingDate: moment(values.futureCheckingDate)
-      .set('hours', 21)
-      .toISOString(),
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(),
       lastCommercialAccountingDate: values.lastCommercialAccountingDate,
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
