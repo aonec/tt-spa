@@ -24,6 +24,7 @@ import {
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
 } from './index';
+import moment from 'moment';
 
 createIndividualDeviceFx.use(createIndividualDevice);
 
@@ -56,8 +57,12 @@ sample({
   source: addIndividualDeviceForm.$values.map(
     (values): CreateIndividualDeviceRequest => ({
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
+      lastCheckingDate: moment(values.lastCheckingDate)
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(),
+      futureCheckingDate: moment(values.futureCheckingDate)
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(),
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,

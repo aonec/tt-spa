@@ -169,8 +169,12 @@ sample({
     ({ values, device }): SwitchIndividualDeviceRequest => ({
       deviceId: device?.id!,
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
+      lastCheckingDate: moment(values.lastCheckingDate)
+        .set('hours', 21)
+        .toISOString(),
+      futureCheckingDate: moment(values.futureCheckingDate)
+      .set('hours', 21)
+      .toISOString(),
       lastCommercialAccountingDate: values.lastCommercialAccountingDate,
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
