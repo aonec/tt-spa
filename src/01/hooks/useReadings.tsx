@@ -191,25 +191,6 @@ export const useReadings = (
     return readingData;
   };
 
-  const getReadings = (prev: ReadingsStateType) => {
-    const date = getDateByReadingMonthSlider(sliderIndex).toISOString();
-
-    const res = prev && {
-      ...prev,
-      previousReadings: {
-        ...prev?.previousReadings,
-        [sliderIndex]: {
-          ...prev?.previousReadings[sliderIndex],
-          date: prev?.previousReadings[sliderIndex].date || date,
-        },
-      },
-    };
-
-    setInitialPreviousReadingState((prev) => res?.previousReadings || prev);
-
-    return res;
-  };
-
   const sendPreviousReading = async (requestPayload: any) => {
     setReadingsState((prev: any) => ({
       ...prev,
@@ -292,7 +273,7 @@ export const useReadings = (
         ),
       isForced: true,
       deviceId: device.id,
-      readingDate: neededPreviousReadings.date,
+      readingDate: getDateByReadingMonthSlider(sliderIndex).toISOString(),
     };
 
     const {
