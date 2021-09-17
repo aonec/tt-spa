@@ -253,7 +253,7 @@ export const useReadings = (
     if (!isExistPreviousReadingValues || !isExistReadingState) return;
 
     if (
-      neededPreviousReadings?.values.every(Boolean) &&
+      !neededPreviousReadings?.values.some(Boolean) &&
       isExistNeededPreviousReadingId
     )
       return setReadingArchived(
@@ -450,6 +450,7 @@ export const useReadings = (
       const neededPreviousReadings =
         readingsState.previousReadings[sliderIndex];
 
+      console.log(isPrevious);
       if (isPrevious) {
         sendPreviousReadingController(neededPreviousReadings);
       } else {
