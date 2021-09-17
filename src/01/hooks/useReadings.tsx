@@ -191,286 +191,291 @@ export const useReadings = (
     return readingData;
   };
 
-  const sendReadings = useCallback(
-    async (isPrevious?: boolean) => {
-      try {
-        const getReadings = (prev: ReadingsStateType) => {
-          const date = getDateByReadingMonthSlider(sliderIndex).toISOString();
+  const getReadings = (prev: ReadingsStateType) => {
+    const date = getDateByReadingMonthSlider(sliderIndex).toISOString();
 
-          const res = prev && {
-            ...prev,
-            previousReadings: {
-              ...prev?.previousReadings,
-              [sliderIndex]: {
-                ...prev?.previousReadings[sliderIndex],
-                date: prev?.previousReadings[sliderIndex].date || date,
-              },
-            },
-          };
+    const res = prev && {
+      ...prev,
+      previousReadings: {
+        ...prev?.previousReadings,
+        [sliderIndex]: {
+          ...prev?.previousReadings[sliderIndex],
+          date: prev?.previousReadings[sliderIndex].date || date,
+        },
+      },
+    };
 
-          setInitialPreviousReadingState(
-            (prev) => res?.previousReadings || prev
-          );
+    setInitialPreviousReadingState((prev) => res?.previousReadings || prev);
 
-          return res;
-        };
+    return res;
+  };
 
-        if (!readingsState) return;
+  const sendPreviousReading = async (requestPayload: any) => {
+    setReadingsState((prev: any) => ({
+      ...prev,
+      previousReadings: {
+        ...prev.previousReadings,
+        [sliderIndex]: {
+          ...prev.previousReadings[sliderIndex],
+          status: 'pending',
+        },
+      },
+    }));
 
-        const neededReadings = getReadings(readingsState);
+    try {
+      const res: any = await axios.post(
+        '/IndividualDeviceReadings/createLite',
+        requestPayload
+      );
 
-        const neededPreviousReadings =
-          neededReadings.previousReadings[sliderIndex];
+      setReadingsState((prev: any) => ({
+        ...prev,
+        previousReadings: {
+          ...prev.previousReadings,
+          [sliderIndex]: {
+            ...prev.previousReadings[sliderIndex],
+            uploadTime: moment(res.uploadTime).toISOString(),
+            source: res.source,
+            user: res.user,
+            id: res.id,
+            status: 'done',
+          },
+        },
+      }));
+    } catch (error) {
+      setReadingsState((prev: any) => ({
+        ...prev,
+        previousReadings: {
+          ...prev.previousReadings,
+          [sliderIndex]: {
+            ...prev.previousReadings[sliderIndex],
+            status: 'failed',
+          },
+        },
+      }));
+      message.error('Не удалось сохранить показания, попробуйте позже');
+      throw error;
+    }
 
-        if (isPrevious) {
-          if (
-            !neededPreviousReadings ||
-            !neededPreviousReadings?.values?.length
-          )
-            return;
+    return;
+  };
 
-          if (!neededPreviousReadings?.values.some(Boolean)) {
-            if (!neededPreviousReadings.id) return;
+  const sendPreviousReadingController = async (
+    neededPreviousReadings: ReadingElem
+  ) => {
+    const isExistPreviousReadingValues = Boolean(
+      neededPreviousReadings?.values?.length
+    );
+    const isExistReadingState = Boolean(readingsState);
+    const isExistNeededPreviousReadingId = neededPreviousReadings.id;
 
-            return setReadingArchived(
-              neededPreviousReadings.id,
-              getPreviousReadingsMonth(sliderIndex)
-            );
-          }
+    if (!isExistPreviousReadingValues || !isExistReadingState) return;
 
-          const requestPayload = {
-            ...neededPreviousReadings?.values
-              .slice(0, getIndividualDeviceRateNumByName(device.rateType))
-              .reduce(
-                (acc: object, value: number, index: number) => ({
-                  ...acc,
-                  [`value${index + 1}`]: Number(value),
-                }),
-                {}
-              ),
-            isForced: true,
-            deviceId: device.id,
-            readingDate: neededPreviousReadings.date,
-          };
+    if (
+      neededPreviousReadings?.values.every(Boolean) &&
+      isExistNeededPreviousReadingId
+    )
+      return setReadingArchived(
+        neededPreviousReadings.id,
+        getPreviousReadingsMonth(sliderIndex)
+      );
 
-          const sendPreviousReading = async () => {
-            setReadingsState((prev: any) => ({
-              ...prev,
-              previousReadings: {
-                ...prev.previousReadings,
-                [sliderIndex]: {
-                  ...prev.previousReadings[sliderIndex],
-                  status: 'pending',
-                },
-              },
-            }));
+    const requestPayload = {
+      ...neededPreviousReadings?.values
+        .slice(0, getIndividualDeviceRateNumByName(device.rateType))
+        .reduce(
+          (acc: object, value: number, index: number) => ({
+            ...acc,
+            [`value${index + 1}`]: Number(value),
+          }),
+          {}
+        ),
+      isForced: true,
+      deviceId: device.id,
+      readingDate: neededPreviousReadings.date,
+    };
 
-            try {
-              const res: any = await axios.post(
-                '/IndividualDeviceReadings/createLite',
-                requestPayload
-              );
+    const {
+      validated,
+      valuesValidationResults,
+      limit,
+    } = isCorrectReadingValues(
+      device.resource,
+      device.rateType,
+      readingsState?.previousReadings[sliderIndex]?.values || [],
+      getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
+        ?.values || undefined
+    );
 
-              setReadingsState((prev: any) => ({
-                ...prev,
-                previousReadings: {
-                  ...prev.previousReadings,
-                  [sliderIndex]: {
-                    ...prev.previousReadings[sliderIndex],
-                    uploadTime: moment(res.uploadTime).toISOString(),
-                    source: res.source,
-                    user: res.user,
-                    id: res.id,
-                    status: 'done',
-                  },
-                },
-              }));
-            } catch (error) {
-              setReadingsState((prev: any) => ({
-                ...prev,
-                previousReadings: {
-                  ...prev.previousReadings,
-                  [sliderIndex]: {
-                    ...prev.previousReadings[sliderIndex],
-                    status: 'failed',
-                  },
-                },
-              }));
-              message.error('Не удалось сохранить показания, попробуйте позже');
-              throw error;
-            }
+    if (validated) {
+      await sendPreviousReading(requestPayload);
+    } else {
+      const neededValueWarning = valuesValidationResults?.find((elem) =>
+        Boolean(elem.type)
+      );
 
-            return;
-          };
-
-          const {
-            validated,
-            valuesValidationResults,
-            limit,
-          } = isCorrectReadingValues(
-            device.resource,
-            device.rateType,
-            readingsState.previousReadings[sliderIndex]?.values,
-            getNextPreviousReading(readingsState.previousReadings, sliderIndex)
-              ?.values || undefined
-          );
-
-          if (validated) {
-            await sendPreviousReading();
-          } else {
-            const neededValueWarning = valuesValidationResults?.find((elem) =>
-              Boolean(elem.type)
-            );
-
-            if (neededValueWarning?.type === 'down') {
-              const failedReadingValidateResult = valuesValidationResults?.find(
-                (elem) => !elem.validated
-              );
-              message.error(
-                `Введенное показание по прибору ${device.model} (${
-                  device.serialNumber
-                }) меньше предыдущего на ${Math.abs(
-                  round(failedReadingValidateResult?.difference || 0, 3)
-                )}${unit} [T${failedReadingValidateResult?.index}]`,
-                4.5
-              );
-              setReadingsState((prev: any) => ({
-                ...prev,
-                previousReadings: {
-                  ...prev.previousReadings,
-                  [sliderIndex]: {
-                    ...prev.previousReadings[sliderIndex],
-                    status: 'failed',
-                  },
-                },
-              }));
-              return;
-            }
-
-            Modal.confirm({
-              title: `${
-                neededValueWarning?.type === 'up'
-                  ? `Расход ${round(
-                      neededValueWarning.difference,
-                      3
-                    )}${unit}, больше чем лимит ${limit}${unit}`
-                  : ''
-              }`,
-              onOk: () => void sendPreviousReading(),
-              okText: 'Сохранить',
-              cancelText: 'Отмена',
-              centered: true,
-            });
-          }
-
-          return;
-        }
-
-        const deviceReadingObject: Record<
-          string,
-          any
-        > = formDeviceReadingObject(device, readingsState);
-
-        if (!readingsState.currentReadingsArray?.some(Boolean)) {
-          if (!readingsState.currentReadingId) return;
-
-          return setReadingArchived(
-            readingsState.currentReadingId,
-            getPreviousReadingsMonth(-1)
-          );
-        }
-
-        const sendCurrentReadings = async () => {
-          setReadingsState((prev: any) => ({
-            ...prev,
-            status: 'pending',
-          }));
-
-          try {
-            const res: any = await axios.post(
-              '/IndividualDeviceReadings/createLite',
-              deviceReadingObject
-            );
-
-            setReadingsState((prev: any) => ({
-              ...prev,
-              uploadTime: moment(res.uploadDate).toISOString(),
-              source: res.source,
-              user: res.user,
-              currentReadingId: res.id || prev.currentReadingId,
-              status: 'done',
-            }));
-
-            setInitialReadings(readingsState.currentReadingsArray);
-          } catch (error) {
-            setReadingsState((prev: any) => ({
-              ...prev,
+      if (neededValueWarning?.type === 'down') {
+        const failedReadingValidateResult = valuesValidationResults?.find(
+          (elem) => !elem.validated
+        );
+        message.error(
+          `Введенное показание по прибору ${device.model} (${
+            device.serialNumber
+          }) меньше предыдущего на ${Math.abs(
+            round(failedReadingValidateResult?.difference || 0, 3)
+          )}${unit} [T${failedReadingValidateResult?.index}]`,
+          4.5
+        );
+        setReadingsState((prev: any) => ({
+          ...prev,
+          previousReadings: {
+            ...prev.previousReadings,
+            [sliderIndex]: {
+              ...prev.previousReadings[sliderIndex],
               status: 'failed',
-            }));
+            },
+          },
+        }));
+        return;
+      }
 
-            message.error('Не удалось сохранить показания, попробуйте позже');
-            throw error;
-          }
-        };
+      Modal.confirm({
+        title: `${
+          neededValueWarning?.type === 'up'
+            ? `Расход ${round(
+                neededValueWarning.difference,
+                3
+              )}${unit}, больше чем лимит ${limit}${unit}`
+            : ''
+        }`,
+        onOk: () => void sendPreviousReading(requestPayload),
+        okText: 'Сохранить',
+        cancelText: 'Отмена',
+        centered: true,
+      });
+    }
 
-        const {
-          validated,
-          valuesValidationResults,
-          limit,
-        } = isCorrectReadingValues(
-          device.resource,
-          device.rateType,
-          readingsState.currentReadingsArray,
-          getNextPreviousReading(
-            readingsState.previousReadings,
-            sliderIndex - 1
-          )?.values
+    return;
+  };
+
+  const sendCurrentReadingController = async () => {
+    if (!readingsState) return;
+
+    const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
+      device,
+      readingsState
+    );
+
+    if (!readingsState.currentReadingsArray?.some(Boolean)) {
+      if (!readingsState.currentReadingId) return;
+
+      return setReadingArchived(
+        readingsState.currentReadingId,
+        getPreviousReadingsMonth(-1)
+      );
+    }
+
+    const sendCurrentReadings = async () => {
+      setReadingsState((prev: any) => ({
+        ...prev,
+        status: 'pending',
+      }));
+
+      try {
+        const res: any = await axios.post(
+          '/IndividualDeviceReadings/createLite',
+          deviceReadingObject
         );
 
-        if (validated) {
-          await sendCurrentReadings();
-        } else {
-          const neededValueWarning = valuesValidationResults?.find(
-            (elem) => !elem.validated
-          );
+        setReadingsState((prev: any) => ({
+          ...prev,
+          uploadTime: moment(res.uploadDate).toISOString(),
+          source: res.source,
+          user: res.user,
+          currentReadingId: res.id || prev.currentReadingId,
+          status: 'done',
+        }));
 
-          if (neededValueWarning?.type === 'down') {
-            message.error(
-              `Введенное показание по прибору ${device.model} (${
-                device.serialNumber
-              }) меньше предыдущего на ${Math.abs(
-                round(neededValueWarning?.difference || 0, 3)
-              )}${unit} [T${neededValueWarning?.index}]`,
-              4.5
-            );
-            setReadingsState((prev: any) => ({
-              ...prev,
-              status: 'failed',
-            }));
-            return;
-          }
+        setInitialReadings(readingsState.currentReadingsArray);
+      } catch (error) {
+        setReadingsState((prev: any) => ({
+          ...prev,
+          status: 'failed',
+        }));
 
-          Modal.confirm({
-            title: `${
-              neededValueWarning?.type === 'up'
-                ? `Расход ${round(
-                    neededValueWarning.difference,
-                    3
-                  )}${unit}, больше чем лимит ${limit}${unit}`
-                : ''
-            }`,
-            onOk: () => void sendCurrentReadings(),
-            okText: 'Сохранить',
-            cancelText: 'Отмена',
-            centered: true,
-          });
-        }
+        message.error('Не удалось сохранить показания, попробуйте позже');
+        throw error;
+      }
+    };
 
+    const {
+      validated,
+      valuesValidationResults,
+      limit,
+    } = isCorrectReadingValues(
+      device.resource,
+      device.rateType,
+      readingsState.currentReadingsArray,
+      getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
+        ?.values
+    );
+
+    if (validated) {
+      await sendCurrentReadings();
+    } else {
+      const neededValueWarning = valuesValidationResults?.find(
+        (elem) => !elem.validated
+      );
+
+      if (neededValueWarning?.type === 'down') {
+        message.error(
+          `Введенное показание по прибору ${device.model} (${
+            device.serialNumber
+          }) меньше предыдущего на ${Math.abs(
+            round(neededValueWarning?.difference || 0, 3)
+          )}${unit} [T${neededValueWarning?.index}]`,
+          4.5
+        );
+        setReadingsState((prev: any) => ({
+          ...prev,
+          status: 'failed',
+        }));
         return;
-      } catch (e) {}
-    },
-    [readingsState]
-  );
+      }
+
+      Modal.confirm({
+        title: `${
+          neededValueWarning?.type === 'up'
+            ? `Расход ${round(
+                neededValueWarning.difference,
+                3
+              )}${unit}, больше чем лимит ${limit}${unit}`
+            : ''
+        }`,
+        onOk: () => void sendCurrentReadings(),
+        okText: 'Сохранить',
+        cancelText: 'Отмена',
+        centered: true,
+      });
+    }
+
+    return;
+  };
+
+  const sendReadings = async (isPrevious?: boolean) => {
+    try {
+      if (!readingsState) return;
+
+      const neededPreviousReadings =
+        readingsState.previousReadings[sliderIndex];
+
+      if (isPrevious) {
+        sendPreviousReadingController(neededPreviousReadings);
+      } else {
+        sendCurrentReadingController();
+      }
+    } catch (e) {}
+  };
 
   const onBlurHandler = useCallback(
     (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
