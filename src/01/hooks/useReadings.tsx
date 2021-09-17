@@ -31,6 +31,7 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { ModalTT } from '01/shared/ui/ModalTT';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
@@ -766,6 +767,10 @@ export const useReadings = (
     >
       {currentReadings}
     </Tooltip>
+  );
+
+  const confirmReadingsLimitModal = (
+    <ModalTT visible title="Подтвердите действие"></ModalTT>
   );
 
   return {

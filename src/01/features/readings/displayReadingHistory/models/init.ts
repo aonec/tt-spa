@@ -9,10 +9,9 @@ import { forward } from 'effector';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 
-$readingHistory.on(
-  fetchReadingHistoryFx.doneData,
-  (_, historyData) => historyData
-);
+$readingHistory
+  .on(fetchReadingHistoryFx.doneData, (_, historyData) => historyData)
+  .reset(ReadingHistoryGate.close);
 
 forward({
   from: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),

@@ -7,9 +7,10 @@ import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFilter';
 import { Radio } from 'antd';
 import { Space } from '../../../shared/ui/Layout/Space/Space';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Switch } from 'react-router-dom';
 import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
+import { Apartments } from './Apartments';
 
 export const Filter = () => {
   const { inputs } = useFilter();
@@ -103,6 +104,9 @@ export const Filter = () => {
           )}
         </>
       )}
+      <Switch path="/meters/apartments" exact>
+        <Apartments />
+      </Switch>
     </>
   );
 };

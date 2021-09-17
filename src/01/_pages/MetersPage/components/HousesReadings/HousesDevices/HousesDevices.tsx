@@ -39,6 +39,8 @@ const HousesDevices: React.FC = () => {
     )
   );
 
+  const pendingDevices = useStore(fetchIndividualDeviceFx.pending);
+
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
 
   useEffect(() => reset && reset(), [housingStockId]);
@@ -73,7 +75,7 @@ const HousesDevices: React.FC = () => {
         {!!deviceElems.length && (
           <HouseReadingsHeader sliderProps={sliderProps} />
         )}
-        {deviceElems}
+        {!pendingDevices && deviceElems}
       </PendingLoader>
     </>
   );
