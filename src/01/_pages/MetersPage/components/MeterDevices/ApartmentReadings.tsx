@@ -10,10 +10,13 @@ import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeI
 import { useStore } from 'effector-react';
 import {
   $individualDevices,
+  $isShownClosedDevices,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -35,13 +38,13 @@ export const getIndividualDeviceRateNumByName = (
 export const ApartmentReadings = () => {
   const devices = useStore($individualDevices);
   const { id } = useParams<{ id: string }>();
-
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+  const showClosed = useStore($isShownClosedDevices);
 
   useEffect(() => reset && reset(), [id]);
 
-  const validDevicesList = devices.filter(
-    (device) => device.closingDate === null
+  const validDevicesList = devices.filter((device) =>
+    showClosed ? true : device.closingDate === null
   );
 
   const isSliderIndexExist = sliderIndex !== undefined;
@@ -72,12 +75,15 @@ export const ApartmentReadings = () => {
       {isSliderIndexExist && (
         <Meters id="meters-component">
           <MetersHeader>
-            <span>Информация o приборe</span>
+            <Flex style={{ alignItems: 'center' }}>
+              <div>Информация o приборe</div>
+              <Space />
+              <ClosedDevices />
+            </Flex>
             {sliderProps ? <MonthSlider {...sliderProps} /> : null}
             <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
           </MetersHeader>
           {validDevices}
-          <ClosedDevices sliderIndex={sliderIndex!} />
         </Meters>
       )}
     </>

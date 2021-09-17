@@ -114,8 +114,10 @@ export const useFilter = () => {
       if (!apartment) {
         resetApartment();
         resetIndividualDevices();
-        dispatch({ type: 'reset' });
         history.push(`/meters/apartments/`);
+        setTimeout(() => {
+          dispatch({ type: 'reset' });
+        }, 1000);
       }
     } catch (error) {}
   };
