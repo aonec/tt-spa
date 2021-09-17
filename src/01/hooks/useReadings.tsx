@@ -253,7 +253,7 @@ export const useReadings = (
     if (!isExistPreviousReadingValues || !isExistReadingState) return;
 
     if (
-      neededPreviousReadings?.values.every(Boolean) &&
+      !neededPreviousReadings?.values.some(Boolean) &&
       isExistNeededPreviousReadingId
     )
       return setReadingArchived(
