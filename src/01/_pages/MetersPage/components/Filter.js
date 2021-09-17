@@ -10,7 +10,6 @@ import { Space } from '../../../shared/ui/Layout/Space/Space';
 import { useHistory, Switch } from 'react-router-dom';
 import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
-import { Apartments } from './Apartments';
 
 export const Filter = () => {
   const { inputs } = useFilter();
@@ -104,9 +103,6 @@ export const Filter = () => {
           )}
         </>
       )}
-      <Switch path="/meters/apartments" exact>
-        <Apartments />
-      </Switch>
     </>
   );
 };
