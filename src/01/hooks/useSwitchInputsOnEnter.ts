@@ -8,6 +8,8 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
       `[data-reading-input="current"]`
     );
 
+    console.log(inputList);
+
     const nextNode = inputList[index + 1];
 
     if (!nextNode) {
@@ -18,7 +20,7 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
       )[0];
 
       neededInputNode && neededInputNode.focus && neededInputNode.focus();
-      return; // currentInputNode?.blur && currentInputNode.blur()
+      return;
     }
 
     const nextInputNode: any = nextNode?.getElementsByClassName('ant-input')[0];
