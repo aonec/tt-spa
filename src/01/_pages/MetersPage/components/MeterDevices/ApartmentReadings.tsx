@@ -59,6 +59,7 @@ export const ApartmentReadings = () => {
           device={device}
           numberOfPreviousReadingsInputs={validDevicesList
             .slice(0, index)
+            .filter((elem) => elem.closingDate === null)
             .reduce(
               (acc, elem) =>
                 acc + getIndividualDeviceRateNumByName(elem.rateType),

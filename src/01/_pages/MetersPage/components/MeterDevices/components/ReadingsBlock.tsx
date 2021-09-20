@@ -11,11 +11,6 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 
-interface ReadingLineStyledProps {
-  houseReadings: boolean;
-  isDisabled: boolean | undefined;
-}
-
 const ReadingLineStyled = styled.div`
   position: relative;
 
@@ -61,9 +56,6 @@ interface DeviceRatesVerticalProps {
   status?: RequestStatusShared;
 }
 
-const SuffixLine = styled.span`
-  // position: absolute;
-`;
 const StyledInput = styled(Input)`
   color: var(--main-70);
   border: 0;
@@ -111,8 +103,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   onChange,
   value,
   readingsBlocked = false,
-  resource,
-  houseReadings = false,
   isDisabled,
   isCurrent,
   lineIndex,
@@ -135,22 +125,22 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     </Flex>
   ) : null;
 
+  const dataString = closed
+    ? ''
+    : typeof isCurrent === 'boolean'
+    ? isCurrent
+      ? 'current'
+      : 'previous'
+    : 'none';
+
   return (
     <ReadingLineStyled
-      data-reading-input={
-        closed
-          ? ''
-          : typeof isCurrent === 'boolean'
-          ? isCurrent
-            ? 'current'
-            : 'previous'
-          : 'none'
-      }
       onKeyDown={
         isCurrent
           ? (e) => typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
           : onKeyDownPrevious
       }
+      {...(!closed && dataString ? { 'data-reading-input': dataString } : {})}
     >
       <StyledInput
         status={status}
