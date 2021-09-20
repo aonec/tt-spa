@@ -46,7 +46,10 @@ const HousesDevices: React.FC = () => {
   useEffect(() => reset && reset(), [housingStockId]);
 
   const deviceElemsList = devices?.slice()?.sort((device1, device2) => {
-    return Number(device1.apartmentNumber) - Number(device2.apartmentNumber);
+    return (
+      Number(getNumberFromString(device1.apartmentNumber || '')) -
+      Number(getNumberFromString(device2.apartmentNumber || ''))
+    );
   });
 
   const deviceElems = deviceElemsList.map((device, index) => (
@@ -82,3 +85,7 @@ const HousesDevices: React.FC = () => {
 };
 
 export default HousesDevices;
+
+function getNumberFromString(str: string) {
+  return parseInt(str.replace(/[^\d]/g, ''));
+}
