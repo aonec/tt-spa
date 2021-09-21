@@ -47,20 +47,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 export class Comments extends React.Component {
   state = {
-    comments: [
-      {
-        author: 'Тransparent Technologies',
-        // avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-        avatar: (
-          <Avatar
-            src={require('../../../../../public/icons/personal.svg')}
-            alt="Тransparent Technologies"
-          />
-        ),
-        content: <p>Выполнить Задачи с объектом</p>,
-        datetime: moment().fromNow(),
-      },
-    ],
+    comments: [],
     submitting: false,
     value: '',
   };

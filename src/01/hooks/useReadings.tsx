@@ -26,18 +26,18 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Wide } from '01/shared/ui/FilesUpload';
 import styled from 'styled-components';
-import { message, Modal, Tooltip } from 'antd';
+import { message, Tooltip } from 'antd';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import confirm from 'antd/lib/modal/confirm';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { ModalTT } from '01/shared/ui/ModalTT';
+import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean,
+  closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -137,7 +137,7 @@ export const useReadings = (
 
   useEffect(() => {
     getArrayByCountRange(11, () => '').forEach((_, index) => {
-      const res = setInitialData(index);
+      setInitialData(index);
     });
   }, [device.readings]);
 
@@ -159,13 +159,11 @@ export const useReadings = (
       }
     };
 
-    confirm({
-      okText: 'Да',
-      cancelText: 'Отмена',
-      onOk: request,
+    openConfirmReadingModal({
       title: `Вы точно хотите удалить показание за ${readingDate.toLowerCase()} на приборе ${
         device.model
       } (${device.serialNumber})?`,
+      callback: () => void request(),
     });
   }
 
@@ -298,28 +296,27 @@ export const useReadings = (
         const failedReadingValidateResult = valuesValidationResults?.find(
           (elem) => !elem.validated
         );
-        message.error(
-          `Введенное показание по прибору ${device.model} (${
-            device.serialNumber
-          }) меньше предыдущего на ${Math.abs(
-            round(failedReadingValidateResult?.difference || 0, 3)
-          )}${unit} [T${failedReadingValidateResult?.index}]`,
-          4.5
-        );
-        setReadingsState((prev: any) => ({
-          ...prev,
-          previousReadings: {
-            ...prev.previousReadings,
-            [sliderIndex]: {
-              ...prev.previousReadings[sliderIndex],
-              status: 'failed',
-            },
-          },
-        }));
+
+        openConfirmReadingModal({
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на T
+              {failedReadingValidateResult?.index}:{' '}
+              <b>
+                {Math.abs(
+                  round(failedReadingValidateResult?.difference || 0, 3)
+                )}{' '}
+                {unit}{' '}
+              </b>
+            </>
+          ),
+          callback: () => void sendPreviousReading(requestPayload),
+        });
         return;
       }
 
-      Modal.confirm({
+      openConfirmReadingModal({
         title: `${
           neededValueWarning?.type === 'up'
             ? `Расход ${round(
@@ -328,10 +325,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendPreviousReading(requestPayload),
-        okText: 'Сохранить',
-        cancelText: 'Отмена',
-        centered: true,
+        callback: () => void sendPreviousReading(requestPayload),
       });
     }
 
@@ -408,22 +402,23 @@ export const useReadings = (
       );
 
       if (neededValueWarning?.type === 'down') {
-        message.error(
-          `Введенное показание по прибору ${device.model} (${
-            device.serialNumber
-          }) меньше предыдущего на ${Math.abs(
-            round(neededValueWarning?.difference || 0, 3)
-          )}${unit} [T${neededValueWarning?.index}]`,
-          4.5
-        );
-        setReadingsState((prev: any) => ({
-          ...prev,
-          status: 'failed',
-        }));
+        openConfirmReadingModal({
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на T{neededValueWarning?.index}
+              :{' '}
+              <b>
+                {Math.abs(round(neededValueWarning?.difference || 0, 3))} {unit}{' '}
+              </b>
+            </>
+          ),
+          callback: () => void sendCurrentReadings(),
+        });
         return;
       }
 
-      Modal.confirm({
+      openConfirmReadingModal({
         title: `${
           neededValueWarning?.type === 'up'
             ? `Расход ${round(
@@ -432,10 +427,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendCurrentReadings(),
-        okText: 'Сохранить',
-        cancelText: 'Отмена',
-        centered: true,
+        callback: () => void sendCurrentReadings(),
       });
     }
 
@@ -752,10 +744,6 @@ export const useReadings = (
     >
       {currentReadings}
     </Tooltip>
-  );
-
-  const confirmReadingsLimitModal = (
-    <ModalTT visible title="Подтвердите действие"></ModalTT>
   );
 
   return {

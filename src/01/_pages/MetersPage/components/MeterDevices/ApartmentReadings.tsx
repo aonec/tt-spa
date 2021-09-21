@@ -17,6 +17,7 @@ import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -72,7 +73,7 @@ export const ApartmentReadings = () => {
     <>
       <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
-
+      <ConfirmReadingValueModal />
       {isSliderIndexExist && (
         <Meters id="meters-component">
           <MetersHeader>

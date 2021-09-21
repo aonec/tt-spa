@@ -20,6 +20,7 @@ import { EResourceType } from 'myApi';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
 type ParamsType = {
   id: string;
@@ -68,6 +69,7 @@ const HousesDevices: React.FC = () => {
 
   return (
     <>
+      <ConfirmReadingValueModal />
       <HousingStockGate id={Number(housingStockId)} />
       <PendingLoader loading={isLoading}>
         <IndividualDevicesGate
