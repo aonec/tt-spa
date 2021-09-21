@@ -12,6 +12,10 @@ export const $isConfirmReadingInputModalOpen = $onConfirmReadingInputCallback.ma
   Boolean
 );
 
+export const $confirmModalTitle = $onConfirmReadingInputCallback.map(
+  (state) => state?.title
+);
+
 export const openConfirmReadingModal = createEvent<Payload>();
 
 export const executeConfirmReadingCallback = createEvent();

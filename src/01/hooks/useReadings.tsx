@@ -32,12 +32,13 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import confirm from 'antd/lib/modal/confirm';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ModalTT } from '01/shared/ui/ModalTT';
+import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 export const useReadings = (
   device: IndividualDeviceListItemResponse,
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
-  closed?: boolean,
+  closed?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
@@ -319,7 +320,7 @@ export const useReadings = (
         return;
       }
 
-      Modal.confirm({
+      openConfirmReadingModal({
         title: `${
           neededValueWarning?.type === 'up'
             ? `Расход ${round(
@@ -328,10 +329,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendPreviousReading(requestPayload),
-        okText: 'Сохранить',
-        cancelText: 'Отмена',
-        centered: true,
+        callback: () => void sendPreviousReading(requestPayload),
       });
     }
 
@@ -423,7 +421,7 @@ export const useReadings = (
         return;
       }
 
-      Modal.confirm({
+      openConfirmReadingModal({
         title: `${
           neededValueWarning?.type === 'up'
             ? `Расход ${round(
@@ -432,10 +430,7 @@ export const useReadings = (
               )}${unit}, больше чем лимит ${limit}${unit}`
             : ''
         }`,
-        onOk: () => void sendCurrentReadings(),
-        okText: 'Сохранить',
-        cancelText: 'Отмена',
-        centered: true,
+        callback: () => void sendCurrentReadings(),
       });
     }
 

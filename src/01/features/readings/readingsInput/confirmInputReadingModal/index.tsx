@@ -5,23 +5,33 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
+  $confirmModalTitle,
   $isConfirmReadingInputModalOpen,
-  $onConfirmReadingInputCallback,
+  closeConfirmReadingCallbackModal,
+  executeConfirmReadingCallback,
 } from './models';
 
 export const ConfirmReadingValueModal: React.FC = () => {
   const visible = useStore($isConfirmReadingInputModalOpen);
-  const payload = useStore($onConfirmReadingInputCallback);
-
-  if (!payload) return null;
+  const title = useStore($confirmModalTitle);
 
   const header = (
     <Flex>
-      <InfoCircleOutlined twoToneColor="#ffad29" />
-      <Space />
+      <InfoCircleOutlined color="#ffad29" size={20} />
+      <Space w={8} />
       <div>Подтвердите действие</div>
     </Flex>
   );
 
-  return <ModalTT visible={visible} title={header}></ModalTT>;
+  return (
+    <ModalTT
+      visible={visible}
+      title={header}
+      centered
+      onCancel={closeConfirmReadingCallbackModal}
+      onSubmit={executeConfirmReadingCallback}
+    >
+      {title}
+    </ModalTT>
+  );
 };
