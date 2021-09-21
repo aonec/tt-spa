@@ -6,7 +6,6 @@ import { ApartmentReadings } from './components/MeterDevices/ApartmentReadings';
 import { Tabs } from 'antd';
 import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
-import { HousingStocks } from '01/features/housingStocks/displayHousingStocks';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
 
@@ -36,11 +35,17 @@ export const MetersPage = () => {
           <Route path="/meters/houses">
             <HousingStockFilter />
           </Route>
-          <Route path="/meters/houses" exact>
-            <HousingStocks />
-          </Route>
           <Route path="/meters/houses/:id">
             <HouseReadings />
+          </Route>
+        </TabPane>
+        <TabPane tab="По узлам учета" key="accountingNodes">
+          <Route path="/meters/accountingNodes">
+            Ввод показаний по узлам учета
+          </Route>
+          <Route path="/meters/accountingNodes/:id">
+            <ApartmentInfo />
+            <ApartmentReadings />
           </Route>
         </TabPane>
       </Tabs>
