@@ -26,14 +26,15 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
       device,
       sliderIndex,
       numberOfPreviousReadingsInputs,
-      false,
-      true
+      false
     );
 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [consumptionState, setConsumptionState] = useState<(number | string)[]>([]);
+    const [consumptionState, setConsumptionState] = useState<
+      (number | string)[]
+    >([]);
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType);
 

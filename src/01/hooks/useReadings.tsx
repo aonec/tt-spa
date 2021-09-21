@@ -38,7 +38,6 @@ export const useReadings = (
   sliderIndex = 0,
   numberOfPreviousReadingsInputs?: number,
   closed?: boolean,
-  clearOnFocus?: boolean
 ) => {
   const unit = getMeasurementUnit(device.resource);
 
