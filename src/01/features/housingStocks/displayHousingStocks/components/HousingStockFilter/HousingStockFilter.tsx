@@ -18,7 +18,7 @@ import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMe
 import { fetchHousingStocksFx } from '../../models';
 import { useFilter, filterValuesInit } from './useFilter.hook';
 
-export const cities = ['Нижнекамск', 'Большое Афанасово', 'Красный ключ'];
+export const cities = ['Нижнекамск', 'Большое Афанасово', 'Красный Ключ'];
 
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();
@@ -75,7 +75,7 @@ export const HousingStockFilter = () => {
 
   return (
     <FieldsWrap>
-      <ExistingStreetsGate />
+      <ExistingStreetsGate City={filterFields.City} />
       <StyledSelector
         placeholder="Город"
         value={filterFields.City || undefined}
