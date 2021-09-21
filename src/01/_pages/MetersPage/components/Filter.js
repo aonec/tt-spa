@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
 
 export const Filter = () => {
-  const { inputs } = useFilter();
+  const { inputs, state } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
   const [searchContext, setSearchContext] = useState(1);
@@ -80,7 +80,7 @@ export const Filter = () => {
             }
           `(
             <filter as="div">
-              <ExistingStreetsGate />
+              <ExistingStreetsGate City={state.city} />
               {inputs.map((input, index) => (
                 <StyledAutocomplete
                   options={input.options}
