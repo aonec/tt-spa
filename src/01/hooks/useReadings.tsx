@@ -298,24 +298,21 @@ export const useReadings = (
         );
 
         openConfirmReadingModal({
-          title: `Введенное показание по прибору ${device.model} (${
-            device.serialNumber
-          }) меньше предыдущего на ${Math.abs(
-            round(failedReadingValidateResult?.difference || 0, 3)
-          )}${unit} [T${failedReadingValidateResult?.index}]`,
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на T
+              {failedReadingValidateResult?.index}:{' '}
+              <b>
+                {Math.abs(
+                  round(failedReadingValidateResult?.difference || 0, 3)
+                )}{' '}
+                {unit}{' '}
+              </b>
+            </>
+          ),
           callback: () => void sendPreviousReading(requestPayload),
         });
-
-        setReadingsState((prev: any) => ({
-          ...prev,
-          previousReadings: {
-            ...prev.previousReadings,
-            [sliderIndex]: {
-              ...prev.previousReadings[sliderIndex],
-              status: 'failed',
-            },
-          },
-        }));
         return;
       }
 
@@ -406,18 +403,18 @@ export const useReadings = (
 
       if (neededValueWarning?.type === 'down') {
         openConfirmReadingModal({
-          title: `Введенное показание по прибору ${device.model} (${
-            device.serialNumber
-          }) меньше предыдущего на ${Math.abs(
-            round(neededValueWarning?.difference || 0, 3)
-          )}${unit} [T${neededValueWarning?.index}]`,
+          title: (
+            <>
+              Введенное показание по прибору <b>{device.serialNumber}</b> (
+              {device.model}) меньше предыдущего на T{neededValueWarning?.index}
+              :{' '}
+              <b>
+                {Math.abs(round(neededValueWarning?.difference || 0, 3))} {unit}{' '}
+              </b>
+            </>
+          ),
           callback: () => void sendCurrentReadings(),
         });
-
-        setReadingsState((prev: any) => ({
-          ...prev,
-          status: 'failed',
-        }));
         return;
       }
 

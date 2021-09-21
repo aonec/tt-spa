@@ -1,7 +1,5 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { InfoCircleOutlined } from '@ant-design/icons';
 import { useStore } from 'effector-react';
 import React from 'react';
 import {
@@ -10,6 +8,9 @@ import {
   closeConfirmReadingCallbackModal,
   executeConfirmReadingCallback,
 } from './models';
+import { ExclamationCircle } from 'react-bootstrap-icons';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import styled from 'styled-components';
 
 export const ConfirmReadingValueModal: React.FC = () => {
   const visible = useStore($isConfirmReadingInputModalOpen);
@@ -17,9 +18,9 @@ export const ConfirmReadingValueModal: React.FC = () => {
 
   const header = (
     <Flex>
-      <InfoCircleOutlined color="#ffad29" size={20} />
-      <Space w={8} />
-      <div>Подтвердите действие</div>
+      <ExclamationCircle color="#ffac27" />
+      <Space />
+      <HeaderTitle>Подтвердите действие</HeaderTitle>
     </Flex>
   );
 
@@ -31,7 +32,15 @@ export const ConfirmReadingValueModal: React.FC = () => {
       onCancel={closeConfirmReadingCallbackModal}
       onSubmit={executeConfirmReadingCallback}
     >
-      {title}
+      <TextWrap>{title}</TextWrap>
     </ModalTT>
   );
 };
+
+const HeaderTitle = styled.div`
+  color: gray;
+`;
+
+const TextWrap = styled.div`
+  font-size: 18px;
+`;
