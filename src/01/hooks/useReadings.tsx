@@ -754,10 +754,6 @@ export const useReadings = (
     </Tooltip>
   );
 
-  const confirmReadingsLimitModal = (
-    <ModalTT visible title="Подтвердите действие"></ModalTT>
-  );
-
   return {
     readingsState, // стейт с показаниями
     previousReadings: previousReadingsWithTooltip, // массив компонентов с показаниями за пред. месяцы
