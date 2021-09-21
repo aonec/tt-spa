@@ -20,13 +20,13 @@ export function getBitDepthAndScaleFactor(
     case EResourceType.Electricity:
       return {
         bitDepth: 6,
-        scaleFactor: 2,
+        scaleFactor: 1,
       };
 
     default:
       return {
         bitDepth: 5,
-        scaleFactor: 3,
+        scaleFactor: 1,
       };
   }
 }
