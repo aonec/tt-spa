@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevices';
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
+import { AccountingNodesFilter } from '01/features/readings/accountingNodesReadings/components/Filter';
 
 const { TabPane } = Tabs;
 
@@ -41,7 +42,7 @@ export const MetersPage = () => {
         </TabPane>
         <TabPane tab="По узлам учета" key="accountingNodes">
           <Route path="/meters/accountingNodes">
-            Ввод показаний по узлам учета
+            <AccountingNodesFilter />
           </Route>
           <Route path="/meters/accountingNodes/:id">
             <ApartmentInfo />
