@@ -2,11 +2,13 @@ import {
   fetchNodes,
   $electricNodes,
 } from '01/features/nodes/displayNodes/models';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
+import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
@@ -15,10 +17,17 @@ export const MeteringDevicesList = () => {
   const header = (
     <Header temp={gridTemp}>
       <HeaderTitleElem>Прибор</HeaderTitleElem>
-      <HeaderTitleElem>Коэф.трансф.</HeaderTitleElem>
-      <HeaderTitleElem>Январь</HeaderTitleElem>
-      <HeaderTitleElem>Февраль</HeaderTitleElem>
-      <HeaderTitleElem>Прибор</HeaderTitleElem>
+      <HeaderTitleElem>Коэф. трансф.</HeaderTitleElem>
+      <HeaderTitleElem>
+        <MonthSlider>
+          <div>Январь</div>
+        </MonthSlider>
+      </HeaderTitleElem>
+      <HeaderTitleElem>
+        <MonthSlider>
+          <div>Февраль</div>
+        </MonthSlider>
+      </HeaderTitleElem>
       <HeaderTitleElem>Общ. потр.</HeaderTitleElem>
       <HeaderTitleElem>Расход на нежил. пом.</HeaderTitleElem>
     </Header>
@@ -26,14 +35,24 @@ export const MeteringDevicesList = () => {
 
   return (
     <PendingLoader loading={pendingNodes}>
-      {electicNodes ? <>{header}</> : 'Нет нод'}
+      {electicNodes?.length === 0 ? 'Нет нод' : header}
+      {electicNodes?.map((node) => (
+        <MeteringDeviceReadingsLine node={node} />
+      ))}
     </PendingLoader>
   );
 };
 
-const gridTemp = '1fr 0.75fr 0.75fr 0.75fr 0.75fr 0.75fr 20px';
+const MonthSlider = styled(Flex)`
+  justify-content: center;
+`;
 
-const HeaderTitleElem = styled.div``;
+export const gridTemp = '1fr 0.5fr 0.75fr 0.75fr 0.75fr 0.75fr 20px';
+
+const HeaderTitleElem = styled.div`
+  font-size: 12px;
+  color: rgba(39, 47, 90, 0, 9);
+`;
 
 const Header = styled(Grid)`
   background: rgba(39, 47, 90, 0.04);
