@@ -8,8 +8,6 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
       `[data-reading-input="current"]`
     );
 
-    console.log(inputList);
-
     const nextNode = inputList[index + 1];
 
     if (!nextNode) {

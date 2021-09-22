@@ -100,8 +100,8 @@ forward({
 
     return {
       ...values,
-      bitDepth,
-      scaleFactor,
+      bitDepth: values.bitDepth || bitDepth,
+      scaleFactor: values.scaleFactor || scaleFactor,
       mountPlaceId: values.deviceMountPlace?.id,
       serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
       ...(isCheck || isSwitch

@@ -9,7 +9,7 @@ export const $individualDevices = createStore<
   IndividualDeviceListItemResponse[]
 >([]);
 
-export const fetchIndividualDeviceFxs = createEffect<
+export const fetchIndividualDevicesFx = createEffect<
   GetIndividualDeviceRequestParams,
   IndividualDeviceListItemResponse[]
 >();

@@ -170,7 +170,7 @@ const Internal = () => {
               <Redirect from="/meters/" to="/meters/apartments" exact />
 
               <Route
-                path="/meters/(apartments|houses)"
+                path="/meters/(apartments|houses|accountingNodes)"
                 component={MetersPage}
               />
 
@@ -181,7 +181,7 @@ const Internal = () => {
           </main>
         </layout>
       </Route>
-    </Switch> 
+    </Switch>
   );
 };
 

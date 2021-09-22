@@ -16,6 +16,7 @@ interface Props {
   loading?: boolean;
   onSubmit?(): void;
   customSubmit?: ReactNode;
+  centered?: boolean;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -28,6 +29,7 @@ export const ModalTT: React.FC<Props> = (props) => {
     onSubmit,
     saveBtnText,
     customSubmit,
+    centered,
   } = props;
 
   return (
@@ -36,6 +38,7 @@ export const ModalTT: React.FC<Props> = (props) => {
       onCancel={onCancel}
       width={800}
       title={<Header>{title}</Header>}
+      centered={centered}
       footer={
         <Footer>
           <ButtonTT color={'white'} key="back" onClick={onCancel}>

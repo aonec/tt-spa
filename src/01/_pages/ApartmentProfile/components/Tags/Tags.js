@@ -5,7 +5,7 @@ import './style.css';
 import { Title } from '../Title';
 
 export function Tags() {
-  const [tags, setTags] = useState(['Бабулька', 'Шустрая']);
+  const [tags, setTags] = useState([]);
   const handleChange = (tags) => {
     setTags(tags);
   };

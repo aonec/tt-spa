@@ -30,3 +30,6 @@ import './apartments/displayProblemDevices/models/init';
 import './apartments/printIssueCertificate/models/init';
 import './housingStocks/displayHousingStockStreets/model/init';
 import './individualDevices/displayIndividualDevices/models/init';
+import './readings/readingsInput/confirmInputReadingModal/models/init';
+import './readings/accountingNodesReadings/models/init.ts';
+import './nodes/displayNodes/models/init';
