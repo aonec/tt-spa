@@ -238,7 +238,8 @@ export const useReadings = (
   };
 
   const sendPreviousReadingController = async (
-    neededPreviousReadings: ReadingElem
+    neededPreviousReadings: ReadingElem,
+    index: number
   ) => {
     const isExistPreviousReadingValues = Boolean(
       neededPreviousReadings?.values?.length
@@ -281,7 +282,8 @@ export const useReadings = (
       device.rateType,
       readingsState?.previousReadings[sliderIndex]?.values || [],
       getNextPreviousReading(readingsState?.previousReadings!, sliderIndex)
-        ?.values || undefined
+        ?.values || [],
+      index
     );
 
     if (validated) {
@@ -331,7 +333,7 @@ export const useReadings = (
     return;
   };
 
-  const sendCurrentReadingController = async () => {
+  const sendCurrentReadingController = async (index: number) => {
     if (!readingsState) return;
 
     const deviceReadingObject: Record<string, any> = formDeviceReadingObject(
@@ -390,7 +392,8 @@ export const useReadings = (
       device.rateType,
       readingsState.currentReadingsArray,
       getNextPreviousReading(readingsState.previousReadings, sliderIndex - 1)
-        ?.values
+        ?.values || [],
+      index
     );
 
     if (validated) {
@@ -433,7 +436,7 @@ export const useReadings = (
     return;
   };
 
-  const sendReadings = async (isPrevious?: boolean) => {
+  const sendReadings = async (isPrevious: boolean, index: number) => {
     try {
       if (!readingsState) return;
 
@@ -441,15 +444,19 @@ export const useReadings = (
         readingsState.previousReadings[sliderIndex];
 
       if (isPrevious) {
-        sendPreviousReadingController(neededPreviousReadings);
+        sendPreviousReadingController(neededPreviousReadings, index);
       } else {
-        sendCurrentReadingController();
+        sendCurrentReadingController(index);
       }
     } catch (e) {}
   };
 
-  const onBlurHandler = useCallback(
-    (e: React.FocusEvent<HTMLDivElement>, isPrevious?: boolean) => {
+  const onEnterHandler = useCallback(
+    (
+      e: React.FocusEvent<HTMLDivElement>,
+      isPrevious: boolean,
+      index: number
+    ) => {
       if (!readingsState) return;
 
       if (
@@ -457,13 +464,13 @@ export const useReadings = (
         initialPreviousReadingState[sliderIndex]?.values !==
           readingsState.previousReadings[sliderIndex]?.values
       ) {
-        sendReadings(isPrevious);
+        sendReadings(isPrevious, index);
 
         return;
       }
 
       if (readingsState.currentReadingsArray !== initialReadings) {
-        sendReadings();
+        sendReadings(isPrevious, index);
       }
     },
     [readingsState, initialReadings]
@@ -591,11 +598,20 @@ export const useReadings = (
             color={
               isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
             }
-            onBlur={(e) => onBlurHandler(e, !isCurrent)}
             onFocus={onFocusHandler}
             resource={device.resource}
           >
-            {readingsElems.map((elem) => elem.elem)[0]}
+            {
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[0]
+            }
           </DeviceReadingsContainer>
         </div>
       ),
@@ -608,11 +624,20 @@ export const useReadings = (
             color={
               isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
             }
-            onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
             onFocus={onFocusHandler}
             resource={device.resource}
           >
-            {readingsElems.map((elem) => elem.elem)[0]}
+            {
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[0]
+            }
           </DeviceReadingsContainer>
           <ReadingUploadDate>
             {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
@@ -625,7 +650,6 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -634,13 +658,33 @@ export const useReadings = (
             color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems.map((elem) => elem.elem)[0]}
+            {
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[0]
+            }
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
             color={isCurrent ? '#957400' : 'var(--main-90)'}
             resource={device.resource}
           >
-            {readingsElems.map((elem) => elem.elem)[1]}
+            {
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[1]
+            }
           </DeviceReadingsContainer>
           <ReadingUploadDate>
             {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
@@ -653,7 +697,6 @@ export const useReadings = (
     {
       value: () => (
         <div
-          onKeyDown={fromEnter((e) => onBlurHandler(e, !isCurrent))}
           onFocus={onFocusHandler}
           style={{ display: 'flex', flexDirection: 'column' }}
         >
@@ -663,8 +706,24 @@ export const useReadings = (
             resource={device.resource}
           >
             {[
-              readingsElems.map((elem) => elem.elem)[0],
-              readingsElems.map((elem) => elem.elem)[1],
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[0],
+              readingsElems.map((elem, index) => (
+                <div
+                  onKeyDown={fromEnter((e) =>
+                    onEnterHandler(e, !isCurrent, index)
+                  )}
+                >
+                  {elem.elem}
+                </div>
+              ))[1],
             ]}
           </DeviceReadingsContainer>
           <DeviceReadingsContainer
@@ -801,9 +860,10 @@ const isCorrectReadingValues = (
   resource: EResourceType,
   rateType: EIndividualDeviceRateType,
   nextReadings: number[],
-  previousReadings?: number[]
+  previousReadings: number[],
+  currentIndex: number
 ): CorrectReadingValuesValidationResult => {
-  if (!previousReadings) return { validated: true };
+  if (!previousReadings.length) return { validated: true };
 
   const rateNum = getIndividualDeviceRateNumByName(rateType);
   const limit = getResourceUpLimit(resource);
@@ -820,7 +880,10 @@ const isCorrectReadingValues = (
       const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
       const difference = currentValue - prevValue;
 
-      const validated = acc.validated && !isDown && !isUp;
+      const validated =
+        currentIndex >= index
+          ? acc.validated && !isDown && !isUp
+          : acc.validated;
 
       return {
         ...acc,
