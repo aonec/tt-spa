@@ -1,12 +1,13 @@
 import { accountingNodesFilterForm, getAccountingNodesDevices } from './index';
 import { sample } from 'effector';
-import { fetchIndividualDevicesFx } from '01/features/individualDevices/displayIndividualDevices/models';
+import { fetchNodes } from '01/features/nodes/displayNodes/models';
 
 sample({
   source: accountingNodesFilterForm.$values.map((elem) => ({
-    City: elem.city,
-    // Street:
+    'Address.City': elem.city,
+    'Address.Street': elem.street,
+    'Address.HousingStockNumber': elem.house,
   })),
-  clock: getAccountingNodesDevices,
-  target: fetchIndividualDevicesFx as any,
+  clock: [getAccountingNodesDevices, accountingNodesFilterForm.formValidated],
+  target: fetchNodes,
 });

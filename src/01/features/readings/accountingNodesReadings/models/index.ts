@@ -3,7 +3,7 @@ import { createForm } from 'effector-forms';
 
 export const accountingNodesFilterForm = createForm({
   fields: {
-    city: { init: 'Нижнекаск' },
+    city: { init: 'Нижнекамск' },
     street: { init: '' },
     house: { init: '' },
   },

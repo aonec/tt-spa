@@ -32,3 +32,4 @@ import './housingStocks/displayHousingStockStreets/model/init';
 import './individualDevices/displayIndividualDevices/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
+import './nodes/displayNodes/models/init';
