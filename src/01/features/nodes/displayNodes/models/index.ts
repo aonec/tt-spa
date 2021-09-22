@@ -31,6 +31,8 @@ interface RequestPayload {
   OrderBy?: EOrderByRule;
 }
 
+export type GetNodesRequestPayload = RequestPayload;
+
 export const $nodes = createStore<NodesPagedList | null>(null);
 
 export const $pipeNodes = $nodes.map((nodes) => nodes?.pipeNodes);

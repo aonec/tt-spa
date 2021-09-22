@@ -44,10 +44,6 @@ export const MetersPage = () => {
           <Route path="/meters/accountingNodes">
             <AccountingNodesFilter />
           </Route>
-          <Route path="/meters/accountingNodes/:id">
-            <ApartmentInfo />
-            <ApartmentReadings />
-          </Route>
         </TabPane>
       </Tabs>
     </Wrap>
