@@ -112,6 +112,8 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   status,
 }) => {
   const onFocusHandler = (e: any) => {
+    e.target.select();
+
     if (Number(e.target.value) === 0) {
       onChange && onChange(e);
     }
