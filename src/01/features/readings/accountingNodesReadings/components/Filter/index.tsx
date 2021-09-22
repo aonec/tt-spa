@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'effector-forms';
-import { accountingNodesFilterForm } from '../models';
+import { accountingNodesFilterForm } from '../../models';
 import { StyledAutocomplete, StyledSelector } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
