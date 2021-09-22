@@ -100,7 +100,9 @@ export const getIndividualDevices = async (
 ) => {
   const res: {
     items: IndividualDeviceListItemResponse[];
-  } = await axios.get('IndividualDevices', { params });
+  } = await axios.get('IndividualDevices', {
+    params: { ...params, PageSize: 10000 },
+  });
 
   return res?.items;
 };
