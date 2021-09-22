@@ -18,6 +18,7 @@ import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
+  const fieldsArray = [fields.city, fields.street, fields.house];
 
   const {
     keyDownEnterGuardedHandler,
@@ -31,6 +32,19 @@ export const AccountingNodesFilter = () => {
     existingStreets
   );
 
+  function onSendHandler() {
+    if (fields.city && fields.street && fields.house) submit();
+  }
+
+  function clearValuesOnFocus(index: number) {
+    const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
+
+    subFieldsArray.forEach((field) => field.onChange(''));
+  }
+
+  const clearValuesOnFocusCallback = (index: number) => () =>
+    clearValuesOnFocus(index);
+
   return (
     <>
       <ExistingStreetsGate City={fields.city.value} />
@@ -41,6 +55,7 @@ export const AccountingNodesFilter = () => {
           onKeyDown={keyDownEnterGuardedHandler(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value}
+          onFocus={clearValuesOnFocusCallback(0)}
         >
           {cities.map((elem, index) => (
             <StyledSelector.Option key={index} value={elem}>
@@ -57,6 +72,7 @@ export const AccountingNodesFilter = () => {
             fromEnter(() => fields.street.onChange(streetMatch))(e);
             keyDownEnterGuardedHandler(1)(e);
           }}
+          onFocus={clearValuesOnFocusCallback(1)}
           options={options}
         />
         <StyledAutocomplete
@@ -64,7 +80,11 @@ export const AccountingNodesFilter = () => {
           value={fields.house.value}
           onChange={fields.house.onChange}
           ref={homeNumberRef}
-          onKeyDown={keyDownEnterGuardedHandler(2)}
+          onFocus={clearValuesOnFocusCallback(2)}
+          onKeyDown={(e) => {
+            fromEnter(onSendHandler)(e);
+            keyDownEnterGuardedHandler(2)(e);
+          }}
         />
       </Grid>
     </>
