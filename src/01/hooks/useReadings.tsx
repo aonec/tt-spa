@@ -289,6 +289,17 @@ export const useReadings = (
     if (validated) {
       await sendPreviousReading(requestPayload);
     } else {
+      setReadingsState((prev: any) => ({
+        ...prev,
+        previousReadings: {
+          ...prev.previousReadings,
+          [sliderIndex]: {
+            ...prev.previousReadings[sliderIndex],
+            status: 'failed',
+          },
+        },
+      }));
+
       const neededValueWarning = valuesValidationResults?.find((elem) =>
         Boolean(elem.type)
       );
@@ -399,6 +410,11 @@ export const useReadings = (
     if (validated) {
       await sendCurrentReadings();
     } else {
+      setReadingsState((prev: any) => ({
+        ...prev,
+        status: 'failed',
+      }));
+
       const neededValueWarning = valuesValidationResults?.find(
         (elem) => !elem.validated
       );
