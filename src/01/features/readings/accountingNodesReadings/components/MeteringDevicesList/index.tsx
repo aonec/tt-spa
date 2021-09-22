@@ -47,7 +47,7 @@ const MonthSlider = styled(Flex)`
   justify-content: center;
 `;
 
-export const gridTemp = '1fr 0.5fr 0.75fr 0.75fr 0.75fr 0.75fr 20px';
+export const gridTemp = '1fr 0.38fr 0.75fr 0.75fr 0.75fr 0.75fr 20px';
 
 const HeaderTitleElem = styled.div`
   font-size: 12px;

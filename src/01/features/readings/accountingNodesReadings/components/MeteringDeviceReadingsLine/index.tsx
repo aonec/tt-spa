@@ -29,12 +29,21 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
     </Flex>
   );
 
-  return <Wrap temp={gridTemp}>{deviceData}</Wrap>;
+  return (
+    <Wrap temp={gridTemp}>
+      {deviceData}
+      <Center>{counter?.scaleFactor}</Center>
+    </Wrap>
+  );
 };
 
 const Wrap = styled(Grid)`
   padding: 25px 15px;
   border-bottom: 1px solid #dcdee4;
+`;
+
+const Center = styled(Flex)`
+  justify-content: center;
 `;
 
 const IconWrap = styled.div`
