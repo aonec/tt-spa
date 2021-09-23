@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/MeterDevices/components/icons/history.svg';
+import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 
 interface Props {
   node: ElectricNodeResponse;
@@ -15,6 +16,8 @@ interface Props {
 
 export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
   const counter = node.counter;
+
+  const { readings, loading } = useMeteringDeviceReadings(node.id);
 
   const deviceData = (
     <Flex>
@@ -34,9 +37,18 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
   return (
     <Wrap temp={gridTemp} gap="15px">
       {deviceData}
-      <Center>{counter?.scaleFactor}</Center>
-      <MeteringDeviceReadingInput value={0} onChange={() => void 0} />
-      <MeteringDeviceReadingInput value={0} onChange={() => void 0} colored />
+      <div>{counter?.scaleFactor}</div>
+      <MeteringDeviceReadingInput
+        loading={loading}
+        value={0}
+        onChange={() => void 0}
+      />
+      <MeteringDeviceReadingInput
+        loading={loading}
+        value={0}
+        onChange={() => void 0}
+        colored
+      />
       <div></div>
       <div></div>
       <HistoryIcon />
