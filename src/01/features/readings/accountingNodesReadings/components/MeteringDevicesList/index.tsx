@@ -15,7 +15,7 @@ export const MeteringDevicesList = () => {
   const electicNodes = useStore($electricNodes);
 
   const header = (
-    <Header temp={gridTemp}>
+    <Header temp={gridTemp} gap="15px">
       <HeaderTitleElem>Прибор</HeaderTitleElem>
       <HeaderTitleElem>Коэф. трансф.</HeaderTitleElem>
       <HeaderTitleElem>
@@ -55,6 +55,7 @@ const HeaderTitleElem = styled.div`
 `;
 
 const Header = styled(Grid)`
+  align-items: center;
   background: rgba(39, 47, 90, 0.04);
   padding: 15px;
   border-bottom: 2px solid #dcdee4;
