@@ -28,6 +28,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   return (
     <Input
+      value={value}
       disabled={loading}
       onFocus={onFocusHandler}
       type="number"
@@ -44,11 +45,8 @@ const loadingGradientAnimation = keyframes`
 	0% {
 		background-position: 0% 50%;
 	}
-	50% {
-		background-position: 100% 50%;
-	}
 	100% {
-		background-position: 0% 50%;
+		background-position: 100% 50%;
 	}
 `;
 
@@ -67,13 +65,15 @@ const Input = styled.input`
   &:disabled {
     background: linear-gradient(
       45deg,
-      ${({ color }: InputProps) => `${color}55`},
-      ${({ color }: InputProps) => `${color}11`},
-      ${({ color }: InputProps) => `${color}77`},
-      ${({ color }: InputProps) => `${color}33`}
+      ${({ color }: InputProps) => `${color}ff`},
+      ${({ color }: InputProps) => `${color}66`},
+      ${({ color }: InputProps) => `${color}ff`},
+      ${({ color }: InputProps) => `${color}66`},
+      ${({ color }: InputProps) => `${color}ff`}
     );
+    border: none;
     background-size: 150% 150%;
-    animation: ${loadingGradientAnimation} 1s ease infinite;
+    animation: ${loadingGradientAnimation} 0.5s infinite linear;
     opacity: 0.3;
   }
 `;

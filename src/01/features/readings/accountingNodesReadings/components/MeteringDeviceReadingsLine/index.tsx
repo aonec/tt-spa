@@ -19,6 +19,22 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
 
   const { readings, loading } = useMeteringDeviceReadings(node.id);
 
+  const readingsInput = (
+    <>
+      <MeteringDeviceReadingInput
+        loading={loading}
+        value={0}
+        onChange={() => void 0}
+      />
+      <MeteringDeviceReadingInput
+        loading={loading}
+        value={0}
+        onChange={() => void 0}
+        colored
+      />
+    </>
+  );
+
   const deviceData = (
     <Flex>
       <IconWrap>
@@ -38,17 +54,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
     <Wrap temp={gridTemp} gap="15px">
       {deviceData}
       <div>{counter?.scaleFactor}</div>
-      <MeteringDeviceReadingInput
-        loading={loading}
-        value={0}
-        onChange={() => void 0}
-      />
-      <MeteringDeviceReadingInput
-        loading={loading}
-        value={0}
-        onChange={() => void 0}
-        colored
-      />
+      {readingsInput}
       <div></div>
       <div></div>
       <HistoryIcon />
