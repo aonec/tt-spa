@@ -22,7 +22,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   const { color: resourceColor } = DeviceIcons[resource];
 
-  const color = colored ? resourceColor : 'lightgray';
+  const color = colored ? resourceColor : '#c3c3c3';
 
   const onFocusHandler = (e: any) => e.target.select();
 
@@ -65,9 +65,15 @@ const Input = styled.input`
   }
 
   &:disabled {
-    background: linear-gradient(-45deg, white, lightgray);
+    background: linear-gradient(
+      45deg,
+      ${({ color }: InputProps) => `${color}55`},
+      ${({ color }: InputProps) => `${color}11`},
+      ${({ color }: InputProps) => `${color}77`},
+      ${({ color }: InputProps) => `${color}33`}
+    );
     background-size: 150% 150%;
-    animation: ${loadingGradientAnimation} 4s ease infinite;
-    opacity: 0.5;
+    animation: ${loadingGradientAnimation} 1s ease infinite;
+    opacity: 0.3;
   }
 `;
