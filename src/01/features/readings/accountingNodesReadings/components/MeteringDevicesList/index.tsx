@@ -1,3 +1,4 @@
+import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
 import {
   fetchNodes,
   $electricNodes,
@@ -13,6 +14,7 @@ import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
   const electicNodes = useStore($electricNodes);
+  const { sliderIndex } = useSliderIndex()
 
   const header = (
     <Header temp={gridTemp} gap="15px">
@@ -38,10 +40,10 @@ export const MeteringDevicesList = () => {
       {electicNodes?.length === 0
         ? 'Нет нод'
         : electicNodes?.length
-        ? header
-        : null}
+          ? header
+          : null}
       {electicNodes?.map((node) => (
-        <MeteringDeviceReadingsLine node={node} />
+        <MeteringDeviceReadingsLine sliderIndex={sliderIndex} node={node} />
       ))}
     </PendingLoader>
   );

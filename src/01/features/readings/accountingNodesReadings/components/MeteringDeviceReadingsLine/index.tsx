@@ -11,24 +11,34 @@ import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/M
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 
 interface Props {
+  sliderIndex: number;
   node: ElectricNodeResponse;
 }
 
-export const MeteringDeviceReadingsLine: React.FC<Props> = ({ node }) => {
+export const MeteringDeviceReadingsLine: React.FC<Props> = ({
+  node,
+  sliderIndex,
+}) => {
   const counter = node.counter;
 
-  const { readings, loading } = useMeteringDeviceReadings(node.id);
+  const {
+    loading,
+    currentReading,
+    previousReading,
+  } = useMeteringDeviceReadings(node.id, sliderIndex);
+
+  console.log(currentReading, previousReading);
 
   const readingsInput = (
     <>
       <MeteringDeviceReadingInput
+        reading={previousReading}
         loading={loading}
-        value={0}
         onChange={() => void 0}
       />
       <MeteringDeviceReadingInput
+        reading={currentReading}
         loading={loading}
-        value={0}
         onChange={() => void 0}
         colored
       />
@@ -66,10 +76,6 @@ const Wrap = styled(Grid)`
   align-items: center;
   padding: 25px 15px;
   border-bottom: 1px solid #dcdee4;
-`;
-
-const Center = styled(Flex)`
-  justify-content: center;
 `;
 
 const IconWrap = styled.div`

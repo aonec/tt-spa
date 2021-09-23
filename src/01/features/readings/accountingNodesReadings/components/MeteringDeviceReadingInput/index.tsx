@@ -2,9 +2,10 @@ import DeviceIcons from '01/_components/DeviceIcons';
 import { EResourceType } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 
 interface Props {
-  value?: number;
+  reading?: MeteringDeviceReading;
   onChange(value: number): void;
   resource?: EResourceType;
   colored?: boolean;
@@ -13,7 +14,7 @@ interface Props {
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   const {
-    value,
+    reading,
     onChange,
     resource = EResourceType.Electricity,
     colored,
@@ -26,9 +27,13 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   const onFocusHandler = (e: any) => e.target.select();
 
+  const value = reading?.reading.value
+
+  const fieldValue = value === 0 ? 0 : (value || '')
+
   return (
     <Input
-      value={value}
+      value={fieldValue}
       disabled={loading}
       onFocus={onFocusHandler}
       type="number"
