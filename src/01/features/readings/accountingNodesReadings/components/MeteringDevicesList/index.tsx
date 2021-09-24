@@ -47,7 +47,7 @@ export const MeteringDevicesList = () => {
   return (
     <PendingLoader loading={pendingNodes}>
       {electicNodes?.length === 0
-        ? 'Нет нод'
+        ? 'Нет приборов'
         : electicNodes?.length
         ? header
         : null}

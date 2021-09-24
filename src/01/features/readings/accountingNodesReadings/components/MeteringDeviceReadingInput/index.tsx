@@ -15,6 +15,7 @@ interface Props {
   colored?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  refetch(): void;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
@@ -25,6 +26,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     colored,
     loading,
     disabled,
+    refetch,
   } = props;
 
   const { color: resourceColor } = DeviceIcons[resource];
@@ -32,12 +34,12 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   const onFocusHandler = (e: any) => e.target.select();
 
-  const { scopedReading, fieldOnChange, edited } = useUploadingReadings(
-    reading
+  const { scopedValue, fieldOnChange, edited } = useUploadingReadings(
+    reading,
+    refetch
   );
 
-  const value = scopedReading?.reading.value;
-  const fieldValue = value === 0 ? 0 : value || '';
+  const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';
 
   const onChangeHandler = (e: any) => fieldOnChange(e.target.value);
 
@@ -61,6 +63,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
         onChange={onChangeHandler}
         edited={edited}
         onKeyDown={onKeyhandler}
+        min={0}
       />
       <ReadingDate>{readingDate}</ReadingDate>
     </Wrap>
@@ -103,7 +106,7 @@ const Input = styled.input`
   border-left: 5px solid ${({ color }: InputProps) => color};
   border-radius: 5px;
   transition: 0.2s;
-  background: ${({ edited }: InputProps) => (edited ? '#f1f1f1' : 'white')};
+  background: ${({ edited }: InputProps) => (edited ? '#0051ff10' : 'white')};
 
   &:focus {
     box-shadow: 0 4px 8px rgba(7, 0, 44, 0.15);

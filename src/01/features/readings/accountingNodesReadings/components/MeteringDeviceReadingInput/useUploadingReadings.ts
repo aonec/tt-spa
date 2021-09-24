@@ -2,30 +2,26 @@ import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 
 export function useUploadingReadings(
-  meteringDeviceReading?: MeteringDeviceReading
+  meteringDeviceReading?: MeteringDeviceReading,
+  refetch?: () => void
 ) {
-  const [reading, setReading] = useState(meteringDeviceReading);
+  const [value, setValue] = useState<string>(
+    String(meteringDeviceReading?.reading.value)
+  );
 
-  useEffect(() => setReading(meteringDeviceReading), [meteringDeviceReading]);
+  const edited =
+    Boolean(value) &&
+    String(value) !== String(meteringDeviceReading?.reading.value);
 
-  const onChangeHandler = (value: string) => {
-    setReading((prev) =>
-      prev
-        ? {
-            ...prev,
-            reading: { ...prev.reading, value: value as any },
-          }
-        : ({
-            reading: { value: value },
-          } as any)
-    );
-  };
+  useEffect(() => setValue(String(meteringDeviceReading?.reading.value)), [
+    meteringDeviceReading,
+  ]);
+
+  async function saveReading() {}
 
   return {
-    scopedReading: reading,
-    fieldOnChange: onChangeHandler,
-    edited:
-      String(reading?.reading.value) !==
-      String(meteringDeviceReading?.reading.value),
+    scopedValue: value,
+    fieldOnChange: setValue,
+    edited,
   };
 }

@@ -25,9 +25,8 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     loading,
     currentReading,
     previousReading,
+    refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
-
-  console.log(currentReading, previousReading);
 
   const readingsInput = (
     <>
@@ -35,12 +34,14 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         reading={previousReading}
         loading={loading}
         onChange={() => void 0}
+        refetch={refetch}
       />
       <MeteringDeviceReadingInput
         reading={currentReading}
         loading={loading}
         onChange={() => void 0}
         colored
+        refetch={refetch}
       />
     </>
   );
