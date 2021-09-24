@@ -40,6 +40,7 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
   return (
     <StyledMeteringDeviceReadingInput
       onKeyDown={fromEnter(saveConsumption)}
+      onFocus={(e: any) => e.target.select()}
       status={status}
       color="#c3c3c3"
       value={value || ''}
