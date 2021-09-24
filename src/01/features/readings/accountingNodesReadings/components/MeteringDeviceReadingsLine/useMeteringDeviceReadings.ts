@@ -33,15 +33,15 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     readings || []
   );
 
+  console.log(preparedPreviousReadingsArray);
+
   return {
     refetch: fetchMeteringDeviceReadings,
     readings,
     loading,
     preparedPreviousReadingsArray,
     currentReading: getCurrentReading(readings || []),
-    previousReading: sliderIndex
-      ? preparedPreviousReadingsArray[sliderIndex]
-      : undefined,
+    previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
   };
 }
 
@@ -51,7 +51,7 @@ const getCurrentReading = (readings: MeteringDeviceReading[]) => {
   return readings.find((reading) => {
     const readingDate = moment(reading.readingDate);
 
-    if (currentDate.diff(readingDate, 'months') > 11) return false;
+    if (currentDate.diff(reading.readingDate, 'months') > 11) return false;
 
     if (currentDate.month() === readingDate.month()) return true;
   });

@@ -1,7 +1,6 @@
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import {
-  postMeteringDeviceReading,
-  putMeteringDeviceReading,
+  createOrUpdateLast,
 } from '01/_api/meteringDeviceReadings';
 import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
@@ -33,18 +32,10 @@ export function useUploadingReadings(params: Params) {
 
     setStatus('pending');
     try {
-      if (meteringDeviceReading) {
-        if (!meteringDeviceReading.id) throw 'no node id';
-        await putMeteringDeviceReading({
-          value: Number(value),
-          id: meteringDeviceReading.id,
-        });
-      } else {
-        await postMeteringDeviceReading({
-          value: Number(value),
-          deviceId,
-        });
-      }
+      await createOrUpdateLast({
+        deviceId,
+        value: Number(value),
+      });
 
       setStatus('done');
       refetch();

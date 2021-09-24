@@ -26,3 +26,7 @@ export async function putMeteringDeviceReading(
 ) {
   return await axios.post('HousingMeteringDeviceReadings', payload);
 }
+
+export async function createOrUpdateLast(payload: CreateHousingMeteringDeviceReadingsRequest) {
+  return await axios.post('HousingMeteringDeviceReadings/CreateOrUpdateLast', payload);
+}
