@@ -35,3 +35,9 @@ export async function createOrUpdateLast(
     payload
   );
 }
+
+export async function deleteMeteringDeviceReading(id: string) {
+  return await axios.delete('HousingMeteringDeviceReadings', {
+    params: { id },
+  });
+}

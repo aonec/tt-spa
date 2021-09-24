@@ -1,5 +1,10 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
+import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import {
+  getDateByReadingMonthSlider,
+  getPreviousReadingsMonth,
+} from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
@@ -45,6 +50,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     edited,
     saveReading,
     status,
+    deleteReading,
   } = useUploadingReadings({
     meteringDeviceReading: reading,
     refetch,
@@ -53,12 +59,26 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
 
   const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';
 
-  const onChangeHandler = (e: any) => fieldOnChange(e.target.value);
+  const onChangeHandler = (e: any) => {
+    const value = e.target.value;
+
+    fieldOnChange(value);
+  };
 
   const readingDate =
     reading?.readingDate && moment(reading.readingDate).format('DD.MM.YYYY');
 
   const onKeyhandler = (e: any) => {
+    const value = e.target.value;
+
+    fromEnter(() => {
+      if (value === '')
+        return openConfirmReadingModal({
+          callback: deleteReading,
+          title: 'Вы уверены, что хотите удалить показание?',
+        });
+    })(e);
+
     fromEnter(saveReading)(e);
   };
 
