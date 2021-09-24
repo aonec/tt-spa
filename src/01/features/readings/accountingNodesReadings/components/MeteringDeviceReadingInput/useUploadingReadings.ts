@@ -1,6 +1,7 @@
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import {
   createOrUpdateLast,
+  deleteMeteringDeviceReading,
 } from '01/_api/meteringDeviceReadings';
 import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
@@ -44,12 +45,25 @@ export function useUploadingReadings(params: Params) {
     }
   }
 
+  async function deleteReading() {
+    try {
+      setStatus('pending');
+      await deleteMeteringDeviceReading(meteringDeviceReading?.id!);
+
+      setStatus('done');
+      refetch();
+    } catch (error) {
+      setStatus('failed');
+    }
+  }
+
   return {
     scopedValue: value,
     fieldOnChange: setValue,
     edited,
     saveReading,
     status,
+    deleteReading,
   };
 }
 
