@@ -36,9 +36,9 @@ export const ReadingsInput: React.FC<Props> = ({
 
   const defaultValues = device.rateType
     ? getArrayByCountRange(
-        getIndividualDeviceRateNumByName(device.rateType),
-        () => ''
-      )
+      getIndividualDeviceRateNumByName(device.rateType),
+      () => ''
+    )
     : [''];
 
   const rateNum = getIndividualDeviceRateNumByName(device.rateType!);
@@ -242,7 +242,7 @@ const ReadingsWrap = styled.div`
   grid-gap: 15px;
 `;
 
-function useSliderIndex() {
+export function useSliderIndex() {
   const limit = 6;
   const [sliderIndex, setSliderIndex] = useState(0);
 
