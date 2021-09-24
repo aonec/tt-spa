@@ -9,19 +9,26 @@ export function useUploadingReadings({
   refetch: () => void;
 }) {
   const [value, setValue] = useState<string>(
-    getReadingValue(meteringDeviceReading?.reading.value)
+    getReadingValue(meteringDeviceReading?.value)
   );
 
   const edited =
     Boolean(value) &&
-    String(value) !== String(meteringDeviceReading?.reading.value);
+    String(value) !== String(meteringDeviceReading?.value);
 
   useEffect(
-    () => setValue(getReadingValue(meteringDeviceReading?.reading.value)),
+    () => setValue(getReadingValue(meteringDeviceReading?.value)),
     [meteringDeviceReading]
   );
 
-  async function saveReading() {}
+  async function putReading() {}
+
+  async function saveReading() {
+    if (!edited) return;
+
+    try {
+    } catch (error) {}
+  }
 
   return {
     scopedValue: value,

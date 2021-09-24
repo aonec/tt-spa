@@ -48,8 +48,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   const onChangeHandler = (e: any) => fieldOnChange(e.target.value);
 
   const readingDate =
-    reading?.reading?.readingDate &&
-    moment(reading.reading.readingDate).format('DD.MM.YYYY');
+    reading?.readingDate && moment(reading.readingDate).format('DD.MM.YYYY');
 
   const onKeyhandler = (e: any) => {
     fromEnter(saveReading)(e);
@@ -59,8 +58,8 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
         value={fieldValue}
-        disabled={loading || !current}
-        loading={loading}
+        disabled={loading}
+        loading={reading ? false : loading}
         onFocus={onFocusHandler}
         type="number"
         color={color}

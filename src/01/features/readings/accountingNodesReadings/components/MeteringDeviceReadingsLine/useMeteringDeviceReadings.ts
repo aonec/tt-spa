@@ -3,9 +3,8 @@ import moment from 'moment';
 import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
 import { useState, useEffect } from 'react';
 
-export interface MeteringDeviceReading {
-  reading: HousingMeteringDeviceReadingsIncludingPlacementResponse;
-}
+export interface MeteringDeviceReading
+  extends HousingMeteringDeviceReadingsIncludingPlacementResponse {}
 
 export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
   const [readings, setReadings] = useState<MeteringDeviceReading[] | null>(
@@ -20,7 +19,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     try {
       const response = await getMeteringDeviceReadings(id);
 
-      const newReadings = response.map((reading) => ({ reading }));
+      const newReadings = response;
 
       setReadings(newReadings);
     } catch (error) {}
@@ -49,7 +48,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
 const getCurrentReading = (readings: MeteringDeviceReading[]) => {
   const currentDate = moment();
 
-  return readings.find(({ reading }) => {
+  return readings.find((reading) => {
     const readingDate = moment(reading.readingDate);
 
     if (currentDate.diff(readingDate, 'months') > 11) return false;
@@ -61,11 +60,11 @@ const getCurrentReading = (readings: MeteringDeviceReading[]) => {
 const getReadingsArrayWithEmpties = (readings: MeteringDeviceReading[]) => {
   const currentDate = moment();
   return readings.reduce((acc, elem) => {
-    if (currentDate.diff(elem.reading.readingDate, 'months') > 11) return acc;
+    if (currentDate.diff(elem.readingDate, 'months') > 11) return acc;
 
     const index =
       Number(moment().format('M')) -
-      Number(moment(elem.reading.readingDate).format('M')) -
+      Number(moment(elem.readingDate).format('M')) -
       1;
 
     acc[index] = elem;
