@@ -79,8 +79,12 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       <div>{counter?.scaleFactor}</div>
       {readingsInput}
       {consumption}
-      {currentReading ? (
-        <ConsumptionInput reading={currentReading} refetch={refetch} />
+      {Boolean(currentReading && counter?.id) ? (
+        <ConsumptionInput
+          reading={currentReading!}
+          refetch={refetch}
+          deviceId={counter?.id!}
+        />
       ) : (
         <div></div>
       )}

@@ -1,6 +1,9 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { putMeteringDeviceReading } from '01/_api/meteringDeviceReadings';
+import {
+  createOrUpdateLast,
+  putMeteringDeviceReading,
+} from '01/_api/meteringDeviceReadings';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -9,9 +12,14 @@ import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMetering
 interface Props {
   reading: MeteringDeviceReading;
   refetch(): void;
+  deviceId: number;
 }
 
-export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
+export const ConsumptionInput: React.FC<Props> = ({
+  reading,
+  refetch,
+  deviceId,
+}) => {
   const [value, setValue] = useState(reading.nonResidentialRoomConsumption);
   const [status, setStatus] = useState<RequestStatusShared>();
 
@@ -24,9 +32,10 @@ export const ConsumptionInput: React.FC<Props> = ({ reading, refetch }) => {
     try {
       if (!reading.id) throw 'none id';
 
-      await putMeteringDeviceReading({
+      await createOrUpdateLast({
+        deviceId,
         nonResidentialRoomConsumption: Number(value),
-        id: reading.id,
+        value: reading.value,
       });
 
       refetch();
