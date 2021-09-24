@@ -3,6 +3,7 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
+import { putCurrentManagingFirm } from '01/_pages/Settings/apiSettings';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React from 'react';
@@ -65,7 +66,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
       <Input
         value={fieldValue}
         disabled={loading || !current}
-        loading={reading ? false : loading}
+        loading={reading ? false : loading || status === 'pending'}
         onFocus={onFocusHandler}
         type="number"
         color={color}

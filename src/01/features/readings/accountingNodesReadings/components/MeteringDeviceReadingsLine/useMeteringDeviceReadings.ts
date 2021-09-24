@@ -55,8 +55,6 @@ const getCurrentReading = (readings: MeteringDeviceReading[]) => {
     if (currentDate.month() === readingDate.month()) return true;
   });
 
-  console.log(res);
-
   return res;
 };
 
