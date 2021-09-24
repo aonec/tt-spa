@@ -33,10 +33,11 @@ export function useUploadingReadings(params: Params) {
 
     setStatus('pending');
     try {
-      if (meteringDeviceReading?.id) {
+      if (meteringDeviceReading) {
+        if (!meteringDeviceReading.id) throw 'no node id';
         await putMeteringDeviceReading({
           value: Number(value),
-          id: meteringDeviceReading.id!,
+          id: meteringDeviceReading.id,
         });
       } else {
         await postMeteringDeviceReading({
