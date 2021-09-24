@@ -68,8 +68,10 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     previousReading &&
     currentReading?.value - previousReading.value;
 
-  const consumption = Boolean(consumptionValue) && (
+  const consumption = Boolean(consumptionValue) ? (
     <div>{currentReading?.value! - previousReading.value!} кВтч</div>
+  ) : (
+    <div></div>
   );
   return (
     <Wrap temp={gridTemp} gap="15px">
@@ -77,8 +79,10 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       <div>{counter?.scaleFactor}</div>
       {readingsInput}
       {consumption}
-      {currentReading && (
+      {currentReading ? (
         <ConsumptionInput reading={currentReading} refetch={refetch} />
+      ) : (
+        <div></div>
       )}
       <Flex style={{ justifyContent: 'center' }}>
         <HistoryIcon />
