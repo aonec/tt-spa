@@ -1,8 +1,12 @@
+import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
+import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
+import { useUploadingReadings } from './useUploadingReadings';
 
 interface Props {
   reading?: MeteringDeviceReading;
@@ -10,6 +14,7 @@ interface Props {
   resource?: EResourceType;
   colored?: boolean;
   loading?: boolean;
+  disabled?: boolean;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
@@ -19,31 +24,67 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     resource = EResourceType.Electricity,
     colored,
     loading,
+    disabled,
   } = props;
 
   const { color: resourceColor } = DeviceIcons[resource];
-
   const color = colored ? resourceColor : '#c3c3c3';
 
   const onFocusHandler = (e: any) => e.target.select();
 
-  const value = reading?.reading.value
+  const { scopedReading, fieldOnChange, edited } = useUploadingReadings(
+    reading
+  );
 
-  const fieldValue = value === 0 ? 0 : (value || '')
+  const value = scopedReading?.reading.value;
+  const fieldValue = value === 0 ? 0 : value || '';
+
+  const onChangeHandler = (e: any) => fieldOnChange(e.target.value);
+
+  const readingDate =
+    reading?.reading?.readingDate &&
+    moment(reading.reading.readingDate).format('DD.MM.YYYY');
+
+  const onKeyhandler = (e: any) => {
+    fromEnter(() => {})(e);
+  };
 
   return (
-    <Input
-      value={fieldValue}
-      disabled={loading}
-      onFocus={onFocusHandler}
-      type="number"
-      color={color}
-    />
+    <Wrap hasDate={Boolean(readingDate)}>
+      <Input
+        value={fieldValue}
+        disabled={loading || disabled}
+        loading={loading}
+        onFocus={onFocusHandler}
+        type="number"
+        color={color}
+        onChange={onChangeHandler}
+        edited={edited}
+        onKeyDown={onKeyhandler}
+      />
+      <ReadingDate>{readingDate}</ReadingDate>
+    </Wrap>
   );
 };
 
+const ReadingDate = styled(Flex)`
+  justify-content: flex-end;
+  color: #858585;
+`;
+
+interface WrapProps {
+  hasDate: boolean;
+}
+
+const Wrap = styled.div`
+  transform: ${({ hasDate }: WrapProps) =>
+    hasDate ? 'translateY(11px)' : 'none'};
+`;
+
 interface InputProps {
   color: string;
+  loading?: boolean;
+  edited?: boolean;
 }
 
 const loadingGradientAnimation = keyframes`
@@ -62,6 +103,7 @@ const Input = styled.input`
   border-left: 5px solid ${({ color }: InputProps) => color};
   border-radius: 5px;
   transition: 0.2s;
+  background: ${({ edited }: InputProps) => (edited ? '#f1f1f1' : 'white')};
 
   &:focus {
     box-shadow: 0 4px 8px rgba(7, 0, 44, 0.15);
@@ -81,4 +123,11 @@ const Input = styled.input`
     animation: ${loadingGradientAnimation} 0.5s infinite linear;
     opacity: 0.3;
   }
+
+  ${({ loading }: InputProps) =>
+    loading
+      ? `
+      
+    `
+      : ''}
 `;

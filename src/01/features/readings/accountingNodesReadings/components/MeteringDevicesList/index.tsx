@@ -64,6 +64,7 @@ const ArrowContainer = styled.div`
 
 const MonthSlider = styled(Flex)`
   justify-content: space-between;
+  font-weight: bold;
 `;
 
 export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.75fr 20px';
@@ -74,6 +75,7 @@ const HeaderTitleElem = styled.div`
 `;
 
 const Header = styled(Grid)`
+  color: #616161;
   align-items: center;
   background: rgba(39, 47, 90, 0.04);
   padding: 15px;
