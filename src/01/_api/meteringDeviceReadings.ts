@@ -24,9 +24,14 @@ export async function postMeteringDeviceReading(
 export async function putMeteringDeviceReading(
   payload: UpdateHousingMeteringDeviceReadingsRequest
 ) {
-  return await axios.post('HousingMeteringDeviceReadings', payload);
+  return await axios.put('HousingMeteringDeviceReadings', payload);
 }
 
-export async function createOrUpdateLast(payload: CreateHousingMeteringDeviceReadingsRequest) {
-  return await axios.post('HousingMeteringDeviceReadings/CreateOrUpdateLast', payload);
+export async function createOrUpdateLast(
+  payload: CreateHousingMeteringDeviceReadingsRequest
+) {
+  return await axios.post(
+    'HousingMeteringDeviceReadings/CreateOrUpdateLast',
+    payload
+  );
 }

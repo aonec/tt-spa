@@ -9,6 +9,7 @@ import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/MeterDevices/components/icons/history.svg';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
+import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 
 interface Props {
   sliderIndex: number;
@@ -76,8 +77,12 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       <div>{counter?.scaleFactor}</div>
       {readingsInput}
       {consumption}
-      <div></div>
-      <HistoryIcon />
+      {currentReading && (
+        <ConsumptionInput reading={currentReading} refetch={refetch} />
+      )}
+      <Flex style={{ justifyContent: 'center' }}>
+        <HistoryIcon />
+      </Flex>
     </Wrap>
   );
 };

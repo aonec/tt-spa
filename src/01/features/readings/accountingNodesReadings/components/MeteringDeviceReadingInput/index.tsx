@@ -97,7 +97,7 @@ const Wrap = styled.div`
 `;
 
 interface InputProps {
-  color: string;
+  color?: string;
   loading?: boolean;
   edited?: boolean;
   status?: RequestStatusShared;

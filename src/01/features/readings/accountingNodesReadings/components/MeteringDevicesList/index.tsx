@@ -67,7 +67,7 @@ const MonthSlider = styled(Flex)`
   font-weight: bold;
 `;
 
-export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.75fr 20px';
+export const gridTemp = '0.9fr 0.38fr 0.6fr 0.6fr 0.35fr 0.6fr 50px';
 
 const HeaderTitleElem = styled.div`
   font-size: 12px;
