@@ -1,6 +1,8 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
+import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React from 'react';
@@ -15,6 +17,7 @@ interface Props {
   loading?: boolean;
   refetch(): void;
   current?: boolean;
+  deviceId: number;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
@@ -24,6 +27,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     loading,
     refetch,
     current,
+    deviceId,
   } = props;
 
   const colored = Boolean(current);
@@ -38,9 +42,11 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     fieldOnChange,
     edited,
     saveReading,
+    status,
   } = useUploadingReadings({
     meteringDeviceReading: reading,
     refetch,
+    deviceId,
   });
 
   const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';
@@ -58,7 +64,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
         value={fieldValue}
-        disabled={loading}
+        disabled={loading || !current}
         loading={reading ? false : loading}
         onFocus={onFocusHandler}
         type="number"
@@ -67,6 +73,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
         edited={edited}
         onKeyDown={onKeyhandler}
         min={0}
+        status={status}
       />
       <ReadingDate>{readingDate}</ReadingDate>
     </Wrap>
@@ -91,6 +98,7 @@ interface InputProps {
   color: string;
   loading?: boolean;
   edited?: boolean;
+  status?: RequestStatusShared;
 }
 
 const loadingGradientAnimation = keyframes`
@@ -136,4 +144,7 @@ const Input = styled.input`
       0.5s infinite linear;
     opacity: ${({ loading }: InputProps) => (loading ? `0.3` : '')};
   }
+
+  ${({ status }: InputProps) =>
+    status ? `background: ${getColorByRequestStatus(status)}22` : ''}
 `;

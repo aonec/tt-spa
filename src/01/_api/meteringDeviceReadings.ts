@@ -1,5 +1,9 @@
 import axios from '01/axios';
-import { HousingMeteringDeviceReadingsIncludingPlacementResponse } from 'myApi';
+import {
+  CreateHousingMeteringDeviceReadingsRequest,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
+  UpdateHousingMeteringDeviceReadingsRequest,
+} from 'myApi';
 
 export async function getMeteringDeviceReadings(
   nodeId: number
@@ -9,4 +13,16 @@ export async function getMeteringDeviceReadings(
   });
 
   return res.items;
+}
+
+export async function postMeteringDeviceReading(
+  payload: CreateHousingMeteringDeviceReadingsRequest
+) {
+  return await axios.post('HousingMeteringDeviceReadings', payload);
+}
+
+export async function putMeteringDeviceReading(
+  payload: UpdateHousingMeteringDeviceReadingsRequest
+) {
+  return await axios.post('HousingMeteringDeviceReadings', payload);
 }
