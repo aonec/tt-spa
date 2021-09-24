@@ -3,7 +3,6 @@ import { RequestStatusShared } from '01/features/readings/displayReadingHistory/
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
-import { putCurrentManagingFirm } from '01/_pages/Settings/apiSettings';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React from 'react';
@@ -17,6 +16,7 @@ interface Props {
   resource?: EResourceType;
   loading?: boolean;
   refetch(): void;
+  disabled?: boolean;
   current?: boolean;
   deviceId: number;
 }
@@ -27,6 +27,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     resource = EResourceType.Electricity,
     loading,
     refetch,
+    disabled,
     current,
     deviceId,
   } = props;
@@ -65,7 +66,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
         value={fieldValue}
-        disabled={loading || !current}
+        disabled={loading || disabled}
         loading={reading ? false : loading || status === 'pending'}
         onFocus={onFocusHandler}
         type="number"
@@ -150,20 +151,4 @@ const Input = styled.input`
     status ? `background: ${getColorByRequestStatus(status)}22` : ''}
 `;
 
-interface ConsumptionInputProps {
-  value: number;
-  onChange(value: number): void;
-}
-
-export const ConsumptionInput: React.FC<ConsumptionInputProps> = ({
-  value,
-  onChange,
-}) => {
-  return (
-    <Input
-      color={'#c3c3c3'}
-      value={value}
-      onChange={(e: any) => onChange(e.target.value)}
-    />
-  );
-};
+export const StyledMeteringDeviceReadingInput = Input;

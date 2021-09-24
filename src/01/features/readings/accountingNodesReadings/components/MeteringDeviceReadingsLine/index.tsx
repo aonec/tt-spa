@@ -34,6 +34,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         deviceId={counter?.id!}
         reading={previousReading}
         loading={loading}
+        disabled
         refetch={refetch}
       />
       <MeteringDeviceReadingInput
