@@ -148,3 +148,21 @@ const Input = styled.input`
   ${({ status }: InputProps) =>
     status ? `background: ${getColorByRequestStatus(status)}22` : ''}
 `;
+
+interface ConsumptionInputProps {
+  value: number;
+  onChange(value: number): void;
+}
+
+export const ConsumptionInput: React.FC<ConsumptionInputProps> = ({
+  value,
+  onChange,
+}) => {
+  return (
+    <Input
+      color={'#c3c3c3'}
+      value={value}
+      onChange={(e: any) => onChange(e.target.value)}
+    />
+  );
+};
