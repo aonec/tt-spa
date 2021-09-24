@@ -10,34 +10,38 @@ import { useUploadingReadings } from './useUploadingReadings';
 
 interface Props {
   reading?: MeteringDeviceReading;
-  onChange(value: number): void;
+  onChange?(value: number): void;
   resource?: EResourceType;
-  colored?: boolean;
   loading?: boolean;
-  disabled?: boolean;
   refetch(): void;
+  current?: boolean;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   const {
     reading,
-    onChange,
     resource = EResourceType.Electricity,
-    colored,
     loading,
-    disabled,
     refetch,
+    current,
   } = props;
+
+  const colored = Boolean(current);
 
   const { color: resourceColor } = DeviceIcons[resource];
   const color = colored ? resourceColor : '#c3c3c3';
 
   const onFocusHandler = (e: any) => e.target.select();
 
-  const { scopedValue, fieldOnChange, edited } = useUploadingReadings(
-    reading,
-    refetch
-  );
+  const {
+    scopedValue,
+    fieldOnChange,
+    edited,
+    saveReading,
+  } = useUploadingReadings({
+    meteringDeviceReading: reading,
+    refetch,
+  });
 
   const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';
 
@@ -48,14 +52,14 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     moment(reading.reading.readingDate).format('DD.MM.YYYY');
 
   const onKeyhandler = (e: any) => {
-    fromEnter(() => {})(e);
+    fromEnter(saveReading)(e);
   };
 
   return (
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
         value={fieldValue}
-        disabled={loading || disabled}
+        disabled={loading || !current}
         loading={loading}
         onFocus={onFocusHandler}
         type="number"
@@ -113,24 +117,24 @@ const Input = styled.input`
   }
 
   &:disabled {
-    background: linear-gradient(
-      45deg,
-      ${({ color }: InputProps) => `${color}ff`},
-      ${({ color }: InputProps) => `${color}66`},
-      ${({ color }: InputProps) => `${color}ff`},
-      ${({ color }: InputProps) => `${color}66`},
-      ${({ color }: InputProps) => `${color}ff`}
-    );
-    border: none;
-    background-size: 150% 150%;
-    animation: ${loadingGradientAnimation} 0.5s infinite linear;
-    opacity: 0.3;
-  }
-
-  ${({ loading }: InputProps) =>
-    loading
-      ? `
-      
+    background: ${({ loading, color }: InputProps) =>
+      loading
+        ? ` 
+          linear-gradient(
+            45deg,
+            ${color}ff,
+            ${color}66,
+            ${color}ff,
+            ${color}66,
+            ${color}ff
+          )
     `
-      : ''}
+        : ''};
+    border: ${({ loading }: InputProps) => (loading ? `none` : '')};
+    background-size: 150% 150%;
+    animation: ${({ loading }: InputProps) =>
+        loading ? loadingGradientAnimation : ''}
+      0.5s infinite linear;
+    opacity: ${({ loading }: InputProps) => (loading ? `0.3` : '')};
+  }
 `;

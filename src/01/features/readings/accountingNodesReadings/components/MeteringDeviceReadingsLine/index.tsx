@@ -33,14 +33,12 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
       <MeteringDeviceReadingInput
         reading={previousReading}
         loading={loading}
-        onChange={() => void 0}
         refetch={refetch}
       />
       <MeteringDeviceReadingInput
         reading={currentReading}
         loading={loading}
-        onChange={() => void 0}
-        colored
+        current
         refetch={refetch}
       />
     </>
