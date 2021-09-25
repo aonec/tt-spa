@@ -51,8 +51,12 @@ export const MeteringDevicesList = () => {
         : electicNodes?.length
         ? header
         : null}
-      {electicNodes?.map((node) => (
-        <MeteringDeviceReadingsLine sliderIndex={sliderIndex} node={node} />
+      {electicNodes?.map((node, index) => (
+        <MeteringDeviceReadingsLine
+          sliderIndex={sliderIndex}
+          node={node}
+          inputIndex={index + 1}
+        />
       ))}
     </PendingLoader>
   );

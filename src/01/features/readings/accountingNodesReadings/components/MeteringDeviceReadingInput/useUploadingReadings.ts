@@ -36,6 +36,8 @@ export function useUploadingReadings(params: Params) {
       await createOrUpdateLast({
         deviceId,
         value: Number(value),
+        nonResidentialRoomConsumption:
+          meteringDeviceReading?.nonResidentialRoomConsumption,
       });
 
       setStatus('done');
