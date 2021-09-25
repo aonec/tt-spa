@@ -14,11 +14,13 @@ import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 interface Props {
   sliderIndex: number;
   node: ElectricNodeResponse;
+  inputIndex: number;
 }
 
 export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   node,
   sliderIndex,
+  inputIndex,
 }) => {
   const counter = node.counter;
 
@@ -44,6 +46,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         loading={loading}
         current
         refetch={refetch}
+        inputIndex={inputIndex}
       />
     </>
   );

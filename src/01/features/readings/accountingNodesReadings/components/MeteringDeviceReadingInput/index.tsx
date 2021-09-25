@@ -1,16 +1,13 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
-import {
-  getDateByReadingMonthSlider,
-  getPreviousReadingsMonth,
-} from '01/shared/lib/readings/getPreviousReadingsMonth';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { getColorByRequestStatus } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
 import React from 'react';
+import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 import { useUploadingReadings } from './useUploadingReadings';
@@ -24,6 +21,7 @@ interface Props {
   disabled?: boolean;
   current?: boolean;
   deviceId: number;
+  inputIndex?: number;
 }
 
 export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
@@ -35,6 +33,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     disabled,
     current,
     deviceId,
+    inputIndex,
   } = props;
 
   const colored = Boolean(current);
@@ -68,8 +67,14 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   const readingDate =
     reading?.readingDate && moment(reading.readingDate).format('DD.MM.YYYY');
 
+  const { onKeyDown } = useSwitchOnInputs(`[data-reading-input="current"]`);
+
   const onKeyhandler = (e: any) => {
     const value = e.target.value;
+
+    fromEnter(() => {
+      inputIndex && onKeyDown(inputIndex);
+    })(e);
 
     fromEnter(() => {
       if (value === '')
@@ -85,6 +90,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   return (
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
+        data-reading-input="current"
         value={fieldValue}
         disabled={loading || disabled}
         loading={reading ? false : loading || status === 'pending'}
@@ -172,3 +178,30 @@ const Input = styled.input`
 `;
 
 export const StyledMeteringDeviceReadingInput = Input;
+
+export const useSwitchOnInputs = (dataAttr: string) => {
+  const onKeyDown = (index: number) => {
+    console.log(index);
+    const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      dataAttr
+    );
+    console.log(inputList);
+
+    const nextNode = inputList[index + 1];
+
+    if (!nextNode) {
+      const firstNode = inputList[0];
+
+      firstNode?.focus && firstNode.focus();
+      return;
+    }
+
+    nextNode?.focus && nextNode.focus();
+  };
+
+  useEffect(() => {
+    onKeyDown(-1);
+  }, []);
+
+  return { onKeyDown };
+};
