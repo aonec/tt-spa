@@ -10,6 +10,7 @@ import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
 import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/MeterDevices/components/icons/history.svg';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
+import { round } from '01/hooks/useReadings';
 
 interface Props {
   sliderIndex: number;
@@ -72,7 +73,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     currentReading?.value - previousReading.value;
 
   const consumption = Boolean(consumptionValue) ? (
-    <div>{currentReading?.value! - previousReading.value!} кВтч</div>
+    <div>{round(currentReading?.value! - previousReading.value!, 3)} кВтч</div>
   ) : (
     <div></div>
   );
