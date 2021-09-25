@@ -73,7 +73,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     const value = e.target.value;
 
     fromEnter(() => {
-      inputIndex && onKeyDown(inputIndex);
+      inputIndex && onKeyDown(inputIndex - 1);
     })(e);
 
     fromEnter(() => {
@@ -90,7 +90,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   return (
     <Wrap hasDate={Boolean(readingDate)}>
       <Input
-        data-reading-input="current"
+        data-reading-input={inputIndex ? 'current' : ''}
         value={fieldValue}
         disabled={loading || disabled}
         loading={reading ? false : loading || status === 'pending'}
@@ -181,11 +181,9 @@ export const StyledMeteringDeviceReadingInput = Input;
 
 export const useSwitchOnInputs = (dataAttr: string) => {
   const onKeyDown = (index: number) => {
-    console.log(index);
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       dataAttr
     );
-    console.log(inputList);
 
     const nextNode = inputList[index + 1];
 
@@ -195,6 +193,8 @@ export const useSwitchOnInputs = (dataAttr: string) => {
       firstNode?.focus && firstNode.focus();
       return;
     }
+
+    console.log(nextNode, nextNode?.focus);
 
     nextNode?.focus && nextNode.focus();
   };
