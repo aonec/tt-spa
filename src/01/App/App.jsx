@@ -174,6 +174,16 @@ const Internal = () => {
                 component={MetersPage}
               />
 
+              <Redirect
+                from="/statistics/"
+                to="/statistics/subscribersConsumption"
+                exact
+              />
+
+              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+                Статистика
+              </Route>
+
               <ApartmentsRouteGroup />
 
               <Redirect to="/error/" />

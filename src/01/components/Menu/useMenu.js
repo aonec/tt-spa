@@ -11,6 +11,13 @@ export function useMenu() {
       perm: ['all'],
     },
     {
+      name: 'Статистика',
+      to: '/statistics/',
+      icon: 'statistics',
+      perm: ['all'],
+      hidden: ['ManagingFirmOperator'],
+    },
+    {
       name: 'Задачи',
       to: '/tasks/',
       icon: 'task',
@@ -40,7 +47,6 @@ export function useMenu() {
       name: 'Собственники',
       to: '/owners/',
       icon: 'key',
-      // perm: ["ManagingFirmAdministrator", "ManagingFirmOperator"],
       perm: [],
     },
     {
@@ -48,12 +54,6 @@ export function useMenu() {
       to: '/meters/',
       icon: 'doc',
       perm: ['ManagingFirmOperator'],
-    },
-    {
-      name: 'Диагностика',
-      to: '/monitoring/',
-      icon: 'monitoring',
-      perm: [],
     },
     {
       name: 'Лог действий',
