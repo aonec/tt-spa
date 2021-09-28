@@ -67,7 +67,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
   const readingDate =
     reading?.readingDate && moment(reading.readingDate).format('DD.MM.YYYY');
 
-  const { onKeyDown } = useSwitchOnInputs(`[data-reading-input="current"]`);
+  const { onKeyDown } = useSwitchOnEnter(`[data-reading-input="current"]`);
 
   const onKeyhandler = (e: any) => {
     const value = e.target.value;
@@ -179,7 +179,7 @@ const Input = styled.input`
 
 export const StyledMeteringDeviceReadingInput = Input;
 
-export const useSwitchOnInputs = (dataAttr: string) => {
+export const useSwitchOnEnter = (dataAttr: string) => {
   const onKeyDown = (index: number) => {
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       dataAttr
