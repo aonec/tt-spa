@@ -41,6 +41,7 @@ import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
 import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
+import { StatisticsPage } from '01/features/statistics';
 
 moment.locale('ru');
 
@@ -181,7 +182,7 @@ const Internal = () => {
               />
 
               <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
-                Статистика
+                <StatisticsPage />
               </Route>
 
               <ApartmentsRouteGroup />
