@@ -85,8 +85,8 @@ export const StyledSquareButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   justify-content: center;
+  cursor: pointer;
   border: 1px solid lightgray;
   padding: 3px 15px;
   transition: 0.2s;
