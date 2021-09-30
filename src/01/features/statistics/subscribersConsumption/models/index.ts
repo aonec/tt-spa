@@ -32,7 +32,7 @@ export const subscribersConsumptionFilterForm = createForm({
       },
     },
     lastReadingMonth: {
-      init: null as string | null,
+      init: null as number | null,
     },
     excludeApartments: {
       init: false,

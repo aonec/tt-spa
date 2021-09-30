@@ -29,7 +29,7 @@ export const ExpandedSearch = () => {
           <CancelButton onClick={() => void reset()}>
             <X style={{ fontSize: 18 }} />
             <Space w={5} />
-            <div>Отмена</div>
+            <div>Очистить</div>
           </CancelButton>
         </Flex>
         <Space />
@@ -83,8 +83,38 @@ export const ExpandedSearch = () => {
           <SearchPointTitle>
             Месяц последней передачи показаний
           </SearchPointTitle>
-          <StyledRangePicker format="DD.MM.YYYY" />
+          <StyledRangePicker
+            value={
+              fields.individualDeviceCheckPeriod.value.from &&
+              fields.individualDeviceCheckPeriod.value.to
+                ? [
+                    moment(
+                      fields.individualDeviceCheckPeriod.value.from || undefined
+                    ),
+                    moment(
+                      fields.individualDeviceCheckPeriod.value.to || undefined
+                    ),
+                  ]
+                : undefined
+            }
+            format="DD.MM.YYYY"
+            onChange={(value) => {
+              value &&
+                fields.individualDeviceCheckPeriod.onChange({
+                  from: value[0]?.toISOString() || null,
+                  to: value[1]?.toISOString() || null,
+                });
+            }}
+          />
           <StyledDatePicker
+            onChange={(value) =>
+              value && fields.lastReadingMonth.onChange(value.month() + 1)
+            }
+            value={
+              fields.lastReadingMonth.value
+                ? moment(fields.lastReadingMonth.value, 'M')
+                : undefined
+            }
             picker="month"
             format="MMMM"
             disabledDate={(date) => date.year() !== moment().year()}
