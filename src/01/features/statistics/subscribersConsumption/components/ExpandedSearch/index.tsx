@@ -13,6 +13,7 @@ import {
 } from '../../models';
 import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { ButtonTT } from '01/tt-components';
+import moment from 'moment';
 
 export const ExpandedSearch = () => {
   const { fields, reset } = useForm(subscribersConsumptionFilterForm);
@@ -75,17 +76,21 @@ export const ExpandedSearch = () => {
               onChange={fields.electricity.onChange}
             />
           </Grid>
-          <Space />
+          <Space h={25} />
         </div>
         <Grid temp="0.7fr 0.47fr" gap="15px">
           <SearchPointTitle>Период проверки ИПУ</SearchPointTitle>
           <SearchPointTitle>
             Месяц последней передачи показаний
           </SearchPointTitle>
-          <StyledRangePicker />
-          <StyledDatePicker />
+          <StyledRangePicker format="DD.MM.YYYY" />
+          <StyledDatePicker
+            picker="month"
+            format="MMMM"
+            disabledDate={(date) => date.year() !== moment().year()}
+          />
         </Grid>
-        <Space />
+        <Space h={25} />
         <Checkbox
           checked={fields.excludeApartments.value}
           onChange={(e) => fields.excludeApartments.onChange(e.target.checked)}
