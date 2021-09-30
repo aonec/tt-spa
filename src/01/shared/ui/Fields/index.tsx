@@ -1,9 +1,12 @@
+import React from 'react';
 import { Select, AutoComplete } from 'antd';
 import styled from 'styled-components';
+import { ReactComponent as FilterIcon } from './icons/filter.svg';
+import { Flex } from '../Layout/Flex';
 
 export const StyledSelector = styled(Select)`
   width: 100%;
-  
+
   .ant-select-selector {
     border: 1px solid lightgray;
     padding: 3px 15px;
@@ -77,3 +80,34 @@ export const StyledInput = styled.input`
     box-shadow: 0 2px 7px #188fffae;
   }
 `;
+
+const StyledFilterButton = styled(Flex)`
+  cursor: pointer;
+  justify-content: center;
+  border: 1px solid lightgray;
+  padding: 3px 15px;
+
+  border-radius: 4px !important;
+
+  border: 1px solid var(--frame);
+  height: var(--h-norm);
+
+  box-shadow: 0 4px 7px #02004b1f;
+
+  &:hover,
+  &:focus {
+    border: 1px solid #1890ff;
+  }
+
+  &:focus {
+    box-shadow: 0 2px 7px #188fffae;
+  }
+`;
+
+export const FilterButton = styled(() => (
+  <StyledFilterButton>
+    <div>
+      <FilterIcon />
+    </div>
+  </StyledFilterButton>
+))``;
