@@ -10,7 +10,5 @@ export const SubscribersConsumption = () => (
 
 const Wrap = styled.div`
   max-width: 960px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  transform: translateX(-10px);
+  margin: 5px 15px 10px 15px;
 `;

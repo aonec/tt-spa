@@ -16,13 +16,18 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import Select from 'rc-select';
 import React from 'react';
-import { subscribersConsumptionFilterForm } from '../../models';
+import {
+  $isExpandedSearchOpen,
+  openExpandedSearch,
+  subscribersConsumptionFilterForm,
+} from '../../models';
+import { ExpandedSearch } from '../ExpandedSearch';
 
 export const Search: React.FC = () => {
   const { fields, submit } = useForm(subscribersConsumptionFilterForm);
-  const fieldsArray = [fields.city, fields.street, fields.house];
+
+  const isOpenExpandedSearch = useStore($isExpandedSearchOpen);
 
   const {
     keyDownEnterGuardedHandler,
@@ -40,11 +45,13 @@ export const Search: React.FC = () => {
     if (fields.city && fields.street && fields.house) submit();
   }
 
-  return (
+  const baseSearch = (
     <>
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="32px 0.5fr 1fr 0.2fr" gap="15px">
-        <FilterButton />
+        <div onClick={() => void openExpandedSearch()}>
+          <FilterButton />
+        </div>
         <StyledSelector
           placeholder="Город"
           ref={cityRef}
@@ -82,4 +89,8 @@ export const Search: React.FC = () => {
       </Grid>
     </>
   );
+
+  const expandedSearch = <ExpandedSearch />;
+
+  return isOpenExpandedSearch ? expandedSearch : baseSearch;
 };

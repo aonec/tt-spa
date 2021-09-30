@@ -81,11 +81,15 @@ export const StyledInput = styled.input`
   }
 `;
 
-const StyledFilterButton = styled(Flex)`
+export const StyledSquareButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   justify-content: center;
   border: 1px solid lightgray;
   padding: 3px 15px;
+  transition: 0.2s;
 
   border-radius: 4px !important;
 
@@ -105,9 +109,9 @@ const StyledFilterButton = styled(Flex)`
 `;
 
 export const FilterButton = styled(() => (
-  <StyledFilterButton>
+  <StyledSquareButton>
     <div>
       <FilterIcon />
     </div>
-  </StyledFilterButton>
+  </StyledSquareButton>
 ))``;

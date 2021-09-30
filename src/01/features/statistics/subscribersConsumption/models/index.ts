@@ -1,3 +1,4 @@
+import { createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
 
 export const subscribersConsumptionFilterForm = createForm({
@@ -7,3 +8,8 @@ export const subscribersConsumptionFilterForm = createForm({
     house: { init: '' },
   },
 });
+
+export const $isExpandedSearchOpen = createStore(false);
+
+export const openExpandedSearch = createEvent();
+export const closeExpandedSearch = createEvent();
