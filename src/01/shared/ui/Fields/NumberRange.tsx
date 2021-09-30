@@ -22,18 +22,18 @@ export const NumberRange: React.FC<Props> = (props) => {
         placeholder="Введите значение"
         type="number"
         disabled={disabled}
-        value={value.from || undefined}
+        value={value.from || ''}
         onChange={(e) => {
           const numberValue = e.target.value;
           onChange({ ...value, from: numberValue });
         }}
       />
-      <ArrowRight />
+      <ArrowRight style={{ color: '#c2c2c2' }} />
       <Input
         placeholder="Введите значение"
         type="number"
         disabled={disabled}
-        value={value.to || undefined}
+        value={value.to || ''}
         onChange={(e) => {
           const numberValue = e.target.value;
           onChange({ ...value, to: numberValue });
