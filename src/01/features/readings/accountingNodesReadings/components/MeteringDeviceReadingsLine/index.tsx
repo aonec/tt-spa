@@ -11,6 +11,7 @@ import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/M
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
+import _ from 'lodash';
 
 interface Props {
   sliderIndex: number;
@@ -32,7 +33,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     refetch,
   } = useMeteringDeviceReadings(node.id, sliderIndex);
 
-  const readingsInput = (
+  const readingsInput = () => (
     <>
       <MeteringDeviceReadingInput
         deviceId={counter?.id!}
@@ -67,31 +68,40 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
     </Flex>
   );
 
-  const consumptionValue =
-    currentReading &&
-    previousReading &&
-    currentReading?.value - previousReading.value;
+  const getConsumption = () => {
+      const previousReadingValue = _.get(previousReading, 'value', null);
+      const currentReadingValue = _.get(currentReading, 'value', null);
+      return (
+          <div>
+              {((previousReadingValue !== null) && (currentReadingValue !== null))
+                  ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
+                  : null
+              }
+          </div>
+      )
+  };
 
-  const consumption = Boolean(consumptionValue) ? (
-    <div>{round(currentReading?.value! - previousReading.value!, 3)} кВтч</div>
-  ) : (
-    <div></div>
-  );
+  const getConsumptionInput = () => {
+      const isShow = Boolean(currentReading && counter?.id);
+      if (!isShow) {
+          return <div></div>;
+      }
+      return (
+          <ConsumptionInput
+              reading={currentReading!}
+              refetch={refetch}
+              deviceId={counter?.id!}
+          />
+      );
+  }
+
   return (
     <Wrap temp={gridTemp} gap="15px">
       {deviceData}
       <div>{counter?.scaleFactor}</div>
-      {readingsInput}
-      {consumption}
-      {Boolean(currentReading && counter?.id) ? (
-        <ConsumptionInput
-          reading={currentReading!}
-          refetch={refetch}
-          deviceId={counter?.id!}
-        />
-      ) : (
-        <div></div>
-      )}
+      {readingsInput()}
+      {getConsumption()}
+      {getConsumptionInput()}
       <Flex style={{ justifyContent: 'center' }}>
         <HistoryIcon />
       </Flex>
