@@ -18,7 +18,7 @@ export const StatisticsPage = () => {
 
   const currentTabFromLocation = (history.location.pathname.split(
     '/'
-  ) as any).at(-1);
+  ) as any)[2];
 
   useEffect(() => setTab(currentTabFromLocation), []);
 
