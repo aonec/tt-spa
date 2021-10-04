@@ -13,9 +13,9 @@ import moment from 'moment';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { addIndividualDeviceForm, SwitchIndividualDeviceGate } from '../models';
-import { FormHeader } from './Header';
-import DeviceIcons from '../../../../_components/DeviceIcons';
+import { addIndividualDeviceForm, SwitchIndividualDeviceGate } from '../../models';
+import { FormHeader } from '../Header';
+import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import {
   EIndividualDeviceRateType,
@@ -30,11 +30,11 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from './ReadingsInput';
+import { ReadingsInput } from '../ReadingsInput';
 import {
   $individualDevice,
   fetchIndividualDeviceFx,
-} from '../../displayIndividualDevice/models';
+} from '../../../displayIndividualDevice/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import { Loader } from '01/components';
@@ -82,7 +82,7 @@ export const BaseInfoStage = () => {
 
             const nextYear =
               value?.year() +
-              (fields.resource.value === EResourceType.Electricity ? 16 : 6);
+              (fields.resource.value === EResourceType.Electricity ? 16 : 4);
 
             nextCheckingDate.set('year', nextYear);
 

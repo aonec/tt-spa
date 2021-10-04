@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from 'antd';
-import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/BaseInfoStage';
+import { closingReasons } from '01/features/individualDevices/switchIndividualDevice/components/stages/BaseInfoStage';
 
 const ActiveLine = ({ isActive, closingReason }) => {
   return (
