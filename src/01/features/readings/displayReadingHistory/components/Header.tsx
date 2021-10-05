@@ -13,7 +13,7 @@ interface Props {
   isModal?: boolean;
 }
 
-export const ReadingHistoryHeader: React.FC<Props> = ({}) => {
+export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
   return (
     <>
@@ -24,9 +24,9 @@ export const ReadingHistoryHeader: React.FC<Props> = ({}) => {
         }}
       >
         <div>
-          <Breadcrumb />
+          {!isModal && <Breadcrumb />}
           <div style={{ marginTop: 5 }}>
-            <Title>История показаний</Title>
+            {!isModal && <Title>История показаний</Title>}
             <Flex>
               <DeviceDataString />
               <Space />

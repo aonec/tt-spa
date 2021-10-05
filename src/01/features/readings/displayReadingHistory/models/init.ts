@@ -4,6 +4,9 @@ import {
   fetchReadingHistoryFx,
   $readingHistory,
   refetchReadingHistory,
+  $readingsHistoryModalDeviceId,
+  openReadingsHistoryModal,
+  closeReadingsHistoryModal,
 } from './index';
 import { forward } from 'effector';
 
@@ -14,7 +17,7 @@ $readingHistory
   .reset(ReadingHistoryGate.close);
 
 forward({
-  from: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),
+  from: ReadingHistoryGate.state.map(({ deviceId }) => deviceId),
   to: fetchReadingHistoryFx,
 });
 
@@ -22,3 +25,7 @@ forward({
   from: refetchReadingHistory,
   to: fetchReadingHistoryFx,
 });
+
+$readingsHistoryModalDeviceId
+  .on(openReadingsHistoryModal, (_, deviceId) => deviceId)
+  .reset(closeReadingsHistoryModal);

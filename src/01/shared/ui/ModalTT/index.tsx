@@ -9,6 +9,7 @@ import { ButtonTT } from '01/tt-components';
 import { Loader } from '01/components';
 
 interface Props {
+  width?: number;
   visible: boolean;
   onCancel?(): void;
   title: string | ReactNode;
@@ -17,10 +18,12 @@ interface Props {
   onSubmit?(): void;
   customSubmit?: ReactNode;
   centered?: boolean;
+  footer?: ReactNode;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
   const {
+    width,
     visible,
     onCancel,
     title,
@@ -30,31 +33,34 @@ export const ModalTT: React.FC<Props> = (props) => {
     saveBtnText,
     customSubmit,
     centered,
+    footer,
   } = props;
 
   return (
     <StyledModal
       visible={visible}
       onCancel={onCancel}
-      width={800}
+      width={width || 800}
       title={<Header>{title}</Header>}
       centered={centered}
       footer={
-        <Footer>
-          <ButtonTT color={'white'} key="back" onClick={onCancel}>
-            Отмена
-          </ButtonTT>
-          {customSubmit || (
-            <ButtonTT
-              color="blue"
-              key="submit"
-              onClick={onSubmit}
-              disabled={loading}
-            >
-              {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
+        footer || (
+          <Footer>
+            <ButtonTT color={'white'} key="back" onClick={onCancel}>
+              Отмена
             </ButtonTT>
-          )}
-        </Footer>
+            {customSubmit || (
+              <ButtonTT
+                color="blue"
+                key="submit"
+                onClick={onSubmit}
+                disabled={loading}
+              >
+                {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
+              </ButtonTT>
+            )}
+          </Footer>
+        )
       }
     >
       <ModalText>{children}</ModalText>
