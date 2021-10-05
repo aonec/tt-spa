@@ -1,4 +1,4 @@
-import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
+import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput/ReadingsInput';
 import {
   fetchNodes,
   $electricNodes,

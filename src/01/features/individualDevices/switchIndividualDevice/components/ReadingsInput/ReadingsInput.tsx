@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import React from 'react';
 import styled from 'styled-components';
-import { DataStringDevice, DeviceDataString } from './DeviceDataString';
+import { DataStringDevice, DeviceDataString } from '../DeviceDataString';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import {
   IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
-} from '../../../../../myApi';
+} from '../../../../../../myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
@@ -16,6 +16,11 @@ import {
 } from '01/shared/lib/readings/getPreviousReadingsMonth';
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
+import { Tooltip } from 'antd';
+import {
+  getNextPreviousReading,
+  getPreviousReadingTooltipString,
+} from '01/hooks/useReadings';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
@@ -36,9 +41,9 @@ export const ReadingsInput: React.FC<Props> = ({
 
   const defaultValues = device.rateType
     ? getArrayByCountRange(
-      getIndividualDeviceRateNumByName(device.rateType),
-      () => ''
-    )
+        getIndividualDeviceRateNumByName(device.rateType),
+        () => ''
+      )
     : [''];
 
   const rateNum = getIndividualDeviceRateNumByName(device.rateType!);
@@ -96,6 +101,18 @@ export const ReadingsInput: React.FC<Props> = ({
     onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
   }
 
+  const PreviousReadingWrap: React.FC = ({ children }) => (
+    <Tooltip
+      title={getPreviousReadingTooltipString(
+        getNextPreviousReading(readings as any, sliderIndex)?.values || [],
+        device.rateType!,
+        device.measurableUnitString!,
+        sliderIndex
+      )}
+    >
+      {children}
+    </Tooltip>
+  );
   return (
     <Wrap>
       <DeviceInfo>
@@ -114,22 +131,24 @@ export const ReadingsInput: React.FC<Props> = ({
           <div>{getPreviousReadingsMonth(-1)}</div>
         </Flex>
 
-        <RenderReadingFields
-          clearValue
-          style={{ marginRight: 0 }}
-          values={previousReading?.value || defaultValues}
-          editable
-          suffix={device.measurableUnitString}
-          onChange={(value, index) => {
-            onChangeHandler({
-              value,
-              index,
-              readingDate: previousReading?.readingDate,
-              isNew: !previousReading,
-              isPrevious: true,
-            });
-          }}
-        />
+        <PreviousReadingWrap>
+          <RenderReadingFields
+            clearValue
+            style={{ marginRight: 0 }}
+            values={previousReading?.value || defaultValues}
+            editable
+            suffix={device.measurableUnitString}
+            onChange={(value, index) => {
+              onChangeHandler({
+                value,
+                index,
+                readingDate: previousReading?.readingDate,
+                isNew: !previousReading,
+                isPrevious: true,
+              });
+            }}
+          />
+        </PreviousReadingWrap>
 
         <RenderReadingFields
           clearValue

@@ -30,7 +30,7 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from '../ReadingsInput';
+import { ReadingsInput } from '../ReadingsInput/ReadingsInput';
 import {
   $individualDevice,
   fetchIndividualDeviceFx,

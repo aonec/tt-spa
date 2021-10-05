@@ -827,7 +827,7 @@ export const useReadings = (
   };
 };
 
-const getPreviousReadingTooltipString = (
+export const getPreviousReadingTooltipString = (
   readings: number[],
   rateType: EIndividualDeviceRateType,
   unit: string,

@@ -24,7 +24,7 @@ import { Loader } from '01/components';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { $contractors } from '01/features/contractors/displayContractors/models';
-import { ReadingsInput } from './ReadingsInput';
+import { ReadingsInput } from './ReadingsInput/ReadingsInput';
 import { $individualDevice } from '../../displayIndividualDevice/models';
 
 interface ILine {
