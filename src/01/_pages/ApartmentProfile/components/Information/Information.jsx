@@ -15,12 +15,14 @@ export const Information = (props) => {
   const { square, numberOfLiving, normativeNumberOfLiving } = props;
   const mapProps = [square, numberOfLiving, normativeNumberOfLiving];
 
-  const list = data.map((value, index) => (
-    <ListItem key={index}>
-      <ListItemDescription>{descriptions[index]}</ListItemDescription>
-      <ListItemValue>{mapProps[index]}</ListItemValue>
-    </ListItem>
-  ));
+  const list = data
+    .filter((elem, index) => mapProps[index])
+    .map((value, index) => (
+      <ListItem key={index}>
+        <ListItemDescription>{descriptions[index]}</ListItemDescription>
+        <ListItemValue>{mapProps[index]}</ListItemValue>
+      </ListItem>
+    ));
 
   return (
     <div style={{ paddingTop: '32px' }}>

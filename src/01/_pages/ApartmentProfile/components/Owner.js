@@ -271,7 +271,6 @@ const Owner = (props) => {
   return (
     <>
       <TitleWrap style={{ paddingTop: '32px' }}>
-        {' '}
         <Icon icon="key" />
         <Title size="24" style={{ paddingLeft: '8px' }}>
           {firstName || 'Собственник: данные обновляются'}
