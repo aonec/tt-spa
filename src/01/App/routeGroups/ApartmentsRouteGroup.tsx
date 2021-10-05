@@ -28,5 +28,9 @@ export const ApartmentsRouteGroup = () => (
     <Route path="/apartment/:id/individualDevice/:deviceId/reopen" exact>
       <SwitchIndividualDevice type="reopen" />
     </Route>
+
+    <Route path="/apartment/:id/switchPersonalNumber" exact>
+      Изменение лицевого счета
+    </Route>
   </Switch>
 );

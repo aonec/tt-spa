@@ -29,6 +29,8 @@ import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
+import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -41,6 +43,12 @@ export const ApartmentInfo = () => {
   const houseManagement = apartment?.housingStock?.houseManagement;
 
   const pending = useStore(fetchApartmentFx.pending);
+
+  const user = useStore($currentManagingFirmUser);
+
+  const isSeniorOperator = user?.userRoles?.find(
+    ({ type }) => type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
+  );
 
   const cancelPauseApartment = () =>
     confirm({
@@ -66,6 +74,11 @@ export const ApartmentInfo = () => {
       title: 'Снять с паузы',
       show: isPaused,
       cb: cancelPauseApartment,
+    },
+    {
+      title: 'Изменить лицевой счет',
+      cb: () => history.push(`/apartment/${id}/switchPersonalNumber`),
+      show: isSeniorOperator,
     },
     {
       title: 'Добавить новый прибор',
@@ -156,7 +169,6 @@ export const ApartmentInfo = () => {
       <ApartmentGate id={Number(id)} />
       <PauseApartmentModal />
       <GetIssueCertificateModal />
-
       <ApartmentInfoWrap>
         <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
           <Flex>
