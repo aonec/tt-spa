@@ -2,7 +2,6 @@ import { fromEnter } from '01/features/housingStocks/displayHousingStocks/compon
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import {
   createOrUpdateLast,
-  putMeteringDeviceReading,
 } from '01/_api/meteringDeviceReadings';
 import React from 'react';
 import { useEffect, useState } from 'react';

@@ -21,6 +21,7 @@ import {
   styles,
 } from '../../../tt-components';
 import {
+  EResourceType,
   IndividualDeviceResponse,
   UpdateIndividualDeviceRequest,
 } from '../../../../myApi';
@@ -114,8 +115,8 @@ const IndividualDeviceEditForm = ({
     onSubmit: async () => {
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(),
+        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,
@@ -125,7 +126,7 @@ const IndividualDeviceEditForm = ({
         sealInstallationDate: moment(
           values.sealInstallationDate,
           'DD.MM.YYYY'
-        ).toISOString(),
+        ).toISOString(true),
         mountPlaceId: values.mountPlaceId,
       };
 
@@ -143,7 +144,7 @@ const IndividualDeviceEditForm = ({
 
         history.goBack();
       } catch (e) {
-        message.error('В выбранном месте уже есть прибор');
+        message.error('Ошибка сохранения формы');
       }
       setLoading(false);
     },
@@ -282,12 +283,15 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.lastCheckingDate?.toISOString()}
+              value={values.lastCheckingDate?.toISOString() || null}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', moment(date));
                 setFieldValue(
                   'futureCheckingDate',
-                  moment(date).add(4, 'years')
+                  moment(date).add(
+                    values.resource === EResourceType.Electricity ? 16 : 6,
+                    'years'
+                  )
                 );
               }}
             />
@@ -296,7 +300,7 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.futureCheckingDate?.toISOString()}
+              value={values.futureCheckingDate?.toISOString() || null}
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', moment(date));
               }}
