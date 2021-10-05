@@ -77,7 +77,7 @@ export const ApartmentInfo = () => {
     },
     {
       title: 'Изменить лицевой счет',
-      cb: () => history.push(`/apartment/${id}/switchPersonalNumber`),
+      cb: () => history.push(`/homeowner/${id}/switchPersonalNumber`),
       show: isSeniorOperator,
     },
     {
