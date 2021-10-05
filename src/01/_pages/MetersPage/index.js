@@ -9,6 +9,7 @@ import HouseReadings from './components/HousesReadings/HousesDevices/HousesDevic
 import { HousingStockFilter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import styled from 'styled-components';
 import { AccountingNodesReadings } from '01/features/readings/accountingNodesReadings';
+import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 
 const { TabPane } = Tabs;
 
@@ -22,6 +23,7 @@ export const MetersPage = () => {
 
   return (
     <Wrap style={{ maxWidth: 960 }}>
+      <CurrentManagingFirmUserGate />
       <Tabs defaultActiveKey={defaultKey} onChange={handleTabClick}>
         <TabPane tab="По квартирам" key="apartments">
           <Route path="/meters/apartments">
