@@ -16,7 +16,7 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
-import { closingReasons } from '../switchIndividualDevice/components/BaseInfoStage';
+import { closingReasons } from '../switchIndividualDevice/components/stages/BaseInfoStage';
 import {
   $closingIndividualDevice,
   $isCloseIndividualDeviceModalOpen,
