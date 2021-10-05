@@ -17,10 +17,7 @@ import {
 import moment from 'moment';
 import { RenderReadingFields } from './RenderReadingFields';
 import { Tooltip } from 'antd';
-import {
-  getNextPreviousReading,
-  getPreviousReadingTooltipString,
-} from '01/hooks/useReadings';
+import { getPreviousReadingTooltipString } from '01/hooks/useReadings';
 
 interface Props {
   readings: (SwitchIndividualDeviceReadingsCreateRequest & { id?: number })[];
@@ -101,16 +98,18 @@ export const ReadingsInput: React.FC<Props> = ({
     onChange(newValues.filter((reading) => isReadingEmpty(reading, rateNum)));
   }
 
+  const previousReadingTooltip = getPreviousReadingTooltipString(
+    getNextPreviousReading(readings as any, sliderIndex) || [],
+    device.rateType!,
+    device.measurableUnitString!,
+    sliderIndex
+  );
+
+  console.log(previousReadingTooltip);
+
   const PreviousReadingWrap: React.FC = ({ children }) => (
-    <Tooltip
-      title={getPreviousReadingTooltipString(
-        getNextPreviousReading(readings as any, sliderIndex)?.values || [],
-        device.rateType!,
-        device.measurableUnitString!,
-        sliderIndex
-      )}
-    >
-      {children}
+    <Tooltip title={previousReadingTooltip}>
+      <div>{children}</div>
     </Tooltip>
   );
   return (
@@ -169,6 +168,24 @@ export const ReadingsInput: React.FC<Props> = ({
       </ReadingsWrap>
     </Wrap>
   );
+};
+
+const getNextPreviousReading = (
+  readings: {
+    [key: number]: SwitchIndividualDeviceReadingsCreateRequest;
+  },
+  sliderIndex: number
+): number[] | null => {
+  for (let i = sliderIndex; i <= 11; ++i) {
+    const elem = readings[i];
+
+    if (elem)
+      return (
+        (getReadingValuesArray(elem)?.value?.filter(Boolean) as any) || null
+      );
+  }
+
+  return null;
 };
 
 const isReadingEmpty = (
