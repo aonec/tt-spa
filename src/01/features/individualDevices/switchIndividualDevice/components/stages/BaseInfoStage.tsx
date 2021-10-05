@@ -82,7 +82,7 @@ export const BaseInfoStage = () => {
 
             const nextYear =
               value?.year() +
-              (fields.resource.value === EResourceType.Electricity ? 16 : 4);
+              (fields.resource.value === EResourceType.Electricity ? 16 : 6);
 
             nextCheckingDate.set('year', nextYear);
 
