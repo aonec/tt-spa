@@ -6,11 +6,11 @@ const Owners = (props) => {
   const { homeowners } = props;
   console.log('homeowners', homeowners);
   const res = homeowners.map((homeowner, index) => {
-    const { firstName, personalAccountNumber, phoneNumber } = homeowner;
+    const { firstName, personalAccountNumber, phoneNumber, fullName } = homeowner;
     return (
       <Owner
         key={personalAccountNumber}
-        firstName={firstName}
+        firstName={fullName}
         personalAccountNumber={personalAccountNumber}
         phoneNumber={phoneNumber}
       />

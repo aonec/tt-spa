@@ -79,14 +79,12 @@ const ApartmentProfile = () => {
         <Wrapper>
           <div>
             <Comments />
-            <Tags />
+            {/* <Tags /> */}
             <Information
               style={{ paddingTop: '32px' }}
-              square={square || 'Данные обновляются'}
-              numberOfLiving={numberOfLiving || 'Данные обновляются'}
-              normativeNumberOfLiving={
-                normativeNumberOfLiving || 'Данные обновляются'
-              }
+              square={square}
+              numberOfLiving={numberOfLiving}
+              normativeNumberOfLiving={normativeNumberOfLiving}
             />
             <Owners homeowners={homeowners} />
           </div>

@@ -271,10 +271,10 @@ const Owner = (props) => {
   return (
     <>
       <TitleWrap style={{ paddingTop: '32px' }}>
-        {' '}
         <Icon icon="key" />
         <Title size="24" style={{ paddingLeft: '8px' }}>
-          {firstName || 'Собственник: данные обновляются'}
+          {firstName?.replaceAll(' unknown', '') ||
+            'Собственник: данные обновляются'}
         </Title>
       </TitleWrap>
       <ListItem>
@@ -282,14 +282,6 @@ const Owner = (props) => {
         <ListItemValue>
           {personalAccountNumber || 'Данные обновляются'}
         </ListItemValue>
-      </ListItem>
-      <ListItem>
-        <ListItemDescription>Статус собственник</ListItemDescription>
-        <ListItemValue>{test || 'Данные обновляются'}</ListItemValue>
-      </ListItem>
-      <ListItem>
-        <ListItemDescription>Юридическое состояние</ListItemDescription>
-        <ListItemValue>{test2 || 'Данные обновляются'}</ListItemValue>
       </ListItem>
       <ListItem>
         <ListItemDescription>Контактный номер телефона</ListItemDescription>
