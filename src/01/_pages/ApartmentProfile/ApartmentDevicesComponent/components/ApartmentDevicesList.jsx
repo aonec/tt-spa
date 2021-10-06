@@ -1,37 +1,16 @@
 import React, { useContext } from 'react';
 import { ApartmentDeviceItem } from './ApartmentDeviceItem';
 import { ApartmentDevicesContext } from '../ApartmentDevices';
-import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 
 export function ApartmentDevicesList({ sliderIndex }) {
   const devices = useContext(ApartmentDevicesContext);
 
   if (!devices) return null;
 
-  const filteredDevices = devices.reduce(
-    (acc, device) => {
-      if (device.closingDate === null) {
-        return { ...acc, validDevices: [...acc.validDevices, device] };
-      }
-      return { ...acc, closedDevices: [...acc.closedDevices, device] };
-    },
-    { validDevices: [], closedDevices: [] }
-  );
+  const validDeviceElems = devices.map((device) => (
+    <ApartmentDeviceItem device={device} sliderIndex={sliderIndex} />
+  ));
 
-  const validDeviceElems = filteredDevices.validDevices
-    .filter(({ closingDate }) => closingDate === null)
-    .map((device) => (
-      <ApartmentDeviceItem device={device} sliderIndex={sliderIndex} />
-    ));
-
-  return (
-    <>
-      {validDeviceElems}
-      <ClosedDevices
-        devices={filteredDevices.closedDevices}
-        sliderIndex={sliderIndex}
-      />
-    </>
-  );
+  return <>{validDeviceElems}</>;
 }
 export default ApartmentDevicesList;

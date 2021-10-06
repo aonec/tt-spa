@@ -28,7 +28,16 @@ export const ApartmentDevices = ({
     <ApartmentDevicesContext.Provider value={items}>
       {sliderIndex !== undefined && sliderProps ? (
         <>
-          <Header slider={<MonthSlider {...sliderProps} />} />
+          <Header
+            slider={
+              <MonthSlider
+                {...{
+                  ...sliderProps,
+                  sliderIndex: sliderProps.sliderIndex - 1,
+                }}
+              />
+            }
+          />
           <ApartmentDevicesList sliderIndex={sliderIndex} />
         </>
       ) : null}
