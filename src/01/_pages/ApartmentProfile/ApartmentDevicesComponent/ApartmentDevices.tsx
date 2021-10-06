@@ -7,7 +7,7 @@ import {
 } from '../../../../myApi';
 import { useMonthSlider } from '../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../shared/ui/devices/MonthSlider';
-import { useReadings } from '01/hooks/useReadings';
+import { useState } from 'react';
 export const ApartmentDevicesContext = React.createContext<
   IndividualDeviceListItemResponse[] | null
 >(null);
@@ -18,6 +18,7 @@ export const ApartmentDevices = ({
   devices: IndividualDeviceListItemResponsePagedList;
 }) => {
   const { sliderIndex, sliderProps } = useMonthSlider(devices.items);
+  const [showClosed, setShowClosed] = useState(false);
 
   const { items } = devices || {};
   if (!items?.length) {
@@ -29,6 +30,8 @@ export const ApartmentDevices = ({
       {sliderIndex !== undefined && sliderProps ? (
         <>
           <Header
+            showClosed={showClosed}
+            setShowClosed={setShowClosed as any}
             slider={
               <MonthSlider
                 {...{
@@ -38,7 +41,10 @@ export const ApartmentDevices = ({
               />
             }
           />
-          <ApartmentDevicesList sliderIndex={sliderIndex} />
+          <ApartmentDevicesList
+            sliderIndex={sliderIndex}
+            showClosed={showClosed}
+          />
         </>
       ) : null}
     </ApartmentDevicesContext.Provider>
