@@ -56,7 +56,7 @@ export function ApartmentDeviceItem({
   ));
 
   return (
-    <DeviceItem>
+    <DeviceItem style={{ opacity: isActive ? '0.7' : 'none' }}>
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
       <DeviceReadingsContainer
