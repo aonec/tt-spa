@@ -26,7 +26,7 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
   return (
     <DeviceColumn>
       <DeviceLink to={`/individualDevices/${id}`}>
-        <div>
+        <div style={{ marginRight: 8 }}>
           <StockIconTT dark icon={icon} fill={color} />
         </div>
         {`${model} `}

@@ -1,13 +1,22 @@
+import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 interface HeaderInterface {
   slider: React.ReactElement;
+  showClosed: boolean;
+  setShowClosed(callback: (value: boolean) => void | boolean): void;
 }
 
-export function Header({ slider }: HeaderInterface) {
+export function Header({ slider, showClosed, setShowClosed }: HeaderInterface) {
   return (
     <HeaderWrap>
       <Title>Информация о приборе</Title>
+      <Checkbox
+        checked={showClosed}
+        onChange={() => setShowClosed((prev) => !prev)}
+      >
+        показать закрытые
+      </Checkbox>
       <div>Статус</div>
       {slider}
     </HeaderWrap>
@@ -16,7 +25,7 @@ export function Header({ slider }: HeaderInterface) {
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
+  grid-template-columns: 2fr 2fr 1.5fr 2fr 4fr;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;
