@@ -3,32 +3,32 @@ import { guard, sample } from 'effector';
 import {
   $individualDevices,
   $isShownClosedDevices,
-  fetchIndividualDeviceFxs,
+  fetchIndividualDevicesFx,
   hideClosedDevices,
   IndividualDevicesGate,
   refetchIndividualDevices,
+  resetIndividualDevices,
   showClosedDevices,
 } from '.';
 import { toArray } from '../../addIndividualDevice/components/CheckFormValuesModal';
 
-fetchIndividualDeviceFxs.use(getIndividualDevices);
+fetchIndividualDevicesFx.use(getIndividualDevices);
 
-$individualDevices.on(
-  fetchIndividualDeviceFxs.doneData,
-  (_, devices) => devices
-);
+$individualDevices
+  .on(fetchIndividualDevicesFx.doneData, (_, devices) => devices)
+  .reset(resetIndividualDevices, IndividualDevicesGate.close);
 
 guard({
   source: IndividualDevicesGate.state.map((elem) => elem),
   clock: IndividualDevicesGate.state,
   filter: (value) => toArray(value).some(Boolean),
-  target: fetchIndividualDeviceFxs,
+  target: fetchIndividualDevicesFx,
 });
 
 sample({
   source: IndividualDevicesGate.state.map((elem) => elem),
   clock: refetchIndividualDevices,
-  target: fetchIndividualDeviceFxs,
+  target: fetchIndividualDevicesFx,
 });
 
 $isShownClosedDevices

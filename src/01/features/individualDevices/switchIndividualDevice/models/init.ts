@@ -1,7 +1,4 @@
-import {
-  switchIndividualDevice,
-  SwitchIndividualDeviceRequestPayload,
-} from './../../../../_api/individualDevices';
+import { switchIndividualDevice } from './../../../../_api/individualDevices';
 import {
   $individualDevice,
   IndividualDeviceGate,
@@ -25,16 +22,20 @@ import {
   confirmCreationNewDeviceButtonClicked,
   $isCreateIndividualDeviceSuccess,
   resetCreationRequestStatus,
+  SwitchIndividualDeviceGate,
 } from './index';
 import { fetchIndividualDeviceFx } from '../../displayIndividualDevice/models';
 import { getBitDepthAndScaleFactor } from '../../addIndividualDevice/utils';
 import {
+  EIndividualDeviceRateType,
+  IndividualDeviceReadingsResponse,
   SwitchIndividualDeviceReadingsCreateRequest,
   SwitchIndividualDeviceRequest,
 } from 'myApi';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import moment, { months } from 'moment';
+import moment from 'moment';
+import { getReadingValuesArray } from '../components/ReadingsInput';
 
 createIndividualDeviceFx.use(switchIndividualDevice);
 
@@ -47,8 +48,6 @@ sample({
   clock: goNextStage,
   target: switchStageButtonClicked,
 });
-
-forward({ from: addIndividualDeviceForm.formValidated, to: goNextStage });
 
 $isCheckCreationDeviceFormDataModalOpen
   .on(checkBeforSavingButtonClicked, () => true)
@@ -65,9 +64,14 @@ $isCreateIndividualDeviceSuccess
 
 forward({
   from: fetchIndividualDeviceFx.doneData.map(
-    (device): SwitchIndividualDeviceReadingsCreateRequest[] =>
+    (
+      device
+    ): (SwitchIndividualDeviceReadingsCreateRequest & { id: number })[] =>
       device?.readings?.map(
-        (elem): SwitchIndividualDeviceReadingsCreateRequest => ({
+        (
+          elem
+        ): SwitchIndividualDeviceReadingsCreateRequest & { id: number } => ({
+          id: elem.id,
           value1: Number(elem.value1),
           value2: Number(elem.value2),
           value3: Number(elem.value3),
@@ -85,11 +89,26 @@ forward({
       values.resource
     );
 
+    const type = SwitchIndividualDeviceGate.state
+      .map(({ type }) => type)
+      .getState();
+
+    const isCheck = type === 'check';
+    const isSwitch = type === 'switch';
+
+    const serialNumberAfterString = getSerialNumberAfterString(type);
+
     return {
-      resource: values.resource,
+      ...values,
+      bitDepth: values.bitDepth || bitDepth,
+      scaleFactor: values.scaleFactor || scaleFactor,
       mountPlaceId: values.deviceMountPlace?.id,
-      bitDepth,
-      scaleFactor,
+      serialNumber: `${values.serialNumber}${serialNumberAfterString}`,
+      ...(isCheck || isSwitch
+        ? { lastCheckingDate: null, futureCheckingDate: null }
+        : {}),
+
+      ...(isSwitch ? { model: '', serialNumber: '' } : {}),
     } as any;
   }),
   to: addIndividualDeviceForm.setForm,
@@ -150,8 +169,12 @@ sample({
     ({ values, device }): SwitchIndividualDeviceRequest => ({
       deviceId: device?.id!,
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
+      lastCheckingDate: moment(values.lastCheckingDate)
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(),
+      futureCheckingDate: moment(values.futureCheckingDate)
+        .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
+        .toISOString(),
       lastCommercialAccountingDate: values.lastCommercialAccountingDate,
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
@@ -162,12 +185,16 @@ sample({
         .map((elem) => elem.fileResponse?.id!),
       contractorId: values.contractorId,
       oldDeviceReadings: mapArray(
-        values.oldDeviceReadings,
+        getChangedReadings(
+          device?.readings!,
+          values.oldDeviceReadings,
+          device?.rateType!
+        ),
         upMonthInReading,
         (elem) =>
           clearEmptyValueFields(
             elem,
-            getIndividualDeviceRateNumByName(values.rateType)
+            getIndividualDeviceRateNumByName(device?.rateType!)
           )
       ),
       newDeviceReadings: mapArray(
@@ -187,3 +214,56 @@ sample({
   clock: confirmCreationNewDeviceButtonClicked,
   target: createIndividualDeviceFx,
 });
+
+forward({
+  from: addIndividualDeviceForm.formValidated,
+  to: checkBeforSavingButtonClicked,
+});
+
+function getChangedReadings(
+  prevReadings: IndividualDeviceReadingsResponse[],
+  currentReadings: (SwitchIndividualDeviceReadingsCreateRequest & {
+    id?: number;
+  })[],
+  deviceRateType: EIndividualDeviceRateType
+) {
+  const rateNum = getIndividualDeviceRateNumByName(deviceRateType);
+
+  const res = currentReadings.filter((newReading) => {
+    if (!newReading.id) return true;
+
+    const neededPrevReading = prevReadings.find(
+      (prevReading) => prevReading.id === newReading.id
+    );
+
+    if (!neededPrevReading) return true;
+
+    const oldDeviceReadingValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(neededPrevReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    const formOldDeviceValues: string[] = getReadingValuesArray(
+      clearEmptyValueFields(newReading as any, rateNum),
+      rateNum
+    )?.value as string[];
+
+    if (compareArrays(oldDeviceReadingValues, formOldDeviceValues))
+      return false;
+
+    return true;
+  });
+
+  return res;
+}
+
+const compareArrays = <T>(array1: T[], array2: T[]) =>
+  array1.reduce((acc, elem, index) => acc && elem === array2[index], true);
+
+const getSerialNumberAfterString = (type: 'switch' | 'check' | 'reopen') => {
+  return {
+    switch: '',
+    check: '*П1',
+    reopen: '*',
+  }[type];
+};

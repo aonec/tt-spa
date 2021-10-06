@@ -34,9 +34,11 @@ export const Nodes = ({ device }: NodesInterface) => {
 
   const NodeStatus = ({ nodeStatus }: NodeStatusInterface) => {
     let icon;
+    
     if (nodeStatus === 'Сдан на коммерческий учет') {
       icon = <IconTT icon="ok" size={16} style={{ marginRight: '8px' }} />;
     }
+
     return (
       <div
         style={{
@@ -54,16 +56,17 @@ export const Nodes = ({ device }: NodesInterface) => {
   const result = nodes.map((node) => {
     const { id, number, nodeStatus, nodeServiceZone, resource } = node;
 
-    const { icon, color } = DeviceIcons[resource!];
-
     return (
       <ListItem key={id}>
         <NameWrap href={`/nodes/${id}`}>
-          <Icon icon={icon} color={color} style={{ marginRight: '8px' }} />
+          <IconTT
+            icon={resource.toLowerCase()}
+            style={{ marginRight: '8px' }}
+          />
           <Name>{`Узел ${number}`}</Name>
         </NameWrap>
 
-        <NodeStatus nodeStatus={nodeStatus?.description || ""} />
+        <NodeStatus nodeStatus={nodeStatus?.description || ''} />
         <Span>{nodeServiceZone?.name}</Span>
       </ListItem>
     );

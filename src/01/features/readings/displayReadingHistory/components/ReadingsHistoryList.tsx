@@ -147,7 +147,6 @@ export const ReadingsHistoryList = () => {
     readings,
   }: IndividualDeviceReadingsMonthHistoryResponse & { year: number }) => {
     const isOpen = isMonthOpen(year, month);
-    const sortedReadings = readings?.sort((elem) => (elem.isArchived ? 1 : -1));
 
     const arrowButton = (
       <ArrowButton
@@ -157,11 +156,9 @@ export const ReadingsHistoryList = () => {
       </ArrowButton>
     );
 
-    if (!sortedReadings?.length) return null;
+    if (!readings?.length) return null;
 
-    const previewReading = !sortedReadings[0].isArchived
-      ? sortedReadings[0]
-      : void 0;
+    const previewReading = readings.find((elem) => !elem.isArchived) || void 0;
 
     const firstReadingline = renderReading({
       reading: previewReading,
@@ -169,15 +166,15 @@ export const ReadingsHistoryList = () => {
       arrowButton,
       year,
       month,
-      readingsLength: sortedReadings.length,
+      readingsLength: readings.length,
     });
 
     return (
       <>
         {firstReadingline}
         {isOpen &&
-          sortedReadings
-            .filter((elem, index) => !(index === 0 && !elem.isArchived))
+          readings
+            .filter((elem, index) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
                 reading,
@@ -185,7 +182,7 @@ export const ReadingsHistoryList = () => {
                 isFirst: false,
                 arrowButton,
                 year,
-                readingsLength: sortedReadings.length,
+                readingsLength: readings.length,
               })
             )}
       </>

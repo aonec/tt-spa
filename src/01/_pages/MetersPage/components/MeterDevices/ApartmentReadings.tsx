@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import ApartmentReadingLine from './components/ApartmentReadingLine';
 import styled from 'styled-components';
 import { useMonthSlider } from '../../../../shared/lib/readings/useMonthSlider';
@@ -9,10 +10,14 @@ import { CloseIndividualDeviceModal } from '01/features/individualDevices/closeI
 import { useStore } from 'effector-react';
 import {
   $individualDevices,
+  $isShownClosedDevices,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import { useParams } from 'react-router';
 import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -34,11 +39,13 @@ export const getIndividualDeviceRateNumByName = (
 export const ApartmentReadings = () => {
   const devices = useStore($individualDevices);
   const { id } = useParams<{ id: string }>();
+  const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+  const showClosed = useStore($isShownClosedDevices);
 
-  const { sliderIndex, sliderProps } = useMonthSlider(devices);
+  useEffect(() => reset && reset(), [id]);
 
-  const validDevicesList = devices.filter(
-    (device) => device.closingDate === null
+  const validDevicesList = devices.filter((device) =>
+    showClosed ? true : device.closingDate === null
   );
 
   const isSliderIndexExist = sliderIndex !== undefined;
@@ -47,11 +54,13 @@ export const ApartmentReadings = () => {
     ? []
     : validDevicesList.map((device, index) => (
         <ApartmentReadingLine
+          closed={device.closingDate !== null}
           sliderIndex={sliderIndex!}
           key={device.id}
           device={device}
           numberOfPreviousReadingsInputs={validDevicesList
             .slice(0, index)
+            .filter((elem) => elem.closingDate === null)
             .reduce(
               (acc, elem) =>
                 acc + getIndividualDeviceRateNumByName(elem.rateType),
@@ -60,27 +69,23 @@ export const ApartmentReadings = () => {
         />
       ));
 
-  const closedDevices = devices.filter((device) => device.closingDate !== null);
-
   return (
     <>
       <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
-
+      <ConfirmReadingValueModal />
       {isSliderIndexExist && (
         <Meters id="meters-component">
           <MetersHeader>
-            <span>Информация o приборe</span>
-            {sliderProps ? (
-              <MonthSlider sliderIndex={sliderIndex!} {...sliderProps} />
-            ) : null}
+            <Flex style={{ alignItems: 'center' }}>
+              <div>Информация o приборe</div>
+              <Space />
+              <ClosedDevices />
+            </Flex>
+            {sliderProps ? <MonthSlider {...sliderProps} /> : null}
             <CenterContainer>{getPreviousReadingsMonth(-1)}</CenterContainer>
           </MetersHeader>
           {validDevices}
-          <ClosedDevices
-            devices={closedDevices}
-            sliderIndex={sliderIndex || 0}
-          />
         </Meters>
       )}
     </>

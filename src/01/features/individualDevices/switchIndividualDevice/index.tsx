@@ -5,18 +5,22 @@ import { CheckFormValuesModal } from './components/CheckFormValuesModal';
 import { CreateIndividualDeviceForm } from './components/CreateIndividualDeviceForm';
 import { Grid } from './components/Grid';
 import { CreateIndividualDeviceFormHeader } from './components/Header';
-import { CreateIndividualDeviceFormStages } from './components/Stages';
+import { SwitchIndividualDeviceGate } from './models';
 
-export const SwitchIndividualDevice = () => {
+interface Props {
+  type: 'reopen' | 'check' | 'switch';
+}
+
+export const SwitchIndividualDevice: React.FC<Props> = ({ type }) => {
   const { deviceId } = useParams<{ deviceId: string }>();
   return (
     <>
+      <SwitchIndividualDeviceGate type={type} />
       <IndividualDeviceGate id={Number(deviceId)} />
       <CheckFormValuesModal />
       <CreateIndividualDeviceFormHeader />
       <Grid>
         <CreateIndividualDeviceForm />
-        <CreateIndividualDeviceFormStages />
       </Grid>
     </>
   );

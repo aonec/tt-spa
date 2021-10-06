@@ -3,7 +3,7 @@ import {
   IndividualDeviceMountPlacesGate,
 } from '01/features/individualDeviceMountPlaces/displayIndividualDeviceMountPlaces/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { DatePickerTT, InputTT, SwitchTT } from '01/tt-components';
+import { InputTT } from '01/tt-components';
 import { allResources } from '01/tt-components/localBases';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { AutoComplete, Form, Select } from 'antd';
@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { addIndividualDeviceForm } from '../../models';
 import { FormHeader } from '../Header';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
-import { DeviceIcon } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import {
@@ -28,6 +28,8 @@ import {
   $contractors,
   ContractorsGate,
 } from '01/features/contractors/displayContractors/models';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 
 export const BaseInfoStage = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,12 +76,11 @@ export const BaseInfoStage = () => {
   const bottomDateFields = (
     <>
       <FormItem label="Дата последней поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={(value: moment.Moment | null = moment()) => {
-            if (!value) return;
+        <DatePickerNative
+          onChange={(incomingValue: string) => {
+            const value = moment(incomingValue);
 
-            onChangeDateField('lastCheckingDate')(value);
+            fields.lastCheckingDate.onChange(incomingValue);
 
             const nextCheckingDate = moment(value);
 
@@ -91,9 +92,9 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            onChangeDateField('futureCheckingDate')(nextCheckingDate);
+            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString());
           }}
-          value={getDatePickerValue(fields.lastCheckingDate.value)}
+          value={fields.lastCheckingDate.value}
         />
         <ErrorMessage>
           {fields.lastCheckingDate.errorText({
@@ -102,10 +103,9 @@ export const BaseInfoStage = () => {
         </ErrorMessage>
       </FormItem>
       <FormItem label="Дата следующей поверки прибора">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('futureCheckingDate')}
-          value={getDatePickerValue(fields.futureCheckingDate.value)}
+        <DatePickerNative
+          onChange={fields.futureCheckingDate.onChange}
+          value={fields.futureCheckingDate.value}
         />
         <ErrorMessage>
           {fields.futureCheckingDate.errorText({
@@ -195,10 +195,12 @@ export const BaseInfoStage = () => {
             {allResources.map((elem) => (
               <Select.Option value={elem.value}>
                 <Flex>
-                  <DeviceIcon
+                  <StockIconTT
                     icon={DeviceIcons[elem.value]?.icon}
                     fill={DeviceIcons[elem.value]?.color}
+                    dark
                   />
+                  <Space />
                   <div>{elem.label}</div>
                 </Flex>
               </Select.Option>
@@ -361,10 +363,9 @@ export const BaseInfoStage = () => {
       {rateNum !== 1 && <FormWrap>{defaultReadingsFields}</FormWrap>}
 
       <FormItem label="Дата ввода в эксплуатацию">
-        <DatePicker
-          format="DD.MM.YYYY"
-          onChange={onChangeDateField('lastCommercialAccountingDate')}
-          value={getDatePickerValue(fields.lastCommercialAccountingDate.value)}
+        <DatePickerNative
+          onChange={fields.lastCommercialAccountingDate.onChange}
+          value={fields.lastCommercialAccountingDate.value}
         />
         <ErrorMessage>
           {fields.lastCommercialAccountingDate.errorText({
@@ -386,12 +387,9 @@ export const BaseInfoStage = () => {
         </FormItem>
 
         <FormItem label="Дата установки пломбы">
-          <DatePicker
-            format="DD.MM.YYYY"
-            onChange={onChangeDateField('magneticSealInstallationDate')}
-            value={getDatePickerValue(
-              fields.magneticSealInstallationDate.value
-            )}
+          <DatePickerNative
+            onChange={fields.magneticSealInstallationDate.onChange}
+            value={fields.magneticSealInstallationDate.value}
           />
         </FormItem>
       </FormWrap>
@@ -415,16 +413,8 @@ export const BaseInfoStage = () => {
   );
 };
 
-function getDatePickerValue(value: string | null) {
-  if (value) return moment(value);
-}
-
 const ErrorMessage = styled.div`
   color: red;
-`;
-
-const DatePicker = styled(DatePickerTT)`
-  border-radius: 4px;
 `;
 
 const FormItem = styled(Form.Item)`

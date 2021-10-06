@@ -5,11 +5,24 @@ import { Flex } from '../Flex';
 interface Props {
   w?: number;
   h?: number;
+  line?: boolean;
 }
 
 export const Space = styled.div`
   min-width: ${({ w }: Props) => `${w || 15}px`};
-  min-height: ${({ h }: Props) => `${h || 15}px`};
+  min-height: ${({ h, line }: Props) => `${(h || 15) * (line ? 2 : 1)}px`};
+`;
+
+export const SpaceLine = () => (
+  <>
+    <Space />
+    <Line />
+    <Space />
+  </>
+);
+
+const Line = styled.div`
+  border-top: 2px solid #f3f3f3;
 `;
 
 interface SpaceProps {

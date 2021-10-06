@@ -1,3 +1,4 @@
+import { createGate } from 'effector-react';
 import {
   EResourceType,
   MeteringDeviceResponse,
@@ -26,9 +27,21 @@ export const addIndividualDeviceForm = createForm({
     },
     lastCheckingDate: {
       init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     futureCheckingDate: {
       init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     lastCommercialAccountingDate: {
       init: null as string | null,
@@ -59,10 +72,18 @@ export const addIndividualDeviceForm = createForm({
       init: '',
     },
     oldDeviceReadings: {
-      init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      init: [] as (SwitchIndividualDeviceReadingsCreateRequest & {
+        id?: number;
+      })[],
     },
     newDeviceReadings: {
       init: [] as SwitchIndividualDeviceReadingsCreateRequest[],
+      rules: [
+        {
+          name: 'required',
+          validator: (value) => Boolean(value.length),
+        },
+      ],
     },
     rateType: {
       init: EIndividualDeviceRateType.OneZone as EIndividualDeviceRateType,
@@ -97,3 +118,7 @@ export const createIndividualDeviceFx = createEffect<
   SwitchIndividualDeviceRequest,
   MeteringDeviceResponse
 >();
+
+export const SwitchIndividualDeviceGate = createGate<{
+  type: 'reopen' | 'check' | 'switch';
+}>();

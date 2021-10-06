@@ -9,3 +9,5 @@ export const fetchApartmentFx = createEffect<number, ApartmentResponse>();
 export const ApartmentGate = createGate<{ id: number }>();
 
 export const refetchApartment = createEvent();
+
+export const resetApartment = createEvent();

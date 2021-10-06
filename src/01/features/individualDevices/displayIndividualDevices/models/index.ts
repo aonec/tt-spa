@@ -9,7 +9,7 @@ export const $individualDevices = createStore<
   IndividualDeviceListItemResponse[]
 >([]);
 
-export const fetchIndividualDeviceFxs = createEffect<
+export const fetchIndividualDevicesFx = createEffect<
   GetIndividualDeviceRequestParams,
   IndividualDeviceListItemResponse[]
 >();
@@ -20,3 +20,5 @@ export const refetchIndividualDevices = createEvent();
 
 export const showClosedDevices = createEvent();
 export const hideClosedDevices = createEvent();
+
+export const resetIndividualDevices = createEvent();

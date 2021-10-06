@@ -18,7 +18,7 @@ sample({
       HousingStockGate.state.map((state) => state.id),
       (house, id) => ({ house, id })
     ),
-    clock: HousingStockGate.open,
+    clock: HousingStockGate.state,
     filter: ({ house, id }) => house?.id !== id,
   }),
   target: fetchHousingStockFx,

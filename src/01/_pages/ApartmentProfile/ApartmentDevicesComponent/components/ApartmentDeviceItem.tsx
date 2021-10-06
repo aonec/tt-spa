@@ -5,7 +5,6 @@ import rateTypeToNumber from '../../../../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../../../../utils/formEmptyReadingsObject';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
-import ActiveLine from '../../../../components/Select/selects/AddReadings/DeviceReadingForm/ActiveLine/ActiveLine';
 import { IndividualDeviceListItemResponse } from '../../../../../myApi';
 import IsActive from '../../../../tt-components/IsActive';
 
@@ -25,8 +24,8 @@ export function ApartmentDeviceItem({
   const numberOfReadings = rateTypeToNumber(device.rateType);
   const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
   const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device.readings![0].readingDate);
-  const { isActive } = device;
+    currentMonth === getMonthFromDate(device?.readings![0]?.readingDate);
+  const isActive = device?.closingDate !== null;
 
   useEffect(() => {
     const readingsArray: number[] = [];
@@ -35,7 +34,8 @@ export function ApartmentDeviceItem({
       : [emptyReadingsObject, ...device.readings!];
 
     for (let i = 1; i <= numberOfReadings; i++) {
-      readingsArray.push(readings[sliderIndex][`value${i}`] ?? '');
+      readings[sliderIndex] &&
+        readingsArray.push(readings[sliderIndex][`value${i}`] ?? '');
     }
 
     setReadingsState({
@@ -44,27 +44,31 @@ export function ApartmentDeviceItem({
     });
   }, [device.readings, sliderIndex]);
 
-  const deviceReadings = readingsState?.readingsArray.map((value, index) => (
+  console.log(readingsState?.readingsArray);
+
+  const deviceReadings = readingsState?.readingsArray?.map((value, index) => (
     <ReadingsBlock
       key={device.id + index}
       index={index}
       value={value}
-      resource={readingsState.resource}
+      resource={readingsState?.resource!}
       operatorCabinet
       isDisabled={true}
     />
   ));
 
   return (
-    <DeviceItem>
+    <DeviceItem style={{ opacity: isActive ? '0.7' : 'none' }}>
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
-      <DeviceReadingsContainer
-        color={'var(--frame)'}
-        resource={device.resource}
-      >
-        {deviceReadings}
-      </DeviceReadingsContainer>
+      {Boolean(readingsState?.readingsArray.length) && (
+        <DeviceReadingsContainer
+          color={'var(--frame)'}
+          resource={device.resource}
+        >
+          {deviceReadings}
+        </DeviceReadingsContainer>
+      )}
     </DeviceItem>
   );
 }

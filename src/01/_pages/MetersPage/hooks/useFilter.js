@@ -3,10 +3,14 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
-import { $apartment } from '01/features/apartments/displayApartment/models';
+import {
+  $apartment,
+  resetApartment,
+} from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
 import { cities } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { resetIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 
 const initialState = {
   city: 'Нижнекамск',
@@ -24,11 +28,41 @@ function filterReducer(state, action) {
       return { ...state, ...payload };
 
     case 'reset':
-      return { ...initialState, city: state.sity };
+      return { ...initialState, city: state.city || initialState.sity };
 
     default:
       break;
   }
+}
+
+export function useStreetAutocomplete(street, streets) {
+  const matches =
+    typeof street === 'string' && Array.isArray(streets)
+      ? stringSimilarity.findBestMatch(
+          street,
+          typeof streets[0] === 'string' ? streets : ['']
+        )
+      : null;
+
+  const matchesArray =
+    matches?.ratings
+      .filter((value) => {
+        const wordsInStreetName = value.target.toUpperCase().split(' ');
+
+        return wordsInStreetName.reduce(
+          (acc, elem) => acc || elem.startsWith(street.toUpperCase()),
+          false
+        );
+      })
+      .sort((a, b) => b.rating - a.rating)
+      .map(({ target }) => ({ value: target })) || [];
+
+  const streetMatch = matchesArray[0]?.value;
+
+  return {
+    streetMatch,
+    options: matchesArray?.length && street ? [matchesArray[0]] : [],
+  };
 }
 
 export const useFilter = () => {
@@ -56,11 +90,9 @@ export const useFilter = () => {
   };
 
   const onApartmentKeyHandler = async (e, isQuestion = false) => {
-    if (
-      (e.key !== 'Enter' || [street, house, apart].some((value) => !value)) &&
-      !isQuestion
-    )
-      return;
+    if (e.key !== 'Enter') return;
+
+    if (!isQuestion && [street, house, apart].some((value) => !value)) return;
 
     try {
       const res = await axios.get('Apartments', {
@@ -79,7 +111,14 @@ export const useFilter = () => {
 
       if (apartment) history.push(`/meters/apartments/${apartment.id}`);
 
-      if (!apartment) history.push(`/meters/apartments/`);
+      if (!apartment) {
+        resetApartment();
+        resetIndividualDevices();
+        history.push(`/meters/apartments/`);
+        setTimeout(() => {
+          dispatch({ type: 'reset' });
+        }, 1000);
+      }
     } catch (error) {}
   };
 
@@ -91,25 +130,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const matches =
-    typeof state.street === 'string' && Array.isArray(streets)
-      ? stringSimilarity.findBestMatch(
-          state.street,
-          typeof streets[0] === 'string' ? streets : ['']
-        )
-      : null;
-
-  const matchesArray =
-    matches?.ratings
-      .filter((value) =>
-        value.target
-          .toUpperCase()
-          .startsWith(String(state.street.toUpperCase()))
-      )
-      .sort((a, b) => b.rating - a.rating)
-      .map(({ target }) => ({ value: target })) || [];
-
-  const streetMatch = matchesArray[0]?.value;
+  const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
 
   return {
     state,
@@ -128,7 +149,7 @@ export const useFilter = () => {
             streetMatch &&
             dispatch({ type: 'change', payload: { street: streetMatch } })
         ),
-        options: matchesArray?.length ? [matchesArray[0]] : [],
+        options: options,
       },
       {
         name: 'house',

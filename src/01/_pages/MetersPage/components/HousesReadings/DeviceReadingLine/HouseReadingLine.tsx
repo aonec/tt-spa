@@ -4,7 +4,11 @@ import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { Icon } from '../../../../../_components/Icon';
 import styles from '../../../../Devices/components/TabsDevices.module.scss';
-import { useReadings } from '../../../../../hooks/useReadings';
+import {
+  getNextPreviousReading,
+  round,
+  useReadings,
+} from '../../../../../hooks/useReadings';
 import { isNullInArray } from '../../../../../utils/checkArrayForNulls';
 import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
@@ -12,19 +16,25 @@ import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
+import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
-      undefined,
-      numberOfPreviousReadingsInputs
+      sliderIndex,
+      numberOfPreviousReadingsInputs,
+      false
     );
 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const [consumptionState, setConsumptionState] = useState<number[]>([]);
+    const [consumptionState, setConsumptionState] = useState<
+      (number | string)[]
+    >([]);
 
     const numberOfReadings: number = rateTypeToNumber(device.rateType);
 
@@ -32,15 +42,23 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     useEffect(() => {
       if (!readingsState) return;
       const currentReadings = readingsState?.currentReadingsArray || {};
-      const previousReadings = readingsState?.previousReadingsArray || {};
+      const previousReadings: any = getNextPreviousReading(
+        readingsState?.previousReadings,
+        -1
+      );
       let consumptionArray = Array.from(
         { length: numberOfReadings },
         (v, i) => i
       );
-      const consumption = consumptionArray.map((value, index) => {
-        return +currentReadings[index] - +previousReadings[index] > 0
-          ? +currentReadings[index] - +previousReadings[index]
-          : 0;
+      const consumption = consumptionArray.map((_, index) => {
+        return (
+          round(
+            +currentReadings[index] - +previousReadings?.values[index] > 0
+              ? +currentReadings[index] - +previousReadings?.values[index]
+              : 0,
+            3
+          ) || ''
+        );
       });
 
       setConsumptionState(consumption);
@@ -57,16 +75,15 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     }, [readingsState]);
 
     const consumptionElems = consumptionState.map((el) => {
-      return <Consumption key={uuid()}>{el} кВтч</Consumption>;
+      return <Consumption key={uuid()}>{el}</Consumption>;
     });
 
     const { icon, color } = DeviceIcons[device.resource];
 
     return (
       <HouseReadingsDevice>
-        <div>
-          <Span>{device.apartmentNumber}</Span>
-        </div>
+        <div>{device.apartmentNumber}</div>
+
         <Column>
           <OwnerName>
             <Span>{device.homeownerName}</Span>
@@ -80,9 +97,11 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
         <Column>
           <div>
+            <b>{device.serialNumber}</b>
+          </div>
+          <div>
             <Span>{device.model}</Span>
           </div>
-          <div>{device.serialNumber}</div>
         </Column>
 
         {previousReadings}
@@ -91,18 +110,29 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <div>{consumptionElems}</div>
         <div>-</div>
 
-        <MenuButtonTT
-          menuButtonArr={[
-            {
-              title: 'Открыть историю показаний',
-              cb: () =>
-                history.push(
-                  `/houses/individualDevice/${device.id}/readingHistory`
-                ),
-              show: true,
-            },
-          ]}
-        />
+        <Flex style={{ minWidth: 80 }}>
+          <HistoryComponent
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              history.push(
+                `/houses/individualDevice/${device.id}/readingHistory`
+              )
+            }
+          />
+          <Space />
+          <MenuButtonTT
+            menuButtonArr={[
+              {
+                title: 'Открыть историю показаний',
+                cb: () =>
+                  history.push(
+                    `/houses/individualDevice/${device.id}/readingHistory`
+                  ),
+                show: true,
+              },
+            ]}
+          />
+        </Flex>
       </HouseReadingsDevice>
     );
   }
@@ -110,7 +140,9 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
 
 const HouseReadingsDevice = styled.div`
   display: grid;
-  grid-template-columns: 10px 100px 6px 130px 170px 170px 47px minmax(100px, 135px) 0px;
+  grid-template-columns:
+    15px 100px 6px 130px 160px 160px 47px 115px
+    minmax(0, 80px);
   column-gap: 16px;
   color: var(--main-90);
   border-bottom: 1px solid var(--frame);
@@ -157,4 +189,5 @@ const Span = styled.span`
 type Props = {
   device: IndividualDeviceListItemResponse;
   numberOfPreviousReadingsInputs: number;
+  sliderIndex: number;
 };

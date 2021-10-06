@@ -4,17 +4,19 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
-  font-weight: 400;
-  color: rgba(39, 47, 90, 0.6);
+  font-weight: 500;
+  color: rgba(39, 47, 90, 1);
   line-height: 1.2;
   align-items: center;
   white-space: nowrap;
 `;
 
 export const DateLine = ({ lastCheckingDate, futureCheckingDate }) => {
+  const last = transformDate(lastCheckingDate);
+  const future = transformDate(futureCheckingDate);
   return (
     <Container>
-      {transformDate(lastCheckingDate)} — {transformDate(futureCheckingDate)}
+      {last} {!!(last && future) && '—'} {future}
     </Container>
   );
 };

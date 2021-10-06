@@ -11,10 +11,7 @@ import {
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 
-const ReadingLineStyled = styled.div<{
-  houseReadings: boolean;
-  isDisabled: boolean | undefined;
-}>`
+const ReadingLineStyled = styled.div`
   position: relative;
 
   &:not(:first-child) {
@@ -44,7 +41,7 @@ const TarifLabel = styled.span<{ houseReadings: boolean }>`
 interface DeviceRatesVerticalProps {
   index: number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: number;
+  value?: number;
   readingsBlocked?: boolean;
   resource: string;
   operatorCabinet?: boolean;
@@ -59,9 +56,6 @@ interface DeviceRatesVerticalProps {
   status?: RequestStatusShared;
 }
 
-const SuffixLine = styled.span`
-  // position: absolute;
-`;
 const StyledInput = styled(Input)`
   color: var(--main-70);
   border: 0;
@@ -109,8 +103,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   onChange,
   value,
   readingsBlocked = false,
-  resource,
-  houseReadings = false,
   isDisabled,
   isCurrent,
   lineIndex,
@@ -120,63 +112,55 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   status,
 }) => {
   const onFocusHandler = (e: any) => {
+    e.target.select();
+
     if (Number(e.target.value) === 0) {
       onChange && onChange(e);
     }
   };
 
-  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs(true);
 
   const sourceIcon = source ? (
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
       {getSourceIcon(source)}
     </Flex>
-  ) : (
-    <></>
-  );
+  ) : null;
+
+  const dataString = closed
+    ? ''
+    : typeof isCurrent === 'boolean'
+    ? isCurrent
+      ? 'current'
+      : 'previous'
+    : 'none';
 
   return (
     <ReadingLineStyled
-      houseReadings={houseReadings}
-      isDisabled={isDisabled || closed}
-      data-reading-input={
-        closed
-          ? ''
-          : typeof isCurrent === 'boolean'
-          ? isCurrent
-            ? 'current'
-            : 'previous'
-          : 'none'
-      }
       onKeyDown={
         isCurrent
           ? (e) => typeof lineIndex === 'number' && onKeyDown(e, lineIndex)
           : onKeyDownPrevious
       }
+      {...(!closed && dataString ? { 'data-reading-input': dataString } : {})}
     >
       <StyledInput
         status={status}
-        prefix={
-          <TarifLabel houseReadings={houseReadings}>Т{index + 1} </TarifLabel>
-        }
         suffix={
-          <>
-            {resource === 'Electricity' ? (
-              <SuffixLine>кВтч</SuffixLine>
-            ) : (
-              <SuffixLine>м³</SuffixLine>
+          <div style={{ marginLeft: -5 }}>
+            {sourceIcon && (
+              <Tooltip title={source ? getSourceName(source, user?.name) : ''}>
+                {sourceIcon}
+              </Tooltip>
             )}
-            <Tooltip title={source ? getSourceName(source, user?.name) : ''}>
-              {sourceIcon}
-            </Tooltip>
-          </>
+          </div>
         }
+        placeholder={`Т${index + 1}`}
         disabled={readingsBlocked || isDisabled || closed}
         type="number"
         value={value}
         onFocus={onFocusHandler}
         onChange={onChange}
-        required
         tabIndex={index + 1}
         step="0.01"
       />
@@ -185,3 +169,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
 };
 
 export default ReadingsBlock;
+
+export const getMeasurementUnit = (resource: any) =>
+  resource === 'Electricity' ? 'кВтч' : 'м³';

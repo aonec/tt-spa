@@ -7,13 +7,12 @@ import { StyledAutocomplete } from '01/shared/ui/Fields';
 import { useFilter } from '../hooks/useFilter';
 import { Radio } from 'antd';
 import { Space } from '../../../shared/ui/Layout/Space/Space';
-import { useHistory, Route, useParams } from 'react-router-dom';
+import { useHistory, Switch } from 'react-router-dom';
 import { useState } from 'react';
-import { Apartments } from './Apartments';
 import { SerialNumberSearch } from './SerialNumberSearch';
 
 export const Filter = () => {
-  const { inputs } = useFilter();
+  const { inputs, state } = useFilter();
   const inputsRefs = getArrayByCountRange(inputs.length, useRef);
   const history = useHistory();
   const [searchContext, setSearchContext] = useState(1);
@@ -81,7 +80,7 @@ export const Filter = () => {
             }
           `(
             <filter as="div">
-              <ExistingStreetsGate />
+              <ExistingStreetsGate City={state.city} />
               {inputs.map((input, index) => (
                 <StyledAutocomplete
                   options={input.options}
@@ -102,9 +101,6 @@ export const Filter = () => {
               ))}
             </filter>
           )}
-          <Route path="/meters/apartments" exact>
-            <Apartments />
-          </Route>
         </>
       )}
     </>
