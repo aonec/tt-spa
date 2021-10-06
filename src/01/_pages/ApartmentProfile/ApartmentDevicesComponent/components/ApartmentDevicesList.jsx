@@ -6,10 +6,6 @@ import ClosedDevices from '../../../../shared/ui/devices/ClosedDevices';
 export function ApartmentDevicesList({ sliderIndex }) {
   const devices = useContext(ApartmentDevicesContext);
 
-  // const closedDevices = devices.filter(
-  //   ({ closingDate }) => closingDate !== null
-  // );
-
   if (!devices) return null;
 
   const filteredDevices = devices.reduce(
