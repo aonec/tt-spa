@@ -10,10 +10,11 @@ const Owners: React.FC<Props> = (props) => {
   const { homeowners } = props;
   const homeownersElems = homeowners.map((homeowner) => {
     const { fullName, personalAccountNumber, phoneNumber } = homeowner;
+    
     return (
       <Owner
         key={personalAccountNumber}
-        firstName={fullName + "dfsfsdfdf"}
+        firstName={fullName?.replace(' unknown', '')}
         personalAccountNumber={personalAccountNumber}
         phoneNumber={phoneNumber}
       />
@@ -23,3 +24,4 @@ const Owners: React.FC<Props> = (props) => {
 };
 
 export default Owners;
+27
