@@ -19,6 +19,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
   ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
@@ -113,10 +114,11 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <Flex style={{ minWidth: 80 }}>
           <HistoryComponent
             style={{ cursor: 'pointer' }}
-            onClick={() =>
-              history.push(
-                `/houses/individualDevice/${device.id}/readingHistory`
-              )
+            onClick={
+              () => openReadingsHistoryModal(device.id)
+              // history.push(
+              //   `/houses/individualDevice/${device.id}/readingHistory`
+              // )
             }
           />
           <Space />
@@ -124,10 +126,10 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
             menuButtonArr={[
               {
                 title: 'Открыть историю показаний',
-                cb: () =>
-                  history.push(
-                    `/houses/individualDevice/${device.id}/readingHistory`
-                  ),
+                cb: () => openReadingsHistoryModal(device.id),
+                // history.push(
+                //   `/houses/individualDevice/${device.id}/readingHistory`
+                // ),
                 show: true,
               },
             ]}

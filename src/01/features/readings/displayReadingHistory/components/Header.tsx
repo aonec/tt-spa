@@ -9,7 +9,11 @@ import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
 
-export const ReadingHistoryHeader = () => {
+interface Props {
+  isModal?: boolean;
+}
+
+export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
   return (
     <>
@@ -20,9 +24,9 @@ export const ReadingHistoryHeader = () => {
         }}
       >
         <div>
-          <Breadcrumb />
+          {!isModal && <Breadcrumb />}
           <div style={{ marginTop: 5 }}>
-            <Title>История показаний</Title>
+            {!isModal && <Title>История показаний</Title>}
             <Flex>
               <DeviceDataString />
               <Space />

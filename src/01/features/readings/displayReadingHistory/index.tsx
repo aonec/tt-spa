@@ -5,14 +5,25 @@ import { ReadingHistoryHeader } from './components/Header';
 import { ReadingsHistoryList } from './components/ReadingsHistoryList';
 import { ReadingHistoryGate } from './models';
 
-export const ReadingHistoryPage = () => {
-  const { deviceId } = useParams<{ deviceId: string }>();
+interface Props {
+  deviceId?: number;
+  isModal?: boolean;
+}
+
+export const ReadingHistoryPage: React.FC<Props> = ({
+  deviceId: deviceIdFromProps,
+  isModal,
+}) => {
+  const { deviceId: deviceIdFromUrlParams } = useParams<{ deviceId: string }>();
+
+  const deviceId = deviceIdFromProps || deviceIdFromUrlParams;
+
   return (
     <>
       <IndividualDeviceGate id={Number(deviceId)} />
       <ReadingHistoryGate deviceId={Number(deviceId)} />
-      <ReadingHistoryHeader />
-      <ReadingsHistoryList />
+      <ReadingHistoryHeader isModal={isModal} />
+      <ReadingsHistoryList isModal={isModal} />
     </>
   );
 };
