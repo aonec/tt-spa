@@ -1,24 +1,49 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
 import React from 'react';
+import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
-import { $isSelectEditPersonalNumberTypeModalOpen } from './models';
-import { ReactNode } from 'react-router/node_modules/@types/react';
+import {
+  $isSelectEditPersonalNumberTypeModalOpen,
+  closeEditPersonalNumberTypeModal,
+} from './models';
 import styled from 'styled-components';
+import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from './icons';
 
 export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);
 
-  const selects: SelectItem[] = [];
+  const selects: SelectItem[] = [
+    {
+      title: 'Редактировать лицевой счет',
+      icon: EditIcon,
+    },
+    {
+      title: 'Заменить лицевой счет',
+      icon: SwitchIcon,
+    },
+    {
+      title: 'Добавить новый лицевой счет к этой квартире',
+      icon: PlusIcon,
+    },
+    {
+      title: 'Разделить лицевые счета и создать новую квартиру',
+      icon: ApartmentIcon,
+    },
+  ];
 
-  const renderSelectItem = ({ title, icon, action }: SelectItem) => (
+  const renderSelectItem = ({ title, icon: Icon, action }: SelectItem) => (
     <StyledSelectItem onClick={action}>
-      {icon}
+      <Icon />
       <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
     </StyledSelectItem>
   );
 
   return (
-    <ModalTT visible={isOpen} title="Выберите действие" >
+    <ModalTT
+      visible={isOpen}
+      title="Выберите действие"
+      footer={<></>}
+      onCancel={closeEditPersonalNumberTypeModal}
+    >
       {selects.map(renderSelectItem)}
     </ModalTT>
   );
@@ -26,8 +51,8 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
 
 interface SelectItem {
   title: string;
-  icon: ReactNode;
-  action(): void;
+  icon: React.FC;
+  action?(): void;
 }
 
 const StyledSelectItem = styled.div`
