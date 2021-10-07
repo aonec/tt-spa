@@ -1,7 +1,6 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import React from 'react';
-import styled from 'styled-components';
 import { ReadingHistoryPage } from '..';
 import {
   $isReadingsHstoryModalOpen,

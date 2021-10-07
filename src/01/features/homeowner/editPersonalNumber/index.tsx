@@ -7,6 +7,7 @@ import {
 } from './models';
 import styled from 'styled-components';
 import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from './icons';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);
@@ -33,6 +34,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const renderSelectItem = ({ title, icon: Icon, action }: SelectItem) => (
     <StyledSelectItem onClick={action}>
       <Icon />
+      <Space />
       <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
     </StyledSelectItem>
   );
@@ -57,18 +59,28 @@ interface SelectItem {
 
 const StyledSelectItem = styled.div`
   border: 1px solid rgba(220, 222, 228, 1);
-  border-radius: 15px;
+  border-radius: 10px;
+  cursor: pointer;
 
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 14px 18px;
 
   transition: 0.2s;
 
   &:hover {
     border: 1px solid rgba(24, 158, 233, 1);
-    box-shadow: 0 4px 8px rgba(24, 158, 233, 0, 32);
+    box-shadow: 0 4px 8px rgba(24, 158, 233, 0.32);
+  }
+
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
-const StyledSelectItemTitle = styled.div``;
+const StyledSelectItemTitle = styled.div`
+  font-weight: 500;
+  font-size: 20px;
+  color: rgba(39, 47, 90, 0.9);
+`;
