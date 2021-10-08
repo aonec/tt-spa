@@ -21,7 +21,7 @@ export function Header({
     <HeaderWrap>
       <Flex>
         <Title>Информация о приборе</Title>
-        <Space />
+        <Space /> 
         {devicesCount ? (
           <Checkbox
             checked={showClosed}

@@ -10,6 +10,7 @@ import {
 import IsActive from '../../../../tt-components/IsActive';
 import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 
 export function ApartmentDeviceItem({
   device,
@@ -22,9 +23,11 @@ export function ApartmentDeviceItem({
 
   const readings: IndividualDeviceReadingsResponse[] = device.readings!;
 
-  const currentReading = readings.filter(
-    (elem) => moment().diff(elem.readingDateTime, 'months') < 11
-  )[0];
+  const currentReading = readings
+    .filter((elem) => moment().diff(elem.readingDateTime, 'months') < 11)
+    .filter(
+      (elem) => moment().month() === moment(elem.readingDateTime).month()
+    )[0];
 
   const preparedReadingsArrWithEmpties = device.readings?.reduce(
     (acc, elem) => {
@@ -82,10 +85,7 @@ export function ApartmentDeviceItem({
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
       {Boolean(previousReadingsArray?.length) && (
-        <DeviceReadingsContainer
-          color={'var(--frame)'}
-          resource={device.resource}
-        >
+        <DeviceReadingsContainer color={'var(--frame)'}>
           {previousDeviceReadings}
         </DeviceReadingsContainer>
       )}
@@ -109,6 +109,11 @@ const DeviceReadingsContainer = styled.div`
   border: 1px solid ${(props) => (props.color ? props.color : 'var(--main-90)')};
   max-width: 200px;
   padding: 8px 8px 8px 12px;
+
+  border-left-width: 4px;
+
+  ${({ resource }) =>
+    resource && `border-color: ${getResourceColor(resource as any)};`}
 
   &:focus-within {
     box-shadow: var(--shadow);
