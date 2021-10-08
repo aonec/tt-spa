@@ -44,8 +44,6 @@ export function ApartmentDeviceItem({
     });
   }, [device.readings, sliderIndex]);
 
-  console.log(readingsState?.readingsArray);
-
   const deviceReadings = readingsState?.readingsArray?.map((value, index) => (
     <ReadingsBlock
       key={device.id + index}
@@ -57,8 +55,12 @@ export function ApartmentDeviceItem({
     />
   ));
 
+  console.log(device.closingDate);
+
   return (
-    <DeviceItem style={{ opacity: isActive ? '0.7' : 'none' }}>
+    <DeviceItem
+      style={{ opacity: device.closingDate === null ? undefined : '0.7' }}
+    >
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
       {Boolean(readingsState?.readingsArray.length) && (

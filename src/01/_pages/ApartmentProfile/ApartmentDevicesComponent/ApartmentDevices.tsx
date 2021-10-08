@@ -30,6 +30,7 @@ export const ApartmentDevices = ({
       {sliderIndex !== undefined && sliderProps ? (
         <>
           <Header
+            devicesCount={items.filter((elem) => elem.closingDate).length}
             showClosed={showClosed}
             setShowClosed={setShowClosed as any}
             slider={
