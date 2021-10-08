@@ -46,7 +46,9 @@ export function ApartmentDeviceItem({
     {} as { [key: number]: IndividualDeviceReadingsResponse }
   );
 
-  const previousReading = preparedReadingsArrWithEmpties![sliderIndex];
+  const previousReading: IndividualDeviceReadingsResponse = preparedReadingsArrWithEmpties![
+    sliderIndex
+  ];
 
   const previousReadingsArray = getValuesArray(
     previousReading || [],
@@ -65,6 +67,7 @@ export function ApartmentDeviceItem({
       resource={device?.resource!}
       operatorCabinet
       isDisabled={true}
+      source={previousReading?.source}
     />
   ));
 
@@ -76,6 +79,7 @@ export function ApartmentDeviceItem({
       resource={device?.resource!}
       operatorCabinet
       isDisabled={true}
+      source={currentReading?.source}
     />
   ));
 
