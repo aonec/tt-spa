@@ -31,7 +31,7 @@ import { getIssueCertificateButtonClicked } from '01/features/apartments/printIs
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ESecuredIdentityRoleName } from 'myApi';
-import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber';
+import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
 
 export const ApartmentInfo = () => {

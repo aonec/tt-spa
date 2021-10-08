@@ -4,9 +4,9 @@ import { useStore } from 'effector-react';
 import {
   $isSelectEditPersonalNumberTypeModalOpen,
   closeEditPersonalNumberTypeModal,
-} from './models';
+} from '../models';
 import styled from 'styled-components';
-import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from './icons';
+import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from '../icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const SelectEditPersonalNumberTypeModal: React.FC = () => {

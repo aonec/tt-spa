@@ -28,5 +28,10 @@ export const ApartmentsRouteGroup = () => (
     <Route path="/apartment/:id/individualDevice/:deviceId/reopen" exact>
       <SwitchIndividualDevice type="reopen" />
     </Route>
+
+    <Route path="/apartment/:id/homeowners/editPersonalNumber" exact></Route>
+    <Route path="/apartment/:id/homeowners/switchPersonalNumber" exact></Route>
+    <Route path="/apartment/:id/homeowners/addPersonalNumber" exact></Route>
+    <Route path="/apartment/:id/homeowners/splitApartment" exact></Route>
   </Switch>
 );
