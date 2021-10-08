@@ -11,6 +11,7 @@ import IsActive from '../../../../tt-components/IsActive';
 import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 export function ApartmentDeviceItem({
   device,
@@ -84,19 +85,37 @@ export function ApartmentDeviceItem({
     >
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
-      {Boolean(previousReadingsArray?.length) && (
+      <div style={{ marginTop: previousReading && '22px' }}>
         <DeviceReadingsContainer color={'var(--frame)'}>
           {previousDeviceReadings}
         </DeviceReadingsContainer>
-      )}
-      {Boolean(currentReadingsArray?.length) && (
+        <Flex
+          style={{
+            justifyContent: 'flex-end',
+            transform: 'translate(-10px, 2px)',
+          }}
+        >
+          {previousReading &&
+            moment(previousReading.uploadTime).format('DD.MM.YYYY')}
+        </Flex>
+      </div>
+      <div style={{ marginTop: currentReading && '22px' }}>
         <DeviceReadingsContainer
           color={'var(--frame)'}
           resource={device.resource}
         >
           {deviceReadings}
         </DeviceReadingsContainer>
-      )}
+        <Flex
+          style={{
+            justifyContent: 'flex-end',
+            transform: 'translate(-10px, 2px)',
+          }}
+        >
+          {currentReading &&
+            moment(currentReading.uploadTime).format('DD.MM.YYYY')}
+        </Flex>
+      </div>
     </DeviceItem>
   );
 }
