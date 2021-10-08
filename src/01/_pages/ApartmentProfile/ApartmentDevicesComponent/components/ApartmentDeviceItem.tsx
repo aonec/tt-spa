@@ -5,8 +5,14 @@ import rateTypeToNumber from '../../../../_api/utils/rateTypeToNumber';
 import { formEmptyReadingsObject } from '../../../../utils/formEmptyReadingsObject';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
-import { IndividualDeviceListItemResponse } from '../../../../../myApi';
+import {
+  EIndividualDeviceRateType,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceReadingsResponse,
+} from '../../../../../myApi';
 import IsActive from '../../../../tt-components/IsActive';
+import moment from 'moment';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 export function ApartmentDeviceItem({
   device,
@@ -15,47 +21,62 @@ export function ApartmentDeviceItem({
   device: IndividualDeviceListItemResponse;
   sliderIndex: number;
 }) {
-  const [readingsState, setReadingsState] = useState<{
-    readingsArray: number[];
-    resource: string;
-  }>();
-
-  const currentMonth = getMonthFromDate();
-  const numberOfReadings = rateTypeToNumber(device.rateType);
-  const emptyReadingsObject = formEmptyReadingsObject(numberOfReadings);
-  const isReadingsCurrent =
-    currentMonth === getMonthFromDate(device?.readings![0]?.readingDate);
   const isActive = device?.closingDate !== null;
 
-  useEffect(() => {
-    const readingsArray: number[] = [];
-    const readings: Record<string, any> = isReadingsCurrent
-      ? device.readings!
-      : [emptyReadingsObject, ...device.readings!];
+  const readings: IndividualDeviceReadingsResponse[] = device.readings!;
 
-    for (let i = 1; i <= numberOfReadings; i++) {
-      readings[sliderIndex] &&
-        readingsArray.push(readings[sliderIndex][`value${i}`] ?? '');
-    }
+  const currentReading = readings.filter(
+    (elem) => moment().diff(elem.readingDateTime, 'months') < 11
+  )[0];
 
-    setReadingsState({
-      readingsArray,
-      resource: device.resource,
-    });
-  }, [device.readings, sliderIndex]);
+  const preparedReadingsArrWithEmpties = device.readings?.reduce(
+    (acc, elem) => {
+      if (moment().diff(elem.readingDateTime, 'months') > 11) return acc;
 
-  const deviceReadings = readingsState?.readingsArray?.map((value, index) => (
+      const index =
+        Number(moment().format('M')) -
+        Number(moment(elem.readingDateTime).format('M')) -
+        1;
+
+      acc[index] = elem;
+
+      return acc;
+    },
+    {} as { [key: number]: IndividualDeviceReadingsResponse }
+  );
+
+  const previousReading = preparedReadingsArrWithEmpties![sliderIndex];
+
+  const previousReadingsArray = getValuesArray(
+    previousReading || [],
+    device.rateType
+  );
+  const currentReadingsArray = getValuesArray(
+    currentReading || [],
+    device.rateType
+  );
+
+  const previousDeviceReadings = previousReadingsArray?.map((value, index) => (
     <ReadingsBlock
       key={device.id + index}
       index={index}
       value={value}
-      resource={readingsState?.resource!}
+      resource={device?.resource!}
       operatorCabinet
       isDisabled={true}
     />
   ));
 
-  console.log(device.closingDate);
+  const deviceReadings = currentReadingsArray?.map((value, index) => (
+    <ReadingsBlock
+      key={device.id + index}
+      index={index}
+      value={value}
+      resource={device?.resource!}
+      operatorCabinet
+      isDisabled={true}
+    />
+  ));
 
   return (
     <DeviceItem
@@ -63,7 +84,15 @@ export function ApartmentDeviceItem({
     >
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
-      {Boolean(readingsState?.readingsArray.length) && (
+      {Boolean(previousReadingsArray?.length) && (
+        <DeviceReadingsContainer
+          color={'var(--frame)'}
+          resource={device.resource}
+        >
+          {previousDeviceReadings}
+        </DeviceReadingsContainer>
+      )}
+      {Boolean(currentReadingsArray?.length) && (
         <DeviceReadingsContainer
           color={'var(--frame)'}
           resource={device.resource}
@@ -96,8 +125,23 @@ const DeviceReadingsContainer = styled.div`
 
 const DeviceItem = styled.div`
   display: inline-grid;
-  grid-template-columns: minmax(330px, 4fr) 2fr 2fr 4fr;
+  grid-template-columns: minmax(330px, 4fr) 2fr 2fr 2fr 2fr;
   padding: 0 16px 16px;
   border-bottom: 1px solid #dcdee4;
   align-items: center;
 `;
+
+const getValuesArray = (
+  reading: IndividualDeviceReadingsResponse,
+  rateType: EIndividualDeviceRateType
+) => {
+  const rateNum = getIndividualDeviceRateNumByName(rateType);
+
+  const res: number[] = [];
+
+  for (let i = 0; i < rateNum; i++) {
+    res.push((reading as any)[`value${i + 1}`]);
+  }
+
+  return res;
+};

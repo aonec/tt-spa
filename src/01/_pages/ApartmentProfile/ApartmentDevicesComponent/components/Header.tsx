@@ -1,3 +1,4 @@
+import { getPreviousMonthFromDate } from '01/utils/getMonthFromDate';
 import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
@@ -29,13 +30,14 @@ export function Header({
       )}
       <div>Статус</div>
       {slider}
+      <div style={{ paddingLeft: '90px' }}>{getPreviousMonthFromDate(1)}</div>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: 1.4fr 2.7fr 1.9fr 2fr 4fr;
+  grid-template-columns: 1.4fr 2.7fr 1.9fr 2fr 2fr 2fr;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;

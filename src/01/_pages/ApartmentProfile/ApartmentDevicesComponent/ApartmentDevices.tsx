@@ -5,9 +5,9 @@ import {
   IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
 } from '../../../../myApi';
-import { useMonthSlider } from '../../../shared/lib/readings/useMonthSlider';
 import MonthSlider from '../../../shared/ui/devices/MonthSlider';
 import { useState } from 'react';
+import { useSliderIndex } from '01/features/individualDevices/switchIndividualDevice/components/ReadingsInput';
 export const ApartmentDevicesContext = React.createContext<
   IndividualDeviceListItemResponse[] | null
 >(null);
@@ -17,7 +17,7 @@ export const ApartmentDevices = ({
 }: {
   devices: IndividualDeviceListItemResponsePagedList;
 }) => {
-  const { sliderIndex, sliderProps } = useMonthSlider(devices.items);
+  const { sliderIndex, up, down, canUp, canDown } = useSliderIndex();
   const [showClosed, setShowClosed] = useState(false);
 
   const { items } = devices || {};
@@ -27,7 +27,7 @@ export const ApartmentDevices = ({
 
   return (
     <ApartmentDevicesContext.Provider value={items}>
-      {sliderIndex !== undefined && sliderProps ? (
+      {
         <>
           <Header
             devicesCount={items.filter((elem) => elem.closingDate).length}
@@ -36,8 +36,11 @@ export const ApartmentDevices = ({
             slider={
               <MonthSlider
                 {...{
-                  ...sliderProps,
-                  sliderIndex: sliderProps.sliderIndex - 1,
+                  onClickIncrease: up,
+                  onClickDecrease: down,
+                  isNextArrowDisabled: !canDown,
+                  isPreviousArrowDisabled: !canUp,
+                  sliderIndex,
                 }}
               />
             }
@@ -47,7 +50,7 @@ export const ApartmentDevices = ({
             showClosed={showClosed}
           />
         </>
-      ) : null}
+      }
     </ApartmentDevicesContext.Provider>
   );
 };
