@@ -81,7 +81,10 @@ export function ApartmentDeviceItem({
 
   return (
     <DeviceItem
-      style={{ opacity: device.closingDate === null ? undefined : '0.7' }}
+      style={{
+        opacity: device.closingDate === null ? undefined : '0.7',
+        marginTop: (previousReading || currentReading) && '-14px',
+      }}
     >
       <ApartmentDevice device={device} />
       <IsActive closingDate={isActive} />
