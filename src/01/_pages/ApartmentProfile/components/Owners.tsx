@@ -9,10 +9,12 @@ type Props = {
 const Owners: React.FC<Props> = (props) => {
   const { homeowners } = props;
   const homeownersElems = homeowners.map((homeowner) => {
-    const { fullName, personalAccountNumber, phoneNumber } = homeowner;
-    
+    const { fullName, personalAccountNumber, phoneNumber, id } = homeowner;
+    console.log(id);
+
     return (
       <Owner
+        id={id}
         key={personalAccountNumber}
         firstName={fullName?.replace(' unknown', '')}
         personalAccountNumber={personalAccountNumber}
@@ -24,4 +26,4 @@ const Owners: React.FC<Props> = (props) => {
 };
 
 export default Owners;
-27
+27;
