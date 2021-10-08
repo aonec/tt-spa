@@ -1,4 +1,6 @@
-import { getPreviousMonthFromDate } from '01/utils/getMonthFromDate';
+import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousReadingsMonth';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Checkbox } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
@@ -17,27 +19,30 @@ export function Header({
 }: HeaderInterface) {
   return (
     <HeaderWrap>
-      <Title>Информация о приборе</Title>
-      {devicesCount ? (
-        <Checkbox
-          checked={showClosed}
-          onChange={() => setShowClosed((prev) => !prev)}
-        >
-          показать закрытые ({devicesCount})
-        </Checkbox>
-      ) : (
-        <div></div>
-      )}
+      <Flex>
+        <Title>Информация о приборе</Title>
+        <Space />
+        {devicesCount ? (
+          <Checkbox
+            checked={showClosed}
+            onChange={() => setShowClosed((prev) => !prev)}
+          >
+            показать закрытые ({devicesCount})
+          </Checkbox>
+        ) : (
+          <div></div>
+        )}
+      </Flex>
       <div>Статус</div>
       {slider}
-      <div style={{ paddingLeft: '90px' }}>{getPreviousMonthFromDate(1)}</div>
+      <div style={{ paddingLeft: '90px' }}>{getPreviousReadingsMonth(-1)}</div>
     </HeaderWrap>
   );
 }
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: 1.4fr 2.7fr 1.9fr 2fr 2fr 2fr;
+  grid-template-columns: 2.2fr 0.6fr 1fr 1fr 2.2fr;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;

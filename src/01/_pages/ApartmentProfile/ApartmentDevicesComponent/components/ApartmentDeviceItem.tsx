@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { getMonthFromDate } from '../../../../utils/getMonthFromDate';
-import rateTypeToNumber from '../../../../_api/utils/rateTypeToNumber';
-import { formEmptyReadingsObject } from '../../../../utils/formEmptyReadingsObject';
 import ReadingsBlock from '../../../MetersPage/components/MeterDevices/components/ReadingsBlock';
 import ApartmentDevice from './ApartmentDevice';
 import {
@@ -125,7 +122,7 @@ const DeviceReadingsContainer = styled.div`
 
 const DeviceItem = styled.div`
   display: inline-grid;
-  grid-template-columns: minmax(330px, 4fr) 2fr 2fr 2fr 2fr;
+  grid-template-columns: 2.2fr 0.6fr 1fr 1fr 2.2fr;
   padding: 0 16px 16px;
   border-bottom: 1px solid #dcdee4;
   align-items: center;
