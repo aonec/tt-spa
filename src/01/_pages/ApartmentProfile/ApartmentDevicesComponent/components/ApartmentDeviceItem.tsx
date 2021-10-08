@@ -12,6 +12,7 @@ import moment from 'moment';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { getResourceColor } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 
 export function ApartmentDeviceItem({
   device,
@@ -122,6 +123,9 @@ export function ApartmentDeviceItem({
           {currentReading &&
             moment(currentReading.uploadTime).format('DD.MM.YYYY')}
         </Flex>
+      </div>
+      <div style={{ marginLeft: 15 }}>
+        <ReadingsHistoryButton deviceId={device.id} />
       </div>
     </DeviceItem>
   );

@@ -33,6 +33,13 @@ interface ApartmentReadingLineProps {
   closed?: boolean;
 }
 
+export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
+  <HistoryIcon
+    style={{ cursor: 'pointer' }}
+    onClick={() => openReadingsHistoryModal(deviceId)}
+  />
+);
+
 const ApartmentReadingLine = ({
   device,
   sliderIndex,
