@@ -19,7 +19,6 @@ interface Props {
   customSubmit?: ReactNode;
   centered?: boolean;
   footer?: ReactNode;
-  withoutFooter?: boolean;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -35,8 +34,9 @@ export const ModalTT: React.FC<Props> = (props) => {
     customSubmit,
     centered,
     footer,
-    withoutFooter,
   } = props;
+
+  const text = saveBtnText || 'Сохранить';
 
   return (
     <StyledModal
@@ -46,26 +46,22 @@ export const ModalTT: React.FC<Props> = (props) => {
       title={<Header>{title}</Header>}
       centered={centered}
       footer={
-        withoutFooter ? (
-          <></>
-        ) : (
-          footer || (
-            <Footer>
-              <ButtonTT color={'white'} key="back" onClick={onCancel}>
-                Отмена
+        footer || (
+          <Footer>
+            <ButtonTT color={'white'} key="back" onClick={onCancel}>
+              Отмена
+            </ButtonTT>
+            {customSubmit || (
+              <ButtonTT
+                color="blue"
+                key="submit"
+                onClick={onSubmit}
+                disabled={loading}
+              >
+                {loading ? <Loader show /> : text}
               </ButtonTT>
-              {customSubmit || (
-                <ButtonTT
-                  color="blue"
-                  key="submit"
-                  onClick={onSubmit}
-                  disabled={loading}
-                >
-                  {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
-                </ButtonTT>
-              )}
-            </Footer>
-          )
+            )}
+          </Footer>
         )
       }
     >

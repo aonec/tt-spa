@@ -1,3 +1,4 @@
+import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { getReadingsHistory } from './../../../../_api/readings';
 import {
   ReadingHistoryGate,
@@ -29,3 +30,8 @@ forward({
 $readingsHistoryModalDeviceId
   .on(openReadingsHistoryModal, (_, deviceId) => deviceId)
   .reset(closeReadingsHistoryModal);
+
+forward({
+  from: $readingsHistoryModalDeviceId as any,
+  to: fetchIndividualDeviceFx,
+});

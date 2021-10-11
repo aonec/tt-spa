@@ -10,7 +10,7 @@ export const ListItem = styled.div`
   line-height: 16px;
   border-bottom: 1px solid #dcdee4;
 `;
-export const ListItemDescription = styled.p`
+export const ListItemDescription = styled.div`
   padding: 0;
   margin: 0;
   color: rgba(39, 47, 90, 0.6);

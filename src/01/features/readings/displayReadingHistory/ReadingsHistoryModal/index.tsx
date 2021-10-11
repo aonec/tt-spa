@@ -8,7 +8,11 @@ import {
   closeReadingsHistoryModal,
 } from '../models';
 
-export const ReadingsHistoryModal: React.FC = () => {
+interface Props {
+  readonly?: boolean;
+}
+
+export const ReadingsHistoryModal: React.FC<Props> = ({ readonly }) => {
   const open = useStore($isReadingsHstoryModalOpen);
   const deviceId = useStore($readingsHistoryModalDeviceId);
 
@@ -21,7 +25,9 @@ export const ReadingsHistoryModal: React.FC = () => {
       centered
       footer={<></>}
     >
-      {deviceId && <ReadingHistoryPage deviceId={deviceId} isModal />}
+      {deviceId && (
+        <ReadingHistoryPage deviceId={deviceId} isModal readonly={readonly} />
+      )}
     </ModalTT>
   );
 };
