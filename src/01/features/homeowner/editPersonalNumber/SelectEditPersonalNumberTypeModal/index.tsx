@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useStore } from 'effector-react';
 import {
@@ -8,45 +8,114 @@ import {
 import styled from 'styled-components';
 import { PlusIcon, EditIcon, SwitchIcon, ApartmentIcon } from '../icons';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { $apartment } from '01/features/apartments/displayApartment/models';
+import { ReactComponent as MainIcon } from './icons/main.svg';
+import { useHistory, useParams } from 'react-router';
 
 export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);
+
+  const [selectedType, setSelectedType] = useState<SelectItem | null>(null);
+  const [homeownerId, setHomeownerId] = useState<number | null>(null);
+  const history = useHistory();
+  const { id } = useParams<{ id: string }>();
+
+  const apartment = useStore($apartment);
 
   const selects: SelectItem[] = [
     {
       title: 'Редактировать лицевой счет',
       icon: EditIcon,
+      route: 'editPersonalNumber',
     },
     {
       title: 'Заменить лицевой счет',
       icon: SwitchIcon,
+      route: 'switchPersonalNumber',
     },
     {
       title: 'Добавить новый лицевой счет к этой квартире',
       icon: PlusIcon,
+      route: 'addPersonalNumber',
     },
     {
       title: 'Разделить лицевые счета и создать новую квартиру',
       icon: ApartmentIcon,
+      route: 'splitApartment',
     },
   ];
 
-  const renderSelectItem = ({ title, icon: Icon, action }: SelectItem) => (
-    <StyledSelectItem onClick={action}>
-      <Icon />
-      <Space />
-      <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
-    </StyledSelectItem>
+  useEffect(() => {
+    setHomeownerId(
+      apartment?.homeowners?.find((elem) => elem.isMainPersonalAccountNumber)
+        ?.id ||
+        (apartment?.homeowners && apartment?.homeowners[0]?.id) ||
+        null
+    );
+  }, [selectedType, apartment]);
+
+  const renderSelectItem = (selectItem: SelectItem) => {
+    const { title, icon: Icon } = selectItem;
+    return (
+      <StyledSelectItem onClick={() => setSelectedType(selectItem)}>
+        <Icon />
+        <Space />
+        <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
+      </StyledSelectItem>
+    );
+  };
+
+  const SelectedTypeIcon = selectedType?.icon || (() => <></>);
+
+  const selectedHomeowner = apartment?.homeowners?.find(
+    (elem) => elem.id === homeownerId
+  );
+
+  const selectHomeownerAccount = (
+    <StyledSelect
+      placeholder="Выберите лицевой счет"
+      style={{ width: '100%' }}
+      value={homeownerId || void 0}
+      onChange={setHomeownerId as any}
+    >
+      {apartment?.homeowners?.map((elem) => (
+        <StyledSelect.Option value={elem.id!}>
+          {selectedHomeowner?.isMainPersonalAccountNumber && <MainIcon />}
+          {elem.personalAccountNumber} (
+          {elem?.fullName?.replaceAll('unknown', '')})
+        </StyledSelect.Option>
+      ))}
+    </StyledSelect>
   );
 
   return (
     <ModalTT
+      customCancelButton={() => setSelectedType(null)}
       visible={isOpen}
-      title="Выберите действие"
-      footer={<></>}
+      title={
+        <Flex>
+          {selectedType && (
+            <>
+              <SelectedTypeIcon />
+              <Space />
+            </>
+          )}
+          {selectedType ? 'Выберите лицевой счет' : 'Выберите действие'}
+        </Flex>
+      }
+      footer={selectedType ? undefined : <></>}
+      saveBtnText="Далее"
       onCancel={closeEditPersonalNumberTypeModal}
+      onSubmit={() => {
+        closeEditPersonalNumberTypeModal();
+        history.push(
+          `/apartment/${id}/homeowners/${homeownerId}/${selectedType?.route}`
+        );
+      }}
     >
-      {selects.map(renderSelectItem)}
+      {selectedType ? selectHomeownerAccount : selects.map(renderSelectItem)}
     </ModalTT>
   );
 };
@@ -55,6 +124,7 @@ interface SelectItem {
   title: string;
   icon: React.FC;
   action?(): void;
+  route?: string;
 }
 
 const StyledSelectItem = styled.div`
