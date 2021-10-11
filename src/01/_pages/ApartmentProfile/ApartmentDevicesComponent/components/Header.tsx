@@ -21,7 +21,7 @@ export function Header({
     <HeaderWrap>
       <Flex>
         <Title>Информация о приборе</Title>
-        <Space /> 
+        <Space />
         {devicesCount ? (
           <Checkbox
             checked={showClosed}
@@ -42,7 +42,8 @@ export function Header({
 
 const HeaderWrap = styled.div`
   display: grid;
-  grid-template-columns: 2.2fr 0.6fr 1fr 1fr 2.2fr;
+  grid-template-columns: 380px 110px 190px 170px 2.2fr;
+  grid-gap: 15px;
   background: rgba(39, 47, 90, 0.04);
   padding: 16px;
   align-items: center;

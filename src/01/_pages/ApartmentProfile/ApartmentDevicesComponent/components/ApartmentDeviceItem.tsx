@@ -91,7 +91,9 @@ export function ApartmentDeviceItem({
         marginTop: (previousReading || currentReading) && '-14px',
       }}
     >
-      <ApartmentDevice device={device} />
+      <div>
+        <ApartmentDevice device={device} />
+      </div>
       <IsActive closingDate={isActive} />
       <div style={{ marginTop: previousReading && '22px' }}>
         <DeviceReadingsContainer color={'var(--frame)'}>
@@ -100,7 +102,7 @@ export function ApartmentDeviceItem({
         <Flex
           style={{
             justifyContent: 'flex-end',
-            transform: 'translate(-10px, 2px)',
+            transform: 'translateY(2px)',
           }}
         >
           {previousReading &&
@@ -117,7 +119,7 @@ export function ApartmentDeviceItem({
         <Flex
           style={{
             justifyContent: 'flex-end',
-            transform: 'translate(-10px, 2px)',
+            transform: 'translateY(2px)',
           }}
         >
           {currentReading &&
@@ -157,7 +159,8 @@ const DeviceReadingsContainer = styled.div`
 
 const DeviceItem = styled.div`
   display: inline-grid;
-  grid-template-columns: 2.2fr 0.6fr 1fr 1fr 2.2fr;
+  grid-template-columns: 375px 110px 200px 200px 2.2fr;
+  grid-gap: 15px;
   padding: 0 16px 16px;
   border-bottom: 1px solid #dcdee4;
   align-items: center;
