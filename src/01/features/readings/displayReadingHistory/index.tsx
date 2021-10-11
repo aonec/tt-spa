@@ -8,11 +8,13 @@ import { ReadingHistoryGate } from './models';
 interface Props {
   deviceId?: number;
   isModal?: boolean;
+  readonly?: boolean;
 }
 
 export const ReadingHistoryPage: React.FC<Props> = ({
   deviceId: deviceIdFromProps,
   isModal,
+  readonly,
 }) => {
   const { deviceId: deviceIdFromUrlParams } = useParams<{ deviceId: string }>();
 
@@ -23,7 +25,7 @@ export const ReadingHistoryPage: React.FC<Props> = ({
       <IndividualDeviceGate id={Number(deviceId)} />
       <ReadingHistoryGate deviceId={Number(deviceId)} />
       <ReadingHistoryHeader isModal={isModal} />
-      <ReadingsHistoryList isModal={isModal} />
+      <ReadingsHistoryList readonly={readonly} isModal={isModal} />
     </>
   );
 };

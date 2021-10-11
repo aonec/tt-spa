@@ -19,7 +19,7 @@ export function ApartmentDevicesList({ sliderIndex, showClosed }) {
 
   return (
     <>
-      <ReadingsHistoryModal apartmentId={params[1]} />
+      <ReadingsHistoryModal apartmentId={params[1]} readonly />
       {validDeviceElems}
     </>
   );
