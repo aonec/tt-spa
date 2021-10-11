@@ -138,6 +138,7 @@ const ValueLine = styled(Flex)`
 `;
 
 const EditableField = styled(Input)`
+  color: black;
   background: white !important;
   border-color: rgba(0, 0, 0, 0);
 `;

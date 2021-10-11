@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Icon } from '01/components/Icon';
 import { Button, Title } from '.';
 import { ListItem, ListItemDescription, ListItemValue } from './ListItem';
-import moment from 'moment';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Check, CheckLg, Pen, X, XLg } from 'react-bootstrap-icons';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { StyledInput } from '01/shared/ui/Fields';
+import axios from '01/axios';
+import { message } from 'antd';
 
 export class Certificate extends React.Component {
   render() {
@@ -260,14 +265,36 @@ const TitleWrap = styled.div`
     `};
 `;
 const Owner = (props) => {
-  const descriptions = [
-    'Номер лицевого счета',
-    'Статус собственник',
-    'Юридическое состояние',
-    'Контактный номер телефона',
-  ];
+  const { firstName, personalAccountNumber, phoneNumber, id } = props;
 
-  const { firstName, personalAccountNumber, phoneNumber, test, test2 } = props;
+  const {
+    cellphone,
+    setCellphone,
+    cancel,
+    isEditMode,
+    setIsEditMode,
+    loading,
+    saveCellPhone,
+  } = useEditOwnerCellphone(phoneNumber, id);
+
+  const edtCellphone = (
+    <Flex>
+      <StyledInput
+        disabled={loading}
+        onChange={(e) => setCellphone(e.target.value)}
+        value={cellphone}
+      />
+      <Space />
+      <IconWrap>
+        <CheckLg onClick={saveCellPhone} />
+      </IconWrap>
+      <Space />
+      <IconWrap>
+        <XLg onClick={cancel} />
+      </IconWrap>
+    </Flex>
+  );
+
   return (
     <>
       <TitleWrap style={{ paddingTop: '32px' }}>
@@ -285,7 +312,20 @@ const Owner = (props) => {
       </ListItem>
       <ListItem>
         <ListItemDescription>Контактный номер телефона</ListItemDescription>
-        <ListItemValue>{phoneNumber || 'Данные обновляются'}</ListItemValue>
+        <ListItemValue>
+          {isEditMode ? (
+            edtCellphone
+          ) : (
+            <Flex>
+              <div>{cellphone || 'Данные обновляются'}</div>
+              <Space />
+              <Pen
+                onClick={() => setIsEditMode(true)}
+                style={{ cursor: 'pointer' }}
+              />
+            </Flex>
+          )}
+        </ListItemValue>
       </ListItem>
 
       <Button style={{ marginTop: '16px' }}>
@@ -294,5 +334,52 @@ const Owner = (props) => {
     </>
   );
 };
+
+const IconWrap = styled.div`
+  transition: 0.2s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.2);
+  }
+`;
+
+function useEditOwnerCellphone(initialCellphone, id) {
+  const [cellphone, setCellphone] = useState(initialCellphone);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [prevCellphone, setPrevCellphone] = useState(initialCellphone);
+
+  async function saveCellPhone() {
+    setLoading(true);
+
+    try {
+      await axios.put(`Homeowners/${id}`, { cellphone });
+
+      setIsEditMode(false);
+      setPrevCellphone(cellphone);
+
+      message.success('Новый номер успешно сохранен');
+    } catch (error) {
+      message.error('Не удалось сохранить номер телефона');
+    }
+
+    setLoading(false);
+  }
+
+  const cancel = () => {
+    setIsEditMode(false);
+    setCellphone(prevCellphone);
+  };
+
+  return {
+    cellphone,
+    setCellphone,
+    isEditMode,
+    setIsEditMode,
+    cancel,
+    loading,
+    saveCellPhone,
+  };
+}
 
 export default Owner;

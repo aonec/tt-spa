@@ -4,7 +4,7 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Breadcrumb } from '01/tt-components';
-import IsActive from '01/tt-components/IsActive';
+import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
@@ -30,7 +30,7 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
             <Flex>
               <DeviceDataString />
               <Space />
-              <IsActive clousingDate={device?.closingDate} />
+              <IsActiveBool active={device?.closingDate === null} />
               <Space />
               <HousingStockAddress />
             </Flex>

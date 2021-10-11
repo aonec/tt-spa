@@ -25,9 +25,10 @@ import { fetchReadingHistoryFx } from '../models';
 
 interface Props {
   isModal?: boolean;
+  readonly?: boolean;
 }
 
-export const ReadingsHistoryList: React.FC<Props> = ({ isModal }) => {
+export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const {
     values,
     setFieldValue,
@@ -96,7 +97,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal }) => {
           )
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
-        editable={isFirst}
+        editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
         onChange={(value, index) =>
@@ -178,7 +179,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal }) => {
         {firstReadingline}
         {isOpen &&
           readings
-            .filter((elem, index) => elem.isArchived)
+            .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
                 reading,
