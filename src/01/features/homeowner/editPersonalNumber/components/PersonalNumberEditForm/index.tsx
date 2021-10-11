@@ -7,39 +7,66 @@ import { InputTT } from '01/tt-components';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Trash } from 'react-bootstrap-icons';
-
-interface HomeownerForm {
-  name: string;
-  phone: number;
-  openAt: string;
-  personalAccountNumber: string;
-}
+import { useForm } from 'effector-forms/dist';
+import { personalNumberEditForm } from '../../models';
+import { ChangeEvent } from 'react-router/node_modules/@types/react';
 
 export const PersonalNumberEditForm: React.FC = () => {
+  const { fields } = useForm(personalNumberEditForm);
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+    (fields as any)[e.target.name]?.onChange(e.target.value);
+
   return (
     <Wrap>
       <Form.Item label="Дата открытия лицевого счета">
-        <DatePickerNative value={null} />
+        <DatePickerNative
+          value={fields.openAt.value}
+          onChange={fields.openAt.onChange}
+        />
       </Form.Item>
       <Grid temp="3fr 1fr" gap="15px">
         <Form.Item label="Лицевой счет">
-          <InputTT placeholder="Введите л/с" />
+          <InputTT
+            placeholder="Введите л/с"
+            value={fields.personalAccountNumber.value}
+            name="personalAccountNumber"
+            onChange={onChangeHandler}
+          />
         </Form.Item>
         <Form.Item label="Платежный код">
-          <InputTT type="number" />
+          <InputTT
+            type="number"
+            value={fields.paymentCode.value}
+            onChange={onChangeHandler}
+            name="paymentCode"
+          />
         </Form.Item>
       </Grid>
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Собственник">
-          <InputTT placeholder="Введите ФИО" />
+          <InputTT
+            placeholder="Введите ФИО"
+            value={fields.name.value}
+            onChange={onChangeHandler}
+            name="name"
+          />
         </Form.Item>
         <Form.Item label="Телефон">
-          <InputTT placeholder="Введите телефон" />
+          <InputTT
+            placeholder="Введите телефон"
+            value={fields.phoneNumber.value}
+            onChange={onChangeHandler}
+            name="phoneNumber"
+          />
         </Form.Item>
       </Grid>
       <Flex style={{ justifyContent: 'space-between' }}>
         <Flex>
-          <Switch />
+          <Switch
+            checked={fields.isMainAccountingNumber.value}
+            onChange={fields.isMainAccountingNumber.onChange}
+          />
           <Space />
           Основной лицевой счет
         </Flex>

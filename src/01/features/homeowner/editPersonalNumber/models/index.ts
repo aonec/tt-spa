@@ -7,7 +7,24 @@ export const openEditPersonalNumberTypeModal = createEvent();
 export const closeEditPersonalNumberTypeModal = createEvent();
 
 export const personalNumberEditForm = createForm({
-    fields: {
-        
-    }
-})
+  fields: {
+    name: {
+      init: '',
+    },
+    phoneNumber: {
+      init: '',
+    },
+    openAt: {
+      init: null as string | null,
+    },
+    personalAccountNumber: {
+      init: null as string | null,
+    },
+    paymentCode: {
+      init: null as number | null,
+    },
+    isMainAccountingNumber: {
+      init: false,
+    },
+  },
+});
