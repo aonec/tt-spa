@@ -1,4 +1,4 @@
-import { EditHomeownerPersonalNumberPage } from '01/features/homeowner';
+import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
