@@ -67,6 +67,16 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
     );
   };
 
+  useEffect(() => {
+    if (
+      selectedType?.route === 'addPersonalNumber' ||
+      selectedType?.route === 'splitApartment'
+    ) {
+      history.push(`/apartment/${id}/homeowners/${selectedType?.route}`);
+      closeEditPersonalNumberTypeModal();
+    }
+  }, [selectedType]);
+
   const SelectedTypeIcon = selectedType?.icon || (() => <></>);
 
   const selectedHomeowner = apartment?.homeowners?.find(

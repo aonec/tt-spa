@@ -1,3 +1,4 @@
+import { EditHomeownerPersonalNumberPage } from '01/features/homeowner';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
 import { ReadingHistoryPage } from '01/features/readings/displayReadingHistory';
@@ -28,21 +29,20 @@ export const ApartmentsRouteGroup = () => (
     <Route path="/apartment/:id/individualDevice/:deviceId/reopen" exact>
       <SwitchIndividualDevice type="reopen" />
     </Route>
-
+    <Route path="/apartment/:id/homeowners/addPersonalNumber" exact>
+      ADD
+    </Route>
+    <Route path="/apartment/:id/homeowners/splitApartment" exact>
+      SPLIT
+    </Route>
     <Route
       path="/apartment/:id/homeowners/:homeownerId/editPersonalNumber"
       exact
-    ></Route>
+    >
+      <EditHomeownerPersonalNumberPage />
+    </Route>
     <Route
       path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumber"
-      exact
-    ></Route>
-    <Route
-      path="/apartment/:id/homeowners/:homeownerId/addPersonalNumber"
-      exact
-    ></Route>
-    <Route
-      path="/apartment/:id/homeowners/:homeownerId/splitApartment"
       exact
     ></Route>
   </Switch>
