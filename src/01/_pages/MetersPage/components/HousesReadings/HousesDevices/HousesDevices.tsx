@@ -21,6 +21,7 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 
 type ParamsType = {
   id: string;
@@ -70,6 +71,7 @@ const HousesDevices: React.FC = () => {
   return (
     <>
       <ConfirmReadingValueModal />
+      <ReadingsHistoryModal />
       <HousingStockGate id={Number(housingStockId)} />
       <PendingLoader loading={isLoading}>
         <IndividualDevicesGate

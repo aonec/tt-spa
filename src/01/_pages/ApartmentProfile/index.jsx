@@ -79,7 +79,6 @@ const ApartmentProfile = () => {
         <Wrapper>
           <div>
             <Comments />
-            {/* <Tags /> */}
             <Information
               style={{ paddingTop: '32px' }}
               square={square}
