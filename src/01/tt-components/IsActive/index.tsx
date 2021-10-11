@@ -20,6 +20,24 @@ export const IsActive = ({ closingDate = null }: any) => {
   );
 };
 
+export const IsActiveBool = ({ active }: any) => {
+  return (
+    <StyledIsActive>
+      {active ? (
+        <>
+          <IconTT icon={'green'} />
+          <span>Активно</span>
+        </>
+      ) : (
+        <>
+          <IconTT icon={'red'} />
+          <span>Не активно</span>
+        </>
+      )}
+    </StyledIsActive>
+  );
+};
+
 export default IsActive;
 
 const StyledIsActive = styled.div`
