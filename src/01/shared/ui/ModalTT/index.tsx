@@ -36,6 +36,8 @@ export const ModalTT: React.FC<Props> = (props) => {
     footer,
   } = props;
 
+  const text = saveBtnText || 'Сохранить';
+
   return (
     <StyledModal
       visible={visible}
@@ -56,7 +58,7 @@ export const ModalTT: React.FC<Props> = (props) => {
                 onClick={onSubmit}
                 disabled={loading}
               >
-                {loading ? <Loader show /> : saveBtnText || 'Сохранить'}
+                {loading ? <Loader show /> : text}
               </ButtonTT>
             )}
           </Footer>

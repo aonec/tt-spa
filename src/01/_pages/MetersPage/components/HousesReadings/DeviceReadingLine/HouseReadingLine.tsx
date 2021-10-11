@@ -114,12 +114,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <Flex style={{ minWidth: 80 }}>
           <HistoryComponent
             style={{ cursor: 'pointer' }}
-            onClick={
-              () => openReadingsHistoryModal(device.id)
-              // history.push(
-              //   `/houses/individualDevice/${device.id}/readingHistory`
-              // )
-            }
+            onClick={() => openReadingsHistoryModal(device.id)}
           />
           <Space />
           <MenuButtonTT
@@ -127,9 +122,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
               {
                 title: 'Открыть историю показаний',
                 cb: () => openReadingsHistoryModal(device.id),
-                // history.push(
-                //   `/houses/individualDevice/${device.id}/readingHistory`
-                // ),
                 show: true,
               },
             ]}
