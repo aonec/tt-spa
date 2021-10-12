@@ -69,6 +69,7 @@ export function ApartmentDeviceItem({
       operatorCabinet
       isDisabled={true}
       source={previousReading?.source}
+      user={previousReading?.user}
     />
   ));
 
@@ -81,6 +82,7 @@ export function ApartmentDeviceItem({
       operatorCabinet
       isDisabled={true}
       source={currentReading?.source}
+      user={currentReading?.user}
     />
   ));
 
