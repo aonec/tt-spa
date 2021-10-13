@@ -58,7 +58,7 @@ const ApartmentProfile = () => {
     numberOfLiving,
     normativeNumberOfLiving,
     housingStock,
-    homeowners,
+    homeownerAccounts,
   } = apartment;
 
   const { city, street, number, id } = housingStock;
@@ -85,7 +85,7 @@ const ApartmentProfile = () => {
               numberOfLiving={numberOfLiving}
               normativeNumberOfLiving={normativeNumberOfLiving}
             />
-            <Owners homeowners={homeowners} />
+            <Owners homeownerAccounts={homeownerAccounts} />
           </div>
 
           <div>

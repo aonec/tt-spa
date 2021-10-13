@@ -42,11 +42,11 @@ export const ApartmentInfo = () => {
   );
 
   const apartment = useStore($apartment);
-  const homeowners = apartment?.homeownerAccounts;
+  const homeownerAccounts = apartment?.homeownerAccounts;
 
   useEffect(() => {
     setCurrentPersonalNumberIndex(0);
-  }, [homeowners]);
+  }, [homeownerAccounts]);
 
   const { userInfo = [], title, comment } = useApartmentInfo(
     apartment,
@@ -54,7 +54,7 @@ export const ApartmentInfo = () => {
   );
   const houseManagement = apartment?.housingStock?.houseManagement;
 
-  const currentHomeowner = homeowners && homeowners[currentPersonalNumberIndex];
+  const currentHomeowner = homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
 
   const pending = useStore(fetchApartmentFx.pending);
 
@@ -189,7 +189,7 @@ export const ApartmentInfo = () => {
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>
           <Space />
-          {homeowners?.map(
+          {homeownerAccounts?.map(
             (homeowner, index) =>
               homeowner?.personalAccountNumber && (
                 <PersonalNumber
