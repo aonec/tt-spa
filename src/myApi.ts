@@ -63,21 +63,18 @@ export enum EPersonType {
   Juristic = "Juristic",
 }
 
-export interface HomeownerListResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-
+export interface HomeownerAccountListResponse {
   /** @format uuid */
-  homeownerAccountId: string;
-  isMainPersonalAccountNumber: boolean;
+  id: string;
   phoneNumber: string | null;
-  personalAccountNumber: string | null;
+  name: string | null;
+  personType: EPersonType;
   paymentCode: string | null;
+  personalAccountNumber: string | null;
+
+  /** @format double */
+  ownershipArea: number;
+  isMainPersonalAccountNumber: boolean;
 }
 
 export interface ApartmentResponse {
@@ -94,7 +91,7 @@ export interface ApartmentResponse {
 
   /** @format uuid */
   mainHomeownerAccountId: string | null;
-  homeowners: HomeownerListResponse[] | null;
+  homeownerAccounts: HomeownerAccountListResponse[] | null;
 
   /** @format int32 */
   numberOfLiving: number | null;
@@ -189,18 +186,6 @@ export interface ApartmentListStatusResponseSuccessApiResponse {
   successResponse: ApartmentListStatusResponse | null;
 }
 
-export interface HomeownersShortResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  cellphone: string | null;
-  email: string | null;
-}
-
 export interface FullAddressResponse {
   city: string | null;
   street: string | null;
@@ -218,7 +203,9 @@ export interface FullAddressResponse {
 export interface HomeownerAccountResponse {
   /** @format uuid */
   id: string;
-  user: HomeownersShortResponse | null;
+  phoneNumber: string | null;
+  name: string | null;
+  personType: EPersonType;
   apartment: FullAddressResponse | null;
   paymentCode: string | null;
   personalAccountNumber: string | null;
@@ -1799,30 +1786,34 @@ export enum PersonType {
   Juristic = "Juristic",
 }
 
-export interface HomeownerCreateServiceModel {
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  phone?: string | null;
-  email?: string | null;
-  personType?: PersonType;
-}
-
 export interface HomeownerAccountCreateServiceModel {
   /** @format int32 */
   apartmentId?: number;
   personalAccountNumber?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  personType?: PersonType;
 
   /** @format date-time */
   openAt?: string;
 
   /** @format double */
   ownershipArea?: number;
-  homeowner?: HomeownerCreateServiceModel | null;
 }
 
 export interface HomeownerAccountResponseSuccessApiResponse {
   successResponse: HomeownerAccountResponse | null;
+}
+
+export interface HomeownerAccountUpdateRequest {
+  personalAccountNumber?: string | null;
+  paymentCode?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  personType?: EPersonType | null;
+
+  /** @format double */
+  ownershipArea?: number | null;
 }
 
 export interface HomeownerAccountCloseRequest {
@@ -1833,27 +1824,20 @@ export interface HomeownerAccountCloseRequest {
   closedAt: string;
 }
 
-export interface HomeownerCreateRequest {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  email?: string | null;
-  phone?: string | null;
-  personType?: EPersonType;
-}
-
 export interface HomeownerAccountCreateRequest {
   personalAccountNumber: string;
 
   /** @format int32 */
   apartmentId: number;
+  name: string;
+  phoneNumber?: string | null;
+  personType?: EPersonType;
 
   /** @format double */
   ownershipArea?: number | null;
 
   /** @format date-time */
   openAt: string;
-  homeowner?: HomeownerCreateRequest | null;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -1879,92 +1863,6 @@ export interface HomeownerCertificateResponse {
 
 export interface HomeownerCertificateResponseSuccessApiResponse {
   successResponse: HomeownerCertificateResponse | null;
-}
-
-export interface HomeownersListResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  address: FullAddressResponse | null;
-  hasTasks: boolean;
-  personalAccountNumber: string | null;
-}
-
-export interface HomeownersListResponsePagedList {
-  /** @format int32 */
-  totalItems: number;
-
-  /** @format int32 */
-  pageNumber: number;
-
-  /** @format int32 */
-  pageSize: number;
-
-  /** @format int32 */
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-
-  /** @format int32 */
-  nextPageNumber: number;
-
-  /** @format int32 */
-  previousPageNumber: number;
-  items: HomeownersListResponse[] | null;
-}
-
-export interface HomeownersListResponsePagedListSuccessApiResponse {
-  successResponse: HomeownersListResponsePagedList | null;
-}
-
-export interface HomeownersApartmentResponse {
-  /** @format int32 */
-  apartmentId: number;
-  city: string | null;
-  street: string | null;
-  housingStockNumber: string | null;
-  apartmentNumber: string | null;
-  personalAccountNumber: string | null;
-  paymentCode: string | null;
-
-  /** @format int32 */
-  numberOfLiving: number | null;
-
-  /** @format int32 */
-  normativeNumberOfLiving: number | null;
-  comment: string | null;
-  square: string | null;
-  ownershipArea: string | null;
-}
-
-export interface HomeownersResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  cellphone: string | null;
-  email: string | null;
-  payments: HomeownersApartmentResponse[] | null;
-}
-
-export interface HomeownersResponseSuccessApiResponse {
-  successResponse: HomeownersResponse | null;
-}
-
-export interface HomeownerUpdateRequest {
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  cellphone?: string | null;
-  email?: string | null;
-  personType?: EPersonType | null;
 }
 
 export interface UpdateHouseManagementRequest {
@@ -2893,31 +2791,27 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
 }
 
 export interface CreateIndividualDeviceRequest {
+  model?: string | null;
   serialNumber: string;
+
+  /** @format date-time */
+  lastCheckingDate: string;
+
+  /** @format date-time */
+  futureCheckingDate: string;
   sealNumber?: string | null;
 
   /** @format date-time */
   sealInstallationDate?: string | null;
 
-  /** @format date-time */
-  lastCheckingDate?: string | null;
-
-  /** @format date-time */
-  futureCheckingDate?: string | null;
-  documentsIds?: number[] | null;
-
   /** @format int32 */
-  bitDepth?: number | null;
+  bitDepth: number;
 
   /** @format double */
-  scaleFactor?: number | null;
+  scaleFactor: number;
 
   /** @format date-time */
   openingDate?: string | null;
-
-  /** @format int32 */
-  checkingNumber?: number | null;
-  model?: string | null;
 
   /** @format int32 */
   apartmentId: number;
@@ -2926,12 +2820,13 @@ export interface CreateIndividualDeviceRequest {
   /** @format int32 */
   mountPlaceId?: number | null;
   rateType: EIndividualDeviceRateType;
-  startupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  startupReadings: BaseIndividualDeviceReadingsCreateRequest;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   isPolling?: boolean;
 
   /** @format int32 */
   contractorId?: number | null;
+  documentsIds?: number[] | null;
 }
 
 export interface CloseDeviceRequest {
@@ -4274,7 +4169,7 @@ export interface TaskListResponse {
   device: MeteringDeviceSearchListResponse | null;
   pipeNode: PipeNodeResponse | null;
   applications: TaskApplicationForTaskResponse[] | null;
-  mainHomeowner: HomeownersShortResponse | null;
+  mainHomeowner: HomeownerAccountListResponse | null;
 
   /** @format int32 */
   totalHomeownersCount: number;
@@ -6209,6 +6104,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags HomeownerAccount
+     * @name HomeownerAccountUpdate
+     * @request PUT:/api/HomeownerAccount/{id}
+     * @secure
+     */
+    homeownerAccountUpdate: (id: string, data: HomeownerAccountUpdateRequest | null, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
      * @name HomeownerAccountCloseCreate
      * @request POST:/api/HomeownerAccount/Close
      * @secure
@@ -6254,85 +6168,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<HomeownerCertificateResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HomeownerAccount/${id}/Certificate`,
         method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersList
-     * @request GET:/api/Homeowners
-     * @secure
-     */
-    homeownersList: (
-      query?: { FullName?: string | null; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
-      params: RequestParams = {},
-    ) =>
-      this.request<HomeownersListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersDetail
-     * @request GET:/api/Homeowners/{homeownerId}
-     * @secure
-     */
-    homeownersDetail: (homeownerId: number, params: RequestParams = {}) =>
-      this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersUpdate
-     * @request PUT:/api/Homeowners/{homeownerId}
-     * @secure
-     */
-    homeownersUpdate: (homeownerId: number, data: HomeownerUpdateRequest | null, params: RequestParams = {}) =>
-      this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersHomeownerAccountsDetail
-     * @request GET:/api/Homeowners/{homeownerId}/HomeownerAccounts
-     * @secure
-     */
-    homeownersHomeownerAccountsDetail: (
-      homeownerId: number,
-      query?: { IsClosed?: boolean | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}/HomeownerAccounts`,
-        method: "GET",
-        query: query,
         secure: true,
         format: "json",
         ...params,

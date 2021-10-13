@@ -42,7 +42,7 @@ export const ApartmentInfo = () => {
   );
 
   const apartment = useStore($apartment);
-  const homeowners = apartment?.homeowners;
+  const homeowners = apartment?.homeownerAccounts;
 
   useEffect(() => {
     setCurrentPersonalNumberIndex(0);
@@ -92,7 +92,7 @@ export const ApartmentInfo = () => {
     {
       title: 'Изменить лицевой счет',
       cb: () =>
-        apartment.homeowners[0]?.id &&
+        apartment?.homeownerAccounts[0]?.id &&
         history.push(`/homeowner/${currentHomeowner?.id}/switchPersonalNumber`),
       show: isSeniorOperator,
     },

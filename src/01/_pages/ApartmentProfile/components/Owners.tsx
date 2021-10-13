@@ -1,22 +1,21 @@
-import { HomeownerListResponse } from 'myApi';
+import { HomeownerAccountListResponse } from 'myApi';
 import React from 'react';
 import Owner from './Owner';
 
 type Props = {
-  homeowners: HomeownerListResponse[];
+  homeowners: HomeownerAccountListResponse[];
 };
 
 const Owners: React.FC<Props> = (props) => {
   const { homeowners } = props;
   const homeownersElems = homeowners.map((homeowner) => {
-    const { fullName, personalAccountNumber, phoneNumber, id } = homeowner;
-    console.log(id);
+    const { name, personalAccountNumber, phoneNumber, id } = homeowner;
 
     return (
       <Owner
         id={id}
         key={personalAccountNumber}
-        firstName={fullName?.replace(' unknown', '')}
+        firstName={name?.replace(' unknown', '')}
         personalAccountNumber={personalAccountNumber}
         phoneNumber={phoneNumber}
       />

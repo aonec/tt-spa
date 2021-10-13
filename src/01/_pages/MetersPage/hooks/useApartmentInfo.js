@@ -11,13 +11,7 @@ export const useApartmentInfo = (apartInfo, homeownerIndex) => {
         housingStock.corpus || ''
       }, кв.${apartmentNumber}`,
     userInfo: [
-      [
-        'Собственник',
-        homeowner.fillName ||
-          `${homeowner.lastName || ''} ${homeowner.firstName || ''} ${
-            homeowner.middleName || ''
-          }`,
-      ],
+      ['Собственник', homeowner.name],
       ['Телефон', homeowners[0]?.phoneNumber ?? '-'],
     ],
     comment: comment,
