@@ -1,5 +1,20 @@
-import { createEvent, createStore } from 'effector';
+import { createGate } from 'effector-react';
+import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
+import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+
+export const $consumptionStatistics = createStore<
+  SubscriberStatisticsСonsumptionResponse[] | null
+>(null);
+
+export const fetchConsumptionStatistics = createEffect<
+  number,
+  SubscriberStatisticsСonsumptionResponse[]
+>();
+
+export const ConsumptionStatisticsGate = createGate<{
+  housingStockId: number;
+}>();
 
 const resourceRangeInitValue = {
   from: null as string | null,
