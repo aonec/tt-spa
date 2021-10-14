@@ -4,6 +4,7 @@ import { $consumptionStatistics } from '../../models';
 import { useStore } from 'effector-react';
 import { useForm } from 'effector-forms/dist';
 import _ from 'lodash';
+import moment from 'moment';
 
 type IterateArrayCallback<T> = ((apartment: T) => any)[];
 
@@ -47,6 +48,15 @@ export function useApartmentList() {
         apartment.electricitySupplyСonsumption <=
           Number(fields.electricity.value.to)
     );
+  }
+
+  if (fields.lastReadingMonth.value) {
+    filterCallbacks.push((apartment) => {
+      return (
+        moment(apartment.dateLastTransmissionOfReading).month() ===
+        fields.lastReadingMonth.value
+      );
+    });
   }
 
   const filteredApartmentList = apartmentList?.filter((elem) => {

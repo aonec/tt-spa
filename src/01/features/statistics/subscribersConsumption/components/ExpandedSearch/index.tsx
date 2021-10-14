@@ -84,6 +84,7 @@ export const ExpandedSearch = () => {
             Месяц последней передачи показаний
           </SearchPointTitle>
           <StyledRangePicker
+            allowClear
             value={
               fields.individualDeviceCheckPeriod.value.from &&
               fields.individualDeviceCheckPeriod.value.to
@@ -99,17 +100,23 @@ export const ExpandedSearch = () => {
             }
             format="DD.MM.YYYY"
             onChange={(value) => {
-              value &&
-                fields.individualDeviceCheckPeriod.onChange({
-                  from: value[0]?.toISOString() || null,
-                  to: value[1]?.toISOString() || null,
-                });
+              fields.individualDeviceCheckPeriod.onChange(
+                value
+                  ? {
+                      from: value[0]?.toISOString() || null,
+                      to: value[1]?.toISOString() || null,
+                    }
+                  : { from: null, to: null }
+              );
             }}
           />
           <StyledDatePicker
-            onChange={(value) =>
-              value && fields.lastReadingMonth.onChange(value.month() + 1)
-            }
+            allowClear
+            onChange={(value) => {
+              fields.lastReadingMonth.onChange(
+                value ? value.month() + 1 : null
+              );
+            }}
             value={
               fields.lastReadingMonth.value
                 ? moment(fields.lastReadingMonth.value, 'M')
