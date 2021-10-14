@@ -9,6 +9,16 @@ import moment from 'moment';
 export const StatisticsList: React.FC = () => {
   const apartmentsList = useStore($consumptionStatistics);
 
+  const sortApartments = (
+    apartment1: SubscriberStatisticsСonsumptionResponse,
+    apartment2: SubscriberStatisticsСonsumptionResponse
+  ) => {
+    const first = Number(apartment1.apartmentNumber) || 0;
+    const second = Number(apartment2.apartmentNumber) || 0;
+
+    return first > second ? 1 : first < second ? -1 : 0;
+  };
+
   const renderApartment = ({
     apartmentNumber,
     coldWaterSupplyСonsumption,
@@ -37,7 +47,7 @@ export const StatisticsList: React.FC = () => {
         <div>Дата последней передачи показаний</div>
         <div>Дата последней проверки</div>
       </Wrap>
-      <div>{apartmentsList?.map(renderApartment)}</div>
+      <div>{apartmentsList?.sort(sortApartments)?.map(renderApartment)}</div>
     </div>
   );
 };
