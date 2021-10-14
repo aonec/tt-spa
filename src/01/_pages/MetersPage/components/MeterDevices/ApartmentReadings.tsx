@@ -18,6 +18,7 @@ import { getPreviousReadingsMonth } from '01/shared/lib/readings/getPreviousRead
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
+import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -71,6 +72,7 @@ export const ApartmentReadings = () => {
 
   return (
     <>
+      <ReadingsHistoryModal />
       <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />

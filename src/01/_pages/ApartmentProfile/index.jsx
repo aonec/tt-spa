@@ -58,7 +58,7 @@ const ApartmentProfile = () => {
     numberOfLiving,
     normativeNumberOfLiving,
     housingStock,
-    homeowners,
+    homeownerAccounts,
   } = apartment;
 
   const { city, street, number, id } = housingStock;
@@ -79,16 +79,13 @@ const ApartmentProfile = () => {
         <Wrapper>
           <div>
             <Comments />
-            <Tags />
             <Information
               style={{ paddingTop: '32px' }}
-              square={square || 'Данные обновляются'}
-              numberOfLiving={numberOfLiving || 'Данные обновляются'}
-              normativeNumberOfLiving={
-                normativeNumberOfLiving || 'Данные обновляются'
-              }
+              square={square}
+              numberOfLiving={numberOfLiving}
+              normativeNumberOfLiving={normativeNumberOfLiving}
             />
-            <Owners homeowners={homeowners} />
+            <Owners homeownerAccounts={homeownerAccounts} />
           </div>
 
           <div>

@@ -76,7 +76,7 @@ export const StyledInput = styled.input`
   }
 
   &:focus {
-    box-shadow: 0 2px 7px #188fffae;
+    box-shadow: 0 4px 8px #188fff52;
   }
 `;
 

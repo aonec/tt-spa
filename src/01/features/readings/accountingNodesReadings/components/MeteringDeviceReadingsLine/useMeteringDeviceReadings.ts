@@ -39,7 +39,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     loading,
     preparedPreviousReadingsArray,
     currentReading: getCurrentReading(
-      readings?.filter((elem) => elem.id) || []
+      readings?.filter(({ id }) => id) || []
     ),
     previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
   };

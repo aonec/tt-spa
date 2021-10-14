@@ -15,7 +15,7 @@ import { MeteringDeviceReadingsLine } from '../MeteringDeviceReadingsLine';
 
 export const MeteringDevicesList = () => {
   const pendingNodes = useStore(fetchNodes.pending);
-  const electicNodes = useStore($electricNodes);
+  const electricNodes = useStore($electricNodes);
   const { sliderIndex, up, down, canDown, canUp } = useSliderIndex();
 
   const header = (
@@ -44,20 +44,31 @@ export const MeteringDevicesList = () => {
     </Header>
   );
 
+  const renderPage = () =>{
+    return (
+        <>
+            {header}
+            {electricNodes?.map((node, index) => (
+                <MeteringDeviceReadingsLine
+                    sliderIndex={sliderIndex}
+                    node={node}
+                    inputIndex={index + 1}
+                    key={index}
+                />
+            ))}
+        </>
+    );
+  }
+
+  const isNullElectricNodes = electricNodes === undefined;
+  const isEmptyElectricNodes = electricNodes?.length === 0;
+  const isShowPage = !isNullElectricNodes && !isEmptyElectricNodes;
+
   return (
     <PendingLoader loading={pendingNodes}>
-      {electicNodes?.length === 0
-        ? 'Нет приборов'
-        : electicNodes?.length
-        ? header
-        : null}
-      {electicNodes?.map((node, index) => (
-        <MeteringDeviceReadingsLine
-          sliderIndex={sliderIndex}
-          node={node}
-          inputIndex={index + 1}
-        />
-      ))}
+        { isNullElectricNodes && null }
+        { isEmptyElectricNodes && 'Нет приборов' }
+        { isShowPage && renderPage() }
     </PendingLoader>
   );
 };

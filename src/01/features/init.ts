@@ -34,3 +34,5 @@ import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
 import './nodes/displayNodes/models/init';
 import './statistics/subscribersConsumption/models/init.ts';
+import './managementFirmUsers/displayCurrentUser/models/init';
+import './homeowner/editPersonalNumber/models/init'

@@ -29,18 +29,40 @@ import confirm from 'antd/lib/modal/confirm';
 import { GetIssueCertificateModal } from '01/features/apartments/printIssueCertificate';
 import { getIssueCertificateButtonClicked } from '01/features/apartments/printIssueCertificate/models';
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
+import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { ESecuredIdentityRoleName } from 'myApi';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
 
+  const [currentPersonalNumberIndex, setCurrentPersonalNumberIndex] = useState(
+    0
+  );
+
   const apartment = useStore($apartment);
-  const { userInfo = [], title, comment } = useApartmentInfo(apartment);
-  const homeowner = apartment?.homeowners[0];
+  const homeownerAccounts = apartment?.homeownerAccounts;
+
+  useEffect(() => {
+    setCurrentPersonalNumberIndex(0);
+  }, [homeownerAccounts]);
+
+  const { userInfo = [], title, comment } = useApartmentInfo(
+    apartment,
+    currentPersonalNumberIndex
+  );
   const houseManagement = apartment?.housingStock?.houseManagement;
 
+  const currentHomeowner = homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
+
   const pending = useStore(fetchApartmentFx.pending);
+
+  const user = useStore($currentManagingFirmUser);
+
+  const isSeniorOperator = user?.userRoles?.find(
+    ({ type }) => type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
+  );
 
   const cancelPauseApartment = () =>
     confirm({
@@ -66,6 +88,13 @@ export const ApartmentInfo = () => {
       title: 'Снять с паузы',
       show: isPaused,
       cb: cancelPauseApartment,
+    },
+    {
+      title: 'Изменить лицевой счет',
+      cb: () =>
+        apartment?.homeownerAccounts[0]?.id &&
+        history.push(`/homeowner/${currentHomeowner?.id}/switchPersonalNumber`),
+      show: isSeniorOperator,
     },
     {
       title: 'Добавить новый прибор',
@@ -156,33 +185,31 @@ export const ApartmentInfo = () => {
       <ApartmentGate id={Number(id)} />
       <PauseApartmentModal />
       <GetIssueCertificateModal />
-
-      <ApartmentInfoWrap>
-        <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
-          <Flex>
-            <ApartmentTitle>{title}</ApartmentTitle>
-            <Space />
-            {homeowner?.personalAccountNumber && (
-              <PersonalNumber>
-                {homeowner?.personalAccountNumber}
-              </PersonalNumber>
-            )}
-          </Flex>
-          <MenuButtonWrap>
-            <MenuButtonTT
-              menuButtonArr={menuButtonArray}
-              loading={pending}
-              size="small"
-            />
-          </MenuButtonWrap>
+      <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
+        <Flex>
+          <ApartmentTitle>{title}</ApartmentTitle>
+          <Space />
+          {homeownerAccounts?.map(
+            (homeowner, index) =>
+              homeowner?.personalAccountNumber && (
+                <PersonalNumber
+                  onClick={() => setCurrentPersonalNumberIndex(index)}
+                  isCurrent={currentHomeowner?.id === homeowner.id}
+                >
+                  {homeowner?.personalAccountNumber}
+                </PersonalNumber>
+              )
+          )}
         </Flex>
-        {content && (
-          <>
-            <Space />
-            {content}
-          </>
-        )}
-      </ApartmentInfoWrap>
+        <MenuButtonWrap>
+          <MenuButtonTT
+            menuButtonArr={menuButtonArray}
+            loading={pending}
+            size="small"
+          />
+        </MenuButtonWrap>
+      </Flex>
+      {!pending ? <ApartmentInfoWrap>{content}</ApartmentInfoWrap> : <Space />}
 
       {apartment && <>{pausedAlert}</>}
     </>
@@ -194,13 +221,23 @@ const MenuButtonWrap = styled.div`
 `;
 
 const PersonalNumber = styled.div`
-  background-color: rgba(24, 158, 233, 1);
+  cursor: pointer;
+  color: black;
+  ${({ isCurrent }) =>
+    isCurrent && `background-color: rgba(24, 158, 233, 1); color: white;`}
   border-radius: 5px;
-  padding: 4px 10px;
-  color: white;
+  padding: 1px 8px;
+  border: 2px solid rgba(24, 158, 233, 1);
   font-weight: 500;
   font-size: 14px;
   width: min-content;
+  margin-right: 10px;
+  transition: 0.2s;
+
+  &:hover {
+    ${({ isCurrent }) =>
+      !isCurrent && `background-color: rgba(24, 158, 233, 0.2);`}
+  }
 `;
 
 const Grid = styled.div`
@@ -275,7 +312,7 @@ const ApartmentComment = ({ comment: commentInitial }) => {
     <CommentModuleWrap>
       <Flex style={{ justifyContent: 'space-between' }}>
         <CommentTitle>Комментарий</CommentTitle>
-        <div>
+        <div style={{ cursor: 'pointer' }}>
           <EditIcon onClick={() => setIsEditMode(true)} />
         </div>
       </Flex>

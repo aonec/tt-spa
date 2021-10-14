@@ -23,7 +23,12 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 
-export const ReadingsHistoryList = () => {
+interface Props {
+  isModal?: boolean;
+  readonly?: boolean;
+}
+
+export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   const {
     values,
     setFieldValue,
@@ -92,7 +97,7 @@ export const ReadingsHistoryList = () => {
           )
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
-        editable={isFirst}
+        editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
         onChange={(value, index) =>
@@ -174,7 +179,7 @@ export const ReadingsHistoryList = () => {
         {firstReadingline}
         {isOpen &&
           readings
-            .filter((elem, index) => elem.isArchived)
+            .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
                 reading,
@@ -208,7 +213,7 @@ export const ReadingsHistoryList = () => {
   };
 
   return (
-    <Wrap>
+    <Wrap isModal={isModal}>
       <GradientLoader loading={pendingHistory} />
       <TableHeader>
         {columnsNames.map((elem) => (
@@ -259,8 +264,21 @@ const GradientLoader = styled.div`
   transform: scale(1, -1);
 `;
 
+interface WrapProps {
+  isModal?: boolean;
+}
+
 const Wrap = styled.div`
   max-width: 960px;
+  ${({ isModal }: WrapProps) =>
+    isModal
+      ? `
+
+    max-height: 620px;
+    overflow-y: auto;
+  
+  `
+      : ''}
 `;
 
 const Grid = styled.div`

@@ -4,21 +4,33 @@ import { Title } from '../Title';
 
 export const Information = (props) => {
   // Пустышка для mapProps
-  const data = ['78 м2', '4', '4'];
 
   const descriptions = [
     'Площадь жилого помещения',
     'Количество проживающих / зарегистрированных',
-    'Нормативное количество проживающих',
+    'Кол-во стояков холодной воды',
+    'Кол-во стояков горячей воды',
   ];
 
-  const { square, numberOfLiving, normativeNumberOfLiving } = props;
-  const mapProps = [square, numberOfLiving, normativeNumberOfLiving];
+  const {
+    square,
+    numberOfLiving,
+    normativeNumberOfLiving,
+    coldWaterRiserCount,
+    hotWaterRiserCount,
+  } = props;
 
-  const list = data.map((value, index) => (
+  const mapProps = [
+    square,
+    numberOfLiving,
+    coldWaterRiserCount,
+    hotWaterRiserCount,
+  ];
+
+  const list = descriptions.map((value, index) => (
     <ListItem key={index}>
       <ListItemDescription>{descriptions[index]}</ListItemDescription>
-      <ListItemValue>{mapProps[index]}</ListItemValue>
+      <ListItemValue>{mapProps[index] || "—"}</ListItemValue>
     </ListItem>
   ));
 
