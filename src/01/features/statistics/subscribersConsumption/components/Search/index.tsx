@@ -1,3 +1,5 @@
+import axios from '01/axios';
+import { HousingStockGate } from '01/features/housingStocks/displayHousingStock/models';
 import {
   cities,
   fromEnter,
@@ -16,9 +18,11 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
+import { HousingStockListResponsePagedList } from 'myApi';
 import React from 'react';
 import {
   $isExpandedSearchOpen,
+  fetchConsumptionStatistics,
   openExpandedSearch,
   subscribersConsumptionFindForm,
 } from '../../models';
@@ -45,6 +49,37 @@ export const Search: React.FC = () => {
     if (fields.city && fields.street && fields.house) submit();
   }
 
+  async function onFindHandler() {
+    const city = fields.city.value;
+    const street = fields.street.value;
+    const house = fields.house.value;
+
+    if (!city || !street || !house) return;
+
+    try {
+      const res: HousingStockListResponsePagedList = await axios.get(
+        'HousingStocks',
+        {
+          params: {
+            City: city,
+            Street: street,
+            HousingStockNumber: house,
+            PageSize: 1,
+            PageNumber: 1,
+          },
+        }
+      );
+
+      if (!res.items) return;
+
+      const housingStock = res.items[0];
+
+      if (!housingStock) return;
+
+      fetchConsumptionStatistics(housingStock.id);
+    } catch (error) {}
+  }
+
   const baseSearch = (
     <>
       <ExistingStreetsGate City={fields.city.value} />
@@ -53,6 +88,7 @@ export const Search: React.FC = () => {
           <FilterButton />
         </div>
         <StyledSelector
+          onBlur={onFindHandler}
           placeholder="Город"
           ref={cityRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
@@ -66,6 +102,7 @@ export const Search: React.FC = () => {
           ))}
         </StyledSelector>
         <StyledAutocomplete
+          onBlur={onFindHandler}
           placeholder="Улица"
           ref={streetRef}
           value={fields.street.value}
@@ -77,6 +114,7 @@ export const Search: React.FC = () => {
           options={options}
         />
         <StyledAutocomplete
+          onBlur={onFindHandler}
           placeholder="Дом"
           value={fields.house.value}
           onChange={fields.house.onChange}
