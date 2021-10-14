@@ -2,12 +2,18 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
-import { $consumptionStatistics } from '../../models';
+import {
+  $consumptionStatistics,
+  fetchConsumptionStatistics,
+} from '../../models';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
+import { round } from '01/hooks/useReadings';
+import { PendingLoader } from '01/shared/ui/PendingLoader';
 
 export const StatisticsList: React.FC = () => {
   const apartmentsList = useStore($consumptionStatistics);
+  const pending = useStore(fetchConsumptionStatistics.pending);
 
   const sortApartments = (
     apartment1: SubscriberStatisticsСonsumptionResponse,
@@ -29,9 +35,9 @@ export const StatisticsList: React.FC = () => {
   }: SubscriberStatisticsСonsumptionResponse) => (
     <ApartmentWrap {...layout}>
       <div>{apartmentNumber}</div>
-      <div>{coldWaterSupplyСonsumption}</div>
-      <div>{hotWaterSupplyСonsumption}</div>
-      <div>{electricitySupplyСonsumption}</div>
+      <div>{round(coldWaterSupplyСonsumption!, 3)}</div>
+      <div>{round(hotWaterSupplyСonsumption!, 3)}</div>
+      <div>{round(electricitySupplyСonsumption!, 3)}</div>
       <div>{moment(dateLastTransmissionOfReading).format('DD.MM.YYYY')}</div>
       <div>{dateLastCheck && moment(dateLastCheck).format('DD.MM.YYYY')}</div>
     </ApartmentWrap>
@@ -47,7 +53,9 @@ export const StatisticsList: React.FC = () => {
         <div>Дата последней передачи показаний</div>
         <div>Дата последней проверки</div>
       </Wrap>
-      <div>{apartmentsList?.sort(sortApartments)?.map(renderApartment)}</div>
+      <PendingLoader loading={pending}>
+        <div>{apartmentsList?.sort(sortApartments)?.map(renderApartment)}</div>
+      </PendingLoader>
     </div>
   );
 };
