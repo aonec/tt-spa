@@ -130,5 +130,9 @@ export const Search: React.FC = () => {
 
   const expandedSearch = <ExpandedSearch />;
 
-  return isOpenExpandedSearch ? expandedSearch : baseSearch;
+  return (
+    <div style={{ paddingLeft: 12 }}>
+      {isOpenExpandedSearch ? expandedSearch : baseSearch}
+    </div>
+  );
 };

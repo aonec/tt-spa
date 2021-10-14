@@ -23,10 +23,11 @@ export const StatisticsPage = () => {
   useEffect(() => setTab(currentTabFromLocation), []);
 
   return (
-    <>
+    <div>
       <Title>Статистика</Title>
       <Tabs activeKey={tab} onChange={(value: any) => setTab(value)}>
         <TabPane
+          style={{ overflow: 'none' }}
           tab="Учет абонентского потребления"
           key="subscribersConsumption"
         >
@@ -38,6 +39,6 @@ export const StatisticsPage = () => {
           key="resourceConsumption"
         ></TabPane>
       </Tabs>
-    </>
+    </div>
   );
 };
