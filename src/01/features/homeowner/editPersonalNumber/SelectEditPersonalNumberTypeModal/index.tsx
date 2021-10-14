@@ -49,9 +49,15 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
 
   useEffect(() => {
     setHomeownerId(
-      apartment?.homeowners?.find((elem) => elem.isMainPersonalAccountNumber)
-        ?.id ||
-        (apartment?.homeowners && apartment?.homeowners[0]?.id) ||
+      () =>
+        Number(
+          apartment?.homeownerAccounts?.find(
+            (elem) => elem.isMainPersonalAccountNumber
+          )?.id
+        ) ||
+        Number(
+          apartment?.homeownerAccounts && apartment?.homeownerAccounts[0]?.id
+        ) ||
         null
     );
   }, [selectedType, apartment]);
@@ -79,8 +85,8 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
 
   const SelectedTypeIcon = selectedType?.icon || (() => <></>);
 
-  const selectedHomeowner = apartment?.homeowners?.find(
-    (elem) => elem.id === homeownerId
+  const selectedHomeowner = apartment?.homeownerAccounts?.find(
+    (elem) => Number(elem.id) === homeownerId
   );
 
   const selectHomeownerAccount = (
@@ -90,11 +96,10 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
       value={homeownerId || void 0}
       onChange={setHomeownerId as any}
     >
-      {apartment?.homeowners?.map((elem) => (
+      {apartment?.homeownerAccounts?.map((elem) => (
         <StyledSelect.Option value={elem.id!}>
           {selectedHomeowner?.isMainPersonalAccountNumber && <MainIcon />}
-          {elem.personalAccountNumber} (
-          {elem?.fullName?.replaceAll('unknown', '')})
+          {elem.personalAccountNumber} ({elem?.name?.replaceAll('unknown', '')})
         </StyledSelect.Option>
       ))}
     </StyledSelect>

@@ -80,7 +80,7 @@ export const useFilter = () => {
           street: apartment.housingStock.street,
           house: apartment.housingStock.number,
           apart: apartment.apartmentNumber,
-          question: apartment.homeowners[0]?.fullName,
+          question: apartment?.homeownerAccounts[0]?.fullName,
         },
       });
   }, [apartment]);

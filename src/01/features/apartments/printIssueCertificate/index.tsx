@@ -22,13 +22,13 @@ export const GetIssueCertificateModal = () => {
   const pendingCertificate = useStore(fetchHomeownerCertificate.pending);
   const certificateRef = useRef();
 
-  if (!apartment?.homeowners?.length) return <></>;
+  if (!apartment?.homeownerAccounts?.length) return <></>;
 
   return (
     <>
       {visible && (
         <HomeownerCerificateGate
-          id={(apartment?.homeowners[0] as any).homeownerAccountId!}
+          id={(apartment?.homeownerAccounts[0] as any).homeownerAccountId!}
         />
       )}
       <ModalTT

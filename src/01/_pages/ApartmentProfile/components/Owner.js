@@ -265,7 +265,7 @@ const TitleWrap = styled.div`
     `};
 `;
 const Owner = (props) => {
-  const { firstName, personalAccountNumber, phoneNumber, id } = props;
+  const { name, personalAccountNumber, phoneNumber, id } = props;
 
   const {
     cellphone,
@@ -300,7 +300,7 @@ const Owner = (props) => {
       <TitleWrap style={{ paddingTop: '32px' }}>
         <Icon icon="key" />
         <Title size="24" style={{ paddingLeft: '8px' }}>
-          {firstName?.replaceAll(' unknown', '') ||
+          {name?.replaceAll(' unknown', '') ||
             'Собственник: данные обновляются'}
         </Title>
       </TitleWrap>
