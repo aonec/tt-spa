@@ -2,28 +2,17 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
-import {
-  $consumptionStatistics,
-  fetchConsumptionStatistics,
-} from '../../models';
+import { fetchConsumptionStatistics } from '../../models';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import moment from 'moment';
 import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
+import _ from 'lodash';
+import { useApartmentList } from './useApartmentList';
 
 export const StatisticsList: React.FC = () => {
-  const apartmentsList = useStore($consumptionStatistics);
+  const { apartmentList } = useApartmentList();
   const pending = useStore(fetchConsumptionStatistics.pending);
-
-  const sortApartments = (
-    apartment1: SubscriberStatisticsСonsumptionResponse,
-    apartment2: SubscriberStatisticsСonsumptionResponse
-  ) => {
-    const first = Number(apartment1.apartmentNumber) || 0;
-    const second = Number(apartment2.apartmentNumber) || 0;
-
-    return first > second ? 1 : first < second ? -1 : 0;
-  };
 
   const renderApartment = ({
     apartmentNumber,
@@ -54,7 +43,7 @@ export const StatisticsList: React.FC = () => {
         <div>Дата последней проверки</div>
       </Wrap>
       <PendingLoader loading={pending}>
-        <div>{apartmentsList?.sort(sortApartments)?.map(renderApartment)}</div>
+        <div>{apartmentList?.map(renderApartment)}</div>
       </PendingLoader>
     </div>
   );
