@@ -6,11 +6,16 @@ const resourceRangeInitValue = {
   to: null as string | null,
 };
 
-export const subscribersConsumptionFilterForm = createForm({
+export const subscribersConsumptionFindForm = createForm({
   fields: {
     city: { init: 'Нижнекамск' },
     street: { init: '' },
     house: { init: '' },
+  },
+});
+
+export const subscribersConsumptionFilterForm = createForm({
+  fields: {
     coldOpen: {
       init: false,
     },

@@ -20,12 +20,12 @@ import React from 'react';
 import {
   $isExpandedSearchOpen,
   openExpandedSearch,
-  subscribersConsumptionFilterForm,
+  subscribersConsumptionFindForm,
 } from '../../models';
 import { ExpandedSearch } from '../ExpandedSearch';
 
 export const Search: React.FC = () => {
-  const { fields, submit } = useForm(subscribersConsumptionFilterForm);
+  const { fields, submit } = useForm(subscribersConsumptionFindForm);
 
   const isOpenExpandedSearch = useStore($isExpandedSearchOpen);
 
