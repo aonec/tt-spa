@@ -16,7 +16,7 @@ export const fetchConsumptionStatistics = createEffect<
 
 export const ConsumptionStatisticsGate = createGate<{
   housingStockId: number;
-  month?: number;
+  month?: string;
 }>();
 
 export const setSelectedHousingStockId = createEvent<number | null>();
@@ -57,7 +57,7 @@ export const subscribersConsumptionFilterForm = createForm({
       },
     },
     lastReadingMonth: {
-      init: null as number | null,
+      init: null as string | null,
     },
     excludeApartments: {
       init: false,

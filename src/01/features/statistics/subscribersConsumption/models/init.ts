@@ -19,10 +19,13 @@ $isExpandedSearchOpen
   .reset(closeExpandedSearch);
 
 forward({
-  from: ConsumptionStatisticsGate.state.map(({ housingStockId, month }) => ({
-    id: housingStockId,
-    month: month ? moment(month, 'M').toISOString() : undefined,
-  })),
+  from: ConsumptionStatisticsGate.state.map(({ housingStockId, month }) => {
+    console.log(month);
+    return {
+      id: housingStockId,
+      month: month ? String(month) : void 0,
+    };
+  }),
   to: fetchConsumptionStatistics,
 });
 
