@@ -123,7 +123,12 @@ export const ExpandedSearch = () => {
                 : undefined
             }
             picker="month"
-            format="MMMM"
+            format="MMMM YYYY"
+            disabledDate={(date) => {
+              const diff = moment().diff(date, 'months');
+
+              return diff < 0 || date.month() - 1 === moment().month();
+            }}
           />
         </Grid>
         <Space h={25} />
@@ -143,7 +148,6 @@ export const ExpandedSearch = () => {
           color="blue"
           onClick={() => {
             closeExpandedSearch();
-            // fetchConsumptionStatistics(id);
           }}
         >
           Применить фильтры
