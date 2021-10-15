@@ -7,6 +7,8 @@ import {
   ConsumptionStatisticsGate,
   fetchConsumptionStatistics,
   $consumptionStatistics,
+  $selectedHousingsStockId,
+  setSelectedHousingStockId,
 } from './index';
 
 fetchConsumptionStatistics.use(getConsumptionStatistics);
@@ -27,3 +29,5 @@ $consumptionStatistics.on(
   fetchConsumptionStatistics.doneData,
   (_, values) => values
 );
+
+$selectedHousingsStockId.on(setSelectedHousingStockId, (_, id) => id);

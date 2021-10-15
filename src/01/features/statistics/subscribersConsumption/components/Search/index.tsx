@@ -19,19 +19,16 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import { HousingStockListResponsePagedList } from 'myApi';
 import React from 'react';
-import { useState } from 'react';
 import {
   $isExpandedSearchOpen,
-  ConsumptionStatisticsGate,
-  fetchConsumptionStatistics,
   openExpandedSearch,
+  setSelectedHousingStockId,
   subscribersConsumptionFindForm,
 } from '../../models';
 import { ExpandedSearch } from '../ExpandedSearch';
 
 export const Search: React.FC = () => {
   const { fields, submit } = useForm(subscribersConsumptionFindForm);
-  const [id, setId] = useState<number | null>(null);
 
   const isOpenExpandedSearch = useStore($isExpandedSearchOpen);
 
@@ -78,13 +75,12 @@ export const Search: React.FC = () => {
 
       if (!housingStock) return;
 
-      setId(housingStock.id);
+      setSelectedHousingStockId(housingStock.id);
     } catch (error) {}
   }
 
   const baseSearch = (
     <>
-      {id && <ConsumptionStatisticsGate housingStockId={id} />}
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="32px 0.5fr 1fr 0.2fr" gap="15px">
         <div onClick={() => void openExpandedSearch()}>

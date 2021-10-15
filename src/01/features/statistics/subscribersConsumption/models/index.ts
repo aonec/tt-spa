@@ -3,6 +3,8 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms';
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 
+export const $selectedHousingsStockId = createStore<number | null>(null);
+
 export const $consumptionStatistics = createStore<
   SubscriberStatisticsСonsumptionResponse[] | null
 >(null);
@@ -16,6 +18,8 @@ export const ConsumptionStatisticsGate = createGate<{
   housingStockId: number;
   month?: string;
 }>();
+
+export const setSelectedHousingStockId = createEvent<number | null>();
 
 const resourceRangeInitValue = {
   from: null as string | null,
