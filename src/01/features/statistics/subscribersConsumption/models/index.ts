@@ -16,7 +16,7 @@ export const fetchConsumptionStatistics = createEffect<
 
 export const ConsumptionStatisticsGate = createGate<{
   housingStockId: number;
-  month?: string;
+  month?: number;
 }>();
 
 export const setSelectedHousingStockId = createEvent<number | null>();

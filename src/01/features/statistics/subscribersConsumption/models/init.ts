@@ -1,5 +1,6 @@
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
 import { forward } from 'effector';
+import moment from 'moment';
 import {
   openExpandedSearch,
   closeExpandedSearch,
@@ -20,7 +21,7 @@ $isExpandedSearchOpen
 forward({
   from: ConsumptionStatisticsGate.state.map(({ housingStockId, month }) => ({
     id: housingStockId,
-    month,
+    month: month ? moment(month, 'M').toISOString() : undefined,
   })),
   to: fetchConsumptionStatistics,
 });

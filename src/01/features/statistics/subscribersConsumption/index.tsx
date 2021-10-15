@@ -4,13 +4,24 @@ import styled from 'styled-components';
 import { useStore } from '../../../../../node_modules/effector-react';
 import { Search } from './components/Search';
 import { StatisticsList } from './components/StatisticsList';
-import { $selectedHousingsStockId, ConsumptionStatisticsGate } from './models';
+import {
+  $selectedHousingsStockId,
+  ConsumptionStatisticsGate,
+  subscribersConsumptionFilterForm,
+} from './models';
+import { useForm } from 'effector-forms';
 
 export const SubscribersConsumption = () => {
   const id = useStore($selectedHousingsStockId);
+  const { fields } = useForm(subscribersConsumptionFilterForm);
   return (
     <Wrap>
-      {id && <ConsumptionStatisticsGate housingStockId={id} />}
+      {id && (
+        <ConsumptionStatisticsGate
+          housingStockId={id}
+          month={fields.lastReadingMonth.value || undefined}
+        />
+      )}
       <Search />
       <Space />
       <StatisticsList />
