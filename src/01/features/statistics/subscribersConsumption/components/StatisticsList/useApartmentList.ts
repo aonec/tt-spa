@@ -50,11 +50,11 @@ export function useApartmentList() {
     );
   }
 
-  if (fields.lastReadingMonth.value) {
+  if (typeof fields.lastReadingMonth.value === 'number') {
     filterCallbacks.push((apartment) => {
       return (
         moment(apartment.dateLastTransmissionOfReading).month() ===
-        fields.lastReadingMonth.value
+        fields.lastReadingMonth.value! - 1
       );
     });
   }
