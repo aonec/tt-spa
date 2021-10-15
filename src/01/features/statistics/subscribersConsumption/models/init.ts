@@ -16,9 +16,10 @@ $isExpandedSearchOpen
   .reset(closeExpandedSearch);
 
 forward({
-  from: ConsumptionStatisticsGate.state.map(
-    ({ housingStockId }) => housingStockId
-  ),
+  from: ConsumptionStatisticsGate.state.map(({ housingStockId, month }) => ({
+    id: housingStockId,
+    month,
+  })),
   to: fetchConsumptionStatistics,
 });
 

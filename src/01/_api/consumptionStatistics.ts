@@ -1,9 +1,12 @@
 import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
 import axios from '01/axios';
 
-export const getConsumptionStatistics = (
-  housingStockId: number
-): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
+export const getConsumptionStatistics = ({
+  id,
+}: {
+  id: number;
+  month?: string;
+}): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
   axios.get(`SubscriberStatistics`, {
-    params: { HousingStockId: housingStockId, Timestamp: '' },
+    params: { HousingStockId: id, Timestamp: '' },
   });

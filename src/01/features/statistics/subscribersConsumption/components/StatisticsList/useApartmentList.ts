@@ -59,6 +59,37 @@ export function useApartmentList() {
     });
   }
 
+  if (
+    fields.individualDeviceCheckPeriod.value.from &&
+    fields.individualDeviceCheckPeriod.value.to
+  ) {
+    filterCallbacks.push((apartment) => {
+      const checkDate = moment(apartment.dateLastCheck);
+
+      if (!checkDate.isValid()) return false;
+
+      const isAfterThanFrom = checkDate.isSameOrAfter(
+        moment(fields.individualDeviceCheckPeriod.value.from)
+      );
+
+      const isBeforeThanTo = checkDate.isSameOrBefore(
+        moment(fields.individualDeviceCheckPeriod.value.to)
+      );
+
+      return isAfterThanFrom && isBeforeThanTo;
+    });
+  }
+
+  if (fields.excludeApartments.value) {
+    filterCallbacks.push((apartment) => {
+      const checkDate = moment(apartment.dateLastCheck);
+
+      if (!checkDate.isValid()) return false;
+
+      return moment().diff(checkDate, 'months') <= 3;
+    });
+  }
+
   const filteredApartmentList = apartmentList?.filter((elem) => {
     const checks = filterCallbacks.map((callback) => Boolean(callback(elem)));
 

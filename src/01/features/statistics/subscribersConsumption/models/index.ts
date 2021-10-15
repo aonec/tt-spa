@@ -8,12 +8,13 @@ export const $consumptionStatistics = createStore<
 >(null);
 
 export const fetchConsumptionStatistics = createEffect<
-  number,
+  { id: number; month?: string },
   SubscriberStatisticsСonsumptionResponse[]
 >();
 
 export const ConsumptionStatisticsGate = createGate<{
   housingStockId: number;
+  month?: string;
 }>();
 
 const resourceRangeInitValue = {

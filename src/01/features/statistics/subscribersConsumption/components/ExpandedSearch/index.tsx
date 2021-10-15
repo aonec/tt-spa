@@ -9,11 +9,13 @@ import { ChevronUp, X } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import {
   closeExpandedSearch,
+  fetchConsumptionStatistics,
   subscribersConsumptionFilterForm,
 } from '../../models';
 import { StyledDatePicker, StyledRangePicker } from '01/shared/ui/Fields';
 import { ButtonTT } from '01/tt-components';
 import moment from 'moment';
+import { useParams } from 'react-router';
 
 export const ExpandedSearch = () => {
   const { fields, reset } = useForm(subscribersConsumptionFilterForm);
@@ -136,9 +138,19 @@ export const ExpandedSearch = () => {
         </Checkbox>
       </div>
       <Footer>
-        <ButtonTT color="white">Отмена</ButtonTT>
+        <ButtonTT color="white" onClick={closeExpandedSearch}>
+          Отмена
+        </ButtonTT>
         <Space />
-        <ButtonTT color="blue">Применить фильтры</ButtonTT>
+        <ButtonTT
+          color="blue"
+          onClick={() => {
+            closeExpandedSearch();
+            // fetchConsumptionStatistics(id);
+          }}
+        >
+          Применить фильтры
+        </ButtonTT>
       </Footer>
     </Wrap>
   );
