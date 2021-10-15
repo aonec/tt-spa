@@ -50,15 +50,6 @@ export function useApartmentList() {
     );
   }
 
-  if (typeof fields.lastReadingMonth.value === 'number') {
-    filterCallbacks.push((apartment) => {
-      return (
-        moment(apartment.dateLastTransmissionOfReading).month() ===
-        fields.lastReadingMonth.value! - 1
-      );
-    });
-  }
-
   if (
     fields.individualDeviceCheckPeriod.value.from &&
     fields.individualDeviceCheckPeriod.value.to
