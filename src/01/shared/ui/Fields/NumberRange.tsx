@@ -25,7 +25,10 @@ export const NumberRange: React.FC<Props> = (props) => {
         value={typeof value.from === 'number' ? value.from : ''}
         onChange={(e) => {
           const numberValue = e.target.value;
-          onChange({ ...value, from: Number(numberValue) });
+          onChange({
+            ...value,
+            from: numberValue === '' ? null : Number(numberValue),
+          });
         }}
       />
       <ArrowRight style={{ color: '#c2c2c2' }} />
@@ -36,7 +39,10 @@ export const NumberRange: React.FC<Props> = (props) => {
         value={typeof value.to === 'number' ? value.to : ''}
         onChange={(e) => {
           const numberValue = e.target.value;
-          onChange({ ...value, to: Number(numberValue) });
+          onChange({
+            ...value,
+            to: numberValue === '' ? null : Number(numberValue),
+          });
         }}
       />
     </Wrap>
