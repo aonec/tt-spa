@@ -22,8 +22,8 @@ export const ConsumptionStatisticsGate = createGate<{
 export const setSelectedHousingStockId = createEvent<number | null>();
 
 const resourceRangeInitValue = {
-  from: null as string | null,
-  to: null as string | null,
+  from: null as number | null,
+  to: null as number | null,
 };
 
 export const subscribersConsumptionFindForm = createForm({

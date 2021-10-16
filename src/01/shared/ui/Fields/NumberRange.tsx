@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { Grid } from '../Layout/Grid';
 
 interface NumberRange {
-  from: string | null;
-  to: string | null;
+  from: number | null;
+  to: number | null;
 }
 
 interface Props {
@@ -22,10 +22,10 @@ export const NumberRange: React.FC<Props> = (props) => {
         placeholder="Введите значение"
         type="number"
         disabled={disabled}
-        value={value.from || ''}
+        value={typeof value.from === 'number' ? value.from : ''}
         onChange={(e) => {
           const numberValue = e.target.value;
-          onChange({ ...value, from: numberValue });
+          onChange({ ...value, from: Number(numberValue) });
         }}
       />
       <ArrowRight style={{ color: '#c2c2c2' }} />
@@ -33,10 +33,10 @@ export const NumberRange: React.FC<Props> = (props) => {
         placeholder="Введите значение"
         type="number"
         disabled={disabled}
-        value={value.to || ''}
+        value={typeof value.to === 'number' ? value.to : ''}
         onChange={(e) => {
           const numberValue = e.target.value;
-          onChange({ ...value, to: numberValue });
+          onChange({ ...value, to: Number(numberValue) });
         }}
       />
     </Wrap>

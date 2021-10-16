@@ -6,7 +6,7 @@ import { useForm } from 'effector-forms/dist';
 import _ from 'lodash';
 import moment from 'moment';
 
-type IterateArrayCallback<T> = ((apartment: T) => any)[];
+type IterateArrayCallback<T> = ((apartment: T) => boolean)[];
 
 export function useApartmentList() {
   const apartmentList = useStore($consumptionStatistics);
@@ -21,12 +21,13 @@ export function useApartmentList() {
     typeof fields.cold.value.from === 'number' &&
     typeof fields.cold.value.to === 'number'
   ) {
-    filterCallbacks.push(
-      (apartment) =>
+    filterCallbacks.push((apartment) =>
+      Boolean(
         apartment.coldWaterSupplyСonsumption &&
-        apartment.coldWaterSupplyСonsumption >=
-          Number(fields.cold.value.from) &&
-        apartment.coldWaterSupplyСonsumption <= Number(fields.cold.value.to)
+          apartment.coldWaterSupplyСonsumption >=
+            Number(fields.cold.value.from) &&
+          apartment.coldWaterSupplyСonsumption <= Number(fields.cold.value.to)
+      )
     );
   }
 
@@ -35,11 +36,13 @@ export function useApartmentList() {
     typeof fields.heat.value.from === 'number' &&
     typeof fields.heat.value.to === 'number'
   ) {
-    filterCallbacks.push(
-      (apartment) =>
+    filterCallbacks.push((apartment) =>
+      Boolean(
         apartment.hotWaterSupplyСonsumption &&
-        apartment.hotWaterSupplyСonsumption >= Number(fields.cold.value.from) &&
-        apartment.hotWaterSupplyСonsumption <= Number(fields.heat.value.to)
+          apartment.hotWaterSupplyСonsumption >=
+            Number(fields.heat.value.from) &&
+          apartment.hotWaterSupplyСonsumption <= Number(fields.heat.value.to)
+      )
     );
   }
 
@@ -48,13 +51,14 @@ export function useApartmentList() {
     typeof fields.electricity.value.from === 'number' &&
     typeof fields.electricity.value.to === 'number'
   ) {
-    filterCallbacks.push(
-      (apartment) =>
+    filterCallbacks.push((apartment) =>
+      Boolean(
         apartment.electricitySupplyСonsumption &&
-        apartment.electricitySupplyСonsumption >=
-          Number(fields.electricity.value.from) &&
-        apartment.electricitySupplyСonsumption <=
-          Number(fields.electricity.value.to)
+          apartment.electricitySupplyСonsumption >=
+            Number(fields.electricity.value.from) &&
+          apartment.electricitySupplyСonsumption <=
+            Number(fields.electricity.value.to)
+      )
     );
   }
 
