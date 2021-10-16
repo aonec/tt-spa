@@ -16,7 +16,11 @@ export function useApartmentList() {
 
   const filterCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> = [];
 
-  if (fields.coldOpen.value && fields.cold.value.from && fields.cold.value.to) {
+  if (
+    fields.coldOpen.value &&
+    typeof fields.cold.value.from === 'number' &&
+    typeof fields.cold.value.to === 'number'
+  ) {
     filterCallbacks.push(
       (apartment) =>
         apartment.coldWaterSupplyСonsumption &&
@@ -26,7 +30,11 @@ export function useApartmentList() {
     );
   }
 
-  if (fields.heatOpen.value && fields.heat.value.from && fields.heat.value.to) {
+  if (
+    fields.heatOpen.value &&
+    typeof fields.heat.value.from === 'number' &&
+    typeof fields.heat.value.to === 'number'
+  ) {
     filterCallbacks.push(
       (apartment) =>
         apartment.hotWaterSupplyСonsumption &&
@@ -37,8 +45,8 @@ export function useApartmentList() {
 
   if (
     fields.electricityOpen.value &&
-    fields.electricity.value.from &&
-    fields.electricity.value.to
+    typeof fields.electricity.value.from === 'number' &&
+    typeof fields.electricity.value.to === 'number'
   ) {
     filterCallbacks.push(
       (apartment) =>
