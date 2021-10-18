@@ -185,7 +185,6 @@ const Internal = () => {
                 <StatisticsPage />
               </Route>
 
-              <Redirect to="/error/" />
             </Switch>
             <ApartmentsRouteGroup />
           </main>
