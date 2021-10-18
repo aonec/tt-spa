@@ -10,7 +10,7 @@ export const $isPauseApartmentModalVisible = createStore(false);
 export const pauseApartmentForm = createForm({
   fields: {
     fromDate: {
-      init: moment().toISOString() as string | null,
+      init: moment().toISOString(true) as string | null,
       rules: [
         {
           name: 'required',

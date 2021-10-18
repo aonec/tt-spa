@@ -147,7 +147,7 @@ const upMonthInReading = (
 
   readingDate.add(1, 'month');
 
-  return { ...reading, readingDate: readingDate.toISOString() };
+  return { ...reading, readingDate: readingDate.toISOString(true) };
 };
 
 const mapArray = <T>(array: T[], ...callbacks: ((elem: T) => T)[]) => {
@@ -171,10 +171,10 @@ sample({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
         .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(),
+        .toISOString(true),
       futureCheckingDate: moment(values.futureCheckingDate)
         .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(),
+        .toISOString(true),
       lastCommercialAccountingDate: values.lastCommercialAccountingDate,
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),

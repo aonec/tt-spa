@@ -102,10 +102,10 @@ const AddDeviceForm = (props: any) => {
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCheckingDate: values.lastCheckingDate.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,

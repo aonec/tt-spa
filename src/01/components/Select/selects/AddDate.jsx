@@ -12,7 +12,7 @@ import 'moment/locale/ru';
 
 const AddDate = ({ getData = () => {} }) => {
   function onChange(date, dateString) {
-    getData({ nextStageDeadline: date.toISOString() ?? null });
+    getData({ nextStageDeadline: date.toISOString(true) ?? null });
   }
 
   return (

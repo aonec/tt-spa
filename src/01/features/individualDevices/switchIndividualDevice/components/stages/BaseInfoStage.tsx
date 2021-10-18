@@ -86,7 +86,7 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString());
+            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString(true));
           }}
           value={fields.lastCheckingDate.value}
         />

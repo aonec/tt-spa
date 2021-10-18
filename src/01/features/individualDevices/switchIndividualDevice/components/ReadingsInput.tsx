@@ -51,7 +51,7 @@ export const ReadingsInput: React.FC<Props> = ({
   );
 
   const readingByCurrentMonth = readings.find((elem) =>
-    compareDates(elem.readingDate, moment().toISOString())
+    compareDates(elem.readingDate, moment().toISOString(true))
   );
 
   const currentReading = readingByCurrentMonth
@@ -165,7 +165,7 @@ const compareDates = (date1: string, date2: string) =>
   moment(date1).format('MM.YYYY') === moment(date2).format('MM.YYYY');
 
 const getNewReadingDate = (sliderIndex: number) =>
-  getDateByReadingMonthSlider(sliderIndex).toISOString();
+  getDateByReadingMonthSlider(sliderIndex).toISOString(true);
 
 function getNewReadingValuesByIndex(value: string, index: number) {
   const res = {

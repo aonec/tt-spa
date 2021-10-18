@@ -115,8 +115,8 @@ const IndividualDeviceEditForm = ({
     onSubmit: async () => {
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(),
+        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,
@@ -126,7 +126,7 @@ const IndividualDeviceEditForm = ({
         sealInstallationDate: moment(
           values.sealInstallationDate,
           'DD.MM.YYYY'
-        ).toISOString(),
+        ).toISOString(true),
         mountPlaceId: values.mountPlaceId,
       };
 
@@ -274,7 +274,7 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
             <DatePickerNative
-              value={values.lastCommercialAccountingDate?.toISOString()}
+              value={values.lastCommercialAccountingDate?.toISOString(true)}
               onChange={(date) => {
                 setFieldValue('lastCommercialAccountingDate', moment(date));
               }}
@@ -283,7 +283,7 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.lastCheckingDate?.toISOString() || null}
+              value={values.lastCheckingDate?.toISOString(true) || null}
               onChange={(date) => {
                 setFieldValue('lastCheckingDate', moment(date));
                 setFieldValue(
@@ -300,7 +300,7 @@ const IndividualDeviceEditForm = ({
 
           <Form.Item label="Дата Следующей поверки" style={styles.w100}>
             <DatePickerNative
-              value={values.futureCheckingDate?.toISOString() || null}
+              value={values.futureCheckingDate?.toISOString(true) || null}
               onChange={(date) => {
                 setFieldValue('futureCheckingDate', moment(date));
               }}

@@ -193,7 +193,7 @@ const CalculatorChangeForm = () => {
       const deregisterForm = {
         deviceId: res.id,
         documentsIds: [123456],
-        closingDateTime: moment().toISOString(),
+        closingDateTime: moment().toISOString(true),
       };
       deregisterDevice(deregisterForm).then((result) => {
         const form = {
