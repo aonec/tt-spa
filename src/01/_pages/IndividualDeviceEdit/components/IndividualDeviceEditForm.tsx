@@ -115,8 +115,8 @@ const IndividualDeviceEditForm = ({
     onSubmit: async () => {
       const form: UpdateIndividualDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
+        lastCheckingDate: values.lastCheckingDate?.toISOString(),
+        futureCheckingDate: values.futureCheckingDate?.toISOString(),
         resource: values.resource,
         model: values.model,
         rateType: values.rateType,
@@ -126,7 +126,7 @@ const IndividualDeviceEditForm = ({
         sealInstallationDate: moment(
           values.sealInstallationDate,
           'DD.MM.YYYY'
-        ).toISOString(true),
+        ).toISOString(),
         mountPlaceId: values.mountPlaceId,
       };
 
