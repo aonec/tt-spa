@@ -1,11 +1,18 @@
+import { putHomeownerAccount } from './../../../../_api/homeowners';
 import {
   openEditPersonalNumberTypeModal,
   closeEditPersonalNumberTypeModal,
   personalNumberEditForm,
+  $editRequestStatus,
+  setEditRequestStatus,
+  editHomeownerAccountEffect,
+  editHomeownerSaveButtonClicked,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
-import { forward } from 'effector';
-import { fetchHomeowner } from '../../displayHomeowner/models';
+import { combine, forward, sample } from 'effector';
+import { $homeowner, fetchHomeowner } from '../../displayHomeowner/models';
+
+editHomeownerAccountEffect.use(putHomeownerAccount);
 
 $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
@@ -24,4 +31,23 @@ forward({
       } as any)
   ),
   to: personalNumberEditForm.setForm,
+});
+
+$editRequestStatus.on(setEditRequestStatus, (_, status) => status);
+
+$editRequestStatus
+  .on(editHomeownerAccountEffect.doneData, () => 'done')
+  .on(editHomeownerAccountEffect.failData, () => 'failed');
+
+sample({
+  source: combine(
+    $homeowner,
+    personalNumberEditForm.$values,
+    (homeowner, { personalAccountNumber, paymentCode, name, phoneNumber }) => ({
+      id: homeowner?.id,
+      data: { personalAccountNumber, paymentCode, name, phoneNumber },
+    })
+  ),
+  clock: editHomeownerSaveButtonClicked,
+  target: editHomeownerAccountEffect as any,
 });

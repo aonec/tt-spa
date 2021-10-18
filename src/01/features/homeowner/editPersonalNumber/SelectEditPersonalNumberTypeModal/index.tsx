@@ -129,6 +129,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
           `/apartment/${id}/homeowners/${homeownerId}/${selectedType?.route}`
         );
       }}
+      disabled={Boolean(selectedType && !homeownerId)}
     >
       {selectedType ? selectHomeownerAccount : selects.map(renderSelectItem)}
     </ModalTT>
