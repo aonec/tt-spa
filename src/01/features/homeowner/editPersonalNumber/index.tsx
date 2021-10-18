@@ -42,7 +42,7 @@ export const EditHomeownerPersonalNumberPage = () => {
         title="Редактирование лицевого счета"
         onSaveHandler={editHomeownerSaveButtonClicked}
       >
-        <PersonalNumberEditForm />
+        <PersonalNumberEditForm type="edit" />
       </PersonaNumberActionPage>
     </>
   );

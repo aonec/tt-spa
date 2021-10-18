@@ -11,8 +11,14 @@ import { useForm } from 'effector-forms/dist';
 import { personalNumberEditForm } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
 
-export const PersonalNumberEditForm: React.FC = () => {
+interface Props {
+  type?: 'switch' | 'edit';
+}
+
+export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
   const { fields } = useForm(personalNumberEditForm);
+
+  const isEdit = type === 'edit';
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     (fields as any)[e.target.name]?.onChange(e.target.value);
@@ -70,11 +76,13 @@ export const PersonalNumberEditForm: React.FC = () => {
           <Space />
           Основной лицевой счет
         </Flex>
-        <DeleteButton>
-          <Trash />
-          <Space w={7} />
-          Закрыть лицевой счет
-        </DeleteButton>
+        {isEdit && (
+          <DeleteButton>
+            <Trash />
+            <Space w={7} />
+            Закрыть лицевой счет
+          </DeleteButton>
+        )}
       </Flex>
     </Wrap>
   );
