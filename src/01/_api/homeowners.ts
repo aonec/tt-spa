@@ -1,4 +1,5 @@
 import {
+  HomeownerAccountReplaceRequest,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
   HomeownerCertificateResponse,
@@ -21,3 +22,7 @@ export const putHomeownerAccount = ({
   id: string;
   data: HomeownerAccountUpdateRequest;
 }): Promise<void> => axios.put(`HomeownerAccount/${id}`, data);
+
+export const replaceHomeownerAccount = (
+  requestPayload: HomeownerAccountReplaceRequest
+): Promise<void> => axios.post('HomeownerAccount/Replace', requestPayload);

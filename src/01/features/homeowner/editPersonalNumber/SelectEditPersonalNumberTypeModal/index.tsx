@@ -33,7 +33,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
     {
       title: 'Заменить лицевой счет',
       icon: SwitchIcon,
-      route: 'switchPersonalNumber',
+      route: 'switchPersonalNumberFx',
     },
     {
       title: 'Добавить новый лицевой счет к этой квартире',

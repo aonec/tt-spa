@@ -43,7 +43,7 @@ export const ApartmentsRouteGroup = () => (
       <EditHomeownerPersonalNumberPage />
     </Route>
     <Route
-      path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumber"
+      path="/apartment/:id/homeowners/:homeownerId/switchPersonalNumberFx"
       exact
     >
       <SwitchPersonalNumberPage />

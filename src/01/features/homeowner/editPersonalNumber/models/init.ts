@@ -48,9 +48,12 @@ sample({
   source: combine(
     $homeowner,
     personalNumberEditForm.$values,
-    (homeowner, { personalAccountNumber, paymentCode, name, phoneNumber }) => ({
+    (
+      homeowner,
+      { personalAccountNumber, paymentCode, name, phoneNumber, openAt }
+    ) => ({
       id: homeowner?.id,
-      data: { personalAccountNumber, paymentCode, name, phoneNumber },
+      data: { personalAccountNumber, paymentCode, name, phoneNumber, openAt },
     })
   ),
   clock: editHomeownerSaveButtonClicked,
