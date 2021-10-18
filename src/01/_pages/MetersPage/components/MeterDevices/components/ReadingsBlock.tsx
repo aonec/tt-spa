@@ -111,7 +111,6 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
   closed,
   status,
 }) => {
-  console.log(user?.name);
   const onFocusHandler = (e: any) => {
     e.target.select();
 
