@@ -35,4 +35,5 @@ import './readings/accountingNodesReadings/models/init.ts';
 import './nodes/displayNodes/models/init';
 import './statistics/subscribersConsumption/models/init.ts';
 import './managementFirmUsers/displayCurrentUser/models/init';
-import './homeowner/editPersonalNumber/models/init'
+import './homeowner/editPersonalNumber/models/init';
+import './homeowner/displayHomeowner/models/init';
