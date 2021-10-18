@@ -1,3 +1,4 @@
+import { createGate } from 'effector-react';
 import { RequestStatusShared } from './../../../readings/displayReadingHistory/hooks/useReadingValues';
 import { HomeownerAccountUpdateRequest } from './../../../../../myApi';
 import { createStore, createEvent, createEffect } from 'effector';
@@ -34,6 +35,10 @@ export const personalNumberEditForm = createForm({
     },
   },
 });
+
+export const AutoCompleteFormGate = createGate<{ autocomplete: boolean }>();
+
+export const PersonalNumberFormGate = createGate();
 
 export const editHomeownerAccountEffect = createEffect<
   { id: string; data: HomeownerAccountUpdateRequest },

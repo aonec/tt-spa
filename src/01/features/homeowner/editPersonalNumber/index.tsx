@@ -7,6 +7,7 @@ import { PersonaNumberActionPage } from './components/PersonalNumberActionPage';
 import { PersonalNumberEditForm } from './components/PersonalNumberEditForm';
 import {
   $editRequestStatus,
+  AutoCompleteFormGate,
   editHomeownerAccountEffect,
   editHomeownerSaveButtonClicked,
   setEditRequestStatus,
@@ -36,6 +37,7 @@ export const EditHomeownerPersonalNumberPage = () => {
 
   return (
     <>
+      <AutoCompleteFormGate autocomplete />
       <HomeownerGate id={homeownerId} />
       <PersonaNumberActionPage
         loading={loading}

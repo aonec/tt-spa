@@ -7,6 +7,8 @@ import {
   setEditRequestStatus,
   editHomeownerAccountEffect,
   editHomeownerSaveButtonClicked,
+  AutoCompleteFormGate,
+  PersonalNumberFormGate,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
@@ -18,20 +20,23 @@ $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
   .reset(closeEditPersonalNumberTypeModal);
 
-forward({
-  from: fetchHomeowner.doneData.map(
-    ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) =>
-      ({
-        name,
-        phoneNumber,
-        personalAccountNumber,
-        paymentCode,
-        isMainAccountingNumber: false,
-        openAt,
-      } as any)
-  ),
-  to: personalNumberEditForm.setForm,
-});
+fetchHomeowner.doneData.watch(
+  ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) => {
+    const isAutocomplete = AutoCompleteFormGate.state.getState().autocomplete;
+
+    console.log(isAutocomplete);
+    if (!isAutocomplete) return;
+
+    personalNumberEditForm.setForm({
+      name,
+      phoneNumber,
+      personalAccountNumber,
+      paymentCode,
+      isMainAccountingNumber: false,
+      openAt,
+    } as any);
+  }
+);
 
 $editRequestStatus.on(setEditRequestStatus, (_, status) => status);
 
@@ -50,4 +55,9 @@ sample({
   ),
   clock: editHomeownerSaveButtonClicked,
   target: editHomeownerAccountEffect as any,
+});
+
+forward({
+  from: PersonalNumberFormGate.close,
+  to: personalNumberEditForm.reset,
 });

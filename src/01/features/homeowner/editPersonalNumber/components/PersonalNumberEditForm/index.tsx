@@ -8,7 +8,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Trash } from 'react-bootstrap-icons';
 import { useForm } from 'effector-forms/dist';
-import { personalNumberEditForm } from '../../models';
+import { personalNumberEditForm, PersonalNumberFormGate } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
 
 interface Props {
@@ -25,6 +25,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
 
   return (
     <Wrap>
+      <PersonalNumberFormGate />
       <Form.Item label="Дата открытия лицевого счета">
         <DatePickerNative
           value={fields.openAt.value}
