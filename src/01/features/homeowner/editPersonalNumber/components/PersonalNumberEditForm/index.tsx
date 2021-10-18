@@ -8,8 +8,15 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Trash } from 'react-bootstrap-icons';
 import { useForm } from 'effector-forms/dist';
-import { personalNumberEditForm, PersonalNumberFormGate } from '../../models';
+import {
+  openCloseHomeonwerAccountModal,
+  personalNumberEditForm,
+  PersonalNumberFormGate,
+} from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
+import confirm from 'antd/lib/modal/confirm';
+import { useHistory, useParams } from 'react-router';
+import axios from '01/axios';
 
 interface Props {
   type?: 'switch' | 'edit';
@@ -17,8 +24,10 @@ interface Props {
 
 export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
   const { fields } = useForm(personalNumberEditForm);
-
+  const history = useHistory();
   const isEdit = type === 'edit';
+
+  const { homeownerId } = useParams<{ homeownerId: string }>();
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     (fields as any)[e.target.name]?.onChange(e.target.value);
@@ -78,7 +87,7 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
           Основной лицевой счет
         </Flex>
         {isEdit && (
-          <DeleteButton>
+          <DeleteButton onClick={() => openCloseHomeonwerAccountModal()}>
             <Trash />
             <Space w={7} />
             Закрыть лицевой счет

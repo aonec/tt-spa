@@ -9,6 +9,9 @@ import {
   editHomeownerSaveButtonClicked,
   AutoCompleteFormGate,
   PersonalNumberFormGate,
+  $isVisibleCloseHomeonwerAccountModal,
+  openCloseHomeonwerAccountModal,
+  closeCloseHomeonwerAccountModal,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
@@ -64,3 +67,7 @@ forward({
   from: PersonalNumberFormGate.close,
   to: personalNumberEditForm.reset,
 });
+
+$isVisibleCloseHomeonwerAccountModal
+  .on(openCloseHomeonwerAccountModal, () => true)
+  .reset(closeCloseHomeonwerAccountModal);

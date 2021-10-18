@@ -13,6 +13,7 @@ import {
   setEditRequestStatus,
 } from './models';
 import { message } from 'antd';
+import { CloseHomeownerAccountModal } from "./components/CloseHomeownerAccountModal"
 
 export const EditHomeownerPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
@@ -37,6 +38,7 @@ export const EditHomeownerPersonalNumberPage = () => {
 
   return (
     <>
+      <CloseHomeownerAccountModal />
       <AutoCompleteFormGate autocomplete />
       <HomeownerGate id={homeownerId} />
       <PersonaNumberActionPage

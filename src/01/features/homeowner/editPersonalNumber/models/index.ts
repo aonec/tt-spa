@@ -46,3 +46,11 @@ export const editHomeownerAccountEffect = createEffect<
 >();
 
 export const editHomeownerSaveButtonClicked = createEvent();
+
+export const $isVisibleCloseHomeonwerAccountModal = createStore(false);
+
+export const openCloseHomeonwerAccountModal = createEvent();
+
+export const closeCloseHomeonwerAccountModal = createEvent();
+
+export const closeHomeownerAccountEffect = createEffect();
