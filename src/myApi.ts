@@ -4307,6 +4307,29 @@ export interface ResourceDisconnectingFilterResponseSuccessApiResponse {
   successResponse: ResourceDisconnectingFilterResponse | null;
 }
 
+export interface SubscriberStatisticsСonsumptionResponse {
+  apartmentNumber: string | null;
+
+  /** @format double */
+  coldWaterSupplyСonsumption: number | null;
+
+  /** @format double */
+  hotWaterSupplyСonsumption: number | null;
+
+  /** @format double */
+  electricitySupplyСonsumption: number | null;
+
+  /** @format date-time */
+  dateLastTransmissionOfReading: string;
+
+  /** @format date-time */
+  dateLastCheck: string | null;
+}
+
+export interface SubscriberStatisticsСonsumptionResponseListSuccessApiResponse {
+  successResponse: SubscriberStatisticsСonsumptionResponse[] | null;
+}
+
 export interface CreateTaskApplicationRequest {
   number?: string | null;
 
@@ -8572,6 +8595,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags SubscriberStatistics
+     * @name SubscriberStatisticsList
+     * @request GET:/api/SubscriberStatistics
+     * @secure
+     */
+    subscriberStatisticsList: (
+      query: { HousingStockId: number; Timestamp?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<SubscriberStatisticsСonsumptionResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/SubscriberStatistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 
