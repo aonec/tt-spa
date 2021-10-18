@@ -30,7 +30,7 @@ sample({
       apartment
     ) => {
       return {
-        replaceHomeownerAccount: homeowner?.id!,
+        ReplaceableAccountId: homeowner?.id!,
         newHomeownerAccount: {
           personalAccountNumber,
           paymentCode,
