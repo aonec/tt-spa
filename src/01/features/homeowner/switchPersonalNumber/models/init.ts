@@ -9,6 +9,7 @@ import { combine, sample } from 'effector';
 import { personalNumberEditForm } from '../../editPersonalNumber/models';
 import { $homeowner } from '../../displayHomeowner/models';
 import { $apartment } from '01/features/apartments/displayApartment/models';
+import moment from 'moment';
 
 switchPersonalNumberFx.use(replaceHomeownerAccount);
 
@@ -35,8 +36,8 @@ sample({
           paymentCode,
           name,
           phoneNumber,
-          openAt,
-          apartmentId: apartment?.id
+          openAt: moment(openAt).toISOString(true),
+          apartmentId: apartment?.id,
         },
       };
     }
