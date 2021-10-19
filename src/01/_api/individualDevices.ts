@@ -73,6 +73,7 @@ export const checkIndividualDevice = async (
 export const getIndividualDevice = async (
   id: number
 ): Promise<IndividualDeviceResponse> => {
+  if (!id) throw 'no id';
   try {
     const res: IndividualDeviceResponse = await axios.get(
       `IndividualDevices/${id}`
