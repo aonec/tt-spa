@@ -8613,7 +8613,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     subscriberStatisticsList: (
-      query: { HousingStockId: number; Timestamp?: string | null },
+      query: { HousingStockId: number; MonthOfLastTransmission?: string | null },
       params: RequestParams = {},
     ) =>
       this.request<SubscriberStatisticsСonsumptionResponseListSuccessApiResponse, ErrorApiResponse>({

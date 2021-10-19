@@ -60,7 +60,7 @@ export const CloseHomeownerAccountModal = () => {
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Дата закрытия текущего лицевого счета">
           <DatePickerNative
-            value={fields.closedAt.value || undefined}
+            value={fields.closedAt.value}
             onChange={fields.closedAt.onChange}
           />
         </Form.Item>

@@ -24,6 +24,7 @@ import {
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import { $homeowner, fetchHomeowner } from '../../displayHomeowner/models';
+import moment from 'moment';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
 
@@ -93,7 +94,10 @@ sample({
     closeHomeownerAccountForm.$values,
     $homeowner,
     (form, homeowner) =>
-      ({ closeAt: form?.closedAt!, homeownerAccountId: homeowner?.id! } as any)
+      ({
+        ClosedAt: moment(form?.closedAt!).toISOString(true),
+        HomeownerAccountId: homeowner?.id!,
+      } as any)
   ),
   target: closeHomeownerAccountFx,
 });
