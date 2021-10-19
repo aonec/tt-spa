@@ -7,6 +7,7 @@ import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentRe
 import { useStore } from 'effector-react';
 import {
   $individualDevices,
+  fetchIndividualDevicesFx,
   IndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import {
@@ -32,6 +33,8 @@ const HousesDevices: React.FC = () => {
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
 
+  const pendingDevices = useStore(fetchIndividualDevicesFx.pending);
+
   useEffect(() => reset && reset(), [housingStockId]);
 
   const deviceElemsList = devices?.slice()?.sort((device1, device2) => {
@@ -43,6 +46,7 @@ const HousesDevices: React.FC = () => {
 
   const deviceElems = deviceElemsList.map((device, index) => (
     <HouseReadingLine
+      disabled={pendingDevices}
       sliderIndex={sliderIndex || 0}
       numberOfPreviousReadingsInputs={deviceElemsList
         .slice(0, index)

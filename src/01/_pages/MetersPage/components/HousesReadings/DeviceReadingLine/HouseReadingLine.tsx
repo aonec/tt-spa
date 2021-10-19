@@ -22,7 +22,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
       sliderIndex,
@@ -82,7 +82,12 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     const { icon, color } = DeviceIcons[device.resource];
 
     return (
-      <HouseReadingsDevice>
+      <HouseReadingsDevice
+        style={{
+          pointerEvents: disabled ? 'none' : undefined,
+          cursor: disabled ? 'not-allowed' : undefined,
+        }}
+      >
         <div>{device.apartmentNumber}</div>
 
         <Column>
@@ -184,4 +189,5 @@ type Props = {
   device: IndividualDeviceListItemResponse;
   numberOfPreviousReadingsInputs: number;
   sliderIndex: number;
+  disabled?: boolean;
 };
