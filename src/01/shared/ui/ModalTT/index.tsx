@@ -19,9 +19,6 @@ interface Props {
   customSubmit?: ReactNode;
   centered?: boolean;
   footer?: ReactNode;
-  customCancelButton?(): void;
-  disabled?: boolean;
-  saveButtonType?: 'blue' | 'red';
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -37,9 +34,6 @@ export const ModalTT: React.FC<Props> = (props) => {
     customSubmit,
     centered,
     footer,
-    customCancelButton,
-    disabled,
-    saveButtonType,
   } = props;
 
   const text = saveBtnText || 'Сохранить';
@@ -54,19 +48,15 @@ export const ModalTT: React.FC<Props> = (props) => {
       footer={
         footer || (
           <Footer>
-            <ButtonTT
-              color={'white'}
-              key="back"
-              onClick={customCancelButton || onCancel}
-            >
+            <ButtonTT color={'white'} key="back" onClick={onCancel}>
               Отмена
             </ButtonTT>
             {customSubmit || (
               <ButtonTT
-                color={saveButtonType || 'blue'}
+                color="blue"
                 key="submit"
                 onClick={onSubmit}
-                disabled={loading || disabled}
+                disabled={loading}
               >
                 {loading ? <Loader show /> : text}
               </ButtonTT>

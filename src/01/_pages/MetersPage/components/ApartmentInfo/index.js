@@ -31,16 +31,15 @@ import { getIssueCertificateButtonClicked } from '01/features/apartments/printIs
 import { useApartmentInfo } from '../../hooks/useApartmentInfo';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { ESecuredIdentityRoleName } from 'myApi';
-import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
-import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
-import { $currentPersonalNumberIndex, setCurrentPersonalNumberIndex } from '01/features/homeowner/displayHomeowner/models';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
 
-  const currentPersonalNumberIndex = useStore($currentPersonalNumberIndex);
+  const [currentPersonalNumberIndex, setCurrentPersonalNumberIndex] = useState(
+    0
+  );
 
   const apartment = useStore($apartment);
   const homeownerAccounts = apartment?.homeownerAccounts;
@@ -55,8 +54,7 @@ export const ApartmentInfo = () => {
   );
   const houseManagement = apartment?.housingStock?.houseManagement;
 
-  const currentHomeowner =
-    homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
+  const currentHomeowner = homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
 
   const pending = useStore(fetchApartmentFx.pending);
 
@@ -93,7 +91,9 @@ export const ApartmentInfo = () => {
     },
     {
       title: 'Изменить лицевой счет',
-      cb: () => openEditPersonalNumberTypeModal(),
+      cb: () =>
+        apartment?.homeownerAccounts[0]?.id &&
+        history.push(`/homeowner/${currentHomeowner?.id}/switchPersonalNumber`),
       show: isSeniorOperator,
     },
     {
@@ -185,7 +185,6 @@ export const ApartmentInfo = () => {
       <ApartmentGate id={Number(id)} />
       <PauseApartmentModal />
       <GetIssueCertificateModal />
-      <SelectEditPersonalNumberTypeModal />
       <Flex style={{ justifyContent: 'space-between', marginBottom: -12 }}>
         <Flex>
           <ApartmentTitle>{title}</ApartmentTitle>

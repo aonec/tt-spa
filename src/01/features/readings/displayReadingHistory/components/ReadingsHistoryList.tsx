@@ -274,7 +274,7 @@ const Wrap = styled.div`
     isModal
       ? `
 
-    max-height: 520px;
+    max-height: 620px;
     overflow-y: auto;
   
   `

@@ -1940,9 +1940,6 @@ export interface CreateHousingMeteringDeviceReadingsRequest {
 
   /** @format double */
   nonResidentialRoomConsumption?: number | null;
-
-  /** @format date-time */
-  readingDate?: string;
 }
 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse {
@@ -6287,6 +6284,45 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsDelete
+     * @request DELETE:/api/HousingMeteringDeviceReadings
+     * @secure
+     */
+    housingMeteringDeviceReadingsDelete: (query?: { id?: string }, params: RequestParams = {}) =>
+      this.request<any, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings`,
+        method: "DELETE",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingMeteringDeviceReadings
+     * @name HousingMeteringDeviceReadingsCreateOrUpdateLastCreate
+     * @request POST:/api/HousingMeteringDeviceReadings/CreateOrUpdateLast
+     * @secure
+     */
+    housingMeteringDeviceReadingsCreateOrUpdateLastCreate: (
+      data: CreateHousingMeteringDeviceReadingsRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingMeteringDeviceReadings/CreateOrUpdateLast`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags HousingMeteringDevices
      * @name HousingMeteringDevicesList
      * @request GET:/api/HousingMeteringDevices
@@ -8363,48 +8399,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/CallCenterWorkingReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Reports
-     * @name ReportsIndividualMeteringDevicesReportList
-     * @request GET:/api/Reports/IndividualMeteringDevicesReport
-     * @secure
-     */
-    reportsIndividualMeteringDevicesReportList: (
-      query?: { From?: string | null; To?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/IndividualMeteringDevicesReport`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Reports
-     * @name ReportsHouseManagementsReportList
-     * @request GET:/api/Reports/HouseManagementsReport
-     * @secure
-     */
-    reportsHouseManagementsReportList: (
-      query?: { From?: string | null; To?: string | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Reports/HouseManagementsReport`,
         method: "GET",
         query: query,
         secure: true,
