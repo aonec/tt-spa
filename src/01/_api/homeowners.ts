@@ -35,4 +35,4 @@ export const closeHomeownerAccount = (
 
 export const addHomeowner = (
   reqestPayload: HomeownerAccountCreateServiceModel
-): Promise<void> => axios.post('Homeowner', reqestPayload);
+): Promise<void> => axios.post('HomeownerAccount', reqestPayload);
