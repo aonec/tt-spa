@@ -112,10 +112,10 @@ const FormEditODPU = ({
 
       const form: UpdatePipeHousingMeteringDeviceRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate?.toISOString(),
-        futureCheckingDate: values.futureCheckingDate?.toISOString(),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(),
+        lastCheckingDate: values.lastCheckingDate?.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate?.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(true),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(true),
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
         model: values.model,

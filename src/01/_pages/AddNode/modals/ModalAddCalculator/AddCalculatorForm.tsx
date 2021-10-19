@@ -69,10 +69,10 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
     onSubmit: async () => {
       const form: CreateCalculatorRequest = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCheckingDate: values.lastCheckingDate.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {

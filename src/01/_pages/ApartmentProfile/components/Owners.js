@@ -3,13 +3,8 @@ import Owner from './Owner';
 
 const Owners = (props) => {
   const { homeownerAccounts } = props;
-  const res = homeownerAccounts.map((homeowner, index) => {
-    const {
-      personalAccountNumber,
-      phoneNumber,
-      name,
-      id,
-    } = homeowner;
+  const res = homeownerAccounts?.map((homeowner, index) => {
+    const { personalAccountNumber, phoneNumber, name, id } = homeowner;
     return (
       <Owner
         id={id}

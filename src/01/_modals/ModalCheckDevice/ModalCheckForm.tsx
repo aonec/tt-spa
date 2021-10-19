@@ -51,8 +51,8 @@ const ModalCheckForm = ({ handleCancel, device }: ModalCheckFormInterface) => {
     onSubmit: async () => {
       const form: CheckDeviceRequest = {
         deviceId: values.deviceId,
-        currentCheckingDate: values.lastCheckingDate.toISOString(),
-        futureCheckingDate: values.futureCheckingDate.toISOString(),
+        currentCheckingDate: values.lastCheckingDate.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate.toISOString(true),
       };
       checkDevice(form).then((res) => {
         setTimeout(handleCancel, 1000);

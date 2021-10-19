@@ -139,7 +139,7 @@ const ModalGroupReport = () => {
       dispatch(
         setForm({
           ...values,
-          dates: [values.dates[0].toISOString(), values.dates[1].toISOString()],
+          dates: [values.dates[0].toISOString(true), values.dates[1].toISOString(true)],
         })
       );
 

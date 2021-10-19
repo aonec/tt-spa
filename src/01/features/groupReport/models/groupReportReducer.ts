@@ -15,7 +15,7 @@ const initialForm = {
   name: reportName,
   address: 'addressString',
   period: 'currentMonth',
-  dates: [moment().startOf('month').toISOString(), moment().toISOString()] as [
+  dates: [moment().startOf('month').toISOString(true), moment().toISOString(true)] as [
     string,
     string
   ],

@@ -87,7 +87,7 @@ export const CloseIndividualDeviceModal = () => {
                 : null
             }
             onChange={(value) =>
-              value && fields.clousingDate.onChange(value?.toISOString())
+              value && fields.clousingDate.onChange(value?.toISOString(true))
             }
             format="DD.MM.YYYY"
           />
