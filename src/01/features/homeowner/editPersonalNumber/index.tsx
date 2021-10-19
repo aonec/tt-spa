@@ -1,49 +1,53 @@
-import { ModalTT } from '01/shared/ui/ModalTT';
-import React from 'react';
 import { useStore } from 'effector-react';
-import { $isSelectEditPersonalNumberTypeModalOpen } from './models';
-import { ReactNode } from 'react-router/node_modules/@types/react';
-import styled from 'styled-components';
+import React from 'react';
+import { useHistory, useParams } from 'react-router';
+import { useEffect } from 'react';
+import { HomeownerGate } from '../displayHomeowner/models';
+import { PersonaNumberActionPage } from './components/PersonalNumberActionPage';
+import { PersonalNumberEditForm } from './components/PersonalNumberEditForm';
+import {
+  $editRequestStatus,
+  AutoCompleteFormGate,
+  editHomeownerAccountEffect,
+  editHomeownerSaveButtonClicked,
+  setEditRequestStatus,
+} from './models';
+import { message } from 'antd';
+import { CloseHomeownerAccountModal } from "./components/CloseHomeownerAccountModal"
 
-export const SelectEditPersonalNumberTypeModal: React.FC = () => {
-  const isOpen = useStore($isSelectEditPersonalNumberTypeModalOpen);
+export const EditHomeownerPersonalNumberPage = () => {
+  const { homeownerId } = useParams<{ homeownerId: string }>();
+  const loading = useStore(editHomeownerAccountEffect.pending);
+  const status = useStore($editRequestStatus);
+  const history = useHistory();
 
-  const selects: SelectItem[] = [];
+  useEffect(() => {
+    if (!status) return;
 
-  const renderSelectItem = ({ title, icon, action }: SelectItem) => (
-    <StyledSelectItem onClick={action}>
-      {icon}
-      <StyledSelectItemTitle>{title}</StyledSelectItemTitle>
-    </StyledSelectItem>
-  );
+    if (status === 'done') {
+      history.goBack();
+      message.success('Лицевой счет успешно изменен');
+    }
+
+    if (status === 'failed') {
+      message.error('Ошибка сохранения');
+    }
+
+    setEditRequestStatus(null);
+  }, [status]);
 
   return (
-    <ModalTT visible={isOpen} title="Выберите действие" >
-      {selects.map(renderSelectItem)}
-    </ModalTT>
+    <>
+      <CloseHomeownerAccountModal />
+      <AutoCompleteFormGate autocomplete />
+      <HomeownerGate id={homeownerId} />
+      <PersonaNumberActionPage
+        loading={loading}
+        title="Редактирование лицевого счета"
+        onSaveHandler={editHomeownerSaveButtonClicked}
+      >
+        <PersonalNumberEditForm type="edit" />
+      </PersonaNumberActionPage>
+    </>
   );
 };
-
-interface SelectItem {
-  title: string;
-  icon: ReactNode;
-  action(): void;
-}
-
-const StyledSelectItem = styled.div`
-  border: 1px solid rgba(220, 222, 228, 1);
-  border-radius: 15px;
-
-  display: flex;
-  align-items: center;
-  padding: 15px;
-
-  transition: 0.2s;
-
-  &:hover {
-    border: 1px solid rgba(24, 158, 233, 1);
-    box-shadow: 0 4px 8px rgba(24, 158, 233, 0, 32);
-  }
-`;
-
-const StyledSelectItemTitle = styled.div``;
