@@ -31,7 +31,7 @@ export async function createOrUpdateLast(
   payload: CreateHousingMeteringDeviceReadingsRequest
 ) {
   return await axios.post(
-    'HousingMeteringDeviceReadings/CreateOrUpdateLast',
+    'HousingMeteringDeviceReadings',
     payload
   );
 }

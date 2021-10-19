@@ -1,8 +1,7 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import {
-  createOrUpdateLast,
-} from '01/_api/meteringDeviceReadings';
+import { createOrUpdateLast } from '01/_api/meteringDeviceReadings';
+import moment from 'moment';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -35,6 +34,7 @@ export const ConsumptionInput: React.FC<Props> = ({
         deviceId,
         nonResidentialRoomConsumption: Number(value),
         value: reading.value,
+        readingDate: moment().toISOString(true),
       });
 
       refetch();

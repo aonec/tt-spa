@@ -21,23 +21,11 @@ import { forward, guard, sample } from 'effector';
 import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
 
 requestReadingsFx.use(
-  // () =>
-  //   new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       reject({ message: 'Ошибка' });
-  //     }, 2000);
-  //   })
   requestReadings
 );
 
 postReadingFx.use((data) => {
   const { value, deviceId } = data;
-
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     reject({ message: 'Ошибка' });
-  //   }, 2000);
-  // });
   return postReading({ value, deviceId });
 });
 
