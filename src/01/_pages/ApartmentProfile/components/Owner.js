@@ -38,6 +38,7 @@ export const Certificate = (props) => {
     nowDate.getDate() + months[nowDate.getMonth() - 1] + nowDate.getFullYear();
   return (
     <div
+      ref={props.ref}
       className="messageBox"
       style={{ left: '454px', top: '66px', padding: '12px 24px' }}
     >
