@@ -1,4 +1,5 @@
 import {
+  HomeownerAccountCloseRequest,
   HomeownerAccountReplaceRequest,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
@@ -26,3 +27,7 @@ export const putHomeownerAccount = ({
 export const replaceHomeownerAccount = (
   requestPayload: HomeownerAccountReplaceRequest
 ): Promise<void> => axios.post('HomeownerAccount/Replace', requestPayload);
+
+export const closeHomeownerAccount = (
+  payload: HomeownerAccountCloseRequest
+): Promise<void> => axios.post('HomeownerAccount/Close', payload);

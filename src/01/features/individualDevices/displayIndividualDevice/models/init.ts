@@ -3,7 +3,7 @@ import {
   fetchIndividualDeviceFx,
   $individualDevice,
 } from './index';
-import { forward } from 'effector';
+import { forward, guard } from 'effector';
 import { getIndividualDevice } from '01/_api/individualDevices';
 
 fetchIndividualDeviceFx.use(getIndividualDevice);
@@ -13,6 +13,10 @@ $individualDevice
   .reset(IndividualDeviceGate.close);
 
 forward({
-  from: IndividualDeviceGate.open.map((state) => state.id),
+  from: guard({
+    clock: IndividualDeviceGate.open,
+    source: IndividualDeviceGate.state.map((state) => state.id),
+    filter: Boolean,
+  }),
   to: fetchIndividualDeviceFx,
 });
