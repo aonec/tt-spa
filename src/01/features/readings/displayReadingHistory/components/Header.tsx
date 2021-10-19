@@ -31,8 +31,6 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
               <DeviceDataString />
               <Space />
               <IsActiveBool active={device?.closingDate === null} />
-              <Space />
-              <HousingStockAddress />
             </Flex>
           </div>
         </div>

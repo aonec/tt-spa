@@ -22,7 +22,7 @@ export const ReadingHistoryPage: React.FC<Props> = ({
 
   return (
     <>
-      <IndividualDeviceGate id={Number(deviceId)} />
+      {deviceId && <IndividualDeviceGate id={Number(deviceId)} />}
       <ReadingHistoryGate deviceId={Number(deviceId)} />
       <ReadingHistoryHeader isModal={isModal} />
       <ReadingsHistoryList readonly={readonly} isModal={isModal} />

@@ -11,13 +11,10 @@ import {
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import {
   $housingStock,
-  fetchHousingStockFx,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import { combine } from 'effector';
 import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { EResourceType } from 'myApi';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
@@ -32,16 +29,6 @@ const HousesDevices: React.FC = () => {
 
   const devices = useStore($individualDevices);
   const house = useStore($housingStock);
-
-  const isLoading = useStore(
-    combine(
-      fetchIndividualDeviceFx.pending,
-      fetchHousingStockFx.pending,
-      (pendingDevices, pendingHouse) => pendingDevices || pendingHouse
-    )
-  );
-
-  const pendingDevices = useStore(fetchIndividualDeviceFx.pending);
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
 
@@ -73,17 +60,15 @@ const HousesDevices: React.FC = () => {
       <ConfirmReadingValueModal />
       <ReadingsHistoryModal />
       <HousingStockGate id={Number(housingStockId)} />
-      <PendingLoader loading={isLoading}>
-        <IndividualDevicesGate
-          HousingStockId={Number(housingStockId)}
-          Resource={EResourceType.Electricity}
-        />
-        {house && <HouseBanner house={house} />}
-        {!!deviceElems.length && (
-          <HouseReadingsHeader sliderProps={sliderProps} />
-        )}
-        {!pendingDevices && deviceElems}
-      </PendingLoader>
+      <IndividualDevicesGate
+        HousingStockId={Number(housingStockId)}
+        Resource={EResourceType.Electricity}
+      />
+      {house && <HouseBanner house={house} />}
+      {!!deviceElems.length && (
+        <HouseReadingsHeader sliderProps={sliderProps} />
+      )}
+      {deviceElems}
     </>
   );
 };

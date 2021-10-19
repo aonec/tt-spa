@@ -1,6 +1,9 @@
 import { createGate } from 'effector-react';
 import { RequestStatusShared } from './../../../readings/displayReadingHistory/hooks/useReadingValues';
-import { HomeownerAccountUpdateRequest } from './../../../../../myApi';
+import {
+  HomeownerAccountCloseRequest,
+  HomeownerAccountUpdateRequest,
+} from './../../../../../myApi';
 import { createStore, createEvent, createEffect } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
@@ -53,4 +56,29 @@ export const openCloseHomeonwerAccountModal = createEvent();
 
 export const closeCloseHomeonwerAccountModal = createEvent();
 
-export const closeHomeownerAccountEffect = createEffect();
+export const closeHomeownerAccountFx = createEffect<
+  HomeownerAccountCloseRequest,
+  void
+>();
+
+export const $closeHomeownerRequestStatus = createStore<RequestStatusShared>(
+  null
+);
+
+export const resetCloseHomeownerRequestStatus = createEvent();
+
+export const closeHomeownerAccountButtonClicked = createEvent();
+
+export const closeHomeownerAccountForm = createForm({
+  fields: {
+    closedAt: {
+      init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
+  },
+});
