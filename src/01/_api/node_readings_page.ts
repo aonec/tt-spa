@@ -24,8 +24,8 @@ export const requestNodeReadings = async (
 ): Promise<RequestNodeReadingsFunctionInterface> => {
   const params = {
     ...searchQuery,
-    from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(),
-    to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString(),
+    from: searchQuery.from.add(moment().utcOffset(), 'minute').toISOString(true),
+    to: searchQuery.to.add(moment().utcOffset(), 'minute').toISOString(true),
   };
 
   const readings = await axios.get<any, ReadingsInterface>('Reports/Archives', {

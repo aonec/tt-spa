@@ -105,8 +105,8 @@ export const ExpandedSearch = () => {
               fields.individualDeviceCheckPeriod.onChange(
                 value
                   ? {
-                      from: value[0]?.toISOString() || null,
-                      to: value[1]?.toISOString() || null,
+                      from: value[0]?.toISOString(true) || null,
+                      to: value[1]?.toISOString(true) || null,
                     }
                   : { from: null, to: null }
               );
@@ -115,7 +115,7 @@ export const ExpandedSearch = () => {
           <StyledDatePicker
             allowClear
             onChange={(value) => {
-              fields.lastReadingMonth.onChange(value && value.toISOString());
+              fields.lastReadingMonth.onChange(value && value.toISOString(true));
             }}
             value={
               fields.lastReadingMonth.value

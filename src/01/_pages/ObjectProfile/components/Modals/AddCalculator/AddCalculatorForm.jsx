@@ -48,10 +48,10 @@ const AddCalculatorForm = (props) => {
   } = useFormik({
     initialValues: {
       serialNumber: '',
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(4, 'years').toISOString(),
-      lastCommercialAccountingDate: moment().toISOString(),
-      futureCommercialAccountingDate: moment().toISOString(),
+      lastCheckingDate: moment().toISOString(true),
+      futureCheckingDate: moment().add(4, 'years').toISOString(true),
+      lastCommercialAccountingDate: moment().toISOString(true),
+      futureCommercialAccountingDate: moment().toISOString(true),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,
@@ -237,7 +237,7 @@ const AddCalculatorForm = (props) => {
               placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date.toISOString(true));
                 setFieldValue(
                   'futureCheckingDate',
                   moment(date).add(3, 'years')
@@ -254,7 +254,7 @@ const AddCalculatorForm = (props) => {
               placeholder="Укажите дату"
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date.toISOString(true));
               }}
               value={moment(values.futureCheckingDate)}
             />
@@ -272,7 +272,7 @@ const AddCalculatorForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'lastCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(true)
                 );
               }}
               value={moment(values.lastCommercialAccountingDate)}
@@ -291,7 +291,7 @@ const AddCalculatorForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'futureCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(true)
                 );
               }}
               value={moment(values.futureCommercialAccountingDate)}

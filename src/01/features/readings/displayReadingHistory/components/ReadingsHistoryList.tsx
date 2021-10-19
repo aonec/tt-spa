@@ -90,7 +90,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
                 getIndividualDeviceRateNumByName(device?.rateType!)
               ),
               deviceId: device?.id!,
-              readingDate: reading.readingDateTime || moment().toISOString(),
+              readingDate: reading.readingDateTime || moment().toISOString(true),
               isForced: true,
             } as any,
             { year, month, id: reading.id }

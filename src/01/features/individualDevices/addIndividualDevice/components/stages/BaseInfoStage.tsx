@@ -52,7 +52,7 @@ export const BaseInfoStage = () => {
   const onChangeDateField = (name: string) => (value: moment.Moment | null) => {
     if (!value || !(fields as any)[name]) return;
 
-    (fields as any)[name].onChange(value.toISOString());
+    (fields as any)[name].onChange(value.toISOString(true));
   };
 
   const onChangeStartupReadings = (valueNumber: 1 | 2 | 3 | 4) => (e: any) =>
@@ -92,7 +92,7 @@ export const BaseInfoStage = () => {
 
             nextCheckingDate.set('year', nextYear);
 
-            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString());
+            fields.futureCheckingDate.onChange(nextCheckingDate.toISOString(true));
           }}
           value={fields.lastCheckingDate.value}
         />

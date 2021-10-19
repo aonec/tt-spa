@@ -9,5 +9,5 @@ export const getConsumptionStatistics = ({
   month?: string;
 }): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
   axios.get(`SubscriberStatistics`, {
-    params: { HousingStockId: id, Timestamp: month },
+    params: { HousingStockId: id, MonthOfLastTransmission: month },
   });

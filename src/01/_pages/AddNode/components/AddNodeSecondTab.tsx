@@ -70,8 +70,8 @@ const AddNodeSecondTab = () => {
         nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(),
-        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
+        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(true),
       };
       setNode((prevState: any) => ({
         ...prevState,

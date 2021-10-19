@@ -136,8 +136,8 @@ export const EditStaffStatusModal: React.FC = () => {
                 moment.Moment
               ];
 
-              fields.startDate.onChange(startDate.toISOString());
-              fields.endDate.onChange(endDate.toISOString());
+              fields.startDate.onChange(startDate.toISOString(true));
+              fields.endDate.onChange(endDate.toISOString(true));
             }}
           />
           <ErrorMessage>

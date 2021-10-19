@@ -122,14 +122,14 @@ const ModalAddDeviceForm = ({
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
-    lastCheckingDate: moment().toISOString(),
-    futureCheckingDate: moment().add(3, 'years').toISOString(),
+    lastCheckingDate: moment().toISOString(true),
+    futureCheckingDate: moment().add(3, 'years').toISOString(true),
     lastCommercialAccountingDate: lastCommercialAccountingDate
-      ? moment(lastCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(lastCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(futureCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,

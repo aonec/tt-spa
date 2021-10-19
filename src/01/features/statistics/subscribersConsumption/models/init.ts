@@ -20,7 +20,6 @@ $isExpandedSearchOpen
 
 forward({
   from: ConsumptionStatisticsGate.state.map(({ housingStockId, month }) => {
-    console.log(month);
     return {
       id: housingStockId,
       month: month ? String(month) : void 0,

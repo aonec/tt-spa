@@ -16,7 +16,7 @@ export const DatePickerNative: React.FC<Props> = ({
   disabled,
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
-  const value = moment(incomingValue).toISOString();
+  const value = moment(incomingValue).toISOString(true);
   const currentValueToMoment = moment(innerValue);
   const isCurrentValueValid = currentValueToMoment.isValid();
 
@@ -26,6 +26,7 @@ export const DatePickerNative: React.FC<Props> = ({
 
   function onChangeGlobal() {
     if (innerValue) onChange && onChange(currentValueToMoment.toISOString());
+
     if (isCurrentValueValid) setInitialInnerValue();
   }
 

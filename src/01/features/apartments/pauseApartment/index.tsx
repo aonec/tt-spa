@@ -37,7 +37,7 @@ export const PauseApartmentModal = () => {
             fields.fromDate.value ? moment(fields.fromDate.value) : undefined
           }
           onChange={(value: moment.Moment | null) =>
-            fields.fromDate.onChange(value && value.toISOString())
+            fields.fromDate.onChange(value && value.toISOString(true))
           }
           format="DD.MM.YYYY"
           disabledDate={(value) => value.diff(moment(fields.toDate.value)) > 0}
@@ -53,7 +53,7 @@ export const PauseApartmentModal = () => {
           allowClear
           value={fields.toDate.value ? moment(fields.toDate.value) : undefined}
           onChange={(value: moment.Moment | null) => {
-            fields.toDate.onChange(value && value.toISOString());
+            fields.toDate.onChange(value && value.toISOString(true));
           }}
           disabledDate={(value) =>
             value.diff(moment(fields.fromDate.value)) < 0
