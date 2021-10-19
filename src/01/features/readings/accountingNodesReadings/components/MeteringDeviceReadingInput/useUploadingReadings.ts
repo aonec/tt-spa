@@ -3,6 +3,7 @@ import {
   createOrUpdateLast,
   deleteMeteringDeviceReading,
 } from '01/_api/meteringDeviceReadings';
+import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMeteringDeviceReadings';
 
@@ -38,6 +39,7 @@ export function useUploadingReadings(params: Params) {
         value: Number(value),
         nonResidentialRoomConsumption:
           meteringDeviceReading?.nonResidentialRoomConsumption,
+        readingDate: moment().toISOString(true),
       });
 
       setStatus('done');
