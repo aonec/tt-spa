@@ -1,4 +1,7 @@
-import { putHomeownerAccount } from './../../../../_api/homeowners';
+import {
+  closeHomeownerAccount,
+  putHomeownerAccount,
+} from './../../../../_api/homeowners';
 import {
   openEditPersonalNumberTypeModal,
   closeEditPersonalNumberTypeModal,
@@ -12,12 +15,19 @@ import {
   $isVisibleCloseHomeonwerAccountModal,
   openCloseHomeonwerAccountModal,
   closeCloseHomeonwerAccountModal,
+  closeHomeownerAccountFx,
+  $closeHomeownerRequestStatus,
+  resetCloseHomeownerRequestStatus,
+  closeHomeownerAccountButtonClicked,
+  closeHomeownerAccountForm,
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
 import { $homeowner, fetchHomeowner } from '../../displayHomeowner/models';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
+
+closeHomeownerAccountFx.use(closeHomeownerAccount);
 
 $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
@@ -71,3 +81,19 @@ forward({
 $isVisibleCloseHomeonwerAccountModal
   .on(openCloseHomeonwerAccountModal, () => true)
   .reset(closeCloseHomeonwerAccountModal);
+
+$closeHomeownerRequestStatus
+  .on(closeHomeownerAccountFx.doneData, () => 'done')
+  .on(closeHomeownerAccountFx.failData, () => 'failed')
+  .reset(resetCloseHomeownerRequestStatus);
+
+sample({
+  clock: closeHomeownerAccountForm.formValidated,
+  source: combine(
+    closeHomeownerAccountForm.$values,
+    $homeowner,
+    (form, homeowner) =>
+      ({ closeAt: form?.closedAt!, homeownerAccountId: homeowner?.id! } as any)
+  ),
+  target: closeHomeownerAccountFx,
+});
