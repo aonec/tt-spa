@@ -27,17 +27,6 @@ export const GetIssueCertificateModal = () => {
 
   if (!apartment?.homeownerAccounts?.length) return <></>;
 
-  const getCertificate = () =>
-    homeownerCertificate &&
-    !pendingCertificate && (
-      <div style={{ marginBottom: 70 }}>
-        <Certificate
-          certificate={homeownerCertificate}
-          ref={certificateRef as any}
-        />
-      </div>
-    );
-
   return (
     <>
       <HomeownerCerificateGate
@@ -55,11 +44,19 @@ export const GetIssueCertificateModal = () => {
                 {pendingCertificate ? <Loader show /> : 'Печать'}
               </ButtonTT>
             )}
-            content={() => (certificateRef as any).current}
+            content={() => {
+              const node = (certificateRef as any).current;
+
+              return node;
+            }}
           />
         }
       >
-        {getCertificate()}
+        {homeownerCertificate && !pendingCertificate && (
+          <div style={{ marginBottom: 70 }} ref={certificateRef as any}>
+            <Certificate certificate={homeownerCertificate} />
+          </div>
+        )}
       </ModalTT>
     </>
   );
