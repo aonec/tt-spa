@@ -33,15 +33,14 @@ import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displa
 import { ESecuredIdentityRoleName } from 'myApi';
 import { SelectEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/SelectEditPersonalNumberTypeModal';
 import { openEditPersonalNumberTypeModal } from '01/features/homeowner/editPersonalNumber/models';
+import { $currentPersonalNumberIndex, setCurrentPersonalNumberIndex } from '01/features/homeowner/displayHomeowner/models';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
   const history = useHistory();
   const { id } = useParams();
 
-  const [currentPersonalNumberIndex, setCurrentPersonalNumberIndex] = useState(
-    0
-  );
+  const currentPersonalNumberIndex = useStore($currentPersonalNumberIndex);
 
   const apartment = useStore($apartment);
   const homeownerAccounts = apartment?.homeownerAccounts;
@@ -56,7 +55,8 @@ export const ApartmentInfo = () => {
   );
   const houseManagement = apartment?.housingStock?.houseManagement;
 
-  const currentHomeowner = homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
+  const currentHomeowner =
+    homeownerAccounts && homeownerAccounts[currentPersonalNumberIndex];
 
   const pending = useStore(fetchApartmentFx.pending);
 
