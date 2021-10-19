@@ -1,5 +1,6 @@
 import {
   HomeownerAccountCloseRequest,
+  HomeownerAccountCreateServiceModel,
   HomeownerAccountReplaceRequest,
   HomeownerAccountResponse,
   HomeownerAccountUpdateRequest,
@@ -31,3 +32,7 @@ export const replaceHomeownerAccount = (
 export const closeHomeownerAccount = (
   payload: HomeownerAccountCloseRequest
 ): Promise<void> => axios.post('HomeownerAccount/Close', payload);
+
+export const addHomeowner = (
+  reqestPayload: HomeownerAccountCreateServiceModel
+): Promise<void> => axios.post('Homeowner', reqestPayload);
