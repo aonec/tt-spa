@@ -1,6 +1,5 @@
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
 import { forward } from 'effector';
-import moment from 'moment';
 import {
   openExpandedSearch,
   closeExpandedSearch,

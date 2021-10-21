@@ -34,6 +34,11 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
       </DeviceLink>
       <ApartmentInfo>
         <MountPlace>{translateMountPlace(mountPlace)}</MountPlace>
+        {device.closingDate && (
+          <ClosingDate>
+            {moment(device.closingDate).format('DD.MM.YYYY')}
+          </ClosingDate>
+        )}
         <DateLine
           lastCheckingDate={lastCheckingDate}
           futureCheckingDate={futureCheckingDate}
@@ -49,6 +54,11 @@ const ApartmentDevice = ({ device }: DeviceInfoProps) => {
     </DeviceColumn>
   );
 };
+
+const ClosingDate = styled.div`
+  font-weight: bold;
+  margin-right: 10px;
+`;
 
 const MagneticSeal = styled.div`
   margin: 3px 0 0 24px;
