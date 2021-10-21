@@ -2971,28 +2971,6 @@ export interface IndividualDeviceReadingsHistoryResponseSuccessApiResponse {
   successResponse: IndividualDeviceReadingsHistoryResponse | null;
 }
 
-export interface CheckIndividualDeviceRequest {
-  /** @format int32 */
-  deviceId: number;
-  documentsIds?: number[] | null;
-
-  /** @format date-time */
-  currentCheckingDate: string;
-
-  /** @format date-time */
-  futureCheckingDate: string;
-  sealNumber?: string | null;
-
-  /** @format date-time */
-  sealInstallationDate?: string | null;
-  newDeviceStartupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  newDeviceDefaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  previousDeviceFinishingReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-
-  /** @format int32 */
-  contractorId?: number | null;
-}
-
 export interface InspectorResponse {
   /** @format int32 */
   id: number;
@@ -5497,6 +5475,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
+     * @name DataMigrationsChangeHousingStockManagingFirmCreate
+     * @request POST:/api/DataMigrations/ChangeHousingStockManagingFirm
+     * @secure
+     */
+    dataMigrationsChangeHousingStockManagingFirmCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ChangeHousingStockManagingFirm`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
      * @name DataMigrationsCreateAdminCreate
      * @request POST:/api/DataMigrations/CreateAdmin
      * @secure
@@ -7212,25 +7206,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags IndividualDevices
-     * @name IndividualDevicesCheckCreate
-     * @request POST:/api/IndividualDevices/check
-     * @secure
-     */
-    individualDevicesCheckCreate: (data: CheckIndividualDeviceRequest | null, params: RequestParams = {}) =>
-      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualDevices/check`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesWithoutReadingsCreate
      * @request POST:/api/IndividualDevices/closeDevicesWithoutReadings
      * @secure
@@ -8613,7 +8588,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     subscriberStatisticsList: (
-      query: { HousingStockId: number; MonthOfLastTransmission?: string | null },
+      query: {
+        HousingStockId: number;
+        MonthOfLastTransmission?: string | null;
+        HotWaterSupply?: boolean | null;
+        ColdWaterSupply?: boolean | null;
+        Electricity?: boolean | null;
+      },
       params: RequestParams = {},
     ) =>
       this.request<SubscriberStatisticsСonsumptionResponseListSuccessApiResponse, ErrorApiResponse>({
