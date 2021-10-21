@@ -5,7 +5,6 @@ import {
   SwitchIndividualDeviceRequest,
   IndividualDeviceResponse,
   MeteringDeviceResponse,
-  CheckIndividualDeviceRequest,
   EOrderByRule,
   IndividualDeviceListItemResponse,
 } from '../../myApi';
@@ -55,12 +54,8 @@ export const switchIndividualDevice = async (
   return res;
 };
 
-export interface CheckIndividualDeviceRequestPayload extends WithMagnetSeal {
-  device: CheckIndividualDeviceRequest;
-}
-
 export const checkIndividualDevice = async (
-  requestPayload: CheckIndividualDeviceRequest
+  requestPayload: any
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/check',
