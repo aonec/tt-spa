@@ -29,12 +29,14 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         {device.serialNumber}
         <SerialNumber>{` ${device.model}`}</SerialNumber>
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
-        <ClosingDate>
-          {/* {moment().format('DD.MM.YYYY')} */}
-        </ClosingDate>
       </DeviceLink>
       <ApartmentInfo>
         <ActiveLine isActive={isActive} closingReason={device.closingReason} />
+        {device.closingDate && (
+          <ClosingDate>
+            {moment(device.closingDate).format('DD.MM.YYYY')}
+          </ClosingDate>
+        )}
         <DateLine
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}
@@ -45,9 +47,8 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
 };
 
 const ClosingDate = styled.div`
-  color: red;
-  margin-left: 15px;
-  font-weight: lighter;
+  margin-right: 15px;
+  font-weight: bold;
 `;
 
 const DeviceColumn = styled.div`
