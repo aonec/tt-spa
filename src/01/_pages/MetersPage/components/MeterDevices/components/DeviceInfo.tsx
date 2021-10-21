@@ -8,6 +8,7 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import moment from 'moment';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -28,6 +29,9 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
         {device.serialNumber}
         <SerialNumber>{` ${device.model}`}</SerialNumber>
         <MountPlace>{translateMountPlace(device.mountPlace)}</MountPlace>
+        <ClosingDate>
+          {/* {moment().format('DD.MM.YYYY')} */}
+        </ClosingDate>
       </DeviceLink>
       <ApartmentInfo>
         <ActiveLine isActive={isActive} closingReason={device.closingReason} />
@@ -39,6 +43,12 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
     </DeviceColumn>
   );
 };
+
+const ClosingDate = styled.div`
+  color: red;
+  margin-left: 15px;
+  font-weight: lighter;
+`;
 
 const DeviceColumn = styled.div`
   display: flex;
