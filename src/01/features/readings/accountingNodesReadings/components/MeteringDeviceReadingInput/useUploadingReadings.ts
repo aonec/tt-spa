@@ -33,13 +33,18 @@ export function useUploadingReadings(params: Params) {
     if (!edited) return;
 
     setStatus('pending');
+
+    const date = moment();
+
+    date.add(1, 'month');
+
     try {
       await createOrUpdateLast({
         deviceId,
         value: Number(value),
         nonResidentialRoomConsumption:
           meteringDeviceReading?.nonResidentialRoomConsumption,
-        readingDate: moment().toISOString(true),
+        readingDate: date.toISOString(true),
       });
 
       setStatus('done');

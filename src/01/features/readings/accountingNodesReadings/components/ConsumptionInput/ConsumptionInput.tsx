@@ -34,7 +34,7 @@ export const ConsumptionInput: React.FC<Props> = ({
         deviceId,
         nonResidentialRoomConsumption: Number(value),
         value: reading.value,
-        readingDate: moment().toISOString(true),
+        readingDate: reading.readingDate,
       });
 
       refetch();
