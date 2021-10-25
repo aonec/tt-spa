@@ -32,22 +32,23 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
       </DeviceLink>
       <ApartmentInfo>
         <ActiveLine isActive={isActive} closingReason={device.closingReason} />
-        {device.closingDate && (
-          <ClosingDate>
-            {moment(device.closingDate).format('DD.MM.YYYY')}
-          </ClosingDate>
-        )}
         <DateLine
           lastCheckingDate={device.lastCheckingDate}
           futureCheckingDate={device.futureCheckingDate}
         />
       </ApartmentInfo>
+      {device.closingDate && (
+        <ClosingDate>
+          {moment(device.closingDate).format('DD.MM.YYYY')}
+        </ClosingDate>
+      )}
     </DeviceColumn>
   );
 };
 
 const ClosingDate = styled.div`
-  margin-right: 15px;
+  margin-top: 2px;
+  margin-left: 25px;
   font-weight: bold;
 `;
 
