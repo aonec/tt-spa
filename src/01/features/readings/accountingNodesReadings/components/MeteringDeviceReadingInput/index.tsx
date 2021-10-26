@@ -13,6 +13,7 @@ import { MeteringDeviceReading } from '../MeteringDeviceReadingsLine/useMetering
 import { useUploadingReadings } from './useUploadingReadings';
 
 interface Props {
+  prevReading?: MeteringDeviceReading;
   reading?: MeteringDeviceReading;
   onChange?(value: number): void;
   resource?: EResourceType;
@@ -34,6 +35,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     current,
     deviceId,
     inputIndex,
+    prevReading,
   } = props;
 
   const colored = Boolean(current);
@@ -54,6 +56,7 @@ export const MeteringDeviceReadingInput: React.FC<Props> = (props) => {
     meteringDeviceReading: reading,
     refetch,
     deviceId,
+    prevValue: prevReading?.value,
   });
 
   const fieldValue = scopedValue === '0' ? 0 : scopedValue || '';

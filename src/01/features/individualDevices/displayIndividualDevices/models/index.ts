@@ -9,6 +9,21 @@ export const $individualDevices = createStore<
   IndividualDeviceListItemResponse[]
 >([]);
 
+export const $pagedIndividualDevices = createStore<
+  IndividualDeviceListItemResponse[]
+>([]);
+
+export const $pagedIndividualDevicePageNumber = createStore<number>(1);
+
+export const fetchNextPageOfIndividualDevices = createEvent();
+
+export const fetchNextPageOfIndividualDevicesFx = createEffect<
+  GetIndividualDeviceRequestParams,
+  IndividualDeviceListItemResponse[]
+>();
+
+export const PagedIndividualDevicesGate = createGate<GetIndividualDeviceRequestParams>();
+
 export const fetchIndividualDevicesFx = createEffect<
   GetIndividualDeviceRequestParams,
   IndividualDeviceListItemResponse[]

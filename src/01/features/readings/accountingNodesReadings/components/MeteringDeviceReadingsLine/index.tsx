@@ -43,6 +43,7 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
         refetch={refetch}
       />
       <MeteringDeviceReadingInput
+        prevReading={previousReading}
         reading={currentReading}
         deviceId={counter?.id!}
         loading={loading}
@@ -69,31 +70,30 @@ export const MeteringDeviceReadingsLine: React.FC<Props> = ({
   );
 
   const getConsumption = () => {
-      const previousReadingValue = _.get(previousReading, 'value', null);
-      const currentReadingValue = _.get(currentReading, 'value', null);
-      return (
-          <div>
-              {((previousReadingValue !== null) && (currentReadingValue !== null))
-                  ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
-                  : null
-              }
-          </div>
-      )
+    const previousReadingValue = _.get(previousReading, 'value', null);
+    const currentReadingValue = _.get(currentReading, 'value', null);
+    return (
+      <div>
+        {previousReadingValue !== null && currentReadingValue !== null
+          ? `${round(currentReadingValue - previousReadingValue, 3)} кВт`
+          : null}
+      </div>
+    );
   };
 
   const getConsumptionInput = () => {
-      const isShow = Boolean(currentReading && counter?.id);
-      if (!isShow) {
-          return <div></div>;
-      }
-      return (
-          <ConsumptionInput
-              reading={currentReading!}
-              refetch={refetch}
-              deviceId={counter?.id!}
-          />
-      );
-  }
+    const isShow = Boolean(currentReading && counter?.id);
+    if (!isShow) {
+      return <div></div>;
+    }
+    return (
+      <ConsumptionInput
+        reading={currentReading!}
+        refetch={refetch}
+        deviceId={counter?.id!}
+      />
+    );
+  };
 
   return (
     <Wrap temp={gridTemp} gap="15px">
