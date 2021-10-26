@@ -1,4 +1,5 @@
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
+import { openConfirmReadingModal } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import {
   createOrUpdateLast,
   deleteMeteringDeviceReading,
@@ -11,10 +12,11 @@ interface Params {
   meteringDeviceReading?: MeteringDeviceReading;
   refetch: () => void;
   deviceId: number;
+  prevValue?: number;
 }
 
 export function useUploadingReadings(params: Params) {
-  const { meteringDeviceReading, refetch, deviceId } = params;
+  const { meteringDeviceReading, refetch, deviceId, prevValue } = params;
 
   const [value, setValue] = useState<string>(
     getReadingValue(meteringDeviceReading?.value)
@@ -70,7 +72,15 @@ export function useUploadingReadings(params: Params) {
     scopedValue: value,
     fieldOnChange: setValue,
     edited,
-    saveReading,
+    saveReading() {
+      if (prevValue && Number(value) < prevValue)
+        return openConfirmReadingModal({
+          title: `Показание ${value} меньше предыдущего (${prevValue})`,
+          callback: saveReading,
+        });
+
+      saveReading();
+    },
     status,
     deleteReading,
   };
