@@ -54,11 +54,16 @@ sample({
     (values, pageNumber) => ({
       ...values,
       PageNumber: pageNumber,
-      PageSize: 15,
+      PageSize: 5,
     })
   ),
   target: [fetchNextPageOfIndividualDevicesFx],
 });
+
+$pagedIndividualDevicePageNumber.on(
+  fetchNextPageOfIndividualDevicesFx.doneData,
+  (prev) => prev + 1
+);
 
 $pagedIndividualDevices
   .on(PagedIndividualDevicesGate.close, () => [])
