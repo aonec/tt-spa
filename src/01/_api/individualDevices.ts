@@ -97,7 +97,7 @@ export const getIndividualDevices = async (
   const res: {
     items: IndividualDeviceListItemResponse[];
   } = await axios.get('IndividualDevices', {
-    params: { ...params, PageSize: 10000 },
+    params: { ...params },
   });
 
   return res?.items;

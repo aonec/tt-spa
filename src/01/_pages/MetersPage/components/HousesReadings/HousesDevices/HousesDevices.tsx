@@ -6,20 +6,22 @@ import HouseBanner from './HouseBanner';
 import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentReadings';
 import { useStore } from 'effector-react';
 import {
-  $individualDevices,
-  fetchIndividualDevicesFx,
-  IndividualDevicesGate,
+  $pagedIndividualDevices,
+  fetchNextPageOfIndividualDevices,
+  fetchNextPageOfIndividualDevicesFx,
+  PagedIndividualDevicesGate,
 } from '01/features/individualDevices/displayIndividualDevices/models';
 import {
   $housingStock,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import { fetchIndividualDeviceFx } from '01/features/individualDevices/displayIndividualDevice/models';
 import { EResourceType } from 'myApi';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { Loader } from '01/_components/Loader';
+import Button from '01/_components/Button';
 
 type ParamsType = {
   id: string;
@@ -28,12 +30,12 @@ type ParamsType = {
 const HousesDevices: React.FC = () => {
   let { id: housingStockId }: ParamsType = useParams();
 
-  const devices = useStore($individualDevices);
+  const devices = useStore($pagedIndividualDevices);
   const house = useStore($housingStock);
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
 
-  const pendingDevices = useStore(fetchIndividualDevicesFx.pending);
+  const pendingDevices = useStore(fetchNextPageOfIndividualDevicesFx.pending);
 
   useEffect(() => reset && reset(), [housingStockId]);
 
@@ -64,7 +66,7 @@ const HousesDevices: React.FC = () => {
       <ConfirmReadingValueModal />
       <ReadingsHistoryModal />
       <HousingStockGate id={Number(housingStockId)} />
-      <IndividualDevicesGate
+      <PagedIndividualDevicesGate
         HousingStockId={Number(housingStockId)}
         Resource={EResourceType.Electricity}
       />
@@ -73,6 +75,12 @@ const HousesDevices: React.FC = () => {
         <HouseReadingsHeader sliderProps={sliderProps} />
       )}
       {deviceElems}
+      {pendingDevices && <Loader show size={20} />}
+      {!pendingDevices && (
+        <Button color="blue" onClick={() => fetchNextPageOfIndividualDevices()}>
+          Загрузить приборы
+        </Button>
+      )}
     </>
   );
 };

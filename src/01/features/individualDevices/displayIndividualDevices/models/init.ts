@@ -1,8 +1,9 @@
 import { getIndividualDevices } from '01/_api/individualDevices';
-import { forward, guard, sample } from 'effector';
+import { combine, forward, guard, sample } from 'effector';
 import {
   $individualDevices,
   $isShownClosedDevices,
+  $pagedIndividualDevicePageNumber,
   $pagedIndividualDevices,
   fetchIndividualDevicesFx,
   fetchNextPageOfIndividualDevices,
@@ -47,7 +48,15 @@ forward({
 
 sample({
   clock: fetchNextPageOfIndividualDevices,
-  source: PagedIndividualDevicesGate.state,
+  source: combine(
+    PagedIndividualDevicesGate.state,
+    $pagedIndividualDevicePageNumber,
+    (values, pageNumber) => ({
+      ...values,
+      PageNumber: pageNumber,
+      PageSize: 15,
+    })
+  ),
   target: [fetchNextPageOfIndividualDevicesFx],
 });
 
