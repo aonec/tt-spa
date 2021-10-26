@@ -13,7 +13,8 @@ import {
   switchPersonalNumber,
   switchPersonalNumberFx,
 } from './models';
-import { message } from 'antd';
+import { message, Steps } from 'antd';
+import styled from 'styled-components';
 
 export const SwitchPersonalNumberPage = () => {
   const { homeownerId } = useParams<{ homeownerId: string }>();
@@ -38,12 +39,12 @@ export const SwitchPersonalNumberPage = () => {
   }, [status]);
 
   return (
-    <>
+    <Wrap>
       <HomeownerGate id={homeownerId} />
       <PersonaNumberActionPage
         onSaveHandler={switchPersonalNumber}
         loading={pendingSwitch}
-        title="Замена лицевого счета"
+        title="Разделение лицевого счета"
       >
         <StyledSelect
           disabled
@@ -51,8 +52,16 @@ export const SwitchPersonalNumberPage = () => {
           style={{ width: '50%' }}
         />
         <SpaceLine />
-        <PersonalNumberEditForm type="switch" />
+        <PersonalNumberEditForm type="split" />
       </PersonaNumberActionPage>
-    </>
+      <Steps direction="vertical" current={1}>
+        <Step title="Finished" description="This is a description." />
+        <Step title="In Progress" description="This is a description." />
+        <Step title="Waiting" description="This is a description." />
+      </Steps>
+    </Wrap>
   );
 };
+const Step = Steps.Step;
+
+const Wrap = styled.div``;
