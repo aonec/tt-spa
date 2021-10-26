@@ -9,10 +9,12 @@ import { round } from '01/hooks/useReadings';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import _ from 'lodash';
 import { useApartmentList } from './useApartmentList';
+import { useHistory } from 'react-router';
 
 export const StatisticsList: React.FC = () => {
   const { apartmentList } = useApartmentList();
   const pending = useStore(fetchConsumptionStatistics.pending);
+  const history = useHistory();
 
   const renderApartment = ({
     apartmentNumber,
@@ -22,7 +24,10 @@ export const StatisticsList: React.FC = () => {
     dateLastCheck,
     dateLastTransmissionOfReading,
   }: SubscriberStatisticsСonsumptionResponse) => (
-    <ApartmentWrap {...layout}>
+    <ApartmentWrap
+      {...layout}
+      onClick={() => history.push(`/objects/245/apartments/461132`)}
+    >
       <div>{apartmentNumber}</div>
       <div>{formatValue(round(coldWaterSupplyСonsumption!, 3))}</div>
       <div>{formatValue(round(hotWaterSupplyСonsumption!, 3))}</div>
