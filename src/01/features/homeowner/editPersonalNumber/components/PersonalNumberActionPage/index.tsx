@@ -11,7 +11,6 @@ import { useStore } from 'effector-react';
 import { HousingStockListResponse } from 'myApi';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
-import { ReactNode } from 'react-router/node_modules/@types/react';
 import styled from 'styled-components';
 
 interface Props {

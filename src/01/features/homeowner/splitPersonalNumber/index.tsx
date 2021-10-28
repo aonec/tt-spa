@@ -1,3 +1,4 @@
+import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { useStore } from 'effector-react';
@@ -7,11 +8,16 @@ import styled from 'styled-components';
 import { $homeowner, HomeownerGate } from '../displayHomeowner/models';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
 import { PersonalNumberEditForm } from '../editPersonalNumber/components/PersonalNumberEditForm';
+import { NewApartmentForm } from './components/NewApartmentForm';
 import { Stages } from './components/Stages';
+import { TransferDevices } from './components/TransferDevices';
 import { $splitPersonalNumberStageNumber } from './models';
 
 export const SplitPersonalNumber = () => {
-  const { homeownerId } = useParams<{ homeownerId: string }>();
+  const { homeownerId, id: apartmentId } = useParams<{
+    homeownerId: string;
+    id: string;
+  }>();
   const homeowner = useStore($homeowner);
   const stage = useStore($splitPersonalNumberStageNumber);
 
@@ -25,12 +31,13 @@ export const SplitPersonalNumber = () => {
       <SpaceLine />
       <PersonalNumberEditForm type="switch" />
     </>,
-    <>Улица дом квартира</>,
-    <>Выбор приборов</>,
+    <NewApartmentForm />,
+    <TransferDevices />,
   ];
 
   return (
     <>
+      <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <HomeownerGate id={homeownerId} />
       <Wrap>
         <PersonaNumberActionPage title="Разделение лицевого счета" type="split">
