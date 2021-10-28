@@ -55,6 +55,7 @@ sample({
       ...values,
       PageNumber: pageNumber,
       PageSize: 5,
+      OrderRule: 'ApartmentNumber',
     })
   ),
   target: [fetchNextPageOfIndividualDevicesFx],
