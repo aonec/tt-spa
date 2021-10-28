@@ -1,1 +1,9 @@
-import React from 'react';
+import {
+  $splitPersonalNumberStageNumber,
+  setSplitPersonalNumberStage,
+} from '.';
+
+$splitPersonalNumberStageNumber.on(
+  setSplitPersonalNumberStage,
+  (_, value) => value
+);
