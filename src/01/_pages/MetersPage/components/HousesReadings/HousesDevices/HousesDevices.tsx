@@ -22,6 +22,7 @@ import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/con
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Loader } from '01/_components/Loader';
 import Button from '01/_components/Button';
+import { CancelSwitchInputGate } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 type ParamsType = {
   id: string;
@@ -63,6 +64,7 @@ const HousesDevices: React.FC = () => {
 
   return (
     <>
+      <CancelSwitchInputGate />
       <ConfirmReadingValueModal />
       <ReadingsHistoryModal />
       <HousingStockGate id={Number(housingStockId)} />
