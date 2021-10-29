@@ -46,14 +46,17 @@ $isShownClosedDevices
   .reset(hideClosedDevices);
 
 sample({
-  clock: fetchNextPageOfIndividualDevices,
+  clock: guard({
+    clock: fetchNextPageOfIndividualDevices,
+    filter: () => !fetchNextPageOfIndividualDevicesFx.pending.getState(),
+  }),
   source: combine(
     PagedIndividualDevicesGate.state,
     $pagedIndividualDevicePageNumber,
     (values, pageNumber) => ({
       ...values,
       PageNumber: pageNumber,
-      PageSize: 5,
+      PageSize: 10,
       OrderRule: 'ApartmentNumber',
       IsOpened: true,
     })

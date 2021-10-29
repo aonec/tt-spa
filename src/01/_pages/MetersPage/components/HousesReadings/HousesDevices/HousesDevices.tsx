@@ -21,9 +21,10 @@ import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Loader } from '01/_components/Loader';
-import Button from '01/_components/Button';
 import { CancelSwitchInputGate } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { useRef } from 'react';
+import { ButtonTT } from '01/tt-components';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 type ParamsType = {
   id: string;
@@ -66,7 +67,7 @@ const HousesDevices: React.FC = () => {
   const elementRef = useRef();
 
   useEffect(() => {
-    const element = elementRef?.current as any;
+    const element = window;
 
     function onScrollDown(event: any) {
       var element = event.target;
@@ -82,10 +83,10 @@ const HousesDevices: React.FC = () => {
       }
     }
 
-    element?.addEventListener('scroll', onScrollDown);
+    element.addEventListener('scroll', onScrollDown);
 
     return () => element.removeEventListener('scroll', onScrollDown);
-  }, [elementRef]);
+  }, []);
 
   return (
     <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
@@ -102,12 +103,14 @@ const HousesDevices: React.FC = () => {
         <HouseReadingsHeader sliderProps={sliderProps} />
       )}
       {deviceElems}
-      {pendingDevices && <Loader show size={20} />}
-      {!pendingDevices && (
-        <Button color="blue" onClick={() => fetchNextPageOfIndividualDevices()}>
-          Загрузить приборы
-        </Button>
-      )}
+      <Space />
+      <ButtonTT
+        disabled={pendingDevices}
+        color="blue"
+        onClick={() => fetchNextPageOfIndividualDevices()}
+      >
+        {pendingDevices ? <Loader show /> : 'Загрузить приборы'}
+      </ButtonTT>
     </div>
   );
 };
