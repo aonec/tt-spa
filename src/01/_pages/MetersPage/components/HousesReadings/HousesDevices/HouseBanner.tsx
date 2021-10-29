@@ -16,27 +16,39 @@ const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
   const pendingInspector = useStore(fetchInspectorFx.pending);
 
   return (
-    <Wrap>
+    <>
       {house.inspectorId && <InspectorGate id={house.inspectorId} />}
-      <Flex>
-        <Block
-          title="Контролер"
-          value={
-            pendingInspector
-              ? 'Загрузка...'
-              : inspector?.fullName
-              ? String(inspector?.fullName)
-              : 'Нет данных'
-          }
-        />
-        <Block
-          title="Дата снятия показаний"
-          value={moment(house.inspectedDay).format('DD.MM.YYYY')}
-        />
-      </Flex>
-    </Wrap>
+      <Title>
+        {house.street}, {house.number}
+      </Title>
+      <Wrap>
+        <Flex>
+          <Block
+            title="Контролер"
+            value={
+              pendingInspector
+                ? 'Загрузка...'
+                : inspector?.fullName
+                ? String(inspector?.fullName)
+                : 'Нет данных'
+            }
+          />
+          <Block
+            title="Дата снятия показаний"
+            value={moment(house.inspectedDay).format('DD.MM.YYYY')}
+          />
+        </Flex>
+      </Wrap>
+    </>
   );
 };
+
+const Title = styled.div`
+  margin-top: 10px 0 5px;
+  font-weight: 500;
+  color: rgba(39, 47, 90, 1);
+  font-size: 20px;
+`;
 
 const Block = ({ title, value }: { title: string; value: string }) => {
   return (
