@@ -34,8 +34,8 @@ const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
             }
           />
           <Block
-            title="Дата снятия показаний"
-            value={moment(house.inspectedDay).format('DD.MM.YYYY')}
+            title="День снятия показаний"
+            value={String(house.inspectedDay)}
           />
         </Flex>
       </Wrap>
