@@ -23,6 +23,7 @@ import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory
 import { Loader } from '01/_components/Loader';
 import Button from '01/_components/Button';
 import { CancelSwitchInputGate } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
+import { useRef } from 'react';
 
 type ParamsType = {
   id: string;
@@ -62,8 +63,32 @@ const HousesDevices: React.FC = () => {
     />
   ));
 
+  const elementRef = useRef();
+
+  useEffect(() => {
+    const element = elementRef?.current as any;
+
+    function onScrollDown(event: any) {
+      var element = event.target;
+
+      console.log(
+        element.scrollHeight,
+        element.scrollTop,
+        element.clientHeight
+      );
+
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        console.log('scrolled');
+      }
+    }
+
+    element?.addEventListener('scroll', onScrollDown);
+
+    return () => element.removeEventListener('scroll', onScrollDown);
+  }, [elementRef]);
+
   return (
-    <>
+    <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
       <CancelSwitchInputGate />
       <ConfirmReadingValueModal />
       <ReadingsHistoryModal />
@@ -83,7 +108,7 @@ const HousesDevices: React.FC = () => {
           Загрузить приборы
         </Button>
       )}
-    </>
+    </div>
   );
 };
 

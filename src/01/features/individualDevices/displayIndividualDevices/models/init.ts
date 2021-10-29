@@ -1,3 +1,7 @@
+import {
+  fetchHousingStockFx,
+  HousingStockGate,
+} from '01/features/housingStocks/displayHousingStock/models';
 import { getIndividualDevices } from '01/_api/individualDevices';
 import { combine, forward, guard, sample } from 'effector';
 import {
@@ -41,11 +45,6 @@ $isShownClosedDevices
   .on(showClosedDevices, () => true)
   .reset(hideClosedDevices);
 
-forward({
-  from: PagedIndividualDevicesGate.open,
-  to: fetchNextPageOfIndividualDevices,
-});
-
 sample({
   clock: fetchNextPageOfIndividualDevices,
   source: combine(
@@ -61,14 +60,19 @@ sample({
   target: [fetchNextPageOfIndividualDevicesFx],
 });
 
-$pagedIndividualDevicePageNumber.on(
-  fetchNextPageOfIndividualDevicesFx.doneData,
-  (prev) => prev + 1
-);
+$pagedIndividualDevicePageNumber
+  .on(fetchNextPageOfIndividualDevicesFx.doneData, (prev) => prev + 1)
+  .reset(HousingStockGate.state);
+
+forward({
+  from: fetchHousingStockFx.doneData,
+  to: fetchNextPageOfIndividualDevices,
+});
 
 $pagedIndividualDevices
   .on(PagedIndividualDevicesGate.close, () => [])
   .on(fetchNextPageOfIndividualDevicesFx.doneData, (prevElems, nextElems) => [
     ...prevElems,
     ...nextElems,
-  ]);
+  ])
+  .reset(HousingStockGate.state);
