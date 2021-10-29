@@ -51,12 +51,7 @@ const HousesDevices: React.FC = () => {
 
   useEffect(() => reset && reset(), [housingStockId]);
 
-  const deviceElemsList = devices?.slice()?.sort((device1, device2) => {
-    return (
-      Number(getNumberFromString(device1.apartmentNumber || '')) -
-      Number(getNumberFromString(device2.apartmentNumber || ''))
-    );
-  });
+  const deviceElemsList = devices;
 
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
