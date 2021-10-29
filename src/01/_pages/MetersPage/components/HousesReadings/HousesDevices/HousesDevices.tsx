@@ -15,7 +15,11 @@ import {
   $housingStock,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import { EResourceType } from 'myApi';
+import {
+  EResourceType,
+  IndividualDeviceListItemResponse,
+  IndividualDeviceResponse,
+} from 'myApi';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
@@ -26,6 +30,7 @@ import { useRef } from 'react';
 import { ButtonTT } from '01/tt-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { AutoSizer, List } from 'react-virtualized';
 
 type ParamsType = {
   id: string;
@@ -50,7 +55,10 @@ const HousesDevices: React.FC = () => {
     );
   });
 
-  const deviceElems = deviceElemsList.map((device, index) => (
+  const renderDevice = (
+    device: IndividualDeviceListItemResponse,
+    index: number
+  ) => (
     <HouseReadingLine
       disabled={pendingDevices}
       sliderIndex={sliderIndex || 0}
@@ -63,7 +71,17 @@ const HousesDevices: React.FC = () => {
       key={device.id + 'f'}
       device={device}
     />
-  ));
+  );
+
+  const renderDeviceRow = ({ key, index, style }: any) => {
+    return (
+      <div key={key} style={style}>
+        {renderDevice(devices[index]!, index)}
+      </div>
+    );
+  };
+
+  const deviceElems = deviceElemsList.map(renderDevice);
 
   const elementRef = useRef();
 
@@ -86,6 +104,18 @@ const HousesDevices: React.FC = () => {
     return () => element.removeEventListener('scroll', onScrollDown);
   }, []);
 
+  const getHeight = () => {
+    const getDeviceHeight = (_: any, index: number) => {
+      const num = getIndividualDeviceRateNumByName(devices[index]?.rateType);
+
+      return 100 + (num - 1) * 40;
+    };
+
+    const sizes = devices.map(getDeviceHeight);
+
+    return sizes.reduce((acc, elem) => acc + elem, 0);
+  };
+
   return (
     <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
       <CancelSwitchInputGate />
@@ -100,7 +130,19 @@ const HousesDevices: React.FC = () => {
       {!!deviceElems.length && (
         <HouseReadingsHeader sliderProps={sliderProps} />
       )}
-      {deviceElems}
+      <List
+        rowCount={devices.length}
+        rowHeight={({ index }) => {
+          const num = getIndividualDeviceRateNumByName(
+            devices[index]?.rateType
+          );
+
+          return 100 + (num - 1) * 40;
+        }}
+        rowRenderer={renderDeviceRow}
+        height={getHeight()}
+        width={956}
+      />
       <Space />
       <ButtonTT
         disabled={pendingDevices}
