@@ -7,6 +7,7 @@ import {
   MeteringDeviceResponse,
   EOrderByRule,
   IndividualDeviceListItemResponse,
+  IndividualDeviceListItemResponsePagedList,
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
@@ -94,13 +95,14 @@ export interface GetIndividualDeviceRequestParams {
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams
 ) => {
-  const res: {
-    items: IndividualDeviceListItemResponse[];
-  } = await axios.get('IndividualDevices', {
-    params: { ...params },
-  });
+  const res: IndividualDeviceListItemResponsePagedList = await axios.get(
+    'IndividualDevices',
+    {
+      params: { ...params },
+    }
+  );
 
-  return res?.items;
+  return { items: res?.items || [], total: res?.totalItems };
 };
 
 export const reopenIndividualDevice = async (deviceId: number) => {

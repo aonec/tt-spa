@@ -6,6 +6,7 @@ import HouseBanner from './HouseBanner';
 import { getIndividualDeviceRateNumByName } from '../../MeterDevices/ApartmentReadings';
 import { useStore } from 'effector-react';
 import {
+  $isAllDevicesDone,
   $pagedIndividualDevices,
   fetchNextPageOfIndividualDevices,
   fetchNextPageOfIndividualDevicesFx,
@@ -43,6 +44,8 @@ const HousesDevices: React.FC = () => {
   const house = useStore($housingStock);
 
   const { sliderIndex, sliderProps, reset } = useMonthSlider(devices);
+
+  const isAllDevicesDone = useStore($isAllDevicesDone);
 
   const pendingDevices = useStore(fetchNextPageOfIndividualDevicesFx.pending);
 
@@ -90,6 +93,8 @@ const HousesDevices: React.FC = () => {
 
     function onScrollDown(event: any) {
       var element = event.target;
+
+      if (isAllDevicesDone) return;
 
       if (
         element.scrollHeight - element.scrollTop <
@@ -144,21 +149,23 @@ const HousesDevices: React.FC = () => {
         width={956}
       />
       <Space />
-      <ButtonTT
-        disabled={pendingDevices}
-        color="blue"
-        onClick={() => fetchNextPageOfIndividualDevices()}
-      >
-        {pendingDevices ? (
-          <Flex>
-            <Loader show />
-            <Space w={8} />
-            Загрузка
-          </Flex>
-        ) : (
-          'Загрузить приборы'
-        )}
-      </ButtonTT>
+      {!isAllDevicesDone && (
+        <ButtonTT
+          disabled={pendingDevices}
+          color="blue"
+          onClick={() => fetchNextPageOfIndividualDevices()}
+        >
+          {pendingDevices ? (
+            <Flex>
+              <Loader show />
+              <Space w={8} />
+              Загрузка
+            </Flex>
+          ) : (
+            'Загрузить приборы'
+          )}
+        </ButtonTT>
+      )}
     </div>
   );
 };

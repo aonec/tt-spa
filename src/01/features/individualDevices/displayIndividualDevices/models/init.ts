@@ -9,6 +9,7 @@ import {
   $isShownClosedDevices,
   $pagedIndividualDevicePageNumber,
   $pagedIndividualDevices,
+  $totalPagedElems,
   fetchIndividualDevicesFx,
   fetchNextPageOfIndividualDevices,
   fetchNextPageOfIndividualDevicesFx,
@@ -25,7 +26,7 @@ fetchIndividualDevicesFx.use(getIndividualDevices);
 fetchNextPageOfIndividualDevicesFx.use(getIndividualDevices);
 
 $individualDevices
-  .on(fetchIndividualDevicesFx.doneData, (_, devices) => devices)
+  .on(fetchIndividualDevicesFx.doneData, (_, { items: devices }) => devices)
   .reset(resetIndividualDevices, IndividualDevicesGate.close);
 
 guard({
@@ -56,7 +57,7 @@ sample({
     (values, pageNumber) => ({
       ...values,
       PageNumber: pageNumber,
-      PageSize: 10,
+      PageSize: 25,
       OrderRule: 'ApartmentNumber',
       IsOpened: true,
     })
@@ -73,10 +74,15 @@ forward({
   to: fetchNextPageOfIndividualDevices,
 });
 
+$totalPagedElems.on(
+  fetchNextPageOfIndividualDevicesFx.doneData,
+  (_, { total }) => total
+);
+
 $pagedIndividualDevices
   .on(PagedIndividualDevicesGate.close, () => [])
-  .on(fetchNextPageOfIndividualDevicesFx.doneData, (prevElems, nextElems) => [
-    ...prevElems,
-    ...nextElems,
-  ])
+  .on(
+    fetchNextPageOfIndividualDevicesFx.doneData,
+    (prevElems, { items: nextElems }) => [...prevElems, ...nextElems]
+  )
   .reset(HousingStockGate.state);
