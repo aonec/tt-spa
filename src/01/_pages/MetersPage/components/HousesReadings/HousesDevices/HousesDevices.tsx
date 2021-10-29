@@ -25,6 +25,7 @@ import { CancelSwitchInputGate } from '01/features/readings/readingsInput/confir
 import { useRef } from 'react';
 import { ButtonTT } from '01/tt-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 type ParamsType = {
   id: string;
@@ -72,18 +73,15 @@ const HousesDevices: React.FC = () => {
     function onScrollDown(event: any) {
       var element = event.target;
 
-      console.log(
-        element.scrollHeight,
-        element.scrollTop,
-        element.clientHeight
-      );
-
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-        console.log('scrolled');
+      if (
+        element.scrollHeight - element.scrollTop <
+        element.clientHeight + 150
+      ) {
+        fetchNextPageOfIndividualDevices();
       }
     }
 
-    element.addEventListener('scroll', onScrollDown);
+    element.addEventListener('scroll', onScrollDown, true);
 
     return () => element.removeEventListener('scroll', onScrollDown);
   }, []);
@@ -109,7 +107,15 @@ const HousesDevices: React.FC = () => {
         color="blue"
         onClick={() => fetchNextPageOfIndividualDevices()}
       >
-        {pendingDevices ? <Loader show /> : 'Загрузить приборы'}
+        {pendingDevices ? (
+          <Flex>
+            <Loader show />
+            <Space w={8} />
+            Загрузка
+          </Flex>
+        ) : (
+          'Загрузить приборы'
+        )}
       </ButtonTT>
     </div>
   );
