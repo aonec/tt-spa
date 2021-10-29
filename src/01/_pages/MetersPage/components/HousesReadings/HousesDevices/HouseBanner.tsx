@@ -1,127 +1,77 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Icon } from '../../../../../components/Icon';
+import {
+  $inspector,
+  fetchInspectorFx,
+  InspectorGate,
+} from '01/features/Inspectors/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { useStore } from 'effector-react';
+import moment from 'moment';
+import React from 'react';
+import styled from 'styled-components';
 import { HousingStockResponse } from '../../../../../../myApi';
 
 const HouseBanner: React.FC<HouseBannerProps> = ({ house }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const inspector = useStore($inspector);
+  const pendingInspector = useStore(fetchInspectorFx.pending);
 
   return (
-    <div style={{ cursor: 'pointer' }}>
-      <Flex style={{ justifyContent: 'space-between', marginTop: 20 }}>
-        <AddressHeader>
-          {house.city}, {house.street}, {house.number}
-          {house.corpus ? `,${house.corpus}` : ''}
-        </AddressHeader>
+    <Wrap>
+      {house.inspectorId && <InspectorGate id={house.inspectorId} />}
+      <Flex>
+        <Block
+          title="Контролер"
+          value={
+            pendingInspector
+              ? 'Загрузка...'
+              : inspector?.fullName
+              ? String(inspector?.fullName)
+              : 'Нет данных'
+          }
+        />
+        <Block
+          title="Дата снятия показаний"
+          value={moment(house.inspectedDay).format('DD.MM.YYYY')}
+        />
       </Flex>
-      <InfoSticker>
-        <InfoHeader onClick={() => setIsVisible((prevState) => !prevState)}>
-          <IconContainer show={isVisible}>
-            <Icon icon="down" />
-          </IconContainer>
-          Информация о доме
-        </InfoHeader>
-        <InfoContent show={isVisible}>
-          <InfoColumn>
-            <InfoRow>
-              <InfoItemHeader>Район</InfoItemHeader>
-              <InfoItem>{house.district ?? 'Нет данных'}</InfoItem>
-            </InfoRow>
-            <InfoRow>
-              <InfoItemHeader>Тип дома</InfoItemHeader>
-              <InfoItem>{house.houseCategory ?? 'Нет данных'}</InfoItem>
-            </InfoRow>
-            <InfoRow>
-              <InfoItemHeader>Год постройки</InfoItemHeader>
-              <InfoItem>{house.constructionDate ?? 'Нет данных'}</InfoItem>
-            </InfoRow>
-          </InfoColumn>
-          <InfoColumn>
-            <InfoRow>
-              <InfoItemHeader>Управляющая компания</InfoItemHeader>
-              <InfoCompany>Нет данных</InfoCompany>
-            </InfoRow>
-            <InfoRow>
-              <InfoItemHeader>Информация об УК</InfoItemHeader>
-              <InfoItem>Нет данных</InfoItem>
-            </InfoRow>
-          </InfoColumn>
-        </InfoContent>
-      </InfoSticker>
-    </div>
+    </Wrap>
   );
 };
 
-const AddressHeader = styled.h2`
-  margin-left: 8px;
-  margin-bottom: 16px;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 32px;
+const Block = ({ title, value }: { title: string; value: string }) => {
+  return (
+    <BlockWrap>
+      <BlockTitle>{title}:</BlockTitle>
+      <Space h={6} />
+      <BlockValue>{value}</BlockValue>
+    </BlockWrap>
+  );
+};
+
+const BlockWrap = styled.div`
+  margin-right: 60px;
 `;
 
-const InfoSticker = styled.div`
-  height: auto;
-  padding: 16px;
-  box-shadow: var(--shadow);
-  margin-bottom: 16px;
-`;
-
-const InfoHeader = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  line-height: 32px;
-`;
-
-const IconContainer = styled.div<ShowProps>`
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-  transform: ${(props) => (props.show ? 'scale(1, -1)' : 'none')};
-`;
-
-const InfoContent = styled.div<ShowProps>`
-  display: ${(props) => (props.show ? 'flex' : 'none')};
-  margin-top: 16px;
-  gap: 16px;
-`;
-
-const InfoColumn = styled.div`
-  display: flex;
-  width: 50%;
-  flex-direction: column;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  padding: 16px 8px 16px;
-  border-bottom: 1px solid var(--frame);
-`;
-
-const InfoItem = styled.div`
-  width: 50%;
-`;
-
-const InfoCompany = styled.div`
-  width: 50%;
-  font-weight: 500;
-`;
-
-const InfoItemHeader = styled.div`
-  width: 50%;
+const BlockTitle = styled.div`
+  color: rgba(39, 47, 90, 0.7);
   font-size: 14px;
-  line-height: 16px;
-  color: var(--main-70);
+`;
+
+const BlockValue = styled.div`
+  color: rgba(39, 47, 90, 1);
+  font-weight: 500;
+  font-size: 14px;
+`;
+
+const Wrap = styled.div`
+  background: rgba(24, 158, 233, 0.08);
+  padding: 12px 19px;
+  margin: 10px 0 15px;
+  border-radius: 8px;
 `;
 
 interface HouseBannerProps {
   house: HousingStockResponse;
-}
-
-interface ShowProps {
-  show: boolean;
 }
 
 export default HouseBanner;

@@ -17,7 +17,7 @@ import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
 import { Flex } from '01/shared/ui/Layout/Flex';
-  import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
   ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
@@ -29,7 +29,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     );
 
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const [consumptionState, setConsumptionState] = useState<
       (number | string)[]
