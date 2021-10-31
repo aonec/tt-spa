@@ -20,26 +20,7 @@ export const ChecksHistory = () => {
   const params = useParams();
   const apartmentId = (params as any)[1];
 
-  const documents: DocumentResponse[] = [
-    {
-      id: 0,
-      name: 'string',
-      uploadingTime: '2021-10-31T18:42:16.055Z',
-      url: 'string',
-      author: 'string',
-      canBeEdited: true,
-      type: EDocumentType.AdditionalMaterials,
-    },
-    {
-      id: 0,
-      name: 'string',
-      uploadingTime: '2021-10-31T18:42:16.055Z',
-      url: 'string',
-      author: 'string',
-      canBeEdited: true,
-      type: EDocumentType.Common,
-    },
-  ]; //useStore($apartmentChecksDocuments);
+  const documents: DocumentResponse[] = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
   const renderDocument = (document: DocumentResponse) => {
@@ -79,29 +60,29 @@ export const ChecksHistory = () => {
 export function translateDocumentType(type: EDocumentType) {
   const types = {
     [EDocumentType.AdditionalMaterials]: 'Дополнительные материалы',
-    [EDocumentType.ApartmentAccessDeniedAct]: 'Акт об отказе в доступе к квартире',
-    [EDocumentType.ApartmentCheckingAct]: 'Дополнительные материалы',
-    [EDocumentType.ApartmentStoppingStatement]: 'Дополнительные материалы',
-    [EDocumentType.ApartmentUnauthorizedInterferenceAct]: 'Дополнительные материалы',
-    [EDocumentType.Common]: 'Дополнительные материалы',
-    [EDocumentType.DeviceAcceptanceAct]: 'Дополнительные материалы',
-    [EDocumentType.DeviceCheckAct]: 'Дополнительные материалы',
-    [EDocumentType.DeviceClosingAct]: 'Дополнительные материалы',
-    [EDocumentType.DeviceCommercialAccountingAct]: 'Дополнительные материалы',
-    [EDocumentType.DeviceCommissionCheckAct]: 'Дополнительные материалы',
-    [EDocumentType.DeviceDeploymentAct]: 'Дополнительные материалы',
-    [EDocumentType.DevicePassport]: 'Дополнительные материалы',
-    [EDocumentType.DeviceTestCertificates]: 'Дополнительные материалы',
-    [EDocumentType.HeatingSeasonChangingStatement]: 'Дополнительные материалы',
-    [EDocumentType.HeatingSeasonEndingOrder]: 'Дополнительные материалы',
-    [EDocumentType.HeatingSeasonStartingOrder]: 'Дополнительные материалы',
-    [EDocumentType.ImportedFile]: 'Дополнительные материалы',
-    [EDocumentType.NodeAdmissionAct]: 'Дополнительные материалы',
-    [EDocumentType.Photo]: 'Дополнительные материалы',
-    [EDocumentType.ProfilePhoto]: 'Дополнительные материалы',
+    [EDocumentType.ApartmentAccessDeniedAct]: null,
+    [EDocumentType.ApartmentCheckingAct]: 'Акт плановой проверки',
+    [EDocumentType.ApartmentStoppingStatement]: 'Заявление о непроживании',
+    [EDocumentType.ApartmentUnauthorizedInterferenceAct]: null,
+    [EDocumentType.Common]: null,
+    [EDocumentType.DeviceAcceptanceAct]: 'Акт-допуск',
+    [EDocumentType.DeviceCheckAct]: 'Акт поверки прибора',
+    [EDocumentType.DeviceClosingAct]: 'Акт закрытия прибора',
+    [EDocumentType.DeviceCommercialAccountingAct]: null,
+    [EDocumentType.DeviceCommissionCheckAct]: 'Акт комиссионной проверки',
+    [EDocumentType.DeviceDeploymentAct]: 'Акт установки прибора',
+    [EDocumentType.DevicePassport]: 'Паспорт прибора',
+    [EDocumentType.DeviceTestCertificates]: 'Сертификат о поверке',
+    [EDocumentType.HeatingSeasonChangingStatement]: null,
+    [EDocumentType.HeatingSeasonEndingOrder]: null,
+    [EDocumentType.HeatingSeasonStartingOrder]: null,
+    [EDocumentType.ImportedFile]: null,
+    [EDocumentType.NodeAdmissionAct]: null,
+    [EDocumentType.Photo]: 'фото',
+    [EDocumentType.ProfilePhoto]: 'Фото профиля',
   };
 
-  return (types as any)[type] || type;
+  return (types as any)[type] || 'Документ';
 }
 
 const Wrap = styled.div`
@@ -125,3 +106,24 @@ const ListItem = styled(Grid)`
   padding: 15px 25px;
   border-bottom: 1px solid lightgray;
 `;
+
+// [
+//     {
+//       id: 0,
+//       name: 'string',
+//       uploadingTime: '2021-10-31T18:42:16.055Z',
+//       url: 'string',
+//       author: 'string',
+//       canBeEdited: true,
+//       type: EDocumentType.AdditionalMaterials,
+//     },
+//     {
+//       id: 0,
+//       name: 'string',
+//       uploadingTime: '2021-10-31T18:42:16.055Z',
+//       url: 'string',
+//       author: 'string',
+//       canBeEdited: true,
+//       type: EDocumentType.Common,
+//     },
+//   ];
