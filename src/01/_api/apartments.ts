@@ -1,6 +1,7 @@
 import {
   ApartmentResponse,
   ApartmentStatusSetRequest,
+  DocumentResponsePagedList,
   IndividualDeviceWithExpiredCheckingDateListResponse,
   IndividualDeviceWithExpiredCheckingDateResponse,
 } from './../../myApi';
@@ -43,4 +44,12 @@ export const getProblemDevices = async ({
   );
 
   return res.devices;
+};
+
+export const getApartmentCheckDocuments = async (apartmentId: number) => {
+  const res: DocumentResponsePagedList = await axios.get(
+    `Apartmens/${apartmentId}/IndividualDeviceCheckDocuments`
+  );
+
+  return res.items;
 };

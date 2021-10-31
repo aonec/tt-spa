@@ -20,6 +20,8 @@ import { ApartmentDevices } from './ApartmentDevicesComponent/ApartmentDevices';
 import Index from '../../tt-components/Breadcrumb';
 import { useAsync } from '../../hooks/useAsync';
 
+import { ChecksHistory } from './components/ChecksHistory';
+
 const ApartmentProfile = () => {
   const params = useParams();
   const apartmentId = params[1];
@@ -96,6 +98,10 @@ const ApartmentProfile = () => {
 
       <Route path="/*/(\\d+)/testimony" exact>
         <ApartmentDevices devices={devices} />
+      </Route>
+
+      <Route path="/*/(\\d+)/checksHistory" exact>
+        <ChecksHistory />
       </Route>
     </>
   );
