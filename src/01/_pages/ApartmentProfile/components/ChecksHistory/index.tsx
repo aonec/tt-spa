@@ -20,7 +20,7 @@ export const ChecksHistory = () => {
   const params = useParams();
   const apartmentId = (params as any)[1];
 
-  const documents: DocumentResponse[] = useStore($apartmentChecksDocuments);
+  const documents = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
   const renderDocument = (document: DocumentResponse) => {
