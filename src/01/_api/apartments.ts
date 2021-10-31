@@ -48,7 +48,7 @@ export const getProblemDevices = async ({
 
 export const getApartmentCheckDocuments = async (apartmentId: number) => {
   const res: DocumentResponsePagedList = await axios.get(
-    `Apartmens/${apartmentId}/IndividualDeviceCheckDocuments`
+    `Apartments/${apartmentId}/IndividualDeviceCheckDocuments`
   );
 
   return res.items;
