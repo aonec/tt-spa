@@ -15,6 +15,7 @@ import { Form } from 'antd';
 import { ECheckType } from 'myApi';
 import { useForm } from 'effector-forms/dist';
 import moment from 'moment';
+import { ErrorMessage } from '01/features/contractors/addContractors';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
@@ -42,6 +43,11 @@ export const CheckApartmentModal = () => {
                 : null
             }
           />
+          <ErrorMessage>
+            {fields.checkingDate.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <Form.Item label="Тип проверки">
           <StyledSelect
@@ -62,6 +68,11 @@ export const CheckApartmentModal = () => {
               Внеплановая
             </StyledSelect.Option>
           </StyledSelect>
+          <ErrorMessage>
+            {fields.checkType.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <FilesUpload
@@ -70,6 +81,11 @@ export const CheckApartmentModal = () => {
         filesInit={fields.documentIds.value}
         onChange={fields.documentIds.onChange}
       />
+      <ErrorMessage>
+        {fields.documentIds.errorText({
+          required: 'Это поле обязательное',
+        })}
+      </ErrorMessage>
     </ModalTT>
   );
 };
