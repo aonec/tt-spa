@@ -36,7 +36,7 @@ export const ChecksHistory = () => {
             <Space w={7} />
             {document.name}
           </Flex>
-          <DownloadIcon />
+          <DownloadIcon style={{ cursor: 'pointer' }} />
         </Flex>
       </ListItem>
     );
@@ -106,24 +106,3 @@ const ListItem = styled(Grid)`
   padding: 15px 25px;
   border-bottom: 1px solid lightgray;
 `;
-
-// [
-//     {
-//       id: 0,
-//       name: 'string',
-//       uploadingTime: '2021-10-31T18:42:16.055Z',
-//       url: 'string',
-//       author: 'string',
-//       canBeEdited: true,
-//       type: EDocumentType.AdditionalMaterials,
-//     },
-//     {
-//       id: 0,
-//       name: 'string',
-//       uploadingTime: '2021-10-31T18:42:16.055Z',
-//       url: 'string',
-//       author: 'string',
-//       canBeEdited: true,
-//       type: EDocumentType.Common,
-//     },
-//   ];
