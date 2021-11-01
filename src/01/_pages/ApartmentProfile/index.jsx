@@ -21,6 +21,7 @@ import Index from '../../tt-components/Breadcrumb';
 import { useAsync } from '../../hooks/useAsync';
 
 import { ChecksHistory } from './components/ChecksHistory';
+import { CheckApartmentModal } from '01/features/apartments/checkApartment';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -68,6 +69,7 @@ const ApartmentProfile = () => {
   return styled(grid)(
     <>
       <Index path={`/objects/${id}/apartments`} />
+      <CheckApartmentModal />
       <Header
         apartmentNumber={apartmentNumber}
         city={city}
