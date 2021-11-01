@@ -39,3 +39,5 @@ import './homeowner/editPersonalNumber/models/init';
 import './homeowner/displayHomeowner/models/init';
 import './homeowner/switchPersonalNumber/models/init';
 import './homeowner/addPersonalNumber/models/init';
+import './apartments/displayApartmentChecksHistory/models/init'
+import './apartments/checkApartment/models/init'
