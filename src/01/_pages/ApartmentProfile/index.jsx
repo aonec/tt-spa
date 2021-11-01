@@ -22,6 +22,7 @@ import { useAsync } from '../../hooks/useAsync';
 
 import { ChecksHistory } from './components/ChecksHistory';
 import { CheckApartmentModal } from '01/features/apartments/checkApartment';
+import { ApartmentGate } from '01/features/apartments/displayApartment/models';
 
 const ApartmentProfile = () => {
   const params = useParams();
@@ -70,6 +71,7 @@ const ApartmentProfile = () => {
     <>
       <Index path={`/objects/${id}/apartments`} />
       <CheckApartmentModal />
+      <ApartmentGate id={Number(apartmentId)} />
       <Header
         apartmentNumber={apartmentNumber}
         city={city}

@@ -4,6 +4,7 @@ import {
   DocumentResponsePagedList,
   IndividualDeviceWithExpiredCheckingDateListResponse,
   IndividualDeviceWithExpiredCheckingDateResponse,
+  CreateApartmentCheckRequest,
 } from './../../myApi';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
@@ -53,3 +54,11 @@ export const getApartmentCheckDocuments = async (apartmentId: number) => {
 
   return res.items;
 };
+
+export const checkApartment = ({
+  apartmentId,
+  data,
+}: {
+  apartmentId: number;
+  data: CreateApartmentCheckRequest;
+}): Promise<void> => axios.post(`Apartments/${apartmentId}/AddCheck`, data);

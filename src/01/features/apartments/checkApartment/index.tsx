@@ -3,6 +3,7 @@ import { useStore } from 'effector-react';
 import {
   $isCheckApartmentModalOpen,
   checkApartmentForm,
+  checkApartmentFx,
   closeCheckApartmentModal,
 } from './models';
 import { ModalTT } from '01/shared/ui/ModalTT';
@@ -18,7 +19,8 @@ import moment from 'moment';
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
 
-  const { fields } = useForm(checkApartmentForm);
+  const { fields, submit } = useForm(checkApartmentForm);
+  const pending = useStore(checkApartmentFx.pending);
 
   return (
     <ModalTT
@@ -26,6 +28,8 @@ export const CheckApartmentModal = () => {
       visible={visible}
       onCancel={closeCheckApartmentModal}
       saveBtnText="Создать проверку"
+      onSubmit={submit}
+      loading={pending}
     >
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Дата проверки">

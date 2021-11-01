@@ -1,5 +1,5 @@
 import { DocumentResponse } from 'myApi';
-import { createEffect, createStore } from 'effector';
+import { createEffect, createStore, createEvent } from 'effector';
 import { createGate } from '../../../../../../node_modules/effector-react';
 
 export const $apartmentChecksDocuments = createStore<DocumentResponse[] | null>(
@@ -12,3 +12,5 @@ export const fetchApartmentChecksDocumentsFx = createEffect<
 >();
 
 export const ApartmentChecksDocuments = createGate<{ apartmentId: number }>();
+
+export const refetchApartmentCheckHistory = createEvent();
