@@ -14,11 +14,9 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import { MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
@@ -31,7 +29,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     );
 
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const [consumptionState, setConsumptionState] = useState<
       (number | string)[]
@@ -120,16 +117,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
           <HistoryComponent
             style={{ cursor: 'pointer' }}
             onClick={() => openReadingsHistoryModal(device.id)}
-          />
-          <Space />
-          <MenuButtonTT
-            menuButtonArr={[
-              {
-                title: 'Открыть историю показаний',
-                cb: () => openReadingsHistoryModal(device.id),
-                show: true,
-              },
-            ]}
           />
         </Flex>
       </HouseReadingsDevice>
