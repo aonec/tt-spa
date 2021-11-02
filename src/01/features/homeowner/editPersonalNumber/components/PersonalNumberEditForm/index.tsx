@@ -19,7 +19,7 @@ import { useHistory, useParams } from 'react-router';
 import axios from '01/axios';
 
 interface Props {
-  type?: 'switch' | 'edit';
+  type?: 'switch' | 'edit' | 'split';
 }
 
 export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {

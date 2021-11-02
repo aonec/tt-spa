@@ -1,5 +1,6 @@
 import { AddPersonalNumberPage } from '01/features/homeowner/addPersonalNumber';
 import { EditHomeownerPersonalNumberPage } from '01/features/homeowner/editPersonalNumber';
+import { SplitPersonalNumber } from '01/features/homeowner/splitPersonalNumber';
 import { SwitchPersonalNumberPage } from '01/features/homeowner/switchPersonalNumber';
 import { AddIndividualDevice } from '01/features/individualDevices/addIndividualDevice';
 import { SwitchIndividualDevice } from '01/features/individualDevices/switchIndividualDevice';
@@ -34,8 +35,8 @@ export const ApartmentsRouteGroup = () => (
     <Route path="/apartment/:id/homeowners/addPersonalNumber" exact>
       <AddPersonalNumberPage />
     </Route>
-    <Route path="/apartment/:id/homeowners/splitApartment" exact>
-      SPLIT
+    <Route path="/apartment/:id/homeowners/:homeownerId/splitApartment" exact>
+      <SplitPersonalNumber />
     </Route>
     <Route
       path="/apartment/:id/homeowners/:homeownerId/editPersonalNumber"
