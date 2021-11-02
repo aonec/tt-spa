@@ -20,7 +20,8 @@ import { Loader } from '01/_components/Loader';
 import styled from 'styled-components';
 import { usePhoneMask } from '01/features/staff/addStaff/utils';
 
-export const ErrorMessage = styled.p`
+export const ErrorMessage = styled.div`
+  margin: 5px 0 5px;
   color: red;
 `;
 

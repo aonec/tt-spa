@@ -152,7 +152,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|changes)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
                 component={ApartmentProfile}
                 exact
               />
@@ -184,7 +184,6 @@ const Internal = () => {
               <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
                 <StatisticsPage />
               </Route>
-
             </Switch>
             <ApartmentsRouteGroup />
           </main>

@@ -147,10 +147,14 @@ const ModalAddDeviceForm = ({
   const handleSubmit = (values: any) => {
     const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
+      futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
+      lastCommercialAccountingDate: moment(
+        values.lastCommercialAccountingDate
+      ).toISOString(true),
+      futureCommercialAccountingDate: moment(
+        values.futureCommercialAccountingDate
+      ).toISOString(true),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       resource: values.resource,
       model: values.model,
