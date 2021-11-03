@@ -19,7 +19,6 @@ import {
 import {
   EResourceType,
   IndividualDeviceListItemResponse,
-  IndividualDeviceResponse,
 } from 'myApi';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
@@ -31,7 +30,7 @@ import { useRef } from 'react';
 import { ButtonTT } from '01/tt-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { AutoSizer, List } from 'react-virtualized';
+import { List } from 'react-virtualized';
 
 type ParamsType = {
   id: string;
