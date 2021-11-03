@@ -23,7 +23,7 @@ export function useApartmentList() {
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        apartment.coldWaterSupplyСonsumption &&
+        typeof apartment.coldWaterSupplyСonsumption === 'number' &&
           apartment.coldWaterSupplyСonsumption >=
             Number(fields.cold.value.from) &&
           apartment.coldWaterSupplyСonsumption <= Number(fields.cold.value.to)
@@ -38,7 +38,7 @@ export function useApartmentList() {
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        apartment.hotWaterSupplyСonsumption &&
+        typeof apartment.hotWaterSupplyСonsumption === 'number' &&
           apartment.hotWaterSupplyСonsumption >=
             Number(fields.heat.value.from) &&
           apartment.hotWaterSupplyСonsumption <= Number(fields.heat.value.to)
@@ -53,7 +53,7 @@ export function useApartmentList() {
   ) {
     filterCallbacks.push((apartment) =>
       Boolean(
-        apartment.electricitySupplyСonsumption &&
+        typeof apartment.electricitySupplyСonsumption === 'number' &&
           apartment.electricitySupplyСonsumption >=
             Number(fields.electricity.value.from) &&
           apartment.electricitySupplyСonsumption <=
