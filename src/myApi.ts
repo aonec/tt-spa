@@ -300,6 +300,7 @@ export enum EClosingReason {
   DeviceBroken = "DeviceBroken",
   CheckingDate = "CheckingDate",
   CertificateIssued = "CertificateIssued",
+  MaintainingStopped = "MaintainingStopped",
 }
 
 export enum EResourceType {
@@ -373,6 +374,41 @@ export interface ApartmentStatusSetRequest {
   /** @format date-time */
   toDate?: string | null;
   documentIds?: number[] | null;
+}
+
+export enum ECheckType {
+  Planned = "Planned",
+  Unplanned = "Unplanned",
+}
+
+export interface CreateApartmentCheckRequest {
+  /** @format date-time */
+  checkingDate?: string;
+  checkType?: ECheckType;
+  documentIds?: number[] | null;
+
+  /** @format int32 */
+  taskId?: number | null;
+  registryNumber?: string | null;
+}
+
+export interface ApartmentCheckResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ECheckType;
+
+  /** @format int32 */
+  taskId: number | null;
+
+  /** @format int32 */
+  apartmentId: number;
+}
+
+export interface ApartmentCheckResponseSuccessApiResponse {
+  successResponse: ApartmentCheckResponse | null;
 }
 
 export interface LoginRequest {
@@ -479,6 +515,8 @@ export enum EUserPermission {
   ReadingReportForOperator = "ReadingReportForOperator",
   IndividualDeviceDelete = "IndividualDeviceDelete",
   ControllerUpdate = "ControllerUpdate",
+  SubscriberStatisticsRead = "SubscriberStatisticsRead",
+  ApartmentCheckCreate = "ApartmentCheckCreate",
 }
 
 export interface TokenResponse {
@@ -1420,7 +1458,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 
   /** @format int32 */
   nextStateVerificationYear?: number;
-  phaseNumber?: EPhaseNumberType;
+  phaseNumber: EPhaseNumberType;
 
   /** @format int32 */
   nodeId?: number | null;
@@ -2456,6 +2494,36 @@ export interface StringPagedListSuccessApiResponse {
   successResponse: StringPagedList | null;
 }
 
+export interface InspectorOnHousingStockResponse {
+  /** @format int32 */
+  housingStockId: number;
+  street: string | null;
+  corpus: string | null;
+  number: string | null;
+
+  /** @format uuid */
+  houseManagementId: string;
+  houseManagement: string | null;
+
+  /** @format int32 */
+  inspectedDay: number | null;
+
+  /** @format int32 */
+  inspectorId: number | null;
+}
+
+export interface InspectorOnHousingStockResponseListSuccessApiResponse {
+  successResponse: InspectorOnHousingStockResponse[] | null;
+}
+
+export interface UpdateInspectorOnHousingStockRequest {
+  /** @format int32 */
+  inspectorId?: number;
+
+  /** @format int32 */
+  inspectedDay?: number | null;
+}
+
 export interface ImportLogListResponse {
   importLogs: ImportLogResponse[] | null;
 }
@@ -2691,6 +2759,11 @@ export interface UpdateIndividualDeviceRequest {
 
   /** @format int32 */
   contractorId?: number | null;
+}
+
+export enum EIndividualDeviceOrderRule {
+  Resource = "Resource",
+  ApartmentNumber = "ApartmentNumber",
 }
 
 export interface IndividualDeviceListItemResponse {
@@ -3027,6 +3100,11 @@ export interface InspectorUpdateRequest {
 
   /** @format int32 */
   readoutPlan?: number | null;
+}
+
+export interface InspectorReassignAllAddressesRequest {
+  /** @format int32 */
+  newInspectorId?: number;
 }
 
 export enum ECompetenceType {
@@ -4305,6 +4383,12 @@ export interface SubscriberStatisticsСonsumptionResponse {
 
   /** @format date-time */
   dateLastCheck: string | null;
+
+  /** @format int32 */
+  housingStockId: number;
+
+  /** @format int32 */
+  apartmentId: number;
 }
 
 export interface SubscriberStatisticsСonsumptionResponseListSuccessApiResponse {
@@ -4927,6 +5011,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Apartments
+     * @name ApartmentsAddCheckCreate
+     * @request POST:/api/Apartments/{apartmentId}/AddCheck
+     * @secure
+     */
+    apartmentsAddCheckCreate: (
+      apartmentId: number,
+      data: CreateApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/AddCheck`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
      * @name ApartmentsDuplicateReadingsCreate
      * @request POST:/api/Apartments/DuplicateReadings
      * @secure
@@ -5468,6 +5575,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsDisableIndividualDevicesMaintenanceCreate
+     * @request POST:/api/DataMigrations/DisableIndividualDevicesMaintenance
+     * @secure
+     */
+    dataMigrationsDisableIndividualDevicesMaintenanceCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/DisableIndividualDevicesMaintenance`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -6719,6 +6842,73 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorsList
+     * @request GET:/api/HousingStocks/inspectors
+     * @secure
+     */
+    housingStocksInspectorsList: (
+      query?: {
+        City?: string | null;
+        Street?: string | null;
+        HousingStockNumber?: string | null;
+        HouseManagement?: string | null;
+        InspectorId?: number | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<InspectorOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/inspectors`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorPartialUpdate
+     * @request PATCH:/api/HousingStocks/{housingStockId}/inspector
+     * @secure
+     */
+    housingStocksInspectorPartialUpdate: (
+      housingStockId: number,
+      data: UpdateInspectorOnHousingStockRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/inspector`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorDelete
+     * @request DELETE:/api/HousingStocks/{housingStockId}/inspector
+     * @secure
+     */
+    housingStocksInspectorDelete: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/inspector`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ImportLogs
      * @name ImportLogsList
      * @request GET:/api/ImportLogs
@@ -7050,6 +7240,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ApartmentIds?: number[] | null;
         IsOpened?: boolean | null;
         SerialNumber?: string | null;
+        OrderRule?: EIndividualDeviceOrderRule;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -7221,6 +7412,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCloseDevicesWithoutCheckingCreate
+     * @request POST:/api/IndividualDevices/CloseDevicesWithoutChecking
+     * @secure
+     */
+    individualDevicesCloseDevicesWithoutCheckingCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualDevices/CloseDevicesWithoutChecking`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Inspectors
      * @name InspectorsList
      * @request GET:/api/Inspectors
@@ -7301,6 +7508,46 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     inspectorsDelete: (inspectorId: number, params: RequestParams = {}) =>
       this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inspectors
+     * @name InspectorsHousingStocksPartialUpdate
+     * @request PATCH:/api/Inspectors/{inspectorId}/housingStocks
+     * @secure
+     */
+    inspectorsHousingStocksPartialUpdate: (
+      inspectorId: number,
+      data: InspectorReassignAllAddressesRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Inspectors/${inspectorId}/housingStocks`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inspectors
+     * @name InspectorsHousingStocksDelete
+     * @request DELETE:/api/Inspectors/{inspectorId}/housingStocks
+     * @secure
+     */
+    inspectorsHousingStocksDelete: (inspectorId: number, params: RequestParams = {}) =>
+      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Inspectors/${inspectorId}/housingStocks`,
         method: "DELETE",
         secure: true,
         format: "json",

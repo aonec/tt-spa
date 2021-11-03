@@ -24,8 +24,6 @@ import {
   emptyConnectionValidationSchema,
 } from './validationSchemas';
 import { isEmptyString } from '../../../../../utils/isEmptyString';
-import { putCalculator } from '../../../../EditCalculator/components/apiEditCalculator';
-import { EditCalculatorContext } from '../../../../EditCalculator';
 import { AddCalculatorContext } from './index';
 
 const AddCalculatorForm = (props) => {
@@ -64,10 +62,14 @@ const AddCalculatorForm = (props) => {
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
+        futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
+        lastCommercialAccountingDate: moment(
+          values.lastCommercialAccountingDate
+        ).toISOString(true),
+        futureCommercialAccountingDate: moment(
+          values.futureCommercialAccountingDate
+        ).toISOString(true),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {

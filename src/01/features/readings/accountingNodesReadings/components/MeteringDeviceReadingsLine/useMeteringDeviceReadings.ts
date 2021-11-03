@@ -21,7 +21,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
 
       const newReadings = response;
 
-      setReadings(newReadings);
+      setReadings(newReadings.filter((elem) => !elem.isArchived));
     } catch (error) {}
 
     setLoading(false);
@@ -38,9 +38,7 @@ export function useMeteringDeviceReadings(id: number, sliderIndex?: number) {
     readings,
     loading,
     preparedPreviousReadingsArray,
-    currentReading: getCurrentReading(
-      readings?.filter(({ id }) => id) || []
-    ),
+    currentReading: getCurrentReading(readings?.filter(({ id }) => id) || []),
     previousReading: preparedPreviousReadingsArray[sliderIndex || 0],
   };
 }
