@@ -18,8 +18,11 @@ export const SubscribersConsumption = () => {
     <Wrap>
       {id && (
         <ConsumptionStatisticsGate
-          housingStockId={id}
-          month={fields.lastReadingMonth.value || undefined}
+          HousingStockId={id}
+          MonthOfLastTransmission={fields.lastReadingMonth.value || undefined}
+          Electricity={true}
+          ColdWaterSupply={true}
+          HotWaterSupply={true}
         />
       )}
       <Search />

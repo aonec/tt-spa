@@ -10,13 +10,22 @@ export const $consumptionStatistics = createStore<
 >(null);
 
 export const fetchConsumptionStatistics = createEffect<
-  { id: number; month?: string },
+  {
+    HousingStockId: number;
+    MonthOfLastTransmission?: string | null;
+    HotWaterSupply?: boolean | null;
+    ColdWaterSupply?: boolean | null;
+    Electricity?: boolean | null;
+  },
   SubscriberStatisticsСonsumptionResponse[]
 >();
 
 export const ConsumptionStatisticsGate = createGate<{
-  housingStockId: number;
-  month?: string;
+  HousingStockId: number;
+  MonthOfLastTransmission?: string | null;
+  HotWaterSupply?: boolean | null;
+  ColdWaterSupply?: boolean | null;
+  Electricity?: boolean | null;
 }>();
 
 export const setSelectedHousingStockId = createEvent<number | null>();
