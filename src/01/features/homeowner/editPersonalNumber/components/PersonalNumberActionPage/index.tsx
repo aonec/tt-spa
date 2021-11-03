@@ -17,6 +17,7 @@ interface Props {
   title: string;
   onSaveHandler?(): void;
   loading?: boolean;
+  type?: 'split';
 }
 
 export const PersonaNumberActionPage: React.FC<Props> = ({
@@ -24,8 +25,11 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   title,
   onSaveHandler,
   loading,
+  type,
 }) => {
   const apartment = useStore($apartment);
+
+  const isSplit = type === 'split';
 
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
@@ -53,7 +57,13 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           disabled={loading}
           onClick={onSaveHandler}
         >
-          {loading ? <Loader show /> : 'Сохранить изменения'}
+          {loading ? (
+            <Loader show />
+          ) : isSplit ? (
+            'Далее'
+          ) : (
+            'Сохранить изменения'
+          )}
         </ButtonTT>
       </Flex>
     </Wrap>

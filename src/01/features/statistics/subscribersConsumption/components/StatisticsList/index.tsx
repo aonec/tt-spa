@@ -23,10 +23,13 @@ export const StatisticsList: React.FC = () => {
     electricitySupplyСonsumption,
     dateLastCheck,
     dateLastTransmissionOfReading,
+    housingStockId,
   }: SubscriberStatisticsСonsumptionResponse) => (
     <ApartmentWrap
       {...layout}
-      onClick={() => history.push(`/objects/245/apartments/461132`)}
+      onClick={() =>
+        history.push(`/objects/${housingStockId}/apartments/${housingStockId}`)
+      }
     >
       <div>{apartmentNumber}</div>
       <div>{formatValue(round(coldWaterSupplyСonsumption!, 3))}</div>
@@ -73,6 +76,13 @@ const Wrap = styled(Grid)`
 const ApartmentWrap = styled(Grid)`
   padding: 10px 20px;
   border-bottom: 1px solid #f3f5f6;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover {
+    color: #3241e6;
+    background-color: #3948f113;
+  }
 
   &:last-child {
     border-bottom: none;

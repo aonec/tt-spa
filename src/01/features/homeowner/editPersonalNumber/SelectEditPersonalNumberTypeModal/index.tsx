@@ -74,10 +74,7 @@ export const SelectEditPersonalNumberTypeModal: React.FC = () => {
   };
 
   useEffect(() => {
-    if (
-      selectedType?.route === 'addPersonalNumber' ||
-      selectedType?.route === 'splitApartment'
-    ) {
+    if (selectedType?.route === 'addPersonalNumber') {
       history.push(`/apartment/${id}/homeowners/${selectedType?.route}`);
       closeEditPersonalNumberTypeModal();
     }
