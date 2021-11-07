@@ -80,6 +80,7 @@ export const CheckApartmentModal = () => {
         uniqId="check-apartments"
         filesInit={fields.documentIds.value}
         onChange={fields.documentIds.onChange}
+        max={1}
       />
       <ErrorMessage>
         {fields.documentIds.errorText({
