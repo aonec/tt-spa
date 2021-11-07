@@ -229,6 +229,11 @@ export enum OrderByRule {
   Descending = "Descending",
 }
 
+export enum ECheckType {
+  Planned = "Planned",
+  Unplanned = "Unplanned",
+}
+
 export enum EDocumentType {
   Common = "Common",
   DeviceCommissionCheckAct = "DeviceCommissionCheckAct",
@@ -266,7 +271,24 @@ export interface DocumentResponse {
   type: EDocumentType;
 }
 
-export interface DocumentResponsePagedList {
+export interface ApartmentCheckResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ECheckType;
+
+  /** @format int32 */
+  taskId: number | null;
+
+  /** @format int32 */
+  apartmentId: number;
+  registryNumber: string | null;
+  checkingAct: DocumentResponse | null;
+}
+
+export interface ApartmentCheckResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -286,11 +308,11 @@ export interface DocumentResponsePagedList {
 
   /** @format int32 */
   previousPageNumber: number;
-  items: DocumentResponse[] | null;
+  items: ApartmentCheckResponse[] | null;
 }
 
-export interface DocumentResponsePagedListSuccessApiResponse {
-  successResponse: DocumentResponsePagedList | null;
+export interface ApartmentCheckResponsePagedListSuccessApiResponse {
+  successResponse: ApartmentCheckResponsePagedList | null;
 }
 
 export enum EClosingReason {
@@ -376,11 +398,6 @@ export interface ApartmentStatusSetRequest {
   documentIds?: number[] | null;
 }
 
-export enum ECheckType {
-  Planned = "Planned",
-  Unplanned = "Unplanned",
-}
-
 export interface CreateApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string;
@@ -392,23 +409,27 @@ export interface CreateApartmentCheckRequest {
   registryNumber?: string | null;
 }
 
-export interface ApartmentCheckResponse {
-  /** @format int32 */
-  id: number;
-
-  /** @format date-time */
-  checkingDate: string;
-  checkType: ECheckType;
-
-  /** @format int32 */
-  taskId: number | null;
-
-  /** @format int32 */
-  apartmentId: number;
-}
-
 export interface ApartmentCheckResponseSuccessApiResponse {
   successResponse: ApartmentCheckResponse | null;
+}
+
+export interface EditApartmentCheckRequest {
+  /** @format date-time */
+  checkingDate?: string | null;
+  checkType?: ECheckType | null;
+  documentIds?: number[] | null;
+
+  /** @format int32 */
+  taskId?: number | null;
+  registryNumber?: string | null;
+
+  /** @format date-time */
+  closingDate?: string | null;
+}
+
+export interface RemoveApartmentCheckRequest {
+  /** @format date-time */
+  closingDate?: string | null;
 }
 
 export interface LoginRequest {
@@ -517,6 +538,8 @@ export enum EUserPermission {
   ControllerUpdate = "ControllerUpdate",
   SubscriberStatisticsRead = "SubscriberStatisticsRead",
   ApartmentCheckCreate = "ApartmentCheckCreate",
+  ApartmentCheckEdit = "ApartmentCheckEdit",
+  ApartmentCheckRemove = "ApartmentCheckRemove",
 }
 
 export interface TokenResponse {
@@ -1837,6 +1860,7 @@ export interface HomeownerAccountCreateServiceModel {
 
   /** @format double */
   ownershipArea?: number;
+  isMainOnApartment?: boolean;
 }
 
 export interface HomeownerAccountResponseSuccessApiResponse {
@@ -1863,10 +1887,9 @@ export interface HomeownerAccountCloseRequest {
 }
 
 export interface HomeownerAccountCreateRequest {
-  personalAccountNumber: string;
-
   /** @format int32 */
   apartmentId: number;
+  personalAccountNumber: string;
   name: string;
   phoneNumber?: string | null;
   personType?: EPersonType;
@@ -1876,6 +1899,7 @@ export interface HomeownerAccountCreateRequest {
 
   /** @format date-time */
   openAt: string;
+  isMainOnApartment?: boolean;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -1901,6 +1925,24 @@ export interface HomeownerCertificateResponse {
 
 export interface HomeownerCertificateResponseSuccessApiResponse {
   successResponse: HomeownerCertificateResponse | null;
+}
+
+export interface HomeownerAccountSplitRequest {
+  accountForClosing: HomeownerAccountCloseRequest;
+  homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest;
+  newHomeownerAccount: HomeownerAccountCreateRequest;
+  individualDeviceIdsForSwitch?: number[] | null;
+  useExistingApartment: boolean;
+  newApartment: ApartmentCreateRequest;
+}
+
+export interface DataAfterSplittingHomeownerAccountResponse {
+  splittedApartmentHomeownerAccount: HomeownerAccountResponse | null;
+  newApartmentHomeownerAccount: HomeownerAccountResponse | null;
+}
+
+export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
+  successResponse: DataAfterSplittingHomeownerAccountResponse | null;
 }
 
 export interface UpdateHouseManagementRequest {
@@ -4648,6 +4690,9 @@ export interface StagePushRequest {
   housingMeteringDeviceSwitch?: SwitchHousingMeteringDeviceRequest | null;
   readings?: IndividualDeviceReadingsCreateRequest[] | null;
   consumableMaterials?: string | null;
+
+  /** @format date-time */
+  apartmentCheckDate?: string | null;
 }
 
 export interface StageRevertRequest {
@@ -4939,17 +4984,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Apartments
-     * @name ApartmentsIndividualDeviceCheckDocumentsDetail
-     * @request GET:/api/Apartments/{apartmentId}/IndividualDeviceCheckDocuments
+     * @name ApartmentsApartmentChecksDetail
+     * @request GET:/api/Apartments/{apartmentId}/ApartmentChecks
      * @secure
      */
-    apartmentsIndividualDeviceCheckDocumentsDetail: (
+    apartmentsApartmentChecksDetail: (
       apartmentId: number,
       query?: { PageNumber?: number; PageSize?: number; OrderBy?: OrderByRule },
       params: RequestParams = {},
     ) =>
-      this.request<DocumentResponsePagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Apartments/${apartmentId}/IndividualDeviceCheckDocuments`,
+      this.request<ApartmentCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/ApartmentChecks`,
         method: "GET",
         query: query,
         secure: true,
@@ -5023,6 +5068,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/AddCheck`,
         method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsEditCheckUpdate
+     * @request PUT:/api/Apartments/{apartmentId}/EditCheck/{apartmentCheckId}
+     * @secure
+     */
+    apartmentsEditCheckUpdate: (
+      apartmentId: number,
+      apartmentCheckId: number,
+      data: EditApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/EditCheck/${apartmentCheckId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsRemoveCheckDelete
+     * @request DELETE:/api/Apartments/{apartmentId}/RemoveCheck/{apartmentCheckId}
+     * @secure
+     */
+    apartmentsRemoveCheckDelete: (
+      apartmentId: number,
+      apartmentCheckId: number,
+      data: RemoveApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/RemoveCheck/${apartmentCheckId}`,
+        method: "DELETE",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -6312,6 +6405,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/HomeownerAccount/${id}/Certificate`,
         method: "GET",
         secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
+     * @name HomeownerAccountSplitCreate
+     * @request POST:/api/HomeownerAccount/Split
+     * @secure
+     */
+    homeownerAccountSplitCreate: (data: HomeownerAccountSplitRequest | null, params: RequestParams = {}) =>
+      this.request<DataAfterSplittingHomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/Split`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

@@ -11,10 +11,18 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { DocumentResponse, EDocumentType } from 'myApi';
+import {
+  ApartmentCheckResponse,
+  EDocumentType,
+  ECheckType,
+  DocumentResponse,
+} from 'myApi';
 import moment from 'moment';
 import { ReactComponent as DocumentIcon } from './documentIcon.svg';
 import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
+import { saveAs } from 'file-saver';
+import { message } from 'antd';
+import axios from '01/axios';
 
 export const ChecksHistory = () => {
   const params = useParams();
@@ -23,22 +31,28 @@ export const ChecksHistory = () => {
   const documents = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
-  const renderDocument = (document: DocumentResponse) => {
-    return (
+  const renderDocument = ({
+    checkingAct: document,
+    checkType,
+  }: ApartmentCheckResponse) => {
+    const onSaveFile = getOnSaveFile(document!);
+    return document ? (
       <ListItem temp="1fr 1fr 2fr">
         <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
           {moment(document?.uploadingTime).format('DD.MM.YYYY')}
         </b>
-        <div>{translateDocumentType(document.type)}</div>
+        <div>{getCheckingActDocument(checkType)}</div>
         <Flex style={{ justifyContent: 'space-between' }}>
           <Flex>
             <DocumentIcon />
             <Space w={7} />
-            {document.name}
+            {document?.name}
           </Flex>
-          <DownloadIcon style={{ cursor: 'pointer' }} />
+          <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
         </Flex>
       </ListItem>
+    ) : (
+      <ListItem temp="1fr 1fr 2fr" />
     );
   };
 
@@ -84,6 +98,20 @@ export function translateDocumentType(type: EDocumentType) {
 
   return (types as any)[type] || 'Документ';
 }
+
+function getCheckingActDocument(type: ECheckType) {
+  return type === ECheckType.Planned ? 'Плановая' : 'Внеплановая';
+}
+
+export const getOnSaveFile = (document: DocumentResponse) =>
+  async function onSaveFile() {
+    try {
+      const url: string = await axios.get(`Documents/${document.id}`);
+      saveAs(url, document.name!);
+    } catch (error) {
+      message.error('Не удалось скачать файл');
+    }
+  };
 
 const Wrap = styled.div`
   width: 720px;

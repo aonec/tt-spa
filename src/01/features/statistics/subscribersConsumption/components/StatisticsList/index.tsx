@@ -24,11 +24,12 @@ export const StatisticsList: React.FC = () => {
     dateLastCheck,
     dateLastTransmissionOfReading,
     housingStockId,
+    apartmentId
   }: SubscriberStatisticsСonsumptionResponse) => (
     <ApartmentWrap
       {...layout}
       onClick={() =>
-        history.push(`/objects/${housingStockId}/apartments/${housingStockId}`)
+        history.push(`/objects/${housingStockId}/apartments/${apartmentId}`)
       }
     >
       <div>{apartmentNumber}</div>
