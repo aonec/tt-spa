@@ -22,6 +22,7 @@ import { ReactComponent as DocumentIcon } from './documentIcon.svg';
 import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
 import { saveAs } from 'file-saver';
 import { message } from 'antd';
+import axios from '01/axios';
 
 export const ChecksHistory = () => {
   const params = useParams();
@@ -103,9 +104,10 @@ function getCheckingActDocument(type: ECheckType) {
 }
 
 export const getOnSaveFile = (document: DocumentResponse) =>
-  function onSaveFile() {
+  async function onSaveFile() {
     try {
-      saveAs(`/api/Documents/${document.id}`, document.name!);
+      const url: string = await axios.get(`Documents/${document.id}`);
+      saveAs(url, document.name!);
     } catch (error) {
       message.error('Не удалось скачать файл');
     }
