@@ -14,20 +14,16 @@ import {
   PersonalNumberFormGate,
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
-import confirm from 'antd/lib/modal/confirm';
 import { useHistory, useParams } from 'react-router';
-import axios from '01/axios';
 
 interface Props {
   type?: 'switch' | 'edit' | 'split';
+  form?: any;
 }
 
-export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
-  const { fields } = useForm(personalNumberEditForm);
-  const history = useHistory();
+export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
+  const { fields } = useForm(form || personalNumberEditForm);
   const isEdit = type === 'edit';
-
-  const { homeownerId } = useParams<{ homeownerId: string }>();
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     (fields as any)[e.target.name]?.onChange(e.target.value);

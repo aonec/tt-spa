@@ -16,6 +16,7 @@ import styled from 'styled-components';
 interface Props {
   title: string;
   onSaveHandler?(): void;
+  onCancelHandler?(): void;
   loading?: boolean;
   type?: 'split';
 }
@@ -24,6 +25,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   children,
   title,
   onSaveHandler,
+  onCancelHandler,
   loading,
   type,
 }) => {
@@ -47,7 +49,11 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
       <Space />
       {children}
       <Flex style={{ justifyContent: 'flex-end' }}>
-        <ButtonTT color={'white'} key="back" onClick={history.goBack}>
+        <ButtonTT
+          color={'white'}
+          key="back"
+          onClick={onCancelHandler || history.goBack}
+        >
           Отмена
         </ButtonTT>
         <Space />

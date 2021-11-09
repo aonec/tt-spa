@@ -11,7 +11,11 @@ import { PersonalNumberEditForm } from '../editPersonalNumber/components/Persona
 import { NewApartmentForm } from './components/NewApartmentForm';
 import { Stages } from './components/Stages';
 import { TransferDevices } from './components/TransferDevices';
-import { $splitPersonalNumberStageNumber } from './models';
+import {
+  $splitPersonalNumberStageNumber,
+  homeownerAccountForSplittedApartmentForm,
+  SplitPersonalNumberGate,
+} from './models';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
@@ -29,7 +33,10 @@ export const SplitPersonalNumber = () => {
         style={{ width: '50%' }}
       />
       <SpaceLine />
-      <PersonalNumberEditForm type="switch" />
+      <PersonalNumberEditForm
+        type="switch"
+        form={homeownerAccountForSplittedApartmentForm}
+      />
     </>,
     <NewApartmentForm />,
     <TransferDevices />,
@@ -39,6 +46,7 @@ export const SplitPersonalNumber = () => {
     <>
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <HomeownerGate id={homeownerId} />
+      <SplitPersonalNumberGate />
       <Wrap>
         <PersonaNumberActionPage title="Разделение лицевого счета" type="split">
           {stages[stage - 1]}
