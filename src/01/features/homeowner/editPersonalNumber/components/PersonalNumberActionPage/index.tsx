@@ -8,7 +8,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Breadcrumb, ButtonTT } from '01/tt-components';
 import { Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
-import { HousingStockListResponse } from 'myApi';
+import { ApartmentResponse, HousingStockListResponse } from 'myApi';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -40,9 +40,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const housingStock = apartment?.housingStock;
-
-  const address = housingStock && getHousingStockAddressString(housingStock);
+  const address = apartment && getHousingStockAddressString(apartment);
 
   return (
     <Wrap>
@@ -84,9 +82,10 @@ const Wrap = styled.div`
   max-width: 620px;
 `;
 
-export const getHousingStockAddressString = (
-  housingStock: HousingStockListResponse
-) =>
-  `${housingStock?.city} ул. ${housingStock?.street}, кв. ${
+export const getHousingStockAddressString = (apartment: ApartmentResponse) => {
+  const housingStock = apartment.housingStock;
+
+  return `${housingStock?.city} ул. ${housingStock?.street}, д. ${
     housingStock?.number
-  }${housingStock?.corpus || ''}`;
+  }, кв. ${apartment.apartmentNumber}${housingStock?.corpus || ''}`;
+};
