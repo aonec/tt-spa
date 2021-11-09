@@ -65,10 +65,11 @@ export const SplitPersonalNumber = () => {
     message.success('Данные успешно сохранены');
   }
 
-  useEffect(
-    () => splitPersonalNumberFx.doneData.watch(() => onSuccesRequest),
-    []
-  );
+  useEffect(() => {
+    const unwatch = splitPersonalNumberFx.doneData.watch(onSuccesRequest);
+
+    return () => unwatch();
+  }, []);
 
   return (
     <>

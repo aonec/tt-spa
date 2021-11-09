@@ -55,16 +55,27 @@ sample({
       apartment
     ) => {
       const accountForClosing = {
-        homeonwerAccountId: homeowner?.id!,
+        HomeownerAccountId: homeowner?.id!,
         closedAt: moment().toISOString(true),
       };
 
       const homeownerAccountForSplittedApartment = {
         apartmentId: apartment?.id,
         ...splittedApartmentHomeownerAccount,
+        openAt: moment(splittedApartmentHomeownerAccount.openAt).toISOString(
+          true
+        ),
       };
 
-      const newHomeownerAccount = { ...newApartmentHomeownerAccount };
+      const newHomeownerAccount = {
+        ...newApartmentHomeownerAccount,
+        openAt: moment(newApartmentHomeownerAccount.openAt).toISOString(true),
+      };
+
+      const newApartment = {
+        housingStockId: apartment?.housingStock?.id,
+        number: newApartmentHomeownerAccount.apartmentNumber,
+      };
 
       const individualDeviceIdsForSwitch = [
         ...transferedDevices.individualDeviceIdsForSwitch,
@@ -75,6 +86,7 @@ sample({
         homeownerAccountForSplittedApartment,
         newHomeownerAccount,
         individualDeviceIdsForSwitch,
+        newApartment,
       };
     }
   ),

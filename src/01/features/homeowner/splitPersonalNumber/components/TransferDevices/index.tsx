@@ -63,13 +63,15 @@ export const TransferDevices = () => {
 
   return (
     <Wrap>
-      {devices.map((value, index) =>
-        renderDevice(
-          value,
-          index,
-          fields.individualDeviceIdsForSwitch.value.includes(value.id)
-        )
-      )}
+      {devices
+        .filter((elem) => elem.closingDate === null)
+        .map((value, index) =>
+          renderDevice(
+            value,
+            index,
+            fields.individualDeviceIdsForSwitch.value.includes(value.id)
+          )
+        )}
     </Wrap>
   );
 };
