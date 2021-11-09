@@ -134,5 +134,7 @@ export const newApartmentPersonalNumberForm = createForm({
 export const SplitPersonalNumberGate = createGate();
 
 export const nextSplitPersonalNumberPage = createEvent();
-
 export const previousSplitPersonalNumberPage = createEvent();
+
+export const saveSplitPersonalNumberForm = createEvent();
+

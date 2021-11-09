@@ -2,12 +2,14 @@ import {
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
   previousSplitPersonalNumberPage,
+  saveSplitPersonalNumberForm,
+  transferDevicesForm,
 } from './index';
 import {
   $splitPersonalNumberStageNumber,
   nextSplitPersonalNumberPage,
 } from '.';
-import { forward } from 'effector';
+import { forward, sample } from 'effector';
 
 $splitPersonalNumberStageNumber
   .on(nextSplitPersonalNumberPage, (value) => (value === 3 ? value : value + 1))
@@ -23,4 +25,9 @@ forward({
 forward({
   from: newApartmentPersonalNumberForm.formValidated,
   to: nextSplitPersonalNumberPage,
+});
+
+forward({
+  from: transferDevicesForm.formValidated,
+  to: saveSplitPersonalNumberForm,
 });

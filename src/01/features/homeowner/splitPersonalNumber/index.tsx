@@ -18,6 +18,7 @@ import {
   newApartmentPersonalNumberForm,
   previousSplitPersonalNumberPage,
   SplitPersonalNumberGate,
+  transferDevicesForm,
 } from './models';
 
 export const SplitPersonalNumber = () => {
@@ -47,8 +48,9 @@ export const SplitPersonalNumber = () => {
 
   const firstForm = useForm(homeownerAccountForSplittedApartmentForm);
   const secondForm = useForm(newApartmentPersonalNumberForm);
+  const thirdForm = useForm(transferDevicesForm);
 
-  const nextHandlers = [firstForm.submit, secondForm.submit];
+  const nextHandlers = [firstForm.submit, secondForm.submit, thirdForm.submit];
 
   const history = useHistory();
 
