@@ -1,8 +1,12 @@
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { createGate } from 'effector-react';
+import { HomeownerAccountSplitRequest } from 'myApi';
 
-export const splitPersonalNumberFx = createEffect();
+export const splitPersonalNumberFx = createEffect<
+  HomeownerAccountSplitRequest,
+  void
+>();
 
 export const $splitPersonalNumberStageNumber = createStore<number>(1);
 
@@ -137,4 +141,3 @@ export const nextSplitPersonalNumberPage = createEvent();
 export const previousSplitPersonalNumberPage = createEvent();
 
 export const saveSplitPersonalNumberForm = createEvent();
-
