@@ -8,11 +8,16 @@ export const $splitPersonalNumberStageNumber = createStore<number>(1);
 
 export const setSplitPersonalNumberStage = createEvent<number>();
 
+export const transferDevicesForm = createForm({
+  fields: {
+    individualDeviceIdsForSwitch: {
+      init: [] as number[],
+    },
+  },
+});
+
 export const homeownerAccountForSplittedApartmentForm = createForm({
   fields: {
-    apartmentNumber: {
-      init: null as number | null,
-    },
     name: {
       init: '',
       rules: [
@@ -67,7 +72,13 @@ export const homeownerAccountForSplittedApartmentForm = createForm({
 export const newApartmentPersonalNumberForm = createForm({
   fields: {
     apartmentNumber: {
-      init: null as number | null,
+      init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     name: {
       init: '',

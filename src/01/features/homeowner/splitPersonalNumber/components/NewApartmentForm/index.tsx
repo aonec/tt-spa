@@ -8,9 +8,12 @@ import { InputTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 import { newApartmentPersonalNumberForm } from '../../models';
+import { useForm } from 'effector-forms/dist';
+import { ErrorMessage } from '01/features/contractors/addContractors';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);
+  const { fields } = useForm(newApartmentPersonalNumberForm);
 
   return (
     <Wrap>
@@ -27,7 +30,17 @@ export const NewApartmentForm = () => {
           />
         </Form.Item>
         <Form.Item label="Квартира">
-          <InputTT />
+          <InputTT
+            value={fields.apartmentNumber.value}
+            onChange={(e: any) =>
+              fields.apartmentNumber.onChange(e.target.value)
+            }
+          />
+          <ErrorMessage>
+            {fields.apartmentNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <SpaceLine />
