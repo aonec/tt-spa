@@ -1,10 +1,12 @@
 import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { $homeowner, HomeownerGate } from '../displayHomeowner/models';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
@@ -17,6 +19,7 @@ import {
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
   previousSplitPersonalNumberPage,
+  splitPersonalNumberFx,
   SplitPersonalNumberGate,
   transferDevicesForm,
 } from './models';
@@ -54,6 +57,19 @@ export const SplitPersonalNumber = () => {
 
   const history = useHistory();
 
+  const pending = useStore(splitPersonalNumberFx.pending);
+
+  function onSuccesRequest() {
+    history.goBack();
+
+    message.success('Данные успешно сохранены');
+  }
+
+  useEffect(
+    () => splitPersonalNumberFx.doneData.watch(() => onSuccesRequest),
+    []
+  );
+
   return (
     <>
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
@@ -61,12 +77,15 @@ export const SplitPersonalNumber = () => {
       <SplitPersonalNumberGate />
       <Wrap>
         <PersonaNumberActionPage
+          saveButtonText={stage === 3 ? 'Сохранить' : void 0}
+          cancelButtonText={stage !== 1 ? 'Назад' : void 0}
           onSaveHandler={nextHandlers[stage - 1]}
           onCancelHandler={
             stage === 1 ? history.goBack : previousSplitPersonalNumberPage
           }
           title="Разделение лицевого счета"
           type="split"
+          loading={pending}
         >
           {stages[stage - 1]}
         </PersonaNumberActionPage>

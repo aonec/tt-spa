@@ -19,6 +19,8 @@ interface Props {
   onCancelHandler?(): void;
   loading?: boolean;
   type?: 'split';
+  saveButtonText?: string;
+  cancelButtonText?: string;
 }
 
 export const PersonaNumberActionPage: React.FC<Props> = ({
@@ -28,6 +30,8 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   onCancelHandler,
   loading,
   type,
+  saveButtonText,
+  cancelButtonText,
 }) => {
   const apartment = useStore($apartment);
 
@@ -54,7 +58,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           key="back"
           onClick={onCancelHandler || history.goBack}
         >
-          Отмена
+          {cancelButtonText || 'Отмена'}
         </ButtonTT>
         <Space />
         <ButtonTT
@@ -66,7 +70,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           {loading ? (
             <Loader show />
           ) : isSplit ? (
-            'Далее'
+            saveButtonText || 'Далее'
           ) : (
             'Сохранить изменения'
           )}

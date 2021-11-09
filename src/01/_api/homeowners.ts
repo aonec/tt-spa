@@ -3,6 +3,7 @@ import {
   HomeownerAccountCreateServiceModel,
   HomeownerAccountReplaceRequest,
   HomeownerAccountResponse,
+  HomeownerAccountSplitRequest,
   HomeownerAccountUpdateRequest,
   HomeownerCertificateResponse,
 } from './../../myApi';
@@ -36,3 +37,7 @@ export const closeHomeownerAccount = (
 export const addHomeowner = (
   reqestPayload: HomeownerAccountCreateServiceModel
 ): Promise<void> => axios.post('HomeownerAccount', reqestPayload);
+
+export const splitHomeownerAccount = (
+  data: HomeownerAccountSplitRequest
+): Promise<void> => axios.post('HomeownerAccount/Split', data);
