@@ -15,6 +15,7 @@ import {
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
 import { useHistory, useParams } from 'react-router';
+import { ErrorMessage } from '01/features/contractors/addContractors';
 
 interface Props {
   type?: 'switch' | 'edit' | 'split';
@@ -36,6 +37,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
           value={fields.openAt.value}
           onChange={fields.openAt.onChange}
         />
+        <ErrorMessage>
+          {fields.openAt.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
       </Form.Item>
       <Grid temp="3fr 1fr" gap="15px">
         <Form.Item label="Лицевой счет">
@@ -45,6 +51,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
             name="personalAccountNumber"
             onChange={onChangeHandler}
           />
+          <ErrorMessage>
+            {fields.personalAccountNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <Form.Item label="Платежный код">
           <InputTT
@@ -53,6 +64,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
             onChange={onChangeHandler}
             name="paymentCode"
           />
+          <ErrorMessage>
+            {fields.paymentCode.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Grid temp="1fr 1fr" gap="15px">
@@ -63,6 +79,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
             onChange={onChangeHandler}
             name="name"
           />
+          <ErrorMessage>
+            {fields.name.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <Form.Item label="Телефон">
           <InputTT
@@ -71,6 +92,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
             onChange={onChangeHandler}
             name="phoneNumber"
           />
+          <ErrorMessage>
+            {fields.phoneNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Flex style={{ justifyContent: 'space-between' }}>

@@ -1,9 +1,10 @@
 import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { $homeowner, HomeownerGate } from '../displayHomeowner/models';
 import { PersonaNumberActionPage } from '../editPersonalNumber/components/PersonalNumberActionPage';
@@ -14,6 +15,8 @@ import { TransferDevices } from './components/TransferDevices';
 import {
   $splitPersonalNumberStageNumber,
   homeownerAccountForSplittedApartmentForm,
+  newApartmentPersonalNumberForm,
+  previousSplitPersonalNumberPage,
   SplitPersonalNumberGate,
 } from './models';
 
@@ -42,13 +45,27 @@ export const SplitPersonalNumber = () => {
     <TransferDevices />,
   ];
 
+  const firstForm = useForm(homeownerAccountForSplittedApartmentForm);
+  const secondForm = useForm(newApartmentPersonalNumberForm);
+
+  const nextHandlers = [firstForm.submit, secondForm.submit];
+
+  const history = useHistory();
+
   return (
     <>
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <HomeownerGate id={homeownerId} />
       <SplitPersonalNumberGate />
       <Wrap>
-        <PersonaNumberActionPage title="Разделение лицевого счета" type="split">
+        <PersonaNumberActionPage
+          onSaveHandler={nextHandlers[stage - 1]}
+          onCancelHandler={
+            stage === 1 ? history.goBack : previousSplitPersonalNumberPage
+          }
+          title="Разделение лицевого счета"
+          type="split"
+        >
           {stages[stage - 1]}
         </PersonaNumberActionPage>
         <Space w={45} />

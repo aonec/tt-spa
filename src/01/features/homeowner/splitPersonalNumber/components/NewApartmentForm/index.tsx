@@ -7,6 +7,7 @@ import { Form } from 'antd';
 import { InputTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import { $apartment } from '01/features/apartments/displayApartment/models';
+import { newApartmentPersonalNumberForm } from '../../models';
 
 export const NewApartmentForm = () => {
   const apartment = useStore($apartment);
@@ -30,7 +31,7 @@ export const NewApartmentForm = () => {
         </Form.Item>
       </Grid>
       <SpaceLine />
-      <PersonalNumberEditForm />
+      <PersonalNumberEditForm form={newApartmentPersonalNumberForm} />
     </Wrap>
   );
 };
