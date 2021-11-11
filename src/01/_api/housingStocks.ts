@@ -34,5 +34,7 @@ export const doesApartmentExist = async ({
     `HousingStocks/${housingStockId}/doesApartmentExist/${apartmentNumber}`
   );
 
-  return res;
+  if (typeof res === 'number') return res;
+
+  return res?.successResponse;
 };
