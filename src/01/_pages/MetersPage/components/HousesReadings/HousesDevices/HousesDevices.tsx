@@ -50,8 +50,6 @@ const HousesDevices: React.FC = () => {
 
   useEffect(() => reset && reset(), [housingStockId]);
 
-  const deviceElemsList = devices;
-
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number
@@ -59,7 +57,7 @@ const HousesDevices: React.FC = () => {
     <HouseReadingLine
       disabled={pendingDevices}
       sliderIndex={sliderIndex || 0}
-      numberOfPreviousReadingsInputs={deviceElemsList
+      numberOfPreviousReadingsInputs={devices
         .slice(0, index)
         .reduce(
           (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
@@ -78,7 +76,7 @@ const HousesDevices: React.FC = () => {
     );
   };
 
-  const deviceElems = deviceElemsList.map(renderDevice);
+  const deviceElems = devices.map(renderDevice);
 
   const elementRef = useRef();
 

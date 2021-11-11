@@ -1,5 +1,6 @@
 import axios from '01/axios';
 import { MagnetSeal } from '01/_pages/IndividualDeviceEdit/hooks/useSwitchMagnetSeal';
+import _ from 'lodash';
 import {
   CreateIndividualDeviceRequest,
   SwitchIndividualDeviceRequest,
@@ -97,9 +98,7 @@ export const getIndividualDevices = async (
 ) => {
   const res: IndividualDeviceListItemResponsePagedList = await axios.get(
     'IndividualDevices',
-    {
-      params: { ...params },
-    }
+    { params }
   );
 
   return { items: res?.items || [], total: res?.totalItems };
