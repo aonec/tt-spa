@@ -8,7 +8,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Breadcrumb, ButtonTT } from '01/tt-components';
 import { Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
-import { HousingStockListResponse } from 'myApi';
+import { ApartmentResponse, HousingStockListResponse } from 'myApi';
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -16,16 +16,22 @@ import styled from 'styled-components';
 interface Props {
   title: string;
   onSaveHandler?(): void;
+  onCancelHandler?(): void;
   loading?: boolean;
   type?: 'split';
+  saveButtonText?: string;
+  cancelButtonText?: string;
 }
 
 export const PersonaNumberActionPage: React.FC<Props> = ({
   children,
   title,
   onSaveHandler,
+  onCancelHandler,
   loading,
   type,
+  saveButtonText,
+  cancelButtonText,
 }) => {
   const apartment = useStore($apartment);
 
@@ -34,9 +40,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const housingStock = apartment?.housingStock;
-
-  const address = housingStock && getHousingStockAddressString(housingStock);
+  const address = apartment && getApartmentAddressString(apartment);
 
   return (
     <Wrap>
@@ -47,8 +51,12 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
       <Space />
       {children}
       <Flex style={{ justifyContent: 'flex-end' }}>
-        <ButtonTT color={'white'} key="back" onClick={history.goBack}>
-          Отмена
+        <ButtonTT
+          color={'white'}
+          key="back"
+          onClick={onCancelHandler || history.goBack}
+        >
+          {cancelButtonText || 'Отмена'}
         </ButtonTT>
         <Space />
         <ButtonTT
@@ -60,7 +68,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
           {loading ? (
             <Loader show />
           ) : isSplit ? (
-            'Далее'
+            saveButtonText || 'Далее'
           ) : (
             'Сохранить изменения'
           )}
@@ -74,9 +82,10 @@ const Wrap = styled.div`
   max-width: 620px;
 `;
 
-export const getHousingStockAddressString = (
-  housingStock: HousingStockListResponse
-) =>
-  `${housingStock?.city} ул. ${housingStock?.street}, кв. ${
+export const getApartmentAddressString = (apartment: ApartmentResponse) => {
+  const housingStock = apartment.housingStock;
+
+  return `${housingStock?.city} ул. ${housingStock?.street}, д. ${
     housingStock?.number
-  }${housingStock?.corpus || ''}`;
+  }, кв. ${apartment.apartmentNumber}${housingStock?.corpus || ''}`;
+};

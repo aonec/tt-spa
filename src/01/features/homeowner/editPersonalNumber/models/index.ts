@@ -20,18 +20,48 @@ export const personalNumberEditForm = createForm({
   fields: {
     name: {
       init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     phoneNumber: {
       init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     openAt: {
       init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     personalAccountNumber: {
       init: null as string | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     paymentCode: {
       init: null as number | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     isMainAccountingNumber: {
       init: false,

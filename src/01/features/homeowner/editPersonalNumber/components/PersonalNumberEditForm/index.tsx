@@ -14,20 +14,17 @@ import {
   PersonalNumberFormGate,
 } from '../../models';
 import { ChangeEvent } from 'react-router/node_modules/@types/react';
-import confirm from 'antd/lib/modal/confirm';
 import { useHistory, useParams } from 'react-router';
-import axios from '01/axios';
+import { ErrorMessage } from '01/features/contractors/addContractors';
 
 interface Props {
   type?: 'switch' | 'edit' | 'split';
+  form?: any;
 }
 
-export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
-  const { fields } = useForm(personalNumberEditForm);
-  const history = useHistory();
+export const PersonalNumberEditForm: React.FC<Props> = ({ type, form }) => {
+  const { fields } = useForm(form || personalNumberEditForm);
   const isEdit = type === 'edit';
-
-  const { homeownerId } = useParams<{ homeownerId: string }>();
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     (fields as any)[e.target.name]?.onChange(e.target.value);
@@ -40,6 +37,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
           value={fields.openAt.value}
           onChange={fields.openAt.onChange}
         />
+        <ErrorMessage>
+          {fields.openAt.errorText({
+            required: 'Это поле обязательное',
+          })}
+        </ErrorMessage>
       </Form.Item>
       <Grid temp="3fr 1fr" gap="15px">
         <Form.Item label="Лицевой счет">
@@ -49,6 +51,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
             name="personalAccountNumber"
             onChange={onChangeHandler}
           />
+          <ErrorMessage>
+            {fields.personalAccountNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <Form.Item label="Платежный код">
           <InputTT
@@ -57,6 +64,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
             onChange={onChangeHandler}
             name="paymentCode"
           />
+          <ErrorMessage>
+            {fields.paymentCode.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Grid temp="1fr 1fr" gap="15px">
@@ -67,6 +79,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
             onChange={onChangeHandler}
             name="name"
           />
+          <ErrorMessage>
+            {fields.name.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
         <Form.Item label="Телефон">
           <InputTT
@@ -75,6 +92,11 @@ export const PersonalNumberEditForm: React.FC<Props> = ({ type }) => {
             onChange={onChangeHandler}
             name="phoneNumber"
           />
+          <ErrorMessage>
+            {fields.phoneNumber.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
         </Form.Item>
       </Grid>
       <Flex style={{ justifyContent: 'space-between' }}>
