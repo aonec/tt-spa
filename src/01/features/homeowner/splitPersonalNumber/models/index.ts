@@ -18,7 +18,6 @@ export const $isConfirmExistingApartmentModalOpen = $checkedExistingApartmentId.
   Boolean
 );
 
-export const openConfirmExistingApartmentModal = createEvent();
 export const closeConfirmExistingApartmentModal = createEvent();
 
 export const transferDevicesForm = createForm({

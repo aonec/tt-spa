@@ -1,6 +1,7 @@
 import {
   $checkedExistingApartmentId,
   checkApartmentExistingFx,
+  closeConfirmExistingApartmentModal,
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
   previousSplitPersonalNumberPage,
@@ -27,8 +28,10 @@ checkApartmentExistingFx.use(doesApartmentExist);
 $splitPersonalNumberStageNumber.reset(SplitPersonalNumberGate.close);
 
 $checkedExistingApartmentId
-  .on(checkApartmentExistingFx.doneData, (_, id) => id)
-  .reset(SplitPersonalNumberGate.close);
+  .on(checkApartmentExistingFx.doneData, (_, id) => {
+    return id;
+  })
+  .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
 
 forward({
   from: SplitPersonalNumberGate.close,
