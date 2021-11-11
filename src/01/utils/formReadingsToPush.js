@@ -5,8 +5,8 @@ export const formReadingToPush = (device) => {
   const deviceReadingObject = {
     deviceId: device.id,
     value1: +pushReadings.value1,
-    readingDate: moment().toISOString(),
-    uploadTime: moment().toISOString(),
+    readingDate: moment().toISOString(true),
+    uploadTime: moment().toISOString(true),
     isForced: true,
   };
   if (pushReadings.value2) {

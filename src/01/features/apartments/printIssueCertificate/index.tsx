@@ -1,4 +1,5 @@
 import { Loader } from '01/components';
+import { $currentPersonalNumberIndex } from '01/features/homeowner/displayHomeowner/models';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { ButtonTT } from '01/tt-components';
 import { Certificate } from '01/_pages/ApartmentProfile/components';
@@ -22,15 +23,15 @@ export const GetIssueCertificateModal = () => {
   const pendingCertificate = useStore(fetchHomeownerCertificate.pending);
   const certificateRef = useRef();
 
-  if (!apartment?.homeowners?.length) return <></>;
+  const homeownerIndex = useStore($currentPersonalNumberIndex);
+
+  if (!apartment?.homeownerAccounts?.length) return <></>;
 
   return (
     <>
-      {visible && (
-        <HomeownerCerificateGate
-          id={(apartment?.homeowners[0] as any).homeownerAccountId!}
-        />
-      )}
+      <HomeownerCerificateGate
+        id={(apartment?.homeownerAccounts[homeownerIndex] as any).id!}
+      />
       <ModalTT
         onCancel={closeIssueCertificateModalButtonClicked}
         visible={visible}
@@ -43,16 +44,17 @@ export const GetIssueCertificateModal = () => {
                 {pendingCertificate ? <Loader show /> : 'Печать'}
               </ButtonTT>
             )}
-            content={() => (certificateRef as any).current}
+            content={() => {
+              const node = (certificateRef as any).current;
+
+              return node;
+            }}
           />
         }
       >
         {homeownerCertificate && !pendingCertificate && (
-          <div style={{ marginBottom: 70 }}>
-            <Certificate
-              certificate={homeownerCertificate}
-              ref={certificateRef as any}
-            />
+          <div style={{ marginBottom: 70 }} ref={certificateRef as any}>
+            <Certificate certificate={homeownerCertificate} />
           </div>
         )}
       </ModalTT>

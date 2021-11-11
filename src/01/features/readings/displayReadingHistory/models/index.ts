@@ -14,3 +14,12 @@ export const fetchReadingHistoryFx = createEffect<
 export const ReadingHistoryGate = createGate<{ deviceId: number }>();
 
 export const refetchReadingHistory = createEvent<number>();
+
+export const $readingsHistoryModalDeviceId = createStore<number | null>(null);
+
+export const $isReadingsHstoryModalOpen = $readingsHistoryModalDeviceId.map(
+  Boolean
+);
+
+export const openReadingsHistoryModal = createEvent<number>();
+export const closeReadingsHistoryModal = createEvent();

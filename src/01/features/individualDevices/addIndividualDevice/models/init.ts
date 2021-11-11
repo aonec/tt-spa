@@ -59,10 +59,10 @@ sample({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate)
         .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(),
+        .toISOString(true),
       futureCheckingDate: moment(values.futureCheckingDate)
         .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
-        .toISOString(),
+        .toISOString(true),
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       apartmentId: values.apartmentId!,

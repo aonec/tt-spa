@@ -8,6 +8,7 @@ import DeviceIcons from '../../../../../_components/DeviceIcons';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { Space } from '../../../../../shared/ui/Layout/Space/Space';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
+import moment from 'moment';
 
 interface DeviceInfoProps {
   device: IndividualDeviceListItemResponse;
@@ -36,9 +37,20 @@ const DeviceInfo = ({ device }: DeviceInfoProps) => {
           futureCheckingDate={device.futureCheckingDate}
         />
       </ApartmentInfo>
+      {device.closingDate && (
+        <ClosingDate>
+          {moment(device.closingDate).format('DD.MM.YYYY')}
+        </ClosingDate>
+      )}
     </DeviceColumn>
   );
 };
+
+const ClosingDate = styled.div`
+  margin-top: 2px;
+  margin-left: 25px;
+  font-weight: bold;
+`;
 
 const DeviceColumn = styled.div`
   display: flex;

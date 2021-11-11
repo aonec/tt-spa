@@ -1,8 +1,9 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
 import {
-  createOrUpdateLast,
+  updateHousingMeteringDeviceReading,
 } from '01/_api/meteringDeviceReadings';
+import moment from 'moment';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyledMeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
@@ -31,10 +32,10 @@ export const ConsumptionInput: React.FC<Props> = ({
     try {
       if (!reading.id) throw 'none id';
 
-      await createOrUpdateLast({
-        deviceId,
-        nonResidentialRoomConsumption: Number(value),
+      await updateHousingMeteringDeviceReading({
+        id: reading.id,
         value: reading.value,
+        nonResidentialRoomConsumption: Number(value),
       });
 
       refetch();

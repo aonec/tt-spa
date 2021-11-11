@@ -1,0 +1,13 @@
+import { SubscriberStatisticsСonsumptionResponse } from 'myApi';
+import axios from '01/axios';
+
+export const getConsumptionStatistics = (params: {
+  HousingStockId: number;
+  MonthOfLastTransmission?: string | null;
+  HotWaterSupply?: boolean | null;
+  ColdWaterSupply?: boolean | null;
+  Electricity?: boolean | null;
+}): Promise<SubscriberStatisticsСonsumptionResponse[]> =>
+  axios.get(`SubscriberStatistics`, {
+    params,
+  });

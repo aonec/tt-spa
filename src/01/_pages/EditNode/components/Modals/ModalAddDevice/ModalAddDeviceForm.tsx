@@ -122,14 +122,14 @@ const ModalAddDeviceForm = ({
   const initialValues = {
     isConnected: isConnectedOptions[0].value,
     serialNumber: undefined,
-    lastCheckingDate: moment().toISOString(),
-    futureCheckingDate: moment().add(3, 'years').toISOString(),
+    lastCheckingDate: moment().toISOString(true),
+    futureCheckingDate: moment().add(3, 'years').toISOString(true),
     lastCommercialAccountingDate: lastCommercialAccountingDate
-      ? moment(lastCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(lastCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate).toISOString()
-      : moment().toISOString(),
+      ? moment(futureCommercialAccountingDate).toISOString(true)
+      : moment().toISOString(true),
     housingMeteringDeviceType: undefined,
     resource,
     model: undefined,
@@ -147,10 +147,14 @@ const ModalAddDeviceForm = ({
   const handleSubmit = (values: any) => {
     const form: CreatePipeHousingMeteringDeviceRequest = {
       serialNumber: values.serialNumber,
-      lastCheckingDate: values.lastCheckingDate,
-      futureCheckingDate: values.futureCheckingDate,
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+      lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
+      futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
+      lastCommercialAccountingDate: moment(
+        values.lastCommercialAccountingDate
+      ).toISOString(true),
+      futureCommercialAccountingDate: moment(
+        values.futureCommercialAccountingDate
+      ).toISOString(true),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       resource: values.resource,
       model: values.model,

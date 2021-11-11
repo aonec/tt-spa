@@ -2,15 +2,14 @@ import React from 'react';
 import Owner from './Owner';
 
 const Owners = (props) => {
-  console.log('homeowners', props);
-  const { homeowners } = props;
-  console.log('homeowners', homeowners);
-  const res = homeowners.map((homeowner, index) => {
-    const { firstName, personalAccountNumber, phoneNumber, fullName } = homeowner;
+  const { homeownerAccounts } = props;
+  const res = homeownerAccounts?.map((homeowner, index) => {
+    const { personalAccountNumber, phoneNumber, name, id } = homeowner;
     return (
       <Owner
+        id={id}
         key={personalAccountNumber}
-        firstName={fullName}
+        name={name}
         personalAccountNumber={personalAccountNumber}
         phoneNumber={phoneNumber}
       />

@@ -41,7 +41,7 @@ import { store } from '../Redux/store';
 import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
 import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
-import { EditHomeownerPersonalNumber } from '01/features/homeownerAccount/editHomeownerAccountPersonalNumber';
+import { StatisticsPage } from '01/features/statistics';
 
 moment.locale('ru');
 
@@ -152,7 +152,7 @@ const Internal = () => {
               />
 
               <Route
-                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|changes)?"
+                path="/objects/(\\d+)/apartments/(\\d+)/(testimony|documents|checksHistory)?"
                 component={ApartmentProfile}
                 exact
               />
@@ -175,14 +175,17 @@ const Internal = () => {
                 component={MetersPage}
               />
 
-              <Route path="/homeowner/:id/switchPersonalNumber" exact>
-                <EditHomeownerPersonalNumber />
+              <Redirect
+                from="/statistics/"
+                to="/statistics/subscribersConsumption"
+                exact
+              />
+
+              <Route path="/statistics/(subscribersConsumption|tasks|resourceConsumption)">
+                <StatisticsPage />
               </Route>
-
-              <ApartmentsRouteGroup />
-
-              <Redirect to="/error/" />
             </Switch>
+            <ApartmentsRouteGroup />
           </main>
         </layout>
       </Route>

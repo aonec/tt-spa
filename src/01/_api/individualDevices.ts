@@ -5,9 +5,9 @@ import {
   SwitchIndividualDeviceRequest,
   IndividualDeviceResponse,
   MeteringDeviceResponse,
-  CheckIndividualDeviceRequest,
   EOrderByRule,
   IndividualDeviceListItemResponse,
+  IndividualDeviceListItemResponsePagedList,
 } from '../../myApi';
 
 export interface CloseIndividualDeviceRequestBody {
@@ -55,12 +55,8 @@ export const switchIndividualDevice = async (
   return res;
 };
 
-export interface CheckIndividualDeviceRequestPayload extends WithMagnetSeal {
-  device: CheckIndividualDeviceRequest;
-}
-
 export const checkIndividualDevice = async (
-  requestPayload: CheckIndividualDeviceRequest
+  requestPayload: any
 ): Promise<MeteringDeviceResponse> => {
   const res: MeteringDeviceResponse = await axios.post(
     'IndividualDevices/check',
@@ -73,6 +69,7 @@ export const checkIndividualDevice = async (
 export const getIndividualDevice = async (
   id: number
 ): Promise<IndividualDeviceResponse> => {
+  if (!id) throw 'no id';
   try {
     const res: IndividualDeviceResponse = await axios.get(
       `IndividualDevices/${id}`
@@ -98,13 +95,14 @@ export interface GetIndividualDeviceRequestParams {
 export const getIndividualDevices = async (
   params: GetIndividualDeviceRequestParams
 ) => {
-  const res: {
-    items: IndividualDeviceListItemResponse[];
-  } = await axios.get('IndividualDevices', {
-    params: { ...params, PageSize: 10000 },
-  });
+  const res: IndividualDeviceListItemResponsePagedList = await axios.get(
+    'IndividualDevices',
+    {
+      params: { ...params },
+    }
+  );
 
-  return res?.items;
+  return { items: res?.items || [], total: res?.totalItems };
 };
 
 export const reopenIndividualDevice = async (deviceId: number) => {

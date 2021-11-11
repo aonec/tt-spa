@@ -179,8 +179,8 @@ export const useReadings = (
         }),
         {}
       ),
-      readingDate: moment().toISOString(),
-      uploadTime: moment().toISOString(),
+      readingDate: moment().toISOString(true),
+      uploadTime: moment().toISOString(true),
       isForced: true,
     };
 
@@ -211,7 +211,7 @@ export const useReadings = (
           ...prev.previousReadings,
           [sliderIndex]: {
             ...prev.previousReadings[sliderIndex],
-            uploadTime: moment(res.uploadTime).toISOString(),
+            uploadTime: moment(res.uploadTime).toISOString(true),
             source: res.source,
             user: res.user,
             id: res.id,
@@ -270,7 +270,7 @@ export const useReadings = (
         ),
       isForced: true,
       deviceId: device.id,
-      readingDate: getDateByReadingMonthSlider(sliderIndex).toISOString(),
+      readingDate: getDateByReadingMonthSlider(sliderIndex).toISOString(true),
     };
 
     const {
@@ -375,7 +375,7 @@ export const useReadings = (
 
         setReadingsState((prev: any) => ({
           ...prev,
-          uploadTime: moment(res.uploadDate).toISOString(),
+          uploadTime: moment(res.uploadDate).toISOString(true),
           source: res.source,
           user: res.user,
           currentReadingId: res.id || prev.currentReadingId,
@@ -996,6 +996,8 @@ const ReadingUploadDate = styled(Flex)`
 `;
 
 export function round(x: number, n: number) {
+  if (!x) return x;
+
   const m = Math.pow(10, n);
   return Math.round(x * m) / m;
 }

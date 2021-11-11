@@ -67,10 +67,10 @@ const AddDeviceForm = (props) => {
     initialValues: {
       isConnected: isConnected[0].value,
       serialNumber: '',
-      lastCheckingDate: moment().toISOString(),
-      futureCheckingDate: moment().add(3, 'years').toISOString(),
-      lastCommercialAccountingDate: moment().toISOString(),
-      futureCommercialAccountingDate: moment().toISOString(),
+      lastCheckingDate: moment().toISOString(true),
+      futureCheckingDate: moment().add(3, 'years').toISOString(true),
+      lastCommercialAccountingDate: moment().toISOString(true),
+      futureCommercialAccountingDate: moment().toISOString(true),
       documentsIds: [],
       ipV4: '',
       deviceAddress: null,
@@ -89,10 +89,10 @@ const AddDeviceForm = (props) => {
     onSubmit: async () => {
       const form = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate,
-        futureCheckingDate: values.futureCheckingDate,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate,
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+        lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
+        futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
+        lastCommercialAccountingDate: moment(values.lastCommercialAccountingDate).toISOString(true),
+        futureCommercialAccountingDate: moment(values.futureCommercialAccountingDate).toISOString(true),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource: values.resource,
@@ -241,7 +241,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('lastCheckingDate', date.toISOString());
+                setFieldValue('lastCheckingDate', date.toISOString(true));
               }}
               value={moment(values.lastCheckingDate)}
             />
@@ -253,7 +253,7 @@ const AddDeviceForm = (props) => {
               placeholder="Укажите дату..."
               allowClear={false}
               onChange={(date) => {
-                setFieldValue('futureCheckingDate', date.toISOString());
+                setFieldValue('futureCheckingDate', date.toISOString(true));
               }}
               value={moment(values.futureCheckingDate)}
             />
@@ -270,7 +270,7 @@ const AddDeviceForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'lastCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(true)
                 );
               }}
               value={moment(values.lastCommercialAccountingDate)}
@@ -289,7 +289,7 @@ const AddDeviceForm = (props) => {
               onChange={(date) => {
                 setFieldValue(
                   'futureCommercialAccountingDate',
-                  date.toISOString()
+                  date.toISOString(true)
                 );
               }}
               value={moment(values.futureCommercialAccountingDate)}

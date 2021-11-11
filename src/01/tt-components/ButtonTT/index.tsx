@@ -15,15 +15,17 @@ interface Props {
 }
 
 export const ButtonTT = styled.button<Partial<Props>>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 500;
   font-size: 16px;
   line-height: 32px;
-  height: 48px;
-  //height: ${({ height }) => (height ? `${height}px` : '48px')};
+  height: 42px;
   border: 1px solid #dcdee4;
-  padding: 8px 24px;
+  padding: 0px 24px;
   background-color: #189ee9;
   transition: background-color 150ms linear 0s, transform 150ms linear 0s,
     border-color 150ms linear 0s;

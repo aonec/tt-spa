@@ -24,6 +24,7 @@ import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 import { ReactComponent as HistoryIcon } from './icons/history.svg';
 import { ReactComponent as StarIcon } from './icons/star.svg';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -31,6 +32,13 @@ interface ApartmentReadingLineProps {
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
 }
+
+export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
+  <HistoryIcon
+    style={{ cursor: 'pointer' }}
+    onClick={() => openReadingsHistoryModal(deviceId)}
+  />
+);
 
 const ApartmentReadingLine = ({
   device,
@@ -120,10 +128,11 @@ const ApartmentReadingLine = ({
           <Tooltip title="История показаний">
             <HistoryIcon
               style={{ cursor: 'pointer' }}
-              onClick={() =>
-                history.push(
-                  `/apartment/${id}/individualDevice/${device.id}/readingHistory`
-                )
+              onClick={
+                () => openReadingsHistoryModal(device.id)
+                // history.push(
+                //   `/apartment/${id}/individualDevice/${device.id}/readingHistory`
+                // )
               }
             />
           </Tooltip>

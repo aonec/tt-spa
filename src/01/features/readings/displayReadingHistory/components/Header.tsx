@@ -4,12 +4,16 @@ import { DeviceDataString } from '01/features/individualDevices/switchIndividual
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Breadcrumb } from '01/tt-components';
-import IsActive from '01/tt-components/IsActive';
+import { IsActiveBool } from '01/tt-components/IsActive';
 import { HeaderWrap, Title } from '01/_components/Headers';
 import { useStore } from 'effector-react';
 import React from 'react';
 
-export const ReadingHistoryHeader = () => {
+interface Props {
+  isModal?: boolean;
+}
+
+export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
   return (
     <>
@@ -20,15 +24,13 @@ export const ReadingHistoryHeader = () => {
         }}
       >
         <div>
-          <Breadcrumb />
+          {!isModal && <Breadcrumb />}
           <div style={{ marginTop: 5 }}>
-            <Title>История показаний</Title>
+            {!isModal && <Title>История показаний</Title>}
             <Flex>
               <DeviceDataString />
               <Space />
-              <IsActive clousingDate={device?.closingDate} />
-              <Space />
-              <HousingStockAddress />
+              <IsActiveBool active={device?.closingDate === null} />
             </Flex>
           </div>
         </div>

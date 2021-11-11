@@ -33,4 +33,13 @@ import './individualDevices/displayIndividualDevices/models/init';
 import './readings/readingsInput/confirmInputReadingModal/models/init';
 import './readings/accountingNodesReadings/models/init.ts';
 import './nodes/displayNodes/models/init';
+import './statistics/subscribersConsumption/models/init.ts';
 import './managementFirmUsers/displayCurrentUser/models/init';
+import './homeowner/editPersonalNumber/models/init';
+import './homeowner/displayHomeowner/models/init';
+import './homeowner/switchPersonalNumber/models/init';
+import './homeowner/addPersonalNumber/models/init';
+import './homeowner/splitPersonalNumber/models/init';
+import './Inspectors/models/init';
+import './apartments/displayApartmentChecksHistory/models/init'
+import './apartments/checkApartment/models/init'

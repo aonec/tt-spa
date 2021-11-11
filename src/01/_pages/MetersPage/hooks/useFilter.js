@@ -73,6 +73,7 @@ export const useFilter = () => {
   const apartment = useStore($apartment);
 
   useEffect(() => {
+    console.log(apartment?.homeownerAccounts);
     if (apartment && apartment.housingStock)
       dispatch({
         type: 'change',
@@ -80,7 +81,9 @@ export const useFilter = () => {
           street: apartment.housingStock.street,
           house: apartment.housingStock.number,
           apart: apartment.apartmentNumber,
-          question: apartment.homeowners[0]?.fullName,
+          question:
+            apartment?.homeownerAccounts &&
+            apartment?.homeownerAccounts[0]?.name,
         },
       });
   }, [apartment]);

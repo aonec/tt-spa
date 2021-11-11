@@ -63,21 +63,18 @@ export enum EPersonType {
   Juristic = "Juristic",
 }
 
-export interface HomeownerListResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-
+export interface HomeownerAccountListResponse {
   /** @format uuid */
-  homeownerAccountId: string;
-  isMainPersonalAccountNumber: boolean;
+  id: string;
   phoneNumber: string | null;
-  personalAccountNumber: string | null;
+  name: string | null;
+  personType: EPersonType;
   paymentCode: string | null;
+  personalAccountNumber: string | null;
+
+  /** @format double */
+  ownershipArea: number;
+  isMainPersonalAccountNumber: boolean;
 }
 
 export interface ApartmentResponse {
@@ -94,7 +91,7 @@ export interface ApartmentResponse {
 
   /** @format uuid */
   mainHomeownerAccountId: string | null;
-  homeowners: HomeownerListResponse[] | null;
+  homeownerAccounts: HomeownerAccountListResponse[] | null;
 
   /** @format int32 */
   numberOfLiving: number | null;
@@ -189,18 +186,6 @@ export interface ApartmentListStatusResponseSuccessApiResponse {
   successResponse: ApartmentListStatusResponse | null;
 }
 
-export interface HomeownersShortResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  cellphone: string | null;
-  email: string | null;
-}
-
 export interface FullAddressResponse {
   city: string | null;
   street: string | null;
@@ -218,7 +203,9 @@ export interface FullAddressResponse {
 export interface HomeownerAccountResponse {
   /** @format uuid */
   id: string;
-  user: HomeownersShortResponse | null;
+  phoneNumber: string | null;
+  name: string | null;
+  personType: EPersonType;
   apartment: FullAddressResponse | null;
   paymentCode: string | null;
   personalAccountNumber: string | null;
@@ -240,6 +227,11 @@ export interface HomeownerAccountResponseICollectionSuccessApiResponse {
 export enum OrderByRule {
   Ascending = "Ascending",
   Descending = "Descending",
+}
+
+export enum ECheckType {
+  Planned = "Planned",
+  Unplanned = "Unplanned",
 }
 
 export enum EDocumentType {
@@ -279,7 +271,24 @@ export interface DocumentResponse {
   type: EDocumentType;
 }
 
-export interface DocumentResponsePagedList {
+export interface ApartmentCheckResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ECheckType;
+
+  /** @format int32 */
+  taskId: number | null;
+
+  /** @format int32 */
+  apartmentId: number;
+  registryNumber: string | null;
+  checkingAct: DocumentResponse | null;
+}
+
+export interface ApartmentCheckResponsePagedList {
   /** @format int32 */
   totalItems: number;
 
@@ -299,11 +308,11 @@ export interface DocumentResponsePagedList {
 
   /** @format int32 */
   previousPageNumber: number;
-  items: DocumentResponse[] | null;
+  items: ApartmentCheckResponse[] | null;
 }
 
-export interface DocumentResponsePagedListSuccessApiResponse {
-  successResponse: DocumentResponsePagedList | null;
+export interface ApartmentCheckResponsePagedListSuccessApiResponse {
+  successResponse: ApartmentCheckResponsePagedList | null;
 }
 
 export enum EClosingReason {
@@ -313,6 +322,7 @@ export enum EClosingReason {
   DeviceBroken = "DeviceBroken",
   CheckingDate = "CheckingDate",
   CertificateIssued = "CertificateIssued",
+  MaintainingStopped = "MaintainingStopped",
 }
 
 export enum EResourceType {
@@ -386,6 +396,40 @@ export interface ApartmentStatusSetRequest {
   /** @format date-time */
   toDate?: string | null;
   documentIds?: number[] | null;
+}
+
+export interface CreateApartmentCheckRequest {
+  /** @format date-time */
+  checkingDate?: string;
+  checkType?: ECheckType;
+  documentIds?: number[] | null;
+
+  /** @format int32 */
+  taskId?: number | null;
+  registryNumber?: string | null;
+}
+
+export interface ApartmentCheckResponseSuccessApiResponse {
+  successResponse: ApartmentCheckResponse | null;
+}
+
+export interface EditApartmentCheckRequest {
+  /** @format date-time */
+  checkingDate?: string | null;
+  checkType?: ECheckType | null;
+  documentIds?: number[] | null;
+
+  /** @format int32 */
+  taskId?: number | null;
+  registryNumber?: string | null;
+
+  /** @format date-time */
+  closingDate?: string | null;
+}
+
+export interface RemoveApartmentCheckRequest {
+  /** @format date-time */
+  closingDate?: string | null;
 }
 
 export interface LoginRequest {
@@ -492,6 +536,10 @@ export enum EUserPermission {
   ReadingReportForOperator = "ReadingReportForOperator",
   IndividualDeviceDelete = "IndividualDeviceDelete",
   ControllerUpdate = "ControllerUpdate",
+  SubscriberStatisticsRead = "SubscriberStatisticsRead",
+  ApartmentCheckCreate = "ApartmentCheckCreate",
+  ApartmentCheckEdit = "ApartmentCheckEdit",
+  ApartmentCheckRemove = "ApartmentCheckRemove",
 }
 
 export interface TokenResponse {
@@ -1433,7 +1481,7 @@ export interface CreateElectricHousingMeteringDeviceRequest {
 
   /** @format int32 */
   nextStateVerificationYear?: number;
-  phaseNumber?: EPhaseNumberType;
+  phaseNumber: EPhaseNumberType;
 
   /** @format int32 */
   nodeId?: number | null;
@@ -1799,30 +1847,35 @@ export enum PersonType {
   Juristic = "Juristic",
 }
 
-export interface HomeownerCreateServiceModel {
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  phone?: string | null;
-  email?: string | null;
-  personType?: PersonType;
-}
-
 export interface HomeownerAccountCreateServiceModel {
   /** @format int32 */
   apartmentId?: number;
   personalAccountNumber?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  personType?: PersonType;
 
   /** @format date-time */
   openAt?: string;
 
   /** @format double */
   ownershipArea?: number;
-  homeowner?: HomeownerCreateServiceModel | null;
+  isMainOnApartment?: boolean;
 }
 
 export interface HomeownerAccountResponseSuccessApiResponse {
   successResponse: HomeownerAccountResponse | null;
+}
+
+export interface HomeownerAccountUpdateRequest {
+  personalAccountNumber?: string | null;
+  paymentCode?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  personType?: EPersonType | null;
+
+  /** @format double */
+  ownershipArea?: number | null;
 }
 
 export interface HomeownerAccountCloseRequest {
@@ -1833,27 +1886,20 @@ export interface HomeownerAccountCloseRequest {
   closedAt: string;
 }
 
-export interface HomeownerCreateRequest {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  email?: string | null;
-  phone?: string | null;
-  personType?: EPersonType;
-}
-
 export interface HomeownerAccountCreateRequest {
-  personalAccountNumber: string;
-
   /** @format int32 */
   apartmentId: number;
+  personalAccountNumber: string;
+  name: string;
+  phoneNumber?: string | null;
+  personType?: EPersonType;
 
   /** @format double */
   ownershipArea?: number | null;
 
   /** @format date-time */
   openAt: string;
-  homeowner?: HomeownerCreateRequest | null;
+  isMainOnApartment?: boolean;
 }
 
 export interface HomeownerAccountReplaceRequest {
@@ -1881,90 +1927,22 @@ export interface HomeownerCertificateResponseSuccessApiResponse {
   successResponse: HomeownerCertificateResponse | null;
 }
 
-export interface HomeownersListResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  address: FullAddressResponse | null;
-  hasTasks: boolean;
-  personalAccountNumber: string | null;
+export interface HomeownerAccountSplitRequest {
+  accountForClosing: HomeownerAccountCloseRequest;
+  homeownerAccountForSplittedApartment: HomeownerAccountCreateRequest;
+  newHomeownerAccount: HomeownerAccountCreateRequest;
+  individualDeviceIdsForSwitch?: number[] | null;
+  useExistingApartment: boolean;
+  newApartment: ApartmentCreateRequest;
 }
 
-export interface HomeownersListResponsePagedList {
-  /** @format int32 */
-  totalItems: number;
-
-  /** @format int32 */
-  pageNumber: number;
-
-  /** @format int32 */
-  pageSize: number;
-
-  /** @format int32 */
-  totalPages: number;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-
-  /** @format int32 */
-  nextPageNumber: number;
-
-  /** @format int32 */
-  previousPageNumber: number;
-  items: HomeownersListResponse[] | null;
+export interface DataAfterSplittingHomeownerAccountResponse {
+  splittedApartmentHomeownerAccount: HomeownerAccountResponse | null;
+  newApartmentHomeownerAccount: HomeownerAccountResponse | null;
 }
 
-export interface HomeownersListResponsePagedListSuccessApiResponse {
-  successResponse: HomeownersListResponsePagedList | null;
-}
-
-export interface HomeownersApartmentResponse {
-  /** @format int32 */
-  apartmentId: number;
-  city: string | null;
-  street: string | null;
-  housingStockNumber: string | null;
-  apartmentNumber: string | null;
-  personalAccountNumber: string | null;
-  paymentCode: string | null;
-
-  /** @format int32 */
-  numberOfLiving: number | null;
-
-  /** @format int32 */
-  normativeNumberOfLiving: number | null;
-  comment: string | null;
-  square: string | null;
-  ownershipArea: string | null;
-}
-
-export interface HomeownersResponse {
-  /** @format int32 */
-  id: number;
-  firstName: string | null;
-  lastName: string | null;
-  middleName: string | null;
-  fullName: string | null;
-  personType: EPersonType;
-  cellphone: string | null;
-  email: string | null;
-  payments: HomeownersApartmentResponse[] | null;
-}
-
-export interface HomeownersResponseSuccessApiResponse {
-  successResponse: HomeownersResponse | null;
-}
-
-export interface HomeownerUpdateRequest {
-  firstName?: string | null;
-  lastName?: string | null;
-  middleName?: string | null;
-  cellphone?: string | null;
-  email?: string | null;
-  personType?: EPersonType | null;
+export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
+  successResponse: DataAfterSplittingHomeownerAccountResponse | null;
 }
 
 export interface UpdateHouseManagementRequest {
@@ -2042,6 +2020,9 @@ export interface CreateHousingMeteringDeviceReadingsRequest {
 
   /** @format double */
   nonResidentialRoomConsumption?: number | null;
+
+  /** @format date-time */
+  readingDate?: string;
 }
 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse {
@@ -2555,6 +2536,36 @@ export interface StringPagedListSuccessApiResponse {
   successResponse: StringPagedList | null;
 }
 
+export interface InspectorOnHousingStockResponse {
+  /** @format int32 */
+  housingStockId: number;
+  street: string | null;
+  corpus: string | null;
+  number: string | null;
+
+  /** @format uuid */
+  houseManagementId: string;
+  houseManagement: string | null;
+
+  /** @format int32 */
+  inspectedDay: number | null;
+
+  /** @format int32 */
+  inspectorId: number | null;
+}
+
+export interface InspectorOnHousingStockResponseListSuccessApiResponse {
+  successResponse: InspectorOnHousingStockResponse[] | null;
+}
+
+export interface UpdateInspectorOnHousingStockRequest {
+  /** @format int32 */
+  inspectorId?: number;
+
+  /** @format int32 */
+  inspectedDay?: number | null;
+}
+
 export interface ImportLogListResponse {
   importLogs: ImportLogResponse[] | null;
 }
@@ -2792,6 +2803,11 @@ export interface UpdateIndividualDeviceRequest {
   contractorId?: number | null;
 }
 
+export enum EIndividualDeviceOrderRule {
+  Resource = "Resource",
+  ApartmentNumber = "ApartmentNumber",
+}
+
 export interface IndividualDeviceListItemResponse {
   /** @format int32 */
   id: number;
@@ -2893,31 +2909,27 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
 }
 
 export interface CreateIndividualDeviceRequest {
+  model?: string | null;
   serialNumber: string;
+
+  /** @format date-time */
+  lastCheckingDate: string;
+
+  /** @format date-time */
+  futureCheckingDate: string;
   sealNumber?: string | null;
 
   /** @format date-time */
   sealInstallationDate?: string | null;
 
-  /** @format date-time */
-  lastCheckingDate?: string | null;
-
-  /** @format date-time */
-  futureCheckingDate?: string | null;
-  documentsIds?: number[] | null;
-
   /** @format int32 */
-  bitDepth?: number | null;
+  bitDepth: number;
 
   /** @format double */
-  scaleFactor?: number | null;
+  scaleFactor: number;
 
   /** @format date-time */
   openingDate?: string | null;
-
-  /** @format int32 */
-  checkingNumber?: number | null;
-  model?: string | null;
 
   /** @format int32 */
   apartmentId: number;
@@ -2926,12 +2938,13 @@ export interface CreateIndividualDeviceRequest {
   /** @format int32 */
   mountPlaceId?: number | null;
   rateType: EIndividualDeviceRateType;
-  startupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
+  startupReadings: BaseIndividualDeviceReadingsCreateRequest;
   defaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
   isPolling?: boolean;
 
   /** @format int32 */
   contractorId?: number | null;
+  documentsIds?: number[] | null;
 }
 
 export interface CloseDeviceRequest {
@@ -3073,28 +3086,6 @@ export interface IndividualDeviceReadingsHistoryResponseSuccessApiResponse {
   successResponse: IndividualDeviceReadingsHistoryResponse | null;
 }
 
-export interface CheckIndividualDeviceRequest {
-  /** @format int32 */
-  deviceId: number;
-  documentsIds?: number[] | null;
-
-  /** @format date-time */
-  currentCheckingDate: string;
-
-  /** @format date-time */
-  futureCheckingDate: string;
-  sealNumber?: string | null;
-
-  /** @format date-time */
-  sealInstallationDate?: string | null;
-  newDeviceStartupReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  newDeviceDefaultReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-  previousDeviceFinishingReadings?: BaseIndividualDeviceReadingsCreateRequest | null;
-
-  /** @format int32 */
-  contractorId?: number | null;
-}
-
 export interface InspectorResponse {
   /** @format int32 */
   id: number;
@@ -3151,6 +3142,11 @@ export interface InspectorUpdateRequest {
 
   /** @format int32 */
   readoutPlan?: number | null;
+}
+
+export interface InspectorReassignAllAddressesRequest {
+  /** @format int32 */
+  newInspectorId?: number;
 }
 
 export enum ECompetenceType {
@@ -4274,7 +4270,7 @@ export interface TaskListResponse {
   device: MeteringDeviceSearchListResponse | null;
   pipeNode: PipeNodeResponse | null;
   applications: TaskApplicationForTaskResponse[] | null;
-  mainHomeowner: HomeownersShortResponse | null;
+  mainHomeowner: HomeownerAccountListResponse | null;
 
   /** @format int32 */
   totalHomeownersCount: number;
@@ -4410,6 +4406,35 @@ export interface ResourceDisconnectingFilterResponse {
 
 export interface ResourceDisconnectingFilterResponseSuccessApiResponse {
   successResponse: ResourceDisconnectingFilterResponse | null;
+}
+
+export interface SubscriberStatisticsСonsumptionResponse {
+  apartmentNumber: string | null;
+
+  /** @format double */
+  coldWaterSupplyСonsumption: number | null;
+
+  /** @format double */
+  hotWaterSupplyСonsumption: number | null;
+
+  /** @format double */
+  electricitySupplyСonsumption: number | null;
+
+  /** @format date-time */
+  dateLastTransmissionOfReading: string;
+
+  /** @format date-time */
+  dateLastCheck: string | null;
+
+  /** @format int32 */
+  housingStockId: number;
+
+  /** @format int32 */
+  apartmentId: number;
+}
+
+export interface SubscriberStatisticsСonsumptionResponseListSuccessApiResponse {
+  successResponse: SubscriberStatisticsСonsumptionResponse[] | null;
 }
 
 export interface CreateTaskApplicationRequest {
@@ -4665,6 +4690,9 @@ export interface StagePushRequest {
   housingMeteringDeviceSwitch?: SwitchHousingMeteringDeviceRequest | null;
   readings?: IndividualDeviceReadingsCreateRequest[] | null;
   consumableMaterials?: string | null;
+
+  /** @format date-time */
+  apartmentCheckDate?: string | null;
 }
 
 export interface StageRevertRequest {
@@ -4956,17 +4984,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Apartments
-     * @name ApartmentsIndividualDeviceCheckDocumentsDetail
-     * @request GET:/api/Apartments/{apartmentId}/IndividualDeviceCheckDocuments
+     * @name ApartmentsApartmentChecksDetail
+     * @request GET:/api/Apartments/{apartmentId}/ApartmentChecks
      * @secure
      */
-    apartmentsIndividualDeviceCheckDocumentsDetail: (
+    apartmentsApartmentChecksDetail: (
       apartmentId: number,
       query?: { PageNumber?: number; PageSize?: number; OrderBy?: OrderByRule },
       params: RequestParams = {},
     ) =>
-      this.request<DocumentResponsePagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Apartments/${apartmentId}/IndividualDeviceCheckDocuments`,
+      this.request<ApartmentCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/ApartmentChecks`,
         method: "GET",
         query: query,
         secure: true,
@@ -5017,6 +5045,77 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<IndividualDeviceWithExpiredCheckingDateListResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Apartments/${apartmentId}/SetStatus`,
         method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsAddCheckCreate
+     * @request POST:/api/Apartments/{apartmentId}/AddCheck
+     * @secure
+     */
+    apartmentsAddCheckCreate: (
+      apartmentId: number,
+      data: CreateApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/AddCheck`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsEditCheckUpdate
+     * @request PUT:/api/Apartments/{apartmentId}/EditCheck/{apartmentCheckId}
+     * @secure
+     */
+    apartmentsEditCheckUpdate: (
+      apartmentId: number,
+      apartmentCheckId: number,
+      data: EditApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/EditCheck/${apartmentCheckId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsRemoveCheckDelete
+     * @request DELETE:/api/Apartments/{apartmentId}/RemoveCheck/{apartmentCheckId}
+     * @secure
+     */
+    apartmentsRemoveCheckDelete: (
+      apartmentId: number,
+      apartmentCheckId: number,
+      data: RemoveApartmentCheckRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<ApartmentCheckResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/${apartmentId}/RemoveCheck/${apartmentCheckId}`,
+        method: "DELETE",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -5569,6 +5668,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsDisableIndividualDevicesMaintenanceCreate
+     * @request POST:/api/DataMigrations/DisableIndividualDevicesMaintenance
+     * @secure
+     */
+    dataMigrationsDisableIndividualDevicesMaintenanceCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/DisableIndividualDevicesMaintenance`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsChangeHousingStockManagingFirmCreate
+     * @request POST:/api/DataMigrations/ChangeHousingStockManagingFirm
+     * @secure
+     */
+    dataMigrationsChangeHousingStockManagingFirmCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ChangeHousingStockManagingFirm`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -6209,6 +6340,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags HomeownerAccount
+     * @name HomeownerAccountUpdate
+     * @request PUT:/api/HomeownerAccount/{id}
+     * @secure
+     */
+    homeownerAccountUpdate: (id: string, data: HomeownerAccountUpdateRequest | null, params: RequestParams = {}) =>
+      this.request<HomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/${id}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HomeownerAccount
      * @name HomeownerAccountCloseCreate
      * @request POST:/api/HomeownerAccount/Close
      * @secure
@@ -6262,78 +6412,18 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags Homeowners
-     * @name HomeownersList
-     * @request GET:/api/Homeowners
+     * @tags HomeownerAccount
+     * @name HomeownerAccountSplitCreate
+     * @request POST:/api/HomeownerAccount/Split
      * @secure
      */
-    homeownersList: (
-      query?: { FullName?: string | null; PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
-      params: RequestParams = {},
-    ) =>
-      this.request<HomeownersListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersDetail
-     * @request GET:/api/Homeowners/{homeownerId}
-     * @secure
-     */
-    homeownersDetail: (homeownerId: number, params: RequestParams = {}) =>
-      this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersUpdate
-     * @request PUT:/api/Homeowners/{homeownerId}
-     * @secure
-     */
-    homeownersUpdate: (homeownerId: number, data: HomeownerUpdateRequest | null, params: RequestParams = {}) =>
-      this.request<HomeownersResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}`,
-        method: "PUT",
+    homeownerAccountSplitCreate: (data: HomeownerAccountSplitRequest | null, params: RequestParams = {}) =>
+      this.request<DataAfterSplittingHomeownerAccountResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HomeownerAccount/Split`,
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Homeowners
-     * @name HomeownersHomeownerAccountsDetail
-     * @request GET:/api/Homeowners/{homeownerId}/HomeownerAccounts
-     * @secure
-     */
-    homeownersHomeownerAccountsDetail: (
-      homeownerId: number,
-      query?: { IsClosed?: boolean | null },
-      params: RequestParams = {},
-    ) =>
-      this.request<HomeownerAccountResponseICollectionSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Homeowners/${homeownerId}/HomeownerAccounts`,
-        method: "GET",
-        query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -6416,45 +6506,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/HousingMeteringDeviceReadings`,
         method: "PUT",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags HousingMeteringDeviceReadings
-     * @name HousingMeteringDeviceReadingsDelete
-     * @request DELETE:/api/HousingMeteringDeviceReadings
-     * @secure
-     */
-    housingMeteringDeviceReadingsDelete: (query?: { id?: string }, params: RequestParams = {}) =>
-      this.request<any, ErrorApiResponse>({
-        path: `/api/HousingMeteringDeviceReadings`,
-        method: "DELETE",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags HousingMeteringDeviceReadings
-     * @name HousingMeteringDeviceReadingsCreateOrUpdateLastCreate
-     * @request POST:/api/HousingMeteringDeviceReadings/CreateOrUpdateLast
-     * @secure
-     */
-    housingMeteringDeviceReadingsCreateOrUpdateLastCreate: (
-      data: CreateHousingMeteringDeviceReadingsRequest | null,
-      params: RequestParams = {},
-    ) =>
-      this.request<HousingMeteringDeviceReadingsIncludingPlacementResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/HousingMeteringDeviceReadings/CreateOrUpdateLast`,
-        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -6903,6 +6954,73 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorsList
+     * @request GET:/api/HousingStocks/inspectors
+     * @secure
+     */
+    housingStocksInspectorsList: (
+      query?: {
+        City?: string | null;
+        Street?: string | null;
+        HousingStockNumber?: string | null;
+        HouseManagement?: string | null;
+        InspectorId?: number | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<InspectorOnHousingStockResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/inspectors`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorPartialUpdate
+     * @request PATCH:/api/HousingStocks/{housingStockId}/inspector
+     * @secure
+     */
+    housingStocksInspectorPartialUpdate: (
+      housingStockId: number,
+      data: UpdateInspectorOnHousingStockRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/inspector`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksInspectorDelete
+     * @request DELETE:/api/HousingStocks/{housingStockId}/inspector
+     * @secure
+     */
+    housingStocksInspectorDelete: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<HousingStockResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/inspector`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags ImportLogs
      * @name ImportLogsList
      * @request GET:/api/ImportLogs
@@ -7234,6 +7352,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ApartmentIds?: number[] | null;
         IsOpened?: boolean | null;
         SerialNumber?: string | null;
+        OrderRule?: EIndividualDeviceOrderRule;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -7390,25 +7509,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags IndividualDevices
-     * @name IndividualDevicesCheckCreate
-     * @request POST:/api/IndividualDevices/check
-     * @secure
-     */
-    individualDevicesCheckCreate: (data: CheckIndividualDeviceRequest | null, params: RequestParams = {}) =>
-      this.request<IndividualDeviceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/IndividualDevices/check`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags IndividualDevices
      * @name IndividualDevicesCloseDevicesWithoutReadingsCreate
      * @request POST:/api/IndividualDevices/closeDevicesWithoutReadings
      * @secure
@@ -7416,6 +7516,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     individualDevicesCloseDevicesWithoutReadingsCreate: (params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/IndividualDevices/closeDevicesWithoutReadings`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesCloseDevicesWithoutCheckingCreate
+     * @request POST:/api/IndividualDevices/CloseDevicesWithoutChecking
+     * @secure
+     */
+    individualDevicesCloseDevicesWithoutCheckingCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualDevices/CloseDevicesWithoutChecking`,
         method: "POST",
         secure: true,
         ...params,
@@ -7504,6 +7620,46 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     inspectorsDelete: (inspectorId: number, params: RequestParams = {}) =>
       this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Inspectors/${inspectorId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inspectors
+     * @name InspectorsHousingStocksPartialUpdate
+     * @request PATCH:/api/Inspectors/{inspectorId}/housingStocks
+     * @secure
+     */
+    inspectorsHousingStocksPartialUpdate: (
+      inspectorId: number,
+      data: InspectorReassignAllAddressesRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Inspectors/${inspectorId}/housingStocks`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Inspectors
+     * @name InspectorsHousingStocksDelete
+     * @request DELETE:/api/Inspectors/{inspectorId}/housingStocks
+     * @secure
+     */
+    inspectorsHousingStocksDelete: (inspectorId: number, params: RequestParams = {}) =>
+      this.request<InspectorResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Inspectors/${inspectorId}/housingStocks`,
         method: "DELETE",
         secure: true,
         format: "json",
@@ -8552,6 +8708,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reports
+     * @name ReportsIndividualMeteringDevicesReportList
+     * @request GET:/api/Reports/IndividualMeteringDevicesReport
+     * @secure
+     */
+    reportsIndividualMeteringDevicesReportList: (
+      query?: { From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/IndividualMeteringDevicesReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsHouseManagementsReportList
+     * @request GET:/api/Reports/HouseManagementsReport
+     * @secure
+     */
+    reportsHouseManagementsReportList: (
+      query?: { From?: string | null; To?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/HouseManagementsReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
      * @name ReportsReportWithNsList
      * @request GET:/api/Reports/ReportWithNs
      * @secure
@@ -8737,6 +8935,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags SubscriberStatistics
+     * @name SubscriberStatisticsList
+     * @request GET:/api/SubscriberStatistics
+     * @secure
+     */
+    subscriberStatisticsList: (
+      query: {
+        HousingStockId: number;
+        MonthOfLastTransmission?: string | null;
+        HotWaterSupply?: boolean | null;
+        ColdWaterSupply?: boolean | null;
+        Electricity?: boolean | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<SubscriberStatisticsСonsumptionResponseListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/SubscriberStatistics`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 

@@ -1,9 +1,14 @@
-import { executeConfirmReadingCallback } from './index';
+import {
+  $isCancelSwitchInput,
+  executeConfirmReadingCallback,
+  CancelSwitchInputGate,
+} from './index';
 import {
   $onConfirmReadingInputCallback,
   closeConfirmReadingCallbackModal,
   openConfirmReadingModal,
 } from '.';
+import { forward } from 'effector';
 
 $onConfirmReadingInputCallback
   .on(openConfirmReadingModal, (_, payload) => payload)
@@ -19,3 +24,7 @@ executeConfirmReadingCallback.watch(() => {
   callback();
   closeConfirmReadingCallbackModal();
 });
+
+$isCancelSwitchInput
+  .on(CancelSwitchInputGate.open, () => true)
+  .reset(CancelSwitchInputGate.close);

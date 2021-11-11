@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { createEvent, createStore } from 'effector';
+import { createGate } from 'effector-react';
 
 interface Payload {
   callback(): void;
@@ -21,3 +22,7 @@ export const openConfirmReadingModal = createEvent<Payload>();
 export const executeConfirmReadingCallback = createEvent();
 
 export const closeConfirmReadingCallbackModal = createEvent();
+
+export const CancelSwitchInputGate = createGate();
+
+export const $isCancelSwitchInput = createStore<boolean>(false);

@@ -30,7 +30,7 @@ const ModalCalculatorDeregisterForm = ({
   const onFinish = () => {
     console.log('onFinish');
     const form: CloseDeviceRequest = {
-      closingDate: getFieldValue('closingDate').toISOString(),
+      closingDate: getFieldValue('closingDate').toISOString(true),
       documentsIds: [],
       deviceId: id,
     };

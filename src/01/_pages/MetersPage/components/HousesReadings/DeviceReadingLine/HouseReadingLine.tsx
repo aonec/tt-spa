@@ -14,14 +14,13 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import { MenuButtonTT } from '01/tt-components';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
-  ({ device, numberOfPreviousReadingsInputs, sliderIndex }) => {
+  ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
     const { readingsState, previousReadings, currentReadings } = useReadings(
       device,
       sliderIndex,
@@ -30,7 +29,6 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     );
 
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const [consumptionState, setConsumptionState] = useState<
       (number | string)[]
@@ -81,7 +79,12 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
     const { icon, color } = DeviceIcons[device.resource];
 
     return (
-      <HouseReadingsDevice>
+      <HouseReadingsDevice
+        style={{
+          pointerEvents: disabled ? 'none' : undefined,
+          cursor: disabled ? 'not-allowed' : undefined,
+        }}
+      >
         <div>{device.apartmentNumber}</div>
 
         <Column>
@@ -113,24 +116,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <Flex style={{ minWidth: 80 }}>
           <HistoryComponent
             style={{ cursor: 'pointer' }}
-            onClick={() =>
-              history.push(
-                `/houses/individualDevice/${device.id}/readingHistory`
-              )
-            }
-          />
-          <Space />
-          <MenuButtonTT
-            menuButtonArr={[
-              {
-                title: 'Открыть историю показаний',
-                cb: () =>
-                  history.push(
-                    `/houses/individualDevice/${device.id}/readingHistory`
-                  ),
-                show: true,
-              },
-            ]}
+            onClick={() => openReadingsHistoryModal(device.id)}
           />
         </Flex>
       </HouseReadingsDevice>
@@ -190,4 +176,5 @@ type Props = {
   device: IndividualDeviceListItemResponse;
   numberOfPreviousReadingsInputs: number;
   sliderIndex: number;
+  disabled?: boolean;
 };
