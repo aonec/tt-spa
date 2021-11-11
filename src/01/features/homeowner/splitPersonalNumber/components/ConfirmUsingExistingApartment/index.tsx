@@ -1,5 +1,4 @@
 import { getApartmentAddressString } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberActionPage';
-import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';

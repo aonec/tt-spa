@@ -41,12 +41,6 @@ export const homeownerAccountForSplittedApartmentForm = createForm({
     },
     phoneNumber: {
       init: '',
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     openAt: {
       init: null as string | null,
@@ -68,12 +62,6 @@ export const homeownerAccountForSplittedApartmentForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     isMainAccountingNumber: {
       init: false,
@@ -103,12 +91,6 @@ export const newApartmentPersonalNumberForm = createForm({
     },
     phoneNumber: {
       init: '',
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     openAt: {
       init: null as string | null,
@@ -130,12 +112,6 @@ export const newApartmentPersonalNumberForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
-      rules: [
-        {
-          name: 'required',
-          validator: Boolean,
-        },
-      ],
     },
     isMainAccountingNumber: {
       init: false,
