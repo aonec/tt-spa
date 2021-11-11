@@ -23,7 +23,7 @@ import {
 } from './index';
 import { $isSelectEditPersonalNumberTypeModalOpen } from '.';
 import { combine, forward, sample } from 'effector';
-import { $homeowner, fetchHomeowner } from '../../displayHomeowner/models';
+import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
 
 editHomeownerAccountEffect.use(putHomeownerAccount);
@@ -34,7 +34,7 @@ $isSelectEditPersonalNumberTypeModalOpen
   .on(openEditPersonalNumberTypeModal, () => true)
   .reset(closeEditPersonalNumberTypeModal);
 
-fetchHomeowner.doneData.watch(
+fetchHomeownerFx.doneData.watch(
   ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) => {
     const isAutocomplete = AutoCompleteFormGate.state.getState().autocomplete;
 

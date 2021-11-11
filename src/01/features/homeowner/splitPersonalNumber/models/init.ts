@@ -4,6 +4,7 @@ import {
   previousSplitPersonalNumberPage,
   saveSplitPersonalNumberForm,
   splitPersonalNumberFx,
+  SplitPersonalNumberGate,
   transferDevicesForm,
 } from './index';
 import {
@@ -12,11 +13,22 @@ import {
 } from '.';
 import { combine, forward, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
-import { $homeowner } from '../../displayHomeowner/models';
+import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
 
 splitPersonalNumberFx.use(splitHomeownerAccount);
+
+$splitPersonalNumberStageNumber.reset(SplitPersonalNumberGate.close);
+
+forward({
+  from: SplitPersonalNumberGate.close,
+  to: [
+    transferDevicesForm.resetValues,
+    homeownerAccountForSplittedApartmentForm.resetValues,
+    newApartmentPersonalNumberForm.resetValues,
+  ],
+});
 
 $splitPersonalNumberStageNumber
   .on(nextSplitPersonalNumberPage, (value) => (value === 3 ? value : value + 1))
@@ -38,6 +50,14 @@ sample({
   clock: transferDevicesForm.formValidated,
   fn: () => false,
   target: saveSplitPersonalNumberForm,
+});
+
+forward({
+  from: fetchHomeownerFx.doneData.map(({ phoneNumber, name }) => ({
+    phoneNumber: phoneNumber || '',
+    name: name || '',
+  })),
+  to: homeownerAccountForSplittedApartmentForm.setForm,
 });
 
 sample({
