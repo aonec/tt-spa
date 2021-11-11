@@ -1,16 +1,18 @@
 import { getApartmentAddressString } from '01/features/homeowner/editPersonalNumber/components/PersonalNumberActionPage';
 import { IndividualDevicesGate } from '01/features/individualDevices/displayIndividualDevices/models';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { getApartment } from '01/_api/apartments';
 import { getIndividualDevices } from '01/_api/individualDevices';
+import { PersonalNumber } from '01/_pages/MetersPage/components/ApartmentInfo';
+import { Tooltip } from 'antd';
 import { useStore } from 'effector-react';
 import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
   $checkedExistingApartmentId,
@@ -72,14 +74,13 @@ export const ConfirmUsingExistingApartmentModal = () => {
 
   const pendingSplitRequest = useStore(splitPersonalNumberFx.pending);
 
-  const history = useHistory();
-
   const getLinkOnApartmentProfile = () =>
     apartment
       ? `/objects/${apartment?.housingStock?.id}/apartments/${apartment?.id}`
       : '';
 
   const isApartmentHasDevices = Boolean(devices?.length);
+  const hasApartmentHomeowners = Boolean(apartment?.homeownerAccounts);
 
   return (
     <>
@@ -87,22 +88,36 @@ export const ConfirmUsingExistingApartmentModal = () => {
         title={'Разделение лицевого счета'}
         visible={show}
         onCancel={closeConfirmExistingApartmentModal}
-        disabled={isApartmentHasDevices || pending}
+        disabled={isApartmentHasDevices || pending || hasApartmentHomeowners}
         onSubmit={onSaveHandler}
         loading={pendingSplitRequest}
       >
         <PendingLoader loading={pending}>
-          <div style={{ color: 'gray', fontSize: 17 }}>
+          <div style={{ color: 'gray', fontSize: 16 }}>
             Квартира по адресу{' '}
             <Link href={getLinkOnApartmentProfile()} target="blank">
               {address}
             </Link>{' '}
             {`уже существует, ${
-              isApartmentHasDevices
-                ? 'и на ней есть активные приборы, вы не можете ее использовать'
+              isApartmentHasDevices || hasApartmentHomeowners
+                ? 'но вы не можете ее использовать, так как на ней есть активные приборы или незакрытые лицевые счета'
                 : 'вы хотите использовать ее?'
             }`}
           </div>
+          {hasApartmentHomeowners && (
+            <>
+              <Space />
+              <Flex>
+                {apartment?.homeownerAccounts?.map((elem) => (
+                  <Tooltip title={`${elem.name}, ${elem.phoneNumber}`}>
+                    <PersonalNumber>
+                      {elem.personalAccountNumber}
+                    </PersonalNumber>
+                  </Tooltip>
+                ))}
+              </Flex>
+            </>
+          )}
           <Space />
           {devices?.map(renderDevice)}
         </PendingLoader>
