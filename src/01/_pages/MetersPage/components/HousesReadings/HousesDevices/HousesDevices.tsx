@@ -16,10 +16,7 @@ import {
   $housingStock,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import {
-  EResourceType,
-  IndividualDeviceListItemResponse,
-} from 'myApi';
+import { EResourceType, IndividualDeviceListItemResponse } from 'myApi';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
@@ -81,8 +78,6 @@ const HousesDevices: React.FC = () => {
   const elementRef = useRef();
 
   useEffect(() => {
-    const element = window;
-
     function onScrollDown(event: any) {
       if (isAllDevicesDone) return;
 
@@ -93,9 +88,9 @@ const HousesDevices: React.FC = () => {
       }
     }
 
-    element.addEventListener('scroll', onScrollDown, true);
+    window.addEventListener('scroll', onScrollDown, true);
 
-    return () => element.removeEventListener('scroll', onScrollDown);
+    return () => window.removeEventListener('scroll', onScrollDown);
   }, []);
 
   const getHeight = () => {
@@ -105,9 +100,7 @@ const HousesDevices: React.FC = () => {
       return 100 + (num - 1) * 40;
     };
 
-    const sizes = devices.map(getDeviceHeight);
-
-    return sizes.reduce((acc, elem) => acc + elem, 0);
+    return devices.map(getDeviceHeight).reduce((acc, elem) => acc + elem, 0);
   };
 
   return (

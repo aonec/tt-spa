@@ -7,7 +7,6 @@ import {
   IndividualDeviceResponse,
   MeteringDeviceResponse,
   EOrderByRule,
-  IndividualDeviceListItemResponse,
   IndividualDeviceListItemResponsePagedList,
 } from '../../myApi';
 
