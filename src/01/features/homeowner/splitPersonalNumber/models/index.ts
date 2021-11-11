@@ -158,4 +158,4 @@ export const checkApartmentExistingFx = createEffect<
   number | null
 >();
 
-export const splitPersonalNumber = createEvent();
+export const splitPersonalNumber = createEvent<boolean>();

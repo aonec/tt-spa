@@ -128,9 +128,12 @@ sample({
   target: splitPersonalNumberFx,
 });
 
-guard({
-  source: checkApartmentExistingFx.doneData,
-  filter: (value) => value === null,
+sample({
+  clock: guard({
+    source: checkApartmentExistingFx.doneData,
+    filter: (value) => value === null,
+  }),
+  fn: () => false,
   target: splitPersonalNumber,
 });
 

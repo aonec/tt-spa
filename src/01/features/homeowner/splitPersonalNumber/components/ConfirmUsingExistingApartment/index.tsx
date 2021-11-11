@@ -10,11 +10,14 @@ import { ApartmentResponse, IndividualDeviceListItemResponse } from 'myApi';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import {
   $checkedExistingApartmentId,
   $isConfirmExistingApartmentModalOpen,
   closeConfirmExistingApartmentModal,
+  splitPersonalNumber,
+  splitPersonalNumberFx,
 } from '../../models';
 import { renderDevice } from '../TransferDevices';
 
@@ -63,16 +66,43 @@ export const ConfirmUsingExistingApartmentModal = () => {
 
   const pending = pendingApartment || pendingDevices;
 
+  function onSaveHandler() {
+    splitPersonalNumber(true);
+  }
+
+  const pendingSplitRequest = useStore(splitPersonalNumberFx.pending);
+
+  const history = useHistory();
+
+  const getLinkOnApartmentProfile = () =>
+    apartment
+      ? `/objects/${apartment?.housingStock?.id}/apartments/${apartment?.id}`
+      : '';
+
+  const isApartmentHasDevices = Boolean(devices?.length);
+
   return (
     <>
       <ModalTT
-        title={'Разделение квартиры'}
+        title={'Разделение лицевого счета'}
         visible={show}
         onCancel={closeConfirmExistingApartmentModal}
-        disabled={Boolean(devices?.length) || !devices || pending}
+        disabled={isApartmentHasDevices || pending}
+        onSubmit={onSaveHandler}
+        loading={pendingSplitRequest}
       >
         <PendingLoader loading={pending}>
-          <Link>{address}</Link>
+          <div style={{ color: 'gray', fontSize: 17 }}>
+            Квартира по адресу{' '}
+            <Link href={getLinkOnApartmentProfile()} target="blank">
+              {address}
+            </Link>{' '}
+            {`уже существует, ${
+              isApartmentHasDevices
+                ? 'и на ней есть активные приборы, вы не можете ее использовать'
+                : 'вы хотите использовать ее?'
+            }`}
+          </div>
           <Space />
           {devices?.map(renderDevice)}
         </PendingLoader>
@@ -81,10 +111,10 @@ export const ConfirmUsingExistingApartmentModal = () => {
   );
 };
 
-const Link = styled.div`
-  color: #22232b;
-
+const Link = styled.a`
+  color: #22232b !important;
+  cursor: pointer;
   &:hover {
-    color: #189ee9;
+    color: #189ee9 !important;
   }
 `;
