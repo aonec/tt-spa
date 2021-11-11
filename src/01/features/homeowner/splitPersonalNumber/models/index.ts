@@ -12,6 +12,15 @@ export const $splitPersonalNumberStageNumber = createStore<number>(1);
 
 export const setSplitPersonalNumberStage = createEvent<number>();
 
+export const $checkedExistingApartmentId = createStore<number | null>(null);
+
+export const $isConfirmExistingApartmentModalOpen = $checkedExistingApartmentId.map(
+  Boolean
+);
+
+export const openConfirmExistingApartmentModal = createEvent();
+export const closeConfirmExistingApartmentModal = createEvent();
+
 export const transferDevicesForm = createForm({
   fields: {
     individualDeviceIdsForSwitch: {
@@ -141,3 +150,13 @@ export const nextSplitPersonalNumberPage = createEvent();
 export const previousSplitPersonalNumberPage = createEvent();
 
 export const saveSplitPersonalNumberForm = createEvent<boolean>();
+
+export const checkApartmentExistingFx = createEffect<
+  {
+    housingStockId: number;
+    apartmentNumber: string;
+  },
+  number | null
+>();
+
+export const splitPersonalNumber = createEvent();

@@ -23,6 +23,7 @@ import {
   SplitPersonalNumberGate,
   transferDevicesForm,
 } from './models';
+import { ConfirmUsingExistingApartmentModal } from './components/ConfirmUsingExistingApartment';
 
 export const SplitPersonalNumber = () => {
   const { homeownerId, id: apartmentId } = useParams<{
@@ -76,6 +77,7 @@ export const SplitPersonalNumber = () => {
       <IndividualDevicesGate ApartmentId={Number(apartmentId)} />
       <HomeownerGate id={homeownerId} />
       <SplitPersonalNumberGate />
+      <ConfirmUsingExistingApartmentModal />
       <Wrap>
         <PersonaNumberActionPage
           saveButtonText={stage === 3 ? 'Сохранить' : void 0}
