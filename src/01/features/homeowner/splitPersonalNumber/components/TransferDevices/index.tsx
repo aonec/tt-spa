@@ -64,7 +64,6 @@ export const TransferDevices = () => {
   return (
     <Wrap>
       {devices
-        .filter((elem) => elem.closingDate === null)
         .map((value, index) =>
           renderDevice(
             value,
