@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Radio, Tabs } from 'antd';
+import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -18,6 +18,7 @@ import {
 import { getReport } from './apiCalculatorReport';
 import { CalculatorResponse } from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 
 interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;
@@ -105,7 +106,7 @@ const ModalCalculatorReportForm = ({
     },
   });
 
-  const prevOptions = Object.values(filteredGroup[values.resource]);
+  const prevOptions = Object.values(filteredGroup[values.resource] || {});
 
   const options = prevOptions.map((node: any, index) => {
     const { id, number, communicationPipes } = node;
@@ -253,6 +254,9 @@ const ModalCalculatorReportForm = ({
             disabled={values.customPeriodDisabled}
           />
         </Form.Item>
+        <SpaceLine />
+        <Checkbox>Выгрузка отчета с кодами НС</Checkbox>
+        <Space />
       </StyledModalBody>
       <StyledFooter modal>
         <ButtonTT color="white" onClick={handleCancel}>
