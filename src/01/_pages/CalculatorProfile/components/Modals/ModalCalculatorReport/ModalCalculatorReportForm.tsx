@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _ from 'lodash';
+import _, { setWith } from 'lodash';
 
 import {
   ButtonTT,
@@ -35,6 +35,8 @@ const ModalCalculatorReportForm = ({
   const { housingStockNumber, street } = address || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
+
+  const [withNs, setWIthNs] = useState(false);
 
   const nodesList =
     nodes ||
@@ -87,7 +89,9 @@ const ModalCalculatorReportForm = ({
       const { nodeId, detail, resource } = values;
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
       const end = `${values.end.format('YYYY-MM-DD')}`;
-      const shortLink = `Reports/Report?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/${
+        withNs ? `ReportWithNs` : 'Report'
+      }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       getReport(shortLink).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
@@ -255,7 +259,9 @@ const ModalCalculatorReportForm = ({
           />
         </Form.Item>
         <SpaceLine />
-        <Checkbox>Выгрузка отчета с кодами НС</Checkbox>
+        <Checkbox checked={withNs} onClick={() => setWIthNs((prev) => !prev)}>
+          Выгрузка отчета с кодами НС
+        </Checkbox>
         <Space />
       </StyledModalBody>
       <StyledFooter modal>
