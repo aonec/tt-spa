@@ -143,7 +143,7 @@ export const useReadings = (
   function setReadingArchived(id: number, readingDate: string) {
     const request = async () => {
       try {
-        await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
+        await axios.post(`IndividualDeviceReadings/${id}/remove`);
 
         refetchIndividualDevices();
 
