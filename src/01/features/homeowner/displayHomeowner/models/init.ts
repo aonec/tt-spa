@@ -1,6 +1,6 @@
 import {
   $currentPersonalNumberIndex,
-  fetchHomeowner,
+  fetchHomeownerFx,
   HomeownerGate,
   setCurrentPersonalNumberIndex,
 } from './index';
@@ -8,14 +8,14 @@ import { $homeowner } from '.';
 import { sample } from 'effector';
 import { getHomeownerAccount } from '01/_api/homeowners';
 
-fetchHomeowner.use(getHomeownerAccount);
+fetchHomeownerFx.use(getHomeownerAccount);
 
-$homeowner.on(fetchHomeowner.doneData, (_, homeowner) => homeowner);
+$homeowner.on(fetchHomeownerFx.doneData, (_, homeowner) => homeowner);
 
 sample({
   source: HomeownerGate.state.map(({ id }) => id),
   clock: [HomeownerGate.state, HomeownerGate.open],
-  target: fetchHomeowner,
+  target: fetchHomeownerFx,
 });
 
 $currentPersonalNumberIndex.on(

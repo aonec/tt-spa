@@ -4,7 +4,7 @@ import { HomeownerAccountResponse } from 'myApi';
 
 export const $homeowner = createStore<HomeownerAccountResponse | null>(null);
 
-export const fetchHomeowner = createEffect<string, HomeownerAccountResponse>();
+export const fetchHomeownerFx = createEffect<string, HomeownerAccountResponse>();
 
 export const HomeownerGate = createGate<{ id: string }>();
 

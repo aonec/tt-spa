@@ -1,9 +1,9 @@
-import React from 'react';
-import { Form, Radio, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { Checkbox, Form, Radio, Tabs } from 'antd';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import _ from 'lodash';
+import _, { setWith } from 'lodash';
 
 import {
   ButtonTT,
@@ -18,6 +18,7 @@ import {
 import { getReport } from './apiCalculatorReport';
 import { CalculatorResponse } from '../../../../../../myApi';
 import { AlertInterface } from '../../../../../tt-components/interfaces';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 
 interface ModalCalculatorReportFormInterface {
   device: CalculatorResponse;
@@ -34,6 +35,8 @@ const ModalCalculatorReportForm = ({
   const { housingStockNumber, street } = address || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
+
+  const [withNs, setWIthNs] = useState(false);
 
   const nodesList =
     nodes ||
@@ -86,7 +89,9 @@ const ModalCalculatorReportForm = ({
       const { nodeId, detail, resource } = values;
       const begin = `${moment(values.begin).format('YYYY-MM-DD')}`;
       const end = `${values.end.format('YYYY-MM-DD')}`;
-      const shortLink = `Reports/Report?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
+      const shortLink = `Reports/${
+        withNs ? `ReportWithNs` : 'Report'
+      }?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
       getReport(shortLink).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
@@ -105,7 +110,7 @@ const ModalCalculatorReportForm = ({
     },
   });
 
-  const prevOptions = Object.values(filteredGroup[values.resource]);
+  const prevOptions = Object.values(filteredGroup[values.resource] || {});
 
   const options = prevOptions.map((node: any, index) => {
     const { id, number, communicationPipes } = node;
@@ -253,6 +258,11 @@ const ModalCalculatorReportForm = ({
             disabled={values.customPeriodDisabled}
           />
         </Form.Item>
+        <SpaceLine />
+        <Checkbox checked={withNs} onClick={() => setWIthNs((prev) => !prev)}>
+          Выгрузка отчета с кодами НС
+        </Checkbox>
+        <Space />
       </StyledModalBody>
       <StyledFooter modal>
         <ButtonTT color="white" onClick={handleCancel}>
