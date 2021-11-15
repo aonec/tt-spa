@@ -73,7 +73,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <div></div>
     );
 
-    const getReadingValues = (type: 'value' | 'consumption') =>
+    const getReadingValues = (
+      type: 'value' | 'consumption' | 'averageConsumption'
+    ) =>
       reading &&
       getReadingValuesArray(
         reading,
@@ -90,7 +92,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
                 getIndividualDeviceRateNumByName(device?.rateType!)
               ),
               deviceId: device?.id!,
-              readingDate: reading.readingDateTime || moment().toISOString(true),
+              readingDate:
+                reading.readingDateTime || moment().toISOString(true),
               isForced: true,
             } as any,
             { year, month, id: reading.id }
@@ -119,6 +122,14 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       />
     );
 
+    const averageConsumption = reading && (
+      <RenderReadingFields
+        suffix={device?.measurableUnitString}
+        values={getReadingValues('averageConsumption') || []}
+        consumption
+      />
+    );
+
     const source = reading && (
       <SourceName sourceType={reading.source} user={reading.user} />
     );
@@ -139,6 +150,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         {monthName}
         {readings || <div></div>}
         {consumption || <div></div>}
+        {averageConsumption || <div></div>}
         {source || <div></div>}
         {uploadTime || <div></div>}
         {arrowButtonComponent}
@@ -232,6 +244,7 @@ const columnsNames = [
   'Период',
   'Показания',
   'Потребление',
+  'Ср. потребление',
   'Источник',
   'Последние показания',
 ];
@@ -269,7 +282,7 @@ interface WrapProps {
 }
 
 const Wrap = styled.div`
-  max-width: 960px;
+  max-width: 1080px;
   ${({ isModal }: WrapProps) =>
     isModal
       ? `
@@ -283,7 +296,7 @@ const Wrap = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 0.96fr 1fr 0.9fr 1.34fr 1fr;
+  grid-template-columns: 0.6fr 1.2fr 0.75fr 0.85fr 1.35fr 1fr 30px;
 `;
 
 const TableHeader = styled(Grid)`
@@ -302,7 +315,6 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1fr 1.2fr 0.9fr 1.5fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;

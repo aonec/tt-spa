@@ -3,7 +3,7 @@ import { IndividualDeviceReadingsItemHistoryResponse } from './../../../../myApi
 
 export const getReadingValuesArray = (
   reading: IndividualDeviceReadingsItemHistoryResponse,
-  type: 'consumption' | 'value',
+  type: 'consumption' | 'value' | 'averageConsumption',
   rateNum: number
 ) => {
   const res: (string | null)[] = [];

@@ -5704,22 +5704,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsTestList
-     * @request GET:/api/DataMigrations/Test
-     * @secure
-     */
-    dataMigrationsTestList: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/Test`,
-        method: "GET",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
      * @name DataMigrationsDisableIndividualDevicesMaintenanceCreate
      * @request POST:/api/DataMigrations/DisableIndividualDevicesMaintenance
      * @secure
@@ -7289,6 +7273,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.FormData,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Imports
+     * @name ImportsImportOrganizationCreate
+     * @request POST:/api/Imports/ImportOrganization
+     * @secure
+     */
+    importsImportOrganizationCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/Imports/ImportOrganization`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
