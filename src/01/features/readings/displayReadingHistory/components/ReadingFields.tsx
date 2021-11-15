@@ -1,6 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
+import { validateYupSchema } from 'formik';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
@@ -52,15 +53,16 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     index: number,
     isOnlyOne?: boolean
   ) => {
-    const value = (clearValue ? elem : Number(elem?.split(' ')[0])) || '';
+    const value = clearValue ? elem : Number(elem?.split(' ')[0]);
     const suffix = globalSuffix || elem?.split(' ')[1];
 
-    if (!editable)
+    if (!editable) {
       return (
         <ValueLine isReading={!consumption}>
-          {value ? `${value} ${suffix}` : ''}
+          {elem !== null ? `${elem} ${suffix}` : ''}
         </ValueLine>
       );
+    }
 
     const prefix = `T${index + 1}`;
 
@@ -75,7 +77,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
           type="number"
           disabled={!editable}
           className={`history-reading-field`}
-          value={value}
+          value={String(value)}
           suffix={suffix}
           prefix={<Prefix>{prefix}</Prefix>}
           onChange={(e) => onChangeHandeler(e, index + 1)}

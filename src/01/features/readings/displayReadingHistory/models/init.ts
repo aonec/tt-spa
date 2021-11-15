@@ -18,7 +18,7 @@ $readingHistory
   .reset(ReadingHistoryGate.close);
 
 forward({
-  from: ReadingHistoryGate.state.map(({ deviceId }) => deviceId),
+  from: ReadingHistoryGate.open.map(({ deviceId }) => deviceId),
   to: fetchReadingHistoryFx,
 });
 
