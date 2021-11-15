@@ -1,4 +1,4 @@
-import { fetchExistingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
+import { $existingCities, fetchExistingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
 import { forward, sample } from 'effector';
 import {
@@ -12,6 +12,7 @@ import {
   setSelectedHousingStockId,
   subscribersConsumptionFindForm,
 } from './index';
+import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 
 fetchConsumptionStatistics.use(getConsumptionStatistics);
 
@@ -32,7 +33,7 @@ $consumptionStatistics.on(
 $selectedHousingsStockId.on(setSelectedHousingStockId, (_, id) => id);
 
 sample({
-  clock: fetchExistingCities.doneData,
+  clock: $existingCities.updates,
   fn: (cities) => (cities?.length ? cities[cities.length - 1] : ''),
   target: subscribersConsumptionFindForm.fields.city.set,
 });
