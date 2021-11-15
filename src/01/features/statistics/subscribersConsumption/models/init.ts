@@ -1,5 +1,6 @@
+import { fetchExistingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
 import { getConsumptionStatistics } from '01/_api/consumptionStatistics';
-import { forward } from 'effector';
+import { forward, sample } from 'effector';
 import {
   openExpandedSearch,
   closeExpandedSearch,
@@ -9,6 +10,7 @@ import {
   $consumptionStatistics,
   $selectedHousingsStockId,
   setSelectedHousingStockId,
+  subscribersConsumptionFindForm,
 } from './index';
 
 fetchConsumptionStatistics.use(getConsumptionStatistics);
@@ -28,3 +30,9 @@ $consumptionStatistics.on(
 );
 
 $selectedHousingsStockId.on(setSelectedHousingStockId, (_, id) => id);
+
+sample({
+  clock: fetchExistingCities.doneData,
+  fn: (cities) => (cities?.length ? cities[cities.length - 1] : ''),
+  target: subscribersConsumptionFindForm.fields.city.set,
+});
