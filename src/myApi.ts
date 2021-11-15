@@ -1972,6 +1972,7 @@ export enum EMagistralType {
   None = "None",
   FeedFlow = "FeedFlow",
   FeedBackFlow = "FeedBackFlow",
+  Recharge = "Recharge",
 }
 
 export interface HousingMeteringDeviceReadingsIncludingPlacementResponse {
@@ -3369,12 +3370,6 @@ export interface ManagingFirmUserCreateRequest {
   housingStockIds?: number[] | null;
 }
 
-export interface ManagementFirmShortResponse {
-  /** @format int32 */
-  id: number;
-  name: string | null;
-}
-
 export interface UserCompetenceResponse {
   /** @format uuid */
   id: string;
@@ -3425,7 +3420,7 @@ export interface ManagingFirmUserResponse {
 
   /** @format date-time */
   suspendedFromDate: string | null;
-  managementFirm: ManagementFirmShortResponse | null;
+  managementFirm: ManagementFirmResponse | null;
   status: UserStatusResponse | null;
   competences: UserCompetenceResponse[] | null;
   userRoles: UserRoleResponse[] | null;
@@ -5702,6 +5697,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsTestList
+     * @request GET:/api/DataMigrations/Test
+     * @secure
+     */
+    dataMigrationsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Test`,
+        method: "GET",
+        secure: true,
         ...params,
       }),
 
