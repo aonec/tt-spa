@@ -49,17 +49,14 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   };
 
   const renderField = (
-    elem: string | null,
+    value: string | null,
     index: number,
     isOnlyOne?: boolean
   ) => {
-    const value = clearValue ? elem : Number(elem?.split(' ')[0]);
-    const suffix = globalSuffix || elem?.split(' ')[1];
-
     if (!editable) {
       return (
         <ValueLine isReading={!consumption}>
-          {elem !== null ? `${elem} ${suffix}` : ''}
+          {value !== null ? `${value} ${globalSuffix}` : ''}
         </ValueLine>
       );
     }
@@ -78,7 +75,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
           disabled={!editable}
           className={`history-reading-field`}
           value={String(value)}
-          suffix={suffix}
+          suffix={globalSuffix}
           prefix={<Prefix>{prefix}</Prefix>}
           onChange={(e) => onChangeHandeler(e, index + 1)}
         />
