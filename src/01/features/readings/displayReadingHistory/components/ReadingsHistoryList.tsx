@@ -82,6 +82,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         type,
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
+
     const readings = reading && (
       <RenderReadingFields
         onBlur={() =>
@@ -103,6 +104,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
+        removed={reading.isRemoved}
         onChange={(value, index) =>
           setFieldValue(value, {
             year,

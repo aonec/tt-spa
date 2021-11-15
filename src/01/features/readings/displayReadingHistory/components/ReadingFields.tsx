@@ -1,7 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import { validateYupSchema } from 'formik';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
@@ -16,6 +15,7 @@ interface Props {
   consumption?: boolean;
   style?: React.CSSProperties;
   clearValue?: boolean;
+  removed?: boolean;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -28,7 +28,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     status,
     consumption,
     style,
-    clearValue,
+    removed,
   } = props;
 
   const wrapRef = useRef<any>();
@@ -85,7 +85,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   if (!editable)
     return (
-      <FieldsWrap style={style}>
+      <FieldsWrap style={style} removed={removed}>
         {values.map((elem, index) => renderField(elem, index, false))}
       </FieldsWrap>
     );
@@ -117,6 +117,8 @@ const Prefix = styled.span`
 const FieldsWrap = styled.div`
   margin-right: 20px;
   counter-reset: section;
+
+  ${({ removed }: { removed?: boolean }) => (removed ? 'color: red;' : '')}
 `;
 
 const ValueLine = styled(Flex)`
