@@ -9,11 +9,11 @@ import {
 } from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
-import { cities } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { resetIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const initialState = {
-  city: 'Нижнекамск',
+  city: '',
   street: '',
   house: '',
   corpus: '',
@@ -135,6 +135,17 @@ export const useFilter = () => {
 
   const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
 
+  const cities = useStore($existingCities);
+
+  useEffect(() => {
+    if (cities) {
+      dispatch({
+        type: 'change',
+        payload: { city: cities[cities.length - 1] },
+      });
+    }
+  }, [cities]);
+
   return {
     state,
     filter: apart,
@@ -142,7 +153,7 @@ export const useFilter = () => {
       {
         name: 'city',
         placeholder: 'Город',
-        options: cities.map((value) => ({ value })),
+        options: (cities || []).map((value) => ({ value })),
       },
       {
         name: 'street',
