@@ -9,7 +9,8 @@ import {
   openReadingsHistoryModal,
   closeReadingsHistoryModal,
 } from './index';
-import { forward } from 'effector';
+import { forward, sample } from 'effector';
+import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
 
 fetchReadingHistoryFx.use(getReadingsHistory);
 
@@ -22,9 +23,10 @@ forward({
   to: fetchReadingHistoryFx,
 });
 
-forward({
-  from: refetchReadingHistory,
-  to: fetchReadingHistoryFx,
+sample({
+  clock: refetchReadingHistory,
+  source: ReadingHistoryGate.state.map((value) => value.deviceId),
+  target: fetchReadingHistoryFx,
 });
 
 $readingsHistoryModalDeviceId
@@ -34,4 +36,9 @@ $readingsHistoryModalDeviceId
 forward({
   from: $readingsHistoryModalDeviceId as any,
   to: fetchIndividualDeviceFx,
+});
+
+forward({
+  from: ReadingHistoryGate.close,
+  to: refetchIndividualDevices,
 });
