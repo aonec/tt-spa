@@ -41,7 +41,7 @@ export function useReadingHistoryValues() {
 
   const setFieldValue = (
     value: string,
-    address: { year: number; month: number; id: number; index: number }
+    address: { year: number; month: number; id: number | null; index: number }
   ) => {
     setBufferedValues((prev) => ({
       ...prev,

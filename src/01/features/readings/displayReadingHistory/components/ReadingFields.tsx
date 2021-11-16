@@ -1,16 +1,19 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Input } from 'antd';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {
-  values: (string | null)[];
+  values?: (string | null)[];
+  noReading?: boolean;
+  rateNum: number | null;
   suffix?: string | null;
   editable?: boolean;
   onChange?(value: string, index: number): void;
   onBlur?(): void;
+  onEnter?(): void;
   status?: RequestStatusShared;
   consumption?: boolean;
   style?: React.CSSProperties;
@@ -29,9 +32,16 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     consumption,
     style,
     removed,
+    onEnter,
+    rateNum,
   } = props;
 
   const wrapRef = useRef<any>();
+
+  const valuesArray = getArrayByCountRange(
+    rateNum || 0,
+    (index) => (values && values[index - 1]) || null
+  );
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -45,7 +55,10 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   const onBlurHandler = onBlur;
 
   const onKeyHandler = (e: any) => {
-    e.key === 'Enter' && e.target.blur();
+    if (e.key === 'Enter') {
+      onEnter && onEnter();
+      e.target.blur();
+    }
   };
 
   const renderField = (
@@ -67,7 +80,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
       <EditableFieldWrap
         ref={wrapRef}
         onKeyDown={onKeyHandler}
-        isOnlyOne={isOnlyOne || values.length === 1}
+        isOnlyOne={isOnlyOne || values?.length === 1}
         status={status!}
       >
         <EditableField
@@ -86,25 +99,13 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   if (!editable)
     return (
       <FieldsWrap style={style} removed={removed}>
-        {values.map((elem, index) => renderField(elem, index, false))}
+        {valuesArray.map((elem, index) => renderField(elem, index, false))}
       </FieldsWrap>
     );
 
   return (
     <FieldsWrap onBlur={onBlurHandler} style={style}>
-      {values.length === 3 ? (
-        <>
-          <div>
-            {[values[0], values[1]].map((elem, index) =>
-              renderField(elem, index, false)
-            )}
-          </div>
-          <Space h={6} />
-          <div>{renderField(values[2], 2, true)}</div>
-        </>
-      ) : (
-        values.map((elem, index) => renderField(elem, index, false))
-      )}
+      {valuesArray.map((elem, index) => renderField(elem, index, false))}
     </FieldsWrap>
   );
 };

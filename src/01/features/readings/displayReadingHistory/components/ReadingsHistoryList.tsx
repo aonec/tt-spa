@@ -22,6 +22,7 @@ import { $individualDevice } from '01/features/individualDevices/displayIndividu
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 
 interface Props {
   isModal?: boolean;
@@ -57,6 +58,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     readingsLength: number;
   }
 
+  const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
+
   const renderReading = ({
     year,
     reading,
@@ -83,9 +86,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
 
-    const readings = reading && (
+    const readings = reading ? (
       <RenderReadingFields
-        onBlur={() =>
+        rateNum={rateNum}
+        onEnter={() =>
           uploadReading(
             {
               ...getReadingValuesObject(
@@ -114,10 +118,33 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           })
         }
       />
+    ) : (
+      <RenderReadingFields
+        rateNum={rateNum}
+        onEnter={() => {}}
+        editable={true}
+        values={
+          getReadingValues('value') ||
+          getArrayByCountRange(
+            getIndividualDeviceRateNumByName(device?.rateType! || 0),
+            () => '' as any
+          )
+        }
+        suffix={device?.measurableUnitString}
+        onChange={(value, index) =>
+          setFieldValue(value, {
+            year,
+            month,
+            id: null,
+            index,
+          })
+        }
+      />
     );
 
     const consumption = reading && (
       <RenderReadingFields
+        rateNum={rateNum}
         suffix={device?.measurableUnitString}
         values={getReadingValues('consumption') || []}
         consumption
@@ -126,6 +153,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
     const averageConsumption = reading && (
       <RenderReadingFields
+        rateNum={rateNum}
         suffix={device?.measurableUnitString}
         values={getReadingValues('averageConsumption') || []}
         consumption
@@ -150,11 +178,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     return (
       <WrapComponent>
         {monthName}
-        {readings || <div></div>}
-        {consumption || <div></div>}
-        {averageConsumption || <div></div>}
-        {source || <div></div>}
-        {uploadTime || <div></div>}
+        <div>{readings}</div>
+        <div>{consumption}</div>
+        <div>{averageConsumption}</div>
+        <div>{source}</div>
+        <div>{uploadTime}</div>
         {arrowButtonComponent}
       </WrapComponent>
     );
@@ -298,7 +326,7 @@ const Wrap = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 0.6fr 1.2fr 0.75fr 0.85fr 1.35fr 1fr 30px;
+  grid-template-columns: 0.6fr 1fr 0.75fr 0.85fr 1.35fr 1fr 30px;
 `;
 
 const TableHeader = styled(Grid)`
