@@ -89,11 +89,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const readings = reading ? (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={() =>
+        onEnter={(values) =>
           uploadReading(
             {
               ...getReadingValuesObject(
-                reading,
+                values,
                 getIndividualDeviceRateNumByName(device?.rateType!)
               ),
               deviceId: device?.id!,
@@ -101,7 +101,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
                 reading.readingDateTime || moment().toISOString(true),
               isForced: true,
             } as any,
-            { year, month, id: reading.id }
           )
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
@@ -121,7 +120,19 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     ) : (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={() => {}}
+        onEnter={(values) =>
+          uploadReading(
+            {
+              ...getReadingValuesObject(
+                values,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate: moment(month),
+              isForced: true,
+            } as any,
+          )
+        }
         editable={true}
         values={
           getReadingValues('value') ||
@@ -131,14 +142,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           )
         }
         suffix={device?.measurableUnitString}
-        onChange={(value, index) =>
-          setFieldValue(value, {
-            year,
-            month,
-            id: null,
-            index,
-          })
-        }
       />
     );
 

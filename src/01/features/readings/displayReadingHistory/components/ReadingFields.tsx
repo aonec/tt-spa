@@ -1,7 +1,7 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Input } from 'antd';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
@@ -13,7 +13,7 @@ interface Props {
   editable?: boolean;
   onChange?(value: string, index: number): void;
   onBlur?(): void;
-  onEnter?(): void;
+  onEnter?(values: (number | null)[]): void;
   status?: RequestStatusShared;
   consumption?: boolean;
   style?: React.CSSProperties;
@@ -38,10 +38,14 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   const wrapRef = useRef<any>();
 
-  const valuesArray = getArrayByCountRange(
+  const preparedValuesArray = getArrayByCountRange(
     rateNum || 0,
     (index) => (values && values[index - 1]) || null
   );
+
+  const [valuesArray, setValuesArray] = useState(preparedValuesArray);
+
+  useEffect(() => setValuesArray(preparedValuesArray), [values]);
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -49,14 +53,21 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   ) => {
     e.preventDefault();
 
-    onChange && onChange(e.target.value, index);
+    setValuesArray((prev) =>
+      prev.map((elem, i) => (i === index ? e.target.value : elem))
+    );
+
+    onChange && onChange(e.target.value, index + 1);
   };
 
   const onBlurHandler = onBlur;
 
   const onKeyHandler = (e: any) => {
     if (e.key === 'Enter') {
-      onEnter && onEnter();
+      const clearValues = valuesArray.map((value) =>
+        value === null ? null : Number(value)
+      );
+      onEnter && onEnter(clearValues);
       e.target.blur();
     }
   };
@@ -90,7 +101,7 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
           value={String(value)}
           suffix={globalSuffix}
           prefix={<Prefix>{prefix}</Prefix>}
-          onChange={(e) => onChangeHandeler(e, index + 1)}
+          onChange={(e) => onChangeHandeler(e, index)}
         />
       </EditableFieldWrap>
     );

@@ -20,7 +20,7 @@ export const getMonthName = (month: number) =>
     .format('MMMM');
 
 export const getReadingValuesObject = (
-  reading: IndividualDeviceReadingsItemHistoryResponse,
+  values: (number | null)[],
   rateNum: number
 ) => {
   const res: { [key: string]: number } = {};
@@ -28,7 +28,7 @@ export const getReadingValuesObject = (
   for (let i = 0; i < rateNum; i++) {
     const index = `value${i + 1}`;
 
-    res[index] = Number(((reading as any)[index] as string).split(' ')[0]) || 0;
+    res[index] = (values as any)[i];
   }
   return res;
 };

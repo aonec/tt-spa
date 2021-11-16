@@ -79,43 +79,13 @@ export function useReadingHistoryValues() {
       [id]: status,
     }));
 
-  async function uploadReading(
-    reading: IndividualDeviceReadingsCreateRequest,
-    address: { year: number; month: number; id: number }
-  ) {
-    const current = getReadingValuesArray(
-      reading as any,
-      'value',
-      rateTypeToNumber(device?.rateType!)
-    ).join('');
-
-    const prev = getReadingValuesArray(
-      initialValues &&
-        (initialValues.yearReadings
-          ?.find((elem) => elem.year === address.year)
-          ?.monthReadings?.find((elem) => elem.month === address.month)
-          ?.readings?.find((elem) => elem.id === address.id) as any),
-      'value',
-      rateTypeToNumber(device?.rateType!)
-    )
-      .map((elem) => elem?.split(' ')[0])
-      .join('');
-
-    // проверка на изменение значений, если изменились, то инициируется отправка данных
-    if (current === prev) return;
-
-    const id = reading.readingDate;
-
-    setReadingUploadRequestStatus(id, 'pending');
+  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
+    // setReadingUploadRequestStatus(id, 'pending');
 
     try {
       await createReading(reading);
       refetchReadingHistory(Number(deviceId));
-
-      setReadingUploadRequestStatus(id, 'done');
-    } catch (e) {
-      setReadingUploadRequestStatus(id, 'failed');
-    }
+    } catch (e) {}
   }
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
