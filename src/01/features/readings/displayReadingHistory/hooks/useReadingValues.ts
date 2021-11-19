@@ -1,5 +1,4 @@
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
-import { getReadingValuesArray } from './../utils';
 import { useParams } from 'react-router-dom';
 import {
   fetchReadingHistoryFx,
@@ -13,8 +12,8 @@ import {
 import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
-import rateTypeToNumber from '01/_api/utils/rateTypeToNumber';
 import axios from '01/axios';
+import moment from 'moment';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -27,8 +26,6 @@ export function useReadingHistoryValues() {
   const params = useParams<{ deviceId: string }>();
 
   const { deviceId } = params;
-
-  const device = useStore($individualDevice);
 
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
     [date: string]: RequestStatusShared;
@@ -78,22 +75,30 @@ export function useReadingHistoryValues() {
     }));
   };
 
-  const setReadingUploadRequestStatus = (
-    id: string,
-    status: RequestStatusShared
-  ) =>
+  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
+    const date = moment(reading.readingDate);
+    const dateString = `${date.month() + 2}.${date.year()}`;
+
+    console.log(dateString, date, reading.readingDate);
+
     setUploadingReadingsStatuses((prev) => ({
       ...prev,
-      [id]: status,
+      [dateString]: 'pending',
     }));
-
-  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
-    // setReadingUploadRequestStatus(id, 'pending');
-
     try {
       await createReading(reading);
       refetchReadingHistory(Number(deviceId));
-    } catch (e) {}
+
+      setUploadingReadingsStatuses((prev) => ({
+        ...prev,
+        [dateString]: 'done',
+      }));
+    } catch (e) {
+      setUploadingReadingsStatuses((prev) => ({
+        ...prev,
+        [dateString]: 'failed',
+      }));
+    }
   }
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);

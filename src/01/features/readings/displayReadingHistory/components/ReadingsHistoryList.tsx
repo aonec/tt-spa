@@ -92,6 +92,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <RenderReadingFields
         rateNum={rateNum}
         onEnter={(values) => {
+          console.log(month);
           if (values.every((elem) => elem === null)) {
             return deleteReading(reading.id);
           }
@@ -105,7 +106,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             isForced: true,
           } as any);
         }}
-        status={uploadingReadingsStatuses[reading.readingDateTime || '']}
+        status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
