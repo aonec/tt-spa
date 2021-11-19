@@ -14,6 +14,7 @@ import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
 import rateTypeToNumber from '01/_api/utils/rateTypeToNumber';
+import axios from '01/axios';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -30,7 +31,7 @@ export function useReadingHistoryValues() {
   const device = useStore($individualDevice);
 
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
-    [key: string]: RequestStatusShared;
+    [date: string]: RequestStatusShared;
   }>({});
 
   const initialValues = useStore($readingHistory);
@@ -38,6 +39,13 @@ export function useReadingHistoryValues() {
   useEffect(() => {
     setBufferedValues(initialValues);
   }, [initialValues]);
+
+  async function deleteReading(id: number) {
+    try {
+      await axios.post(`IndividualDeviceReadings/${id}/remove`);
+      refetchReadingHistory(Number(deviceId));
+    } catch (error) {}
+  }
 
   const setFieldValue = (
     value: string,
@@ -109,5 +117,6 @@ export function useReadingHistoryValues() {
     setFieldValue,
     uploadingReadingsStatuses,
     uploadReading,
+    deleteReading,
   };
 }

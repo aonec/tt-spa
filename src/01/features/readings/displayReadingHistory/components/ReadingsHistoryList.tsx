@@ -35,6 +35,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     setFieldValue,
     uploadingReadingsStatuses,
     uploadReading,
+    deleteReading,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
@@ -89,7 +90,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     const readings = reading ? (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={(values) =>
+        onEnter={(values) => {
+          if (values.every((elem) => elem === null)) {
+            return deleteReading(reading.id);
+          }
           uploadReading({
             ...getReadingValuesObject(
               values,
@@ -98,8 +102,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             deviceId: device?.id!,
             readingDate: reading.readingDateTime || moment().toISOString(true),
             isForced: true,
-          } as any)
-        }
+          } as any);
+        }}
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
