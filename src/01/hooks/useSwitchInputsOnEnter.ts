@@ -6,7 +6,6 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
   const isAllDevicesDone = useStore($isAllDevicesDone);
 
   const onKeyDown = (e: any, index: number, isForced?: boolean) => {
-    console.log(isAllDevicesDone);
     if (e.key !== 'Enter' && !isForced) return;
 
     const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(

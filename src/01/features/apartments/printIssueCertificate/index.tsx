@@ -30,7 +30,7 @@ export const GetIssueCertificateModal = () => {
   return (
     <>
       <HomeownerCerificateGate
-        id={(apartment?.homeownerAccounts[homeownerIndex] as any).id!}
+        id={(apartment?.homeownerAccounts[homeownerIndex] as any)?.id!}
       />
       <ModalTT
         onCancel={closeIssueCertificateModalButtonClicked}

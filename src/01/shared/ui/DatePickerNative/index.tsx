@@ -71,5 +71,5 @@ const StyledInput = styled.input`
   padding: 10px 15px;
 `;
 
-const fromEnter = (callback: (e: any) => void) => (e: any) =>
+export const fromEnter = (callback: (e: any) => void) => (e: any) =>
   e?.key === 'Enter' && callback(e);
