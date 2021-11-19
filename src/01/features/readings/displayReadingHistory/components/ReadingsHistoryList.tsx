@@ -23,6 +23,7 @@ import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/component
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 
 interface Props {
   isModal?: boolean;
@@ -58,6 +59,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     year: number;
     readingsLength: number;
     isHasArchived: boolean;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
   }
 
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
@@ -92,7 +94,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <RenderReadingFields
         rateNum={rateNum}
         onEnter={(values) => {
-          console.log(month);
           if (values.every((elem) => elem === null)) {
             return deleteReading(reading.id);
           }
@@ -133,9 +134,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             readingDate: (() => {
               const date = moment();
 
-              console.log(month);
               date.set('day', 15);
               date.set('month', month - 2);
+              date.set('year', year);
 
               return date.toISOString();
             })(),
@@ -200,7 +201,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month,
     year,
     readings,
-  }: IndividualDeviceReadingsMonthHistoryResponse & { year: number }) => {
+    prevReading,
+  }: IndividualDeviceReadingsMonthHistoryResponse & {
+    year: number;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
+  }) => {
     const isOpen = isMonthOpen(year, month);
 
     const arrowButton = (
@@ -233,6 +238,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
+                prevReading,
                 reading,
                 month,
                 isFirst: false,
@@ -246,10 +252,21 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
   };
 
+  const getActiveReadings = (
+    readings?: IndividualDeviceReadingsItemHistoryResponse[] | null
+  ) => {
+    if (!readings) return;
+
+    return readings.find((elem) => !elem.isArchived) || void 0;
+  };
+
   const renderYear = ({
     year,
     monthReadings,
-  }: IndividualDeviceReadingsYearHistoryResponse) => {
+    prevMonths,
+  }: IndividualDeviceReadingsYearHistoryResponse & {
+    prevMonths?: IndividualDeviceReadingsMonthHistoryResponse[] | null;
+  }) => {
     const isOpen = isYearOpen(year);
 
     return (
@@ -259,7 +276,15 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           <Arrow open={isOpen} />
         </Year>
         {isOpen &&
-          monthReadings?.map((month) => renderMonth({ ...month, year }))}
+          monthReadings?.map((month, index) =>
+            renderMonth({
+              ...month,
+              year,
+              prevReading:
+                getActiveReadings(monthReadings[index + 1]?.readings) ||
+                getActiveReadings(prevMonths && prevMonths[0]?.readings),
+            })
+          )}
       </>
     );
   };
@@ -267,12 +292,20 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   return (
     <Wrap isModal={isModal}>
       <GradientLoader loading={pendingHistory} />
+      <ConfirmReadingValueModal />
       <TableHeader>
         {columnsNames.map((elem) => (
           <div>{elem}</div>
         ))}
       </TableHeader>
-      {values?.yearReadings?.map(renderYear)}
+      {values?.yearReadings?.map((yearReading, index) =>
+        renderYear({
+          ...yearReading,
+          prevMonths:
+            values?.yearReadings &&
+            values?.yearReadings[index + 1]?.monthReadings,
+        })
+      )}
     </Wrap>
   );
 };
