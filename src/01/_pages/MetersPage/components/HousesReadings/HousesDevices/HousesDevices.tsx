@@ -81,11 +81,6 @@ const HousesDevices: React.FC = () => {
     function onScrollDown(event: any) {
       const element = event.target;
 
-      console.log(
-        element.scrollHeight - element.scrollTop,
-        element.clientHeight
-      );
-
       if (
         Math.round(element.scrollHeight - element.scrollTop) ===
           element.clientHeight ||
