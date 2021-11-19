@@ -90,18 +90,15 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <RenderReadingFields
         rateNum={rateNum}
         onEnter={(values) =>
-          uploadReading(
-            {
-              ...getReadingValuesObject(
-                values,
-                getIndividualDeviceRateNumByName(device?.rateType!)
-              ),
-              deviceId: device?.id!,
-              readingDate:
-                reading.readingDateTime || moment().toISOString(true),
-              isForced: true,
-            } as any,
-          )
+          uploadReading({
+            ...getReadingValuesObject(
+              values,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: reading.readingDateTime || moment().toISOString(true),
+            isForced: true,
+          } as any)
         }
         status={uploadingReadingsStatuses[reading.readingDateTime || '']}
         editable={isFirst && !readonly}
@@ -121,17 +118,23 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <RenderReadingFields
         rateNum={rateNum}
         onEnter={(values) =>
-          uploadReading(
-            {
-              ...getReadingValuesObject(
-                values,
-                getIndividualDeviceRateNumByName(device?.rateType!)
-              ),
-              deviceId: device?.id!,
-              readingDate: moment(month),
-              isForced: true,
-            } as any,
-          )
+          uploadReading({
+            ...getReadingValuesObject(
+              values,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: (() => {
+              const date = moment();
+
+              console.log(month);
+              date.set('day', 15);
+              date.set('month', month - 2);
+
+              return date.toISOString();
+            })(),
+            isForced: true,
+          } as any)
         }
         editable={true}
         values={
