@@ -73,7 +73,6 @@ export const useFilter = () => {
   const apartment = useStore($apartment);
 
   useEffect(() => {
-    console.log(apartment?.homeownerAccounts);
     if (apartment && apartment.housingStock)
       dispatch({
         type: 'change',

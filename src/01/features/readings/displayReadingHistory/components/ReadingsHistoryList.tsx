@@ -22,6 +22,8 @@ import { $individualDevice } from '01/features/individualDevices/displayIndividu
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
 
 interface Props {
   isModal?: boolean;
@@ -34,6 +36,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     setFieldValue,
     uploadingReadingsStatuses,
     uploadReading,
+    deleteReading,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
 
@@ -55,7 +58,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month: number;
     year: number;
     readingsLength: number;
+    isHasArchived: boolean;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
   }
+
+  const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
 
   const renderReading = ({
     year,
@@ -63,7 +70,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     isFirst,
     month,
     arrowButton,
-    readingsLength,
+    isHasArchived,
   }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
@@ -73,33 +80,38 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <div></div>
     );
 
-    const getReadingValues = (type: 'value' | 'consumption') =>
+    const getReadingValues = (
+      type: 'value' | 'consumption' | 'averageConsumption'
+    ) =>
       reading &&
       getReadingValuesArray(
         reading,
         type,
         getIndividualDeviceRateNumByName(device?.rateType!)
       );
-    const readings = reading && (
+
+    const readings = reading ? (
       <RenderReadingFields
-        onBlur={() =>
-          uploadReading(
-            {
-              ...getReadingValuesObject(
-                reading,
-                getIndividualDeviceRateNumByName(device?.rateType!)
-              ),
-              deviceId: device?.id!,
-              readingDate: reading.readingDateTime || moment().toISOString(true),
-              isForced: true,
-            } as any,
-            { year, month, id: reading.id }
-          )
-        }
-        status={uploadingReadingsStatuses[reading.readingDateTime || '']}
+        rateNum={rateNum}
+        onEnter={(values) => {
+          if (values.every((elem) => elem === null)) {
+            return deleteReading(reading.id);
+          }
+          uploadReading({
+            ...getReadingValuesObject(
+              values,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: reading.readingDateTime || moment().toISOString(true),
+            isForced: true,
+          } as any);
+        }}
+        status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
         values={getReadingValues('value') || []}
         suffix={device?.measurableUnitString}
+        removed={reading.isRemoved}
         onChange={(value, index) =>
           setFieldValue(value, {
             year,
@@ -109,12 +121,54 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           })
         }
       />
+    ) : (
+      <RenderReadingFields
+        rateNum={rateNum}
+        onEnter={(values) =>
+          uploadReading({
+            ...getReadingValuesObject(
+              values,
+              getIndividualDeviceRateNumByName(device?.rateType!)
+            ),
+            deviceId: device?.id!,
+            readingDate: (() => {
+              const date = moment();
+
+              date.set('day', 15);
+              date.set('month', month - 2);
+              date.set('year', year);
+
+              return date.toISOString();
+            })(),
+            isForced: true,
+          } as any)
+        }
+        editable={true}
+        values={
+          getReadingValues('value') ||
+          getArrayByCountRange(
+            getIndividualDeviceRateNumByName(device?.rateType! || 0),
+            () => '' as any
+          )
+        }
+        suffix={device?.measurableUnitString}
+      />
     );
 
     const consumption = reading && (
       <RenderReadingFields
+        rateNum={rateNum}
         suffix={device?.measurableUnitString}
         values={getReadingValues('consumption') || []}
+        consumption
+      />
+    );
+
+    const averageConsumption = reading && (
+      <RenderReadingFields
+        rateNum={rateNum}
+        suffix={device?.measurableUnitString}
+        values={getReadingValues('averageConsumption') || []}
         consumption
       />
     );
@@ -128,19 +182,16 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     );
 
     const arrowButtonComponent =
-      !readings || (isFirst && readingsLength > 1) ? (
-        arrowButton
-      ) : (
-        <ArrowButtonBlock />
-      );
+      isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
     return (
       <WrapComponent>
         {monthName}
-        {readings || <div></div>}
-        {consumption || <div></div>}
-        {source || <div></div>}
-        {uploadTime || <div></div>}
+        <div>{readings}</div>
+        <div>{consumption}</div>
+        <div>{averageConsumption}</div>
+        <div>{source}</div>
+        <div>{uploadTime}</div>
         {arrowButtonComponent}
       </WrapComponent>
     );
@@ -150,7 +201,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month,
     year,
     readings,
-  }: IndividualDeviceReadingsMonthHistoryResponse & { year: number }) => {
+    prevReading,
+  }: IndividualDeviceReadingsMonthHistoryResponse & {
+    year: number;
+    prevReading?: IndividualDeviceReadingsItemHistoryResponse;
+  }) => {
     const isOpen = isMonthOpen(year, month);
 
     const arrowButton = (
@@ -172,6 +227,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       year,
       month,
       readingsLength: readings.length,
+      isHasArchived: readings.some((elem) => elem.isArchived),
     });
 
     return (
@@ -182,22 +238,35 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
+                prevReading,
                 reading,
                 month,
                 isFirst: false,
                 arrowButton,
                 year,
                 readingsLength: readings.length,
+                isHasArchived: readings.some((elem) => elem.isArchived),
               })
             )}
       </>
     );
   };
 
+  const getActiveReadings = (
+    readings?: IndividualDeviceReadingsItemHistoryResponse[] | null
+  ) => {
+    if (!readings) return;
+
+    return readings.find((elem) => !elem.isArchived) || void 0;
+  };
+
   const renderYear = ({
     year,
     monthReadings,
-  }: IndividualDeviceReadingsYearHistoryResponse) => {
+    prevMonths,
+  }: IndividualDeviceReadingsYearHistoryResponse & {
+    prevMonths?: IndividualDeviceReadingsMonthHistoryResponse[] | null;
+  }) => {
     const isOpen = isYearOpen(year);
 
     return (
@@ -207,7 +276,15 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           <Arrow open={isOpen} />
         </Year>
         {isOpen &&
-          monthReadings?.map((month) => renderMonth({ ...month, year }))}
+          monthReadings?.map((month, index) =>
+            renderMonth({
+              ...month,
+              year,
+              prevReading:
+                getActiveReadings(monthReadings[index + 1]?.readings) ||
+                getActiveReadings(prevMonths && prevMonths[0]?.readings),
+            })
+          )}
       </>
     );
   };
@@ -215,12 +292,20 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
   return (
     <Wrap isModal={isModal}>
       <GradientLoader loading={pendingHistory} />
+      <ConfirmReadingValueModal />
       <TableHeader>
         {columnsNames.map((elem) => (
           <div>{elem}</div>
         ))}
       </TableHeader>
-      {values?.yearReadings?.map(renderYear)}
+      {values?.yearReadings?.map((yearReading, index) =>
+        renderYear({
+          ...yearReading,
+          prevMonths:
+            values?.yearReadings &&
+            values?.yearReadings[index + 1]?.monthReadings,
+        })
+      )}
     </Wrap>
   );
 };
@@ -232,6 +317,7 @@ const columnsNames = [
   'Период',
   'Показания',
   'Потребление',
+  'Ср. потребление',
   'Источник',
   'Последние показания',
 ];
@@ -269,7 +355,7 @@ interface WrapProps {
 }
 
 const Wrap = styled.div`
-  max-width: 960px;
+  max-width: 1080px;
   ${({ isModal }: WrapProps) =>
     isModal
       ? `
@@ -283,7 +369,7 @@ const Wrap = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 0.96fr 1fr 0.9fr 1.34fr 1fr;
+  grid-template-columns: 0.6fr 1fr 0.75fr 0.85fr 1.35fr 1fr 30px;
 `;
 
 const TableHeader = styled(Grid)`
@@ -302,7 +388,6 @@ const Year = styled(Flex)`
 `;
 
 const Month = styled(Grid)`
-  grid-template-columns: 1fr 1.2fr 0.9fr 1.5fr 1fr 0fr;
   padding: 16px;
   align-items: center;
   user-select: none;

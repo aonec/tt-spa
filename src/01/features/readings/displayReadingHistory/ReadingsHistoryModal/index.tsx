@@ -18,7 +18,7 @@ export const ReadingsHistoryModal: React.FC<Props> = ({ readonly }) => {
 
   return (
     <ModalTT
-      width={960}
+      width={1080}
       visible={open}
       title="История показаний"
       onCancel={closeReadingsHistoryModal}
