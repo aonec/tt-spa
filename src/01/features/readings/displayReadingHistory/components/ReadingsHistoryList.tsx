@@ -179,11 +179,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <div>{moment(reading.uploadTime).format('DD.MM.YYYY HH:mm')}</div>
     );
 
-    const arrowButtonComponent = isHasArchived ? (
-      arrowButton
-    ) : (
-      <ArrowButtonBlock />
-    );
+    const arrowButtonComponent =
+      isHasArchived && isFirst ? arrowButton : <ArrowButtonBlock />;
 
     return (
       <WrapComponent>
