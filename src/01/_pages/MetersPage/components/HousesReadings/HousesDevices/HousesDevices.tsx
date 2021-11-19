@@ -79,13 +79,18 @@ const HousesDevices: React.FC = () => {
 
   useEffect(() => {
     function onScrollDown(event: any) {
+      if (pendingDevices) return;
+
       const element = event.target;
 
+      console.log(
+        Math.round(element.scrollHeight - element.scrollTop),
+        element.clientHeight
+      );
+
       if (
-        Math.round(element.scrollHeight - element.scrollTop) ===
-          element.clientHeight ||
-        Math.floor(element.scrollHeight - element.scrollTop) ===
-          element.clientHeight
+        element.scrollHeight - element.scrollTop - element.clientHeight <
+        250
       ) {
         fetchNextPageOfIndividualDevices();
       }
