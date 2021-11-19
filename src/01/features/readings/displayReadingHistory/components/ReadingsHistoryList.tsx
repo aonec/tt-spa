@@ -57,6 +57,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month: number;
     year: number;
     readingsLength: number;
+    isHasArchived: boolean;
   }
 
   const rateNum = device && getIndividualDeviceRateNumByName(device.rateType);
@@ -67,7 +68,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     isFirst,
     month,
     arrowButton,
-    readingsLength,
+    isHasArchived,
   }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
@@ -178,12 +179,11 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       <div>{moment(reading.uploadTime).format('DD.MM.YYYY HH:mm')}</div>
     );
 
-    const arrowButtonComponent =
-      !readings || (isFirst && readingsLength > 1) ? (
-        arrowButton
-      ) : (
-        <ArrowButtonBlock />
-      );
+    const arrowButtonComponent = isHasArchived ? (
+      arrowButton
+    ) : (
+      <ArrowButtonBlock />
+    );
 
     return (
       <WrapComponent>
@@ -224,6 +224,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       year,
       month,
       readingsLength: readings.length,
+      isHasArchived: readings.some((elem) => elem.isArchived),
     });
 
     return (
@@ -240,6 +241,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
                 arrowButton,
                 year,
                 readingsLength: readings.length,
+                isHasArchived: readings.some((elem) => elem.isArchived),
               })
             )}
       </>
