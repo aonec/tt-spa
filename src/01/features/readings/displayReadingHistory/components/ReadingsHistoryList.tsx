@@ -6,6 +6,7 @@ import {
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
   EResourceType,
+  IndividualDeviceReadingsHistoryResponse,
 } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -25,7 +26,10 @@ import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
-import { CorrectReadingValuesValidationResult, getResourceUpLimit } from '01/hooks/useReadings';
+import {
+  CorrectReadingValuesValidationResult,
+  getResourceUpLimit,
+} from '01/hooks/useReadings';
 
 interface Props {
   isModal?: boolean;
@@ -41,6 +45,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     deleteReading,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
+
+  const readingsHistory = values;
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
@@ -73,6 +79,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month,
     arrowButton,
     isHasArchived,
+    prevReading,
   }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
@@ -99,6 +106,26 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           if (values.every((elem) => elem === null)) {
             return deleteReading(reading.id);
           }
+
+          const prevReading =
+            readingsHistory &&
+            getPreviousReadingByHistory(readingsHistory, reading.id);
+
+          if (prevReading) {
+            const validationResult = validateReadings(
+              getReadingValuesArray(
+                prevReading,
+                'value',
+                rateNum!
+              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
+              values,
+              rateNum!,
+              device?.resource!
+            );
+
+            console.log(validationResult, prevReading);
+          }
+
           uploadReading({
             ...getReadingValuesObject(
               values,
@@ -230,6 +257,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       month,
       readingsLength: readings.length,
       isHasArchived: readings.some((elem) => elem.isArchived),
+      prevReading,
     });
 
     return (
@@ -240,7 +268,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
-                prevReading,
                 reading,
                 month,
                 isFirst: false,
@@ -313,7 +340,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 };
 
 const validateReadings = (
-  currentValues: (number | null)[],
+  prevValues: (number | null)[],
   newValues: (number | null)[],
   rateNum: number,
   resource: EResourceType
@@ -325,7 +352,7 @@ const validateReadings = (
       if (index + 1 > rateNum) return acc;
 
       const currentValue = Number(elem) || 0;
-      const prevValue = Number(currentValues[index]) || 0;
+      const prevValue = Number(prevValues[index]) || 0;
 
       const isDown = currentValue < prevValue;
       const isUp = currentValue - prevValue > limit;
@@ -469,3 +496,41 @@ const ArrowButtonBlock = styled.div`
   width: 30px;
   height: 30px;
 `;
+
+const getPreviousReadingByHistory = (
+  readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
+  currentId: number
+): IndividualDeviceReadingsItemHistoryResponse | null => {
+  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = getClone(
+    readingsHistoryRaw
+  );
+
+  const readingsHistoryCleared = readingsHistoryClone.yearReadings
+    ?.map(
+      (yearReading) =>
+        yearReading.monthReadings
+          ?.map((monthReading) =>
+            monthReading.readings?.find(
+              (reading) => !reading.isArchived && !reading.isRemoved
+            )
+          )
+          .filter(Boolean) as IndividualDeviceReadingsItemHistoryResponse[]
+    )
+    .flat();
+
+  const currentIndex = readingsHistoryCleared?.reduce(
+    (acc, reading, index) => (reading?.id === currentId ? index : acc),
+    null as number | null
+  );
+
+  return (
+    (currentIndex &&
+      readingsHistoryCleared &&
+      readingsHistoryCleared[currentIndex + 1]) ||
+    null
+  );
+};
+
+export function getClone<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value));
+}
