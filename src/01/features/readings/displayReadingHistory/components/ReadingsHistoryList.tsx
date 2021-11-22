@@ -7,6 +7,7 @@ import {
   IndividualDeviceReadingsYearHistoryResponse,
   EResourceType,
   IndividualDeviceReadingsHistoryResponse,
+  IndividualDeviceResponse,
 } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -29,7 +30,10 @@ import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadin
 import {
   CorrectReadingValuesValidationResult,
   getResourceUpLimit,
+  round,
 } from '01/hooks/useReadings';
+import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
+import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 
 interface Props {
   isModal?: boolean;
@@ -107,11 +111,23 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             return deleteReading(reading.id);
           }
 
+          const request = () =>
+            uploadReading({
+              ...getReadingValuesObject(
+                values,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate:
+                reading.readingDateTime || moment().toISOString(true),
+              isForced: true,
+            } as any);
+
           const prevReading =
             readingsHistory &&
             getPreviousReadingByHistory(readingsHistory, reading.id);
 
-          if (prevReading) {
+          if (prevReading && device) {
             const validationResult = validateReadings(
               getReadingValuesArray(
                 prevReading,
@@ -123,18 +139,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               device?.resource!
             );
 
-            console.log(validationResult, prevReading);
+            return confirmReading(validationResult, request, device);
           }
 
-          uploadReading({
-            ...getReadingValuesObject(
-              values,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            ),
-            deviceId: device?.id!,
-            readingDate: reading.readingDateTime || moment().toISOString(true),
-            isForced: true,
-          } as any);
+          request();
         }}
         status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
@@ -534,3 +542,49 @@ const getPreviousReadingByHistory = (
 export function getClone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
+
+const confirmReading = (
+  { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
+  callback: () => void,
+  device: IndividualDeviceResponse
+) => {
+  const neededValueWarning = valuesValidationResults?.find((elem) =>
+    Boolean(elem.type)
+  );
+
+  const unit = getMeasurementUnit(device.resource);
+
+  if (neededValueWarning?.type === 'down') {
+    const failedReadingValidateResult = valuesValidationResults?.find(
+      (elem) => !elem.validated
+    );
+
+    openConfirmReadingModal({
+      title: (
+        <>
+          Введенное показание по прибору <b>{device.serialNumber}</b> (
+          {device.model}) меньше предыдущего на T
+          {failedReadingValidateResult?.index}:{' '}
+          <b>
+            {Math.abs(round(failedReadingValidateResult?.difference || 0, 3))}{' '}
+            {unit}{' '}
+          </b>
+        </>
+      ),
+      callback: () => void callback(),
+    });
+    return;
+  }
+
+  openConfirmReadingModal({
+    title: `${
+      neededValueWarning?.type === 'up'
+        ? `Расход ${round(
+            neededValueWarning.difference,
+            3
+          )}${unit}, больше чем лимит ${limit}${unit}`
+        : ''
+    }`,
+    callback: () => void callback(),
+  });
+};
