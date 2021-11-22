@@ -855,11 +855,11 @@ const limits = {
   [EResourceType.Electricity]: 1000,
 };
 
-const getResourceUpLimit = (resource: EResourceType) => {
+export const getResourceUpLimit = (resource: EResourceType) => {
   return (limits as any)[resource] || Infinity;
 };
 
-interface CorrectReadingValuesValidationResult {
+export interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
     type: 'up' | 'down' | null;

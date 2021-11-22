@@ -5,6 +5,7 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
+  EResourceType,
 } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -24,6 +25,7 @@ import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
+import { CorrectReadingValuesValidationResult, getResourceUpLimit } from '01/hooks/useReadings';
 
 interface Props {
   isModal?: boolean;
@@ -308,6 +310,50 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       )}
     </Wrap>
   );
+};
+
+const validateReadings = (
+  currentValues: (number | null)[],
+  newValues: (number | null)[],
+  rateNum: number,
+  resource: EResourceType
+) => {
+  const limit = getResourceUpLimit(resource);
+
+  const res = newValues.reduce(
+    (acc, elem, index) => {
+      if (index + 1 > rateNum) return acc;
+
+      const currentValue = Number(elem) || 0;
+      const prevValue = Number(currentValues[index]) || 0;
+
+      const isDown = currentValue < prevValue;
+      const isUp = currentValue - prevValue > limit;
+      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
+      const difference = currentValue - prevValue;
+
+      const validated = acc.validated && !isDown && !isUp;
+
+      return {
+        ...acc,
+        validated,
+        valuesValidationResults: [
+          ...(acc.valuesValidationResults || []),
+          {
+            validated,
+            index: index + 1,
+            type,
+            difference,
+            currentValue,
+            prevValue,
+          },
+        ],
+      };
+    },
+    { validated: true, limit } as CorrectReadingValuesValidationResult
+  );
+
+  return res;
 };
 
 const Arrow = ({ open }: { open?: boolean }) =>
