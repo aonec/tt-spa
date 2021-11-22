@@ -83,7 +83,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     month,
     arrowButton,
     isHasArchived,
-    prevReading,
   }: RenderReading) => {
     const WrapComponent = isFirst ? Month : PreviousReading;
 
@@ -125,7 +124,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
 
           const prevReading =
             readingsHistory &&
-            getPreviousReadingByHistory(readingsHistory, reading.id);
+            getPreviousReadingByHistory(readingsHistory, { month, year });
 
           if (prevReading && device) {
             const validationResult = validateReadings(
@@ -161,25 +160,47 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     ) : (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={(values) =>
-          uploadReading({
-            ...getReadingValuesObject(
+        onEnter={(values) => {
+          const request = () =>
+            uploadReading({
+              ...getReadingValuesObject(
+                values,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate: (() => {
+                const date = moment();
+
+                date.set('day', 15);
+                date.set('month', month - 2);
+                date.set('year', year);
+
+                return date.toISOString();
+              })(),
+              isForced: true,
+            } as any);
+
+          const prevReading =
+            readingsHistory &&
+            getPreviousReadingByHistory(readingsHistory, { month, year });
+
+          if (prevReading && device) {
+            const validationResult = validateReadings(
+              getReadingValuesArray(
+                prevReading,
+                'value',
+                rateNum!
+              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            ),
-            deviceId: device?.id!,
-            readingDate: (() => {
-              const date = moment();
+              rateNum!,
+              device?.resource!
+            );
 
-              date.set('day', 15);
-              date.set('month', month - 2);
-              date.set('year', year);
+            return confirmReading(validationResult, request, device);
+          }
 
-              return date.toISOString();
-            })(),
-            isForced: true,
-          } as any)
-        }
+          request();
+        }}
         editable={true}
         values={
           getReadingValues('value') ||
@@ -507,36 +528,45 @@ const ArrowButtonBlock = styled.div`
 
 const getPreviousReadingByHistory = (
   readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
-  currentId: number
+  address: { year: number; month: number }
 ): IndividualDeviceReadingsItemHistoryResponse | null => {
   const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = getClone(
     readingsHistoryRaw
   );
 
   const readingsHistoryCleared = readingsHistoryClone.yearReadings
-    ?.map(
-      (yearReading) =>
-        yearReading.monthReadings
-          ?.map((monthReading) =>
-            monthReading.readings?.find(
-              (reading) => !reading.isArchived && !reading.isRemoved
-            )
-          )
-          .filter(Boolean) as IndividualDeviceReadingsItemHistoryResponse[]
+    ?.map((yearReading) =>
+      yearReading.monthReadings?.map((monthReading) => {
+        const activeReading = monthReading.readings?.find(
+          (reading) => !reading.isArchived && !reading.isRemoved
+        );
+
+        return {
+          reading: activeReading,
+          month: monthReading.month,
+          year: yearReading.year,
+        };
+      })
     )
     .flat();
 
   const currentIndex = readingsHistoryCleared?.reduce(
-    (acc, reading, index) => (reading?.id === currentId ? index : acc),
+    (acc, readingsHistoryElement, index) =>
+      readingsHistoryElement?.month === address.month &&
+      readingsHistoryElement?.year === address.year
+        ? index
+        : acc,
     null as number | null
   );
 
-  return (
-    (currentIndex &&
-      readingsHistoryCleared &&
-      readingsHistoryCleared[currentIndex + 1]) ||
-    null
-  );
+  if (typeof currentIndex !== 'number') return null;
+
+  const res =
+    readingsHistoryCleared
+      ?.slice(currentIndex + 1, readingsHistoryCleared.length)
+      .find((elem) => Boolean(elem?.reading))?.reading || null;
+
+  return res;
 };
 
 export function getClone<T>(value: T): T {
