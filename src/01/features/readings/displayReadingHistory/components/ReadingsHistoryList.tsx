@@ -138,6 +138,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               device?.resource!
             );
 
+            if (validationResult.validated) {
+              return request();
+            }
+
             return confirmReading(validationResult, request, device);
           }
 
@@ -195,6 +199,10 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               rateNum!,
               device?.resource!
             );
+
+            if (validationResult.validated) {
+              return request();
+            }
 
             return confirmReading(validationResult, request, device);
           }
