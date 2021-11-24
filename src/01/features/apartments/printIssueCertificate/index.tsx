@@ -29,9 +29,11 @@ export const GetIssueCertificateModal = () => {
 
   return (
     <>
-      <HomeownerCerificateGate
-        id={(apartment?.homeownerAccounts[homeownerIndex] as any)?.id!}
-      />
+      {visible && (
+        <HomeownerCerificateGate
+          id={(apartment?.homeownerAccounts[homeownerIndex] as any)?.id!}
+        />
+      )}
       <ModalTT
         onCancel={closeIssueCertificateModalButtonClicked}
         visible={visible}

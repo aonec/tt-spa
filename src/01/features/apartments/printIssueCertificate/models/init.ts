@@ -22,7 +22,7 @@ $homeownerCertificatre.on(
 
 guard({
   source: HomeownerCerificateGate.state.map((values) => values.id),
-  clock: HomeownerCerificateGate.state,
+  clock: HomeownerCerificateGate.open,
   filter: Boolean,
   target: fetchHomeownerCertificate,
 });
