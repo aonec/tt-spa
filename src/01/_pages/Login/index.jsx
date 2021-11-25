@@ -10,6 +10,7 @@ import { Label, Button, Input, Icon } from '01/tt-components';
 import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 import { message } from 'antd';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const Main = styled.div`
   height: 100vh;
@@ -75,6 +76,10 @@ export const Login = () => {
     }
   }
 
+  const isDev = process.env.NODE_ENV;
+
+  console.log(isDev);
+
   return (
     <Main>
       <LoginLeft>
@@ -135,6 +140,7 @@ export const Login = () => {
             >
               <span>Вход в систему</span>
             </Button>
+            <Space></Space>
           </Loader>
         </Form>
       </LoginRight>
