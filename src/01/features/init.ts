@@ -45,3 +45,4 @@ import './apartments/displayApartmentChecksHistory/models/init';
 import './apartments/checkApartment/models/init';
 import './housingStocks/displayHousingStockCities/models/init';
 import './actsJournal/displayActsJournal/models/init';
+import './actsJournal/displayActTypes/models/init';

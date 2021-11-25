@@ -7,9 +7,11 @@ import {
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
+import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
+import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
 import { gridTemp } from './TableHeader';
 
 export const AddNewActForm = () => {
@@ -24,8 +26,11 @@ export const AddNewActForm = () => {
     ],
   } = useOnEnterSwitch(4);
 
+  const actTypes = useStore($actTypes);
+
   return (
     <>
+      <ApartmentActTypesGate />
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <StyledInput
@@ -37,7 +42,13 @@ export const AddNewActForm = () => {
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={keyDownEnterGuardedHandler(1)}
-        />
+        >
+          {actTypes?.map((type) => (
+            <StyledSelector.Option key={type.key} value={type.key!}>
+              {type.value}
+            </StyledSelector.Option>
+          ))}
+        </StyledSelector>
         <StyledSelector
           placeholder="Выберите"
           ref={recourceRef}
