@@ -5,6 +5,9 @@ import {
   IndividualDeviceReadingsItemHistoryResponse,
   IndividualDeviceReadingsMonthHistoryResponse,
   IndividualDeviceReadingsYearHistoryResponse,
+  EResourceType,
+  IndividualDeviceReadingsHistoryResponse,
+  IndividualDeviceResponse,
 } from 'myApi';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
@@ -24,6 +27,13 @@ import { useReadingHistoryValues } from '../hooks/useReadingValues';
 import { fetchReadingHistoryFx } from '../models';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { ConfirmReadingValueModal } from '../../readingsInput/confirmInputReadingModal';
+import {
+  CorrectReadingValuesValidationResult,
+  getResourceUpLimit,
+  round,
+} from '01/hooks/useReadings';
+import { openConfirmReadingModal } from '../../readingsInput/confirmInputReadingModal/models';
+import { getMeasurementUnit } from '01/_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 
 interface Props {
   isModal?: boolean;
@@ -39,6 +49,8 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     deleteReading,
   } = useReadingHistoryValues();
   const device = useStore($individualDevice);
+
+  const readingsHistory = values;
 
   const pendingHistory = useStore(fetchReadingHistoryFx.pending);
 
@@ -97,15 +109,43 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
           if (values.every((elem) => elem === null)) {
             return deleteReading(reading.id);
           }
-          uploadReading({
-            ...getReadingValuesObject(
+
+          const request = () =>
+            uploadReading({
+              ...getReadingValuesObject(
+                values,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate:
+                reading.readingDateTime || moment().toISOString(true),
+              isForced: true,
+            } as any);
+
+          const prevReading =
+            readingsHistory &&
+            getPreviousReadingByHistory(readingsHistory, { month, year });
+
+          if (prevReading && device) {
+            const validationResult = validateReadings(
+              getReadingValuesArray(
+                prevReading,
+                'value',
+                rateNum!
+              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            ),
-            deviceId: device?.id!,
-            readingDate: reading.readingDateTime || moment().toISOString(true),
-            isForced: true,
-          } as any);
+              rateNum!,
+              device?.resource!
+            );
+
+            if (validationResult.validated) {
+              return request();
+            }
+
+            return confirmReading(validationResult, request, device);
+          }
+
+          request();
         }}
         status={uploadingReadingsStatuses[`${month}.${year}`]}
         editable={isFirst && !readonly}
@@ -124,25 +164,51 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
     ) : (
       <RenderReadingFields
         rateNum={rateNum}
-        onEnter={(values) =>
-          uploadReading({
-            ...getReadingValuesObject(
+        onEnter={(values) => {
+          const request = () =>
+            uploadReading({
+              ...getReadingValuesObject(
+                values,
+                getIndividualDeviceRateNumByName(device?.rateType!)
+              ),
+              deviceId: device?.id!,
+              readingDate: (() => {
+                const date = moment();
+
+                date.set('day', 15);
+                date.set('month', month - 2);
+                date.set('year', year);
+
+                return date.toISOString();
+              })(),
+              isForced: true,
+            } as any);
+
+          const prevReading =
+            readingsHistory &&
+            getPreviousReadingByHistory(readingsHistory, { month, year });
+
+          if (prevReading && device) {
+            const validationResult = validateReadings(
+              getReadingValuesArray(
+                prevReading,
+                'value',
+                rateNum!
+              ).map((elem) => (typeof elem === 'string' ? Number(elem) : elem)),
               values,
-              getIndividualDeviceRateNumByName(device?.rateType!)
-            ),
-            deviceId: device?.id!,
-            readingDate: (() => {
-              const date = moment();
+              rateNum!,
+              device?.resource!
+            );
 
-              date.set('day', 15);
-              date.set('month', month - 2);
-              date.set('year', year);
+            if (validationResult.validated) {
+              return request();
+            }
 
-              return date.toISOString();
-            })(),
-            isForced: true,
-          } as any)
-        }
+            return confirmReading(validationResult, request, device);
+          }
+
+          request();
+        }}
         editable={true}
         values={
           getReadingValues('value') ||
@@ -228,6 +294,7 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       month,
       readingsLength: readings.length,
       isHasArchived: readings.some((elem) => elem.isArchived),
+      prevReading,
     });
 
     return (
@@ -238,7 +305,6 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
             .filter((elem) => elem.isArchived)
             ?.map((reading) =>
               renderReading({
-                prevReading,
                 reading,
                 month,
                 isFirst: false,
@@ -308,6 +374,50 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
       )}
     </Wrap>
   );
+};
+
+const validateReadings = (
+  prevValues: (number | null)[],
+  newValues: (number | null)[],
+  rateNum: number,
+  resource: EResourceType
+) => {
+  const limit = getResourceUpLimit(resource);
+
+  const res = newValues.reduce(
+    (acc, elem, index) => {
+      if (index + 1 > rateNum) return acc;
+
+      const currentValue = Number(elem) || 0;
+      const prevValue = Number(prevValues[index]) || 0;
+
+      const isDown = currentValue < prevValue;
+      const isUp = currentValue - prevValue > limit;
+      const type: 'up' | 'down' | null = isUp ? 'up' : isDown ? 'down' : null;
+      const difference = currentValue - prevValue;
+
+      const validated = acc.validated && !isDown && !isUp;
+
+      return {
+        ...acc,
+        validated,
+        valuesValidationResults: [
+          ...(acc.valuesValidationResults || []),
+          {
+            validated,
+            index: index + 1,
+            type,
+            difference,
+            currentValue,
+            prevValue,
+          },
+        ],
+      };
+    },
+    { validated: true, limit } as CorrectReadingValuesValidationResult
+  );
+
+  return res;
 };
 
 const Arrow = ({ open }: { open?: boolean }) =>
@@ -423,3 +533,96 @@ const ArrowButtonBlock = styled.div`
   width: 30px;
   height: 30px;
 `;
+
+const getPreviousReadingByHistory = (
+  readingsHistoryRaw: IndividualDeviceReadingsHistoryResponse,
+  address: { year: number; month: number }
+): IndividualDeviceReadingsItemHistoryResponse | null => {
+  const readingsHistoryClone: IndividualDeviceReadingsHistoryResponse = getClone(
+    readingsHistoryRaw
+  );
+
+  const readingsHistoryCleared = readingsHistoryClone.yearReadings
+    ?.map((yearReading) =>
+      yearReading.monthReadings?.map((monthReading) => {
+        const activeReading = monthReading.readings?.find(
+          (reading) => !reading.isArchived && !reading.isRemoved
+        );
+
+        return {
+          reading: activeReading,
+          month: monthReading.month,
+          year: yearReading.year,
+        };
+      })
+    )
+    .flat();
+
+  const currentIndex = readingsHistoryCleared?.reduce(
+    (acc, readingsHistoryElement, index) =>
+      readingsHistoryElement?.month === address.month &&
+      readingsHistoryElement?.year === address.year
+        ? index
+        : acc,
+    null as number | null
+  );
+
+  if (typeof currentIndex !== 'number') return null;
+
+  const res =
+    readingsHistoryCleared
+      ?.slice(currentIndex + 1, readingsHistoryCleared.length)
+      .find((elem) => Boolean(elem?.reading))?.reading || null;
+
+  return res;
+};
+
+export function getClone<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value));
+}
+
+const confirmReading = (
+  { valuesValidationResults, limit }: CorrectReadingValuesValidationResult,
+  callback: () => void,
+  device: IndividualDeviceResponse
+) => {
+  const neededValueWarning = valuesValidationResults?.find((elem) =>
+    Boolean(elem.type)
+  );
+
+  const unit = getMeasurementUnit(device.resource);
+
+  if (neededValueWarning?.type === 'down') {
+    const failedReadingValidateResult = valuesValidationResults?.find(
+      (elem) => !elem.validated
+    );
+
+    openConfirmReadingModal({
+      title: (
+        <>
+          Введенное показание по прибору <b>{device.serialNumber}</b> (
+          {device.model}) меньше предыдущего на T
+          {failedReadingValidateResult?.index}:{' '}
+          <b>
+            {Math.abs(round(failedReadingValidateResult?.difference || 0, 3))}{' '}
+            {unit}{' '}
+          </b>
+        </>
+      ),
+      callback: () => void callback(),
+    });
+    return;
+  }
+
+  openConfirmReadingModal({
+    title: `${
+      neededValueWarning?.type === 'up'
+        ? `Расход ${round(
+            neededValueWarning.difference,
+            3
+          )}${unit}, больше чем лимит ${limit}${unit}`
+        : ''
+    }`,
+    callback: () => void callback(),
+  });
+};

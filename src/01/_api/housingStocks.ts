@@ -1,4 +1,8 @@
-import { HousingStockListResponse, HousingStockResponse } from './../../myApi';
+import {
+  HousingStockListResponse,
+  HousingStockResponse,
+  StringPagedList,
+} from './../../myApi';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
 
@@ -37,4 +41,10 @@ export const doesApartmentExist = async ({
   if (typeof res === 'number') return res;
 
   return res?.successResponse;
+};
+
+export const getExistingCities = async () => {
+  const res: StringPagedList = await axios.get('HousingStocks/ExistingCities');
+
+  return res.items;
 };

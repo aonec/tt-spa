@@ -79,8 +79,6 @@ export function useReadingHistoryValues() {
     const date = moment(reading.readingDate);
     const dateString = `${date.month() + 2}.${date.year()}`;
 
-    console.log(dateString, date, reading.readingDate);
-
     setUploadingReadingsStatuses((prev) => ({
       ...prev,
       [dateString]: 'pending',
