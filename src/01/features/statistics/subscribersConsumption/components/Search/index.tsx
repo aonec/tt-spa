@@ -1,8 +1,9 @@
 import axios from '01/axios';
 import {
-  cities,
-  fromEnter,
-} from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
+import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
   $existingStreets,
   ExistingStreetsGate,
@@ -79,8 +80,11 @@ export const Search: React.FC = () => {
     } catch (error) {}
   }
 
+  const cities = useStore($existingCities);
+
   const baseSearch = (
     <>
+      <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="32px 0.5fr 1fr 0.2fr" gap="15px">
         <div onClick={() => void openExpandedSearch()}>
@@ -94,7 +98,7 @@ export const Search: React.FC = () => {
           onChange={fields.city.onChange as any}
           value={fields.city.value}
         >
-          {cities.map((elem, index) => (
+          {cities?.map((elem, index) => (
             <StyledSelector.Option key={index} value={elem}>
               {elem}
             </StyledSelector.Option>
