@@ -21,7 +21,7 @@ export const TableHeader = () => {
   );
 };
 
-export const gridTemp = '1fr 1fr 2fr 1fr 3fr 1fr';
+export const gridTemp = '1fr 1fr 1.8fr 1fr 2.5fr 1.2fr';
 
 const Wrap = styled(Grid)`
   background: #f3f5f6;
