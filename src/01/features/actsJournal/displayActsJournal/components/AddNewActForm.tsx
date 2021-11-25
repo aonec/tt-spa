@@ -11,6 +11,7 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React from 'react';
 import styled from 'styled-components';
+import { $resources, ActResourcesGate } from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
 import { gridTemp } from './TableHeader';
 
@@ -27,10 +28,12 @@ export const AddNewActForm = () => {
   } = useOnEnterSwitch(4);
 
   const actTypes = useStore($actTypes);
+  const actResources = useStore($resources);
 
   return (
     <>
       <ApartmentActTypesGate />
+      <ActResourcesGate />
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <StyledInput
@@ -53,8 +56,13 @@ export const AddNewActForm = () => {
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
-        />
-
+        >
+          {actResources?.map((type) => (
+            <StyledSelector.Option key={type.key} value={type.key!}>
+              {type.value}
+            </StyledSelector.Option>
+          ))}
+        </StyledSelector>
         <StyledInput
           placeholder="Введите"
           ref={addressRef}
