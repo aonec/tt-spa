@@ -1,3 +1,4 @@
+import { AddressSearch } from '01/features/addressSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import {
   StyledDatePicker,
@@ -63,11 +64,12 @@ export const AddNewActForm = () => {
             </StyledSelector.Option>
           ))}
         </StyledSelector>
-        <StyledInput
+        {/* <StyledInput
           placeholder="Введите"
           ref={addressRef}
           onKeyDown={keyDownEnterGuardedHandler(3)}
-        />
+        /> */}
+        <AddressSearch />
         <StyledDatePicker
           placeholder="Дата"
           format="DD.MM.YYYY"
