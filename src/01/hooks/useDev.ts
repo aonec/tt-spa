@@ -1,8 +1,9 @@
 export function useIsDev() {
-  console.log(process.env.DEVMODE, process.env);
 
   const isDev =
-    process.env.NODE_ENV === 'development' || process.env.DEVMODE === 'true';
+    process.env.NODE_ENV === 'development' ||
+    process.env.REACT_APP_API_URL ===
+      'https://transparent-staging.herokuapp.com/api';
 
   return isDev;
 }
