@@ -47,3 +47,4 @@ import './housingStocks/displayHousingStockCities/models/init';
 import './actsJournal/displayActsJournal/models/init';
 import './actsJournal/displayActTypes/models/init';
 import './actsJournal/displayActResources/models/init';
+import './developmentSettings/models/init';
