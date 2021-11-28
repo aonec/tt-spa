@@ -7,6 +7,7 @@ interface Props {
   onChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  ref?: any;
 }
 
 export const DatePickerNative: React.FC<Props> = ({
@@ -14,6 +15,7 @@ export const DatePickerNative: React.FC<Props> = ({
   placeholder,
   onChange,
   disabled,
+  ref,
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString(true);
@@ -34,6 +36,7 @@ export const DatePickerNative: React.FC<Props> = ({
 
   return (
     <StyledInput
+      ref={ref}
       disabled={disabled}
       onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
       onBlur={onChangeGlobal}

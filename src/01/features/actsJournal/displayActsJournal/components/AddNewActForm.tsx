@@ -10,7 +10,7 @@ import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { $resources, ActResourcesGate } from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
@@ -19,17 +19,13 @@ import { gridTemp } from './TableHeader';
 export const AddNewActForm = () => {
   const {
     keyDownEnterGuardedHandler,
-    refs: [
-      registryNumberRef,
-      documentTypeRef,
-      recourceRef,
-      addressRef,
-      workDateRef,
-    ],
+    refs: [registryNumberRef, documentTypeRef, recourceRef, addressRef],
   } = useOnEnterSwitch(4);
 
   const actTypes = useStore($actTypes);
   const actResources = useStore($resources);
+
+  const datePickerRef = useRef(null);
 
   return (
     <>
@@ -64,16 +60,16 @@ export const AddNewActForm = () => {
             </StyledSelector.Option>
           ))}
         </StyledSelector>
-        {/* <StyledInput
-          placeholder="Введите"
-          ref={addressRef}
-          onKeyDown={keyDownEnterGuardedHandler(3)}
-        /> */}
-        <AddressSearch />
+        <AddressSearch
+          firstInputRef={addressRef}
+          onExit={() => {
+            (datePickerRef?.current as any)?.focus();
+          }}
+        />
         <StyledDatePicker
           placeholder="Дата"
           format="DD.MM.YYYY"
-          ref={workDateRef}
+          ref={datePickerRef}
         />
       </Wrap>
       <ButtonWrap>
