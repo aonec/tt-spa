@@ -30,6 +30,7 @@ export const AddressSearch: FC<Props> = (props) => {
   return (
     <SearchWrap temp="10px 1fr 0.35fr 0.3fr" gap="10px">
       <SearchIcon />
+      {/* <Popover text="hello world" /> */}
       <StyledInput
         onKeyDown={keyDownEnterGuardedHandler(0)}
         placeholder="Улица"
@@ -52,6 +53,21 @@ export const AddressSearch: FC<Props> = (props) => {
   );
 };
 
+const Popover: React.FC<{ text: string }> = ({ text }) => {
+  return text ? <PopoverWrap>{text}</PopoverWrap> : null;
+};
+
+const PopoverWrap = styled.div`
+  position: absolute;
+  top: 35px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+  padding: 5px 10px;
+  width: 100%;
+  z-index: 10;
+`;
+
 const StyledInput = styled.input`
   height: 60%;
   border-right: 1px solid lightgray;
@@ -62,6 +78,7 @@ const StyledInput = styled.input`
 `;
 
 const SearchWrap = styled(Grid)`
+  position: relative;
   color: #333333;
   border: 1px solid lightgray;
   padding: 0px 10px;
