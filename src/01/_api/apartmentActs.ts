@@ -1,6 +1,9 @@
 import axios from '01/axios';
 import { MayBe } from '01/features/actsJournal/displayActsJournal/models';
 import {
+  ApartmentActPaginationParameters,
+  ApartmentActResponse,
+  ApartmentActResponsePagedList,
   EActResourceTypeStringDictionaryItem,
   EActTypeStringDictionaryItem,
 } from 'myApi';
@@ -13,3 +16,13 @@ export const getActResources = (): Promise<
   MayBe<EActResourceTypeStringDictionaryItem[]>
 > => axios.get('ApartmentActs/ActResourceTypes');
 
+export const getApartmentActs = async (
+  params: ApartmentActPaginationParameters
+): Promise<ApartmentActResponse[] | null> => {
+  
+  const res: ApartmentActResponsePagedList = await axios.get('ApartmentActs', {
+    params,
+  });
+
+  return res.items;
+};

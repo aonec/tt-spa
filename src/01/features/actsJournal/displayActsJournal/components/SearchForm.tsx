@@ -18,7 +18,13 @@ import { searchForm } from '../models';
 
 export const SearchForm = () => {
   const { fields, submit } = useForm(searchForm);
-  const fieldsArray = [fields.city, fields.street, fields.house];
+
+  const fieldsArray = [
+    fields.city,
+    fields.street,
+    fields.house,
+    fields.apartment,
+  ];
 
   const {
     keyDownEnterGuardedHandler,
@@ -56,6 +62,7 @@ export const SearchForm = () => {
           placeholder="Город"
           ref={cityRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
+          onFocus={clearValuesOnFocusCallback(0)}
           onChange={fields.city.onChange as any}
           value={fields.city.value}
         >
@@ -84,7 +91,6 @@ export const SearchForm = () => {
           ref={homeNumberRef}
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e) => {
-            fromEnter(onSendHandler)(e);
             keyDownEnterGuardedHandler(2)(e);
           }}
         />

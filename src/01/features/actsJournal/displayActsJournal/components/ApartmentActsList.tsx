@@ -1,16 +1,16 @@
-import axios from '01/axios';
+import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { useStore } from 'effector-react';
 import React from 'react';
-import { useEffect } from 'react';
+import { $apartmentActs, fetchApartmentActsFx } from '../models';
 
 export const ApartmentActsList = () => {
-  async function fetchData() {
-    try {
-      const res = await axios.get('ApartmentActs');
-      console.log(res);
-    } catch (error) {}
-  }
+  const pending = useStore(fetchApartmentActsFx.pending);
 
-  useEffect(() => void fetchData(), []);
+  const acts = useStore($apartmentActs);
 
-  return <></>;
+  return (
+    <PendingLoader loading={pending}>
+      {acts?.length === 0 && 'Нет актов'}
+    </PendingLoader>
+  );
 };

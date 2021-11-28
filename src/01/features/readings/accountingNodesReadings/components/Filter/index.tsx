@@ -103,7 +103,9 @@ export function useOnEnterSwitch(amount: number) {
   function onEnterHandler(index: number) {
     if (index === amount - 1) lastRef?.current?.blur();
 
-    refs[index + 1]?.current?.focus();
+    if (refs[index + 1]?.current?.focus) {
+      refs[index + 1]?.current?.focus();
+    }
   }
 
   const keyDownEnterGuardedHandler = (index: number) =>

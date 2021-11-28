@@ -1,4 +1,13 @@
+import { createEffect, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { ApartmentActPaginationParameters, ApartmentActResponse } from 'myApi';
+
+export const $apartmentActs = createStore<ApartmentActResponse[] | null>(null);
+
+export const fetchApartmentActsFx = createEffect<
+  ApartmentActPaginationParameters,
+  ApartmentActResponse[] | null
+>();
 
 export const searchForm = createForm({
   fields: {
