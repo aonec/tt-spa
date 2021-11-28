@@ -21,7 +21,7 @@ export function useMenu() {
       name: 'Журнал актов',
       to: '/actsJournal/',
       icon: 'act',
-      perm: ['all'],
+      perm: ['ManagingFirmOperator'],
     },
     {
       name: 'Задачи',
