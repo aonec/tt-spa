@@ -2,17 +2,23 @@ import { Loader } from '01/components';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
-import { $existingStreets } from '../housingStocks/displayHousingStockStreets/model';
+import {
+  $existingStreets,
+  fetchExistingStreets,
+} from '../housingStocks/displayHousingStockStreets/model';
 import { ReactComponent as SearchIcon } from './assets/searchIcon.svg';
 import {
+  $existingApartmentNumbers,
   $existingHousingStockNumbers,
   addressSearchForm,
+  fetchExistingApartmentNumbersFx,
   fetchExistingHousingStockNumbers,
   loadExistingApartmentNumbers,
   loadExistingHousingStockNumbers,
@@ -28,11 +34,14 @@ interface Props {
 export const AddressSearch: FC<Props> = (props) => {
   const { onExit, firstInputRef } = props;
 
+  const [counter, setCounter] = useState(0);
+
   const { fields } = useForm(addressSearchForm);
   const fieldsArray = [fields.street, fields.house, fields.apartment];
 
   const existingStreets = useStore($existingStreets);
   const existingHousngStockNumbers = useStore($existingHousingStockNumbers);
+  const existingApartmentNumbers = useStore($existingApartmentNumbers);
 
   let {
     keyDownEnterGuardedHandler,
@@ -62,11 +71,19 @@ export const AddressSearch: FC<Props> = (props) => {
     existingHousngStockNumbers?.map((elem) => elem.number)
   );
 
-  const pendingExistingStoreNumber = useStore(
-    fetchExistingHousingStockNumbers.pending
+  const { bestMatch: bestApartmentNumberMatch } = useAutocomplete(
+    fields.apartment.value,
+    existingApartmentNumbers?.map((elem) => elem.number)
   );
 
-  const loading = [pendingExistingStoreNumber].some(Boolean);
+  const loading = useStore(
+    combine(
+      fetchExistingHousingStockNumbers.pending,
+      fetchExistingApartmentNumbersFx.pending,
+      fetchExistingStreets.pending,
+      (...pendings) => pendings.some(Boolean)
+    )
+  );
 
   const isActive = (ref: any) => ref.current === document.activeElement;
 
@@ -88,6 +105,7 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.street.onChange(streetMatch);
               loadExistingHousingStockNumbers();
+              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Улица"
@@ -108,6 +126,7 @@ export const AddressSearch: FC<Props> = (props) => {
             fromEnter(() => {
               fields.house.onChange(bestHousingStockMatch);
               loadExistingApartmentNumbers();
+              setCounter((prev) => prev + 1);
             })(e);
           }}
           placeholder="Дом"
@@ -125,12 +144,16 @@ export const AddressSearch: FC<Props> = (props) => {
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e: any) => {
             keyDownEnterGuardedHandler(3)(e);
+            fields.apartment.onChange(bestApartmentNumberMatch);
             fromEnter(() => onExit && onExit())(e);
+            setCounter((prev) => prev + 1);
           }}
           placeholder="Кв."
           ref={apartmentNumberRef}
         />
-        {isActive(apartmentNumberRef) && <Popover></Popover>}
+        {isActive(apartmentNumberRef) && (
+          <Popover>{bestApartmentNumberMatch}</Popover>
+        )}
       </PopoverWrap>
     </SearchWrap>
   );

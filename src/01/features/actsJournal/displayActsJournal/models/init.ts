@@ -19,3 +19,4 @@ forward({
   ),
   to: searchForm.fields.city.set,
 });
+

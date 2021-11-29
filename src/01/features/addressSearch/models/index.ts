@@ -3,9 +3,14 @@ import { createStore, createEffect, createEvent } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { NumberIdResponse } from 'myApi';
 
-export const $existingApartmentNumbers = createStore<number | null>(null);
+export const $existingApartmentNumbers = createStore<NumberIdResponse[] | null>(
+  null
+);
 
-export const fetchExistingApartmentNumbersFx = createEffect();
+export const fetchExistingApartmentNumbersFx = createEffect<
+  number,
+  NumberIdResponse[] | null
+>();
 
 export const loadExistingApartmentNumbers = createEvent();
 

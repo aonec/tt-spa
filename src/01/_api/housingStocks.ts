@@ -61,3 +61,8 @@ export const getExistingHousingStockNumbers = (
   axios.get(`HousingStocks/ExistingHousingStockNumber`, {
     params,
   });
+
+export const getExistingApartmentNumbers = (
+  housingStockId: number
+): Promise<NumberIdResponse[] | null> =>
+  axios.get(`HousingStocks/${housingStockId}/ExistingApartmentNumber`);

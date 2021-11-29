@@ -1,7 +1,11 @@
+import { getExistingApartmentNumbers } from './../../../_api/housingStocks';
 import {
   fetchExistingHousingStockNumbers,
   loadExistingHousingStockNumbers,
   addressSearchForm,
+  fetchExistingApartmentNumbersFx,
+  $existingApartmentNumbers,
+  loadExistingApartmentNumbers,
 } from './index';
 import { $existingHousingStockNumbers } from '.';
 import { getExistingHousingStockNumbers } from '01/_api/housingStocks';
@@ -23,4 +27,29 @@ sample({
   ),
   clock: loadExistingHousingStockNumbers,
   target: fetchExistingHousingStockNumbers,
+});
+
+fetchExistingApartmentNumbersFx.use(getExistingApartmentNumbers);
+
+$existingApartmentNumbers.on(
+  fetchExistingApartmentNumbersFx.doneData,
+  (_, payload) => payload
+);
+
+sample({
+  source: combine(
+    $existingHousingStockNumbers,
+    addressSearchForm.fields.house.$value,
+    (existingHouseNumbers, house) => ({ existingHouseNumbers, house })
+  ),
+  fn: ({ existingHouseNumbers, house }) => {
+    const res = existingHouseNumbers?.find((elem) => elem.number === house)
+      ?.id!;
+
+    console.log(res, existingHouseNumbers, house);
+
+    return res;
+  },
+  clock: loadExistingApartmentNumbers,
+  target: fetchExistingApartmentNumbersFx as any,
 });
