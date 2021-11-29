@@ -43,10 +43,9 @@ export const AddressSearch: FC<Props> = (props) => {
   const existingHousngStockNumbers = useStore($existingHousingStockNumbers);
   const existingApartmentNumbers = useStore($existingApartmentNumbers);
 
-  let {
-    keyDownEnterGuardedHandler,
-    refs: [_, homeNumberRef, apartmentNumberRef],
-  } = useOnEnterSwitch(3);
+  let { keyDownEnterGuardedHandler, refs } = useOnEnterSwitch(3);
+
+  const [_, homeNumberRef, apartmentNumberRef] = refs;
 
   function onChangeHandler(e: any) {
     (fields as any)[e.target.name]?.onChange(e.target.value);
@@ -87,8 +86,37 @@ export const AddressSearch: FC<Props> = (props) => {
 
   const isActive = (ref: any) => ref.current === document.activeElement;
 
+  const Popover: React.FC<{ name: string; children: string }> = ({
+    children,
+    name,
+  }) => {
+    const Wrap = styled.div`
+      position: absolute;
+      top: 35px;
+      background-color: #188fff;
+      color: white;
+      backdrop-filter: blur(4px);
+      border-radius: 4px;
+      padding: 2px 8px;
+      width: 100%;
+      z-index: 10;
+      cursor: pointer;
+    `;
+
+    return children ? (
+      <Wrap onClick={() => (fields as any)[name]?.onChange(children)}>
+        {children}
+      </Wrap>
+    ) : null;
+  };
+
   return (
-    <SearchWrap temp="12px 1fr 0.35fr 0.3fr">
+    <SearchWrap
+      temp="12px 1fr 0.35fr 0.3fr"
+      focused={[firstInputRef, ...refs].some(
+        (elem) => elem.current === document.activeElement
+      )}
+    >
       {loading ? <Loader show size={14} /> : <SearchIcon />}
       <PopoverWrap>
         <StyledInput
@@ -111,7 +139,9 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Улица"
           ref={firstInputRef}
         />
-        {isActive(firstInputRef) && <Popover>{bestStreetMatch}</Popover>}
+        {isActive(firstInputRef) && (
+          <Popover name="street">{bestStreetMatch}</Popover>
+        )}
       </PopoverWrap>
 
       <PopoverWrap>
@@ -121,6 +151,7 @@ export const AddressSearch: FC<Props> = (props) => {
           onFocus={clearValuesOnFocusCallback(1)}
           onChange={onChangeHandler}
           value={fields.house.value}
+          disabled={!fields.street.value}
           onKeyDown={(e) => {
             keyDownEnterGuardedHandler(1)(e);
             fromEnter(() => {
@@ -132,14 +163,18 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Дом"
           ref={homeNumberRef}
         />
-        {isActive(homeNumberRef) && <Popover>{bestHousingStockMatch}</Popover>}
+        {isActive(homeNumberRef) && (
+          <Popover name="house">{bestHousingStockMatch}</Popover>
+        )}
       </PopoverWrap>
 
       <PopoverWrap>
         <StyledInput
+          style={{ borderRadius: '0 3px 3px 0' }}
           autoComplete="off"
           name="apartment"
           onChange={onChangeHandler}
+          disabled={!fields.house.value}
           value={fields.apartment.value}
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e: any) => {
@@ -152,7 +187,7 @@ export const AddressSearch: FC<Props> = (props) => {
           ref={apartmentNumberRef}
         />
         {isActive(apartmentNumberRef) && (
-          <Popover>{bestApartmentNumberMatch}</Popover>
+          <Popover name="apartment">{bestApartmentNumberMatch}</Popover>
         )}
       </PopoverWrap>
     </SearchWrap>
@@ -163,29 +198,13 @@ const PopoverWrap = styled.div`
   position: relative;
 `;
 
-const Popover: React.FC = ({ children }) => {
-  const Wrap = styled.div`
-    position: absolute;
-    top: 30px;
-    background-color: #188fff;
-    color: white;
-    backdrop-filter: blur(4px);
-    border-radius: 4px;
-    padding: 2px 8px;
-    width: 100%;
-    z-index: 10;
-  `;
-
-  return children ? <Wrap>{children}</Wrap> : null;
-};
-
 const StyledInput = styled.input`
-  height: 60%;
+  height: 30px;
   border-left: 1px solid lightgray;
   padding: 0 7px;
 
-  &:nth-child(2) {
-    border-right: none;
+  &:disabled {
+    background: #ebebf0c0;
   }
 `;
 
@@ -193,7 +212,7 @@ const SearchWrap = styled(Grid)`
   position: relative;
   color: #333333;
   border: 1px solid lightgray;
-  padding: 0px 5px 0 10px;
+  padding-left: 10px;
   transition: 0.2s;
   align-items: center;
 
@@ -212,6 +231,9 @@ const SearchWrap = styled(Grid)`
   &:focus {
     border: 1px solid #1890ff;
   }
+
+  ${({ focused }: { focused?: boolean }) =>
+    focused && `border: 1px solid #1890ff;`}
 
   &:focus {
     box-shadow: 0 4px 8px #188fff52;
