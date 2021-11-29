@@ -1,6 +1,6 @@
-import { createActForm } from './index';
+import { createActForm, createApartmentActFx } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
-import { getApartmentActs } from '01/_api/apartmentActs';
+import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
 import { forward, sample } from 'effector';
 import {
   $apartmentActs,
@@ -11,6 +11,8 @@ import {
 import { addressSearchForm } from '01/features/addressSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);
+
+createApartmentActFx.use(addApartmentActs)
 
 $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
@@ -30,4 +32,10 @@ forward({
 forward({
   from: clearCreationActFormValues,
   to: [createActForm.reset, addressSearchForm.reset],
+});
+
+sample({
+  clock: createActForm.formValidated,
+  source: createActForm.$values,
+  target: createApartmentActFx as any,
 });

@@ -2,6 +2,7 @@ import {
   EActType,
   EActResourceType,
   EOrderByRule,
+  AddApartmentActRequest,
 } from './../../../../../myApi';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
@@ -60,3 +61,8 @@ export const createActForm = createForm({
 });
 
 export const clearCreationActFormValues = createEvent();
+
+export const createApartmentActFx = createEffect<
+  AddApartmentActRequest,
+  void
+>();

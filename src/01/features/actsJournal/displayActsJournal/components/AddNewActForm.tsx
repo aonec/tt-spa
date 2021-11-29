@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { AddressSearch } from '01/features/addressSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import {
@@ -15,7 +16,11 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { $resources, ActResourcesGate } from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
-import { clearCreationActFormValues, createActForm } from '../models';
+import {
+  clearCreationActFormValues,
+  createActForm,
+  createApartmentActFx,
+} from '../models';
 import { gridTemp } from './TableHeader';
 
 export const AddNewActForm = () => {
@@ -30,6 +35,8 @@ export const AddNewActForm = () => {
   const actResources = useStore($resources);
 
   const datePickerRef = useRef(null);
+
+  const pendingRequest = useStore(createApartmentActFx.pending);
 
   return (
     <>
@@ -89,8 +96,8 @@ export const AddNewActForm = () => {
           Сбросить
         </ButtonTT>
         <Space />
-        <ButtonTT color="blue" small onClick={submit}>
-          Сохранить
+        <ButtonTT disabled={pendingRequest} color="blue" small onClick={submit}>
+          {pendingRequest ? <Loader show /> : 'Сохранить'}
         </ButtonTT>
       </ButtonWrap>
       <SpaceLine />

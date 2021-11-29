@@ -4,6 +4,7 @@ import {
   MayBe,
 } from '01/features/actsJournal/displayActsJournal/models';
 import {
+  AddApartmentActRequest,
   ApartmentActResponse,
   ApartmentActResponsePagedList,
   EActResourceTypeStringDictionaryItem,
@@ -27,3 +28,7 @@ export const getApartmentActs = async (
 
   return res.items;
 };
+
+export const addApartmentActs = (
+  payload: AddApartmentActRequest
+): Promise<void> => axios.post('ApartmentActs', payload);
