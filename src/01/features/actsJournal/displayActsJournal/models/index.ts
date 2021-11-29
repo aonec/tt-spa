@@ -3,9 +3,10 @@ import {
   EActResourceType,
   EOrderByRule,
 } from './../../../../../myApi';
-import { createEffect, createStore } from 'effector';
+import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { ApartmentActResponse } from 'myApi';
+import moment from 'moment';
 
 export type MayBe<T> = null | T;
 
@@ -54,6 +55,8 @@ export const createActForm = createForm({
     registryNumber: {
       init: ff<string>(),
     },
-    actJobDate: { init: ff<string>() },
+    actJobDate: { init: ff<moment.Moment>() },
   },
 });
+
+export const clearCreationActFormValues = createEvent();

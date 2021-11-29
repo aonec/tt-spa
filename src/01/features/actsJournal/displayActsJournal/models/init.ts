@@ -1,7 +1,14 @@
+import { createActForm } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { getApartmentActs } from '01/_api/apartmentActs';
 import { forward, sample } from 'effector';
-import { $apartmentActs, fetchApartmentActsFx, searchForm } from '.';
+import {
+  $apartmentActs,
+  clearCreationActFormValues,
+  fetchApartmentActsFx,
+  searchForm,
+} from '.';
+import { addressSearchForm } from '01/features/addressSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);
 
@@ -20,3 +27,7 @@ forward({
   to: searchForm.fields.city.set,
 });
 
+forward({
+  from: clearCreationActFormValues,
+  to: [createActForm.reset, addressSearchForm.reset],
+});

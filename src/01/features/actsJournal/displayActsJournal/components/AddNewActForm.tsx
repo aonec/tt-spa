@@ -15,11 +15,11 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { $resources, ActResourcesGate } from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
-import { createActForm } from '../models';
+import { clearCreationActFormValues, createActForm } from '../models';
 import { gridTemp } from './TableHeader';
 
 export const AddNewActForm = () => {
-  const { fields } = useForm(createActForm);
+  const { fields, submit } = useForm(createActForm);
 
   const {
     keyDownEnterGuardedHandler,
@@ -85,11 +85,11 @@ export const AddNewActForm = () => {
         />
       </Wrap>
       <ButtonWrap>
-        <ButtonTT color="white" small>
+        <ButtonTT color="white" small onClick={clearCreationActFormValues}>
           Сбросить
         </ButtonTT>
         <Space />
-        <ButtonTT color="blue" small>
+        <ButtonTT color="blue" small onClick={submit}>
           Сохранить
         </ButtonTT>
       </ButtonWrap>
