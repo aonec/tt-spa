@@ -2,10 +2,10 @@ import { createForm } from 'effector-forms/dist';
 
 export const addressSearchForm = createForm({
   fields: {
-    city: {
+    street: {
       init: '',
     },
-    street: {
+    house: {
       init: '',
     },
     apartment: {
