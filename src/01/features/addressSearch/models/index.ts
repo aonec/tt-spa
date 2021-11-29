@@ -1,11 +1,24 @@
+import { GetExistingHousingStockParams } from '01/_api/housingStocks';
 import { createStore, createEffect, createEvent } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { NumberIdResponse } from 'myApi';
 
-export const $selectedSearchApartmentId = createStore<number | null>(null);
+export const $existingApartmentNumbers = createStore<number | null>(null);
 
-export const fetchSearchApartmentIdFx = createEffect();
+export const fetchExistingApartmentNumbersFx = createEffect();
 
-export const findApartmentId = createEvent();
+export const loadExistingApartmentNumbers = createEvent();
+
+export const $existingHousingStockNumbers = createStore<
+  NumberIdResponse[] | null
+>(null);
+
+export const fetchExistingHousingStockNumbers = createEffect<
+  GetExistingHousingStockParams,
+  NumberIdResponse[] | null
+>();
+
+export const loadExistingHousingStockNumbers = createEvent();
 
 export const addressSearchForm = createForm({
   fields: {

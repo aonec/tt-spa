@@ -9,11 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export enum EOrderByRule {
-  Ascending = "Ascending",
-  Descending = "Descending",
-}
-
 export enum EActType {
   PlannedCheck = "PlannedCheck",
   UnplannedCheck = "UnplannedCheck",
@@ -31,24 +26,9 @@ export enum EActResourceType {
   Electricity = "Electricity",
 }
 
-export interface ApartmentActPaginationParameters {
-  /** @format int32 */
-  pageNumber?: number;
-
-  /** @format int32 */
-  pageSize?: number;
-  orderBy?: EOrderByRule;
-  city?: string | null;
-  street?: string | null;
-  housingStockNumber?: string | null;
-  corpus?: string | null;
-  apartmentNumber?: string | null;
-  actTypes?: EActType[] | null;
-  actResourceTypes?: EActResourceType[] | null;
-  actDateOrderBy?: EOrderByRule | null;
-  actJobDateOrderBy?: EOrderByRule | null;
-  registryNumberOrderBy?: EOrderByRule | null;
-  addressOrderBy?: EOrderByRule | null;
+export enum EOrderByRule {
+  Ascending = "Ascending",
+  Descending = "Descending",
 }
 
 export interface FullAddressResponse {
@@ -2708,6 +2688,16 @@ export interface StringPagedListSuccessApiResponse {
   successResponse: StringPagedList | null;
 }
 
+export interface NumberIdResponse {
+  /** @format int32 */
+  id: number;
+  number: string | null;
+}
+
+export interface NumberIdResponseArraySuccessApiResponse {
+  successResponse: NumberIdResponse[] | null;
+}
+
 export interface InspectorOnHousingStockResponse {
   /** @format int32 */
   housingStockId: number;
@@ -5036,13 +5026,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/ApartmentActs
      * @secure
      */
-    apartmentActsList: (data: ApartmentActPaginationParameters | null, params: RequestParams = {}) =>
+    apartmentActsList: (
+      query?: {
+        City?: string | null;
+        Street?: string | null;
+        HousingStockNumber?: string | null;
+        Corpus?: string | null;
+        ApartmentNumber?: string | null;
+        ActTypes?: EActType[] | null;
+        ActResourceTypes?: EActResourceType[] | null;
+        ActDateOrderBy?: EOrderByRule | null;
+        ActJobDateOrderBy?: EOrderByRule | null;
+        RegistryNumberOrderBy?: EOrderByRule | null;
+        AddressOrderBy?: EOrderByRule | null;
+        PageNumber?: number;
+        PageSize?: number;
+        OrderBy?: EOrderByRule;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<ApartmentActResponsePagedListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/ApartmentActs`,
         method: "GET",
-        body: data,
+        query: query,
         secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -6071,13 +6078,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsAddCallCenterCreate
-     * @request POST:/api/DataMigrations/AddCallCenter
+     * @name DataMigrationsAddFirmUsersCreate
+     * @request POST:/api/DataMigrations/AddFirmUsers
      * @secure
      */
-    dataMigrationsAddCallCenterCreate: (params: RequestParams = {}) =>
+    dataMigrationsAddFirmUsersCreate: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/DataMigrations/AddCallCenter`,
+        path: `/api/DataMigrations/AddFirmUsers`,
         method: "POST",
         secure: true,
         ...params,
@@ -6981,6 +6988,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags HousingMeteringDevices
+     * @name HousingMeteringDevicesCloseDevicesByCheckingDateCreate
+     * @request POST:/api/HousingMeteringDevices/closeDevicesByCheckingDate
+     * @secure
+     */
+    housingMeteringDevicesCloseDevicesByCheckingDateCreate: (params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/HousingMeteringDevices/closeDevicesByCheckingDate`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags HousingStocks
      * @name HousingStocksCreate
      * @request POST:/api/HousingStocks
@@ -7266,6 +7289,44 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/HousingStocks/ExistingStreets`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingHousingStockNumberList
+     * @request GET:/api/HousingStocks/ExistingHousingStockNumber
+     * @secure
+     */
+    housingStocksExistingHousingStockNumberList: (
+      query?: { city?: string | null; street?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/ExistingHousingStockNumber`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags HousingStocks
+     * @name HousingStocksExistingApartmentNumberDetail
+     * @request GET:/api/HousingStocks/{housingStockId}/ExistingApartmentNumber
+     * @secure
+     */
+    housingStocksExistingApartmentNumberDetail: (housingStockId: number, params: RequestParams = {}) =>
+      this.request<NumberIdResponseArraySuccessApiResponse, ErrorApiResponse>({
+        path: `/api/HousingStocks/${housingStockId}/ExistingApartmentNumber`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -7899,13 +7960,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags IndividualDevices
-     * @name IndividualDevicesCloseDevicesWithoutCheckingCreate
-     * @request POST:/api/IndividualDevices/CloseDevicesWithoutChecking
+     * @name IndividualDevicesCloseDevicesByCheckingDateCreate
+     * @request POST:/api/IndividualDevices/closeDevicesByCheckingDate
      * @secure
      */
-    individualDevicesCloseDevicesWithoutCheckingCreate: (params: RequestParams = {}) =>
+    individualDevicesCloseDevicesByCheckingDateCreate: (params: RequestParams = {}) =>
       this.request<void, ErrorApiResponse>({
-        path: `/api/IndividualDevices/CloseDevicesWithoutChecking`,
+        path: `/api/IndividualDevices/closeDevicesByCheckingDate`,
         method: "POST",
         secure: true,
         ...params,

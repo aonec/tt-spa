@@ -10,7 +10,7 @@ $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 sample({
   source: searchForm.$values,
   clock: searchForm.formValidated,
-  target: fetchApartmentActsFx,
+  target: fetchApartmentActsFx as any,
 });
 
 forward({

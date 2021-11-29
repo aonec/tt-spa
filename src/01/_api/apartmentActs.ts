@@ -1,7 +1,9 @@
 import axios from '01/axios';
-import { MayBe } from '01/features/actsJournal/displayActsJournal/models';
 import {
   ApartmentActPaginationParameters,
+  MayBe,
+} from '01/features/actsJournal/displayActsJournal/models';
+import {
   ApartmentActResponse,
   ApartmentActResponsePagedList,
   EActResourceTypeStringDictionaryItem,
@@ -19,7 +21,6 @@ export const getActResources = (): Promise<
 export const getApartmentActs = async (
   params: ApartmentActPaginationParameters
 ): Promise<ApartmentActResponse[] | null> => {
-  
   const res: ApartmentActResponsePagedList = await axios.get('ApartmentActs', {
     params,
   });

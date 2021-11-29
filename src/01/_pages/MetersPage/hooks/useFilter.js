@@ -59,9 +59,12 @@ export function useAutocomplete(street, streets) {
 
   const streetMatch = matchesArray[0]?.value;
 
+  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
+
   return {
     streetMatch,
-    options: matchesArray?.length && street ? [matchesArray[0]] : [],
+    options,
+    bestMatch: options[0]?.value,
   };
 }
 

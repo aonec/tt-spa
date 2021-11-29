@@ -3,7 +3,7 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -23,16 +23,10 @@ export const AddressSearch: FC<Props> = (props) => {
 
   let {
     keyDownEnterGuardedHandler,
-    refs: [streetRef, homeNumberRef, apartmentNumberRef],
+    refs: [_, homeNumberRef, apartmentNumberRef],
   } = useOnEnterSwitch(3);
 
   const { fields } = useForm(addressSearchForm);
-
-  useEffect(() => {
-    if (firstInputRef) {
-      streetRef = firstInputRef;
-    }
-  }, [firstInputRef]);
 
   function onChangeHandler(e: any) {
     (fields as any)[e.target.name]?.onChange(e.target.value);
@@ -40,7 +34,7 @@ export const AddressSearch: FC<Props> = (props) => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useAutocomplete(
+  const { streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
     fields.street.value,
     existingStreets
   );
@@ -77,7 +71,7 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Улица"
           ref={firstInputRef}
         />
-        <Popover>{options[0]?.value}</Popover>
+        <Popover>{bestStreetMatch}</Popover>
       </PopoverWrap>
 
       <PopoverWrap>
