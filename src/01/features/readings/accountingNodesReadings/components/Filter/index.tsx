@@ -28,7 +28,7 @@ export const AccountingNodesFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useAutocomplete(
+  const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
     existingStreets
   );

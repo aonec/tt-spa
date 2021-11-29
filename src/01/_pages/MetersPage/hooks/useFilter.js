@@ -57,12 +57,12 @@ export function useAutocomplete(street, streets) {
       .sort((a, b) => b.rating - a.rating)
       .map(({ target }) => ({ value: target })) || [];
 
-  const streetMatch = matchesArray[0]?.value;
+  const match = matchesArray[0]?.value;
 
   const options = matchesArray?.length && street ? [matchesArray[0]] : [];
 
   return {
-    streetMatch,
+    match,
     options,
     bestMatch: options[0]?.value,
   };

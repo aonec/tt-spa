@@ -51,14 +51,13 @@ export const getExistingCities = async () => {
 };
 
 export interface GetExistingHousingStockParams {
-  housingStockId: number;
-  payload: { city?: string | null; street?: string | null };
+  city?: string | null;
+  street?: string | null;
 }
 
-export const getExistingHousingStockNumbers = ({
-  housingStockId,
-  payload,
-}: GetExistingHousingStockParams): Promise<NumberIdResponse[] | null> =>
-  axios.get(`HousingStocks/${housingStockId}/ExistingHousingStockNumber`, {
-    params: payload,
+export const getExistingHousingStockNumbers = (
+  params: GetExistingHousingStockParams
+): Promise<NumberIdResponse[] | null> =>
+  axios.get(`HousingStocks/ExistingHousingStockNumber`, {
+    params,
   });

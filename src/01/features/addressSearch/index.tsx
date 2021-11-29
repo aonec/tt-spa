@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
@@ -9,7 +10,13 @@ import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { $existingStreets } from '../housingStocks/displayHousingStockStreets/model';
 import { ReactComponent as SearchIcon } from './assets/searchIcon.svg';
-import { addressSearchForm } from './models';
+import {
+  $existingHousingStockNumbers,
+  addressSearchForm,
+  fetchExistingHousingStockNumbers,
+  loadExistingApartmentNumbers,
+  loadExistingHousingStockNumbers,
+} from './models';
 
 interface Props {
   apartmentId?: MayBe<number>;
@@ -21,25 +28,20 @@ interface Props {
 export const AddressSearch: FC<Props> = (props) => {
   const { onExit, firstInputRef } = props;
 
+  const { fields } = useForm(addressSearchForm);
+  const fieldsArray = [fields.street, fields.house, fields.apartment];
+
+  const existingStreets = useStore($existingStreets);
+  const existingHousngStockNumbers = useStore($existingHousingStockNumbers);
+
   let {
     keyDownEnterGuardedHandler,
     refs: [_, homeNumberRef, apartmentNumberRef],
   } = useOnEnterSwitch(3);
 
-  const { fields } = useForm(addressSearchForm);
-
   function onChangeHandler(e: any) {
     (fields as any)[e.target.name]?.onChange(e.target.value);
   }
-
-  const existingStreets = useStore($existingStreets);
-
-  const { streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
-    fields.street.value,
-    existingStreets
-  );
-
-  const fieldsArray = [fields.street, fields.house, fields.apartment];
 
   function clearValuesOnFocus(index: number) {
     const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
@@ -50,10 +52,27 @@ export const AddressSearch: FC<Props> = (props) => {
   const clearValuesOnFocusCallback = (index: number) => () =>
     clearValuesOnFocus(index);
 
+  const { match: streetMatch, bestMatch: bestStreetMatch } = useAutocomplete(
+    fields.street.value,
+    existingStreets
+  );
+
+  const { bestMatch: bestHousingStockMatch } = useAutocomplete(
+    fields.house.value,
+    existingHousngStockNumbers?.map((elem) => elem.number)
+  );
+
+  const pendingExistingStoreNumber = useStore(
+    fetchExistingHousingStockNumbers.pending
+  );
+
+  const loading = [pendingExistingStoreNumber].some(Boolean);
+
+  const isActive = (ref: any) => ref.current === document.activeElement;
+
   return (
     <SearchWrap temp="12px 1fr 0.35fr 0.3fr">
-      <SearchIcon />
-
+      {loading ? <Loader show size={14} /> : <SearchIcon />}
       <PopoverWrap>
         <StyledInput
           autoComplete="off"
@@ -65,13 +84,16 @@ export const AddressSearch: FC<Props> = (props) => {
           }}
           onFocus={clearValuesOnFocusCallback(0)}
           onKeyDown={(e) => {
-            fromEnter(() => fields.street.onChange(streetMatch))(e);
             keyDownEnterGuardedHandler(0)(e);
+            fromEnter(() => {
+              fields.street.onChange(streetMatch);
+              loadExistingHousingStockNumbers();
+            })(e);
           }}
           placeholder="Улица"
           ref={firstInputRef}
         />
-        <Popover>{bestStreetMatch}</Popover>
+        {isActive(firstInputRef) && <Popover>{bestStreetMatch}</Popover>}
       </PopoverWrap>
 
       <PopoverWrap>
@@ -81,11 +103,17 @@ export const AddressSearch: FC<Props> = (props) => {
           onFocus={clearValuesOnFocusCallback(1)}
           onChange={onChangeHandler}
           value={fields.house.value}
-          onKeyDown={keyDownEnterGuardedHandler(1)}
+          onKeyDown={(e) => {
+            keyDownEnterGuardedHandler(1)(e);
+            fromEnter(() => {
+              fields.house.onChange(bestHousingStockMatch);
+              loadExistingApartmentNumbers();
+            })(e);
+          }}
           placeholder="Дом"
           ref={homeNumberRef}
         />
-        <Popover></Popover>
+        {isActive(homeNumberRef) && <Popover>{bestHousingStockMatch}</Popover>}
       </PopoverWrap>
 
       <PopoverWrap>
@@ -102,7 +130,7 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Кв."
           ref={apartmentNumberRef}
         />
-        <Popover></Popover>
+        {isActive(apartmentNumberRef) && <Popover></Popover>}
       </PopoverWrap>
     </SearchWrap>
   );
