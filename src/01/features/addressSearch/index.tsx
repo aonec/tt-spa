@@ -1,10 +1,13 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
+import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
+import { useStore } from 'effector-react';
 import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { $existingStreets } from '../housingStocks/displayHousingStockStreets/model';
 import { ReactComponent as SearchIcon } from './assets/searchIcon.svg';
 import { addressSearchForm } from './models';
 
@@ -35,27 +38,39 @@ export const AddressSearch: FC<Props> = (props) => {
     (fields as any)[e.target.name]?.onChange(e.target.value);
   }
 
+  const existingStreets = useStore($existingStreets);
+
+  const { streetMatch, options } = useStreetAutocomplete(
+    fields.street.value,
+    existingStreets
+  );
+
   return (
     <SearchWrap temp="12px 1fr 0.35fr 0.3fr">
       <SearchIcon />
 
       <PopoverWrap>
         <StyledInput
+          autoComplete="off"
           name="street"
           onChange={onChangeHandler}
           value={fields.street.value}
           style={{
             borderLeft: 'none',
           }}
-          onKeyDown={keyDownEnterGuardedHandler(0)}
+          onKeyDown={(e) => {
+            fromEnter(() => fields.street.onChange(streetMatch))(e);
+            keyDownEnterGuardedHandler(0)(e);
+          }}
           placeholder="Улица"
           ref={firstInputRef}
         />
-        <Popover>{fields.street.value}</Popover>
+        <Popover>{options[0]?.value}</Popover>
       </PopoverWrap>
 
       <PopoverWrap>
         <StyledInput
+          autoComplete="off"
           name="house"
           onChange={onChangeHandler}
           value={fields.house.value}
@@ -63,11 +78,12 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Дом"
           ref={homeNumberRef}
         />
-        <Popover>{fields.house.value}</Popover>
+        <Popover></Popover>
       </PopoverWrap>
 
       <PopoverWrap>
         <StyledInput
+          autoComplete="off"
           name="apartment"
           onChange={onChangeHandler}
           value={fields.apartment.value}
@@ -78,7 +94,7 @@ export const AddressSearch: FC<Props> = (props) => {
           placeholder="Кв."
           ref={apartmentNumberRef}
         />
-        <Popover>{fields.apartment.value}</Popover>
+        <Popover></Popover>
       </PopoverWrap>
     </SearchWrap>
   );
@@ -92,14 +108,13 @@ const Popover: React.FC = ({ children }) => {
   const Wrap = styled.div`
     position: absolute;
     top: 30px;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: #188fff;
+    color: white;
     backdrop-filter: blur(4px);
     border-radius: 4px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
     padding: 2px 8px;
     width: 100%;
     z-index: 10;
-    border-bottom: 1px solid #1890ff;
   `;
 
   return children ? <Wrap>{children}</Wrap> : null;
