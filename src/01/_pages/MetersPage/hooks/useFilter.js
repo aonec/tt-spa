@@ -35,7 +35,7 @@ function filterReducer(state, action) {
   }
 }
 
-export function useStreetAutocomplete(street, streets) {
+export function useAutocomplete(street, streets) {
   const matches =
     typeof street === 'string' && Array.isArray(streets)
       ? stringSimilarity.findBestMatch(
@@ -132,7 +132,7 @@ export const useFilter = () => {
     callback();
   };
 
-  const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
+  const { streetMatch, options } = useAutocomplete(state.street, streets);
 
   const cities = useStore($existingCities);
 

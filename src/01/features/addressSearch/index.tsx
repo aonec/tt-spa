@@ -1,6 +1,6 @@
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { FC, useEffect } from 'react';
@@ -40,10 +40,21 @@ export const AddressSearch: FC<Props> = (props) => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useStreetAutocomplete(
+  const { streetMatch, options } = useAutocomplete(
     fields.street.value,
     existingStreets
   );
+
+  const fieldsArray = [fields.street, fields.house, fields.apartment];
+
+  function clearValuesOnFocus(index: number) {
+    const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
+
+    subFieldsArray.forEach((field) => field.onChange(''));
+  }
+
+  const clearValuesOnFocusCallback = (index: number) => () =>
+    clearValuesOnFocus(index);
 
   return (
     <SearchWrap temp="12px 1fr 0.35fr 0.3fr">
@@ -58,6 +69,7 @@ export const AddressSearch: FC<Props> = (props) => {
           style={{
             borderLeft: 'none',
           }}
+          onFocus={clearValuesOnFocusCallback(0)}
           onKeyDown={(e) => {
             fromEnter(() => fields.street.onChange(streetMatch))(e);
             keyDownEnterGuardedHandler(0)(e);
@@ -72,6 +84,7 @@ export const AddressSearch: FC<Props> = (props) => {
         <StyledInput
           autoComplete="off"
           name="house"
+          onFocus={clearValuesOnFocusCallback(1)}
           onChange={onChangeHandler}
           value={fields.house.value}
           onKeyDown={keyDownEnterGuardedHandler(1)}
@@ -87,6 +100,7 @@ export const AddressSearch: FC<Props> = (props) => {
           name="apartment"
           onChange={onChangeHandler}
           value={fields.apartment.value}
+          onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e: any) => {
             keyDownEnterGuardedHandler(3)(e);
             fromEnter(() => onExit && onExit())(e);
