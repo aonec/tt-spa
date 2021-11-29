@@ -8,15 +8,19 @@ import {
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
+import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { $resources, ActResourcesGate } from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
+import { createActForm } from '../models';
 import { gridTemp } from './TableHeader';
 
 export const AddNewActForm = () => {
+  const { fields } = useForm(createActForm);
+
   const {
     keyDownEnterGuardedHandler,
     refs: [registryNumberRef, documentTypeRef, recourceRef, addressRef],
@@ -34,11 +38,15 @@ export const AddNewActForm = () => {
       <Wrap temp={gridTemp} gap="15px">
         <DocDate>{moment().format('DD.MM.YYYY')}</DocDate>
         <StyledInput
+          value={fields.registryNumber.value || ''}
+          onChange={(e) => fields.registryNumber.onChange(e.target.value)}
           placeholder="Введите"
           ref={registryNumberRef}
           onKeyDown={keyDownEnterGuardedHandler(0)}
         />
         <StyledSelector
+          value={fields.actType.value as any}
+          onChange={fields.actType.onChange as any}
           placeholder="Выберите тип документа"
           ref={documentTypeRef}
           onKeyDown={keyDownEnterGuardedHandler(1)}
@@ -50,6 +58,8 @@ export const AddNewActForm = () => {
           ))}
         </StyledSelector>
         <StyledSelector
+          value={fields.actResourceType.value as any}
+          onChange={fields.actResourceType.onChange as any}
           placeholder="Выберите"
           ref={recourceRef}
           onKeyDown={keyDownEnterGuardedHandler(2)}
@@ -67,6 +77,8 @@ export const AddNewActForm = () => {
           }}
         />
         <StyledDatePicker
+          value={fields.actJobDate.value as any}
+          onChange={fields.actJobDate.onChange as any}
           placeholder="Дата"
           format="DD.MM.YYYY"
           ref={datePickerRef}

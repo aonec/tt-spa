@@ -7,6 +7,12 @@ import { createEffect, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { ApartmentActResponse } from 'myApi';
 
+export type MayBe<T> = null | T;
+
+export const formField = <T>(): null | T => null;
+
+export const ff = formField;
+
 export const $apartmentActs = createStore<ApartmentActResponse[] | null>(null);
 
 export interface ApartmentActPaginationParameters {
@@ -40,19 +46,14 @@ export const searchForm = createForm({
   },
 });
 
-export type MayBe<T> = null | T;
-
-export const formField = <T>(): null | T => null;
-
-export const ff = formField;
-
 export const createActForm = createForm({
   fields: {
+    actType: { init: ff<EActType>() },
+    actResourceType: { init: ff<EActResourceType>() },
     actDateTime: { init: ff<string>() },
     registryNumber: {
       init: ff<string>(),
     },
-    apartmentId: { init: ff<number>() },
     actJobDate: { init: ff<string>() },
   },
 });
