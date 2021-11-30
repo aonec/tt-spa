@@ -1,7 +1,11 @@
-import { createActForm, createApartmentActFx } from './index';
+import {
+  createActForm,
+  createApartmentActFx,
+  refetchApartmentActs,
+} from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
-import { combine, forward, sample } from 'effector';
+import { combine, forward, sample, guard } from 'effector';
 import {
   $apartmentActs,
   clearCreationActFormValues,
@@ -21,7 +25,7 @@ $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
 sample({
   source: searchForm.$values,
-  clock: searchForm.formValidated,
+  clock: [searchForm.formValidated, refetchApartmentActs],
   fn: (data) => ({
     City: data.city,
     Street: data.street,
@@ -57,4 +61,21 @@ sample({
     })
   ),
   target: createApartmentActFx as any,
+});
+
+guard({
+  source: combine(
+    searchForm.$values,
+    addressSearchForm.$values,
+    (searchForm, creationSearchForm) => {
+      return (
+        searchForm.street === creationSearchForm.street &&
+        searchForm.house === creationSearchForm.house &&
+        searchForm.apartment === creationSearchForm.apartment
+      );
+    }
+  ),
+  clock: createApartmentActFx.doneData,
+  filter: (isSuccess) => isSuccess,
+  target: refetchApartmentActs,
 });

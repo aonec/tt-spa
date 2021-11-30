@@ -66,3 +66,5 @@ export const createApartmentActFx = createEffect<
   AddApartmentActRequest,
   void
 >();
+
+export const refetchApartmentActs = createEvent();

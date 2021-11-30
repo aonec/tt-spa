@@ -9,7 +9,7 @@ import {
 } from './index';
 import { $existingHousingStockNumbers } from '.';
 import { getExistingHousingStockNumbers } from '01/_api/housingStocks';
-import { combine, sample } from 'effector';
+import { combine, guard, sample } from 'effector';
 import { searchForm } from '../../actsJournal/displayActsJournal/models/index';
 
 fetchExistingHousingStockNumbers.use(getExistingHousingStockNumbers);
@@ -45,8 +45,6 @@ sample({
   fn: ({ existingHouseNumbers, house }) => {
     const res = existingHouseNumbers?.find((elem) => elem.number === house)
       ?.id!;
-
-    console.log(res, existingHouseNumbers, house);
 
     return res;
   },
