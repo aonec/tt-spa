@@ -1,14 +1,14 @@
 import { getActResources } from '01/_api/apartmentActs';
 import { guard } from 'effector';
-import { $resources, ActResourcesGate, fetchResourcesFx } from '.';
+import { $actResources, ActResourcesGate, fetchResourcesFx } from '.';
 
 fetchResourcesFx.use(getActResources);
 
-$resources.on(fetchResourcesFx.doneData, (_, types) => types);
+$actResources.on(fetchResourcesFx.doneData, (_, types) => types);
 
 guard({
   clock: ActResourcesGate.open,
-  source: $resources,
+  source: $actResources,
   filter: (types) => !types?.length,
   target: fetchResourcesFx,
 });

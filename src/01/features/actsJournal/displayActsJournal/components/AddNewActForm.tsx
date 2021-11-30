@@ -14,7 +14,10 @@ import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { $resources, ActResourcesGate } from '../../displayActResources/models';
+import {
+  $actResources,
+  ActResourcesGate,
+} from '../../displayActResources/models';
 import { $actTypes, ApartmentActTypesGate } from '../../displayActTypes/models';
 import {
   clearCreationActFormValues,
@@ -32,7 +35,7 @@ export const AddNewActForm = () => {
   } = useOnEnterSwitch(4);
 
   const actTypes = useStore($actTypes);
-  const actResources = useStore($resources);
+  const actResources = useStore($actResources);
 
   const datePickerRef = useRef(null);
 
@@ -96,8 +99,20 @@ export const AddNewActForm = () => {
           Сбросить
         </ButtonTT>
         <Space />
-        <ButtonTT disabled={pendingRequest} color="blue" small onClick={submit}>
-          {pendingRequest ? <Loader show /> : 'Сохранить'}
+        <ButtonTT
+          style={{ padding: '5px 25px' }}
+          disabled={pendingRequest}
+          color="blue"
+          small
+          onClick={submit}
+        >
+          {pendingRequest ? (
+            <div style={{ transform: 'translate(-8px, 2px)' }}>
+              <Loader show />
+            </div>
+          ) : (
+            'Сохранить'
+          )}
         </ButtonTT>
       </ButtonWrap>
       <SpaceLine />

@@ -3,7 +3,7 @@ import { createGate } from 'effector-react';
 import { EActResourceTypeStringDictionaryItem } from 'myApi';
 import { MayBe } from '../../displayActsJournal/models';
 
-export const $resources = createStore<
+export const $actResources = createStore<
   MayBe<EActResourceTypeStringDictionaryItem[]>
 >(null);
 
