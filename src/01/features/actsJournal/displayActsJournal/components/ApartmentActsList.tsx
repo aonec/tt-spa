@@ -10,14 +10,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
 import { $actTypes } from '../../displayActTypes/models';
-import { $apartmentActs, fetchApartmentActsFx } from '../models';
+import {
+  $apartmentActs,
+  expandedFilterForm,
+  fetchApartmentActsFx,
+} from '../models';
 import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.svg';
 import { Empty } from 'antd';
+import { useForm } from 'effector-forms/dist';
 
 export const ApartmentActsList = () => {
   const pending = useStore(fetchApartmentActsFx.pending);
+  const {
+    fields: { allowedActResources, allowedActTypes },
+  } = useForm(expandedFilterForm);
 
   const acts = useStore($apartmentActs);
   const actTypes = useStore($actTypes);
@@ -25,10 +33,13 @@ export const ApartmentActsList = () => {
 
   const renderAct = (act: ApartmentActResponse) => {
     const actType = actTypes?.find((elem) => elem.key === act.actType)?.value;
+
     const resourceIcon = getIconFromResource(act.actResourceType);
+
     const resourceName = actResources?.find(
       (elem) => elem.key === act.actResourceType
     )?.value;
+
     const actAddress =
       act.apartment &&
       `ул. ${act.apartment.street} ${
@@ -51,10 +62,32 @@ export const ApartmentActsList = () => {
     );
   };
 
+  console.log(allowedActResources);
+
+  const filterActs = (act: ApartmentActResponse) => {
+    const res = [] as boolean[];
+
+    res.push(
+      allowedActResources.value.length === 0
+        ? true
+        : allowedActResources.value.includes(act.actResourceType)
+    );
+
+    res.push(
+      allowedActTypes.value.length === 0
+        ? true
+        : allowedActTypes.value.includes(act.actType)
+    );
+
+    return res.every(Boolean);
+  };
+
+  const preparedActs = acts?.filter(filterActs);
+
   return (
     <Wrap>
       <PendingLoader loading={pending} skeleton>
-        {acts?.length === 0 && (
+        {preparedActs?.length === 0 && (
           <Flex style={{ justifyContent: 'center' }}>
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -63,7 +96,7 @@ export const ApartmentActsList = () => {
           </Flex>
         )}
 
-        {acts?.map(renderAct)}
+        {preparedActs?.map(renderAct)}
       </PendingLoader>
     </Wrap>
   );
