@@ -9,10 +9,12 @@ import {
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
+import { message } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useRef } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import {
   $actResources,
@@ -40,6 +42,22 @@ export const AddNewActForm = () => {
   const datePickerRef = useRef(null);
 
   const pendingRequest = useStore(createApartmentActFx.pending);
+
+  useEffect(
+    () =>
+      createApartmentActFx.done.watch(() =>
+        message.success('Акт успешно добавлен')
+      ).unsubscribe,
+    []
+  );
+
+  useEffect(
+    () =>
+      createApartmentActFx.fail.watch(() =>
+        message.error('Ошибка при добавлении акта')
+      ).unsubscribe,
+    []
+  );
 
   return (
     <>
