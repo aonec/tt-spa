@@ -1,4 +1,5 @@
 import {
+  clearCreationActForms,
   createActForm,
   createApartmentActFx,
   refetchApartmentActs,
@@ -75,7 +76,12 @@ guard({
       );
     }
   ),
-  clock: createApartmentActFx.doneData,
+  clock: createApartmentActFx.done,
   filter: (isSuccess) => isSuccess,
   target: refetchApartmentActs,
+});
+
+forward({
+  from: clearCreationActForms,
+  to: [createActForm.reset, addressSearchForm.reset],
 });

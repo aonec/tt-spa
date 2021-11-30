@@ -68,3 +68,5 @@ export const createApartmentActFx = createEffect<
 >();
 
 export const refetchApartmentActs = createEvent();
+
+export const clearCreationActForms = createEvent();

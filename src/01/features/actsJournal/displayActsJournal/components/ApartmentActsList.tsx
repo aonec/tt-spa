@@ -53,7 +53,7 @@ export const ApartmentActsList = () => {
 
   return (
     <Wrap>
-      <PendingLoader loading={pending}>
+      <PendingLoader loading={pending} skeleton>
         {acts?.length === 0 && (
           <Flex style={{ justifyContent: 'center' }}>
             <Empty
