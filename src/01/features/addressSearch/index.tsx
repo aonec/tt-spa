@@ -112,7 +112,7 @@ export const AddressSearch: FC<Props> = (props) => {
 
   return (
     <SearchWrap
-      temp="12px 0.7fr 0.35fr 0.3fr"
+      temp="12px 0.8fr 0.35fr 0.3fr"
       focused={[firstInputRef, ...refs].some(
         (elem) => elem.current === document.activeElement
       )}

@@ -22,6 +22,12 @@ $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 sample({
   source: searchForm.$values,
   clock: searchForm.formValidated,
+  fn: (data) => ({
+    City: data.city,
+    Street: data.street,
+    HousingStockNumber: data.house,
+    ApartmentNumber: data.apartment,
+  }),
   target: fetchApartmentActsFx as any,
 });
 

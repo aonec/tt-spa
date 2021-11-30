@@ -100,7 +100,7 @@ export const AddNewActForm = () => {
         </ButtonTT>
         <Space />
         <ButtonTT
-          style={{ padding: '5px 25px' }}
+          style={{ padding: '5px 30px' }}
           disabled={pendingRequest}
           color="blue"
           small
@@ -121,12 +121,12 @@ export const AddNewActForm = () => {
 };
 
 const Wrap = styled(Grid)`
-  padding: 0px 15px 0;
+  padding: 0px 0 0 15px;
   align-items: center;
 `;
 
 const ButtonWrap = styled.div`
-  padding: 15px 15px 0;
+  padding: 15px 0 0 15px;
   display: flex;
   justify-content: flex-end;
 `;

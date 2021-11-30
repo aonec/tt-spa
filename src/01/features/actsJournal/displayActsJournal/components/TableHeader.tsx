@@ -21,11 +21,11 @@ export const TableHeader = () => {
   );
 };
 
-export const gridTemp = '0.75fr 0.7fr 1.6fr 0.7fr 2.1fr 0.85fr';
+export const gridTemp = '0.63fr 0.7fr 1.4fr 0.7fr 2.1fr 0.85fr';
 
 const Wrap = styled(Grid)`
   background: #f3f5f6;
-  padding: 15px;
+  padding: 15px 0 15px 15px;
 `;
 
 const Title = styled.div`

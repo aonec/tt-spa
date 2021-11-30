@@ -14,6 +14,7 @@ import { $apartmentActs, fetchApartmentActsFx } from '../models';
 import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.svg';
+import { Empty } from 'antd';
 
 export const ApartmentActsList = () => {
   const pending = useStore(fetchApartmentActsFx.pending);
@@ -53,7 +54,14 @@ export const ApartmentActsList = () => {
   return (
     <Wrap>
       <PendingLoader loading={pending}>
-        {acts?.length === 0 && 'Нет актов'}
+        {acts?.length === 0 && (
+          <Flex style={{ justifyContent: 'center' }}>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Нет актов"
+            />
+          </Flex>
+        )}
 
         {acts?.map(renderAct)}
       </PendingLoader>
@@ -68,7 +76,7 @@ const Wrap = styled.div`
 const ActWrap = styled(Grid)`
   height: 50px;
   align-items: center;
-  padding: 0 15px;
+  padding: 0 0 0 15px;
   border-bottom: 1px solid #f3f3f3;
 `;
 
