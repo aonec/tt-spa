@@ -5,10 +5,9 @@ import { FilterButton } from './filterButton/FIlterButton';
 import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
 import { Checkbox } from 'antd';
-import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { $actResources } from '../../displayActResources/models';
-import { getIconFromResource } from './ApartmentActsList';
-import { Flex } from '01/shared/ui/Layout/Flex';
+import { expandedFilterForm } from '../models';
+import { useForm } from 'effector-forms/dist';
 
 export const TableHeader = () => {
   const columnTitles = [
@@ -34,6 +33,9 @@ export const TableHeader = () => {
 
 const ResourceExtendedSearch = () => {
   const resources = useStore($actResources);
+  const {
+    fields: { allowedActResources },
+  } = useForm(expandedFilterForm);
 
   const CheckboxWrap = styled.div`
     margin-bottom: 9px;
@@ -45,29 +47,37 @@ const ResourceExtendedSearch = () => {
   `;
 
   return (
-    <FilterButton>
-      <div>
-        {resources?.map((elem) => (
+    <FilterButton onClear={() => allowedActResources.onChange([])}>
+      {resources?.map((elem) => {
+        const checked = allowedActResources.value.includes(elem.key!);
+        return (
           <CheckboxWrap>
-            <Checkbox>{elem.value}</Checkbox>
+            <Checkbox
+              checked={checked}
+              onClick={() =>
+                allowedActResources.onChange(
+                  checked
+                    ? allowedActResources.value.filter(
+                        (resource) => resource !== elem.key
+                      )
+                    : [...allowedActResources.value, elem.key!]
+                )
+              }
+            >
+              {elem.value}
+            </Checkbox>
           </CheckboxWrap>
-        ))}
-      </div>
-      <div style={{ marginTop: -10 }}>
-        <SpaceLine />
-      </div>
-      <div
-        className="ant-btn-link"
-        style={{ marginTop: -5, cursor: 'pointer' }}
-      >
-        Сбросить
-      </div>
+        );
+      })}
     </FilterButton>
   );
 };
 
 const TypeDocumentExtendedSearch = () => {
   const actTypes = useStore($actTypes);
+  const {
+    fields: { allowedActTypes },
+  } = useForm(expandedFilterForm);
 
   const CheckboxWrap = styled.div`
     margin-bottom: 9px;
@@ -78,23 +88,29 @@ const TypeDocumentExtendedSearch = () => {
   `;
 
   return (
-    <FilterButton>
-      <div>
-        {actTypes?.map((elem) => (
+    <FilterButton onClear={() => allowedActTypes.onChange([])}>
+      {actTypes?.map((elem) => {
+        const checked = allowedActTypes.value.includes(elem.key!);
+
+        return (
           <CheckboxWrap>
-            <Checkbox>{elem.value}</Checkbox>
+            <Checkbox
+              checked={checked}
+              onClick={() =>
+                allowedActTypes.onChange(
+                  checked
+                    ? allowedActTypes.value.filter(
+                        (resource) => resource !== elem.key
+                      )
+                    : [...allowedActTypes.value, elem.key!]
+                )
+              }
+            >
+              {elem.value}
+            </Checkbox>
           </CheckboxWrap>
-        ))}
-      </div>
-      <div style={{ marginTop: -10 }}>
-        <SpaceLine />
-      </div>
-      <div
-        className="ant-btn-link"
-        style={{ marginTop: -5, cursor: 'pointer' }}
-      >
-        Сбросить
-      </div>
+        );
+      })}
     </FilterButton>
   );
 };

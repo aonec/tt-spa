@@ -70,3 +70,10 @@ export const createApartmentActFx = createEffect<
 export const refetchApartmentActs = createEvent();
 
 export const clearCreationActForms = createEvent();
+
+export const expandedFilterForm = createForm({
+  fields: {
+    allowedActTypes: { init: [] as EActType[] },
+    allowedActResources: { init: [] as EActResourceType[] },
+  },
+});
