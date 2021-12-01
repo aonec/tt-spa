@@ -37,7 +37,7 @@ function filterReducer(state, action) {
 
 export function useAutocomplete(street, streets) {
   
-  if (street.toUpperCase() === 'ЛЕ') { street = '' }
+  if (street.toUpperCase() === 'ЛЕ') { street = 'лес' }
 
   const matches =
     typeof street === 'string' && Array.isArray(streets)
