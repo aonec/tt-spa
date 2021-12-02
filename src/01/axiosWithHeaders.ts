@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const baseURL = process.env.REACT_APP_URL
 
-const devUrl = 'https://transparent-staging.herokuapp.com/api';
+const devUrl = 'https://transparent-demo.herokuapp.com/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 // const baseURL = 'https://transparent-production.herokuapp.com/api';
 
@@ -13,6 +13,7 @@ let axiosWithHeaders = axios.create({
 });
 
 let cancel;
+
 axiosWithHeaders.interceptors.request.use((req) => {
   if (req.baseURL === 'http://84.201.132.164:8080/api') {
     delete req.headers.Authorization;

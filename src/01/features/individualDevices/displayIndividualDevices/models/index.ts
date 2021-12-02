@@ -43,5 +43,5 @@ export const resetIndividualDevices = createEvent();
 export const $isAllDevicesDone = combine(
   $pagedIndividualDevices,
   $totalPagedElems,
-  (devices, total) => (devices.length ? devices.length === total : null)
+  (devices, total) => devices.length === total
 );

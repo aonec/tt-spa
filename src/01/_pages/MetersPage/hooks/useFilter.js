@@ -9,11 +9,11 @@ import {
 } from '01/features/apartments/displayApartment/models';
 import { useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
+import { cities } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { resetIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 
 const initialState = {
-  city: '',
+  city: 'Нижнекамск',
   street: '',
   house: '',
   corpus: '',
@@ -61,14 +61,11 @@ export function useAutocomplete(street, streets) {
       .sort((a, b) => b.rating - a.rating)
       .map(({ target }) => ({ value: target })) || [];
 
-  const match = matchesArray[0]?.value;
-
-  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
+  const streetMatch = matchesArray[0]?.value;
 
   return {
-    match,
-    options,
-    bestMatch: options[0]?.value,
+    streetMatch,
+    options: matchesArray?.length && street ? [matchesArray[0]] : [],
   };
 }
 
@@ -80,6 +77,7 @@ export const useFilter = () => {
   const apartment = useStore($apartment);
 
   useEffect(() => {
+    console.log(apartment?.homeownerAccounts);
     if (apartment && apartment.housingStock)
       dispatch({
         type: 'change',
@@ -162,7 +160,7 @@ export const useFilter = () => {
       {
         name: 'city',
         placeholder: 'Город',
-        options: (cities || []).map((value) => ({ value })),
+        options: cities.map((value) => ({ value })),
       },
       {
         name: 'street',

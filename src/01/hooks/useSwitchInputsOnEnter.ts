@@ -1,10 +1,6 @@
-import { $isAllDevicesDone } from '01/features/individualDevices/displayIndividualDevices/models';
-import { useStore } from 'effector-react';
 import { useEffect } from 'react';
 
 export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
-  const isAllDevicesDone = useStore($isAllDevicesDone);
-
   const onKeyDown = (e: any, index: number, isForced?: boolean) => {
     if (e.key !== 'Enter' && !isForced) return;
 
@@ -15,8 +11,6 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     const nextNode = inputList[index + 1];
 
     if (!nextNode) {
-      if (isAllDevicesDone === false) return;
-
       const firstNode = inputList[0];
 
       const neededInputNode: any = firstNode?.getElementsByClassName(

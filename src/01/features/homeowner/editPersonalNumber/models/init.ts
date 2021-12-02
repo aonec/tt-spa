@@ -38,6 +38,7 @@ fetchHomeownerFx.doneData.watch(
   ({ name, phoneNumber, personalAccountNumber, paymentCode, openAt }) => {
     const isAutocomplete = AutoCompleteFormGate.state.getState().autocomplete;
 
+    console.log(isAutocomplete);
     if (!isAutocomplete) return;
 
     personalNumberEditForm.setForm({

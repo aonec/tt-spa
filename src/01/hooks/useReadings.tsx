@@ -143,7 +143,7 @@ export const useReadings = (
   function setReadingArchived(id: number, readingDate: string) {
     const request = async () => {
       try {
-        await axios.post(`IndividualDeviceReadings/${id}/remove`);
+        await axios.post(`IndividualDeviceReadings/${id}/setArchived`);
 
         refetchIndividualDevices();
 
@@ -855,11 +855,11 @@ const limits = {
   [EResourceType.Electricity]: 1000,
 };
 
-export const getResourceUpLimit = (resource: EResourceType) => {
+const getResourceUpLimit = (resource: EResourceType) => {
   return (limits as any)[resource] || Infinity;
 };
 
-export interface CorrectReadingValuesValidationResult {
+interface CorrectReadingValuesValidationResult {
   validated: boolean;
   valuesValidationResults?: {
     type: 'up' | 'down' | null;

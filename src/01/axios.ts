@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const devUrl = 'https://transparent-staging.herokuapp.com/api';
+const devUrl = 'https://transparent-demo.herokuapp.com/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
@@ -20,6 +20,7 @@ axios.interceptors.request.use((req) => {
     };
   }
   return req;
+  
 });
 
 axios.interceptors.response.use(

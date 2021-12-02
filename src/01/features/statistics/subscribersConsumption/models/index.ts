@@ -37,7 +37,7 @@ const resourceRangeInitValue = {
 
 export const subscribersConsumptionFindForm = createForm({
   fields: {
-    city: { init: '' },
+    city: { init: 'Нижнекамск' },
     street: { init: '' },
     house: { init: '' },
   },
