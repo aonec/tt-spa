@@ -64,6 +64,7 @@ export const TransferDevices = () => {
   return (
     <Wrap>
       {devices
+        .filter((elem) => elem.closingDate === null)
         .map((value, index) =>
           renderDevice(
             value,
@@ -79,28 +80,6 @@ export const Wrap = styled.div`
   width: 620px;
   margin-bottom: 25px;
 `;
-
-export const renderDevice = (
-  device: IndividualDeviceListItemResponse,
-  index: number
-) => (
-  <Device key={index}>
-    <Flex>
-      <DeviceDataString device={device} />
-      <Space />
-      <ActiveLine
-        isActive={device.closingDate === null}
-        closingReason={device.closingReason}
-      />
-      <DateLine
-        lastCheckingDate={device.lastCheckingDate}
-        futureCheckingDate={device.futureCheckingDate}
-      />
-      <Space />
-      <div>{translateMountPlace(device.mountPlace)}</div>
-    </Flex>
-  </Device>
-);
 
 const Device = styled.div`
   padding: 15px;

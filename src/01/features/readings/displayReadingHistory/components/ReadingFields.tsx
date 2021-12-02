@@ -1,24 +1,20 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Input } from 'antd';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { RequestStatusShared } from '../hooks/useReadingValues';
 
 interface Props {
-  values?: (string | null)[];
-  noReading?: boolean;
-  rateNum: number | null;
+  values: (string | null)[];
   suffix?: string | null;
   editable?: boolean;
   onChange?(value: string, index: number): void;
   onBlur?(): void;
-  onEnter?(values: (number | null)[]): void;
   status?: RequestStatusShared;
   consumption?: boolean;
   style?: React.CSSProperties;
   clearValue?: boolean;
-  removed?: boolean;
 }
 
 export const RenderReadingFields: React.FC<Props> = (props) => {
@@ -31,21 +27,10 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
     status,
     consumption,
     style,
-    removed,
-    onEnter,
-    rateNum,
+    clearValue,
   } = props;
 
   const wrapRef = useRef<any>();
-
-  const preparedValuesArray = getArrayByCountRange(
-    rateNum || 0,
-    (index) => (values && values[index - 1]) || null
-  );
-
-  const [valuesArray, setValuesArray] = useState(preparedValuesArray);
-
-  useEffect(() => setValuesArray(preparedValuesArray), [values]);
 
   const onChangeHandeler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -53,37 +38,29 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
   ) => {
     e.preventDefault();
 
-    setValuesArray((prev) =>
-      prev.map((elem, i) => (i === index ? e.target.value : elem))
-    );
-
-    onChange && onChange(e.target.value, index + 1);
+    onChange && onChange(e.target.value, index);
   };
 
   const onBlurHandler = onBlur;
 
   const onKeyHandler = (e: any) => {
-    if (e.key === 'Enter') {
-      const clearValues = valuesArray.map((value) =>
-        value === null ? null : Number(value)
-      );
-      onEnter && onEnter(clearValues);
-      e.target.blur();
-    }
+    e.key === 'Enter' && e.target.blur();
   };
 
   const renderField = (
-    value: string | null,
+    elem: string | null,
     index: number,
     isOnlyOne?: boolean
   ) => {
-    if (!editable) {
+    const value = (clearValue ? elem : Number(elem?.split(' ')[0])) || '';
+    const suffix = globalSuffix || elem?.split(' ')[1];
+
+    if (!editable)
       return (
         <ValueLine isReading={!consumption}>
-          {value !== null ? `${value} ${globalSuffix}` : ''}
+          {value ? `${value} ${suffix}` : ''}
         </ValueLine>
       );
-    }
 
     const prefix = `T${index + 1}`;
 
@@ -91,17 +68,17 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
       <EditableFieldWrap
         ref={wrapRef}
         onKeyDown={onKeyHandler}
-        isOnlyOne={isOnlyOne || values?.length === 1}
+        isOnlyOne={isOnlyOne || values.length === 1}
         status={status!}
       >
         <EditableField
           type="number"
           disabled={!editable}
           className={`history-reading-field`}
-          value={String(value)}
-          suffix={globalSuffix}
+          value={value}
+          suffix={suffix}
           prefix={<Prefix>{prefix}</Prefix>}
-          onChange={(e) => onChangeHandeler(e, index)}
+          onChange={(e) => onChangeHandeler(e, index + 1)}
         />
       </EditableFieldWrap>
     );
@@ -109,14 +86,26 @@ export const RenderReadingFields: React.FC<Props> = (props) => {
 
   if (!editable)
     return (
-      <FieldsWrap style={style} removed={removed}>
-        {valuesArray.map((elem, index) => renderField(elem, index, false))}
+      <FieldsWrap style={style}>
+        {values.map((elem, index) => renderField(elem, index, false))}
       </FieldsWrap>
     );
 
   return (
     <FieldsWrap onBlur={onBlurHandler} style={style}>
-      {valuesArray.map((elem, index) => renderField(elem, index, false))}
+      {values.length === 3 ? (
+        <>
+          <div>
+            {[values[0], values[1]].map((elem, index) =>
+              renderField(elem, index, false)
+            )}
+          </div>
+          <Space h={6} />
+          <div>{renderField(values[2], 2, true)}</div>
+        </>
+      ) : (
+        values.map((elem, index) => renderField(elem, index, false))
+      )}
     </FieldsWrap>
   );
 };
@@ -129,8 +118,6 @@ const Prefix = styled.span`
 const FieldsWrap = styled.div`
   margin-right: 20px;
   counter-reset: section;
-
-  ${({ removed }: { removed?: boolean }) => (removed ? 'color: red;' : '')}
 `;
 
 const ValueLine = styled(Flex)`

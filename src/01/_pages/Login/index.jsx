@@ -6,14 +6,10 @@ import { Loader } from '01/components';
 import axios from '01/axios';
 import login from '01/assets/svg/login.svg';
 import logo from '01/assets/svg/logo.svg';
-import { Label, Button, Input, Icon, ButtonTT } from '01/tt-components';
+import { Label, Button, Input, Icon } from '01/tt-components';
 import { Title } from '../../tt-components/Title';
 import styled from 'styled-components';
 import { message } from 'antd';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { DevSettingsModal } from '01/features/developmentSettings';
-import { openDevSettingsModal } from '01/features/developmentSettings/models';
-import { useIsDev } from '01/hooks/useDev';
 
 export const Main = styled.div`
   height: 100vh;
@@ -79,9 +75,6 @@ export const Login = () => {
     }
   }
 
-  const isDev = useIsDev();
-
-  
   return (
     <Main>
       <LoginLeft>
@@ -144,20 +137,6 @@ export const Login = () => {
             </Button>
           </Loader>
         </Form>
-        {isDev && (
-          <>
-            <DevSettingsModal />
-            <Space />
-            <ButtonTT
-              onClick={openDevSettingsModal}
-              small
-              color="white"
-              style={{ color: 'white' }}
-            >
-              Development settings
-            </ButtonTT>
-          </>
-        )}
       </LoginRight>
     </Main>
   );

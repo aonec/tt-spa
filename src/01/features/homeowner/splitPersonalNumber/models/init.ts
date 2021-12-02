@@ -1,12 +1,8 @@
 import {
-  $checkedExistingApartmentId,
-  checkApartmentExistingFx,
-  closeConfirmExistingApartmentModal,
   homeownerAccountForSplittedApartmentForm,
   newApartmentPersonalNumberForm,
   previousSplitPersonalNumberPage,
   saveSplitPersonalNumberForm,
-  splitPersonalNumber,
   splitPersonalNumberFx,
   SplitPersonalNumberGate,
   transferDevicesForm,
@@ -15,23 +11,15 @@ import {
   $splitPersonalNumberStageNumber,
   nextSplitPersonalNumberPage,
 } from '.';
-import { combine, forward, guard, sample } from 'effector';
+import { combine, forward, sample } from 'effector';
 import { splitHomeownerAccount } from '01/_api/homeowners';
 import { $homeowner, fetchHomeownerFx } from '../../displayHomeowner/models';
 import moment from 'moment';
 import { $apartment } from '01/features/apartments/displayApartment/models';
-import { doesApartmentExist } from '01/_api/housingStocks';
 
 splitPersonalNumberFx.use(splitHomeownerAccount);
-checkApartmentExistingFx.use(doesApartmentExist);
 
 $splitPersonalNumberStageNumber.reset(SplitPersonalNumberGate.close);
-
-$checkedExistingApartmentId
-  .on(checkApartmentExistingFx.doneData, (_, id) => {
-    return id;
-  })
-  .reset(SplitPersonalNumberGate.close, closeConfirmExistingApartmentModal);
 
 forward({
   from: SplitPersonalNumberGate.close,
@@ -122,30 +110,7 @@ sample({
       };
     }
   ),
-  clock: splitPersonalNumber,
-  fn: (store, clock) =>
-    ({ ...store, useExistingApartment: Boolean(clock) } as any),
-  target: splitPersonalNumberFx,
-});
-
-sample({
-  clock: guard({
-    source: checkApartmentExistingFx.doneData,
-    filter: (value) => value === null,
-  }),
-  fn: () => false,
-  target: splitPersonalNumber,
-});
-
-sample({
   clock: saveSplitPersonalNumberForm,
-  source: combine(
-    $apartment,
-    newApartmentPersonalNumberForm.fields.apartmentNumber.$value,
-    (apartment, apartmentNumber) => ({
-      housingStockId: apartment?.housingStock?.id!,
-      apartmentNumber: apartmentNumber!,
-    })
-  ),
-  target: checkApartmentExistingFx,
+  fn: (store, clock) => ({ ...store, useExistingApartment: clock } as any),
+  target: splitPersonalNumberFx,
 });
