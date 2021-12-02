@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const devUrl = 'https://transparent-staging.herokuapp.com/api';
+const devUrl = 'https://transparent-demo.herokuapp.com/';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
