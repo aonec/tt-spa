@@ -15,7 +15,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import { HousingStockListResponsePagedList } from 'myApi';
@@ -40,7 +40,7 @@ export const Search: React.FC = () => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useStreetAutocomplete(
+  const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
     existingStreets
   );

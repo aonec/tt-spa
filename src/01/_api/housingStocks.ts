@@ -1,6 +1,7 @@
 import {
   HousingStockListResponse,
   HousingStockResponse,
+  NumberIdResponse,
   StringPagedList,
 } from './../../myApi';
 import axios from '01/axios';
@@ -48,3 +49,20 @@ export const getExistingCities = async () => {
 
   return res.items;
 };
+
+export interface GetExistingHousingStockParams {
+  city?: string | null;
+  street?: string | null;
+}
+
+export const getExistingHousingStockNumbers = (
+  params: GetExistingHousingStockParams
+): Promise<NumberIdResponse[] | null> =>
+  axios.get(`HousingStocks/ExistingHousingStockNumber`, {
+    params,
+  });
+
+export const getExistingApartmentNumbers = (
+  housingStockId: number
+): Promise<NumberIdResponse[] | null> =>
+  axios.get(`HousingStocks/${housingStockId}/ExistingApartmentNumber`);
