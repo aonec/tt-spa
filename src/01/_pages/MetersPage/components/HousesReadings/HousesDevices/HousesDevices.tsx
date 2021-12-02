@@ -16,10 +16,7 @@ import {
   $housingStock,
   HousingStockGate,
 } from '01/features/housingStocks/displayHousingStock/models';
-import {
-  EResourceType,
-  IndividualDeviceListItemResponse,
-} from 'myApi';
+import { EResourceType, IndividualDeviceListItemResponse } from 'myApi';
 import { useMonthSlider } from '01/shared/lib/readings/useMonthSlider';
 import { useEffect } from 'react';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
@@ -50,8 +47,6 @@ const HousesDevices: React.FC = () => {
 
   useEffect(() => reset && reset(), [housingStockId]);
 
-  const deviceElemsList = devices;
-
   const renderDevice = (
     device: IndividualDeviceListItemResponse,
     index: number
@@ -59,7 +54,7 @@ const HousesDevices: React.FC = () => {
     <HouseReadingLine
       disabled={pendingDevices}
       sliderIndex={sliderIndex || 0}
-      numberOfPreviousReadingsInputs={deviceElemsList
+      numberOfPreviousReadingsInputs={devices
         .slice(0, index)
         .reduce(
           (acc, elem) => acc + getIndividualDeviceRateNumByName(elem.rateType),
@@ -78,26 +73,32 @@ const HousesDevices: React.FC = () => {
     );
   };
 
-  const deviceElems = deviceElemsList.map(renderDevice);
+  const deviceElems = devices.map(renderDevice);
 
   const elementRef = useRef();
 
   useEffect(() => {
-    const element = window;
-
     function onScrollDown(event: any) {
-      if (isAllDevicesDone) return;
+      if (pendingDevices) return;
 
       const element = event.target;
 
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      console.log(
+        Math.round(element.scrollHeight - element.scrollTop),
+        element.clientHeight
+      );
+
+      if (
+        element.scrollHeight - element.scrollTop - element.clientHeight <
+        250
+      ) {
         fetchNextPageOfIndividualDevices();
       }
     }
 
-    element.addEventListener('scroll', onScrollDown, true);
+    window.addEventListener('scroll', onScrollDown, true);
 
-    return () => element.removeEventListener('scroll', onScrollDown);
+    return () => window.removeEventListener('scroll', onScrollDown);
   }, []);
 
   const getHeight = () => {
@@ -107,9 +108,7 @@ const HousesDevices: React.FC = () => {
       return 100 + (num - 1) * 40;
     };
 
-    const sizes = devices.map(getDeviceHeight);
-
-    return sizes.reduce((acc, elem) => acc + elem, 0);
+    return devices.map(getDeviceHeight).reduce((acc, elem) => acc + elem, 0);
   };
 
   return (

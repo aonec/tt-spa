@@ -16,6 +16,7 @@ import { setApartmentStatus } from '01/_api/apartments';
 import { sample, combine, forward } from 'effector';
 import { EApartmentStatus } from 'myApi';
 import { FileData } from '01/hooks/useFilesUpload';
+import moment from 'moment';
 
 pauseApartmentStatusFx.use(setApartmentStatus);
 
@@ -48,8 +49,8 @@ const payload = combine(
   ): GetProblemDevicesRequestPayload => ({
     apartmentId,
     requestPayload: {
-      fromDate: values.fromDate,
-      toDate: values.toDate,
+      fromDate: moment(values.fromDate).format("YYYY-MM-DD"),
+      toDate: moment(values.toDate).format("YYYY-MM-DD"),
       status: EApartmentStatus.Pause,
       documentIds: values.documents
         .filter((elem) => elem.fileResponse)

@@ -1,4 +1,8 @@
 import {
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
+import {
   $existingStreets,
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
@@ -8,7 +12,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
 import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
@@ -17,8 +21,6 @@ import styled from 'styled-components';
 import { useRedirectBetweenMetersPages } from '../../hooks/useRedirectsBetweenMetersPages';
 import { fetchHousingStocksFx } from '../../models';
 import { useFilter, filterValuesInit } from './useFilter.hook';
-
-export const cities = ['Нижнекамск', 'Большое Афанасово', 'Красный Ключ'];
 
 export const HousingStockFilter = () => {
   const { filterFields, setValue, setFilterFields } = useFilter();
@@ -68,13 +70,16 @@ export const HousingStockFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useStreetAutocomplete(
+  const { match: streetMatch, options } = useAutocomplete(
     filterFields.Street,
     existingStreets
   );
 
+  const cities = useStore($existingCities);
+
   return (
     <FieldsWrap>
+      <ExistingCitiesGate />
       <ExistingStreetsGate City={filterFields.City} />
       <StyledSelector
         placeholder="Город"
@@ -83,7 +88,7 @@ export const HousingStockFilter = () => {
         ref={refs[0]}
         onKeyDown={(e) => onKeyDownHandler(e, 0)}
       >
-        {cities.map((city) => (
+        {cities?.map((city) => (
           <Select.Option value={city}>{city}</Select.Option>
         ))}
       </StyledSelector>

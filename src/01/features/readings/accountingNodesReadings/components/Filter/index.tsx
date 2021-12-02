@@ -5,16 +5,17 @@ import { StyledAutocomplete, StyledSelector } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { useRef } from 'react';
-import {
-  cities,
-  fromEnter,
-} from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
+import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import {
   $existingStreets,
   ExistingStreetsGate,
 } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useStore } from 'effector-react';
-import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import {
+  $existingCities,
+  ExistingCitiesGate,
+} from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const AccountingNodesFilter = () => {
   const { fields, submit } = useForm(accountingNodesFilterForm);
@@ -27,7 +28,7 @@ export const AccountingNodesFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useStreetAutocomplete(
+  const { match: streetMatch, options } = useAutocomplete(
     fields.street.value,
     existingStreets
   );
@@ -45,8 +46,11 @@ export const AccountingNodesFilter = () => {
   const clearValuesOnFocusCallback = (index: number) => () =>
     clearValuesOnFocus(index);
 
+  const cities = useStore($existingCities);
+
   return (
     <>
+      <ExistingCitiesGate />
       <ExistingStreetsGate City={fields.city.value} />
       <Grid temp="0.75fr 1.5fr 0.75fr" gap="15px">
         <StyledSelector
@@ -57,7 +61,7 @@ export const AccountingNodesFilter = () => {
           value={fields.city.value}
           onFocus={clearValuesOnFocusCallback(0)}
         >
-          {cities.map((elem, index) => (
+          {cities?.map((elem, index) => (
             <StyledSelector.Option key={index} value={elem}>
               {elem}
             </StyledSelector.Option>
@@ -99,7 +103,9 @@ export function useOnEnterSwitch(amount: number) {
   function onEnterHandler(index: number) {
     if (index === amount - 1) lastRef?.current?.blur();
 
-    refs[index + 1]?.current?.focus();
+    if (refs[index + 1]?.current?.focus) {
+      refs[index + 1]?.current?.focus();
+    }
   }
 
   const keyDownEnterGuardedHandler = (index: number) =>
