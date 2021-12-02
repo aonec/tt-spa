@@ -55,6 +55,7 @@ export const DatePickerNative: React.FC<Props> = ({
 
 const StyledInput = styled.input`
   ${({ searchStyle }: { searchStyle?: boolean }) =>
+  
     searchStyle
       ? `
       width: 130px;
