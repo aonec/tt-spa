@@ -39,7 +39,7 @@ export const SearchForm = () => {
   );
 
   function onSendHandler() {
-    if (fields.city && fields.street && fields.house) submit();
+    submit();
   }
 
   function clearValuesOnFocus(index: number) {
@@ -79,6 +79,7 @@ export const SearchForm = () => {
           onChange={fields.street.onChange}
           onKeyDown={(e) => {
             fromEnter(() => fields.street.onChange(streetMatch))(e);
+            fromEnter(onSendHandler)(e);
             keyDownEnterGuardedHandler(1)(e);
           }}
           onFocus={clearValuesOnFocusCallback(1)}
@@ -91,6 +92,7 @@ export const SearchForm = () => {
           ref={homeNumberRef}
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e) => {
+            fromEnter(onSendHandler)(e);
             keyDownEnterGuardedHandler(2)(e);
           }}
         />

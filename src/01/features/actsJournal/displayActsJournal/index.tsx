@@ -5,7 +5,11 @@ import { AddNewActForm } from './components/AddNewActForm';
 import { ApartmentActsList } from './components/ApartmentActsList';
 import { SearchForm } from './components/SearchForm';
 import { TableHeader } from './components/TableHeader';
-import { clearCreationActForms, createApartmentActFx } from './models';
+import {
+  clearCreationActForms,
+  createApartmentActFx,
+  ActJournalGate,
+} from './models';
 
 export const ApartmentActs = () => {
   useEffect(
@@ -18,6 +22,7 @@ export const ApartmentActs = () => {
 
   return (
     <Wrap>
+      <ActJournalGate />
       <SearchForm />
       <Space h={20} />
       <TableHeader />

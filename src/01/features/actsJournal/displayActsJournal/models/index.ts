@@ -8,6 +8,7 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { ApartmentActResponse } from 'myApi';
 import moment from 'moment';
+import { createGate } from 'effector-react';
 
 export type MayBe<T> = null | T;
 
@@ -77,3 +78,5 @@ export const expandedFilterForm = createForm({
     allowedActResources: { init: [] as EActResourceType[] },
   },
 });
+
+export const ActJournalGate = createGate();

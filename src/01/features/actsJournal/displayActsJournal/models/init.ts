@@ -1,4 +1,5 @@
 import {
+  ActJournalGate,
   clearCreationActForms,
   createActForm,
   createApartmentActFx,
@@ -26,7 +27,7 @@ $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
 sample({
   source: searchForm.$values,
-  clock: [searchForm.formValidated, refetchApartmentActs],
+  clock: [searchForm.formValidated, refetchApartmentActs, ActJournalGate.open],
   fn: (data) => ({
     City: data.city,
     Street: data.street,
@@ -64,21 +65,9 @@ sample({
   target: createApartmentActFx as any,
 });
 
-guard({
-  source: combine(
-    searchForm.$values,
-    addressSearchForm.$values,
-    (searchForm, creationSearchForm) => {
-      return (
-        searchForm.street === creationSearchForm.street &&
-        searchForm.house === creationSearchForm.house &&
-        searchForm.apartment === creationSearchForm.apartment
-      );
-    }
-  ),
-  clock: createApartmentActFx.done,
-  filter: (isSuccess) => isSuccess,
-  target: refetchApartmentActs,
+forward({
+  from: createApartmentActFx.done,
+  to: refetchApartmentActs,
 });
 
 forward({
