@@ -1,6 +1,7 @@
 import { Loader } from '01/components';
 import { AddressSearch } from '01/features/addressSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 import {
   StyledDatePicker,
   StyledInput,
@@ -101,15 +102,15 @@ export const AddNewActForm = () => {
         <AddressSearch
           firstInputRef={addressRef}
           onExit={() => {
-            (datePickerRef?.current as any)?.focus();
+            document.getElementById('act-journal-date-picker')?.focus();
           }}
         />
-        <StyledDatePicker
+        <DatePickerNative
+          searchStyle
           value={fields.actJobDate.value as any}
           onChange={fields.actJobDate.onChange as any}
           placeholder="Дата"
-          format="DD.MM.YYYY"
-          ref={datePickerRef}
+          id="act-journal-date-picker"
         />
       </Wrap>
       <ButtonWrap>
