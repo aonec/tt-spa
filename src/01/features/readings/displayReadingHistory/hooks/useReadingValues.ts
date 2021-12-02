@@ -1,4 +1,5 @@
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
+import { getReadingValuesArray } from './../utils';
 import { useParams } from 'react-router-dom';
 import {
   fetchReadingHistoryFx,
@@ -12,8 +13,7 @@ import {
 import { useStore } from 'effector-react';
 import { useEffect, useState } from 'react';
 import { $readingHistory } from '../models';
-import axios from '01/axios';
-import moment from 'moment';
+import rateTypeToNumber from '01/_api/utils/rateTypeToNumber';
 
 export type RequestStatusShared = 'pending' | 'done' | 'failed' | null;
 
@@ -27,8 +27,10 @@ export function useReadingHistoryValues() {
 
   const { deviceId } = params;
 
+  const device = useStore($individualDevice);
+
   const [uploadingReadingsStatuses, setUploadingReadingsStatuses] = useState<{
-    [date: string]: RequestStatusShared;
+    [key: string]: RequestStatusShared;
   }>({});
 
   const initialValues = useStore($readingHistory);
@@ -37,16 +39,9 @@ export function useReadingHistoryValues() {
     setBufferedValues(initialValues);
   }, [initialValues]);
 
-  async function deleteReading(id: number) {
-    try {
-      await axios.post(`IndividualDeviceReadings/${id}/remove`);
-      refetchReadingHistory(Number(deviceId));
-    } catch (error) {}
-  }
-
   const setFieldValue = (
     value: string,
-    address: { year: number; month: number; id: number | null; index: number }
+    address: { year: number; month: number; id: number; index: number }
   ) => {
     setBufferedValues((prev) => ({
       ...prev,
@@ -75,27 +70,51 @@ export function useReadingHistoryValues() {
     }));
   };
 
-  async function uploadReading(reading: IndividualDeviceReadingsCreateRequest) {
-    const date = moment(reading.readingDate);
-    const dateString = `${date.month() + 2}.${date.year()}`;
-
+  const setReadingUploadRequestStatus = (
+    id: string,
+    status: RequestStatusShared
+  ) =>
     setUploadingReadingsStatuses((prev) => ({
       ...prev,
-      [dateString]: 'pending',
+      [id]: status,
     }));
+
+  async function uploadReading(
+    reading: IndividualDeviceReadingsCreateRequest,
+    address: { year: number; month: number; id: number }
+  ) {
+    const current = getReadingValuesArray(
+      reading as any,
+      'value',
+      rateTypeToNumber(device?.rateType!)
+    ).join('');
+
+    const prev = getReadingValuesArray(
+      initialValues &&
+        (initialValues.yearReadings
+          ?.find((elem) => elem.year === address.year)
+          ?.monthReadings?.find((elem) => elem.month === address.month)
+          ?.readings?.find((elem) => elem.id === address.id) as any),
+      'value',
+      rateTypeToNumber(device?.rateType!)
+    )
+      .map((elem) => elem?.split(' ')[0])
+      .join('');
+
+    // проверка на изменение значений, если изменились, то инициируется отправка данных
+    if (current === prev) return;
+
+    const id = reading.readingDate;
+
+    setReadingUploadRequestStatus(id, 'pending');
+
     try {
       await createReading(reading);
       refetchReadingHistory(Number(deviceId));
 
-      setUploadingReadingsStatuses((prev) => ({
-        ...prev,
-        [dateString]: 'done',
-      }));
+      setReadingUploadRequestStatus(id, 'done');
     } catch (e) {
-      setUploadingReadingsStatuses((prev) => ({
-        ...prev,
-        [dateString]: 'failed',
-      }));
+      setReadingUploadRequestStatus(id, 'failed');
     }
   }
 
@@ -120,6 +139,5 @@ export function useReadingHistoryValues() {
     setFieldValue,
     uploadingReadingsStatuses,
     uploadReading,
-    deleteReading,
   };
 }

@@ -221,7 +221,7 @@ const MenuButtonWrap = styled.div`
   transform: scale(-0.7) translate(-5px, 5px);
 `;
 
-export const PersonalNumber = styled.div`
+const PersonalNumber = styled.div`
   cursor: pointer;
   color: black;
   ${({ isCurrent }) =>

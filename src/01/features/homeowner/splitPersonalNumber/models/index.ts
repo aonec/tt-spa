@@ -12,14 +12,6 @@ export const $splitPersonalNumberStageNumber = createStore<number>(1);
 
 export const setSplitPersonalNumberStage = createEvent<number>();
 
-export const $checkedExistingApartmentId = createStore<number | null>(null);
-
-export const $isConfirmExistingApartmentModalOpen = $checkedExistingApartmentId.map(
-  Boolean
-);
-
-export const closeConfirmExistingApartmentModal = createEvent();
-
 export const transferDevicesForm = createForm({
   fields: {
     individualDeviceIdsForSwitch: {
@@ -41,6 +33,12 @@ export const homeownerAccountForSplittedApartmentForm = createForm({
     },
     phoneNumber: {
       init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     openAt: {
       init: null as string | null,
@@ -62,6 +60,12 @@ export const homeownerAccountForSplittedApartmentForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     isMainAccountingNumber: {
       init: false,
@@ -91,6 +95,12 @@ export const newApartmentPersonalNumberForm = createForm({
     },
     phoneNumber: {
       init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     openAt: {
       init: null as string | null,
@@ -112,6 +122,12 @@ export const newApartmentPersonalNumberForm = createForm({
     },
     paymentCode: {
       init: null as number | null,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
     },
     isMainAccountingNumber: {
       init: false,
@@ -125,13 +141,3 @@ export const nextSplitPersonalNumberPage = createEvent();
 export const previousSplitPersonalNumberPage = createEvent();
 
 export const saveSplitPersonalNumberForm = createEvent<boolean>();
-
-export const checkApartmentExistingFx = createEffect<
-  {
-    housingStockId: number;
-    apartmentNumber: string;
-  },
-  number | null
->();
-
-export const splitPersonalNumber = createEvent<boolean>();

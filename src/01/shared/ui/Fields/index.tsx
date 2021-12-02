@@ -114,6 +114,7 @@ export const StyledDatePicker = styled(DatePicker)`
   transition: 0.2s;
 
   &:last-child {
+    margin-right: 10px;
   }
 
   border-radius: 4px;

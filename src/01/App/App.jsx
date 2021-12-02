@@ -42,7 +42,6 @@ import { DevicesFromSearch } from '../_pages/Devices';
 import '../features/init';
 import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
 import { StatisticsPage } from '01/features/statistics';
-import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 
 moment.locale('ru');
 
@@ -74,11 +73,6 @@ const Internal = () => {
                 exact
               />
               <Redirect from={'/tasks'} to="/tasks/executing" exact />
-
-              <Route path="/actsJournal" exact>
-                <ApartmentActs />
-              </Route>
-
               <Route
                 path="/tasks/(executing|observing|archived)/"
                 component={Tasks}

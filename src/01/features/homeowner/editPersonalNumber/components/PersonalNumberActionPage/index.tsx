@@ -40,7 +40,7 @@ export const PersonaNumberActionPage: React.FC<Props> = ({
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
-  const address = apartment && getApartmentAddressString(apartment);
+  const address = apartment && getHousingStockAddressString(apartment);
 
   return (
     <Wrap>
@@ -82,7 +82,7 @@ const Wrap = styled.div`
   max-width: 620px;
 `;
 
-export const getApartmentAddressString = (apartment: ApartmentResponse) => {
+export const getHousingStockAddressString = (apartment: ApartmentResponse) => {
   const housingStock = apartment.housingStock;
 
   return `${housingStock?.city} ул. ${housingStock?.street}, д. ${

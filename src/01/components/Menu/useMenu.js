@@ -18,12 +18,6 @@ export function useMenu() {
       hidden: ['ManagingFirmOperator'],
     },
     {
-      name: 'Журнал актов',
-      to: '/actsJournal/',
-      icon: 'act',
-      perm: ['ManagingFirmOperator'],
-    },
-    {
       name: 'Задачи',
       to: '/tasks/',
       icon: 'task',
@@ -56,7 +50,7 @@ export function useMenu() {
       perm: [],
     },
     {
-      name: 'Ввод показаний',
+      name: 'Ввод показаний ',
       to: '/meters/',
       icon: 'doc',
       perm: ['ManagingFirmOperator'],

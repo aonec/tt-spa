@@ -10,7 +10,6 @@ import { Space } from '../../../shared/ui/Layout/Space/Space';
 import { useHistory, Switch } from 'react-router-dom';
 import { useState } from 'react';
 import { SerialNumberSearch } from './SerialNumberSearch';
-import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
 
 export const Filter = () => {
   const { inputs, state } = useFilter();
@@ -81,7 +80,6 @@ export const Filter = () => {
             }
           `(
             <filter as="div">
-              <ExistingCitiesGate />
               <ExistingStreetsGate City={state.city} />
               {inputs.map((input, index) => (
                 <StyledAutocomplete
