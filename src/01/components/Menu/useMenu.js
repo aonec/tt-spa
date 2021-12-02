@@ -10,13 +10,13 @@ export function useMenu() {
       icon: 'username2',
       perm: ['all'],
     },
-    {
-      name: 'Статистика',
-      to: '/statistics/',
-      icon: 'statistics',
-      perm: ['all'],
-      hidden: ['ManagingFirmOperator'],
-    },
+    // {
+    //   name: 'Статистика',
+    //   to: '/statistics/',
+    //   icon: 'statistics',
+    //   perm: ['all'],
+    //   hidden: ['ManagingFirmOperator'],
+    // },
     {
       name: 'Журнал актов',
       to: '/actsJournal/',
