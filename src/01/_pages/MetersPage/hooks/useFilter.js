@@ -36,8 +36,9 @@ function filterReducer(state, action) {
 }
 
 export function useAutocomplete(street, streets) {
-  
-  if (street.toUpperCase() === 'ЛЕ') { street = 'лес' }
+  if (street.toUpperCase() === 'ЛЕ') {
+    street = 'лес';
+  }
 
   const matches =
     typeof street === 'string' && Array.isArray(streets)
@@ -138,7 +139,10 @@ export const useFilter = () => {
     callback();
   };
 
-  const { streetMatch, options } = useAutocomplete(state.street, streets);
+  const { options, bestMatch } = useAutocomplete(
+    state.street,
+    streets
+  );
 
   const cities = useStore($existingCities);
 
@@ -165,8 +169,8 @@ export const useFilter = () => {
         placeholder: 'Улица',
         onKeyDown: enterKeyDownHandler(
           () =>
-            streetMatch &&
-            dispatch({ type: 'change', payload: { street: streetMatch } })
+            bestMatch &&
+            dispatch({ type: 'change', payload: { street: bestMatch } })
         ),
         options: options,
       },
