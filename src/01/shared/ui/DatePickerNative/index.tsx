@@ -7,6 +7,8 @@ interface Props {
   onChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
+  id?: string;
+  searchStyle?: boolean;
 }
 
 export const DatePickerNative: React.FC<Props> = ({
@@ -14,6 +16,8 @@ export const DatePickerNative: React.FC<Props> = ({
   placeholder,
   onChange,
   disabled,
+  id,
+  searchStyle,
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString(true);
@@ -34,6 +38,8 @@ export const DatePickerNative: React.FC<Props> = ({
 
   return (
     <StyledInput
+      searchStyle={searchStyle}
+      id={id}
       disabled={disabled}
       onKeyDown={fromEnter((e) => isCurrentValueValid && e.target.blur())}
       onBlur={onChangeGlobal}
@@ -48,6 +54,40 @@ export const DatePickerNative: React.FC<Props> = ({
 };
 
 const StyledInput = styled.input`
+  ${({ searchStyle }: { searchStyle?: boolean }) =>
+  
+    searchStyle
+      ? `
+      width: 130px;
+      font-size: 13px;
+      padding-right: 5px;
+      color: #333333;
+  border: 1px solid lightgray;
+  padding-left: 10px;
+  transition: 0.2s;
+  align-items: center;
+  border-radius: 4px;
+
+  border: 1px solid var(--frame);
+  height: var(--h-norm);
+
+  box-shadow: 0 4px 7px #02004b1f;
+
+  &:hover,
+  &:focus {
+    border: 1px solid #1890ff;
+  }
+
+  ${({ focused }: { focused?: boolean }) =>
+    focused && `border: 1px solid #1890ff;`}
+
+  &:focus {
+    box-shadow: 0 4px 8px #188fff52;
+  }
+  
+  `
+      : `
+
   cursor: text;
   height: 48px;
   border: 1px solid #d9d9d9;
@@ -69,6 +109,7 @@ const StyledInput = styled.input`
   }
 
   padding: 10px 15px;
+  `}
 `;
 
 export const fromEnter = (callback: (e: any) => void) => (e: any) =>

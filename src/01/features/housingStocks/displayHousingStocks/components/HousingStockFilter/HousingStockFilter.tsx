@@ -12,7 +12,7 @@ import {
   StyledSelector,
 } from '01/shared/ui/Fields';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { useStreetAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
+import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
 import { useStore } from 'effector-react';
 import React, { useRef } from 'react';
@@ -70,7 +70,7 @@ export const HousingStockFilter = () => {
 
   const existingStreets = useStore($existingStreets);
 
-  const { streetMatch, options } = useStreetAutocomplete(
+  const { match: streetMatch, options } = useAutocomplete(
     filterFields.Street,
     existingStreets
   );

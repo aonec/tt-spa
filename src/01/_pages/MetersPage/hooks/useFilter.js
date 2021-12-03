@@ -35,9 +35,10 @@ function filterReducer(state, action) {
   }
 }
 
-export function useStreetAutocomplete(street, streets) {
-  
-  if (street.toUpperCase() === 'ЛЕ') { street = 'лес' }
+export function useAutocomplete(street, streets) {
+  if (street.toUpperCase() === 'ЛЕ') {
+    street = 'лес';
+  }
 
   const matches =
     typeof street === 'string' && Array.isArray(streets)
@@ -60,11 +61,14 @@ export function useStreetAutocomplete(street, streets) {
       .sort((a, b) => b.rating - a.rating)
       .map(({ target }) => ({ value: target })) || [];
 
-  const streetMatch = matchesArray[0]?.value;
+  const match = matchesArray[0]?.value;
+
+  const options = matchesArray?.length && street ? [matchesArray[0]] : [];
 
   return {
-    streetMatch,
-    options: matchesArray?.length && street ? [matchesArray[0]] : [],
+    match,
+    options,
+    bestMatch: options[0]?.value,
   };
 }
 
@@ -135,7 +139,10 @@ export const useFilter = () => {
     callback();
   };
 
-  const { streetMatch, options } = useStreetAutocomplete(state.street, streets);
+  const { options, bestMatch } = useAutocomplete(
+    state.street,
+    streets
+  );
 
   const cities = useStore($existingCities);
 
@@ -162,8 +169,8 @@ export const useFilter = () => {
         placeholder: 'Улица',
         onKeyDown: enterKeyDownHandler(
           () =>
-            streetMatch &&
-            dispatch({ type: 'change', payload: { street: streetMatch } })
+            bestMatch &&
+            dispatch({ type: 'change', payload: { street: bestMatch } })
         ),
         options: options,
       },
