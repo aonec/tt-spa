@@ -1,3 +1,4 @@
+import { $apartment } from '01/features/apartments/displayApartment/models';
 import { HousingStockAddress } from '01/features/individualDevices/addIndividualDevice/components/HousingStockAddress';
 import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
@@ -15,6 +16,7 @@ interface Props {
 
 export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
+  const address = useApartmentAddressString();
   return (
     <>
       <HeaderWrap
@@ -31,6 +33,8 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
               <DeviceDataString />
               <Space />
               <IsActiveBool active={device?.closingDate === null} />
+              <Space />
+              {address}
             </Flex>
           </div>
         </div>
@@ -38,3 +42,14 @@ export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
     </>
   );
 };
+
+export function useApartmentAddressString() {
+  const apartment = useStore($apartment);
+
+  return (
+    apartment &&
+    `ул. ${apartment.housingStock?.street}, д. ${apartment.housingStock?.number}${
+      apartment.housingStock?.corpus || ''
+    }, кв. ${apartment.apartmentNumber}`
+  );
+}
