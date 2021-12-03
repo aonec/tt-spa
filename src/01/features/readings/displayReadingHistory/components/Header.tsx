@@ -17,7 +17,9 @@ interface Props {
 
 export const ReadingHistoryHeader: React.FC<Props> = ({ isModal }) => {
   const device = useStore($individualDevice);
+  
   const address = useApartmentAddressString();
+
   const checkingDates = useDeviceCheckingDates();
 
   return (
