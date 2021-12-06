@@ -17,12 +17,12 @@ export function useMenu() {
       perm: ['all'],
       hidden: ['ManagingFirmOperator'],
     },
-    // {
-    //   name: 'Журнал актов',
-    //   to: '/actsJournal/',
-    //   icon: 'act',
-    //   perm: ['ManagingFirmOperator'],
-    // },
+    {
+      name: 'Журнал актов',
+      to: '/actsJournal/',
+      icon: 'act',
+      perm: ['ManagingFirmOperator'],
+    },
     {
       name: 'Задачи',
       to: '/tasks/',
