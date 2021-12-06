@@ -22,7 +22,6 @@ export const ApartmentActs = () => {
 
   return (
     <Wrap>
-      <ActJournalGate />
       <SearchForm />
       <Space h={20} />
       <TableHeader />

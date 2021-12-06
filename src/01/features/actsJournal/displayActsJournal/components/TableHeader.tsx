@@ -9,7 +9,9 @@ import { $actResources } from '../../displayActResources/models';
 import { ActOrderFieldName, expandedFilterForm, searchForm } from '../models';
 import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
-import { useState } from 'react';
+import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
+import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
+import { EOrderByRule } from 'myApi';
 
 export const TableHeader = () => {
   const columnTitles = [
@@ -41,12 +43,36 @@ export const TableHeader = () => {
 };
 
 const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
-  const form = useState(searchForm);
+  const { fields } = useForm(searchForm);
+
+  const field = fields[name];
+
+  const value = field.value;
+  const onChange = field.onChange;
+
+  function onClickHandler() {
+    console.log('click');
+
+    onChange(
+      value === null
+        ? EOrderByRule.Descending
+        : value === EOrderByRule.Descending
+        ? EOrderByRule.Ascending
+        : null
+    );
+  }
+
+  const Icon =
+    value === null
+      ? SortIcon
+      : value === EOrderByRule.Ascending
+      ? SortIconBottom
+      : SortIconTop;
 
   return (
-    <>
-      <SortIcon style={{ fill: 'black !important' }} />
-    </>
+    <div onClick={onClickHandler} style={{ cursor: 'pointer' }}>
+      <Icon />
+    </div>
   );
 };
 
@@ -145,6 +171,7 @@ export const gridTemp = '0.63fr 0.7fr 1.4fr 0.7fr 2.1fr 0.85fr';
 const Wrap = styled(Grid)`
   background: #f3f5f6;
   padding: 15px 0 15px 15px;
+  user-select: none;
 `;
 
 const Title = styled.div`

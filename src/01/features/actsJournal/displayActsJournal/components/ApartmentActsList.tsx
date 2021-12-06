@@ -17,6 +17,7 @@ import {
   ActJournalGate,
   expandedFilterForm,
   fetchApartmentActsFx,
+  searchForm,
   setActJournalPageNumber,
 } from '../models';
 import { DocDate } from './AddNewActForm';
@@ -24,7 +25,6 @@ import { gridTemp } from './TableHeader';
 import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.svg';
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
-import { useState } from 'react';
 
 const pageSize = 50;
 
@@ -41,6 +41,8 @@ export const ApartmentActsList = () => {
   const acts = useStore($apartmentActs);
   const actTypes = useStore($actTypes);
   const actResources = useStore($actResources);
+
+  const { fields } = useForm(searchForm);
 
   const renderAct = (act: ApartmentActResponse) => {
     const actType = actTypes?.find((elem) => elem.key === act.actType)?.value;
@@ -80,6 +82,10 @@ export const ApartmentActsList = () => {
         ActResourceTypes={allowedActResources.value}
         PageNumber={pageNumber}
         PageSize={pageSize}
+        ActDateOrderBy={fields.ActDateOrderBy.value}
+        ActJobDateOrderBy={fields.ActJobDateOrderBy.value}
+        RegistryNumberOrderBy={fields.RegistryNumberOrderBy.value}
+        AddressOrderBy={fields.AddressOrderBy.value}
       />
       <PendingLoader loading={pending} skeleton>
         {acts?.length === 0 && (
