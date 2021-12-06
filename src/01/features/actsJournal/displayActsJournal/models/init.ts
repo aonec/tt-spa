@@ -26,13 +26,23 @@ createApartmentActFx.use(addApartmentActs);
 $apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
 sample({
-  source: searchForm.$values,
-  clock: [searchForm.formValidated, refetchApartmentActs, ActJournalGate.open],
-  fn: (data) => ({
+  source: combine(
+    searchForm.$values,
+    ActJournalGate.state,
+    (formValues, filterSortState) => ({ formValues, filterSortState })
+  ),
+  clock: [
+    searchForm.formValidated,
+    refetchApartmentActs,
+    ActJournalGate.open,
+    ActJournalGate.state,
+  ],
+  fn: ({ formValues: data, filterSortState }) => ({
     City: data.city,
     Street: data.street,
     HousingStockNumber: data.house,
     ApartmentNumber: data.apartment,
+    ...filterSortState,
   }),
   target: fetchApartmentActsFx as any,
 });

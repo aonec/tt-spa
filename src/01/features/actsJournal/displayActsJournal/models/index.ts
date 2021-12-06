@@ -79,4 +79,4 @@ export const expandedFilterForm = createForm({
   },
 });
 
-export const ActJournalGate = createGate();
+export const ActJournalGate = createGate<ApartmentActPaginationParameters>();
