@@ -1,10 +1,12 @@
 import {
+  $actJournalPageNumber,
   $apartmentActsPaged,
   ActJournalGate,
   clearCreationActForms,
   createActForm,
   createApartmentActFx,
   refetchApartmentActs,
+  setActJournalPageNumber,
 } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
@@ -24,6 +26,8 @@ fetchApartmentActsFx.use(getApartmentActs);
 createApartmentActFx.use(addApartmentActs);
 
 $apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
+
+$actJournalPageNumber.on(setActJournalPageNumber, (_, value) => value);
 
 sample({
   source: combine(
@@ -51,8 +55,6 @@ sample({
         ? filterSortState.ActResourceTypes
         : null,
     };
-
-    console.log(requestPayload);
 
     return requestPayload;
   },

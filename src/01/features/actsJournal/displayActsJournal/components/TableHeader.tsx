@@ -6,22 +6,23 @@ import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
 import { Checkbox } from 'antd';
 import { $actResources } from '../../displayActResources/models';
-import { expandedFilterForm } from '../models';
+import { ActOrderFieldName, expandedFilterForm, searchForm } from '../models';
 import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
+import { useState } from 'react';
 
 export const TableHeader = () => {
   const columnTitles = [
-    { text: 'Дата акта', extended: <SortButton /> },
-    { text: '№ док', extended: <SortButton /> },
+    { text: 'Дата акта', extended: <SortButton name="ActDateOrderBy" /> },
+    { text: '№ док', extended: <SortButton name="RegistryNumberOrderBy" /> },
     { text: 'Тип документа', extended: <TypeDocumentExtendedSearch /> },
     { text: 'Ресурс', extended: <ResourceExtendedSearch /> },
-    { text: 'Адрес', extended: <SortButton /> },
+    { text: 'Адрес', extended: <SortButton name="AddressOrderBy" /> },
     {
       text: 'Дата работ',
       extended: (
         <div style={{ margin: '0 15px 0 0' }}>
-          <SortButton />
+          <SortButton name="ActJobDateOrderBy" />
         </div>
       ),
     },
@@ -39,10 +40,12 @@ export const TableHeader = () => {
   );
 };
 
-const SortButton = () => {
+const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
+  const form = useState(searchForm);
+
   return (
     <>
-      <SortIcon />
+      <SortIcon style={{ fill: 'black !important' }} />
     </>
   );
 };

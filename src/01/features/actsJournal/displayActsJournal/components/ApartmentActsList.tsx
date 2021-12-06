@@ -11,11 +11,13 @@ import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
 import { $actTypes } from '../../displayActTypes/models';
 import {
+  $actJournalPageNumber,
   $apartmentActs,
   $apartmentActsPaged,
   ActJournalGate,
   expandedFilterForm,
   fetchApartmentActsFx,
+  setActJournalPageNumber,
 } from '../models';
 import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
@@ -32,7 +34,7 @@ export const ApartmentActsList = () => {
     fields: { allowedActResources, allowedActTypes },
   } = useForm(expandedFilterForm);
 
-  const [pageNumber, setPageNumber] = useState(1);
+  const pageNumber = useStore($actJournalPageNumber);
 
   const actsPagedData = useStore($apartmentActsPaged);
 
@@ -99,7 +101,7 @@ export const ApartmentActsList = () => {
           current={pageNumber}
           total={actsPagedData.totalItems}
           pageSize={pageSize}
-          onChange={(value) => setPageNumber(value)}
+          onChange={(value) => setActJournalPageNumber(value)}
         />
       )}
     </Wrap>
