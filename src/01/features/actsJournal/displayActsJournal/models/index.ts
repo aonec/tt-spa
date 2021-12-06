@@ -3,6 +3,7 @@ import {
   EActResourceType,
   EOrderByRule,
   AddApartmentActRequest,
+  ApartmentActResponsePagedList,
 } from './../../../../../myApi';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
@@ -16,7 +17,13 @@ export const formField = <T>(): null | T => null;
 
 export const ff = formField;
 
-export const $apartmentActs = createStore<ApartmentActResponse[] | null>(null);
+export const $apartmentActsPaged = createStore<ApartmentActResponsePagedList | null>(
+  null
+);
+
+export const $apartmentActs = $apartmentActsPaged.map(
+  (pagedData) => pagedData?.items
+);
 
 export interface ApartmentActPaginationParameters {
   City?: string | null;
@@ -37,7 +44,7 @@ export interface ApartmentActPaginationParameters {
 
 export const fetchApartmentActsFx = createEffect<
   ApartmentActPaginationParameters,
-  ApartmentActResponse[] | null
+  ApartmentActResponsePagedList | null
 >();
 
 export const searchForm = createForm({

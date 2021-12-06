@@ -21,12 +21,12 @@ export const getActResources = (): Promise<
 
 export const getApartmentActs = async (
   params: ApartmentActPaginationParameters
-): Promise<ApartmentActResponse[] | null> => {
+): Promise<ApartmentActResponsePagedList | null> => {
   const res: ApartmentActResponsePagedList = await axios.get('ApartmentActs', {
     params,
   });
 
-  return res.items;
+  return res;
 };
 
 export const addApartmentActs = (

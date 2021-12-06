@@ -1,4 +1,5 @@
 import {
+  $apartmentActsPaged,
   ActJournalGate,
   clearCreationActForms,
   createActForm,
@@ -7,9 +8,8 @@ import {
 } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
-import { combine, forward, sample, guard } from 'effector';
+import { combine, forward, sample } from 'effector';
 import {
-  $apartmentActs,
   clearCreationActFormValues,
   fetchApartmentActsFx,
   searchForm,
@@ -23,7 +23,8 @@ fetchApartmentActsFx.use(getApartmentActs);
 
 createApartmentActFx.use(addApartmentActs);
 
-$apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
+$apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
+
 
 sample({
   source: combine(
