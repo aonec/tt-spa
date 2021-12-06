@@ -13,9 +13,7 @@ import styled, { css } from 'styled-components';
 import * as Yup from 'yup';
 
 export const Example = () => {
-  const handleSubmit = (values: any) => {
-    console.log('values', values);
-  };
+  const handleSubmit = (values: any) => {};
 
   return (
     <Formik

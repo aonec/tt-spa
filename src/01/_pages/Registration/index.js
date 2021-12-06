@@ -13,9 +13,7 @@ import { AccessDeniedPage } from '../AccessDeniedPage';
 
 export const Registration = () => {
   const parsedSearch = queryString.parse(window.location.search);
-  // console.log(parsedSearch);
   const { token } = parsedSearch;
-  // console.log(token);
 
   const {
     handleSubmit,
@@ -37,7 +35,6 @@ export const Registration = () => {
         .required('Подтвердите пароль'),
     }),
     onSubmit: async () => {
-      console.log('accessToken', token);
       const form = {
         token,
         password: values.password,

@@ -49,7 +49,6 @@ export const Tasks = () => {
   const { items, executingTasksCount, observingTasksCount } = useTasks(
     debouncedSearchState
   );
-  console.log(useTasks(debouncedSearchState));
   return (
     <div style={{ maxWidth: 960 }}>
       <h1 style={{ fontWeight: 300, marginBottom: 16 }}>Задачи</h1>

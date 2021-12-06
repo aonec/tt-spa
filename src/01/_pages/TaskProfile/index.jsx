@@ -38,7 +38,6 @@ function reducer(state, action) {
       };
     // вернуть этап
     case 'push_stage':
-      // console.log("stagedata", data)
       return {
         ...state,
         stageData: { data, move: 'push' },
@@ -54,7 +53,6 @@ function reducer(state, action) {
 export const TaskProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   usePageFetch(state, dispatch);
-  console.log('state', state);
   const panel = usePanel(state, dispatch);
   // панель действий
   const stages = useStages(state, dispatch);

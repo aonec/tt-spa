@@ -18,7 +18,6 @@ export const Panel = React.memo(
     wrapper,
   }) => {
     if (!showPanel) return null;
-    // console.log(wrapper)
     const { email, document } = wrapper;
     return styled(
       styles,

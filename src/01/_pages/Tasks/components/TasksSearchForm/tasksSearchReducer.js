@@ -4,7 +4,6 @@ const SET_TASKS_TYPE = 'SET_TASKS_TYPE';
 const SET_TASK_ID = 'SET_TASK_ID';
 
 const tasksSearchReducer = (state, action) => {
-  console.log('action', action);
   switch (action.type) {
     case SET_SEARCHTERM:
       return { ...state, searchTerm: action.searchTerm };

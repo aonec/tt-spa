@@ -47,11 +47,11 @@ axios.interceptors.response.use(
       const { config } = error;
       return new Promise((resolve, reject) => {
         axios.post('/auth/refreshToken').then(
-          () => resolve(axios(config)),
-          () => {
-            localStorage.clear();
-            window.location.replace('/login');
-          }
+          () => resolve(axios(config))
+          // () => {
+          //   localStorage.clear();
+          //   window.location.replace('/login');
+          // }
         );
       });
     }

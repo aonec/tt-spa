@@ -42,7 +42,7 @@ export const useFetch = (config) => {
   const { replace } = useHistory();
 
   useEffect(() => {
-    axios(config).then(console.log);
+    axios(config);
   }, [config]);
 
   return data;

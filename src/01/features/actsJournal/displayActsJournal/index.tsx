@@ -8,7 +8,6 @@ import { TableHeader } from './components/TableHeader';
 import {
   clearCreationActForms,
   createApartmentActFx,
-  ActJournalGate,
 } from './models';
 
 export const ApartmentActs = () => {

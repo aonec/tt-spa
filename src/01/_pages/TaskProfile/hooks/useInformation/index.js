@@ -50,8 +50,6 @@ export const useInformation = (state = {}) => {
   };
 };
 
-function createInfoHeader(state = {}) {
-  // console.log("state", state)
-}
+function createInfoHeader(state = {}) {}
 
 export default useInformation;

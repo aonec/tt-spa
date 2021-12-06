@@ -58,7 +58,6 @@ const ModalCommonReport = ({ visible, setVisible }: ModalInterface) => {
     };
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
     };
 
     const onPeriodChange = (event: any) => {

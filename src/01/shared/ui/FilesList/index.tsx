@@ -109,8 +109,6 @@ export const FilesList: React.FC<Props> = ({
 
     const content = components[controlType];
 
-    console.log(controlType, components, content);
-
     return <ControlPanelWrap>{content}</ControlPanelWrap>;
   };
 

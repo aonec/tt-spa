@@ -36,9 +36,9 @@ export const EditNode = () => {
   }, [nodeId]);
 
   useEffect(() => {
-    node && node.calculatorId
-      ? runCalculator(getCalculator(node.calculatorId))
-      : console.log('wait');
+    node &&
+      node.calculatorId &&
+      runCalculator(getCalculator(node.calculatorId));
   }, [node]);
 
   function handleChangeTab(value: string) {

@@ -11,13 +11,10 @@ import { Loader } from '../../components/Loader';
 
 export const UserProfile = () => {
   const { userId } = useParams();
-  console.log('userId', userId);
 
-  console.log('UserProfile');
   const [user, setUser] = useState();
   useEffect(() => {
     getManagingFirmUsers(userId).then((res) => {
-      console.log('ressss', res);
       setUser(res);
     });
 

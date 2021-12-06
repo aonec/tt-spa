@@ -83,11 +83,6 @@ const HousesDevices: React.FC = () => {
 
       const element = event.target;
 
-      console.log(
-        Math.round(element.scrollHeight - element.scrollTop),
-        element.clientHeight
-      );
-
       if (
         element.scrollHeight - element.scrollTop - element.clientHeight <
         250

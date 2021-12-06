@@ -5,7 +5,6 @@ import { ReportContext } from '../index';
 import { InputTT, SelectTT } from '../../../../../../tt-components';
 
 export const Uzel = () => {
-  console.log('Uzel');
   const {
     street,
     housingStockNumber,
@@ -15,13 +14,9 @@ export const Uzel = () => {
     handleSomeChange,
   } = useContext(ReportContext);
 
-  console.log('selectOptions', selectOptions);
-  console.log('type', type);
-
   const modifiedSelectOptions = selectOptions.filter(
     (option) => option.resource == type
   );
-  console.log('modifiedSelectOptions', modifiedSelectOptions);
 
   {
     return (
@@ -43,7 +38,6 @@ export const Uzel = () => {
 };
 
 export const Top = () => {
-  console.log('Top');
   return (
     <>
       <DevicesListDiv />

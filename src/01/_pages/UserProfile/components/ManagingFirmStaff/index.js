@@ -28,7 +28,6 @@ const ManagingFirmStaff = (props) => {
   const currentUserRoleIds = _.find(UserRoles, { value: userRoleIds[0] }).value;
 
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  console.log('currentUser', currentUser);
 
   const {
     handleSubmit,
@@ -69,8 +68,6 @@ const ManagingFirmStaff = (props) => {
       };
 
       putManagingFirmUsersCurrent(id, form);
-      console.log('DONE', form);
-      console.log('JSON', JSON.stringify(form));
     },
   });
 
@@ -97,15 +94,9 @@ const ManagingFirmStaff = (props) => {
 
   const isTrue = (array, id) => array.find((item) => item === id);
 
-  // const isAdministrator = currentUser.userRoleIds.find((item) => item === 1334533);
-
   const isAdministrator = isTrue(currentUser.userRoleIds, 1334533);
 
-  console.log('isAdministrator', isAdministrator);
-
   const disabled = isAdministrator === undefined ? true : false;
-
-  console.log('disabled', disabled);
 
   return (
     <div>
