@@ -55,9 +55,9 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
 
     onChange(
       value === null
-        ? EOrderByRule.Descending
-        : value === EOrderByRule.Descending
         ? EOrderByRule.Ascending
+        : value === EOrderByRule.Ascending
+        ? EOrderByRule.Descending
         : null
     );
   }
@@ -66,8 +66,8 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
     value === null
       ? SortIcon
       : value === EOrderByRule.Ascending
-      ? SortIconBottom
-      : SortIconTop;
+      ? SortIconTop
+      : SortIconBottom;
 
   return (
     <div onClick={onClickHandler} style={{ cursor: 'pointer' }}>
