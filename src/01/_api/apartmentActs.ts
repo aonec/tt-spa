@@ -3,9 +3,9 @@ import {
   ApartmentActPaginationParameters,
   MayBe,
 } from '01/features/actsJournal/displayActsJournal/models';
+import { formQueryString } from '01/utils/formQueryString';
 import {
   AddApartmentActRequest,
-  ApartmentActResponse,
   ApartmentActResponsePagedList,
   EActResourceTypeStringDictionaryItem,
   EActTypeStringDictionaryItem,
@@ -21,12 +21,12 @@ export const getActResources = (): Promise<
 
 export const getApartmentActs = async (
   params: ApartmentActPaginationParameters
-): Promise<ApartmentActResponse[] | null> => {
-  const res: ApartmentActResponsePagedList = await axios.get('ApartmentActs', {
-    params,
-  });
+): Promise<ApartmentActResponsePagedList | null> => {
+  const res: ApartmentActResponsePagedList = await axios.get(
+    `ApartmentActs${formQueryString(params)}`
+  );
 
-  return res.items;
+  return res;
 };
 
 export const addApartmentActs = (

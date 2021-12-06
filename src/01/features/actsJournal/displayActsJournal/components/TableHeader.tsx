@@ -6,17 +6,28 @@ import { useStore } from 'effector-react';
 import { $actTypes } from '../../displayActTypes/models';
 import { Checkbox } from 'antd';
 import { $actResources } from '../../displayActResources/models';
-import { expandedFilterForm } from '../models';
+import { ActOrderFieldName, expandedFilterForm, searchForm } from '../models';
 import { useForm } from 'effector-forms/dist';
+import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
+import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
+import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
+import { EOrderByRule } from 'myApi';
 
 export const TableHeader = () => {
   const columnTitles = [
-    { text: 'Дата документа' },
-    { text: '№ док' },
+    { text: 'Дата акта', extended: <SortButton name="ActDateOrderBy" /> },
+    { text: '№ док', extended: <SortButton name="RegistryNumberOrderBy" /> },
     { text: 'Тип документа', extended: <TypeDocumentExtendedSearch /> },
     { text: 'Ресурс', extended: <ResourceExtendedSearch /> },
-    { text: 'Адрес' },
-    { text: 'Дата работ' },
+    { text: 'Адрес', extended: <SortButton name="AddressOrderBy" /> },
+    {
+      text: 'Дата работ',
+      extended: (
+        <div style={{ margin: '0 15px 0 0' }}>
+          <SortButton name="ActJobDateOrderBy" />
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -28,6 +39,40 @@ export const TableHeader = () => {
         </Title>
       ))}
     </Wrap>
+  );
+};
+
+const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
+  const { fields } = useForm(searchForm);
+
+  const field = fields[name];
+
+  const value = field.value;
+  const onChange = field.onChange;
+
+  function onClickHandler() {
+    console.log('click');
+
+    onChange(
+      value === null
+        ? EOrderByRule.Ascending
+        : value === EOrderByRule.Ascending
+        ? EOrderByRule.Descending
+        : null
+    );
+  }
+
+  const Icon =
+    value === null
+      ? SortIcon
+      : value === EOrderByRule.Ascending
+      ? SortIconTop
+      : SortIconBottom;
+
+  return (
+    <div onClick={onClickHandler} style={{ cursor: 'pointer' }}>
+      <Icon />
+    </div>
   );
 };
 
@@ -47,7 +92,10 @@ const ResourceExtendedSearch = () => {
   `;
 
   return (
-    <FilterButton onClear={() => allowedActResources.onChange([])}>
+    <FilterButton
+      onClear={() => allowedActResources.onChange([])}
+      active={allowedActResources.value.length !== 0}
+    >
       {resources?.map((elem) => {
         const checked = allowedActResources.value.includes(elem.key!);
         return (
@@ -88,7 +136,10 @@ const TypeDocumentExtendedSearch = () => {
   `;
 
   return (
-    <FilterButton onClear={() => allowedActTypes.onChange([])}>
+    <FilterButton
+      onClear={() => allowedActTypes.onChange([])}
+      active={allowedActTypes.value.length !== 0}
+    >
       {actTypes?.map((elem) => {
         const checked = allowedActTypes.value.includes(elem.key!);
 
@@ -120,6 +171,7 @@ export const gridTemp = '0.63fr 0.7fr 1.4fr 0.7fr 2.1fr 0.85fr';
 const Wrap = styled(Grid)`
   background: #f3f5f6;
   padding: 15px 0 15px 15px;
+  user-select: none;
 `;
 
 const Title = styled.div`
