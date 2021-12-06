@@ -99,9 +99,7 @@ const HousingChangeForm = () => {
         .required('Введите данные'),
       calculatorId: Yup.string().required('Выберите вычислитель'),
     }),
-    onSubmit: () => {
-      console.log('DONE!');
-    },
+    onSubmit: () => {},
   });
 
   function isDisabled(value) {
@@ -169,7 +167,6 @@ const HousingChangeForm = () => {
     };
 
     putOdpu(selected.id, putDeviceForm).then((res) => {
-      console.log('res', res);
       pushStage(taskId, form);
     });
   }
@@ -182,8 +179,12 @@ const HousingChangeForm = () => {
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       lastCheckingDate: values.lastCheckingDate.toISOString(true),
       futureCheckingDate: values.futureCheckingDate.toISOString(true),
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
-      futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
+      lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
+        true
+      ),
+      futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
+        true
+      ),
       closingDate: moment().toISOString(true),
     };
 

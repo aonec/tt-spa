@@ -104,8 +104,12 @@ const AddDeviceForm = (props: any) => {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate.toISOString(true),
         futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
+          true
+        ),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
@@ -132,7 +136,6 @@ const AddDeviceForm = (props: any) => {
           }
         );
 
-        console.log('newCommunicationPipes', newCommunicationPipes);
         setCommunicationPipes(newCommunicationPipes);
       } else {
         const communicationPipe = {
@@ -207,14 +210,9 @@ const AddDeviceForm = (props: any) => {
       const getDevices = _.find(communicationPipes, {
         number: values.pipeNumber,
       });
-      // console.log('getDevices', getDevices);
       const isSameType = _.find(getDevices.devices, {
         housingMeteringDeviceType: values.housingMeteringDeviceType,
       });
-      console.log('isSameType', isSameType);
-      isSameType
-        ? console.log('на трубе уже есть утстройство такого типа')
-        : console.log('на трубе НЕТ утстройство такого типа');
       isSameType
         ? setFieldValue('isAllowed', false)
         : setFieldValue('isAllowed', true);

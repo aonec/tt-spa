@@ -31,7 +31,6 @@ export const MapObject = () => {
   ];
 
   const [show, setShow] = useState(false);
-  // console.log('show', show);
 
   if (object?.id === 226) {
     return (

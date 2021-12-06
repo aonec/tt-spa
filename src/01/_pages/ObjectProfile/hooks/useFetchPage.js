@@ -18,7 +18,6 @@ export const useFetchPage = (state, dispatch) => {
 
   React.useEffect(() => {
     const { id, info, events, devices } = state;
-    console.log(isExact, url, state, pageDevice, pageApart, replace);
     if (isExact && !info) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
     }

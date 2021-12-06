@@ -51,7 +51,6 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
   const onChange = field.onChange;
 
   function onClickHandler() {
-    console.log('click');
 
     onChange(
       value === null

@@ -7,7 +7,6 @@ export async function confirmRegistration(form) {
     alert('Успешная попытка подтверждения пользователя');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка подтверждения пользователя',

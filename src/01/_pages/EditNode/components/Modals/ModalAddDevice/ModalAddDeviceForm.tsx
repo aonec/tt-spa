@@ -244,9 +244,7 @@ const ModalAddDeviceForm = ({
                         : setValidationSchema(
                             validationSchemaTemperatureSensor
                           );
-                      value !== 'FlowMeter'
-                        ? setFieldValue('diameter', null)
-                        : console.log(values.diameter);
+                      value !== 'FlowMeter' && setFieldValue('diameter', null);
                       coldWaterValidation(value);
                     }}
                   />

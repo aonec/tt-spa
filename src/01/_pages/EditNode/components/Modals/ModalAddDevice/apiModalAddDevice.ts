@@ -9,7 +9,6 @@ export async function addHousingMeteringDevice(
     alert('ОДПУ успешно создан !');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'device',
       message: 'Произошла ошибка добавления ОДПУ',

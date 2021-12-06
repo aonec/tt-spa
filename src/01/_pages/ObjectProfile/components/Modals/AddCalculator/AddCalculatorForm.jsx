@@ -27,7 +27,6 @@ import { isEmptyString } from '../../../../../utils/isEmptyString';
 import { AddCalculatorContext } from './index';
 
 const AddCalculatorForm = (props) => {
-  console.log('props', props);
   const { housingStockId, handleCancel, setAddCalculator } = props;
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
@@ -80,8 +79,6 @@ const AddCalculatorForm = (props) => {
         housingStockId: values.housingStockId,
         infoId: values.infoId,
       };
-      console.log('form', form);
-      console.log(JSON.stringify(form));
       // addCalculator(form);
       addCalculator(form).then(({ show, id }) => {
         if (show === true) {
@@ -108,8 +105,6 @@ const AddCalculatorForm = (props) => {
   }
 
   useEffect(() => {
-    // setEmpty(isEmptyConnection());
-    console.log('Правда, что все строки пустые:?', isEmptyConnection());
 
     if (values.isConnected === false) {
       if (isEmptyConnection() === true) {
@@ -154,7 +149,6 @@ const AddCalculatorForm = (props) => {
   ];
 
   function handleNext() {
-    console.log('12345');
     setTab(String(Number(currentTabKey) + 1));
   }
 

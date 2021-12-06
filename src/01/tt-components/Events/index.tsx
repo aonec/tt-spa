@@ -12,9 +12,7 @@ export interface EventsInterface {
 }
 
 export const Events = ({ title = '', tasks = [] }: EventsInterface) => {
-  const buttonHandler = () => {
-    console.log('buttonHandler');
-  };
+  const buttonHandler = () => {};
 
   const Tasks = (tasks || []).map((task, index) => {
     const { currentStage, perpetrator, id } = task;

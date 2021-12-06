@@ -71,7 +71,6 @@ export const NodeProfile = () => {
     title: 'Ввод показаний',
     key: 'readings',
     cb: () => {
-      console.log('readings');
       push(`${path}/readings`);
     },
   };

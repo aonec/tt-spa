@@ -85,7 +85,6 @@ export const NodeRelatedDevices = ({
               icon="del"
               style={{ marginLeft: 8, cursor: 'pointer' }}
               onClick={() => {
-                console.log('del');
                 if (setDeregisterDeviceValue) {
                   getHousingMeteringDevice(id).then((res) => {
                     setDeregisterDeviceValue(res);
