@@ -11,14 +11,13 @@
   --main-32: rgba(var(--main), 0.32);
   --main-4: rgba(var(--main), 0.04);
 
-
   /*синий*/
   --primary: 24, 158, 233;
   --primary-100: rgb(var(--primary));
   --primary-16: rgba(var(--primary), 0.16);
 
   /*черный*/
-  --standart: #272F5A;
+  --standart: #272f5a;
 
   /*красный*/
   --error: #fc525b;
@@ -182,4 +181,12 @@ input[type='file'] {
 
 sup {
   font-size: 8px;
+}
+
+.ant-pagination-item,
+.ant-pagination-item-link,
+.ant-pagination-options-quick-jumper input {
+  border: 0 !important;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 6px !important;
 }

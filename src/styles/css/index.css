@@ -3,3 +3,9 @@
 @import './base.css';
 @import './button.css';
 @import './input.css';
+
+.ant-pagination-item {
+  border: 0 !important;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 6px !important;
+}

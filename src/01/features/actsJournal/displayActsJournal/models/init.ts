@@ -25,7 +25,6 @@ createApartmentActFx.use(addApartmentActs);
 
 $apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
-
 sample({
   source: combine(
     searchForm.$values,
@@ -38,13 +37,26 @@ sample({
     ActJournalGate.open,
     ActJournalGate.state,
   ],
-  fn: ({ formValues: data, filterSortState }) => ({
-    City: data.city,
-    Street: data.street,
-    HousingStockNumber: data.house,
-    ApartmentNumber: data.apartment,
-    ...filterSortState,
-  }),
+  fn: ({ formValues: data, filterSortState }) => {
+    const requestPayload = {
+      City: data.city,
+      Street: data.street,
+      HousingStockNumber: data.house,
+      ApartmentNumber: data.apartment,
+      ...filterSortState,
+      ActTypes: filterSortState.ActTypes?.length
+        ? filterSortState.ActTypes
+        : null,
+      ActResourceTypes: filterSortState.ActResourceTypes?.length
+        ? filterSortState.ActResourceTypes
+        : null,
+    };
+
+    console.log(requestPayload);
+
+    return requestPayload;
+  },
+
   target: fetchApartmentActsFx as any,
 });
 
