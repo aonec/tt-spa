@@ -197,8 +197,6 @@ export const useSwitchOnEnter = (dataAttr: string) => {
       return;
     }
 
-    console.log(nextNode, nextNode?.focus);
-
     nextNode?.focus && nextNode.focus();
   };
 

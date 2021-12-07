@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import { useCancelFetch } from '01/_hooks';
 
 import {
   getInfo,
@@ -10,7 +9,6 @@ import {
 } from '01/_api/objects_page';
 
 export const useFetchPage = (state, dispatch) => {
-  useCancelFetch();
   const { replace } = useHistory();
   const { url, path, isExact, params } = useRouteMatch('/:page/:id');
   const pageApart = useRouteMatch(path + '/apartments');
@@ -18,7 +16,6 @@ export const useFetchPage = (state, dispatch) => {
 
   React.useEffect(() => {
     const { id, info, events, devices } = state;
-    console.log(isExact, url, state, pageDevice, pageApart, replace);
     if (isExact && !info) {
       getInfo(url).then((data) => dispatch({ type: 'success', data }));
     }

@@ -28,7 +28,6 @@ export const useFetch = ({ config }, dispatch) => {
         }
         dispatch({ type: 'success', payload: res.data });
       } catch (err) {
-        console.log('err', err);
         dispatch({ type: 'error', payload: err });
       }
     };

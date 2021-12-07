@@ -1,6 +1,7 @@
 export function useMenu() {
   const user = JSON.parse(localStorage.getItem('user')) ?? {};
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
+  const permissions = JSON.parse(localStorage.getItem('permissions')) ?? [];
   const { managementFirm = {}, id = '' } = user;
   return [
     {
@@ -16,13 +17,14 @@ export function useMenu() {
       icon: 'statistics',
       perm: ['all'],
       hidden: ['ManagingFirmOperator'],
+      placePerm: 'SubscriberStatisticsRead',
     },
-    // {
-    //   name: 'Журнал актов',
-    //   to: '/actsJournal/',
-    //   icon: 'act',
-    //   perm: ['ManagingFirmOperator'],
-    // },
+    {
+      name: 'Журнал актов',
+      to: '/actsJournal/',
+      icon: 'act',
+      perm: ['ManagingFirmOperator'],
+    },
     {
       name: 'Задачи',
       to: '/tasks/',
@@ -73,7 +75,13 @@ export function useMenu() {
       if (roles.some((role) => perm.includes(role))) menu.push(item);
       return menu;
     }, [])
-    .filter((menuItem) =>
-      menuItem.hidden ? !menuItem.hidden.some((e) => roles.includes(e)) : true
-    );
+    .filter((menuItem) => {
+
+      return (
+        permissions.includes(menuItem.placePerm) ||
+        (menuItem.hidden
+          ? !menuItem.hidden.some((e) => roles.includes(e))
+          : true)
+      );
+    });
 }

@@ -14,9 +14,7 @@ export const Menu = () => {
     <nav>
       {menuList.map(({ name, to, icon, company }, i) => (
         <NavLink key={i} to={to} activeClassName={style.active}>
-          <div style={{ transform: 'translateY(3px)' }}>
-            {icon && <Icon icon={icon} />}
-          </div>
+          {icon && <Icon icon={icon} />}
           <span>{name}</span>
           {company && <span>{company}</span>}
         </NavLink>

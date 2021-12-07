@@ -137,13 +137,6 @@ export const getGraphParams = (
             'deltaVolume',
           ];
     default:
-      console.log(
-        'Ресурс',
-        resource,
-        'и количество труб ',
-        pipeCount,
-        'не предусмотрено'
-      );
       return [];
   }
 };

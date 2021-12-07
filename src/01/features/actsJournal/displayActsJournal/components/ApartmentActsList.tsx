@@ -1,7 +1,7 @@
 import { Icon } from '01/shared/ui/Icon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -11,15 +11,22 @@ import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
 import { $actTypes } from '../../displayActTypes/models';
 import {
+  $actJournalPageNumber,
   $apartmentActs,
+  $apartmentActsPaged,
+  ActJournalGate,
   expandedFilterForm,
   fetchApartmentActsFx,
+  searchForm,
+  setActJournalPageNumber,
 } from '../models';
 import { DocDate } from './AddNewActForm';
 import { gridTemp } from './TableHeader';
 import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.svg';
-import { Empty } from 'antd';
+import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
+
+const pageSize = 20;
 
 export const ApartmentActsList = () => {
   const pending = useStore(fetchApartmentActsFx.pending);
@@ -27,9 +34,15 @@ export const ApartmentActsList = () => {
     fields: { allowedActResources, allowedActTypes },
   } = useForm(expandedFilterForm);
 
+  const pageNumber = useStore($actJournalPageNumber);
+
+  const actsPagedData = useStore($apartmentActsPaged);
+
   const acts = useStore($apartmentActs);
   const actTypes = useStore($actTypes);
   const actResources = useStore($actResources);
+
+  const { fields } = useForm(searchForm);
 
   const renderAct = (act: ApartmentActResponse) => {
     const actType = actTypes?.find((elem) => elem.key === act.actType)?.value;
@@ -62,32 +75,20 @@ export const ApartmentActsList = () => {
     );
   };
 
-  console.log(allowedActResources);
-
-  const filterActs = (act: ApartmentActResponse) => {
-    const res = [] as boolean[];
-
-    res.push(
-      allowedActResources.value.length === 0
-        ? true
-        : allowedActResources.value.includes(act.actResourceType)
-    );
-
-    res.push(
-      allowedActTypes.value.length === 0
-        ? true
-        : allowedActTypes.value.includes(act.actType)
-    );
-
-    return res.every(Boolean);
-  };
-
-  const preparedActs = acts?.filter(filterActs);
-
   return (
     <Wrap>
+      <ActJournalGate
+        ActTypes={allowedActTypes.value}
+        ActResourceTypes={allowedActResources.value}
+        PageNumber={pageNumber}
+        PageSize={pageSize}
+        ActDateOrderBy={fields.ActDateOrderBy.value}
+        ActJobDateOrderBy={fields.ActJobDateOrderBy.value}
+        RegistryNumberOrderBy={fields.RegistryNumberOrderBy.value}
+        AddressOrderBy={fields.AddressOrderBy.value}
+      />
       <PendingLoader loading={pending} skeleton>
-        {preparedActs?.length === 0 && (
+        {acts?.length === 0 && (
           <Flex style={{ justifyContent: 'center' }}>
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -96,8 +97,19 @@ export const ApartmentActsList = () => {
           </Flex>
         )}
 
-        {preparedActs?.map(renderAct)}
+        <div>{acts?.map(renderAct)}</div>
       </PendingLoader>
+      <SpaceLine noTop />
+      {actsPagedData && (
+        <Pagination
+          showQuickJumper
+          showSizeChanger={false}
+          current={pageNumber}
+          total={actsPagedData.totalItems}
+          pageSize={pageSize}
+          onChange={(value) => setActJournalPageNumber(value)}
+        />
+      )}
     </Wrap>
   );
 };
@@ -111,6 +123,10 @@ const ActWrap = styled(Grid)`
   align-items: center;
   padding: 0 0 0 15px;
   border-bottom: 1px solid #f3f3f3;
+
+  &:last-child {
+    border-bottom: none;
+  }
 `;
 
 export function getIconFromResource(resource: EActResourceType) {

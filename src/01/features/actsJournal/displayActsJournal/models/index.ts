@@ -3,10 +3,10 @@ import {
   EActResourceType,
   EOrderByRule,
   AddApartmentActRequest,
+  ApartmentActResponsePagedList,
 } from './../../../../../myApi';
 import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
-import { ApartmentActResponse } from 'myApi';
 import moment from 'moment';
 import { createGate } from 'effector-react';
 
@@ -16,7 +16,21 @@ export const formField = <T>(): null | T => null;
 
 export const ff = formField;
 
-export const $apartmentActs = createStore<ApartmentActResponse[] | null>(null);
+export const ffInit = <T>() => ({
+  init: ff<T>(),
+});
+
+export const $apartmentActsPaged = createStore<ApartmentActResponsePagedList | null>(
+  null
+);
+
+export const $apartmentActs = $apartmentActsPaged.map(
+  (pagedData) => pagedData?.items
+);
+
+export const $actJournalPageNumber = createStore(1);
+
+export const setActJournalPageNumber = createEvent<number>();
 
 export interface ApartmentActPaginationParameters {
   City?: string | null;
@@ -37,8 +51,14 @@ export interface ApartmentActPaginationParameters {
 
 export const fetchApartmentActsFx = createEffect<
   ApartmentActPaginationParameters,
-  ApartmentActResponse[] | null
+  ApartmentActResponsePagedList | null
 >();
+
+export type ActOrderFieldName =
+  | 'ActDateOrderBy'
+  | 'ActJobDateOrderBy'
+  | 'RegistryNumberOrderBy'
+  | 'AddressOrderBy';
 
 export const searchForm = createForm({
   fields: {
@@ -46,6 +66,10 @@ export const searchForm = createForm({
     street: { init: '' },
     house: { init: '' },
     apartment: { init: '' },
+    ActDateOrderBy: ffInit<EOrderByRule>(),
+    ActJobDateOrderBy: ffInit<EOrderByRule>(),
+    RegistryNumberOrderBy: ffInit<EOrderByRule>(),
+    AddressOrderBy: ffInit<EOrderByRule>(),
   },
 });
 
@@ -79,4 +103,4 @@ export const expandedFilterForm = createForm({
   },
 });
 
-export const ActJournalGate = createGate();
+export const ActJournalGate = createGate<ApartmentActPaginationParameters>();

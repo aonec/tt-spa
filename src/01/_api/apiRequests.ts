@@ -157,7 +157,6 @@ export async function addNode(form: CreatePipeNodeRequest) {
     alert('Узел успешно создан');
     return res;
   } catch (error) {
-    console.log(error);
     alert('Произошла ошибка создания Узла!');
     throw {
       resource: 'node',
@@ -172,7 +171,6 @@ export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
     alert('Узел успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',

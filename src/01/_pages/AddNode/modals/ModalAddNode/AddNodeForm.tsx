@@ -68,8 +68,6 @@ const AddNodeForm = (props: any) => {
     })
   );
 
-  console.log('node', node);
-
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
   const initialValues = { communicationPipes };
@@ -78,7 +76,6 @@ const AddNodeForm = (props: any) => {
     initialValues,
     validationSchema,
     onSubmit: async () => {
-      console.log('Создаем Узел');
       const form = {
         communicationPipes: values.communicationPipes,
       };
@@ -92,7 +89,6 @@ const AddNodeForm = (props: any) => {
       };
 
       addNode(addNodeForm).then((res) => {
-        console.log('addNodeFormResponseFromServer', res);
         history.push(`/objects/${housingStockId}`);
       });
     },

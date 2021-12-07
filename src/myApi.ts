@@ -667,6 +667,7 @@ export enum EUserPermission {
   ApartmentActCreate = "ApartmentActCreate",
   ApartmentActEdit = "ApartmentActEdit",
   ApartmentActRemove = "ApartmentActRemove",
+  IndividualDeviceReadingsHistoryUpdate = "IndividualDeviceReadingsHistoryUpdate",
 }
 
 export interface TokenResponse {
@@ -3261,6 +3262,10 @@ export interface IndividualDeviceReadingsHistoryResponseSuccessApiResponse {
   successResponse: IndividualDeviceReadingsHistoryResponse | null;
 }
 
+export interface EditIndividualDeviceReadingsHistoryRequest {
+  newReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
+}
+
 export interface InspectorResponse {
   /** @format int32 */
   id: number;
@@ -4715,6 +4720,7 @@ export enum EManagingFirmTaskFilterType {
   PipeRupture = "PipeRupture",
   CurrentApplication = "CurrentApplication",
   EmergencyApplication = "EmergencyApplication",
+  IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
 }
 
 export enum TaskGroupingFilter {
@@ -4776,6 +4782,7 @@ export interface TaskResponse {
   /** @format date-time */
   closingTime: string | null;
   closingStatus: ETaskClosingStatus | null;
+  closingReason: string | null;
   isResponsible: boolean;
   userOperatingStatus: string | null;
   currentStage: StageResponse | null;
@@ -5606,6 +5613,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         IsConnected?: boolean | null;
         CountTasks?: boolean | null;
         IsClosed?: boolean | null;
+        FileName?: string | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -5650,6 +5658,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         IsConnected?: boolean | null;
         CountTasks?: boolean | null;
         IsClosed?: boolean | null;
+        FileName?: string | null;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -7540,35 +7549,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Imports
-     * @name ImportsReadingsCreate
-     * @request POST:/api/Imports/Readings
-     * @secure
-     */
-    importsReadingsCreate: (
-      data: {
-        ContentType?: string | null;
-        ContentDisposition?: string | null;
-        Headers?: Record<string, string[]>;
-        Length?: number;
-        Name?: string | null;
-        FileName?: string | null;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Imports/Readings`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Imports
      * @name ImportsPersonalAccountNumbersCreate
      * @request POST:/api/Imports/PersonalAccountNumbers
      * @secure
@@ -7937,6 +7917,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         secure: true,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags IndividualDevices
+     * @name IndividualDevicesEditReadingsHistoryCreate
+     * @request POST:/api/IndividualDevices/{deviceId}/editReadingsHistory
+     * @secure
+     */
+    individualDevicesEditReadingsHistoryCreate: (
+      deviceId: number,
+      data: EditIndividualDeviceReadingsHistoryRequest | null,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/IndividualDevices/${deviceId}/editReadingsHistory`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 

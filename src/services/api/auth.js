@@ -7,7 +7,6 @@ export const auth = axios.create({
 
 auth.interceptors.request.use((req) => {
   if (req.url === 'refreshToken') {
-    console.log('start refresh');
   }
   return req;
 });
@@ -21,7 +20,6 @@ auth.interceptors.response.use((res) => {
   }
   if (res.config.url === 'refreshToken') {
     sessionStorage.setItem('refresh', false);
-    console.log('success refresh');
   }
   return res;
 });

@@ -28,7 +28,6 @@ const StyledEditButton = styled(Button).attrs((props) => ({
 `;
 
 export const EditButtonTT = (props) => {
-  // console.log('props', props);
   const { menuButtonArr: arr, size } = props;
   function getCurrentColor(color) {
     switch (color) {
