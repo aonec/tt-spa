@@ -26,7 +26,7 @@ import { ReactComponent as AllResourceIcon } from '../assets/allResourcesIcon.sv
 import { Empty, Pagination } from 'antd';
 import { useForm } from 'effector-forms/dist';
 
-const pageSize = 50;
+const pageSize = 20;
 
 export const ApartmentActsList = () => {
   const pending = useStore(fetchApartmentActsFx.pending);
@@ -99,7 +99,7 @@ export const ApartmentActsList = () => {
 
         <div>{acts?.map(renderAct)}</div>
       </PendingLoader>
-      <SpaceLine />
+      <SpaceLine noTop />
       {actsPagedData && (
         <Pagination
           showQuickJumper

@@ -20,6 +20,7 @@ import {
   $existingApartmentNumbers,
   addressSearchForm,
 } from '01/features/addressSearch/models';
+import moment from 'moment';
 
 fetchApartmentActsFx.use(getApartmentActs);
 
@@ -85,6 +86,7 @@ sample({
       apartmentId: apartmentNumbers?.find(
         (elem) => elem.number === address.apartment
       )?.id,
+      actJobDate: moment(values.actJobDate).format('YYYY-MM-DD'),
     })
   ),
   target: createApartmentActFx as any,
