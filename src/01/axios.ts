@@ -28,6 +28,7 @@ axios.interceptors.response.use(
 
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
+
       saveToLocStor('token', token);
       saveToLocStor('refreshToken', refreshToken);
       saveToLocStor('permissions', permissions);
@@ -47,11 +48,11 @@ axios.interceptors.response.use(
       const { config } = error;
       return new Promise((resolve, reject) => {
         axios.post('/auth/refreshToken').then(
-          () => resolve(axios(config))
-          // () => {
-          //   localStorage.clear();
-          //   window.location.replace('/login');
-          // }
+          () => resolve(axios(config)),
+          () => {
+            localStorage.clear();
+            window.location.replace('/login');
+          }
         );
       });
     }
