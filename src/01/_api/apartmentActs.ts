@@ -10,6 +10,7 @@ import {
   EActResourceTypeStringDictionaryItem,
   EActTypeStringDictionaryItem,
 } from 'myApi';
+import { stringify } from 'query-string';
 
 export const getApartmentActTypes = (): Promise<
   MayBe<EActTypeStringDictionaryItem[]>
@@ -23,7 +24,11 @@ export const getApartmentActs = async (
   params: ApartmentActPaginationParameters
 ): Promise<ApartmentActResponsePagedList | null> => {
   const res: ApartmentActResponsePagedList = await axios.get(
-    `ApartmentActs${formQueryString(params)}`
+    `ApartmentActs?${stringify(params, {
+      arrayFormat: 'none',
+      skipEmptyString: true,
+      skipNull: true,
+    })}`
   );
 
   return res;
