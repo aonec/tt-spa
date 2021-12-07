@@ -160,7 +160,7 @@ export const TasksList = ({ items }) => {
               {showExecutor && (
                 <executor>
                   <Icon icon="username2" />
-                  {perpetrator.name}
+                  {perpetrator?.name}
                 </executor>
               )}
             </row>
