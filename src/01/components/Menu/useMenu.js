@@ -31,6 +31,7 @@ export function useMenu() {
       icon: 'task',
       perm: ['all'],
       hidden: ['ManagingFirmOperator'],
+      placePerm: 'TasksRead',
     },
     {
       name: 'Объекты',
@@ -76,7 +77,6 @@ export function useMenu() {
       return menu;
     }, [])
     .filter((menuItem) => {
-
       return (
         permissions.includes(menuItem.placePerm) ||
         (menuItem.hidden
