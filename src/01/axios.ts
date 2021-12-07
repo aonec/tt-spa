@@ -45,18 +45,26 @@ axios.interceptors.response.use(
     if (status === 401 && !checkUrl('login', error.config.url)) {
       const { config } = error;
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
+          setIsRefreshRunning(true);
           axios.post('/auth/refreshToken').then(
-            () => resolve(axios(config)),
+            () => {
+              setIsRefreshRunning(false);
+
+              return resolve(axios(config));
+            },
             () => {
               localStorage.clear();
               window.location.replace('/login');
             }
           );
         } else {
-          const subscription = $isRefreshRunning.watch(() => {
-            subscription.unsubscribe();
+          const subscription = $isRefreshRunning.watch((isRefreshStop) => {
+            if (!isRefreshStop) {
+              resolve(axios(config));
+              subscription.unsubscribe();
+            }
           });
         }
       });
@@ -84,7 +92,7 @@ function checkUrl(str: string, url: string) {
 
 export const $isRefreshRunning = createStore(false);
 
-export const setIsRefreshRunning = createEvent<false>();
+export const setIsRefreshRunning = createEvent<boolean>();
 
 $isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
 
