@@ -11,7 +11,7 @@ import { useForm } from 'effector-forms/dist';
 import { ReactComponent as SortIcon } from './filterButton/assets/sortArrows.svg';
 import { ReactComponent as SortIconTop } from './filterButton/assets/sortArrowsTop.svg';
 import { ReactComponent as SortIconBottom } from './filterButton/assets/sortArrowsBottom.svg';
-import { EOrderByRule } from 'myApi';
+import { EActResourceTypeStringDictionaryItem, EOrderByRule } from 'myApi';
 
 export const TableHeader = () => {
   const columnTitles = [
@@ -51,7 +51,6 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
   const onChange = field.onChange;
 
   function onClickHandler() {
-
     onChange(
       value === null
         ? EOrderByRule.Ascending
@@ -75,43 +74,50 @@ const SortButton: React.FC<{ name: ActOrderFieldName }> = ({ name }) => {
   );
 };
 
+const CheckboxWrap = styled.div`
+  margin-bottom: 9px;
+  width: 90px;
+
+  &:last-child {
+    margin-bottom: none;
+  }
+`;
+
 const ResourceExtendedSearch = () => {
   const resources = useStore($actResources);
   const {
     fields: { allowedActResources },
   } = useForm(expandedFilterForm);
 
-  const CheckboxWrap = styled.div`
-    margin-bottom: 9px;
-    width: 90px;
-
-    &:last-child {
-      margin-bottom: none;
-    }
-  `;
+  const checkboxClickHandler = ({
+    checked,
+    resource,
+  }: {
+    checked: boolean;
+    resource: EActResourceTypeStringDictionaryItem;
+  }) =>
+    allowedActResources.onChange(
+      checked
+        ? allowedActResources.value.filter(
+            (allowedResource) => allowedResource !== resource.key
+          )
+        : [...allowedActResources.value, resource.key!]
+    );
 
   return (
     <FilterButton
       onClear={() => allowedActResources.onChange([])}
       active={allowedActResources.value.length !== 0}
     >
-      {resources?.map((elem) => {
-        const checked = allowedActResources.value.includes(elem.key!);
+      {resources?.map((resource) => {
+        const checked = allowedActResources.value.includes(resource.key!);
         return (
           <CheckboxWrap>
             <Checkbox
               checked={checked}
-              onClick={() =>
-                allowedActResources.onChange(
-                  checked
-                    ? allowedActResources.value.filter(
-                        (resource) => resource !== elem.key
-                      )
-                    : [...allowedActResources.value, elem.key!]
-                )
-              }
+              onClick={() => checkboxClickHandler({ checked, resource })}
             >
-              {elem.value}
+              {resource.value}
             </Checkbox>
           </CheckboxWrap>
         );
