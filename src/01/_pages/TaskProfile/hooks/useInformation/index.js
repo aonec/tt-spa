@@ -39,7 +39,9 @@ export const useInformation = (state = {}) => {
           {
             title,
             value: state[value],
-            url: `/objects/${state?.apartment?.housingStock?.id}/apartments/${state?.apartment?.id}`,
+            url: state?.apartment?.id
+              ? `/objects/${state?.apartment?.housingStock?.id}/apartments/${state?.apartment?.id}`
+              : `/objects/${state[url]}`,
           },
         ];
       }
