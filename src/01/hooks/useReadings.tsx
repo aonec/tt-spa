@@ -91,8 +91,8 @@ export const useReadings = (
       preparedReadingsArrWithEmpties![sliderIndex] || {};
 
     for (let i = 1; i <= 3; i++) {
-      previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
-      currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
+      previousReadingsArray.push(prevReadings[`value${i}`] || '');
+      currentReadingsArray.push(currentReadings[`value${i}`] || '');
     }
 
     setReadingsState((prev) => {
@@ -173,13 +173,15 @@ export const useReadings = (
   ): ReadingType => {
     const readingData = {
       deviceId: deviceItem.id,
-      ...readingsState.currentReadingsArray.filter(Boolean).reduce(
-        (acc, elem, index) => ({
-          ...acc,
-          [`value${index + 1}`]: Number(elem),
-        }),
-        {}
-      ),
+      ...readingsState.currentReadingsArray
+        .filter(Boolean)
+        .reduce((acc, elem, index) => {
+
+          return {
+            ...acc,
+            [`value${index + 1}`]: Number(elem),
+          };
+        }, {}),
       readingDate: moment().toISOString(true),
       uploadTime: moment().toISOString(true),
       isForced: true,
@@ -194,7 +196,7 @@ export const useReadings = (
       getIndividualDeviceRateNumByName(device.rateType)
     );
 
-    if (values.some((value) => typeof value !== 'number')) return;
+    if (values.some(Boolean)) return;
 
     setReadingsState((prev: any) => ({
       ...prev,
@@ -375,8 +377,7 @@ export const useReadings = (
         getIndividualDeviceRateNumByName(device.rateType)
       );
 
-      console.log(values);
-      if (values.some((value) => typeof value !== 'number')) return;
+      if (!values.every(Boolean)) return;
 
       setReadingsState((prev: any) => ({
         ...prev,
