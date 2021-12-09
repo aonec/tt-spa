@@ -17,6 +17,7 @@ import {
   EResourceType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
+  IndividualDeviceReadingsCreateRequest,
 } from '../../myApi';
 import {
   getDateByReadingMonthSlider,
@@ -188,6 +189,13 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
+    const values = getReadingValuesArray(
+      requestPayload,
+      getIndividualDeviceRateNumByName(device.rateType)
+    );
+
+    if (!values.every(Boolean)) return;
+
     setReadingsState((prev: any) => ({
       ...prev,
       previousReadings: {
@@ -362,6 +370,13 @@ export const useReadings = (
     }
 
     const sendCurrentReadings = async () => {
+      const values = getReadingValuesArray(
+        deviceReadingObject as any,
+        getIndividualDeviceRateNumByName(device.rateType)
+      );
+
+      if (!values.every(Boolean)) return;
+
       setReadingsState((prev: any) => ({
         ...prev,
         status: 'pending',
@@ -1000,4 +1015,19 @@ export function round(x: number, n: number) {
 
   const m = Math.pow(10, n);
   return Math.round(x * m) / m;
+}
+
+function getReadingValuesArray(
+  payload: IndividualDeviceReadingsCreateRequest,
+  deviceRateNum: number
+) {
+  const res: number[] = [];
+
+  for (let i = 1; i <= deviceRateNum; i++) {
+    const value = (payload as any)[`value${i}`];
+
+    res.push(value);
+  }
+
+  return res;
 }
