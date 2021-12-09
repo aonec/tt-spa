@@ -194,7 +194,7 @@ export const useReadings = (
       getIndividualDeviceRateNumByName(device.rateType)
     );
 
-    if (!values.every((value) => typeof value === 'number')) return;
+    if (values.some((value) => typeof value !== 'number')) return;
 
     setReadingsState((prev: any) => ({
       ...prev,
@@ -375,7 +375,8 @@ export const useReadings = (
         getIndividualDeviceRateNumByName(device.rateType)
       );
 
-      if (!values.every((value) => typeof value === 'number')) return;
+      console.log(values);
+      if (values.some((value) => typeof value !== 'number')) return;
 
       setReadingsState((prev: any) => ({
         ...prev,
