@@ -91,8 +91,8 @@ export const useReadings = (
       preparedReadingsArrWithEmpties![sliderIndex] || {};
 
     for (let i = 1; i <= 3; i++) {
-      previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
-      currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
+      previousReadingsArray.push(prevReadings[`value${i}`] || '');
+      currentReadingsArray.push(currentReadings[`value${i}`] || '');
     }
 
     setReadingsState((prev) => {
@@ -376,7 +376,8 @@ export const useReadings = (
       );
 
       console.log(values);
-      if (values.some((value) => typeof value !== 'number')) return;
+
+      if (!values.every((value) => typeof value === 'number')) return;
 
       setReadingsState((prev: any) => ({
         ...prev,
