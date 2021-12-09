@@ -176,7 +176,6 @@ export const useReadings = (
       ...readingsState.currentReadingsArray
         .filter(Boolean)
         .reduce((acc, elem, index) => {
-          console.log(elem);
 
           return {
             ...acc,
@@ -377,8 +376,6 @@ export const useReadings = (
         deviceReadingObject as any,
         getIndividualDeviceRateNumByName(device.rateType)
       );
-
-      console.log(values);
 
       if (!values.every(Boolean)) return;
 
