@@ -1,13 +1,14 @@
 import React from 'react';
-import { ChevronDoubleUp, ChevronUp } from 'react-bootstrap-icons';
+import { ChevronDoubleUp, ChevronUp, StopCircle } from 'react-bootstrap-icons';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 export const TopButton = () => {
-  const { fastUp, slowUp } = useUpPage();
+  const { fastUp, slowUp, isUpRunnung, stopUp } = useUpPage();
   return (
     <Wrap>
-      <Botton onClick={slowUp}>
-        <ChevronUp />
+      <Botton onClick={isUpRunnung ? stopUp : slowUp}>
+        {isUpRunnung ? <StopCircle /> : <ChevronUp />}
       </Botton>
       <Botton onClick={fastUp}>
         <ChevronDoubleUp />
@@ -17,7 +18,7 @@ export const TopButton = () => {
 };
 
 const Wrap = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   right: 30px;
   border-radius: 8px;
@@ -59,8 +60,30 @@ const Botton = styled.div`
 `;
 
 function useUpPage() {
+  const [intervalNumber, setIntervalNumber] = useState<number | null>(null);
+
   return {
-    fastUp() {},
-    slowUp() {},
+    fastUp() {
+      window.scrollTo(0, 0);
+    },
+    slowUp: () => {
+      const intervalId = setInterval(() => {
+        window.scrollBy(0, -1);
+
+        if (window.scrollY === 0 && intervalNumber) {
+          clearInterval(intervalNumber);
+          setIntervalNumber(null);
+        }
+      }, 3);
+
+      setIntervalNumber(intervalId as any);
+    },
+    isUpRunnung: Boolean(intervalNumber),
+    stopUp() {
+      if (intervalNumber) {
+        clearInterval(intervalNumber);
+        setIntervalNumber(null);
+      }
+    },
   };
 }

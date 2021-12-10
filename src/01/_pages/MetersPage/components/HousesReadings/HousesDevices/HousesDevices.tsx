@@ -79,15 +79,12 @@ const HousesDevices: React.FC = () => {
   const elementRef = useRef();
 
   useEffect(() => {
-    function onScrollDown(event: any) {
+    function onScrollDown() {
       if (pendingDevices) return;
 
-      const element = event.target;
+      const scrollHeight = document.body.scrollHeight - window.screen.height;
 
-      if (
-        element.scrollHeight - element.scrollTop - element.clientHeight <
-        250
-      ) {
+      if (window.scrollY > scrollHeight - 200) {
         fetchNextPageOfIndividualDevices();
       }
     }
@@ -158,7 +155,3 @@ const HousesDevices: React.FC = () => {
 };
 
 export default HousesDevices;
-
-function getNumberFromString(str: string) {
-  return parseInt(str.replace(/[^\d]/g, ''));
-}

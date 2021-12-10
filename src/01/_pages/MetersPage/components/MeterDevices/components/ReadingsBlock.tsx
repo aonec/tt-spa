@@ -10,8 +10,6 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { useStore } from 'effector-react';
-import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 const ReadingLineStyled = styled.div`
   position: relative;
