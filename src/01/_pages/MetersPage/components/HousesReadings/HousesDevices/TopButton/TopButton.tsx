@@ -3,12 +3,13 @@ import { ChevronDoubleUp, ChevronUp } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 
 export const TopButton = () => {
+  const { fastUp, slowUp } = useUpPage();
   return (
     <Wrap>
-      <Botton>
+      <Botton onClick={slowUp}>
         <ChevronUp />
       </Botton>
-      <Botton>
+      <Botton onClick={fastUp}>
         <ChevronDoubleUp />
       </Botton>
     </Wrap>
@@ -23,6 +24,7 @@ const Wrap = styled.div`
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
+  z-index: 5;
 `;
 
 const Botton = styled.div`
@@ -33,6 +35,7 @@ const Botton = styled.div`
   align-items: center;
   cursor: pointer;
   transition: 0.2s;
+  background: white;
 
   &:first-child {
     border-right: 1px solid lightgray;
