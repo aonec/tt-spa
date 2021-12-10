@@ -1,9 +1,9 @@
-import { $isAllDevicesDone } from '01/features/individualDevices/displayIndividualDevices/models';
+import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 import { useStore } from 'effector-react';
 import { useEffect } from 'react';
 
 export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
-  const isAllDevicesDone = useStore($isAllDevicesDone);
+  const isCancelSwitch = useStore($isCancelSwitchInput);
 
   const onKeyDown = (e: any, index: number, isForced?: boolean) => {
     if (e.key !== 'Enter' && !isForced) return;
@@ -15,7 +15,7 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     const nextNode = inputList[index + 1];
 
     if (!nextNode) {
-      if (isAllDevicesDone === false) return;
+      if (isCancelSwitch) return;
 
       const firstNode = inputList[0];
 
@@ -38,7 +38,7 @@ export const useSwitchOnInputs = (focusOnFirst?: boolean) => {
     if (focusOnFirst) {
       onKeyDown({}, -1, true);
     }
-  }, [focusOnFirst]);
+  }, []);
 
   return { onKeyDown, onKeyDownPrevious };
 };

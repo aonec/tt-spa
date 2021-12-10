@@ -121,9 +121,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
-  const isCancelSwitch = useStore($isCancelSwitchInput);
-
-  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs(!isCancelSwitch);
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
 
   const sourceIcon = source ? (
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
