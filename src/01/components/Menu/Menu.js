@@ -7,9 +7,10 @@ import { Icon } from '01/components/Icon';
 import { useMenu } from './useMenu';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { clearInterval } from 'timers';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 export const Menu = () => {
-  const menuList = useMenu();
+  const { menuList, user } = useMenu();
   const history = useHistory();
   const pathname = usePathname();
 
@@ -18,12 +19,43 @@ export const Menu = () => {
   const component = (
     <div>
       <MenuList>
+        <User>
+          <MenuItem
+            style={{ paddingTop: 5, paddingBottom: 5, height: 'auto' }}
+            onClick={() => history.push(user.to)}
+            activeElem={isActive(user.to)}
+          >
+            <div>
+              <Flex>
+                {user.icon && (
+                  <Icon size={16} icon={user.icon} fill={'#00a3e7'} />
+                )}
+                <Space w={10} />
+                <span>{user.name}</span>
+              </Flex>
+              {user.company && (
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 400,
+                    opacity: 0.6,
+                    color: 'black',
+                    marginLeft: 27,
+                    marginTop: 2,
+                  }}
+                >
+                  {user.company}
+                </div>
+              )}
+            </div>
+          </MenuItem>
+        </User>
+
         {menuList.map(({ name, to, icon, company }) => (
           <MenuItem onClick={() => history.push(to)} activeElem={isActive(to)}>
             {icon && <Icon size={16} icon={icon} fill={'#00a3e7'} />}
             <Space w={10} />
             <span>{name}</span>
-            {company && <span>{company}</span>}
           </MenuItem>
         ))}
       </MenuList>
@@ -36,6 +68,8 @@ export const Menu = () => {
 
   return <Wrap>{component}</Wrap>;
 };
+
+const User = styled.div``;
 
 const MenuList = styled.div``;
 const MenuItem = styled.div`
