@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createEvent, createStore, forward } from 'effector';
+import { createEvent, createStore } from 'effector';
 
 const devUrl = 'https://transparent-staging.herokuapp.com/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
@@ -55,8 +55,8 @@ axios.interceptors.response.use(
               return resolve(axios(config));
             },
             () => {
-              localStorage.clear();
-              window.location.replace('/login');
+              // localStorage.clear();
+              // window.location.replace('/login');
             }
           );
         } else {

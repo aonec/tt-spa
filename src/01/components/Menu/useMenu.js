@@ -3,14 +3,15 @@ export function useMenu() {
   const roles = JSON.parse(localStorage.getItem('roles')) ?? [];
   const permissions = JSON.parse(localStorage.getItem('permissions')) ?? [];
   const { managementFirm = {}, id = '' } = user;
+  
   return [
-    {
-      name: user.email,
-      company: managementFirm.name,
-      to: `/user/${id}`,
-      icon: 'username2',
-      perm: ['all'],
-    },
+    // {
+    //   name: user.email,
+    //   company: managementFirm.name,
+    //   to: `/user/${id}`,
+    //   icon: 'username2',
+    //   perm: ['all'],
+    // },
     {
       name: 'Статистика',
       to: '/statistics/',

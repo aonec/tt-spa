@@ -43,6 +43,8 @@ import '../features/init';
 import { ApartmentsRouteGroup } from './routeGroups/ApartmentsRouteGroup';
 import { StatisticsPage } from '01/features/statistics';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
+import styledC from 'styled-components';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 moment.locale('ru');
 
@@ -58,10 +60,12 @@ const Internal = () => {
       <Route path="/access-denied/" render={() => <AccessDeniedPage />} />
       <Route path="/">
         <layout>
-          <menu as="div">
+          <LeftBlock style={{ position: 'fixed', height: '100vh' }}>
             <Logotip />
+            <Space />
             <Menu />
-          </menu>
+          </LeftBlock>
+          <div></div>
           <main>
             <Switch>
               <Redirect
@@ -213,5 +217,11 @@ export function App() {
     </Provider>
   );
 }
+
+const LeftBlock = styledC.div`
+padding-top: 20px; 
+  width: 208px;
+  background: #2883e110;
+`;
 
 export default App;
