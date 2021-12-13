@@ -68,13 +68,13 @@ function useUpPage() {
     },
     slowUp: () => {
       const intervalId = setInterval(() => {
-        window.scrollBy(0, -1);
+        window.scrollBy(0, -2);
 
         if (window.scrollY === 0 && intervalNumber) {
           clearInterval(intervalNumber);
           setIntervalNumber(null);
         }
-      }, 3);
+      }, 1);
 
       setIntervalNumber(intervalId as any);
     },
