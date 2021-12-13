@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createEvent, createStore, forward } from 'effector';
 
-const devUrl = 'http://51.250.1.215:8081';
+const devUrl = 'http://51.250.1.215:8081/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
