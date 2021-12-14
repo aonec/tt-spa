@@ -17,7 +17,7 @@ export const TopButton = () => {
   );
 };
 
-const Wrap = styled.div`
+const Wrap = styled.div<{}>`
   position: fixed;
   bottom: 30px;
   right: 30px;
