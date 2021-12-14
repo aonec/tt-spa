@@ -12,7 +12,7 @@ export function useOpenedYears(
       setOpenedYears(
         years?.map((elem, index) => ({
           year: elem.year,
-          open: index === 0,
+          open: true,
           openedMonths: [],
         })) || []
       ),
