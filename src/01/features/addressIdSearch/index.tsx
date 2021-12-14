@@ -15,7 +15,12 @@ import {
   fetchExistingStreets,
 } from '../housingStocks/displayHousingStockStreets/model';
 import { ReactComponent as SearchIcon } from './assets/searchIcon.svg';
-import { addressSearchForm, $apartmentSearchId } from './models';
+import {
+  addressSearchForm,
+  $apartmentSearchId,
+  onExitAddressSearchForm,
+  fetchApartmentSearchIdFx,
+} from './models';
 
 interface Props {
   apartmentId?: MayBe<number>;
@@ -31,7 +36,7 @@ export const AddressIdSearch: FC<Props> = (props) => {
 
   const fetchedApartmentId = useStore($apartmentSearchId);
 
-  const { fields } = useForm(addressSearchForm);
+  const { fields, submit } = useForm(addressSearchForm);
   const fieldsArray = [fields.street, fields.house, fields.apartment];
 
   const existingStreets = useStore($existingStreets);
@@ -59,8 +64,10 @@ export const AddressIdSearch: FC<Props> = (props) => {
   );
 
   const loading = useStore(
-    combine(fetchExistingStreets.pending, (...pendings) =>
-      pendings.some(Boolean)
+    combine(
+      fetchExistingStreets.pending,
+      fetchApartmentSearchIdFx.pending,
+      (...pendings) => pendings.some(Boolean)
     )
   );
 
@@ -154,7 +161,10 @@ export const AddressIdSearch: FC<Props> = (props) => {
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e: any) => {
             keyDownEnterGuardedHandler(3)(e);
-            fromEnter(() => onExit && onExit())(e);
+            fromEnter(() => {
+              onExit && onExit();
+              onExitAddressSearchForm();
+            })(e);
             setCounter((prev) => prev + 1);
           }}
           placeholder="Кв."

@@ -1,9 +1,20 @@
 import { createStore, createEffect, createEvent } from 'effector';
 import { createForm } from 'effector-forms/dist';
 
+export interface FindApartmentIdQueryPayload {
+  City: string;
+  Street: string;
+  HousingNumber: string;
+  HousingCorpus?: string | null;
+  ApartmentNumber: string;
+}
+
 export const $apartmentSearchId = createStore<number | null>(null);
 
-export const fetchApartmentSearchIdFx = createEffect();
+export const fetchApartmentSearchIdFx = createEffect<
+  FindApartmentIdQueryPayload,
+  number | null
+>();
 
 export const onExitAddressSearchForm = createEvent();
 

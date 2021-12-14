@@ -19,10 +19,10 @@ import {
   searchForm,
 } from '.';
 import {
-  $existingApartmentNumbers,
   addressSearchForm,
-} from '01/features/addressSearch/models';
+} from '01/features/addressIdSearch/models';
 import moment from 'moment';
+import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);
 
@@ -88,13 +88,10 @@ sample({
   clock: createActForm.formValidated,
   source: combine(
     createActForm.$values,
-    addressSearchForm.$values,
-    $existingApartmentNumbers,
-    (values, address, apartmentNumbers) => ({
+    $apartmentSearchId,
+    (values, apartmentId) => ({
       ...values,
-      apartmentId: apartmentNumbers?.find(
-        (elem) => elem.number === address.apartment
-      )?.id,
+      apartmentId,
       actJobDate: moment(values.actJobDate).format('YYYY-MM-DD'),
     })
   ),

@@ -8,6 +8,7 @@ import {
 } from './../../myApi';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
+import { FindApartmentIdQueryPayload } from '01/features/addressIdSearch/models';
 
 export const getApartment = async (id: number): Promise<ApartmentResponse> => {
   const res: any = await axios.get(`Apartments/${id}`);
@@ -62,3 +63,8 @@ export const checkApartment = ({
   apartmentId: number;
   data: CreateApartmentCheckRequest;
 }): Promise<void> => axios.post(`Apartments/${apartmentId}/AddCheck`, data);
+
+export const findApartmentId = (
+  payload: FindApartmentIdQueryPayload
+): Promise<number | null> =>
+  axios.get('Apartments/FindApartmentId', { params: payload });
