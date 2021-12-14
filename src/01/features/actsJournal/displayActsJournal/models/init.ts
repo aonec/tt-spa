@@ -5,6 +5,7 @@ import {
   clearCreationActForms,
   createActForm,
   createApartmentActFx,
+  expandedFilterForm,
   refetchApartmentActs,
   setActJournalPageNumber,
 } from './index';
@@ -29,6 +30,8 @@ createApartmentActFx.use(addApartmentActs);
 $apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 
 $actJournalPageNumber.on(setActJournalPageNumber, (_, value) => value);
+
+$actJournalPageNumber.reset([searchForm.$values, expandedFilterForm.$values]);
 
 sample({
   source: combine(
