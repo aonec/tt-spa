@@ -554,6 +554,11 @@ export interface EditApartmentCheckRequest {
   registryNumber?: string | null;
 }
 
+export interface Int32SuccessApiResponse {
+  /** @format int32 */
+  successResponse: number;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -4905,19 +4910,19 @@ export interface TaskAssignToMultipleRequest {
   nextPerpetratorId: number;
 }
 
-export interface EManagingFirmTaskFilterTypeStringDictionaryItem {
-  key?: EManagingFirmTaskFilterType;
+export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
+  key?: EManagingFirmTaskFilterType | null;
   value?: string | null;
 }
 
-export interface ETaskClosingStatusStringDictionaryItem {
-  key?: ETaskClosingStatus;
+export interface ETaskClosingStatusNullableStringDictionaryItem {
+  key?: ETaskClosingStatus | null;
   value?: string | null;
 }
 
 export interface TaskFilterResponse {
-  taskTypes: EManagingFirmTaskFilterTypeStringDictionaryItem[] | null;
-  closingStatuses: ETaskClosingStatusStringDictionaryItem[] | null;
+  taskTypes: EManagingFirmTaskFilterTypeNullableStringDictionaryItem[] | null;
+  closingStatuses: ETaskClosingStatusNullableStringDictionaryItem[] | null;
 }
 
 export interface TaskFilterResponseSuccessApiResponse {
@@ -5437,6 +5442,33 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/Apartments/DuplicateReadings`,
         method: "POST",
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Apartments
+     * @name ApartmentsFindApartmentIdList
+     * @request GET:/api/Apartments/FindApartmentId
+     * @secure
+     */
+    apartmentsFindApartmentIdList: (
+      query: {
+        City: string;
+        Street: string;
+        HousingNumber: string;
+        HousingCorpus?: string | null;
+        ApartmentNumber: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Int32SuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Apartments/FindApartmentId`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -6342,24 +6374,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Exports
-     * @name ExportsMilurDevicesTempList
-     * @request GET:/api/Exports/MilurDevicesTemp
-     * @secure
-     */
-    exportsMilurDevicesTempList: (query?: { startDate?: string; endDate?: string }, params: RequestParams = {}) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/Exports/MilurDevicesTemp`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
         ...params,
       }),
 
@@ -7564,7 +7578,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+      this.request<Int32SuccessApiResponse, ErrorApiResponse>({
         path: `/api/Imports/PersonalAccountNumbers`,
         method: "POST",
         body: data,
