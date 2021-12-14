@@ -6,7 +6,6 @@ import { menu as style } from '01/styles/menu';
 import { Icon } from '01/components/Icon';
 import { useMenu } from './useMenu';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { clearInterval } from 'timers';
 import { Flex } from '01/shared/ui/Layout/Flex';
 
 export const Menu = () => {
