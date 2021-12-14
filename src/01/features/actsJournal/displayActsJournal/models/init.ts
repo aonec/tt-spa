@@ -3,6 +3,7 @@ import {
   $apartmentActsPaged,
   ActJournalGate,
   clearCreationActForms,
+  clearFilters,
   createActForm,
   createApartmentActFx,
   expandedFilterForm,
@@ -32,6 +33,11 @@ $apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
 $actJournalPageNumber.on(setActJournalPageNumber, (_, value) => value);
 
 $actJournalPageNumber.reset([searchForm.$values, expandedFilterForm.$values]);
+
+forward({
+  from: clearFilters,
+  to: [expandedFilterForm.resetValues, searchForm.resetValues],
+});
 
 sample({
   source: combine(

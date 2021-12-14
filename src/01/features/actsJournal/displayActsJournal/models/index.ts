@@ -9,6 +9,7 @@ import { createEffect, createEvent, createStore } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { createGate } from 'effector-react';
+import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 
 export type MayBe<T> = null | T;
 
@@ -62,7 +63,13 @@ export type ActOrderFieldName =
 
 export const searchForm = createForm({
   fields: {
-    city: { init: '' },
+    city: {
+      init: (() => {
+        const cities = $existingCities.getState();
+
+        return cities && cities[cities?.length - 1];
+      })(),
+    },
     street: { init: '' },
     house: { init: '' },
     apartment: { init: '' },
@@ -104,3 +111,5 @@ export const expandedFilterForm = createForm({
 });
 
 export const ActJournalGate = createGate<ApartmentActPaginationParameters>();
+
+export const clearFilters = createEvent();

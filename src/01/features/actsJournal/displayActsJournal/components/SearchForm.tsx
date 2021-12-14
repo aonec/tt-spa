@@ -14,7 +14,7 @@ import {
   ExistingCitiesGate,
 } from '01/features/housingStocks/displayHousingStockCities/models';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
-import { searchForm } from '../models';
+import { clearFilters, searchForm } from '../models';
 import { ButtonTT } from '01/tt-components';
 
 export const SearchForm = () => {
@@ -65,7 +65,7 @@ export const SearchForm = () => {
           onKeyDown={keyDownEnterGuardedHandler(0)}
           onFocus={clearValuesOnFocusCallback(0)}
           onChange={fields.city.onChange as any}
-          value={fields.city.value}
+          value={fields.city.value!}
         >
           {cities?.map((elem, index) => (
             <StyledSelector.Option key={index} value={elem}>
@@ -108,7 +108,9 @@ export const SearchForm = () => {
             keyDownEnterGuardedHandler(3)(e);
           }}
         />
-        <ButtonTT color="white" small>Очистить</ButtonTT>
+        <ButtonTT color="white" small onClick={clearFilters}>
+          Очистить
+        </ButtonTT>
       </Grid>
     </>
   );
