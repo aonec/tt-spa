@@ -10,8 +10,6 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { useStore } from 'effector-react';
-import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 const ReadingLineStyled = styled.div`
   position: relative;
@@ -121,9 +119,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
-  const isCancelSwitch = useStore($isCancelSwitchInput);
-
-  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs(!isCancelSwitch);
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
 
   const sourceIcon = source ? (
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
