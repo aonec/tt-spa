@@ -3,6 +3,7 @@ import { findApartmentId } from '01/_api/apartments';
 import { combine, sample } from 'effector';
 import {
   $apartmentSearchId,
+  $error,
   addressSearchForm,
   fetchApartmentSearchIdFx,
   onExitAddressSearchForm,
@@ -27,3 +28,7 @@ sample({
   clock: onExitAddressSearchForm,
   target: fetchApartmentSearchIdFx as any,
 });
+
+$error
+  .on(fetchApartmentSearchIdFx.fail, () => true)
+  .reset(fetchApartmentSearchIdFx.doneData, addressSearchForm.$values);

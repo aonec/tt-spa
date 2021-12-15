@@ -6,7 +6,7 @@ import { combine } from 'effector';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import React, { FC, useState } from 'react';
-import { CheckLg } from 'react-bootstrap-icons';
+import { CheckLg, XLg } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { MayBe } from '../actsJournal/displayActsJournal/models';
 import { fromEnter } from '../housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
@@ -20,6 +20,7 @@ import {
   $apartmentSearchId,
   onExitAddressSearchForm,
   fetchApartmentSearchIdFx,
+  $error,
 } from './models';
 
 interface Props {
@@ -31,6 +32,7 @@ interface Props {
 
 export const AddressIdSearch: FC<Props> = (props) => {
   const { onExit, firstInputRef } = props;
+  const error = useStore($error);
 
   const [counter, setCounter] = useState(0);
 
@@ -106,8 +108,11 @@ export const AddressIdSearch: FC<Props> = (props) => {
         (elem) => elem.current === document.activeElement
       )}
       isSuccess={isSuccess}
+      error={error}
     >
-      {isSuccess ? (
+      {error ? (
+        <XLg style={{ color: '#c31700' }} />
+      ) : isSuccess ? (
         <CheckLg style={{ color: '#00c34e' }} />
       ) : loading ? (
         <Loader show size={14} />
@@ -189,7 +194,11 @@ const StyledInput = styled.input`
   }
 `;
 
-const SearchWrap = styled(Grid)<{ isSuccess?: boolean; focused?: boolean }>`
+const SearchWrap = styled(Grid)<{
+  isSuccess?: boolean;
+  focused?: boolean;
+  error?: boolean;
+}>`
   position: relative;
   color: #333333;
   border: 1px solid lightgray;
@@ -217,6 +226,9 @@ const SearchWrap = styled(Grid)<{ isSuccess?: boolean; focused?: boolean }>`
 
   ${({ isSuccess }) =>
     isSuccess && `border: 1px solid #00c34e; box-shadow: 0 4px 8px #1dbf7438;`}
+
+${({ error }) =>
+    error && `border: 1px solid #c31700; box-shadow: 0 4px 8px #bf1d1d38;`}
 
   &:focus {
     box-shadow: 0 4px 8px #188fff52;
