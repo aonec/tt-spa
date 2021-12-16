@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from 'react';
+import React, { MutableRefObject, useEffect } from 'react';
 
 import { Input, Tooltip } from 'antd';
 import styled from 'styled-components';
@@ -134,6 +134,22 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
       ? 'current'
       : 'previous'
     : 'none';
+
+  useEffect(() => {
+    if (lineIndex === 0 && isCurrent) {
+      const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+        `[data-reading-input="current"]`
+      );
+
+      const node = inputList[lineIndex];
+
+      if (!node) return;
+
+      const neededInputNode: any = node?.getElementsByClassName('ant-input')[0];
+
+      neededInputNode?.focus();
+    }
+  }, []);
 
   return (
     <ReadingLineStyled
