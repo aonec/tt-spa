@@ -24,6 +24,7 @@ export enum EActResourceType {
   ColdWaterSupply = "ColdWaterSupply",
   HotWaterSupply = "HotWaterSupply",
   Electricity = "Electricity",
+  Heat = "Heat",
 }
 
 export enum EOrderByRule {
@@ -354,11 +355,6 @@ export interface HomeownerAccountResponseICollectionSuccessApiResponse {
   successResponse: HomeownerAccountResponse[] | null;
 }
 
-export enum OrderByRule {
-  Ascending = "Ascending",
-  Descending = "Descending",
-}
-
 export enum ECheckType {
   Planned = "Planned",
   Unplanned = "Unplanned",
@@ -532,10 +528,9 @@ export interface CreateApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string;
   checkType?: ECheckType;
-  documentIds?: number[] | null;
 
   /** @format int32 */
-  taskId?: number | null;
+  documentId?: number;
   registryNumber?: string | null;
 }
 
@@ -547,10 +542,9 @@ export interface EditApartmentCheckRequest {
   /** @format date-time */
   checkingDate?: string | null;
   checkType?: ECheckType | null;
-  documentIds?: number[] | null;
 
   /** @format int32 */
-  taskId?: number | null;
+  documentId?: number | null;
   registryNumber?: string | null;
 }
 
@@ -1936,6 +1930,11 @@ export enum StatusType {
   All = "All",
   Closed = "Closed",
   NotClosed = "NotClosed",
+}
+
+export enum OrderByRule {
+  Ascending = "Ascending",
+  Descending = "Descending",
 }
 
 export interface HomeownerAccountResponsePagedList {
@@ -5303,7 +5302,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     apartmentsApartmentChecksDetail: (
       apartmentId: number,
-      query?: { PageNumber?: number; PageSize?: number; OrderBy?: OrderByRule },
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
       params: RequestParams = {},
     ) =>
       this.request<ApartmentCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
@@ -6010,6 +6009,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
+     * @name DataMigrationsTestList
+     * @request GET:/api/DataMigrations/Test
+     * @secure
+     */
+    dataMigrationsTestList: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/Test`,
+        method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
      * @name DataMigrationsDisableIndividualDevicesMaintenanceCreate
      * @request POST:/api/DataMigrations/DisableIndividualDevicesMaintenance
      * @secure
@@ -6050,23 +6065,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/DataMigrations/CreateAdmin`,
         method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsRemoveApartmentTasksCreate
-     * @request POST:/api/DataMigrations/RemoveApartmentTasks
-     * @secure
-     */
-    dataMigrationsRemoveApartmentTasksCreate: (query?: { managementFirmId?: number }, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RemoveApartmentTasks`,
-        method: "POST",
-        query: query,
         secure: true,
         ...params,
       }),
@@ -6142,22 +6140,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     dataMigrationsMakeDemoCreate: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/DataMigrations/MakeDemo`,
-        method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsRemoveUnactualTemplateTasksCreate
-     * @request POST:/api/DataMigrations/RemoveUnactualTemplateTasks
-     * @secure
-     */
-    dataMigrationsRemoveUnactualTemplateTasksCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RemoveUnactualTemplateTasks`,
         method: "POST",
         secure: true,
         ...params,

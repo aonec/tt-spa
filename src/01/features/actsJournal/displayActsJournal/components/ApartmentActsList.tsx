@@ -143,5 +143,5 @@ export function getIconFromResource(resource: EActResourceType) {
     ),
   };
 
-  return icons[resource];
+  return (icons as any)[resource];
 }
