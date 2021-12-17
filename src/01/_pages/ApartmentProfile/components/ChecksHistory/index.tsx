@@ -44,11 +44,15 @@ export const ChecksHistory = () => {
         <div>{getCheckingActDocument(checkType)}</div>
         <Flex style={{ justifyContent: 'space-between' }}>
           <Flex>
-            <DocumentIcon />
+            <div style={{ minWidth: 18 }}>
+              <DocumentIcon />
+            </div>
             <Space w={7} />
             {document?.name}
           </Flex>
-          <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
+          <div style={{ minWidth: 18 }}>
+            <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
+          </div>
         </Flex>
       </ListItem>
     ) : (
