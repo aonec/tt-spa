@@ -4,10 +4,15 @@ import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBloc
 
 interface Props {
   name: string;
+  style?: React.CSSProperties;
 }
 
-export const Icon: React.FC<Props> = ({ name }) => {
+export const Icon: React.FC<Props> = ({ name, style }) => {
   const { icon, color } = DeviceIcons[name] || {};
 
-  return <StockIconTT icon={icon} color={color} dark />;
+  return (
+    <div style={style}>
+      <StockIconTT icon={icon} color={color} dark />
+    </div>
+  );
 };
