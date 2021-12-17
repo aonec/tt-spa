@@ -153,7 +153,7 @@ export async function getHousingStockCalculators(id: number) {
 
 export async function addNode(form: CreatePipeNodeRequest) {
   try {
-    const res = await axios.post('Nodes', form);
+    const res = await axios.post('PipeNodes', form);
     alert('Узел успешно создан');
     return res;
   } catch (error) {
