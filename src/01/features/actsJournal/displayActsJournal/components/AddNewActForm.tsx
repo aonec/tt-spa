@@ -2,10 +2,7 @@ import { Loader } from '01/components';
 import { AddressIdSearch } from '01/features/addressIdSearch';
 import { useOnEnterSwitch } from '01/features/readings/accountingNodesReadings/components/Filter';
 import { DatePickerNative } from '01/shared/ui/DatePickerNative';
-import {
-  StyledInput,
-  StyledSelector,
-} from '01/shared/ui/Fields';
+import { StyledInput, StyledSelector } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { ButtonTT } from '01/tt-components';
@@ -105,6 +102,7 @@ export const AddNewActForm = () => {
           }}
         />
         <DatePickerNative
+          fullSize
           searchStyle
           value={fields.actJobDate.value as any}
           onChange={fields.actJobDate.onChange as any}
@@ -118,7 +116,7 @@ export const AddNewActForm = () => {
         </ButtonTT>
         <Space />
         <ButtonTT
-          style={{ padding: '5px 30px' }}
+          style={{ padding: '5px 40px' }}
           disabled={pendingRequest}
           color="blue"
           small
