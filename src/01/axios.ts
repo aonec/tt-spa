@@ -55,8 +55,8 @@ axios.interceptors.response.use(
               return resolve(axios(config));
             },
             () => {
-              // localStorage.clear();
-              // window.location.replace('/login');
+              localStorage.clear();
+              window.location.replace('/login');
             }
           );
         } else {

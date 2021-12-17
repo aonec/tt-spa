@@ -29,8 +29,8 @@ sample({
       apartmentId: id,
       data: {
         ...values,
-        checkingDate: moment(values.checkingDate).toISOString(true),
-        documentIds: values.documentIds.map((elem) => elem.fileResponse?.id),
+        checkingDate: moment(values.checkingDate).format('YYYY-MM-DD'),
+        documentId: values.documentIds.map((elem) => elem.fileResponse?.id)[0],
       },
     })
   ),

@@ -48,5 +48,14 @@ export const checkApartmentForm = createForm({
         },
       ],
     },
+    registryNumber: {
+      init: '',
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
   },
 });
