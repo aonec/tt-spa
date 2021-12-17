@@ -9,13 +9,14 @@ import {
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { DatePickerTT } from '01/tt-components';
+import { DatePickerTT, InputTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form } from 'antd';
 import { ECheckType } from 'myApi';
 import { useForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
+import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
@@ -32,7 +33,7 @@ export const CheckApartmentModal = () => {
       onSubmit={submit}
       loading={pending}
     >
-      <Grid temp="1fr 1fr" gap="15px">
+      <Grid temp="1fr 1fr 1fr" gap="15px">
         <Form.Item label="Дата проверки">
           <DatePickerTT
             format="DD.MM.YYYY"
@@ -70,6 +71,20 @@ export const CheckApartmentModal = () => {
           </StyledSelect>
           <ErrorMessage>
             {fields.checkType.errorText({
+              required: 'Это поле обязательное',
+            })}
+          </ErrorMessage>
+        </Form.Item>
+        <Form.Item label="Номер документа">
+          <InputTT
+            value={fields.registryNumber.value}
+            onChange={(e: any) =>
+              fields.registryNumber.onChange(e.target.value)
+            }
+            placeholder="Введите номер"
+          />
+          <ErrorMessage>
+            {fields.registryNumber.errorText({
               required: 'Это поле обязательное',
             })}
           </ErrorMessage>
