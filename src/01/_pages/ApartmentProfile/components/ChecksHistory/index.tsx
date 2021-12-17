@@ -35,23 +35,27 @@ export const ChecksHistory = () => {
     checkingDate,
     checkingAct: document,
     checkType,
+    registryNumber,
   }: ApartmentCheckResponse) => {
     const onSaveFile = getOnSaveFile(document!);
     return (
-      <ListItem temp="1fr 1fr 2fr">
+      <ListItem temp="1fr 1fr 1fr 2.5fr">
         <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
           {moment(checkingDate).format('DD.MM.YYYY')}
         </b>
         <div>{getCheckingActDocument(checkType)}</div>
+        <div>{registryNumber || '—'}</div>
         <Flex style={{ justifyContent: 'space-between' }}>
           <Flex>
             <div style={{ minWidth: 18 }}>
               <DocumentIcon />
             </div>
             <Space w={7} />
-            {document?.name || (
-              <span style={{ color: '#b3b3b3' }}>Нет документа</span>
-            )}
+            <div>
+              {document?.name || (
+                <span style={{ color: '#b3b3b3' }}>Нет документа</span>
+              )}
+            </div>
           </Flex>
           <div style={{ minWidth: 18 }}>
             {document?.id && (
@@ -70,9 +74,10 @@ export const ChecksHistory = () => {
     <Wrap>
       <ApartmentChecksDocuments apartmentId={apartmentId} />
       <PendingLoader loading={pending}>
-        <Header temp="1fr 1fr 2fr">
+        <Header temp="1fr 1fr 1fr 2.5fr">
           <div>Дата</div>
           <div>Тип</div>
+          <div>№ акта</div>
           <div>Заключение</div>
         </Header>
         {documents?.map(renderDocument)}
@@ -124,7 +129,7 @@ export const getOnSaveFile = (document: DocumentResponse) =>
   };
 
 const Wrap = styled.div`
-  width: 720px;
+  width: 920px;
 `;
 
 const Header = styled(Grid)`
