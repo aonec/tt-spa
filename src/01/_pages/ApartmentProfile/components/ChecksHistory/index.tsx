@@ -32,14 +32,15 @@ export const ChecksHistory = () => {
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
   const renderDocument = ({
+    checkingDate,
     checkingAct: document,
     checkType,
   }: ApartmentCheckResponse) => {
     const onSaveFile = getOnSaveFile(document!);
-    return document ? (
+    return (
       <ListItem temp="1fr 1fr 2fr">
         <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
-          {moment(document?.uploadingTime).format('DD.MM.YYYY')}
+          {moment(checkingDate).format('DD.MM.YYYY')}
         </b>
         <div>{getCheckingActDocument(checkType)}</div>
         <Flex style={{ justifyContent: 'space-between' }}>
@@ -48,15 +49,20 @@ export const ChecksHistory = () => {
               <DocumentIcon />
             </div>
             <Space w={7} />
-            {document?.name}
+            {document?.name || (
+              <span style={{ color: '#b3b3b3' }}>Нет документа</span>
+            )}
           </Flex>
           <div style={{ minWidth: 18 }}>
-            <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
+            {document?.id && (
+              <DownloadIcon
+                style={{ cursor: 'pointer' }}
+                onClick={onSaveFile}
+              />
+            )}
           </div>
         </Flex>
       </ListItem>
-    ) : (
-      <ListItem temp="1fr 1fr 2fr" />
     );
   };
 
