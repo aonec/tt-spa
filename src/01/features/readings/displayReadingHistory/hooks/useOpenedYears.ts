@@ -10,9 +10,9 @@ export function useOpenedYears(
   useEffect(
     () =>
       setOpenedYears(
-        years?.map((elem, index) => ({
+        years?.map((elem) => ({
           year: elem.year,
-          open: index === 0,
+          open: true,
           openedMonths: [],
         })) || []
       ),
