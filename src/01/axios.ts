@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 
-const devUrl = 'https://transparent-staging.herokuapp.com/api';
+const devUrl = 'https://management.transparent-technology.ru:1443/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
