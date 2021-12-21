@@ -225,13 +225,13 @@ export const Panel = (
         <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
 
-      {(UploadReadings || addReadingsDone) && (
+      {/* {(UploadReadings || addReadingsDone) && (
         <AddReadings
           apartmentId={apartment.id}
           addReadings={(readings) => dispatch(addReadings(readings))}
           readingsBlocked={addReadingsDone || isObserver}
         />
-      )}
+      )} */}
       {!isObserver && <PushButton {...pushProps} />}
     </panel>
   );
