@@ -3,16 +3,18 @@ import {
   getResourceColor,
 } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
-import { useReadings } from '01/hooks/useReadings';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Space, SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { ButtonTT } from '01/tt-components';
 import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
 import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { Form } from 'antd';
+import Checkbox from 'antd/lib/checkbox/Checkbox';
+import TextArea from 'antd/lib/input/TextArea';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EResourceType, IndividualDeviceResponse } from 'myApi';
@@ -49,11 +51,7 @@ export const CorrectionReadingsPanel = () => {
   );
 
   const editTaskInfo = (
-    <Grid
-      temp="0.7fr 0.5fr 0.8fr 1.2fr"
-      gap="15px"
-      style={{ width: '100%', maxWidth: '900px' }}
-    >
+    <Grid temp="0.7fr 0.5fr 0.8fr 1.2fr" gap="15px">
       <InfoBlock
         title="Некорректные показания"
         value={problemReading?.value1!}
@@ -76,6 +74,19 @@ export const CorrectionReadingsPanel = () => {
     </>
   );
 
+  const extraCheckingSelection = (
+    <div>
+      <SpaceLine />
+      <Checkbox>Требуется дополнительная проверка старшего оператора</Checkbox>
+      <Space />
+      <Form.Item label="Комментарий">
+        <TextArea placeholder="Введите комментарий" />
+      </Form.Item>
+    </div>
+  );
+
+  const endStageButton = <ButtonTT color="blue">Завершить этап</ButtonTT>;
+
   return (
     <PendingLoader loading={pending}>
       <Wrap>
@@ -88,6 +99,8 @@ export const CorrectionReadingsPanel = () => {
         {editTaskInfo}
         <Space h={5} />
         {inputReadings}
+        {extraCheckingSelection}
+        <Flex style={{ justifyContent: 'flex-end' }}>{endStageButton}</Flex>
       </Wrap>
     </PendingLoader>
   );

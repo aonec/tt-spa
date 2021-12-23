@@ -173,11 +173,9 @@ export const ReadingsHistoryList: React.FC<Props> = ({ isModal, readonly }) => {
               ),
               deviceId: device?.id!,
               readingDate: (() => {
-                const date = moment();
+                const date = moment(`${15}.${month}.${year}`, 'DD.MM.YYYY');
 
-                date.set('day', 15);
                 date.set('month', month - 2);
-                date.set('year', year);
 
                 return date.toISOString();
               })(),
