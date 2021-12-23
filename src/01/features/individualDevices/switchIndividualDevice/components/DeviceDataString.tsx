@@ -4,7 +4,6 @@ import { $individualDevice } from '../../displayIndividualDevice/models';
 import {
   EIndividualDeviceRateType,
   EResourceType,
-  IndividualDeviceResponse,
 } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';

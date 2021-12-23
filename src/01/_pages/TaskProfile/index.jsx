@@ -73,7 +73,7 @@ export const TaskProfile = () => {
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
   const isIndividualDeviceReadingCheckType =
-    state.type === 'IndividualDeviceCheck';
+    state.type === 'IndividualDeviceReadingsCheck';
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
