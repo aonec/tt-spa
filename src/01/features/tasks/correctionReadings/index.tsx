@@ -15,13 +15,16 @@ import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevi
 import { Form } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
+import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType, IndividualDeviceResponse } from 'myApi';
+import { EResourceType } from 'myApi';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { NextStagesGate } from '../displayNextStages/models';
 import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
+import { correctionReadingsForm } from './models';
 
 export const CorrectionReadingsPanel = () => {
   const params = useParams<[string]>();
@@ -32,6 +35,8 @@ export const CorrectionReadingsPanel = () => {
   const problemReading = device?.readings && device?.readings[0];
 
   const pending = useStore(fetchTaskFx.pending);
+
+  const { fields } = useForm(correctionReadingsForm);
 
   const deviceDataString = (
     <Flex>
@@ -69,7 +74,12 @@ export const CorrectionReadingsPanel = () => {
   const inputReadings = device && (
     <>
       <Form.Item label="Исправленные показания">
-        <ReadingsInput device={device} />
+        <ReadingInputStyled
+          resource={device.resource}
+          type="number"
+          value={fields.readingValue.value || ''}
+          onChange={(e: any) => fields.readingValue.onChange(e.target.value)}
+        />
       </Form.Item>
     </>
   );
@@ -77,10 +87,22 @@ export const CorrectionReadingsPanel = () => {
   const extraCheckingSelection = (
     <div>
       <SpaceLine />
-      <Checkbox>Требуется дополнительная проверка старшего оператора</Checkbox>
+      <Checkbox
+        checked={fields.needSeniorOperatorCheck.value}
+        onClick={() =>
+          fields.needSeniorOperatorCheck.onChange(
+            !fields.needSeniorOperatorCheck.value
+          )
+        }
+      >
+        Требуется дополнительная проверка старшего оператора
+      </Checkbox>
       <Space />
       <Form.Item label="Комментарий">
-        <TextArea placeholder="Введите комментарий" />
+        <TextArea
+          placeholder="Введите комментарий"
+          disabled={!fields.needSeniorOperatorCheck.value}
+        />
       </Form.Item>
     </div>
   );
@@ -92,6 +114,7 @@ export const CorrectionReadingsPanel = () => {
       <Wrap>
         <ReadingsHistoryModal />
         <TaskGate id={Number(params[0])} />
+        {task?.id && <NextStagesGate taskId={task?.id} />}
         <Header>Введите исправленные показния</Header>
         <Space />
         {deviceDataString}
@@ -140,14 +163,6 @@ const InfoBlockValue = styled.div`
   font-size: 16px;
   font-weight: 500;
 `;
-
-interface ReadingsInputProps {
-  device: IndividualDeviceResponse;
-}
-
-export const ReadingsInput: React.FC<ReadingsInputProps> = ({ device }) => {
-  return <ReadingInputStyled resource={device.resource} type="number" />;
-};
 
 const ReadingInputStyled = styled.input<{ resource: EResourceType }>`
   border: 1px solid ${({ resource }) => getResourceColor(resource)};

@@ -51,3 +51,4 @@ import './developmentSettings/models/init';
 import './addressSearch/models/init';
 import './addressIdSearch/models/init';
 import './tasks/displayTask/models/init';
+import './tasks/displayNextStages/models/init';

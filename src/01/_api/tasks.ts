@@ -5,6 +5,7 @@ import {
   EOrderByRule,
   ETaskClosingStatus,
   ETaskTargetType,
+  StageListResponse,
   TaskGroupingFilter,
   TaskResponse,
 } from 'myApi';
@@ -30,3 +31,11 @@ export interface GetTasksParams {
 
 export const getTask = (id: number): Promise<TaskResponse> =>
   axios.get(`Tasks/${id}`);
+
+export const getNextStages = async (
+  taskId: number
+): Promise<StageListResponse[] | null> => {
+  const res: any = await axios.get(`Tasks/${taskId}/NextStages`);
+
+  return res.items;
+};
