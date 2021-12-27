@@ -1,3 +1,4 @@
+import { pushStageFx } from '01/features/tasks/pushingStage/models';
 import axios from 'axios';
 import {
   ECompetenceType,
@@ -6,6 +7,7 @@ import {
   ETaskClosingStatus,
   ETaskTargetType,
   StageListResponse,
+  StagePushRequest,
   TaskGroupingFilter,
   TaskResponse,
 } from 'myApi';
@@ -39,3 +41,11 @@ export const getNextStages = async (
 
   return res.items;
 };
+
+export const pushStages = ({
+  taskId,
+  payload,
+}: {
+  taskId: number;
+  payload: StagePushRequest;
+}): Promise<void> => axios.post(`Tasks/${taskId}/PushStage`, payload);

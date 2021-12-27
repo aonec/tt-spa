@@ -1,3 +1,4 @@
+import { pushStages } from '01/_api/tasks';
 import { combine, forward, sample } from 'effector';
 import {
   completeStage,
@@ -7,6 +8,8 @@ import {
 import { $nextStages } from '../../displayNextStages/models';
 import { $task } from '../../displayTask/models';
 import { pushStageFx } from '../../pushingStage/models';
+
+pushStageFx.use(pushStages);
 
 sample({
   source: combine(
@@ -37,7 +40,9 @@ sample({
 
       return {
         taskId: task?.id!,
-        data: needSeniorOperatorCheck ? payloadForEtraCheck : payloadForFinal,
+        payload: needSeniorOperatorCheck
+          ? payloadForEtraCheck
+          : payloadForFinal,
       };
     }
   ),

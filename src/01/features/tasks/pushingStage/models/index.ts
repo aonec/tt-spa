@@ -3,7 +3,7 @@ import { StagePushRequest } from 'myApi';
 
 export interface PushStageParams {
   taskId: number;
-  data: StagePushRequest | null;
+  payload: StagePushRequest;
 }
 
 export const pushStageFx = createEffect<PushStageParams, void>(); 

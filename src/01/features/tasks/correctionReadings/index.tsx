@@ -1,3 +1,4 @@
+import { Loader } from '01/components';
 import {
   DeviceDataString,
   getResourceColor,
@@ -26,7 +27,12 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { NextStagesGate } from '../displayNextStages/models';
 import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
-import { correctionReadingsForm, CorrectionReadingsGate } from './models';
+import { pushStageFx } from '../pushingStage/models';
+import {
+  correctionReadingsForm,
+  CorrectionReadingsGate,
+  completeStage,
+} from './models';
 
 export const CorrectionReadingsPanel = () => {
   const params = useParams<[string]>();
@@ -39,6 +45,8 @@ export const CorrectionReadingsPanel = () => {
   const pending = useStore(fetchTaskFx.pending);
 
   const { fields } = useForm(correctionReadingsForm);
+
+  const pendingCompleteStage = useStore(pushStageFx.pending);
 
   const deviceDataString = (
     <Flex>
@@ -91,7 +99,8 @@ export const CorrectionReadingsPanel = () => {
             onChange={(e: any) =>
               fields.readingValue.onChange({
                 ...fields.readingValue.value,
-                [`value${index + 1}`]: e.target.value,
+                [`value${index + 1}`]:
+                  e.target.value === '' ? '' : Number(e.target.value),
               })
             }
           />
@@ -125,7 +134,15 @@ export const CorrectionReadingsPanel = () => {
     </div>
   );
 
-  const endStageButton = <ButtonTT color="blue">Завершить этап</ButtonTT>;
+  const endStageButton = (
+    <ButtonTT
+      color="blue"
+      onClick={completeStage}
+      disabled={pendingCompleteStage}
+    >
+      {pendingCompleteStage ? <Loader show /> : 'Завершить этап'}
+    </ButtonTT>
+  );
 
   return (
     <PendingLoader loading={pending}>
