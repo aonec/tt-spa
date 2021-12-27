@@ -1,5 +1,9 @@
-import { combine, sample } from 'effector';
-import { completeStage, correctionReadingsForm } from '.';
+import { combine, forward, sample } from 'effector';
+import {
+  completeStage,
+  correctionReadingsForm,
+  CorrectionReadingsGate,
+} from '.';
 import { $nextStages } from '../../displayNextStages/models';
 import { $task } from '../../displayTask/models';
 import { pushStageFx } from '../../pushingStage/models';
@@ -39,4 +43,9 @@ sample({
   ),
   clock: completeStage,
   target: pushStageFx as any,
+});
+
+forward({
+  from: CorrectionReadingsGate.close,
+  to: correctionReadingsForm.reset,
 });

@@ -26,7 +26,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { NextStagesGate } from '../displayNextStages/models';
 import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
-import { correctionReadingsForm } from './models';
+import { correctionReadingsForm, CorrectionReadingsGate } from './models';
 
 export const CorrectionReadingsPanel = () => {
   const params = useParams<[string]>();
@@ -130,6 +130,7 @@ export const CorrectionReadingsPanel = () => {
   return (
     <PendingLoader loading={pending}>
       <Wrap>
+        <CorrectionReadingsGate />
         <ReadingsHistoryModal />
         <TaskGate id={Number(params[0])} />
         {task?.id && <NextStagesGate taskId={task?.id} />}

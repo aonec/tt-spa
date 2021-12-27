@@ -1,5 +1,6 @@
 import { createEvent } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { createGate } from 'effector-react';
 
 export const correctionReadingsForm = createForm({
   fields: {
@@ -21,3 +22,5 @@ export const correctionReadingsForm = createForm({
 });
 
 export const completeStage = createEvent();
+
+export const CorrectionReadingsGate = createGate();
