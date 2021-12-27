@@ -87,11 +87,16 @@ export const CorrectionReadingsPanel = () => {
     (count) => (fields.readingValue.value as any)[`value${count}`]
   );
 
+  const isReadOnly = !task?.isPerpertator;
+
+  const actions = task?.currentStage?.actions;
+
   const inputReadings = device && (
     <Form.Item label="Исправленные показания">
       <Grid temp="1fr" gap="10px">
         {[...readingValues].map((elem, index) => (
           <ReadingInputStyled
+            disabled={isReadOnly}
             placeholder={`T${index + 1}`}
             resource={device.resource}
             type="number"
@@ -113,6 +118,7 @@ export const CorrectionReadingsPanel = () => {
     <div>
       <SpaceLine />
       <Checkbox
+        disabled={isReadOnly}
         checked={fields.needSeniorOperatorCheck.value}
         onClick={() =>
           fields.needSeniorOperatorCheck.onChange(
@@ -126,7 +132,7 @@ export const CorrectionReadingsPanel = () => {
       <Form.Item label="Комментарий">
         <TextArea
           placeholder="Введите комментарий"
-          disabled={!fields.needSeniorOperatorCheck.value}
+          disabled={!fields.needSeniorOperatorCheck.value || isReadOnly}
           value={fields.comment.value}
           onChange={(e) => fields.comment.onChange(e.target.value)}
         />
@@ -134,7 +140,7 @@ export const CorrectionReadingsPanel = () => {
     </div>
   );
 
-  const endStageButton = (
+  const endStageButton = isReadOnly ? null : (
     <ButtonTT
       color="blue"
       onClick={completeStage}

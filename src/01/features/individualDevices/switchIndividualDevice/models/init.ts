@@ -175,7 +175,7 @@ sample({
       futureCheckingDate: moment(values.futureCheckingDate)
         .set({ hour: 21, minute: 0, second: 0, millisecond: 0 })
         .toISOString(true),
-      lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+      // lastCommercialAccountingDate: values.lastCommercialAccountingDate,
       bitDepth: Number(values.bitDepth),
       scaleFactor: Number(values.scaleFactor),
       rateType: values.rateType,

@@ -2492,6 +2492,11 @@ export interface HousingStockResponseSuccessApiResponse {
   successResponse: HousingStockResponse | null;
 }
 
+export enum EHousingStockOrderRule {
+  Street = "Street",
+  TaskCount = "TaskCount",
+}
+
 export interface HousingStockListResponsePagedList {
   /** @format int32 */
   totalItems: number;
@@ -2777,7 +2782,6 @@ export interface IndividualDeviceReadingsCreateRequest {
 
   /** @format double */
   value4?: number | null;
-  isForced?: boolean;
 
   /** @format int32 */
   deviceId: number;
@@ -3085,7 +3089,7 @@ export interface BaseIndividualDeviceReadingsCreateRequest {
 }
 
 export interface CreateIndividualDeviceRequest {
-  model?: string | null;
+  model: string;
   serialNumber: string;
 
   /** @format date-time */
@@ -3166,50 +3170,38 @@ export interface SwitchIndividualDeviceReadingsCreateRequest {
 export interface SwitchIndividualDeviceRequest {
   /** @format int32 */
   deviceId: number;
-  documentsIds?: number[] | null;
+  model: string;
+  serialNumber: string;
 
   /** @format int32 */
-  newDeviceId?: number | null;
-  serialNumber?: string | null;
+  bitDepth: number;
+
+  /** @format double */
+  scaleFactor: number;
+  rateType?: EIndividualDeviceRateType;
   sealNumber?: string | null;
 
   /** @format date-time */
   sealInstallationDate?: string | null;
 
   /** @format date-time */
-  lastCheckingDate?: string | null;
+  lastCheckingDate: string;
 
   /** @format date-time */
-  futureCheckingDate?: string | null;
-
-  /** @format date-time */
-  futureCommercialAccountingDate?: string | null;
-
-  /** @format date-time */
-  lastCommercialAccountingDate?: string | null;
+  futureCheckingDate: string;
 
   /** @format date-time */
   openingDate?: string | null;
 
   /** @format int32 */
   contractorId?: number | null;
-
-  /** @format int32 */
-  checkingNumber?: number | null;
   oldDeviceClosingReason?: EClosingReason;
-
-  /** @format int32 */
-  bitDepth?: number | null;
-
-  /** @format double */
-  scaleFactor?: number | null;
-  model?: string | null;
-  rateType?: EIndividualDeviceRateType;
 
   /** @format int32 */
   newDeviceMountPlaceId?: number | null;
   oldDeviceReadings?: SwitchIndividualDeviceReadingsCreateRequest[] | null;
   newDeviceReadings: SwitchIndividualDeviceReadingsCreateRequest[];
+  documentsIds?: number[] | null;
 }
 
 export interface IndividualDeviceReadingsItemHistoryResponse {
@@ -4488,6 +4480,11 @@ export interface TasksPagedListSuccessApiResponse {
   successResponse: TasksPagedList | null;
 }
 
+export enum YearRangeType {
+  FirstHalf = "FirstHalf",
+  SecondHalf = "SecondHalf",
+}
+
 export enum EResourceDisconnectingType {
   Other = "Other",
   Planned = "Planned",
@@ -4775,6 +4772,7 @@ export interface TaskResponse {
 
   /** @format int32 */
   housingStockId: number;
+  isPerpertator: boolean;
   perpetrator: ManagingFirmUserShortResponse | null;
 
   /** @format date-time */
@@ -6009,14 +6007,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags DataMigrations
-     * @name DataMigrationsTestList
-     * @request GET:/api/DataMigrations/Test
+     * @name DataMigrationsOperatorIssuesList
+     * @request GET:/api/DataMigrations/OperatorIssues
      * @secure
      */
-    dataMigrationsTestList: (params: RequestParams = {}) =>
+    dataMigrationsOperatorIssuesList: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/DataMigrations/Test`,
+        path: `/api/DataMigrations/OperatorIssues`,
         method: "GET",
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsRevalidateReadingTasksCreate
+     * @request POST:/api/DataMigrations/RevalidateReadingTasks
+     * @secure
+     */
+    dataMigrationsRevalidateReadingTasksCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/RevalidateReadingTasks`,
+        method: "POST",
         secure: true,
         ...params,
       }),
@@ -7035,6 +7049,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     housingStocksList: (
       query?: {
+        OrderRule?: EHousingStockOrderRule;
         City?: string | null;
         Street?: string | null;
         HousingStockNumber?: string | null;
@@ -9085,7 +9100,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/OperatorsWorkingReport`,
         method: "GET",
         query: query,
@@ -9106,7 +9121,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/InspectorsWorkingReport`,
         method: "GET",
         query: query,
@@ -9127,7 +9142,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/CallCenterWorkingReport`,
         method: "GET",
         query: query,
@@ -9148,7 +9163,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/IndividualMeteringDevicesReport`,
         method: "GET",
         query: query,
@@ -9169,7 +9184,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { From?: string | null; To?: string | null },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/HouseManagementsReport`,
         method: "GET",
         query: query,
@@ -9187,7 +9202,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsCheckingDatesReportList: (query?: { To?: string }, params: RequestParams = {}) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/CheckingDatesReport`,
         method: "GET",
         query: query,
@@ -9205,8 +9220,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReadingsReportList: (query?: { MonthsFromNow?: number }, params: RequestParams = {}) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<File, ErrorApiResponse>({
         path: `/api/Reports/ReadingsReport`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsManuallyClosedDevicesReportList
+     * @request GET:/api/Reports/ManuallyClosedDevicesReport
+     * @secure
+     */
+    reportsManuallyClosedDevicesReportList: (
+      query?: { ManagementFirmId?: number; Resource?: EResourceType; To?: string | null; From?: string | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ManuallyClosedDevicesReport`,
         method: "GET",
         query: query,
         secure: true,
@@ -9231,6 +9267,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: "GET",
         query: query,
         secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reports
+     * @name ReportsRunnerReportsList
+     * @request GET:/api/Reports/RunnerReports
+     * @secure
+     */
+    reportsRunnerReportsList: (
+      query?: { yearRange?: YearRangeType; hmIds?: string[] | null },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, ErrorApiResponse>({
+        path: `/api/Reports/RunnerReports`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
         ...params,
       }),
 

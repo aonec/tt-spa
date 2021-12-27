@@ -6,7 +6,7 @@ import {
   CorrectionReadingsGate,
 } from '.';
 import { $nextStages } from '../../displayNextStages/models';
-import { $task } from '../../displayTask/models';
+import { $task, refetchTask } from '../../displayTask/models';
 import { pushStageFx } from '../../pushingStage/models';
 
 pushStageFx.use(pushStages);
@@ -53,4 +53,9 @@ sample({
 forward({
   from: CorrectionReadingsGate.close,
   to: correctionReadingsForm.reset,
+});
+
+forward({
+  from: pushStageFx.doneData,
+  to: refetchTask,
 });
