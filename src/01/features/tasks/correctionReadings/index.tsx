@@ -11,7 +11,9 @@ import { ButtonTT } from '01/tt-components';
 import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Form } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
@@ -71,17 +73,31 @@ export const CorrectionReadingsPanel = () => {
     </Grid>
   );
 
+  const rateNum = getIndividualDeviceRateNumByName(device?.rateType) || 0;
+  const readingValues = getArrayByCountRange(
+    rateNum,
+    (count) => (fields.readingValue.value as any)[`value${count}`]
+  );
+
   const inputReadings = device && (
-    <>
-      <Form.Item label="Исправленные показания">
-        <ReadingInputStyled
-          resource={device.resource}
-          type="number"
-          value={fields.readingValue.value || ''}
-          onChange={(e: any) => fields.readingValue.onChange(e.target.value)}
-        />
-      </Form.Item>
-    </>
+    <Form.Item label="Исправленные показания">
+      <Grid temp="1fr" gap="10px">
+        {[...readingValues].map((elem, index) => (
+          <ReadingInputStyled
+            placeholder={`T${index + 1}`}
+            resource={device.resource}
+            type="number"
+            value={elem}
+            onChange={(e: any) =>
+              fields.readingValue.onChange({
+                ...fields.readingValue.value,
+                [`value${index + 1}`]: e.target.value,
+              })
+            }
+          />
+        ))}
+      </Grid>
+    </Form.Item>
   );
 
   const extraCheckingSelection = (
@@ -102,6 +118,8 @@ export const CorrectionReadingsPanel = () => {
         <TextArea
           placeholder="Введите комментарий"
           disabled={!fields.needSeniorOperatorCheck.value}
+          value={fields.comment.value}
+          onChange={(e) => fields.comment.onChange(e.target.value)}
         />
       </Form.Item>
     </div>
