@@ -68,18 +68,19 @@ export const CorrectionReadingsPanel = () => {
   );
 
   const deviceDataString = (
-    <Flex>
-      <DeviceDataString device={device} />
-      <Space w={5} />
-      <IsActive closingDate={device?.closingDate} />
-      <Space />
-      <div>{translateMountPlace(device?.mountPlace)}</div>
-      <Space />
-      <DateLine
-        lastCheckingDate={device?.lastCheckingDate}
-        futureCheckingDate={device?.futureCheckingDate}
-      />
-      <Space />
+    <Flex style={{ justifyContent: 'space-between' }}>
+      <Flex>
+        <DeviceDataString device={device} />
+        <Space w={5} />
+        <IsActive closingDate={device?.closingDate} />
+        <Space />
+        <div>{translateMountPlace(device?.mountPlace)}</div>
+        <Space />
+        <DateLine
+          lastCheckingDate={device?.lastCheckingDate}
+          futureCheckingDate={device?.futureCheckingDate}
+        />
+      </Flex>
       <ReadingsHistoryButton deviceId={device?.id} />
     </Flex>
   );
