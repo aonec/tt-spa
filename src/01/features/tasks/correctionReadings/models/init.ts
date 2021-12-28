@@ -21,7 +21,6 @@ sample({
       const reading = device?.readings && device?.readings[0];
 
       const finalStage = nextStages?.find((elem) => elem.type === 'Final');
-      const switchStage = nextStages?.find((elem) => elem.type === 'Switch');
 
       const payloadForFinal = {
         fixedReading: {
@@ -30,12 +29,11 @@ sample({
           readingDate: reading?.readingDate,
           uploadTime: reading?.readingDateTime,
         },
-        nextStagesId: finalStage?.id,
       };
 
       const payloadForEtraCheck = {
+        nextStagesId: finalStage?.id,
         comment,
-        nextStageId: switchStage?.id,
       };
 
       return {

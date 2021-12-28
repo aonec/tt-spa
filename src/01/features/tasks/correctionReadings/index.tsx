@@ -15,14 +15,14 @@ import { DateLine } from '01/_components/DateLine/DateLine';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import TextArea from 'antd/lib/input/TextArea';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { EResourceType } from 'myApi';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { NextStagesGate } from '../displayNextStages/models';
@@ -47,6 +47,25 @@ export const CorrectionReadingsPanel = () => {
   const { fields } = useForm(correctionReadingsForm);
 
   const pendingCompleteStage = useStore(pushStageFx.pending);
+
+  useEffect(
+    () =>
+      pushStageFx.failData.watch((error) => {
+        const errorMessage = ({ ...error } as any)?.response?.data?.error
+          ?.Message;
+
+        if (errorMessage) message.error(errorMessage);
+      }).unsubscribe,
+    []
+  );
+
+  useEffect(
+    () =>
+      pushStageFx.done.watch(() => {
+        message.success('Задача успешно обновлена');
+      }).unsubscribe,
+    []
+  );
 
   const deviceDataString = (
     <Flex>
@@ -213,6 +232,10 @@ const ReadingInputStyled = styled.input<{ resource: EResourceType }>`
   padding: 4px 10px;
   width: 180px;
   transition: 0.2s;
+
+  &:disabled {
+    background: rgba(0, 0, 0, 0.08);
+  }
 
   &:focus,
   &:hover {
