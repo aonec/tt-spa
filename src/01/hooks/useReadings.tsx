@@ -72,10 +72,13 @@ export const useReadings = (
       (acc, elem) => {
         if (currentDate.diff(elem.readingDateTime, 'months') > 11) return acc;
 
-        const index =
-          Number(moment().format('M')) -
-          Number(moment(elem.readingDateTime).format('M')) -
-          1;
+        const index = moment().diff(elem.readingDateTime, 'months');
+
+        console.log(
+          index,
+          Number(moment().format('M')),
+          Number(moment(elem.readingDateTime).format('M'))
+        );
 
         acc[index] = elem;
 
@@ -176,7 +179,6 @@ export const useReadings = (
       ...readingsState.currentReadingsArray
         .filter(Boolean)
         .reduce((acc, elem, index) => {
-
           return {
             ...acc,
             [`value${index + 1}`]: Number(elem),
