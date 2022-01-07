@@ -167,7 +167,7 @@ export async function addNode(form: CreatePipeNodeRequest) {
 
 export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
   try {
-    const res = await axios.put(`Nodes/${nodeId}`, form);
+    const res = await axios.put(`PipeNodes/${nodeId}`, form);
     alert('Узел успешно изменен!');
     return res;
   } catch (error) {
