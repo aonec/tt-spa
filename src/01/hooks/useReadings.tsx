@@ -74,12 +74,6 @@ export const useReadings = (
 
         const index = moment().diff(elem.readingDateTime, 'months');
 
-        console.log(
-          index,
-          Number(moment().format('M')),
-          Number(moment(elem.readingDateTime).format('M'))
-        );
-
         acc[index] = elem;
 
         return acc;
