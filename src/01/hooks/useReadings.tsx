@@ -70,9 +70,14 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        if (currentDate.diff(elem.readingDateTime, 'months') > 11) return acc;
+        const dateFormat = "YYYY-MM"
 
-        const index = moment().diff(elem.readingDateTime, 'months');
+        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
+        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+
+        if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
+
+        const index = currentMonthDate.diff(readingMonthDate, 'months') - 1;
 
         acc[index] = elem;
 
