@@ -10,6 +10,7 @@ import { StyledInput } from '01/shared/ui/Fields';
 import axios from '01/axios';
 import { message } from 'antd';
 import { useEffect } from 'react';
+import moment from 'moment';
 
 export const Certificate = (props) => {
   const { certificate } = props;
@@ -20,22 +21,8 @@ export const Certificate = (props) => {
 
   useEffect(() => setFullName(name), [name]);
 
-  const nowDate = new Date();
-  const months = [
-    ' января ',
-    ' февраля ',
-    ' марта ',
-    ' апреля ',
-    ' июня ',
-    ' июля ',
-    ' августа ',
-    ' сентября ',
-    ' октября ',
-    ' ноября ',
-    ' декабря ',
-  ];
-  const strDate =
-    nowDate.getDate() + months[nowDate.getMonth() - 1] + nowDate.getFullYear();
+  const strDate = moment().format('DD MMMM YYYY');
+
   return (
     <div
       ref={props.ref}
