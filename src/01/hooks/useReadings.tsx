@@ -197,7 +197,7 @@ export const useReadings = (
       getIndividualDeviceRateNumByName(device.rateType)
     );
 
-    if (!values.every(Boolean)) return;
+    // if (!values.every(Boolean)) return;
 
     setReadingsState((prev: any) => ({
       ...prev,
@@ -378,7 +378,7 @@ export const useReadings = (
         getIndividualDeviceRateNumByName(device.rateType)
       );
 
-      if (!values.every(Boolean)) return;
+      // if (!values.every(Boolean)) return;
 
       setReadingsState((prev: any) => ({
         ...prev,
