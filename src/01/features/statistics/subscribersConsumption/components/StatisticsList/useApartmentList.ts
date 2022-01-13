@@ -38,7 +38,7 @@ export function useApartmentList() {
   ];
 
   filters.forEach(({valuePath, fromPath, toPath, consumptionPath}) => {
-    const [value, from, to, consuption] = [
+    const [value, from, to, consumption] = [
       _.get(fields, valuePath),
       _.get(fields, fromPath),
       _.get(fields, toPath),
@@ -46,7 +46,7 @@ export function useApartmentList() {
     ]
     if (value && (typeof from === 'number') && (typeof to === 'number')) {
       filterCallbacks.push((apartment) =>
-        Boolean(typeof consuption === "number" && consuption >= Number(from) && consuption <= Number(to))
+        Boolean(typeof consumption === "number" && consumption >= Number(from) && consumption <= Number(to))
       )
     }
   });
