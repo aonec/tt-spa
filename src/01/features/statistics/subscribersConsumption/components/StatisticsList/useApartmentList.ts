@@ -16,51 +16,40 @@ export function useApartmentList() {
 
   const filterCallbacks: IterateArrayCallback<SubscriberStatisticsСonsumptionResponse> = [];
 
-  if (
-    fields.coldOpen.value &&
-    typeof fields.cold.value.from === 'number' &&
-    typeof fields.cold.value.to === 'number'
-  ) {
-    filterCallbacks.push((apartment) =>
-      Boolean(
-        typeof apartment.coldWaterSupplyСonsumption === 'number' &&
-          apartment.coldWaterSupplyСonsumption >=
-            Number(fields.cold.value.from) &&
-          apartment.coldWaterSupplyСonsumption <= Number(fields.cold.value.to)
-      )
-    );
-  }
+  const filters = [
+    {
+      valuePath: 'coldOpen.value',
+      fromPath: 'cold.value.from',
+      toPath: 'cold.value.to',
+      consumptionPath: 'coldWaterSupplyСonsumption',
+    },
+    {
+      valuePath: 'hotOpen.value',
+      fromPath: 'hot.value.from',
+      toPath: 'hot.value.to',
+      consumptionPath: 'hotWaterSupplyСonsumption',
+    },
+    {
+      valuePath: 'electricityOpen.value',
+      fromPath: 'electricity.value.from',
+      toPath: 'electricity.value.to',
+      consumptionPath: 'electricitySupplyСonsumption',
+    }
+  ];
 
-  if (
-    fields.heatOpen.value &&
-    typeof fields.heat.value.from === 'number' &&
-    typeof fields.heat.value.to === 'number'
-  ) {
-    filterCallbacks.push((apartment) =>
-      Boolean(
-        typeof apartment.hotWaterSupplyСonsumption === 'number' &&
-          apartment.hotWaterSupplyСonsumption >=
-            Number(fields.heat.value.from) &&
-          apartment.hotWaterSupplyСonsumption <= Number(fields.heat.value.to)
+  filters.forEach(({valuePath, fromPath, toPath, consumptionPath}) => {
+    const [value, from, to, consuption] = [
+      _.get(fields, valuePath),
+      _.get(fields, fromPath),
+      _.get(fields, toPath),
+      _.get(fields, consumptionPath)
+    ]
+    if (value && (typeof from === 'number') && (typeof to === 'number')) {
+      filterCallbacks.push((apartment) =>
+        Boolean(typeof consuption === "number" && consuption >= Number(from) && consuption <= Number(to))
       )
-    );
-  }
-
-  if (
-    fields.electricityOpen.value &&
-    typeof fields.electricity.value.from === 'number' &&
-    typeof fields.electricity.value.to === 'number'
-  ) {
-    filterCallbacks.push((apartment) =>
-      Boolean(
-        typeof apartment.electricitySupplyСonsumption === 'number' &&
-          apartment.electricitySupplyСonsumption >=
-            Number(fields.electricity.value.from) &&
-          apartment.electricitySupplyСonsumption <=
-            Number(fields.electricity.value.to)
-      )
-    );
-  }
+    }
+  });
 
   if (
     fields.individualDeviceCheckPeriod.value.from &&
