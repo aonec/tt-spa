@@ -97,9 +97,9 @@ export const CloseIndividualDeviceModal = () => {
             })}
           </ErrorMessage>
         </Form.Item>
-        <Form.Item label="Причина замены" style={{ width: '100%' }}>
+        <Form.Item label="Причина зыкрытия" style={{ width: '100%' }}>
           <StyledSelect
-            placeholder="Выберите причину замены"
+            placeholder="Выберите причину закрытия"
             value={fields.closingReason.value || undefined}
             onChange={fields.closingReason.onChange as any}
           >
