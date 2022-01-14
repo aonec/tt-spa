@@ -4,13 +4,11 @@ import { useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Header, ModalText, StyledModal } from '01/shared/ui/Modal/Modal';
+import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, DatePickerTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, Select } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
-import confirm from 'antd/lib/modal/confirm';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
@@ -61,16 +59,18 @@ export const CloseIndividualDeviceModal = () => {
       }
       footer={
         <Footer>
-          <ButtonTT color="white" onClick={onCancel}>
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="red"
-            onClick={submit}
-            disabled={pendingProcessing || pendingSave}
-          >
-            {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
-          </ButtonTT>
+          <Flex style={{ justifyContent: 'flex-end' }}>
+            <ButtonTT color="white" onClick={onCancel}>
+              Отмена
+            </ButtonTT>
+            <ButtonTT
+              color="red"
+              onClick={submit}
+              disabled={pendingProcessing || pendingSave}
+            >
+              {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
+            </ButtonTT>
+          </Flex>
         </Footer>
       }
     >
