@@ -16,7 +16,6 @@ import { ECheckType } from 'myApi';
 import { useForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
-import { DatePickerNative } from '01/shared/ui/DatePickerNative';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);

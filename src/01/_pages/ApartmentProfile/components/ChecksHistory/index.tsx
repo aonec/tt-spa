@@ -23,6 +23,7 @@ import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
 import { saveAs } from 'file-saver';
 import { message } from 'antd';
 import axios from '01/axios';
+import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
 
 export const ChecksHistory = () => {
   const params = useParams();
@@ -82,37 +83,20 @@ export const ChecksHistory = () => {
         </Header>
         {documents?.map(renderDocument)}
       </PendingLoader>
+      <Space />
+      <CreateButton
+        className="ant-btn-link"
+        onClick={() => openCheckApartmentModal()}
+      >
+        + Создать проверку
+      </CreateButton>
     </Wrap>
   );
 };
 
-export function translateDocumentType(type: EDocumentType) {
-  const types = {
-    [EDocumentType.AdditionalMaterials]: 'Дополнительные материалы',
-    [EDocumentType.ApartmentAccessDeniedAct]: null,
-    [EDocumentType.ApartmentCheckingAct]: 'Акт плановой проверки',
-    [EDocumentType.ApartmentStoppingStatement]: 'Заявление о непроживании',
-    [EDocumentType.ApartmentUnauthorizedInterferenceAct]: null,
-    [EDocumentType.Common]: null,
-    [EDocumentType.DeviceAcceptanceAct]: 'Акт-допуск',
-    [EDocumentType.DeviceCheckAct]: 'Акт поверки прибора',
-    [EDocumentType.DeviceClosingAct]: 'Акт закрытия прибора',
-    [EDocumentType.DeviceCommercialAccountingAct]: null,
-    [EDocumentType.DeviceCommissionCheckAct]: 'Акт комиссионной проверки',
-    [EDocumentType.DeviceDeploymentAct]: 'Акт установки прибора',
-    [EDocumentType.DevicePassport]: 'Паспорт прибора',
-    [EDocumentType.DeviceTestCertificates]: 'Сертификат о поверке',
-    [EDocumentType.HeatingSeasonChangingStatement]: null,
-    [EDocumentType.HeatingSeasonEndingOrder]: null,
-    [EDocumentType.HeatingSeasonStartingOrder]: null,
-    [EDocumentType.ImportedFile]: null,
-    [EDocumentType.NodeAdmissionAct]: null,
-    [EDocumentType.Photo]: 'фото',
-    [EDocumentType.ProfilePhoto]: 'Фото профиля',
-  };
-
-  return (types as any)[type] || 'Документ';
-}
+const CreateButton = styled.div`
+  cursor: pointer;
+`;
 
 function getCheckingActDocument(type: ECheckType) {
   return type === ECheckType.Planned ? 'Плановая' : 'Внеплановая';
