@@ -11,19 +11,20 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import {
-  ApartmentCheckResponse,
-  EDocumentType,
-  ECheckType,
-  DocumentResponse,
-} from 'myApi';
+import { ApartmentCheckResponse, ECheckType, DocumentResponse } from 'myApi';
 import moment from 'moment';
 import { ReactComponent as DocumentIcon } from './documentIcon.svg';
 import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
 import { saveAs } from 'file-saver';
 import { message } from 'antd';
 import axios from '01/axios';
-import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
+import {
+  openCheckApartmentModal,
+  removeApartmentCheckEv,
+} from '01/features/apartments/checkApartment/models';
+import { $apartmentEditMode } from '01/features/apartments/displayApartment/models';
+import { Pen, Trash } from 'react-bootstrap-icons';
+import confirm from 'antd/lib/modal/confirm';
 
 export const ChecksHistory = () => {
   const params = useParams();
@@ -32,11 +33,14 @@ export const ChecksHistory = () => {
   const documents = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
+  const isEditMode = useStore($apartmentEditMode);
+
   const renderDocument = ({
     checkingDate,
     checkingAct: document,
     checkType,
     registryNumber,
+    id,
   }: ApartmentCheckResponse) => {
     const onSaveFile = getOnSaveFile(document!);
     return (
@@ -58,14 +62,32 @@ export const ChecksHistory = () => {
               )}
             </div>
           </Flex>
-          <div style={{ minWidth: 18 }}>
-            {document?.id && (
-              <DownloadIcon
-                style={{ cursor: 'pointer' }}
-                onClick={onSaveFile}
-              />
+          <Flex style={{ minWidth: 18, fontSize: 16 }}>
+            {isEditMode ? (
+              <>
+                <Pen style={{ cursor: 'pointer' }} />
+                <Space />
+                <Trash
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    confirm({
+                      title: 'Вы уверены, что хотите удалить проверку?',
+                      okText: 'Да',
+                      cancelText: 'Нет',
+                      onOk: () => void removeApartmentCheckEv(id),
+                    })
+                  }
+                />
+              </>
+            ) : (
+              document?.id && (
+                <DownloadIcon
+                  style={{ cursor: 'pointer' }}
+                  onClick={onSaveFile}
+                />
+              )
             )}
-          </div>
+          </Flex>
         </Flex>
       </ListItem>
     );

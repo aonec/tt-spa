@@ -7,7 +7,7 @@ import {
   resetApartment,
   switchApartmentEditMode,
 } from './index';
-import { forward, sample } from 'effector';
+import { sample } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
 $apartment

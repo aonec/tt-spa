@@ -5,6 +5,7 @@ import {
 import { createForm } from 'effector-forms';
 import { createStore, createEffect, createEvent } from 'effector';
 import { FileData } from '01/hooks/useFilesUpload';
+import { RemoveCheckPayload } from '01/_api/apartments';
 
 export const $isCheckApartmentModalOpen = createStore(false);
 
@@ -59,3 +60,9 @@ export const checkApartmentForm = createForm({
     },
   },
 });
+
+export const removeApartmnetCheckFx = createEffect<RemoveCheckPayload, void>();
+
+export const removeApartmentCheckEv = createEvent<number>();
+
+export const openEditCheckModal = createEvent();

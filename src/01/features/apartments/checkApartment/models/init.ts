@@ -4,6 +4,8 @@ import {
   closeCheckApartmentModal,
   checkApartmentFx,
   checkApartmentForm,
+  removeApartmnetCheckFx,
+  removeApartmentCheckEv,
 } from './index';
 import { $isCheckApartmentModalOpen } from '.';
 import {
@@ -11,11 +13,13 @@ import {
   sample,
   forward,
 } from '../../../../../../node_modules/effector';
-import { ApartmentGate } from '../../displayApartment/models';
-import { checkApartment } from '01/_api/apartments';
+import { $apartment, ApartmentGate } from '../../displayApartment/models';
+import { checkApartment, removeApartmentCheck } from '01/_api/apartments';
 import moment from 'moment';
 
 checkApartmentFx.use(checkApartment);
+
+removeApartmnetCheckFx.use(removeApartmentCheck);
 
 $isCheckApartmentModalOpen
   .on(openCheckApartmentModal, () => true)
@@ -41,4 +45,16 @@ sample({
 forward({
   from: checkApartmentFx.done,
   to: [refetchApartmentCheckHistory, checkApartmentForm.reset],
+});
+
+sample({
+  source: $apartment,
+  clock: removeApartmentCheckEv,
+  fn: (apartment, checkId) => ({ apartmentId: apartment?.id!, checkId }),
+  target: removeApartmnetCheckFx,
+});
+
+forward({
+  from: removeApartmnetCheckFx.done,
+  to: refetchApartmentCheckHistory,
 });

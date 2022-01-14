@@ -68,3 +68,14 @@ export const findApartmentId = (
   payload: FindApartmentIdQueryPayload
 ): Promise<number | null> =>
   axios.get('Apartments/FindApartmentId', { params: payload });
+
+export interface RemoveCheckPayload {
+  apartmentId: number;
+  checkId: number;
+}
+
+export const removeApartmentCheck = ({
+  apartmentId,
+  checkId,
+}: RemoveCheckPayload): Promise<void> =>
+  axios.delete(`Apartments/${apartmentId}/RemoveCheck/${checkId}`);
