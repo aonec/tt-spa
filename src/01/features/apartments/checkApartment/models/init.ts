@@ -66,7 +66,7 @@ sample({
   fn: ({ apartmentId, apartmentCheckId, data }) => ({
     apartmentId,
     apartmentCheckId,
-    data,
+    data: { ...data, checkingAct: data.documentIds[0]?.fileResponse?.id },
   }),
   clock: saveEditApartmentCheck,
   target: editApartmentCheckFx,

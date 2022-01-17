@@ -47,6 +47,8 @@ export const CheckApartmentModal = () => {
     []
   );
 
+  console.log(payload?.checkingAct);
+
   return (
     <ModalTT
       title={isEditOpen ? 'Редактировать проверку' : 'Создать проверку'}
