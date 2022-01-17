@@ -8,6 +8,7 @@ export interface FileData {
   status?: 'done' | 'failed' | 'pending';
   fileResponse: DocumentResponse | null;
   error?: Error;
+  onRemove?(): void;
 }
 
 interface FileUploader {

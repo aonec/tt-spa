@@ -20,6 +20,7 @@ import { message } from 'antd';
 import axios from '01/axios';
 import {
   openCheckApartmentModal,
+  openEditApartmentCheckModal,
   removeApartmentCheckEv,
 } from '01/features/apartments/checkApartment/models';
 import { $apartmentEditMode } from '01/features/apartments/displayApartment/models';
@@ -65,7 +66,18 @@ export const ChecksHistory = () => {
           <Flex style={{ minWidth: 18, fontSize: 16 }}>
             {isEditMode ? (
               <>
-                <Pen style={{ cursor: 'pointer' }} />
+                <Pen
+                  onClick={() =>
+                    openEditApartmentCheckModal({
+                      checkingDate,
+                      checkingAct: document,
+                      checkType,
+                      registryNumber,
+                      id,
+                    } as any)
+                  }
+                  style={{ cursor: 'pointer' }}
+                />
                 <Space />
                 <Trash
                   style={{ cursor: 'pointer' }}

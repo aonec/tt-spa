@@ -6,6 +6,11 @@ import {
   checkApartmentForm,
   removeApartmnetCheckFx,
   removeApartmentCheckEv,
+  $editApartmentCheckModalPayload,
+  openEditApartmentCheckModal,
+  editApartmentCheckFx,
+  clearPayloadFile,
+  saveEditApartmentCheck,
 } from './index';
 import { $isCheckApartmentModalOpen } from '.';
 import {
@@ -14,10 +19,15 @@ import {
   forward,
 } from '../../../../../../node_modules/effector';
 import { $apartment, ApartmentGate } from '../../displayApartment/models';
-import { checkApartment, removeApartmentCheck } from '01/_api/apartments';
+import {
+  checkApartment,
+  putApartmentCheck,
+  removeApartmentCheck,
+} from '01/_api/apartments';
 import moment from 'moment';
 
 checkApartmentFx.use(checkApartment);
+editApartmentCheckFx.use(putApartmentCheck);
 
 removeApartmnetCheckFx.use(removeApartmentCheck);
 
@@ -42,6 +52,26 @@ sample({
   target: checkApartmentFx as any,
 });
 
+sample({
+  source: combine(
+    ApartmentGate.state.map(({ id }) => id),
+    $editApartmentCheckModalPayload,
+    checkApartmentForm.$values,
+    (apartmentId, payload, data) => ({
+      apartmentId,
+      apartmentCheckId: payload?.id!,
+      data,
+    })
+  ),
+  fn: ({ apartmentId, apartmentCheckId, data }) => ({
+    apartmentId,
+    apartmentCheckId,
+    data,
+  }),
+  clock: saveEditApartmentCheck,
+  target: editApartmentCheckFx,
+});
+
 forward({
   from: checkApartmentFx.done,
   to: [refetchApartmentCheckHistory, checkApartmentForm.reset],
@@ -57,4 +87,41 @@ sample({
 forward({
   from: removeApartmnetCheckFx.done,
   to: refetchApartmentCheckHistory,
+});
+
+$editApartmentCheckModalPayload
+  .on(openEditApartmentCheckModal, (_, payload) => {
+    return payload;
+  })
+  .reset(closeCheckApartmentModal)
+  .on(clearPayloadFile, (payload) =>
+    payload ? { ...payload, checkingAct: null } : null
+  );
+
+sample({
+  clock: openEditApartmentCheckModal,
+  fn: (payload) => {
+    return {
+      ...payload,
+      documentIds: payload?.checkingAct
+        ? [
+            {
+              id: Date.now(),
+              fileResponse: payload?.checkingAct,
+            },
+          ]
+        : [],
+    };
+  },
+  target: checkApartmentForm.setForm,
+});
+
+forward({
+  from: closeCheckApartmentModal,
+  to: [checkApartmentForm.reset],
+});
+
+forward({
+  from: editApartmentCheckFx.doneData,
+  to: [closeCheckApartmentModal, refetchApartmentCheckHistory],
 });
