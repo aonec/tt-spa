@@ -23,11 +23,11 @@ export const Header = ({ apartmentNumber, city, street, number }) => {
       </div>
       <MenuButtonTT
         menuButtonArr={[
-          {
-            title: isEditMode ? 'Отменить редактирование' : 'Редактировать',
-            show: true,
-            cb: switchApartmentEditMode,
-          },
+          // {
+          //   title: isEditMode ? 'Отменить редактирование' : 'Редактировать',
+          //   show: true,
+          //   cb: switchApartmentEditMode,
+          // },
           {
             title: 'Создать проверку',
             show: true,

@@ -27,6 +27,8 @@ import { $apartmentEditMode } from '01/features/apartments/displayApartment/mode
 import { Pen, Trash } from 'react-bootstrap-icons';
 import confirm from 'antd/lib/modal/confirm';
 
+const temp = '0.7fr 0.6fr 0.5fr 2.5fr';
+
 export const ChecksHistory = () => {
   const params = useParams();
   const apartmentId = (params as any)[1];
@@ -45,7 +47,7 @@ export const ChecksHistory = () => {
   }: ApartmentCheckResponse) => {
     const onSaveFile = getOnSaveFile(document!);
     return (
-      <ListItem temp="1fr 1fr 1fr 2.5fr">
+      <ListItem temp={temp}>
         <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
           {moment(checkingDate).format('DD.MM.YYYY')}
         </b>
@@ -64,41 +66,32 @@ export const ChecksHistory = () => {
             </div>
           </Flex>
           <Flex style={{ minWidth: 18, fontSize: 16 }}>
-            {isEditMode ? (
-              <>
-                <Pen
-                  onClick={() =>
-                    openEditApartmentCheckModal({
-                      checkingDate,
-                      checkingAct: document,
-                      checkType,
-                      registryNumber,
-                      id,
-                    } as any)
-                  }
-                  style={{ cursor: 'pointer' }}
-                />
-                <Space />
-                <Trash
-                  style={{ cursor: 'pointer' }}
-                  onClick={() =>
-                    confirm({
-                      title: 'Вы уверены, что хотите удалить проверку?',
-                      okText: 'Да',
-                      cancelText: 'Нет',
-                      onOk: () => void removeApartmentCheckEv(id),
-                    })
-                  }
-                />
-              </>
-            ) : (
-              document?.id && (
-                <DownloadIcon
-                  style={{ cursor: 'pointer' }}
-                  onClick={onSaveFile}
-                />
-              )
-            )}
+            <Pen
+              onClick={() =>
+                openEditApartmentCheckModal({
+                  checkingDate,
+                  checkingAct: document,
+                  checkType,
+                  registryNumber,
+                  id,
+                } as any)
+              }
+              style={{ cursor: 'pointer' }}
+            />
+            <Space />
+            <Trash
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                confirm({
+                  title: 'Вы уверены, что хотите удалить проверку?',
+                  okText: 'Да',
+                  cancelText: 'Нет',
+                  onOk: () => void removeApartmentCheckEv(id),
+                })
+              }
+            />
+            <Space />
+            <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
           </Flex>
         </Flex>
       </ListItem>
@@ -109,7 +102,7 @@ export const ChecksHistory = () => {
     <Wrap>
       <ApartmentChecksDocuments apartmentId={apartmentId} />
       <PendingLoader loading={pending}>
-        <Header temp="1fr 1fr 1fr 2.5fr">
+        <Header temp={temp}>
           <div>Дата</div>
           <div>Тип</div>
           <div>№ акта</div>
