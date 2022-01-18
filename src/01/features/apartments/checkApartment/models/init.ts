@@ -68,8 +68,7 @@ sample({
     apartmentCheckId,
     data: {
       ...data,
-      checkingAct: data.documentIds[0]?.fileResponse?.id,
-      documentIds: null,
+      documentId: data.documentIds[0]?.fileResponse?.id,
     },
   }),
   clock: saveEditApartmentCheck,
