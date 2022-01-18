@@ -3,6 +3,7 @@ import { ErrorMessage } from '01/features/contractors/addContractors';
 import { useFilesUpload } from '01/hooks/useFilesUpload';
 import { DragAndDrop } from '01/shared/ui/DragAndDrop';
 import { FilesList } from '01/shared/ui/FilesList';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import { Header, StyledModal } from '01/shared/ui/Modal/Modal';
 import { ButtonTT, DatePickerTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
@@ -58,16 +59,18 @@ export const CloseIndividualDeviceModal = () => {
       }
       footer={
         <Footer>
-          <ButtonTT color="white" onClick={onCancel}>
-            Отмена
-          </ButtonTT>
-          <ButtonTT
-            color="red"
-            onClick={submit}
-            disabled={pendingProcessing || pendingSave}
-          >
-            {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
-          </ButtonTT>
+          <Flex style={{ justifyContent: 'flex-end' }}>
+            <ButtonTT color="white" onClick={onCancel}>
+              Отмена
+            </ButtonTT>
+            <ButtonTT
+              color="red"
+              onClick={submit}
+              disabled={pendingProcessing || pendingSave}
+            >
+              {pendingSave ? <Loader show /> : 'Снять прибор с учета'}
+            </ButtonTT>
+          </Flex>
         </Footer>
       }
     >
@@ -94,9 +97,9 @@ export const CloseIndividualDeviceModal = () => {
             })}
           </ErrorMessage>
         </Form.Item>
-        <Form.Item label="Причина замены" style={{ width: '100%' }}>
+        <Form.Item label="Причина зыкрытия" style={{ width: '100%' }}>
           <StyledSelect
-            placeholder="Выберите причину замены"
+            placeholder="Выберите причину закрытия"
             value={fields.closingReason.value || undefined}
             onChange={fields.closingReason.onChange as any}
           >
