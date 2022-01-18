@@ -5,6 +5,7 @@ import {
   IndividualDeviceWithExpiredCheckingDateResponse,
   CreateApartmentCheckRequest,
   ApartmentCheckResponsePagedList,
+  EditApartmentCheckRequest,
 } from './../../myApi';
 import axios from '01/axios';
 import { formQueryString } from '01/utils/formQueryString';
@@ -68,3 +69,27 @@ export const findApartmentId = (
   payload: FindApartmentIdQueryPayload
 ): Promise<number | null> =>
   axios.get('Apartments/FindApartmentId', { params: payload });
+
+export interface RemoveCheckPayload {
+  apartmentId: number;
+  checkId: number;
+}
+
+export const removeApartmentCheck = ({
+  apartmentId,
+  checkId,
+}: RemoveCheckPayload): Promise<void> =>
+  axios.delete(`Apartments/${apartmentId}/RemoveCheck/${checkId}`);
+
+export interface CheckApartmentPayload {
+  apartmentId: number;
+  apartmentCheckId: number;
+  data: EditApartmentCheckRequest | null;
+}
+
+export const putApartmentCheck = ({
+  apartmentId,
+  apartmentCheckId,
+  data,
+}: CheckApartmentPayload): Promise<void> =>
+  axios.put(`Apartments/${apartmentId}/EditCheck/${apartmentCheckId}`, data);

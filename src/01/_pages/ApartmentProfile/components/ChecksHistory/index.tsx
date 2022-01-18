@@ -11,18 +11,23 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
-import {
-  ApartmentCheckResponse,
-  EDocumentType,
-  ECheckType,
-  DocumentResponse,
-} from 'myApi';
+import { ApartmentCheckResponse, ECheckType, DocumentResponse } from 'myApi';
 import moment from 'moment';
 import { ReactComponent as DocumentIcon } from './documentIcon.svg';
 import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
 import { saveAs } from 'file-saver';
 import { message } from 'antd';
 import axios from '01/axios';
+import {
+  openCheckApartmentModal,
+  openEditApartmentCheckModal,
+  removeApartmentCheckEv,
+} from '01/features/apartments/checkApartment/models';
+import { $apartmentEditMode } from '01/features/apartments/displayApartment/models';
+import { Pen, Trash } from 'react-bootstrap-icons';
+import confirm from 'antd/lib/modal/confirm';
+
+const temp = '0.7fr 0.6fr 0.5fr 2.5fr';
 
 export const ChecksHistory = () => {
   const params = useParams();
@@ -31,15 +36,18 @@ export const ChecksHistory = () => {
   const documents = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
 
+  const isEditMode = useStore($apartmentEditMode);
+
   const renderDocument = ({
     checkingDate,
     checkingAct: document,
     checkType,
     registryNumber,
+    id,
   }: ApartmentCheckResponse) => {
     const onSaveFile = getOnSaveFile(document!);
     return (
-      <ListItem temp="1fr 1fr 1fr 2.5fr">
+      <ListItem temp={temp}>
         <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
           {moment(checkingDate).format('DD.MM.YYYY')}
         </b>
@@ -57,14 +65,34 @@ export const ChecksHistory = () => {
               )}
             </div>
           </Flex>
-          <div style={{ minWidth: 18 }}>
-            {document?.id && (
-              <DownloadIcon
-                style={{ cursor: 'pointer' }}
-                onClick={onSaveFile}
-              />
-            )}
-          </div>
+          <Flex style={{ minWidth: 18, fontSize: 16 }}>
+            <Pen
+              onClick={() =>
+                openEditApartmentCheckModal({
+                  checkingDate,
+                  checkingAct: document,
+                  checkType,
+                  registryNumber,
+                  id,
+                } as any)
+              }
+              style={{ cursor: 'pointer' }}
+            />
+            <Space />
+            <Trash
+              style={{ cursor: 'pointer' }}
+              onClick={() =>
+                confirm({
+                  title: 'Вы уверены, что хотите удалить проверку?',
+                  okText: 'Да',
+                  cancelText: 'Нет',
+                  onOk: () => void removeApartmentCheckEv(id),
+                })
+              }
+            />
+            <Space />
+            <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
+          </Flex>
         </Flex>
       </ListItem>
     );
@@ -74,7 +102,7 @@ export const ChecksHistory = () => {
     <Wrap>
       <ApartmentChecksDocuments apartmentId={apartmentId} />
       <PendingLoader loading={pending}>
-        <Header temp="1fr 1fr 1fr 2.5fr">
+        <Header temp={temp}>
           <div>Дата</div>
           <div>Тип</div>
           <div>№ акта</div>
@@ -82,37 +110,20 @@ export const ChecksHistory = () => {
         </Header>
         {documents?.map(renderDocument)}
       </PendingLoader>
+      <Space />
+      <CreateButton
+        className="ant-btn-link"
+        onClick={() => openCheckApartmentModal()}
+      >
+        + Создать проверку
+      </CreateButton>
     </Wrap>
   );
 };
 
-export function translateDocumentType(type: EDocumentType) {
-  const types = {
-    [EDocumentType.AdditionalMaterials]: 'Дополнительные материалы',
-    [EDocumentType.ApartmentAccessDeniedAct]: null,
-    [EDocumentType.ApartmentCheckingAct]: 'Акт плановой проверки',
-    [EDocumentType.ApartmentStoppingStatement]: 'Заявление о непроживании',
-    [EDocumentType.ApartmentUnauthorizedInterferenceAct]: null,
-    [EDocumentType.Common]: null,
-    [EDocumentType.DeviceAcceptanceAct]: 'Акт-допуск',
-    [EDocumentType.DeviceCheckAct]: 'Акт поверки прибора',
-    [EDocumentType.DeviceClosingAct]: 'Акт закрытия прибора',
-    [EDocumentType.DeviceCommercialAccountingAct]: null,
-    [EDocumentType.DeviceCommissionCheckAct]: 'Акт комиссионной проверки',
-    [EDocumentType.DeviceDeploymentAct]: 'Акт установки прибора',
-    [EDocumentType.DevicePassport]: 'Паспорт прибора',
-    [EDocumentType.DeviceTestCertificates]: 'Сертификат о поверке',
-    [EDocumentType.HeatingSeasonChangingStatement]: null,
-    [EDocumentType.HeatingSeasonEndingOrder]: null,
-    [EDocumentType.HeatingSeasonStartingOrder]: null,
-    [EDocumentType.ImportedFile]: null,
-    [EDocumentType.NodeAdmissionAct]: null,
-    [EDocumentType.Photo]: 'фото',
-    [EDocumentType.ProfilePhoto]: 'Фото профиля',
-  };
-
-  return (types as any)[type] || 'Документ';
-}
+const CreateButton = styled.div`
+  cursor: pointer;
+`;
 
 function getCheckingActDocument(type: ECheckType) {
   return type === ECheckType.Planned ? 'Плановая' : 'Внеплановая';
