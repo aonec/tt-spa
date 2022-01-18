@@ -11,12 +11,14 @@ import {
   editApartmentCheckFx,
   clearPayloadFile,
   saveEditApartmentCheck,
+  $isEditApartmentCheckModalOpen,
 } from './index';
 import { $isCheckApartmentModalOpen } from '.';
 import {
   combine,
   sample,
   forward,
+  guard,
 } from '../../../../../../node_modules/effector';
 import { $apartment, ApartmentGate } from '../../displayApartment/models';
 import {
@@ -48,7 +50,11 @@ sample({
       },
     })
   ),
-  clock: checkApartmentForm.formValidated,
+  clock: guard({
+    source: $isCheckApartmentModalOpen,
+    clock: checkApartmentForm.formValidated,
+    filter: (isOpen) => isOpen,
+  }),
   target: checkApartmentFx as any,
 });
 
@@ -71,7 +77,11 @@ sample({
       documentId: data.documentIds[0]?.fileResponse?.id,
     },
   }),
-  clock: saveEditApartmentCheck,
+  clock: guard({
+    source: $isEditApartmentCheckModalOpen,
+    clock: checkApartmentForm.formValidated,
+    filter: (isOpen) => isOpen,
+  }),
   target: editApartmentCheckFx,
 });
 

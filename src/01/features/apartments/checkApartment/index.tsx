@@ -53,7 +53,7 @@ export const CheckApartmentModal = () => {
       visible={visible || isEditOpen}
       onCancel={closeCheckApartmentModal}
       saveBtnText={isEditOpen ? 'Сохранить изменения' : 'Создать проверку'}
-      onSubmit={isEditOpen ? saveEditApartmentCheck : submit}
+      onSubmit={submit}
       loading={pending}
     >
       <Grid temp="1fr 1fr 1fr" gap="15px">

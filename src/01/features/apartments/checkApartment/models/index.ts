@@ -17,6 +17,8 @@ export const checkApartmentFx = createEffect<
   void
 >();
 
+export const createApartmentCheckEv = createEvent();
+
 export const closeCheckApartmentModal = createEvent();
 export const openCheckApartmentModal = createEvent();
 
