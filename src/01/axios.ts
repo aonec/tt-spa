@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 
-const devUrl = 'https://management.transparent-technology.ru:1443/api';
+const devUrl = 'https://management.transparent-technology.ru/api';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
