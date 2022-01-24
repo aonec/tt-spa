@@ -9,3 +9,9 @@ export interface CheckHistoryComponentProps {
   removeApartmentCheck(id: number): void;
   openEditApartmentCheckModal(payload: EditApartmentCheckPayload): void;
 }
+
+export interface CheckHistoryDocumentProps {
+  document: ApartmentCheckResponse;
+  removeApartmentCheck(id: number): void;
+  openEditApartmentCheckModal(payload: EditApartmentCheckPayload): void;
+}
