@@ -10,7 +10,6 @@ import {
   openEditApartmentCheckModal,
   editApartmentCheckFx,
   clearPayloadFile,
-  saveEditApartmentCheck,
   $isEditApartmentCheckModalOpen,
 } from './index';
 import { $isCheckApartmentModalOpen } from '.';
