@@ -55,8 +55,9 @@ export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
               )}
             </div>
           </Flex>
-          <Flex style={{ minWidth: 18, fontSize: 16 }}>
+          <Flex>
             <Pen
+              style={{ fontSize: 16, cursor: 'pointer' }}
               onClick={() =>
                 openEditApartmentCheckModal({
                   checkingDate,
@@ -66,11 +67,10 @@ export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
                   id,
                 } as any)
               }
-              style={{ cursor: 'pointer' }}
             />
             <Space />
             <Trash
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', fontSize: 16 }}
               onClick={() =>
                 confirm({
                   title: 'Вы уверены, что хотите удалить проверку?',
