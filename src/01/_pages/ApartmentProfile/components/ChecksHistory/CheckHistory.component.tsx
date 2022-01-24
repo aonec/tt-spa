@@ -1,42 +1,32 @@
-import {
-  $apartmentChecksDocuments,
-  ApartmentChecksDocuments,
-  fetchApartmentChecksDocumentsFx,
-} from '01/features/apartments/displayApartmentChecksHistory/models';
-import { Grid } from '01/shared/ui/Layout/Grid';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { useStore } from 'effector-react';
-import { PendingLoader } from '01/shared/ui/PendingLoader';
-import { ApartmentCheckResponse, ECheckType, DocumentResponse } from 'myApi';
+import { ApartmentCheckResponse } from 'myApi';
+import { FC } from 'react';
+import { ListItem, Header, Wrap, CreateButton } from './CheckHistory.styled';
+import { CheckHistoryComponentProps } from './CheckHistory.types';
+import { getCheckingActDocument, getOnSaveFile } from './utils';
 import moment from 'moment';
-import { ReactComponent as DocumentIcon } from './documentIcon.svg';
-import { ReactComponent as DownloadIcon } from './downloadIcon.svg';
-import { saveAs } from 'file-saver';
-import { message } from 'antd';
-import axios from '01/axios';
-import {
-  openCheckApartmentModal,
-  openEditApartmentCheckModal,
-  removeApartmentCheckEv,
-} from '01/features/apartments/checkApartment/models';
-import { $apartmentEditMode } from '01/features/apartments/displayApartment/models';
+import { ReactComponent as DocumentIcon } from './assets/documentIcon.svg';
+import { ReactComponent as DownloadIcon } from './assets/downloadIcon.svg';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Pen, Trash } from 'react-bootstrap-icons';
 import confirm from 'antd/lib/modal/confirm';
+import { ApartmentChecksDocuments } from '01/features/apartments/displayApartmentChecksHistory/models';
+import { PendingLoader } from '01/shared/ui/PendingLoader';
 
 const temp = '0.7fr 0.6fr 0.5fr 2.5fr';
 
-export const ChecksHistory = () => {
-  const params = useParams();
-  const apartmentId = (params as any)[1];
-
-  const documents = useStore($apartmentChecksDocuments);
-  const pending = useStore(fetchApartmentChecksDocumentsFx.pending);
-
-  const isEditMode = useStore($apartmentEditMode);
+export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
+  props
+) => {
+  const {
+    apartmentId,
+    documents,
+    pending,
+    openCheckApartmentModal,
+    removeApartmentCheck,
+    openEditApartmentCheckModal,
+  } = props;
 
   const renderDocument = ({
     checkingDate,
@@ -86,7 +76,7 @@ export const ChecksHistory = () => {
                   title: 'Вы уверены, что хотите удалить проверку?',
                   okText: 'Да',
                   cancelText: 'Нет',
-                  onOk: () => void removeApartmentCheckEv(id),
+                  onOk: () => void removeApartmentCheck(id),
                 })
               }
             />
@@ -120,43 +110,3 @@ export const ChecksHistory = () => {
     </Wrap>
   );
 };
-
-const CreateButton = styled.div`
-  cursor: pointer;
-`;
-
-function getCheckingActDocument(type: ECheckType) {
-  return type === ECheckType.Planned ? 'Плановая' : 'Внеплановая';
-}
-
-export const getOnSaveFile = (document: DocumentResponse) =>
-  async function onSaveFile() {
-    try {
-      const url: string = await axios.get(`Documents/${document.id}`);
-      saveAs(url, document.name!);
-    } catch (error) {
-      message.error('Не удалось скачать файл');
-    }
-  };
-
-const Wrap = styled.div`
-  width: 920px;
-`;
-
-const Header = styled(Grid)`
-  background: rgba(39, 47, 90, 0.04);
-  padding: 15px 25px;
-  border-bottom: 1px solid lightgray;
-
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
-
-const ListItem = styled(Grid)`
-  padding: 15px 25px;
-  border-bottom: 1px solid lightgray;
-`;
