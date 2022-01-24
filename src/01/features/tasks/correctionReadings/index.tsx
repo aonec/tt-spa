@@ -1,7 +1,6 @@
 import { Loader } from '01/components';
 import {
   DeviceDataString,
-  getResourceColor,
 } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Flex } from '01/shared/ui/Layout/Flex';
@@ -21,13 +20,12 @@ import TextArea from 'antd/lib/input/TextArea';
 import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
-import { EResourceType } from 'myApi';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { NextStagesGate } from '../displayNextStages/models';
 import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
 import { pushStageFx } from '../pushingStage/models';
+import { Header, InfoBlock, ReadingInputStyled, Wrap } from './CorrectionReadings.styled';
 import {
   correctionReadingsForm,
   CorrectionReadingsGate,
@@ -190,56 +188,3 @@ export const CorrectionReadingsPanel = () => {
     </PendingLoader>
   );
 };
-
-const Wrap = styled.div`
-  padding: 15px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const Header = styled.div`
-  font-size: 16px;
-  color: rgba(39, 47, 90, 0.7);
-`;
-
-interface InfoBlockData {
-  title: string;
-  value: string;
-  color?: string;
-}
-
-const InfoBlock = ({ title, value, color }: InfoBlockData) => {
-  return (
-    <div>
-      <InfoBlockTitle>{title}</InfoBlockTitle>
-      <InfoBlockValue style={{ color }}>{value}</InfoBlockValue>
-    </div>
-  );
-};
-
-const InfoBlockTitle = styled.div`
-  color: gray;
-`;
-
-const InfoBlockValue = styled.div`
-  color: #000000dd;
-  font-size: 16px;
-  font-weight: 500;
-`;
-
-const ReadingInputStyled = styled.input<{ resource: EResourceType }>`
-  border: 1px solid ${({ resource }) => getResourceColor(resource)};
-  border-left: 4px solid ${({ resource }) => getResourceColor(resource)};
-  border-radius: 4px;
-  padding: 4px 10px;
-  width: 180px;
-  transition: 0.2s;
-
-  &:disabled {
-    background: rgba(0, 0, 0, 0.08);
-  }
-
-  &:focus,
-  &:hover {
-    box-shadow: 0 5px 10px #00001522;
-  }
-`;
