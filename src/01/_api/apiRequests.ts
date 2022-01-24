@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import {
   CalculatorListResponsePagedList,
   CalculatorResponse,
@@ -17,7 +18,7 @@ import axios from '../axios';
 export async function addCalculator(form: CreateCalculatorRequest) {
   try {
     const res = await axios.post('Calculators', form);
-    alert('Вычислитель успешно создан !');
+    message.success('Вычислитель успешно создан !');
     return res;
   } catch (error) {
     throw {

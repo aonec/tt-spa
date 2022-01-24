@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import {
   // Title,
   ButtonTT,
@@ -35,7 +35,7 @@ import {
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
 
-const AddCalculatorForm = ({ handleCancel }: any) => {
+const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
@@ -87,11 +87,16 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         housingStockId: Number(values.housingStockId),
         infoId: Number(values.infoId),
       };
-      addCalculator(form).then((res: any) => {
-        setTimeout(() => {
-          setAddCalculator(false);
-        }, 1000);
-      });
+
+      try {
+        const res: any = await addCalculator(form);
+
+        onCreateCalculator && onCreateCalculator(res.id);
+
+        setAddCalculator(false);
+      } catch (error) {
+        message.error('Ошибка добавления вичислителя');
+      }
     },
   });
 
@@ -152,6 +157,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
 
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
+    e.stopPropagation();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors

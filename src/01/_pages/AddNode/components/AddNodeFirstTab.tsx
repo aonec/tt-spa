@@ -13,7 +13,6 @@ import {
   StyledFooter,
   styles,
   StyledFormPage,
-  AutoCompleteTT,
 } from '../../../tt-components';
 
 import ModalAddCalculator from '../modals/ModalAddCalculator';
@@ -21,6 +20,7 @@ import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import { isEmpty } from '../../../_api/utils/isEmptyErrors';
 import * as Yup from 'yup';
+import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 
 const AddNodeFirstTab = () => {
   const {
@@ -115,13 +115,16 @@ const AddNodeFirstTab = () => {
           label="Вычислитель, к которому подключен узел"
           style={styles.w49}
         >
-          <AutoCompleteTT
-            filterOption
-            options={calculators}
-            onSelect={(value: string, option: any) => {
-              setFieldValue('calculatorId', option.key);
-            }}
-          />
+          <StyledSelect
+            value={values.calculatorId}
+            onChange={(value: any) => setFieldValue('calculatorId', value)}
+          >
+            {calculators?.map((calculator: any) => (
+              <StyledSelect.Option value={calculator.key} key={calculator.key}>
+                {calculator.value}
+              </StyledSelect.Option>
+            ))}
+          </StyledSelect>
         </Form.Item>
 
         <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
@@ -162,7 +165,9 @@ const AddNodeFirstTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-      <ModalAddCalculator />
+      <ModalAddCalculator
+        onCreateCalculator={(id: any) => setFieldValue('calculatorId', id)}
+      />
     </form>
   );
 };
