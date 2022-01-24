@@ -1,20 +1,13 @@
 import React from 'react';
-import { ApartmentCheckResponse } from 'myApi';
 import { FC } from 'react';
-import { ListItem, Header, Wrap, CreateButton } from './CheckHistory.styled';
+import { Header, Wrap, CreateButton } from './CheckHistory.styled';
 import { CheckHistoryComponentProps } from './CheckHistory.types';
-import { getCheckingActDocument, getOnSaveFile } from './utils';
-import moment from 'moment';
-import { ReactComponent as DocumentIcon } from './assets/documentIcon.svg';
-import { ReactComponent as DownloadIcon } from './assets/downloadIcon.svg';
-import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Pen, Trash } from 'react-bootstrap-icons';
-import confirm from 'antd/lib/modal/confirm';
 import { ApartmentChecksDocuments } from '01/features/apartments/displayApartmentChecksHistory/models';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
+import { CheckHistoryDocument } from './Components/CheckHistoryDocument';
 
-const temp = '0.7fr 0.6fr 0.5fr 2.5fr';
+export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
 
 export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
   props
@@ -28,77 +21,23 @@ export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
     openEditApartmentCheckModal,
   } = props;
 
-  const renderDocument = ({
-    checkingDate,
-    checkingAct: document,
-    checkType,
-    registryNumber,
-    id,
-  }: ApartmentCheckResponse) => {
-    const onSaveFile = getOnSaveFile(document!);
-    return (
-      <ListItem temp={temp}>
-        <b style={{ color: 'rgba(39, 47, 90, 1)' }}>
-          {moment(checkingDate).format('DD.MM.YYYY')}
-        </b>
-        <div>{getCheckingActDocument(checkType)}</div>
-        <div>{registryNumber || '—'}</div>
-        <Flex style={{ justifyContent: 'space-between' }}>
-          <Flex>
-            <div style={{ minWidth: 18 }}>
-              <DocumentIcon />
-            </div>
-            <Space w={7} />
-            <div>
-              {document?.name || (
-                <span style={{ color: '#b3b3b3' }}>Нет документа</span>
-              )}
-            </div>
-          </Flex>
-          <Flex>
-            <Pen
-              style={{ fontSize: 16, cursor: 'pointer' }}
-              onClick={() =>
-                openEditApartmentCheckModal({
-                  checkingDate,
-                  checkingAct: document,
-                  checkType,
-                  registryNumber,
-                  id,
-                } as any)
-              }
-            />
-            <Space />
-            <Trash
-              style={{ cursor: 'pointer', fontSize: 16 }}
-              onClick={() =>
-                confirm({
-                  title: 'Вы уверены, что хотите удалить проверку?',
-                  okText: 'Да',
-                  cancelText: 'Нет',
-                  onOk: () => void removeApartmentCheck(id),
-                })
-              }
-            />
-            <Space />
-            <DownloadIcon style={{ cursor: 'pointer' }} onClick={onSaveFile} />
-          </Flex>
-        </Flex>
-      </ListItem>
-    );
-  };
-
   return (
     <Wrap>
       <ApartmentChecksDocuments apartmentId={apartmentId} />
       <PendingLoader loading={pending}>
-        <Header temp={temp}>
+        <Header temp={checkHistoryTemp}>
           <div>Дата</div>
           <div>Тип</div>
           <div>№ акта</div>
           <div>Заключение</div>
         </Header>
-        {documents?.map(renderDocument)}
+        {documents?.map((document) => (
+          <CheckHistoryDocument
+            document={document}
+            removeApartmentCheck={removeApartmentCheck}
+            openEditApartmentCheckModal={openEditApartmentCheckModal}
+          />
+        ))}
       </PendingLoader>
       <Space />
       <CreateButton
