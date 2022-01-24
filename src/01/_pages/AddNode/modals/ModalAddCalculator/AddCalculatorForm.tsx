@@ -71,8 +71,12 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate.toISOString(true),
         futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
+          true
+        ),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {
@@ -194,7 +198,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
           Добавление нового вычислителя
         </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} />
+        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -347,10 +351,14 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         <ButtonTT
           color="white"
           type="button"
-          onClick={handleCancel}
+          onClick={
+            currentTabKey === '1'
+              ? handleCancel
+              : () => setTab((prev) => String(Number(prev) - 1))
+          }
           style={{ marginLeft: 16 }}
         >
-          Отмена
+          {currentTabKey === '1' ? 'Отмена' : 'Назад'}
         </ButtonTT>
       </StyledFooter>
     </form>

@@ -96,7 +96,7 @@ const AddNodeThirdTab = () => {
           onClick={handleCancel}
           style={{ marginLeft: 16 }}
         >
-          Отмена
+          Назад
         </ButtonTT>
       </StyledFooter>
       <ModalAddDevice />
