@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
@@ -27,6 +27,7 @@ const AddNodeFirstTab = () => {
     handleCancel,
     currentTabKey,
     handleNext,
+    setTab,
     setNode,
     calculators,
     setAddCalculator,
@@ -103,11 +104,16 @@ const AddNodeFirstTab = () => {
             name="isConnected"
             onChange={(item) => {
               setFieldValue('isConnected', item);
+
+              if (!item) {
+                setTab('2');
+                setFieldValue('calculatorId', undefined);
+                setFieldValue('entryNumber', 1);
+              }
             }}
             placeholder="Подключение к вычислителю"
             options={isConnected}
             value={values.isConnected}
-            disabled
           />
         </Form.Item>
 
@@ -116,6 +122,7 @@ const AddNodeFirstTab = () => {
           style={styles.w49}
         >
           <StyledSelect
+            disabled={!values.isConnected}
             value={values.calculatorId}
             onChange={(value: any) => setFieldValue('calculatorId', value)}
           >
@@ -129,6 +136,7 @@ const AddNodeFirstTab = () => {
 
         <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
           <ButtonTT
+            disabled={!values.isConnected}
             style={styles.w100}
             color="white"
             type="button"
@@ -140,6 +148,7 @@ const AddNodeFirstTab = () => {
 
         <Form.Item label="Номер ввода" style={styles.w100}>
           <SelectTT
+            disabled={!values.isConnected}
             name="entryNumber"
             onBlur={handleBlur}
             placeholder="Выберите номер ввода"
