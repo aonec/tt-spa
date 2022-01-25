@@ -6,6 +6,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ApartmentChecksDocuments } from '01/features/apartments/displayApartmentChecksHistory/models';
 import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './Components/CheckHistoryDocument';
+import './models/init';
 
 export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
 
