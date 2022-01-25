@@ -21,6 +21,7 @@ import { AlertInterface } from '../../../tt-components/interfaces';
 import { isEmpty } from '../../../_api/utils/isEmptyErrors';
 import * as Yup from 'yup';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { SelectValue } from 'antd/lib/select';
 
 const AddNodeFirstTab = () => {
   const {
@@ -93,6 +94,12 @@ const AddNodeFirstTab = () => {
     setFieldValue('disabled', isEmpty(errors));
   }, [values]);
 
+  const onChangeIsConnected = (value: SelectValue) => {
+    setFieldValue('isConnected', value);
+
+    if (!value) setTab('2');
+  };
+
   return (
     <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
       <StyledFormPage>
@@ -102,15 +109,7 @@ const AddNodeFirstTab = () => {
         <Form.Item label="Подключение к вычислителю" style={styles.w100}>
           <SelectTT
             name="isConnected"
-            onChange={(item) => {
-              setFieldValue('isConnected', item);
-
-              if (!item) {
-                setTab('2');
-                setFieldValue('calculatorId', undefined);
-                setFieldValue('entryNumber', 1);
-              }
-            }}
+            onChange={onChangeIsConnected}
             placeholder="Подключение к вычислителю"
             options={isConnected}
             value={values.isConnected}

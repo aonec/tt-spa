@@ -193,7 +193,9 @@ const AddDeviceForm = (props: any) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handleSubmitForm() {
+  function handleSubmitForm(e: any) {
+    e.stopPropagation();
+    e.preventDefault();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors
