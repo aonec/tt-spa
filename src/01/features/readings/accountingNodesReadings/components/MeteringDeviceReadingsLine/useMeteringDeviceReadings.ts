@@ -59,14 +59,17 @@ const getCurrentReading = (readings: MeteringDeviceReading[]) => {
 };
 
 const getReadingsArrayWithEmpties = (readings: MeteringDeviceReading[]) => {
-  const currentDate = moment();
   return readings.reduce((acc, elem) => {
-    if (currentDate.diff(elem.readingDate, 'months') > 11) return acc;
+    const dateFormat = 'YYYY-MM';
 
-    const index =
-      Number(moment().format('M')) -
-      Number(moment(elem.readingDate).format('M')) -
-      1;
+    const currentMonthDate = moment(moment().format(dateFormat), dateFormat);
+    const readingMonthDate = moment(
+      moment(elem.readingDate).format(dateFormat)
+    );
+
+    if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
+
+    const index = currentMonthDate.diff(readingMonthDate, 'months') - 1;
 
     acc[index] = elem;
 
