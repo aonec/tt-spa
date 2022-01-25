@@ -13,8 +13,8 @@ import {
 } from '01/features/apartments/checkApartment/models';
 
 export const ChecksHistory = () => {
-  const params = useParams();
-  const apartmentId = (params as any)[1];
+  const params = useParams<{ 1: string }>();
+  const apartmentId = Number(params[1]);
 
   const documents = useStore($apartmentChecksDocuments);
   const pending = useStore(fetchApartmentChecksDocumentsFx.pending);

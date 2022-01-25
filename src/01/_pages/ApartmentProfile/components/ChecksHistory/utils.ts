@@ -2,8 +2,13 @@ import axios from '01/axios';
 import { message } from 'antd';
 import { DocumentResponse, ECheckType } from 'myApi';
 
+export const CheckingActDocumentType = {
+  [ECheckType.Planned]: 'Плановая',
+  [ECheckType.Unplanned]: 'Внеплановая',
+};
+
 export function getCheckingActDocument(type: ECheckType) {
-  return type === ECheckType.Planned ? 'Плановая' : 'Внеплановая';
+  return CheckingActDocumentType[type];
 }
 
 export const getOnSaveFile = (document: DocumentResponse) =>
