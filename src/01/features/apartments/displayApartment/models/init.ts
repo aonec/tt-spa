@@ -1,5 +1,12 @@
 import { getApartment } from './../../../../_api/apartments';
-import { ApartmentGate, refetchApartment, resetApartment } from './index';
+import {
+  $apartmentEditMode,
+  ApartmentEditModeGate,
+  ApartmentGate,
+  refetchApartment,
+  resetApartment,
+  switchApartmentEditMode,
+} from './index';
 import { sample } from 'effector';
 import { $apartment, fetchApartmentFx } from '.';
 
@@ -16,3 +23,7 @@ sample({
   clock: [ApartmentGate.state, refetchApartment],
   target: fetchApartmentFx,
 });
+
+$apartmentEditMode
+  .on(switchApartmentEditMode, (mode) => !mode)
+  .reset(ApartmentEditModeGate.close);
