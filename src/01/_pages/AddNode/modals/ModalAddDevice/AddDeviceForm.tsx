@@ -107,6 +107,8 @@ const AddDeviceForm = (props: any) => {
         },
       };
 
+      console.log(device);
+
       const pipeNumbers = _.map(communicationPipes, 'number');
 
       if (pipeNumbers.includes(values.pipeNumber)) {
@@ -142,6 +144,10 @@ const AddDeviceForm = (props: any) => {
       setTab('1');
     },
   });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   useEffect(() => {
     setValidationSchema(validationSchemaFlowMeter);
