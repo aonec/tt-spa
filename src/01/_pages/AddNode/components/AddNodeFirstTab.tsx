@@ -101,7 +101,7 @@ const AddNodeFirstTab = () => {
   };
 
   return (
-    <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
+    <div hidden={Number(currentTabKey) !== 1}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Настройки соединения
@@ -121,6 +121,7 @@ const AddNodeFirstTab = () => {
           style={styles.w49}
         >
           <StyledSelect
+            placeholder="Выберите вычислитель"
             disabled={!values.isConnected}
             value={values.calculatorId}
             onChange={(value: any) => setFieldValue('calculatorId', value)}
@@ -161,7 +162,7 @@ const AddNodeFirstTab = () => {
         </Form.Item>
       </StyledFormPage>
       <StyledFooter form>
-        <ButtonTT color="blue" big type="submit">
+        <ButtonTT color="blue" big onClick={handleSubmit}>
           Далее
         </ButtonTT>
         <ButtonTT
@@ -176,7 +177,7 @@ const AddNodeFirstTab = () => {
       <ModalAddCalculator
         onCreateCalculator={(id: any) => setFieldValue('calculatorId', id)}
       />
-    </form>
+    </div>
   );
 };
 
