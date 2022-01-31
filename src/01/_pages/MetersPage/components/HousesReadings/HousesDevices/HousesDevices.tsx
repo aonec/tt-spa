@@ -82,6 +82,8 @@ const HousesDevices: React.FC = () => {
     function onScrollDown() {
       if (pendingDevices) return;
 
+      console.log('checck run');
+
       const scrollHeight = document.body.scrollHeight - window.screen.height;
 
       if (window.scrollY > scrollHeight - 200) {
@@ -89,9 +91,13 @@ const HousesDevices: React.FC = () => {
       }
     }
 
-    window.addEventListener('scroll', onScrollDown, true);
+    window.addEventListener('scroll', onScrollDown);
 
-    return () => window.removeEventListener('scroll', onScrollDown);
+    return () => {
+      console.log('user leave page');
+
+      window.removeEventListener('scroll', onScrollDown);
+    };
   }, []);
 
   const getHeight = () => {
