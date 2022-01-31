@@ -50,10 +50,8 @@ const AddDeviceForm = (props: any) => {
     isConnected: isConnected[0].value,
     isAllowed: true,
     serialNumber: '',
-    lastCheckingDate: moment(),
-    futureCheckingDate: moment().add(3, 'years'),
-    lastCommercialAccountingDate: moment(),
-    futureCommercialAccountingDate: moment().add(3, 'years'),
+    lastCheckingDate: null as moment.Moment | null,
+    futureCheckingDate: null as moment.Moment | null,
     documentsIds: [],
     ipV4: '',
     deviceAddress: null,
@@ -86,14 +84,8 @@ const AddDeviceForm = (props: any) => {
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(true),
-        futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
-          true
-        ),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
-          true
-        ),
+        lastCheckingDate: values.lastCheckingDate!.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate!.toISOString(true),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
@@ -106,8 +98,6 @@ const AddDeviceForm = (props: any) => {
           magistral: values.magistral,
         },
       };
-
-      console.log(device);
 
       const pipeNumbers = _.map(communicationPipes, 'number');
 
@@ -144,14 +134,6 @@ const AddDeviceForm = (props: any) => {
       setTab('1');
     },
   });
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
-  useEffect(() => {
-    setValidationSchema(validationSchemaFlowMeter);
-  }, []);
 
   useEffect(() => {
     if (

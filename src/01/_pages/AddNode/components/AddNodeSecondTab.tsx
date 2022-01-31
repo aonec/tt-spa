@@ -73,7 +73,7 @@ const AddNodeSecondTab = () => {
         lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
           true
         ),
-        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
           true
         ),
       };
