@@ -126,10 +126,10 @@ const EditNodeForm = ({
       nodeServiceZoneId: chosenInputForSelect?.value,
       startCommercialAccountingDate: getFieldValue(
         'lastCommercialAccountingDate'
-      )?.toISOString(true),
+      )?.format("YYYY-MM-DD"),
       endCommercialAccountingDate: getFieldValue(
         'futureCommercialAccountingDate'
-      )?.toISOString(true),
+      )?.format("YYYY-MM-DD"),
       calculatorId,
     };
 
