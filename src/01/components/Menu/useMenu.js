@@ -14,6 +14,13 @@ export function useMenu() {
       placePerm: 'SubscriberStatisticsRead',
     },
     {
+      name: 'Отчеты',
+      to: '/reports/',
+      icon: 'statistics',
+      perm: ['ManagingFirmSeniorOperator'],
+      placePerm: 'SubscriberStatisticsRead',
+    },
+    {
       name: 'Журнал актов',
       to: '/actsJournal/',
       icon: 'act',
