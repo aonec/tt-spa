@@ -12,13 +12,18 @@ export const Information = ({
   ...props
 }) => {
   const { push } = useHistory();
+
   return styled(information)`
     Loader {
       justify-self: center;
     }
+
+    info_value {
+      color: black;
+    }
   `(
     <information {...props}>
-      <h2>Подробная информация</h2>
+      <h2>Информация о задаче</h2>
       <Loader show={loading} size="20">
         <info_list>
           {list.map(({ title, value, url }) => (
@@ -28,7 +33,7 @@ export const Information = ({
               onClick={url ? () => push(url) : null}
             >
               <span>{title}</span>
-              <span>{value}</span>
+              <info_value>{value}</info_value>
             </info_item>
           ))}
         </info_list>
