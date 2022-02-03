@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components/Loader';
 import { information } from '01/r_comp';
+import { InfoSectionTitle } from '01/shared/ui/InfoSection';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const Information = ({
   list = [],
@@ -23,7 +25,8 @@ export const Information = ({
     }
   `(
     <information {...props}>
-      <h2>Информация о задаче</h2>
+      <InfoSectionTitle>Информация о задаче</InfoSectionTitle>
+      <Space />
       <Loader show={loading} size="20">
         <info_list>
           {list.map(({ title, value, url }) => (

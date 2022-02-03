@@ -649,7 +649,7 @@ export const useReadings = (
           </DeviceReadingsContainer>
         </div>
       ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.None,
+      isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
     },
     {
       value: () => (
