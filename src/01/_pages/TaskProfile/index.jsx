@@ -66,6 +66,7 @@ export const TaskProfile = () => {
   const infoDevice = useInformationDevice(state);
 
   const { device, node } = state;
+
   const { type, id } = device || {};
   const { icon, color } = DeviceIcons[node?.resource] || {};
   const { calculator } = state;
