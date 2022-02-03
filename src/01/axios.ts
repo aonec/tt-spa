@@ -70,7 +70,7 @@ axios.interceptors.response.use(
         }
       });
     } else {
-      message.error(error.response.data.errorResponse.message);
+      message.error(error.response.data.errorResponse.message || error.message);
     }
 
     return Promise.reject(error);
