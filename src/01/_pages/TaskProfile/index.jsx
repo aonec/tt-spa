@@ -26,6 +26,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 import { ApartmentOwners } from './components/ApartmentOwners';
 import { Space } from '01/shared/ui/Layout/Space/Space';
+import { ApartmentDevices } from './components/ApartmentDevices';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -97,7 +98,8 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <ApartmentOwners homeowners={state?.apartment?.homeownerAccounts} />
-          <InformationDevice {...infoDevice} type={type} id={id} />
+          <ApartmentDevices devices={state?.individualDevices} />
+          {/* <InformationDevice {...infoDevice} type={type} id={id} /> */}
           {node ? (
             <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>

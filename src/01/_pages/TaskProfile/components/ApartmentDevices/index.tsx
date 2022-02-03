@@ -5,7 +5,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReactComponent as DeviceIcon } from './assets/keys.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Empty } from 'antd';
-import { InfoSectionTitle } from '01/shared/ui/InfoSection';
+import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 
 interface Props {
   devices?: MeteringDeviceSearchListResponse[];
@@ -17,7 +17,7 @@ export const ApartmentDevices: FC<Props> = ({ devices }) => {
       <Flex>
         <DeviceIcon />
         <Space w={8} />
-        <Title>Собственники</Title>
+        <Title>Приборы</Title>
       </Flex>
       <Space />
       <ListWrap>
@@ -32,12 +32,9 @@ export const ApartmentDevices: FC<Props> = ({ devices }) => {
 };
 
 const Device = ({ device }: { device: MeteringDeviceSearchListResponse }) => {
-  return (
-    <HomeownerWrap>
-      <InfoSectionTitle>{device.model}</InfoSectionTitle>
-      <HomeownerPhoneNumber>{device.serialNumber}</HomeownerPhoneNumber>
-    </HomeownerWrap>
-  );
+  return <HomeownerWrap>
+    <DeviceDataString device={device} />
+  </HomeownerWrap>;
 };
 
 const Wrap = styled.div`
