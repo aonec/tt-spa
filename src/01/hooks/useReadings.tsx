@@ -70,10 +70,15 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        const dateFormat = "YYYY-MM"
+        const dateFormat = 'YYYY-MM';
 
-        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
-        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+        const currentMonthDate = moment(
+          moment().format(dateFormat),
+          dateFormat
+        );
+        const readingMonthDate = moment(
+          moment(elem.readingDateTime).format(dateFormat)
+        );
 
         if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
 
@@ -624,157 +629,133 @@ export const useReadings = (
     readingsElems: { elem: JSX.Element; value: number }[],
     isCurrent: boolean,
     uploadTime?: string
-  ): OptionsInterface[] => [
-    {
-      value: () => (
-        <div>
-          <DeviceReadingsContainer
-            color={
-              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
-            }
+  ): OptionsInterface[] => {
+    return [
+      {
+        value: () => (
+          <Wide>
+            <DeviceReadingsContainer
+              color={
+                isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
+              }
+              onFocus={onFocusHandler}
+              resource={device.resource}
+            >
+              {
+                readingsElems.map((elem, index) => (
+                  <div
+                    onKeyDown={fromEnter((e) =>
+                      onEnterHandler(e, !isCurrent, index)
+                    )}
+                  >
+                    {elem.elem}
+                  </div>
+                ))[0]
+              }
+            </DeviceReadingsContainer>
+            <ReadingUploadDate>
+              {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+                'Нет показаний'}
+            </ReadingUploadDate>
+          </Wide>
+        ),
+        isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
+      },
+      {
+        value: () => (
+          <div
             onFocus={onFocusHandler}
-            resource={device.resource}
+            style={{ display: 'flex', flexDirection: 'column' }}
           >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0]
-            }
-          </DeviceReadingsContainer>
-        </div>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
-    },
-    {
-      value: () => (
-        <Wide>
-          <DeviceReadingsContainer
-            color={
-              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
-            }
+            <DeviceReadingsContainer
+              style={{ marginBottom: 8 }}
+              color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+              resource={device.resource}
+            >
+              {
+                readingsElems.map((elem, index) => (
+                  <div
+                    onKeyDown={fromEnter((e) =>
+                      onEnterHandler(e, !isCurrent, index)
+                    )}
+                  >
+                    {elem.elem}
+                  </div>
+                ))[0]
+              }
+            </DeviceReadingsContainer>
+            <DeviceReadingsContainer
+              color={isCurrent ? '#957400' : 'var(--main-90)'}
+              resource={device.resource}
+            >
+              {
+                readingsElems.map((elem, index) => (
+                  <div
+                    onKeyDown={fromEnter((e) =>
+                      onEnterHandler(e, !isCurrent, index)
+                    )}
+                  >
+                    {elem.elem}
+                  </div>
+                ))[1]
+              }
+            </DeviceReadingsContainer>
+            <ReadingUploadDate>
+              {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+                'Нет показаний'}
+            </ReadingUploadDate>
+          </div>
+        ),
+        isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
+      },
+      {
+        value: () => (
+          <div
             onFocus={onFocusHandler}
-            resource={device.resource}
+            style={{ display: 'flex', flexDirection: 'column' }}
           >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0]
-            }
-          </DeviceReadingsContainer>
-          <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
-              'Нет показаний'}
-          </ReadingUploadDate>
-        </Wide>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.OneZone,
-    },
-    {
-      value: () => (
-        <div
-          onFocus={onFocusHandler}
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <DeviceReadingsContainer
-            style={{ marginBottom: 8 }}
-            color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-            resource={device.resource}
-          >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0]
-            }
-          </DeviceReadingsContainer>
-          <DeviceReadingsContainer
-            color={isCurrent ? '#957400' : 'var(--main-90)'}
-            resource={device.resource}
-          >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[1]
-            }
-          </DeviceReadingsContainer>
-          <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
-              'Нет показаний'}
-          </ReadingUploadDate>
-        </div>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.TwoZone,
-    },
-    {
-      value: () => (
-        <div
-          onFocus={onFocusHandler}
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <DeviceReadingsContainer
-            style={{ marginBottom: 8 }}
-            color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
-            resource={device.resource}
-          >
-            {[
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0],
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[1],
-            ]}
-          </DeviceReadingsContainer>
-          <DeviceReadingsContainer
-            color={isCurrent ? '#957400' : 'var(--main-90)'}
-            resource={device.resource}
-          >
-            {readingsElems.map((elem) => elem.elem)[2]}
-          </DeviceReadingsContainer>
-          <ReadingUploadDate>
-            {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
-              'Нет показаний'}
-          </ReadingUploadDate>
-        </div>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
-    },
-  ];
+            <DeviceReadingsContainer
+              style={{ marginBottom: 8 }}
+              color={isCurrent ? 'var(--electro)' : 'var(--main-90)'}
+              resource={device.resource}
+            >
+              {[
+                readingsElems.map((elem, index) => (
+                  <div
+                    onKeyDown={fromEnter((e) =>
+                      onEnterHandler(e, !isCurrent, index)
+                    )}
+                  >
+                    {elem.elem}
+                  </div>
+                ))[0],
+                readingsElems.map((elem, index) => (
+                  <div
+                    onKeyDown={fromEnter((e) =>
+                      onEnterHandler(e, !isCurrent, index)
+                    )}
+                  >
+                    {elem.elem}
+                  </div>
+                ))[1],
+              ]}
+            </DeviceReadingsContainer>
+            <DeviceReadingsContainer
+              color={isCurrent ? '#957400' : 'var(--main-90)'}
+              resource={device.resource}
+            >
+              {readingsElems.map((elem) => elem.elem)[2]}
+            </DeviceReadingsContainer>
+            <ReadingUploadDate>
+              {(uploadTime && moment(uploadTime).format('DD.MM.YYYY')) ||
+                'Нет показаний'}
+            </ReadingUploadDate>
+          </div>
+        ),
+        isSuccess: device.rateType === EIndividualDeviceRateType.ThreeZone,
+      },
+    ];
+  };
 
   const previousResultReadings = options(
     previousDeviceReadings,
