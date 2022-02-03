@@ -5,7 +5,6 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReactComponent as KeysIcon } from './assets/keys.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Empty } from 'antd';
-import { InfoSectionTitle } from '01/shared/ui/InfoSection';
 
 interface Props {
   homeowners?: HomeownerAccountListResponse[];
