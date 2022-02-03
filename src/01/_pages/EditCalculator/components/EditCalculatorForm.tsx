@@ -100,8 +100,6 @@ const EditCalculatorForm = ({
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate?.toISOString(true),
         futureCheckingDate: values.futureCheckingDate?.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate?.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate?.toISOString(true),
         isConnected: values.isConnected,
         connection: {
           ipV4: values.ipV4,
