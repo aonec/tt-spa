@@ -12,6 +12,7 @@ interface Props {
 }
 
 export const ApartmentOwners: FC<Props> = ({ homeowners }) => {
+  console.log(homeowners);
   return (
     <Wrap>
       <Flex>
@@ -38,7 +39,7 @@ const Homeowner = ({
 }) => {
   return (
     <HomeownerWrap>
-      <InfoSectionTitle>{homeowner.name}</InfoSectionTitle>
+      <HomeownerName>{homeowner.name}</HomeownerName>
       <HomeownerPhoneNumber>{homeowner.phoneNumber}</HomeownerPhoneNumber>
     </HomeownerWrap>
   );
@@ -63,10 +64,19 @@ export const ListWrap = styled.div`
     0px 8px 16px rgba(78, 93, 146, 0.08);
 `;
 
+const HomeownerName = styled.div`
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0em;
+  text-align: left;
+`;
+
 const HomeownerWrap = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1fr;
-  padding: 5px 10px;
+  grid-template-columns: 0.7fr 1fr;
+  padding: 15px 10px;
   border-bottom: 1px solid #f1f1f1;
 
   &:last-child {
