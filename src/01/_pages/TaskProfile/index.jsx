@@ -76,6 +76,8 @@ export const TaskProfile = () => {
   const isIndividualDeviceReadingCheckType =
     state.type === 'IndividualDeviceReadingsCheck';
 
+  const devices = state?.individualDevices;
+
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Index path="/tasks/" />
