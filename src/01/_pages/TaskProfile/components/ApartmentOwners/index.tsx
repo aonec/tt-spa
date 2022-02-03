@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const ApartmentOwners: FC<Props> = ({ homeowners }) => {
-  console.log(homeowners);
   return (
     <Wrap>
       <Flex>

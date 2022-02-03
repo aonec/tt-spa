@@ -1,21 +1,32 @@
 import React, { FC, useState } from 'react';
-import { MeteringDeviceSearchListResponse } from 'myApi';
-import styled from 'styled-components';
+import { EResourceType, IndividualDeviceResponse } from 'myApi';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReactComponent as DeviceIcon } from './assets/keys.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Empty } from 'antd';
 import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
-import { Link } from 'react-router-dom';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons';
+import {
+  Wrap,
+  Title,
+  ListWrap,
+  DeviceWrap,
+  OpenDeviceButton,
+  LinkToProfile,
+  DeviceInfoRow,
+} from './ApartmentDevices.styled';
+import { translateMountPlace } from '01/utils/translateMountPlace';
+import moment from 'moment';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
 
 interface Props {
-  devices?: MeteringDeviceSearchListResponse[];
+  devices?: IndividualDeviceResponse[];
 }
 
 export const ApartmentDevices: FC<Props> = ({ devices }) => {
+  console.log(devices);
   return (
     <>
       <ReadingsHistoryModal />
@@ -38,7 +49,7 @@ export const ApartmentDevices: FC<Props> = ({ devices }) => {
   );
 };
 
-const Device = ({ device }: { device: MeteringDeviceSearchListResponse }) => {
+const Device = ({ device }: { device: IndividualDeviceResponse }) => {
   const [opened, setOpened] = useState(false);
 
   const openDeviceIcon = opened ? <ChevronUp /> : <ChevronDown />;
@@ -50,59 +61,74 @@ const Device = ({ device }: { device: MeteringDeviceSearchListResponse }) => {
   );
 
   return (
-    <DeviceWrap h="space-between">
-      <DeviceDataString device={device} />
-      <Flex>
-        <LinkToProfile to="/">Перейти в профиль</LinkToProfile>
-        <Space />
-        <ReadingsHistoryButton deviceId={device.id} />
-        <Space />
-        {openDeviceButton}
+    <DeviceWrap>
+      <Flex h="space-between">
+        <DeviceDataString device={device} />
+        <Flex>
+          <LinkToProfile to="/">Перейти в профиль</LinkToProfile>
+          <Space />
+          <ReadingsHistoryButton deviceId={device.id} />
+          <Space />
+          {openDeviceButton}
+        </Flex>
       </Flex>
+      {opened && (
+        <>
+          <Space />
+          <DeviceInfo device={device} />
+        </>
+      )}
     </DeviceWrap>
   );
 };
 
-const Wrap = styled.div`
-  margin-top: 25px;
-  padding: 5px 0;
-`;
+const DeviceInfo = ({ device }: { device: IndividualDeviceResponse }) => {
+  const fields: { name: string; value: string | number | null }[] = [
+    {
+      name: 'Тип ресурса',
+      value: getResourceName(device.resource),
+    },
+    {
+      name: 'Место установки',
+      value: translateMountPlace(device.mountPlace),
+    },
+    {
+      name: 'Разрядность',
+      value: getIndividualDeviceRateNumByName(device.rateType),
+    },
+    {
+      name: 'Множитель',
+      value: device.scaleFactor,
+    },
+    {
+      name: 'Дата начальной поверки',
+      value: moment(device.lastCheckingDate).format('DD.MM.YYYY'),
+    },
+    {
+      name: 'Дата следующей поверки',
+      value: moment(device.futureCheckingDate).format('DD.MM.YYYY'),
+    },
+  ];
 
-const Title = styled.div`
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: 0em;
-  text-align: left;
-`;
+  return (
+    <div>
+      {fields.map(({ name, value }) => (
+        <DeviceInfoRow>
+          <div>{name}</div>
+          <div>{value}</div>
+        </DeviceInfoRow>
+      ))}
+    </div>
+  );
+};
 
-export const ListWrap = styled.div`
-  padding: 5px;
-  box-shadow: 0px 4px 4px rgba(78, 93, 146, 0.16),
-    0px 8px 16px rgba(78, 93, 146, 0.08);
-`;
+const getResourceName = (resource: EResourceType) => {
+  const resources: { [key: string]: string } = {
+    [EResourceType.ColdWaterSupply]: 'Холодная вода',
+    [EResourceType.Electricity]: 'Электричество',
+    [EResourceType.HotWaterSupply]: 'Горячая вода',
+    [EResourceType.Heat]: 'Тепло',
+  };
 
-const DeviceWrap = styled(Flex)`
-  padding: 15px 15px;
-  border-bottom: 1px solid #f1f1f1;
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const LinkToProfile = styled(Link)`
-  color: black;
-`;
-
-const OpenDeviceButton = styled(Flex)`
-  cursor: pointer;
-  transition: 0.2s;
-  padding: 5px;
-  border-radius: 20px;
-
-  &:hover {
-    background-color: #e1e1e1;
-  }
-`;
+  return resources[resource];
+};
