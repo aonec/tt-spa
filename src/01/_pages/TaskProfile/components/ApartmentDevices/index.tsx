@@ -65,7 +65,9 @@ const Device = ({ device }: { device: IndividualDeviceResponse }) => {
       <Flex h="space-between">
         <DeviceDataString device={device} />
         <Flex>
-          <LinkToProfile to="/">Перейти в профиль</LinkToProfile>
+          <LinkToProfile to={`/individualDevices/${device.id}`}>
+            Перейти в профиль
+          </LinkToProfile>
           <Space />
           <ReadingsHistoryButton deviceId={device.id} />
           <Space />
