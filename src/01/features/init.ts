@@ -53,3 +53,4 @@ import './addressIdSearch/models/init';
 import './tasks/displayTask/models/init';
 import './tasks/displayNextStages/models/init';
 import './tasks/correctionReadings/models/init';
+import './reports/CreateReportModal/models/init';

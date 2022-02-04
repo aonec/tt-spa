@@ -45,7 +45,7 @@ import { StatisticsPage } from '01/features/statistics';
 import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import styledC from 'styled-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ReportsPage } from '01/features/reports';
+import { ReportsPageContainer } from '01/features/reports';
 
 moment.locale('ru');
 
@@ -196,7 +196,7 @@ const Internal = () => {
                 <StatisticsPage />
               </Route>
 
-              <Route path="/reports" component={ReportsPage} exact />
+              <Route path="/reports" component={ReportsPageContainer} exact />
             </Switch>
             <ApartmentsRouteGroup />
           </main>

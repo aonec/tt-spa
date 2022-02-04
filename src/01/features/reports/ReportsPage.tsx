@@ -1,12 +1,21 @@
+import React, { FC } from 'react';
 import { PageHeader } from '01/shared/ui/PageHeader';
-import React from 'react';
 
-export const ReportsPage = () => {
+interface Props {
+  onCreateReport(): void;
+}
+
+export const ReportsPage: FC<Props> = ({ onCreateReport }) => {
   return (
     <PageHeader
       title="Отчеты"
       contextMenu={{
-        menuButtons: [{ title: 'Создать отчет', onClick() {} }],
+        menuButtons: [
+          {
+            title: 'Создать отчет',
+            onClick: onCreateReport,
+          },
+        ],
       }}
     />
   );
