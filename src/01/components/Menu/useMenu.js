@@ -16,7 +16,7 @@ export function useMenu() {
     {
       name: 'Отчеты',
       to: '/reports/',
-      icon: 'statistics',
+      icon: 'reports',
       perm: ['ManagingFirmSeniorOperator'],
       placePerm: 'SubscriberStatisticsRead',
     },
