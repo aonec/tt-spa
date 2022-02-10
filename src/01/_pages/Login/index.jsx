@@ -144,7 +144,7 @@ export const Login = () => {
             </Button>
           </Loader>
         </Form>
-        {isDev && (
+        {true && (
           <>
             <DevSettingsModal />
             <Space />
