@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { Loader } from '01/components/Loader';
 import { information } from '01/r_comp';
+import { InfoSectionTitle } from '01/shared/ui/InfoSection';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const Information = ({
   list = [],
@@ -12,13 +14,19 @@ export const Information = ({
   ...props
 }) => {
   const { push } = useHistory();
+
   return styled(information)`
     Loader {
       justify-self: center;
     }
+
+    info_value {
+      color: black;
+    }
   `(
     <information {...props}>
-      <h2>Подробная информация</h2>
+      <InfoSectionTitle>Информация о задаче</InfoSectionTitle>
+      <Space />
       <Loader show={loading} size="20">
         <info_list>
           {list.map(({ title, value, url }) => (
@@ -28,7 +36,7 @@ export const Information = ({
               onClick={url ? () => push(url) : null}
             >
               <span>{title}</span>
-              <span>{value}</span>
+              <info_value>{value}</info_value>
             </info_item>
           ))}
         </info_list>
