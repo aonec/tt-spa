@@ -13,7 +13,6 @@ interface InformationInterface {
 export const Information = ({ device }: InformationInterface) => {
   const loading = !device;
   const {
-    lastCommercialAccountingDate,
     futureCheckingDate,
     lastCheckingDate,
     mountPlace,
@@ -31,12 +30,6 @@ export const Information = ({ device }: InformationInterface) => {
         <ListItem
           title={'Место установки'}
           description={translateMountPlace(mountPlace)}
-        />
-        <ListItem
-          title={'Дата ввода в эксплуатацию'}
-          description={moment(lastCommercialAccountingDate).format(
-            'DD.MM.YYYY'
-          )}
         />
         <ListItem
           title={'Дата начальной поверки'}
@@ -75,7 +68,6 @@ const ListItem = ({ title, description }: ListItemInterface) => {
 const ListWrap = styled.div`
   display: grid;
   height: min-content;
-}
 `;
 
 const StyledListItem = styled.div`
@@ -104,5 +96,4 @@ const StyledListItem = styled.div`
       font-weight: normal;
     }
   }
-}
 `;

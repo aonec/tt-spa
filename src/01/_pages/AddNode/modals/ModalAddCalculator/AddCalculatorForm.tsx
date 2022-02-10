@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 import {
   // Title,
   ButtonTT,
@@ -35,7 +35,7 @@ import {
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
 
-const AddCalculatorForm = ({ handleCancel }: any) => {
+const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
@@ -71,8 +71,12 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate.toISOString(true),
         futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(true),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
+          true
+        ),
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
+          true
+        ),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {
@@ -83,11 +87,16 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         housingStockId: Number(values.housingStockId),
         infoId: Number(values.infoId),
       };
-      addCalculator(form).then((res: any) => {
-        setTimeout(() => {
-          setAddCalculator(false);
-        }, 1000);
-      });
+
+      try {
+        const res: any = await addCalculator(form);
+
+        onCreateCalculator && onCreateCalculator(res.id);
+
+        setAddCalculator(false);
+      } catch (error) {
+        message.error('Ошибка добавления вичислителя');
+      }
     },
   });
 
@@ -148,6 +157,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
 
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
+    e.stopPropagation();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors
@@ -194,7 +204,7 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
           Добавление нового вычислителя
         </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} />
+        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -347,10 +357,14 @@ const AddCalculatorForm = ({ handleCancel }: any) => {
         <ButtonTT
           color="white"
           type="button"
-          onClick={handleCancel}
+          onClick={
+            currentTabKey === '1'
+              ? handleCancel
+              : () => setTab((prev) => String(Number(prev) - 1))
+          }
           style={{ marginLeft: 16 }}
         >
-          Отмена
+          {currentTabKey === '1' ? 'Отмена' : 'Назад'}
         </ButtonTT>
       </StyledFooter>
     </form>

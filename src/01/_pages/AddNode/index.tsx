@@ -16,7 +16,7 @@ export const AddNode = () => {
     housingStockId: string;
   }>();
   const housingStockId = Number(housingStockIdStr);
-  const { push } = useHistory();
+  const history = useHistory();
   const [
     housingStock,
     setHousingStock,
@@ -51,7 +51,11 @@ export const AddNode = () => {
   ];
 
   function handleCancel() {
-    push(`objects/${housingStockId}`);
+    if (currentTabKey === '1') {
+      history.goBack();
+    } else {
+      setTab((prev) => String(Number(prev) - 1));
+    }
   }
 
   function handleChangeTab(value: string) {

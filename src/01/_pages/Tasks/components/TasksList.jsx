@@ -7,6 +7,7 @@ import { Icon as IconTT } from '../../../tt-components/Icon';
 import { time_line } from '01/r_comp';
 import { Link, useHistory } from 'react-router-dom';
 import DeviceIcons from '../../../_components/DeviceIcons';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 const styles = css`
   task_item {
@@ -96,7 +97,7 @@ cursor: pointer;
       color: var(--primary-100);
       // box-shadow: var(--shadow);
     }
-`;
+    `;
 
 export const TasksList = ({ items }) => {
   const { push } = useHistory();
@@ -118,8 +119,10 @@ export const TasksList = ({ items }) => {
         perpetrator,
         showExecutor,
         node,
+        devices,
       }) => {
         const { icon, color } = DeviceIcons[node?.resource] || {};
+        const iconName = devices?.length > 1 ? 'multiDevices' : device.icon;
         return (
           <task_item
             to={`/tasks/${id}`}
@@ -168,7 +171,8 @@ export const TasksList = ({ items }) => {
             <row>
               {device && (
                 <device>
-                  <Icon icon={device.icon} fill={device.fill} />
+                  <IconTT dark icon={iconName} fill={device.fill} />
+                  <Space w={8} />
                   <device_model as="span">{device.model}</device_model>{' '}
                   <device_number as="span">
                     ({device.serialNumber})

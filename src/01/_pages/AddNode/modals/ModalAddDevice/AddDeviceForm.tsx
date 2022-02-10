@@ -20,7 +20,6 @@ import {
   StyledFormPage,
   styles,
 } from '../../../../tt-components';
-import { handleTabsBeforeFormSubmit } from '../../../../utils/handleTabsBeforeFormSubmit';
 import { AddNodeContext } from '../../AddNodeContext';
 import Warning from '../../../../tt-components/Warning';
 import {
@@ -47,29 +46,12 @@ const AddDeviceForm = (props: any) => {
   const [disable, setDisable] = useState(false);
   const [validationSchema, setValidationSchema] = useState(Yup.object({}));
 
-  const tabErrors = [
-    {
-      key: '1',
-      value: [
-        'model',
-        'serialNumber',
-        'diameter',
-        'entryNumber',
-        'pipeNumber',
-        'calculatorId',
-        'isAllowed',
-      ],
-    },
-  ];
-
   const initialValues = {
     isConnected: isConnected[0].value,
     isAllowed: true,
     serialNumber: '',
-    lastCheckingDate: moment(),
-    futureCheckingDate: moment().add(3, 'years'),
-    lastCommercialAccountingDate: moment(),
-    futureCommercialAccountingDate: moment().add(3, 'years'),
+    lastCheckingDate: null as moment.Moment | null,
+    futureCheckingDate: null as moment.Moment | null,
     documentsIds: [],
     ipV4: '',
     deviceAddress: null,
@@ -102,14 +84,8 @@ const AddDeviceForm = (props: any) => {
     onSubmit: async () => {
       const device = {
         serialNumber: values.serialNumber,
-        lastCheckingDate: values.lastCheckingDate.toISOString(true),
-        futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
-          true
-        ),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
-          true
-        ),
+        lastCheckingDate: values.lastCheckingDate!.toISOString(true),
+        futureCheckingDate: values.futureCheckingDate!.toISOString(true),
         documentsIds: [],
         housingMeteringDeviceType: values.housingMeteringDeviceType,
         resource,
@@ -151,15 +127,13 @@ const AddDeviceForm = (props: any) => {
         ]);
       }
 
+      handleCancel();
+
       resetForm({});
 
       setTab('1');
     },
   });
-
-  useEffect(() => {
-    setValidationSchema(validationSchemaFlowMeter);
-  }, []);
 
   useEffect(() => {
     if (
@@ -193,16 +167,6 @@ const AddDeviceForm = (props: any) => {
     setTab(String(Number(currentTabKey) + 1));
   }
 
-  function handleSubmitForm() {
-    const { hasError, errorTab } = handleTabsBeforeFormSubmit(
-      tabErrors,
-      errors
-    );
-    if (hasError) {
-      setTab(errorTab);
-    }
-  }
-
   useEffect(() => {
     const pipeNumbers = _.map(communicationPipes, 'number');
 
@@ -227,15 +191,10 @@ const AddDeviceForm = (props: any) => {
       key: '1',
       cb: () => setTab('1'),
     },
-    {
-      title: 'Шаг 2. Документы',
-      key: '2',
-      cb: () => setTab('2'),
-    },
   ];
 
   return (
-    <form id="formikFormAddOdpu" onSubmit={handleSubmit}>
+    <div id="formikFormAddOdpu">
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового ОДПУ
@@ -362,7 +321,7 @@ const AddDeviceForm = (props: any) => {
           color="blue"
           onClick={handleNext}
           big
-          hidden={currentTabKey === '2'}
+          hidden
           disabled={coldandthermo}
           style={{ marginLeft: 16 }}
           type="button"
@@ -372,12 +331,10 @@ const AddDeviceForm = (props: any) => {
 
         <ButtonTT
           color="blue"
-          type="submit"
-          hidden={currentTabKey !== '2'}
           style={{ marginLeft: '16px' }}
           big
           disabled={coldandthermo}
-          onClick={handleSubmitForm}
+          onClick={handleSubmit}
         >
           Добавить
         </ButtonTT>
@@ -390,7 +347,7 @@ const AddDeviceForm = (props: any) => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-    </form>
+    </div>
   );
 };
 
