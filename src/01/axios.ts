@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import axios from 'axios';
 import { createEvent, createStore } from 'effector';
 
@@ -17,7 +18,6 @@ axios.interceptors.request.use((req) => {
   }
   return req;
 });
-
 
 axios.interceptors.response.use(
   ({ data, config }) => {
@@ -69,6 +69,8 @@ axios.interceptors.response.use(
           });
         }
       });
+    } else {
+      message.error(error.response.data.errorResponse.message || error.message);
     }
 
     return Promise.reject(error);

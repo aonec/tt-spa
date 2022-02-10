@@ -6,6 +6,8 @@ import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import StyledTextArea from '../../../../tt-components/TextArea';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 const styles = css`
   panel {
@@ -98,8 +100,15 @@ const PushButton = ({ loading = false, ...props }) =>
     }
   `(
     <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
+      <Flex>
+        <span>Завершить этап</span>
+        {loading && (
+          <>
+            <Space w={5} />
+            <Loader show />
+          </>
+        )}
+      </Flex>
     </button>
   );
 

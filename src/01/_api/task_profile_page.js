@@ -71,7 +71,11 @@ export async function moveStage(id = '', move = '', data = {}) {
       panelLoading: false,
       stageData: null,
     };
-  } catch (error) {}
+  } catch (error) {
+    return {
+      panelLoading: false,
+    };
+  }
 }
 
 export async function deleteDoc(docId) {

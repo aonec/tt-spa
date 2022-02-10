@@ -16,12 +16,7 @@ export const Information = ({ device }: InformationInterface) => {
   const { address } = device || { address: DEFAULT_BUILDING };
   const { city, street, housingStockNumber, corpus, id } =
     address || DEFAULT_BUILDING;
-  const {
-    futureCommercialAccountingDate,
-    lastCommercialAccountingDate,
-    futureCheckingDate,
-    lastCheckingDate,
-  } = device || DEFAULT_DEVICE;
+  const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   return (
     <ListWrap>
@@ -32,16 +27,6 @@ export const Information = ({ device }: InformationInterface) => {
             corpus ? `, к.${corpus}` : ''
           }`}
         </Subtitle>
-      </ListItem>
-      <ListItem>
-        <span>Дата начала действия акта-допуска</span>
-        <span>{moment(lastCommercialAccountingDate).format('DD.MM.YYYY')}</span>
-      </ListItem>
-      <ListItem>
-        <span>Дата окончания действия акта-допуска</span>
-        <span>
-          {moment(futureCommercialAccountingDate).format('DD.MM.YYYY')}
-        </span>
       </ListItem>
       <ListItem>
         <span>Дата поверки прибора</span>
