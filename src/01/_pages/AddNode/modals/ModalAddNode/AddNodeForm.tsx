@@ -47,6 +47,8 @@ const AddNodeForm = (props: any) => {
     number,
     resource,
     nodeServiceZoneId,
+    startCommercialAccountingDate,
+    endCommercialAccountingDate,
   } = node;
 
   const calculator = _.find(calculators, { id: calculatorId });
@@ -86,6 +88,12 @@ const AddNodeForm = (props: any) => {
         ...node,
         communicationPipes,
         housingStockId: +housingStockId,
+        startCommercialAccountingDate: moment(
+          startCommercialAccountingDate
+        ).format('YYYY-MM-DD'),
+        endCommercialAccountingDate: moment(endCommercialAccountingDate).format(
+          'YYYY-MM-DD'
+        ),
       };
 
       addNode(addNodeForm).then((res) => {
@@ -123,8 +131,8 @@ const AddNodeForm = (props: any) => {
         <List>
           <Info>Даты действия акта-допуска</Info>
           <Description>
-            {moment(lastCheckingDate).format('DD.MM.YYYY')} -{' '}
-            {moment(futureCheckingDate).format('DD.MM.YYYY')}
+            {moment(startCommercialAccountingDate).format('DD.MM.YYYY')} -{' '}
+            {moment(endCommercialAccountingDate).format('DD.MM.YYYY')}
           </Description>
         </List>
       </ul>
