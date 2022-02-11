@@ -71,12 +71,6 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
         serialNumber: values.serialNumber,
         lastCheckingDate: values.lastCheckingDate.toISOString(true),
         futureCheckingDate: values.futureCheckingDate.toISOString(true),
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
-          true
-        ),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
-          true
-        ),
         documentsIds: values.documentsIds,
         isConnected: values.isConnected,
         connection: {

@@ -627,32 +627,6 @@ export const useReadings = (
   ): OptionsInterface[] => [
     {
       value: () => (
-        <div>
-          <DeviceReadingsContainer
-            color={
-              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
-            }
-            onFocus={onFocusHandler}
-            resource={device.resource}
-          >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0]
-            }
-          </DeviceReadingsContainer>
-        </div>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.None,
-    },
-    {
-      value: () => (
         <Wide>
           <DeviceReadingsContainer
             color={
