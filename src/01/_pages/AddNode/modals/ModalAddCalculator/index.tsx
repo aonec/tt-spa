@@ -18,10 +18,7 @@ const ModalAddCalculator = (props: any) => {
         footer={null}
         width={800}
       >
-        <AddCalculatorForm
-          handleCancel={handleCancel}
-          onCreateCalculator={props.onCreateCalculator}
-        />
+        <AddCalculatorForm handleCancel={handleCancel} />
       </StyledModal>
     </>
   );

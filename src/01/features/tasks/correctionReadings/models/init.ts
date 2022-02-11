@@ -32,7 +32,7 @@ sample({
       };
 
       const payloadForEtraCheck = {
-        nextStageId: finalStage?.id,
+        nextStagesId: finalStage?.id,
         comment,
       };
 

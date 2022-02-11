@@ -7,10 +7,14 @@ export const information = css`
   }
   info_item {
     display: grid;
-    grid-template-columns: 0.7fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 48px;
     align-items: center;
     border-bottom: 1px solid var(--frame);
+
+    &:last-child {
+      border-bottom: none;
+    }
 
     opacity: 0.8;
     &[|url] {

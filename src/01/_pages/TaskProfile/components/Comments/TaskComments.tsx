@@ -10,7 +10,6 @@ import SingleComment from './SingleComment';
 import styled from 'styled-components';
 import Icon from '../../../../tt-components/Icon';
 import { Loader } from '../../../../components/Loader';
-import { InfoSectionTitle } from '01/shared/ui/InfoSection';
 
 const TaskComments = ({
   comments,
@@ -53,9 +52,7 @@ const TaskComments = ({
   return (
     <div>
       {/*<form action="">*/}
-      <InfoSectionTitle style={{ marginBottom: 24 }}>
-        Комментарии к задаче
-      </InfoSectionTitle>
+      <h2 style={{ marginBottom: 24 }}>Комментарии к задаче</h2>
       {data && data.length === 0 ? (
         <div
           style={{

@@ -70,12 +70,8 @@ const AddNodeSecondTab = () => {
         nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
-        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
-          true
-        ),
-        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
-          true
-        ),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
+        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(true),
       };
       setNode((prevState: any) => ({
         ...prevState,
@@ -97,7 +93,7 @@ const AddNodeSecondTab = () => {
   return (
     <>
       <PageGate />
-      <div hidden={Number(currentTabKey) !== 2}>
+      <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
         <StyledFormPage>
           <Title color="black" style={styles.w100}>
             Общие данные
@@ -210,7 +206,7 @@ const AddNodeSecondTab = () => {
           ) : null}
         </StyledFormPage>
         <StyledFooter form>
-          <ButtonTT color="blue" big onClick={handleSubmit}>
+          <ButtonTT color="blue" big type="submit">
             Далее
           </ButtonTT>
 
@@ -220,10 +216,10 @@ const AddNodeSecondTab = () => {
             onClick={handleCancel}
             style={{ marginLeft: 16 }}
           >
-            Назад
+            Отмена
           </ButtonTT>
         </StyledFooter>
-      </div>
+      </form>
     </>
   );
 };

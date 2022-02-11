@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 
-export const Flex = styled.div<{
-  h?: 'space-between' | 'flex-end' | 'flex-start' | 'space-around';
-}>`
+export const Flex = styled.div`
   display: flex;
   align-items: center;
-  justify-content: ${({ h }) => h};
 `;
