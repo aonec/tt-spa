@@ -28,7 +28,6 @@ import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addS
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
-import { ENodeCommercialAccountStatus } from 'myApi';
 
 const AddNodeSecondTab = () => {
   const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
@@ -37,6 +36,7 @@ const AddNodeSecondTab = () => {
 
   const serviceZones = useStore($serviceZones);
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
+  const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
 
   const selectZonesOptions = serviceZones.map((zone) => ({
@@ -57,9 +57,9 @@ const AddNodeSecondTab = () => {
       resource: resources[0].value,
       number: 1,
       serviceZone: chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
-      nodeStatus: ENodeCommercialAccountStatus.NotRegistered,
-      startCommercialAccountingDate: null as moment.Moment | null,
-      endCommercialAccountingDate: null as moment.Moment | null,
+      nodeStatus: nodeStatusList[0].value,
+      lastCommercialAccountingDate: moment(),
+      futureCommercialAccountingDate: moment().add(1, 'years'),
       disabledSecond: false,
     },
     validationSchema: nodeValidationSchema,
@@ -70,10 +70,10 @@ const AddNodeSecondTab = () => {
         nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
-        startCommercialAccountingDate: values?.startCommercialAccountingDate?.toISOString(
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(
           true
         ),
-        endCommercialAccountingDate: values?.endCommercialAccountingDate?.toISOString(
+        futureCommercialAccountingDate: values.futureCommercialAccountingDate.toISOString(
           true
         ),
       };
@@ -181,14 +181,14 @@ const AddNodeSecondTab = () => {
               >
                 <DatePickerTT
                   format="DD.MM.YYYY"
-                  name="startCommercialAccountingDate"
+                  name="lastCommercialAccountingDate"
                   allowClear={false}
                   onChange={(date) => {
-                    setFieldValue('startCommercialAccountingDate', date);
+                    setFieldValue('lastCommercialAccountingDate', date);
                   }}
-                  value={values.startCommercialAccountingDate}
+                  value={values.lastCommercialAccountingDate}
                 />
-                <Alert name="startCommercialAccountingDate" />
+                <Alert name="lastCheckingDate" />
               </Form.Item>
 
               <Form.Item
@@ -197,14 +197,14 @@ const AddNodeSecondTab = () => {
               >
                 <DatePickerTT
                   format="DD.MM.YYYY"
-                  name="endCommercialAccountingDate"
+                  name="futureCommercialAccountingDate"
                   allowClear={false}
                   onChange={(date) => {
-                    setFieldValue('endCommercialAccountingDate', date);
+                    setFieldValue('futureCommercialAccountingDate', date);
                   }}
-                  value={values.endCommercialAccountingDate}
+                  value={values.futureCommercialAccountingDate}
                 />
-                <Alert name="endCommercialAccountingDate" />
+                <Alert name="futureCommercialAccountingDate" />
               </Form.Item>
             </>
           ) : null}
