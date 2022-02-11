@@ -31,9 +31,9 @@ export const StyledAutoComplete = styled(AutoComplete)`
       }
     }
 
-    &:before {
+    &: before {
       position: absolute !important;
-      content: '';
+      content: "";
       display: block;
       background-image: url(${img});
       width: 16px;
@@ -42,6 +42,9 @@ export const StyledAutoComplete = styled(AutoComplete)`
       top: calc(50% - 8px);
     }
   }
+}
+
+}
 `;
 
 export interface AutoCompleteInterface {
@@ -54,20 +57,17 @@ interface AutoCompleteTTInterface {
   options: Array<AutoCompleteInterface>;
   onSelect: any;
   filterOption?: any;
-  value: any;
 }
 
 export const AutoCompleteTT = ({
   options,
   onSelect,
   filterOption,
-  value,
 }: AutoCompleteTTInterface) => (
   <StyledAutoComplete
     options={options}
     filterOption={filterOption}
     onSelect={onSelect}
-    value={value}
     placeholder="Введите данные"
   />
 );

@@ -208,7 +208,7 @@ const AddNodeForm = (props: any) => {
   );
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <StyledModalBody>
         <Title size="middle" color="black">
           Добавление нового узла
@@ -220,13 +220,7 @@ const AddNodeForm = (props: any) => {
         <ThirdBlock />
       </StyledModalBody>
       <StyledFooter>
-        <ButtonTT
-          onClick={handleSubmit}
-          color="blue"
-          type="submit"
-          style={{ marginLeft: '16px' }}
-          big
-        >
+        <ButtonTT color="blue" type="submit" style={{ marginLeft: '16px' }} big>
           Создать Узел
         </ButtonTT>
         <ButtonTT
@@ -238,7 +232,7 @@ const AddNodeForm = (props: any) => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-    </div>
+    </form>
   );
 };
 
@@ -315,3 +309,23 @@ const DeviceDescription = styled.div`
   align-items: center;
   grid-column-gap: 8px;
 `;
+
+// const form = {
+//   serialNumber: values.serialNumber,
+//   lastCheckingDate: values.lastCheckingDate,
+//   futureCheckingDate: values.futureCheckingDate,
+//   lastCommercialAccountingDate: values.lastCommercialAccountingDate,
+//   futureCommercialAccountingDate: values.futureCommercialAccountingDate,
+//   documentsIds: [],
+//   housingMeteringDeviceType: values.housingMeteringDeviceType,
+//   resource: values.resource,
+//   model: values.model,
+//   diameter: values.diameter,
+//   pipe: {
+//     calculatorId: values.calculatorId,
+//     entryNumber: values.entryNumber,
+//     hubNumber: values.hubNumber || null,
+//     pipeNumber: values.pipeNumber,
+//     magistral: values.magistral,
+//   },
+// };

@@ -84,7 +84,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen": "npx swagger-typescript-api -p https://management.transparent-technology.ru:1443/swagger/v1/swagger.json -o ./src -n myApi.ts --axios",
+    "updateTypes": "npx swagger-typescript-api -p http://transparent-staging.herokuapp.com/swagger/v1/swagger.json -o ./src -n myApi.ts --axios",
     "prettify": "yarn prettier --write ."
   },
   "eslintConfig": {

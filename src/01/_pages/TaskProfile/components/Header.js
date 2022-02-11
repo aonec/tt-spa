@@ -5,8 +5,7 @@ import { Loader } from '01/components';
 import * as s from '01/r_comp';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { Icon } from '01/tt-components';
-import DeviceIcons from '01/_components/DeviceIcons';
+import { Icon } from '01/shared/ui/Icon';
 
 const styles = css`
   h {
@@ -81,13 +80,8 @@ export const Header = React.memo(
           {state?.type === 'IndividualDeviceCheck' && (
             <>
               <Icon
-                dark
-                icon={getIcon(
-                  state?.individualDevice?.resource,
-                  state?.individualDevices?.length > 1
-                )}
+                name={state?.individualDevice?.resource}
                 style={{ transform: 'scale(1.4)' }}
-                size={24}
               />
               <Space w={10} />
             </>
@@ -119,6 +113,3 @@ export const Header = React.memo(
       </h>
     )
 );
-
-const getIcon = (resource, isMulty) =>
-  isMulty ? 'multiDevices' : DeviceIcons[resource]?.icon;
