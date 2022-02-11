@@ -48,6 +48,14 @@ export const AddNewActForm = () => {
     []
   );
 
+  useEffect(
+    () =>
+      createApartmentActFx.fail.watch(() =>
+        message.error('Ошибка при добавлении акта')
+      ).unsubscribe,
+    []
+  );
+
   return (
     <>
       <ApartmentActTypesGate />

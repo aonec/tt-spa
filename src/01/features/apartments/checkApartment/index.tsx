@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from 'effector-react';
 import {
   $editApartmentCheckModalPayload,
@@ -101,8 +101,8 @@ export const CheckApartmentModal = () => {
         <Form.Item label="Номер документа">
           <InputTT
             value={fields.registryNumber.value}
-            onChange={(e: SyntheticEvent<HTMLInputElement>) =>
-              fields.registryNumber.onChange(e.currentTarget.value)
+            onChange={(e: any) =>
+              fields.registryNumber.onChange(e.target.value)
             }
             placeholder="Введите номер"
           />
