@@ -1,9 +1,11 @@
+import { information } from '01/r_comp';
+import { useInfoHeader } from './useInfoHeder';
+
 const taskInfo = [
   ['Причина задачи', 'creationReason'],
   ['Номер задачи', 'id'],
   ['Дата создания', 'creationTime'],
   ['Адрес', 'address', 'housingStockId'],
-  ['Комментарий к квартире', 'commnt', 'name'],
   ['Исполнитель', 'perpetrator', 'name'],
 ];
 
@@ -19,15 +21,6 @@ export const useInformation = (state = {}) => {
             value: state[value]
               ? new Date(state[value]).toLocaleDateString()
               : '',
-          },
-        ];
-      }
-      if (/Комментарий к квартире/i.test(title)) {
-        return [
-          ...l,
-          {
-            title,
-            value: state.apartment?.comment,
           },
         ];
       }

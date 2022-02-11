@@ -18,7 +18,7 @@ const tabItems = [
 ];
 
 const tabItemsWatcher = [
-  ['К исполнению', 'executing'],
+  // ['К исполнению', 'executing'],
   ['Наблюдаемые', 'observing'],
   ['Архив', 'archived'],
 ];

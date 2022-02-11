@@ -6,7 +6,7 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { ApartmentActResponse, EActResourceType } from 'myApi';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { $actResources } from '../../displayActResources/models';
 import { $actTypes } from '../../displayActTypes/models';
@@ -130,7 +130,7 @@ const ActWrap = styled(Grid)`
 `;
 
 export function getIconFromResource(resource: EActResourceType) {
-  const icons: { [key: string]: ReactElement } = {
+  const icons = {
     [EActResourceType.All]: <AllResourceIcon />,
     [EActResourceType.ColdWaterSupply]: (
       <Icon name={EActResourceType.ColdWaterSupply} />
@@ -143,5 +143,5 @@ export function getIconFromResource(resource: EActResourceType) {
     ),
   };
 
-  return icons[resource];
+  return (icons as any)[resource];
 }

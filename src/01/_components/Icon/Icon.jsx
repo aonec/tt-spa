@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { ReactComponent as WaterIcon } from './icons/water.svg';
 import { ReactComponent as HeatIcon } from './icons/heat.svg';
 import { ReactComponent as ElectroIcon } from './icons/electro.svg';
-import { ReactComponent as MultiDevicesIcon } from './icons/multiDevices.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 
@@ -13,7 +12,6 @@ export const darkIcons = {
   water: WaterIcon,
   hotWater: HeatIcon,
   electro: ElectroIcon,
-  multiDevices: MultiDevicesIcon,
 };
 
 export const Icon = ({ size = 16, icon = '', dark = false, ...props }) => {

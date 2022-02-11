@@ -23,10 +23,6 @@ import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
 import { Link, NavLink } from 'react-router-dom';
-import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
-import { ApartmentOwners } from './components/ApartmentOwners';
-import { Space } from '01/shared/ui/Layout/Space/Space';
-import { ApartmentDevices } from './components/ApartmentDevices';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -69,26 +65,19 @@ export const TaskProfile = () => {
   const infoDevice = useInformationDevice(state);
 
   const { device, node } = state;
-
   const { type, id } = device || {};
   const { icon, color } = DeviceIcons[node?.resource] || {};
   const { calculator } = state;
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
-  const isIndividualDeviceReadingCheckType =
-    state.type === 'IndividualDeviceReadingsCheck';
+  console.log(state);
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Index path="/tasks/" />
       <Header {...state.header} state={state} />
-      {isIndividualDeviceReadingCheckType ? (
-        <CorrectionReadingsPanel />
-      ) : (
-        <Panel {...panel} device={device} state={state} />
-      )}
-      <Space />
+      <Panel {...panel} device={device} state={state} />
       <Steps />
       <Documents {...docs} />
       <grid>
@@ -97,9 +86,9 @@ export const TaskProfile = () => {
             <TaskComments comments={state.comments} />
           ) : null}
           <Information {...info} />
-          <ApartmentOwners homeowners={state?.apartment?.homeownerAccounts} />
-          <ApartmentDevices devices={state?.individualDevices} />
-          {/* <InformationDevice {...infoDevice} type={type} id={id} /> */}
+          <InformationDevice {...infoDevice} type={type} id={id} />
+
+          {/*подождать бэк и вынести в отдельный компонент*/}
           {node ? (
             <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>
