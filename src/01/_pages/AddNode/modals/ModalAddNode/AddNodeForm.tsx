@@ -220,6 +220,7 @@ const AddNodeForm = (props: any) => {
         <ThirdBlock />
       </StyledModalBody>
       <StyledFooter>
+        
         <ButtonTT
           onClick={handleSubmit}
           color="blue"
