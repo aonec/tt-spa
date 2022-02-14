@@ -72,13 +72,13 @@ export const TaskProfile = () => {
 
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
-  console.log(state);
+  const isIndividualDeviceReadingCheckType =
+    state.type === 'IndividualDeviceReadingsCheck';
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Index path="/tasks/" />
       <Header {...state.header} state={state} />
-      <Panel {...panel} device={device} state={state} />
       {isIndividualDeviceReadingCheckType ? (
         <CorrectionReadingsPanel />
       ) : (

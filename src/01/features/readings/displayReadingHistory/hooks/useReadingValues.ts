@@ -1,4 +1,3 @@
-import { $individualDevice } from '01/features/individualDevices/displayIndividualDevice/models';
 import { useParams } from 'react-router-dom';
 import {
   fetchReadingHistoryFx,
