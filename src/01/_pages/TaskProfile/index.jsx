@@ -23,6 +23,7 @@ import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
 import { Link, NavLink } from 'react-router-dom';
+import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -78,6 +79,11 @@ export const TaskProfile = () => {
       <Index path="/tasks/" />
       <Header {...state.header} state={state} />
       <Panel {...panel} device={device} state={state} />
+      {isIndividualDeviceReadingCheckType ? (
+        <CorrectionReadingsPanel />
+      ) : (
+        <Panel {...panel} device={device} state={state} />
+      )}
       <Steps />
       <Documents {...docs} />
       <grid>

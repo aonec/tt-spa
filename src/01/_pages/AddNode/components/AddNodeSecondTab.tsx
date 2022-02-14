@@ -28,7 +28,6 @@ import { addServiceZoneButtonClicked } from '../../../features/serviceZones/addS
 import AddNewZonesModal from '../../../features/serviceZones/addServiceZone';
 import styled from 'styled-components';
 import { useStore } from 'effector-react';
-import { ENodeCommercialAccountStatus } from 'myApi';
 
 const AddNodeSecondTab = () => {
   const { handleCancel, currentTabKey, handleNext, setNode } = useContext(
@@ -37,6 +36,7 @@ const AddNodeSecondTab = () => {
 
   const serviceZones = useStore($serviceZones);
   const zonesLoadingStatus = useStore($requestServiceZonesStatus);
+  const isRequestServiceZonesError = zonesLoadingStatus === 'error';
   const chosenInputForSelect = useStore($derivedChosenInput);
 
   const selectZonesOptions = serviceZones.map((zone) => ({
@@ -57,9 +57,9 @@ const AddNodeSecondTab = () => {
       resource: resources[0].value,
       number: 1,
       serviceZone: chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
-      nodeStatus: ENodeCommercialAccountStatus.NotRegistered,
-      startCommercialAccountingDate: null as moment.Moment | null,
-      endCommercialAccountingDate: null as moment.Moment | null,
+      nodeStatus: nodeStatusList[0].value,
+      lastCommercialAccountingDate: moment(),
+      futureCommercialAccountingDate: moment().add(1, 'years'),
       disabledSecond: false,
     },
     validationSchema: nodeValidationSchema,
@@ -70,12 +70,8 @@ const AddNodeSecondTab = () => {
         nodeServiceZoneId:
           chosenInputForSelect?.value ?? selectZonesOptions[0]?.value,
         nodeStatus: values.nodeStatus,
-        startCommercialAccountingDate: values?.startCommercialAccountingDate?.toISOString(
-          true
-        ),
-        endCommercialAccountingDate: values?.endCommercialAccountingDate?.toISOString(
-          true
-        ),
+        lastCommercialAccountingDate: values.lastCommercialAccountingDate.toISOString(true),
+        futureCheckingDate: values.futureCommercialAccountingDate.toISOString(true),
       };
       setNode((prevState: any) => ({
         ...prevState,
@@ -97,7 +93,7 @@ const AddNodeSecondTab = () => {
   return (
     <>
       <PageGate />
-      <div hidden={Number(currentTabKey) !== 2}>
+      <form hidden={Number(currentTabKey) !== 2} onSubmit={handleSubmit}>
         <StyledFormPage>
           <Title color="black" style={styles.w100}>
             Общие данные
@@ -181,14 +177,14 @@ const AddNodeSecondTab = () => {
               >
                 <DatePickerTT
                   format="DD.MM.YYYY"
-                  name="startCommercialAccountingDate"
+                  name="lastCommercialAccountingDate"
                   allowClear={false}
                   onChange={(date) => {
-                    setFieldValue('startCommercialAccountingDate', date);
+                    setFieldValue('lastCommercialAccountingDate', date);
                   }}
-                  value={values.startCommercialAccountingDate}
+                  value={values.lastCommercialAccountingDate}
                 />
-                <Alert name="startCommercialAccountingDate" />
+                <Alert name="lastCheckingDate" />
               </Form.Item>
 
               <Form.Item
@@ -197,20 +193,20 @@ const AddNodeSecondTab = () => {
               >
                 <DatePickerTT
                   format="DD.MM.YYYY"
-                  name="endCommercialAccountingDate"
+                  name="futureCommercialAccountingDate"
                   allowClear={false}
                   onChange={(date) => {
-                    setFieldValue('endCommercialAccountingDate', date);
+                    setFieldValue('futureCommercialAccountingDate', date);
                   }}
-                  value={values.endCommercialAccountingDate}
+                  value={values.futureCommercialAccountingDate}
                 />
-                <Alert name="endCommercialAccountingDate" />
+                <Alert name="futureCommercialAccountingDate" />
               </Form.Item>
             </>
           ) : null}
         </StyledFormPage>
         <StyledFooter form>
-          <ButtonTT color="blue" big onClick={handleSubmit}>
+          <ButtonTT color="blue" big type="submit">
             Далее
           </ButtonTT>
 
@@ -220,10 +216,10 @@ const AddNodeSecondTab = () => {
             onClick={handleCancel}
             style={{ marginLeft: 16 }}
           >
-            Назад
+            Отмена
           </ButtonTT>
         </StyledFooter>
-      </div>
+      </form>
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 import { useFormik } from 'formik';
 import _ from 'lodash';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import {
   // Title,
   ButtonTT,
@@ -35,7 +35,7 @@ import {
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
 
-const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
+const AddCalculatorForm = ({ handleCancel }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
@@ -81,16 +81,11 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
         housingStockId: Number(values.housingStockId),
         infoId: Number(values.infoId),
       };
-
-      try {
-        const res: any = await addCalculator(form);
-
-        onCreateCalculator && onCreateCalculator(res.id);
-
-        setAddCalculator(false);
-      } catch (error) {
-        message.error('Ошибка добавления вичислителя');
-      }
+      addCalculator(form).then((res: any) => {
+        setTimeout(() => {
+          setAddCalculator(false);
+        }, 1000);
+      });
     },
   });
 
@@ -151,7 +146,6 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
 
   const handleSubmitForm = (e: any) => {
     e.preventDefault();
-    e.stopPropagation();
     const { hasError, errorTab } = handleTabsBeforeFormSubmit(
       tabErrors,
       errors
@@ -198,7 +192,7 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
           Добавление нового вычислителя
         </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
+        <Tabs tabItems={tabItems} tabsType={'tabs'} />
 
         <StyledFormPage hidden={Number(currentTabKey) !== 1}>
           <Form.Item label="Серийный номер устройства" style={styles.w100}>
@@ -351,14 +345,10 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
         <ButtonTT
           color="white"
           type="button"
-          onClick={
-            currentTabKey === '1'
-              ? handleCancel
-              : () => setTab((prev) => String(Number(prev) - 1))
-          }
+          onClick={handleCancel}
           style={{ marginLeft: 16 }}
         >
-          {currentTabKey === '1' ? 'Отмена' : 'Назад'}
+          Отмена
         </ButtonTT>
       </StyledFooter>
     </form>
