@@ -6,6 +6,7 @@ import { getIndividualDevices } from '01/_api/individualDevices';
 import { combine, forward, guard, sample } from 'effector';
 import {
   $individualDevices,
+  $isAllDevicesDone,
   $isShownClosedDevices,
   $pagedIndividualDevicePageNumber,
   $pagedIndividualDevices,
@@ -48,8 +49,12 @@ $isShownClosedDevices
 
 sample({
   clock: guard({
+    source: combine(
+      $isAllDevicesDone,
+      fetchNextPageOfIndividualDevicesFx.pending
+    ),
     clock: fetchNextPageOfIndividualDevices,
-    filter: () => !fetchNextPageOfIndividualDevicesFx.pending.getState(),
+    filter: ([isAllDone, pending]) => !(pending || isAllDone),
   }),
   source: combine(
     PagedIndividualDevicesGate.state,

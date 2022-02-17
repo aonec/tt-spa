@@ -69,7 +69,7 @@ const AddNodeThirdTab = () => {
   }
 
   return (
-    <form hidden={Number(currentTabKey) !== 3} onSubmit={handleSubmit}>
+    <div hidden={Number(currentTabKey) !== 3}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Подключенные приборы
@@ -80,28 +80,26 @@ const AddNodeThirdTab = () => {
         <ButtonTT
           style={{ marginTop: '24px' }}
           color="white"
-          type="button"
           onClick={handleShowAddDevice}
         >
           + Добавить прибор
         </ButtonTT>
       </StyledFormPage>
       <StyledFooter form={true}>
-        <ButtonTT color="blue" big type="submit">
+        <ButtonTT color="blue" big onClick={handleSubmit}>
           Создать Узел
         </ButtonTT>
         <ButtonTT
-          type="button"
           color="white"
           onClick={handleCancel}
           style={{ marginLeft: 16 }}
         >
-          Отмена
+          Назад
         </ButtonTT>
       </StyledFooter>
       <ModalAddDevice />
       <ModalAddNode />
-    </form>
+    </div>
   );
 };
 
