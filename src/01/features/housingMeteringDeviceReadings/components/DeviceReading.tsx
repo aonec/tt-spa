@@ -1,4 +1,7 @@
-import { HousingMeteringDeviceReadingsResponse } from '../../../../myApi';
+import {
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
+  HousingMeteringDeviceReadingsResponse,
+} from '../../../../myApi';
 import { useStore } from 'effector-react';
 import {
   $chosenInputId,
@@ -17,15 +20,15 @@ import styled from 'styled-components';
 export const DeviceReading = ({
   deviceElem,
 }: {
-  deviceElem: HousingMeteringDeviceReadingsResponse;
+  deviceElem: HousingMeteringDeviceReadingsIncludingPlacementResponse;
 }) => {
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 16, color: 'var(--main-32)' }} spin />
   );
 
   const isColdWaterSupply = useStore($isColdWaterSupply);
-  const { value, id, year, month } = deviceElem;
-  const deviceId = Number(id);
+  const { value, id, year, month, deviceId } = deviceElem;
+  console.log(deviceElem);
   const chosenInputId = useStore($chosenInputId);
   const isInputChosen = chosenInputId === deviceId;
   const today = new Date();
