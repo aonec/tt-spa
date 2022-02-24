@@ -21,12 +21,17 @@ import { forward, guard, sample } from 'effector';
 import { GetHousingMeteringDeviceReadingsResponse } from '../../../../myApi';
 import moment from 'moment';
 import { formatDate } from '01/utils/dates';
+import { createOrUpdateLast } from '01/_api/meteringDeviceReadings';
 
 requestReadingsFx.use(requestReadings);
 
 postReadingFx.use((data) => {
   const { value, deviceId } = data;
-  return postReading({ value, deviceId, readingDate: formatDate(moment()) });
+  return createOrUpdateLast({
+    value,
+    deviceId,
+    readingDate: formatDate(moment().add(1, 'M')),
+  });
 });
 
 const addReadingsReducer = (

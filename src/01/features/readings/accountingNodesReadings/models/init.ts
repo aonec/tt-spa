@@ -1,5 +1,6 @@
+import { fetchExistingCities } from './../../../housingStocks/displayHousingStockCities/models/index';
 import { accountingNodesFilterForm, getAccountingNodesDevices } from './index';
-import { sample } from 'effector';
+import { sample, forward } from 'effector';
 import { fetchNodes } from '01/features/nodes/displayNodes/models';
 
 sample({
@@ -10,4 +11,11 @@ sample({
   })),
   clock: [getAccountingNodesDevices, accountingNodesFilterForm.formValidated],
   target: fetchNodes,
+});
+
+forward({
+  from: fetchExistingCities.doneData.map((cities) =>
+    cities ? cities[cities.length - 1] : ''
+  ),
+  to: accountingNodesFilterForm.fields.city.set,
 });

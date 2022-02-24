@@ -29,7 +29,7 @@ export async function putMeteringDeviceReading(
 
 export async function createOrUpdateLast(
   payload: CreateHousingMeteringDeviceReadingsRequest
-) {
+): Promise<HousingMeteringDeviceReadingsIncludingPlacementResponse> {
   return await axios.post(
     'HousingMeteringDeviceReadings',
     payload

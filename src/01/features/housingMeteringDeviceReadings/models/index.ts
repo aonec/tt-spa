@@ -3,6 +3,7 @@ import {
   GetHousingMeteringDeviceReadingsResponse,
   HousingMeteringDeviceReadingsResponse,
   EResourceType,
+  HousingMeteringDeviceReadingsIncludingPlacementResponse,
 } from '../../../../myApi';
 import { createGate } from 'effector-react';
 import { prepareReadings } from '../lib/groupReadingsByDates';
@@ -38,7 +39,7 @@ export const requestReadingsFx = createEffect<
 
 export const postReadingFx = createEffect<
   InputPayloadType,
-  HousingMeteringDeviceReadingsResponse
+  HousingMeteringDeviceReadingsIncludingPlacementResponse
 >();
 
 export type InputPayloadType = {
