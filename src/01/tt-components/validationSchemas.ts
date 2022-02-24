@@ -40,7 +40,7 @@ export const validationSchemaFlowMeter = Yup.object({
   isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
   entryNumber: Yup.number()
     .min(1)
-    .max(2, 'Укажите число до 2')
+    .max(3, 'Укажите число до 3')
     .typeError('Введите число, значение не может быть пустым')
     .required('Введите номер ввода'),
   model: Yup.string().required('Введите модель'),
