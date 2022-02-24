@@ -7,6 +7,8 @@ export interface ItemInterface {
   label: string;
 }
 
+export type SelectItem = ItemInterface
+
 export const items: Array<ItemInterface> = [
   {
     id: 1,
