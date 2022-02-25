@@ -38,18 +38,10 @@ export const nodeValidationSchema = Yup.object({
 
 export const validationSchemaFlowMeter = Yup.object({
   isAllowed: Yup.boolean().oneOf([true], 'Field must be checked'),
-  entryNumber: Yup.number()
-    .min(1)
-    .max(3, 'Укажите число до 3')
-    .typeError('Введите число, значение не может быть пустым')
-    .required('Введите номер ввода'),
   model: Yup.string().required('Введите модель'),
   serialNumber: Yup.string()
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите серийный номер'),
-  // calculatorId: Yup.number()
-  //   .typeError('Вы не выбрали вычислитель')
-  //   .required('Выберите вычислитель'),
   pipeNumber: Yup.number()
     .min(0)
     .max(10, 'Укажите число до 10')
@@ -67,14 +59,6 @@ export const validationSchemaTemperatureSensor = Yup.object({
   serialNumber: Yup.string()
     .min(3, 'Серийный номер должен быть длиннее трех символов')
     .required('Введите серийный номер'),
-  calculatorId: Yup.number()
-    .typeError('Вы не выбрали вычислитель')
-    .required('Выберите вычислитель'),
-  entryNumber: Yup.number()
-    .min(0)
-    .max(10, 'Укажите число до 10')
-    .typeError('Введите число, значение не может быть пустым')
-    .required('Введите номер'),
   pipeNumber: Yup.number()
     .min(0)
     .max(10, 'Укажите число до 10')

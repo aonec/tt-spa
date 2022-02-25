@@ -75,7 +75,7 @@ export const RelatedDevices = () => {
           <Serial>{` (${serialNumber})`}</Serial>
         </NameWrap>
 
-        <Span>{`Ввод: ${entryNumber}`}</Span>
+        {<Span>{entryNumber && `Ввод: ${entryNumber}`}</Span>}
         <Span>{`Труба: ${pipeNumber}`}</Span>
         <Div>
           {/* <IconTT icon="edit" style={{ marginLeft: 8 }} onClick={handleEdit} /> */}
