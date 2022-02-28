@@ -27,6 +27,7 @@ import {
   ApartmentActTypesGate,
   $actTypes,
 } from '../../actsJournal/displayActTypes/models';
+import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
@@ -87,18 +88,11 @@ export const CheckApartmentModal = () => {
               value={fields.checkType.value || undefined}
               onChange={fields.checkType.onChange as any}
             >
-              <StyledSelect.Option
-                value={ECheckType.Planned}
-                key={ECheckType.Planned}
-              >
-                Плановая
-              </StyledSelect.Option>
-              <StyledSelect.Option
-                value={ECheckType.Unplanned}
-                key={ECheckType.Unplanned}
-              >
-                Внеплановая
-              </StyledSelect.Option>
+              {Object.entries(CheckingActDocumentType).map(([key, value]) => (
+                <StyledSelect.Option value={key} key={key}>
+                  {value}
+                </StyledSelect.Option>
+              ))}
             </StyledSelect>
             <ErrorMessage>
               {fields.checkType.errorText({
