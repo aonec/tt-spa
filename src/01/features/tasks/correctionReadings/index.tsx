@@ -33,7 +33,6 @@ import {
 } from './models';
 
 export const CorrectionReadingsPanel = () => {
-  const params = useParams<[string]>();
 
   const task = useStore($task);
 
@@ -173,7 +172,6 @@ export const CorrectionReadingsPanel = () => {
       <Wrap>
         <CorrectionReadingsGate />
         <ReadingsHistoryModal />
-        <TaskGate id={Number(params[0])} />
         {task?.id && <NextStagesGate taskId={task?.id} />}
         <Header>Введите исправленные показния</Header>
         <Space />
