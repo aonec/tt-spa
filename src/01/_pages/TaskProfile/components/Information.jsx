@@ -35,7 +35,7 @@ export const Information = ({
       <Loader show={loading} size="20">
         <info_list>
           {list.map(({ title, value, url }) => {
-            const link = task?.device?.id && `/nodes/${task?.device?.id}/stats`;
+            const link = task?.device?.id && `/nodes/${task?.device?.nodeId}/stats`;
 
             const isNodeStatLink =
               title === 'Причина задачи' && isHousingDeviceMalfunction && link;
