@@ -139,7 +139,7 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const isPerpetrator = currentUser.id === taskPerpetrator?.id;
+  const isPerpetrator = currentUser?.id === taskPerpetrator?.id;
 
   if (isObserver && AddDocuments && Switch) {
     return styled(

@@ -24,6 +24,7 @@ import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
 import { Link, NavLink } from 'react-router-dom';
 import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
+import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -75,6 +76,12 @@ export const TaskProfile = () => {
   const isIndividualDeviceReadingCheckType =
     state.type === 'IndividualDeviceReadingsCheck';
 
+  const isShowNodeStatistic = Boolean(
+    state?.device?.nodeId &&
+      (state?.type === 'HousingDeviceMalfunction' ||
+        state?.type === 'HousingDeviceMalfunctionNonCommercial')
+  );
+
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
       <Index path="/tasks/" />
@@ -93,6 +100,9 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
+          {isShowNodeStatistic && (
+            <TaskNodeStatistic id={state?.device?.nodeId} />
+          )}
 
           {/*подождать бэк и вынести в отдельный компонент*/}
           {node ? (
