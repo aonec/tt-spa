@@ -5,6 +5,7 @@ import { DocumentResponse, ECheckType } from 'myApi';
 export const CheckingActDocumentType = {
   [ECheckType.Planned]: 'Плановая',
   [ECheckType.Unplanned]: 'Внеплановая',
+  [ECheckType.Admission]: 'Акт допуска',
 };
 
 export function getCheckingActDocument(type: ECheckType) {
