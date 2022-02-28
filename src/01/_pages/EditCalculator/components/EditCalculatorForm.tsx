@@ -32,6 +32,8 @@ import {
   calculatorNoConnectionValidationSchema,
   calculatorValidationSchema,
 } from '../../../tt-components/validationSchemas';
+import { useStore } from 'effector-react';
+import { $calculatorTypesSelectItems, CalculatorInfosGate } from '01/features/carlculators/calculatorsInfo/models';
 
 interface EditCalculatorFormInterface {
   calculator: CalculatorResponse;
@@ -64,6 +66,8 @@ const EditCalculatorForm = ({
   const [validationSchema, setValidationSchema] = useState<any>(
     calculatorValidationSchema
   );
+
+  const calculatorTypesSelectItems = useStore($calculatorTypesSelectItems);
 
   const getCurrentInfoId = model
     ? _.find<ItemInterface>(items, { label: model })
@@ -199,6 +203,7 @@ const EditCalculatorForm = ({
   return (
     <form onSubmit={handleSubmitForm} style={{ maxWidth: 800 }}>
       <StyledFormPage hidden={Number(tab) !== 1}>
+        <CalculatorInfosGate />
         <Form.Item label="Серийный номер устройства" style={styles.w100}>
           <InputTT
             name="serialNumber"
@@ -214,7 +219,7 @@ const EditCalculatorForm = ({
         <Form.Item label="Тип вычислителя" style={styles.w100}>
           <SelectTT
             placeholder="Выберите тип устройства"
-            options={items}
+            options={calculatorTypesSelectItems}
             value={values.infoId}
             onChange={(event, target) => {
               setFieldValue('infoId', event);
