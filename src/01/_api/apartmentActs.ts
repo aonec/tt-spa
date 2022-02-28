@@ -3,7 +3,6 @@ import {
   ApartmentActPaginationParameters,
   MayBe,
 } from '01/features/actsJournal/displayActsJournal/models';
-import { formQueryString } from '01/utils/formQueryString';
 import {
   AddApartmentActRequest,
   ApartmentActResponsePagedList,
