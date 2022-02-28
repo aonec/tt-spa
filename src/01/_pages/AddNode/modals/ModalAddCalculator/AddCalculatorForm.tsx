@@ -34,9 +34,14 @@ import {
 } from '../../../../tt-components/validationSchemas';
 import { addCalculator } from '../../../../_api/apiRequests';
 import Title from '../../../../tt-components/Title';
+import { $calculatorTypesSelectItems, CalculatorInfosGate } from '01/features/carlculators/calculatorsInfo/models';
+import { useStore } from 'effector-react';
 
 const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   const { housingStockId, setAddCalculator } = useContext(AddNodeContext);
+
+  const calculatorTypesSelectItems = useStore($calculatorTypesSelectItems);
+
   const [currentTabKey, setTab] = useState('1');
   const [validationSchema, setValidationSchema] = useState<any>(
     calculatorValidationSchema
@@ -192,176 +197,188 @@ const AddCalculatorForm = ({ handleCancel, onCreateCalculator }: any) => {
   ];
 
   return (
-    <form onSubmit={handleSubmitForm}>
-      <StyledModalBody>
-        <Title size="middle" color="black">
-          Добавление нового вычислителя
-        </Title>
+    <>
+      <CalculatorInfosGate />
+      <form onSubmit={handleSubmitForm}>
+        <StyledModalBody>
+          <Title size="middle" color="black">
+            Добавление нового вычислителя
+          </Title>
 
-        <Tabs tabItems={tabItems} tabsType={'tabs'} activeKey={currentTabKey} />
+          <Tabs
+            tabItems={tabItems}
+            tabsType={'tabs'}
+            activeKey={currentTabKey}
+          />
 
-        <StyledFormPage hidden={Number(currentTabKey) !== 1}>
-          <Form.Item label="Серийный номер устройства" style={styles.w100}>
-            <InputTT
-              name="serialNumber"
-              value={values.serialNumber}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            <Alert name="serialNumber" />
-          </Form.Item>
+          <StyledFormPage hidden={Number(currentTabKey) !== 1}>
+            <Form.Item label="Серийный номер устройства" style={styles.w100}>
+              <InputTT
+                name="serialNumber"
+                value={values.serialNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <Alert name="serialNumber" />
+            </Form.Item>
 
-          <Form.Item label="Тип вычислителя" style={styles.w100}>
-            <SelectTT
-              name="infoId"
-              placeholder="Выберите тип устройства"
-              options={items}
-              value={values.infoId}
-              onChange={(event) => {
-                setFieldValue('infoId', event);
-              }}
-            />
-          </Form.Item>
+            <Form.Item label="Тип вычислителя" style={styles.w100}>
+              <SelectTT
+                name="infoId"
+                placeholder="Выберите тип устройства"
+                options={calculatorTypesSelectItems}
+                value={values.infoId}
+                onChange={(event) => {
+                  setFieldValue('infoId', event);
+                }}
+              />
+            </Form.Item>
 
-          <Form.Item label="Дата поверки" style={styles.w49}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCheckingDate"
-              allowClear={false}
-              onChange={(date) => {
-                setFieldValue('lastCheckingDate', date);
-                setFieldValue(
-                  'futureCheckingDate',
-                  moment(date).add(3, 'years')
-                );
-              }}
-              value={values.lastCheckingDate}
-            />
-          </Form.Item>
+            <Form.Item label="Дата поверки" style={styles.w49}>
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                name="lastCheckingDate"
+                allowClear={false}
+                onChange={(date) => {
+                  setFieldValue('lastCheckingDate', date);
+                  setFieldValue(
+                    'futureCheckingDate',
+                    moment(date).add(3, 'years')
+                  );
+                }}
+                value={values.lastCheckingDate}
+              />
+            </Form.Item>
 
-          <Form.Item label="Дата следующей поверки" style={styles.w49}>
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="futureCheckingDate"
-              allowClear={false}
-              onChange={(date) => {
-                setFieldValue('futureCheckingDate', date);
-              }}
-              value={values.futureCheckingDate}
-            />
-          </Form.Item>
+            <Form.Item label="Дата следующей поверки" style={styles.w49}>
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                name="futureCheckingDate"
+                allowClear={false}
+                onChange={(date) => {
+                  setFieldValue('futureCheckingDate', date);
+                }}
+                value={values.futureCheckingDate}
+              />
+            </Form.Item>
 
-          <Form.Item
-            label="Дата начала Акта действия допуска"
-            style={styles.w49}
+            <Form.Item
+              label="Дата начала Акта действия допуска"
+              style={styles.w49}
+            >
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                name="lastCommercialAccountingDate"
+                allowClear={false}
+                onChange={(date) => {
+                  setFieldValue('lastCommercialAccountingDate', date);
+                }}
+                value={values.lastCommercialAccountingDate}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Дата окончания Акта действия допуска"
+              style={styles.w49}
+            >
+              <DatePickerTT
+                format="DD.MM.YYYY"
+                name="futureCommercialAccountingDate"
+                allowClear={false}
+                onChange={(date) => {
+                  setFieldValue('futureCommercialAccountingDate', date);
+                }}
+                value={values.futureCommercialAccountingDate}
+              />
+            </Form.Item>
+          </StyledFormPage>
+
+          <StyledFormPage hidden={Number(currentTabKey) !== 2}>
+            <div style={styles.w100}>
+              <SwitchTT
+                onChange={onSwitchChange}
+                checked={values.isConnected}
+                title={'Опрашивать вычислитель'}
+              />
+            </div>
+
+            <Form.Item label="IP адрес вычислителя" style={styles.w49}>
+              <InputTT
+                name="ipV4"
+                type="text"
+                value={values.ipV4}
+                onBlur={handleBlur}
+                placeholder="Введите IP адрес вычислителя"
+                onChange={handleChange}
+              />
+              <Alert name="ipV4" />
+            </Form.Item>
+
+            <Form.Item label="Порт вычислителя" style={styles.w49}>
+              <InputTT
+                name="port"
+                type="number"
+                placeholder="Введите номер порта"
+                value={values.port}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <Alert name="port" />
+            </Form.Item>
+
+            <Form.Item label="Адрес вычислителя" style={styles.w100}>
+              <InputTT
+                name="deviceAddress"
+                type="number"
+                placeholder="Введите сетевой адрес вычислителя"
+                value={values.deviceAddress}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <Alert name="deviceAddress" />
+            </Form.Item>
+
+            <ConnectionTakesTime />
+          </StyledFormPage>
+
+          <StyledFormPage hidden={Number(currentTabKey) !== 3}>
+            <Title color="black">Компонент Документы в разработке</Title>
+          </StyledFormPage>
+        </StyledModalBody>
+        <StyledFooter>
+          <ButtonTT
+            color="blue"
+            onClick={handleNext}
+            type="button"
+            hidden={currentTabKey === '3'}
+            big
           >
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="lastCommercialAccountingDate"
-              allowClear={false}
-              onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', date);
-              }}
-              value={values.lastCommercialAccountingDate}
-            />
-          </Form.Item>
+            Далее
+          </ButtonTT>
 
-          <Form.Item
-            label="Дата окончания Акта действия допуска"
-            style={styles.w49}
+          <ButtonTT
+            color="blue"
+            type="submit"
+            hidden={currentTabKey !== '3'}
+            big
           >
-            <DatePickerTT
-              format="DD.MM.YYYY"
-              name="futureCommercialAccountingDate"
-              allowClear={false}
-              onChange={(date) => {
-                setFieldValue('futureCommercialAccountingDate', date);
-              }}
-              value={values.futureCommercialAccountingDate}
-            />
-          </Form.Item>
-        </StyledFormPage>
-
-        <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          <div style={styles.w100}>
-            <SwitchTT
-              onChange={onSwitchChange}
-              checked={values.isConnected}
-              title={'Опрашивать вычислитель'}
-            />
-          </div>
-
-          <Form.Item label="IP адрес вычислителя" style={styles.w49}>
-            <InputTT
-              name="ipV4"
-              type="text"
-              value={values.ipV4}
-              onBlur={handleBlur}
-              placeholder="Введите IP адрес вычислителя"
-              onChange={handleChange}
-            />
-            <Alert name="ipV4" />
-          </Form.Item>
-
-          <Form.Item label="Порт вычислителя" style={styles.w49}>
-            <InputTT
-              name="port"
-              type="number"
-              placeholder="Введите номер порта"
-              value={values.port}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            <Alert name="port" />
-          </Form.Item>
-
-          <Form.Item label="Адрес вычислителя" style={styles.w100}>
-            <InputTT
-              name="deviceAddress"
-              type="number"
-              placeholder="Введите сетевой адрес вычислителя"
-              value={values.deviceAddress}
-              onBlur={handleBlur}
-              onChange={handleChange}
-            />
-            <Alert name="deviceAddress" />
-          </Form.Item>
-
-          <ConnectionTakesTime />
-        </StyledFormPage>
-
-        <StyledFormPage hidden={Number(currentTabKey) !== 3}>
-          <Title color="black">Компонент Документы в разработке</Title>
-        </StyledFormPage>
-      </StyledModalBody>
-      <StyledFooter>
-        <ButtonTT
-          color="blue"
-          onClick={handleNext}
-          type="button"
-          hidden={currentTabKey === '3'}
-          big
-        >
-          Далее
-        </ButtonTT>
-
-        <ButtonTT color="blue" type="submit" hidden={currentTabKey !== '3'} big>
-          Добавить
-        </ButtonTT>
-        <ButtonTT
-          color="white"
-          type="button"
-          onClick={
-            currentTabKey === '1'
-              ? handleCancel
-              : () => setTab((prev) => String(Number(prev) - 1))
-          }
-          style={{ marginLeft: 16 }}
-        >
-          {currentTabKey === '1' ? 'Отмена' : 'Назад'}
-        </ButtonTT>
-      </StyledFooter>
-    </form>
+            Добавить
+          </ButtonTT>
+          <ButtonTT
+            color="white"
+            type="button"
+            onClick={
+              currentTabKey === '1'
+                ? handleCancel
+                : () => setTab((prev) => String(Number(prev) - 1))
+            }
+            style={{ marginLeft: 16 }}
+          >
+            {currentTabKey === '1' ? 'Отмена' : 'Назад'}
+          </ButtonTT>
+        </StyledFooter>
+      </form>
+    </>
   );
 };
 

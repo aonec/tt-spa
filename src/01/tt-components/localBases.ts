@@ -7,6 +7,8 @@ export interface ItemInterface {
   label: string;
 }
 
+export type SelectItem = ItemInterface
+
 export const items: Array<ItemInterface> = [
   {
     id: 1,
@@ -293,6 +295,7 @@ export const nodeStatusList = [
 export const entryNumberList = [
   { value: 1, label: 1 },
   { value: 2, label: 2 },
+  { value: 3, label: 3 },
 ];
 
 export const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/;

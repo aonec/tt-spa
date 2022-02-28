@@ -1,8 +1,6 @@
 import { fromEnter } from '01/features/housingStocks/displayHousingStocks/components/HousingStockFilter/HousingStockFilter';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import {
-  updateHousingMeteringDeviceReading,
-} from '01/_api/meteringDeviceReadings';
+import { updateHousingMeteringDeviceReading } from '01/_api/meteringDeviceReadings';
 import moment from 'moment';
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -34,7 +32,6 @@ export const ConsumptionInput: React.FC<Props> = ({
 
       await updateHousingMeteringDeviceReading({
         id: reading.id,
-        value: reading.value,
         nonResidentialRoomConsumption: Number(value),
       });
 
