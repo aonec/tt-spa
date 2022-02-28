@@ -34,12 +34,7 @@ export const Information = ({
       <h2>Подробная информация</h2>
       <Loader show={loading} size="20">
         <info_list>
-          {list.map(({ title, value, url }) => {
-            const link = task?.device?.id && `/nodes/${task?.device?.nodeId}/stats`;
-
-            const isNodeStatLink =
-              title === 'Причина задачи' && isHousingDeviceMalfunction && link;
-
+          {list.map(({ title, value, url }, index) => {
             return (
               <info_item
                 key={title}
@@ -47,11 +42,16 @@ export const Information = ({
                 onClick={url ? () => push(url) : null}
               >
                 <span>{title}</span>
-                {isNodeStatLink ? (
-                  <StatisticLink to={link}>{value}</StatisticLink>
-                ) : (
-                  <span>{value}</span>
-                )}
+                <span
+                  style={{
+                    color:
+                      isHousingDeviceMalfunction && index === 0
+                        ? 'red'
+                        : void 0,
+                  }}
+                >
+                  {value}
+                </span>
               </info_item>
             );
           })}
