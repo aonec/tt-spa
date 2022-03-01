@@ -10,6 +10,7 @@ export function getReportTypeTitleName(type: ReportType) {
   return types[type];
 }
 
-export const reportTypeTitleNames = Object.keys(ReportType).map((key) =>
-  getReportTypeTitleName(key as ReportType)
-);
+export const reportTypeTitleNames = Object.keys(ReportType).map((key) => ({
+  name: getReportTypeTitleName(key as ReportType),
+  type: key,
+}));
