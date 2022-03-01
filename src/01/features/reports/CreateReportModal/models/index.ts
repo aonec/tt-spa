@@ -11,7 +11,9 @@ const $isModalOpen = createReportDomain.createStore(false);
 const openModalButtonClicked = createReportDomain.createEvent();
 const closeModalButonClicked = createReportDomain.createEvent();
 
-$isModalOpen.on(openModalButtonClicked, () => true);
+$isModalOpen
+  .on(openModalButtonClicked, () => true)
+  .reset(closeModalButonClicked);
 
 export const form = createForm({
   fields: {

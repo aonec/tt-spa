@@ -4,11 +4,12 @@ import { CreateReportFormContainer } from './CreateReportForm/CreateReportFormCo
 
 interface Props {
   isOpen: boolean;
+  onHide(): void;
 }
 
-export const CreateReportModal: FC<Props> = ({ isOpen }) => {
+export const CreateReportModal: FC<Props> = ({ isOpen, onHide }) => {
   return (
-    <ModalTT title="Создать отчет" visible={isOpen}>
+    <ModalTT title="Создать отчет" visible={isOpen} onCancel={onHide}>
       <CreateReportFormContainer />
     </ModalTT>
   );

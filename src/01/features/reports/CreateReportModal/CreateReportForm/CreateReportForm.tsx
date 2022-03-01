@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const CreateReportForm: FC<Props> = ({ type, setType }) => {
-  console.log(reportTypeTitleNames);
   return (
     <>
       <FormItem label="Тип отчета">
