@@ -18,7 +18,7 @@ interface ExtraProps {
 }
 
 const meteringUnits: Partial<
-  { [key in GraphParamsType]: 'ГКал' | 'т' | 'м³' }
+  { [key in GraphParamsType]: 'ГКал' | 'т' | 'м³' | '℃' }
 > = {
   energy: 'ГКал',
   inputMass: 'т',
@@ -27,6 +27,8 @@ const meteringUnits: Partial<
   inputVolume: 'м³',
   outputVolume: 'м³',
   deltaVolume: 'м³',
+  inputTemperature: '℃',
+  outputTemperature: '℃',
 };
 
 export const GraphTooltip: React.FC<GraphTooltipProps & ExtraProps> = (

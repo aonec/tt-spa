@@ -114,7 +114,7 @@ export const getGraphParams = (
       return ['inputVolume'];
     case 'HotWaterSupply':
       return pipeCount === 1
-        ? ['energy', 'inputVolume', 'inputMass']
+        ? ['energy', 'inputVolume', 'inputMass', 'inputTemperature']
         : [
             'energy',
             'inputMass',
@@ -123,10 +123,12 @@ export const getGraphParams = (
             'inputVolume',
             'outputVolume',
             'deltaVolume',
+            'inputTemperature',
+            'outputTemperature',
           ];
     case 'Heat':
       return pipeCount === 1
-        ? ['energy', 'inputVolume', 'inputMass']
+        ? ['energy', 'inputVolume', 'inputMass', 'inputTemperature']
         : [
             'energy',
             'inputMass',
@@ -135,6 +137,8 @@ export const getGraphParams = (
             'inputVolume',
             'outputVolume',
             'deltaVolume',
+            'inputTemperature',
+            'outputTemperature',
           ];
     default:
       return [];
@@ -151,6 +155,8 @@ export const paramsTranslation: Partial<
   outputMass: 'Выходящая масса, т',
   deltaMass: 'Расход по массе, т',
   energy: 'Энергия, ГКал',
+  inputTemperature: 'Входящая температура, ℃',
+  outputTemperature: 'Выходящая температура, ℃',
 };
 
 export const formGraphData = (

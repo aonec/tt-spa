@@ -91,7 +91,9 @@ const HousesDevices: React.FC = () => {
 
     window.addEventListener('scroll', onScrollDown, true);
 
-    return () => window.removeEventListener('scroll', onScrollDown);
+    return () => {
+      window.removeEventListener('scroll', onScrollDown, true);
+    };
   }, []);
 
   const getHeight = () => {
