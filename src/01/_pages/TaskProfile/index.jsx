@@ -25,6 +25,7 @@ import DeviceIcons from '../../_components/DeviceIcons';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 import { TaskGate } from '01/features/tasks/displayTask/models';
+import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -77,6 +78,12 @@ export const TaskProfile = () => {
 
   const isIndividualDeviceReadingCheckType =
     state.type === 'IndividualDeviceReadingsCheck';
+
+  const isShowNodeStatistic = Boolean(
+    state?.device?.nodeId &&
+      (state?.type === 'HousingDeviceMalfunction' ||
+        state?.type === 'HousingDeviceMalfunctionNonCommercial')
+  );
 
   return styled(s.grid)(
     <>
