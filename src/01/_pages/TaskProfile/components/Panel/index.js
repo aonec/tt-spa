@@ -177,7 +177,7 @@ export const Panel = (
       })}
     >
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
+        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}  />
       )}
 
       {Switch && (
