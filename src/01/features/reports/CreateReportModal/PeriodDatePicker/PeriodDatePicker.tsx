@@ -1,13 +1,24 @@
-import { RangePickerTT } from '01/tt-components';
+import { DatePickerTT } from '01/tt-components';
 import FormItem from 'antd/lib/form/FormItem';
-import React from 'react';
+import moment from 'moment';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-export const PeriodDatePicker = () => {
+interface Props {
+  date: moment.Moment | null;
+  onChange(date: moment.Moment): void;
+}
+
+export const PeriodDatePicker: FC<Props> = ({ date, onChange }) => {
   return (
     <FormItem label="Период">
       <Wrap>
-        <RangePickerTT format="MMMM YYYY" picker="month" />
+        <DatePickerTT
+          format="MMMM YYYY"
+          picker="month"
+          value={date}
+          onChange={(value) => value && onChange(value)}
+        />
       </Wrap>
     </FormItem>
   );

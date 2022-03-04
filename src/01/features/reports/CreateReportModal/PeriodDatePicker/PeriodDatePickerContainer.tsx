@@ -8,11 +8,14 @@ export const PeriodDatePickerContainer = () => {
   const {
     fields: {
       type: { value: type },
+      monthPeriod: { value: monthPeriod, onChange: changeMonthPeriod }
     },
   } = useForm(form);
 
   const datePickers: { [key in ReportType]: ReactElement } = {
-    [ReportType.OperatorsWorkingReport]: <PeriodDatePicker />,
+    [ReportType.OperatorsWorkingReport]: (
+      <PeriodDatePicker date={monthPeriod} onChange={changeMonthPeriod} />
+    ),
   };
 
   const datePicker = type && datePickers[type];
