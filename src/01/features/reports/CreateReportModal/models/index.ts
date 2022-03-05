@@ -4,6 +4,7 @@ import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { reportsInputs } from '../../models';
 import { ReportType } from '../types';
+import { downloadURI } from '../utils';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -40,8 +41,22 @@ const createOperatorsReportFx = createReportDomain.createEffect<
     From?: string;
     To?: string;
   },
-  File
->((params) => axios.get('Reports/OperatorsWorkingReport', { params }));
+  void
+>(async (params) => {
+  const res: any = await axios.get('Reports/OperatorsWorkingReport', {
+    params,
+    responseType: 'blob',
+  });
+
+  const url = window.URL.createObjectURL(new Blob([res]));
+
+  downloadURI(
+    url,
+    `${form.$values.getState().type}_${moment(params.To).format('MMMM_YYYY')}`
+  );
+});
+
+$isModalOpen.reset(createOperatorsReportFx.doneData);
 
 const createReport = createReportDomain.createEvent();
 
@@ -63,9 +78,7 @@ createReport.watch(() => {
   }
 });
 
-createOperatorsReportFx.doneData.watch((payload) => {
-  console.log(payload);
-});
+createOperatorsReportFx.doneData.watch((payload) => {});
 
 $isModalOpen
   .on(openModalButtonClicked, () => true)
