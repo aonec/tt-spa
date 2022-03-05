@@ -3,7 +3,7 @@ import { combine, createDomain, forward } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { reportsInputs } from '../../models';
-import { ReportType } from '../types';
+import { getReportTypeTitleName, ReportType } from '../types';
 import { downloadURI } from '../utils';
 
 const createReportDomain = createDomain('CreateReport');
@@ -52,7 +52,9 @@ const createOperatorsReportFx = createReportDomain.createEffect<
 
   downloadURI(
     url,
-    `${form.$values.getState().type}_${moment(params.To).format('MMMM_YYYY')}`
+    `${getReportTypeTitleName(form.$values.getState().type!)}_${moment(
+      params.To
+    ).format('MMMM_YYYY')}`
   );
 });
 
