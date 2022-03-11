@@ -10,10 +10,12 @@ axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
 
   if (req.url && checkUrl('refresh', req.url)) {
+    
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
     };
+  
   }
   return req;
 });
