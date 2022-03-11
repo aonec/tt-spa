@@ -7,6 +7,7 @@ const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
 
+
 axios.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
 
