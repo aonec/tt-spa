@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 const devUrl = 'https://management.staging.transparent-technology.ru/';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
@@ -12,7 +13,7 @@ axiosWithHeaders.interceptors.request.use((req) => {
   if (req.baseURL === 'http://84.201.132.164:8080/api') {
     delete req.headers.Authorization;
   } else {
-    
+
     req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
   }
 
