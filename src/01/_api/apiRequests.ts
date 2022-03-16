@@ -153,11 +153,10 @@ export async function getHousingStockCalculators(id: number) {
 
 export async function addNode(form: CreatePipeNodeRequest) {
   try {
-    const res = await axios.post('Nodes', form);
+    const res = await axios.post('PipeNodes', form);
     alert('Узел успешно создан');
     return res;
   } catch (error) {
-    console.log(error);
     alert('Произошла ошибка создания Узла!');
     throw {
       resource: 'node',
@@ -168,11 +167,10 @@ export async function addNode(form: CreatePipeNodeRequest) {
 
 export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
   try {
-    const res = await axios.put(`Nodes/${nodeId}`, form);
+    const res = await axios.put(`PipeNodes/${nodeId}`, form);
     alert('Узел успешно изменен!');
     return res;
   } catch (error) {
-    console.log(error);
     throw {
       resource: 'node',
       message: 'Произошла ошибка запроса узла',

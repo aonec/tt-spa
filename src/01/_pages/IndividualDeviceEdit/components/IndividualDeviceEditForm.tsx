@@ -68,8 +68,6 @@ const IndividualDeviceEditForm = ({
     id,
     model,
     serialNumber,
-    lastCommercialAccountingDate,
-    futureCommercialAccountingDate,
     lastCheckingDate,
     futureCheckingDate,
     resource,
@@ -87,12 +85,6 @@ const IndividualDeviceEditForm = ({
     serialNumber,
     lastCheckingDate: toMoment(lastCheckingDate),
     futureCheckingDate: futureCheckingDate ? moment(futureCheckingDate) : null,
-    lastCommercialAccountingDate: lastCommercialAccountingDate
-      ? moment(lastCommercialAccountingDate)
-      : null,
-    futureCommercialAccountingDate: futureCommercialAccountingDate
-      ? moment(futureCommercialAccountingDate)
-      : null,
     rateType,
     apartmentId: address?.apartmentId,
     mountPlaceId: deviceMountPlace?.id,
@@ -272,14 +264,7 @@ const IndividualDeviceEditForm = ({
             </Form.Item>
           </Flex>
 
-          <Form.Item label="Дата ввода в эксплуатацию" style={styles.w100}>
-            <DatePickerNative
-              value={values.lastCommercialAccountingDate?.toISOString(true)}
-              onChange={(date) => {
-                setFieldValue('lastCommercialAccountingDate', moment(date));
-              }}
-            />
-          </Form.Item>
+          <div></div>
 
           <Form.Item label="Дата Поверки" style={styles.w100}>
             <DatePickerNative

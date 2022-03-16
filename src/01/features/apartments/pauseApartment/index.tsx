@@ -11,6 +11,7 @@ import moment from 'moment';
 import { EApartmentStatus } from 'myApi';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
   $problemDevices,
@@ -71,6 +72,15 @@ export const PauseApartmentModal = () => {
   const { id } = useParams<{ id: string }>();
   const problemDevices = useStore($problemDevices);
 
+  const gatePayload = useMemo(
+    () => ({
+      status: EApartmentStatus.Pause,
+      fromDate: fields.fromDate.value,
+      toDate: fields.toDate.value,
+    }),
+    [EApartmentStatus.Pause, fields.fromDate.value, fields.toDate.value]
+  );
+
   return (
     <ModalTT
       saveBtnText="Поставить на паузу"
@@ -80,16 +90,10 @@ export const PauseApartmentModal = () => {
       onSubmit={submit}
       loading={pendingRequest}
     >
-      {visible && (
-        <ProblemDevicesGate
-          apartmentId={Number(id)}
-          requestPayload={{
-            status: EApartmentStatus.Pause,
-            fromDate: fields.fromDate.value,
-            toDate: fields.toDate.value,
-          }}
-        />
-      )}
+      <ProblemDevicesGate
+        apartmentId={Number(id)}
+        requestPayload={gatePayload}
+      />
       <Spaces>
         <div>Максимальный срок поставновки квартиры на паузу - 1 год</div>
 

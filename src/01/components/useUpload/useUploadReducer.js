@@ -9,9 +9,7 @@ export const useUploadReducer = () => {
           const files = [];
           const formData = new FormData();
           for (let i in inputFiles) {
-            // console.log(i)
           }
-          console.log(typeof inputFiles);
           return { ...state };
 
         default:

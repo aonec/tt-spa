@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from 'react';
+import React, { MutableRefObject, useEffect } from 'react';
 
 import { Input, Tooltip } from 'antd';
 import styled from 'styled-components';
@@ -10,8 +10,6 @@ import {
 } from '01/features/readings/displayReadingHistory/components/SourceIcon';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { RequestStatusShared } from '01/features/readings/displayReadingHistory/hooks/useReadingValues';
-import { useStore } from 'effector-react';
-import { $isCancelSwitchInput } from '01/features/readings/readingsInput/confirmInputReadingModal/models';
 
 const ReadingLineStyled = styled.div`
   position: relative;
@@ -121,9 +119,7 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
     }
   };
 
-  const isCancelSwitch = useStore($isCancelSwitchInput);
-
-  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs(!isCancelSwitch);
+  const { onKeyDown, onKeyDownPrevious } = useSwitchOnInputs();
 
   const sourceIcon = source ? (
     <Flex style={{ marginLeft: 7, marginRight: 2 }}>
@@ -138,6 +134,22 @@ const ReadingsBlock: React.FC<DeviceRatesVerticalProps> = ({
       ? 'current'
       : 'previous'
     : 'none';
+
+  useEffect(() => {
+    if (lineIndex === 0 && isCurrent) {
+      const inputList: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+        `[data-reading-input="current"]`
+      );
+
+      const node = inputList[lineIndex];
+
+      if (!node) return;
+
+      const neededInputNode: any = node?.getElementsByClassName('ant-input')[0];
+
+      neededInputNode?.focus();
+    }
+  }, []);
 
   return (
     <ReadingLineStyled

@@ -1,12 +1,7 @@
 import axios from 'axios';
 
-// const baseURL = process.env.REACT_APP_URL
-
-const devUrl = 'https://transparent-demo.herokuapp.com/api';
+const devUrl = 'https://management.demo.transparent-technology.ru/'
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
-// const baseURL = 'https://transparent-production.herokuapp.com/api';
-
-// axios.defaults.baseURL = baseURL;
 
 let axiosWithHeaders = axios.create({
   baseURL: baseURL,
@@ -17,6 +12,7 @@ axiosWithHeaders.interceptors.request.use((req) => {
   if (req.baseURL === 'http://84.201.132.164:8080/api') {
     delete req.headers.Authorization;
   } else {
+
     req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
   }
 

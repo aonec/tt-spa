@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Form } from 'antd';
 import { useFormik } from 'formik';
 import _ from 'lodash';
@@ -13,7 +13,6 @@ import {
   StyledFooter,
   styles,
   StyledFormPage,
-  AutoCompleteTT,
 } from '../../../tt-components';
 
 import ModalAddCalculator from '../modals/ModalAddCalculator';
@@ -21,12 +20,15 @@ import { AddNodeContext } from '../AddNodeContext';
 import { AlertInterface } from '../../../tt-components/interfaces';
 import { isEmpty } from '../../../_api/utils/isEmptyErrors';
 import * as Yup from 'yup';
+import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
+import { SelectValue } from 'antd/lib/select';
 
 const AddNodeFirstTab = () => {
   const {
     handleCancel,
     currentTabKey,
     handleNext,
+    setTab,
     setNode,
     calculators,
     setAddCalculator,
@@ -92,8 +94,14 @@ const AddNodeFirstTab = () => {
     setFieldValue('disabled', isEmpty(errors));
   }, [values]);
 
+  const onChangeIsConnected = (value: SelectValue) => {
+    setFieldValue('isConnected', value);
+
+    if (!value) setTab('2');
+  };
+
   return (
-    <form hidden={Number(currentTabKey) !== 1} onSubmit={handleSubmit}>
+    <div hidden={Number(currentTabKey) !== 1}>
       <StyledFormPage>
         <Title color="black" style={styles.w100}>
           Настройки соединения
@@ -101,13 +109,10 @@ const AddNodeFirstTab = () => {
         <Form.Item label="Подключение к вычислителю" style={styles.w100}>
           <SelectTT
             name="isConnected"
-            onChange={(item) => {
-              setFieldValue('isConnected', item);
-            }}
+            onChange={onChangeIsConnected}
             placeholder="Подключение к вычислителю"
             options={isConnected}
             value={values.isConnected}
-            disabled
           />
         </Form.Item>
 
@@ -115,17 +120,23 @@ const AddNodeFirstTab = () => {
           label="Вычислитель, к которому подключен узел"
           style={styles.w49}
         >
-          <AutoCompleteTT
-            filterOption
-            options={calculators}
-            onSelect={(value: string, option: any) => {
-              setFieldValue('calculatorId', option.key);
-            }}
-          />
+          <StyledSelect
+            placeholder="Выберите вычислитель"
+            disabled={!values.isConnected}
+            value={values.calculatorId}
+            onChange={(value: any) => setFieldValue('calculatorId', value)}
+          >
+            {calculators?.map((calculator: any) => (
+              <StyledSelect.Option value={calculator.key} key={calculator.key}>
+                {calculator.value}
+              </StyledSelect.Option>
+            ))}
+          </StyledSelect>
         </Form.Item>
 
         <Form.Item label="&nbsp;" colon={false} style={styles.w49}>
           <ButtonTT
+            disabled={!values.isConnected}
             style={styles.w100}
             color="white"
             type="button"
@@ -137,6 +148,7 @@ const AddNodeFirstTab = () => {
 
         <Form.Item label="Номер ввода" style={styles.w100}>
           <SelectTT
+            disabled={!values.isConnected}
             name="entryNumber"
             onBlur={handleBlur}
             placeholder="Выберите номер ввода"
@@ -150,7 +162,7 @@ const AddNodeFirstTab = () => {
         </Form.Item>
       </StyledFormPage>
       <StyledFooter form>
-        <ButtonTT color="blue" big type="submit">
+        <ButtonTT color="blue" big onClick={handleSubmit}>
           Далее
         </ButtonTT>
         <ButtonTT
@@ -162,8 +174,10 @@ const AddNodeFirstTab = () => {
           Отмена
         </ButtonTT>
       </StyledFooter>
-      <ModalAddCalculator />
-    </form>
+      <ModalAddCalculator
+        onCreateCalculator={(id: any) => setFieldValue('calculatorId', id)}
+      />
+    </div>
   );
 };
 

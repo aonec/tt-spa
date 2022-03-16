@@ -17,6 +17,7 @@ import {
   EResourceType,
   IndividualDeviceListItemResponse,
   IndividualDeviceReadingsResponse,
+  IndividualDeviceReadingsCreateRequest,
 } from '../../myApi';
 import {
   getDateByReadingMonthSlider,
@@ -69,12 +70,14 @@ export const useReadings = (
 
     const preparedReadingsArrWithEmpties = device.readings?.reduce(
       (acc, elem) => {
-        if (currentDate.diff(elem.readingDateTime, 'months') > 11) return acc;
+        const dateFormat = "YYYY-MM"
 
-        const index =
-          Number(moment().format('M')) -
-          Number(moment(elem.readingDateTime).format('M')) -
-          1;
+        const currentMonthDate = moment(moment().format(dateFormat), dateFormat)
+        const readingMonthDate = moment(moment(elem.readingDateTime).format(dateFormat))
+
+        if (currentMonthDate.diff(readingMonthDate, 'months') > 11) return acc;
+
+        const index = currentMonthDate.diff(readingMonthDate, 'months') - 1;
 
         acc[index] = elem;
 
@@ -90,8 +93,8 @@ export const useReadings = (
       preparedReadingsArrWithEmpties![sliderIndex] || {};
 
     for (let i = 1; i <= 3; i++) {
-      previousReadingsArray.push(prevReadings[`value${i}`] ?? '');
-      currentReadingsArray.push(currentReadings[`value${i}`] ?? '');
+      previousReadingsArray.push(prevReadings[`value${i}`] || '');
+      currentReadingsArray.push(currentReadings[`value${i}`] || '');
     }
 
     setReadingsState((prev) => {
@@ -172,13 +175,14 @@ export const useReadings = (
   ): ReadingType => {
     const readingData = {
       deviceId: deviceItem.id,
-      ...readingsState.currentReadingsArray.filter(Boolean).reduce(
-        (acc, elem, index) => ({
-          ...acc,
-          [`value${index + 1}`]: Number(elem),
-        }),
-        {}
-      ),
+      ...readingsState.currentReadingsArray
+        .filter(Boolean)
+        .reduce((acc, elem, index) => {
+          return {
+            ...acc,
+            [`value${index + 1}`]: Number(elem),
+          };
+        }, {}),
       readingDate: moment().toISOString(true),
       uploadTime: moment().toISOString(true),
       isForced: true,
@@ -188,6 +192,13 @@ export const useReadings = (
   };
 
   const sendPreviousReading = async (requestPayload: any) => {
+    const values = getReadingValuesArray(
+      requestPayload,
+      getIndividualDeviceRateNumByName(device.rateType)
+    );
+
+    // if (!values.every(Boolean)) return;
+
     setReadingsState((prev: any) => ({
       ...prev,
       previousReadings: {
@@ -362,6 +373,13 @@ export const useReadings = (
     }
 
     const sendCurrentReadings = async () => {
+      const values = getReadingValuesArray(
+        deviceReadingObject as any,
+        getIndividualDeviceRateNumByName(device.rateType)
+      );
+
+      // if (!values.every(Boolean)) return;
+
       setReadingsState((prev: any) => ({
         ...prev,
         status: 'pending',
@@ -607,32 +625,6 @@ export const useReadings = (
     isCurrent: boolean,
     uploadTime?: string
   ): OptionsInterface[] => [
-    {
-      value: () => (
-        <div>
-          <DeviceReadingsContainer
-            color={
-              isCurrent ? getInputColor(device.resource) : 'var(--main-90)'
-            }
-            onFocus={onFocusHandler}
-            resource={device.resource}
-          >
-            {
-              readingsElems.map((elem, index) => (
-                <div
-                  onKeyDown={fromEnter((e) =>
-                    onEnterHandler(e, !isCurrent, index)
-                  )}
-                >
-                  {elem.elem}
-                </div>
-              ))[0]
-            }
-          </DeviceReadingsContainer>
-        </div>
-      ),
-      isSuccess: device.rateType === EIndividualDeviceRateType.None,
-    },
     {
       value: () => (
         <Wide>
@@ -1000,4 +992,19 @@ export function round(x: number, n: number) {
 
   const m = Math.pow(10, n);
   return Math.round(x * m) / m;
+}
+
+function getReadingValuesArray(
+  payload: IndividualDeviceReadingsCreateRequest,
+  deviceRateNum: number
+) {
+  const res: number[] = [];
+
+  for (let i = 1; i <= deviceRateNum; i++) {
+    const value = (payload as any)[`value${i}`];
+
+    res.push(value);
+  }
+
+  return res;
 }

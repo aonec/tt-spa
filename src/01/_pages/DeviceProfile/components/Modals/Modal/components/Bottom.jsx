@@ -4,7 +4,6 @@ import { ReportContext } from '../index';
 import { RangePickerTT } from '../../../../../../tt-components/RangePicker';
 
 export const Bottom = () => {
-  console.log('Bottom');
   const {
     onPeriodChange,
     onDetailChange,

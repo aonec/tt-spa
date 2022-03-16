@@ -23,7 +23,6 @@ const translate = (resource) => Translate[resource];
 export const ReportContext = React.createContext();
 
 export const ModalODPU = ({ device }) => {
-  console.log('props', device);
   // const { device, building, hubs } = useContext(DeviceContext);
   // const { device, building } = useContext(DeviceContext);
 
@@ -66,12 +65,10 @@ export const ModalODPU = ({ device }) => {
       $('.ant-tabs-tab-active').click();
     }
 
-    console.log('device = ', device);
     setTimeout(foo, 1000);
   }, []);
 
   const onTabsChangeHandler = (resource) => {
-    console.log('onTabsChangeHandler', resource);
     $('.ant-select-selection-item').html('Выберите узел');
     setType(resource);
     entryNumberRes.current = undefined;
@@ -80,7 +77,6 @@ export const ModalODPU = ({ device }) => {
   if (hubsarr) {
     hubsarr.map((item, index) => {
       const { resource, housingMeteringDeviceType, hub, serialNumber } = item;
-      console.log('pipeNumber = ', pipeNumber);
       const { entryNumber, pipeNumber } = hub;
       if (
         housingMeteringDeviceType === 'FlowMeter' &&
@@ -95,7 +91,6 @@ export const ModalODPU = ({ device }) => {
         });
       }
     });
-    console.log('devicesList', devicesList);
   }
 
   const onPeriodChange = (e) => {
@@ -106,8 +101,6 @@ export const ModalODPU = ({ device }) => {
   };
 
   const selectOptions = [];
-
-  console.log('devicesList', devicesList);
 
   devicesList.map(({ resource, serialNumber, entryNumber, pipeNumber }) => {
     if (_.find(selectOptions, (o) => o.value === resource)) {
@@ -134,9 +127,7 @@ export const ModalODPU = ({ device }) => {
   });
 
   const downloadReport = () => {
-    console.log('entryNumberRes.current = ', entryNumberRes.current);
     if (entryNumberRes.current) {
-      console.log('entryNumberRes', entryNumberRes.current);
       const link = `http://84.201.132.164:8080/api/reports/getByResource?deviceId=${id}&reporttype=${
         detail.current
       }&resourcetype=${type}&entrynumber=${entryNumberRes.current}&pipenumber=${
@@ -152,19 +143,14 @@ export const ModalODPU = ({ device }) => {
       const template2 =
         'http://84.201.132.164:8080/api/reports/getByResource?deviceId=1510&reporttype=daily&resourcetype=Heat&entrynumber=1&from=2020-09-01T00:00:00Z&to=2020-09-15T00:00:00Z';
       // window.location.assign(link);
-      console.log(link);
-      // console.log(lastTemplate);
-      window.open(link);
     } else {
       alert('Выберите узел!');
     }
   };
 
   function handleChange(value) {
-    console.log(value);
     const b = _.filter(selectOptions, { value: `${value}` });
     const { entryNumber, pipeNumber } = { ...b[0] };
-    console.log('number', entryNumber);
     entryNumberRes.current = entryNumber;
     pipeNumberRes.current = pipeNumber;
   }

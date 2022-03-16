@@ -22,7 +22,10 @@ import TaskComments from './components/Comments/TaskComments';
 import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
+import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
+import { TaskGate } from '01/features/tasks/displayTask/models';
+import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -38,7 +41,6 @@ function reducer(state, action) {
       };
     // вернуть этап
     case 'push_stage':
-      // console.log("stagedata", data)
       return {
         ...state,
         stageData: { data, move: 'push' },
@@ -54,7 +56,6 @@ function reducer(state, action) {
 export const TaskProfile = () => {
   const [state, dispatch] = React.useReducer(reducer, {});
   usePageFetch(state, dispatch);
-  console.log('state', state);
   const panel = usePanel(state, dispatch);
   // панель действий
   const stages = useStages(state, dispatch);
@@ -71,54 +72,72 @@ export const TaskProfile = () => {
   const { icon, color } = DeviceIcons[node?.resource] || {};
   const { calculator } = state;
 
+  const params = useParams();
+
   // в каждый компонент в пропсах приходят данные, собранные из одноименных хуков сверху
 
+  const isIndividualDeviceReadingCheckType =
+    state.type === 'IndividualDeviceReadingsCheck';
+
+  const isShowNodeStatistic = Boolean(
+    state?.device?.nodeId &&
+      (state?.type === 'HousingDeviceMalfunction' ||
+        state?.type === 'HousingDeviceMalfunctionNonCommercial')
+  );
+
   return styled(s.grid)(
-    <TasksProfileContext.Provider value={{ ...state, dispatch }}>
-      <Index path="/tasks/" />
-      <Header {...state.header} />
-      <Panel {...panel} device={device} state={state} />
-      <Steps />
-      <Documents {...docs} />
-      <grid>
-        <div>
-          {state.comments !== undefined ? (
-            <TaskComments comments={state.comments} />
-          ) : null}
-          <Information {...info} />
-          <InformationDevice {...infoDevice} type={type} id={id} />
+    <>
+      <TaskGate id={Number(params[0])} />
+      <TasksProfileContext.Provider value={{ ...state, dispatch }}>
+        <Index path="/tasks/" />
+        <Header {...state.header} state={state} />
+        {isIndividualDeviceReadingCheckType ? (
+          <CorrectionReadingsPanel />
+        ) : (
+          <Panel {...panel} device={device} state={state} />
+        )}
+        <Steps />
+        <Documents {...docs} />
+        <grid>
+          <div>
+            {state.comments !== undefined ? (
+              <TaskComments comments={state.comments} />
+            ) : null}
+            <Information {...info} />
+            <InformationDevice {...infoDevice} type={type} id={id} />
 
-          {/*подождать бэк и вынести в отдельный компонент*/}
-          {node ? (
-            <div style={{ marginTop: 16 }}>
-              <NodeLink to={`/nodes/${node.id}`}>
-                <div>
-                  <IconTT
-                    icon={icon}
-                    fill={color}
-                    size={24}
-                    style={{ marginRight: 8 }}
-                  />
-                  Узел {node.number}
+            {/*подождать бэк и вынести в отдельный компонент*/}
+            {node ? (
+              <div style={{ marginTop: 16 }}>
+                <NodeLink to={`/nodes/${node.id}`}>
+                  <div>
+                    <IconTT
+                      icon={icon}
+                      fill={color}
+                      size={24}
+                      style={{ marginRight: 8 }}
+                    />
+                    Узел {node.number}
+                  </div>
+                </NodeLink>
+
+                <div style={{ marginLeft: 32, marginTop: 8 }}>
+                  <span style={{ color: 'var(--main-100)' }}>
+                    {calculator.model}
+                  </span>{' '}
+                  <span style={{ color: 'var(--main-60)' }}>
+                    ({calculator.serialNumber})
+                  </span>
                 </div>
-              </NodeLink>
-
-              <div style={{ marginLeft: 32, marginTop: 8 }}>
-                <span style={{ color: 'var(--main-100)' }}>
-                  {calculator.model}
-                </span>{' '}
-                <span style={{ color: 'var(--main-60)' }}>
-                  ({calculator.serialNumber})
-                </span>
+                {/*</div>*/}
+                <NodeInformation node={node} calculator={calculator} task />
               </div>
-              {/*</div>*/}
-              <NodeInformation node={node} calculator={calculator} task />
-            </div>
-          ) : null}
-        </div>
-        <Stages {...stages} state={state} />
-      </grid>
-    </TasksProfileContext.Provider>
+            ) : null}
+          </div>
+          <Stages {...stages} state={state} />
+        </grid>
+      </TasksProfileContext.Provider>
+    </>
   );
 };
 

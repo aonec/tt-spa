@@ -14,7 +14,7 @@ interface Props {
   files?: FileData[];
   removeFile?: (id: number, documentId?: number) => void;
   initialFiles?: DocumentResponse[];
-  controlType?: 'CONTROL' | 'DELETE' | "NONE";
+  controlType?: 'CONTROL' | 'DELETE' | 'NONE';
 }
 
 export const FilesList: React.FC<Props> = ({
@@ -73,7 +73,12 @@ export const FilesList: React.FC<Props> = ({
     </>
   );
 
-  const controlFile = ({ fileResponse: file, id, status }: FileData) => {
+  const controlFile = ({
+    fileResponse: file,
+    id,
+    status,
+    onRemove,
+  }: FileData) => {
     const loading = status === 'pending';
 
     const confirmDeletion = () =>
@@ -88,7 +93,10 @@ export const FilesList: React.FC<Props> = ({
     const menuButtonArr = [
       {
         title: 'удалить',
-        cb: () => removeFile && removeFile(id, file?.id),
+        cb: () => {
+          removeFile && removeFile(id, file?.id);
+          onRemove && onRemove();
+        },
         show: true,
         color: 'red',
         clickable: true,
@@ -104,12 +112,10 @@ export const FilesList: React.FC<Props> = ({
         />
       ),
       DELETE: <StyledDropIcon onClick={confirmDeletion} />,
-      NONE: null
+      NONE: null,
     };
 
     const content = components[controlType];
-
-    console.log(controlType, components, content);
 
     return <ControlPanelWrap>{content}</ControlPanelWrap>;
   };

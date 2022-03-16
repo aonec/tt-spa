@@ -71,13 +71,23 @@ export function useApartmentList() {
 
       if (!checkDate.isValid()) return false;
 
-      const isAfterThanFrom = checkDate.isSameOrAfter(
-        moment(fields.individualDeviceCheckPeriod.value.from)
-      );
+      const isAfterThanFrom =
+        checkDate.isSameOrAfter(
+          moment(fields.individualDeviceCheckPeriod.value.from)
+        ) ||
+        checkDate.format('DD-MM-YYYY') ===
+          moment(fields.individualDeviceCheckPeriod.value.from)?.format(
+            'DD-MM-YYYY'
+          );
 
-      const isBeforeThanTo = checkDate.isSameOrBefore(
-        moment(fields.individualDeviceCheckPeriod.value.to)
-      );
+      const isBeforeThanTo =
+        checkDate.isSameOrBefore(
+          moment(fields.individualDeviceCheckPeriod.value.to)
+        ) ||
+        checkDate.format('DD-MM-YYYY') ===
+          moment(fields.individualDeviceCheckPeriod.value.to)?.format(
+            'DD-MM-YYYY'
+          );
 
       return isAfterThanFrom && isBeforeThanTo;
     });

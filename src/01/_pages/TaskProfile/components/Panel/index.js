@@ -5,8 +5,6 @@ import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
-import AddReadings from '../../../../components/Select/selects/AddReadings/AddReadings';
-import { addReadings } from '../../hooks/usePanel';
 import StyledTextArea from '../../../../tt-components/TextArea';
 
 const styles = css`
@@ -141,7 +139,7 @@ export const Panel = (
 
   const taskPerpetrator = state.perpetrator;
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const isPerpetrator = currentUser.id === taskPerpetrator?.id;
+  const isPerpetrator = currentUser?.id === taskPerpetrator?.id;
 
   if (isObserver && AddDocuments && Switch) {
     return styled(
@@ -179,7 +177,7 @@ export const Panel = (
       })}
     >
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
+        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}  />
       )}
 
       {Switch && (
@@ -225,13 +223,6 @@ export const Panel = (
         <AddDate getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
 
-      {(UploadReadings || addReadingsDone) && (
-        <AddReadings
-          apartmentId={apartment.id}
-          addReadings={(readings) => dispatch(addReadings(readings))}
-          readingsBlocked={addReadingsDone || isObserver}
-        />
-      )}
       {!isObserver && <PushButton {...pushProps} />}
     </panel>
   );

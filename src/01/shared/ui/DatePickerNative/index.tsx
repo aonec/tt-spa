@@ -9,6 +9,7 @@ interface Props {
   disabled?: boolean;
   id?: string;
   searchStyle?: boolean;
+  fullSize?: boolean;
 }
 
 export const DatePickerNative: React.FC<Props> = ({
@@ -18,6 +19,7 @@ export const DatePickerNative: React.FC<Props> = ({
   disabled,
   id,
   searchStyle,
+  fullSize,
 }) => {
   const [innerValue, setInnerValue] = useState<any>();
   const value = moment(incomingValue).toISOString(true);
@@ -38,6 +40,7 @@ export const DatePickerNative: React.FC<Props> = ({
 
   return (
     <StyledInput
+      fullSize={fullSize}
       searchStyle={searchStyle}
       id={id}
       disabled={disabled}
@@ -53,9 +56,12 @@ export const DatePickerNative: React.FC<Props> = ({
   );
 };
 
-const StyledInput = styled.input`
-  ${({ searchStyle }: { searchStyle?: boolean }) =>
-  
+const StyledInput = styled.input<{
+  searchStyle?: boolean;
+  focused?: boolean;
+  fullSize?: boolean;
+}>`
+  ${({ searchStyle }) =>
     searchStyle
       ? `
       width: 130px;
@@ -78,38 +84,39 @@ const StyledInput = styled.input`
     border: 1px solid #1890ff;
   }
 
-  ${({ focused }: { focused?: boolean }) =>
-    focused && `border: 1px solid #1890ff;`}
-
+  
   &:focus {
     box-shadow: 0 4px 8px #188fff52;
   }
   
   `
       : `
-
+  
   cursor: text;
   height: 48px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   transition: 0.2s;
-
+  
   &:hover:not([disabled]),
   &:focus {
     border-color: #40a9ff;
   }
-
+  
   &:focus {
     box-shadow: 0 4px 8px #40a9ff34;
   }
-
+  
   &:disabled {
     background: #f5f5f5;
     color: rgba(0, 0, 0, 0.25);
   }
-
+  
   padding: 10px 15px;
   `}
+
+  ${({ focused }) => focused && 'border: 1px solid #1890ff;'}
+  ${({ fullSize }) => fullSize && 'width: 100%'}
 `;
 
 export const fromEnter = (callback: (e: any) => void) => (e: any) =>

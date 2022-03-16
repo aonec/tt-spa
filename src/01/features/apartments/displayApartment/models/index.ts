@@ -11,3 +11,9 @@ export const ApartmentGate = createGate<{ id: number }>();
 export const refetchApartment = createEvent();
 
 export const resetApartment = createEvent();
+
+export const $apartmentEditMode = createStore(false);
+
+export const ApartmentEditModeGate = createGate();
+
+export const switchApartmentEditMode = createEvent<void>();

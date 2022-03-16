@@ -1,26 +1,26 @@
 import axios from 'axios';
+import { createEvent, createStore } from 'effector';
 
-const devUrl = 'https://transparent-demo.herokuapp.com/api';
+const devUrl = 'https://management.demo.transparent-technology.ru/'
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
 axios.defaults.baseURL = baseURL;
 
-let cancel;
+
 axios.interceptors.request.use((req) => {
-  if (req.baseURL === 'http://84.201.132.164:8080/api') {
-    delete req.headers.Authorization;
-  } else {
-    req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
-  }
+  req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
 
   if (req.url && checkUrl('refresh', req.url)) {
+    
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
     };
+  
   }
   return req;
 });
+
 
 axios.interceptors.response.use(
   ({ data, config }) => {
@@ -28,31 +28,49 @@ axios.interceptors.response.use(
 
     if (url && checkUrl('(login|refresh)', url)) {
       const { token, refreshToken, roles, permissions } = data.successResponse;
-      saveToLocStor('token', token);
-      saveToLocStor('refreshToken', refreshToken);
-      saveToLocStor('permissions', permissions);
-      checkUrl('login', url) && saveToLocStor('roles', roles);
+
+      saveToLocalStorage('token', token);
+      saveToLocalStorage('refreshToken', refreshToken);
+      saveToLocalStorage('permissions', permissions);
+      checkUrl('login', url) && saveToLocalStorage('roles', roles);
     }
 
     if (url && checkUrl('(users/current)', url)) {
       const user = data.successResponse;
-      saveToLocStor('user', user);
+      saveToLocalStorage('user', user);
     }
+
     const res = data.successResponse ?? data ?? {};
+
     return res;
   },
   (error) => {
     const status = error?.response?.status;
     if (status === 401 && !checkUrl('login', error.config.url)) {
       const { config } = error;
-      return new Promise((resolve, reject) => {
-        axios.post('/auth/refreshToken').then(
-          () => resolve(axios(config)),
-          () => {
-            localStorage.clear();
-            window.location.replace('/login');
-          }
-        );
+
+      return new Promise((resolve) => {
+        if (!$isRefreshRunning.getState()) {
+          setIsRefreshRunning(true);
+          axios.post('/auth/refreshToken').then(
+            () => {
+              setIsRefreshRunning(false);
+
+              return resolve(axios(config));
+            },
+            () => {
+              localStorage.clear();
+              window.location.replace('/login');
+            }
+          );
+        } else {
+          const subscription = $isRefreshRunning.watch((isRefreshStop) => {
+            if (!isRefreshStop) {
+              resolve(axios(config));
+              subscription.unsubscribe();
+            }
+          });
+        }
       });
     }
 
@@ -60,19 +78,26 @@ axios.interceptors.response.use(
   }
 );
 
-function saveToLocStor(name: string, data: string) {
+function saveToLocalStorage(name: string, data: string) {
   localStorage.setItem(name, JSON.stringify(data));
 }
 
 function takeFromLocStor(name: string) {
-  const userName = localStorage.getItem(name);
-  if (!userName) return;
-  return JSON.parse(userName);
+  const value = localStorage.getItem(name);
+
+  if (!value) return;
+
+  return JSON.parse(value);
 }
 
 function checkUrl(str: string, url: string) {
   return new RegExp(str, 'gi').test(url);
 }
 
-export { cancel };
+export const $isRefreshRunning = createStore(false);
+
+export const setIsRefreshRunning = createEvent<boolean>();
+
+$isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
+
 export default axios;

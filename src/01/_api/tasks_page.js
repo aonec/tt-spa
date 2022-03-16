@@ -28,7 +28,5 @@ export async function getTasks(grouptype = null, searchState = {}) {
         showExecutor: grouptype === 'observing',
       })),
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 }

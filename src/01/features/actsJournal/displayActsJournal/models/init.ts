@@ -1,39 +1,74 @@
 import {
+  $actJournalPageNumber,
+  $apartmentActsPaged,
   ActJournalGate,
   clearCreationActForms,
+  clearFilters,
   createActForm,
   createApartmentActFx,
+  expandedFilterForm,
   refetchApartmentActs,
+  setActJournalPageNumber,
 } from './index';
 import { fetchExistingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { addApartmentActs, getApartmentActs } from '01/_api/apartmentActs';
-import { combine, forward, sample, guard } from 'effector';
+import { combine, forward, sample } from 'effector';
 import {
-  $apartmentActs,
   clearCreationActFormValues,
   fetchApartmentActsFx,
   searchForm,
 } from '.';
 import {
-  $existingApartmentNumbers,
   addressSearchForm,
-} from '01/features/addressSearch/models';
+} from '01/features/addressIdSearch/models';
+import moment from 'moment';
+import { $apartmentSearchId } from '01/features/addressIdSearch/models';
 
 fetchApartmentActsFx.use(getApartmentActs);
 
 createApartmentActFx.use(addApartmentActs);
 
-$apartmentActs.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
+$apartmentActsPaged.on(fetchApartmentActsFx.doneData, (_, acts) => acts);
+
+$actJournalPageNumber.on(setActJournalPageNumber, (_, value) => value);
+
+$actJournalPageNumber.reset([searchForm.$values, expandedFilterForm.$values]);
+
+forward({
+  from: clearFilters,
+  to: [expandedFilterForm.resetValues, searchForm.resetValues],
+});
 
 sample({
-  source: searchForm.$values,
-  clock: [searchForm.formValidated, refetchApartmentActs, ActJournalGate.open],
-  fn: (data) => ({
-    City: data.city,
-    Street: data.street,
-    HousingStockNumber: data.house,
-    ApartmentNumber: data.apartment,
-  }),
+  source: combine(
+    searchForm.$values,
+    ActJournalGate.state,
+    (formValues, filterSortState) => ({ formValues, filterSortState })
+  ),
+  clock: [
+    searchForm.formValidated,
+    refetchApartmentActs,
+    ActJournalGate.open,
+    ActJournalGate.state,
+  ],
+  fn: ({ formValues: data, filterSortState }) => {
+    const requestPayload = {
+      City: data.city,
+      Street: data.street,
+      HousingStockNumber: data.house,
+      ApartmentNumber: data.apartment,
+      ...filterSortState,
+      ActTypes: filterSortState.ActTypes?.length
+        ? filterSortState.ActTypes
+        : null,
+      ActResourceTypes: filterSortState.ActResourceTypes?.length
+        ? filterSortState.ActResourceTypes
+        : null,
+    };
+
+    return requestPayload;
+  },
+
   target: fetchApartmentActsFx as any,
 });
 
@@ -53,13 +88,11 @@ sample({
   clock: createActForm.formValidated,
   source: combine(
     createActForm.$values,
-    addressSearchForm.$values,
-    $existingApartmentNumbers,
-    (values, address, apartmentNumbers) => ({
+    $apartmentSearchId,
+    (values, apartmentId) => ({
       ...values,
-      apartmentId: apartmentNumbers?.find(
-        (elem) => elem.number === address.apartment
-      )?.id,
+      apartmentId,
+      actJobDate: moment(values.actJobDate).format('YYYY-MM-DD'),
     })
   ),
   target: createApartmentActFx as any,

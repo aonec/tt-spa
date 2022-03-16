@@ -8,7 +8,6 @@ import {
   closeConfirmReadingCallbackModal,
   openConfirmReadingModal,
 } from '.';
-import { forward } from 'effector';
 
 $onConfirmReadingInputCallback
   .on(openConfirmReadingModal, (_, payload) => payload)

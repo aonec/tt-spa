@@ -1,8 +1,11 @@
 import React from 'react';
 import styled, { css } from 'reshadow/macro';
 
-import { Loader, Icon } from '01/components';
+import { Loader } from '01/components';
 import * as s from '01/r_comp';
+import { Space } from '01/shared/ui/Layout/Space/Space';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Icon } from '01/shared/ui/Icon';
 
 const styles = css`
   h {
@@ -66,14 +69,27 @@ const styles = css`
 `;
 
 export const Header = React.memo(
-  ({ title = '', name = '', timeline = null, timer = null }) =>
+  ({ title = '', name = '', timeline = null, timer = null, state }) =>
     styled(
       styles,
       s.time_line
     )(
       <h>
         <Loader show={!title} size="48" />
-        <h_title as="h1">{title}</h_title>
+        <Flex>
+          {state?.type === 'IndividualDeviceCheck' && (
+            <>
+              <Icon
+                name={state?.individualDevice?.resource}
+                style={{ transform: 'scale(1.4)' }}
+              />
+              <Space w={10} />
+            </>
+          )}
+          <div>
+            <span style={{ fontSize: 32 }}>{title}</span>
+          </div>
+        </Flex>
         {name && (
           <>
             <h_name>{name}</h_name>

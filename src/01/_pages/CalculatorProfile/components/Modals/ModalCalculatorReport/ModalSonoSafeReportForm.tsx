@@ -152,7 +152,6 @@ const ModalSonoSafeReportForm = ({ device, handleCancel, visible }: any) => {
 
       const shortLink = `Reports/Report?nodeId=${nodeId}&reportType=${detail}&from=${begin}&to=${end}`;
 
-      console.log('shortLink', shortLink);
       getReport(shortLink).then((response: any) => {
         const fileNameWithJunk = response.headers['content-disposition'].split(
           ';'

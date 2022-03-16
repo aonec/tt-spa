@@ -13,9 +13,9 @@ export const Space = styled.div`
   min-height: ${({ h, line }: Props) => `${(h || 15) * (line ? 2 : 1)}px`};
 `;
 
-export const SpaceLine = () => (
+export const SpaceLine = ({ noTop }: { noTop?: boolean }) => (
   <>
-    <Space />
+    {!noTop && <Space />}
     <Line />
     <Space />
   </>

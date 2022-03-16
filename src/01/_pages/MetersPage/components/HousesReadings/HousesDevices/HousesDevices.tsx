@@ -28,6 +28,7 @@ import { ButtonTT } from '01/tt-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { List } from 'react-virtualized';
+import { TopButton } from './TopButton/TopButton';
 
 type ParamsType = {
   id: string;
@@ -78,27 +79,21 @@ const HousesDevices: React.FC = () => {
   const elementRef = useRef();
 
   useEffect(() => {
-    function onScrollDown(event: any) {
+    function onScrollDown() {
       if (pendingDevices) return;
 
-      const element = event.target;
+      const scrollHeight = document.body.scrollHeight - window.screen.height;
 
-      console.log(
-        Math.round(element.scrollHeight - element.scrollTop),
-        element.clientHeight
-      );
-
-      if (
-        element.scrollHeight - element.scrollTop - element.clientHeight <
-        250
-      ) {
+      if (window.scrollY > scrollHeight - 200) {
         fetchNextPageOfIndividualDevices();
       }
     }
 
     window.addEventListener('scroll', onScrollDown, true);
 
-    return () => window.removeEventListener('scroll', onScrollDown);
+    return () => {
+      window.removeEventListener('scroll', onScrollDown, true);
+    };
   }, []);
 
   const getHeight = () => {
@@ -113,6 +108,7 @@ const HousesDevices: React.FC = () => {
 
   return (
     <div id="individual-devices-on-home-tabs" ref={elementRef as any}>
+      <TopButton />
       <CancelSwitchInputGate />
       <ConfirmReadingValueModal />
       <ReadingsHistoryModal />
@@ -161,7 +157,3 @@ const HousesDevices: React.FC = () => {
 };
 
 export default HousesDevices;
-
-function getNumberFromString(str: string) {
-  return parseInt(str.replace(/[^\d]/g, ''));
-}

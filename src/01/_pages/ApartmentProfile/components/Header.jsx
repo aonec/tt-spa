@@ -6,6 +6,7 @@ import { MenuButtonTT } from '../../../tt-components';
 import { openCheckApartmentModal } from '01/features/apartments/checkApartment/models';
 
 export const Header = ({ apartmentNumber, city, street, number }) => {
+
   return (
     <HeaderWrap>
       <div className="apartment-header__wrap">

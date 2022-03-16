@@ -179,7 +179,9 @@ export const AddressSearch: FC<Props> = (props) => {
           onFocus={clearValuesOnFocusCallback(2)}
           onKeyDown={(e: any) => {
             keyDownEnterGuardedHandler(3)(e);
-            fields.apartment.onChange(bestApartmentNumberMatch);
+            fromEnter(() => {
+              fields.apartment.onChange(bestApartmentNumberMatch);
+            })(e);
             fromEnter(() => onExit && onExit())(e);
             setCounter((prev) => prev + 1);
           }}

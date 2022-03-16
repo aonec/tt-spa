@@ -149,12 +149,6 @@ const ModalAddDeviceForm = ({
       serialNumber: values.serialNumber,
       lastCheckingDate: moment(values.lastCheckingDate).toISOString(true),
       futureCheckingDate: moment(values.futureCheckingDate).toISOString(true),
-      lastCommercialAccountingDate: moment(
-        values.lastCommercialAccountingDate
-      ).toISOString(true),
-      futureCommercialAccountingDate: moment(
-        values.futureCommercialAccountingDate
-      ).toISOString(true),
       housingMeteringDeviceType: values.housingMeteringDeviceType,
       resource: values.resource,
       model: values.model,
@@ -244,9 +238,7 @@ const ModalAddDeviceForm = ({
                         : setValidationSchema(
                             validationSchemaTemperatureSensor
                           );
-                      value !== 'FlowMeter'
-                        ? setFieldValue('diameter', null)
-                        : console.log(values.diameter);
+                      value !== 'FlowMeter' && setFieldValue('diameter', null);
                       coldWaterValidation(value);
                     }}
                   />
