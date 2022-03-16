@@ -2,18 +2,26 @@ import React from 'react';
 import axios from '01/axios';
 
 import { Select } from '../Select';
+import { useStore } from 'effector-react';
+import { $task } from '01/features/tasks/displayTask/models';
 
 export const Perpetrator = ({ getData = () => {}, ...props }) => {
   const [data, setData] = React.useState({ loading: null });
+  const task = useStore($task);
 
   React.useEffect(() => {
     data.loading &&
       axios
         .get('ManagingFirmUsers', {
-          params: { RoleNames: 'ManagingFirmExecutor' },
+          params: {
+            RoleNames:
+              task?.type === 'IndividualDeviceCheck'
+                ? 'Controller'
+                : 'ManagingFirmExecutor',
+          },
         })
         .then((data) => setData({ items: data.items }));
-  }, [data]);
+  }, [data, task]);
 
   return (
     <Select
