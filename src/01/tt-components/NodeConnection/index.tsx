@@ -5,20 +5,24 @@ import styled from 'styled-components';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
 import { getCalculator } from './apiNodeConnection';
+import { Flex } from '01/shared/ui/Layout/Flex';
 
 interface ConnectionInterface {
-  // calculator: CalculatorIntoNodeResponse;
   node: PipeNodeResponse;
-  edit: boolean;
+  edit?: boolean;
+  onEdit?(): void;
   setDeregisterDeviceValue?: any;
   setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
+  onRemoveConnection?(): void;
 }
 
-const NodeConnection = ({
+export const NodeConnection = ({
   node,
   edit = false,
   setDeregisterDeviceValue,
   setDeregisterDevice,
+  onEdit,
+  onRemoveConnection,
 }: ConnectionInterface) => {
   const { calculator } = node;
 
@@ -40,6 +44,9 @@ const NodeConnection = ({
     : 'Следующая Дата поверки не указана';
   const icon = closingDate ? 'red' : 'green';
   const status = closingDate ? 'Не активен' : 'Активен';
+
+  const editIcon = <IconTT icon="edit" style={{ marginLeft: 8 }} />;
+
   return (
     <ListItem>
       <NavLink to={`/calculators/${id}`}>
@@ -61,34 +68,31 @@ const NodeConnection = ({
         <Dates>{`${lastCheckingDateText} - ${futureCheckingDateText}`}</Dates>
       </Div>
 
-      <div>
+      <Flex style={{ justifyContent: 'flex-end' }}>
         {edit ? (
           <>
-            <Link
-              to={`/calculators/${id}/edit`}
-              style={{ display: 'inline-flex', width: 'fit-content' }}
-              title="Редактирование Вычислителя"
-            >
-              <IconTT icon="edit" style={{ marginLeft: 8 }} />
-            </Link>
+            {onEdit ? (
+              <div style={{ cursor: 'pointer' }} onClick={onEdit}>
+                {editIcon}
+              </div>
+            ) : (
+              <Link
+                to={`/calculators/${id}/edit`}
+                style={{ display: 'inline-flex', width: 'fit-content' }}
+                title="Редактирование Вычислителя"
+              >
+                {editIcon}
+              </Link>
+            )}
 
             <IconTT
               icon="del"
               style={{ marginLeft: 8, cursor: 'pointer' }}
-              onClick={() => {
-                if (setDeregisterDeviceValue) {
-                  getCalculator(id).then((res) => {
-                    setDeregisterDeviceValue(res);
-                  });
-                }
-                if (setDeregisterDevice) {
-                  setDeregisterDevice(true);
-                }
-              }}
+              onClick={onRemoveConnection}
             />
           </>
         ) : null}
-      </div>
+      </Flex>
     </ListItem>
   );
 };
