@@ -66,7 +66,7 @@ export const AddStaffModal: React.FC = () => {
   const onCancel = () => addStaffModalCloseButtonClicked();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem?.competence?.title,
+    label: '', //elem?.competence?.title,
     value: elem.id,
   }));
 

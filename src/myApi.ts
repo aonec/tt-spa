@@ -32,10 +32,6 @@ export interface AddHeatingStationRequest {
   address?: AddressRequest | null;
 }
 
-export interface AddManagementFirmCompetenceRequest {
-  type?: ECompetenceType;
-}
-
 export interface AddManagingFirmUserWorkingStatusRequest {
   /** @format int32 */
   userId?: number;
@@ -590,20 +586,6 @@ export interface CommunicationPipeResponse {
   devices: PipeHousingMeteringDeviceListResponse[] | null;
 }
 
-export interface CompetenceListResponse {
-  competences: CompetenceResponse[] | null;
-}
-
-export interface CompetenceListResponseSuccessApiResponse {
-  successResponse: CompetenceListResponse | null;
-}
-
-export interface CompetenceResponse {
-  title: string | null;
-  type: ECompetenceType;
-  nomenclatures: NomenclatureResponse[] | null;
-}
-
 export interface ConfirmRequest {
   token: string;
   password: string;
@@ -972,8 +954,10 @@ export interface CreateTaskApplicationRequest {
   /** @format uuid */
   sourceId?: string;
   type?: ETaskApplicationType;
-  competence?: ECompetenceType;
-  nomenclatures?: ENomenclatureType[] | null;
+
+  /** @format uuid */
+  competenceId?: string;
+  workNomenclatureIds?: string[] | null;
 
   /** @format int32 */
   apartmentId?: number | null;
@@ -1147,17 +1131,6 @@ export enum EClosingReason {
   CertificateIssued = "CertificateIssued",
   MaintainingStopped = "MaintainingStopped",
   ByLetter = "ByLetter",
-}
-
-export enum ECompetenceType {
-  HousingStockElectricityDevice = "HousingStockElectricityDevice",
-  HousingStockHeatControlDevice = "HousingStockHeatControlDevice",
-  HousingStockWaterAndHeatDevice = "HousingStockWaterAndHeatDevice",
-  OutdoorLighting = "OutdoorLighting",
-  TrafficRegulation = "TrafficRegulation",
-  IntraHouseElectricalNetwork = "IntraHouseElectricalNetwork",
-  ElectricityIndividualDevice = "ElectricityIndividualDevice",
-  WaterAndHeatIndividualDevice = "WaterAndHeatIndividualDevice",
 }
 
 export interface EditApartmentCheckRequest {
@@ -1392,6 +1365,7 @@ export enum EManagingFirmTaskFilterType {
   CurrentApplication = "CurrentApplication",
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
+  PlannedApplication = "PlannedApplication",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1410,6 +1384,7 @@ export enum EManagingFirmTaskType {
   CurrentApplication = "CurrentApplication",
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
+  PlannedApplication = "PlannedApplication",
 }
 
 export enum EManagingFirmUserWorkingStatusType {
@@ -1458,13 +1433,6 @@ export enum ENodeWorkingRangesType {
   MassOfFeedFlowMagistral = "MassOfFeedFlowMagistral",
   MassOfFeedBackFlowMagistral = "MassOfFeedBackFlowMagistral",
   DeltaMassOfMagistral = "DeltaMassOfMagistral",
-}
-
-export enum ENomenclatureType {
-  InstallingPowerSupplyDevices = "InstallingPowerSupplyDevices",
-  InstallingCounter = "InstallingCounter",
-  UninstallingDevice = "UninstallingDevice",
-  WorkTitle = "WorkTitle",
 }
 
 export enum ENonResidentialHouseType {
@@ -1568,6 +1536,7 @@ export enum ETaskApplicationStatus {
 export enum ETaskApplicationType {
   Emergency = "Emergency",
   Current = "Current",
+  Planned = "Planned",
 }
 
 export enum ETaskClosingStatus {
@@ -3061,18 +3030,13 @@ export interface ManagementFirmAddressResponse {
 export interface ManagementFirmCompetenceResponse {
   /** @format uuid */
   id: string;
-  competence: CompetenceResponse | null;
+  title: string | null;
   relatedUsers: ManagementFirmCompetenceUserResponse[] | null;
-}
-
-export interface ManagementFirmCompetenceResponseSuccessApiResponse {
-  successResponse: ManagementFirmCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
 }
 
 export interface ManagementFirmCompetencesListResponse {
-  /** @format int32 */
-  managementFirmId: number;
-  items: ManagementFirmCompetenceResponse[] | null;
+  competences: ManagementFirmCompetenceResponse[] | null;
 }
 
 export interface ManagementFirmCompetencesListResponseSuccessApiResponse {
@@ -3243,6 +3207,10 @@ export interface ManagingFirmUserListResponse {
   /** @format int32 */
   executingTaskCount: number;
   status: UserStatusResponse | null;
+}
+
+export interface ManagingFirmUserListResponseListSuccessApiResponse {
+  successResponse: ManagingFirmUserListResponse[] | null;
 }
 
 export interface ManagingFirmUserListResponsePagedList {
@@ -3582,11 +3550,6 @@ export interface NodesPagedList {
 
 export interface NodesPagedListSuccessApiResponse {
   successResponse: NodesPagedList | null;
-}
-
-export interface NomenclatureResponse {
-  title: string | null;
-  type: ENomenclatureType;
 }
 
 export interface NumberIdResponse {
@@ -4258,6 +4221,19 @@ export interface SwitchMagneticSealRequest {
   magneticSealTypeName?: string | null;
 }
 
+export interface TaskApplicationCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+}
+
+export interface TaskApplicationForTaskCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
+}
+
 export interface TaskApplicationForTaskResponse {
   /** @format int32 */
   id: number;
@@ -4267,8 +4243,8 @@ export interface TaskApplicationForTaskResponse {
   applicationDate: string;
   source: TaskApplicationSourceResponse | null;
   type: ETaskApplicationType;
-  competence: ECompetenceType;
-  nomenclatures: ENomenclatureType[] | null;
+  competence: TaskApplicationForTaskCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
   comment: string | null;
 }
 
@@ -4296,8 +4272,8 @@ export interface TaskApplicationResponse {
   source: TaskApplicationSourceResponse | null;
   status: ETaskApplicationStatus;
   type: ETaskApplicationType;
-  competence: ECompetenceType;
-  nomenclatures: ENomenclatureType[] | null;
+  competence: TaskApplicationCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
   address: FullAddressResponse | null;
   comment: string | null;
   executor: ManagingFirmUserShortResponse | null;
@@ -4741,13 +4717,13 @@ export interface UpdatePipeNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+  disconnectFromCalculator?: boolean;
 }
 
 export interface UserCompetenceResponse {
   /** @format uuid */
   id: string;
   title: string | null;
-  type: ECompetenceType;
 }
 
 export interface UserRoleListResponse {
@@ -4811,6 +4787,12 @@ export interface ValueNodeWorkingRangeResponse {
 
 export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
   successResponse: ValueNodeWorkingRangeResponse | null;
+}
+
+export interface WorkNomenclatureResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
 }
 
 export enum YearRangeType {
@@ -5935,6 +5917,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags DataMigrations
+     * @name DataMigrationsReassignF4TasksCreate
+     * @request POST:/api/DataMigrations/ReassignF4Tasks
+     * @secure
+     */
+    dataMigrationsReassignF4TasksCreate: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/DataMigrations/ReassignF4Tasks`,
+        method: "POST",
+        secure: true,
         ...params,
       }),
 
@@ -8176,24 +8174,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
      *
      * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesCatalogList
-     * @summary ManagementFirmCompetenceRead
-     * @request GET:/api/ManagementFirmCompetences/Catalog
-     * @secure
-     */
-    managementFirmCompetencesCatalogList: (params: RequestParams = {}) =>
-      this.request<CompetenceListResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences/Catalog`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
-     *
-     * @tags ManagementFirmCompetences
      * @name ManagementFirmCompetencesList
      * @summary ManagementFirmCompetenceRead
      * @request GET:/api/ManagementFirmCompetences
@@ -8204,26 +8184,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ManagementFirmCompetences`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li>
-     *
-     * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesCreate
-     * @summary ManagementFirmCompetenceCreate
-     * @request POST:/api/ManagementFirmCompetences
-     * @secure
-     */
-    managementFirmCompetencesCreate: (data: AddManagementFirmCompetenceRequest, params: RequestParams = {}) =>
-      this.request<ManagementFirmCompetenceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -9363,10 +9323,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { ManagementFirmId?: number; Resource?: EResourceType; To?: string; From?: string },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/ManuallyClosedDevicesReport`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li>
+     *
+     * @tags Reports
+     * @name ReportsApartmentsWithPreviousBrokenDevicesReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ApartmentsWithPreviousBrokenDevicesReport
+     * @secure
+     */
+    reportsApartmentsWithPreviousBrokenDevicesReportList: (params: RequestParams = {}) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ApartmentsWithPreviousBrokenDevicesReport`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -9527,7 +9505,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -9555,7 +9533,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
@@ -9614,8 +9592,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     taskApplicationsSimilarList: (
       query?: {
         Type?: ETaskApplicationType;
-        Competence?: ECompetenceType;
-        Nomenclatures?: ENomenclatureType[];
+        CompetenceId?: string;
+        WorkNomenclatureIds?: string[];
         ApartmentId?: number;
         HousingStockId?: number;
       },
@@ -9660,10 +9638,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     taskApplicationsManagingFirmUsersList: (
-      query?: { Type?: ETaskApplicationType; Competence?: ECompetenceType; HousingStockId?: number },
+      query?: { Type?: ETaskApplicationType; CompetenceId?: string; HousingStockId?: number },
       params: RequestParams = {},
     ) =>
-      this.request<ManagingFirmUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ManagingFirmUserListResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/TaskApplications/managingFirmUsers`,
         method: "GET",
         query: query,
@@ -9806,7 +9784,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HasChanged?: boolean;
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
-        ApplicationCompetenceType?: ECompetenceType;
+        ApplicationCompetenceId?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -9845,7 +9823,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HasChanged?: boolean;
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
-        ApplicationCompetenceType?: ECompetenceType;
+        ApplicationCompetenceId?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -9935,7 +9913,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksPushStageCreate
@@ -9955,7 +9933,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksRevertStageCreate
@@ -9993,7 +9971,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsCreate
@@ -10104,7 +10082,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksReturnCreate
