@@ -4,16 +4,19 @@ import { outputs, inputs } from './models';
 import { useStore } from 'effector-react';
 
 export const RemoveConnectionConfirmModalContainer = () => {
-  const { $isConfirmModalOpen } = outputs;
+  const { $isConfirmModalOpen, $loading } = outputs;
 
   const isConfirmModalOpen = useStore($isConfirmModalOpen);
+  const loading = useStore($loading);
 
-  const { closeConfirmationModal } = inputs;
+  const { closeConfirmationModal, removeConnectionButtonClicked } = inputs;
 
   return (
     <RemoveConnectionConfirmModal
+      loading={loading}
       onClose={closeConfirmationModal}
       show={isConfirmModalOpen}
+      onRemove={removeConnectionButtonClicked}
     />
   );
 };
