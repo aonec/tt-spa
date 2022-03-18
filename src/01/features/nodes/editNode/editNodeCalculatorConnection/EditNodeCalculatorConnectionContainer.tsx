@@ -1,10 +1,13 @@
 import React from 'react';
 import { EditNodeCalculatorConnection } from './EditNodeCalculatorConnection';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { outputs, inputs } from '../../displayNode/models';
 import { inputs as removeNodeCalculatorConnectionInputs } from './components/RemoveConnectionConfirmModal/models';
 import { useParams } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from './components/RemoveConnectionConfirmModal/RemoveConnectionConfirmModalContainer';
+import ButtonTT from '../../../../tt-components/ButtonTT';
+import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
+import { openAddNodeCalculatorConnectionModal } from './components/AddNodeCalculatorConnectionModal/models';
 
 export const EditNodeCalculatorConnectionContainer = () => {
   const { $node } = outputs;
@@ -16,17 +19,29 @@ export const EditNodeCalculatorConnectionContainer = () => {
 
   const { openConfirmationModal } = removeNodeCalculatorConnectionInputs;
 
+  const addNodeCalculatorConnectionButtonClicked = useEvent(
+    openAddNodeCalculatorConnectionModal
+  );
+
   return (
     <>
       <RemoveConnectionConfirmModalContainer />
+      <AddNodeCalculatorConnectionModalContainer />
       <NodeGate id={Number(nodeId)} />
-      {node ? (
+      {node?.calculator ? (
         <EditNodeCalculatorConnection
           onEdit={() => {}}
           onRemoveConnection={openConfirmationModal}
           node={node}
         />
-      ) : null}
+      ) : (
+        <ButtonTT
+          color="white"
+          onClick={addNodeCalculatorConnectionButtonClicked}
+        >
+          + Добавить вычислитель
+        </ButtonTT>
+      )}
     </>
   );
 };
