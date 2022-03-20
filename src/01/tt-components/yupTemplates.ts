@@ -11,6 +11,4 @@ export const editNodeValidationSchema = Yup.object({
     .required('Укажите номер'),
   nodeStatus: Yup.string().required('Укажите статус'),
   serviceZone: Yup.string().required('Укажите зону'),
-  lastCommercialAccountingDate: yupDate,
-  futureCommercialAccountingDate: yupDate,
 });
