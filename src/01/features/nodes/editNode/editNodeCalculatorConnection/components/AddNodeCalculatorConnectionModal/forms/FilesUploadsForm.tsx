@@ -1,6 +1,5 @@
 import React from 'react';
 import { FilesUpload } from '../../../../../../../shared/ui/FilesUpload';
-import { Space } from '../../../../../../../shared/ui/Layout/Space/Space';
 
 export const FilesUploadForm = () => {
   return (

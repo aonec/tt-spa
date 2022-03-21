@@ -39,7 +39,7 @@ export const EditNodeCalculatorConnectionContainer = () => {
           color="white"
           onClick={addNodeCalculatorConnectionButtonClicked}
         >
-          + Добавить вычислитель
+          + Подключить вычислитель
         </ButtonTT>
       )}
     </>

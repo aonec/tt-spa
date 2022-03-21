@@ -5,15 +5,18 @@ import {
   $isAddNodeCalculatorConnectionModalOpen,
   closeAddNodeCalculatorConnectionModal,
 } from './models';
+import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(closeAddNodeCalculatorConnectionModal);
   const isOpen = useStore($isAddNodeCalculatorConnectionModalOpen);
 
   return (
-    <AddNodeCalculatorConnectionModal
-      isOpen={isOpen}
-      onClose={() => closeModal()}
-    />
+    <>
+      <AddNodeCalculatorConnectionModal
+        isOpen={isOpen}
+        onClose={() => closeModal()}
+      />
+    </>
   );
 };
