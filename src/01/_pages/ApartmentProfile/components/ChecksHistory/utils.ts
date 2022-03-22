@@ -15,12 +15,10 @@ export function getCheckingActDocument(type: ECheckType) {
 
 export const getOnSaveFile = (document: DocumentResponse) =>
   async function onSaveFile() {
-    console.log(document);
     try {
       const url: string = await axios.get(`Documents/${document.id}`);
       saveAs(url, document.name!);
     } catch (error) {
-      console.log(error)
       message.error('Не удалось скачать файл');
     }
   };
