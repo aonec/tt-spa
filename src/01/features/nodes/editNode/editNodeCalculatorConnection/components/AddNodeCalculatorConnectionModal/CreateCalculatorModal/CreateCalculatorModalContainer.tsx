@@ -1,6 +1,17 @@
+import { useStore } from 'effector-react';
 import React from 'react';
 import { CreateCalculatorModal } from './CreateCalculatorModal';
+import { createCalcuatorService } from './models';
 
 export const CreateCalculatorModalContainer = () => {
-  return <CreateCalculatorModal isOpen={false} onClose={() => {}} />;
+  const isOpen = useStore(
+    createCalcuatorService.outputs.$isCreateCalculatorModalOpen
+  );
+
+  return (
+    <CreateCalculatorModal
+      isOpen={isOpen}
+      onClose={createCalcuatorService.inputs.closeCreateCalculatorModal}
+    />
+  );
 };

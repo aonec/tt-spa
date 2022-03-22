@@ -5,7 +5,6 @@ import {
   $isAddNodeCalculatorConnectionModalOpen,
   closeAddNodeCalculatorConnectionModal,
 } from './models';
-import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(closeAddNodeCalculatorConnectionModal);
