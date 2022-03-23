@@ -38,3 +38,8 @@ export const inputs = {
 export const outputs = {
   $node,
 };
+
+export const nodeService = {
+  inputs,
+  outputs,
+};

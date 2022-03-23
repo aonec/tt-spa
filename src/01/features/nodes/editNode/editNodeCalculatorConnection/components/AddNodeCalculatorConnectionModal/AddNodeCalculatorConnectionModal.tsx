@@ -1,21 +1,23 @@
 import { Button, Form } from 'antd';
 import React, { FC } from 'react';
+import { CalculatorListResponse } from '../../../../../../../myApi';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
 import { StyledSelect } from '../../../../../../_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { CreateCalculatorModalContainer } from './CreateCalculatorModal/CreateCalculatorModalContainer';
 import { createCalcuatorService } from './CreateCalculatorModal/models';
-import { openAddNodeCalculatorConnectionModal } from './models';
 
 interface Props {
   onClose(): void;
   isOpen: boolean;
+  calculators: CalculatorListResponse[];
 }
 
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   onClose,
   isOpen,
+  calculators,
 }) => {
   return (
     <ModalTT
@@ -26,7 +28,13 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
       <CreateCalculatorModalContainer />
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Вычислитель, к которому подключен узел">
-          <StyledSelect placeholder="Серийный номер или IP адрес"></StyledSelect>
+          <StyledSelect placeholder="Серийный номер или IP адрес">
+            {calculators && calculators?.map((calculator) => (
+              <StyledSelect.Option key={calculator.id} value={calculator.id}>
+                {calculator.serialNumber} ({calculator.model})
+              </StyledSelect.Option>
+            ))}
+          </StyledSelect>
         </Form.Item>
         <Flex style={{ transform: 'translateY(10px)' }}>
           <Button
@@ -38,8 +46,8 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
             + Добавить вычислитель
           </Button>
         </Flex>
-        <Form.Item label="Вычислитель, к которому подключен узел">
-          <StyledSelect placeholder="Серийный номер или IP адрес"></StyledSelect>
+        <Form.Item label="Номер ввода">
+          <StyledSelect placeholder="Выберите номер ввода"></StyledSelect>
         </Form.Item>
       </Grid>
     </ModalTT>
