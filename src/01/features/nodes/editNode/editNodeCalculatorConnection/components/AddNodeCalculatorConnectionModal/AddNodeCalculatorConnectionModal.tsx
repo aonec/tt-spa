@@ -1,7 +1,10 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
-import { CalculatorListResponse } from '../../../../../../../myApi';
+import {
+  CalculatorListResponse,
+  PipeNodeResponse,
+} from '../../../../../../../myApi';
 import { Flex } from '../../../../../../shared/ui/Layout/Flex';
 import { Grid } from '../../../../../../shared/ui/Layout/Grid';
 import { ModalTT } from '../../../../../../shared/ui/ModalTT';
@@ -17,6 +20,7 @@ interface Props {
   calculators: CalculatorListResponse[];
   form: AddNodeCalculatorConnectionForm;
   loading: boolean;
+  node?: PipeNodeResponse | null;
 }
 
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
@@ -25,14 +29,20 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   calculators,
   form,
   loading,
+  node,
 }) => {
   const { fields, submit } = useForm(form);
+  const calculator = node?.calculator;
   return (
     <ModalTT
       loading={loading}
       visible={isOpen}
       onCancel={onClose}
-      title="Подключение вычислителя"
+      title={
+        calculator
+          ? 'Редактирование подключения вычислителя'
+          : 'Подключение вычислителя'
+      }
       onSubmit={submit}
     >
       <CreateCalculatorModalContainer />

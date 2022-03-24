@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { RemoveConnectionConfirmModalContainer } from './components/RemoveConnectionConfirmModal/RemoveConnectionConfirmModalContainer';
 import ButtonTT from '../../../../tt-components/ButtonTT';
 import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
-import { openAddNodeCalculatorConnectionModal } from './components/AddNodeCalculatorConnectionModal/models';
+import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/models';
 import { Loader } from '../../../../components/Loader';
 
 export const EditNodeCalculatorConnectionContainer = () => {
@@ -21,7 +21,7 @@ export const EditNodeCalculatorConnectionContainer = () => {
   const { openConfirmationModal } = removeNodeCalculatorConnectionInputs;
 
   const addNodeCalculatorConnectionButtonClicked = useEvent(
-    openAddNodeCalculatorConnectionModal
+    addNodeCalculatorService.inputs.openAddNodeCalculatorConnectionModal
   );
 
   const loading = useStore(nodeService.outputs.$loading);
@@ -37,7 +37,10 @@ export const EditNodeCalculatorConnectionContainer = () => {
         <>
           {node?.calculator ? (
             <EditNodeCalculatorConnection
-              onEdit={() => {}}
+              onEdit={
+                addNodeCalculatorService.inputs
+                  .openAddNodeCalculatorConnectionModal
+              }
               onRemoveConnection={openConfirmationModal}
               node={node}
             />

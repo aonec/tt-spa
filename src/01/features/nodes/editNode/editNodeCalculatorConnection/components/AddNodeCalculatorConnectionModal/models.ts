@@ -10,11 +10,11 @@ export const $isAddNodeCalculatorConnectionModalOpen = addNodeCalculatorConnecti
   false
 );
 
-export const openAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
+const openAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
 
-export const closeAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
+const closeAddNodeCalculatorConnectionModal = addNodeCalculatorConnection.createEvent();
 
-export const addNodeCalculatorConnectionForm = createForm({
+const addNodeCalculatorConnectionForm = createForm({
   fields: {
     calculatorId: {
       init: null as number | null,
@@ -63,13 +63,18 @@ sample({
 export type AddNodeCalculatorConnectionForm = typeof addNodeCalculatorConnectionForm;
 
 export const addNodeCalculatorService = {
+  inputs: {
+    openAddNodeCalculatorConnectionModal,
+    closeAddNodeCalculatorConnectionModal,
+    addNodeCalculatorConnectionForm,
+  },
   outputs: {
     $loading: saveNodeCalculatorConnectionFx.pending,
   },
 };
 
 saveNodeCalculatorConnectionFx.doneData.watch(() =>
-  message.success('Вычислитель успешно подключен!А')
+  message.success('Вычислитель успешно подключен!')
 );
 
 saveNodeCalculatorConnectionFx.failData.watch(() =>
@@ -79,6 +84,21 @@ saveNodeCalculatorConnectionFx.failData.watch(() =>
 forward({
   from: saveNodeCalculatorConnectionFx.doneData,
   to: [nodeService.inputs.refetchNode, closeAddNodeCalculatorConnectionModal],
+});
+
+forward({
+  from: closeAddNodeCalculatorConnectionModal,
+  to: addNodeCalculatorConnectionForm.resetValues,
+});
+
+sample({
+  source: nodeService.outputs.$node,
+  clock: openAddNodeCalculatorConnectionModal,
+  fn: (node) => ({
+    calculatorId: node?.calculatorId,
+    entryNumber: node?.entryNumber,
+  }),
+  target: addNodeCalculatorConnectionForm.setForm,
 });
 
 $isAddNodeCalculatorConnectionModalOpen
