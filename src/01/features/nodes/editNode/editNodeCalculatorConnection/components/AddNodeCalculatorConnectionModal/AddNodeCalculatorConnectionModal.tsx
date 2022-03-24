@@ -44,6 +44,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
           : 'Подключение вычислителя'
       }
       onSubmit={submit}
+      centered
     >
       <CreateCalculatorModalContainer />
       <Grid temp="1fr 1fr" gap="15px">
