@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import {
   CalculatorListResponsePagedList,
   CalculatorResponse,
@@ -168,6 +169,7 @@ export async function addNode(form: CreatePipeNodeRequest) {
 export async function putNode(nodeId: number, form: UpdatePipeNodeRequest) {
   try {
     const res = await axios.put(`PipeNodes/${nodeId}`, form);
+    message.success('Узел успешно изменен!');
     return res;
   } catch (error) {
     throw {

@@ -37,7 +37,11 @@ export const EditNodeCalculatorConnectionContainer = () => {
       ) : (
         <ButtonTT
           color="white"
-          onClick={addNodeCalculatorConnectionButtonClicked}
+          onClick={(e: any) => {
+            e.stopPropagation();
+            e.preventDefault();
+            addNodeCalculatorConnectionButtonClicked();
+          }}
         >
           + Подключить вычислитель
         </ButtonTT>

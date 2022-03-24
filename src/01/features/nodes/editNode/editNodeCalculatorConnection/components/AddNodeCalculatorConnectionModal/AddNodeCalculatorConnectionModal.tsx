@@ -12,6 +12,9 @@ interface Props {
   onClose(): void;
   isOpen: boolean;
   calculators: CalculatorListResponse[];
+  form?: {
+    calculatorId: {};
+  };
 }
 
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
@@ -29,11 +32,12 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Вычислитель, к которому подключен узел">
           <StyledSelect placeholder="Серийный номер или IP адрес">
-            {calculators && calculators?.map((calculator) => (
-              <StyledSelect.Option key={calculator.id} value={calculator.id}>
-                {calculator.serialNumber} ({calculator.model})
-              </StyledSelect.Option>
-            ))}
+            {calculators &&
+              calculators?.map((calculator) => (
+                <StyledSelect.Option key={calculator.id} value={calculator.id}>
+                  {calculator.serialNumber} ({calculator.model})
+                </StyledSelect.Option>
+              ))}
           </StyledSelect>
         </Form.Item>
         <Flex style={{ transform: 'translateY(10px)' }}>
@@ -47,7 +51,13 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
           </Button>
         </Flex>
         <Form.Item label="Номер ввода">
-          <StyledSelect placeholder="Выберите номер ввода"></StyledSelect>
+          <StyledSelect placeholder="Выберите номер ввода">
+            {[1, 2, 3].map((value) => (
+              <StyledSelect.Option key={value} value={value}>
+                {value}
+              </StyledSelect.Option>
+            ))}
+          </StyledSelect>
         </Form.Item>
       </Grid>
     </ModalTT>

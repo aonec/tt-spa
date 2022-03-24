@@ -25,7 +25,7 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
         />
       )}
       <AddNodeCalculatorConnectionModal
-        calculators={calculators || []}
+        calculators={calculators}
         isOpen={isOpen}
         onClose={() => closeModal()}
       />
