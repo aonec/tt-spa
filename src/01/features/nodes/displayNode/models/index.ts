@@ -37,6 +37,7 @@ export const inputs = {
 
 export const outputs = {
   $node,
+  $loading: fetchNodeFx.pending,
 };
 
 export const nodeService = {

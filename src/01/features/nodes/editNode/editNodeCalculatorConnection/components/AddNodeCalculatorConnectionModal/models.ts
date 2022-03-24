@@ -1,5 +1,8 @@
+import { message } from 'antd';
+import { nodeService } from './../../../../displayNode/models/index';
+import axios from '01/axios';
 import { createForm } from 'effector-forms';
-import { createDomain } from 'effector';
+import { createDomain, sample, forward } from 'effector';
 
 const addNodeCalculatorConnection = createDomain('addNodeCalculatorConnection');
 
@@ -32,6 +35,50 @@ export const addNodeCalculatorConnectionForm = createForm({
       ],
     },
   },
+});
+
+const saveNodeCalculatorConnectionFx = addNodeCalculatorConnection.createEffect<
+  {
+    calculatorId: number;
+    entryNumber: number;
+    nodeId: number;
+  },
+  void
+>((payload) => axios.put(`PipeNodes/${payload.nodeId}`, payload));
+
+sample({
+  source: nodeService.outputs.$node,
+  clock: addNodeCalculatorConnectionForm.formValidated,
+  fn: (node, values) => ({
+    calculatorId: values.calculatorId!,
+    entryNumber: values.entryNumber!,
+    nodeId: node?.id!,
+    resource: node?.resource,
+    nodeStatus: node?.nodeStatus?.value,
+    number: node?.number,
+  }),
+  target: saveNodeCalculatorConnectionFx,
+});
+
+export type AddNodeCalculatorConnectionForm = typeof addNodeCalculatorConnectionForm;
+
+export const addNodeCalculatorService = {
+  outputs: {
+    $loading: saveNodeCalculatorConnectionFx.pending,
+  },
+};
+
+saveNodeCalculatorConnectionFx.doneData.watch(() =>
+  message.success('Вычислитель успешно подключен!А')
+);
+
+saveNodeCalculatorConnectionFx.failData.watch(() =>
+  message.error('Ошибка подключения вычислителя')
+);
+
+forward({
+  from: saveNodeCalculatorConnectionFx.doneData,
+  to: [nodeService.inputs.refetchNode, closeAddNodeCalculatorConnectionModal],
 });
 
 $isAddNodeCalculatorConnectionModalOpen

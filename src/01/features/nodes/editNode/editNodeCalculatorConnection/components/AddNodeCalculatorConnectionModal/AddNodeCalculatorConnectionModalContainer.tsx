@@ -4,9 +4,12 @@ import { calculatorsService } from '../../../../../carlculators/calculators/mode
 import { AddNodeCalculatorConnectionModal } from './AddNodeCalculatorConnectionModal';
 import {
   $isAddNodeCalculatorConnectionModalOpen,
+  addNodeCalculatorConnectionForm,
+  addNodeCalculatorService,
   closeAddNodeCalculatorConnectionModal,
 } from './models';
 import { nodeService } from '../../../../displayNode/models';
+import { useForm } from 'effector-forms/dist';
 
 export const AddNodeCalculatorConnectionModalContainer = () => {
   const closeModal = useEvent(closeAddNodeCalculatorConnectionModal);
@@ -17,6 +20,8 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
 
   const { CalculatorsGate } = calculatorsService.inputs;
 
+  const loading = useStore(addNodeCalculatorService.outputs.$loading);
+
   return (
     <>
       {node && (
@@ -25,6 +30,8 @@ export const AddNodeCalculatorConnectionModalContainer = () => {
         />
       )}
       <AddNodeCalculatorConnectionModal
+        loading={loading}
+        form={addNodeCalculatorConnectionForm}
         calculators={calculators}
         isOpen={isOpen}
         onClose={() => closeModal()}
