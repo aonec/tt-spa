@@ -1,5 +1,7 @@
-import { createDomain, createEvent } from 'effector';
+import { createDomain } from 'effector';
 import { Stage } from './types';
+import { createForm } from 'effector-forms';
+import moment from 'moment';
 
 const createCalcuatorDomain = createDomain();
 
@@ -21,6 +23,15 @@ $isCreateCalculatorModalOpen
   .on(openCreateCalculatorModal, () => true)
   .reset(closeCreateCalculatorModal);
 
+const baseInfoAddNodeCalculatorConnectionForm = createForm({
+  fields: {
+    serialNumber: { init: null as number | null },
+    futureCheckingDate: { init: null as string | null },
+    lastCheckingDate: { init: null as string | null },
+    infoId: { init: null as number | null },
+  },
+});
+
 export const createCalcuatorService = {
   inputs: {
     openCreateCalculatorModal,
@@ -31,5 +42,8 @@ export const createCalcuatorService = {
   outputs: {
     $isCreateCalculatorModalOpen,
     $stage,
+  },
+  forms: {
+    baseInfo: baseInfoAddNodeCalculatorConnectionForm,
   },
 };
