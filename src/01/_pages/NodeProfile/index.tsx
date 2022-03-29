@@ -106,7 +106,7 @@ export const NodeProfile = () => {
       },
     },
     {
-      title: 'Документы приборы',
+      title: 'Документы',
       key: 'documents',
       cb: () => {
         push(`${path}/documents`);
