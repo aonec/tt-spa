@@ -17,6 +17,8 @@ interface Props {
   stage: Stage;
   onNextStage(): void;
   onPreviousStage(): void;
+  onSave(): void;
+  loading: boolean;
 }
 
 const { TabPane } = Tabs;
@@ -27,6 +29,8 @@ export const CreateCalculatorModal: FC<Props> = ({
   stage,
   onNextStage,
   onPreviousStage,
+  onSave,
+  loading
 }) => {
   const calculatorTypes = useStore($calculatorTypesSelectItems);
 
@@ -34,11 +38,12 @@ export const CreateCalculatorModal: FC<Props> = ({
     <>
       <CalculatorInfosGate />
       <ModalTT
+        loading={loading}
         visible={isOpen}
         onCancel={stage === '1' ? onClose : onPreviousStage}
         saveBtnText={stage === '3' ? 'Сохранить' : 'Далее'}
         cancelBtnText={stage === '1' ? 'Отмена' : 'Назад'}
-        onSubmit={stage === '3' ? () => {} : onNextStage}
+        onSubmit={stage === '3' ? onSave : onNextStage}
         title="Добавление нового вычислителя"
         centered
       >

@@ -1,8 +1,8 @@
 import { message } from 'antd';
 import { nodeService } from './../../../../displayNode/models/index';
-import axios from '01/axios';
 import { createForm } from 'effector-forms';
 import { createDomain, sample, forward } from 'effector';
+import axios from '../../../../../../axios';
 
 const addNodeCalculatorConnection = createDomain('addNodeCalculatorConnection');
 
@@ -37,6 +37,15 @@ const addNodeCalculatorConnectionForm = createForm({
   },
 });
 
+const connectionSettingsForm = createForm({
+  fields: {
+    isConnected: { init: true },
+    ipV4: { init: '' },
+    port: { init: '' },
+    deviceAddress: { init: '' },
+  },
+});
+
 const saveNodeCalculatorConnectionFx = addNodeCalculatorConnection.createEffect<
   {
     calculatorId: number;
@@ -67,6 +76,7 @@ export const addNodeCalculatorService = {
     openAddNodeCalculatorConnectionModal,
     closeAddNodeCalculatorConnectionModal,
     addNodeCalculatorConnectionForm,
+    connectionSettingsForm,
   },
   outputs: {
     $loading: saveNodeCalculatorConnectionFx.pending,

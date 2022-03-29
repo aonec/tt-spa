@@ -10,6 +10,8 @@ export const CreateCalculatorModalContainer = () => {
   const stage = useStore(createCalcuatorService.outputs.$stage);
   const onNextStage = useEvent(createCalcuatorService.inputs.nextStage);
   const onPreviousStage = useEvent(createCalcuatorService.inputs.previousStage);
+  const loading = useStore(createCalcuatorService.outputs.$loading);
+  const onSave = useEvent(createCalcuatorService.inputs.saveButtonClicked)
 
   return (
     <CreateCalculatorModal
@@ -18,6 +20,8 @@ export const CreateCalculatorModalContainer = () => {
       onClose={createCalcuatorService.inputs.closeCreateCalculatorModal}
       onNextStage={() => onNextStage()}
       onPreviousStage={() => onPreviousStage()}
+      onSave={() => onSave()}
+      loading={loading}
     />
   );
 };

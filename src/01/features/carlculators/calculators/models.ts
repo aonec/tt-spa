@@ -1,8 +1,12 @@
 import { createGate } from 'effector-react';
 import { CalculatorsListRequestPayload } from './types';
-import { CalculatorListResponse, CalculatorListResponsePagedList } from './../../../../myApi';
-import { createDomain, forward } from 'effector';
+import {
+  CalculatorListResponse,
+  CalculatorListResponsePagedList,
+} from './../../../../myApi';
+import { createDomain, forward, sample } from 'effector';
 import axios from '01/axios';
+import { createCalcuatorService } from '../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
 
 const calculatorsDomain = createDomain('calculatorsDomain');
 
@@ -17,6 +21,8 @@ const fetchCalculatorsFx = calculatorsDomain.createEffect<
   return axios.get('Calculators', { params: payload });
 });
 
+const refetchCalculators = calculatorsDomain.createEvent();
+
 const $loading = fetchCalculatorsFx.pending;
 
 const CalculatorsGate = createGate<{ params: CalculatorsListRequestPayload }>();
@@ -30,9 +36,21 @@ forward({
   to: fetchCalculatorsFx,
 });
 
+sample({
+  source: CalculatorsGate.state.map(({ params }) => params),
+  clock: refetchCalculators,
+  target: fetchCalculatorsFx,
+});
+
+forward({
+  from: createCalcuatorService.events.newCalculatorCreated,
+  to: refetchCalculators,
+});
+
 export const calculatorsService = {
   inputs: {
     CalculatorsGate,
+    refetchCalculators,
   },
   outputs: {
     $calculators,

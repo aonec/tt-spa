@@ -699,7 +699,7 @@ export interface CreateCalculatorRequest {
 export interface CreateCommunicationPipeRequest {
   /** @format int32 */
   number?: number;
-  magistral?: string | null;
+  magistral?: EMagistralType;
   devices?: CreatePipeHousingMeteringDeviceRequest[] | null;
 }
 
@@ -1510,6 +1510,7 @@ export interface ErrorResponse {
   message: string | null;
   text: string | null;
   data: Record<string, any>;
+  requestId: string | null;
 }
 
 export enum ESecuredIdentityRoleName {
@@ -1683,6 +1684,16 @@ export enum EUserPermission {
   ApartmentActEdit = "ApartmentActEdit",
   ApartmentActRemove = "ApartmentActRemove",
   IndividualDeviceReadingsHistoryUpdate = "IndividualDeviceReadingsHistoryUpdate",
+}
+
+export interface ExportResultServiceModel {
+  error?: string[] | null;
+  warning?: string[] | null;
+  info?: string[] | null;
+}
+
+export interface ExportResultServiceModelSuccessApiResponse {
+  successResponse: ExportResultServiceModel | null;
 }
 
 export enum EYearQuarter {
@@ -5232,7 +5243,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsAddCheckCreate
@@ -5252,7 +5263,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsEditCheckUpdate
@@ -5277,7 +5288,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsRemoveCheckDelete
@@ -5921,39 +5932,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsReassignF4TasksCreate
-     * @request POST:/api/DataMigrations/ReassignF4Tasks
-     * @secure
-     */
-    dataMigrationsReassignF4TasksCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/ReassignF4Tasks`,
-        method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
-     *
-     * @tags DataMigrations
-     * @name DataMigrationsRestoreDeviceOpeningDateCreate
-     * @summary IndividualDeviceReadingsRead
-     * @request POST:/api/DataMigrations/RestoreDeviceOpeningDate
-     * @secure
-     */
-    dataMigrationsRestoreDeviceOpeningDateCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RestoreDeviceOpeningDate`,
-        method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags DataMigrations
@@ -5971,10 +5949,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Роли:<li>Администратор системы</li>
      *
      * @tags DataMigrations
      * @name DataMigrationsRevalidateReadingTasksCreate
+     * @summary DataMigration
      * @request POST:/api/DataMigrations/RevalidateReadingTasks
      * @secure
      */
@@ -7572,7 +7551,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     importsReadingsFromErcMultipleCreate: (
-      data: { files?: File[]; isForced?: boolean; isSphere?: boolean },
+      data: { files: File[]; isForced?: boolean; isSphere?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<ImportLogResponseArraySuccessApiResponse, ErrorApiResponse>({
@@ -7618,11 +7597,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags Imports
      * @name ImportsPersonalAccountNumbersCreate
-     * @summary IndividualDeviceReadingsCreate
+     * @summary HomeownersCreate
      * @request POST:/api/Imports/PersonalAccountNumbers
      * @secure
      */
@@ -7635,11 +7614,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Name?: string;
         FileName?: string;
       },
+      query?: { save?: boolean; createApartment?: boolean },
       params: RequestParams = {},
     ) =>
-      this.request<Int32SuccessApiResponse, ErrorApiResponse>({
+      this.request<ExportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Imports/PersonalAccountNumbers`,
         method: "POST",
+        query: query,
         body: data,
         secure: true,
         type: ContentType.FormData,
@@ -9505,7 +9486,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -9533,7 +9514,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
