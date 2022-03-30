@@ -1,26 +1,21 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { PipeNodeResponse } from '../../../myApi';
 import IconTT from '../IconTT';
-import { getCalculator } from './apiNodeConnection';
 import { Flex } from '01/shared/ui/Layout/Flex';
 
 interface ConnectionInterface {
   node: PipeNodeResponse;
   edit?: boolean;
   onEdit?: () => void;
-  setDeregisterDeviceValue?: any;
-  setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
   onRemoveConnection?(): void;
 }
 
 export const NodeConnection = ({
   node,
   edit = false,
-  setDeregisterDeviceValue,
-  setDeregisterDevice,
   onEdit,
   onRemoveConnection,
 }: ConnectionInterface) => {
@@ -39,13 +34,13 @@ export const NodeConnection = ({
   const lastCheckingDateText = lastCheckingDate
     ? moment(lastCheckingDate).format('DD.MM.YYYY')
     : 'Дата поверки не указана';
+
   const futureCheckingDateText = futureCheckingDate
     ? moment(futureCheckingDate).format('DD.MM.YYYY')
     : 'Следующая Дата поверки не указана';
+
   const icon = closingDate ? 'red' : 'green';
   const status = closingDate ? 'Не активен' : 'Активен';
-
-  const editIcon = <IconTT icon="edit" style={{ marginLeft: 8 }} />;
 
   return (
     <ListItem>
@@ -71,17 +66,15 @@ export const NodeConnection = ({
       <Flex style={{ justifyContent: 'flex-end' }}>
         {edit ? (
           <>
-            {onEdit ? (
-              <div style={{ cursor: 'pointer' }} onClick={onEdit}>
-                {editIcon}
-              </div>
-            ) : (
+            {onEdit && <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} onClick={onEdit} />}
+
+            {!onEdit && (
               <Link
                 to={`/calculators/${id}/edit`}
                 style={{ display: 'inline-flex', width: 'fit-content' }}
                 title="Редактирование Вычислителя"
               >
-                {editIcon}
+                <IconTT icon="edit" style={{ marginLeft: 8, cursor: 'pointer' }} />
               </Link>
             )}
 
@@ -90,6 +83,7 @@ export const NodeConnection = ({
               style={{ marginLeft: 8, cursor: 'pointer' }}
               onClick={onRemoveConnection}
             />
+
           </>
         ) : null}
       </Flex>
