@@ -19,9 +19,11 @@ export const NodeConnection = ({
   onEdit,
   onRemoveConnection,
 }: ConnectionInterface) => {
+
   const { calculator } = node;
 
   if (!calculator) return null;
+
   const {
     model,
     id,
@@ -90,8 +92,6 @@ export const NodeConnection = ({
     </ListItem>
   );
 };
-
-export default NodeConnection;
 
 const NameWrap = styled.div`
   display: grid;

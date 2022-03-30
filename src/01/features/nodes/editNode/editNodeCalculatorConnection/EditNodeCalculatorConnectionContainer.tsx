@@ -8,7 +8,7 @@ import ButtonTT from '../../../../tt-components/ButtonTT';
 import { AddNodeCalculatorConnectionModalContainer } from './components/AddNodeCalculatorConnectionModal/AddNodeCalculatorConnectionModalContainer';
 import { addNodeCalculatorService } from './components/AddNodeCalculatorConnectionModal/models';
 import { Loader } from '../../../../components/Loader';
-import NodeConnection from "../../../../tt-components/NodeConnection";
+import { NodeConnection } from "../../../../tt-components/NodeConnection";
 
 export const EditNodeCalculatorConnectionContainer = () => {
   const { NodeGate } = inputs;
