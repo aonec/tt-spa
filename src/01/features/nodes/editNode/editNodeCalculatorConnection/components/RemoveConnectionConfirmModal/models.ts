@@ -62,3 +62,8 @@ export const inputs = {
   closeConfirmationModal,
   removeConnectionButtonClicked,
 };
+
+export const RemoveNodeCalculatorConnectionService = {
+  inputs,
+  outputs
+}

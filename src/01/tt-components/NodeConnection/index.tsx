@@ -10,7 +10,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 interface ConnectionInterface {
   node: PipeNodeResponse;
   edit?: boolean;
-  onEdit?(): void;
+  onEdit?: () => void;
   setDeregisterDeviceValue?: any;
   setDeregisterDevice?: Dispatch<SetStateAction<boolean>>;
   onRemoveConnection?(): void;
