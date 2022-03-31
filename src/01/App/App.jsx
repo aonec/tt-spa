@@ -111,7 +111,7 @@ const Internal = () => {
 
               <Route
                 path={
-                  '/nodes/:nodeId/(stats|connection|readings|related|documents)?'
+                  '/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?'
                 }
                 component={NodeProfile}
                 exact

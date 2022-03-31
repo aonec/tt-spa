@@ -1,7 +1,6 @@
 import { pushStageFx } from '01/features/tasks/pushingStage/models';
 import axios from 'axios';
 import {
-  ECompetenceType,
   EManagingFirmTaskFilterType,
   EOrderByRule,
   ETaskClosingStatus,
@@ -25,7 +24,7 @@ export interface GetTasksParams {
   HasChanged?: boolean | null;
   PipeNodeId?: number | null;
   ClosingStatuses?: ETaskClosingStatus[] | null;
-  ApplicationCompetenceType?: ECompetenceType | null;
+  ApplicationCompetenceType?: any | null;
   PageNumber?: number;
   PageSize?: number;
   OrderBy?: EOrderByRule;

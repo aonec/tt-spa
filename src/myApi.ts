@@ -32,10 +32,6 @@ export interface AddHeatingStationRequest {
   address?: AddressRequest | null;
 }
 
-export interface AddManagementFirmCompetenceRequest {
-  type?: ECompetenceType;
-}
-
 export interface AddManagingFirmUserWorkingStatusRequest {
   /** @format int32 */
   userId?: number;
@@ -590,20 +586,6 @@ export interface CommunicationPipeResponse {
   devices: PipeHousingMeteringDeviceListResponse[] | null;
 }
 
-export interface CompetenceListResponse {
-  competences: CompetenceResponse[] | null;
-}
-
-export interface CompetenceListResponseSuccessApiResponse {
-  successResponse: CompetenceListResponse | null;
-}
-
-export interface CompetenceResponse {
-  title: string | null;
-  type: ECompetenceType;
-  nomenclatures: NomenclatureResponse[] | null;
-}
-
 export interface ConfirmRequest {
   token: string;
   password: string;
@@ -717,7 +699,7 @@ export interface CreateCalculatorRequest {
 export interface CreateCommunicationPipeRequest {
   /** @format int32 */
   number?: number;
-  magistral?: string | null;
+  magistral?: EMagistralType;
   devices?: CreatePipeHousingMeteringDeviceRequest[] | null;
 }
 
@@ -891,6 +873,16 @@ export interface CreateIndividualDeviceRequest {
   documentsIds?: number[] | null;
 }
 
+export interface CreateNodeCheckRequest {
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ENodeCheckType;
+
+  /** @format int32 */
+  documentId?: number | null;
+  registryNumber: string;
+}
+
 export interface CreatePipeConnectionRequest {
   /** @format int32 */
   pipeNumber: number;
@@ -972,8 +964,10 @@ export interface CreateTaskApplicationRequest {
   /** @format uuid */
   sourceId?: string;
   type?: ETaskApplicationType;
-  competence?: ECompetenceType;
-  nomenclatures?: ENomenclatureType[] | null;
+
+  /** @format uuid */
+  competenceId?: string;
+  workNomenclatureIds?: string[] | null;
 
   /** @format int32 */
   apartmentId?: number | null;
@@ -1147,17 +1141,6 @@ export enum EClosingReason {
   CertificateIssued = "CertificateIssued",
   MaintainingStopped = "MaintainingStopped",
   ByLetter = "ByLetter",
-}
-
-export enum ECompetenceType {
-  HousingStockElectricityDevice = "HousingStockElectricityDevice",
-  HousingStockHeatControlDevice = "HousingStockHeatControlDevice",
-  HousingStockWaterAndHeatDevice = "HousingStockWaterAndHeatDevice",
-  OutdoorLighting = "OutdoorLighting",
-  TrafficRegulation = "TrafficRegulation",
-  IntraHouseElectricalNetwork = "IntraHouseElectricalNetwork",
-  ElectricityIndividualDevice = "ElectricityIndividualDevice",
-  WaterAndHeatIndividualDevice = "WaterAndHeatIndividualDevice",
 }
 
 export interface EditApartmentCheckRequest {
@@ -1392,6 +1375,7 @@ export enum EManagingFirmTaskFilterType {
   CurrentApplication = "CurrentApplication",
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
+  PlannedApplication = "PlannedApplication",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1410,6 +1394,7 @@ export enum EManagingFirmTaskType {
   CurrentApplication = "CurrentApplication",
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
+  PlannedApplication = "PlannedApplication",
 }
 
 export enum EManagingFirmUserWorkingStatusType {
@@ -1435,6 +1420,12 @@ export enum EMeteringDeviceType {
   HousingElectric = "HousingElectric",
 }
 
+export enum ENodeCheckType {
+  PlannedCheck = "PlannedCheck",
+  UnplannedCheck = "UnplannedCheck",
+  AdmissionCheck = "AdmissionCheck",
+}
+
 export enum ENodeCommercialAccountStatus {
   NotRegistered = "NotRegistered",
   Registered = "Registered",
@@ -1458,13 +1449,6 @@ export enum ENodeWorkingRangesType {
   MassOfFeedFlowMagistral = "MassOfFeedFlowMagistral",
   MassOfFeedBackFlowMagistral = "MassOfFeedBackFlowMagistral",
   DeltaMassOfMagistral = "DeltaMassOfMagistral",
-}
-
-export enum ENomenclatureType {
-  InstallingPowerSupplyDevices = "InstallingPowerSupplyDevices",
-  InstallingCounter = "InstallingCounter",
-  UninstallingDevice = "UninstallingDevice",
-  WorkTitle = "WorkTitle",
 }
 
 export enum ENonResidentialHouseType {
@@ -1542,6 +1526,7 @@ export interface ErrorResponse {
   message: string | null;
   text: string | null;
   data: Record<string, any>;
+  requestId: string | null;
 }
 
 export enum ESecuredIdentityRoleName {
@@ -1568,6 +1553,7 @@ export enum ETaskApplicationStatus {
 export enum ETaskApplicationType {
   Emergency = "Emergency",
   Current = "Current",
+  Planned = "Planned",
 }
 
 export enum ETaskClosingStatus {
@@ -1605,115 +1591,14 @@ export enum ETaskTargetType {
   Application = "Application",
 }
 
-export enum EUserPermission {
-  Default = "Default",
-  ApartmentsRead = "ApartmentsRead",
-  ApartmentsStatusPatch = "ApartmentsStatusPatch",
-  ContractorsRead = "ContractorsRead",
-  ContractorsCreate = "ContractorsCreate",
-  ContractorsUpdate = "ContractorsUpdate",
-  ContractorsDelete = "ContractorsDelete",
-  DocumentsCreate = "DocumentsCreate",
-  DocumentsDelete = "DocumentsDelete",
-  HousingStocksRead = "HousingStocksRead",
-  MeteringDevicesRead = "MeteringDevicesRead",
-  IndividualDeviceReadingsCreate = "IndividualDeviceReadingsCreate",
-  ManagingFirmsRead = "ManagingFirmsRead",
-  ManagingFirmsUpdate = "ManagingFirmsUpdate",
-  ManagingFirmUsersRead = "ManagingFirmUsersRead",
-  ManagingFirmUsersCreate = "ManagingFirmUsersCreate",
-  ManagingFirmUsersUpdate = "ManagingFirmUsersUpdate",
-  TasksRead = "TasksRead",
-  TasksExecute = "TasksExecute",
-  TaskAssign = "TaskAssign",
-  TaskCommentsCreate = "TaskCommentsCreate",
-  TaskCommentsUpdate = "TaskCommentsUpdate",
-  TaskCommentsDelete = "TaskCommentsDelete",
-  TaskDocumentsDelete = "TaskDocumentsDelete",
-  UserRolesRead = "UserRolesRead",
-  TaskCreate = "TaskCreate",
-  MeteringDevicesClose = "MeteringDevicesClose",
-  MeteringDevicesCheck = "MeteringDevicesCheck",
-  CalculatorCreate = "CalculatorCreate",
-  HousingStocksCreate = "HousingStocksCreate",
-  HousingStocksUpdate = "HousingStocksUpdate",
-  ApartmentCreate = "ApartmentCreate",
-  CalculatorUpdate = "CalculatorUpdate",
-  IndividualDeviceCreate = "IndividualDeviceCreate",
-  IndividualDeviceUpdate = "IndividualDeviceUpdate",
-  HousingMeteringDeviceUpdate = "HousingMeteringDeviceUpdate",
-  HousingMeteringDeviceCreate = "HousingMeteringDeviceCreate",
-  ApartmentUpdate = "ApartmentUpdate",
-  CalculatorSwitch = "CalculatorSwitch",
-  CalculatorInfoRead = "CalculatorInfoRead",
-  HousingMeteringDeviceSwitch = "HousingMeteringDeviceSwitch",
-  IndividualDeviceMountPlaceRead = "IndividualDeviceMountPlaceRead",
-  HomeownersRead = "HomeownersRead",
-  HomeownersCreate = "HomeownersCreate",
-  HomeownersUpdate = "HomeownersUpdate",
-  IndividualDeviceReadingsRead = "IndividualDeviceReadingsRead",
-  IndividualDeviceReadingsUpdate = "IndividualDeviceReadingsUpdate",
-  ManagingFirmsReadAll = "ManagingFirmsReadAll",
-  TaskDelete = "TaskDelete",
-  ReportRead = "ReportRead",
-  ReportAdd = "ReportAdd",
-  IndividualDeviceClose = "IndividualDeviceClose",
-  DataMigration = "DataMigration",
-  NodeWorkingRangeAddOrUpdate = "NodeWorkingRangeAddOrUpdate",
-  NodeWorkingRangeRead = "NodeWorkingRangeRead",
-  HeatingSeasonsRead = "HeatingSeasonsRead",
-  HeatingSeasonsCreate = "HeatingSeasonsCreate",
-  HeatingSeasonsUpdate = "HeatingSeasonsUpdate",
-  ManagementFirmCompetenceRead = "ManagementFirmCompetenceRead",
-  ManagementFirmCompetenceCreate = "ManagementFirmCompetenceCreate",
-  ManagementFirmCompetenceUpdate = "ManagementFirmCompetenceUpdate",
-  ManagementFirmUserWorkingStatusRead = "ManagementFirmUserWorkingStatusRead",
-  ManagementFirmUserWorkingStatusCreate = "ManagementFirmUserWorkingStatusCreate",
-  ManagementFirmUserWorkingStatusUpdate = "ManagementFirmUserWorkingStatusUpdate",
-  ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
-  ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
-  ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
-  HeatingStationRead = "HeatingStationRead",
-  HeatingStationCreate = "HeatingStationCreate",
-  HeatingStationUpdate = "HeatingStationUpdate",
-  HeatingStationDelete = "HeatingStationDelete",
-  NodeRead = "NodeRead",
-  NodeCreate = "NodeCreate",
-  NodeUpdate = "NodeUpdate",
-  NodeDelete = "NodeDelete",
-  ResourceDisconnectingRead = "ResourceDisconnectingRead",
-  ResourceDisconnectingCreate = "ResourceDisconnectingCreate",
-  ResourceDisconnectingUpdate = "ResourceDisconnectingUpdate",
-  TaskApplicationCreate = "TaskApplicationCreate",
-  TaskApplicationRead = "TaskApplicationRead",
-  TaskApplicationUpdate = "TaskApplicationUpdate",
-  TaskApplicationDelete = "TaskApplicationDelete",
-  DocumentsRead = "DocumentsRead",
-  HouseManagementUpdate = "HouseManagementUpdate",
-  CurrentTransformerCreate = "CurrentTransformerCreate",
-  CurrentTransformerRead = "CurrentTransformerRead",
-  CurrentTransformerUpdate = "CurrentTransformerUpdate",
-  IndividualDeviceReopen = "IndividualDeviceReopen",
-  HousingMeteringDeviceReadingsRead = "HousingMeteringDeviceReadingsRead",
-  HousingMeteringDeviceReadingsCreate = "HousingMeteringDeviceReadingsCreate",
-  HousingMeteringDeviceReadingsUpdate = "HousingMeteringDeviceReadingsUpdate",
-  InspectorRead = "InspectorRead",
-  InspectorCreate = "InspectorCreate",
-  InspectorUpdate = "InspectorUpdate",
-  InspectorDelete = "InspectorDelete",
-  ReadingReportForOperator = "ReadingReportForOperator",
-  IndividualDeviceDelete = "IndividualDeviceDelete",
-  ControllerUpdate = "ControllerUpdate",
-  SubscriberStatisticsRead = "SubscriberStatisticsRead",
-  ApartmentCheckCreate = "ApartmentCheckCreate",
-  ApartmentCheckEdit = "ApartmentCheckEdit",
-  ApartmentCheckRemove = "ApartmentCheckRemove",
-  IndividualDeviceReadingsDelete = "IndividualDeviceReadingsDelete",
-  ApartmentActRead = "ApartmentActRead",
-  ApartmentActCreate = "ApartmentActCreate",
-  ApartmentActEdit = "ApartmentActEdit",
-  ApartmentActRemove = "ApartmentActRemove",
-  IndividualDeviceReadingsHistoryUpdate = "IndividualDeviceReadingsHistoryUpdate",
+export interface ExportResultServiceModel {
+  error?: string[] | null;
+  warning?: string[] | null;
+  info?: string[] | null;
+}
+
+export interface ExportResultServiceModelSuccessApiResponse {
+  successResponse: ExportResultServiceModel | null;
 }
 
 export enum EYearQuarter {
@@ -3061,18 +2946,13 @@ export interface ManagementFirmAddressResponse {
 export interface ManagementFirmCompetenceResponse {
   /** @format uuid */
   id: string;
-  competence: CompetenceResponse | null;
+  title: string | null;
   relatedUsers: ManagementFirmCompetenceUserResponse[] | null;
-}
-
-export interface ManagementFirmCompetenceResponseSuccessApiResponse {
-  successResponse: ManagementFirmCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
 }
 
 export interface ManagementFirmCompetencesListResponse {
-  /** @format int32 */
-  managementFirmId: number;
-  items: ManagementFirmCompetenceResponse[] | null;
+  competences: ManagementFirmCompetenceResponse[] | null;
 }
 
 export interface ManagementFirmCompetencesListResponseSuccessApiResponse {
@@ -3243,6 +3123,10 @@ export interface ManagingFirmUserListResponse {
   /** @format int32 */
   executingTaskCount: number;
   status: UserStatusResponse | null;
+}
+
+export interface ManagingFirmUserListResponseListSuccessApiResponse {
+  successResponse: ManagingFirmUserListResponse[] | null;
 }
 
 export interface ManagingFirmUserListResponsePagedList {
@@ -3529,6 +3413,44 @@ export interface NodeAdmissionActRequest {
   endCommercialAccountingDate?: string;
 }
 
+export interface NodeCheckResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ENodeCheckType;
+  registryNumber: string | null;
+  checkingAct: DocumentResponse | null;
+}
+
+export interface NodeCheckResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: NodeCheckResponse[] | null;
+}
+
+export interface NodeCheckResponsePagedListSuccessApiResponse {
+  successResponse: NodeCheckResponsePagedList | null;
+}
+
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
@@ -3582,11 +3504,6 @@ export interface NodesPagedList {
 
 export interface NodesPagedListSuccessApiResponse {
   successResponse: NodesPagedList | null;
-}
-
-export interface NomenclatureResponse {
-  title: string | null;
-  type: ENomenclatureType;
 }
 
 export interface NumberIdResponse {
@@ -3804,7 +3721,7 @@ export interface Point {
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
-  permissions: EUserPermission[] | null;
+  permissions: string[] | null;
   maintenanceMessage: string | null;
 }
 
@@ -4258,6 +4175,19 @@ export interface SwitchMagneticSealRequest {
   magneticSealTypeName?: string | null;
 }
 
+export interface TaskApplicationCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+}
+
+export interface TaskApplicationForTaskCompetenceResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
+}
+
 export interface TaskApplicationForTaskResponse {
   /** @format int32 */
   id: number;
@@ -4267,8 +4197,8 @@ export interface TaskApplicationForTaskResponse {
   applicationDate: string;
   source: TaskApplicationSourceResponse | null;
   type: ETaskApplicationType;
-  competence: ECompetenceType;
-  nomenclatures: ENomenclatureType[] | null;
+  competence: TaskApplicationForTaskCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
   comment: string | null;
 }
 
@@ -4296,8 +4226,8 @@ export interface TaskApplicationResponse {
   source: TaskApplicationSourceResponse | null;
   status: ETaskApplicationStatus;
   type: ETaskApplicationType;
-  competence: ECompetenceType;
-  nomenclatures: ENomenclatureType[] | null;
+  competence: TaskApplicationCompetenceResponse | null;
+  nomenclatures: WorkNomenclatureResponse[] | null;
   address: FullAddressResponse | null;
   comment: string | null;
   executor: ManagingFirmUserShortResponse | null;
@@ -4572,7 +4502,7 @@ export interface TokenResponse {
   token: string | null;
   refreshToken: string | null;
   roles: string[] | null;
-  permissions: EUserPermission[] | null;
+  permissions: string[] | null;
   maintenanceMessage: string | null;
 }
 
@@ -4694,6 +4624,16 @@ export interface UpdateInspectorOnHousingStockRequest {
   inspectedDay?: number | null;
 }
 
+export interface UpdateNodeCheckRequest {
+  /** @format date-time */
+  checkingDate?: string | null;
+  checkType?: ENodeCheckType | null;
+
+  /** @format int32 */
+  documentId?: number | null;
+  registryNumber?: string | null;
+}
+
 export interface UpdatePipeHousingMeteringDeviceRequest {
   serialNumber?: string | null;
   sealNumber?: string | null;
@@ -4741,13 +4681,13 @@ export interface UpdatePipeNodeRequest {
 
   /** @format int32 */
   calculatorId?: number | null;
+  disconnectFromCalculator?: boolean;
 }
 
 export interface UserCompetenceResponse {
   /** @format uuid */
   id: string;
   title: string | null;
-  type: ECompetenceType;
 }
 
 export interface UserRoleListResponse {
@@ -4811,6 +4751,12 @@ export interface ValueNodeWorkingRangeResponse {
 
 export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
   successResponse: ValueNodeWorkingRangeResponse | null;
+}
+
+export interface WorkNomenclatureResponse {
+  /** @format uuid */
+  id: string;
+  title: string | null;
 }
 
 export enum YearRangeType {
@@ -5250,7 +5196,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsAddCheckCreate
@@ -5270,7 +5216,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsEditCheckUpdate
@@ -5295,7 +5241,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Контролёр</li>
      *
      * @tags Apartments
      * @name ApartmentsRemoveCheckDelete
@@ -5942,23 +5888,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
      *
      * @tags DataMigrations
-     * @name DataMigrationsRestoreDeviceOpeningDateCreate
-     * @summary IndividualDeviceReadingsRead
-     * @request POST:/api/DataMigrations/RestoreDeviceOpeningDate
-     * @secure
-     */
-    dataMigrationsRestoreDeviceOpeningDateCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/DataMigrations/RestoreDeviceOpeningDate`,
-        method: "POST",
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Фоновый рабочий</li><li>Контролёр</li>
-     *
-     * @tags DataMigrations
      * @name DataMigrationsOperatorIssuesList
      * @summary IndividualDeviceReadingsRead
      * @request GET:/api/DataMigrations/OperatorIssues
@@ -5973,10 +5902,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Роли:<li>Администратор системы</li>
      *
      * @tags DataMigrations
      * @name DataMigrationsRevalidateReadingTasksCreate
+     * @summary DataMigration
      * @request POST:/api/DataMigrations/RevalidateReadingTasks
      * @secure
      */
@@ -7574,7 +7504,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     importsReadingsFromErcMultipleCreate: (
-      data: { files?: File[]; isForced?: boolean; isSphere?: boolean },
+      data: { files: File[]; isForced?: boolean; isSphere?: boolean },
       params: RequestParams = {},
     ) =>
       this.request<ImportLogResponseArraySuccessApiResponse, ErrorApiResponse>({
@@ -7620,11 +7550,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags Imports
      * @name ImportsPersonalAccountNumbersCreate
-     * @summary IndividualDeviceReadingsCreate
+     * @summary HomeownersCreate
      * @request POST:/api/Imports/PersonalAccountNumbers
      * @secure
      */
@@ -7637,11 +7567,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Name?: string;
         FileName?: string;
       },
+      query?: { save?: boolean; createApartment?: boolean },
       params: RequestParams = {},
     ) =>
-      this.request<Int32SuccessApiResponse, ErrorApiResponse>({
+      this.request<ExportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Imports/PersonalAccountNumbers`,
         method: "POST",
+        query: query,
         body: data,
         secure: true,
         type: ContentType.FormData,
@@ -8176,24 +8108,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
      *
      * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesCatalogList
-     * @summary ManagementFirmCompetenceRead
-     * @request GET:/api/ManagementFirmCompetences/Catalog
-     * @secure
-     */
-    managementFirmCompetencesCatalogList: (params: RequestParams = {}) =>
-      this.request<CompetenceListResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences/Catalog`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Диспетчер УК</li>
-     *
-     * @tags ManagementFirmCompetences
      * @name ManagementFirmCompetencesList
      * @summary ManagementFirmCompetenceRead
      * @request GET:/api/ManagementFirmCompetences
@@ -8204,26 +8118,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/ManagementFirmCompetences`,
         method: "GET",
         secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li>
-     *
-     * @tags ManagementFirmCompetences
-     * @name ManagementFirmCompetencesCreate
-     * @summary ManagementFirmCompetenceCreate
-     * @request POST:/api/ManagementFirmCompetences
-     * @secure
-     */
-    managementFirmCompetencesCreate: (data: AddManagementFirmCompetenceRequest, params: RequestParams = {}) =>
-      this.request<ManagementFirmCompetenceResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/ManagementFirmCompetences`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -8720,7 +8614,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodesPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<NodesPagedListSuccessApiResponse, any>({
         path: `/api/Nodes`,
         method: "GET",
         query: query,
@@ -8745,6 +8639,87 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksDetail
+     * @summary NodeCheckRead
+     * @request GET:/api/Nodes/{nodeId}/Checks
+     * @secure
+     */
+    nodesChecksDetail: (
+      nodeId: number,
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksCreate
+     * @summary NodeCheckCreate
+     * @request POST:/api/Nodes/{nodeId}/Checks
+     * @secure
+     */
+    nodesChecksCreate: (nodeId: number, data: CreateNodeCheckRequest, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksUpdate
+     * @summary NodeCheckUpdate
+     * @request PUT:/api/Nodes/{nodeId}/Checks/{checkId}
+     * @secure
+     */
+    nodesChecksUpdate: (nodeId: number, checkId: number, data: UpdateNodeCheckRequest, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksDelete
+     * @summary NodeCheckDelete
+     * @request DELETE:/api/Nodes/{nodeId}/Checks/{checkId}
+     * @secure
+     */
+    nodesChecksDelete: (nodeId: number, checkId: number, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
         ...params,
       }),
 
@@ -9363,10 +9338,28 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: { ManagementFirmId?: number; Resource?: EResourceType; To?: string; From?: string },
       params: RequestParams = {},
     ) =>
-      this.request<TasksPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Reports/ManuallyClosedDevicesReport`,
         method: "GET",
         query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Старший оператор УК</li>
+     *
+     * @tags Reports
+     * @name ReportsApartmentsWithPreviousBrokenDevicesReportList
+     * @summary ReadingReportForOperator
+     * @request GET:/api/Reports/ApartmentsWithPreviousBrokenDevicesReport
+     * @secure
+     */
+    reportsApartmentsWithPreviousBrokenDevicesReportList: (params: RequestParams = {}) =>
+      this.request<FileContentResultSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Reports/ApartmentsWithPreviousBrokenDevicesReport`,
+        method: "GET",
         secure: true,
         format: "json",
         ...params,
@@ -9527,7 +9520,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsList
@@ -9555,7 +9548,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags SubscriberStatistics
      * @name SubscriberStatisticsExportList
@@ -9614,8 +9607,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     taskApplicationsSimilarList: (
       query?: {
         Type?: ETaskApplicationType;
-        Competence?: ECompetenceType;
-        Nomenclatures?: ENomenclatureType[];
+        CompetenceId?: string;
+        WorkNomenclatureIds?: string[];
         ApartmentId?: number;
         HousingStockId?: number;
       },
@@ -9660,10 +9653,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     taskApplicationsManagingFirmUsersList: (
-      query?: { Type?: ETaskApplicationType; Competence?: ECompetenceType; HousingStockId?: number },
+      query?: { Type?: ETaskApplicationType; CompetenceId?: string; HousingStockId?: number },
       params: RequestParams = {},
     ) =>
-      this.request<ManagingFirmUserListResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<ManagingFirmUserListResponseListSuccessApiResponse, ErrorApiResponse>({
         path: `/api/TaskApplications/managingFirmUsers`,
         method: "GET",
         query: query,
@@ -9806,7 +9799,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HasChanged?: boolean;
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
-        ApplicationCompetenceType?: ECompetenceType;
+        ApplicationCompetenceId?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -9845,7 +9838,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         HasChanged?: boolean;
         PipeNodeId?: number;
         ClosingStatuses?: ETaskClosingStatus[];
-        ApplicationCompetenceType?: ECompetenceType;
+        ApplicationCompetenceId?: string;
         PageNumber?: number;
         PageSize?: number;
         OrderBy?: EOrderByRule;
@@ -9935,7 +9928,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksPushStageCreate
@@ -9955,7 +9948,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksRevertStageCreate
@@ -9993,7 +9986,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksCommentsCreate
@@ -10104,7 +10097,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Диспетчер УК</li><li>Контролёр</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
      *
      * @tags Tasks
      * @name TasksReturnCreate

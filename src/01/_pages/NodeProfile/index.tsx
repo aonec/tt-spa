@@ -106,10 +106,17 @@ export const NodeProfile = () => {
       },
     },
     {
-      title: 'Документы приборы',
+      title: 'Приборы',
       key: 'documents',
       cb: () => {
         push(`${path}/documents`);
+      },
+    },
+    {
+      title: 'История проверок',
+      key: 'checks',
+      cb: () => {
+        push(`${path}/checks`);
       },
     },
   ];
@@ -147,11 +154,9 @@ export const NodeProfile = () => {
             </>
           )}
         </Route>
-
         <Route path={`${path}/readings`} exact>
           <HousingMeteringDeviceReadings nodeId={nodeId} resource={resource} />
         </Route>
-
         <Route path={`${path}/connection`} exact>
           <NodeConnection node={node} edit={false} />
         </Route>
@@ -160,6 +165,9 @@ export const NodeProfile = () => {
         </Route>
         <Route path={`${path}/documents`} exact>
           <Documents />
+        </Route>
+        <Route path={`${path}/checks`} exact>
+          <></>
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
       </Grid>

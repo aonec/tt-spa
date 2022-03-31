@@ -96,9 +96,7 @@ export const CalculatorProfile = () => {
   return (
     <>
       {status === 'error' && <div style={{ background: 'red' }}>ОШИБКА</div>}
-      {(status === 'pending' || status === 'idle') && (
-        <Loader show size={32} />
-      )}
+      {(status === 'pending' || status === 'idle') && <Loader show size={32} />}
       {status === 'resolved' && (
         <>
           <CalculatorProfileContext.Provider value={context}>
