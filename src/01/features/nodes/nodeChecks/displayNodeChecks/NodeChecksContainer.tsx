@@ -10,7 +10,11 @@ export const NodeChecksContainer = () => {
 
   const { NodeChecksGate } = nodeChecksService.inputs;
 
-  const { nodeId } = useParams<{ nodeId: string }>();
+  const params = useParams<{ nodeId: string }>();
+
+  const { nodeId } = params;
+
+  console.log(nodeId, params);
 
   return (
     <>

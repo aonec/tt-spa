@@ -1,6 +1,6 @@
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
-import { NodeCheckResponse } from 'myApi';
+import { NodeCheckResponse, NodeCheckResponsePagedList } from 'myApi';
 import { GetNodeChecksRequest } from './types';
 import { forward } from 'effector';
 import { axios } from '01/axios';
@@ -14,9 +14,13 @@ const $nodeChecks = displayNodeChecksDomain.createStore<
 const fetchNodeChecksFx = displayNodeChecksDomain.createEffect<
   GetNodeChecksRequest,
   NodeCheckResponse[] | null
->((payload) =>
-  axios.get(`Nodes/${payload.NodeId}/Checks`, { params: payload })
-);
+>(async (payload) => {
+  const res: NodeCheckResponsePagedList = await axios.get(
+    `Nodes/${payload.NodeId}/Checks`
+  );
+
+  return res?.items;
+});
 
 const NodeChecksGate = createGate<GetNodeChecksRequest>();
 

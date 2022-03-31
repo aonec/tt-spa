@@ -167,7 +167,7 @@ export const NodeProfile = () => {
         <Route path={`${path}/documents`} exact>
           <Documents />
         </Route>
-        <Route path={`${path}/checks`} exact>
+        <Route path={`/nodes/:nodeId/checks`} exact>
           <NodeChecksContainer />
         </Route>
         <Events title="Задачи с объектом" tasks={tasks} />
