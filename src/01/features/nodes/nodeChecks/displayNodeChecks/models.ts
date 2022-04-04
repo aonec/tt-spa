@@ -1,4 +1,4 @@
-import { createDomain } from 'effector';
+import { createDomain, sample } from 'effector';
 import { createGate } from 'effector-react';
 import { NodeCheckResponse, NodeCheckResponsePagedList } from 'myApi';
 import { GetNodeChecksRequest } from './types';
@@ -22,6 +22,8 @@ const fetchNodeChecksFx = displayNodeChecksDomain.createEffect<
   return res?.items;
 });
 
+const refetchNodeChecks = displayNodeChecksDomain.createEvent();
+
 const NodeChecksGate = createGate<GetNodeChecksRequest>();
 
 $nodeChecks
@@ -33,9 +35,16 @@ forward({
   to: fetchNodeChecksFx,
 });
 
+sample({
+  source: NodeChecksGate.state,
+  clock: refetchNodeChecks,
+  target: fetchNodeChecksFx,
+});
+
 export const nodeChecksService = {
   inputs: {
     NodeChecksGate,
+    refetchNodeChecks,
   },
   outputs: {
     $nodeChecks,
