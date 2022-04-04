@@ -15,6 +15,7 @@ export const CheckNodeModalContainer = () => {
   const loading = useStore(checkNodeService.outputs.$loading);
 
   const closeModal = useEvent(checkNodeService.inputs.closeCheckNodeModal);
+  const clearPayloadFile = useEvent(checkNodeService.inputs.clearPayloadFile);
 
   const { fields, submit } = useForm(checkNodeService.forms.checkNodeForm);
 
@@ -27,6 +28,7 @@ export const CheckNodeModalContainer = () => {
       visible={visible}
       isEditOpen={isEditOpen}
       payload={editPayload}
+      clearPayloadFile={() => clearPayloadFile()}
     />
   );
 };

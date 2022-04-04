@@ -8,16 +8,18 @@ import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/Individu
 import { Form } from 'antd';
 import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';
+import { EditNodeCheckPayload } from './models';
 import { CheckingActDocumentType } from './utils';
 
 interface Props {
   visible: boolean;
   isEditOpen: boolean;
-  payload: any;
+  payload: EditNodeCheckPayload | null;
   fields: any;
-  submit: any;
+  submit(): void;
   pending: boolean;
   closeCheckApartmentModal(): void;
+  clearPayloadFile(): void;
 }
 
 export const CheckNodeModal: FC<Props> = ({
@@ -28,9 +30,8 @@ export const CheckNodeModal: FC<Props> = ({
   submit,
   pending,
   closeCheckApartmentModal,
+  clearPayloadFile,
 }) => {
-
-
   return (
     <>
       <ModalTT
@@ -99,7 +100,7 @@ export const CheckNodeModal: FC<Props> = ({
                 fileResponse: payload?.checkingAct,
                 onRemove: () => {
                   fields.documentIds.onChange([]);
-                  // clearPayloadFile();
+                  clearPayloadFile();
                 },
               },
             ]}
