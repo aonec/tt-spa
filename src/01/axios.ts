@@ -1,28 +1,24 @@
-import axios from 'axios';
+import axiosHttpClient from 'axios';
 import { createEvent, createStore } from 'effector';
 
 const devUrl = 'https://management.staging.transparent-technology.ru/api/';
 const baseURL = process.env.REACT_APP_API_URL || devUrl;
 
-axios.defaults.baseURL = baseURL;
+axiosHttpClient.defaults.baseURL = baseURL;
 
-
-axios.interceptors.request.use((req) => {
+axiosHttpClient.interceptors.request.use((req) => {
   req.headers.Authorization = `Bearer ${takeFromLocStor('token')}`;
 
   if (req.url && checkUrl('refresh', req.url)) {
-    
     req.data = {
       token: takeFromLocStor('token'),
       refreshToken: takeFromLocStor('refreshToken'),
     };
-  
   }
   return req;
 });
 
-
-axios.interceptors.response.use(
+axiosHttpClient.interceptors.response.use(
   ({ data, config }) => {
     const { url } = config;
 
@@ -52,11 +48,11 @@ axios.interceptors.response.use(
       return new Promise((resolve) => {
         if (!$isRefreshRunning.getState()) {
           setIsRefreshRunning(true);
-          axios.post('/auth/refreshToken').then(
+          axiosHttpClient.post('/auth/refreshToken').then(
             () => {
               setIsRefreshRunning(false);
 
-              return resolve(axios(config));
+              return resolve(axiosHttpClient(config));
             },
             () => {
               localStorage.clear();
@@ -66,7 +62,7 @@ axios.interceptors.response.use(
         } else {
           const subscription = $isRefreshRunning.watch((isRefreshStop) => {
             if (!isRefreshStop) {
-              resolve(axios(config));
+              resolve(axiosHttpClient(config));
               subscription.unsubscribe();
             }
           });
@@ -100,4 +96,6 @@ export const setIsRefreshRunning = createEvent<boolean>();
 
 $isRefreshRunning.on(setIsRefreshRunning, (_, value) => value);
 
-export default axios;
+export default axiosHttpClient;
+
+export const axios = axiosHttpClient;

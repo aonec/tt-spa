@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { getTask, moveStage } from '01/_api/task_profile_page';
-import { getCalculator } from '../../../_api/device_page';
 import { pushStageFx } from '01/features/tasks/pushingStage/models';
+import { getCalculator } from '../../../_api/device_page';
 
 export const usePageFetch = (state, dispatch) => {
   const { 0: id } = useParams();
@@ -11,6 +11,7 @@ export const usePageFetch = (state, dispatch) => {
 
   const initTaskData = async () => {
     const task = await getTask(id);
+    console.log(task);
     if (!task?.node) {
       dispatch({ type: 'success', data: task });
       return;
