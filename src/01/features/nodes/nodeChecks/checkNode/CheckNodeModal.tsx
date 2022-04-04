@@ -8,7 +8,7 @@ import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/Individu
 import { Form } from 'antd';
 import moment from 'moment';
 import React, { FC, SyntheticEvent } from 'react';
-import { ENodeCheckType } from 'myApi';
+import { CheckingActDocumentType } from './utils';
 
 interface Props {
   visible: boolean;
@@ -29,6 +29,8 @@ export const CheckNodeModal: FC<Props> = ({
   pending,
   closeCheckApartmentModal,
 }) => {
+
+
   return (
     <>
       <ModalTT
@@ -62,7 +64,7 @@ export const CheckNodeModal: FC<Props> = ({
               value={fields.checkType.value || undefined}
               onChange={fields.checkType.onChange as any}
             >
-              {Object.entries(ENodeCheckType).map(([key, value]) => (
+              {Object.entries(CheckingActDocumentType).map(([key, value]) => (
                 <StyledSelect.Option value={key} key={key}>
                   {value}
                 </StyledSelect.Option>

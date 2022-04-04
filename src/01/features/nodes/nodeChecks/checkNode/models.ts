@@ -82,7 +82,7 @@ const removeNodeCheckEv = checkNodeDomain.createEvent<number>();
 
 const openEditCheckModal = checkNodeDomain.createEvent();
 
-interface EditNodeCheckPayload {
+export interface EditNodeCheckPayload {
   id: number;
   checkingDate: string;
   checkType: ECheckType;
@@ -98,7 +98,7 @@ const $isEditNodeCheckModalOpen = $editNodeCheckModalPayload.map(Boolean);
 const openEditNodeCheckModal = checkNodeDomain.createEvent<EditNodeCheckPayload>();
 
 const editNodeCheckFx = checkNodeDomain.createEffect<
-  { data: EditNodeCheckPayload; nodeId: number },
+  { data: EditNodeCheckPayload; nodeId: number; nodeCheckId: number },
   void
 >();
 
@@ -136,7 +136,10 @@ checkNodeFx.use((payload) =>
   axios.post(`Nodes/${payload.nodeId}/Checks`, payload.data)
 );
 editNodeCheckFx.use((payload) =>
-  axios.put(`Nodes/${payload.nodeId}/Checks/${payload.data.id}`, payload.data)
+  axios.put(
+    `Nodes/${payload.nodeId}/Checks/${payload.nodeCheckId}`,
+    payload.data
+  )
 );
 removeApartmnetCheckFx.use((payload) =>
   axios.delete(`Nodes/${payload.nodeId}/Checks/${payload.checkId}`)

@@ -1,6 +1,7 @@
 import { useStore } from 'effector-react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { nodeService } from '../../displayNode/models';
 import { CheckNodeModalContainer } from '../checkNode/CheckNodeModalContainer';
 import { checkNodeService } from '../checkNode/models';
 import { nodeChecksService } from './models';
@@ -11,21 +12,23 @@ export const NodeChecksContainer = () => {
   const loading = useStore(nodeChecksService.outputs.$loading);
 
   const { NodeChecksGate } = nodeChecksService.inputs;
-
   const params = useParams<{ nodeId: string }>();
 
   const { nodeId } = params;
+
+  const NodeGate = nodeService.gates.NodeGate;
 
   return (
     <>
       <NodeChecksGate NodeId={Number(nodeId)} />
       <CheckNodeModalContainer />
+      <NodeGate id={Number(nodeId)} />
       <NodeChecks
         documents={nodeChecks}
         pending={loading}
-        removeApartmentCheck={() => {}}
-        openCheckApartmentModal={checkNodeService.inputs.openCheckNodeModal}
-        openEditApartmentCheckModal={
+        removeNodeCheck={checkNodeService.inputs.removeNodeCheckEv}
+        openCheckNodeModal={checkNodeService.inputs.openCheckNodeModal}
+        openEditNodeCheckModal={
           checkNodeService.inputs.openEditNodeCheckModal
         }
       />

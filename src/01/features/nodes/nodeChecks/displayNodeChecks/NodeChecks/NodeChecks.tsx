@@ -5,15 +5,15 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './CheckHistoryDocument';
 import styled from 'styled-components';
 import { Grid } from '01/shared/ui/Layout/Grid';
-import { EditApartmentCheckPayload } from '01/features/apartments/checkApartment/models';
 import { NodeCheckResponse } from 'myApi';
+import { EditNodeCheckPayload } from '../../checkNode/models';
 
 interface Props {
   documents: NodeCheckResponse[] | null;
   pending: boolean;
-  openCheckApartmentModal(payload: void): void;
-  removeApartmentCheck(id: number): void;
-  openEditApartmentCheckModal(payload: EditApartmentCheckPayload): void;
+  openCheckNodeModal(payload: void): void;
+  removeNodeCheck(id: number): void;
+  openEditNodeCheckModal(payload: EditNodeCheckPayload): void;
 }
 
 export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
@@ -22,9 +22,9 @@ export const NodeChecks: FC<Props> = (props) => {
   const {
     documents,
     pending,
-    openCheckApartmentModal,
-    removeApartmentCheck,
-    openEditApartmentCheckModal,
+    openCheckNodeModal,
+    removeNodeCheck,
+    openEditNodeCheckModal,
   } = props;
 
   return (
@@ -39,15 +39,15 @@ export const NodeChecks: FC<Props> = (props) => {
         {documents?.map((document) => (
           <CheckHistoryDocument
             document={document}
-            removeApartmentCheck={removeApartmentCheck}
-            openEditApartmentCheckModal={openEditApartmentCheckModal}
+            removeCheck={removeNodeCheck}
+            openEditCheckModal={openEditNodeCheckModal as any}
           />
         ))}
       </PendingLoader>
       <Space />
       <CreateButton
         className="ant-btn-link"
-        onClick={() => openCheckApartmentModal()}
+        onClick={() => openCheckNodeModal()}
       >
         + Создать проверку
       </CreateButton>

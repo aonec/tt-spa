@@ -12,8 +12,8 @@ import { NodeCheckResponse } from 'myApi';
 
 interface Props {
   document: NodeCheckResponse;
-  removeApartmentCheck(id: number): void;
-  openEditApartmentCheckModal(payload: any): void;
+  removeCheck(id: number): void;
+  openEditCheckModal(payload: any): void;
 }
 
 export const CheckHistoryDocument = ({
@@ -24,8 +24,8 @@ export const CheckHistoryDocument = ({
     registryNumber,
     id,
   },
-  openEditApartmentCheckModal,
-  removeApartmentCheck,
+  openEditCheckModal,
+  removeCheck,
 }: Props) => {
   const onSaveFile = getOnSaveFile(document!);
   return (
@@ -51,7 +51,7 @@ export const CheckHistoryDocument = ({
           <Pen
             style={{ fontSize: 16, cursor: 'pointer' }}
             onClick={() =>
-              openEditApartmentCheckModal({
+              openEditCheckModal({
                 checkingDate,
                 checkingAct: document,
                 checkType,
@@ -68,7 +68,7 @@ export const CheckHistoryDocument = ({
                 title: 'Вы уверены, что хотите удалить проверку?',
                 okText: 'Да',
                 cancelText: 'Нет',
-                onOk: () => void removeApartmentCheck(id),
+                onOk: () => void removeCheck(id),
               })
             }
           />
