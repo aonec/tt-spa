@@ -9,6 +9,7 @@ import { getCheckingActDocument, getOnSaveFile } from '../utils';
 import { ReactComponent as DocumentIcon } from '../assets/documentIcon.svg';
 import { ReactComponent as DownloadIcon } from '../assets/downloadIcon.svg';
 import { NodeCheckResponse } from 'myApi';
+import styled from 'styled-components';
 
 interface Props {
   document: NodeCheckResponse;
@@ -41,11 +42,11 @@ export const CheckHistoryDocument = ({
             <DocumentIcon />
           </div>
           <Space w={7} />
-          <div>
+          <DocumentName>
             {document?.name || (
               <span style={{ color: '#b3b3b3' }}>Нет документа</span>
             )}
-          </div>
+          </DocumentName>
         </Flex>
         <Flex>
           <Pen
@@ -79,3 +80,10 @@ export const CheckHistoryDocument = ({
     </ListItem>
   );
 };
+
+const DocumentName = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 265px;
+`;

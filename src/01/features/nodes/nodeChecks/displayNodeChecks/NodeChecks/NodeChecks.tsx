@@ -56,7 +56,7 @@ export const NodeChecks: FC<Props> = (props) => {
 };
 
 export const Wrap = styled.div`
-  width: 920px;
+  width: 720px;
 `;
 
 export const Header = styled(Grid)`
