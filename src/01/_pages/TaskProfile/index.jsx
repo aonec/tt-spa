@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'reshadow/macro';
 import * as s from '01/r_comp';
+import styledC from 'styled-components';
+import { Link, NavLink } from 'react-router-dom';
+import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 import { TasksProfileContext } from './context';
 import { usePageFetch } from './hooks/usePageFetch';
 import { usePanel } from './hooks/usePanel';
@@ -8,7 +11,6 @@ import { useStages } from './hooks/useStages';
 import { useDocuments } from './hooks/useDocuments';
 import { useInformation } from './hooks/useInformation';
 import { useInformationDevice } from './hooks/useInformationDevice';
-import styledC from 'styled-components';
 
 import { Header } from './components/Header';
 import { Panel } from './components/Panel';
@@ -22,8 +24,6 @@ import TaskComments from './components/Comments/TaskComments';
 import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
-import { Link, NavLink } from 'react-router-dom';
-import { CorrectionReadingsPanel } from '01/features/tasks/correctionReadings';
 import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
 
 function reducer(state, action) {
@@ -104,7 +104,7 @@ export const TaskProfile = () => {
             <TaskNodeStatistic id={state?.device?.nodeId} />
           )}
 
-          {/*подождать бэк и вынести в отдельный компонент*/}
+          {/* подождать бэк и вынести в отдельный компонент */}
           {node ? (
             <div style={{ marginTop: 16 }}>
               <NodeLink to={`/nodes/${node.id}`}>
@@ -127,7 +127,7 @@ export const TaskProfile = () => {
                   ({calculator.serialNumber})
                 </span>
               </div>
-              {/*</div>*/}
+              {/* </div> */}
               <NodeInformation node={node} calculator={calculator} task />
             </div>
           ) : null}

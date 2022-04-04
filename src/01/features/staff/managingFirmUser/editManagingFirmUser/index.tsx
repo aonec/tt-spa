@@ -87,7 +87,7 @@ export const EditManagingFirmUserPage = () => {
   const phoneMask = usePhoneMask();
 
   const multipleSelectionCompetences = competences?.map((elem) => ({
-    label: elem?.competence?.title,
+    label: '', //elem?.competence?.title,
     value: elem.id,
   }));
 
