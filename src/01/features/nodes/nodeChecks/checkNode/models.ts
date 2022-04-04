@@ -11,6 +11,7 @@ import { nodeService } from '../../displayNode/models';
 import moment from 'moment';
 import { nodeChecksService } from '../displayNodeChecks/models';
 import { axios } from '01/axios';
+import { message } from 'antd';
 
 const checkNodeDomain = createDomain('checkNode');
 
@@ -73,7 +74,7 @@ const checkNodeForm = createForm({
   },
 });
 
-const removeApartmnetCheckFx = checkNodeDomain.createEffect<
+const removeNodeCheckFx = checkNodeDomain.createEffect<
   { nodeId: number; checkId: number },
   void
 >();
@@ -141,8 +142,27 @@ editNodeCheckFx.use((payload) =>
     payload.data
   )
 );
-removeApartmnetCheckFx.use((payload) =>
+removeNodeCheckFx.use((payload) =>
   axios.delete(`Nodes/${payload.nodeId}/Checks/${payload.checkId}`)
+);
+
+checkNodeFx.doneData.watch(() =>
+  message.success('Проверка успешно добавлена!')
+);
+checkNodeFx.failData.watch(() =>
+  message.error('Ошибка при добавлении проверки')
+);
+editNodeCheckFx.doneData.watch(() =>
+  message.success('Проверка успешно сохранена!')
+);
+editNodeCheckFx.failData.watch(() =>
+  message.error('Ошибка при сохранении проверки')
+);
+removeNodeCheckFx.doneData.watch(() =>
+  message.success('Проверка успешно удалена!')
+);
+removeNodeCheckFx.failData.watch(() =>
+  message.error('Ошибка при удалении проверки')
 );
 
 $isCheckNodeModalOpen
@@ -206,11 +226,11 @@ sample({
   source: nodeService.outputs.$node,
   clock: removeNodeCheckEv,
   fn: (node, checkId) => ({ nodeId: node?.id!, checkId }),
-  target: removeApartmnetCheckFx,
+  target: removeNodeCheckFx,
 });
 
 forward({
-  from: removeApartmnetCheckFx.done,
+  from: removeNodeCheckFx.done,
   to: nodeChecksService.inputs.refetchNodeChecks,
 });
 
