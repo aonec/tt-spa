@@ -1,7 +1,7 @@
 import { DatePickerTT } from '01/tt-components';
 import FormItem from 'antd/lib/form/FormItem';
 import moment from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,6 +10,10 @@ interface Props {
 }
 
 export const PeriodDatePicker: FC<Props> = ({ date, onChange }) => {
+  const handleChange = useCallback(
+    (value: moment.Moment | null) => value && onChange(value),
+    [onChange]
+  );
   return (
     <FormItem label="Период">
       <Wrap>
@@ -17,7 +21,7 @@ export const PeriodDatePicker: FC<Props> = ({ date, onChange }) => {
           format="MMMM YYYY"
           picker="month"
           value={date}
-          onChange={(value) => value && onChange(value)}
+          onChange={handleChange}
         />
       </Wrap>
     </FormItem>

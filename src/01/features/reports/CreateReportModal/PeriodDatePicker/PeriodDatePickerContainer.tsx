@@ -12,13 +12,13 @@ export const PeriodDatePickerContainer = () => {
     },
   } = useForm(form);
 
-  const datePickers: { [key in ReportType]: ReactElement } = {
+  const datePickersLookup: { [key in ReportType]: ReactElement } = {
     [ReportType.OperatorsWorkingReport]: (
       <PeriodDatePicker date={monthPeriod} onChange={changeMonthPeriod} />
     ),
   };
 
-  const datePicker = type && datePickers[type];
+  const datePicker = type && datePickersLookup[type];
 
   return datePicker;
 };
