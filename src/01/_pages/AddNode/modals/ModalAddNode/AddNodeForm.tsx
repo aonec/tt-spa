@@ -36,7 +36,7 @@ const AddNodeForm = (props: any) => {
 
   const serviceZones = useStore($serviceZones);
 
-  const { id, city, street, number: houseNumber, corpus } = housingStock;
+  const { city, street, number: houseNumber, corpus } = housingStock;
 
   const {
     calculatorId,
