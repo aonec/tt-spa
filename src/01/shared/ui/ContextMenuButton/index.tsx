@@ -18,9 +18,7 @@ export interface ContextMenuButtonProps {
 export const ContextMenuButton: FC<ContextMenuButtonProps> = (props) => {
   const { menuButtons, disabled } = props;
 
-  const menuButtonsFiltered = menuButtons?.filter(
-    ({ hidden }) => !hidden
-  );
+  const menuButtonsFiltered = menuButtons?.filter(({ hidden }) => !hidden);
 
   const menu = (
     <Menu>
@@ -66,10 +64,10 @@ enum Color {
   disabled = 'rgba(39, 47, 90, 0.32)',
   black = 'rgba(39, 47, 90, 0.9)',
   red = '#FC525B',
-};
+}
 
-function getButtonColor(color?: keyof typeof Color) {
+function getButtonColor(color?: Color) {
   if (!color) return Color.default;
 
-  return Color[color] || Color.default;
+  return (Color as any)[color] || Color.default;
 }
