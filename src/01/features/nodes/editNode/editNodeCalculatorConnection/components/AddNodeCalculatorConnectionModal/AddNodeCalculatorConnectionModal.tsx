@@ -17,7 +17,7 @@ import { AddNodeCalculatorConnectionForm } from './models';
 interface Props {
   onClose(): void;
   isOpen: boolean;
-  calculators: CalculatorListResponse[];
+  calculators: CalculatorListResponse[] | null;
   form: AddNodeCalculatorConnectionForm;
   loading: boolean;
   node?: PipeNodeResponse | null;

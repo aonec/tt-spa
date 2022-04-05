@@ -5,21 +5,19 @@ import {
   CalculatorListResponsePagedList,
 } from './../../../../myApi';
 import { createDomain, forward, sample } from 'effector';
-import axios from '01/axios';
 import { createCalcuatorService } from '../../nodes/editNode/editNodeCalculatorConnection/components/AddNodeCalculatorConnectionModal/CreateCalculatorModal/models';
+import { getCalculatorsList } from './api';
 
 const calculatorsDomain = createDomain('calculatorsDomain');
 
-const $calculators = calculatorsDomain.createStore<CalculatorListResponse[]>(
-  []
-);
+const $calculators = calculatorsDomain.createStore<
+  CalculatorListResponse[] | null
+>(null);
 
 const fetchCalculatorsFx = calculatorsDomain.createEffect<
   CalculatorsListRequestPayload,
   CalculatorListResponsePagedList
->((payload) => {
-  return axios.get('Calculators', { params: payload });
-});
+>(getCalculatorsList);
 
 const refetchCalculators = calculatorsDomain.createEvent();
 
@@ -28,7 +26,7 @@ const $loading = fetchCalculatorsFx.pending;
 const CalculatorsGate = createGate<{ params: CalculatorsListRequestPayload }>();
 
 $calculators
-  .on(fetchCalculatorsFx.doneData, (_, data) => data.items as any)
+  .on(fetchCalculatorsFx.doneData, (_, data) => data.items)
   .reset(fetchCalculatorsFx.failData);
 
 forward({
