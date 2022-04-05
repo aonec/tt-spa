@@ -23,6 +23,8 @@ interface Props {
   node?: PipeNodeResponse | null;
 }
 
+const calculatorConnectionInputNumbers = [1, 2, 3]
+
 export const AddNodeCalculatorConnectionModal: FC<Props> = ({
   onClose,
   isOpen,
@@ -83,7 +85,7 @@ export const AddNodeCalculatorConnectionModal: FC<Props> = ({
             value={fields.entryNumber.value || undefined}
             onChange={fields.entryNumber.onChange as any}
           >
-            {[1, 2, 3].map((value) => (
+            {calculatorConnectionInputNumbers.map((value) => (
               <StyledSelect.Option key={value} value={value}>
                 {value}
               </StyledSelect.Option>

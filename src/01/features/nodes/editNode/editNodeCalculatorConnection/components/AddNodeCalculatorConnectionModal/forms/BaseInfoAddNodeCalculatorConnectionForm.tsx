@@ -19,7 +19,7 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
   const { fields } = useForm(createCalcuatorService.forms.baseInfo);
 
   return (
-    <Wrap>
+    <div>
       <Grid temp="1fr 1fr" gap="15px">
         <Form.Item label="Серийный номер">
           <InputTT
@@ -56,8 +56,6 @@ export const BaseInfoAddNodeCalculatorConnectionForm: FC<Props> = ({
           />
         </Form.Item>
       </Grid>
-    </Wrap>
+    </div>
   );
 };
-
-const Wrap = styled.div``;

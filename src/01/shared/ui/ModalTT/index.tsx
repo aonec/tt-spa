@@ -41,7 +41,7 @@ export const ModalTT: React.FC<Props> = (props) => {
     customCancelButton,
     disabled,
     saveButtonType,
-    cancelBtnText,
+    cancelBtnText = 'Отмена',
   } = props;
 
   const text = saveBtnText || 'Сохранить';
@@ -61,7 +61,7 @@ export const ModalTT: React.FC<Props> = (props) => {
               key="back"
               onClick={customCancelButton || onCancel}
             >
-              {cancelBtnText || 'Отмена'}
+              {cancelBtnText}
             </ButtonTT>
             {customSubmit || (
               <ButtonTT
