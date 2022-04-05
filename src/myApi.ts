@@ -873,6 +873,16 @@ export interface CreateIndividualDeviceRequest {
   documentsIds?: number[] | null;
 }
 
+export interface CreateNodeCheckRequest {
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ENodeCheckType;
+
+  /** @format int32 */
+  documentId?: number | null;
+  registryNumber: string;
+}
+
 export interface CreatePipeConnectionRequest {
   /** @format int32 */
   pipeNumber: number;
@@ -1410,6 +1420,12 @@ export enum EMeteringDeviceType {
   HousingElectric = "HousingElectric",
 }
 
+export enum ENodeCheckType {
+  PlannedCheck = "PlannedCheck",
+  UnplannedCheck = "UnplannedCheck",
+  AdmissionCheck = "AdmissionCheck",
+}
+
 export enum ENodeCommercialAccountStatus {
   NotRegistered = "NotRegistered",
   Registered = "Registered",
@@ -1575,115 +1591,14 @@ export enum ETaskTargetType {
   Application = "Application",
 }
 
-export enum EUserPermission {
-  Default = "Default",
-  ApartmentsRead = "ApartmentsRead",
-  ApartmentsStatusPatch = "ApartmentsStatusPatch",
-  ContractorsRead = "ContractorsRead",
-  ContractorsCreate = "ContractorsCreate",
-  ContractorsUpdate = "ContractorsUpdate",
-  ContractorsDelete = "ContractorsDelete",
-  DocumentsCreate = "DocumentsCreate",
-  DocumentsDelete = "DocumentsDelete",
-  HousingStocksRead = "HousingStocksRead",
-  MeteringDevicesRead = "MeteringDevicesRead",
-  IndividualDeviceReadingsCreate = "IndividualDeviceReadingsCreate",
-  ManagingFirmsRead = "ManagingFirmsRead",
-  ManagingFirmsUpdate = "ManagingFirmsUpdate",
-  ManagingFirmUsersRead = "ManagingFirmUsersRead",
-  ManagingFirmUsersCreate = "ManagingFirmUsersCreate",
-  ManagingFirmUsersUpdate = "ManagingFirmUsersUpdate",
-  TasksRead = "TasksRead",
-  TasksExecute = "TasksExecute",
-  TaskAssign = "TaskAssign",
-  TaskCommentsCreate = "TaskCommentsCreate",
-  TaskCommentsUpdate = "TaskCommentsUpdate",
-  TaskCommentsDelete = "TaskCommentsDelete",
-  TaskDocumentsDelete = "TaskDocumentsDelete",
-  UserRolesRead = "UserRolesRead",
-  TaskCreate = "TaskCreate",
-  MeteringDevicesClose = "MeteringDevicesClose",
-  MeteringDevicesCheck = "MeteringDevicesCheck",
-  CalculatorCreate = "CalculatorCreate",
-  HousingStocksCreate = "HousingStocksCreate",
-  HousingStocksUpdate = "HousingStocksUpdate",
-  ApartmentCreate = "ApartmentCreate",
-  CalculatorUpdate = "CalculatorUpdate",
-  IndividualDeviceCreate = "IndividualDeviceCreate",
-  IndividualDeviceUpdate = "IndividualDeviceUpdate",
-  HousingMeteringDeviceUpdate = "HousingMeteringDeviceUpdate",
-  HousingMeteringDeviceCreate = "HousingMeteringDeviceCreate",
-  ApartmentUpdate = "ApartmentUpdate",
-  CalculatorSwitch = "CalculatorSwitch",
-  CalculatorInfoRead = "CalculatorInfoRead",
-  HousingMeteringDeviceSwitch = "HousingMeteringDeviceSwitch",
-  IndividualDeviceMountPlaceRead = "IndividualDeviceMountPlaceRead",
-  HomeownersRead = "HomeownersRead",
-  HomeownersCreate = "HomeownersCreate",
-  HomeownersUpdate = "HomeownersUpdate",
-  IndividualDeviceReadingsRead = "IndividualDeviceReadingsRead",
-  IndividualDeviceReadingsUpdate = "IndividualDeviceReadingsUpdate",
-  ManagingFirmsReadAll = "ManagingFirmsReadAll",
-  TaskDelete = "TaskDelete",
-  ReportRead = "ReportRead",
-  ReportAdd = "ReportAdd",
-  IndividualDeviceClose = "IndividualDeviceClose",
-  DataMigration = "DataMigration",
-  NodeWorkingRangeAddOrUpdate = "NodeWorkingRangeAddOrUpdate",
-  NodeWorkingRangeRead = "NodeWorkingRangeRead",
-  HeatingSeasonsRead = "HeatingSeasonsRead",
-  HeatingSeasonsCreate = "HeatingSeasonsCreate",
-  HeatingSeasonsUpdate = "HeatingSeasonsUpdate",
-  ManagementFirmCompetenceRead = "ManagementFirmCompetenceRead",
-  ManagementFirmCompetenceCreate = "ManagementFirmCompetenceCreate",
-  ManagementFirmCompetenceUpdate = "ManagementFirmCompetenceUpdate",
-  ManagementFirmUserWorkingStatusRead = "ManagementFirmUserWorkingStatusRead",
-  ManagementFirmUserWorkingStatusCreate = "ManagementFirmUserWorkingStatusCreate",
-  ManagementFirmUserWorkingStatusUpdate = "ManagementFirmUserWorkingStatusUpdate",
-  ManagingFirmUserCompetenceRead = "ManagingFirmUserCompetenceRead",
-  ManagingFirmUserCompetenceCreate = "ManagingFirmUserCompetenceCreate",
-  ManagingFirmUserCompetenceUpdate = "ManagingFirmUserCompetenceUpdate",
-  HeatingStationRead = "HeatingStationRead",
-  HeatingStationCreate = "HeatingStationCreate",
-  HeatingStationUpdate = "HeatingStationUpdate",
-  HeatingStationDelete = "HeatingStationDelete",
-  NodeRead = "NodeRead",
-  NodeCreate = "NodeCreate",
-  NodeUpdate = "NodeUpdate",
-  NodeDelete = "NodeDelete",
-  ResourceDisconnectingRead = "ResourceDisconnectingRead",
-  ResourceDisconnectingCreate = "ResourceDisconnectingCreate",
-  ResourceDisconnectingUpdate = "ResourceDisconnectingUpdate",
-  TaskApplicationCreate = "TaskApplicationCreate",
-  TaskApplicationRead = "TaskApplicationRead",
-  TaskApplicationUpdate = "TaskApplicationUpdate",
-  TaskApplicationDelete = "TaskApplicationDelete",
-  DocumentsRead = "DocumentsRead",
-  HouseManagementUpdate = "HouseManagementUpdate",
-  CurrentTransformerCreate = "CurrentTransformerCreate",
-  CurrentTransformerRead = "CurrentTransformerRead",
-  CurrentTransformerUpdate = "CurrentTransformerUpdate",
-  IndividualDeviceReopen = "IndividualDeviceReopen",
-  HousingMeteringDeviceReadingsRead = "HousingMeteringDeviceReadingsRead",
-  HousingMeteringDeviceReadingsCreate = "HousingMeteringDeviceReadingsCreate",
-  HousingMeteringDeviceReadingsUpdate = "HousingMeteringDeviceReadingsUpdate",
-  InspectorRead = "InspectorRead",
-  InspectorCreate = "InspectorCreate",
-  InspectorUpdate = "InspectorUpdate",
-  InspectorDelete = "InspectorDelete",
-  ReadingReportForOperator = "ReadingReportForOperator",
-  IndividualDeviceDelete = "IndividualDeviceDelete",
-  ControllerUpdate = "ControllerUpdate",
-  SubscriberStatisticsRead = "SubscriberStatisticsRead",
-  ApartmentCheckCreate = "ApartmentCheckCreate",
-  ApartmentCheckEdit = "ApartmentCheckEdit",
-  ApartmentCheckRemove = "ApartmentCheckRemove",
-  IndividualDeviceReadingsDelete = "IndividualDeviceReadingsDelete",
-  ApartmentActRead = "ApartmentActRead",
-  ApartmentActCreate = "ApartmentActCreate",
-  ApartmentActEdit = "ApartmentActEdit",
-  ApartmentActRemove = "ApartmentActRemove",
-  IndividualDeviceReadingsHistoryUpdate = "IndividualDeviceReadingsHistoryUpdate",
+export interface ExportResultServiceModel {
+  error?: string[] | null;
+  warning?: string[] | null;
+  info?: string[] | null;
+}
+
+export interface ExportResultServiceModelSuccessApiResponse {
+  successResponse: ExportResultServiceModel | null;
 }
 
 export interface ExportResultServiceModel {
@@ -3508,6 +3423,44 @@ export interface NodeAdmissionActRequest {
   endCommercialAccountingDate?: string;
 }
 
+export interface NodeCheckResponse {
+  /** @format int32 */
+  id: number;
+
+  /** @format date-time */
+  checkingDate: string;
+  checkType: ENodeCheckType;
+  registryNumber: string | null;
+  checkingAct: DocumentResponse | null;
+}
+
+export interface NodeCheckResponsePagedList {
+  /** @format int32 */
+  totalItems: number;
+
+  /** @format int32 */
+  pageNumber: number;
+
+  /** @format int32 */
+  pageSize: number;
+
+  /** @format int32 */
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+
+  /** @format int32 */
+  nextPageNumber: number;
+
+  /** @format int32 */
+  previousPageNumber: number;
+  items: NodeCheckResponse[] | null;
+}
+
+export interface NodeCheckResponsePagedListSuccessApiResponse {
+  successResponse: NodeCheckResponsePagedList | null;
+}
+
 export interface NodeCommercialStatusResponse {
   value: ENodeCommercialAccountStatus;
   description: string | null;
@@ -3778,7 +3731,7 @@ export interface Point {
 export interface RefreshResponse {
   token: string | null;
   refreshToken: string | null;
-  permissions: EUserPermission[] | null;
+  permissions: string[] | null;
   maintenanceMessage: string | null;
 }
 
@@ -4559,7 +4512,7 @@ export interface TokenResponse {
   token: string | null;
   refreshToken: string | null;
   roles: string[] | null;
-  permissions: EUserPermission[] | null;
+  permissions: string[] | null;
   maintenanceMessage: string | null;
 }
 
@@ -4679,6 +4632,16 @@ export interface UpdateInspectorOnHousingStockRequest {
 
   /** @format int32 */
   inspectedDay?: number | null;
+}
+
+export interface UpdateNodeCheckRequest {
+  /** @format date-time */
+  checkingDate?: string | null;
+  checkType?: ENodeCheckType | null;
+
+  /** @format int32 */
+  documentId?: number | null;
+  registryNumber?: string | null;
 }
 
 export interface UpdatePipeHousingMeteringDeviceRequest {
@@ -8661,7 +8624,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       },
       params: RequestParams = {},
     ) =>
-      this.request<NodesPagedListSuccessApiResponse, ErrorApiResponse>({
+      this.request<NodesPagedListSuccessApiResponse, any>({
         path: `/api/Nodes`,
         method: "GET",
         query: query,
@@ -8686,6 +8649,87 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         body: data,
         secure: true,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksDetail
+     * @summary NodeCheckRead
+     * @request GET:/api/Nodes/{nodeId}/Checks
+     * @secure
+     */
+    nodesChecksDetail: (
+      nodeId: number,
+      query?: { PageNumber?: number; PageSize?: number; OrderBy?: EOrderByRule },
+      params: RequestParams = {},
+    ) =>
+      this.request<NodeCheckResponsePagedListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksCreate
+     * @summary NodeCheckCreate
+     * @request POST:/api/Nodes/{nodeId}/Checks
+     * @secure
+     */
+    nodesChecksCreate: (nodeId: number, data: CreateNodeCheckRequest, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksUpdate
+     * @summary NodeCheckUpdate
+     * @request PUT:/api/Nodes/{nodeId}/Checks/{checkId}
+     * @secure
+     */
+    nodesChecksUpdate: (nodeId: number, checkId: number, data: UpdateNodeCheckRequest, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Nodes
+     * @name NodesChecksDelete
+     * @summary NodeCheckDelete
+     * @request DELETE:/api/Nodes/{nodeId}/Checks/{checkId}
+     * @secure
+     */
+    nodesChecksDelete: (nodeId: number, checkId: number, params: RequestParams = {}) =>
+      this.request<NodeCheckResponse, ErrorApiResponse>({
+        path: `/api/Nodes/${nodeId}/Checks/${checkId}`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
         ...params,
       }),
 

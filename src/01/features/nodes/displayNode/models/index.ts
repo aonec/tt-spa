@@ -45,3 +45,11 @@ export const nodeService = {
   inputs,
   outputs,
 };
+
+export const nodeService = {
+  inputs,
+  outputs,
+  gates: {
+    NodeGate,
+  },
+};

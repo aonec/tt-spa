@@ -115,7 +115,9 @@ export const ExpandedSearch = () => {
           <StyledDatePicker
             allowClear
             onChange={(value) => {
-              fields.lastReadingMonth.onChange(value && value.toISOString(true));
+              fields.lastReadingMonth.onChange(
+                value && value.toISOString(true)
+              );
             }}
             value={
               fields.lastReadingMonth.value
@@ -125,9 +127,9 @@ export const ExpandedSearch = () => {
             picker="month"
             format="MMMM YYYY"
             disabledDate={(date) => {
-              const diff = moment().diff(date, 'months');
+              const diff = moment(date).diff(moment(), 'months');
 
-              return diff < 0 || date.month() - 1 === moment().month();
+              return diff >= 1;
             }}
           />
         </Grid>
