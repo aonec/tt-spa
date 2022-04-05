@@ -7,7 +7,7 @@ export interface ContextMenuElement {
   title: string;
   onClick(): void;
   hidden?: boolean;
-  color?: string;
+  color?: Color;
 }
 
 export interface ContextMenuButtonProps {
@@ -61,15 +61,15 @@ const MenuItem = styled(Menu.Item)`
   color: ${(props) => props.color || 'var(--primary)'};
 `;
 
-const colors: { [key: string]: string } = {
-  default: 'rgba(39, 47, 90, 0.9)',
-  disabled: 'rgba(39, 47, 90, 0.32)',
-  black: 'rgba(39, 47, 90, 0.9)',
-  red: '#FC525B',
+enum Color {
+  default = 'rgba(39, 47, 90, 0.9)',
+  disabled = 'rgba(39, 47, 90, 0.32)',
+  black = 'rgba(39, 47, 90, 0.9)',
+  red = '#FC525B',
 };
 
-function getButtonColor(color?: string) {
-  if (!color) return colors.default;
+function getButtonColor(color?: keyof typeof Color) {
+  if (!color) return Color.default;
 
-  return colors[color] || colors.default;
+  return Color[color] || Color.default;
 }

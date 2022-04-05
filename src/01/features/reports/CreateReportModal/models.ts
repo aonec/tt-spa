@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { combine, createDomain, forward } from 'effector';
+import { combine, createDomain, forward, sample } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import moment from 'moment';
-import { reportsInputs } from '../../models';
-import { getReportTypeTitleName, ReportType } from '../types';
-import { downloadURI } from '../utils';
+import { reportsInputs } from '../models';
+import { getReportTypeTitleName, ReportType } from './types';
+import { downloadURI } from './utils';
 
 const createReportDomain = createDomain('CreateReport');
 
@@ -38,8 +38,8 @@ export const form = createForm({
 
 const createOperatorsReportFx = createReportDomain.createEffect<
   {
-    From?: string;
-    To?: string;
+    From?: string | null;
+    To?: string | null;
   },
   void
 >(async (params) => {
@@ -67,20 +67,26 @@ forward({
   to: createReport,
 });
 
-createReport.watch(() => {
-  const type = form.fields.type.$value.getState();
-  const monthPeriod = form.fields.monthPeriod.$value.getState();
+sample({
+  clock: createReport,
+  fn: () => {
+    const type = form.fields.type.$value.getState();
+    const monthPeriod = form.fields.monthPeriod.$value.getState();
 
-  switch (type) {
-    case ReportType.OperatorsWorkingReport:
-      const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
-      const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
+    switch (type) {
+      case ReportType.OperatorsWorkingReport:
+        const startOfMonth = moment(monthPeriod).startOf('month').toISOString();
+        const endOfMonth = moment(monthPeriod).endOf('month').toISOString();
 
-      createOperatorsReportFx({ From: startOfMonth, To: endOfMonth });
-  }
+        return { From: startOfMonth, To: endOfMonth };
+      default:
+        return { From: null, To: null };
+    }
+  },
+  target: createOperatorsReportFx,
 });
 
-createOperatorsReportFx.doneData.watch((payload) => {});
+createReport.watch(() => {});
 
 $isModalOpen
   .on(openModalButtonClicked, () => true)
