@@ -10,10 +10,13 @@ import { Button, Title } from '../../tt-components';
 import { confirmRegistration } from './apiRegistration';
 import styles from './registration.module.scss';
 import { AccessDeniedPage } from '../AccessDeniedPage';
+import { useHistory } from 'react-router-dom';
 
 export const Registration = () => {
   const parsedSearch = queryString.parse(window.location.search);
   const { token } = parsedSearch;
+
+  const history = useHistory();
 
   const {
     handleSubmit,
@@ -39,7 +42,8 @@ export const Registration = () => {
         token,
         password: values.password,
       };
-      confirmRegistration(form);
+      await confirmRegistration(form);
+      history.push('/login');
     },
   });
 
@@ -59,9 +63,11 @@ export const Registration = () => {
   return (
     <div className={styles.registration}>
       <div className={styles.registration__left}>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <img src={logo} alt="logo" />
-          <Title size="24">TT Management</Title>
+          <Title size="24" style={{ marginLeft: 8 }}>
+            TT Management
+          </Title>
         </div>
 
         <img src={login} alt="login" style={{ width: '100%' }} />
@@ -72,8 +78,8 @@ export const Registration = () => {
           style={{ maxWidth: 400 }}
           onSubmit={handleSubmit}
         >
-          <Title size="40" color="white">
-            Введите пароль для входа в систему
+          <Title size="32" color="white">
+            Создайте пароль для входа в систему
           </Title>
 
           <Form.Item label={<label>Пароль</label>}>
@@ -104,7 +110,7 @@ export const Registration = () => {
             type="submit"
             style={{ width: '100%', marginTop: '24px' }}
           >
-            <span>Вход в систему</span>
+            <span>Сохранить пароль</span>
           </Button>
         </form>
       </div>

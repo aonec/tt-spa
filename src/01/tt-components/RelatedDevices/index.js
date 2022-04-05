@@ -35,7 +35,9 @@ export const State = styled.div`
   color: rgba(39, 47, 90, 0.8);
 `;
 
-export const Title = styled.h2``;
+export const Title = styled.h2`
+  color: white;
+`;
 
 export const ListWrap = styled.div`
   display: grid;
