@@ -31,7 +31,9 @@ export async function getTask(id) {
         perpName: currentStage?.perpetrator.name,
       },
       stages: {
-        items: stages,
+        items: stages.map((...rest) =>
+          changeItemStage(...rest, userOperatingStatus === 'Executor')
+        ),
       },
       device: createDevice(res.device),
     };
