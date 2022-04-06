@@ -7,6 +7,8 @@ import * as s from '01/r_comp';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import StyledTextArea from '../../../../tt-components/TextArea';
 import { Readings } from '../Readings';
+import { Flex } from '01/shared/ui/Layout/Flex';
+import { Space } from 'antd';
 
 const styles = css`
   panel {
@@ -96,8 +98,12 @@ const PushButton = ({ loading = false, ...props }) =>
     }
   `(
     <button data-big data-primary {...props}>
-      <Loader show={loading} />
-      <span>Завершить этап</span>
+      <Flex>
+        <div style={{ marginRight: loading ? 10 : 0 }}>
+          <Loader show={loading} />
+        </div>
+        <span>Завершить этап</span>
+      </Flex>
     </button>
   );
 
@@ -131,7 +137,7 @@ export const Panel = (
     UploadReadings,
   } = actions;
 
-  console.log(actions)
+  console.log(actions);
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone =
@@ -177,7 +183,7 @@ export const Panel = (
       })}
     >
       {AddPerpetrator && (
-        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })}  />
+        <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
 
       {Switch && (

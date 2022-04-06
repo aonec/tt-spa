@@ -6,9 +6,10 @@ import DeviceInfo from '01/_pages/MetersPage/components/MeterDevices/components/
 import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
+import moment from 'moment';
 
 type Props = {
-  getData: () => void;
+  getData: (data: any) => void;
 };
 
 type Reading = {
@@ -19,13 +20,14 @@ type Reading = {
   deviceId: number;
 };
 
-export const Readings: FC<Props> = () => {
+export const Readings: FC<Props> = ({ getData }) => {
   const [readings, setReadings] = useState<Reading[]>([]);
 
   const task = useStore($task);
 
   useEffect(() => {
     const devices = task?.individualDevices;
+
     if (devices) {
       setReadings(
         devices.map((device) => ({
@@ -38,6 +40,18 @@ export const Readings: FC<Props> = () => {
       );
     }
   }, [task]);
+
+  useEffect(() => {
+    if (readings.length) {
+      getData({
+        readings: readings.map((elem) => ({
+          ...elem,
+          value1: Number(elem.value1),
+          readingDate: moment().toISOString(true),
+        })),
+      });
+    }
+  }, [readings]);
 
   const onChangeReading = (index: number, value: number) => {
     setReadings((prev) =>
