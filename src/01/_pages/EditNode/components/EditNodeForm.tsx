@@ -38,6 +38,7 @@ import { FileData } from '01/hooks/useFilesUpload';
 import { postNodeDocuments } from '01/_api/editNode';
 import { deleteDoc } from '01/_api/task_profile_page';
 import _ from 'lodash';
+import { EditNodeCalculatorConnectionContainer } from '01/features/nodes/editNode/editNodeCalculatorConnection/EditNodeCalculatorConnectionContainer';
 
 interface EditNodeFormInterface {
   // calculator: CalculatorResponse;
@@ -281,12 +282,7 @@ const EditNodeForm = ({
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 2}>
-          {/*<NodeConnection*/}
-          {/*  // calculator={calculator}*/}
-          {/*  edit={true}*/}
-          {/*  setDeregisterDeviceValue={setDeregisterDeviceValue}*/}
-          {/*  setDeregisterDevice={setDeregisterDevice}*/}
-          {/*/>*/}
+          <EditNodeCalculatorConnectionContainer />
         </StyledFormPage>
 
         <StyledFormPage hidden={Number(currentTabKey) !== 3}>
