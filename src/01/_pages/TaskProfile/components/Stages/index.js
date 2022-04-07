@@ -10,6 +10,7 @@ import {
   Time,
   UserName,
 } from './StyledStages';
+import { Space } from '01/shared/ui/Layout/Space/Space';
 
 export const Stages = ({
   items = [],
@@ -48,6 +49,7 @@ export const Stages = ({
                     disabled={panelLoading ?? false}
                   >
                     Вернуть этап
+                    <Space w={panelLoading ? 10 : "0"} />
                     <Loader show={panelLoading ?? false} />
                   </Button>
                 )}

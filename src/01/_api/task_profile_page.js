@@ -1,4 +1,5 @@
 import axios from '01/axios';
+import { message } from 'antd';
 import {
   createTimeline,
   createTimer,
@@ -72,7 +73,11 @@ export async function moveStage(id = '', move = '', data = {}) {
       panelLoading: false,
       stageData: null,
     };
-  } catch (error) {}
+  } catch (error) {
+    message.error(error?.response?.data?.error?.Message);
+    message.info(error?.response?.data?.error?.Text);
+  }
+  return { panelLoading: false };
 }
 
 export async function deleteDoc(docId) {
