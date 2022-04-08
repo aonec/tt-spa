@@ -110,13 +110,15 @@ const ReadingLine = ({
         <Flex style={{ flexDirection: 'column' }}>
           {readingValues.map((value, index) => (
             <ReadingInputStyled
+              index={index + 1}
               onChange={(e) =>
                 onChangeReading(e.target.value as any, index + 1)
               }
               value={value}
               resource={device.resource}
               type="number"
-              style={{ marginBottom: '15px' }}
+              style={{ marginBottom: '15px', padding: "7px 12px" }}
+              placeholder={`T${index + 1}`}
             />
           ))}
         </Flex>
