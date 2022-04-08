@@ -15,6 +15,7 @@ export const Select = ({
 }) => {
   const [checked, setChecked] = React.useState([]);
   const [showList, setShowList] = React.useState(false);
+  console.log(props,)
   React.useEffect(() => {
     if (!loading) getSelectData(checked);
   }, [checked]);
