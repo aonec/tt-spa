@@ -1,7 +1,7 @@
 import axios from '01/axios';
-import { createDomain, forward } from 'effector';
+import { createDomain, forward, guard } from 'effector';
 import { createGate } from 'effector-react';
-import { PipeNodeResponse } from 'myApi';
+import { PipeNodeResponse } from '../../../../../myApi';
 
 const nodeDomain = createDomain('node');
 
@@ -13,19 +13,32 @@ const fetchNodeFx = nodeDomain.createEffect<number, PipeNodeResponse>((id) =>
 
 const NodeGate = createGate<{ id: number }>();
 
-$node.on(fetchNodeFx.doneData, (_, node) => node).reset(NodeGate.close);
+const refetchNode = nodeDomain.createEvent();
+
+$node
+  .on(fetchNodeFx.doneData, (_, node) => node)
+  .reset(NodeGate.close);
 
 forward({
   from: NodeGate.open.map(({ id }) => id),
   to: fetchNodeFx,
 });
 
+guard({
+  source: $node.map((node) => Number(node?.id)),
+  clock: refetchNode,
+  filter: (id) => Boolean(id),
+  target: fetchNodeFx
+})
+
 export const inputs = {
   NodeGate,
+  refetchNode,
 };
 
 export const outputs = {
   $node,
+  $loading: fetchNodeFx.pending,
 };
 
 export const nodeService = {

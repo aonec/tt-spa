@@ -16,7 +16,7 @@ import { Loader } from '../../components';
 import { Alert } from 'antd';
 import NodeRelatedDevices from '../../tt-components/NodeRelatedDevices';
 import Information from './components/Information';
-import NodeConnection from '../../tt-components/NodeConnection';
+import { NodeConnection } from '../../tt-components/NodeConnection';
 import Tabs from '../../tt-components/Tabs';
 import { TabsItemInterface } from '../../tt-components/interfaces';
 import { Events } from '../../tt-components';
@@ -107,7 +107,7 @@ export const NodeProfile = () => {
       },
     },
     {
-      title: 'Приборы',
+      title: 'Документы',
       key: 'documents',
       cb: () => {
         push(`${path}/documents`);

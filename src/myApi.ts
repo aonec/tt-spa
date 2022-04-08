@@ -1601,6 +1601,16 @@ export interface ExportResultServiceModelSuccessApiResponse {
   successResponse: ExportResultServiceModel | null;
 }
 
+export interface ExportResultServiceModel {
+  error?: string[] | null;
+  warning?: string[] | null;
+  info?: string[] | null;
+}
+
+export interface ExportResultServiceModelSuccessApiResponse {
+  successResponse: ExportResultServiceModel | null;
+}
+
 export enum EYearQuarter {
   First = "First",
   Second = "Second",
