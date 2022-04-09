@@ -11,7 +11,7 @@ export const usePageFetch = (state, dispatch) => {
   React.useEffect(() => {
     const initTaskData = async () => {
       const task = await getTask(id);
-      if (!task.node) {
+      if (!task?.node) {
         dispatch({ type: 'success', data: task });
         return;
       }

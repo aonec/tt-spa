@@ -1,10 +1,7 @@
 import React from 'react';
 import { useStore } from 'effector-react';
 import { $individualDevice } from '../../displayIndividualDevice/models';
-import {
-  EIndividualDeviceRateType,
-  EResourceType,
-} from 'myApi';
+import { EIndividualDeviceRateType, EResourceType } from 'myApi';
 import DeviceIcons from '01/_components/DeviceIcons';
 import { StockIconTT } from '01/_pages/Devices/components/DeviceBlock/DeviceBlock';
 import styled from 'styled-components';
@@ -72,7 +69,9 @@ export const RenderDeviceIcon = ({
   );
 };
 
-export function getResourceColor(resource: EResourceType) {
+export function getResourceColor(resource: EResourceType, index?: number) {
+  if (resource === EResourceType.Electricity && index === 2) return '#957400E5';
+
   const { color } = DeviceIcons[resource];
 
   return color;
