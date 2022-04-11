@@ -7,6 +7,8 @@ import { SpaceLine } from '01/shared/ui/Layout/Space/Space';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { ReadingInputStyled } from '01/features/tasks/correctionReadings/CorrectionReadings.styled';
 import moment from 'moment';
+import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 
 type Props = {
   getData: (data: any) => void;
@@ -43,19 +45,30 @@ export const Readings: FC<Props> = ({ getData }) => {
 
   useEffect(() => {
     if (readings.length) {
-      getData({
+      const readingValues = getData({
         readings: readings.map((elem) => ({
           ...elem,
-          value1: Number(elem.value1),
           readingDate: moment().toISOString(true),
         })),
       });
     }
   }, [readings]);
 
-  const onChangeReading = (index: number, value: number) => {
+  const onChangeReading = (
+    index: number,
+    value: number,
+    valueIndex: number
+  ) => {
     setReadings((prev) =>
-      prev.map((elem, i) => (i === index ? { ...elem, value1: value } : elem))
+      prev.map((elem, i) =>
+        i === index
+          ? {
+              ...elem,
+              [`value${valueIndex}`]:
+                (value as any) === '' ? '' : Number(value),
+            }
+          : elem
+      )
     );
   };
 
@@ -65,7 +78,9 @@ export const Readings: FC<Props> = ({ getData }) => {
         <ReadingLine
           device={device as any}
           reading={readings[index]}
-          onChangeReading={(value) => onChangeReading(index, value)}
+          onChangeReading={(value, valueIndex) =>
+            onChangeReading(index, value, valueIndex)
+          }
         />
       ))}
     </div>
@@ -79,18 +94,34 @@ const ReadingLine = ({
 }: {
   device: IndividualDeviceListItemResponse;
   reading?: Reading;
-  onChangeReading: (value: number) => void;
+  onChangeReading: (value: number, valueIndex: number) => void;
 }) => {
+  const rateNumber = getIndividualDeviceRateNumByName(device.rateType);
+  const readingValues = reading
+    ? getArrayByCountRange(
+        rateNumber,
+        (count) => (reading as any)[`value${count}`]
+      )
+    : [];
   return (
     <div>
       <Flex style={{ justifyContent: 'space-between' }}>
         <DeviceInfo device={device} />
-        <ReadingInputStyled
-          onChange={(e) => onChangeReading(e.target.value as any)}
-          value={reading?.value1}
-          resource={device.resource}
-          type="number"
-        />
+        <Flex style={{ flexDirection: 'column' }}>
+          {readingValues.map((value, index) => (
+            <ReadingInputStyled
+              index={index + 1}
+              onChange={(e) =>
+                onChangeReading(e.target.value as any, index + 1)
+              }
+              value={value}
+              resource={device.resource}
+              type="number"
+              style={{ marginBottom: '15px', padding: "7px 12px" }}
+              placeholder={`T${index + 1}`}
+            />
+          ))}
+        </Flex>
       </Flex>
       <SpaceLine />
     </div>

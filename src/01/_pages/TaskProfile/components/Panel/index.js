@@ -137,8 +137,6 @@ export const Panel = (
     UploadReadings,
   } = actions;
 
-  console.log(actions);
-
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
   const addReadingsDone =
     stages.items[2]?.name === 'Ввод показаний' && Completion;

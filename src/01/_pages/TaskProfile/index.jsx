@@ -57,7 +57,6 @@ export const TaskProfile = () => {
   usePageFetch(state, dispatch);
   const panel = usePanel(state, dispatch);
   // панель действий
-  console.log(state)
   const stages = useStages(state, dispatch);
   // ?
   const docs = useDocuments(state, dispatch);
