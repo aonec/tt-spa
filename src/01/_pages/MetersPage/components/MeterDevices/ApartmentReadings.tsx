@@ -22,6 +22,7 @@ import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory
 import { UserRolesGate } from '01/features/userRoles/displayUserRoles/models';
 import { ManagingFirmUserGate } from '01/features/staff/managingFirmUser/displayManagingFirmUser/models';
 import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { DeleteIndividualDeviceModalContainer } from '01/features/individualDevices/deleteIndividualDevice/DeleteIndividualDeviceModalContainer';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
@@ -79,6 +80,7 @@ export const ApartmentReadings = () => {
       <IndividualDevicesGate ApartmentId={Number(id)} />
       <CloseIndividualDeviceModal />
       <ConfirmReadingValueModal />
+      <DeleteIndividualDeviceModalContainer />
       {isSliderIndexExist && (
         <Meters id="meters-component">
           <MetersHeader>

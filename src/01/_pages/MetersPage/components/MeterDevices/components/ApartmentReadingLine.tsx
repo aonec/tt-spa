@@ -25,9 +25,10 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { ReactComponent as HistoryIcon } from './icons/history.svg';
 import { ReactComponent as StarIcon } from './icons/star.svg';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -65,6 +66,10 @@ const ApartmentReadingLine = ({
 
   const isSeniorOperator = user?.userRoles?.find(
     (role) => role.type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
+  );
+
+  const onDeleteIndividualDevice = useEvent(
+    deleteIndividualDeviceService.inputs.deleteDeviceButtonClicked
   );
 
   if (!readingsState) return null;
@@ -111,7 +116,7 @@ const ApartmentReadingLine = ({
       title: 'Удалить прибор',
       show: isSeniorOperator,
       color: 'red',
-      cb: () => closingIndividualDeviceButtonClicked(device),
+      cb: () => onDeleteIndividualDevice(device),
     },
   ];
 
