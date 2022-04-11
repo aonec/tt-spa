@@ -3,7 +3,7 @@ import {
   CurrentManagingFirmUserGate,
   fetchCurrentManagingFirmUser,
 } from './index';
-import { forward } from 'effector';
+import { forward, guard } from 'effector';
 import { getCurrentManagingFirmUser } from '01/_api/managingFirmUser';
 
 fetchCurrentManagingFirmUser.use(getCurrentManagingFirmUser);
@@ -13,7 +13,9 @@ $currentManagingFirmUser.on(
   (_, user) => user
 );
 
-forward({
-  from: CurrentManagingFirmUserGate.open,
-  to: fetchCurrentManagingFirmUser,
+guard({
+  source: $currentManagingFirmUser,
+  clock: CurrentManagingFirmUserGate.open,
+  filter: (user) => !user,
+  target: fetchCurrentManagingFirmUser,
 });

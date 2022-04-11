@@ -25,6 +25,9 @@ import { refetchIndividualDevices } from '01/features/individualDevices/displayI
 import { ReactComponent as HistoryIcon } from './icons/history.svg';
 import { ReactComponent as StarIcon } from './icons/star.svg';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
+import { useStore } from 'effector-react';
+import { ESecuredIdentityRoleName } from 'myApi';
+import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -56,6 +59,12 @@ const ApartmentReadingLine = ({
     sliderIndex,
     numberOfPreviousReadingsInputs,
     closed
+  );
+
+  const user = useStore($currentManagingFirmUser);
+
+  const isSeniorOperator = user?.userRoles?.find(
+    (role) => role.type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
   );
 
   if (!readingsState) return null;
@@ -95,6 +104,12 @@ const ApartmentReadingLine = ({
     {
       title: 'Закрытие прибора',
       show: !closed,
+      color: 'red',
+      cb: () => closingIndividualDeviceButtonClicked(device),
+    },
+    {
+      title: 'Удалить прибор',
+      show: isSeniorOperator,
       color: 'red',
       cb: () => closingIndividualDeviceButtonClicked(device),
     },

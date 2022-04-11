@@ -19,6 +19,9 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ConfirmReadingValueModal } from '01/features/readings/readingsInput/confirmInputReadingModal';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
+import { UserRolesGate } from '01/features/userRoles/displayUserRoles/models';
+import { ManagingFirmUserGate } from '01/features/staff/managingFirmUser/displayManagingFirmUser/models';
+import { CurrentManagingFirmUserGate } from '01/features/managementFirmUsers/displayCurrentUser/models';
 
 export const getIndividualDeviceRateNumByName = (
   rateType: EIndividualDeviceRateType
