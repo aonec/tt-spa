@@ -5,15 +5,15 @@ import { IndividualDeviceListItemResponse } from 'myApi';
 type Props = {
   visible: boolean;
   loading: boolean;
-  onClose: () => void;
-  onDelete: () => void;
+  handleClose: () => void;
+  handleDelete: () => void;
   device?: IndividualDeviceListItemResponse | null;
 };
 
 export const DeleteIndividualDeviceModal: React.FC<Props> = ({
   visible,
-  onClose,
-  onDelete,
+  handleClose,
+  handleDelete,
   device,
   loading,
 }) => {
@@ -23,8 +23,8 @@ export const DeleteIndividualDeviceModal: React.FC<Props> = ({
       visible={visible}
       saveButtonType="red"
       saveBtnText="Удалить прибор"
-      onCancel={onClose}
-      onSubmit={onDelete}
+      onCancel={handleClose}
+      onSubmit={handleDelete}
       loading={loading}
     >
       Прибор будет навсегда удален из системы. Показания по прибору не будут

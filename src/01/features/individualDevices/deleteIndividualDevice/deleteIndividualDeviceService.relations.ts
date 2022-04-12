@@ -3,13 +3,13 @@ import { deleteIndividualDeviceService } from './deleteIndividualDeviceService.m
 import { message } from 'antd';
 import { refetchIndividualDevices } from '../displayIndividualDevices/models';
 
-deleteIndividualDeviceService.outputs.$individualDevice
+deleteIndividualDeviceService.outputs.$currentIndividualDevice
   .on(
-    deleteIndividualDeviceService.inputs.deleteDeviceButtonClicked,
+    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened,
     (_, device) => device
   )
   .reset(
-    deleteIndividualDeviceService.inputs.closeModalButtonClicked,
+    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed,
     deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.doneData
   );
 
@@ -21,10 +21,10 @@ deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx.failData.watch(
 );
 
 guard({
-  source: deleteIndividualDeviceService.outputs.$individualDevice.map(
+  source: deleteIndividualDeviceService.outputs.$currentIndividualDevice.map(
     (device) => device?.id
   ),
-  clock: deleteIndividualDeviceService.inputs.acceptDeleteDeviceButtonClicked,
+  clock: deleteIndividualDeviceService.inputs.acceptDeleteDevice,
   filter: (id): id is number => typeof id === 'number',
   target: deleteIndividualDeviceService.inputs.deleteIndividualDeviceFx,
 });

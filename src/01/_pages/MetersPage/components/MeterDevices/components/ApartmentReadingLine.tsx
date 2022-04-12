@@ -27,7 +27,7 @@ import { ReactComponent as StarIcon } from './icons/star.svg';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
-import { $currentManagingFirmUser } from '01/features/managementFirmUsers/displayCurrentUser/models';
+import { $userRoleTypes } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
 
 interface ApartmentReadingLineProps {
@@ -62,14 +62,12 @@ const ApartmentReadingLine = ({
     closed
   );
 
-  const user = useStore($currentManagingFirmUser);
+  const userRoletypes = useStore($userRoleTypes);
 
-  const isSeniorOperator = user?.userRoles?.find(
-    (role) => role.type === ESecuredIdentityRoleName.ManagingFirmSeniorOperator
-  );
+  const isSeniorOperator = Boolean(userRoletypes) && userRoletypes?.includes(ESecuredIdentityRoleName.ManagingFirmSeniorOperator)
 
   const onDeleteIndividualDevice = useEvent(
-    deleteIndividualDeviceService.inputs.deleteDeviceButtonClicked
+    deleteIndividualDeviceService.inputs.deleteDeviceModalOpened
   );
 
   if (!readingsState) return null;

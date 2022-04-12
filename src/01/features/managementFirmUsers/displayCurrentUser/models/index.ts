@@ -6,6 +6,10 @@ export const $currentManagingFirmUser = createStore<ManagingFirmUserResponse | n
   null
 );
 
+export const $userRoleTypes = $currentManagingFirmUser.map((user) =>
+  user?.userRoles?.map((role) => role.type)
+);
+
 export const fetchCurrentManagingFirmUser = createEffect<
   void,
   ManagingFirmUserResponse

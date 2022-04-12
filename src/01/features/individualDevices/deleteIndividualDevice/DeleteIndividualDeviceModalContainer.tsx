@@ -6,15 +6,15 @@ import { DeleteIndividualDeviceModal } from './views/DeleteIndividualDeviceModal
 export const DeleteIndividualDeviceModalContainer = () => {
   const visible = useStore(deleteIndividualDeviceService.outputs.$isModalOpen);
   const device = useStore(
-    deleteIndividualDeviceService.outputs.$individualDevice
+    deleteIndividualDeviceService.outputs.$currentIndividualDevice
   );
   const loading = useStore(deleteIndividualDeviceService.outputs.$loading);
 
-  const onClose = useEvent(
-    deleteIndividualDeviceService.inputs.closeModalButtonClicked
+  const handleClose = useEvent(
+    deleteIndividualDeviceService.inputs.deleteDeviceModalClosed
   );
-  const onDelete = useEvent(
-    deleteIndividualDeviceService.inputs.acceptDeleteDeviceButtonClicked
+  const handleDelete = useEvent(
+    deleteIndividualDeviceService.inputs.acceptDeleteDevice
   );
 
   return (
@@ -22,8 +22,8 @@ export const DeleteIndividualDeviceModalContainer = () => {
       device={device}
       visible={visible}
       loading={loading}
-      onClose={() => onClose()}
-      onDelete={() => onDelete()}
+      handleClose={() => handleClose()}
+      handleDelete={() => handleDelete()}
     />
   );
 };

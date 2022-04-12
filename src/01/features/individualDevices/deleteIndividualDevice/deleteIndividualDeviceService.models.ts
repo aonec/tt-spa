@@ -6,16 +6,16 @@ const deleteIndividualDeviceDomain = createDomain(
   'deleteIndividualDeviceService'
 );
 
-const $individualDevice = deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
+const $currentIndividualDevice = deleteIndividualDeviceDomain.createStore<IndividualDeviceListItemResponse | null>(
   null
 );
 
-const $isModalOpen = $individualDevice.map(Boolean);
+const $isModalOpen = $currentIndividualDevice.map(Boolean);
 
-const deleteDeviceButtonClicked = deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
-const closeModalButtonClicked = deleteIndividualDeviceDomain.createEvent();
+const deleteDeviceModalOpened = deleteIndividualDeviceDomain.createEvent<IndividualDeviceListItemResponse>();
+const deleteDeviceModalClosed = deleteIndividualDeviceDomain.createEvent();
 
-const acceptDeleteDeviceButtonClicked = deleteIndividualDeviceDomain.createEvent();
+const acceptDeleteDevice = deleteIndividualDeviceDomain.createEvent();
 
 const deleteIndividualDeviceFx = deleteIndividualDeviceDomain.createEffect<
   number,
@@ -24,14 +24,14 @@ const deleteIndividualDeviceFx = deleteIndividualDeviceDomain.createEffect<
 
 export const deleteIndividualDeviceService = {
   inputs: {
-    deleteDeviceButtonClicked,
-    closeModalButtonClicked,
-    acceptDeleteDeviceButtonClicked,
+    deleteDeviceModalOpened,
+    deleteDeviceModalClosed,
+    acceptDeleteDevice,
     deleteIndividualDeviceFx,
   },
   outputs: {
     $isModalOpen,
-    $individualDevice,
+    $currentIndividualDevice,
     $loading: deleteIndividualDeviceFx.pending,
   },
 };
