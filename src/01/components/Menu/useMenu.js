@@ -49,7 +49,7 @@ export function useMenu() {
     },
     {
       name: 'Профиль компании',
-      to: '/settings/',
+      to: '/companyProfile/',
       icon: 'company',
       perm: ['ManagingFirmAdministrator'],
     },
@@ -64,6 +64,12 @@ export function useMenu() {
       to: '/meters/',
       icon: 'doc',
       perm: ['ManagingFirmOperator'],
+    },
+    {
+      name: 'Настройки',
+      to: '/settings/controllers',
+      icon: 'settings',
+      perm: ['ManagingFirmSeniorOperator'],
     },
     {
       name: 'Лог действий',
