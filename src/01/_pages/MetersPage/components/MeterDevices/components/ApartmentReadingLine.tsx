@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useReadings } from '../../../../../hooks/useReadings';
-import { message, Modal, Tooltip } from 'antd';
+import { message, Tooltip } from 'antd';
 import DeviceInfo from './DeviceInfo';
-import {
-  IndividualDeviceListItemResponse,
-  EResourceType,
-} from '../../../../../../myApi';
+import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
 import { ButtonTT, MenuButtonTT } from '01/tt-components';
 import { useHistory, useParams } from 'react-router-dom';
 import { closingIndividualDeviceButtonClicked } from '01/features/individualDevices/closeIndividualDevice/models';
@@ -16,19 +12,19 @@ import {
   StyledModal as StyledAntdModal,
 } from '01/shared/ui/Modal/Modal';
 import { Flex } from '01/shared/ui/Layout/Flex';
-import { ReactComponent as SwitchIcon } from './icons/switch.svg';
-import { ReactComponent as CheckIcon } from './icons/check.svg';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import confirm from 'antd/lib/modal/confirm';
 import { reopenIndividualDevice } from '01/_api/individualDevices';
 import { refetchIndividualDevices } from '01/features/individualDevices/displayIndividualDevices/models';
-import { ReactComponent as HistoryIcon } from './icons/history.svg';
-import { ReactComponent as StarIcon } from './icons/star.svg';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
 import { useEvent, useStore } from 'effector-react';
 import { ESecuredIdentityRoleName } from 'myApi';
 import { $userRoleTypes } from '01/features/managementFirmUsers/displayCurrentUser/models';
 import { deleteIndividualDeviceService } from '01/features/individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.models';
+
+import { FullDeviceLine } from './apartment_reading_line.styled'
+import { SwitchIcon, CheckIcon, HistoryIcon, StarIcon } from "ui-kit/icons";
+import {ActionButton} from "./action_button/action_button";
 
 interface ApartmentReadingLineProps {
   device: IndividualDeviceListItemResponse;
@@ -36,13 +32,6 @@ interface ApartmentReadingLineProps {
   numberOfPreviousReadingsInputs: number;
   closed?: boolean;
 }
-
-export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
-  <HistoryIcon
-    style={{ cursor: 'pointer' }}
-    onClick={() => openReadingsHistoryModal(deviceId)}
-  />
-);
 
 const ApartmentReadingLine = ({
   device,
@@ -215,104 +204,19 @@ const SelectSwitchDeiveTypeModal = ({
       }
     >
       <Flex>
-        <SwitchTypeButton
+        <ActionButton
           onClick={setSwitchType('switch')}
           active={isSwitchActive('switch')}
-        >
-          <SwitchIcon />
-          <Space />
-          Замена прибора
-        </SwitchTypeButton>
-        <SwitchTypeButton
+          type='switch'
+        />
+        <ActionButton
           onClick={setSwitchType('check')}
           active={isSwitchActive('check')}
-        >
-          <CheckIcon />
-          <Space />
-          Поверка прибора
-        </SwitchTypeButton>
+          type='check'
+        />
       </Flex>
     </StyledAntdModal>
   );
 };
-
-interface SwitchTypeButtonProps {
-  active?: boolean;
-}
-
-const SwitchTypeButton = styled(Flex)`
-  border: 1px solid #dcdee4;
-  border-radius: 8px;
-  width: 100%;
-  transition: 0.3s;
-  padding: 16px 0;
-  justify-content: center;
-  cursor: pointer;
-  margin-right: 20px;
-  font-size: 20px;
-  font-weight: 500;
-  color: #272f5aee;
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  ${(props: SwitchTypeButtonProps) =>
-    props.active
-      ? `{
-    border-color: #189ee9;
-    box-shadow: 0 4px 8px 0 #189ee955;
-  }`
-      : ''}
-
-  &:hover {
-    border-color: #189ee9;
-  }
-`;
-
-const FullDeviceLine = styled.div`
-  display: grid;
-  grid-template-columns: minmax(330px, 4.75fr) 2.25fr 2.25fr 1.2fr;
-  column-gap: 16px;
-  margin-top: 4px;
-  align-items: center;
-  justify-content: flex-start;
-  white-space: nowrap;
-  padding: 4px 0px 10px 8px;
-  border-bottom: 1px solid #dcdee4;
-  ${({ closed }: { closed?: boolean }) => (closed ? 'opacity: 0.7;' : '')}
-`;
-
-export const getInputColor = (resource: EResourceType) => {
-  switch (resource) {
-    case 'HotWaterSupply':
-      return '#FF8C68';
-    case 'ColdWaterSupply':
-      return '#79AFFF';
-    case 'Heat':
-      return 'Отопление';
-    case 'Electricity':
-      return '#E2B104';
-  }
-};
-
-export const DeviceReadingsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  border: 1px solid ${(props) => (props.color ? props.color : 'var(--main-90)')};
-  border-left-width: 4px;
-  max-width: 200px;
-  padding: 8px 8px 8px 12px;
-
-  &:focus-within {
-    box-shadow: var(--shadow);
-  }
-
-  .ant-input-affix-wrapper:focus,
-  .ant-input-affix-wrapper-focused {
-    box-shadow: none;
-  }
-`;
 
 export default ApartmentReadingLine;

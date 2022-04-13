@@ -7,11 +7,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { gridTemp } from '../MeteringDevicesList';
 import { MeteringDeviceReadingInput } from '../MeteringDeviceReadingInput';
-import { ReactComponent as HistoryIcon } from '01/_pages/MetersPage/components/MeterDevices/components/icons/history.svg';
 import { useMeteringDeviceReadings } from './useMeteringDeviceReadings';
 import { ConsumptionInput } from '../ConsumptionInput/ConsumptionInput';
 import { round } from '01/hooks/useReadings';
 import _ from 'lodash';
+import {HistoryIcon} from "ui-kit/icons";
 
 interface Props {
   sliderIndex: number;
