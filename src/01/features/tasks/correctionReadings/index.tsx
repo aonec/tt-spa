@@ -12,7 +12,6 @@ import IsActive from '01/tt-components/IsActive';
 import { translateMountPlace } from '01/utils/translateMountPlace';
 import { DateLine } from '01/_components/DateLine/DateLine';
 import { getIndividualDeviceRateNumByName } from '01/_pages/MetersPage/components/MeterDevices/ApartmentReadings';
-import { ReadingsHistoryButton } from '01/_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
 import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import { Form, message } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
@@ -31,6 +30,7 @@ import {
   CorrectionReadingsGate,
   completeStage,
 } from './models';
+import {ReadingsHistoryButton} from "ui-kit/shared_components/reading_history_button";
 
 export const CorrectionReadingsPanel = () => {
 

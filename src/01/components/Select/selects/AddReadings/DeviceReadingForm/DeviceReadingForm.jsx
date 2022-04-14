@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
-import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+
+import rateTypeToNumber from '../../../../../_api/utils/rateTypeToNumber';
 import DeviceIcons from '../../../../../_components/DeviceIcons';
 import styles from '../../../../../_pages/Devices/components/TabsDevices.module.scss';
 import { Icon } from '../../../../../tt-components/Icon';
@@ -8,8 +10,8 @@ import ActiveLine from './ActiveLine/ActiveLine';
 import { DateLine } from '../../../../../_components/DateLine/DateLine';
 import ReadingsBlock from '../../../../../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
 import { updateReadings } from '../../../../../Redux/ducks/readings/actionCreators';
-import { useDispatch } from 'react-redux';
-import { DeviceReadingsContainer } from '../../../../../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+
+import { DeviceReadingsContainer } from '../../../../../hooks/useReadings';
 
 const FullDeviceLine = styled.div`
   display: grid;

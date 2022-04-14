@@ -4,10 +4,7 @@ import { formEmptyReadingsObject } from '../utils/formEmptyReadingsObject';
 import { getMonthFromDate } from '../utils/getMonthFromDate';
 import moment from 'moment';
 import axios from '../axios';
-import {
-  DeviceReadingsContainer,
-  getInputColor,
-} from '../_pages/MetersPage/components/MeterDevices/components/ApartmentReadingLine';
+
 import ReadingsBlock, {
   getMeasurementUnit,
 } from '../_pages/MetersPage/components/MeterDevices/components/ReadingsBlock';
@@ -1008,3 +1005,35 @@ function getReadingValuesArray(
 
   return res;
 }
+
+export const DeviceReadingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  border: 1px solid ${(props) => (props.color ? props.color : 'var(--main-90)')};
+  border-left-width: 4px;
+  max-width: 200px;
+  padding: 8px 8px 8px 12px;
+
+  &:focus-within {
+    box-shadow: var(--shadow);
+  }
+
+  .ant-input-affix-wrapper:focus,
+  .ant-input-affix-wrapper-focused {
+    box-shadow: none;
+  }
+`;
+
+export const getInputColor = (resource: EResourceType) => {
+  switch (resource) {
+    case 'HotWaterSupply':
+      return '#FF8C68';
+    case 'ColdWaterSupply':
+      return '#79AFFF';
+    case 'Heat':
+      return 'Отопление';
+    case 'Electricity':
+      return '#E2B104';
+  }
+};

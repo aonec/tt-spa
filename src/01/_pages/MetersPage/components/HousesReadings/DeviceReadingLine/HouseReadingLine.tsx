@@ -14,10 +14,9 @@ import { useDispatch } from 'react-redux';
 import { setInputUnfocused } from '01/Redux/ducks/readings/actionCreators';
 import { v4 as uuid } from 'uuid';
 import { IndividualDeviceListItemResponse } from '../../../../../../myApi';
-import { useHistory } from 'react-router-dom';
-import { ReactComponent as HistoryComponent } from '../../MeterDevices/components/icons/history.svg';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { openReadingsHistoryModal } from '01/features/readings/displayReadingHistory/models';
+import { HistoryIcon } from "ui-kit/icons";
 
 export const HouseReadingLine: React.FC<Props> = React.memo(
   ({ device, numberOfPreviousReadingsInputs, sliderIndex, disabled }) => {
@@ -114,7 +113,7 @@ export const HouseReadingLine: React.FC<Props> = React.memo(
         <div>-</div>
 
         <Flex style={{ minWidth: 80 }}>
-          <HistoryComponent
+          <HistoryIcon
             style={{ cursor: 'pointer' }}
             onClick={() => openReadingsHistoryModal(device.id)}
           />
