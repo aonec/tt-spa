@@ -2,6 +2,7 @@ import React from 'react';
 import { PageHeader } from '../../../../shared/ui/PageHeader';
 import { useHistory, useParams } from 'react-router-dom';
 import { Tabs } from 'antd';
+import { InspectorsDistributionPage } from '../../inspectorsDistributionService/views/InspectorsDistributionPage';
 
 const { TabPane } = Tabs;
 
@@ -29,7 +30,7 @@ export const SettingsPage = () => {
       <Tabs activeKey={section} onChange={history.push}>
         <TabPane tab="Распредление контролеров" key="controllers"></TabPane>
         <TabPane tab="Распредление инспекторов" key="inspectors">
-          Content of Tab Pane 2
+          <InspectorsDistributionPage />
         </TabPane>
       </Tabs>
     </>
