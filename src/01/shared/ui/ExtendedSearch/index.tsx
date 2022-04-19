@@ -5,6 +5,7 @@ import { Space } from '../Layout/Space/Space';
 import { ReactComponent as FilerIcon } from './assets/filter.svg';
 
 type Props = {
+  open: boolean;
   handleClose?: () => void;
   handleOpen?: () => void;
   extendedSearchContent: ReactElement;

@@ -10,13 +10,14 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
 import { Select } from 'antd';
 import React, { FC } from 'react';
-import styled from 'styled-components';
+import { Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 
 export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProps> = ({
   form,
   cities,
   existingStreets,
+  isExtendedSearchOpen
 }) => {
   const street = form.fields.Street.value;
 
@@ -34,6 +35,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
     <>
       <Wrap>
         <ExtendedSearch
+          open={isExtendedSearchOpen}
           handleClose={() => {}}
           handleOpen={() => {}}
           extendedSearchContent={<></>}
@@ -79,7 +81,3 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
     </>
   );
 };
-
-const Wrap = styled.div`
-  max-width: 1000px;
-`;

@@ -1,7 +1,7 @@
 import { $existingCities } from '01/features/housingStocks/displayHousingStockCities/models';
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useForm } from 'effector-forms/dist';
-import { useStore } from 'effector-react';
+import { useEvent, useStore } from 'effector-react';
 import React from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
@@ -13,12 +13,25 @@ export const SearchInspectorsHousingStocksContainer = () => {
 
   const cities = useStore($existingCities);
   const existingStreets = useStore($existingStreets);
+  const isExtendedSearchOpen = useStore(
+    searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
+  );
+
+  const handelExtendedSearchOpen = useEvent(
+    searchInspectorsHousingStockService.inputs.extendedSearchOpened
+  );
+  const handleExtendedSearchClose = useEvent(
+    searchInspectorsHousingStockService.inputs.extendedSearchClosed
+  );
 
   return (
     <>
       <ExistingCitiesGate />
       <ExistingStreetsGate City={form.fields.City.value} />
       <SearchInspectorsHousingStocks
+        handelExtendedSearchOpen={() => handelExtendedSearchOpen()}
+        handleExtendedSearchClose={() => handleExtendedSearchClose()}
+        isExtendedSearchOpen={isExtendedSearchOpen}
         form={form}
         cities={cities}
         existingStreets={existingStreets}

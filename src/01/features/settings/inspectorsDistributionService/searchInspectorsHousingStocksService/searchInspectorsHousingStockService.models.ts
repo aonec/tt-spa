@@ -5,6 +5,13 @@ const searchInspectorsHousingStockServiceDomain = createDomain(
   'searchInspectorsHousingStockService'
 );
 
+const $isExtendedSearchOpen = searchInspectorsHousingStockServiceDomain.createStore(
+  false
+);
+
+const extendedSearchOpened = searchInspectorsHousingStockServiceDomain.createEvent();
+const extendedSearchClosed = searchInspectorsHousingStockServiceDomain.createEvent();
+
 const searchForm = createForm({
   fields: {
     City: {
@@ -33,5 +40,8 @@ export const searchInspectorsHousingStockService = {
   },
   inputs: {
     startSearchInspectorsHousingStocks,
+    extendedSearchOpened,
+    extendedSearchClosed,
   },
+  outputs: { $isExtendedSearchOpen },
 };
