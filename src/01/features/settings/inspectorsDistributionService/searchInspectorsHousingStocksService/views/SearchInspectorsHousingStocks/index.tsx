@@ -35,6 +35,18 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
     refs: [cityRef, streetRef, homeNumberRef],
   } = useOnEnterSwitch(3);
 
+  const fieldsArray = [
+    form.fields.City,
+    form.fields.Street,
+    form.fields.HousingStockNumber,
+  ];
+
+  function clearValuesOnFocus(index: number) {
+    const subFieldsArray = fieldsArray.slice(index, fieldsArray.length);
+
+    subFieldsArray.forEach((field) => field.onChange(''));
+  }
+
   return (
     <>
       <Wrap>
@@ -47,8 +59,15 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               <Form.Item label="Инспектор">
                 <StyledSelector
                   placeholder="Выберите из списка"
-                  value={form.fields.InspectorId.value}
-                  onChange={form.fields.InspectorId.onChange}
+                  value={form.fields.InspectorId.value || undefined}
+                  onChange={(value) => {
+                    if (!value) {
+                      form.fields.InspectorId.reset();
+                    } else {
+                      form.fields.InspectorId.onChange(value);
+                    }
+                  }}
+                  allowClear
                 >
                   {inspectors?.map((inspector) => (
                     <Select.Option key={inspector.id} value={inspector.id}>
@@ -58,7 +77,19 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                 </StyledSelector>
               </Form.Item>
               <Form.Item label="Домоуправление">
-                <StyledSelector placeholder="Выберите из списка">
+                <StyledSelector
+                  value={form.fields.HouseManagement.value || undefined}
+                  onChange={(value) => {
+                    if (!value) {
+                      form.fields.HouseManagement.reset();
+                    } else {
+                      form.fields.HouseManagement.onChange(value);
+                    }
+                  }}
+                  allowClear
+                  onClear={console.log}
+                  placeholder="Выберите из списка"
+                >
                   {hosuingManagements?.map((houseManagement) => (
                     <Select.Option
                       key={houseManagement.key}
@@ -79,8 +110,9 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               }}
               ref={cityRef}
               placeholder="Город"
-              value={form.fields.City.value}
+              value={form.fields.City.value || undefined}
               onChange={form.fields.City.onChange}
+              onFocus={() => clearValuesOnFocus(0)}
             >
               {cities &&
                 cities.map((city) => (
@@ -97,12 +129,19 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                 fromEnter(() => form.fields.Street.onChange(streetMatch))(e);
                 keyDownEnterGuardedHandler(1)(e);
               }}
+              onFocus={() => clearValuesOnFocus(1)}
               options={options}
               placeholder="Улица"
             />
             <StyledInput
+              type="number"
               ref={homeNumberRef}
               placeholder="Дом"
+              value={form.fields.HousingStockNumber.value}
+              onChange={(e) =>
+                form.fields.HousingStockNumber.onChange(e.target.value)
+              }
+              onFocus={() => clearValuesOnFocus(2)}
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(2)(e);
               }}
