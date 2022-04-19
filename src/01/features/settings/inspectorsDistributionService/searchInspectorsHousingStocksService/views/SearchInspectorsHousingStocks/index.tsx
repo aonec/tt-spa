@@ -20,6 +20,8 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
   isExtendedSearchOpen,
   handelExtendedSearchOpen,
   handleExtendedSearchClose,
+  inspectors,
+  hosuingManagements,
 }) => {
   const street = form.fields.Street.value;
 
@@ -43,10 +45,29 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">
-                <StyledSelector placeholder="Выберите из списка"></StyledSelector>
+                <StyledSelector
+                  placeholder="Выберите из списка"
+                  value={form.fields.InspectorId.value}
+                  onChange={form.fields.InspectorId.onChange}
+                >
+                  {inspectors?.map((inspector) => (
+                    <Select.Option key={inspector.id} value={inspector.id}>
+                      {inspector.fullName}
+                    </Select.Option>
+                  ))}
+                </StyledSelector>
               </Form.Item>
               <Form.Item label="Домоуправление">
-                <StyledSelector placeholder="Выберите из списка"></StyledSelector>
+                <StyledSelector placeholder="Выберите из списка">
+                  {hosuingManagements?.map((houseManagement) => (
+                    <Select.Option
+                      key={houseManagement.key}
+                      value={houseManagement.key!}
+                    >
+                      {houseManagement.value}
+                    </Select.Option>
+                  ))}
+                </StyledSelector>
               </Form.Item>
             </ExtendedSearchWrap>
           }

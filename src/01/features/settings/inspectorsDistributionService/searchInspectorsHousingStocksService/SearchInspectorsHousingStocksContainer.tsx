@@ -7,6 +7,8 @@ import { searchInspectorsHousingStockService } from './searchInspectorsHousingSt
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { ExistingCitiesGate } from '01/features/housingStocks/displayHousingStockCities/models';
+import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
+import { displayHousingStockFiltersService } from '01/features/housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.models';
 
 export const SearchInspectorsHousingStocksContainer = () => {
   const form = useForm(searchInspectorsHousingStockService.forms.searchForm);
@@ -16,6 +18,10 @@ export const SearchInspectorsHousingStocksContainer = () => {
   const isExtendedSearchOpen = useStore(
     searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
   );
+  const inspectors = useStore(displayInspectorsService.outputs.$inspectorsList);
+  const housingManagementList = useStore(
+    displayHousingStockFiltersService.outputs.$hosuingManagementList
+  );
 
   const handelExtendedSearchOpen = useEvent(
     searchInspectorsHousingStockService.inputs.extendedSearchOpened
@@ -24,8 +30,13 @@ export const SearchInspectorsHousingStocksContainer = () => {
     searchInspectorsHousingStockService.inputs.extendedSearchClosed
   );
 
+  const { InspectorsGate } = displayInspectorsService.inputs;
+  const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
+
   return (
     <>
+      <InspectorsGate />
+      <HousingStockFiltersGate />
       <ExistingCitiesGate />
       <ExistingStreetsGate City={form.fields.City.value} />
       <SearchInspectorsHousingStocks
@@ -35,6 +46,8 @@ export const SearchInspectorsHousingStocksContainer = () => {
         form={form}
         cities={cities}
         existingStreets={existingStreets}
+        inspectors={inspectors}
+        hosuingManagements={housingManagementList}
       />
     </>
   );

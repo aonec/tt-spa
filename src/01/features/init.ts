@@ -56,3 +56,5 @@ import './tasks/correctionReadings/models/init';
 import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
+import './Inspectors/displayInspectors/displayInspectorsService.init';
+import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';

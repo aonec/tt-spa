@@ -1,3 +1,5 @@
+import { GuidStringDictionaryItem, InspectorResponse } from 'myApi';
+
 export type SearchInspectorsHousingStocksProps = {
   form: any;
   cities: string[] | null;
@@ -5,4 +7,6 @@ export type SearchInspectorsHousingStocksProps = {
   isExtendedSearchOpen: boolean;
   handelExtendedSearchOpen: () => void;
   handleExtendedSearchClose: () => void;
+  inspectors: InspectorResponse[] | null;
+  hosuingManagements?: GuidStringDictionaryItem[] | null;
 };
