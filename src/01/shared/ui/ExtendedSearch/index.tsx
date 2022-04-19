@@ -1,40 +1,56 @@
-import React, { FC, ReactElement } from 'react';
-import styled from 'styled-components';
-import { Flex } from '../Layout/Flex';
-import { Space } from '../Layout/Space/Space';
+import { ButtonTT } from '01/tt-components';
+import React, { FC } from 'react';
+import { ChevronUp, XLg } from 'react-bootstrap-icons';
 import { ReactComponent as FilerIcon } from './assets/filter.svg';
+import {
+  ExtendedSearchButton,
+  ExtendedSearchWrap,
+  HideExtendedSearchButton,
+  SearchContentWrap,
+  SearchWrap,
+  Content,
+  Footer,
+  Header,
+} from './components';
+import { ExtendedSearchProps } from './types';
 
-type Props = {
-  open: boolean;
-  handleClose?: () => void;
-  handleOpen?: () => void;
-  extendedSearchContent: ReactElement;
-};
-
-export const ExtendedSearch: FC<Props> = ({ children }) => {
-  return (
-    <Flex style={{ padding: '0 0 15px' }}>
-      <ExtendedSearchButton>
+export const ExtendedSearch: FC<ExtendedSearchProps> = ({
+  children,
+  open,
+  handleClose,
+  handleOpen,
+  extendedSearchContent,
+}) => {
+  return open ? (
+    <ExtendedSearchWrap>
+      <Header>
+        <HideExtendedSearchButton onClick={handleClose}>
+          <ChevronUp />
+        </HideExtendedSearchButton>
+        <ButtonTT style={{ marginLeft: '10px' }} small color="white">
+          Очистить <XLg />
+        </ButtonTT>
+      </Header>
+      <Content>{extendedSearchContent}</Content>
+      <Footer>
+        <ButtonTT color="white" onClick={handleClose}>
+          Отмена
+        </ButtonTT>
+        <ButtonTT
+          color="blue"
+          onClick={handleClose}
+          style={{ marginLeft: '10px' }}
+        >
+          Применить фильтры
+        </ButtonTT>
+      </Footer>
+    </ExtendedSearchWrap>
+  ) : (
+    <SearchWrap>
+      <ExtendedSearchButton onClick={handleOpen}>
         <FilerIcon />
       </ExtendedSearchButton>
-      <Space />
-      {children}
-    </Flex>
+      <SearchContentWrap>{children}</SearchContentWrap>
+    </SearchWrap>
   );
 };
-
-const ExtendedSearchButton = styled(Flex)`
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  border: 1px solid #dcdee4;
-  justify-content: center;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.2s;
-
-  &:hover {
-    border-color: #189ee9;
-    background-color: #189ce91e;
-  }
-`;

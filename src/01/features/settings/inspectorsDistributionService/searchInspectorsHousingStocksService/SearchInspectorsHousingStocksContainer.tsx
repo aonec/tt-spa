@@ -2,7 +2,7 @@ import { $existingCities } from '01/features/housingStocks/displayHousingStockCi
 import { $existingStreets } from '01/features/housingStocks/displayHousingStockStreets/model';
 import { useForm } from 'effector-forms/dist';
 import { useEvent, useStore } from 'effector-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { searchInspectorsHousingStockService } from './searchInspectorsHousingStockService.models';
 import { SearchInspectorsHousingStocks } from './views/SearchInspectorsHousingStocks';
 import { ExistingStreetsGate } from '01/features/housingStocks/displayHousingStockStreets/model';

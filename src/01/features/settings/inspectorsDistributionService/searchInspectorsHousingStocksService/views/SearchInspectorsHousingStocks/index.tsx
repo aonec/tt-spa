@@ -8,16 +8,18 @@ import {
 } from '01/shared/ui/Fields';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { useAutocomplete } from '01/_pages/MetersPage/hooks/useFilter';
-import { Select } from 'antd';
+import { Form, Select } from 'antd';
 import React, { FC } from 'react';
-import { Wrap } from './components';
+import { ExtendedSearchWrap, Wrap } from './components';
 import { SearchInspectorsHousingStocksProps } from './types';
 
 export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProps> = ({
   form,
   cities,
   existingStreets,
-  isExtendedSearchOpen
+  isExtendedSearchOpen,
+  handelExtendedSearchOpen,
+  handleExtendedSearchClose,
 }) => {
   const street = form.fields.Street.value;
 
@@ -36,9 +38,18 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
       <Wrap>
         <ExtendedSearch
           open={isExtendedSearchOpen}
-          handleClose={() => {}}
-          handleOpen={() => {}}
-          extendedSearchContent={<></>}
+          handleClose={handleExtendedSearchClose}
+          handleOpen={handelExtendedSearchOpen}
+          extendedSearchContent={
+            <ExtendedSearchWrap>
+              <Form.Item label="Инспектор">
+                <StyledSelector placeholder="Выберите из списка"></StyledSelector>
+              </Form.Item>
+              <Form.Item label="Домоуправление">
+                <StyledSelector placeholder="Выберите из списка"></StyledSelector>
+              </Form.Item>
+            </ExtendedSearchWrap>
+          }
         >
           <Grid temp="0.5fr 1fr 0.25fr" gap="15px" style={{ width: '100%' }}>
             <StyledSelector

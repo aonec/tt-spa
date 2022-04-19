@@ -10,8 +10,6 @@ forward({
 });
 
 searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
-  .on(
-    searchInspectorsHousingStockService.inputs.extendedSearchOpened,
-    () => true
+  .on(searchInspectorsHousingStockService.inputs.extendedSearchOpened, () => true
   )
   .reset(searchInspectorsHousingStockService.inputs.extendedSearchClosed);
