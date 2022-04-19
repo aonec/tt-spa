@@ -1,0 +1,37 @@
+import { createDomain } from 'effector';
+import { createForm } from 'effector-forms';
+
+const searchInspectorsHousingStockServiceDomain = createDomain(
+  'searchInspectorsHousingStockService'
+);
+
+const searchForm = createForm({
+  fields: {
+    City: {
+      init: '',
+    },
+    Street: {
+      init: '',
+    },
+    HousingStockNumber: {
+      init: '',
+    },
+    HouseManagement: {
+      init: '',
+    },
+    InspectorId: {
+      init: null as number | null,
+    },
+  },
+});
+
+const startSearchInspectorsHousingStocks = searchInspectorsHousingStockServiceDomain.createEvent();
+
+export const searchInspectorsHousingStockService = {
+  forms: {
+    searchForm,
+  },
+  inputs: {
+    startSearchInspectorsHousingStocks,
+  },
+};
