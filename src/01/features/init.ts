@@ -58,3 +58,4 @@ import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService
 import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import './Inspectors/displayInspectors/displayInspectorsService.init';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
+import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
