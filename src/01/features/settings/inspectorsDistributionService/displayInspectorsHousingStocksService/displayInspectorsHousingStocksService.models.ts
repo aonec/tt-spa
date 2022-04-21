@@ -1,6 +1,7 @@
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorOnHousingStockResponse } from 'myApi';
+import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksService.api';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 
 const displayInspectorsHousingStocksServiceDomain = createDomain(
@@ -14,7 +15,7 @@ const $inspectorsHousingStocksList = displayInspectorsHousingStocksServiceDomain
 const fetchInspectorsHousingStocksListFx = displayInspectorsHousingStocksServiceDomain.createEffect<
   GetInspectorsHousingStocksRequestParams,
   InspectorOnHousingStockResponse[] | null
->();
+>(getInspectorsHousingStocks);
 
 const $loading = fetchInspectorsHousingStocksListFx.pending;
 

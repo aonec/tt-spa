@@ -1,3 +1,5 @@
-export type InspectorsHosuingsStocksListProps = {
+import { InspectorOnHousingStockResponse } from 'myApi';
 
-}
+export type InspectorsHosuingsStocksListProps = {
+  housingStocks: InspectorOnHousingStockResponse[] | null;
+};

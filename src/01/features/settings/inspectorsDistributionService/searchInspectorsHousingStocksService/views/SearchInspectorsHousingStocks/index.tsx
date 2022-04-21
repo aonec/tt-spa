@@ -22,6 +22,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
   handleExtendedSearchClose,
   inspectors,
   hosuingManagements,
+  handleSearch,
 }) => {
   const street = form.fields.Street.value;
 
@@ -107,6 +108,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
             <StyledSelector
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
+                fromEnter(handleSearch)(e)
               }}
               ref={cityRef}
               placeholder="Город"
@@ -128,6 +130,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               onKeyDown={(e) => {
                 fromEnter(() => form.fields.Street.onChange(streetMatch))(e);
                 keyDownEnterGuardedHandler(1)(e);
+                fromEnter(handleSearch)(e)
               }}
               onFocus={() => clearValuesOnFocus(1)}
               options={options}
@@ -144,6 +147,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               onFocus={() => clearValuesOnFocus(2)}
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(2)(e);
+                fromEnter(handleSearch)(e)
               }}
             />
           </Grid>

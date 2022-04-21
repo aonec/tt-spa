@@ -1,5 +1,4 @@
-import { forward } from 'effector';
-import { sample } from 'lodash';
+import { forward, sample } from 'effector';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { displayInspectorsHousingStocksService } from './displayInspectorsHousingStocksService.models';
 
@@ -16,7 +15,7 @@ sample({
       .handleGetInspectorsHousingStocks,
   target:
     displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx,
+      .fetchInspectorsHousingStocksListFx as any,
 });
 
 forward({
@@ -26,4 +25,14 @@ forward({
   to:
     displayInspectorsHousingStocksService.inputs
       .fetchInspectorsHousingStocksListFx,
+});
+
+sample({
+  source: searchInspectorsHousingStockService.forms.searchForm.$values,
+  clock:
+    searchInspectorsHousingStockService.inputs
+      .startSearchInspectorsHousingStocks,
+  target:
+    displayInspectorsHousingStocksService.inputs
+      .fetchInspectorsHousingStocksListFx as any,
 });

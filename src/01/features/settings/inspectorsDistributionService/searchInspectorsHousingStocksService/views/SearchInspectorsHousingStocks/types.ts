@@ -9,4 +9,5 @@ export type SearchInspectorsHousingStocksProps = {
   handleExtendedSearchClose: () => void;
   inspectors: InspectorResponse[] | null;
   hosuingManagements?: GuidStringDictionaryItem[] | null;
+  handleSearch: () => void;
 };
