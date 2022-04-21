@@ -55,6 +55,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
           open={isExtendedSearchOpen}
           handleClose={handleExtendedSearchClose}
           handleOpen={handelExtendedSearchOpen}
+          handleApply={handleSearch}
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">

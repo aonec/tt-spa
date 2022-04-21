@@ -19,6 +19,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   open,
   handleClose,
   handleOpen,
+  handleApply,
   extendedSearchContent,
 }) => {
   return open ? (
@@ -38,7 +39,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
         </ButtonTT>
         <ButtonTT
           color="blue"
-          onClick={handleClose}
+          onClick={handleApply}
           style={{ marginLeft: '10px' }}
         >
           Применить фильтры

@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 
 export const Wrap = styled.div`
-  margin-top: 15px;
-`;
-
-export const LoaderWrap = styled.div`
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    padding: 75px 0;
 `;

@@ -7,6 +7,14 @@ export const InspectorsHousingStocksListContainer: FC = () => {
   const housingStocks = useStore(
     displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList
   );
+  const loading = useStore(
+    displayInspectorsHousingStocksService.outputs.$loading
+  );
 
-  return <InspectorsHousingStocksList housingStocks={housingStocks} />;
+  return (
+    <InspectorsHousingStocksList
+      loading={loading}
+      housingStocks={housingStocks}
+    />
+  );
 };
