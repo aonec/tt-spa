@@ -59,3 +59,4 @@ import './Inspectors/displayInspectors/displayInspectorsService.init';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
 import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
 import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
+import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';

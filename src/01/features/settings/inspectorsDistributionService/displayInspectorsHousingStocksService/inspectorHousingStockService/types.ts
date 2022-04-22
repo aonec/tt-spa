@@ -1,5 +1,19 @@
-import { InspectorOnHousingStockResponse } from 'myApi';
+import {
+  InspectorOnHousingStockResponse,
+  UpdateInspectorOnHousingStockRequest,
+} from 'myApi';
 
 export type HousingStockItemContainerProps = {
   housingStock: InspectorOnHousingStockResponse;
+};
+
+export type PatchHousingStockInspectorInfoPayload = {
+  housingStockId: number;
+  data: UpdateInspectorOnHousingStockRequest;
+};
+
+export type CurrentHousingStockUpdate = {
+  housingStock: InspectorOnHousingStockResponse;
+  updatedData: UpdateInspectorOnHousingStockRequest;
+  status?: 'loading' | 'failed' | 'done';
 };
