@@ -95,7 +95,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                   {hosuingManagements?.map((houseManagement) => (
                     <Select.Option
                       key={houseManagement.key}
-                      value={houseManagement.key!}
+                      value={houseManagement.value!}
                     >
                       {houseManagement.value}
                     </Select.Option>
@@ -109,7 +109,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
             <StyledSelector
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(0)(e);
-                fromEnter(handleSearch)(e)
+                fromEnter(handleSearch)(e);
               }}
               ref={cityRef}
               placeholder="Город"
@@ -129,9 +129,13 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               value={form.fields.Street.value}
               onChange={form.fields.Street.onChange}
               onKeyDown={(e) => {
-                fromEnter(() => form.fields.Street.onChange(streetMatch))(e);
+                fromEnter(() =>
+                  form.fields.Street.onChange(
+                    form.fields.Street.value ? streetMatch : ''
+                  )
+                )(e);
                 keyDownEnterGuardedHandler(1)(e);
-                fromEnter(handleSearch)(e)
+                fromEnter(handleSearch)(e);
               }}
               onFocus={() => clearValuesOnFocus(1)}
               options={options}
@@ -148,7 +152,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
               onFocus={() => clearValuesOnFocus(2)}
               onKeyDown={(e) => {
                 keyDownEnterGuardedHandler(2)(e);
-                fromEnter(handleSearch)(e)
+                fromEnter(handleSearch)(e);
               }}
             />
           </Grid>
