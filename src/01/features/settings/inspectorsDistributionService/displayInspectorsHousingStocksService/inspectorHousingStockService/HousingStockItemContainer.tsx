@@ -14,7 +14,7 @@ export const HousingStockItemContainer: FC<HousingStockItemContainerProps> = ({
   );
 
   const update = updates.find(
-    (elem) => elem.housingStock.housingStockId === housingStock.housingStockId
+    (elem) => elem.housingStockId === housingStock.housingStockId
   );
 
   const updateHousingStock = useEvent(
@@ -27,8 +27,11 @@ export const HousingStockItemContainer: FC<HousingStockItemContainerProps> = ({
       inspectors={inspectors}
       days={days}
       update={update}
-      updateHousingStock={(updatedData) =>
-        updateHousingStock({ housingStock, updatedData })
+      updateHousingStock={(data) =>
+        updateHousingStock({
+          housingStockId: housingStock.housingStockId,
+          data,
+        })
       }
     />
   );

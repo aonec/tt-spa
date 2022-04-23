@@ -13,7 +13,6 @@ export type PatchHousingStockInspectorInfoPayload = {
 };
 
 export type CurrentHousingStockUpdate = {
-  housingStock: InspectorOnHousingStockResponse;
-  updatedData: UpdateInspectorOnHousingStockRequest;
-  status?: 'loading' | 'failed' | 'done';
+  housingStockId: number;
+  status?: 'loading' | 'failed';
 };

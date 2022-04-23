@@ -14,6 +14,8 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   const inspectedDatSelectRef = useRef<any>(null);
   const inspectorSelectRef = useRef<any>(null);
 
+  console.log(update)
+
   return (
     <Wrap>
       <Address>{`ул. ${housingStock.street} ${housingStock.number}${
@@ -25,11 +27,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         placeholder="Число"
         noShadow
         disabled={update?.status === 'loading'}
-        value={
-          update?.updatedData.inspectedDay ||
-          housingStock.inspectedDay ||
-          void 0
-        }
+        value={housingStock.inspectedDay || void 0}
         style={{
           borderColor: update?.status === 'failed' ? 'red' : void 0,
         }}
@@ -52,9 +50,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         placeholder="Контролер"
         noShadow
         disabled={update?.status === 'loading'}
-        value={
-          update?.updatedData.inspectorId || housingStock.inspectorId || void 0
-        }
+        value={housingStock.inspectorId || void 0}
         style={{
           borderColor: update?.status === 'failed' ? 'red' : void 0,
         }}

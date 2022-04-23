@@ -2,6 +2,7 @@ import { displayInspectorsService } from '01/features/Inspectors/displayInspecto
 import { range } from '01/shared/utils/range';
 import { createDomain } from 'effector';
 import { HousingStockResponse } from 'myApi';
+import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
 import { patchHousingStockInspectorInfo } from './inspectorHousingStockService.api';
 import {
   CurrentHousingStockUpdate,
@@ -21,7 +22,7 @@ const updateHousingStockInspectorInfoFx = inspectorHousingStockServiceDomain.cre
   HousingStockResponse | null
 >(patchHousingStockInspectorInfo);
 
-const updateHousingStockInspectorInfo = inspectorHousingStockServiceDomain.createEvent<CurrentHousingStockUpdate>();
+const updateHousingStockInspectorInfo = inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
 
 const days = range(15, 25, 1);
 
@@ -32,6 +33,9 @@ export const inspectorHousingStockService = {
   },
   outputs: {
     $inspectors: displayInspectorsService.outputs.$inspectorsList,
+    $housingStocks:
+      displayInspectorsHousingStocksService.outputs
+        .$inspectorsHousingStocksList,
     $currentHousingStockUpdates,
     days,
   },
