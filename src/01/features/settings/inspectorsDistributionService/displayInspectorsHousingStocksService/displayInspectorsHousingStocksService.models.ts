@@ -2,7 +2,6 @@ import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import { InspectorOnHousingStockResponse } from 'myApi';
 import { getInspectorsHousingStocks } from './displayInspectorsHousingStocksService.api';
-import { inspectorHousingStockService } from './inspectorHousingStockService/inspectorHousingStockService.models';
 import { GetInspectorsHousingStocksRequestParams } from './types';
 
 const displayInspectorsHousingStocksServiceDomain = createDomain(
