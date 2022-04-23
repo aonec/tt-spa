@@ -9,8 +9,8 @@ export type HousingStockItemProps = {
   housingStock: InspectorOnHousingStockResponse;
   inspectors: InspectorResponse[] | null;
   days: number[];
-  update?: CurrentHousingStockUpdate;
   updateHousingStock: (
     updatedData: UpdateInspectorOnHousingStockRequest
-  ) => void;
+    ) => void;
+    update?: CurrentHousingStockUpdate;
 };
