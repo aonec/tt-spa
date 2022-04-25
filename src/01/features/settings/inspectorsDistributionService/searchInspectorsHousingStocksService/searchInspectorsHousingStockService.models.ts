@@ -32,6 +32,8 @@ const searchForm = createForm({
   },
 });
 
+const clearExtendedSearch = searchInspectorsHousingStockServiceDomain.createEvent();
+
 const startSearchInspectorsHousingStocks = searchInspectorsHousingStockServiceDomain.createEvent();
 
 export const searchInspectorsHousingStockService = {
@@ -42,6 +44,7 @@ export const searchInspectorsHousingStockService = {
     startSearchInspectorsHousingStocks,
     extendedSearchOpened,
     extendedSearchClosed,
+    clearExtendedSearch,
   },
   outputs: { $isExtendedSearchOpen },
 };

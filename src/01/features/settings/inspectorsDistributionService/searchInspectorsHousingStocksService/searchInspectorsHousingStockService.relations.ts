@@ -10,6 +10,18 @@ forward({
 });
 
 searchInspectorsHousingStockService.outputs.$isExtendedSearchOpen
-  .on(searchInspectorsHousingStockService.inputs.extendedSearchOpened, () => true
+  .on(
+    searchInspectorsHousingStockService.inputs.extendedSearchOpened,
+    () => true
   )
   .reset(searchInspectorsHousingStockService.inputs.extendedSearchClosed);
+
+forward({
+  from: searchInspectorsHousingStockService.inputs.clearExtendedSearch,
+  to: [
+    searchInspectorsHousingStockService.forms.searchForm.fields.HouseManagement
+      .resetValue,
+    searchInspectorsHousingStockService.forms.searchForm.fields.InspectorId
+      .resetValue,
+  ],
+});

@@ -5,5 +5,6 @@ export type ExtendedSearchProps = {
   handleClose: () => void;
   handleOpen: () => void;
   handleApply: () => void;
+  handleClear: () => void;
   extendedSearchContent: ReactElement;
 };

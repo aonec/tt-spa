@@ -23,6 +23,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
   inspectors,
   hosuingManagements,
   handleSearch,
+  handleClearExtendedSearchValues,
 }) => {
   const street = form.fields.Street.value;
 
@@ -56,6 +57,7 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
           handleClose={handleExtendedSearchClose}
           handleOpen={handelExtendedSearchOpen}
           handleApply={handleSearch}
+          handleClear={handleClearExtendedSearchValues}
           extendedSearchContent={
             <ExtendedSearchWrap>
               <Form.Item label="Инспектор">

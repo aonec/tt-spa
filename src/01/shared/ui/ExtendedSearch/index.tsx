@@ -21,6 +21,7 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
   handleOpen,
   handleApply,
   extendedSearchContent,
+  handleClear,
 }) => {
   return open ? (
     <ExtendedSearchWrap>
@@ -28,7 +29,12 @@ export const ExtendedSearch: FC<ExtendedSearchProps> = ({
         <HideExtendedSearchButton onClick={handleClose}>
           <ChevronUp />
         </HideExtendedSearchButton>
-        <ButtonTT style={{ marginLeft: '10px' }} small color="white">
+        <ButtonTT
+          style={{ marginLeft: '10px' }}
+          small
+          color="white"
+          onClick={handleClear}
+        >
           Очистить <XLg />
         </ButtonTT>
       </Header>

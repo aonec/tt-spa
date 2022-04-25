@@ -33,6 +33,9 @@ export const SearchInspectorsHousingStocksContainer = () => {
     searchInspectorsHousingStockService.inputs
       .startSearchInspectorsHousingStocks
   );
+  const handleClearExtendedSearchValues = useEvent(
+    searchInspectorsHousingStockService.inputs.clearExtendedSearch
+  );
 
   const { InspectorsGate } = displayInspectorsService.inputs;
   const { HousingStockFiltersGate } = displayHousingStockFiltersService.inputs;
@@ -47,6 +50,9 @@ export const SearchInspectorsHousingStocksContainer = () => {
         handleSearch={() => handleStartSearch()}
         handelExtendedSearchOpen={() => handelExtendedSearchOpen()}
         handleExtendedSearchClose={() => handleExtendedSearchClose()}
+        handleClearExtendedSearchValues={() =>
+          handleClearExtendedSearchValues()
+        }
         isExtendedSearchOpen={isExtendedSearchOpen}
         form={form}
         cities={cities}
