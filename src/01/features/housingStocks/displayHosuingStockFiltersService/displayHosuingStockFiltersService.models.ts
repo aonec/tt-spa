@@ -2,6 +2,7 @@ import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
 import { HousingStockFilterResponse } from 'myApi';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
+import { sortHousingManagementsListByAlphabet } from './utils';
 
 const displayHosuingStockFiltersServiceDomain = createDomain(
   'displayHosuingStockFiltersServiceDomain'
@@ -12,7 +13,9 @@ const $hosuingStockfilters = displayHosuingStockFiltersServiceDomain.createStore
 );
 
 const $hosuingManagementList = $hosuingStockfilters.map(
-  (filters) => filters?.houseManagements
+  (filters) =>
+    filters?.houseManagements &&
+    sortHousingManagementsListByAlphabet(filters?.houseManagements)
 );
 
 const fetchHosuingStockFiltersFx = displayHosuingStockFiltersServiceDomain.createEffect<
