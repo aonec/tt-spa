@@ -8,6 +8,7 @@ export const ReassingInspectorModalContainer = () => {
   const inspectorsList = useStore(
     inspectorReassignmentService.outputs.$inspectorsList
   );
+  const loading = useStore(inspectorReassignmentService.outputs.$loading);
 
   const handleClose = useEvent(inspectorReassignmentService.inputs.closeModal);
   const handleSave = useEvent(
@@ -23,6 +24,7 @@ export const ReassingInspectorModalContainer = () => {
       handleSave={() => handleSave()}
       form={form}
       inspectorsList={inspectorsList}
+      loading={loading}
     />
   );
 };

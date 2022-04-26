@@ -1,6 +1,8 @@
 import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms/dist';
+import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
+import { PatchInspectorPayload } from './types';
 
 const inspectorReassignmentServiceDomain = createDomain(
   'inspectorrRassignmentService'
@@ -13,9 +15,12 @@ const closeModal = inspectorReassignmentServiceDomain.createEvent();
 
 const saveInspectorReassing = inspectorReassignmentServiceDomain.createEvent();
 
-const reassingInspectorsFx = inspectorReassignmentServiceDomain.createEffect(
-  () => console.log('work')
-);
+const reassingInspectorsFx = inspectorReassignmentServiceDomain.createEffect<
+  PatchInspectorPayload,
+  void
+>(reassingHousingStockInspector);
+
+const $loading = reassingInspectorsFx.pending;
 
 const reassingmentInspectorsForm = createForm({
   fields: {
@@ -44,6 +49,7 @@ export const inspectorReassignmentService = {
   outputs: {
     $isModalOpen,
     $inspectorsList: displayInspectorsService.outputs.$inspectorsList,
+    $loading,
   },
   inputs: {
     openModal,

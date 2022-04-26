@@ -7,4 +7,5 @@ export type ReassingInspectorModalProps = {
   handleSave: () => void;
   form: InspectorsReassignmentForm;
   inspectorsList: InspectorResponse[] | null;
+  loading: boolean;
 };

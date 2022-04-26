@@ -12,6 +12,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   handleSave,
   form,
   inspectorsList,
+  loading
 }) => {
   const { fields } = useForm(form);
   return (
@@ -21,6 +22,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
       onCancel={handleClose}
       onSubmit={handleSave}
       saveBtnText="Переназначить сотрудника"
+      loading={loading}
     >
       <ModalDescription>
         На все адреса такущего сотрудника будет автоматически назначен новый
