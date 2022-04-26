@@ -10,6 +10,7 @@
   - my_service.relations.ts
   - my_service.types.ts
   - my_service.container.ts
+  - my_service.api.ts
   - index.ts
   - view
     - component_1
