@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { PageHeader } from '../../../../shared/ui/PageHeader';
 import { useHistory, useParams } from 'react-router-dom';
 import { Tabs } from 'antd';
 import { InspectorsDistributionPage } from '../../inspectorsDistributionService/views/InspectorsDistributionPage';
+import { SettingsPageProps } from './types';
 
 const { TabPane } = Tabs;
 
-export const SettingsPage = () => {
+export const SettingsPage: FC<SettingsPageProps> = ({
+  handleReassingInspector,
+}) => {
   const { section } = useParams<{ section: string }>();
   const history = useHistory();
 
@@ -22,7 +25,7 @@ export const SettingsPage = () => {
             },
             {
               title: 'Переназначить сотрудника',
-              onClick: () => {},
+              onClick: handleReassingInspector,
             },
           ],
         }}
