@@ -46,7 +46,7 @@ import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import styledC from 'styled-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
-import { SettingsPage } from '../features/settings/views/SettingsPage';
+import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 
 moment.locale('ru');
 
@@ -189,7 +189,7 @@ const Internal = () => {
 
               <Route
                 path="/settings/:section"
-                component={SettingsPage}
+                component={SettingsPageContainer}
                 exact
               />
 
