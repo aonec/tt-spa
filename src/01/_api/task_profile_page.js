@@ -39,7 +39,6 @@ export async function getTask(id) {
       device: createDevice(res.device),
     };
   } catch (error) {
-    console.log(error);
   }
 }
 

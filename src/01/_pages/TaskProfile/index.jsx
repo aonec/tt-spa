@@ -25,6 +25,7 @@ import NodeInformation from '../NodeProfile/components/Information';
 import { Icon as IconTT } from '../../tt-components/Icon';
 import DeviceIcons from '../../_components/DeviceIcons';
 import { TaskNodeStatistic } from '../../features/nodes/displayNode/TaskNodeStatistic';
+import { getNodeIdFromTask } from './utlis';
 
 function reducer(state, action) {
   const { type, data } = action;
@@ -76,11 +77,7 @@ export const TaskProfile = () => {
   const isIndividualDeviceReadingCheckType =
     state.type === 'IndividualDeviceReadingsCheck';
 
-  const isShowNodeStatistic = Boolean(
-    state?.device?.nodeId &&
-      (state?.type === 'HousingDeviceMalfunction' ||
-        state?.type === 'HousingDeviceMalfunctionNonCommercial')
-  );
+  const nodeId = state && getNodeIdFromTask(state);
 
   return styled(s.grid)(
     <TasksProfileContext.Provider value={{ ...state, dispatch }}>
@@ -100,9 +97,7 @@ export const TaskProfile = () => {
           ) : null}
           <Information {...info} />
           <InformationDevice {...infoDevice} type={type} id={id} />
-          {isShowNodeStatistic && (
-            <TaskNodeStatistic id={state?.device?.nodeId} />
-          )}
+          {nodeId && <TaskNodeStatistic id={nodeId} />}
 
           {/* подождать бэк и вынести в отдельный компонент */}
           {node ? (
