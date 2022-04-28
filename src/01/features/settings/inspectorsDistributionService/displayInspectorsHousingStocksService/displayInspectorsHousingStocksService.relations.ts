@@ -1,7 +1,6 @@
-import { forward, sample } from 'effector';
+import { forward } from 'effector';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { displayInspectorsHousingStocksService } from './displayInspectorsHousingStocksService.models';
-import { GetInspectorsHousingStocksRequestParams } from './types';
 
 displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   displayInspectorsHousingStocksService.inputs
@@ -9,33 +8,11 @@ displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   (_, list) => list
 );
 
-sample({
-  source: searchInspectorsHousingStockService.forms.searchForm.$values,
-  clock:
-    displayInspectorsHousingStocksService.inputs
-      .handleGetInspectorsHousingStocks,
-  fn: (values) => values as GetInspectorsHousingStocksRequestParams,
-  target:
-    displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx,
-});
-
 forward({
   from:
-    displayInspectorsHousingStocksService.inputs.InspectorsHousingStockGate
-      .state,
-  to:
-    displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx,
-});
-
-sample({
-  source: searchInspectorsHousingStockService.forms.searchForm.$values,
-  clock:
     searchInspectorsHousingStockService.inputs
       .startSearchInspectorsHousingStocks,
-  fn: (values) => values as GetInspectorsHousingStocksRequestParams,
-  target:
+  to:
     displayInspectorsHousingStocksService.inputs
       .fetchInspectorsHousingStocksListFx,
 });
