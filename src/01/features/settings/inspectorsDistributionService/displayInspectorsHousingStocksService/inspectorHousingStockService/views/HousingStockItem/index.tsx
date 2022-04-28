@@ -14,8 +14,6 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   const inspectedDatSelectRef = useRef<any>(null);
   const inspectorSelectRef = useRef<any>(null);
 
-  console.log(update)
-
   return (
     <Wrap>
       <Address>{`ул. ${housingStock.street} ${housingStock.number}${

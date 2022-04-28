@@ -1,6 +1,7 @@
 import { forward, sample } from 'effector';
 import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { displayInspectorsHousingStocksService } from './displayInspectorsHousingStocksService.models';
+import { GetInspectorsHousingStocksRequestParams } from './types';
 
 displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   displayInspectorsHousingStocksService.inputs
@@ -13,9 +14,10 @@ sample({
   clock:
     displayInspectorsHousingStocksService.inputs
       .handleGetInspectorsHousingStocks,
+  fn: (values) => values as GetInspectorsHousingStocksRequestParams,
   target:
     displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx as any,
+      .fetchInspectorsHousingStocksListFx,
 });
 
 forward({
@@ -32,7 +34,8 @@ sample({
   clock:
     searchInspectorsHousingStockService.inputs
       .startSearchInspectorsHousingStocks,
+  fn: (values) => values as GetInspectorsHousingStocksRequestParams,
   target:
     displayInspectorsHousingStocksService.inputs
-      .fetchInspectorsHousingStocksListFx as any,
+      .fetchInspectorsHousingStocksListFx,
 });
