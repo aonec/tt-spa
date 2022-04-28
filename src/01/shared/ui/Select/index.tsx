@@ -1,4 +1,3 @@
-export const Select = StyledSelect
 import { Select as AntSelect } from 'antd';
 import styled from 'styled-components';
 
