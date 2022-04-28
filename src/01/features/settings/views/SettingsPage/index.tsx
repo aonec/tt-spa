@@ -4,6 +4,8 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Tabs } from 'antd';
 import { InspectorsDistributionPage } from '../../inspectorsDistributionService/views/InspectorsDistributionPage';
 import { SettingsPageProps } from './types';
+import { InspectorAddressesResetModalContainer } from '../../inspectorsDistributionService/inspectorAddressesResetService/InspectorAddressesResetModalContainer';
+import { inspectorAddressesResetService } from '../../inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.models';
 
 const { TabPane } = Tabs;
 
@@ -15,13 +17,14 @@ export const SettingsPage: FC<SettingsPageProps> = ({
 
   return (
     <>
+      <InspectorAddressesResetModalContainer />
       <PageHeader
         title="Настройки"
         contextMenu={{
           menuButtons: [
             {
               title: 'Сбросить все адреса',
-              onClick: () => {},
+              onClick: inspectorAddressesResetService.inputs.openModal,
             },
             {
               title: 'Переназначить сотрудника',
