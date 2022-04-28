@@ -40,7 +40,9 @@ sample({
   clock: guard({
     source: searchInspectorsHousingStockService.forms.searchForm.$values,
     clock: searchInspectorsHousingStockService.forms.searchForm.submit,
-    filter: (values) => Boolean(values.City && values.Street),
+    filter: (values) =>
+      Boolean(values.HouseManagement || values.InspectorId) ||
+      Boolean(values.City && values.Street),
   }),
   fn: (values) => values as GetInspectorsHousingStocksRequestParams,
   target:
