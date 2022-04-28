@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { forward, sample } from 'effector';
+import { searchInspectorsHousingStockService } from '../searchInspectorsHousingStocksService/searchInspectorsHousingStockService.models';
 import { inspectorAddressesResetService } from './inspectorAddressesResetService.models';
 
 inspectorAddressesResetService.outputs.$isModalOpen
@@ -20,7 +21,10 @@ sample({
 
 forward({
   from: inspectorAddressesResetService.inputs.resetAddressesFx.doneData,
-  to: inspectorAddressesResetService.inputs.closeModal,
+  to: [
+    inspectorAddressesResetService.inputs.closeModal,
+    searchInspectorsHousingStockService.forms.searchForm.submit,
+  ],
 });
 
 forward({
