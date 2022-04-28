@@ -6,6 +6,9 @@ import { InspectorAddressesResetModal } from './views/InspectorAddressesResetMod
 export const InspectorAddressesResetModalContainer: FC = () => {
   const isOpen = useStore(inspectorAddressesResetService.outputs.$isModalOpen);
   const loading = useStore(inspectorAddressesResetService.outputs.$loading);
+  const inspectorsList = useStore(
+    inspectorAddressesResetService.outputs.$inspectorsList
+  );
 
   const form = inspectorAddressesResetService.form;
 
@@ -18,6 +21,7 @@ export const InspectorAddressesResetModalContainer: FC = () => {
 
   return (
     <InspectorAddressesResetModal
+      inspectorsList={inspectorsList}
       form={form}
       isOpen={isOpen}
       loading={loading}

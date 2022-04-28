@@ -1,3 +1,4 @@
+import { InspectorResponse } from 'myApi';
 import { ResetInspectorHousingStocksAddressesForm } from '../../types';
 
 export type InspectorAddressesResetModalProps = {
@@ -6,4 +7,5 @@ export type InspectorAddressesResetModalProps = {
   handleResetAddress: () => void;
   form: ResetInspectorHousingStocksAddressesForm;
   loading: boolean;
+  inspectorsList: InspectorResponse[] | null;
 };
