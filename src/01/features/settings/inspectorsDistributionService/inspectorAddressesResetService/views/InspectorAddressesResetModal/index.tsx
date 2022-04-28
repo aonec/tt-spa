@@ -1,11 +1,10 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
-import { Select } from '01/shared/ui/Select';
 import { Form } from 'antd';
 import { useForm } from 'effector-forms/dist';
 import React, { FC } from 'react';
-import { SelectNotify } from 'selects';
 import { FormWrap } from './components';
 import { InspectorAddressesResetModalProps } from './types';
+import { Select } from '01/shared/ui/Select';
 
 export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps> = ({
   isOpen,
@@ -27,11 +26,12 @@ export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps>
     >
       <FormWrap>
         <Form.Item label="Сотрудник">
-          <SelectNotify
+          <Select
+            allowClear
             placeholder="Выберите из списка"
             value={fields.inspectorId.value || undefined}
-            onChange={(value: number) =>
-              fields.inspectorId.onChange(value || null)
+            onChange={(value) =>
+              fields.inspectorId.onChange(Number(value) || null)
             }
           >
             {inspectorsList?.map((elem) => (
@@ -39,7 +39,7 @@ export const InspectorAddressesResetModal: FC<InspectorAddressesResetModalProps>
                 {elem.fullName}
               </Select.Option>
             ))}
-          </SelectNotify>
+          </Select>
         </Form.Item>
       </FormWrap>
     </ModalTT>
