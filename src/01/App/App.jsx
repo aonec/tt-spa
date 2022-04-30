@@ -46,6 +46,7 @@ import { ApartmentActs } from '01/features/actsJournal/displayActsJournal';
 import styledC from 'styled-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
+import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 
 moment.locale('ru');
 
@@ -66,11 +67,11 @@ const Internal = () => {
             <Space />
             <Menu />
           </LeftBlock>
-          <div></div>
+          <div />
           <main>
             <Switch>
               <Redirect
-                from={'/'}
+                from="/"
                 to={
                   roles.includes('ManagingFirmOperator')
                     ? '/meters/apartments'
@@ -78,7 +79,7 @@ const Internal = () => {
                 }
                 exact
               />
-              <Redirect from={'/tasks'} to="/tasks/executing" exact />
+              <Redirect from="/tasks" to="/tasks/executing" exact />
 
               <Route path="/actsJournal" exact>
                 <ApartmentActs />
@@ -111,9 +112,7 @@ const Internal = () => {
               />
 
               <Route
-                path={
-                  '/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?'
-                }
+                path="/nodes/:nodeId/(stats|connection|readings|related|documents|checks)?"
                 component={NodeProfile}
                 exact
               />
@@ -184,6 +183,12 @@ const Internal = () => {
               <Route
                 path="/meters/(apartments|houses|accountingNodes)"
                 component={MetersPage}
+              />
+
+              <Route
+                path="/nodeArchive/:nodeId"
+                component={NodeArchivePageContainer}
+                exact
               />
 
               <Redirect
