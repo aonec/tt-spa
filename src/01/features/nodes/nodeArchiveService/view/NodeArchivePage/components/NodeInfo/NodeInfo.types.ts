@@ -1,5 +1,6 @@
 import { PipeNodeResponse } from 'myApi';
 
 export type NodeInfoProps = {
-  node: PipeNodeResponse;
+  node: PipeNodeResponse | null;
+  loading: boolean;
 };
