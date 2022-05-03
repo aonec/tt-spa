@@ -55,3 +55,4 @@ import './tasks/displayNextStages/models/init';
 import './tasks/correctionReadings/models/init';
 import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
+import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
