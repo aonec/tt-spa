@@ -4,6 +4,7 @@ import { NodeArchivePageProps } from './NodeArchivePage.types';
 import { Wrap } from './NodeArchivePage.styled';
 import { Breadcrumb } from '01/tt-components/Breadcrumb';
 import { NodeInfo } from './components/NodeInfo/';
+import { SearchNodeArchiveFiltersContainer } from '../../searchNodeArchiveFiltersService';
 
 export const NodeArchivePage: FC<NodeArchivePageProps> = ({
   node,
@@ -14,7 +15,9 @@ export const NodeArchivePage: FC<NodeArchivePageProps> = ({
       <Breadcrumb />
       <PageHeader title="Архив" />
       <NodeInfo node={node} loading={loading} />
-      <Wrap></Wrap>
+      <Wrap>
+        <SearchNodeArchiveFiltersContainer />
+      </Wrap>
     </>
   );
 };

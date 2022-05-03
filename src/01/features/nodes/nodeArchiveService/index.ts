@@ -1,1 +1,1 @@
-export { NodeArchivePageContainer } from './NodeArchivePageContainer';
+export { NodeArchivePageContainer } from './nodeArchiveService.container';
