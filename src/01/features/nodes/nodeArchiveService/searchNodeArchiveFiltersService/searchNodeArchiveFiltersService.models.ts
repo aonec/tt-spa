@@ -1,5 +1,6 @@
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms';
+import { displayNodeArchiveService } from '../displayNodeArchiveService';
 
 const searchNodeArchiveFiltersServiceDomain = createDomain(
   'searchNodeArchiveFiltersService'
@@ -18,4 +19,7 @@ const form = createForm({
 
 export const searchNodeArchiveFilters = {
   form,
+  inputs: {
+    loadNodeArchiveData: displayNodeArchiveService.inputs.loadNodeArchiveData,
+  },
 };

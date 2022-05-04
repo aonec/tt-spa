@@ -1,5 +1,6 @@
 import { createDomain } from 'effector';
 import { nodeService } from '../../displayNode/models';
+import { getNodeArchiveData } from './displayNodeArchiveService.api';
 import {
   GetNodeArchiveDataRequestParams,
   LoadNodeArchiveDataPayload,
@@ -17,7 +18,7 @@ const $nodeArchiveData = displayNodeArchiveServiceDomain.createStore<NodeArchive
 const fetchNodeArchiveDataFx = displayNodeArchiveServiceDomain.createEffect<
   GetNodeArchiveDataRequestParams,
   NodeArchiveData
->();
+>(getNodeArchiveData);
 
 const loadNodeArchiveData = displayNodeArchiveServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
 

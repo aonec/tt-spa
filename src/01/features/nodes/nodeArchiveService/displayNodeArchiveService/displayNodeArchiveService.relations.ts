@@ -13,6 +13,7 @@ sample({
   fn: (node, payload) => ({
     NodeId: node?.id!,
     ReportFormat: EReportFormat.Consumption,
+    ReportType: 'Daily',
     From: payload.from,
     To: payload.to,
   }),
