@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { EReportType } from 'myApi';
 import { LoadNodeArchiveDataPayload } from '../../../displayNodeArchiveService/displayNodeArchiveService.types';
 
 export type SearchNodeArchiveFiltersProps = {
@@ -9,4 +10,5 @@ export type SearchNodeArchiveFiltersProps = {
 export type FormValues = {
   from: null | moment.Moment;
   to: null | moment.Moment;
+  type: null | EReportType;
 };

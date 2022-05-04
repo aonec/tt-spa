@@ -1,4 +1,4 @@
-import { EReportFormat } from 'myApi';
+import { EReportFormat, EReportType } from 'myApi';
 
 export type NodeArchiveDataRow = {
   dateTimeText: string;
@@ -19,7 +19,7 @@ export type NodeArchiveData = {
 
 export type GetNodeArchiveDataRequestParams = {
   NodeId?: number;
-  ReportType?: string;
+  ReportType?: EReportType;
   From?: string;
   To?: string;
   ReportFormat?: EReportFormat;
@@ -28,4 +28,5 @@ export type GetNodeArchiveDataRequestParams = {
 export type LoadNodeArchiveDataPayload = {
   from?: string;
   to?: string;
+  type?: EReportType;
 };

@@ -1,5 +1,4 @@
 import { createDomain } from 'effector';
-import { createForm } from 'effector-forms';
 import { displayNodeArchiveService } from '../displayNodeArchiveService';
 import { LoadNodeArchiveDataPayload } from '../displayNodeArchiveService/displayNodeArchiveService.types';
 

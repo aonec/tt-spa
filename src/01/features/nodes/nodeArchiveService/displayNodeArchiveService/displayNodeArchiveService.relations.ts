@@ -1,5 +1,5 @@
 import { sample } from 'effector';
-import { EReportFormat } from 'myApi';
+import { EReportFormat, EReportType } from 'myApi';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 
 displayNodeArchiveService.outputs.$nodeArchiveData.on(
@@ -13,7 +13,7 @@ sample({
   fn: (nodeId, payload) => ({
     NodeId: nodeId,
     ReportFormat: EReportFormat.Consumption,
-    ReportType: 'Daily',
+    ReportType: payload.type || EReportType.Daily,
     From: payload.from,
     To: payload.to,
   }),

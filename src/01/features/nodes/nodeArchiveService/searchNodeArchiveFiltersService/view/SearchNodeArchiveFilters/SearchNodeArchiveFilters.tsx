@@ -1,7 +1,8 @@
 import { ButtonTT } from '01/tt-components';
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
+import { EReportType } from 'myApi';
 import React, { FC } from 'react';
 import {
   Bottom,
@@ -14,6 +15,7 @@ import {
   FormValues,
   SearchNodeArchiveFiltersProps,
 } from './SearchNodeArchiveFilters.types';
+import { reportTypes } from './SearchNodeArchiveFilters.utils';
 
 export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
   loading,
@@ -28,6 +30,7 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
     initialValues: {
       from: null,
       to: null,
+      type: EReportType.Daily,
     },
     onSubmit: ({ from, to }) => {
       handleSubmit({
@@ -52,6 +55,18 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
             }}
             style={{ width: '100%' }}
           />
+        </Form.Item>
+        <Form.Item label="Детализация">
+          <Select
+            value={values.type || undefined}
+            onChange={(value) => setFieldValue('type', value)}
+          >
+            {reportTypes.map(({ key, value }) => (
+              <Select.Option key={key} value={key}>
+                {value}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </FiltersWrap>
       <Bottom>
