@@ -1523,6 +1523,19 @@ export enum EReportFormat {
   Rso2 = "Rso2",
 }
 
+export enum EReportType {
+  None = "None",
+  Hourly = "Hourly",
+  Daily = "Daily",
+  Monthly = "Monthly",
+  Total = "Total",
+  Current = "Current",
+  TotalCurrent = "TotalCurrent",
+  Events = "Events",
+  Settings = "Settings",
+  Other = "Other",
+}
+
 export enum EResourceDisconnectingOrderRule {
   StartDate = "StartDate",
   EndDate = "EndDate",
@@ -1638,6 +1651,16 @@ export enum EValueNodeWorkingRangeRelation {
   ManagementFirm = "ManagementFirm",
   HouseManagement = "HouseManagement",
   HousingStock = "HousingStock",
+}
+
+export interface ExportResultServiceModel {
+  error?: string[] | null;
+  warning?: string[] | null;
+  info?: string[] | null;
+}
+
+export interface ExportResultServiceModelSuccessApiResponse {
+  successResponse: ExportResultServiceModel | null;
 }
 
 export enum EYearQuarter {
@@ -7648,7 +7671,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Name?: string;
         FileName?: string;
       },
-      query?: { save?: boolean; createApartment?: boolean },
+      query?: { save?: boolean; createApartment?: boolean; dateOfImport?: string },
       params: RequestParams = {},
     ) =>
       this.request<ExportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
@@ -9196,7 +9219,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsArchivesList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string; ReportFormat?: EReportFormat },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9217,7 +9240,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportDataList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string; ReportFormat?: EReportFormat },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9238,7 +9261,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string; ReportFormat?: EReportFormat },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9261,7 +9284,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     reportsConsolidatedReportList: (
       query?: {
         CalculatorsId?: number[];
-        ReportType?: string;
+        ReportType?: EReportType;
         From?: string;
         To?: string;
         ReportFormat?: EReportFormat;
@@ -9296,7 +9319,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Subscription.TriggerAt"?: string;
         "Subscription.Type"?: EEmailSubscriptionType;
         DelayedEmailTarget?: string;
-        ReportType?: string;
+        ReportType?: EReportType;
         From?: string;
         To?: string;
         ReportFormat?: EReportFormat;
@@ -9494,32 +9517,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportWithNsList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string; ReportFormat?: EReportFormat },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ReportWithNs`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
-     *
-     * @tags Reports
-     * @name ReportsReportDataWithNsList
-     * @summary ReportRead
-     * @request GET:/api/Reports/ReportDataWithNs
-     * @secure
-     */
-    reportsReportDataWithNsList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/ReportDataWithNs`,
         method: "GET",
         query: query,
         secure: true,
