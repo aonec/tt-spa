@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
+import { ArchiveRow } from './components/ArchiveRow';
 import { SetFiltersToStart } from './components/SetFiltersToStart/SetFiltersToStart';
-import { Wrap, Header, GradientLoader } from './NodeArchiveList.styled';
+import { Wrap, Header, GradientLoader, Column } from './NodeArchiveList.styled';
 import { NodeArchiveListProps } from './NodeArchiveList.types';
 
 export const NodeArchiveList: FC<NodeArchiveListProps> = ({
@@ -12,7 +13,18 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
       <Wrap>
         {loading && <GradientLoader />}
         {!data && <SetFiltersToStart />}
-        {data && <Header></Header>}
+        {data && (
+          <>
+            <Header>
+              {data.columns.map((column) => (
+                <Column>{column.text}</Column>
+              ))}
+            </Header>
+            {data.rows.map((row) => (
+              <ArchiveRow row={row} />
+            ))}
+          </>
+        )}
       </Wrap>
     </>
   );

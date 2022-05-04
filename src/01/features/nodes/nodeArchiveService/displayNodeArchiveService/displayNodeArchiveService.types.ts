@@ -1,20 +1,20 @@
 import { EReportFormat } from 'myApi';
 
+export type NodeArchiveDataRow = {
+  dateTimeText: string;
+  dateTime: string;
+  values: {
+    text: string;
+    doubleValue: number;
+  }[];
+};
+
 export type NodeArchiveData = {
   columns: {
     text: string;
     group: string;
   }[];
-  rows: [
-    {
-      dateTimeText: string;
-      dateTime: string;
-      values: {
-        text: string;
-        doubleValue: number;
-      }[];
-    }
-  ];
+  rows: NodeArchiveDataRow[];
 };
 
 export type GetNodeArchiveDataRequestParams = {

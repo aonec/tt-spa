@@ -1,12 +1,17 @@
 import styled, { keyframes } from 'styled-components';
 
 export const Wrap = styled.div`
-  width: 700px;
+  width: 800px;
 `;
 
 export const Header = styled.div`
   height: 50px;
   background: rgba(243, 245, 246, 1);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  align-items: center;
+  padding: 0 10px;
 `;
 
 const slide = keyframes`
@@ -32,3 +37,5 @@ export const GradientLoader = styled.div`
   animation: ${slide} 40s linear infinite;
   transform: scale(1, -1);
 `;
+
+export const Column = styled.div``;
