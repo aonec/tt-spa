@@ -1,26 +1,18 @@
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms';
 import { displayNodeArchiveService } from '../displayNodeArchiveService';
+import { LoadNodeArchiveDataPayload } from '../displayNodeArchiveService/displayNodeArchiveService.types';
 
 const searchNodeArchiveFiltersServiceDomain = createDomain(
   'searchNodeArchiveFiltersService'
 );
 
-const form = createForm({
-  fields: {
-    from: {
-      init: null as moment.Moment | null,
-    },
-    to: {
-      init: null as moment.Moment | null,
-    },
-  },
-});
+const applyFilters = searchNodeArchiveFiltersServiceDomain.createEvent<LoadNodeArchiveDataPayload>();
 
 export const searchNodeArchiveFilters = {
-  form,
   inputs: {
     loadNodeArchiveData: displayNodeArchiveService.inputs.loadNodeArchiveData,
+    applyFilters,
   },
   outputs: {
     $loading: displayNodeArchiveService.outputs.$loading,

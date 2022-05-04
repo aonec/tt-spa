@@ -2,9 +2,6 @@ import { forward } from 'effector';
 import { searchNodeArchiveFilters } from './searchNodeArchiveFiltersService.models';
 
 forward({
-  from: searchNodeArchiveFilters.form.formValidated.map((values) => ({
-    from: values.from?.toISOString(),
-    to: values.to?.toISOString(),
-  })),
+  from: searchNodeArchiveFilters.inputs.applyFilters,
   to: searchNodeArchiveFilters.inputs.loadNodeArchiveData,
 });

@@ -1,34 +1,66 @@
 import { ButtonTT } from '01/tt-components';
-import { useForm } from 'effector-forms/dist';
+import { Form } from 'antd';
+import { useFormik } from 'formik';
+import moment from 'moment';
 import React, { FC } from 'react';
-import { FiltersForm } from './components/FiltersForm';
 import {
   Bottom,
   FiltersWrap,
+  RangePicker,
   Title,
   Wrap,
 } from './SearchNodeArchiveFilters.styled';
-import { SearchNodeArchiveFiltersProps } from './SearchNodeArchiveFilters.types';
+import {
+  FormValues,
+  SearchNodeArchiveFiltersProps,
+} from './SearchNodeArchiveFilters.types';
 
 export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
-  form,
   loading,
+  handleSubmit,
 }) => {
-  const { submit, reset } = useForm(form);
+  const {
+    values,
+    setFieldValue,
+    resetForm,
+    submitForm,
+  } = useFormik<FormValues>({
+    initialValues: {
+      from: null,
+      to: null,
+    },
+    onSubmit: ({ from, to }) => {
+      handleSubmit({
+        from: from?.toISOString(true),
+        to: to?.toISOString(true),
+      });
+    },
+  });
 
   return (
     <Wrap>
       <FiltersWrap>
         <Title>Фильтры</Title>
-        <FiltersForm form={form} />
+        <Form.Item label="Период">
+          <RangePicker
+            value={[values.from, values.to]}
+            format="DD.MM.YYYY"
+            disabledDate={(date) => moment().diff(date) < 0}
+            onChange={(dateRange) => {
+              setFieldValue('from', dateRange?.[0] || null);
+              setFieldValue('to', dateRange?.[1] || null);
+            }}
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
       </FiltersWrap>
       <Bottom>
-        <ButtonTT onClick={reset} color="white">
+        <ButtonTT onClick={resetForm} color="white">
           Сбросить
         </ButtonTT>
         <ButtonTT
           disabled={loading}
-          onClick={submit}
+          onClick={submitForm}
           color="blue"
           style={{ marginLeft: '15px' }}
         >

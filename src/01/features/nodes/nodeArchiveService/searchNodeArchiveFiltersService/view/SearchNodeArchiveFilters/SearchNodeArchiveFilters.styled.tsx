@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import { DatePicker } from 'antd';
+
+export const RangePicker = styled(DatePicker.RangePicker)`
+  width: 100%;
+`;
 
 export const Wrap = styled.div`
   width: 361px;
