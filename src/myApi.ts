@@ -174,6 +174,7 @@ export interface ApartmentCheckResponse {
   apartmentId: number;
   registryNumber: string | null;
   checkingAct: DocumentResponse | null;
+  actResourceType: EActResourceType;
 }
 
 export interface ApartmentCheckResponsePagedList {
@@ -662,6 +663,7 @@ export interface CreateApartmentCheckRequest {
   /** @format int32 */
   documentId: number;
   registryNumber?: string | null;
+  actResourceType?: EActResourceType;
 }
 
 export interface CreateCalculatorRequest {
@@ -1094,7 +1096,6 @@ export enum EActType {
   HomeownerAccountCertificate = "HomeownerAccountCertificate",
   Admission = "Admission",
   NonAdmission = "NonAdmission",
-  AdmissionCheck = "AdmissionCheck",
 }
 
 export interface EActTypeStringDictionaryItem {
@@ -1151,6 +1152,7 @@ export interface EditApartmentCheckRequest {
   /** @format int32 */
   documentId?: number | null;
   registryNumber?: string | null;
+  actResourceType?: EActResourceType | null;
 }
 
 export interface EditIndividualDeviceReadingsHistoryRequest {
@@ -1376,6 +1378,7 @@ export enum EManagingFirmTaskFilterType {
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   PlannedApplication = "PlannedApplication",
+  MeasurementErrorAny = "MeasurementErrorAny",
 }
 
 export interface EManagingFirmTaskFilterTypeNullableStringDictionaryItem {
@@ -1395,6 +1398,8 @@ export enum EManagingFirmTaskType {
   EmergencyApplication = "EmergencyApplication",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
   PlannedApplication = "PlannedApplication",
+  MeasurementErrorCommercial = "MeasurementErrorCommercial",
+  MeasurementErrorNonCommercial = "MeasurementErrorNonCommercial",
 }
 
 export enum EManagingFirmUserWorkingStatusType {
@@ -1573,6 +1578,7 @@ export enum ETaskCreateType {
   PipeRupture = "PipeRupture",
   IndividualDeviceCheck = "IndividualDeviceCheck",
   IndividualDeviceReadingsCheck = "IndividualDeviceReadingsCheck",
+  MeasurementError = "MeasurementError",
 }
 
 export enum ETaskTargetObjectRequestType {
@@ -1589,16 +1595,6 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
-}
-
-export interface ExportResultServiceModel {
-  error?: string[] | null;
-  warning?: string[] | null;
-  info?: string[] | null;
-}
-
-export interface ExportResultServiceModelSuccessApiResponse {
-  successResponse: ExportResultServiceModel | null;
 }
 
 export interface ExportResultServiceModel {
@@ -1896,6 +1892,12 @@ export interface HomeownerAccountListResponse {
 
   /** @format double */
   ownershipArea: number;
+
+  /** @format date-time */
+  openAt: string;
+
+  /** @format date-time */
+  openAtFact: string;
   isMainPersonalAccountNumber: boolean;
 }
 
@@ -1923,6 +1925,9 @@ export interface HomeownerAccountResponse {
 
   /** @format date-time */
   openAt: string;
+
+  /** @format date-time */
+  openAtFact: string;
 
   /** @format date-time */
   closedAt: string | null;
@@ -7560,6 +7565,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Старший оператор УК</li><li>Оператор УК</li><li>Сервис ЕРЦ</li><li>Фоновый рабочий</li>
+     *
+     * @tags Imports
+     * @name ImportsReadingsFromErcNewCreate
+     * @summary IndividualDeviceReadingsCreate
+     * @request POST:/api/Imports/ReadingsFromErcNew
+     * @secure
+     */
+    importsReadingsFromErcNewCreate: (
+      data: {
+        ContentType?: string;
+        ContentDisposition?: string;
+        Headers?: Record<string, string[]>;
+        Length?: number;
+        Name?: string;
+        FileName?: string;
+        isForced?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ImportLogResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Imports/ReadingsFromErcNew`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор УК</li><li>Старший оператор УК</li><li>Оператор УК</li>
      *
      * @tags Imports
@@ -8653,7 +8689,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksDetail
@@ -8676,7 +8712,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksCreate
@@ -8696,7 +8732,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksUpdate
@@ -8716,7 +8752,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li>
      *
      * @tags Nodes
      * @name NodesChecksDelete
@@ -9130,6 +9166,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
      *
      * @tags Reports
+     * @name ReportsReportDataList
+     * @summary ReportRead
+     * @request GET:/api/Reports/ReportData
+     * @secure
+     */
+    reportsReportDataList: (
+      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/ReportData`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Reports
      * @name ReportsReportList
      * @summary ReportRead
      * @request GET:/api/Reports/Report
@@ -9390,6 +9447,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ReportWithNs`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Reports
+     * @name ReportsReportDataWithNsList
+     * @summary ReportRead
+     * @request GET:/api/Reports/ReportDataWithNs
+     * @secure
+     */
+    reportsReportDataWithNsList: (
+      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/ReportDataWithNs`,
         method: "GET",
         query: query,
         secure: true,
