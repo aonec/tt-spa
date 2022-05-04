@@ -47,6 +47,7 @@ import styledC from 'styled-components';
 import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
+import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
 
 moment.locale('ru');
 
@@ -92,8 +93,8 @@ const Internal = () => {
               <Route path="/tasks/(\\d+)" render={() => <TaskProfile />} />
               <Route path="/objects/" component={Objects} exact />
               <Route path="/devices/" component={DevicesFromSearch} exact />
-              <Route path="/settings/:section?" component={Settings} />
-              <Route path="/settings/staff/:id" component={Settings} />
+              <Route path="/companyProfile/:section?" component={Settings} />
+              <Route path="/companyProfile/staff/:id" component={Settings} />
 
               <Route path="/devices/(\\d+)" component={Devices} exact />
 
@@ -188,6 +189,12 @@ const Internal = () => {
               <Route
                 path="/nodeArchive/:nodeId"
                 component={NodeArchivePageContainer}
+                exact
+              />
+
+              <Route
+                path="/settings/:section"
+                component={SettingsPageContainer}
                 exact
               />
 

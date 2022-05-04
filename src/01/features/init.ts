@@ -57,3 +57,11 @@ import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
 import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
 import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
+import './Inspectors/displayInspectors/displayInspectorsService.init';
+import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
+import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';
+import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.init';
+import './settings/inspectorsDistributionService/displayInspectorsHousingStocksService/inspectorHousingStockService/inspectorHousingStockService.init';
+import './settings/inspectorsDistributionService/inspectorRassignmentService/inspectorReassignmentService.init'
+import './settings/inspectorsDistributionService/inspectorAddressesResetService/inspectorAddressesResetService.init';
+

@@ -1640,16 +1640,6 @@ export enum EValueNodeWorkingRangeRelation {
   HousingStock = "HousingStock",
 }
 
-export interface ExportResultServiceModel {
-  error?: string[] | null;
-  warning?: string[] | null;
-  info?: string[] | null;
-}
-
-export interface ExportResultServiceModelSuccessApiResponse {
-  successResponse: ExportResultServiceModel | null;
-}
-
 export enum EYearQuarter {
   First = "First",
   Second = "Second",
@@ -9509,6 +9499,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ReportWithNs`,
+        method: "GET",
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
+     *
+     * @tags Reports
+     * @name ReportsReportDataWithNsList
+     * @summary ReportRead
+     * @request GET:/api/Reports/ReportDataWithNs
+     * @secure
+     */
+    reportsReportDataWithNsList: (
+      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/Reports/ReportDataWithNs`,
         method: "GET",
         query: query,
         secure: true,
