@@ -10,5 +10,5 @@ export type SearchNodeArchiveFiltersProps = {
 export type FormValues = {
   from: null | moment.Moment;
   to: null | moment.Moment;
-  type: null | EReportType;
+  type: EReportType;
 };
