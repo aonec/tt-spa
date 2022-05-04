@@ -12,6 +12,7 @@ import { SearchNodeArchiveFiltersProps } from './SearchNodeArchiveFilters.types'
 
 export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
   form,
+  loading,
 }) => {
   const { submit, reset } = useForm(form);
 
@@ -25,7 +26,12 @@ export const SearchNodeArchiveFilters: FC<SearchNodeArchiveFiltersProps> = ({
         <ButtonTT onClick={reset} color="white">
           Сбросить
         </ButtonTT>
-        <ButtonTT onClick={submit} color="blue" style={{ marginLeft: '15px' }}>
+        <ButtonTT
+          disabled={loading}
+          onClick={submit}
+          color="blue"
+          style={{ marginLeft: '15px' }}
+        >
           Применить фильтр
         </ButtonTT>
       </Bottom>

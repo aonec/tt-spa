@@ -33,5 +33,6 @@ export const displayNodeArchiveService = {
     $nodeArchiveData,
     $loading,
     $node: nodeService.outputs.$node,
+    $nodeId: nodeService.gates.NodeGate.state.map(({ id }) => id),
   },
 };

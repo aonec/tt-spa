@@ -2,4 +2,5 @@ import { SearchNodeArchiveFiltersForm } from '../../searchNodeArchiveFiltersServ
 
 export type SearchNodeArchiveFiltersProps = {
   form: SearchNodeArchiveFiltersForm;
+  loading: boolean;
 };

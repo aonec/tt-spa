@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Wrap, Header } from './NodeArchiveList.styled';
+import { SetFiltersToStart } from './components/SetFiltersToStart/SetFiltersToStart';
+import { Wrap, Header, GradientLoader } from './NodeArchiveList.styled';
 import { NodeArchiveListProps } from './NodeArchiveList.types';
 
 export const NodeArchiveList: FC<NodeArchiveListProps> = ({
@@ -9,7 +10,9 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
   return (
     <>
       <Wrap>
-        <Header></Header>
+        {loading && <GradientLoader />}
+        {!data && <SetFiltersToStart />}
+        {data && <Header></Header>}
       </Wrap>
     </>
   );

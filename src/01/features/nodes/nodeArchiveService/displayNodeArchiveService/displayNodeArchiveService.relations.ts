@@ -8,10 +8,10 @@ displayNodeArchiveService.outputs.$nodeArchiveData.on(
 );
 
 sample({
-  source: displayNodeArchiveService.outputs.$node,
+  source: displayNodeArchiveService.outputs.$nodeId,
   clock: displayNodeArchiveService.inputs.loadNodeArchiveData,
-  fn: (node, payload) => ({
-    NodeId: node?.id!,
+  fn: (nodeId, payload) => ({
+    NodeId: nodeId,
     ReportFormat: EReportFormat.Consumption,
     ReportType: 'Daily',
     From: payload.from,

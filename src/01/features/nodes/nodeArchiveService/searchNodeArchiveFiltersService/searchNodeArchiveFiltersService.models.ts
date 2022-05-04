@@ -22,4 +22,7 @@ export const searchNodeArchiveFilters = {
   inputs: {
     loadNodeArchiveData: displayNodeArchiveService.inputs.loadNodeArchiveData,
   },
+  outputs: {
+    $loading: displayNodeArchiveService.outputs.$loading,
+  },
 };
