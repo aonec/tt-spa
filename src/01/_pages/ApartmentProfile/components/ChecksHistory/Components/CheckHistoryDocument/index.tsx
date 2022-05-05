@@ -56,9 +56,10 @@ export const CheckHistoryDocument = ({
                 checkingDate,
                 checkingAct: document,
                 checkType,
-                registryNumber,
+                registryNumber: registryNumber!,
+                actResourceType, 
                 id,
-              } as any)
+              })
             }
           />
           <Space />

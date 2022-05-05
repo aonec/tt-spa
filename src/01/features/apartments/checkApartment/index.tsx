@@ -23,6 +23,10 @@ import { FilesList } from '01/shared/ui/FilesList';
 import { combine } from 'effector';
 import { ApartmentActTypesGate } from '../../actsJournal/displayActTypes/models';
 import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
+import { Select } from '01/shared/ui/Select';
+import { actTypes } from './utils';
+import { ResourceInfo } from '01/_pages/ApartmentProfile/components/ChecksHistory/Components/CheckHistoryDocument/components/ResourceInfo';
+import { EActResourceType } from 'myApi';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
@@ -58,7 +62,7 @@ export const CheckApartmentModal = () => {
         onSubmit={submit}
         loading={pending}
       >
-        <Grid temp="1fr 1fr 1fr" gap="15px">
+        <Grid temp="1fr 1fr" gap="15px">
           <Form.Item label="Дата проверки">
             <DatePickerTT
               format="DD.MM.YYYY"
@@ -106,6 +110,21 @@ export const CheckApartmentModal = () => {
                 required: 'Это поле обязательное',
               })}
             </ErrorMessage>
+          </Form.Item>
+          <Form.Item label="Ресурс">
+            <Select
+              placeholder="Выберите"
+              value={fields.actResourceType.value || undefined}
+              onChange={(value) =>
+                fields.actResourceType.onChange(value as EActResourceType)
+              }
+            >
+              {actTypes.map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  <ResourceInfo resource={elem} />
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </Grid>
         {payload?.checkingAct ? (
