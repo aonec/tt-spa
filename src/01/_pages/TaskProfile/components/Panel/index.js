@@ -1,14 +1,18 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import styled, { css, use } from 'reshadow/macro';
 import { Perpetrator, Contractors, NextStage } from '01/components/Select';
 import { Loader } from '01/components';
 import { UploadButton, useUpload, UploadList } from '01/components/Upload';
 import * as s from '01/r_comp';
+import { Flex } from '01/shared/ui/Layout/Flex';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import StyledTextArea from '../../../../tt-components/TextArea';
 import { Readings } from '../Readings';
-import { Flex } from '01/shared/ui/Layout/Flex';
-import { Space } from 'antd';
+import { CloseDevices } from '../CloseDevices';
 
 const styles = css`
   panel {
@@ -107,22 +111,17 @@ const PushButton = ({ loading = false, ...props }) =>
     </button>
   );
 
-export const Panel = (
-  {
-    expectedCompletionTime,
-    hiddenPanel = true,
-    actions = {},
-    state = {},
-    pushProps = {},
-    isObserver = false,
-    perpName = '',
-    apartment,
-    device,
-    dispatch = () => {},
-    stages = {},
-  },
-  ...props
-) => {
+export const Panel = ({
+  expectedCompletionTime,
+  hiddenPanel = true,
+  actions = {},
+  state = {},
+  pushProps = {},
+  isObserver = false,
+  perpName = '',
+  dispatch = () => {},
+  stages = {},
+}) => {
   const upload = useUpload((data) => dispatch({ type: 'add_data', data }));
   const [message, setMessage] = useState();
   if (hiddenPanel) return null;
@@ -132,9 +131,9 @@ export const Panel = (
     AddDocuments,
     Switch,
     Completion,
-    SwitchDevices,
     SetNextStageDeadline,
     UploadReadings,
+    CloseIndividualDevices,
   } = actions;
 
   const deadline = new Date(expectedCompletionTime).toLocaleDateString();
@@ -171,7 +170,8 @@ export const Panel = (
         styleSwitchAndAddPerpetrator: Switch && AddPerpetrator,
         styleCompletion: Completion,
         styleSwitchAndAddDocuments: Switch && AddDocuments,
-        styleReadings: UploadReadings || addReadingsDone,
+        styleReadings:
+          UploadReadings || addReadingsDone || CloseIndividualDevices,
         styleAddPerpetratorAndAddDocumentsAndAddEmailNotify:
           AddDocuments && AddPerpetrator && EmailNotify,
         styleAddPerpetratorAndEmailNotify: AddPerpetrator && EmailNotify,
@@ -229,6 +229,12 @@ export const Panel = (
 
       {UploadReadings && (
         <Readings getData={(data) => dispatch({ type: 'add_data', data })} />
+      )}
+
+      {CloseIndividualDevices && (
+        <CloseDevices
+          getData={(data) => dispatch({ type: 'add_data', data })}
+        />
       )}
 
       {!isObserver && <PushButton {...pushProps} />}
