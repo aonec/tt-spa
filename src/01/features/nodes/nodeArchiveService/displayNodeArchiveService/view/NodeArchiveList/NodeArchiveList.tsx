@@ -9,23 +9,23 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
   loading,
 }) => {
   return (
-    <>
+    <div>
+      {loading && <GradientLoader />}
       <Wrap>
-        {loading && <GradientLoader />}
         {!data && <SetFiltersToStart />}
         {data && (
           <>
-            <Header>
+            <Header columnsCount={data.columns.length}>
               {data.columns.map((column) => (
                 <Column>{column.text}</Column>
               ))}
             </Header>
             {data.rows.map((row) => (
-              <ArchiveRow row={row} />
+              <ArchiveRow columnsCount={data.columns.length} row={row} />
             ))}
           </>
         )}
       </Wrap>
-    </>
+    </div>
   );
 };

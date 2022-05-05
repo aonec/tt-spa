@@ -2,10 +2,12 @@ import { sample } from 'effector';
 import { EReportFormat, EReportType } from 'myApi';
 import { displayNodeArchiveService } from './displayNodeArchiveService.models';
 
-displayNodeArchiveService.outputs.$nodeArchiveData.on(
-  displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.doneData,
-  (_, data) => data
-);
+displayNodeArchiveService.outputs.$nodeArchiveData
+  .on(
+    displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.doneData,
+    (_, data) => data
+  )
+  .reset(displayNodeArchiveService.inputs.NodeArchiveGate.close);
 
 sample({
   source: displayNodeArchiveService.outputs.$nodeId,

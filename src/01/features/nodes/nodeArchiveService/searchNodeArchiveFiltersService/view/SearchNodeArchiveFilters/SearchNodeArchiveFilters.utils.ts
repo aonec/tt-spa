@@ -3,14 +3,14 @@ import { EReportType } from 'myApi';
 export const reportTypes = [
   {
     key: EReportType.Hourly,
-    value: 'Час',
+    value: 'Часовые',
   },
   {
     key: EReportType.Daily,
-    value: 'День',
+    value: 'Суточные',
   },
   {
     key: EReportType.Monthly,
-    value: 'Месяц',
+    value: 'Месячные',
   },
 ];

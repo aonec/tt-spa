@@ -9,5 +9,12 @@ export const NodeArchiveContainer = () => {
   );
   const loading = useStore(displayNodeArchiveService.outputs.$loading);
 
-  return <NodeArchiveList data={nodeArchiveData} loading={loading} />;
+  const { NodeArchiveGate } = displayNodeArchiveService.inputs;
+
+  return (
+    <>
+      <NodeArchiveGate />
+      <NodeArchiveList data={nodeArchiveData} loading={loading} />
+    </>
+  );
 };

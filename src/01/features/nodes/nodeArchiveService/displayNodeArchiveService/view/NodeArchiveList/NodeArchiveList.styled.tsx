@@ -1,14 +1,20 @@
+import { getArrayByCountRange } from '01/_pages/MetersPage/components/utils';
 import styled, { keyframes } from 'styled-components';
+
+export const columnWidth = `120px`;
 
 export const Wrap = styled.div`
   width: 800px;
+  overflow-x: auto;
 `;
 
-export const Header = styled.div`
+export const Header = styled.div<{ columnsCount: number }>`
+  width: max-content;
   height: 50px;
   background: rgba(243, 245, 246, 1);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: ${({ columnsCount }) =>
+    getArrayByCountRange(columnsCount, () => columnWidth).join(' ')};
   grid-gap: 10px;
   align-items: center;
   padding: 0 10px;
@@ -25,6 +31,7 @@ const slide = keyframes`
 `;
 
 export const GradientLoader = styled.div`
+  width: 800px;
   background: repeating-linear-gradient(
     45deg,
     #e8ebff,

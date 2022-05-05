@@ -1,4 +1,5 @@
 import { createDomain } from 'effector';
+import { createGate } from 'effector-react';
 import { nodeService } from '../../displayNode/models';
 import { getNodeArchiveData } from './displayNodeArchiveService.api';
 import {
@@ -24,10 +25,13 @@ const loadNodeArchiveData = displayNodeArchiveServiceDomain.createEvent<LoadNode
 
 const $loading = fetchNodeArchiveDataFx.pending;
 
+const NodeArchiveGate = createGate();
+
 export const displayNodeArchiveService = {
   inputs: {
     fetchNodeArchiveDataFx,
     loadNodeArchiveData,
+    NodeArchiveGate,
   },
   outputs: {
     $nodeArchiveData,
