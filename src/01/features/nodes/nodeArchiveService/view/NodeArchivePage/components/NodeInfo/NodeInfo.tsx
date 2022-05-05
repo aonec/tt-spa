@@ -15,7 +15,7 @@ export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
       <Wrap>
         {address}
         <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
-        <NodeName>Узел {node.entryNumber}</NodeName>
+        <NodeName>Узел {node.number}</NodeName>
       </Wrap>
     );
   } else {
