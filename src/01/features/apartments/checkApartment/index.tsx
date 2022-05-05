@@ -9,7 +9,6 @@ import {
   clearPayloadFile,
   closeCheckApartmentModal,
   editApartmentCheckFx,
-  saveEditApartmentCheck,
 } from './models';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
@@ -17,16 +16,12 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, message } from 'antd';
-import { ECheckType } from 'myApi';
 import { useForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { FilesList } from '01/shared/ui/FilesList';
 import { combine } from 'effector';
-import {
-  ApartmentActTypesGate,
-  $actTypes,
-} from '../../actsJournal/displayActTypes/models';
+import { ApartmentActTypesGate } from '../../actsJournal/displayActTypes/models';
 import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
 
 export const CheckApartmentModal = () => {
@@ -51,8 +46,6 @@ export const CheckApartmentModal = () => {
         .unsubscribe,
     []
   );
-
-  const actTypes = useStore($actTypes);
 
   return (
     <>

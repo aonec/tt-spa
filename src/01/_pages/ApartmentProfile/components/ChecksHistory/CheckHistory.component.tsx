@@ -8,7 +8,7 @@ import { PendingLoader } from '01/shared/ui/PendingLoader';
 import { CheckHistoryDocument } from './Components/CheckHistoryDocument';
 import './models/init';
 
-export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 2.5fr';
+export const checkHistoryTemp = '0.7fr 0.6fr 0.5fr 0.5fr 2.5fr';
 
 export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
   props
@@ -30,6 +30,7 @@ export const ChecksHistoryComponent: FC<CheckHistoryComponentProps> = (
           <div>Дата</div>
           <div>Тип</div>
           <div>№ акта</div>
+          <div>Ресурс</div>
           <div>Заключение</div>
         </Header>
         {documents?.map((document) => (
