@@ -55,6 +55,8 @@ import './tasks/displayNextStages/models/init';
 import './tasks/correctionReadings/models/init';
 import './carlculators/calculatorsInfo/models/init';
 import './individualDevices/deleteIndividualDevice/deleteIndividualDeviceService.init';
+import './nodes/nodeArchiveService/displayNodeArchiveService/displayNodeArchiveService.relations';
+import './nodes/nodeArchiveService/searchNodeArchiveFiltersService/searchNodeArchiveFiltersService.relations';
 import './Inspectors/displayInspectors/displayInspectorsService.init';
 import './housingStocks/displayHosuingStockFiltersService/displayHosuingStockFiltersService.init';
 import './settings/inspectorsDistributionService/searchInspectorsHousingStocksService/searchInspectorsHousingStockService.init';

@@ -67,15 +67,18 @@ export interface AddOrUpdateHeatingSeasonForHouseManagementRequest {
 }
 
 export interface AddOrUpdateNodeWorkingRangeRequest {
-  season?: ENodeWorkingRangeSeason;
-  nodeResourceType?: EResourceType;
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: EResourceType;
+  typeWorkingRange: ENodeWorkingRangeType;
+
+  /** @format int32 */
+  housingStockId?: number | null;
 
   /** @format uuid */
   housingManagementId?: string | null;
 
   /** @format int32 */
   nodeId?: number | null;
-  typeWorkingRange?: ENodeWorkingRangesType;
 
   /** @format float */
   min?: number | null;
@@ -99,7 +102,7 @@ export interface AddressResponse {
 export interface AllNodeWorkingRangeResponse {
   season: ENodeWorkingRangeSeason;
   nodeResourceType: EResourceType;
-  nodeWorkingRanges: ValueNodeWorkingRangeResponse[] | null;
+  nodeWorkingRanges: ValueNodeWorkingRangeListResponse[] | null;
 }
 
 export interface AllNodeWorkingRangeResponseSuccessApiResponse {
@@ -314,6 +317,9 @@ export interface ApartmentResponse {
 
   /** @format date-time */
   stoppedTo: string | null;
+
+  /** @format int32 */
+  deniedPermissionsCount: number | null;
 }
 
 export interface ApartmentResponseSuccessApiResponse {
@@ -1044,6 +1050,21 @@ export interface DataAfterSplittingHomeownerAccountResponseSuccessApiResponse {
   successResponse: DataAfterSplittingHomeownerAccountResponse | null;
 }
 
+export interface DisableNodeWorkingRangeRequest {
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: EResourceType;
+  typeWorkingRange: ENodeWorkingRangeType;
+
+  /** @format int32 */
+  housingStockId?: number | null;
+
+  /** @format uuid */
+  housingManagementId?: string | null;
+
+  /** @format int32 */
+  nodeId?: number | null;
+}
+
 export interface DocumentLiteResponse {
   /** @format int32 */
   id: number;
@@ -1448,12 +1469,21 @@ export enum ENodeWorkingRangeSeason {
   InterHeating = "InterHeating",
 }
 
-export enum ENodeWorkingRangesType {
+export enum ENodeWorkingRangeType {
   AllowableError = "AllowableError",
   CriticalError = "CriticalError",
   MassOfFeedFlowMagistral = "MassOfFeedFlowMagistral",
   MassOfFeedBackFlowMagistral = "MassOfFeedBackFlowMagistral",
   DeltaMassOfMagistral = "DeltaMassOfMagistral",
+}
+
+export interface ENodeWorkingRangeTypeStringDictionaryItem {
+  key?: ENodeWorkingRangeType;
+  value?: string | null;
+}
+
+export interface ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse {
+  successResponse: ENodeWorkingRangeTypeStringDictionaryItem[] | null;
 }
 
 export enum ENonResidentialHouseType {
@@ -1485,6 +1515,25 @@ export enum EPhaseType {
   A = "A",
   B = "B",
   C = "C",
+}
+
+export enum EReportFormat {
+  Consumption = "Consumption",
+  Rso = "Rso",
+  Rso2 = "Rso2",
+}
+
+export enum EReportType {
+  None = "None",
+  Hourly = "Hourly",
+  Daily = "Daily",
+  Monthly = "Monthly",
+  Total = "Total",
+  Current = "Current",
+  TotalCurrent = "TotalCurrent",
+  Events = "Events",
+  Settings = "Settings",
+  Other = "Other",
 }
 
 export enum EResourceDisconnectingOrderRule {
@@ -1595,6 +1644,13 @@ export enum ETaskTargetType {
   Housing = "Housing",
   Node = "Node",
   Application = "Application",
+}
+
+export enum EValueNodeWorkingRangeRelation {
+  Self = "Self",
+  ManagementFirm = "ManagementFirm",
+  HouseManagement = "HouseManagement",
+  HousingStock = "HousingStock",
 }
 
 export interface ExportResultServiceModel {
@@ -3859,6 +3915,7 @@ export interface StageListResponse {
 
   /** @format date-time */
   expectedCompletionTime: string | null;
+  requiredUserRoles: string[] | null;
 }
 
 export interface StageListResponseWrappedListResponse {
@@ -4633,7 +4690,7 @@ export interface UpdateIndividualDeviceRequest {
 
 export interface UpdateInspectorOnHousingStockRequest {
   /** @format int32 */
-  inspectorId?: number;
+  inspectorId: number;
 
   /** @format int32 */
   inspectedDay?: number | null;
@@ -4740,28 +4797,29 @@ export interface UserStatusResponse {
   endDate: string | null;
 }
 
-export interface ValueNodeWorkingRangeResponse {
-  /** @format uuid */
-  nodeWorkingRangeId: string;
-  season: ENodeWorkingRangeSeason;
-  nodeResourceType: EResourceType;
-  nodeWorkingRangesType: ENodeWorkingRangesType;
-  unit: string | null;
+export interface ValueNodeWorkingRangeListResponse {
+  nodeWorkingRangeType: ENodeWorkingRangeType;
+  measureUnit: string | null;
+  relationType: EValueNodeWorkingRangeRelation;
 
   /** @format float */
   min: number | null;
 
   /** @format float */
   max: number | null;
+}
 
-  /** @format int32 */
-  managementFirmId: number;
+export interface ValueNodeWorkingRangeResponse {
+  season: ENodeWorkingRangeSeason;
+  nodeResourceType: EResourceType;
+  nodeWorkingRangeType: ENodeWorkingRangeType;
+  measureUnit: string | null;
 
-  /** @format uuid */
-  houseManagementId: string;
+  /** @format float */
+  min: number | null;
 
-  /** @format int32 */
-  nodeId: number;
+  /** @format float */
+  max: number | null;
 }
 
 export interface ValueNodeWorkingRangeResponseSuccessApiResponse {
@@ -7613,7 +7671,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         Name?: string;
         FileName?: string;
       },
-      query?: { save?: boolean; createApartment?: boolean },
+      query?: { save?: boolean; createApartment?: boolean; dateOfImport?: string },
       params: RequestParams = {},
     ) =>
       this.request<ExportResultServiceModelSuccessApiResponse, ErrorApiResponse>({
@@ -8863,6 +8921,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     *
+     * @tags NodeWorkingRange
+     * @name NodeWorkingRangeList
+     * @summary NodeWorkingRangeRead
+     * @request GET:/api/NodeWorkingRange
+     * @secure
+     */
+    nodeWorkingRangeList: (
+      query: {
+        Season: ENodeWorkingRangeSeason;
+        NodeResourceType: EResourceType;
+        HousingStockId?: number;
+        HousingManagementId?: string;
+        NodeId?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
      * @description Роли:<li>Администратор УК</li>
      *
      * @tags NodeWorkingRange
@@ -8883,30 +8969,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
+     * @description Роли:<li>Администратор УК</li>
      *
      * @tags NodeWorkingRange
-     * @name NodeWorkingRangeGetList
-     * @summary NodeWorkingRangeRead
-     * @request GET:/api/NodeWorkingRange/Get
+     * @name NodeWorkingRangeDisableDelete
+     * @summary NodeWorkingRangeAddOrUpdate
+     * @request DELETE:/api/NodeWorkingRange/Disable
      * @secure
      */
-    nodeWorkingRangeGetList: (
-      query?: {
-        TypeWorkingRange?: ENodeWorkingRangesType;
-        Season?: ENodeWorkingRangeSeason;
-        NodeResourceType?: EResourceType;
-        HousingManagementId?: string;
-        NodeId?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<ValueNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/NodeWorkingRange/Get`,
-        method: "GET",
-        query: query,
+    nodeWorkingRangeDisableDelete: (data: DisableNodeWorkingRangeRequest, params: RequestParams = {}) =>
+      this.request<void, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/Disable`,
+        method: "DELETE",
+        body: data,
         secure: true,
-        format: "json",
+        type: ContentType.Json,
         ...params,
       }),
 
@@ -8914,24 +8991,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Диспетчер УК</li><li>Сервис Scada</li>
      *
      * @tags NodeWorkingRange
-     * @name NodeWorkingRangeGetAllList
+     * @name NodeWorkingRangeTypesList
      * @summary NodeWorkingRangeRead
-     * @request GET:/api/NodeWorkingRange/GetAll
+     * @request GET:/api/NodeWorkingRange/Types
      * @secure
      */
-    nodeWorkingRangeGetAllList: (
-      query?: {
-        Season?: ENodeWorkingRangeSeason;
-        NodeResourceType?: EResourceType;
-        HousingManagementId?: string;
-        NodeId?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<AllNodeWorkingRangeResponseSuccessApiResponse, ErrorApiResponse>({
-        path: `/api/NodeWorkingRange/GetAll`,
+    nodeWorkingRangeTypesList: (params: RequestParams = {}) =>
+      this.request<ENodeWorkingRangeTypeStringDictionaryItemListSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/NodeWorkingRange/Types`,
         method: "GET",
-        query: query,
         secure: true,
         format: "json",
         ...params,
@@ -9151,7 +9219,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsArchivesList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9172,7 +9240,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportDataList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9193,7 +9261,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9214,7 +9282,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsConsolidatedReportList: (
-      query?: { CalculatorsId?: number[]; ReportType?: string; From?: string; To?: string },
+      query?: {
+        CalculatorsId?: number[];
+        ReportType?: EReportType;
+        From?: string;
+        To?: string;
+        ReportFormat?: EReportFormat;
+      },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
@@ -9245,9 +9319,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         "Subscription.TriggerAt"?: string;
         "Subscription.Type"?: EEmailSubscriptionType;
         DelayedEmailTarget?: string;
-        ReportType?: string;
+        ReportType?: EReportType;
         From?: string;
         To?: string;
+        ReportFormat?: EReportFormat;
       },
       params: RequestParams = {},
     ) =>
@@ -9442,32 +9517,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     reportsReportWithNsList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
+      query?: { NodeId?: number; ReportType?: EReportType; From?: string; To?: string; ReportFormat?: EReportFormat },
       params: RequestParams = {},
     ) =>
       this.request<void, ErrorApiResponse>({
         path: `/api/Reports/ReportWithNs`,
-        method: "GET",
-        query: query,
-        secure: true,
-        ...params,
-      }),
-
-    /**
-     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li>
-     *
-     * @tags Reports
-     * @name ReportsReportDataWithNsList
-     * @summary ReportRead
-     * @request GET:/api/Reports/ReportDataWithNs
-     * @secure
-     */
-    reportsReportDataWithNsList: (
-      query?: { NodeId?: number; ReportType?: string; From?: string; To?: string },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, ErrorApiResponse>({
-        path: `/api/Reports/ReportDataWithNs`,
         method: "GET",
         query: query,
         secure: true,

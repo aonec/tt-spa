@@ -23,6 +23,7 @@ import { Events } from '../../tt-components';
 import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
 import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
+import { SidePanel } from '01/shared/ui/SidePanel';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -170,7 +171,7 @@ export const NodeProfile = () => {
         <Route path={`/nodes/:nodeId/checks`} exact>
           <NodeChecksContainer />
         </Route>
-        <Events title="Задачи с объектом" tasks={tasks} />
+        <SidePanel title="Архив" link={`/nodeArchive/${nodeId}`} />
       </Grid>
     </>
   );
