@@ -7,7 +7,10 @@ displayNodeArchiveService.outputs.$nodeArchiveData
     displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.doneData,
     (_, data) => data
   )
-  .reset(displayNodeArchiveService.inputs.NodeArchiveGate.close);
+  .reset(
+    displayNodeArchiveService.inputs.NodeArchiveGate.close,
+    displayNodeArchiveService.inputs.fetchNodeArchiveDataFx.fail
+  );
 
 sample({
   source: displayNodeArchiveService.outputs.$nodeId,
