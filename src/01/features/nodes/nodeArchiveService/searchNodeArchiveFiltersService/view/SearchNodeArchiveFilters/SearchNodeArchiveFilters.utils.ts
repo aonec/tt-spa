@@ -9,8 +9,4 @@ export const reportTypes = [
     key: EReportType.Daily,
     value: 'Суточные',
   },
-  {
-    key: EReportType.Monthly,
-    value: 'Месячные',
-  },
 ];
