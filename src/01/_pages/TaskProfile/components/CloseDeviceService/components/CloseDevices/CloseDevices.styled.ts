@@ -11,7 +11,7 @@ export const Header = styled.div`
   color: #272f5ab2;
 `;
 
-export const DeviceRowWrap = styled.div`
+export const DeviceWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;
@@ -20,7 +20,7 @@ export const DeviceRowWrap = styled.div`
   align-items: center;
 `;
 
-export const DeviceInfoWrap = styled.div`
+export const DeviceInfoWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -29,6 +29,6 @@ export const DeviceInfoStrokeWrap = styled.div`
   margin-left: 25px;
 `;
 
-export const DetePickerWrap = styled.div`
+export const DatePickerWrapper  = styled.div`
   width: 250px;
 `;

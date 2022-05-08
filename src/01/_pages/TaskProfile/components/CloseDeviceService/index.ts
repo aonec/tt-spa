@@ -1,1 +1,1 @@
-export { CloseDevicesContainer } from "./CloseDevicesService.container"
+export { CloseDevicesContainer } from "./closeDevicesService.container"

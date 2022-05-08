@@ -4,10 +4,10 @@ import { Checkbox } from 'antd';
 import { IndividualDeviceListItemResponse } from 'myApi';
 import React, { FC } from 'react';
 import {
-  DetePickerWrap,
+  DatePickerWrapper,
   DeviceInfoStrokeWrap,
-  DeviceInfoWrap,
-  DeviceRowWrap,
+  DeviceInfoWrapper,
+  DeviceWrapper,
   Header,
   Wrapper,
 } from './CloseDevices.styled';
@@ -33,13 +33,18 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
         const isSelected = Boolean(selectedDevicePayload);
         const closingDate = selectedDevicePayload?.closingDate;
 
+        const handleCheckboxChanged = () =>
+          handleDeviceCheboxClicked(device.id);
+
+        const handleClosingDateChanged = (value: string) =>
+          onChangeClosingDate(device.id, value);
+
+        const isClosingDatePickerDisabled = !isSelected
+
         return (
-          <DeviceRowWrap key={device.id}>
-            <DeviceInfoWrap>
-              <Checkbox
-                checked={isSelected}
-                onChange={() => handleDeviceCheboxClicked(device.id)}
-              />
+          <DeviceWrapper key={device.id}>
+            <DeviceInfoWrapper>
+              <Checkbox checked={isSelected} onChange={handleCheckboxChanged} />
               <DeviceInfoStrokeWrap>
                 <DeviceInfo
                   device={
@@ -47,15 +52,15 @@ export const CloseDevices: FC<CloseDevicesProps> = ({
                   }
                 />
               </DeviceInfoStrokeWrap>
-            </DeviceInfoWrap>
-            <DetePickerWrap>
+            </DeviceInfoWrapper>
+            <DatePickerWrapper>
               <DatePickerNative
                 value={closingDate}
-                onChange={(value) => onChangeClosingDate(device.id, value)}
-                disabled={!isSelected}
+                onChange={handleClosingDateChanged}
+                disabled={isClosingDatePickerDisabled}
               />
-            </DetePickerWrap>
-          </DeviceRowWrap>
+            </DatePickerWrapper>
+          </DeviceWrapper>
         );
       })}
     </Wrapper>
