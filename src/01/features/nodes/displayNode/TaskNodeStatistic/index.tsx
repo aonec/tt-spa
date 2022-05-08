@@ -1,6 +1,6 @@
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Space } from '01/shared/ui/Layout/Space/Space';
-import { Icon } from '01/tt-components';
+import { IconTT } from '01/tt-components';
 import { useStore } from 'effector-react';
 import React, { FC } from 'react';
 import { ChevronRight } from 'react-bootstrap-icons';
@@ -17,21 +17,27 @@ export const TaskNodeStatistic: FC<{ id: number }> = ({ id }) => {
   return (
     <>
       <NodeGate id={id} />
-      <Wrap>
-        <Title>Статистика</Title>
-        <Panel>
-          <Flex>
-            <Icon icon={node?.resource.toLowerCase()} />
-            <Space />
-            <NodeName>Узел {node?.number}</NodeName>
-          </Flex>
-          <StatisticLink to={`/nodes/${node?.id}/stats`}>
-            Перейти
-            <Space w={5} />
-            <ChevronRight />
-          </StatisticLink>
-        </Panel>
-      </Wrap>
+      {node && (
+        <Wrap>
+          <Title>Статистика</Title>
+          <Panel>
+            <Flex>
+              <IconTT
+                icon={(node.resource || 'node').toLowerCase()}
+                size={24}
+                style={{ marginRight: 8 }}
+              />
+              <Space />
+              <NodeName>Узел {node.number}</NodeName>
+            </Flex>
+            <StatisticLink to={`/nodes/${node.id}/stats`}>
+              Перейти
+              <Space w={5} />
+              <ChevronRight />
+            </StatisticLink>
+          </Panel>
+        </Wrap>
+      )}
     </>
   );
 };

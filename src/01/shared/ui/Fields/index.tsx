@@ -3,7 +3,7 @@ import { Select, AutoComplete, DatePicker } from 'antd';
 import styled from 'styled-components';
 import { ReactComponent as FilterIcon } from './icons/filter.svg';
 
-export const StyledSelector = styled(Select)`
+export const StyledSelector = styled(Select)<{ noShadow?: boolean }>`
   width: 100%;
 
   .ant-select-selector {
@@ -15,7 +15,7 @@ export const StyledSelector = styled(Select)`
     border: 1px solid var(--frame);
     height: var(--h-norm);
 
-    box-shadow: 0 4px 7px #02004b1f;
+    box-shadow: ${({ noShadow }) => noShadow ? 'none' :  `0 4px 7px #02004b1f`};
 
     &:hover,
     &:focus {

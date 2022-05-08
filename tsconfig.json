@@ -17,6 +17,6 @@
     "jsx": "react",
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/01/features/nodes/nodeArchiveService/searchNodeArchiveFiltersService/.tsx"],
   "typeRoots": ["../node_modules/@types", "../@types"]
 }

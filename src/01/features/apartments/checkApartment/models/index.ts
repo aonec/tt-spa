@@ -1,5 +1,6 @@
 import {
   CreateApartmentCheckRequest,
+  EActResourceType,
   ECheckType,
 } from './../../../../../myApi';
 import { createForm } from 'effector-forms';
@@ -63,6 +64,15 @@ export const checkApartmentForm = createForm({
     checkingAct: {
       init: null as null | null,
     },
+    actResourceType: {
+      init: null as null | EActResourceType,
+      rules: [
+        {
+          name: 'required',
+          validator: Boolean,
+        },
+      ],
+    },
   },
 });
 
@@ -78,6 +88,7 @@ export interface EditApartmentCheckPayload {
   checkType: ECheckType;
   checkingAct: any;
   registryNumber: string;
+  actResourceType: EActResourceType;
 }
 
 export const $editApartmentCheckModalPayload = createStore<EditApartmentCheckPayload | null>(

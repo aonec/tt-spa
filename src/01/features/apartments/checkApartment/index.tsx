@@ -9,7 +9,6 @@ import {
   clearPayloadFile,
   closeCheckApartmentModal,
   editApartmentCheckFx,
-  saveEditApartmentCheck,
 } from './models';
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { FilesUpload } from '01/shared/ui/FilesUpload';
@@ -17,17 +16,17 @@ import { Grid } from '01/shared/ui/Layout/Grid';
 import { DatePickerTT, InputTT } from '01/tt-components';
 import { StyledSelect } from '01/_pages/IndividualDeviceEdit/components/IndividualDeviceEditForm';
 import { Form, message } from 'antd';
-import { ECheckType } from 'myApi';
 import { useForm } from 'effector-forms/dist';
 import moment from 'moment';
 import { ErrorMessage } from '01/features/contractors/addContractors';
 import { FilesList } from '01/shared/ui/FilesList';
 import { combine } from 'effector';
-import {
-  ApartmentActTypesGate,
-  $actTypes,
-} from '../../actsJournal/displayActTypes/models';
+import { ApartmentActTypesGate } from '../../actsJournal/displayActTypes/models';
 import { CheckingActDocumentType } from '01/_pages/ApartmentProfile/components/ChecksHistory/utils';
+import { Select } from '01/shared/ui/Select';
+import { actTypes } from './utils';
+import { ResourceInfo } from '01/_pages/ApartmentProfile/components/ChecksHistory/Components/CheckHistoryDocument/components/ResourceInfo';
+import { EActResourceType } from 'myApi';
 
 export const CheckApartmentModal = () => {
   const visible = useStore($isCheckApartmentModalOpen);
@@ -52,8 +51,6 @@ export const CheckApartmentModal = () => {
     []
   );
 
-  const actTypes = useStore($actTypes);
-
   return (
     <>
       <ApartmentActTypesGate />
@@ -65,7 +62,7 @@ export const CheckApartmentModal = () => {
         onSubmit={submit}
         loading={pending}
       >
-        <Grid temp="1fr 1fr 1fr" gap="15px">
+        <Grid temp="1fr 1fr" gap="15px">
           <Form.Item label="Дата проверки">
             <DatePickerTT
               format="DD.MM.YYYY"
@@ -113,6 +110,21 @@ export const CheckApartmentModal = () => {
                 required: 'Это поле обязательное',
               })}
             </ErrorMessage>
+          </Form.Item>
+          <Form.Item label="Ресурс">
+            <Select
+              placeholder="Выберите"
+              value={fields.actResourceType.value || undefined}
+              onChange={(value) =>
+                fields.actResourceType.onChange(value as EActResourceType)
+              }
+            >
+              {actTypes.map((elem) => (
+                <Select.Option key={elem} value={elem}>
+                  <ResourceInfo resource={elem} />
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </Grid>
         {payload?.checkingAct ? (
