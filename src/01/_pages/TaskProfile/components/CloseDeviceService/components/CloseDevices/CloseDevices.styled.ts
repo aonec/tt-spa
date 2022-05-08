@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrap = styled.div`
+export const Wrapper = styled.div`
   padding-bottom: 15px;
 `;
 

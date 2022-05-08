@@ -12,7 +12,7 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import StyledTextArea from '../../../../tt-components/TextArea';
 import { Readings } from '../Readings';
-import { CloseDevices } from '../CloseDevices';
+import { CloseDevicesContainer } from '../CloseDeviceService';
 
 const styles = css`
   panel {
@@ -232,8 +232,8 @@ export const Panel = ({
       )}
 
       {CloseIndividualDevices && (
-        <CloseDevices
-          getData={(data) => dispatch({ type: 'add_data', data })}
+        <CloseDevicesContainer
+          setData={(data) => dispatch({ type: 'add_data', data })}
         />
       )}
 
