@@ -12,7 +12,8 @@ import { Flex } from '01/shared/ui/Layout/Flex';
 import AddDate from '../../../../components/Select/selects/AddDate';
 import StyledTextArea from '../../../../tt-components/TextArea';
 import { Readings } from '../Readings';
-import { CloseDevicesContainer } from '../CloseDeviceService/closeDeviceService.container';
+import { SetNextStageDeadlineContainer } from '../SetNextStageDeadlineService';
+import { CloseDevicesContainer } from '../CloseDeviceService';
 
 const styles = css`
   panel {
@@ -53,6 +54,8 @@ const styles = css`
       display: block !important;
     }
     &[|styleAddPerpetratorAndSetNextStageDeadline] {
+      padding-top: 45px;
+      position: relative;
       grid-template-areas: 'p ad push';
       grid-template-columns: 1fr 1fr auto;
       align-items: flex-end;
@@ -180,6 +183,8 @@ export const Panel = ({
           AddPerpetrator && SetNextStageDeadline,
       })}
     >
+      {SetNextStageDeadline && <SetNextStageDeadlineContainer />}
+
       {AddPerpetrator && (
         <Perpetrator getData={(data) => dispatch({ type: 'add_data', data })} />
       )}
