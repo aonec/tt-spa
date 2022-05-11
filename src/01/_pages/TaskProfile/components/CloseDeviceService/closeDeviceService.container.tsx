@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import { FC, useEffect, useState } from 'react';
-import { CloseDevicesContainerProps } from './closeDevicesService.types';
+import { CloseDevicesContainerProps } from './closeDeviceService.types';
 import { closeDeviceService } from './closeDevicesService.models';
 import { CloseDevices } from './components/CloseDevices/CloseDevices';
 
