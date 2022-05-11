@@ -1,7 +1,5 @@
 import { Loader } from '01/components';
-import {
-  DeviceDataString,
-} from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
+import { DeviceDataString } from '01/features/individualDevices/switchIndividualDevice/components/DeviceDataString';
 import { ReadingsHistoryModal } from '01/features/readings/displayReadingHistory/ReadingsHistoryModal';
 import { Flex } from '01/shared/ui/Layout/Flex';
 import { Grid } from '01/shared/ui/Layout/Grid';
@@ -20,20 +18,23 @@ import { useForm } from 'effector-forms/dist';
 import { useStore } from 'effector-react';
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { NextStagesGate } from '../displayNextStages/models';
-import { $task, fetchTaskFx, TaskGate } from '../displayTask/models';
+import { $task, fetchTaskFx } from '../displayTask/models';
 import { pushStageFx } from '../pushingStage/models';
-import { Header, InfoBlock, ReadingInputStyled, Wrap } from './CorrectionReadings.styled';
+import {
+  Header,
+  InfoBlock,
+  ReadingInputStyled,
+  Wrap,
+} from './CorrectionReadings.styled';
 import {
   correctionReadingsForm,
   CorrectionReadingsGate,
   completeStage,
 } from './models';
-import {ReadingsHistoryButton} from "ui-kit/shared_components/reading_history_button";
+import { ReadingsHistoryButton } from 'ui-kit/shared_components/reading_history_button';
 
 export const CorrectionReadingsPanel = () => {
-
   const task = useStore($task);
 
   const device = task?.individualDevice!;
