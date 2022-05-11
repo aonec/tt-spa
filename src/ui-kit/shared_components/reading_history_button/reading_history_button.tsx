@@ -1,6 +1,6 @@
-import {HistoryIcon} from "../../icons";
-import {openReadingsHistoryModal} from "../../../01/features/readings/displayReadingHistory/models";
-import React from "react";
+import { HistoryIcon } from '../../icons';
+import { openReadingsHistoryModal } from '../../../01/features/readings/displayReadingHistory/models';
+import React from 'react';
 
 export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
   <HistoryIcon
@@ -8,3 +8,4 @@ export const ReadingsHistoryButton = ({ deviceId }: { deviceId: number }) => (
     onClick={() => openReadingsHistoryModal(deviceId)}
   />
 );
+ 
