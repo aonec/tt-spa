@@ -4,9 +4,14 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
+import {
+  CalculatorIntoNodeResponse,
+  PipeNodeResponse,
+} from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
+import { useEvent } from 'effector-react';
+import { nodeCommercialRegistrationService } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 
 interface HeaderInterface {
   node: PipeNodeResponse;
@@ -14,12 +19,23 @@ interface HeaderInterface {
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
   unitRecord: boolean;
-  setUnitRecord: Dispatch<SetStateAction<boolean>>
+  setUnitRecord: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Header = ({ node, calculator, nodeId, unitRecord, setUnitRecord }: HeaderInterface) => {
+export const Header = ({
+  node,
+  calculator,
+  nodeId,
+  unitRecord,
+  setUnitRecord,
+}: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
+
+  const openRegisterNodeOnCommercialAccountingModal = useEvent(
+    nodeCommercialRegistrationService.inputs.openModal
+  );
+
   const { show } = access;
 
   if (!node) {
@@ -37,6 +53,11 @@ export const Header = ({ node, calculator, nodeId, unitRecord, setUnitRecord }: 
       cb: () => {
         push(`/nodes/${nodeId}/edit`);
       },
+    },
+    {
+      title: 'Поставить узел на коммерческий учёт',
+      show: true,
+      cb: () => openRegisterNodeOnCommercialAccountingModal(),
     },
     {
       title: 'Поставить/Снять узел на коммерческий учёт',

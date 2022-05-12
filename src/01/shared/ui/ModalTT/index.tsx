@@ -23,6 +23,7 @@ interface Props {
   customCancelButton?(): void;
   disabled?: boolean;
   saveButtonType?: 'blue' | 'red';
+  formId?: string;
 }
 
 export const ModalTT: React.FC<Props> = (props) => {
@@ -42,6 +43,7 @@ export const ModalTT: React.FC<Props> = (props) => {
     disabled,
     saveButtonType,
     cancelBtnText = 'Отмена',
+    formId,
   } = props;
 
   const text = saveBtnText || 'Сохранить';
@@ -67,6 +69,8 @@ export const ModalTT: React.FC<Props> = (props) => {
               <ButtonTT
                 color={saveButtonType || 'blue'}
                 key="submit"
+                type="submit"
+                form="register-node-on-commertion-accounting-form"
                 onClick={onSubmit}
                 disabled={loading || disabled}
               >
