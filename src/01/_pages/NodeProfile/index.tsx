@@ -24,6 +24,7 @@ import { getCalculator, getNode, getNodeTasks } from '../../_api/apiRequests';
 import HousingMeteringDeviceReadings from '../../features/housingMeteringDeviceReadings/components';
 import { NodeChecksContainer } from '01/features/nodes/nodeChecks/displayNodeChecks/NodeChecksContainer';
 import { SidePanel } from '01/shared/ui/SidePanel';
+import { RegisterNodeOnCommercialAccountingModalContainer } from '01/features/nodes/changeNodeStatusService/nodeCommercialRegistrationService';
 
 export const NodeProfile = () => {
   const { nodeId } = useParams();
@@ -31,7 +32,7 @@ export const NodeProfile = () => {
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
-  const [ unitRecord, setUnitRecord] = useState(false)
+  const [unitRecord, setUnitRecord] = useState(false);
 
   const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
   const { calculator } = node || {};
@@ -126,6 +127,7 @@ export const NodeProfile = () => {
 
   return (
     <>
+      <RegisterNodeOnCommercialAccountingModalContainer />
       <Header
         node={node}
         calculator={calculator}
