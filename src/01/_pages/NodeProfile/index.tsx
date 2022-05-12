@@ -31,6 +31,7 @@ export const NodeProfile = () => {
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
+  const [ unitRecord, setUnitRecord] = useState(false)
 
   const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
   const { calculator } = node || {};
@@ -130,6 +131,8 @@ export const NodeProfile = () => {
         calculator={calculator}
         setAddDevice={setAddDevice}
         nodeId={nodeId}
+        unitRecord={unitRecord}
+        setUnitRecord={setUnitRecord}
       />
       <Tabs tabItems={tabItems} tabsType={'route'} />
       <Grid>
