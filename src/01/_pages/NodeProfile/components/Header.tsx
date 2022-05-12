@@ -16,9 +16,11 @@ interface HeaderInterface {
   calculator: CalculatorIntoNodeResponse;
   nodeId: number;
   setAddDevice: Dispatch<SetStateAction<boolean>>;
+  unitRecord: boolean;
+  setUnitRecord: Dispatch<SetStateAction<boolean>>
 }
 
-export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
+export const Header = ({ node, calculator, nodeId, unitRecord, setUnitRecord }: HeaderInterface) => {
   const { push } = useHistory();
   const access = getAccessesList();
   const { show } = access;
@@ -43,7 +45,7 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
       title: 'Поставить/Снять узел на коммерческий учёт',
       show: show('CalculatorUpdate'),
       cb: () => {
-        alert('Поставить/Снять узел на коммерческий учёт');
+        setUnitRecord(true);
       },
     },
   ];
