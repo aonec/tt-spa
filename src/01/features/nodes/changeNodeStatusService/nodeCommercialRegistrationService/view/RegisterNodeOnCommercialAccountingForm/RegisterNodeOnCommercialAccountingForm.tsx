@@ -1,7 +1,7 @@
 import { FilesUpload } from '01/shared/ui/FilesUpload';
 import { Grid } from '01/shared/ui/Layout/Grid';
 import { DatePickerTT } from '01/tt-components';
-
+import { EDocumentType } from "myApi"
 import { DatePicker, Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -67,6 +67,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
         </Form.Item>
       </Grid>
       <FilesUpload
+        type={EDocumentType.NodeAdmissionAct}
         uniqId="accounting-form"
         max={1}
         onChange={(value) =>
