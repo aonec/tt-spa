@@ -29,7 +29,6 @@ export const RegisterNodeOnCommercialAccountingModalContainer = () => {
       loading={loading}
       saveBtnText="Снять с учета"
       formId="register-node-on-commertion-accounting-form"
-    
     >
       <div>
         После этого данные узла будут использоваться для мониторинга работы

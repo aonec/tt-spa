@@ -54,7 +54,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
           <DatePickerTT 
           value={
             values.endCommercialAccountingDate ?
-            moment(values.startCommercialAccountingDate)
+            moment(values.endCommercialAccountingDate)
             : undefined
           }
           onChange={(value) =>
