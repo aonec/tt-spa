@@ -1,4 +1,5 @@
 import { combine, createDomain, forward } from 'effector';
+import { registerNode } from './nodeCommercialRegistrationService.api';
 import { NodeCommercialRegistrationRequestPayload } from './nodeCommercialRegistrationService.types';
 
 const nodeCommercialRegistrationServiceDomain = createDomain(
@@ -13,7 +14,7 @@ const closeModal = nodeCommercialRegistrationServiceDomain.createEvent();
 const registerNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomain.createEffect<
   NodeCommercialRegistrationRequestPayload,
   void
->(() => new Promise((resolve) => setTimeout(resolve, 500)));
+>(registerNode);
 
 const registrationNodeDone = registerNodeOnCommercialAccountingFx.doneData;
 

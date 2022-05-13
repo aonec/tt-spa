@@ -18,7 +18,9 @@ export const RegisterNodeOnCommercialAccountingModalContainer = () => {
   const handleSumbit = useEvent(
     nodeCommercialRegistrationService.inputs.registerNodeOnCommercialAccounting
   );
-
+// if (!isOpen){
+//     return null
+// } 
   return (
     <ModalTT
       title="Постановка узла на коммерческий учёт"
@@ -26,6 +28,8 @@ export const RegisterNodeOnCommercialAccountingModalContainer = () => {
       onCancel={() => handleClose()}
       loading={loading}
       saveBtnText="Снять с учета"
+      formId="register-node-on-commertion-accounting-form"
+    
     >
       <div>
         После этого данные узла будут использоваться для мониторинга работы
