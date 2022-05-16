@@ -92,7 +92,6 @@ export const SearchInspectorsHousingStocks: FC<SearchInspectorsHousingStocksProp
                     }
                   }}
                   allowClear
-                  onClear={console.log}
                   placeholder="Выберите из списка"
                 >
                   {hosuingManagements?.map((houseManagement) => (
