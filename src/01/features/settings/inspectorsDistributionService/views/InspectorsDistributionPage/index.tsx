@@ -1,5 +1,5 @@
 import React from 'react';
-import { InspectorsHousingStocksListContainer } from '../../displayInspectorsHousingStocksService/InspectorsHousingStocksListContainer';
+import { InspectorsHousingStocksListContainer } from '../../displayInspectorsHousingStocksService/displayInspectorsHousingStocksService.container';
 import {SearchInspectorsHousingStocksContainer} from "../../searchInspectorsHousingStocksService/SearchInspectorsHousingStocksContainer"
 import { Wrap } from './components';
 

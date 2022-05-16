@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { range } from '01/shared/utils/range';
 import { displayInspectorsHousingStocksService } from './displayInspectorsHousingStocksService.models';
 import { useEvent, useStore } from 'effector-react';
 import { InspectorsHousingStocksList } from './views/InspectorsHousingStocksList';
@@ -12,7 +13,6 @@ export const InspectorsHousingStocksListContainer: FC = () => {
     displayInspectorsHousingStocksService.outputs.$loading
   );
 
-  const days = inspectorHousingStockService.outputs.days;
   const inspectors = useStore(inspectorHousingStockService.outputs.$inspectors);
   const updates = useStore(
     inspectorHousingStockService.outputs.$currentHousingStockUpdates
@@ -21,6 +21,8 @@ export const InspectorsHousingStocksListContainer: FC = () => {
   const updateHousingStock = useEvent(
     inspectorHousingStockService.inputs.updateHousingStockInspectorInfo
   );
+
+  const days = range(15, 25, 1);
 
   return (
     <InspectorsHousingStocksList

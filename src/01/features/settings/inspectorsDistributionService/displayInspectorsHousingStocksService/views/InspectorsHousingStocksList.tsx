@@ -1,9 +1,9 @@
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Empty, Skeleton } from 'antd';
 import React, { FC } from 'react';
-import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem';
-import { LoaderWrap, Wrap } from './components';
-import { InspectorsHosuingsStocksListProps } from './types';
+import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
+import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
+import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
 
 export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> = ({
   housingStocks,
@@ -40,18 +40,17 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
     );
   });
 
-  const content = (
-    <>
-      {housingStocks ? (
-        housingStocks?.length ? (
-          list
-        ) : (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        )
-      ) : (
-        <TypeAddressToStart />
-      )}
-    </>
+  const isHousingStocksListExist = Boolean(housingStocks);
+  const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
+
+  const content = isHousingStocksListExist ? (
+    isHousingStocksListContainsElems ? (
+      list
+    ) : (
+      <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+    )
+  ) : (
+    <TypeAddressToStart />
   );
 
   return <Wrap>{loading ? loader : content}</Wrap>;

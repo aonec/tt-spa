@@ -12,11 +12,10 @@ const $hosuingStockfilters = displayHosuingStockFiltersServiceDomain.createStore
   null
 );
 
-const $hosuingManagementList = $hosuingStockfilters.map((filters) =>
-  filters?.houseManagements
-    ? sortHousingManagementsListByAlphabet(filters?.houseManagements)
-    : []
-);
+const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
+  const houseManagements = filters?.houseManagements || [];
+  return sortHousingManagementsListByAlphabet(houseManagements);
+});
 
 const fetchHosuingStockFiltersFx = displayHosuingStockFiltersServiceDomain.createEffect<
   void,

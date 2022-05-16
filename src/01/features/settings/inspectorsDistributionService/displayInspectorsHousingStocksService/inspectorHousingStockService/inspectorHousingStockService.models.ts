@@ -1,5 +1,4 @@
 import { displayInspectorsService } from '01/features/Inspectors/displayInspectors/displayInspectorsService.models';
-import { range } from '01/shared/utils/range';
 import { createDomain } from 'effector';
 import { HousingStockResponse } from 'myApi';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
@@ -7,7 +6,8 @@ import { patchHousingStockInspectorInfo } from './inspectorHousingStockService.a
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
-} from './types';
+  UpdateHousingStockInspectorInfoRequestError,
+} from './inspectorHousingStockService.types';
 
 const inspectorHousingStockServiceDomain = createDomain(
   'inspectorHousingStockService'
@@ -19,12 +19,11 @@ const $currentHousingStockUpdates = inspectorHousingStockServiceDomain.createSto
 
 const updateHousingStockInspectorInfoFx = inspectorHousingStockServiceDomain.createEffect<
   PatchHousingStockInspectorInfoPayload,
-  HousingStockResponse | null
+  HousingStockResponse | null,
+  UpdateHousingStockInspectorInfoRequestError
 >(patchHousingStockInspectorInfo);
 
 const updateHousingStockInspectorInfo = inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
-
-const days = range(15, 25, 1);
 
 export const inspectorHousingStockService = {
   inputs: {
@@ -37,6 +36,5 @@ export const inspectorHousingStockService = {
       displayInspectorsHousingStocksService.outputs
         .$inspectorsHousingStocksList,
     $currentHousingStockUpdates,
-    days,
   },
 };

@@ -1,6 +1,7 @@
 import { sample } from 'effector';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
 import { inspectorHousingStockService } from './inspectorHousingStockService.models';
+import { UpdateHousingStockInspectorInfoRequestError } from './inspectorHousingStockService.types';
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
@@ -10,7 +11,7 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
     .failData,
-  (prev, error: any) => {
+  (prev, error: UpdateHousingStockInspectorInfoRequestError) => {
     const housingStockId = Number(error.config?.url?.split('/')[1]);
     return prev.map((elem) =>
       elem.housingStockId === housingStockId

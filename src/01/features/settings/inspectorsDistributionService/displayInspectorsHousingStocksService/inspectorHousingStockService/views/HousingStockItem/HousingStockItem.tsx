@@ -1,8 +1,9 @@
 import { StyledSelector } from '01/shared/ui/Fields';
 import { Select } from 'antd';
+import { RefSelectProps } from 'antd/lib/select';
 import React, { FC, useRef } from 'react';
-import { Address, Wrap } from './components';
-import { HousingStockItemProps } from './types';
+import { Address, Wrap } from './HousingStockItem.styled';
+import { HousingStockItemProps } from './HousingStockItem.types';
 
 export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
@@ -11,8 +12,8 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   update,
   updateHousingStock,
 }) => {
-  const inspectedDatSelectRef = useRef<any>(null);
-  const inspectorSelectRef = useRef<any>(null);
+  const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
+  const inspectorSelectRef = useRef<RefSelectProps | null>(null);
 
   return (
     <Wrap>
@@ -23,7 +24,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       <StyledSelector
         ref={inspectedDatSelectRef}
         placeholder="Число"
-        noShadow
+        isShadow={false}
         disabled={update?.status === 'loading'}
         value={housingStock.inspectedDay || void 0}
         style={{
@@ -46,7 +47,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
       <StyledSelector
         ref={inspectorSelectRef}
         placeholder="Контролер"
-        noShadow
+        isShadow={false}
         disabled={update?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
