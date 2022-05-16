@@ -68,7 +68,6 @@ const Internal = () => {
             <Space />
             <Menu />
           </LeftBlock>
-          <div />
           <main>
             <Switch>
               <Redirect

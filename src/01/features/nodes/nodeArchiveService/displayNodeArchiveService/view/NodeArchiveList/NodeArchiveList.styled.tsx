@@ -44,5 +44,3 @@ export const GradientLoader = styled.div`
   animation: ${slide} 40s linear infinite;
   transform: scale(1, -1);
 `;
-
-export const Column = styled.div``;

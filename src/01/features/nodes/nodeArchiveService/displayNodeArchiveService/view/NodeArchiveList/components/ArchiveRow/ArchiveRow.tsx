@@ -7,7 +7,7 @@ export const ArchiveRow: FC<ArchiveRowProps> = ({ row, columnsCount }) => {
     <Row columnsCount={columnsCount}>
       <div>{row.dateTimeText}</div>
       {row.values.map((value) => (
-        <div>{value.text}</div>
+        <div key={value.text}>{value.text}</div>
       ))}
     </Row>
   );
