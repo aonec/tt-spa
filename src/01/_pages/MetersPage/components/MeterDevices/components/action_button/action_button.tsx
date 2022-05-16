@@ -39,7 +39,7 @@ const Wrapper = styled.div<WrapperProps>`
   box-shadow: ${props => props.active ? '0 4px 8px 0 #189ee955' : 'none'};
 `;
 
-const IconLookup = {
+const ResourceIconLookup = {
   switch: <SwitchIcon />,
   check: <CheckIcon />
 }
@@ -53,7 +53,7 @@ const TextLookup = {
 export const ActionButton = memo(({ active = false, onClick, type }: ActionButtonProps) => {
   return (
     <Wrapper onClick={onClick} active={active}>
-      {IconLookup[type]}
+      {ResourceIconLookup[type]}
       <Space />
       {TextLookup[type]}
     </Wrapper>

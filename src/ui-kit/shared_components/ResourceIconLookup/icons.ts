@@ -6,7 +6,7 @@ import {
   HeatIcon,
   HotWaterSupplyIcon,
 } from './assets';
-import { Icons } from './IconTT.types';
+import { Icons } from './ResourceIconLookup.types';
 
 export const icons: Icons = {
   [EResourceType.ColdWaterSupply]: ColdWaterSupplyIcon,

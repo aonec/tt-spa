@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { icons } from './icons';
-import { IconTTProps } from './IconTT.types';
+import { IconTTProps } from './ResourceIconLookup.types';
 
-export const IconTT: FC<IconTTProps> = ({ icon, ...props }) => {
+export const ResourceIconLookup: FC<IconTTProps> = ({ icon, ...props }) => {
   const Icon = icons[icon];
 
   if (!Icon) return null;
