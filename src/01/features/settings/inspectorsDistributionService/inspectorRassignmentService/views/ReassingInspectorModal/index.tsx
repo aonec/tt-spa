@@ -12,9 +12,16 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   handleSave,
   form,
   inspectorsList,
-  loading
+  loading,
 }) => {
   const { fields } = useForm(form);
+
+  const inspectorsOptionsList = inspectorsList?.map((inspector) => (
+    <Select.Option key={inspector.id} value={inspector.id}>
+      {inspector.fullName}
+    </Select.Option>
+  ));
+
   return (
     <ModalTT
       title="Переназначить сотрудника"
@@ -38,11 +45,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
             }
             placeholder="Выберите из списка"
           >
-            {inspectorsList?.map((inspector) => (
-              <Select.Option key={inspector.id} value={inspector.id}>
-                {inspector.fullName}
-              </Select.Option>
-            ))}
+            {inspectorsOptionsList}
           </Select>
           <ErrorMessage>
             {fields.currentInspector.errorText({
@@ -59,11 +62,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
             }
             placeholder="Выберите из списка"
           >
-            {inspectorsList?.map((inspector) => (
-              <Select.Option key={inspector.id} value={inspector.id}>
-                {inspector.fullName}
-              </Select.Option>
-            ))}
+            {inspectorsOptionsList}
           </Select>
           <ErrorMessage>
             {fields.newInspector.errorText({
