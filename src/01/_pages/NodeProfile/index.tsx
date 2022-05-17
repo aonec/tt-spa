@@ -66,7 +66,7 @@ export const NodeProfile = () => {
   if (status === 'pending' || status === 'idle')
     return <Loader size={'32'} show />;
 
-  const { resource, communicationPipes } = node;
+  const { resource, communicationPipes, nodeStatus, lastCommercialAccountingDate } = node;
 
   const isShowReadings =
     node?.calculator === null || node?.calculator?.isConnected === false;
@@ -127,7 +127,7 @@ export const NodeProfile = () => {
 
   return (
     <>
-      <RegisterNodeOnCommercialAccountingModalContainer />
+      <RegisterNodeOnCommercialAccountingModalContainer nodeStatus={nodeStatus?.value} lastCommercialAccountingDate={lastCommercialAccountingDate}/>
       <Header
         node={node}
         calculator={calculator}
