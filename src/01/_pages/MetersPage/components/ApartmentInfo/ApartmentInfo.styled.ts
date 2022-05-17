@@ -17,3 +17,7 @@ export const AlertLink = styled.div`
 export const ArrowRight = styled(ChevronRight)`
   margin-left: 7px;
 `;
+
+export const HomeownerAccountChangeDate = styled.div`
+  color: #272f5ab2;
+`;

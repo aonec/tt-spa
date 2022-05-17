@@ -41,6 +41,7 @@ import {
   AlertLink,
   ApartmentAlertWrapper,
   ArrowRight,
+  HomeownerAccountChangeDate,
   Wrapper,
 } from './ApartmentInfo.styled';
 import { checkIsHomeownerAccountRecentlyModified } from './utils';
@@ -97,8 +98,6 @@ export const ApartmentInfo = () => {
   const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
     checkIsHomeownerAccountRecentlyModified
   );
-
-  console.log(recentlyModifiedApartmentPersonalAccounts);
 
   const menuButtonArray = [
     {
@@ -165,6 +164,25 @@ export const ApartmentInfo = () => {
         </AlertContent>
       </Alert>
     </ApartmentAlertWrapper>
+  );
+
+  const apartmentHomeownerAcconutChangeAlerts = recentlyModifiedApartmentPersonalAccounts?.map(
+    (homeownerAccount) => (
+      <ApartmentAlertWrapper key={homeownerAccount.id}>
+        <Alert type="info">
+          <AlertContent>
+            <div>
+              Добавлен новый номер лицевого счёта квартиры{' '}
+              {homeownerAccount.personalAccountNumber} ({homeownerAccount.name})
+            </div>
+            <HomeownerAccountChangeDate>
+              Дата изменения:{' '}
+              {moment(homeownerAccount.openAtFact).format('DD.MM.YYYY')}
+            </HomeownerAccountChangeDate>
+          </AlertContent>
+        </Alert>
+      </ApartmentAlertWrapper>
+    )
   );
 
   const houseManagementRender = houseManagement && (
@@ -252,6 +270,7 @@ export const ApartmentInfo = () => {
 
       {apartment && pausedAlert}
       {isApartmentTaskExist && apartmentTaskAlert}
+      {apartmentHomeownerAcconutChangeAlerts}
     </Wrapper>
   );
 };
