@@ -6,7 +6,6 @@ import { patchHousingStockInspectorInfo } from './inspectorHousingStockService.a
 import {
   CurrentHousingStockUpdate,
   PatchHousingStockInspectorInfoPayload,
-  UpdateHousingStockInspectorInfoRequestError,
 } from './inspectorHousingStockService.types';
 
 const inspectorHousingStockServiceDomain = createDomain(
@@ -19,8 +18,7 @@ const $currentHousingStockUpdates = inspectorHousingStockServiceDomain.createSto
 
 const updateHousingStockInspectorInfoFx = inspectorHousingStockServiceDomain.createEffect<
   PatchHousingStockInspectorInfoPayload,
-  HousingStockResponse | null,
-  UpdateHousingStockInspectorInfoRequestError
+  HousingStockResponse | null
 >(patchHousingStockInspectorInfo);
 
 const updateHousingStockInspectorInfo = inspectorHousingStockServiceDomain.createEvent<PatchHousingStockInspectorInfoPayload>();
