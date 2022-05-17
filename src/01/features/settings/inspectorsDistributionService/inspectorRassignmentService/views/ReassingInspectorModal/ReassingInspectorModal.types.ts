@@ -1,5 +1,5 @@
 import { InspectorResponse } from 'myApi';
-import { InspectorsReassignmentForm } from '../../types';
+import { InspectorsReassignmentForm } from '../../inspectorReassignmentService.types';
 
 export type ReassingInspectorModalProps = {
   isOpen: boolean;
@@ -7,5 +7,5 @@ export type ReassingInspectorModalProps = {
   handleSave: () => void;
   form: InspectorsReassignmentForm;
   inspectorsList: InspectorResponse[] | null;
-  loading: boolean;
+  isLoading: boolean;
 };

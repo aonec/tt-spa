@@ -1,18 +1,19 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
-import { ReassingInspectorModalProps } from './types';
-import { FormWrap, ModalDescription } from './components';
+import { ReassingInspectorModalProps } from './ReassingInspectorModal.types';
+import { FormWrap, ModalDescription } from './ReassingInspectorModal.styled';
 import { useForm } from 'effector-forms/dist';
 import { Form } from 'antd';
 import { Select } from '01/shared/ui/Select';
 import { ErrorMessage } from '01/shared/ui/ErrorMessage';
+
 export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   isOpen,
   handleClose,
   handleSave,
   form,
   inspectorsList,
-  loading,
+  isLoading,
 }) => {
   const { fields } = useForm(form);
 
@@ -29,7 +30,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
       onCancel={handleClose}
       onSubmit={handleSave}
       saveBtnText="Переназначить сотрудника"
-      loading={loading}
+      loading={isLoading}
     >
       <ModalDescription>
         На все адреса такущего сотрудника будет автоматически назначен новый

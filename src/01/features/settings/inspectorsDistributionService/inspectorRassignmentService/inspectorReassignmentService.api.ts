@@ -1,5 +1,5 @@
 import { axios } from '01/axios';
-import { PatchInspectorPayload } from './types';
+import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 
 export const reassingHousingStockInspector = ({
   inspectorId,

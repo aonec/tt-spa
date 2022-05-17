@@ -24,7 +24,7 @@ export const ReassingInspectorModalContainer = () => {
       handleSave={() => handleSave()}
       form={form}
       inspectorsList={inspectorsList}
-      loading={isLoading}
+      isLoading={isLoading}
     />
   );
 };

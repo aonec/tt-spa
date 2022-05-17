@@ -2,7 +2,7 @@ import { displayInspectorsService } from '01/features/Inspectors/displayInspecto
 import { createDomain } from 'effector';
 import { createForm } from 'effector-forms/dist';
 import { reassingHousingStockInspector } from './inspectorReassignmentService.api';
-import { PatchInspectorPayload } from './types';
+import { PatchInspectorPayload } from './inspectorReassignmentService.types';
 
 const inspectorReassignmentServiceDomain = createDomain(
   'inspectorrRassignmentService'
