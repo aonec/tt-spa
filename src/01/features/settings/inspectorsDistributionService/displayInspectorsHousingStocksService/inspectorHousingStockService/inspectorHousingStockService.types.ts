@@ -16,5 +16,3 @@ export type CurrentHousingStockUpdate = {
   housingStockId: number;
   status?: 'loading' | 'failed';
 };
-
-export type UpdateHousingStockInspectorInfoRequestError = { config?: { url?: string } };

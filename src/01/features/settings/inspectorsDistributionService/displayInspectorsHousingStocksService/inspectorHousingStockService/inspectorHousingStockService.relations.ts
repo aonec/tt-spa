@@ -1,7 +1,6 @@
 import { sample } from 'effector';
 import { displayInspectorsHousingStocksService } from '../displayInspectorsHousingStocksService.models';
 import { inspectorHousingStockService } from './inspectorHousingStockService.models';
-import { UpdateHousingStockInspectorInfoRequestError } from './inspectorHousingStockService.types';
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfo,
@@ -9,15 +8,15 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
 );
 
 inspectorHousingStockService.outputs.$currentHousingStockUpdates.on(
-  inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
-    .failData,
-  (prev, error: UpdateHousingStockInspectorInfoRequestError) => {
-    const housingStockId = Number(error.config?.url?.split('/')[1]);
-    return prev.map((elem) =>
-      elem.housingStockId === housingStockId
-        ? { ...elem, status: 'failed' }
-        : elem
-    );
+  inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx.fail,
+  (prev, { params }) => {
+    const housingStockId = params.housingStockId;
+
+    return prev.map((elem) => {
+      if (elem.housingStockId !== housingStockId) return elem;
+
+      return { ...elem, status: 'failed' };
+    });
   }
 );
 
@@ -37,22 +36,17 @@ displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
     .doneData,
   (hosuingStocks, updatedHosuingStock) => {
-    console.log(hosuingStocks);
-
     const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
-
-      if (housingStock.housingStockId === updatedHosuingStock?.id) {
-        return {
-          ...housingStock,
-          inspectedDay: updatedHosuingStock.inspectedDay,
-          inspectorId: updatedHosuingStock.inspectorId,
-        };
+      if (housingStock.housingStockId !== updatedHosuingStock?.id) {
+        return housingStock;
       }
 
-      return housingStock;
+      return {
+        ...housingStock,
+        inspectedDay: updatedHosuingStock.inspectedDay,
+        inspectorId: updatedHosuingStock.inspectorId,
+      };
     });
-
-    console.log(updatedHousingStocks)
 
     return updatedHousingStocks;
   }

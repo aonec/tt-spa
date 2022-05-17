@@ -10,7 +10,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
   inspectors,
   days,
   updateHousingStock,
-  updates,
+  updateInfo,
   loading,
 }) => {
   const loader = (
@@ -20,7 +20,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
   );
 
   const list = housingStocks?.map((housingStock) => {
-    const update = updates.find(
+    const update = updateInfo.find(
       (elem) => elem.housingStockId === housingStock.housingStockId
     );
     return (
@@ -53,7 +53,12 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
     }
 
     return list;
-  }, [isHousingStocksListExist, isHousingStocksListContainsElems]);
+  }, [
+    isHousingStocksListExist,
+    isHousingStocksListContainsElems,
+    housingStocks,
+    updateInfo,
+  ]);
 
   return (
     <Wrap>

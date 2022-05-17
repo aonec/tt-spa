@@ -14,7 +14,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
   );
 
   const inspectors = useStore(inspectorHousingStockService.outputs.$inspectors);
-  const updates = useStore(
+  const updateInfo = useStore(
     inspectorHousingStockService.outputs.$currentHousingStockUpdates
   );
 
@@ -31,7 +31,7 @@ export const InspectorsHousingStocksListContainer: FC = () => {
       days={days}
       inspectors={inspectors}
       updateHousingStock={updateHousingStock}
-      updates={updates}
+      updateInfo={updateInfo}
     />
   );
 };

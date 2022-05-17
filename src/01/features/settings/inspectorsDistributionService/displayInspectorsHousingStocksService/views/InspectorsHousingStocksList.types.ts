@@ -12,5 +12,5 @@ export type InspectorsHosuingsStocksListProps = {
   updateHousingStock: (
     updatedData: PatchHousingStockInspectorInfoPayload
   ) => void;
-  updates: CurrentHousingStockUpdate[];
+  updateInfo: CurrentHousingStockUpdate[];
 };
