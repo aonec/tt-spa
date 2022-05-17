@@ -1,6 +1,6 @@
 import { CSSProperties, FC } from 'react';
 
-export type IconTTProps = {
+export type ResourceIconLookupProps = {
   icon: string;
   style?: CSSProperties;
 };
