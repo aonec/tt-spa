@@ -4,9 +4,10 @@ import { Flex } from '../Layout/Flex';
 import { Space } from '../Layout/Space/Space';
 import { ReactComponent as InfoIcon } from './icons/info.svg';
 import { ReactComponent as StopIcon } from './icons/stop.svg';
+import { ReactComponent as WarningIcon } from './icons/warning.svg'
 
 interface Props {
-  type?: 'info' | 'stop';
+  type?: 'info' | 'stop' | 'warning';
   color?: string;
 }
 
@@ -14,6 +15,7 @@ export const Alert: React.FC<Props> = ({ children, type = 'info', color }) => {
   const icons = {
     info: InfoIcon,
     stop: StopIcon,
+    warning: WarningIcon,
   };
 
   const Icon = icons[type];

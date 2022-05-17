@@ -320,6 +320,7 @@ export interface ApartmentResponse {
 
   /** @format int32 */
   deniedPermissionsCount: number | null;
+  activeTaskIds: number[] | null;
 }
 
 export interface ApartmentResponseSuccessApiResponse {
@@ -10251,6 +10252,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
         path: `/api/Tasks/${taskId}/return`,
         method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * @description Роли:<li>Администратор УК</li><li>Исполнитель УК</li><li>Старший оператор УК</li><li>Оператор УК</li><li>Наблюдатель УК</li><li>Наблюдатель УК (ограниченный доступ)</li><li>Диспетчер УК</li><li>Контролёр</li>
+     *
+     * @tags Tasks
+     * @name TasksExportExecutingIndividualDeviceCheckTasksList
+     * @summary TasksExecute
+     * @request GET:/api/Tasks/ExportExecutingIndividualDeviceCheckTasks
+     * @secure
+     */
+    tasksExportExecutingIndividualDeviceCheckTasksList: (query?: { taskId?: number }, params: RequestParams = {}) =>
+      this.request<TaskResponseSuccessApiResponse, ErrorApiResponse>({
+        path: `/api/Tasks/ExportExecutingIndividualDeviceCheckTasks`,
+        method: "GET",
+        query: query,
         secure: true,
         format: "json",
         ...params,
