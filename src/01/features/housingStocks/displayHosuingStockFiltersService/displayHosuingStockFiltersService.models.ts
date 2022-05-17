@@ -1,8 +1,8 @@
 import { createDomain } from 'effector';
 import { createGate } from 'effector-react';
-import { HousingStockFilterResponse } from 'myApi';
+import _ from 'lodash';
+import { GuidStringDictionaryItem, HousingStockFilterResponse } from 'myApi';
 import { getHosuingStockFilters } from './displayHosuingStockFiltersService.api';
-import { sortHousingManagementsListByAlphabet } from './utils';
 
 const displayHosuingStockFiltersServiceDomain = createDomain(
   'displayHosuingStockFiltersServiceDomain'
@@ -13,8 +13,14 @@ const $hosuingStockfilters = displayHosuingStockFiltersServiceDomain.createStore
 );
 
 const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
-  const houseManagements = filters?.houseManagements || [];
-  return sortHousingManagementsListByAlphabet(houseManagements);
+  const houseManagements = filters?.houseManagements;
+
+  const sortedHouseManagements = _.sortBy(
+    houseManagements,
+    (houseManagement) => houseManagement.value
+  );
+
+  return sortedHouseManagements;
 });
 
 const fetchHosuingStockFiltersFx = displayHosuingStockFiltersServiceDomain.createEffect<

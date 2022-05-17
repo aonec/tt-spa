@@ -33,19 +33,29 @@ inspectorHousingStockService.outputs.$currentHousingStockUpdates.reset(
   displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList
 );
 
-inspectorHousingStockService.outputs.$housingStocks.on(
+displayInspectorsHousingStocksService.outputs.$inspectorsHousingStocksList.on(
   inspectorHousingStockService.inputs.updateHousingStockInspectorInfoFx
     .doneData,
-  (prev, hosuingStock) =>
-    prev?.map((elem) =>
-      elem.housingStockId === hosuingStock?.id
-        ? {
-            ...elem,
-            inspectedDay: hosuingStock.inspectedDay,
-            inspectorId: hosuingStock.inspectorId,
-          }
-        : elem
-    )
+  (hosuingStocks, updatedHosuingStock) => {
+    console.log(hosuingStocks);
+
+    const updatedHousingStocks = hosuingStocks?.map((housingStock) => {
+
+      if (housingStock.housingStockId === updatedHosuingStock?.id) {
+        return {
+          ...housingStock,
+          inspectedDay: updatedHosuingStock.inspectedDay,
+          inspectorId: updatedHosuingStock.inspectorId,
+        };
+      }
+
+      return housingStock;
+    });
+
+    console.log(updatedHousingStocks)
+
+    return updatedHousingStocks;
+  }
 );
 
 sample({
