@@ -4,5 +4,4 @@ import { NodeCommercialRegistrationRequestPayload } from '../../nodeCommercialRe
 export type RegisterNodeOnCommercialAccountingFormProps = {
   handleSubmit: (payload: NodeCommercialRegistrationRequestPayload) => void;
   nodeStatus: ENodeCommercialAccountStatus,
-  lastCommercialAccountingDate: string
 };

@@ -13,10 +13,9 @@ import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCom
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({
   handleSubmit,
   nodeStatus,
-  lastCommercialAccountingDate,
 }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
-  const date = moment(lastCommercialAccountingDate)
+
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -29,7 +28,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
     },
     onSubmit: (values) =>
       handleSubmit({
-        data: values,
+        data:values,
         pipeNodeId: Number(nodeId),
       }),
   });
@@ -39,7 +38,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
       id="register-node-on-commertion-accounting-form"
       onSubmitCapture={submitForm}
     >
-      {/* {nodeStatus === 'Registered' ? (
+      {nodeStatus === 'Registered' ? (
         <Form.Item label="Дата снятия с коммерческого учёта">
           <DatePickerTT
             value={
@@ -49,14 +48,14 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
             }
             onChange={(value) =>
               setFieldValue(
-                'endCommercialAccountingDate',
+                'endCommercialAccountingDate',// может быть другое поле 
                 value?.toISOString(false)
               )
             }
           />
         </Form.Item>
-      ) : ( */}
-        <Grid temp="1fr 1fr" gap="15px" margin-top="25px">
+      ) : (
+        <Grid temp="1fr 1fr" gap="15px">
           <Form.Item label="Дата начала действия акта-допуска">
             <DatePickerTT
               value={
@@ -88,7 +87,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
             />
           </Form.Item>
         </Grid>
-       
+      )}
       <FilesUpload
         type={EDocumentType.NodeAdmissionAct}
         uniqId="accounting-form"
