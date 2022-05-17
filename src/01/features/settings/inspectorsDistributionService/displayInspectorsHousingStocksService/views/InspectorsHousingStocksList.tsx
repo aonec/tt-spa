@@ -1,6 +1,6 @@
 import { TypeAddressToStart } from '01/shared/ui/TypeToStart';
 import { Empty, Skeleton } from 'antd';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { HousingStockItem } from '../inspectorHousingStockService/views/HousingStockItem/HousingStockItem';
 import { LoaderWrap, Wrap } from './InspectorsHousingStocksList.styled';
 import { InspectorsHosuingsStocksListProps } from './InspectorsHousingStocksList.types';
@@ -43,15 +43,22 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
   const isHousingStocksListExist = Boolean(housingStocks);
   const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
 
-  const content = isHousingStocksListExist ? (
-    isHousingStocksListContainsElems ? (
-      list
-    ) : (
-      <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-    )
-  ) : (
-    <TypeAddressToStart />
-  );
+  const content = useMemo(() => {
+    if (!isHousingStocksListExist) {
+      return <TypeAddressToStart />;
+    }
 
-  return <Wrap>{loading ? loader : content}</Wrap>;
+    if (!isHousingStocksListContainsElems) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+    }
+
+    return list;
+  }, [isHousingStocksListExist, isHousingStocksListContainsElems]);
+
+  return (
+    <Wrap>
+      {loading && loader}
+      {!loading && content}
+    </Wrap>
+  );
 };
