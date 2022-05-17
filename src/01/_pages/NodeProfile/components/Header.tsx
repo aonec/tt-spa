@@ -45,7 +45,7 @@ export const Header = ({
   const { resource, nodeStatus, number, address } = node;
   const { id: objectId, city, street, housingStockNumber, corpus } =
     address || {};
-
+  const { value } = nodeStatus || {};
   const menuButtonArr: MenuButtonInterface[] = [
     {
       title: 'Редактировать узел',
@@ -55,7 +55,10 @@ export const Header = ({
       },
     },
     {
-      title: 'Поставить узел на коммерческий учёт',
+      title:
+        value === 'Registered'
+          ? 'Снять узел с комерческого учета'
+          : 'Поставить узел на комерческий учет',
       show: true,
       cb: () => openRegisterNodeOnCommercialAccountingModal(),
     },
