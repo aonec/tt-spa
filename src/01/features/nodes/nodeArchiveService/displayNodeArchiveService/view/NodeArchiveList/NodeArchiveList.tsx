@@ -16,15 +16,15 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
         {data && (
           <>
             <Header columnsCount={data.columns.length}>
-              {data.columns.map((column) => (
-                <div key={column.text}>{column.text}</div>
+              {data.columns.map((column, index) => (
+                <div key={index}>{column.text}</div>
               ))}
             </Header>
-            {data.rows.map((row) => (
+            {data.rows.map((row, index) => (
               <ArchiveRow
                 columnsCount={data.columns.length}
                 row={row}
-                key={row.dateTime}
+                key={index}
               />
             ))}
           </>
