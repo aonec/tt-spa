@@ -43,6 +43,7 @@ import {
   ArrowRight,
   Wrapper,
 } from './ApartmentInfo.styled';
+import { checkIsHomeownerAccountRecentlyModified } from './utils';
 
 export const ApartmentInfo = () => {
   const [show, setShow] = React.useState(false);
@@ -92,6 +93,12 @@ export const ApartmentInfo = () => {
   const apartmentTaskId = apartment?.activeTaskIds[0];
 
   const isApartmentTaskExist = Boolean(apartmentTaskId);
+
+  const recentlyModifiedApartmentPersonalAccounts = apartment?.homeownerAccounts.filter(
+    checkIsHomeownerAccountRecentlyModified
+  );
+
+  console.log(recentlyModifiedApartmentPersonalAccounts);
 
   const menuButtonArray = [
     {
