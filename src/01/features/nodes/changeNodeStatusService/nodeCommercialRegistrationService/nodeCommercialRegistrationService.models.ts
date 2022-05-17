@@ -1,12 +1,16 @@
 import { message } from 'antd';
 import { combine, createDomain, forward } from 'effector';
-import { registerNode } from './nodeCommercialRegistrationService.api';
-import { NodeCommercialRegistrationRequestPayload } from './nodeCommercialRegistrationService.types';
+import { registerNode, unsetNode } from './nodeCommercialRegistrationService.api';
+import { NodeCommercialRegistrationRequestPayload, unsetNodeCommercialRegistrationRequestPayload } from './nodeCommercialRegistrationService.types';
 
 type Error = {
-  error: {
-    Text: string;
-  };
+    response: {
+      data: {
+        error: {
+          Text: string;
+        };
+      };
+    };
 };
 
 const nodeCommercialRegistrationServiceDomain = createDomain(
@@ -28,26 +32,37 @@ const unsetNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomai
   NodeCommercialRegistrationRequestPayload,
   void,
   Error
->(registerNode);
+>(unsetNode); // добавить новое апи 
 
 const registrationNodeDone = registerNodeOnCommercialAccountingFx.doneData;
+const unsetNodeDone = unsetNodeOnCommercialAccountingFx.doneData;
+
 
 const registerNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<NodeCommercialRegistrationRequestPayload>();
+const unsetNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
 
-const $loading = registerNodeOnCommercialAccountingFx.pending;
+const $loading = combine(registerNodeOnCommercialAccountingFx.pending, unsetNodeOnCommercialAccountingFx.pending, (...loading)=> loading.some(Boolean))
 
-registerNodeOnCommercialAccountingFx.failData.watch(({ error }) => {
-  message.error(error.Text);
+registerNodeOnCommercialAccountingFx.failData.watch(({response}) => {
+  message.error(response?.data.error.Text);
 });
 
 registerNodeOnCommercialAccountingFx.done.watch(() => {
   message.success('Статус изменен успешно');
 });
 
+unsetNodeOnCommercialAccountingFx.failData.watch(({response}) => {
+  message.error(response?.data.error.Text);
+});
+
+unsetNodeOnCommercialAccountingFx.done.watch(() => {
+  message.success('Статус изменен успешно');
+});
+
 $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
 
 forward({
-  from: registrationNodeDone,
+  from: [registrationNodeDone, unsetNodeDone],
   to: closeModal,
 });
 
@@ -56,11 +71,17 @@ forward({
   to: registerNodeOnCommercialAccountingFx,
 });
 
+forward({
+  from: unsetNodeOnCommercialAccounting,
+  to: unsetNodeOnCommercialAccountingFx,
+})
+
 export const nodeCommercialRegistrationService = {
   inputs: {
     registerNodeOnCommercialAccounting,
     openModal,
     closeModal,
+    unsetNodeOnCommercialAccounting
   },
   outputs: {
     $isModalOpen,
