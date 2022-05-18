@@ -10,15 +10,17 @@ export const NodeInfo: FC<NodeInfoProps> = ({ node, loading }) => {
 
   if (loading) {
     return <LoadingSkeleton />;
-  } else if (node) {
-    return (
-      <Wrap>
-        {address}
-        <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
-        <NodeName>Узел {node.number}</NodeName>
-      </Wrap>
-    );
-  } else {
-    return null
   }
+
+  if (!node) {
+    return null;
+  }
+
+  return (
+    <Wrap>
+      {address}
+      <IconTT style={{ marginLeft: 10 }} icon={node.resource.toLowerCase()} />
+      <NodeName>Узел {node.entryNumber}</NodeName>
+    </Wrap>
+  );
 };
