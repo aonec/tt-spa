@@ -1,7 +1,15 @@
-import { ENodeCommercialAccountStatus } from 'myApi';
-import { NodeCommercialRegistrationRequestPayload } from '../../nodeCommercialRegistrationService.types';
+import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
+import {
+  ElectricNodeCommercialRegistrationRequestPayload,
+  NodeCommercialRegistrationRequestPayload,
+  unsetNodeCommercialRegistrationRequestPayload,
+  unsetElectricNodeCommercialRegistrationRequestPayload,
+} from '../../nodeCommercialRegistrationService.types';
 
 export type RegisterNodeOnCommercialAccountingFormProps = {
-  handleSubmit: (payload: NodeCommercialRegistrationRequestPayload) => void;
-  nodeStatus: ENodeCommercialAccountStatus,
+  handleSubmit: (
+    payload: any
+  ) => void;
+  nodeStatus: ENodeCommercialAccountStatus;
+  resource: EResourceType;
 };

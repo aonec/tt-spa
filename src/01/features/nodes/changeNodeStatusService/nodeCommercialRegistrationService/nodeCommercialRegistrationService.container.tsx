@@ -1,29 +1,40 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import { useEvent, useStore } from 'effector-react';
-import { ENodeCommercialAccountStatus } from 'myApi';
+import { ENodeCommercialAccountStatus, EResourceType } from 'myApi';
 import React from 'react';
 import { nodeCommercialRegistrationService } from '.';
 import { RegisterNodeOnCommercialAccountingForm } from './view/RegisterNodeOnCommercialAccountingForm';
 
 export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
   nodeStatus: ENodeCommercialAccountStatus;
-}> = ({ nodeStatus }) => {
+  resource: EResourceType;
+}> = ({ nodeStatus, resource }) => {
   const status = nodeStatus === 'Registered';
+
   const isOpen = useStore(
     nodeCommercialRegistrationService.outputs.$isModalOpen
   );
+
   const loading = useStore(nodeCommercialRegistrationService.outputs.$loading);
 
   const handleClose = useEvent(
     nodeCommercialRegistrationService.inputs.closeModal
   );
 
-  const handleSumbit = useEvent(
-    status
-      ? nodeCommercialRegistrationService.inputs.unsetNodeOnCommercialAccounting
+  const props =
+    resource === 'Electricity'
+      ? status
+        ? nodeCommercialRegistrationService.inputs
+            .unsetElectricNodeOnCommercialAccounting
+        : nodeCommercialRegistrationService.inputs
+            .registerElectricNodeOnCommercialAccounting
+      : status
+      ? nodeCommercialRegistrationService.inputs
+          .unsetPipeNodeOnCommercialAccounting
       : nodeCommercialRegistrationService.inputs
-          .registerNodeOnCommercialAccounting
-  );
+          .registerPipeNodeOnCommercialAccounting;
+
+  const handleSumbit = useEvent(props);
 
   return (
     <ModalTT
@@ -45,6 +56,7 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
       <RegisterNodeOnCommercialAccountingForm
         handleSubmit={handleSumbit}
         nodeStatus={nodeStatus}
+        resource={resource}
       />
     </ModalTT>
   );

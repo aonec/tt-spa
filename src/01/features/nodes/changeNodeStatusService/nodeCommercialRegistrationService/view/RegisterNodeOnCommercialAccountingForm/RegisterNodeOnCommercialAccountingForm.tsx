@@ -5,7 +5,7 @@ import { EDocumentType } from 'myApi';
 import { DatePicker, Form } from 'antd';
 import { useFormik } from 'formik';
 import moment from 'moment';
-import { NodeAdmissionActRequest } from 'myApi';
+import { NodeSetRegisteredRequest, NodeSetNotRegisteredRequest } from 'myApi';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCommercialAccountingForm.types';
@@ -13,26 +13,27 @@ import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCom
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({
   handleSubmit,
   nodeStatus,
+  resource
 }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
-
+  // type current = nodeStatus === "Registered"? NodeSetNotRegisteredRequest : NodeSetNotRegisteredRequest
   const {
     handleSubmit: submitForm,
     setFieldValue,
     values,
-  } = useFormik<NodeAdmissionActRequest>({
+  } = useFormik<NodeSetRegisteredRequest>({
     initialValues: {
-      documentId: undefined as number | undefined,
+      documentId: undefined,
       startCommercialAccountingDate: undefined,
       endCommercialAccountingDate: undefined,
     },
     onSubmit: (values) =>
       handleSubmit({
-        data:values,
+        data: values,
         pipeNodeId: Number(nodeId),
       }),
   });
-  console.log(values);
+
   return (
     <Form
       id="register-node-on-commertion-accounting-form"
@@ -48,7 +49,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
             }
             onChange={(value) =>
               setFieldValue(
-                'endCommercialAccountingDate',// может быть другое поле 
+                'endCommercialAccountingDate', 
                 value?.toISOString(false)
               )
             }
