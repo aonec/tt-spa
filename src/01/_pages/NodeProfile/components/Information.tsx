@@ -25,7 +25,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
   } = node;
 
   const { address } = node || {};
-  const { city, street, housingStockNumber, corpus, id } = address || {};
+  const { city, street, number, corpus, id } = address || {};
 
   const getNodeStatus =
     nodeStatusList.find(
@@ -42,7 +42,7 @@ const Information = ({ node, task = false }: HeaderInterface) => {
           <span>Адрес</span>
           <Subtitle to={`/objects/${id}`}>
             {address
-              ? `${city}, ${street}, ${housingStockNumber} ${
+              ? `${city}, ${street}, ${number} ${
                   corpus ? `, к.${corpus}` : ''
                 }`
               : ''}

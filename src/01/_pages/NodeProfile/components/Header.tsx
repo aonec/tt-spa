@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 import { IconTT, MenuButtonTT } from '../../../tt-components';
 import { nodeStatusList } from '../../../tt-components/localBases';
 import getAccessesList from '../../../_api/utils/getAccessesList';
-import { CalculatorIntoNodeResponse, PipeNodeResponse } from '../../../../myApi';
+import {
+  CalculatorIntoNodeResponse,
+  PipeNodeResponse,
+} from '../../../../myApi';
 import { MenuButtonInterface } from '../../../tt-components/interfaces';
 import { HeaderWrap, Title, Subtitle } from '../../../_components/Headers';
 
@@ -25,7 +28,7 @@ export const Header = ({ node, calculator, nodeId }: HeaderInterface) => {
   }
 
   const { resource, nodeStatus, number, address } = node;
-  const { id: objectId, city, street, housingStockNumber, corpus } =
+  const { id: objectId, city, street, number: housingStockNumber, corpus } =
     address || {};
 
   const menuButtonArr: MenuButtonInterface[] = [
