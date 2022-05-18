@@ -58,7 +58,7 @@ const TabsDevices = () => {
 
   const deviceArray = devicesByObject.map((addressDevicesGroup) => (
     <DevicesByAddress
-      key={addressDevicesGroup.address?.id}
+      key={addressDevicesGroup.address?.mainAddress?.id}
       addressDevicesGroup={addressDevicesGroup}
     />
   ));

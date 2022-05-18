@@ -14,21 +14,15 @@ interface InformationInterface {
 
 export const Information = ({ device }: InformationInterface) => {
   const { address } = device || { address: DEFAULT_BUILDING };
-  const { city, street, housingStockNumber, corpus, id } =
-    address || DEFAULT_BUILDING;
-  const {
-    futureCheckingDate,
-    lastCheckingDate,
-  } = device || DEFAULT_DEVICE;
+  const { city, street, number, corpus, id } = address || DEFAULT_BUILDING;
+  const { futureCheckingDate, lastCheckingDate } = device || DEFAULT_DEVICE;
 
   return (
     <ListWrap>
       <ListItem>
         <span>Адрес</span>
         <Subtitle to={`/objects/${id}`} style={{ padding: 8 }}>
-          {`${city}, ${street}, ${housingStockNumber}${
-            corpus ? `, к.${corpus}` : ''
-          }`}
+          {`${city}, ${street}, ${number}${corpus ? `, к.${corpus}` : ''}`}
         </Subtitle>
       </ListItem>
       <ListItem>

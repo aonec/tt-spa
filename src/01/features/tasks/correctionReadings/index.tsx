@@ -105,7 +105,7 @@ export const CorrectionReadingsPanel = () => {
     (count) => (fields.readingValue.value as any)[`value${count}`]
   );
 
-  const isReadOnly = !task?.isPerpertator;
+  const isReadOnly = !task?.isPerpetrator;
 
   const actions = task?.currentStage?.actions;
 

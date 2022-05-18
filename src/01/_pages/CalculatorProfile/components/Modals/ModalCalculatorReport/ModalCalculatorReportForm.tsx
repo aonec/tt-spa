@@ -32,7 +32,7 @@ const ModalCalculatorReportForm = ({
   handleCancel,
 }: ModalCalculatorReportFormInterface) => {
   const { model, serialNumber, address, nodes } = device;
-  const { housingStockNumber, street } = address || {};
+  const { number, street } = address || {};
   const serialNumberCalculator = serialNumber;
   const modelCalculator = model;
 
@@ -197,7 +197,7 @@ const ModalCalculatorReportForm = ({
           {TabsList}
         </Tabs>
         <Form.Item label="Название отчета">
-          <InputTT value={`${street}_${housingStockNumber}.exls`} readOnly />
+          <InputTT value={`${street}_${number}.exls`} readOnly />
         </Form.Item>
 
         <Form.Item label="Выбор узла">
