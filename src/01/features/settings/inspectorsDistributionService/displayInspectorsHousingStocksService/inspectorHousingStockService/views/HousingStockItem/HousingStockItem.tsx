@@ -9,7 +9,7 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
   housingStock,
   inspectors,
   days,
-  update,
+  updateInfo,
   updateHousingStock,
 }) => {
   const inspectedDatSelectRef = useRef<RefSelectProps | null>(null);
@@ -25,10 +25,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         ref={inspectedDatSelectRef}
         placeholder="Число"
         isShadow={false}
-        disabled={update?.status === 'loading'}
+        disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectedDay || void 0}
         style={{
-          borderColor: update?.status === 'failed' ? 'red' : void 0,
+          borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         onChange={(value) => {
           inspectedDatSelectRef?.current?.blur();
@@ -48,10 +48,10 @@ export const HousingStockItem: FC<HousingStockItemProps> = ({
         ref={inspectorSelectRef}
         placeholder="Контролер"
         isShadow={false}
-        disabled={update?.status === 'loading'}
+        disabled={updateInfo?.status === 'loading'}
         value={housingStock.inspectorId || void 0}
         style={{
-          borderColor: update?.status === 'failed' ? 'red' : void 0,
+          borderColor: updateInfo?.status === 'failed' ? 'red' : void 0,
         }}
         onChange={(value) => {
           inspectorSelectRef?.current?.blur();

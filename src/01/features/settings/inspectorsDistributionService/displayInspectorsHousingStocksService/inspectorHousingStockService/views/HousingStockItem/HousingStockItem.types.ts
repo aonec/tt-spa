@@ -12,5 +12,5 @@ export type HousingStockItemProps = {
   updateHousingStock: (
     updatedData: UpdateInspectorOnHousingStockRequest
   ) => void;
-  update?: CurrentHousingStockUpdate;
+  updateInfo?: CurrentHousingStockUpdate;
 };

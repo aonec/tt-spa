@@ -13,7 +13,7 @@ const $hosuingStockfilters = displayHosuingStockFiltersServiceDomain.createStore
 );
 
 const $hosuingManagementList = $hosuingStockfilters.map((filters) => {
-  const houseManagements = filters?.houseManagements;
+  const houseManagements = filters?.houseManagements || [];
 
   const sortedHouseManagements = _.sortBy(
     houseManagements,

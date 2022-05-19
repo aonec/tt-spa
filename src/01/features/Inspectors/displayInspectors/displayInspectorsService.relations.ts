@@ -8,10 +8,7 @@ displayInspectorsService.outputs.$inspectorsList
     (_, inspectors) => {
       if (!inspectors) return null;
 
-      const filteredInspectors = sortBy(
-        inspectors,
-        (inspector) => inspector.fullName
-      );
+      const filteredInspectors = sortBy(inspectors, 'fullName');
 
       return filteredInspectors;
     }

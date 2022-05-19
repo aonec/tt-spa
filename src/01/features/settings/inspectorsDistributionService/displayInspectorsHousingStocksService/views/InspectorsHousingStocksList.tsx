@@ -29,7 +29,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
         housingStock={housingStock}
         inspectors={inspectors}
         days={days}
-        update={update}
+        updateInfo={update}
         updateHousingStock={(data) =>
           updateHousingStock({
             housingStockId: housingStock.housingStockId!,
