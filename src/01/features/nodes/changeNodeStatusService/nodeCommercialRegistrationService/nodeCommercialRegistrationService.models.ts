@@ -1,27 +1,14 @@
 import { message } from 'antd';
 import { combine, createDomain, forward } from 'effector';
 import {
-  registerElectricNode,
   registerPipeNode,
-  unsetElectricNode,
   unsetPipeNode,
 } from './nodeCommercialRegistrationService.api';
 import {
-  ElectricNodeCommercialRegistrationRequestPayload,
+  Error,
   NodeCommercialRegistrationRequestPayload,
-  unsetElectricNodeCommercialRegistrationRequestPayload,
   unsetNodeCommercialRegistrationRequestPayload,
 } from './nodeCommercialRegistrationService.types';
-
-type Error = {
-  response: {
-    data: {
-      error: {
-        Text: string;
-      };
-    };
-  };
-};
 
 const nodeCommercialRegistrationServiceDomain = createDomain(
   'nodeCommercialRegistrationService'
@@ -44,34 +31,15 @@ const unsetNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomai
   Error
 >(unsetPipeNode);
 
-const registerElectricNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomain.createEffect<
-  ElectricNodeCommercialRegistrationRequestPayload,
-  void,
-  Error
->(registerElectricNode);
+const registrationNodeDone = registerNodeOnCommercialAccountingFx.doneData;
+const unsetNodeDone = unsetNodeOnCommercialAccountingFx.doneData;
 
-const unsetElectricNodeOnCommercialAccountingFx = nodeCommercialRegistrationServiceDomain.createEffect<
-  unsetElectricNodeCommercialRegistrationRequestPayload,
-  void,
-  Error
->(unsetElectricNode);
-
-const registrationPipeNodeDone = registerNodeOnCommercialAccountingFx.doneData;
-const unsetPipeNodeDone = unsetNodeOnCommercialAccountingFx.doneData;
-const registrationElectricNodeDone =
-  registerElectricNodeOnCommercialAccountingFx.doneData;
-const unsetElectricNodeDone =
-  unsetElectricNodeOnCommercialAccountingFx.doneData;
-
-const registerPipeNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<NodeCommercialRegistrationRequestPayload>();
-const unsetPipeNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
-const registerElectricNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<ElectricNodeCommercialRegistrationRequestPayload>();
-const unsetElectricNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<unsetElectricNodeCommercialRegistrationRequestPayload>();
+const registerNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<NodeCommercialRegistrationRequestPayload>();
+const unsetNodeOnCommercialAccounting = nodeCommercialRegistrationServiceDomain.createEvent<unsetNodeCommercialRegistrationRequestPayload>();
 
 const $loading = combine(
   registerNodeOnCommercialAccountingFx.pending,
   unsetNodeOnCommercialAccountingFx.pending,
-  
   (...loading) => loading.some(Boolean)
 );
 
@@ -94,43 +62,26 @@ unsetNodeOnCommercialAccountingFx.done.watch(() => {
 $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
 
 forward({
-  from: [
-    registrationPipeNodeDone,
-    unsetPipeNodeDone,
-    registrationElectricNodeDone,
-    unsetElectricNodeDone,
-  ],
+  from: [registrationNodeDone, unsetNodeDone],
   to: closeModal,
 });
 
 forward({
-  from: registerPipeNodeOnCommercialAccounting,
+  from: registerNodeOnCommercialAccounting,
   to: registerNodeOnCommercialAccountingFx,
 });
 
 forward({
-  from: unsetPipeNodeOnCommercialAccounting,
+  from: unsetNodeOnCommercialAccounting,
   to: unsetNodeOnCommercialAccountingFx,
-});
-
-forward({
-  from: unsetElectricNodeOnCommercialAccounting,
-  to: unsetElectricNodeOnCommercialAccountingFx,
-});
-
-forward({
-  from: registerElectricNodeOnCommercialAccounting,
-  to: registerElectricNodeOnCommercialAccountingFx,
 });
 
 export const nodeCommercialRegistrationService = {
   inputs: {
-    registerPipeNodeOnCommercialAccounting,
+    registerNodeOnCommercialAccounting,
     openModal,
     closeModal,
-    unsetPipeNodeOnCommercialAccounting,
-    registerElectricNodeOnCommercialAccounting,
-    unsetElectricNodeOnCommercialAccounting
+    unsetNodeOnCommercialAccounting,
   },
   outputs: {
     $isModalOpen,

@@ -12,11 +12,12 @@ import { RegisterNodeOnCommercialAccountingFormProps } from './RegisterNodeOnCom
 
 export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercialAccountingFormProps> = ({
   handleSubmit,
-  nodeStatus,
-  resource
+  handleSubmitUnset,
+  status,
+  resource,
 }) => {
   const { nodeId } = useParams<{ nodeId: string }>();
-  // type current = nodeStatus === "Registered"? NodeSetNotRegisteredRequest : NodeSetNotRegisteredRequest
+  const resourceType = resource === 'Electricity' ? 'electric' : 'pipe';
   const {
     handleSubmit: submitForm,
     setFieldValue,
@@ -28,10 +29,17 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
       endCommercialAccountingDate: undefined,
     },
     onSubmit: (values) =>
-      handleSubmit({
-        data: values,
-        pipeNodeId: Number(nodeId),
-      }),
+      status
+        ? handleSubmitUnset({
+            data: values,
+            nodeId: Number(nodeId),
+            type: resourceType,
+          })
+        : handleSubmit({
+            data: values,
+            nodeId: Number(nodeId),
+            type: resourceType,
+          }),
   });
 
   return (
@@ -39,7 +47,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
       id="register-node-on-commertion-accounting-form"
       onSubmitCapture={submitForm}
     >
-      {nodeStatus === 'Registered' ? (
+      {status ? (
         <Form.Item label="Дата снятия с коммерческого учёта">
           <DatePickerTT
             value={
@@ -49,7 +57,7 @@ export const RegisterNodeOnCommercialAccountingForm: FC<RegisterNodeOnCommercial
             }
             onChange={(value) =>
               setFieldValue(
-                'endCommercialAccountingDate', 
+                'endCommercialAccountingDate',
                 value?.toISOString(false)
               )
             }

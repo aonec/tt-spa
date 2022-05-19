@@ -21,20 +21,13 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
     nodeCommercialRegistrationService.inputs.closeModal
   );
 
-  const props =
-    resource === 'Electricity'
-      ? status
-        ? nodeCommercialRegistrationService.inputs
-            .unsetElectricNodeOnCommercialAccounting
-        : nodeCommercialRegistrationService.inputs
-            .registerElectricNodeOnCommercialAccounting
-      : status
-      ? nodeCommercialRegistrationService.inputs
-          .unsetPipeNodeOnCommercialAccounting
-      : nodeCommercialRegistrationService.inputs
-          .registerPipeNodeOnCommercialAccounting;
-
-  const handleSumbit = useEvent(props);
+  const handleSumbitUnset = useEvent(
+    nodeCommercialRegistrationService.inputs.unsetNodeOnCommercialAccounting
+  );
+  const handleSumbit = useEvent(
+    nodeCommercialRegistrationService.inputs
+      .registerNodeOnCommercialAccounting
+  );
 
   return (
     <ModalTT
@@ -55,7 +48,8 @@ export const RegisterNodeOnCommercialAccountingModalContainer: React.FC<{
       </div>
       <RegisterNodeOnCommercialAccountingForm
         handleSubmit={handleSumbit}
-        nodeStatus={nodeStatus}
+        handleSubmitUnset={handleSumbitUnset}
+        status={status}
         resource={resource}
       />
     </ModalTT>
