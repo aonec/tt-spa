@@ -48,6 +48,7 @@ import { Space } from '01/shared/ui/Layout/Space/Space';
 import { ReportsPageContainer } from '01/features/reports';
 import { NodeArchivePageContainer } from '01/features/nodes/nodeArchiveService';
 import { SettingsPageContainer } from '../features/settings/SettingsPageContainer';
+import { EditManagingFirmUserPage } from '01/features/staff/managingFirmUser/editManagingFirmUser';
 
 moment.locale('ru');
 
@@ -191,6 +192,10 @@ const Internal = () => {
                 component={NodeArchivePageContainer}
                 exact
               />
+
+              <Route path="/settings/editManagingFirmUser/:id">
+                <EditManagingFirmUserPage />
+              </Route>
 
               <Route
                 path="/settings/:section"
