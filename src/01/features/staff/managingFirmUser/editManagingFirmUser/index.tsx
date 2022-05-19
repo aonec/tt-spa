@@ -82,7 +82,7 @@ export const EditManagingFirmUserPage = () => {
   const { fields, submit } = useForm(editManagingUserInfoForm);
 
   const onSubmit = () => submit();
-  const onCancel = () => history.push('/settings/staff');
+  const onCancel = () => history.push('/companyProfile/staff');
 
   const phoneMask = usePhoneMask();
 
@@ -96,7 +96,7 @@ export const EditManagingFirmUserPage = () => {
     value: elem.id,
   }));
 
-  useRedirectAfterSuccessRequest(isSuccessUpdated, '/settings/staff');
+  useRedirectAfterSuccessRequest(isSuccessUpdated, '/companyProfile/staff');
 
   const form = (
     <FormContainer>

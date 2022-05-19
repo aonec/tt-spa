@@ -1,7 +1,9 @@
-import { HousingStockAddressResponse } from 'myApi';
+import { HousingStockShortResponse } from 'myApi';
 
 export const getHousingStockAddressString = (
-  address: HousingStockAddressResponse
+  address: HousingStockShortResponse
 ) => {
-  return `${address?.city}, ул. ${address?.street}, ${address?.housingStockNumber}${address?.corpus || ''}`;
+  return `${address?.city}, ул. ${address?.street}, ${address?.number}${
+    address?.corpus || ''
+  }`;
 };

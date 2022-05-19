@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ArchiveRow } from './components/ArchiveRow';
 import { SetFiltersToStart } from './components/SetFiltersToStart/SetFiltersToStart';
-import { Wrap, Header, GradientLoader, Column } from './NodeArchiveList.styled';
+import { Wrap, Header, GradientLoader } from './NodeArchiveList.styled';
 import { NodeArchiveListProps } from './NodeArchiveList.types';
 
 export const NodeArchiveList: FC<NodeArchiveListProps> = ({
@@ -16,12 +16,16 @@ export const NodeArchiveList: FC<NodeArchiveListProps> = ({
         {data && (
           <>
             <Header columnsCount={data.columns.length}>
-              {data.columns.map((column) => (
-                <Column>{column.text}</Column>
+              {data.columns.map((column, index) => (
+                <div key={index}>{column.text}</div>
               ))}
             </Header>
-            {data.rows.map((row) => (
-              <ArchiveRow columnsCount={data.columns.length} row={row} />
+            {data.rows.map((row, index) => (
+              <ArchiveRow
+                columnsCount={data.columns.length}
+                row={row}
+                key={index}
+              />
             ))}
           </>
         )}

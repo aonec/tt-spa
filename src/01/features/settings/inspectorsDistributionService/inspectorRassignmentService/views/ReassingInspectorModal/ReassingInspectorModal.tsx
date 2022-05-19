@@ -1,7 +1,7 @@
 import { ModalTT } from '01/shared/ui/ModalTT';
 import React, { FC } from 'react';
-import { ReassingInspectorModalProps } from './types';
-import { FormWrap, ModalDescription } from './components';
+import { ReassingInspectorModalProps } from './ReassingInspectorModal.types';
+import { FormWrap, ModalDescription } from './ReassingInspectorModal.styled';
 import { useForm } from 'effector-forms/dist';
 import { Form } from 'antd';
 import { Select } from '01/shared/ui/Select';
@@ -12,9 +12,16 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
   handleSave,
   form,
   inspectorsList,
-  loading
+  isLoading,
 }) => {
   const { fields } = useForm(form);
+
+  const inspectorsOptionsList = inspectorsList?.map((inspector) => (
+    <Select.Option key={inspector.id} value={inspector.id}>
+      {inspector.fullName}
+    </Select.Option>
+  ));
+
   return (
     <ModalTT
       title="Переназначить сотрудника"
@@ -22,7 +29,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
       onCancel={handleClose}
       onSubmit={handleSave}
       saveBtnText="Переназначить сотрудника"
-      loading={loading}
+      loading={isLoading}
     >
       <ModalDescription>
         На все адреса такущего сотрудника будет автоматически назначен новый
@@ -38,11 +45,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
             }
             placeholder="Выберите из списка"
           >
-            {inspectorsList?.map((inspector) => (
-              <Select.Option key={inspector.id} value={inspector.id}>
-                {inspector.fullName}
-              </Select.Option>
-            ))}
+            {inspectorsOptionsList}
           </Select>
           <ErrorMessage>
             {fields.currentInspector.errorText({
@@ -59,11 +62,7 @@ export const ReassingInspectorModal: FC<ReassingInspectorModalProps> = ({
             }
             placeholder="Выберите из списка"
           >
-            {inspectorsList?.map((inspector) => (
-              <Select.Option key={inspector.id} value={inspector.id}>
-                {inspector.fullName}
-              </Select.Option>
-            ))}
+            {inspectorsOptionsList}
           </Select>
           <ErrorMessage>
             {fields.newInspector.errorText({

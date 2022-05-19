@@ -1,6 +1,6 @@
 import { useEvent } from 'effector-react';
 import React from 'react';
-import { ReassingInspectorModalContainer } from './inspectorsDistributionService/inspectorRassignmentService/ReassingInspectorModalContainer';
+import { ReassingInspectorModalContainer } from './inspectorsDistributionService/inspectorRassignmentService';
 import { settingsService } from './settingsService.models';
 import { SettingsPage } from './views/SettingsPage';
 
