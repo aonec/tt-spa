@@ -1,11 +1,29 @@
+import { EActResourceType, EResourceType } from 'myApi';
 import React, { FC } from 'react';
-import { icons } from './icons';
-import { ResourceIconLookupProps } from './ResourceIconLookup.types';
+import {
+  AllResourcesIcon,
+  ColdWaterSupplyIcon,
+  ElectricityIcon,
+  HeatIcon,
+  HotWaterSupplyIcon,
+} from 'ui-kit/icons';
+import { Icons, ResourceIconLookupProps } from './ResourceIconLookup.types';
 
-export const ResourceIconLookup: FC<ResourceIconLookupProps> = ({ icon, ...props }) => {
-  const Icon = icons[icon];
+export const resourceIconLookup: Icons = {
+  [EResourceType.ColdWaterSupply]: ColdWaterSupplyIcon,
+  [EResourceType.HotWaterSupply]: HotWaterSupplyIcon,
+  [EResourceType.Electricity]: ElectricityIcon,
+  [EActResourceType.All]: AllResourcesIcon,
+  [EActResourceType.Heat]: HeatIcon,
+};
+
+export const ResourceIconLookup: FC<ResourceIconLookupProps> = ({
+  icon,
+  style
+}) => {
+  const Icon = resourceIconLookup[icon];
 
   if (!Icon) return null;
 
-  return <Icon {...props} />;
+  return <Icon style={style} />;
 };

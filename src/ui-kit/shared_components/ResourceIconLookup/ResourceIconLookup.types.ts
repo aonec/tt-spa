@@ -6,5 +6,9 @@ export type ResourceIconLookupProps = {
 };
 
 export type Icons = {
-  [key: string]: FC;
+  [key: string]: React.FunctionComponent<
+    React.SVGProps<SVGSVGElement> & {
+      title?: string | undefined;
+    }
+  >;
 };
