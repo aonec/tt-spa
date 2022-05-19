@@ -307,7 +307,7 @@ const Grid = styled.div`
 
 const ApartmentInfoWrap = styled.div`
   padding: 10px 10px 10px 15px;
-  margin: 15px 0;
+  margin: 15px 0 0;
   background: rgba(24, 158, 233, 0.1);
   border-radius: 10px;
 `;
