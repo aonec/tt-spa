@@ -67,7 +67,11 @@ export const NodeProfile = () => {
     return <Loader size={'32'} show />;
 
   const { resource, communicationPipes, nodeStatus, lastCommercialAccountingDate } = node;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> f7756a44a64ff988d4138d909b5b452abcae94a3
   const isShowReadings =
     node?.calculator === null || node?.calculator?.isConnected === false;
 
