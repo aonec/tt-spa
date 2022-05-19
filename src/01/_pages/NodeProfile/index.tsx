@@ -32,10 +32,12 @@ export const NodeProfile = () => {
   const path = `/nodes/${nodeId}`;
   const [addDevice, setAddDevice] = useState(false);
   const [tasks, setTasks] = useState<TaskListResponse[] | null>();
-  const [unitRecord, setUnitRecord] = useState(false);
+  const [unitRecord, setUnitRecord] = useState(true);
 
   const { data: node, status, run } = useAsync<PipeNodeResponse | null>();
   const { calculator } = node || {};
+
+  const getData = () => run(getNode(nodeId));
 
   useEffect(() => {
     run(getNode(nodeId));
@@ -45,6 +47,7 @@ export const NodeProfile = () => {
     getNodeTasks(nodeId).then((res) => {
       setTasks(res);
     });
+    setUnitRecord(true);
   }, []);
 
   if (!node) {
@@ -66,7 +69,12 @@ export const NodeProfile = () => {
   if (status === 'pending' || status === 'idle')
     return <Loader size={'32'} show />;
 
-  const { resource, communicationPipes, nodeStatus, lastCommercialAccountingDate } = node;
+  const {
+    resource,
+    communicationPipes,
+    nodeStatus,
+    lastCommercialAccountingDate,
+  } = node;
   const isShowReadings =
     node?.calculator === null || node?.calculator?.isConnected === false;
 
@@ -126,7 +134,13 @@ export const NodeProfile = () => {
 
   return (
     <>
-      <RegisterNodeOnCommercialAccountingModalContainer nodeStatus={nodeStatus?.value} lastCommercialAccountingDate={lastCommercialAccountingDate}/>
+      <RegisterNodeOnCommercialAccountingModalContainer
+        getData={getData}
+        unitRecord={unitRecord}
+        setUnitRecord={setUnitRecord}
+        nodeStatus={nodeStatus?.value}
+        lastCommercialAccountingDate={lastCommercialAccountingDate}
+      />
       <Header
         node={node}
         calculator={calculator}

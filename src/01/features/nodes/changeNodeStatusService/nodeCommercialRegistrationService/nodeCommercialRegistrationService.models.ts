@@ -15,6 +15,9 @@ const nodeCommercialRegistrationServiceDomain = createDomain(
 );
 
 const $isModalOpen = nodeCommercialRegistrationServiceDomain.createStore(false);
+const $doneData = nodeCommercialRegistrationServiceDomain.createStore(false)
+
+const setDone = nodeCommercialRegistrationServiceDomain.createEvent();
 
 const openModal = nodeCommercialRegistrationServiceDomain.createEvent();
 const closeModal = nodeCommercialRegistrationServiceDomain.createEvent();
@@ -60,10 +63,11 @@ unsetNodeOnCommercialAccountingFx.done.watch(() => {
 });
 
 $isModalOpen.on(openModal, () => true).on(closeModal, () => false);
+$doneData.on(setDone, ()=>true).on(openModal, ()=>false)
 
 forward({
   from: [registrationNodeDone, unsetNodeDone],
-  to: closeModal,
+  to: [closeModal, setDone]
 });
 
 forward({
@@ -86,5 +90,6 @@ export const nodeCommercialRegistrationService = {
   outputs: {
     $isModalOpen,
     $loading,
+    $doneData
   },
 };
