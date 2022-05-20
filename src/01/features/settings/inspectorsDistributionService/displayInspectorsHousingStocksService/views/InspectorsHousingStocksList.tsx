@@ -40,10 +40,10 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
     );
   });
 
-  const isHousingStocksListExist = Boolean(housingStocks);
-  const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
-
   const content = useMemo(() => {
+    const isHousingStocksListExist = Boolean(housingStocks);
+    const isHousingStocksListContainsElems = Boolean(housingStocks?.length);
+
     if (!isHousingStocksListExist) {
       return <TypeAddressToStart />;
     }
@@ -53,12 +53,7 @@ export const InspectorsHousingStocksList: FC<InspectorsHosuingsStocksListProps> 
     }
 
     return list;
-  }, [
-    isHousingStocksListExist,
-    isHousingStocksListContainsElems,
-    housingStocks,
-    updateInfo,
-  ]);
+  }, [housingStocks, updateInfo]);
 
   return (
     <Wrap>
